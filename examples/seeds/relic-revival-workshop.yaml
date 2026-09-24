@@ -1,0 +1,83 @@
+title: 逆袭公主
+theme: 普通女孩通过原创的自我提升项目与生活空间焕新，逐步完成都市逆袭
+template: idle-shop-v1
+designMode: reference_reskin
+referenceMechanics:
+  schemaVersion: 1
+  lockedBy: human
+  source:
+    name: Idle Success
+    url: https://poki.com/zh/g/idle-success
+    researchFiles: []
+  coreLoop:
+    - 角色持续执行当前提升动作并自动产出资源
+    - 玩家点击角色或动作区获得短时加速和即时反馈
+    - 消耗资源升级当前动作效率
+    - 达成门槛后解锁下一项始终可见的近期目标
+    - 人物状态、生活空间与身份阶段同步发生可视变化
+  playerActions:
+    - 点击或触摸当前动作进行短时加速
+    - 购买当前项目的效率升级
+    - 在达到条件后切换到新解锁项目
+  progressionSystems:
+    - 单项目效率与收益成长
+    - 连续可见的小目标解锁链
+    - 人物外观阶段变化
+    - 生活空间阶段变化
+    - 身份与人生状态阶段变化
+  unlockRules:
+    - 下一项目始终可见但未达到门槛时保持锁定
+    - 每次解锁必须带来动作、场景或身份中的至少一种明确变化
+    - 长期逆袭目标被拆成十秒到五分钟内连续兑现的小目标
+  feedbackCadence:
+    immediateSeconds: 1
+    microGoalMinSeconds: 10
+    microGoalMaxSeconds: 300
+  mustPreserveMechanics:
+    - 持续动作、自动产出与主动点击加速并存
+    - 升级当前动作后立即感知效率提升
+    - 下一目标可见但锁定并持续提供近期追求
+    - 数值成长与人物、空间、身份的阶段变化同步
+  adaptableMechanics:
+    - 提升项目的原创题材映射和数量
+    - 阶段数量与节奏
+    - 货币名称、内容文案和反馈表现
+    - 广告触发点和频控
+  fidelityPolicy:
+    level: maximum_core_mechanics
+    preserveInputStateTransitions: true
+    preserveCoreLoopOrder: true
+    preserveProgressionTopology: true
+    preserveUnlockDependencies: true
+    preserveFailureAndRecoveryRules: true
+    preserveFeedbackTimingBands: true
+  expressionIsolation:
+    originalCode: true
+    originalAssets: true
+    originalNamesAndText: true
+    originalUiLayout: true
+    originalAudio: true
+    originalTuningValues: true
+preferences:
+  tone: 轻松、明亮、有明显逆袭满足感
+  audience: 轻度休闲玩家
+  platform: 竖屏 Web-lite
+  session_minutes: 5
+  reference_policy:
+    mechanics_only: true
+    no_third_party_expression: true
+  mvp_scope:
+    include:
+      - 角色持续执行当前提升动作
+      - 点击加速、自动收入、效率升级和购买可用性
+      - 至少三个始终可见但逐步解锁的原创提升项目
+      - 人物与生活空间各至少三个明显原创阶段
+      - 完整可测的新手前五分钟节奏
+    exclude:
+      - 离线收益
+      - 广告、内购、转盘和 VIP
+      - 复杂社交、自由装修和多角色系统
+      - 大量手工关卡或需要后端的功能
+  production_constraints:
+    no_backend: true
+    deterministic_test_api: true

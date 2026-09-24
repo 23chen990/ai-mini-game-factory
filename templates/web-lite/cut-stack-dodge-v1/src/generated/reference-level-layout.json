@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "reference-level-layout",
+  "template": "cut-stack-dodge-v1",
+  "runtime": "web-lite",
+  "sourceRuntimeDataHash": null,
+  "playerObjectId": "player-blade",
+  "level": {
+    "fixedStepSeconds": 0.016666666666666666,
+    "gravity": 760,
+    "tapImpulse": -430,
+    "forwardSpeed": 260,
+    "angularImpulse": 6.283185307179586,
+    "failY": 650,
+    "finishX": 920,
+    "player": { "x": 80, "y": 420, "radius": 18, "angle": 1.5707963267948966 },
+    "objects": [
+      { "id": "start-support", "role": "support", "x": 12, "y": 455, "width": 145, "height": 54 },
+      { "id": "cuttable-1", "role": "cuttable", "x": 220, "y": 150, "width": 46, "height": 380 },
+      { "id": "cuttable-2", "role": "cuttable", "x": 350, "y": 105, "width": 52, "height": 340 },
+      { "id": "hazard-1", "role": "hazard", "x": 470, "y": 430, "width": 72, "height": 170 },
+      { "id": "landing-support", "role": "support", "x": 590, "y": 500, "width": 150, "height": 46 },
+      { "id": "cuttable-3", "role": "cuttable", "x": 690, "y": 130, "width": 56, "height": 360 },
+      { "id": "finish-1", "role": "finish", "x": 915, "y": 80, "width": 26, "height": 440 }
+    ]
+  }
+}

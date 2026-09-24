@@ -1,0 +1,23 @@
+node_modules/
+runs/
+test-results/
+playwright-report/
+prototypes/**/dist/
+*.log
+.env
+factory-eval/latest.json
+.DS_Store
+templates/**/dist/
+.learnings/
+_tmp_*
+# Public factory export guard: generated games and local run evidence stay out.
+runs/
+prototypes/
+.workbuddy/
+docs/triage/
+tools/games.txt
+tools/board.log
+factory-eval/latest.json
+*.apk
+*.aab
+node_modules

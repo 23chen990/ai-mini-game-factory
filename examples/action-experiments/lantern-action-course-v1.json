@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "fixtureId": "lantern-action-course-v1",
+  "viewport": { "width": 390, "height": 844 },
+  "fixedStepSeconds": 0.008333333333333333,
+  "physics": {
+    "gravity": 880,
+    "swingDrive": 190,
+    "attachRadius": 560,
+    "maxSpeed": 840,
+    "failY": 900
+  },
+  "player": { "x": 72, "y": 575, "vx": 245, "vy": -185 },
+  "anchors": [
+    { "id": "ring-1", "x": 275, "y": 365 },
+    { "id": "ring-2", "x": 600, "y": 335 },
+    { "id": "ring-3", "x": 925, "y": 375 },
+    { "id": "ring-4", "x": 1250, "y": 330 },
+    { "id": "ring-5", "x": 1575, "y": 370 },
+    { "id": "ring-6", "x": 1900, "y": 340 },
+    { "id": "ring-7", "x": 2225, "y": 365 },
+    { "id": "ring-8", "x": 2550, "y": 335 }
+  ],
+  "finishX": 2760,
+  "requirements": [
+    "No chase, production art, formal UI, progression, or monetization.",
+    "All variants use these exact physical constants and anchor coordinates.",
+    "Only the automatic hook-selection policy may differ between variants.",
+    "Release must not inject speed or rotate velocity."
+  ]
+}

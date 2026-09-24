@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+    <meta name="theme-color" content="#101827" />
+    <title>Cut Course</title>
+  </head>
+  <body>
+    <main id="game-shell">
+      <section id="hud" aria-live="polite">
+        <div class="title-block"><h1 id="title"></h1><p id="status"></p></div>
+        <div class="progress" aria-label="关卡进度"><span id="progress-fill"></span></div>
+        <div class="stats"><span id="cuts"></span><span id="attempt"></span></div>
+      </section>
+      <div id="game-stage">
+        <canvas id="game-canvas" width="1000" height="600" aria-label="单指翻转切割关卡"></canvas>
+        <div id="impact-label" aria-hidden="true"></div>
+        <button id="primary-action" data-gameplay-role="primary-action" aria-label="点击翻转刀刃">点击翻转</button>
+        <button id="replay-button" data-gameplay-role="replay-control" hidden>重新挑战</button>
+      </div>
+      <p id="instructions"><span class="tap-icon">●</span> 点击画面让刀刃向前翻转；避开红色危险区。</p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "researchId": "agent-orchestration-2026-09-03",
+  "targetGame": "shared-mini-game-factory",
+  "targetWorkspace": "src/agents and src/core (shared factory only)",
+  "researchedAt": "2026-09-03T00:00:00+08:00",
+  "candidates": [
+    {
+      "name": "OpenAI Agents SDK JS/TS",
+      "repositoryUrl": "https://github.com/openai/openai-agents-js",
+      "immutableRevision": "v0.11.6",
+      "version": "0.11.6",
+      "directLicenseEvidence": "https://github.com/openai/openai-agents-js/blob/v0.11.6/LICENSE",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": { "verdict": "APPROVED", "evidence": "The repository is TypeScript-first and the factory already depends on @openai/agents for Node-based provider calls." },
+        "wechatMiniGame": { "verdict": "CONDITIONAL", "evidence": "Use only in the local factory control plane; do not ship the SDK in a mini-game runtime." },
+        "douyinMiniGame": { "verdict": "CONDITIONAL", "evidence": "Use only in the local factory control plane; do not ship the SDK in a mini-game runtime." },
+        "tapTapMiniGame": { "verdict": "CONDITIONAL", "evidence": "Use only in the local factory control plane; do not ship the SDK in a mini-game runtime." }
+      },
+      "maintenanceRisk": "LOW",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": ["Retain the MIT copyright and permission notice when distributing substantial copies."],
+      "decision": "REUSE",
+      "approvedScope": ["Typed agent package metadata", "structured-output runner wrapper", "tracing and handoff metadata in the factory control plane"],
+      "rationale": "It fills the packaging and observability gap without replacing the factory's Zod artifacts, state machine, pause/resume protocol, or workspace permission boundary."
+    },
+    {
+      "name": "LangGraph JS",
+      "repositoryUrl": "https://github.com/langchain-ai/langgraphjs",
+      "immutableRevision": "ac72c3d270bc491f4a73abab4e3058ff090987c2",
+      "version": "current-main-2026-09-03",
+      "directLicenseEvidence": "https://github.com/langchain-ai/langgraphjs/blob/ac72c3d270bc491f4a73abab4e3058ff090987c2/LICENSE",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": { "verdict": "CONDITIONAL", "evidence": "Node/TypeScript compatible, but its graph runtime would duplicate the existing factory state machine." },
+        "wechatMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency; only a server/control-plane candidate." },
+        "douyinMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency; only a server/control-plane candidate." },
+        "tapTapMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency; only a server/control-plane candidate." }
+      },
+      "maintenanceRisk": "LOW",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": ["Retain the MIT copyright and permission notice if adopted."],
+      "decision": "REJECT",
+      "approvedScope": [],
+      "rationale": "Checkpointers and interrupts are valuable, but adding a second durable graph would split ownership of the existing resumable state machine and increase migration risk."
+    },
+    {
+      "name": "Mastra",
+      "repositoryUrl": "https://github.com/mastra-ai/mastra",
+      "immutableRevision": "ffc6440d13b9392b3cf1ff309d3b9cde4a791038",
+      "version": "current-main-2026-09-03",
+      "directLicenseEvidence": "https://github.com/mastra-ai/mastra/blob/ffc6440d13b9392b3cf1ff309d3b9cde4a791038/LICENSE.md",
+      "licenseSpdx": "Apache-2.0 (core; ee is separately licensed)",
+      "targetPlatformFit": {
+        "webLite": { "verdict": "CONDITIONAL", "evidence": "TypeScript workflows and human-in-the-loop are relevant to the control plane." },
+        "wechatMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency." },
+        "douyinMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency." },
+        "tapTapMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency." }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": ["Track Apache-2.0 notices for core code.", "Do not import code from ee directories without reviewing the separate enterprise license."],
+      "decision": "REJECT",
+      "approvedScope": [],
+      "rationale": "The mixed license boundary and broad framework surface are unnecessary for the narrow packaging problem."
+    },
+    {
+      "name": "Microsoft AutoGen",
+      "repositoryUrl": "https://github.com/microsoft/autogen",
+      "immutableRevision": "027ecf0a379bcc1d09956d46d12d44a3ad9cee14",
+      "version": "maintenance-line-2026-04-15",
+      "directLicenseEvidence": "https://github.com/microsoft/autogen/blob/027ecf0a379bcc1d09956d46d12d44a3ad9cee14/LICENSE",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": { "verdict": "REJECTED", "evidence": "The primary supported surface is Python/.NET and the repository README directs new projects to Microsoft Agent Framework." },
+        "wechatMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency." },
+        "douyinMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency." },
+        "tapTapMiniGame": { "verdict": "REJECTED", "evidence": "Not a mini-game runtime dependency." }
+      },
+      "maintenanceRisk": "HIGH",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": ["Retain the MIT copyright and permission notice if adopted."],
+      "decision": "REJECT",
+      "approvedScope": [],
+      "rationale": "Maintenance mode, cross-language integration cost, and an explicitly recommended successor make it a poor fit for this TypeScript factory."
+    }
+  ],
+  "conclusion": {
+    "approvedCandidateNames": ["OpenAI Agents SDK JS/TS"],
+    "rejectedCandidateNames": ["LangGraph JS", "Mastra", "Microsoft AutoGen"],
+    "noSuitablePlatformAdapter": true,
+    "architectureDecision": "Reuse the already-installed OpenAI Agents SDK only as a typed control-plane adapter around the existing Zod artifact contracts and resumable state machine. Introduce a local AgentPackage registry and prompt/context wrapper; keep generated game workspaces and all mini-game platform adapters independent of the SDK."
+  }
+}

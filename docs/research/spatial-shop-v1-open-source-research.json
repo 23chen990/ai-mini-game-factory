@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "targetPlatforms": [
+    "wechat-minigame",
+    "douyin-minigame",
+    "taptap-minigame"
+  ],
+  "queries": [
+    "Phaser 3.90 immutable source and license evidence",
+    "TypeScript ECS libraries suitable for deterministic spatial shop simulation",
+    "Cocos Creator 3.8 runtime license and mini-game platform support",
+    "Existing repository spatial logistics prototype and web-lite adapter reuse"
+  ],
+  "candidates": [
+    {
+      "id": "phaser-3.90.0",
+      "name": "Phaser 3.90.0",
+      "repositoryUrl": "https://github.com/phaserjs/phaser",
+      "revision": "a9965625f49cf366584f454556b039e06e8adad6",
+      "license": "MIT",
+      "licenseEvidenceUrl": "https://github.com/phaserjs/phaser/blob/a9965625f49cf366584f454556b039e06e8adad6/LICENSE.md",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Approved only as the already-pinned web-lite development and QA renderer. The deterministic simulation remains DOM-free and engine-free so Phaser output is not treated as proof of publishability for any target mini-game platform.",
+      "maintenanceRisk": "low",
+      "securityRisks": [
+        "Browser APIs must remain outside the shared simulation core",
+        "A web build must not be mislabeled as a mini-game package"
+      ],
+      "attributionRequirements": [
+        "Retain the Phaser copyright notice and MIT permission notice in distributed substantial copies"
+      ],
+      "decision": "REUSE"
+    },
+    {
+      "id": "miniplex-0.7.2",
+      "name": "Miniplex 0.7.2",
+      "repositoryUrl": "https://github.com/hmans/miniplex",
+      "revision": "088ef1a3ff6d2a60e4b23232d10f8dbe4b862d5e",
+      "license": "MIT",
+      "licenseEvidenceUrl": "https://github.com/hmans/miniplex/blob/088ef1a3ff6d2a60e4b23232d10f8dbe4b862d5e/LICENSE.md",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Framework-neutral TypeScript entity queries are compatible with the intended rule layer, but the first template needs a small stable-ID state graph rather than an ECS. Adding object-identity entity management would complicate deterministic saves and cross-runtime migration without reducing current code.",
+      "maintenanceRisk": "medium",
+      "securityRisks": [
+        "Additional dependency and API lifecycle for a feature set not required by the first template"
+      ],
+      "attributionRequirements": [
+        "If adopted later, retain the Miniplex copyright and MIT permission notice"
+      ],
+      "decision": "REJECT"
+    },
+    {
+      "id": "bitecs-0.4.0",
+      "name": "bitECS 0.4.0",
+      "repositoryUrl": "https://github.com/NateTheGreatt/bitECS",
+      "revision": "efacc63b95b66d582603ab5c7a5b3fbf2bd74952",
+      "license": "MPL-2.0",
+      "licenseEvidenceUrl": "https://github.com/NateTheGreatt/bitECS/blob/efacc63b95b66d582603ab5c7a5b3fbf2bd74952/LICENSE",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame",
+        "taptap-minigame"
+      ],
+      "technicalFit": "Its data-oriented queries and serialization are stronger than this low-entity-count shop needs. Version 0.4 is a documented API rewrite, and MPL file-level source obligations add release work that is avoidable for a compact original simulation.",
+      "maintenanceRisk": "medium",
+      "securityRisks": [
+        "Recent major API rewrite increases migration risk",
+        "Typed-array oriented storage would add conversion code for human-readable versioned saves"
+      ],
+      "attributionRequirements": [
+        "MPL-2.0 notices and source availability obligations would apply to covered files and modifications"
+      ],
+      "decision": "REJECT"
+    },
+    {
+      "id": "cocos-engine-3.8.8",
+      "name": "Cocos Engine 3.8.8",
+      "repositoryUrl": "https://github.com/cocos/cocos-engine",
+      "revision": "411f98df047c25902f93440d4b22925c2fb65461",
+      "license": "MIT engine runtime; separate editor terms require review",
+      "licenseEvidenceUrl": "https://github.com/cocos/cocos-engine/blob/411f98df047c25902f93440d4b22925c2fb65461/LICENSE.md",
+      "targetPlatforms": [
+        "wechat-minigame",
+        "douyin-minigame"
+      ],
+      "technicalFit": "The upstream runtime documents WeChat Mini Game and TikTok Mini Games support and remains the planned production renderer. It is not added to the web-lite template, and this evidence does not establish TapTap packaging or resolve separate Cocos Creator editor terms.",
+      "maintenanceRisk": "medium",
+      "securityRisks": [
+        "Editor terms must be reviewed separately from the MIT runtime license before production redistribution",
+        "TapTap packaging still requires an independently verified adapter and real-device QA"
+      ],
+      "attributionRequirements": [
+        "Retain the Cocos Engine copyright and MIT permission notice for substantial runtime copies",
+        "Review and comply with applicable Cocos Creator editor terms before production use"
+      ],
+      "decision": "REFERENCE_ONLY"
+    }
+  ],
+  "outcome": "REUSE_APPROVED",
+  "selectedCandidateIds": [
+    "phaser-3.90.0"
+  ],
+  "rationale": "Reuse only the repository's existing pinned Phaser renderer for browser development and QA. Keep the spatial-shop simulation as small original pure TypeScript because the evaluated ECS libraries add dependency, save-format, migration, or licensing cost without solving a current bottleneck. Preserve a renderer boundary for a later separately verified Cocos production adapter; do not claim any mini-game platform is publishable from this web-lite work.",
+  "researchedAt": "2026-08-30T16:21:27Z"
+}

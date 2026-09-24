@@ -1,0 +1,138 @@
+title: 海滩渔货铺
+theme: 原创海滩物流经营
+template: spatial-shop-v1
+designMode: reference_reskin
+referenceMechanics:
+  schemaVersion: 1
+  lockedBy: human
+  source:
+    name: Airplane Manager 通用空间服务机制
+    url: https://poki.com/zh/g/airplane-manager
+    researchFiles:
+      - docs/research/spatial-shop-v1-open-source-research.json
+  coreLoop:
+    - 玩家移动到产出站点自动采集货物
+    - 携带有限货物到兼容货架自动补货
+    - 顾客取货、排队并由玩家完成结算
+    - 将收益逐份投入建设或升级站点
+    - 新站点解锁后形成更长的物流链与新瓶颈
+  playerActions:
+    - 使用单移动输入调度采集、补货、收银、建设和升级
+  progressionSystems:
+    - 站点解锁链、携带容量、移动速度和结算效率
+  unlockRules:
+    - 建设区按固定频率逐份投入货币，完成后原子解锁关联生产点和货架
+  feedbackCadence:
+    immediateSeconds: 1
+    microGoalMinSeconds: 10
+    microGoalMaxSeconds: 180
+  mustPreserveMechanics:
+    - 移动是唯一主操作，进入交互范围后自动执行当前有效任务
+    - 采集、携带、补货、顾客消费、结算和再投资的顺序不变
+    - 顾客耐心、货架库存、生产能力和玩家路程共同形成可见瓶颈
+  adaptableMechanics:
+    - 原创商品、站点类型、地图坐标、解锁顺序、流量窗口与全部数值
+    - 主题特色模块可使用生产加速窗口或需求高峰窗口组合
+  expressionIsolation:
+    originalCode: true
+    originalAssets: true
+    originalNamesAndText: true
+    originalUiLayout: true
+    originalAudio: true
+    originalTuningValues: true
+preferences:
+  tone: 轻快、清爽、有明显物流忙碌感
+  audience: 轻度休闲玩家
+  session_minutes: 5
+  original_expression_only: true
+spatialShop:
+  schemaVersion: 1
+  world:
+    width: 540
+    height: 960
+  player:
+    start: { x: 270, y: 760 }
+    speed: 220
+    capacity: 4
+    interactionRadius: 64
+    pickupIntervalMs: 140
+    depositIntervalMs: 120
+  economy:
+    startingCurrency: 0
+  products:
+    - { id: fresh-fish, name: 鲜鱼, color: "#4BA3C7", saleValue: 2 }
+    - { id: kelp, name: 海带, color: "#4F8A5B", saleValue: 3 }
+  stations:
+    - id: net
+      kind: producer
+      label: 近岸渔网
+      position: { x: 120, y: 180 }
+      initiallyUnlocked: true
+      outputProductId: fresh-fish
+      cycleMs: 900
+      capacity: 6
+    - id: fish-shelf
+      kind: shelf
+      label: 鲜鱼冰盘
+      position: { x: 270, y: 420 }
+      initiallyUnlocked: true
+      acceptsProductIds: [fresh-fish]
+      capacity: 8
+    - id: checkout
+      kind: checkout
+      label: 收银桌
+      position: { x: 270, y: 640 }
+      initiallyUnlocked: true
+      serviceMs: 700
+    - id: kelp-pool
+      kind: producer
+      label: 潮池
+      position: { x: 420, y: 180 }
+      initiallyUnlocked: false
+      outputProductId: kelp
+      cycleMs: 1200
+      capacity: 5
+    - id: kelp-shelf
+      kind: shelf
+      label: 海带篮
+      position: { x: 410, y: 420 }
+      initiallyUnlocked: false
+      acceptsProductIds: [kelp]
+      capacity: 6
+    - id: kelp-build
+      kind: construction
+      label: 扩建潮池
+      position: { x: 410, y: 720 }
+      initiallyUnlocked: true
+      cost: 4
+      contributionIntervalMs: 180
+      unlockStationIds: [kelp-pool, kelp-shelf]
+    - id: capacity-upgrade
+      kind: upgrade
+      label: 扩容
+      position: { x: 120, y: 720 }
+      initiallyUnlocked: true
+      target: player-capacity
+      amount: 2
+      baseCost: 4
+      costMultiplier: 2
+      maxPurchases: 3
+      purchaseIntervalMs: 500
+  customers:
+    entrance: { x: 32, y: 520 }
+    exit: { x: 508, y: 520 }
+    spawnIntervalMs: 3500
+    moveSpeed: 180
+    patienceMs: 8000
+    demand:
+      - { productId: fresh-fish, weight: 3 }
+      - { productId: kelp, weight: 1 }
+  flowEvents:
+    - id: high-tide
+      label: 涨潮
+      kind: production-boost
+      stationIds: [net]
+      startsAtMs: 15000
+      durationMs: 5000
+      repeatEveryMs: 30000
+      multiplier: 1.5

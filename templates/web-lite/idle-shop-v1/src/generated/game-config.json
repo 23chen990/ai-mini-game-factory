@@ -1,0 +1,22 @@
+{
+  "title": "Idle Shop Template",
+  "theme": "original small shop",
+  "content": {
+    "productName": "product",
+    "customerName": "customer",
+    "currencyName": "coin"
+  },
+  "balance": {
+    "startingCurrency": 0,
+    "orderReward": 5,
+    "baseUpgradeCost": 10
+  },
+  "palette": ["#151225", "#F6C768", "#D66B5D"],
+  "uiStyle": "rounded cards",
+  "assets": {
+    "customer": "./assets/customer.svg",
+    "product": "./assets/product.svg",
+    "background": "./assets/background.svg",
+    "upgrade": "./assets/upgrade.svg"
+  }
+}

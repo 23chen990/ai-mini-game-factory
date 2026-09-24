@@ -1,0 +1,10 @@
+{
+  "slot": "C",
+  "policy": "predicted-trajectory-intercept",
+  "rules": [
+    "Exclude anchors more than 560 units away or clearly behind the velocity vector.",
+    "Predict player position 180 milliseconds ahead using current velocity.",
+    "Choose the anchor nearest that predicted position; break ties by greater forward progress.",
+    "Capture the current player-to-anchor distance as rope length."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "experimentId": "lantern-hook-intent-v1",
+  "question": "在相同几何、相同物理且移除追逐干扰后，哪种自动选钩策略最符合玩家意图，同时保持可信的松手动量？",
+  "coreAction": "按住自动挂钩并摆荡，松手完整保留切线速度飞出。",
+  "decisionIntervalMs": 900,
+  "sourceWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "sharedGeometryFixture": "examples/action-experiments/lantern-action-course-v1.json",
+  "constraints": {
+    "greyboxOnly": true,
+    "chaseIncluded": false,
+    "formalUiIncluded": false,
+    "iaaIncluded": false
+  },
+  "prototypes": [
+    {
+      "slot": "A",
+      "name": "最近前向钩·基线",
+      "workspace": "workspace/action-a",
+      "geometryFixtureHash": "sha256:19bba3921980a7206693b392933fc25ab8d0cf1795d0268bfb672cdd16c58b9d",
+      "treatmentHash": "sha256:fa682d210cdebf502bae4af696e9db299bd3a1f8130e5ff95d5e3ff8d140c759",
+      "hypothesis": "当前最近前向钩规则足够清楚，可作为控制组。",
+      "treatment": [
+        "Use the exact shared fixture: 390x844, 1/120 fixed step, gravity 880, swing drive 190, attach radius 560, max speed 840, initial player (72,575) velocity (245,-185), eight anchors at x=275+325n with y=[365,335,375,330,370,340,365,335], finishX 2760 and failY 900.",
+        "Exclude anchors farther than 560 units or more than 20 units behind the player.",
+        "Choose the remaining anchor with the shortest Euclidean distance.",
+        "Capture current distance as rope length; release must preserve velocity exactly and add no impulse."
+      ]
+    },
+    {
+      "slot": "B",
+      "name": "方向加权钩·意图优先",
+      "workspace": "workspace/action-b",
+      "geometryFixtureHash": "sha256:19bba3921980a7206693b392933fc25ab8d0cf1795d0268bfb672cdd16c58b9d",
+      "treatmentHash": "sha256:0269adda83ee0c5a2bbb585718f1faae83ea2e889c3361dc7c79aa8ef36b550b",
+      "hypothesis": "距离75%加飞行方向25%的选钩权重，会减少系统背叛感且不降低可读性。",
+      "treatment": [
+        "Use the exact shared fixture: 390x844, 1/120 fixed step, gravity 880, swing drive 190, attach radius 560, max speed 840, initial player (72,575) velocity (245,-185), eight anchors at x=275+325n with y=[365,335,375,330,370,340,365,335], finishX 2760 and failY 900.",
+        "Exclude anchors farther than 560 units or clearly behind the current velocity vector.",
+        "Score eligible anchors using 75% normalized distance plus 25% angular error from current velocity; break ties by greater forward progress.",
+        "Capture current distance as rope length; release must preserve velocity exactly and add no impulse."
+      ]
+    },
+    {
+      "slot": "C",
+      "name": "轨迹预判钩·截点优先",
+      "workspace": "workspace/action-c",
+      "geometryFixtureHash": "sha256:19bba3921980a7206693b392933fc25ab8d0cf1795d0268bfb672cdd16c58b9d",
+      "treatmentHash": "sha256:4541b2306b93a928b9815ede72379424da462af039ef4f95bf348654a042a475",
+      "hypothesis": "按180毫秒后的预测位置选钩，会更贴合高速飞行中的下一步意图。",
+      "treatment": [
+        "Use the exact shared fixture: 390x844, 1/120 fixed step, gravity 880, swing drive 190, attach radius 560, max speed 840, initial player (72,575) velocity (245,-185), eight anchors at x=275+325n with y=[365,335,375,330,370,340,365,335], finishX 2760 and failY 900.",
+        "Exclude anchors farther than 560 units or clearly behind the current velocity vector.",
+        "Predict player position 180ms ahead and choose the eligible anchor nearest that point; break ties by greater forward progress.",
+        "Capture current distance as rope length; release must preserve velocity exactly and add no impulse."
+      ]
+    }
+  ],
+  "automaticQaThresholds": {
+    "inputResponseMs": { "max": 50 },
+    "releaseVelocityRetentionRatio": { "min": 0.96 },
+    "wrongHookAttachments": { "max": 0 },
+    "maxEventGapMs": { "max": 1800 },
+    "retryFrictionMs": { "max": 800 },
+    "missedFinishDetections": { "max": 0 }
+  }
+}

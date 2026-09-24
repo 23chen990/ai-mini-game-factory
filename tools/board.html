@@ -1,0 +1,239 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>小游戏工厂 · 工厂看板</title>
+<style>
+:root{--bg:#0f1420;--panel:#171d2b;--panel2:#1f2738;--line:#2a3346;--txt:#e7ecf5;--mut:#8a96ad;--grn:#34d399;--blu:#60a5fa;--amb:#fbbf24;--red:#f87171;--pink:#c084fc;--cyn:#22d3ee}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--txt);font-size:14px}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:14px;padding:14px 22px;background:linear-gradient(180deg,#141a28,#0f1420);border-bottom:1px solid var(--line);flex-wrap:wrap}
+header h1{font-size:17px;margin:0;letter-spacing:.5px}header h1 b{color:var(--pink)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{background:var(--panel2);border:1px solid var(--line);padding:5px 11px;border-radius:20px;font-size:12px;color:var(--mut)}.chip b{color:var(--txt);font-size:13px}
+button{cursor:pointer;background:var(--panel2);color:var(--txt);border:1px solid var(--line);padding:7px 13px;border-radius:8px;font-size:13px}
+button:hover{border-color:var(--blu)}
+.filters{display:flex;gap:8px;padding:14px 22px 4px;flex-wrap:wrap}.filters button.active{border-color:var(--pink);color:#fff}
+main{padding:14px 22px 60px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;transition:.15s;position:relative}
+.card:hover{border-color:var(--blu);transform:translateY(-2px)}
+.card .thumb{width:100%;height:150px;object-fit:cover;background:var(--panel2);display:block;border-bottom:1px solid var(--line)}
+.card .nothumb{height:150px;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:12px;border-bottom:1px solid var(--line);background:repeating-linear-gradient(45deg,#1a2030,#1a2030 12px,#161b29 12px,#161b29 24px)}
+.card .body{padding:13px 14px}
+.card .pms{font-size:12px;font-weight:600;margin-bottom:6px}
+.card h3{margin:0 0 4px;font-size:16px;padding-right:70px}
+.card .th{color:var(--mut);font-size:11px;margin-bottom:9px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .iter{color:var(--mut);font-size:11px;margin:-4px 0 8px;opacity:.85}
+.card .row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--mut)}
+.card .play{display:inline-block;margin-top:9px;background:rgba(52,211,153,.15);color:var(--grn);border:1px solid var(--grn);padding:5px 11px;border-radius:7px;font-size:12px;font-weight:600;text-decoration:none}
+.pm-playable{color:var(--grn)}.pm-wait_accept{color:var(--grn);font-weight:700}.pm-reviewed{color:var(--cyn)}.pm-waiting_pm{color:var(--amb)}.pm-failed{color:var(--red)}.pm-building{color:var(--blu)}.pm-research{color:var(--cyn)}.pm-draft{color:var(--mut)}
+.filters button[data-f="wait_accept"].active{border-color:var(--grn);color:var(--grn)}
+.filters button[data-f="reviewed"].active{border-color:var(--cyn);color:var(--cyn)}
+/* overlay */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);z-index:50;display:none;overflow:auto}
+.overlay.show{display:block}
+.sheet{background:var(--panel);max-width:1000px;margin:26px auto;padding:26px;border-radius:16px;border:1px solid var(--line)}
+.sheet .x{float:right;cursor:pointer;color:var(--mut);font-size:20px}
+.sheet h2{margin:0 0 4px}.sheet .sub{color:var(--mut);font-size:12px;margin-bottom:14px;line-height:1.5}
+.accept{background:rgba(52,211,153,.1);border:1px solid var(--grn);border-radius:10px;padding:14px 16px;margin:0 0 18px}
+.accept .lab{color:var(--grn);font-weight:700;margin-bottom:8px;font-size:13px}
+.accept a{display:inline-block;background:var(--grn);color:#06231a;padding:8px 16px;border-radius:8px;font-weight:700;text-decoration:none;font-size:14px}
+.gate{background:rgba(251,191,36,.1);border:1px solid var(--amb);border-radius:10px;padding:14px 16px;margin:0 0 18px}
+.gate .lab{color:var(--amb);font-weight:700;margin-bottom:7px}
+.gate code{display:block;background:#0b0f18;border:1px solid var(--line);padding:9px 11px;border-radius:7px;font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--grn);white-space:pre-wrap}
+.section-h{font-size:12px;color:var(--mut);letter-spacing:1px;margin:20px 0 10px;border-top:1px solid var(--line);padding-top:16px}
+.flow{display:flex;flex-direction:column}
+.step{display:grid;grid-template-columns:22px 1fr;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}
+.step .dot{width:12px;height:12px;border-radius:50%;margin-top:5px;border:2px solid var(--line)}
+.step.d-done .dot{background:var(--grn);border-color:var(--grn)}.step.d-failed .dot{background:var(--red);border-color:var(--red)}
+.step.d-waiting .dot{background:var(--amb);border-color:var(--amb)}.step.d-running .dot{background:var(--blu);border-color:var(--blu);box-shadow:0 0 0 4px rgba(96,165,250,.22)}
+.step.d-draft .dot{background:transparent}
+.step.missing .dot{border-style:dashed;opacity:.65}
+.step.d-evidence .dot{background:transparent;border-color:var(--cyn)}
+.evidence{margin-top:5px;padding:6px 9px;background:#0b0f18;border:1px solid var(--line);border-radius:6px;font-size:11px;color:var(--mut);font-family:ui-monospace,Menlo,monospace;word-break:break-all;line-height:1.55}
+.evidence b{color:var(--txt);font-family:-apple-system,sans-serif}
+.plain{margin-top:5px;color:var(--txt);font-size:13px;line-height:1.6}
+.techbtn{margin-top:6px;font-size:11px;color:var(--mut);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline}
+.techdet{display:none;margin-top:6px;padding:6px 9px;background:#0b0f18;border:1px dashed var(--line);border-radius:6px;font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#5e6b82;word-break:break-all;line-height:1.5}
+.fb-box{background:rgba(251,191,36,.08);border:1px solid var(--amb);border-radius:10px;padding:14px 16px;margin:0 0 18px}
+.fb-box .lab{color:var(--amb);font-weight:700;margin-bottom:8px;font-size:13px}
+.fb-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.fb-tag{display:inline-block;font-size:11px;padding:5px 10px;border-radius:14px;background:var(--panel2);border:1px solid var(--line);color:var(--mut);cursor:pointer;user-select:none}
+.fb-tag.on{background:rgba(251,191,36,.18);border-color:var(--amb);color:var(--amb);font-weight:600}
+.fb-ta{width:100%;min-height:80px;background:#0b0f18;border:1px solid var(--line);border-radius:7px;color:var(--txt);font-size:13px;padding:9px 11px;font-family:inherit;resize:vertical}
+.fb-saved{margin-top:10px;padding:9px 11px;background:var(--panel2);border:1px solid var(--line);border-radius:7px;font-size:12px;color:var(--txt);white-space:pre-wrap}
+.step .lab{font-weight:600;font-size:13px}.step .lab .ag{color:var(--pink);font-weight:400;font-size:11px;margin-left:6px}
+.step .mdl{display:inline-block;font-size:10px;background:rgba(192,132,252,.12);color:var(--pink);border:1px solid rgba(192,132,252,.3);padding:1px 7px;border-radius:10px;margin-left:6px;vertical-align:middle}
+.step .st{font-size:11px;color:var(--mut);margin-top:3px}
+.step .st b{color:var(--txt)}
+.shots{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+.shots img{width:100%;height:190px;object-fit:cover;border-radius:8px;border:1px solid var(--line);cursor:pointer}
+.shots a{display:block}
+/* 试玩区：直接在看板里玩，不用跳新标签页 */
+.playbox{margin:0 0 16px;border-radius:12px;overflow:hidden;border:1px solid var(--grn);background:#000}
+.playbar{display:flex;align-items:center;gap:10px;padding:9px 13px;background:rgba(52,211,153,.12);border-bottom:1px solid rgba(52,211,153,.4)}
+.playbar .t{color:var(--grn);font-weight:700;font-size:13px;flex:1}
+.playbar a,.playbar button{margin:0;background:var(--grn);color:#06231a;padding:6px 13px;border-radius:7px;font-weight:700;text-decoration:none;font-size:12px;border:1px solid var(--grn)}
+.playbox iframe{display:block;width:100%;height:480px;border:0;background:#000}
+.runlist{display:flex;flex-direction:column;gap:6px}
+.runrow{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--panel2)}
+.runrow:hover{border-color:var(--blu)}
+.runrow .rid{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:var(--mut);flex:1;word-break:break-all}
+.runrow{position:relative}
+.runrow.current{border-color:var(--grn);background:rgba(52,211,153,.06)}
+.runrow.abandoned{opacity:.5}
+.runrow.abandoned .rid{text-decoration:line-through}
+.curbadge{font-size:10px;color:var(--grn);background:rgba(52,211,153,.15);border:1px solid var(--grn);padding:2px 7px;border-radius:10px;font-weight:600;white-space:nowrap}
+.abbadge{font-size:10px;color:var(--mut);background:var(--panel2);border:1px solid var(--line);padding:2px 7px;border-radius:10px;white-space:nowrap}
+.abbtn{margin:4px 0;font-size:12px;color:var(--mut)}
+.research-note{background:rgba(34,211,238,.08);border:1px solid var(--cyn);border-radius:10px;padding:13px 16px;margin:0 0 18px}
+.research-note .lab{color:var(--cyn);font-weight:700;margin-bottom:6px;font-size:13px}
+.rowplay{font-size:10px;color:var(--grn);text-decoration:none;background:rgba(52,211,153,.12);border:1px solid rgba(52,211,153,.4);padding:2px 8px;border-radius:6px;white-space:nowrap}
+.runrow .mr{font-size:11px;color:var(--mut)}
+.legend{font-size:11px;color:var(--mut);margin-top:16px;line-height:1.9;border-top:1px solid var(--line);padding-top:14px}
+.legend b{color:var(--txt)}
+.empty{color:var(--mut);padding:40px;text-align:center}
+.back{cursor:pointer;color:var(--blu);font-size:12px;margin-bottom:8px;display:inline-block}
+</style></head><body>
+<header><h1>小游戏工厂 · <b>工厂看板</b></h1><div class="chips" id="chips"></div><button id="refresh">刷新</button></header>
+<div class="filters" id="filters">
+<button data-f="all" class="active">全部</button>
+<button data-f="wait_accept">🆕 等你验收</button>
+<button data-f="reviewed">👀 你看过了</button>
+<button data-f="waiting_pm">⏳ 等我拍板</button>
+<button data-f="building">🔧 制作中</button>
+<button data-f="need">⛔ 卡住/需处理</button>
+</div>
+<main><div class="grid" id="grid"></div></main>
+<div class="overlay" id="overlay"><div class="sheet" id="sheet"></div></div>
+<script>
+const $=s=>document.querySelector(s);
+// agent 英文名 → 中文角色（你看懂这一个词就够了，模型见底部图例）
+const AGENT_ZH={'RequestRouter':'接入','ProducerAgent':'策划','ResearchAgent':'研究','OpenSourceResearchAgent':'开源调研','ArtDirectorAgent':'美术指导','StyleLockAgent':'美术定稿','AssetProducerAgent':'美术素材','BuilderAgent':'程序构建','FixerAgent':'修复','QAAgent':'质检','ReleaseAgent':'发布','PrototypeBuilder':'原型制作','NarrativeDesigner':'叙事','ReplayDesigner':'重玩','ChapterBuilder':'章节','ActionLab':'动作实验','Terra':'程序构建','Sol':'研究/策划','Luna':'质检/修复','Spark':'素材/UI','QAAgent + FixerAgent':'质检+修复','你（产品经理）':'你（产品经理）','—':'人工'};
+const agZ=s=>AGENT_ZH[s]||s||'人工';
+let DATA=[];
+const PM={wait_accept:'🆕 等你验收',reviewed:'👀 你看过了',playable:'✅ 可试玩',waiting_pm:'⏳ 等你拍板',building:'🔧 制作中',failed:'⛔ 卡住了',research:'📋 研究中',draft:'📝 还没开始'};
+const PM_COLOR={wait_accept:'var(--grn)',reviewed:'var(--cyn)',playable:'var(--grn)',waiting_pm:'var(--amb)',building:'var(--blu)',failed:'var(--red)',research:'var(--cyn)',draft:'var(--mut)'};
+async function load(){const r=await fetch('/api/runs');DATA=await r.json();renderChips();render();}
+function renderChips(){const c={all:DATA.length,wait_accept:0,reviewed:0,building:0,need:0};
+DATA.forEach(g=>{if(g.type==='other')return;c.wait_accept+=g.pmStatus==='wait_accept'?1:0;c.reviewed+=g.pmStatus==='reviewed'?1:0;c.building+=(g.pmStatus==='building'||g.pmStatus==='research'||g.pmStatus==='draft')?1:0;c.need+=g.needsAttention?1:0;});
+$('#chips').innerHTML=Object.entries(c).map(([k,v])=>'<span class="chip">'+({all:'游戏总数',wait_accept:'等你验收',reviewed:'你看过了',building:'制作中',need:'卡住/需处理'}[k])+' <b>'+v+'</b></span>').join('');}
+function render(){const f=$('.filters button.active').dataset.f;const list=DATA.filter(g=>{if(f==='all')return true;if(g.type==='other')return false;if(f==='need')return g.needsAttention;if(f==='building')return['building','research','draft'].includes(g.pmStatus);if(f==='reviewed')return g.pmStatus==='reviewed'||g.pmStatus==='playable';return g.pmStatus===f;});
+$('#grid').innerHTML=list.length?list.map(card).join(''):'<div class="empty">这个分类下暂时没有</div>';
+document.querySelectorAll('.card').forEach(el=>el.onclick=()=>openGroup(el.dataset.key));}
+function card(g){const thumb=g.thumbUrl?'<img class="thumb" src="'+g.thumbUrl+'">':'<div class="nothumb">'+(g.playUrl?'🎮 可以试玩<br><span style="opacity:.7">（这一版没留画面）</span>':'暂无画面')+'</div>';
+const play=g.playUrl?'<a class="play" href="'+g.playUrl+'" target="_blank" onclick="event.stopPropagation()">🎮 点此试玩</a>':'';
+const iter=(g.count>1||g.abandonedCount>0)?'<div class="iter">'+(g.count>1?'已迭代 '+g.count+' 次':'')+(g.abandonedCount>0?(g.count>1?' · ':'')+'已废弃 '+g.abandonedCount+' 条':'')+'（点开看明细）</div>':'';
+return '<div class="card" data-key="'+g.key+'">'+thumb+'<div class="body"><div class="pms pm-'+g.pmStatus+'">'+g.pmStatusLabel+'</div>'
++'<h3>'+esc(g.name)+'</h3>'
++'<div class="th">'+esc(g.subtitle||g.theme||'')+'</div>'+iter+play
++'<div class="row"><span>'+esc(g.latestStage?stageZh(g.latestStage):'—')+'</span><span>'+rel(g.latestUpdatedAt)+'</span></div></div></div>';}
+function stageZh(s){const m={CREATED:'需求接入',BLUEPRINT:'策划定玩法',ART_DIRECTIONS:'美术定方向',STYLE_LOCK:'锁定美术',ASSETS:'出素材',BUILD:'程序实现',FIX:'修复',QA:'质检',RELEASE:'打包',COMPLETED:'完成',WAITING_FOR_PROTOTYPE:'等你选原型',WAITING_FOR_ART:'等你选美术',WAITING_FOR_REFERENCE:'等你确认参考',ACTION_EXPERIMENT:'动作实验',PROTOTYPE:'原型',NARRATIVE:'叙事设计',REPLAY:'重玩设计',CHAPTER:'章节扩展'};for(const k in m)if(s.indexOf(k)>=0)return m[k];return s;}
+function rel(iso){if(!iso)return'';const s=(Date.now()-new Date(iso).getTime())/1000;if(s<60)return'刚刚';if(s<3600)return Math.floor(s/60)+' 分钟前';if(s<86400)return Math.floor(s/3600)+' 小时前';return Math.floor(s/86400)+' 天前';}
+function esc(s){return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+async function openGroup(key){const g=DATA.find(x=>x.key===key);if(!g)return;
+const activeIds=g.activeRunIds&&g.activeRunIds.length?g.activeRunIds:[];
+const abIds=g.abandonedRunIds||[];
+let h='<span class="x" onclick="closeRun()">✕</span><h2>'+esc(g.name)+(g.count>1?' <span style="color:var(--pink)">×'+g.count+' 次运行</span>':'')+'</h2>'
++'<div class="sub">'+esc(g.subtitle||g.theme||'')+' · 模板 '+esc(g.template||'—')+'</div>';
+if(g.playUrl)h+='<div class="accept"><div class="lab">✅ 这一款可以试玩验收了</div><a href="'+g.playUrl+'" target="_blank">🎮 立即试玩（当前可玩版本）</a></div>';
+else if(g.activeRunIds&&!g.activeRunIds.length&&abIds.length)h+='<div class="gate"><div class="lab">这一款的运行记录全部被废弃了</div>可以在 tools/games.txt 里去掉行首的「-」恢复某条线。</div>';
+h+='<div class="section-h">进行中的生产线（'+activeIds.length+' 条，点开看每条流程）</div><div class="runlist">';
+for(const rid of activeIds){h+=await runRowHtml(rid,g,false);}
+h+='</div>';
+if(abIds.length){
+h+='<div class="section-h">已废弃</div><button class="abbtn" id="abtoggle" onclick="toggleAb()">▸ 已废弃 '+abIds.length+' 条（点开展开）</button><div class="runlist" id="ablist" style="display:none">';
+for(const rid of abIds){h+=await runRowHtml(rid,g,true);}
+h+='</div>';}
+h+='<div class="legend">点任一行 → 看那条线的 <b>agent 分工 + 模型 + 流程 + 画面</b>。废弃某条线：在 <b>tools/games.txt</b> 对应行该 run-id 前加「-」。</div>';
+$('#sheet').innerHTML=h;$('#overlay').classList.add('show');
+document.querySelectorAll('.runrow').forEach(el=>el.onclick=()=>openRunDetail(el.dataset.rid,g));}
+async function runRowHtml(rid,g,isAb){const r=await fetch('/api/run/'+encodeURIComponent(rid)).then(x=>x.json());const ps=pmOf(r);const sp=r.mode==='research'?'研究原型':stageZh(r.state?.stage||'');
+const isCurrent=!isAb&&(rid===g.playableRunId);
+const playLink=r.playable?'<a class="rowplay" href="'+r.playUrl+'" target="_blank" onclick="event.stopPropagation()">🎮 试玩</a>':'';
+return '<div class="runrow'+(isCurrent?' current':'')+(isAb?' abandoned':'')+'" data-rid="'+rid+'"><span class="pms pm-'+ps+'" style="font-size:12px;font-weight:600">'+PM[ps]+'</span><span class="rid">'+esc(r.meta?.name||rid)+'</span>'
++(isAb?'<span class="abbadge">已废弃</span>':'')+(isCurrent?'<span class="curbadge">🎮 当前可玩</span>':'')+playLink
++'<span class="mr">'+esc(sp)+' · '+rel(r.state?.updatedAt||r.state?.createdAt)+'</span></div>';}
+function toggleAb(){const l=$('#ablist'),b=$('#abtoggle');if(!l)return;const open=l.style.display!=='none';l.style.display=open?'none':'flex';b.textContent=b.textContent.replace(open?'▾':'▸',open?'▸':'▾');}
+function pmOf(r){if(r.playable)return'playable';const s=r.state?.status,st=r.state?.stage||'';if(s==='waiting'||st.indexOf('WAITING')===0)return'waiting_pm';if(s==='failed')return'failed';if(s==='running'||s==='pending'||r.state)return'building';if(r.screenshots&&r.screenshots.length)return'research';return'draft';}
+let CURRUN=null,CURGROUP=null,SHOTS_OPEN=false;
+function detailHtml(rid){const r=CURRUN;
+let h='<span class="x" onclick="closeRun()">✕</span><a class="back" onclick="openGroup(\''+CURGROUP.key+'\')">← 返回批次</a>'
++'<h2>'+esc(r.meta?.name||rid)+'</h2><div class="sub">'+esc(r.meta?.subtitle||'')+' · '+rid+'</div>';
+// 1) 游戏本体：直接内嵌，点开就能玩
+if(r.playable){
+h+='<div class="playbox"><div class="playbar"><span class="t">🎮 直接在这里玩</span>'
++(r.playMtime?'<span style="color:var(--mut);font-size:11px">构建: '+esc(r.playMtime)+'</span>':'')
++'<a href="'+r.playUrl+'" target="_blank">全屏玩</a>'
++'<button onclick="reloadPlay()">重新加载</button></div>'
++'<iframe id="playFrame" src="'+r.playUrl+'"></iframe></div>';
+}
+else if(r.gate)h+='<div class="gate"><div class="lab">⏳ '+esc(r.gate.label)+'</div><code>'+esc(r.gate.cmd)+'</code></div>';
+if(r.mode==='research')h+='<div class="research-note"><div class="lab">📋 研究原型线（未走完整流水线）</div>这条线是快速研究 / 原型验证，没有正式的流程记录，下面列的「证据」都只是看板自动扫到的文件，<b>不代表你认为完成</b>。</div>';
+// 2) 画面
+if(r.screenshots&&r.screenshots.length){const total=r.screenshots.length;const show=SHOTS_OPEN?r.screenshots:r.screenshots.slice(0,6);
+h+='<div class="section-h">画面（'+total+' 张，点击看大图）</div><div class="shots">';show.forEach(sh=>h+='<a href="'+sh.url+'" target="_blank"><img src="'+sh.url+'" alt=""></a>');h+='</div>';
+if(total>6)h+='<div style="margin-top:10px"><button onclick="toggleShots()">'+(SHOTS_OPEN?'收起，只看前 6 张':'查看全部 '+total+' 张')+'</button></div>';}
+// 3) 你的判断
+if(r.feedback){h+='<div class="fb-box"><div class="lab">📝 你之前的判断</div><div style="font-size:11px;color:var(--mut);margin-bottom:6px">'+esc(r.feedback.at)+(r.feedback.tags.length?' · '+esc(r.feedback.tags.map(t=>'#'+t).join(' ')):'')+'</div><div class="fb-saved">'+esc(r.feedback.note)+'</div></div>';}
+h+=feedbackFormHtml(r);
+// 4) 谁做的（流程，次要）
+const flowTitle=r.mode==='research'?'agent 留了什么证据（你判断算不算完成）':'制作流程（每步由谁、用哪个模型）';
+h+='<div class="section-h">'+flowTitle+'</div><div class="flow">';
+r.stages.forEach(s=>{const isEvidence=s.status==='evidence';
+const stt=s.status;
+const cs='d-'+(isEvidence?'evidence':stt==='completed'?'done':stt==='failed'?'failed':(stt==='waiting'||(s.stageName||'').indexOf('WAITING')===0)?'waiting':(stt==='running'||stt==='pending')?'running':'draft');
+let st='';
+if(isEvidence)st='<b style="color:var(--cyn)">有证据</b>（待你判断算不算完成）';
+else if(stt==='completed')st='<b style="color:var(--grn)">已完成</b>';
+else if(stt==='failed')st='<b style="color:var(--red)">失败</b>';
+else if(stt==='waiting'||(s.stageName||'').indexOf('WAITING')===0)st='<b style="color:var(--amb)">等你操作</b>';
+else if(stt==='running'||stt==='pending')st='进行中';
+else st='未开始';
+const t=s.startedAt?rel(s.startedAt):'';
+let evidenceHtml='';
+if(isEvidence){
+  evidenceHtml='<div class="plain">'+esc(s.plain||'')+'</div>';
+  if(s.evidence&&s.evidence.length)evidenceHtml+='<button class="techbtn" onclick="toggleTech(this)">▸ 技术文件明细（看不懂可忽略）</button><div class="techdet">'+esc(s.evidence.join('\n'))+'</div>';
+}
+h+='<div class="step '+cs+'"><div class="dot"></div><div><div class="lab">'+esc(s.label||s.name||'')+'<span class="ag">'+agZ(s.agent)+'</span><span class="mdl">'+esc(s.model||'—')+'</span></div><div class="st">'+st+(t?' · '+t:'')+(s.attempts>1?' · 第'+s.attempts+'次':'')+'</div>'+evidenceHtml+'</div></div>';});
+h+='</div>';
+if(r.missing&&r.missing.length){h+='<div class="section-h">工厂正式产线的标准步骤（这条研究线都没走）</div><div class="flow">';
+r.missing.forEach(s=>{h+='<div class="step d-draft missing"><div class="dot"></div><div><div class="lab" style="color:var(--mut)">'+esc(s.label)+'<span class="ag">'+agZ(s.agent)+'</span><span class="mdl">'+esc(s.model)+'</span></div><div class="st">未走这条产线</div></div></div>';});
+h+='</div><div class="sub" style="margin-top:8px">注意：你在工厂外可能已经做了一些（比如美术方向大体定了）——看板只扫工厂流水线内的文件。在下面记录你的判断，工厂下次迭代能读到。</div>';}
+h+='<div class="legend"><b>模型说明：</b><br><b style="color:var(--pink)">Sol</b>＝旗舰推理模型，负责研究/玩法/体验判断/最终复盘 &nbsp; <b style="color:var(--pink)">Terra</b>＝编码构建模型，负责实现代码 &nbsp; <b style="color:var(--pink)">Luna</b>＝审查模型，负责质检/修复/美术审查 &nbsp; <b style="color:var(--pink)">Spark</b>＝快速模型，负责素材/UI微调 &nbsp; <b>—</b>＝人工（你，产品经理）<br>每个 agent 只用允许的模型，且不验收自己的工作。</div>';
+return h;}
+function feedbackFormHtml(r){const tags=['玩法已定','美术方向已定','需要改进','不通过','升级为正式'];
+const prev=r.feedback?r.feedback.tags:[];
+const note=r.feedback?r.feedback.note:'';
+let tagHtml='';
+tags.forEach(t=>{const on=prev.includes(t);tagHtml+='<span class="fb-tag'+(on?' on':'')+'" data-tag="'+t+'" onclick="toggleTag(this)">#'+t+'</span>';});
+return '<div class="fb-box"><div class="lab">📝 我的判断（你写，下一轮迭代会读）</div>'
++'<div class="fb-tags">'+tagHtml+'</div>'
++'<textarea class="fb-ta" id="fbNote" placeholder="例如：玩法我玩过觉得行，但移动端操作不顺手；美术想要更暗一点的夜市感……">'+esc(note)+'</textarea>'
++'<div style="margin-top:8px"><button onclick="saveFb()">💾 保存我的判断</button> <span id="fbStatus" style="margin-left:8px;color:var(--mut);font-size:12px"></span></div></div>';}
+function reloadPlay(){const f=document.getElementById('playFrame');if(!f)return;const u=new URL(f.src,location.href);u.searchParams.set('v',Date.now());f.src=u.toString();}
+function toggleTag(el){el.classList.toggle('on');}
+function toggleTech(btn){const d=btn.nextElementSibling;if(!d)return;const open=d.style.display!=='none';d.style.display=open?'none':'block';btn.textContent=open?'▸ 技术文件明细（看不懂可忽略）':'▾ 技术文件明细（看不懂可忽略）';}
+async function saveFb(){const tags=[...document.querySelectorAll('.fb-tag.on')].map(x=>x.dataset.tag);
+const note=document.getElementById('fbNote').value;
+document.getElementById('fbStatus').textContent='保存中…';
+const r=await fetch('/api/feedback/'+encodeURIComponent(CURRUN.runId),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tags,note})}).then(x=>x.json());
+let msg='✅ ';
+if(r.source==='factory'){
+  msg+='已写入工厂反馈记录（下一轮迭代会读）';
+  if(r.stages&&r.stages.length) msg+='，计划改动：'+r.stages.join(' → ');
+}else if(r.source==='board'){
+  msg+='已保存到看板（这条研究线没在工厂流水线里，工厂不直接读；告诉我"用 agent 改' + CURRUN.runId + '"我就动手）';
+}else{
+  msg+='已保存（工厂命令失败：'+r.error+'）';
+}
+document.getElementById('fbStatus').textContent=msg;
+CURRUN.feedback={at:r.recordedAt||r.at||'',tags,tags,note};
+SHOTS_OPEN=false;$('#sheet').innerHTML=detailHtml(CURRUN.runId);}
+function toggleShots(){SHOTS_OPEN=!SHOTS_OPEN;$('#sheet').innerHTML=detailHtml(CURRUN.runId);}
+async function openRunDetail(rid,g){CURGROUP=g;SHOTS_OPEN=false;CURRUN=await fetch('/api/run/'+encodeURIComponent(rid)).then(x=>x.json());
+$('#sheet').innerHTML=detailHtml(rid);$('#overlay').classList.add('show');}
+function stagePmMap(s){const m={CREATED:['需求接入','RequestRouter','Sol'],BLUEPRINT:['策划定玩法','ProducerAgent','Sol'],COMPETITOR_RESEARCH:['竞品研究','ResearchAgent','Sol'],REFERENCE:['参考机制锁定','ResearchAgent','Sol'],OPEN_SOURCE_RESEARCH:['开源调研','OpenSourceResearchAgent','Sol'],ART_DIRECTIONS:['美术定方向','ArtDirectorAgent','Luna'],WAITING_FOR_ART_APPROVAL:['等你选美术','你（产品经理）','—'],STYLE_LOCK:['锁定美术','StyleLockAgent','Luna'],ASSETS:['出素材','AssetProducerAgent','Spark+Luna'],BUILD:['程序实现','BuilderAgent','Terra'],FIX:['修复问题','FixerAgent','Luna'],QA:['自动质检','QAAgent','Luna'],RELEASE:['打包发布','ReleaseAgent','Sol'],COMPLETED:['已完成','—','—'],WAITING_FOR_PROTOTYPE_APPROVAL:['等你选原型','你（产品经理）','—'],WAITING_FOR_REFERENCE_APPROVAL:['等你确认参考','你（产品经理）','—'],WAITING_FOR_ACTION_APPROVAL:['等你选动作方案','你（产品经理）','—'],ACTION_EXPERIMENT_SPEC:['动作实验设计','ActionLab','Terra'],BUILD_ACTION_PROTOTYPES:['做动作原型','BuilderAgent','Terra'],PLAYTEST_ACTION_PROTOTYPES:['动作原型试玩','QAAgent','Luna'],ACTION_EXPERIMENT_APPROVED:['动作实验完成','—','—'],NARRATIVE:['叙事设计','NarrativeDesigner','Sol'],REPLAY:['重玩设计','ReplayDesigner','Sol'],CHAPTER:['章节扩展','ChapterBuilder','Terra']};for(const k in m)if(s.indexOf(k)>=0)return m[k];return[s,'—','—'];}
+function closeRun(){$('#overlay').classList.remove('show');}
+$('#refresh').onclick=load;
+document.querySelectorAll('.filters button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.filters button').forEach(x=>x.classList.remove('active'));b.classList.add('active');render();});
+$('#overlay').onclick=e=>{if(e.target.id==='overlay')closeRun();};
+load();
+</script></body></html>

@@ -1,0 +1,472 @@
+{
+  "schemaVersion": 1,
+  "artifactKind": "spatial-management-template-extraction-recommendation",
+  "subject": "单移动输入的空间模拟经营玩法模板",
+  "scope": {
+    "mode": "RESEARCH_ONLY",
+    "comparedGames": [
+      "beach-fish-shop",
+      "toy-factory-direct-store-3d"
+    ],
+    "researchSources": [
+      "docs/spatial-shop-template.md",
+      "docs/research/spatial-shop-v1-open-source-research.json",
+      "src/schemas/spatial-shop.ts",
+      "tests/unit/spatial-shop-simulation.test.ts",
+      "tests/fixtures/spatial-shop.ts",
+      "runs/20260830210424-pawshop-v1/artifacts/game-blueprint.json",
+      "runs/20260830210424-pawshop-v1/artifacts/qa-report.json",
+      "runs/20260830165832-6d29b0ff/artifacts/game-blueprint.json",
+      "runs/20260830165832-6d29b0ff/workspace/game/tests/gameplay-core-loop.test.ts",
+      "runs/20260830165832-6d29b0ff/workspace/game/tests/customer-spawn-and-rush.test.ts"
+    ],
+    "excludedMutations": [
+      "shared factory code",
+      "template directories",
+      "all run workspaces"
+    ]
+  },
+  "evidenceAssessment": {
+    "qaGate": {
+      "minimumIndependentQaPassedGames": 2,
+      "currentIndependentQaPassedGames": 1,
+      "satisfied": false,
+      "qualificationRule": "只有独立 run 中正式 qa-report.json 的 passed=true 才计数；共享单测、多配置 fixture、构建通过或浏览器预览都不单独计数。",
+      "independenceRule": "每个证据必须来自独立 run workspace，且使用原创主题、地图、表达与数值；至少覆盖一组不同的扩展组合。",
+      "platformBoundary": "web-lite QA 只证明玩法与浏览器适配器，不证明微信、抖音或 TapTap 小游戏包可发布。"
+    },
+    "games": [
+      {
+        "gameId": "beach-fish-shop",
+        "title": "海滩渔货铺",
+        "runPath": "runs/20260830210424-pawshop-v1",
+        "runtime": "web-lite",
+        "qaStatus": "QA_PASSED",
+        "qaReportPath": "runs/20260830210424-pawshop-v1/artifacts/qa-report.json",
+        "stableEvidence": [
+          "31/31 游戏测试、类型检查与生产构建通过",
+          "已验证按商品分类的容量上限、满货架阻塞与顾客取货后恢复补货",
+          "已验证版本化存档恢复、容量夹取和顾客倒计时",
+          "已验证单潮池投建/采集节点与竖屏可见反馈"
+        ],
+        "caveats": [
+          "该 run 实现了海滩特有的单节点解锁与 UI 反馈，不能整体上移为母版",
+          "QA 通过的是 web-lite 证据，不是三平台可发布证据"
+        ]
+      },
+      {
+        "gameId": "toy-factory-direct-store-3d",
+        "title": "玩具工厂直营店 3D",
+        "runPath": "runs/20260830165832-6d29b0ff",
+        "runtime": "cocos-3d",
+        "qaStatus": "NOT_QA_PASSED",
+        "qaReportPath": null,
+        "stableEvidence": [
+          "run 内已有生产、搬运、补货、收银、扩建和需求高峰的单元测试候选契约",
+          "混合 3D 表现与携带堆叠摇摆已有独立视觉方案"
+        ],
+        "caveats": [
+          "没有 passed=true 的 run 级 qa-report.json",
+          "实现仍在变化，包含存档 v2、反馈事件、单次需求高峰、顾客上限和携带摇摆等未经跨游戏稳定的行为",
+          "不得将该 run 的当前实现直接抽入共享层"
+        ]
+      }
+    ],
+    "nonQualifyingEvidence": [
+      {
+        "id": "airport-config-fixture",
+        "kind": "CONFIG_FIXTURE_ONLY",
+        "path": "tests/fixtures/spatial-shop.ts",
+        "value": "证明同一纯模拟可被不同配置驱动，但不是独立游戏、不具备 run 级 QA，因此不计入提取门槛。"
+      },
+      {
+        "id": "shared-simulation-unit-tests",
+        "kind": "UNIT_TEST_ONLY",
+        "path": "tests/unit/spatial-shop-simulation.test.ts",
+        "value": "证明确定性和配置驱动的可行性，不能代替两个独立游戏的玩法 QA。"
+      }
+    ],
+    "infrastructureResearch": [
+      {
+        "finding": "保留引擎无关的纯 TypeScript 规则边界",
+        "evidencePath": "docs/research/spatial-shop-v1-open-source-research.json",
+        "implication": "Phaser 3.90.0 只批准用于 web-lite 开发/QA；Cocos 仅作生产运行时参考，不应进入纯规则层。"
+      },
+      {
+        "finding": "当前无需引入 ECS 依赖",
+        "evidencePath": "docs/research/spatial-shop-v1-open-source-research.json",
+        "implication": "Miniplex 和 bitECS 的抽象、迁移与许可成本高于当前收益；未来提取也应优先小型纯函数和可序列化数据。"
+      },
+      {
+        "finding": "开源复用只限于已批准基础设施",
+        "evidencePath": "runs/20260830210424-pawshop-v1/artifacts/open-source-research.json",
+        "implication": "不得复用第三方经营游戏的角色、地图、UI、经济、内容或数值。"
+      }
+    ]
+  },
+  "decision": {
+    "status": "DEFER_EXTRACTION",
+    "rationale": "当前只有海滩渔货铺一个独立游戏通过 run 级 QA；玩具工厂仍在变化，而机场配置只是 fixture。现阶段可以冻结语义候选和测试契约，不应迁移任何游戏实现到共享层。",
+    "allowedNow": [
+      "记录不含引擎 API 的纯规则不变量",
+      "在每个游戏自己的 run workspace 内实现同一平台无关测试契约",
+      "收集第二个独立游戏的 QA 证据和差异清单"
+    ],
+    "prohibitedUntilGate": [
+      "从海滩渔货铺或玩具工厂复制模拟实现到共享层",
+      "扩大现有共享 schema 来追赶单个游戏的新特性",
+      "将共享单测或配置 fixture 表述为第二个 QA 通过游戏",
+      "将 web-lite 通过表述为任一目标小游戏平台可发布"
+    ]
+  },
+  "pureRuleCandidates": [
+    {
+      "id": "pure-fixed-step-transition",
+      "invariant": "规则核心是无副作用的确定性状态转移：相同 spec、state、input、delta 和随机种子必须产生相同结果。",
+      "inputs": ["validated spec", "serializable state", "movement input", "deltaMs", "random seed"],
+      "outputs": ["new serializable state", "semantic feedback events"],
+      "forbiddenDependencies": ["Phaser", "Cocos", "DOM", "window", "localStorage", "platform SDK", "wall clock"],
+      "evidenceGameIds": ["beach-fish-shop", "toy-factory-direct-store-3d"],
+      "recommendation": "SPECIFY_ONLY"
+    },
+    {
+      "id": "bounded-spatial-movement",
+      "invariant": "移动输入归一化后按速度和时间推进，玩家位置始终被限制在已验证世界边界内。",
+      "inputs": ["position", "movement vector", "speed", "deltaMs", "world bounds"],
+      "outputs": ["bounded position"],
+      "forbiddenDependencies": ["engine transform", "camera", "screen pixels"],
+      "evidenceGameIds": ["beach-fish-shop", "toy-factory-direct-store-3d"],
+      "recommendation": "SPECIFY_ONLY"
+    },
+    {
+      "id": "typed-capacity-transfer",
+      "invariant": "采集、携带和补货是按商品类型的原子数量转移；任何容器不为负数、不超容量，转移不凭空创造或丢失货物。",
+      "inputs": ["source inventory", "destination inventory", "accepted product ids", "capacity"],
+      "outputs": ["updated inventories", "blocked or transferred result"],
+      "forbiddenDependencies": ["rendered stack count", "sprite hierarchy", "3D node hierarchy"],
+      "evidenceGameIds": ["beach-fish-shop", "toy-factory-direct-store-3d"],
+      "recommendation": "SPECIFY_ONLY"
+    },
+    {
+      "id": "bounded-production-buffer",
+      "invariant": "生产进度只在已解锁且产出缓冲区未满时转换为整数货物，产出不超容量。满载时的进度保留策略必须由游戏明示声明。",
+      "inputs": ["cycle duration", "buffer capacity", "progress", "deltaMs", "optional multiplier"],
+      "outputs": ["bounded ready count", "normalized progress"],
+      "forbiddenDependencies": ["animation timeline", "particle completion callback"],
+      "evidenceGameIds": ["beach-fish-shop", "toy-factory-direct-store-3d"],
+      "recommendation": "SPECIFY_ONLY"
+    },
+    {
+      "id": "customer-stock-checkout-conservation",
+      "invariant": "顾客只能从兼容且有库存的货架取货一次，货架库存同量减少，篮子价值只记录一次，结账时收益只入账一次。",
+      "inputs": ["customer demand", "shelf stock", "product sale value", "checkout eligibility"],
+      "outputs": ["customer phase", "shelf stock", "queue state", "currency delta"],
+      "forbiddenDependencies": ["NPC animation state", "path renderer", "coin VFX"],
+      "evidenceGameIds": ["beach-fish-shop", "toy-factory-direct-store-3d"],
+      "recommendation": "SPECIFY_ONLY"
+    },
+    {
+      "id": "incremental-investment-atomic-unlock",
+      "invariant": "投建以可审计的整数份额扣款，货币和已投资额不越界；达到成本阈值时一次性解锁完整依赖集。",
+      "inputs": ["currency", "contributed amount", "cost", "unlock target ids", "interaction time"],
+      "outputs": ["currency", "contributed amount", "atomic unlock result"],
+      "forbiddenDependencies": ["construction animation", "scene activation callback"],
+      "evidenceGameIds": ["beach-fish-shop", "toy-factory-direct-store-3d"],
+      "recommendation": "SPECIFY_ONLY"
+    },
+    {
+      "id": "referential-integrity-and-opening-loop",
+      "invariant": "spec 中 ID 唯一、引用存在、坐标合法，开局至少存在一条已解锁的生产→货架→收银闭环。",
+      "inputs": ["gameplay spec"],
+      "outputs": ["validated spec or structured validation issues"],
+      "forbiddenDependencies": ["runtime scene lookup", "implicit editor node names"],
+      "evidenceGameIds": ["beach-fish-shop", "toy-factory-direct-store-3d"],
+      "recommendation": "SPECIFY_ONLY"
+    },
+    {
+      "id": "versioned-serializable-state",
+      "invariant": "规则状态必须可序列化、带版本，载入时对容量、计时器和引用做显式归一化，不保存引擎对象。",
+      "inputs": ["versioned serialized state", "validated spec", "migration policy"],
+      "outputs": ["normalized current state or explicit incompatibility"],
+      "forbiddenDependencies": ["localStorage", "platform cloud save SDK", "engine component instances"],
+      "evidenceGameIds": ["beach-fish-shop", "toy-factory-direct-store-3d"],
+      "recommendation": "SPECIFY_ONLY"
+    }
+  ],
+  "platformIndependentTestContracts": [
+    {
+      "id": "contract-config-validation",
+      "given": "含重复 ID、断引用、越界坐标或缺少开局闭环的 spec",
+      "when": "运行规则配置验证",
+      "then": "以稳定字段路径和错误代码拒绝，不启动任何引擎",
+      "evidenceLevel": "EXISTING_SHARED_UNIT",
+      "appliesTo": ["all runtimes"]
+    },
+    {
+      "id": "contract-deterministic-replay",
+      "given": "相同的 spec、初始状态、随机种子、输入序列和固定步长",
+      "when": "在不同运行时适配器外围回放",
+      "then": "得到深度相等的规则状态和语义事件序列",
+      "evidenceLevel": "EXISTING_SHARED_UNIT",
+      "appliesTo": ["web-lite", "cocos-3d", "future runtimes"]
+    },
+    {
+      "id": "contract-delta-partition",
+      "given": "同一状态和一段总时长",
+      "when": "分别以一次调用和多个固定小步执行",
+      "then": "在声明的取整边界内得到等价状态，不因渲染帧率改变经济结果",
+      "evidenceLevel": "PROPOSED",
+      "appliesTo": ["all runtimes"]
+    },
+    {
+      "id": "contract-typed-transfer-capacity",
+      "given": "生产缓冲、有限携带栏、按类型接收且容量有限的货架",
+      "when": "采集、错类型补货、满货架补货和顾客取货发生",
+      "then": "数量守恒、错类型不转移、容量不溢出，顾客取货后精确释放一个库存位",
+      "evidenceLevel": "BEACH_QA_AND_TOY_UNIT",
+      "appliesTo": ["all runtimes"]
+    },
+    {
+      "id": "contract-blocked-interaction-time",
+      "given": "因携带或目标容量被阻塞的自动交互",
+      "when": "继续停留后阻塞条件被解除",
+      "then": "不允许隐形超额转移；游戏必须声明‘重置、暂停或保留’计时策略并为其编写特征测试",
+      "evidenceLevel": "BEACH_QA_POLICY_PROVEN",
+      "appliesTo": ["all runtimes"]
+    },
+    {
+      "id": "contract-customer-single-consumption",
+      "given": "一名有有效需求的顾客、一个兼容货架和一个收银节点",
+      "when": "顾客取货、排队、结账或耐心耗尽",
+      "then": "每份商品最多被消费一次、每笔订单最多入账一次、队列和库存不为负数",
+      "evidenceLevel": "SHARED_UNIT_AND_RUN_TESTS",
+      "appliesTo": ["all runtimes"]
+    },
+    {
+      "id": "contract-atomic-unlock",
+      "given": "未完成的投建节点、有限货币和多个解锁依赖",
+      "when": "玩家分次投入直到成本阈值",
+      "then": "每次扣款可审计且不超额，阈值前不部分解锁，达到阈值时依赖集一次性解锁",
+      "evidenceLevel": "BEACH_QA_AND_TOY_UNIT",
+      "appliesTo": ["all runtimes"]
+    },
+    {
+      "id": "contract-save-roundtrip",
+      "given": "含生产进度、库存、顾客倒计时、建设进度和解锁的版本化状态",
+      "when": "序列化、解析、迁移并恢复",
+      "then": "纯规则状态等价，非法容量被夹取，未知版本显式失败，不依赖具体存储 API",
+      "evidenceLevel": "BEACH_QA_SINGLE_GAME",
+      "appliesTo": ["all runtimes"]
+    },
+    {
+      "id": "contract-runtime-boundary",
+      "given": "一份纯规则模块",
+      "when": "执行静态导入扫描和 Node 环境单测",
+      "then": "不导入引擎、DOM、存储或平台 SDK，且不需要创建场景就能执行全部契约",
+      "evidenceLevel": "EXISTING_SHARED_UNIT",
+      "appliesTo": ["all runtimes"]
+    }
+  ],
+  "optionalExtensionPoints": [
+    {
+      "id": "scheduled-flow-events",
+      "boundary": "输入为经过验证的时间窗口和倍率，输出为生产或需求节奏修饰值。",
+      "defaultBehavior": "无流程事件，倍率为 1。",
+      "gameExamples": ["海滩的涨潮增产", "玩具店的放学需求高峰"],
+      "extractionStatus": "CONTRACT_ONLY_UNTIL_GATE"
+    },
+    {
+      "id": "upgrade-catalog",
+      "boundary": "升级成本曲线与效果作为数据输入，规则层只处理购买资格和原子效果。",
+      "defaultBehavior": "无升级节点。",
+      "gameExamples": ["携带容量", "移动速度", "收银速度"],
+      "extractionStatus": "CONTRACT_ONLY_UNTIL_GATE"
+    },
+    {
+      "id": "customer-demand-policy",
+      "boundary": "需求候选集、权重、顾客上限、耐心和缺货结果由游戏策略接口提供。",
+      "defaultBehavior": "仅从已解锁且有可达货架的商品中确定性加权选择。",
+      "gameExamples": ["缺货等待后离开", "一次性需求高峰", "循环需求窗口"],
+      "extractionStatus": "CONTRACT_ONLY_UNTIL_GATE"
+    },
+    {
+      "id": "interaction-selection-policy",
+      "boundary": "当多个站点同时可交互时，由可测试策略返回唯一任务，规则核心不写死主题特有优先级。",
+      "defaultBehavior": "按补货、采集、收银、投建、升级的声明顺序，再以稳定 ID 破平局。",
+      "gameExamples": ["单潮池同时承担投建和采集", "分离的产线扩建区"],
+      "extractionStatus": "CONTRACT_ONLY_UNTIL_GATE"
+    },
+    {
+      "id": "save-storage-adapter",
+      "boundary": "规则层产生版本化快照；浏览器、微信、抖音和 TapTap 存储由各自适配器读写。",
+      "defaultBehavior": "内存快照，不持久化。",
+      "gameExamples": ["localStorage 开发适配", "小游戏平台本地/云存档"],
+      "extractionStatus": "CONTRACT_ONLY_UNTIL_GATE"
+    },
+    {
+      "id": "presentation-and-carry-stack",
+      "boundary": "规则层只暴露携带数量和语义事件；2D 堆叠、3D 节点、相机朝向图片和阻尼摇摆由表现适配器处理。",
+      "defaultBehavior": "无视觉堆叠或摇摆。",
+      "gameExamples": ["2D 精灵堆叠", "3D 实体堆叠", "摄像机朝向的透明渲染图摇摆"],
+      "extractionStatus": "GAME_LOCAL_PRESENTATION"
+    }
+  ],
+  "mustRemainGameLocal": [
+    {
+      "category": "expression-and-ip",
+      "examples": ["角色", "场景", "商品造型", "UI 布局", "图标", "文案", "音频", "名称"],
+      "reason": "必须保持每款游戏的原创表达，避免把‘换皮’变成第三方内容复制。"
+    },
+    {
+      "category": "map-and-route",
+      "examples": ["世界尺寸", "站点坐标", "顾客路线", "入口与出口", "相机构图", "解锁方向"],
+      "reason": "路程是瓶颈和节奏的一部分，不是可随意替换的表层参数。"
+    },
+    {
+      "category": "balance-and-session-pacing",
+      "examples": ["价格", "产速", "容量", "行走速度", "交互间隔", "顾客上限", "耐心", "需求权重", "2–3 分钟里程碑"],
+      "reason": "数值与地图距离、可见反馈和主题预期强耦合，必须逐游戏试玩。"
+    },
+    {
+      "category": "topology-and-special-stations",
+      "examples": ["潮池的投建/采集合一", "玩具工厂的独立产线扩建区", "一个或多个收银点"],
+      "reason": "这些会改变交互优先级和关卡路由，不应为了共享 schema 而削平。"
+    },
+    {
+      "category": "customer-and-event-design",
+      "examples": ["需求高峰是一次性还是循环", "缺货顾客是等待还是立即离开", "需求是否被解锁链过滤"],
+      "reason": "当前两款实现尚未证明同一策略能稳定覆盖多游戏。"
+    },
+    {
+      "category": "presentation-physics",
+      "examples": ["携带物左右摇摆", "堆叠高度", "摄像机朝向图片", "拾取/放置 tween", "碰撞体"],
+      "reason": "这是 2D/3D 适配器与美术的责任，不应污染数量和经济规则。"
+    },
+    {
+      "category": "save-migrations",
+      "examples": ["海滩 save-v3", "玩具工厂 save-v2", "容量夹取", "旧节点映射"],
+      "reason": "在通用状态包络稳定前，每款游戏必须拥有自己的版本和迁移策略，避免共享迁移损坏玩家进度。"
+    },
+    {
+      "category": "platform-packaging-and-evidence",
+      "examples": ["微信构建配置", "抖音构建配置", "TapTap 插件与包", "真机 QA", "平台存档权限"],
+      "reason": "工厂规则要求每个 run 的平台适配、配置、测试、QA 证据与构建输出相互隔离。"
+    }
+  ],
+  "migrationRisks": [
+    {
+      "id": "premature-generalization",
+      "severity": "HIGH",
+      "trigger": "以一个 QA 通过游戏和一个未定型游戏推导共享 API",
+      "impact": "共享层被单个游戏的例外污染，后续依靠功能开关和分支堆叠维持。",
+      "mitigation": "现在只写语义候选和契约；第二个独立游戏 QA 通过后再做实现 diff 和最小交集评审。",
+      "blocksExtraction": true
+    },
+    {
+      "id": "schema-reality-drift",
+      "severity": "HIGH",
+      "trigger": "当前 SpatialShopSpec 的分立 construction 站点与海滩单潮池多角色节点或玩具工厂新状态不一致",
+      "impact": "迁移为了通过 schema 改变已通过 QA 的玩法语义。",
+      "mitigation": "将复合节点、交互选择和视觉阶段留在游戏内；只在两个实例展示相同需求后设计新类型。",
+      "blocksExtraction": true
+    },
+    {
+      "id": "save-corruption",
+      "severity": "HIGH",
+      "trigger": "共享状态类型或字段默认值替换现有 save-v2/save-v3",
+      "impact": "进度丢失、解锁回退、计时器或容量越界。",
+      "mitigation": "保留每游戏迁移器，先用黄金存档 fixture 做双向特征测试，共享层只定义版本包络契约。",
+      "blocksExtraction": true
+    },
+    {
+      "id": "timer-semantic-drift",
+      "severity": "HIGH",
+      "trigger": "满仓、离开交互区、大 delta 或帧率差异时对进度重置/保留的处理不同",
+      "impact": "生产、补货、收银和建设吞吐量在运行时之间不一致。",
+      "mitigation": "把阻塞时间策略显式化，添加 delta 分割、边界值和暂停/恢复契约。",
+      "blocksExtraction": true
+    },
+    {
+      "id": "balance-map-coupling",
+      "severity": "MEDIUM",
+      "trigger": "把价格、产速、携带量或顾客频率作为共享默认值",
+      "impact": "地图距离和相机尺度变化后，2–3 分钟闭环或瓶颈可读性失效。",
+      "mitigation": "数值与地图保留在 run 内，用每游戏的时间到首单、首次阻塞和首次解锁指标验收。",
+      "blocksExtraction": false
+    },
+    {
+      "id": "presentation-rule-leakage",
+      "severity": "MEDIUM",
+      "trigger": "为实现 3D 堆叠摇摆、粒子或游戏引擎回调而修改规则状态",
+      "impact": "纯模拟无法在 Node 中测试，2D 与 3D 行为分叉。",
+      "mitigation": "只向表现层发送拾取、放置、结算和容量变化事件；摇摆使用独立阻尼模型。",
+      "blocksExtraction": false
+    },
+    {
+      "id": "fixture-as-product-proof",
+      "severity": "MEDIUM",
+      "trigger": "将机场 fixture 的单元测试通过视为独立产品验证",
+      "impact": "提取门槛被虚假满足，忽略地图、UI、节奏与真实操作问题。",
+      "mitigation": "只计数含正式 run 级 QA Artifact 的独立游戏。",
+      "blocksExtraction": true
+    },
+    {
+      "id": "platform-proof-overclaim",
+      "severity": "HIGH",
+      "trigger": "从 web-lite 测试或 Cocos 编辑器预览推断三平台可发布",
+      "impact": "忽略平台适配、权限、包体、输入、存档和真机性能问题。",
+      "mitigation": "保持每个 run 的三平台构建、配置、测试和 QA 证据隔离，发布结论仅基于对应平台证据。",
+      "blocksExtraction": false
+    },
+    {
+      "id": "third-party-expression-contamination",
+      "severity": "HIGH",
+      "trigger": "将开源或市售经营游戏的代码、UI、地图、素材、名称或数值一并视为模板",
+      "impact": "许可、归属、原创性与平台审核风险。",
+      "mitigation": "仅复用开源研究 Artifact 明确批准的基础设施；玩法关系用原创纯规则表达，其他内容逐游戏原创。",
+      "blocksExtraction": true
+    }
+  ],
+  "futureExtractionGate": {
+    "nextReviewTrigger": "第二个独立模拟经营游戏在自己的 run workspace 中产生 passed=true 的正式 QA Artifact。",
+    "requiredChecks": [
+      "两个合格游戏都通过同一组平台无关契约，且契约在各自 run 内先红后绿",
+      "两个游戏的主题、地图、节奏和扩展组合足够不同，足以暴露伪抽象",
+      "对两份实现做行为 diff，只提取经特征测试证明的最小交集，不直接复制任一 run 实现",
+      "先锁定存档版本与迁移边界，对两游戏的黄金存档 fixture 执行无损恢复",
+      "所有规则契约可在无 Phaser、无 Cocos、无 DOM 和无平台 SDK 的 Node 环境运行",
+      "每个目标平台的适配、配置、测试、QA 和构建仍保持 run 隔离",
+      "提取前重新检查开源研究 Artifact；如未新增第三方依赖，明确记录为无新候选",
+      "以新的提取建议 Artifact 进入人工评审，门槛满足不代表自动授权修改共享层"
+    ],
+    "futureCandidateModules": [
+      "spec validation primitives",
+      "pure fixed-step transition helpers",
+      "typed bounded transfer helpers",
+      "seeded demand selection",
+      "platform-independent characterization contract suite",
+      "versioned state envelope without game-specific migrations"
+    ],
+    "explicitlyExcludedModules": [
+      "game maps and station layouts",
+      "balance defaults",
+      "theme content and expression",
+      "2D or 3D presentation implementations",
+      "game-specific save migrations",
+      "platform packages and QA evidence"
+    ]
+  },
+  "validationProfile": {
+    "schema": "SuggestedArtifactSchema-v1 (inline Zod validation; research artifact only, not registered in shared factory)",
+    "constraints": [
+      "all object shapes are strict",
+      "all id-bearing arrays require unique ids",
+      "qaGate.currentIndependentQaPassedGames must equal the number of games with qaStatus=QA_PASSED",
+      "QA_PASSED requires a non-null qaReportPath and NOT_QA_PASSED requires qaReportPath=null",
+      "qaGate.satisfied must equal currentIndependentQaPassedGames >= minimumIndependentQaPassedGames",
+      "decision.status must be DEFER_EXTRACTION while qaGate.satisfied=false",
+      "no pureRuleCandidate may be marked implementation-extractable while the gate is unsatisfied"
+    ]
+  },
+  "researchedAt": "2026-08-31"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "ai-mini-game-factory",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.19.0",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "factory": "tsx src/cli/factory.ts",
+    "board": "node tools/board.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "vitest run tests/e2e",
+    "test:game": "playwright test",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test",
+    "evidence:check": "tsx tools/verify-evidence-provenance.ts",
+    "evidence:ingest": "tsx tools/ingest-reference-media.ts",
+    "evidence:review": "tsx tools/review-reference-media.ts"
+  },
+  "dependencies": {
+    "@openai/agents": "^0.17.0",
+    "@openai/codex-sdk": "^0.151.0",
+    "openai": "^7.8.0",
+    "phaser": "^3.90.0",
+    "yaml": "^2.8.1",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^24.3.0",
+    "eslint": "^9.35.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.41.0",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
+  }
+}

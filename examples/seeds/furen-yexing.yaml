@@ -1,0 +1,106 @@
+title: 符刃夜行
+theme: 雾夜符刃试炼场中，一柄符刃由单指点击驱动向前翻转，切开目标、借安全支点继续前进、避开危险并抵达终点
+identity:
+  canonicalGameId: xiaoli-feidao
+  aliases:
+    - 灵刃飞斩
+  variantId: furen-yexing
+  variantOf: xiaoli-feidao
+runtime: web-lite
+template: cut-stack-dodge-v1
+designMode: reference_reskin
+referenceMechanics:
+  schemaVersion: 1
+  lockedBy: human
+  source:
+    name: 用户指定的 Slice Master 第一关录屏行为参照
+    url: https://poki.com/zh/g/slice-master
+    researchFiles: []
+  coreLoop:
+    - 从首关固定初始构图进入可操作状态，符刃保持连续向前运动
+    - 玩家单指点击使符刃立即获得翻转冲量，点击时机决定刀刃相位和飞行轨迹
+    - 刀刃接触可切对象时对象按录屏所示生命周期分离并下落，刀身与安全支点接触时产生支撑或反弹
+    - 依照录屏首关的对象类型、前后顺序、相对摆放关系、间距节奏和镜头阶段依次通过关卡
+    - 接触危险或坠落时进入原因可见的失败状态，到达终点时进入可见结算
+    - 失败或结算后通过单次可见点击重开，并回到首关固定初始状态
+  playerActions:
+    - 在游戏区域单指点击或触摸以驱动符刃翻转
+    - 在失败或结算界面点击唯一可见的重开控件
+  progressionSystems:
+    - 录屏第一关的固定对象与检查点序列
+    - 可切对象、安全支点、危险对象和终点的生命周期推进
+    - 随符刃前进而推进并按录屏阶段切换的跟随镜头
+  unlockRules:
+    - 后续交互对象仅在前序检查点按录屏关系通过后自然可达
+    - 终点结算仅在完整通过第一关对象序列后触发
+    - 重开操作仅在失败或结算状态可用并必须恢复首关初始状态
+  feedbackCadence:
+    immediateSeconds: 0.12
+    microGoalMinSeconds: 1
+    microGoalMaxSeconds: 12
+  mustPreserveMechanics:
+    - 单指点击到符刃翻转冲量、旋转相位和轨迹变化的因果链
+    - 刀刃切割与刀身支撑或反弹采用不同接触分支
+    - 录屏第一关中对象类型、生命周期、前后顺序、相对摆放关系、间距节奏与可达性拓扑
+    - 危险接触或坠落的可归因失败、终点结算和单次点击重开
+    - 录屏所示镜头跟随阶段、反馈事件顺序和终端后回到初始状态
+  adaptableMechanics:
+    - 原创游戏名称、世界观、角色和物体造型
+    - 原创 UI 视觉语言、图标、文案、字体、音效与音乐
+    - 在不改变录屏行为带宽和空间拓扑前提下重新测定的物理数值
+    - 后续关卡内容；本次核心预览只实现录屏第一关
+  fidelityPolicy:
+    level: maximum_core_mechanics
+    preserveInputStateTransitions: true
+    preserveCoreLoopOrder: true
+    preserveProgressionTopology: true
+    preserveUnlockDependencies: true
+    preserveFailureAndRecoveryRules: true
+    preserveFeedbackTimingBands: true
+  expressionIsolation:
+    originalCode: true
+    originalAssets: true
+    originalNamesAndText: true
+    originalUiLayout: true
+    originalAudio: true
+    originalTuningValues: true
+targetPlatforms:
+  - wechat-minigame
+  - douyin-minigame
+  - taptap-minigame
+preferences:
+  experienceProfile:
+    schemaVersion: 1
+    primary: ACTION_FEEL
+    secondary: null
+    lockedBy: human
+    rationale: 录屏第一关的单指翻转、碰撞分支、失败压力和重开手感是唯一优先验收对象
+  migration:
+    sourceRunId: mobile-slice-adaptation-20260830
+    oldWorkspaceReadOnly: runs/mobile-slice-adaptation-20260830/workspace/prototype-a
+    reason: 旧 run 无法在原图上安全补齐录屏重建契约，必须由新标准 run 重建
+  recordingFirstLevel:
+    sourceViewport:
+      width: 1100
+      height: 720
+    requiredIdentitySha256: 3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a
+    acceptanceScope:
+      - semantic-object-types
+      - object-lifecycle-branches
+      - encounter-order
+      - relative-placement-topology
+      - spacing-and-reachability
+      - natural-tap-sequence
+      - camera-phases
+      - attributable-failure
+      - settlement-and-replay
+    originalExpressionRequired: true
+  mvpScope:
+    include:
+      - 录屏第一关的完整默认浏览器旅程
+      - 点击翻转、切割、支撑或反弹、危险失败、终点结算和重开
+      - 390x844 与 430x932 手机视口的自然输入可见证据
+    exclude:
+      - 第二关及后续内容扩展
+      - 广告、内购、排行、社交和后端
+      - 第三方名称、资产、UI、音频、代码和原始数值

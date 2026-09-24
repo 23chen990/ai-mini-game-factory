@@ -1,0 +1,10 @@
+{
+  "slot": "B",
+  "policy": "direction-weighted-intent",
+  "rules": [
+    "Exclude anchors more than 560 units away or clearly behind the velocity vector.",
+    "Score eligible anchors with 75 percent normalized distance and 25 percent angular error from the current velocity direction.",
+    "Prefer the lowest score; break ties by greater forward progress.",
+    "Capture the current player-to-anchor distance as rope length."
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "title": "彩云补给站",
+  "theme": "原创空中岛物流补给",
+  "content": { "productName": "补给箱", "customerName": "旅人", "currencyName": "云币" },
+  "balance": { "startingCurrency": 0, "orderReward": 2, "baseUpgradeCost": 4 },
+  "palette": ["#16324F", "#62B6CB", "#F4D35E", "#F7FFF7"],
+  "uiStyle": "清晰木牌标记",
+  "assets": {},
+  "spatialShop": {
+    "schemaVersion": 1,
+    "world": { "width": 540, "height": 960 },
+    "player": { "start": { "x": 270, "y": 760 }, "speed": 220, "capacity": 4, "interactionRadius": 64, "pickupIntervalMs": 140, "depositIntervalMs": 120 },
+    "economy": { "startingCurrency": 0 },
+    "products": [
+      { "id": "supply-box", "name": "补给箱", "color": "#F4D35E", "saleValue": 2 },
+      { "id": "sky-fruit", "name": "云果", "color": "#62B6CB", "saleValue": 3 }
+    ],
+    "stations": [
+      { "id": "supply-dock", "kind": "producer", "label": "补给码头", "position": { "x": 120, "y": 180 }, "initiallyUnlocked": true, "outputProductId": "supply-box", "cycleMs": 900, "capacity": 6 },
+      { "id": "supply-shelf", "kind": "shelf", "label": "补给架", "position": { "x": 270, "y": 420 }, "initiallyUnlocked": true, "acceptsProductIds": ["supply-box"], "capacity": 8 },
+      { "id": "checkout", "kind": "checkout", "label": "结算台", "position": { "x": 270, "y": 640 }, "initiallyUnlocked": true, "serviceMs": 700 },
+      { "id": "fruit-garden", "kind": "producer", "label": "云果园", "position": { "x": 420, "y": 180 }, "initiallyUnlocked": false, "outputProductId": "sky-fruit", "cycleMs": 1200, "capacity": 5 },
+      { "id": "fruit-shelf", "kind": "shelf", "label": "云果篮", "position": { "x": 410, "y": 420 }, "initiallyUnlocked": false, "acceptsProductIds": ["sky-fruit"], "capacity": 6 },
+      { "id": "fruit-build", "kind": "construction", "label": "扩建果园", "position": { "x": 410, "y": 720 }, "initiallyUnlocked": true, "cost": 4, "contributionIntervalMs": 180, "unlockStationIds": ["fruit-garden", "fruit-shelf"] },
+      { "id": "capacity-upgrade", "kind": "upgrade", "label": "扩容", "position": { "x": 120, "y": 720 }, "initiallyUnlocked": true, "target": "player-capacity", "amount": 2, "baseCost": 4, "costMultiplier": 2, "maxPurchases": 3, "purchaseIntervalMs": 500 }
+    ],
+    "customers": { "entrance": { "x": 32, "y": 520 }, "exit": { "x": 508, "y": 520 }, "spawnIntervalMs": 3500, "moveSpeed": 180, "patienceMs": 8000, "demand": [{ "productId": "supply-box", "weight": 3 }, { "productId": "sky-fruit", "weight": 1 }] },
+    "flowEvents": [{ "id": "cloud-current", "label": "顺风", "kind": "production-boost", "stationIds": ["supply-dock"], "startsAtMs": 15000, "durationMs": 5000, "repeatEveryMs": 30000, "multiplier": 1.5 }]
+  }
+}

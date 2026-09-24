@@ -1,0 +1,46 @@
+:root {
+  color: #f8fafc;
+  background: #081521;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; overscroll-behavior: none; }
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 0%, #244b67 0%, #081521 68%);
+}
+
+#game-shell {
+  width: min(100vw, 540px);
+  padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+}
+
+#hud {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 8px 16px;
+  min-height: 76px;
+  padding: 12px 16px;
+  border: 1px solid #ffffff24;
+  border-radius: 18px 18px 8px 8px;
+  background: #102a3be8;
+  box-shadow: 0 12px 36px #0006;
+}
+
+h1, p { margin: 0; }
+h1 { font-size: clamp(20px, 5vw, 28px); }
+#status { margin-top: 4px; color: #bae6fd; font-size: 13px; }
+.stats { display: grid; gap: 4px; justify-items: end; font-weight: 800; }
+#game { width: 100%; touch-action: none; }
+#game canvas { display: block; width: 100% !important; height: auto !important; border-radius: 8px 8px 20px 20px; box-shadow: 0 20px 60px #0008; }
+#instructions { padding: 10px 8px 0; color: #cbd5e1; font-size: 12px; line-height: 1.55; text-align: center; }
+
+@media (max-height: 740px) {
+  #instructions { display: none; }
+  #hud { min-height: 58px; padding-block: 8px; }
+}

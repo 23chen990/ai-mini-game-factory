@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+    <meta name="theme-color" content="#13293d" />
+    <title>Spatial Shop</title>
+  </head>
+  <body>
+    <main id="game-shell">
+      <section id="hud" aria-live="polite">
+        <div><h1 id="title"></h1><p id="status"></p></div>
+        <div class="stats"><span id="coins"></span><span id="level"></span></div>
+      </section>
+      <div id="game" aria-label="空间物流经营游戏区域"></div>
+      <p id="instructions">拖动任意空白处移动；靠近站点会自动采集、补货、收银或投建。桌面端也可使用 WASD / 方向键。</p>
+    </main>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

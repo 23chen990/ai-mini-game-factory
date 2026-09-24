@@ -1,0 +1,10 @@
+{
+  "slot": "A",
+  "policy": "nearest-forward-baseline",
+  "rules": [
+    "Exclude anchors more than 560 units away.",
+    "Exclude anchors more than 20 units behind the player.",
+    "Choose the remaining anchor with the shortest Euclidean distance.",
+    "Capture the current player-to-anchor distance as rope length."
+  ]
+}

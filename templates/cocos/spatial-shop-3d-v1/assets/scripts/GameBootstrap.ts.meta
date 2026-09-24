@@ -1,0 +1,13 @@
+{
+  "ver": "4.0.23",
+  "importer": "typescript",
+  "imported": true,
+  "uuid": "7e55c112-aec1-4a1f-8b53-0c76dbb63f63",
+  "files": [],
+  "subMetas": {},
+  "userData": {
+    "moduleId": "project:///assets/scripts/GameBootstrap.js",
+    "importerSettings": 7,
+    "simulateGlobals": []
+  }
+}

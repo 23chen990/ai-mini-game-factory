@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "researchId": "lantern-action-open-source-v1",
+  "targetGame": "夜市飞侠：护印突围",
+  "targetWorkspace": "runs/mobile-chart-adaptation-20260830/workspace/prototype-a",
+  "researchedAt": "2026-08-30T13:21:31.000Z",
+  "candidates": [
+    {
+      "name": "Phaser 3.90.0",
+      "repositoryUrl": "https://github.com/phaserjs/phaser",
+      "immutableRevision": "a9965625f49cf366584f454556b039e06e8adad6",
+      "version": "v3.90.0",
+      "directLicenseEvidence": "https://github.com/phaserjs/phaser/blob/v3.90.0/LICENSE.md",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": { "verdict": "APPROVED", "evidence": "The repository already pins Phaser 3.90.0 and uses its Canvas/WebGL browser runtime for web-lite development evidence." },
+        "wechatMiniGame": { "verdict": "REJECTED", "evidence": "Phaser is browser-oriented and this research found no maintained, validated Phaser 3 adapter for the DOM-less WeChat Mini Game runtime." },
+        "douyinMiniGame": { "verdict": "REJECTED", "evidence": "No official open-source Phaser 3 adapter with immutable revision and direct license evidence was found for Douyin Mini Game." },
+        "tapTapMiniGame": { "verdict": "REJECTED", "evidence": "No official open-source Phaser 3 adapter with immutable revision and direct license evidence was found for TapTap Mini Game." }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "LOW",
+      "attributionDuties": ["Retain the Phaser MIT copyright and permission notice in distributed copies or substantial portions."],
+      "decision": "REUSE",
+      "approvedScope": ["Existing pinned Phaser 3.90.0 dependency for isolated web-lite greybox rendering and browser QA only."],
+      "rationale": "The v3.90.0 release is pinned to immutable commit a9965625f49cf366584f454556b039e06e8adad6. It is not approval or evidence for any mini-game platform package."
+    },
+    {
+      "name": "Microsoft Playwright 1.62.1",
+      "repositoryUrl": "https://github.com/microsoft/playwright",
+      "immutableRevision": "26a9e470a7b3c7822084b09fb7f13902c5f37b51",
+      "version": "v1.62.1",
+      "directLicenseEvidence": "https://github.com/microsoft/playwright/blob/v1.62.1/LICENSE",
+      "licenseSpdx": "Apache-2.0",
+      "targetPlatformFit": {
+        "webLite": { "verdict": "APPROVED", "evidence": "Playwright drives the independent Chromium QA runner and records screenshots, logs, and traces." },
+        "wechatMiniGame": { "verdict": "REJECTED", "evidence": "Browser automation does not build or prove a WeChat Mini Game package." },
+        "douyinMiniGame": { "verdict": "REJECTED", "evidence": "Browser automation does not build or prove a Douyin Mini Game package." },
+        "tapTapMiniGame": { "verdict": "REJECTED", "evidence": "Browser automation does not build or prove a TapTap Mini Game package." }
+      },
+      "maintenanceRisk": "LOW",
+      "securityRisk": "LOW",
+      "attributionDuties": ["Preserve the Apache-2.0 license and applicable copyright, patent, trademark, attribution, and NOTICE obligations when redistributing the work."],
+      "decision": "REUSE",
+      "approvedScope": ["Development-only deterministic web-lite QA; never platform packaging evidence."],
+      "rationale": "The v1.62.1 release is pinned to immutable commit 26a9e470a7b3c7822084b09fb7f13902c5f37b51 and remains outside shipped game code."
+    },
+    {
+      "name": "WeChat minigame-adaptor",
+      "repositoryUrl": "https://github.com/wechat-miniprogram/minigame-adaptor",
+      "immutableRevision": "3ccb9639a46b9b948b18e427351a3287e5b7699c",
+      "version": "archived-2024-10-11",
+      "directLicenseEvidence": "https://github.com/wechat-miniprogram/minigame-adaptor/blob/master/LICENSE",
+      "licenseSpdx": "BSD-3-Clause AND Apache-2.0",
+      "targetPlatformFit": {
+        "webLite": { "verdict": "REJECTED", "evidence": "The adapter is unrelated to browser QA." },
+        "wechatMiniGame": { "verdict": "REJECTED", "evidence": "The official repository is archived and its documented workflow targets Unity asset migration rather than the current Phaser 3 TypeScript runtime." },
+        "douyinMiniGame": { "verdict": "REJECTED", "evidence": "The repository targets WeChat and provides no Douyin adapter." },
+        "tapTapMiniGame": { "verdict": "REJECTED", "evidence": "The repository targets WeChat and provides no TapTap adapter." }
+      },
+      "maintenanceRisk": "HIGH",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": ["If ever reconsidered, retain BSD-3-Clause notices and comply with the listed Apache-2.0 third-party component duties."],
+      "decision": "REJECT",
+      "approvedScope": [],
+      "rationale": "Archived status, Unity-specific scope, and lack of Phaser 3 fit make reuse riskier than a project-owned platform adapter."
+    }
+  ],
+  "conclusion": {
+    "approvedCandidateNames": ["Phaser 3.90.0", "Microsoft Playwright 1.62.1"],
+    "rejectedCandidateNames": ["WeChat minigame-adaptor"],
+    "noSuitablePlatformAdapter": true,
+    "architectureDecision": "Continue the A/B/C action experiment only as isolated web-lite development and QA evidence. Add no dependency and make no WeChat, Douyin, or TapTap publishability claim; each platform adapter remains a separate research, build, and device-QA stage."
+  }
+}

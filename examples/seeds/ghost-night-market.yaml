@@ -1,0 +1,10 @@
+title: 妖怪夜市
+theme: 雾夜里的妖怪点心摊
+template: idle-shop-v1
+designMode: prototype_tournament
+status: DESIGN_REJECTED
+purpose: regression_fixture
+preferences:
+  tone: 温暖神秘
+  audience: 轻度休闲玩家
+  session_minutes: 3

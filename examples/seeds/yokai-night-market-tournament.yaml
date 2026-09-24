@@ -1,0 +1,13 @@
+title: 妖怪夜市·玩法锦标赛
+theme: 人类误入每晚规则都会变化的妖怪夜市
+template: idle-shop-v1
+designMode: prototype_tournament
+preferences:
+  validation_goal: 只验证核心操作和真实决策是否有趣
+  forbidden_core_loops:
+    - 摊位经营
+    - 生产后交付订单
+    - 等待收益后升级
+    - 赚钱、解锁或数值变大作为核心玩法
+  diversity_requirement: 六个方案必须覆盖明显不同的核心动词、决策类型与失败结构；入选三个不得只是经营变体
+  prototype_scope: 占位美术、无正式UI、无IAA、每个最多两个主系统

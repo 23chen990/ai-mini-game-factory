@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "platform": "bytedance-mini-game",
+  "orientation": "portrait",
+  "output": "build/douyin-minigame",
+  "status": "requires-platform-devtools-validation"
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "lessons": [
+    {
+      "lessonId": "qa-natural-subset-not-complete-001",
+      "text": "A targeted natural replay can prove one branch while the default/full sweep still fails; never promote a local PASS to repaired until the exact object-state-renderer-viewport matrix and the complete natural journey pass.",
+      "tags": ["qa", "gameplay"],
+      "appliesTo": ["PlaytestAgent", "BuilderAgent", "GameDesignerAgent"],
+      "sourceRunIds": ["mobile-slice-adaptation-20260830"],
+      "occurrences": 1,
+      "createdAt": "2026-09-04T17:14:00.000Z",
+      "lastSeenAt": "2026-09-04T17:14:00.000Z"
+    },
+    {
+      "lessonId": "failure-pressure-causal-proof-001",
+      "text": "Every authored hazard must be tested as a player decision: normal input must reach its window, collision must produce an attributable failure signal, and a readable avoidance or recovery route must be verified on desktop and mobile.",
+      "tags": ["gameplay", "qa"],
+      "appliesTo": ["GameDesignerAgent", "BuilderAgent", "PlaytestAgent"],
+      "sourceRunIds": ["mobile-slice-adaptation-20260830"],
+      "occurrences": 1,
+      "createdAt": "2026-09-04T17:14:00.000Z",
+      "lastSeenAt": "2026-09-04T17:14:00.000Z"
+    },
+    {
+      "lessonId": "qa-runner-health-boundary-001",
+      "text": "A natural QA runner must treat preview-server death, frame starvation and stale browser processes as explicit infrastructure evidence with a bounded watchdog; never convert an interrupted run into a gameplay PASS or silently reuse an old report.",
+      "tags": ["qa", "general"],
+      "appliesTo": ["PlaytestAgent", "BuilderAgent"],
+      "sourceRunIds": ["mobile-slice-adaptation-20260830"],
+      "occurrences": 1,
+      "createdAt": "2026-09-04T17:14:00.000Z",
+    "lastSeenAt": "2026-09-04T17:14:00.000Z"
+  },
+  {
+    "lessonId": "natural-route-threshold-calibration-001",
+    "text": "Hazard dimensions must be calibrated against the actual normal-input timing envelope: keep a deterministic safe line, a deterministic risk line that fails visibly, and recovery shelves that catch late misses without sealing the route; validate every changed branch on desktop and mobile before closing BLOCKED.",
+    "tags": ["qa", "gameplay"],
+    "appliesTo": ["GameDesignerAgent", "BuilderAgent", "PlaytestAgent"],
+    "sourceRunIds": ["mobile-slice-adaptation-20260830"],
+    "occurrences": 1,
+    "createdAt": "2026-09-04T18:25:00.000Z",
+    "lastSeenAt": "2026-09-04T18:25:00.000Z"
+  }
+  ]
+}

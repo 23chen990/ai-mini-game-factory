@@ -1,0 +1,142 @@
+title: 玩具工厂直营店 3D
+theme: 原创玩具工厂混合 3D 经营
+runtime: cocos-3d
+template: spatial-shop-3d-v1
+designMode: reference_reskin
+referenceMechanics:
+  schemaVersion: 1
+  lockedBy: human
+  source:
+    name: Airplane Manager 类空间服务经营的通用机制关系
+    url: https://poki.com/zh/g/airplane-manager
+    researchFiles:
+      - docs/research/spatial-shop-v1-open-source-research.json
+      - artifacts/open-source-research.json
+      - artifacts/hybrid-3d-asset-research.json
+  coreLoop:
+    - 玩家移动到组装线自动收取完成的玩具
+    - 将有限携带量的玩具送到对应货架自动补货
+    - 顾客取货后排队，玩家在收银台完成结算
+    - 将收益逐份投入积木线扩建区
+    - 解锁第二条生产链后应对放学需求高峰
+  playerActions:
+    - 使用单移动输入调度采集、补货、收银和建设
+  progressionSystems:
+    - 积木组装线扩建、携带容量和店内客流压力
+  unlockRules:
+    - 积木扩建区按固定频率逐份投入货币，完成后同时解锁积木组装线和积木货架
+  feedbackCadence:
+    immediateSeconds: 1
+    microGoalMinSeconds: 12
+    microGoalMaxSeconds: 150
+  mustPreserveMechanics:
+    - 移动是唯一主操作，进入交互范围后自动执行当前有效任务
+    - 生产、携带、补货、顾客消费、结算和再投资的关系保持不变
+    - 货架库存、生产能力、收银速度与玩家路程共同形成可见瓶颈
+  adaptableMechanics:
+    - 原创玩具、机器、店面布局、角色、视觉表达与全部数值
+    - 真 3D 几何与生成的透明 3D 渲染贴片可以组合，但贴片不承担碰撞或导航
+  expressionIsolation:
+    originalCode: true
+    originalAssets: true
+    originalNamesAndText: true
+    originalUiLayout: true
+    originalAudio: true
+    originalTuningValues: true
+preferences:
+  tone: 明快、玩具感、生产线忙碌但不压迫
+  audience: 轻度休闲玩家
+  session_minutes: 3
+  prototype_question: 从组装线搬运到货架再收银的循环，在固定三分之四视角的混合 3D 表现下是否清晰且好玩
+  mvp_customer_cap: 10
+  visual_pipeline: hybrid-3d
+  camera: fixed-three-quarter
+  true_3d_roles:
+    - 地面与建筑边界
+    - 玩家和顾客
+    - 产线、传送带、货架和收银台的交互体积
+  generated_cutout_roles:
+    - 玩具包装外观
+    - 机器面板与墙面装饰
+    - 店招与远景
+  original_expression_only: true
+spatialShop:
+  schemaVersion: 1
+  world:
+    width: 54
+    height: 96
+  player:
+    start: { x: 27, y: 76 }
+    speed: 18
+    capacity: 4
+    interactionRadius: 5.5
+    pickupIntervalMs: 180
+    depositIntervalMs: 150
+  economy:
+    startingCurrency: 0
+  products:
+    - { id: toy-car, name: 回力玩具车, color: "#EF6A62", saleValue: 3 }
+    - { id: brick-box, name: 创意积木盒, color: "#F5B947", saleValue: 5 }
+  stations:
+    - id: car-assembler
+      kind: producer
+      label: 玩具车组装线
+      position: { x: 13, y: 19 }
+      initiallyUnlocked: true
+      outputProductId: toy-car
+      cycleMs: 1100
+      capacity: 6
+    - id: car-shelf
+      kind: shelf
+      label: 玩具车展架
+      position: { x: 21, y: 48 }
+      initiallyUnlocked: true
+      acceptsProductIds: [toy-car]
+      capacity: 8
+    - id: checkout
+      kind: checkout
+      label: 快乐收银台
+      position: { x: 27, y: 68 }
+      initiallyUnlocked: true
+      serviceMs: 850
+    - id: brick-assembler
+      kind: producer
+      label: 积木分装线
+      position: { x: 41, y: 19 }
+      initiallyUnlocked: false
+      outputProductId: brick-box
+      cycleMs: 1450
+      capacity: 5
+    - id: brick-shelf
+      kind: shelf
+      label: 积木盒展架
+      position: { x: 39, y: 48 }
+      initiallyUnlocked: false
+      acceptsProductIds: [brick-box]
+      capacity: 6
+    - id: brick-line-expansion
+      kind: construction
+      label: 扩建积木分装线
+      position: { x: 43, y: 76 }
+      initiallyUnlocked: true
+      cost: 12
+      contributionIntervalMs: 220
+      unlockStationIds: [brick-assembler, brick-shelf]
+  customers:
+    entrance: { x: 4, y: 59 }
+    exit: { x: 50, y: 59 }
+    spawnIntervalMs: 3200
+    moveSpeed: 13
+    patienceMs: 11500
+    demand:
+      - { productId: toy-car, weight: 4 }
+      - { productId: brick-box, weight: 1 }
+  flowEvents:
+    - id: after-school-rush
+      label: 放学小高峰
+      kind: demand-rush
+      stationIds: []
+      startsAtMs: 22000
+      durationMs: 9000
+      repeatEveryMs: 60000
+      multiplier: 1.8

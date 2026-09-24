@@ -1,0 +1,10 @@
+{
+  "name": "spatial-shop-3d-v1",
+  "uuid": "d989c95e-99c9-44de-98a3-7ed17cfa5052",
+  "version": "3.8.8",
+  "private": true,
+  "scripts": {
+    "test": "vitest run tests",
+    "typecheck": "tsc --noEmit -p tsconfig.core.json"
+  }
+}
