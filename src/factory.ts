@@ -33,7 +33,7 @@ import { buildPreviewPresentationDisclosure } from './core/preview-presentation-
 import { applyReferenceBehaviorAnalysis, buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis, referenceBlockersRequirePause, verifyReferenceFidelityReview } from './core/reference-evidence.js';
 import { enforceRecordingAnalysisAuthority } from './core/reference-analysis-authority.js';
 import { REFERENCE_BEHAVIOR_DIMENSIONS, ReferenceFidelityContractSchema, ReferenceFidelityGateSchema } from './schemas/reference-fidelity.js';
-import { BuildReportSchema, ProductionLineResolutionSchema } from './schemas/index.js';
+import { BuildReportSchema, ProductionLineResolutionSchema, type QaReport } from './schemas/index.js';
 import { snapshotModelPolicy, buildModelRouteDecision, evaluateModelPolicySnapshot } from './core/model-policy-artifact.js';
 import { assertPermissionOperation, buildPermissionManifestBundle, evaluatePermissionManifest, evaluatePermissionManifestBundle } from './core/permission-manifest.js';
 import { buildRandomnessPolicy } from './core/randomness-policy.js';
@@ -61,7 +61,7 @@ import { evaluateTransitionHistory } from './core/state-machine.js';
 import { buildAcceptanceHandoff } from './core/acceptance-handoff.js';
 import { auditReferenceQuality } from './core/reference-quality-audit.js';
 import { extractReferenceRecordingFrames, selectReferenceResearchMedia, type ReferenceFrameExtractor } from './core/reference-recording.js';
-import { deriveReferenceLevelImplementationContract, verifyReferenceLevelImplementationContract, verifyReferenceLevelReconstruction, verifyReferenceLevelRuntimeTrace } from './core/reference-level.js';
+import { deriveReferenceLevelImplementationContract, renderReferenceLevelComparisonReport, verifyReferenceLevelImplementationContract, verifyReferenceLevelReconstruction, verifyReferenceLevelRuntimeTrace } from './core/reference-level.js';
 import { compileReferenceLevelRuntimeData, verifyReferenceLevelRuntimeData } from './core/reference-level-runtime.js';
 import { readReferenceLevelRuntimeData, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from './core/reference-level-binding.js';
 import { buildContentExpansionPlan, buildUiSkeleton } from './core/experience-production.js';
@@ -119,6 +119,29 @@ import { GameRunIdentityManifestSchema } from './schemas/game-identity.js';
 export type FactoryMode = 'mock' | 'live-art' | 'codex-account';
 export type FactoryValidationMode = 'fast' | 'production';
 export type FactoryOptions = { root?: string; repositoryRoot?: string; mode?: FactoryMode; qaMode?: 'stub' | 'playwright'; validationMode?: FactoryValidationMode; enforcePlayerAcceptance?: boolean; enforceOperatingGates?: boolean; enforceStageContracts?: boolean; enforceExplicitStageContracts?: boolean; operatingProfile?: Partial<FactoryOperatingProfile>; agentProvider?: AgentProvider; previewImageProvider?: ImageProvider; assetImageProvider?: ImageProvider; codexProvider?: CodexProvider; codexExecutor?: CodexExecutor; referenceFrameExtractor?: ReferenceFrameExtractor; referenceFrameFps?: number; referenceLevelQaRunner?: ReferenceLevelQaRunner; allowSyntheticReferenceAnalysisForTests?: boolean };
+
+export type QaFailureRoute = 'WAITING_FOR_EVIDENCE' | 'FIX' | 'PASS';
+
+/** Decide whether a failed QA report has enough visual evidence to enter FIX.
+ * This small decision layer is shared by the preview and normal factory paths
+ * so an observation gap cannot be mistaken for a confirmed product mismatch. */
+export async function routeQaFailure(
+  report: QaReport,
+  handlers: {
+    waitForEvidence: (evidence: string[]) => Promise<void>;
+    runFixer: () => Promise<void>;
+  },
+): Promise<QaFailureRoute> {
+  if (report.visualStatus === 'INSUFFICIENT') {
+    await handlers.waitForEvidence(['qa:fixer-not-routed:visual-evidence-insufficient']);
+    return 'WAITING_FOR_EVIDENCE';
+  }
+  if (!report.passed) {
+    await handlers.runFixer();
+    return 'FIX';
+  }
+  return 'PASS';
+}
 
 // Provider usage is a rolling audit summary, not an immutable stage output.
 // Keep it out of drift-triggered rewinds while retaining the file for cost and
@@ -439,6 +462,7 @@ export function createFactory(options: FactoryOptions = {}) {
         reconstructionValue,
         contract,
         { path: 'artifacts/reference-level-reconstruction.json', sha256: reconstructionSha256 },
+        { verificationBlockers: verified.blockers },
       );
       return verified.passed && contractVerified.passed && contract.status === 'READY' && contract.sourceReconstruction.sha256 === reconstructionSha256;
     } catch { return false; }
@@ -512,7 +536,12 @@ export function createFactory(options: FactoryOptions = {}) {
       await verifyReferenceLevelLayoutFile(contract.workspace, runtimeData);
       const trace = ReferenceLevelRuntimeTraceSchema.parse(await store.readArtifact(runId, 'reference-level-runtime-trace.json'));
       const gate = await verifyReferenceLevelRuntimeTrace(contract, trace, { runtimeData, verifyEvidenceFile: (evidence) => verifyRunBoundEvidence(runRoot, evidence) });
-      await store.writeArtifact(runId, 'reference-level-comparison-gate.json', gate);
+      // Resume validation is read-only. Rewriting the gate would churn its
+      // checkedAt timestamp without a new QA run and make the artifact ledger
+      // look stale on the next reconciliation pass.
+      const frameManifest = await store.readArtifact(runId, 'reference-frame-manifest.json').catch(() => undefined);
+      const reportPath = path.join(runRoot, 'artifacts/reference-level-difference-report.md');
+      if (!await exists(reportPath)) await writeFile(reportPath, renderReferenceLevelComparisonReport(contract, trace, gate, frameManifest));
       return gate.passed && gate.buildHash === buildHash;
     } catch { return false; }
   }
@@ -540,6 +569,8 @@ export function createFactory(options: FactoryOptions = {}) {
     const gate = ReferenceLevelComparisonGateSchema.parse({ ...verified, passed: reported.passed && blockers.length === 0, blockers, checkedAt: new Date().toISOString() });
     await store.writeArtifact(runId, 'reference-level-runtime-trace.json', trace);
     await store.writeArtifact(runId, 'reference-level-comparison-gate.json', gate);
+    const frameManifest = await store.readArtifact(runId, 'reference-frame-manifest.json').catch(() => undefined);
+    await writeFile(path.join(runRoot, 'artifacts/reference-level-difference-report.md'), renderReferenceLevelComparisonReport(contract, trace, gate, frameManifest));
     return { trace, gate };
   }
 
@@ -913,7 +944,7 @@ export function createFactory(options: FactoryOptions = {}) {
       const verified = verifyReferenceLevelReconstruction(reconstruction, frameManifest, { frameManifestSha256 });
       await store.writeArtifact(runId, 'reference-level-reconstruction.json', reconstruction);
       const reconstructionFile = path.join(runRoot, 'artifacts/reference-level-reconstruction.json');
-      const implementationContract = deriveReferenceLevelImplementationContract(reconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: await sha256File(reconstructionFile) });
+      const implementationContract = deriveReferenceLevelImplementationContract(reconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: await sha256File(reconstructionFile) }, { verificationBlockers: verified.blockers });
       await store.writeArtifact(runId, 'reference-level-implementation-contract.json', implementationContract);
       if (!verified.passed || implementationContract.status !== 'READY') {
         const levelUnknowns = [...verified.blockers, ...implementationContract.blockers].map((blocker) => `recording-level:${blocker}`);
@@ -2815,28 +2846,41 @@ export function createFactory(options: FactoryOptions = {}) {
       try {
         let report = await qaAgent.run(workspace, runRoot, true);
         let referenceLevelEvidence: string[] = [];
+        let referenceMeasurementInsufficient = false;
         if (levelContract) {
           const levelResult = await executeReferenceLevelQa(runId, workspace, previewBuildHash);
           report = mergeReferenceLevelQaReport(report, levelResult.gate, levelResult.trace.screenshots.map((item) => item.path));
-          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'];
+          referenceMeasurementInsufficient = (levelResult.gate.measurementResults ?? []).some((result) => result.result === 'INSUFFICIENT')
+            || levelResult.gate.blockers.some((blocker) => blocker.startsWith('reference-level:evidence-invalid:'));
+          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'];
           await refreshAcceptanceArtifacts(runRoot, true, report.passed, report.screenshots);
         }
         await store.writeArtifact(runId, 'qa-report.json', report);
         await complete(state, record, ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...referenceLevelEvidence], ['qa:preview', 'qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(levelContract ? ['qa:recording-level-comparison-when-declared'] : []), `passed:${report.passed}`]);
-        if (!report.passed) {
-          const fixInputs = ['artifacts/qa-report.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? [...recordingLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
-          const fixRecord = await begin(state, 'FIX', fixInputs);
-          try {
-            const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Repair only the explicit preview QA issues against the frozen reference and recording-level contracts. Keep the core contract unchanged and add focused regression coverage.');
-            const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
-            addAgentMetrics(fixRecord, fix.metrics);
-            state.codexThreadId = fix.threadId;
-            state.fixAttempts += 1;
-            await saveUsage(state);
-            await complete(state, fixRecord, [previewBuild.webBuild], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
-          } catch (error) { return fail(state, fixRecord, error); }
-          return executeReplicaPreview(state, seed);
+        if (referenceMeasurementInsufficient) {
+          return setWaiting(state, 'QA', ['artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'], ['artifacts/reference-level-difference-report.md'], ['blocked:reference-level:measurement-insufficient', 'qa:fixer-not-routed:measurement-evidence-required']);
         }
+        let waitingState: RunState | undefined;
+        const qaRoute = await routeQaFailure(report, {
+          waitForEvidence: async (evidence) => {
+            waitingState = await setWaiting(state, 'QA', ['artifacts/qa-report.json'], ['artifacts/qa-report.json'], evidence);
+          },
+          runFixer: async () => {
+            const fixInputs = ['artifacts/qa-report.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? [...recordingLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
+            const fixRecord = await begin(state, 'FIX', fixInputs);
+            try {
+              const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Repair only the explicit preview QA issues against the frozen reference and recording-level contracts. Keep the core contract unchanged and add focused regression coverage.');
+              const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
+              addAgentMetrics(fixRecord, fix.metrics);
+              state.codexThreadId = fix.threadId;
+              state.fixAttempts += 1;
+              await saveUsage(state);
+              await complete(state, fixRecord, [previewBuild.webBuild], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
+            } catch (error) { await fail(state, fixRecord, error); }
+          },
+        });
+        if (qaRoute === 'WAITING_FOR_EVIDENCE') return waitingState ?? state;
+        if (qaRoute === 'FIX') return executeReplicaPreview(state, seed);
       } catch (error) { return fail(state, record, error); }
     }
     const fidelityReview = await store.readArtifact(runId, 'reference-fidelity-review.json').catch(() => undefined);
@@ -2866,7 +2910,7 @@ export function createFactory(options: FactoryOptions = {}) {
     }
     await recordControlStage(state, 'QA', 'completed',
       ['artifacts/build-report.json', 'artifacts/production-line-contract.json', 'artifacts/product-experience-contract.json', 'artifacts/core-spec-lock.json', 'artifacts/reference-fidelity-contract.json', ...(levelContract ? ['artifacts/reference-level-reconstruction.json', ...recordingLevelInputs] : []), 'artifacts/reference-fidelity-review.json'],
-      ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...(levelContract ? ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : []), 'artifacts/reference-fidelity-gate.json'],
+      ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...(levelContract ? ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'] : []), 'artifacts/reference-fidelity-gate.json'],
       ['qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(levelContract ? ['qa:recording-level-comparison-when-declared'] : []), 'qa:reference-fidelity:verified', `build-hash:${previewBuildHash}`]);
     const coreDemoAcceptancePath = path.join(runRoot, 'human/playtest-acceptance.json');
     let coreDemoAcceptance: ReturnType<typeof HumanPlaytestAcceptanceSchema.parse> | undefined;
@@ -3681,10 +3725,13 @@ export function createFactory(options: FactoryOptions = {}) {
           report = QaReportSchema.parse({ ...report, checks: [...report.checks, policyCheck], issues: [...report.issues, ...policyIssues], passed: report.passed && policyResult.passed });
         }
         let referenceLevelEvidence: string[] = [];
+        let referenceMeasurementInsufficient = false;
         if (referenceLevelInputs.length > 0) {
           const levelResult = await executeReferenceLevelQa(runId, workspace, buildHash);
           report = mergeReferenceLevelQaReport(report, levelResult.gate, levelResult.trace.screenshots.map((item) => item.path));
-          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'];
+          referenceMeasurementInsufficient = (levelResult.gate.measurementResults ?? []).some((result) => result.result === 'INSUFFICIENT')
+            || levelResult.gate.blockers.some((blocker) => blocker.startsWith('reference-level:evidence-invalid:'));
+          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'];
           await refreshAcceptanceArtifacts(runRoot, await readBuildSuccess(runRoot), report.passed, report.screenshots);
         }
         const naturalLineEvidence = await persistNaturalLineEvidence(runId, report, buildHash);
@@ -3692,21 +3739,31 @@ export function createFactory(options: FactoryOptions = {}) {
         await store.writeArtifact(runId, 'qa-report.json', report);
         await store.writeArtifact(runId, 'qa-evidence.json', evidence);
         await complete(state, record, ['artifacts/qa-report.json', 'artifacts/completion-gates.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', ...referenceLevelEvidence, ...(naturalLineEvidence ? ['artifacts/production-line-play-evidence.json'] : []), 'logs/console.log', ...report.screenshots], [qaMode === 'playwright' ? 'playwright:completed' : 'qa:stub', 'qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(referenceLevelInputs.length > 0 ? ['qa:recording-level-comparison-when-declared'] : []), `runtime-product:${runtimeProduct.passed}`, `qa:build-hash:${buildHash}`, `qa-build-path:${qaBuildPath}`, 'qa:provenance-bound', `passed:${report.passed}`]);
+        if (referenceMeasurementInsufficient) {
+          return setWaiting(state, 'QA', ['artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'], ['artifacts/reference-level-difference-report.md'], ['blocked:reference-level:measurement-insufficient', 'qa:fixer-not-routed:measurement-evidence-required']);
+        }
         if (enforceOperatingGates && !runtimeProduct.passed) {
           return setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/qa-report.json', 'artifacts/runtime-product-gates.json'], ['artifacts/runtime-product-gates.json'], ['runtime-product:startup-core-loop-terminal-replay-required']);
         }
         if (enforceOperatingGates && report.checks.some((check) => check.name === 'natural-input-policy' && !check.passed)) {
           return setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/qa-report.json', 'artifacts/natural-input-policy.json'], ['artifacts/qa-report.json'], ['natural-input-policy:line-specific-evidence-required']);
         }
-        qaPassed = report.passed;
-        if (!qaPassed) {
-          const fixInputs = ['artifacts/qa-report.json', ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...(referenceLevelInputs.length > 0 ? [...referenceLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
-          const fixRecord = await begin(state, 'FIX', fixInputs);
-          const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Fix only explicit QA issues; preserve the frozen acceptance standard and add regression coverage.');
-          const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
-          addAgentMetrics(fixRecord, fix.metrics); state.codexThreadId = fix.threadId; state.fixAttempts += 1; await saveUsage(state);
-          await complete(state, fixRecord, [qaBuildPath], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
-        }
+        let waitingState: RunState | undefined;
+        const qaRoute = await routeQaFailure(report, {
+          waitForEvidence: async (evidence) => {
+            waitingState = await setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/qa-report.json'], ['artifacts/qa-report.json'], evidence);
+          },
+          runFixer: async () => {
+            const fixInputs = ['artifacts/qa-report.json', ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...(referenceLevelInputs.length > 0 ? [...referenceLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
+            const fixRecord = await begin(state, 'FIX', fixInputs);
+            const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Fix only explicit QA issues; preserve the frozen acceptance standard and add regression coverage.');
+            const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
+            addAgentMetrics(fixRecord, fix.metrics); state.codexThreadId = fix.threadId; state.fixAttempts += 1; await saveUsage(state);
+            await complete(state, fixRecord, [qaBuildPath], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
+          },
+        });
+        if (qaRoute === 'WAITING_FOR_EVIDENCE') return waitingState ?? state;
+        qaPassed = qaRoute === 'PASS' && report.passed;
       } catch (error) { return fail(state, record, error); }
     }
     const normalFlowReport = QaReportSchema.parse(await store.readArtifact(runId, 'qa-report.json'));

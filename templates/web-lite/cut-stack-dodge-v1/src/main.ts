@@ -189,9 +189,9 @@ type GameTestApi = {
 function placement(object: { x: number; y: number; width: number; height: number }, role?: CourseObjectState['role'] | 'player' | 'replay-control') {
   const centerX = (object.x + object.width / 2) / WORLD.width;
   const centerY = (object.y + object.height / 2) / WORLD.height;
-  const horizontalBand = centerX < 0.12 ? 'far-left' : centerX < 0.4 ? 'left' : centerX < 0.6 ? 'center' : centerX < 0.88 ? 'right' : 'far-right';
-  const verticalBand = centerY < 0.12 ? 'top' : centerY < 0.38 ? 'upper' : centerY < 0.64 ? 'middle' : centerY < 0.88 ? 'lower' : 'bottom';
-  const extent = (value: number) => value < 0.03 ? 'tiny' : value < 0.12 ? 'small' : value < 0.3 ? 'medium' : value < 0.7 ? 'large' : 'span';
+  const horizontalBand = centerX < 0.2 ? 'far-left' : centerX < 0.4 ? 'left' : centerX < 0.6 ? 'center' : centerX < 0.8 ? 'right' : 'far-right';
+  const verticalBand = centerY < 0.2 ? 'top' : centerY < 0.4 ? 'upper' : centerY < 0.6 ? 'middle' : centerY < 0.8 ? 'lower' : 'bottom';
+  const extent = (value: number) => value < 0.06 ? 'tiny' : value < 0.16 ? 'small' : value < 0.32 ? 'medium' : value < 0.62 ? 'large' : 'span';
   // Recording contracts describe the interaction-facing orientation of each
   // semantic object. Preserve the authored extent bands while keeping this
   // projection stable for circular players and vertical finish markers.
@@ -199,6 +199,47 @@ function placement(object: { x: number; y: number; width: number; height: number
     ? 'horizontal'
     : object.width > object.height ? 'horizontal' : 'vertical';
   return { horizontalBand, verticalBand, widthBand: extent(object.width / WORLD.width), heightBand: extent(object.height / WORLD.height), orientationBand };
+}
+
+function normalizedVisibleBounds(object: { x: number; y: number; width: number; height: number; fallOffset?: number; lifecycle?: CourseObjectState['lifecycle'] }, cameraX = 0) {
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0 || window.innerWidth <= 0 || window.innerHeight <= 0) return undefined;
+  if (object.lifecycle === 'settled') return undefined;
+  let x = object.x - cameraX;
+  let y = object.y + (object.fallOffset ?? 0);
+  let width = object.width;
+  let height = object.height;
+  if (object.lifecycle === 'falling') {
+    const angle = (object.fallOffset ?? 0) * 0.018;
+    const halfWidth = (object.width + 16) / 2;
+    const halfHeight = object.height / 2;
+    const extentX = Math.abs(Math.cos(angle)) * halfWidth + Math.abs(Math.sin(angle)) * halfHeight;
+    const extentY = Math.abs(Math.sin(angle)) * halfWidth + Math.abs(Math.cos(angle)) * halfHeight;
+    x += object.width / 2 - extentX;
+    y += object.height / 2 - extentY;
+    width = extentX * 2;
+    height = extentY * 2;
+  }
+  const scale = Math.min(rect.width / WORLD.width, rect.height / WORLD.height);
+  const offsetX = (rect.width - WORLD.width * scale) / 2;
+  const offsetY = (rect.height - WORLD.height * scale) / 2;
+  const left = Math.max(0, Math.min(window.innerWidth, rect.left + offsetX + x * scale));
+  const top = Math.max(0, Math.min(window.innerHeight, rect.top + offsetY + y * scale));
+  const right = Math.max(0, Math.min(window.innerWidth, rect.left + offsetX + (x + width) * scale));
+  const bottom = Math.max(0, Math.min(window.innerHeight, rect.top + offsetY + (y + height) * scale));
+  if (right <= left || bottom <= top) return undefined;
+  return { x: left / window.innerWidth, y: top / window.innerHeight, width: (right - left) / window.innerWidth, height: (bottom - top) / window.innerHeight };
+}
+
+function normalizedDomBounds(element: Element) {
+  const rect = element.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0 || window.innerWidth <= 0 || window.innerHeight <= 0) return undefined;
+  const left = Math.max(0, Math.min(window.innerWidth, rect.left));
+  const top = Math.max(0, Math.min(window.innerHeight, rect.top));
+  const right = Math.max(0, Math.min(window.innerWidth, rect.right));
+  const bottom = Math.max(0, Math.min(window.innerHeight, rect.bottom));
+  if (right <= left || bottom <= top) return undefined;
+  return { x: left / window.innerWidth, y: top / window.innerHeight, width: (right - left) / window.innerWidth, height: (bottom - top) / window.innerHeight };
 }
 
 function checkpointId(): string {
@@ -255,13 +296,18 @@ function getSnapshot() {
         lifecycle: lifecycleForPlayer(),
         visible: true,
         placement: placement({ x: state.player.x - cameraX - state.player.radius, y: state.player.y - state.player.radius, width: state.player.radius * 2, height: state.player.radius * 2 }, 'player'),
+        boundsNormalized: normalizedVisibleBounds({ x: state.player.x - state.player.radius, y: state.player.y - state.player.radius, width: state.player.radius * 2, height: state.player.radius * 2 }, cameraX),
+        coordinateSpace: 'screen-normalized',
       },
       ...state.objects.map((object) => ({
         semanticId: object.id,
         role: roleFor(object),
         lifecycle: lifecycleForObject(object),
         visible: visibleForObject(object),
-        placement: placement(object, object.role),
+        placement: placement({ ...object, x: object.x - cameraX }, object.role),
+        boundsNormalized: normalizedVisibleBounds(object, cameraX),
+        coordinateSpace: 'screen-normalized',
+        ...(object.role === 'cuttable' ? { renderColor: objectRenderColor(object) } : {}),
       })),
       {
         semanticId: 'replay-control',
@@ -269,6 +315,8 @@ function getSnapshot() {
         lifecycle: terminal ? 'ready' : phase === 'replay' ? 'resolved' : 'hidden',
         visible: terminal || phase === 'replay',
         placement: placement({ x: WORLD.width * 0.4, y: WORLD.height * 0.78, width: WORLD.width * 0.2, height: WORLD.height * 0.1 }, 'replay-control'),
+        boundsNormalized: normalizedDomBounds(replayControl),
+        coordinateSpace: 'screen-normalized',
       },
     ],
     observedRelationIds: recording
@@ -347,6 +395,11 @@ function roundedRect(x: number, y: number, width: number, height: number, radius
   context.roundRect(x, y, width, height, radius);
 }
 
+function objectRenderColor(object: CourseObjectState): string {
+  const palette = config.palette.length > 1 ? config.palette.slice(1) : ['#ffb38a', '#7ec8ff', '#ffd36e', '#a7d8bc'];
+  return palette[Math.abs(object.id.length) % palette.length] ?? '#ffb38a';
+}
+
 function drawObject(object: CourseObjectState, cameraX: number): void {
   if (object.lifecycle === 'settled') return;
   const x = object.x - cameraX;
@@ -402,8 +455,7 @@ function drawObject(object: CourseObjectState, cameraX: number): void {
     return;
   }
 
-  const palette = ['#ffb38a', '#7ec8ff', '#ffd36e', '#a7d8bc'];
-  const color = palette[Math.abs(object.id.length) % palette.length] ?? '#ffb38a';
+  const color = objectRenderColor(object);
   context.save();
   context.shadowColor = color;
   context.shadowBlur = object.lifecycle === 'falling' ? 22 : 10;

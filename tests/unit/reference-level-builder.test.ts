@@ -41,6 +41,16 @@ function makeContract(runRoot: string, targetGame = TARGET_GAME) {
     cameraSequence: [{ order: 1, checkpointId: 'ready', mode: 'follow', focusObjectRole: 'player' }],
     terminal: { checkpointId: 'settled', result: 'level-complete', causeVisible: true, settlementVisible: true },
     replay: { checkpointId: 'replay', actionId: 'replay', targetObjectId: 'replay-control', returnsToCheckpointId: 'ready' },
+    behaviorMeasurements: [
+      {
+        id: 'response-interval', measurementId: 'response-interval', kind: 'checkpoint-interval', unit: 'ms', fromCheckpointId: 'ready', toCheckpointId: 'settled', subjectObjectId: null, relatedObjectId: null,
+        expectedRange: { min: 100, max: 100 }, acceptanceRange: { min: 40, max: 180 }, uncertainty: 60, coordinateSpace: 'screen-normalized', applicability: 'same natural tap', sourceFrameIds: ['frame-ready', 'frame-settled'], source: { path: 'artifacts/reference-level-reconstruction.json', sha256: sha256Text('fixture-reconstruction') },
+      },
+      {
+        id: 'hero-ground-spacing', measurementId: 'hero-ground-spacing', kind: 'relative-distance', unit: 'normalized-distance', fromCheckpointId: 'ready', toCheckpointId: 'settled', subjectObjectId: 'hero', relatedObjectId: 'ground',
+        expectedRange: { min: 0.1, max: 0.1 }, acceptanceRange: { min: 0.05, max: 0.15 }, uncertainty: 0.02, coordinateSpace: 'screen-normalized', applicability: 'same camera', sourceFrameIds: ['frame-ready', 'frame-settled'], source: { path: 'artifacts/reference-level-reconstruction.json', sha256: sha256Text('fixture-reconstruction') },
+      },
+    ],
     runtimeProbe: { globalName: '__REFERENCE_LEVEL_TEST__', readOnly: true, methods: ['getSnapshot', 'getNaturalInputTarget'] },
     originalityBoundary: { sourceCoordinatesExposedToBuilder: false, mustBeOriginal: ['code', 'assets', 'names-and-text', 'ui-expression', 'audio', 'raw-tuning-values'] },
     status: 'READY',
@@ -158,9 +168,11 @@ describe('Builder reference-level runtime binding', () => {
     const calls: string[] = [];
     const { workspace, data } = await writeReferenceArtifacts(runRoot);
     let providerData: unknown;
+    let providerTargets: unknown;
     const provider = {
       async build(input: Parameters<CodexProvider['build']>[0]) {
         calls.push('provider.build');
+        providerTargets = input.referenceLevelBehaviorTargets;
         providerData = JSON.parse(await readFile(path.join(input.workspace, referenceLevelRuntimeDataPath('web-lite')), 'utf8'));
         return { threadId: 'builder-thread', verificationMode: 'contract' as const, metrics: { provider: 'fixture', model: 'fixture', calls: 1 } };
       },
@@ -176,6 +188,7 @@ describe('Builder reference-level runtime binding', () => {
     });
 
     expect(providerData).toEqual(data);
+    expect(providerTargets).toEqual(expect.arrayContaining([expect.objectContaining({ measurementId: 'response-interval', expectedRange: { min: 100, max: 100 } })]));
     expect(calls).toEqual(['createProject', 'applyBlueprint', 'importAssets', 'provider.build', 'verifyProject', 'buildWeb']);
   });
 
