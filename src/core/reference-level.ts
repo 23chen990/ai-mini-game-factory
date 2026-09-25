@@ -156,6 +156,7 @@ function measurementAcceptanceRange(observed: { min: number; max: number }, unce
 export function deriveReferenceLevelImplementationContract(
   reconstructionValue: unknown,
   sourceReconstruction: { path: string; sha256: string },
+  options: { verificationBlockers?: string[] } = {},
 ): ReferenceLevelImplementationContract {
   const reconstruction = ReferenceLevelReconstructionSchema.parse(reconstructionValue);
   const firstSeen = new Map<string, { role: ReferenceLevelReconstruction['checkpoints'][number]['objects'][number]['role']; checkpointIndex: number }>();
@@ -171,6 +172,7 @@ export function deriveReferenceLevelImplementationContract(
       lifecycleOrder: orderedUnique(reconstruction.checkpoints.flatMap((checkpoint) => checkpoint.objects.filter((object) => object.semanticId === semanticId).map((object) => object.lifecycle))),
     }));
   const blockers = [
+    ...(options.verificationBlockers ?? []),
     ...reconstruction.blockers,
     ...reconstruction.unknowns.map((unknown) => `unknown:${unknown}`),
     ...(reconstruction.spatialRelations.some((relation) => !relation.observed) ? ['unobserved-spatial-relation'] : []),
@@ -267,9 +269,10 @@ export function verifyReferenceLevelImplementationContract(
   reconstructionValue: unknown,
   contractValue: unknown,
   sourceReconstruction: ReferenceLevelImplementationContract['sourceReconstruction'],
+  options: { verificationBlockers?: string[] } = {},
 ) {
   const contract = ReferenceLevelImplementationContractSchema.parse(contractValue);
-  const expected = deriveReferenceLevelImplementationContract(reconstructionValue, sourceReconstruction);
+  const expected = deriveReferenceLevelImplementationContract(reconstructionValue, sourceReconstruction, options);
   const expectedAtStoredTime = { ...expected, createdAt: contract.createdAt };
   const blockers = JSON.stringify(expectedAtStoredTime) === JSON.stringify(contract)
     ? []
@@ -377,8 +380,14 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
     const observed = new Map((trace.observedMeasurements ?? []).map((measurement) => [measurement.measurementId, measurement]));
     for (const expected of contract.behaviorMeasurements) {
       const actual = observed.get(expected.measurementId);
+      const expectedCheckpointIds = [expected.fromCheckpointId, expected.toCheckpointId];
+      const actualCheckpointIds = actual?.sourceCheckpointIds ?? [];
+      const checkpointProvenanceMatches = actualCheckpointIds.length === expectedCheckpointIds.length
+        && actualCheckpointIds.every((checkpointId, index) => checkpointId === expectedCheckpointIds[index]);
       if (!actual || actual.status !== 'MEASURED' || actual.actualRange === undefined || actual.unit !== expected.unit
-        || actual.subjectObjectId !== expected.subjectObjectId || actual.relatedObjectId !== expected.relatedObjectId) {
+        || actual.subjectObjectId !== expected.subjectObjectId || actual.relatedObjectId !== expected.relatedObjectId
+        || actual.coordinateSpace !== expected.coordinateSpace
+        || !checkpointProvenanceMatches) {
         measurementResults.push({ measurementId: expected.measurementId, result: 'INSUFFICIENT', expectedRange: expected.acceptanceRange, evidence: actual?.evidence ?? [], reason: actual?.basis ?? '候选运行没有提供该指标的真实测量区间。' });
         blockers.push(`reference-level:measurement-insufficient:${expected.measurementId}`);
         continue;
@@ -399,10 +408,10 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
 
   const comparisonStatus = measurementResults.length === 0
     ? undefined
-    : measurementResults.some((result) => result.result === 'DIFFERENT')
-      ? 'DIFFERENT' as const
-      : measurementResults.some((result) => result.result === 'INSUFFICIENT')
-        ? 'INSUFFICIENT' as const
+    : measurementResults.some((result) => result.result === 'INSUFFICIENT')
+      ? 'INSUFFICIENT' as const
+      : measurementResults.some((result) => result.result === 'DIFFERENT')
+        ? 'DIFFERENT' as const
         : 'CONFORMING' as const;
 
   return ReferenceLevelComparisonGateSchema.parse({

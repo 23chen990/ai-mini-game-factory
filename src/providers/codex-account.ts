@@ -227,14 +227,32 @@ export class CodexAccountProvider implements AgentProvider, CodexProvider {
     const recordingLevelInstruction = hasReferenceLevelRuntimeInputs(execution)
       ? `Implement the complete recording-derived semantic level contract before visual polish: preserve every checkpoint, semantic object id and role, lifecycle order, coarse placement/extent/orientation band, support/reachability relation, natural-input action order, camera phase, terminal cause, settlement, and replay return. Do not use source frame coordinates as tuning; author original numeric values that preserve the locked causal topology and coarse gameplay placement while keeping UI expression original. Expose a read-only window.__REFERENCE_LEVEL_TEST__ with exactly getSnapshot() and getNaturalInputTarget(actionId). getNaturalInputTarget must point to a real visible control or canvas location that Playwright can operate through normal pointer/touch input; it must never mutate state. getSnapshot must report current checkpoint id and phase, visible object ids/roles/lifecycles plus each gameplay object's coarse placement signature, observed relation ids, camera mode, visible feedback ids, terminal visibility, and screen-normalized bounds for the semantic objects used by an R1 behavior target whenever the live renderer can measure them. These bounds must come from the current simulation/render state, never from expected checkpoints. Add contract tests for every checkpoint, object, placement rule, action, relation, camera phase, terminal, and replay rule. ${recordingRuntimeBindingInstruction}`
       : '';
-    const behaviorTargetInstruction = input.referenceLevelBehaviorTargets && input.referenceLevelBehaviorTargets.length > 0
-      ? `The frozen Builder-facing behavior targets below are acceptance goals derived from source evidence. Use their semantic checkpoint/object ids to implement the causal behavior, but keep all source coordinates, source timestamps, frame paths and target ranges out of runtime state and game UI. Author original numeric tuning and expression, then let fresh natural-input QA measure the result independently.\nR1 behavior targets:\n${JSON.stringify(input.referenceLevelBehaviorTargets)}`
+    const builderVisibleBehaviorTargets = input.referenceLevelBehaviorTargets?.map((target) => ({
+      id: target.id,
+      measurementId: target.measurementId,
+      kind: target.kind,
+      unit: target.unit,
+      fromCheckpointId: target.fromCheckpointId,
+      toCheckpointId: target.toCheckpointId,
+      subjectObjectId: target.subjectObjectId,
+      relatedObjectId: target.relatedObjectId,
+      expectedRange: target.expectedRange,
+      acceptanceRange: target.acceptanceRange,
+      uncertainty: target.uncertainty,
+      coordinateSpace: target.coordinateSpace,
+      applicability: target.applicability,
+    }));
+    const behaviorTargetInstruction = builderVisibleBehaviorTargets && builderVisibleBehaviorTargets.length > 0
+      ? `The frozen Builder-facing behavior targets below are acceptance goals derived from source evidence. Use their semantic checkpoint/object ids to implement the causal behavior, but keep all source coordinates, source timestamps, frame paths and target ranges out of runtime state and game UI. Author original numeric tuning and expression, then let fresh natural-input QA measure the result independently.\nR1 behavior targets:\n${JSON.stringify(builderVisibleBehaviorTargets)}`
       : '';
+    const builderPromptInput = builderVisibleBehaviorTargets
+      ? { ...input, referenceLevelBehaviorTargets: builderVisibleBehaviorTargets }
+      : input;
     const model = execution?.model?.trim() || process.env.CODEX_MODEL || 'account-default';
     const result = await this.execute({
       label: 'BUILD', cwd: input.workspace, runRoot, sandbox: 'workspace-write', model, stage: 'FULL_BUILD', role: 'builder', outputPath: path.join(logDir, 'BUILD.last-message.txt'), logDir,
       timeoutMs: this.buildTimeoutMs, maxRetries: 0,
-      prompt: `You are BuilderAgent. Modify only the current generated game workspace. Implement the validated blueprint, style lock and manifest assets below without changing the factory repository. ${gameplayInstruction} ${gameplayRevisionInstruction} ${narrativeInstruction} ${provisionalArtInstruction} ${cocosInstruction} ${recordingLevelInstruction} ${behaviorTargetInstruction} ${experienceSkillInstruction({ stage: 'FULL_BUILD', request: 'player-visible core loop feedback and natural triggers' })} ${buildProductEvidenceInstruction()} For every implemented feature, return a structured implementation handoff listing feature id, runtimeWired, playerVisible, naturalTriggerVerified, and exact evidence paths; Builder declarations are not independent QA proof. ${deterministicTestInstruction} Work test-first: add or update focused gameplay and UI-shell tests, observe the relevant failure, then implement the behavior. Add package scripts named test and typecheck, run both scripts and the production build, and fix every failure before finishing. Do not claim success from prose or stop while any check fails.\nFactory execution context (sanitized): ${JSON.stringify(execution?.contextPacket ?? { schemaVersion: 1, stage: 'FULL_BUILD', summary: 'no packet', inputs: [], omitted: [], totalChars: 0 })}\n${JSON.stringify(builderInputWithUiAnimationStandard(input))}`,
+      prompt: `You are BuilderAgent. Modify only the current generated game workspace. Implement the validated blueprint, style lock and manifest assets below without changing the factory repository. ${gameplayInstruction} ${gameplayRevisionInstruction} ${narrativeInstruction} ${provisionalArtInstruction} ${cocosInstruction} ${recordingLevelInstruction} ${behaviorTargetInstruction} ${experienceSkillInstruction({ stage: 'FULL_BUILD', request: 'player-visible core loop feedback and natural triggers' })} ${buildProductEvidenceInstruction()} For every implemented feature, return a structured implementation handoff listing feature id, runtimeWired, playerVisible, naturalTriggerVerified, and exact evidence paths; Builder declarations are not independent QA proof. ${deterministicTestInstruction} Work test-first: add or update focused gameplay and UI-shell tests, observe the relevant failure, then implement the behavior. Add package scripts named test and typecheck, run both scripts and the production build, and fix every failure before finishing. Do not claim success from prose or stop while any check fails.\nFactory execution context (sanitized): ${JSON.stringify(execution?.contextPacket ?? { schemaVersion: 1, stage: 'FULL_BUILD', summary: 'no packet', inputs: [], omitted: [], totalChars: 0 })}\n${JSON.stringify(builderInputWithUiAnimationStandard(builderPromptInput))}`,
     });
     return { threadId: result.threadId, verificationMode: 'full' as const, metrics: { provider: 'codex-cli', model, calls: result.attempts, usage: result.usage } };
   }

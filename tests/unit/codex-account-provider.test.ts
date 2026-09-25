@@ -246,6 +246,10 @@ describe('CodexAccountProvider', () => {
       styleLock,
       assets: { schemaVersion: 1, provider: 'test', assets: ['blade', 'target', 'background', 'replay'].map((id, index) => ({ id, kind: (['character', 'product', 'background', 'ui'] as const)[index]!, path: `assets/${id}.png`, prompt: id, status: 'generated' as const, sha256: 'hash' })) },
       template: 'cut-stack-dodge-v1',
+      referenceLevelBehaviorTargets: [{
+        id: 'response-interval', measurementId: 'response-interval', kind: 'checkpoint-interval', unit: 'ms', fromCheckpointId: 'ready', toCheckpointId: 'interaction', subjectObjectId: null, relatedObjectId: null,
+        expectedRange: { min: 100, max: 120 }, acceptanceRange: { min: 50, max: 180 }, uncertainty: 30, coordinateSpace: 'screen-normalized', applicability: 'same natural tap', sourceFrameIds: ['frame-a', 'frame-b'], source: { path: 'artifacts/reference-level-reconstruction.json', sha256: 'a'.repeat(64) },
+      }],
       context: { runRoot: path.resolve(workspace, '../..'), outputPath: path.resolve(workspace, '../../logs/codex/BUILD.last-message.txt'), logDir: path.resolve(workspace, '../../logs/codex'), inputPaths: ['artifacts/reference-level-implementation-contract.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FULL_BUILD', sandbox: 'workspace-write' },
     });
 
@@ -255,6 +259,10 @@ describe('CodexAccountProvider', () => {
     expect(prompt).not.toContain('spawnCustomer');
     expect(prompt).not.toContain('completeOrder');
     expect(prompt).not.toContain('upgradeStation');
+    expect(prompt).toContain('response-interval');
+    expect(prompt).toContain('acceptanceRange');
+    expect(prompt).not.toContain('sourceFrameIds');
+    expect(prompt).not.toContain('frame-a');
   });
 
   it('gives the Cocos Builder the locked hybrid-3D and carry-sway contract', async () => {

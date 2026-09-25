@@ -201,6 +201,15 @@ describe('recording-derived level contracts', () => {
     ]));
   });
 
+  it('keeps verification blockers on the derived Builder contract', () => {
+    const raw = reconstruction();
+    const contract = deriveReferenceLevelImplementationContract(raw, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('reconstruction') }, { verificationBlockers: ['reference-level:measurement-uncertainty-too-precise:input-to-contact'] });
+
+    expect(contract.status).toBe('BLOCKED');
+    expect(contract.blockers).toContain('reference-level:measurement-uncertainty-too-precise:input-to-contact');
+    expect(verifyReferenceLevelImplementationContract(raw, contract, contract.sourceReconstruction, { verificationBlockers: ['reference-level:measurement-uncertainty-too-precise:input-to-contact'] })).toEqual({ passed: true, blockers: [] });
+  });
+
   it('compares a natural runtime trace against semantic object, relation, camera, terminal, and replay requirements', () => {
     const source = reconstruction();
     const contract = deriveReferenceLevelImplementationContract(source, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('reconstruction') });

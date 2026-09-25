@@ -127,7 +127,7 @@ export const ReferenceBehaviorMeasurementSchema = z.object({
 }).strict().superRefine((measurement, context) => {
   if (measurement.fromCheckpointId === measurement.toCheckpointId) context.addIssue({ code: 'custom', path: ['toCheckpointId'], message: 'a measurement must compare two distinct checkpoints' });
   if (measurement.status === 'OBSERVED' && (measurement.observedRange === null || measurement.uncertainty === null)) context.addIssue({ code: 'custom', path: ['observedRange'], message: 'OBSERVED measurements require a measured range and uncertainty' });
-  if (measurement.status === 'UNKNOWN' && measurement.observedRange !== null) context.addIssue({ code: 'custom', path: ['observedRange'], message: 'UNKNOWN measurements cannot carry an observed range' });
+  if (measurement.status !== 'OBSERVED' && (measurement.observedRange !== null || measurement.uncertainty !== null)) context.addIssue({ code: 'custom', path: ['observedRange'], message: 'INFERRED and UNKNOWN measurements cannot carry observed values or uncertainty' });
   if (measurement.kind === 'checkpoint-interval' && measurement.unit !== 'ms') context.addIssue({ code: 'custom', path: ['unit'], message: 'checkpoint intervals must use milliseconds' });
   if (measurement.kind === 'relative-distance' && (measurement.subjectObjectId === null || measurement.relatedObjectId === null)) context.addIssue({ code: 'custom', path: ['subjectObjectId'], message: 'relative-distance measurements require two semantic objects' });
 });
@@ -150,7 +150,13 @@ export const ReferenceBehaviorTargetSchema = z.object({
   applicability: Text,
   sourceFrameIds: z.array(Text).min(1),
   source: EvidenceFile,
-}).strict();
+}).strict().superRefine((target, context) => {
+  if (target.id !== target.measurementId) context.addIssue({ code: 'custom', path: ['measurementId'], message: 'measurementId must match the target id' });
+  if (target.fromCheckpointId === target.toCheckpointId) context.addIssue({ code: 'custom', path: ['toCheckpointId'], message: 'a target must compare two distinct checkpoints' });
+  if (target.kind === 'checkpoint-interval' && target.unit !== 'ms') context.addIssue({ code: 'custom', path: ['unit'], message: 'checkpoint interval targets must use milliseconds' });
+  if (target.kind === 'relative-distance' && (target.unit !== 'normalized-distance' || target.subjectObjectId === null || target.relatedObjectId === null)) context.addIssue({ code: 'custom', path: ['unit'], message: 'relative distance targets require normalized-distance and two semantic objects' });
+  if (target.acceptanceRange.min > target.expectedRange.min || target.acceptanceRange.max < target.expectedRange.max) context.addIssue({ code: 'custom', path: ['acceptanceRange'], message: 'acceptance range cannot be narrower than expected range' });
+});
 export type ReferenceBehaviorTarget = z.infer<typeof ReferenceBehaviorTargetSchema>;
 
 const RuntimeMeasurementStatusSchema = z.enum(['MEASURED', 'INSUFFICIENT']);
@@ -159,6 +165,9 @@ const RuntimeMeasurementSchema = z.object({
   status: RuntimeMeasurementStatusSchema,
   unit: MeasurementUnitSchema,
   actualRange: MeasurementRangeSchema.optional(),
+  // Optional for legacy runtime traces.  The comparison gate treats a missing
+  // or mismatched space as INSUFFICIENT instead of rejecting the whole trace.
+  coordinateSpace: z.enum(['screen-normalized', 'world-relative']).optional(),
   sourceCheckpointIds: z.array(Text).min(1),
   subjectObjectId: Text.nullable(),
   relatedObjectId: Text.nullable(),
@@ -371,7 +380,7 @@ export const ReferenceLevelRuntimeTraceSchema = z.object({
   viewport: Viewport.extend({ label: Text }).strict(),
   startedFromReset: z.boolean(),
   naturalInputOnly: z.boolean(),
-  actions: z.array(z.object({ order: z.number().int().positive(), actionId: Text, kind: ReferenceInputKindSchema.exclude(['none']), targetObjectId: Text, naturalInput: z.boolean(), stateChanged: z.boolean(), observedCheckpointId: Text }).strict()),
+  actions: z.array(z.object({ order: z.number().int().positive(), actionId: Text, kind: ReferenceInputKindSchema.exclude(['none']), targetObjectId: Text, naturalInput: z.boolean(), stateChanged: z.boolean(), observedCheckpointId: Text, startedAtMs: z.number().nonnegative().optional() }).strict()),
   checkpoints: z.array(z.object({
     sourceCheckpointId: Text,
     runtimeBinding: ReferenceLevelRuntimeBindingSchema.optional(),
@@ -390,7 +399,10 @@ export const ReferenceLevelRuntimeTraceSchema = z.object({
   reviewer: z.enum(['QAAgent', 'HumanReviewer']),
   authorIndependent: z.literal(true),
   observedAt: z.string().datetime(),
-}).strict();
+}).strict().superRefine((trace, context) => {
+  const ids = (trace.observedMeasurements ?? []).map((measurement) => measurement.measurementId);
+  if (new Set(ids).size !== ids.length) context.addIssue({ code: 'custom', path: ['observedMeasurements'], message: 'runtime measurement ids must be unique' });
+});
 export type ReferenceLevelRuntimeTrace = z.infer<typeof ReferenceLevelRuntimeTraceSchema>;
 
 export const ReferenceLevelComparisonGateSchema = z.object({
@@ -419,6 +431,7 @@ export const ReferenceLevelComparisonGateSchema = z.object({
   checkedAt: z.string().datetime(),
 }).strict().superRefine((gate, context) => {
   if (gate.passed !== (gate.blockers.length === 0)) context.addIssue({ code: 'custom', path: ['passed'], message: 'comparison status must match blockers' });
+  if ((gate.comparisonStatus === undefined) !== (gate.measurementResults === undefined)) context.addIssue({ code: 'custom', path: ['comparisonStatus'], message: 'comparisonStatus and measurementResults must be present together' });
   if (gate.measurementResults) {
     const ids = gate.measurementResults.map((result) => result.measurementId);
     if (new Set(ids).size !== ids.length) context.addIssue({ code: 'custom', path: ['measurementResults'], message: 'measurement result ids must be unique' });

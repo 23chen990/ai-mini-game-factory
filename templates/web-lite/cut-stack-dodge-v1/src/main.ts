@@ -202,12 +202,28 @@ function placement(object: { x: number; y: number; width: number; height: number
 }
 
 function normalizedVisibleBounds(object: { x: number; y: number; width: number; height: number }) {
-  const left = Math.max(0, Math.min(WORLD.width, object.x));
-  const top = Math.max(0, Math.min(WORLD.height, object.y));
-  const right = Math.max(0, Math.min(WORLD.width, object.x + object.width));
-  const bottom = Math.max(0, Math.min(WORLD.height, object.y + object.height));
+  const rect = canvas.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0 || window.innerWidth <= 0 || window.innerHeight <= 0) return undefined;
+  const scale = Math.min(rect.width / WORLD.width, rect.height / WORLD.height);
+  const offsetX = (rect.width - WORLD.width * scale) / 2;
+  const offsetY = (rect.height - WORLD.height * scale) / 2;
+  const left = Math.max(0, Math.min(window.innerWidth, rect.left + offsetX + object.x * scale));
+  const top = Math.max(0, Math.min(window.innerHeight, rect.top + offsetY + object.y * scale));
+  const right = Math.max(0, Math.min(window.innerWidth, rect.left + offsetX + (object.x + object.width) * scale));
+  const bottom = Math.max(0, Math.min(window.innerHeight, rect.top + offsetY + (object.y + object.height) * scale));
   if (right <= left || bottom <= top) return undefined;
-  return { x: left / WORLD.width, y: top / WORLD.height, width: (right - left) / WORLD.width, height: (bottom - top) / WORLD.height };
+  return { x: left / window.innerWidth, y: top / window.innerHeight, width: (right - left) / window.innerWidth, height: (bottom - top) / window.innerHeight };
+}
+
+function normalizedDomBounds(element: Element) {
+  const rect = element.getBoundingClientRect();
+  if (rect.width <= 0 || rect.height <= 0 || window.innerWidth <= 0 || window.innerHeight <= 0) return undefined;
+  const left = Math.max(0, Math.min(window.innerWidth, rect.left));
+  const top = Math.max(0, Math.min(window.innerHeight, rect.top));
+  const right = Math.max(0, Math.min(window.innerWidth, rect.right));
+  const bottom = Math.max(0, Math.min(window.innerHeight, rect.bottom));
+  if (right <= left || bottom <= top) return undefined;
+  return { x: left / window.innerWidth, y: top / window.innerHeight, width: (right - left) / window.innerWidth, height: (bottom - top) / window.innerHeight };
 }
 
 function checkpointId(): string {
@@ -283,6 +299,8 @@ function getSnapshot() {
         lifecycle: terminal ? 'ready' : phase === 'replay' ? 'resolved' : 'hidden',
         visible: terminal || phase === 'replay',
         placement: placement({ x: WORLD.width * 0.4, y: WORLD.height * 0.78, width: WORLD.width * 0.2, height: WORLD.height * 0.1 }, 'replay-control'),
+        boundsNormalized: normalizedDomBounds(replayControl),
+        coordinateSpace: 'screen-normalized',
       },
     ],
     observedRelationIds: recording

@@ -439,6 +439,7 @@ export function createFactory(options: FactoryOptions = {}) {
         reconstructionValue,
         contract,
         { path: 'artifacts/reference-level-reconstruction.json', sha256: reconstructionSha256 },
+        { verificationBlockers: verified.blockers },
       );
       return verified.passed && contractVerified.passed && contract.status === 'READY' && contract.sourceReconstruction.sha256 === reconstructionSha256;
     } catch { return false; }
@@ -512,9 +513,12 @@ export function createFactory(options: FactoryOptions = {}) {
       await verifyReferenceLevelLayoutFile(contract.workspace, runtimeData);
       const trace = ReferenceLevelRuntimeTraceSchema.parse(await store.readArtifact(runId, 'reference-level-runtime-trace.json'));
       const gate = await verifyReferenceLevelRuntimeTrace(contract, trace, { runtimeData, verifyEvidenceFile: (evidence) => verifyRunBoundEvidence(runRoot, evidence) });
-      await store.writeArtifact(runId, 'reference-level-comparison-gate.json', gate);
+      // Resume validation is read-only. Rewriting the gate would churn its
+      // checkedAt timestamp without a new QA run and make the artifact ledger
+      // look stale on the next reconciliation pass.
       const frameManifest = await store.readArtifact(runId, 'reference-frame-manifest.json').catch(() => undefined);
-      await writeFile(path.join(runRoot, 'artifacts/reference-level-difference-report.md'), renderReferenceLevelComparisonReport(contract, trace, gate, frameManifest));
+      const reportPath = path.join(runRoot, 'artifacts/reference-level-difference-report.md');
+      if (!await exists(reportPath)) await writeFile(reportPath, renderReferenceLevelComparisonReport(contract, trace, gate, frameManifest));
       return gate.passed && gate.buildHash === buildHash;
     } catch { return false; }
   }
@@ -917,7 +921,7 @@ export function createFactory(options: FactoryOptions = {}) {
       const verified = verifyReferenceLevelReconstruction(reconstruction, frameManifest, { frameManifestSha256 });
       await store.writeArtifact(runId, 'reference-level-reconstruction.json', reconstruction);
       const reconstructionFile = path.join(runRoot, 'artifacts/reference-level-reconstruction.json');
-      const implementationContract = deriveReferenceLevelImplementationContract(reconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: await sha256File(reconstructionFile) });
+      const implementationContract = deriveReferenceLevelImplementationContract(reconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: await sha256File(reconstructionFile) }, { verificationBlockers: verified.blockers });
       await store.writeArtifact(runId, 'reference-level-implementation-contract.json', implementationContract);
       if (!verified.passed || implementationContract.status !== 'READY') {
         const levelUnknowns = [...verified.blockers, ...implementationContract.blockers].map((blocker) => `recording-level:${blocker}`);
@@ -2823,7 +2827,8 @@ export function createFactory(options: FactoryOptions = {}) {
         if (levelContract) {
           const levelResult = await executeReferenceLevelQa(runId, workspace, previewBuildHash);
           report = mergeReferenceLevelQaReport(report, levelResult.gate, levelResult.trace.screenshots.map((item) => item.path));
-          referenceMeasurementInsufficient = levelResult.gate.comparisonStatus === 'INSUFFICIENT';
+          referenceMeasurementInsufficient = (levelResult.gate.measurementResults ?? []).some((result) => result.result === 'INSUFFICIENT')
+            || levelResult.gate.blockers.some((blocker) => blocker.startsWith('reference-level:evidence-invalid:'));
           referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'];
           await refreshAcceptanceArtifacts(runRoot, true, report.passed, report.screenshots);
         }
@@ -3694,7 +3699,8 @@ export function createFactory(options: FactoryOptions = {}) {
         if (referenceLevelInputs.length > 0) {
           const levelResult = await executeReferenceLevelQa(runId, workspace, buildHash);
           report = mergeReferenceLevelQaReport(report, levelResult.gate, levelResult.trace.screenshots.map((item) => item.path));
-          referenceMeasurementInsufficient = levelResult.gate.comparisonStatus === 'INSUFFICIENT';
+          referenceMeasurementInsufficient = (levelResult.gate.measurementResults ?? []).some((result) => result.result === 'INSUFFICIENT')
+            || levelResult.gate.blockers.some((blocker) => blocker.startsWith('reference-level:evidence-invalid:'));
           referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'];
           await refreshAcceptanceArtifacts(runRoot, await readBuildSuccess(runRoot), report.passed, report.screenshots);
         }

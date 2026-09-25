@@ -4,6 +4,7 @@ import { evaluateReferenceLevelRuntimeTrace, renderReferenceLevelComparisonRepor
 import {
   ReferenceLevelImplementationContractSchema,
   ReferenceLevelRuntimeTraceSchema,
+  ReferenceBehaviorMeasurementSchema,
   type ReferenceLevelImplementationContract,
   type ReferenceLevelRuntimeTrace,
 } from '../../src/schemas/reference-recording.js';
@@ -154,11 +155,20 @@ function runtimeTrace(observedMeasurements?: ReferenceLevelRuntimeTrace['observe
 
 const evidence = [{ path: 'screenshots/candidate.png', sha256: hash('candidate-screenshot') }];
 const measured = (latency: { min: number; max: number }, distance: { min: number; max: number }) => [
-  { measurementId: 'cut-latency', status: 'MEASURED' as const, unit: 'ms' as const, actualRange: latency, sourceCheckpointIds: ['input', 'interaction'], subjectObjectId: null, relatedObjectId: null, basis: 'capturedAtMs delta', evidence },
-  { measurementId: 'hero-target-distance', status: 'MEASURED' as const, unit: 'normalized-distance' as const, actualRange: distance, sourceCheckpointIds: ['input', 'interaction'], subjectObjectId: 'hero', relatedObjectId: 'target', basis: 'screen-normalized bounds', evidence },
+  { measurementId: 'cut-latency', status: 'MEASURED' as const, unit: 'ms' as const, coordinateSpace: 'screen-normalized' as const, actualRange: latency, sourceCheckpointIds: ['input', 'interaction'], subjectObjectId: null, relatedObjectId: null, basis: 'capturedAtMs delta', evidence },
+  { measurementId: 'hero-target-distance', status: 'MEASURED' as const, unit: 'normalized-distance' as const, coordinateSpace: 'screen-normalized' as const, actualRange: distance, sourceCheckpointIds: ['input', 'interaction'], subjectObjectId: 'hero', relatedObjectId: 'target', basis: 'screen-normalized bounds', evidence },
 ];
 
 describe('R1 reference behavior measurement gate', () => {
+  it('keeps inferred source observations explicitly value-free', () => {
+    const result = ReferenceBehaviorMeasurementSchema.safeParse({
+      id: 'inferred-latency', kind: 'checkpoint-interval', status: 'INFERRED', unit: 'ms', fromCheckpointId: 'input', toCheckpointId: 'interaction', fromEvent: 'tap', toEvent: 'feedback',
+      subjectObjectId: null, relatedObjectId: null, sourceCheckpointIds: ['input', 'interaction'], sourceFrameIds: ['frame-input', 'frame-interaction'], observedRange: { min: 10, max: 20 }, uncertainty: 5, coordinateSpace: 'screen-normalized', applicability: 'inferred only', basis: 'input timestamp is not visible',
+    });
+
+    expect(result.success).toBe(false);
+  });
+
   it('marks two measured behaviors CONFORMING when both candidate ranges fit', () => {
     const contract = contractWithMeasurements();
     const gate = evaluateReferenceLevelRuntimeTrace(contract, runtimeTrace(measured({ min: 95, max: 105 }, { min: 0.22, max: 0.28 })));
@@ -203,6 +213,39 @@ describe('R1 reference behavior measurement gate', () => {
     expect(gate.measurementResults).toEqual(expect.arrayContaining([
       expect.objectContaining({ measurementId: 'cut-latency', result: 'CONFORMING', evidence }),
       expect.objectContaining({ measurementId: 'hero-target-distance', result: 'INSUFFICIENT', evidence: [] }),
+    ]));
+  });
+
+  it('rejects a measured range sourced from the wrong checkpoints', () => {
+    const contract = contractWithMeasurements();
+    const wrongSource = measured({ min: 95, max: 105 }, { min: 0.22, max: 0.28 }).map((measurement) => ({
+      ...measurement,
+      sourceCheckpointIds: ['ready', 'terminal'],
+    }));
+    const gate = evaluateReferenceLevelRuntimeTrace(contract, runtimeTrace(wrongSource));
+
+    expect(gate.comparisonStatus).toBe('INSUFFICIENT');
+    expect(gate.measurementResults).toEqual(expect.arrayContaining([
+      expect.objectContaining({ measurementId: 'cut-latency', result: 'INSUFFICIENT' }),
+      expect.objectContaining({ measurementId: 'hero-target-distance', result: 'INSUFFICIENT' }),
+    ]));
+    expect(gate.blockers).toEqual(expect.arrayContaining([
+      'reference-level:measurement-insufficient:cut-latency',
+      'reference-level:measurement-insufficient:hero-target-distance',
+    ]));
+  });
+
+  it('keeps the aggregate status INSUFFICIENT when one measured space is invalid', () => {
+    const contract = contractWithMeasurements();
+    const wrongSpace = measured({ min: 95, max: 105 }, { min: 0.22, max: 0.28 }).map((measurement, index) => index === 0
+      ? { ...measurement, coordinateSpace: 'world-relative' as const }
+      : measurement);
+    const gate = evaluateReferenceLevelRuntimeTrace(contract, runtimeTrace(wrongSpace));
+
+    expect(gate.comparisonStatus).toBe('INSUFFICIENT');
+    expect(gate.measurementResults).toEqual(expect.arrayContaining([
+      expect.objectContaining({ measurementId: 'cut-latency', result: 'INSUFFICIENT' }),
+      expect.objectContaining({ measurementId: 'hero-target-distance', result: 'CONFORMING' }),
     ]));
   });
 

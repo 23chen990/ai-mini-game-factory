@@ -106,6 +106,7 @@ describe('R1 natural browser behavior comparison', () => {
     expect(baseline.gate.comparisonStatus, JSON.stringify(baseline.gate)).toBe('CONFORMING');
     expect(baseline.gate.passed).toBe(true);
     expect(baseline.trace.actions.some((action) => action.naturalInput && action.stateChanged)).toBe(true);
+    expect(new Set(baseline.trace.screenshots.map((item) => item.path)).size).toBe(baseline.trace.screenshots.length);
 
     const slow = await runReferenceLevelQa(await fixture('slow'));
     expect(slow.gate.comparisonStatus).toBe('DIFFERENT');
