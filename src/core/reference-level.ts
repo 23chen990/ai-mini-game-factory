@@ -92,7 +92,10 @@ export function verifyReferenceLevelReconstruction(
       } else if (from.camera.mode !== to.camera.mode) {
         blockers.push(`reference-level:measurement-camera-transition:${measurement.id}`);
       } else {
-        const observed = Math.abs(centerDistance(toSubject, toRelated, frameManifest.source.height / frameManifest.source.width) - centerDistance(fromSubject, fromRelated, frameManifest.source.height / frameManifest.source.width));
+        const signedDelta = centerDistance(toSubject, toRelated, frameManifest.source.height / frameManifest.source.width) - centerDistance(fromSubject, fromRelated, frameManifest.source.height / frameManifest.source.width);
+        const observed = Math.abs(signedDelta);
+        const derivedDirection = Math.abs(signedDelta) <= measurement.uncertainty ? 'stable' : signedDelta < 0 ? 'approaching' : 'separating';
+        if (measurement.direction !== undefined && measurement.direction !== derivedDirection) blockers.push(`reference-level:measurement-direction-conflict:${measurement.id}`);
         if (measurement.unit !== 'normalized-distance' || observed < measurement.observedRange.min || observed > measurement.observedRange.max) blockers.push(`reference-level:measurement-range-does-not-cover-source:${measurement.id}`);
       }
     }

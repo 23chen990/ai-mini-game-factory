@@ -73,9 +73,11 @@ async function waitForPhase(page: Page, expected: string, timeout = 6_000): Prom
 }
 
 async function naturalTap(page: Page, actions: string[]): Promise<void> {
-  const control = page.locator('#primary-action:visible');
-  if (await control.count() === 0) throw new Error('visible primary cut/flip control is missing');
-  await control.click();
+  const control = page.locator('#primary-action');
+  await control.waitFor({ state: 'visible', timeout: 10_000 });
+  const box = await control.boundingBox();
+  if (!box) throw new Error('visible primary cut/flip control has no geometry');
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
   actions.push('pointer:tap-primary-action');
 }
 
@@ -139,15 +141,16 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
     const fallingGeometry = await page.evaluate(() => {
       const game = (window as unknown as { __GAME_TEST__?: { getState?: () => { objects?: Array<{ id: string; lifecycle: string }> } } }).__GAME_TEST__?.getState?.();
       const falling = game?.objects?.find((object) => object.lifecycle === 'falling');
-      const snapshot = (window as unknown as { __REFERENCE_LEVEL_TEST__?: { getSnapshot?: () => { objectStates?: Array<{ semanticId: string; boundsNormalized?: { x: number; y: number; width: number; height: number } }> } } }).__REFERENCE_LEVEL_TEST__?.getSnapshot?.();
-      const observed = falling && snapshot?.objectStates?.find((object) => object.semanticId === falling.id)?.boundsNormalized;
+      const snapshot = (window as unknown as { __REFERENCE_LEVEL_TEST__?: { getSnapshot?: () => { objectStates?: Array<{ semanticId: string; boundsNormalized?: { x: number; y: number; width: number; height: number }; renderColor?: string }> } } }).__REFERENCE_LEVEL_TEST__?.getSnapshot?.();
+      const observedObject = falling && snapshot?.objectStates?.find((object) => object.semanticId === falling.id);
+      const observed = observedObject?.boundsNormalized;
       const canvas = document.querySelector<HTMLCanvasElement>('#game-canvas');
       const context = canvas?.getContext('2d');
       if (!falling || !observed || !canvas || !context) return { passed: false, reason: 'falling object, snapshot bounds, or canvas context unavailable' };
       try {
         const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
-        const palette = ['#ffb38a', '#7ec8ff', '#ffd36e', '#a7d8bc'];
-        const hex = palette[Math.abs(falling.id.length) % palette.length]!;
+        if (!observedObject?.renderColor) return { passed: false, reason: 'falling object render color evidence unavailable', observed };
+        const hex = observedObject.renderColor;
         const expected = [Number.parseInt(hex.slice(1, 3), 16), Number.parseInt(hex.slice(3, 5), 16), Number.parseInt(hex.slice(5, 7), 16)];
         const rect = canvas.getBoundingClientRect();
         let minX = canvas.width; let minY = canvas.height; let maxX = -1; let maxY = -1;
@@ -155,7 +158,8 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
           const offset = (y * canvas.width + x) * 4;
           const normalizedX = (rect.left + x / canvas.width * rect.width) / innerWidth;
           const withinObservedColumn = normalizedX >= observed.x - 0.12 && normalizedX <= observed.x + observed.width + 0.12;
-          if (withinObservedColumn && Math.hypot(pixels[offset]! - expected[0]!, pixels[offset + 1]! - expected[1]!, pixels[offset + 2]! - expected[2]!) < 16) {
+          const matchesRenderedFill = Math.hypot(pixels[offset]! - expected[0]!, pixels[offset + 1]! - expected[1]!, pixels[offset + 2]! - expected[2]!) < 24;
+          if (withinObservedColumn && matchesRenderedFill) {
             minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
           }
         }

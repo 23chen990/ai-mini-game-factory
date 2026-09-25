@@ -84,7 +84,7 @@ function strictSchemaNode(value: unknown): unknown {
       // legacy artifacts, but a fresh structured research response must still
       // be able to return it. Preserve that one field in the model schema;
       // the canonical Zod parse remains backward compatible when it is absent.
-      const properties = Object.fromEntries(Object.entries(originalProperties).filter(([name]) => required.has(name) || name === 'behaviorMeasurements').map(([name, schema]) => [name, strictSchemaNode(schema)]));
+      const properties = Object.fromEntries(Object.entries(originalProperties).filter(([name]) => required.has(name) || name === 'behaviorMeasurements' || name === 'direction').map(([name, schema]) => [name, strictSchemaNode(schema)]));
       output.properties = properties;
       output.required = Object.keys(properties);
       output.additionalProperties = false;
@@ -240,6 +240,7 @@ export class CodexAccountProvider implements AgentProvider, CodexProvider {
       acceptanceRange: target.acceptanceRange,
       uncertainty: target.uncertainty,
       coordinateSpace: target.coordinateSpace,
+      ...(target.direction === undefined ? {} : { direction: target.direction }),
       applicability: target.applicability,
     }));
     const behaviorTargetInstruction = builderVisibleBehaviorTargets && builderVisibleBehaviorTargets.length > 0

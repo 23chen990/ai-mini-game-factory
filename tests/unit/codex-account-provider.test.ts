@@ -4,7 +4,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { CodexAccountProvider, codexOutputSchema, type CodexExecutor } from '../../src/providers/codex-account.js';
 import type { CodexExecRequest, CodexExecResult } from '../../src/providers/codex-cli.js';
-import { ArtDirectionsSchema, GameBlueprintSchema, OpenSourceResearchSchema, type ArtDirections, type GameBlueprint, type StyleLock } from '../../src/schemas/index.js';
+import { ArtDirectionsSchema, GameBlueprintSchema, OpenSourceResearchSchema, ReferenceBehaviorAnalysisSchema, type ArtDirections, type GameBlueprint, type StyleLock } from '../../src/schemas/index.js';
 import type { GameplayIdea } from '../../src/schemas/gameplay-experiment.js';
 
 const blueprint: GameBlueprint = { schemaVersion: 1, gameId: 'test', title: 'Test', theme: 'spirits', runtime: 'web-lite', template: 'idle-shop-v1', designMode: 'prototype_tournament', targetPlatforms: ['wechat-minigame', 'douyin-minigame', 'taptap-minigame'], concept: 'test concept', coreLoop: ['customer', 'production', 'delivery', 'reward'], content: { productName: 'tea', customerName: 'spirit', currencyName: 'coin' }, balance: { startingCurrency: 0, orderReward: 1, baseUpgradeCost: 2 }, preferences: {} };
@@ -38,6 +38,10 @@ describe('CodexAccountProvider', () => {
     expect(serialized).not.toContain('"format":"uri"');
     expect(serialized).toContain('repositoryUrl');
     expect(serialized).toContain('licenseEvidenceUrl');
+  });
+
+  it('keeps the source behavior direction in the final structured research schema', () => {
+    expect(JSON.stringify(codexOutputSchema(ReferenceBehaviorAnalysisSchema))).toContain('direction');
   });
 
   it('runs Producer read-only with the existing output schema', async () => {
@@ -247,8 +251,8 @@ describe('CodexAccountProvider', () => {
       assets: { schemaVersion: 1, provider: 'test', assets: ['blade', 'target', 'background', 'replay'].map((id, index) => ({ id, kind: (['character', 'product', 'background', 'ui'] as const)[index]!, path: `assets/${id}.png`, prompt: id, status: 'generated' as const, sha256: 'hash' })) },
       template: 'cut-stack-dodge-v1',
       referenceLevelBehaviorTargets: [{
-        id: 'response-interval', measurementId: 'response-interval', kind: 'checkpoint-interval', unit: 'ms', fromCheckpointId: 'ready', toCheckpointId: 'interaction', subjectObjectId: null, relatedObjectId: null,
-        expectedRange: { min: 100, max: 120 }, acceptanceRange: { min: 50, max: 180 }, uncertainty: 30, coordinateSpace: 'screen-normalized', applicability: 'same natural tap', sourceFrameIds: ['frame-a', 'frame-b'], source: { path: 'artifacts/reference-level-reconstruction.json', sha256: 'a'.repeat(64) },
+        id: 'spacing-change', measurementId: 'spacing-change', kind: 'relative-distance', unit: 'normalized-distance', fromCheckpointId: 'ready', toCheckpointId: 'interaction', subjectObjectId: 'hero', relatedObjectId: 'target',
+        expectedRange: { min: 0.2, max: 0.3 }, acceptanceRange: { min: 0.1, max: 0.4 }, uncertainty: 0.05, coordinateSpace: 'screen-normalized', direction: 'approaching', applicability: 'same natural tap', sourceFrameIds: ['frame-a', 'frame-b'], source: { path: 'artifacts/reference-level-reconstruction.json', sha256: 'a'.repeat(64) },
       }],
       context: { runRoot: path.resolve(workspace, '../..'), outputPath: path.resolve(workspace, '../../logs/codex/BUILD.last-message.txt'), logDir: path.resolve(workspace, '../../logs/codex'), inputPaths: ['artifacts/reference-level-implementation-contract.json'], requiredArtifacts: ['artifacts/reference-level-implementation-contract.json'], stage: 'FULL_BUILD', sandbox: 'workspace-write' },
     });
@@ -259,8 +263,9 @@ describe('CodexAccountProvider', () => {
     expect(prompt).not.toContain('spawnCustomer');
     expect(prompt).not.toContain('completeOrder');
     expect(prompt).not.toContain('upgradeStation');
-    expect(prompt).toContain('response-interval');
+    expect(prompt).toContain('spacing-change');
     expect(prompt).toContain('acceptanceRange');
+    expect(prompt).toContain('approaching');
     expect(prompt).not.toContain('sourceFrameIds');
     expect(prompt).not.toContain('frame-a');
   });

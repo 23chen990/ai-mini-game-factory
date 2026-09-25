@@ -89,11 +89,16 @@ async function performNaturalInput(page: Page, action: ReferenceLevelImplementat
 }
 
 function addSnapshot(target: ReferenceLevelRuntimeTrace['checkpoints'], value: RuntimeSnapshot) {
-  const checkpoint = { sourceCheckpointId: value.checkpointId, ...(Number.isFinite(value.capturedAtMs) ? { capturedAtMs: value.capturedAtMs } : {}), runtimeBinding: value.runtimeBinding, phase: value.phase, objectStates: value.objectStates, observedRelationIds: value.observedRelationIds, cameraMode: value.cameraMode, visibleFeedbackIds: value.visibleFeedbackIds };
+  const prior = target.at(-1);
+  const sampleGapMs = prior?.capturedAtMs !== undefined && Number.isFinite(prior.capturedAtMs) && Number.isFinite(value.capturedAtMs)
+    ? Math.max(0, value.capturedAtMs - prior.capturedAtMs)
+    : undefined;
+  const checkpoint = { sourceCheckpointId: value.checkpointId, ...(Number.isFinite(value.capturedAtMs) ? { capturedAtMs: value.capturedAtMs } : {}), ...(sampleGapMs === undefined ? {} : { sampleGapMs }), runtimeBinding: value.runtimeBinding, phase: value.phase, objectStates: value.objectStates, observedRelationIds: value.observedRelationIds, cameraMode: value.cameraMode, visibleFeedbackIds: value.visibleFeedbackIds };
   // Keep every sampled checkpoint. The timestamp is measurement evidence; a
   // state-only dedupe here can erase the later occurrence needed for A→C or
   // repeated-action intervals.
   target.push(checkpoint);
+  return checkpoint;
 }
 
 function snapshotStateSignature(value: RuntimeSnapshot): string {
@@ -142,8 +147,13 @@ export function measureRuntimeBehaviors(contract: ReferenceLevelImplementationCo
     if (target.kind === 'checkpoint-interval') {
       const delta = to.capturedAtMs - from.capturedAtMs;
       if (delta <= 0 || target.unit !== 'ms') return { ...base, status: 'INSUFFICIENT', basis: '候选状态时间戳不递增，或量测单位与 checkpoint interval 不一致。' };
-      const uncertainty = 50;
-      return { ...base, status: 'MEASURED', actualRange: { min: Math.max(0, delta - uncertainty), max: delta + uncertainty }, basis: `浏览器 performance.now() 的自然输入状态差，轮询分辨率约 ${uncertainty}ms。` };
+      const adjacentGaps = checkpoints.map((checkpoint, index) => checkpoint.sampleGapMs ?? (index > 0 && checkpoint.capturedAtMs !== undefined && checkpoints[index - 1]?.capturedAtMs !== undefined ? Math.max(0, checkpoint.capturedAtMs - checkpoints[index - 1]!.capturedAtMs!) : undefined)).filter((gap): gap is number => gap !== undefined && Number.isFinite(gap));
+      const fallbackGap = adjacentGaps.length > 0 ? Math.max(...adjacentGaps) : undefined;
+      const fromGap = from.sampleGapMs ?? fallbackGap;
+      const toGap = to.sampleGapMs ?? fallbackGap;
+      if (fromGap === undefined || toGap === undefined) return { ...base, status: 'INSUFFICIENT', basis: '候选轨迹没有可核对的实际采样空档，无法支持该时间精度。' };
+      const uncertainty = Math.max(1, fromGap, toGap) + (from.captureDelayMs ?? 0) + (to.captureDelayMs ?? 0);
+      return { ...base, status: 'MEASURED', actualRange: { min: Math.max(0, delta - uncertainty), max: delta + uncertainty }, basis: `浏览器 performance.now() 的自然输入状态差；实际采样空档与截图等待合计不确定性 ${uncertainty}ms。` };
     }
     if (target.unit !== 'normalized-distance' || target.coordinateSpace !== 'screen-normalized') return { ...base, status: 'INSUFFICIENT', basis: '候选运行缺少可比的 screen-normalized 相对空间量测。' };
     const fromSubject = target.subjectObjectId ? from.objectStates.find((object) => object.semanticId === target.subjectObjectId) : undefined;
@@ -210,7 +220,11 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
     checkpointScreenshots.add(value.checkpointId);
     const checkpointSlug = value.checkpointId.replaceAll(/[^a-z0-9_-]+/giu, '-');
     const checkpointPath = `screenshots/reference-level/${slug}-${checkpointSlug}.png`;
+    const captureStartedAt = Date.now();
     await page.screenshot({ path: path.join(input.runRoot, checkpointPath), fullPage: true });
+    const captureDelayMs = Math.max(0, Date.now() - captureStartedAt);
+    const captured = [...checkpoints].reverse().find((checkpoint) => checkpoint.sourceCheckpointId === value.checkpointId && checkpoint.capturedAtMs === value.capturedAtMs);
+    if (captured) captured.captureDelayMs = captureDelayMs;
     screenshots.push({ path: checkpointPath, sha256: await sha256File(path.join(input.runRoot, checkpointPath)) });
   };
   try {

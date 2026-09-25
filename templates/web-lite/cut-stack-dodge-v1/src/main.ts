@@ -307,6 +307,7 @@ function getSnapshot() {
         placement: placement({ ...object, x: object.x - cameraX }, object.role),
         boundsNormalized: normalizedVisibleBounds(object, cameraX),
         coordinateSpace: 'screen-normalized',
+        ...(object.role === 'cuttable' ? { renderColor: objectRenderColor(object) } : {}),
       })),
       {
         semanticId: 'replay-control',
@@ -394,6 +395,11 @@ function roundedRect(x: number, y: number, width: number, height: number, radius
   context.roundRect(x, y, width, height, radius);
 }
 
+function objectRenderColor(object: CourseObjectState): string {
+  const palette = config.palette.length > 1 ? config.palette.slice(1) : ['#ffb38a', '#7ec8ff', '#ffd36e', '#a7d8bc'];
+  return palette[Math.abs(object.id.length) % palette.length] ?? '#ffb38a';
+}
+
 function drawObject(object: CourseObjectState, cameraX: number): void {
   if (object.lifecycle === 'settled') return;
   const x = object.x - cameraX;
@@ -449,8 +455,7 @@ function drawObject(object: CourseObjectState, cameraX: number): void {
     return;
   }
 
-  const palette = ['#ffb38a', '#7ec8ff', '#ffd36e', '#a7d8bc'];
-  const color = palette[Math.abs(object.id.length) % palette.length] ?? '#ffb38a';
+  const color = objectRenderColor(object);
   context.save();
   context.shadowColor = color;
   context.shadowBlur = object.lifecycle === 'falling' ? 22 : 10;

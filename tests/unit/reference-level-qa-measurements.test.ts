@@ -13,15 +13,23 @@ const contract = {
 } as unknown as ReferenceLevelImplementationContract;
 
 const checkpoints = [
-  { sourceCheckpointId: 'ready', capturedAtMs: 100, phase: 'ready', objectStates: [], observedRelationIds: [], cameraMode: 'static', visibleFeedbackIds: [] },
-  { sourceCheckpointId: 'input', capturedAtMs: 200, phase: 'input', objectStates: [], observedRelationIds: [], cameraMode: 'static', visibleFeedbackIds: [] },
-  { sourceCheckpointId: 'interaction', capturedAtMs: 300, phase: 'interaction', objectStates: [], observedRelationIds: [], cameraMode: 'static', visibleFeedbackIds: [] },
+  { sourceCheckpointId: 'ready', capturedAtMs: 100, sampleGapMs: 100, phase: 'ready', objectStates: [], observedRelationIds: [], cameraMode: 'static', visibleFeedbackIds: [] },
+  { sourceCheckpointId: 'input', capturedAtMs: 200, sampleGapMs: 100, phase: 'input', objectStates: [], observedRelationIds: [], cameraMode: 'static', visibleFeedbackIds: [] },
+  { sourceCheckpointId: 'interaction', capturedAtMs: 300, sampleGapMs: 100, phase: 'interaction', objectStates: [], observedRelationIds: [], cameraMode: 'static', visibleFeedbackIds: [] },
 ] as unknown as ReferenceLevelRuntimeTrace['checkpoints'];
 
 describe('reference-level QA measurement timing', () => {
   it('uses the declared A→C checkpoint interval across multiple actions', () => {
     const result = measureRuntimeBehaviors(contract, checkpoints, [{ path: 'logs/trace.json', sha256: 'b'.repeat(64) }], { width: 390, height: 844 });
 
-    expect(result?.[0]).toMatchObject({ status: 'MEASURED', actualRange: { min: 150, max: 250 } });
+    expect(result?.[0]).toMatchObject({ status: 'MEASURED', actualRange: { min: 100, max: 300 } });
+    expect(result?.[0]?.basis).toMatch(/采样空档/);
+  });
+
+  it('widens uncertainty for delayed observation and screenshot capture without changing the measured event', () => {
+    const delayed = checkpoints.map((checkpoint) => ({ ...checkpoint, captureDelayMs: checkpoint.sourceCheckpointId === 'interaction' ? 120 : 0 }));
+    const result = measureRuntimeBehaviors(contract, delayed, [{ path: 'logs/trace.json', sha256: 'b'.repeat(64) }], { width: 390, height: 844 });
+
+    expect(result?.[0]).toMatchObject({ status: 'MEASURED', actualRange: { min: 0, max: 420 } });
   });
 });
