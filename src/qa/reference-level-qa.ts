@@ -29,6 +29,8 @@ export type ReferenceLevelQaInput = {
   runtimeData: ReferenceLevelRuntimeData;
   buildHash: string;
   viewport: { width: number; height: number; label: string };
+  /** Delay only the QA-side observation call; never blocks the game page. */
+  observationDelayMs?: number;
 };
 
 export type ReferenceLevelQaRunner = (input: ReferenceLevelQaInput) => Promise<{
@@ -54,7 +56,8 @@ function parseSnapshot(value: unknown): RuntimeSnapshot {
   return { checkpointId: parsed.sourceCheckpointId, capturedAtMs: parsed.capturedAtMs ?? Number.NaN, runtimeBinding: parsed.runtimeBinding, phase: parsed.phase, objectStates: parsed.objectStates, observedRelationIds: parsed.observedRelationIds, cameraMode: parsed.cameraMode, visibleFeedbackIds: parsed.visibleFeedbackIds, ...(raw.terminal && typeof raw.terminal === 'object' ? { terminal: raw.terminal as RuntimeSnapshot['terminal'] } : {}) };
 }
 
-async function snapshot(page: Page) {
+async function snapshot(page: Page, observationDelayMs = 0) {
+  if (observationDelayMs > 0) await new Promise((resolve) => setTimeout(resolve, observationDelayMs));
   return parseSnapshot(await page.evaluate(() => {
     const api = (window as unknown as { __REFERENCE_LEVEL_TEST__?: { getSnapshot(): unknown } }).__REFERENCE_LEVEL_TEST__;
     if (!api || typeof api.getSnapshot !== 'function') throw new Error('window.__REFERENCE_LEVEL_TEST__.getSnapshot is unavailable');
@@ -93,7 +96,10 @@ function addSnapshot(target: ReferenceLevelRuntimeTrace['checkpoints'], value: R
   const sampleGapMs = prior?.capturedAtMs !== undefined && Number.isFinite(prior.capturedAtMs) && Number.isFinite(value.capturedAtMs)
     ? Math.max(0, value.capturedAtMs - prior.capturedAtMs)
     : undefined;
-  const checkpoint = { sourceCheckpointId: value.checkpointId, ...(Number.isFinite(value.capturedAtMs) ? { capturedAtMs: value.capturedAtMs } : {}), ...(sampleGapMs === undefined ? {} : { sampleGapMs }), runtimeBinding: value.runtimeBinding, phase: value.phase, objectStates: value.objectStates, observedRelationIds: value.observedRelationIds, cameraMode: value.cameraMode, visibleFeedbackIds: value.visibleFeedbackIds };
+  const observationWindow = prior?.capturedAtMs !== undefined && Number.isFinite(prior.capturedAtMs) && Number.isFinite(value.capturedAtMs)
+    ? { startMs: prior.capturedAtMs, endMs: value.capturedAtMs }
+    : undefined;
+  const checkpoint = { sourceCheckpointId: value.checkpointId, ...(Number.isFinite(value.capturedAtMs) ? { capturedAtMs: value.capturedAtMs } : {}), ...(sampleGapMs === undefined ? {} : { sampleGapMs }), ...(observationWindow === undefined ? {} : { observationWindow }), runtimeBinding: value.runtimeBinding, phase: value.phase, objectStates: value.objectStates, observedRelationIds: value.observedRelationIds, cameraMode: value.cameraMode, visibleFeedbackIds: value.visibleFeedbackIds };
   // Keep every sampled checkpoint. The timestamp is measurement evidence; a
   // state-only dedupe here can erase the later occurrence needed for A→C or
   // repeated-action intervals.
@@ -110,15 +116,15 @@ export function runtimeSnapshotStateChanged(before: RuntimeSnapshot, after: Runt
   return snapshotStateSignature(before) !== snapshotStateSignature(after);
 }
 
-async function pollSnapshots(page: Page, checkpoints: ReferenceLevelRuntimeTrace['checkpoints'], durationMs: number, expectedCheckpointId?: string, onSnapshot?: (snapshot: RuntimeSnapshot) => Promise<void>) {
+async function pollSnapshots(page: Page, checkpoints: ReferenceLevelRuntimeTrace['checkpoints'], durationMs: number, expectedCheckpointId?: string, onSnapshot?: (snapshot: RuntimeSnapshot) => Promise<void>, observationDelayMs = 0) {
   const deadline = Date.now() + durationMs;
-  let latest = await snapshot(page);
+  let latest = await snapshot(page, observationDelayMs);
   addSnapshot(checkpoints, latest);
   await onSnapshot?.(latest);
   if (expectedCheckpointId && latest.checkpointId === expectedCheckpointId) return latest;
   while (Date.now() < deadline) {
     await page.waitForTimeout(50);
-    latest = await snapshot(page);
+    latest = await snapshot(page, observationDelayMs);
     addSnapshot(checkpoints, latest);
     await onSnapshot?.(latest);
     if (expectedCheckpointId && latest.checkpointId === expectedCheckpointId) return latest;
@@ -135,25 +141,26 @@ function runtimeMeasurementEvidence(evidence: Array<{ path: string; sha256: stri
 export function measureRuntimeBehaviors(contract: ReferenceLevelImplementationContract, checkpoints: ReferenceLevelRuntimeTrace['checkpoints'], evidence: Array<{ path: string; sha256: string }>, viewport: { width: number; height: number }): RuntimeMeasurement[] | undefined {
   if (!contract.behaviorMeasurements || contract.behaviorMeasurements.length === 0) return undefined;
   return contract.behaviorMeasurements.map((target): RuntimeMeasurement => {
-    const fromIndex = checkpoints.findIndex((checkpoint) => checkpoint.sourceCheckpointId === target.fromCheckpointId && checkpoint.capturedAtMs !== undefined);
+    const fromIndex = checkpoints.findIndex((checkpoint) => checkpoint.sourceCheckpointId === target.fromCheckpointId && checkpoint.observationWindow !== undefined);
     const from = fromIndex >= 0 ? checkpoints[fromIndex] : undefined;
-    const to = checkpoints.find((checkpoint, index) => index > fromIndex && checkpoint.sourceCheckpointId === target.toCheckpointId && checkpoint.capturedAtMs !== undefined)
-      ?? checkpoints.find((checkpoint) => checkpoint.sourceCheckpointId === target.toCheckpointId && checkpoint.capturedAtMs !== undefined);
+    const to = checkpoints.find((checkpoint, index) => index > fromIndex && checkpoint.sourceCheckpointId === target.toCheckpointId && checkpoint.observationWindow !== undefined)
+      ?? checkpoints.find((checkpoint) => checkpoint.sourceCheckpointId === target.toCheckpointId && checkpoint.observationWindow !== undefined);
     const sourceCheckpointIds = [...new Set([target.fromCheckpointId, target.toCheckpointId].filter(Boolean))];
     const base = { measurementId: target.measurementId, unit: target.unit, coordinateSpace: target.kind === 'relative-distance' ? target.coordinateSpace : 'screen-normalized' as const, sourceCheckpointIds, subjectObjectId: target.subjectObjectId, relatedObjectId: target.relatedObjectId, evidence: runtimeMeasurementEvidence(evidence) };
     if (!from || !to || from.capturedAtMs === undefined || to.capturedAtMs === undefined || !Number.isFinite(from.capturedAtMs) || !Number.isFinite(to.capturedAtMs)) {
-      return { ...base, status: 'INSUFFICIENT', basis: '候选浏览器轨迹没有为测量所需的两个自然输入状态提供实际采样时间。' };
+      return { ...base, status: 'INSUFFICIENT', basis: '候选浏览器轨迹没有为测量所需的两个自然输入状态提供实际采样时间和端点观察窗口。' };
     }
     if (target.kind === 'checkpoint-interval') {
-      const delta = to.capturedAtMs - from.capturedAtMs;
-      if (delta <= 0 || target.unit !== 'ms') return { ...base, status: 'INSUFFICIENT', basis: '候选状态时间戳不递增，或量测单位与 checkpoint interval 不一致。' };
-      const adjacentGaps = checkpoints.map((checkpoint, index) => checkpoint.sampleGapMs ?? (index > 0 && checkpoint.capturedAtMs !== undefined && checkpoints[index - 1]?.capturedAtMs !== undefined ? Math.max(0, checkpoint.capturedAtMs - checkpoints[index - 1]!.capturedAtMs!) : undefined)).filter((gap): gap is number => gap !== undefined && Number.isFinite(gap));
-      const fallbackGap = adjacentGaps.length > 0 ? Math.max(...adjacentGaps) : undefined;
-      const fromGap = from.sampleGapMs ?? fallbackGap;
-      const toGap = to.sampleGapMs ?? fallbackGap;
-      if (fromGap === undefined || toGap === undefined) return { ...base, status: 'INSUFFICIENT', basis: '候选轨迹没有可核对的实际采样空档，无法支持该时间精度。' };
-      const uncertainty = Math.max(1, fromGap, toGap) + (from.captureDelayMs ?? 0) + (to.captureDelayMs ?? 0);
-      return { ...base, status: 'MEASURED', actualRange: { min: Math.max(0, delta - uncertainty), max: delta + uncertainty }, basis: `浏览器 performance.now() 的自然输入状态差；实际采样空档与截图等待合计不确定性 ${uncertainty}ms。` };
+      if (target.unit !== 'ms') return { ...base, status: 'INSUFFICIENT', basis: '量测单位与 checkpoint interval 不一致。' };
+      const fromWindow = from.observationWindow;
+      const toWindow = to.observationWindow;
+      if (!fromWindow || !toWindow || fromWindow.endMs < fromWindow.startMs || toWindow.endMs < toWindow.startMs) {
+        return { ...base, status: 'INSUFFICIENT', basis: '候选轨迹缺少端点观察窗口，无法确定事件发生的时间边界。' };
+      }
+      const min = toWindow.startMs - fromWindow.endMs;
+      const max = toWindow.endMs - fromWindow.startMs;
+      if (max <= 0 || min < 0) return { ...base, status: 'INSUFFICIENT', basis: '端点观察窗口没有形成递增的 checkpoint interval。' };
+      return { ...base, status: 'MEASURED', actualRange: { min, max }, basis: `端点观察窗口：${fromWindow.startMs}-${fromWindow.endMs}ms → ${toWindow.startMs}-${toWindow.endMs}ms；截图等待仅作诊断，不重复计入时间不确定性。` };
     }
     if (target.unit !== 'normalized-distance' || target.coordinateSpace !== 'screen-normalized') return { ...base, status: 'INSUFFICIENT', basis: '候选运行缺少可比的 screen-normalized 相对空间量测。' };
     const fromSubject = target.subjectObjectId ? from.objectStates.find((object) => object.semanticId === target.subjectObjectId) : undefined;
@@ -239,7 +246,10 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
       const api = (window as unknown as { __REFERENCE_LEVEL_TEST__?: Record<string, unknown> }).__REFERENCE_LEVEL_TEST__;
       return Boolean(api && typeof api.getSnapshot === 'function' && typeof api.getNaturalInputTarget === 'function' && Object.keys(api).every((key) => key === 'getSnapshot' || key === 'getNaturalInputTarget'));
     }, undefined, { timeout: 10_000 });
-    latest = await snapshot(page);
+    const observationDelayMs = input.observationDelayMs ?? 0;
+    const firstObservation = await snapshot(page, observationDelayMs);
+    addSnapshot(checkpoints, firstObservation);
+    latest = await snapshot(page, observationDelayMs);
     addSnapshot(checkpoints, latest);
     await captureCheckpoint(latest);
     const orderedActions = [...contract.interactionSequence].sort((left, right) => left.order - right.order);
@@ -249,7 +259,7 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
       const before = latest;
       const startedAtMs = await page.evaluate(() => performance.now());
       await performNaturalInput(page, action, input.viewport);
-      latest = await pollSnapshots(page, checkpoints, action.responseClass === 'immediate' ? 1_000 : action.responseClass === 'short' ? 3_000 : 8_000, action.toCheckpointId, captureCheckpoint);
+      latest = await pollSnapshots(page, checkpoints, action.responseClass === 'immediate' ? 1_000 : action.responseClass === 'short' ? 3_000 : 8_000, action.toCheckpointId, captureCheckpoint, observationDelayMs);
       terminalObservation = latest.terminal?.reached ? latest.terminal : terminalObservation;
       actions.push({ order: action.order, actionId: action.actionId, kind: action.kind, targetObjectId: action.targetObjectId, naturalInput: true, stateChanged: runtimeSnapshotStateChanged(before, latest), observedCheckpointId: latest.checkpointId, startedAtMs });
     }
@@ -263,19 +273,19 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
       const before = latest;
       const startedAtMs = await page.evaluate(() => performance.now());
       await performNaturalInput(page, continuation, input.viewport);
-      latest = await pollSnapshots(page, checkpoints, 900, contract.terminal?.checkpointId, captureCheckpoint);
+      latest = await pollSnapshots(page, checkpoints, 900, contract.terminal?.checkpointId, captureCheckpoint, observationDelayMs);
       terminalObservation = latest.terminal?.reached ? latest.terminal : terminalObservation;
       actions.push({ order: actions.length + 1, actionId: continuation.actionId, kind: continuation.kind, targetObjectId: continuation.targetObjectId, naturalInput: true, stateChanged: runtimeSnapshotStateChanged(before, latest), observedCheckpointId: latest.checkpointId, startedAtMs });
     }
-    latest = await pollSnapshots(page, checkpoints, 1_000, contract.terminal?.checkpointId, captureCheckpoint);
+    latest = await pollSnapshots(page, checkpoints, 1_000, contract.terminal?.checkpointId, captureCheckpoint, observationDelayMs);
     terminalObservation = latest.terminal?.reached ? latest.terminal : terminalObservation;
     const terminalPath = `screenshots/reference-level/${slug}-terminal-final.png`;
     await page.screenshot({ path: path.join(input.runRoot, terminalPath), fullPage: true });
     screenshots.push({ path: terminalPath, sha256: await sha256File(path.join(input.runRoot, terminalPath)) });
     if (!contract.replay) throw new Error('reference level contract has no replay action');
     await performNaturalInput(page, { order: 1, actionId: contract.replay.actionId, kind: 'tap', targetObjectId: contract.replay.targetObjectId, fromCheckpointId: contract.replay.checkpointId, toCheckpointId: contract.replay.returnsToCheckpointId, responseClass: 'short', expectedStateChange: 'replay returns to ready' }, input.viewport);
-    latest = await pollSnapshots(page, checkpoints, 120, contract.replay.checkpointId, captureCheckpoint);
-    latest = await pollSnapshots(page, checkpoints, 1_000, contract.replay.returnsToCheckpointId, captureCheckpoint);
+    latest = await pollSnapshots(page, checkpoints, 120, contract.replay.checkpointId, captureCheckpoint, observationDelayMs);
+    latest = await pollSnapshots(page, checkpoints, 1_000, contract.replay.returnsToCheckpointId, captureCheckpoint, observationDelayMs);
     replayReturned = latest.checkpointId;
     const replayPath = `screenshots/reference-level/${slug}-replay-final.png`;
     await page.screenshot({ path: path.join(input.runRoot, replayPath), fullPage: true });

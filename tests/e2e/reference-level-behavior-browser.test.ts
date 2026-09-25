@@ -73,20 +73,20 @@ async function fixture(variant: 'baseline' | 'slow' | 'probe-delay' | 'far' | 'r
   await mkdir(path.dirname(dataFile), { recursive: true });
   await writeFile(dataFile, `${JSON.stringify(runtimeData)}\n`);
   const delay = variant === 'slow' ? 700 : 0;
-  const probeDelay = variant === 'probe-delay' ? 180 : 0;
+  const observationDelayMs = variant === 'probe-delay' ? 180 : 0;
   const reverse = variant === 'reverse';
   const unchanged = variant === 'unchanged';
   const interactionX = reverse ? 0.9 : variant === 'far' ? 0.85 : 0.45;
   const targetX = reverse ? 0.15 : 0.6;
   const includeBounds = variant !== 'missing-bounds';
   const html = `<!doctype html><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font:20px sans-serif;margin:0;padding:24px}button{font:inherit;padding:16px;margin:12px}</style><button id="advance">Advance</button><button id="replay" hidden>Replay</button><p id="state">ready</p><script>
-    const data=${JSON.stringify(runtimeData)}; const delay=${delay}; const probeDelay=${probeDelay}; const interactionX=${interactionX}; const targetX=${targetX}; const reverse=${reverse}; const includeBounds=${includeBounds}; const unchanged=${unchanged}; let phase='ready'; let clicks=0;
+    const data=${JSON.stringify(runtimeData)}; const delay=${delay}; const interactionX=${interactionX}; const targetX=${targetX}; const reverse=${reverse}; const includeBounds=${includeBounds}; const unchanged=${unchanged}; let phase='ready'; let clicks=0;
     const advance=document.querySelector('#advance'), replay=document.querySelector('#replay'), label=document.querySelector('#state');
     function render(){ advance.hidden=phase==='terminal'||phase==='replay'; replay.hidden=phase!=='terminal'; label.textContent=phase; }
     advance.onclick=()=>{ if(unchanged) return; clicks++; if(clicks===1){ setTimeout(()=>{phase='interaction';render()},delay); } else { phase='terminal';render(); } };
     replay.onclick=()=>{ clicks=0; phase='replay'; render(); setTimeout(()=>{phase='ready';render()},20); };
     function stateObject(id,role,lifecycle,visible,bounds){ return {semanticId:id,role,lifecycle,visible,placement:{horizontalBand:'center',verticalBand:'middle',widthBand:'small',heightBand:'small',orientationBand:'horizontal'},...(includeBounds&&bounds?{boundsNormalized:bounds,coordinateSpace:'screen-normalized'}:{})}; }
-    function getSnapshot(){ if(phase==='interaction'&&probeDelay){ const until=performance.now()+probeDelay; while(performance.now()<until){} } const terminal=phase==='terminal'; const replayPhase=phase==='replay'; const heroX=phase==='interaction'?interactionX:reverse?0.55:0.1; return {checkpointId:phase,phase, runtimeBinding:{runtimeDataHash:data.runtimeDataHash,contractHash:data.sourceContract.sha256,resolutionHash:data.production.resolutionHash,dataPath:'src/generated/reference-level.json'},objectStates:[stateObject('hero','player',terminal?'terminal':phase==='ready'||replayPhase?'ready':'moving',true,{x:heroX,y:0.4,width:0.1,height:0.1}),stateObject('target','cuttable',phase==='interaction'?'contact':terminal||replayPhase?'resolved':'ready',!terminal&&!replayPhase,{x:targetX,y:0.4,width:0.1,height:0.1}),stateObject('platform','support',terminal||replayPhase?'settled':'ready',true,{x:0.35,y:0.7,width:0.3,height:0.1}),stateObject('replay-control','replay-control',replayPhase?'resolved':terminal?'ready':'hidden',terminal||replayPhase,{x:0.4,y:0.8,width:0.2,height:0.1})],observedRelationIds:terminal||replayPhase?[]:['standing'],cameraMode:'static',visibleFeedbackIds:['feedback-'+phase],terminal:{reached:terminal,result:terminal?'completed':'not-observed',causeVisible:terminal,settlementVisible:terminal}} }
+    function getSnapshot(){ const terminal=phase==='terminal'; const replayPhase=phase==='replay'; const heroX=phase==='interaction'?interactionX:reverse?0.55:0.1; return {checkpointId:phase,phase, runtimeBinding:{runtimeDataHash:data.runtimeDataHash,contractHash:data.sourceContract.sha256,resolutionHash:data.production.resolutionHash,dataPath:'src/generated/reference-level.json'},objectStates:[stateObject('hero','player',terminal?'terminal':phase==='ready'||replayPhase?'ready':'moving',true,{x:heroX,y:0.4,width:0.1,height:0.1}),stateObject('target','cuttable',phase==='interaction'?'contact':terminal||replayPhase?'resolved':'ready',!terminal&&!replayPhase,{x:targetX,y:0.4,width:0.1,height:0.1}),stateObject('platform','support',terminal||replayPhase?'settled':'ready',true,{x:0.35,y:0.7,width:0.3,height:0.1}),stateObject('replay-control','replay-control',replayPhase?'resolved':terminal?'ready':'hidden',terminal||replayPhase,{x:0.4,y:0.8,width:0.2,height:0.1})],observedRelationIds:terminal||replayPhase?[]:['standing'],cameraMode:'static',visibleFeedbackIds:['feedback-'+phase],terminal:{reached:terminal,result:terminal?'completed':'not-observed',causeVisible:terminal,settlementVisible:terminal}} }
     function getNaturalInputTarget(id){ const node=/replay/iu.test(id)?replay:advance; const r=node.getBoundingClientRect(); return {x:(r.left+r.width/2)/innerWidth,y:(r.top+r.height/2)/innerHeight}; }
     window.__REFERENCE_LEVEL_TEST__={getSnapshot,getNaturalInputTarget}; render();
   </script>`;
@@ -101,7 +101,7 @@ async function fixture(variant: 'baseline' | 'slow' | 'probe-delay' | 'far' | 'r
       return { url: `http://127.0.0.1:${address.port}/`, stop: () => new Promise<void>((resolve, reject) => server!.close((error) => error ? reject(error) : resolve())) };
     },
   };
-  return { runtime, runRoot, workspace: identity.workspace, contract, runtimeData, buildHash: hash(`${variant}-candidate`), viewport: { width: 390, height: 844, label: 'phone' } };
+  return { runtime, runRoot, workspace: identity.workspace, contract, runtimeData, buildHash: hash(`${variant}-candidate`), viewport: { width: 390, height: 844, label: 'phone' }, observationDelayMs };
 }
 
 describe('R1 natural browser behavior comparison', () => {

@@ -214,8 +214,8 @@ describe('R1 time measurement direction pipeline', () => {
     if (!target) return;
     expect(target).not.toHaveProperty('direction');
     const candidateMeasurements = measureRuntimeBehaviors(contract, [
-      { sourceCheckpointId: 'tap-1', capturedAtMs: 100, sampleGapMs: 20, phase: 'input', objectStates: [], observedRelationIds: [], cameraMode: 'follow', visibleFeedbackIds: [] },
-      { sourceCheckpointId: 'cut-1', capturedAtMs: 700, sampleGapMs: 20, phase: 'interaction', objectStates: [], observedRelationIds: [], cameraMode: 'follow', visibleFeedbackIds: [] },
+      { sourceCheckpointId: 'tap-1', capturedAtMs: 100, sampleGapMs: 20, observationWindow: { startMs: 80, endMs: 100 }, phase: 'input', objectStates: [], observedRelationIds: [], cameraMode: 'follow', visibleFeedbackIds: [] },
+      { sourceCheckpointId: 'cut-1', capturedAtMs: 700, sampleGapMs: 20, observationWindow: { startMs: 680, endMs: 700 }, phase: 'interaction', objectStates: [], observedRelationIds: [], cameraMode: 'follow', visibleFeedbackIds: [] },
     ] as any, [{ path: 'evidence/trace.json', sha256: hash('trace') }], { width: 390, height: 844 });
     expect(candidateMeasurements?.[0]).toMatchObject({ measurementId: target.measurementId, status: 'MEASURED', actualRange: { min: 580, max: 620 } });
     expect(candidateMeasurements?.[0]).not.toHaveProperty('direction');

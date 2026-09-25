@@ -393,6 +393,10 @@ export const ReferenceLevelRuntimeTraceSchema = z.object({
     runtimeBinding: ReferenceLevelRuntimeBindingSchema.optional(),
     capturedAtMs: z.number().nonnegative().optional(),
     sampleGapMs: z.number().nonnegative().optional(),
+    // The two observations that bound when this checkpoint could have
+    // occurred. Legacy traces may omit it; measurement must then be
+    // explicitly INSUFFICIENT instead of borrowing a distant sample gap.
+    observationWindow: z.object({ startMs: z.number().nonnegative(), endMs: z.number().nonnegative() }).strict().optional(),
     captureDelayMs: z.number().nonnegative().optional(),
     phase: ReferenceLevelPhaseSchema,
     objectStates: z.array(z.object({ semanticId: Text, role: ReferenceObjectRoleSchema, lifecycle: ReferenceObjectLifecycleSchema, visible: z.boolean(), placement: PlacementSignatureSchema.optional(), boundsNormalized: NormalizedBounds.optional(), coordinateSpace: z.enum(['screen-normalized', 'world-relative']).optional(), renderColor: z.string().regex(/^#[0-9a-f]{6}$/iu).optional() }).strict()),

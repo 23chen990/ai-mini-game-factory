@@ -56,6 +56,46 @@
 - 已核对 `runs/20260917065307-974ee21f` 与 `runs/20260919045632-6b7e8c7a`：已有录屏/接触表资料，但研究输出明确阻塞于 `recording-level:non-authoritative-provider:mock`，不得升级为真实竞品还原通过。
 - 本轮未让产品经理补填坐标、时间或技术规格，也未用自制样例替代真实参考。真实最小样本仍为 `BLOCKED`，最小缺口是使用权威研究输出从已验证录屏提取至少两项 source-bound 行为量测，并保留 frame/checkpoint provenance，然后才可进入 Builder→自然 QA→差异定位链路。
 
+## R1-NEXT-01：时间观测、VERIFY-02 落地与信息缺口
+
+本节覆盖提交 `1c5b646`（VERIFY-02 测试落地）及其子提交中的时间实现。此前章节中关于“固定使用采样空档和截图等待”的描述是历史记录；当前实现已改为端点观察窗口，截图耗时仍只作诊断字段。
+
+### VERIFY-02 落地与浏览器失败证据
+
+- `tests/unit/reference-direction-pipeline.test.ts` 的 `extractBuilderBehaviorTargets` 从 `R1 behavior targets:` 后解析完整 JSON 数组，再按 ID 校验：`input-to-contact` 恰有一个、`kind=checkpoint-interval` 且无自有 `direction`；`blade-fruit-spacing` 恰有一个、`kind=relative-distance`、`direction=approaching`。向时间目标添加方向、删除时间目标两种变异均被持久回归拒绝。
+- `tests/e2e/reference-level-behavior-browser.test.ts` 现在逐项确认真实 Chromium 指针输入、候选 `separating`、参考 `approaching`、距离结果 `DIFFERENT` 和 `passed=false`；`tests/unit/reference-level-measurements.test.ts` 固定验证时间 `INSUFFICIENT` + 距离 `DIFFERENT` 保留两项明细且总状态为 `INSUFFICIENT`。
+- 原始失败日志已保留为 `/tmp/r1-next-01-evidence/original-r1-fix-01a-full-test.log`，摘要为同目录 `original-failure-summary.json`：时间 `response-interval` 为 `INSUFFICIENT`（实际 `[0,269.3999999994412]`，期望 `[0,260]`），距离 `hero-target-spacing-change` 为 `DIFFERENT`（候选 `separating`、参考 `approaching`），总状态 `INSUFFICIENT`、`passed=false`。孤立重跑未复现，记录为“未复现”，不是“原始失败不存在”。
+
+### 时间修复与反例证据
+
+`src/qa/reference-level-qa.ts:addSnapshot` 为每个有前一实际观察的 checkpoint 保存 `observationWindow: {startMs,endMs}`；`measureRuntimeBehaviors` 只用声明的起点到终点窗口计算 `[to.start-from.end, to.end-from.start]`。起点没有窗口时返回 `INSUFFICIENT`，不再从整条轨迹借用最大 gap；`captureDelayMs` 不会回写已经结束的端点区间。首次页面观察后立即再观察一次，为首个可测 checkpoint 提供真实前置观察依据。`src/schemas/reference-recording.ts:ReferenceLevelRuntimeTraceSchema` 的新字段为可选，旧 trace 仍可解析但缺证据时不伪造精度。
+
+失败反例先在旧实现上运行：四项时间单元测试均失败（旧结果分别为 `[300,900]`、`[300,900]`、`MEASURED`、`[0,1400]`）。修复后 `tests/unit/reference-level-qa-measurements.test.ts` 四项通过，覆盖：C 后晚样本不改变 A→C；无起点依据为 `INSUFFICIENT`；C 前等待进入相邻窗口而 C 后截图等待不扩大窗口；明确窗口仍可量测。`tests/e2e/reference-level-behavior-browser.test.ts` 使用同一页面和自然输入，`probe-delay` 通过 `ReferenceLevelQaInput.observationDelayMs` 延迟 QA 侧观察而不忙等页面主线程；基线仍 `CONFORMING`，纯观察延迟不变成 `DIFFERENT`，`slow` 真实延迟仍为 `DIFFERENT`。
+
+### cut-stack 视觉失败证据
+
+原始失败身份是 `tests/e2e/cut-stack-playwright-qa.test.ts > cut-stack-dodge natural runtime QA > does not use the mother palette as the rendered geometry identity`，断言 `report.passed` 期望 `true`、实际 `false`，具体 issue 为 `cut-stack-preview-runtime: visible primary cut/flip control has no geometry`。同一报告仍有 `cut-stack-mobile-affordance`、`cut-stack-rendered-falling-bounds`、自然失败、玩家可见失败原因、重试/完成/重玩/打包检查；原始日志中的观察边界约为 `{x:0.0741,y:0.2322,width:0.2991,height:0.1502}`，像素边界约为 `{x:0.078,y:0.1800,width:0.304,height:0.2005}`，对象包含 `cuttable-1/2/3` 与 `hazard-1`，生命周期为下落/接触失败分支，视口为 390×844。该单次失败与有诊断输出的重跑（`/tmp/r1-next-01-cut-stack-evidence/`，含 `qa-report.json`、`manifest.json`、screenshots、logs，源码版本 `757899832ab344b6a7829f1eb9ee028ad34fbce3`）不一致，分类为“尚无法判断”；未取得的颜色像素明细、异常栈和更细对象逐帧边界均明确缺失。没有修改几何检查、视觉阈值或视觉算法。
+
+### 高保真量化信息盘点
+
+| 信息项目 | Research 当前如何保存 | contract 如何投影 | Builder 实际收到什么 | runtime 是否有可调入口 | QA 实际检查什么 | 丢失／压缩／未测量位置 | 最小补齐建议 |
+|---|---|---|---|---|---|---|---|
+| 输入→反馈时间 | `src/schemas/reference-recording.ts:ReferenceBehaviorMeasurementSchema` 的 checkpoint interval、`observedRange/uncertainty/sourceFrameIds` | `deriveReferenceLevelImplementationContract` 投影为 expected/acceptance range | `src/providers/codex-account.ts:behaviorTargetInstruction` 收到 ID、区间、适用条件；原始时间戳不传 | `src/qa/reference-level-qa.ts:runReferenceLevelQa` 可采样窗口；实现可调 `observationDelayMs` 仅用于诊断 | `measureRuntimeBehaviors` 检查端点窗口和 `evaluateReferenceLevelRuntimeTrace` 的结果 | 已测区间被压缩为目标区间；反馈内部各事件的分段延迟未测 | 下一批保留 source-bound 的反馈事件序列和每段窗口，不扩大容差 |
+| 关键对象初始距离 | `ReferenceCheckpointSchema`/`objectStates` 可保存 bounds 与关系，但只有研究实际提供才算已测 | `placementRules` 是 coarse band；距离行为量测保留归一化范围和方向 | Builder 得到语义对象、placement band 和相对距离目标，不得得到来源坐标 | runtime `getSnapshot()` 可返回实时 normalized bounds | 目标对象相对中心距离、方向和坐标空间 | 原始坐标被策略性舍弃；没有研究量测时不能由坐标字段推断已测 | 只在 Research 有来源帧时补 `sourceViewport` 和距离窗口，继续隐藏原始坐标 |
+| 主角/目标尺寸、占屏比例 | `ReferenceCheckpointSchema` 的 `boundsNormalized` 可保存观察值 | `PlacementSignatureSchema` 仅投影 `widthBand/heightBand` | Builder 收到粗尺寸档位 | runtime 可返回实时 bounds | 仅在声明目标使用 bounds 时检查 | 已传粗档位；精确占屏比例未进入 contract，部分 QA 未检查 | 增加 source-bound extent band + viewport 的最小目标，避免填入猜测坐标 |
+| 运动轨迹与旋转 | checkpoint object lifecycle/placement 可保存离散状态，研究 schema 没有连续轨迹序列 | placement orientation band 与 checkpoint 顺序 | Builder 收到离散朝向/生命周期，未收到轨迹点 | runtime 快照能看到当前 bounds/placement，不能回放连续轨迹 | cut-stack 几何/生命周期检查，未量测完整轨迹和旋转曲线 | 已传离散档位；连续运动和旋转未测量 | 下一批只补 source-bound 的少量轨迹锚点与旋转区间 |
+| 镜头运动 | `ReferenceLevelReconstructionSchema.cameraSequence` 保存 checkpoint/mode/focus role | contract 传 camera sequence | Builder 收到相机阶段和焦点角色 | runtime 快照报告 `cameraMode` | QA 检查模式和可见对象 | 平移、缩放幅度及延迟未测 | 为已有 camera sequence 增加观察视口/幅度区间，保持语义而不传原始画面坐标 |
+| 接触后的反馈顺序 | `ReferenceCheckpointSchema.visibleFeedbackIds`、interaction/terminal/replay 序列 | checkpoint visibleFeedbackIds、action order、terminal/replay | Builder 收到语义 ID 和顺序 | runtime 快照返回 `visibleFeedbackIds`、terminal 状态 | QA 检查状态转换、可见反馈 ID、终态/重玩 | 事件间精确时间和并行关系未测；接受标准不检查每个视觉层级 | Research 只补事件顺序与相邻窗口，QA 增加逐项顺序断言 |
+| 失败→重玩时间 | terminal/replay checkpoint 与 interaction sequence | contract terminal/replay topology | Builder 收到失败原因、settlement 和 replay 返回点 | `runReferenceLevelQa` 走自然失败、终态和 replay | QA 检查自然重玩路径与返回 checkpoint | 失败到重玩按钮可用、点击到恢复的精确时间未测 | 补两个 source-bound 时间窗口并在 QA 中分别报告，不改重玩逻辑 |
+
+这些字段中，“已测但没传”主要是 Research 的精确时间/边界被 contract 设计压缩；“只传粗档位”是 placement/extent/orientation；“传到了但实现没有使用”目前没有证据可确认，不能以字段存在推断使用；“候选能实现但 QA 没检查”是连续轨迹、镜头幅度和反馈/重玩精确时间；Research 本来就没测到的是旋转曲线和事件间精确延迟；其余保持“当前无法确认”。提示中的“最大保真”与 `src/providers/codex-account.ts` 的“source coordinates/timestamps must not become Builder tuning”同时存在，实际含义是保留可验证的语义区间而舍弃原始坐标，不能把粗档位宣称为完整高保真量化。
+
+### 参考资料采集调用链盘点
+
+已确认的链路是：`factory.ts:383-406` 从已验证 provenance 选择录屏 → `src/core/reference-recording.ts:extractReferenceRecordingFrames/selectReferenceResearchMedia` 生成 run-bound frame manifest/contact sheets → `factory.ts:893-930` 组装 `ReferenceResearchAgent` 输入 → `src/providers/codex-account.ts` 或 `src/providers/real.ts` 执行研究 → `deriveReferenceLevelImplementationContract` 投影 → `runReferenceLevelQa` 对候选 preview 做自然浏览器 QA。已确认的是“录屏已在 run 中、抽帧并送入研究”的工厂路径。
+
+当前仓库没有可靠证据证明存在“参考 URL → 打开页面 → 操作 → 录屏 → 归档”的端到端自动采集调用链；`reference-evidence` 入口要求外部证据先由 `pnpm evidence:ingest` 绑定和人工 identity review。故 URL 打开、操作录制和归档部分标为“未确认”，没有用关键词缺失推断绝对不存在。本批未访问未授权账号、未调用真实 Research/Builder/Fixer、未读取或修改真实 run。
+
 ## R1-FIX-01 时间量测方向修复
 
 - 研究 structured output 只在 `levelReconstruction.behaviorMeasurements[*].direction` 接受 `null`；其它方向字段保持原有枚举约束。研究提示明确要求 checkpoint-interval 不生成空间方向。
