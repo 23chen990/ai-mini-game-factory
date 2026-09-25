@@ -137,10 +137,15 @@ describe('R1 natural browser behavior comparison', () => {
   }, 30_000);
 
   it('keeps the sign of relative-distance change and rejects the opposite direction', async () => {
-    const result = await runReferenceLevelQa(await fixture('reverse'));
-    expect(result.gate.comparisonStatus, JSON.stringify(result.gate)).toBe('DIFFERENT');
-    expect(result.gate.measurementResults).toEqual(expect.arrayContaining([
-      expect.objectContaining({ measurementId: 'hero-target-spacing-change', result: 'DIFFERENT' }),
-    ]));
+    const candidate = await fixture('reverse');
+    const result = await runReferenceLevelQa(candidate);
+    const expectedDistance = candidate.contract.behaviorMeasurements?.find((measurement) => measurement.measurementId === 'hero-target-spacing-change');
+    const observedDistance = result.trace.observedMeasurements?.find((measurement) => measurement.measurementId === 'hero-target-spacing-change');
+    const distanceResult = result.gate.measurementResults?.find((measurement) => measurement.measurementId === 'hero-target-spacing-change');
+    expect(result.trace.actions.some((action) => action.naturalInput && action.stateChanged)).toBe(true);
+    expect(expectedDistance?.direction).toBe('approaching');
+    expect(observedDistance?.direction).toBe('separating');
+    expect(distanceResult).toMatchObject({ measurementId: 'hero-target-spacing-change', result: 'DIFFERENT' });
+    expect(result.gate.passed).toBe(false);
   }, 30_000);
 });

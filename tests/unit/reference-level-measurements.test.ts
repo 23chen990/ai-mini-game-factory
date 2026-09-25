@@ -204,6 +204,22 @@ describe('R1 reference behavior measurement gate', () => {
     ]));
   });
 
+  it('retains both detail results when time is INSUFFICIENT and distance is DIFFERENT', () => {
+    const contract = contractWithMeasurements();
+    const available = measured({ min: 95, max: 105 }, { min: 0.8, max: 0.9 });
+    const gate = evaluateReferenceLevelRuntimeTrace(contract, runtimeTrace([
+      { ...available[0]!, status: 'INSUFFICIENT', actualRange: undefined, basis: 'endpoint observation window missing' },
+      available[1]!,
+    ]));
+
+    expect(gate.comparisonStatus).toBe('INSUFFICIENT');
+    expect(gate.passed).toBe(false);
+    expect(gate.measurementResults).toEqual(expect.arrayContaining([
+      expect.objectContaining({ measurementId: 'cut-latency', result: 'INSUFFICIENT' }),
+      expect.objectContaining({ measurementId: 'hero-target-distance', result: 'DIFFERENT' }),
+    ]));
+  });
+
   it('marks a missing runtime measurement INSUFFICIENT and carries available evidence', () => {
     const contract = contractWithMeasurements();
     const available = measured({ min: 95, max: 105 }, { min: 0.22, max: 0.28 })[0]!;

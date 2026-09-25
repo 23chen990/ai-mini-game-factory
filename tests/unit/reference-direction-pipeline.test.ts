@@ -96,6 +96,48 @@ function assertStrictSchemaTree(value: unknown): void {
   });
 }
 
+function extractBuilderBehaviorTargets(prompt: string): unknown[] {
+  const marker = 'R1 behavior targets:\n';
+  const start = prompt.indexOf(marker);
+  if (start < 0) throw new Error('Builder prompt is missing the R1 behavior target array');
+  const jsonStart = start + marker.length;
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  let jsonEnd = -1;
+  for (let index = jsonStart; index < prompt.length; index += 1) {
+    const character = prompt[index]!;
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (character === '\\') escaped = true;
+      else if (character === '"') inString = false;
+      continue;
+    }
+    if (character === '"') { inString = true; continue; }
+    if (character === '[') depth += 1;
+    if (character === ']') {
+      depth -= 1;
+      if (depth === 0) { jsonEnd = index + 1; break; }
+    }
+  }
+  if (jsonEnd < 0) throw new Error('Builder prompt has an unterminated R1 behavior target array');
+  const parsed: unknown = JSON.parse(prompt.slice(jsonStart, jsonEnd));
+  if (!Array.isArray(parsed)) throw new Error('Builder R1 behavior targets are not an array');
+  return parsed;
+}
+
+function assertBuilderBehaviorTargets(value: unknown): void {
+  if (!Array.isArray(value)) throw new Error('Builder R1 behavior targets are not an array');
+  const timeTargets = value.filter((target) => target && typeof target === 'object' && (target as Record<string, unknown>).id === 'input-to-contact');
+  const distanceTargets = value.filter((target) => target && typeof target === 'object' && (target as Record<string, unknown>).id === 'blade-fruit-spacing');
+  if (timeTargets.length !== 1) throw new Error(`expected one input-to-contact target, got ${timeTargets.length}`);
+  if (distanceTargets.length !== 1) throw new Error(`expected one blade-fruit-spacing target, got ${distanceTargets.length}`);
+  const time = timeTargets[0] as Record<string, unknown>;
+  const distance = distanceTargets[0] as Record<string, unknown>;
+  if (time.kind !== 'checkpoint-interval' || Object.hasOwn(time, 'direction')) throw new Error('input-to-contact must be directionless checkpoint interval');
+  if (distance.kind !== 'relative-distance' || distance.direction !== 'approaching') throw new Error('blade-fruit-spacing must preserve approaching direction');
+}
+
 describe('R1 time measurement direction pipeline', () => {
   it('allows null only for behavior measurement direction in the structured output schema', () => {
     const root = '/tmp/r1-direction-schema-test';
@@ -155,11 +197,12 @@ describe('R1 time measurement direction pipeline', () => {
     });
 
     const prompt = client.requests.find((request) => request.label === 'BUILD')?.prompt ?? '';
-    expect(prompt).toContain('"kind":"checkpoint-interval"');
-    expect(prompt).toContain('"kind":"relative-distance"');
-    expect(prompt).toContain('"direction":"approaching"');
-    const timeTarget = prompt.match(/\{"id":"input-to-contact"[\s\S]*?\}/)?.[0] ?? '';
-    expect(timeTarget).not.toContain('"direction"');
+    const capturedTargets = extractBuilderBehaviorTargets(prompt);
+    assertBuilderBehaviorTargets(capturedTargets);
+    expect(() => assertBuilderBehaviorTargets(capturedTargets.map((target) => target && typeof target === 'object' && (target as Record<string, unknown>).id === 'input-to-contact' ? { ...(target as Record<string, unknown>), direction: 'approaching' } : target))).toThrow(/directionless/);
+    expect(() => assertBuilderBehaviorTargets(capturedTargets.filter((target) => target && typeof target === 'object' && (target as Record<string, unknown>).id !== 'input-to-contact'))).toThrow(/input-to-contact/);
+    expect(prompt).not.toContain('sourceFrameIds');
+    expect(prompt).not.toContain('frame-a');
   });
 
   it('does not require a candidate direction for the derived time target', () => {

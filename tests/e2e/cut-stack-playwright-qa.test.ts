@@ -1,4 +1,4 @@
-import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
@@ -9,7 +9,16 @@ import { runPlaywrightQa } from '../../src/qa/playwright-qa.js';
 import type { GameBlueprint, StyleLock } from '../../src/schemas/index.js';
 
 const roots: string[] = [];
+const diagnosticRoot = '/tmp/r1-next-01-cut-stack-evidence';
 afterEach(async () => { await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true }))); });
+
+async function preserveCutStackDiagnostics(runRoot: string, report: unknown): Promise<void> {
+  await mkdir(diagnosticRoot, { recursive: true });
+  await writeFile(path.join(diagnosticRoot, 'qa-report.json'), `${JSON.stringify(report, null, 2)}\n`);
+  await cp(path.join(runRoot, 'screenshots'), path.join(diagnosticRoot, 'screenshots'), { recursive: true, force: true }).catch(() => undefined);
+  await cp(path.join(runRoot, 'logs'), path.join(diagnosticRoot, 'logs'), { recursive: true, force: true }).catch(() => undefined);
+  await writeFile(path.join(diagnosticRoot, 'manifest.json'), `${JSON.stringify({ sourceRunRoot: runRoot, sourceWorkspace: path.join(runRoot, 'workspace/game'), capturedBy: 'tests/e2e/cut-stack-playwright-qa.test.ts', sourceCommit: '757899832ab344b6a7829f1eb9ee028ad34fbce3' }, null, 2)}\n`);
+}
 
 const blueprint: GameBlueprint = {
   schemaVersion: 1,
@@ -101,6 +110,7 @@ describe('cut-stack-dodge natural runtime QA', () => {
     await writeFile(path.join(runRoot, 'artifacts/production-line-contract.json'), `${JSON.stringify(lockProductionLine('cut-stack-dodge'), null, 2)}\n`);
 
     const report = await runCutStackDodgePlaywrightQa(adapter, workspace, runRoot);
+    await preserveCutStackDiagnostics(runRoot, report);
 
     expect(report.passed, JSON.stringify({ checks: report.checks, issues: report.issues }, null, 2)).toBe(true);
     expect(report.checks).toEqual(expect.arrayContaining([
