@@ -131,6 +131,7 @@ export const ReferenceBehaviorMeasurementSchema = z.object({
   if (measurement.status === 'OBSERVED' && (measurement.observedRange === null || measurement.uncertainty === null)) context.addIssue({ code: 'custom', path: ['observedRange'], message: 'OBSERVED measurements require a measured range and uncertainty' });
   if (measurement.status !== 'OBSERVED' && (measurement.observedRange !== null || measurement.uncertainty !== null)) context.addIssue({ code: 'custom', path: ['observedRange'], message: 'INFERRED and UNKNOWN measurements cannot carry observed values or uncertainty' });
   if (measurement.kind === 'checkpoint-interval' && measurement.unit !== 'ms') context.addIssue({ code: 'custom', path: ['unit'], message: 'checkpoint intervals must use milliseconds' });
+  if (measurement.kind === 'checkpoint-interval' && measurement.direction !== undefined) context.addIssue({ code: 'custom', path: ['direction'], message: 'checkpoint interval measurements cannot carry spatial direction' });
   if (measurement.kind === 'relative-distance' && (measurement.subjectObjectId === null || measurement.relatedObjectId === null)) context.addIssue({ code: 'custom', path: ['subjectObjectId'], message: 'relative-distance measurements require two semantic objects' });
 });
 export type ReferenceBehaviorMeasurement = z.infer<typeof ReferenceBehaviorMeasurementSchema>;
@@ -157,6 +158,7 @@ export const ReferenceBehaviorTargetSchema = z.object({
   if (target.id !== target.measurementId) context.addIssue({ code: 'custom', path: ['measurementId'], message: 'measurementId must match the target id' });
   if (target.fromCheckpointId === target.toCheckpointId) context.addIssue({ code: 'custom', path: ['toCheckpointId'], message: 'a target must compare two distinct checkpoints' });
   if (target.kind === 'checkpoint-interval' && target.unit !== 'ms') context.addIssue({ code: 'custom', path: ['unit'], message: 'checkpoint interval targets must use milliseconds' });
+  if (target.kind === 'checkpoint-interval' && target.direction !== undefined) context.addIssue({ code: 'custom', path: ['direction'], message: 'checkpoint interval targets cannot carry spatial direction' });
   if (target.kind === 'relative-distance' && (target.unit !== 'normalized-distance' || target.subjectObjectId === null || target.relatedObjectId === null)) context.addIssue({ code: 'custom', path: ['unit'], message: 'relative distance targets require normalized-distance and two semantic objects' });
   if (target.acceptanceRange.min > target.expectedRange.min || target.acceptanceRange.max < target.expectedRange.max) context.addIssue({ code: 'custom', path: ['acceptanceRange'], message: 'acceptance range cannot be narrower than expected range' });
 });
@@ -180,6 +182,7 @@ const RuntimeMeasurementSchema = z.object({
 }).strict().superRefine((measurement, context) => {
   if (measurement.status === 'MEASURED' && measurement.actualRange === undefined) context.addIssue({ code: 'custom', path: ['actualRange'], message: 'MEASURED runtime observations require an actual range' });
   if (measurement.status === 'INSUFFICIENT' && measurement.actualRange !== undefined) context.addIssue({ code: 'custom', path: ['actualRange'], message: 'INSUFFICIENT runtime observations cannot carry an actual range' });
+  if (measurement.unit === 'ms' && measurement.direction !== undefined) context.addIssue({ code: 'custom', path: ['direction'], message: 'time runtime measurements cannot carry spatial direction' });
 });
 export type ReferenceLevelRuntimeMeasurement = z.infer<typeof RuntimeMeasurementSchema>;
 

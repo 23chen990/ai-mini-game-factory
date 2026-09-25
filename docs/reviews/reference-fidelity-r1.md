@@ -55,3 +55,10 @@
 - 本轮尝试只重试 `REFERENCE_DEEP_RESEARCH`，未修改全局超时或重试策略；run 进入 waiting 后，`resume`/`run` 没有重新发起 Provider 调用，现有 stage gate 仍未给出新的研究输出。该事实已保留在 run state/logs，不能被解释成研究通过。
 - 已核对 `runs/20260917065307-974ee21f` 与 `runs/20260919045632-6b7e8c7a`：已有录屏/接触表资料，但研究输出明确阻塞于 `recording-level:non-authoritative-provider:mock`，不得升级为真实竞品还原通过。
 - 本轮未让产品经理补填坐标、时间或技术规格，也未用自制样例替代真实参考。真实最小样本仍为 `BLOCKED`，最小缺口是使用权威研究输出从已验证录屏提取至少两项 source-bound 行为量测，并保留 frame/checkpoint provenance，然后才可进入 Builder→自然 QA→差异定位链路。
+
+## R1-FIX-01 时间量测方向修复
+
+- 研究 structured output 只在 `levelReconstruction.behaviorMeasurements[*].direction` 接受 `null`；其它方向字段保持原有枚举约束。研究提示明确要求 checkpoint-interval 不生成空间方向。
+- `normalizeReferenceBehaviorAnalysis` 在正式 `ReferenceBehaviorAnalysisSchema.parse` 前删除量测 `direction: null`。因此时间量测在 canonical artifact 与 Builder-facing target 中都省略方向；relative-distance 仍可保留接近/远离/稳定方向。
+- source、target 与 runtime schema 显式拒绝 checkpoint-interval 的非空方向，防止方向要求重新进入时间链路。旧的缺省方向距离 artifact 保持原序列化形状和绝对距离比较语义。
+- 新增 `tests/unit/reference-direction-pipeline.test.ts` 覆盖 Provider schema、Research→canonical parse→contract、无方向候选时间量测和旧距离 artifact。
