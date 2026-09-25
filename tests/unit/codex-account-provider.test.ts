@@ -93,7 +93,9 @@ describe('CodexAccountProvider', () => {
     expect(client.requests[0]?.prompt).toMatch(/non-null levelReconstruction/i);
     expect(client.requests[0]?.prompt).toMatch(/normalized object bounds/i);
     expect(client.requests[0]?.prompt).toMatch(/replay action.*replay checkpoint.*ready.*interactionSequence/i);
+    expect(client.requests[0]?.prompt).toMatch(/at least two source-bound behaviorMeasurements/i);
     expect(JSON.stringify(client.requests[0]?.outputSchema)).toContain('levelReconstruction');
+    expect(JSON.stringify(client.requests[0]?.outputSchema)).toContain('behaviorMeasurements');
   });
 
   it('honors the routed model in structured calls but never grants write access', async () => {

@@ -149,6 +149,58 @@ describe('recording-derived level contracts', () => {
     });
   });
 
+  it('carries two source-bound measurements only when frame timing and geometry support them', () => {
+    const raw = reconstruction();
+    const measured = ReferenceLevelReconstructionSchema.parse({
+      ...raw,
+      behaviorMeasurements: [
+        {
+          id: 'input-to-contact', kind: 'checkpoint-interval', status: 'OBSERVED', unit: 'ms',
+          fromCheckpointId: 'tap-1', toCheckpointId: 'cut-1', fromEvent: 'tap accepted', toEvent: 'contact feedback',
+          subjectObjectId: null, relatedObjectId: null, sourceCheckpointIds: ['tap-1', 'cut-1'], sourceFrameIds: ['frame-1', 'frame-2'],
+          observedRange: { min: 550, max: 650 }, uncertainty: 300, coordinateSpace: 'screen-normalized', applicability: 'same source viewport', basis: 'adjacent extracted frames bracket the visible response',
+        },
+        {
+          id: 'blade-fruit-spacing', kind: 'relative-distance', status: 'OBSERVED', unit: 'normalized-distance',
+          fromCheckpointId: 'ready', toCheckpointId: 'cut-1', fromEvent: 'ready spacing', toEvent: 'contact spacing',
+          subjectObjectId: 'blade', relatedObjectId: 'fruit-1', sourceCheckpointIds: ['ready', 'cut-1'], sourceFrameIds: ['frame-0', 'frame-2'],
+          observedRange: { min: 0.05, max: 0.15 }, uncertainty: 0.1, coordinateSpace: 'screen-normalized', applicability: 'same follow camera', basis: 'center distance changes across two stable source checkpoints',
+        },
+      ],
+    });
+    expect(verifyReferenceLevelReconstruction(measured, frameManifest, { frameManifestSha256: hash('manifest') })).toMatchObject({ passed: true, blockers: [] });
+    const contract = deriveReferenceLevelImplementationContract(measured, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('reconstruction-with-measurements') });
+    expect(contract.behaviorMeasurements).toHaveLength(2);
+    expect(contract.behaviorMeasurements?.[0]).toMatchObject({ sourceViewport: { width: 1100, height: 720 }, sourceFrameIds: ['frame-1', 'frame-2'] });
+    expect(JSON.stringify(contract)).not.toContain('observedRange');
+  });
+
+  it('blocks source measurements that claim more precision than the frame spacing supports', () => {
+    const raw = reconstruction();
+    const tooPrecise = ReferenceLevelReconstructionSchema.parse({
+      ...raw,
+      behaviorMeasurements: [
+        {
+          id: 'input-to-contact', kind: 'checkpoint-interval', status: 'OBSERVED', unit: 'ms',
+          fromCheckpointId: 'tap-1', toCheckpointId: 'cut-1', fromEvent: 'tap accepted', toEvent: 'contact feedback',
+          subjectObjectId: null, relatedObjectId: null, sourceCheckpointIds: ['tap-1', 'cut-1'], sourceFrameIds: ['frame-1', 'frame-2'],
+          observedRange: { min: 600, max: 600 }, uncertainty: 1, coordinateSpace: 'screen-normalized', applicability: 'same source viewport', basis: 'claimed exact timing',
+        },
+        {
+          id: 'blade-fruit-spacing', kind: 'relative-distance', status: 'UNKNOWN', unit: 'normalized-distance',
+          fromCheckpointId: 'ready', toCheckpointId: 'cut-1', fromEvent: 'unknown', toEvent: 'unknown',
+          subjectObjectId: 'blade', relatedObjectId: 'fruit-1', sourceCheckpointIds: ['ready', 'cut-1'], sourceFrameIds: ['frame-0', 'frame-2'],
+          observedRange: null, uncertainty: null, coordinateSpace: 'unknown', applicability: 'camera cannot be aligned', basis: 'source pixels do not establish comparable geometry',
+        },
+      ],
+    });
+    const result = verifyReferenceLevelReconstruction(tooPrecise, frameManifest, { frameManifestSha256: hash('manifest') });
+    expect(result.blockers).toEqual(expect.arrayContaining([
+      'reference-level:measurement-uncertainty-too-precise:input-to-contact',
+      'reference-level:measurement-not-observed:blade-fruit-spacing',
+    ]));
+  });
+
   it('compares a natural runtime trace against semantic object, relation, camera, terminal, and replay requirements', () => {
     const source = reconstruction();
     const contract = deriveReferenceLevelImplementationContract(source, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('reconstruction') });

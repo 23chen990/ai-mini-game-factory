@@ -1,4 +1,4 @@
-import { ReferenceFrameManifestSchema, ReferenceLevelComparisonGateSchema, ReferenceLevelImplementationContractSchema, ReferenceLevelReconstructionSchema, ReferenceLevelRuntimeTraceSchema, type ReferenceLevelImplementationContract, type ReferenceLevelReconstruction, type ReferenceLevelRuntimeTrace } from '../schemas/reference-recording.js';
+import { ReferenceFrameManifestSchema, ReferenceLevelComparisonGateSchema, ReferenceLevelImplementationContractSchema, ReferenceLevelReconstructionSchema, ReferenceLevelRuntimeTraceSchema, type ReferenceLevelComparisonGate, type ReferenceLevelImplementationContract, type ReferenceLevelReconstruction, type ReferenceLevelRuntimeTrace } from '../schemas/reference-recording.js';
 import { sha256Text } from './files.js';
 import { ReferenceLevelRuntimeDataSchema, type ReferenceLevelRuntimeData } from '../schemas/reference-level-runtime.js';
 import { referenceLevelRuntimeDataPath } from './reference-level-runtime.js';
@@ -22,6 +22,11 @@ export function verifyReferenceLevelReconstruction(
   if (reconstruction.status !== 'READY') blockers.push(...reconstruction.blockers.map((blocker) => `reference-level:analysis-blocked:${blocker}`));
 
   const frames = new Map(frameManifest.frames.map((frame) => [frame.id, frame]));
+  for (let index = 1; index < frameManifest.frames.length; index += 1) {
+    const previous = frameManifest.frames[index - 1]!;
+    const current = frameManifest.frames[index]!;
+    if (current.actualMs <= previous.actualMs) blockers.push(`reference-level:frame-actual-time-not-monotonic:${previous.id}:${current.id}`);
+  }
   const frameTimeToleranceMs = Math.max(250, Math.ceil(2_000 / frameManifest.extraction.samplingFps));
   const roleByObject = new Map<string, string>();
   for (const checkpoint of reconstruction.checkpoints) {
@@ -42,6 +47,56 @@ export function verifyReferenceLevelReconstruction(
   }
   for (const action of reconstruction.interactionSequence) if (!roleByObject.has(action.targetObjectId)) blockers.push(`reference-level:action-target-unbound:${action.actionId}:${action.targetObjectId}`);
   if (reconstruction.replay && !roleByObject.has(reconstruction.replay.targetObjectId)) blockers.push(`reference-level:replay-target-unbound:${reconstruction.replay.actionId}:${reconstruction.replay.targetObjectId}`);
+  const frameGaps = frameManifest.frames.slice(1).map((frame, index) => frame.actualMs - frameManifest.frames[index]!.actualMs).filter((gap) => gap > 0);
+  const halfFrameInterval = frameGaps.length > 0 ? Math.max(1, Math.max(...frameGaps) / 2) : Math.max(1, 500 / frameManifest.extraction.samplingFps);
+  const checkpointById = new Map(reconstruction.checkpoints.map((checkpoint) => [checkpoint.id, checkpoint]));
+  const objectAt = (checkpointId: string, objectId: string) => checkpointById.get(checkpointId)?.objects.find((object) => object.semanticId === objectId);
+  const centerDistance = (left: { boundsNormalized: { x: number; y: number; width: number; height: number } }, right: { boundsNormalized: { x: number; y: number; width: number; height: number } }, aspectRatio: number) => {
+    const leftCenter = { x: left.boundsNormalized.x + left.boundsNormalized.width / 2, y: left.boundsNormalized.y + left.boundsNormalized.height / 2 };
+    const rightCenter = { x: right.boundsNormalized.x + right.boundsNormalized.width / 2, y: right.boundsNormalized.y + right.boundsNormalized.height / 2 };
+    return Math.hypot(leftCenter.x - rightCenter.x, (leftCenter.y - rightCenter.y) * aspectRatio);
+  };
+  for (const measurement of reconstruction.behaviorMeasurements ?? []) {
+    const from = checkpointById.get(measurement.fromCheckpointId);
+    const to = checkpointById.get(measurement.toCheckpointId);
+    if (!from || !to) continue;
+    if (!measurement.sourceCheckpointIds.includes(from.id) || !measurement.sourceCheckpointIds.includes(to.id)) blockers.push(`reference-level:measurement-checkpoint-provenance:${measurement.id}`);
+    if (!measurement.sourceFrameIds.some((frameId) => from.sourceFrameIds.includes(frameId)) || !measurement.sourceFrameIds.some((frameId) => to.sourceFrameIds.includes(frameId))) blockers.push(`reference-level:measurement-frame-provenance:${measurement.id}`);
+    const citedFrames = measurement.sourceFrameIds.map((frameId) => frames.get(frameId));
+    if (citedFrames.some((frame) => !frame)) blockers.push(`reference-level:measurement-frame-unbound:${measurement.id}`);
+    const actualTimes = citedFrames.filter((frame): frame is NonNullable<typeof frame> => frame !== undefined).map((frame) => frame.actualMs);
+    if (new Set(measurement.sourceFrameIds).size !== measurement.sourceFrameIds.length) blockers.push(`reference-level:measurement-duplicate-frame:${measurement.id}`);
+    if (actualTimes.some((time, index) => index > 0 && time <= actualTimes[index - 1]!)) blockers.push(`reference-level:measurement-frame-order:${measurement.id}`);
+    if (measurement.status !== 'OBSERVED') {
+      blockers.push(`reference-level:measurement-not-observed:${measurement.id}`);
+      continue;
+    }
+    if (measurement.observedRange === null || measurement.uncertainty === null) continue;
+    if (measurement.kind === 'checkpoint-interval' && measurement.uncertainty < halfFrameInterval) blockers.push(`reference-level:measurement-uncertainty-too-precise:${measurement.id}`);
+    const fromFrame = measurement.sourceFrameIds.map((frameId) => frames.get(frameId)).find((frame) => frame !== undefined && from.sourceFrameIds.includes(frame.id));
+    const toFrame = measurement.sourceFrameIds.map((frameId) => frames.get(frameId)).find((frame) => frame !== undefined && to.sourceFrameIds.includes(frame.id));
+    if (!fromFrame || !toFrame) continue;
+    if (toFrame.actualMs <= fromFrame.actualMs) blockers.push(`reference-level:measurement-time-order:${measurement.id}`);
+    if (measurement.kind === 'checkpoint-interval') {
+      const observed = toFrame.actualMs - fromFrame.actualMs;
+      if (measurement.unit !== 'ms' || observed < measurement.observedRange.min || observed > measurement.observedRange.max) blockers.push(`reference-level:measurement-range-does-not-cover-source:${measurement.id}`);
+    } else if (measurement.coordinateSpace !== 'screen-normalized') {
+      blockers.push(`reference-level:measurement-coordinate-space-unsupported:${measurement.id}`);
+    } else {
+      const fromSubject = measurement.subjectObjectId ? objectAt(from.id, measurement.subjectObjectId) : undefined;
+      const fromRelated = measurement.relatedObjectId ? objectAt(from.id, measurement.relatedObjectId) : undefined;
+      const toSubject = measurement.subjectObjectId ? objectAt(to.id, measurement.subjectObjectId) : undefined;
+      const toRelated = measurement.relatedObjectId ? objectAt(to.id, measurement.relatedObjectId) : undefined;
+      if (!fromSubject || !fromRelated || !toSubject || !toRelated) {
+        blockers.push(`reference-level:measurement-object-provenance:${measurement.id}`);
+      } else if (from.camera.mode !== to.camera.mode) {
+        blockers.push(`reference-level:measurement-camera-transition:${measurement.id}`);
+      } else {
+        const observed = Math.abs(centerDistance(toSubject, toRelated, frameManifest.source.height / frameManifest.source.width) - centerDistance(fromSubject, fromRelated, frameManifest.source.height / frameManifest.source.width));
+        if (measurement.unit !== 'normalized-distance' || observed < measurement.observedRange.min || observed > measurement.observedRange.max) blockers.push(`reference-level:measurement-range-does-not-cover-source:${measurement.id}`);
+      }
+    }
+  }
   return { passed: blockers.length === 0, blockers: [...new Set(blockers)], reconstruction, frameManifest };
 }
 
@@ -89,6 +144,15 @@ function orientationBand(degrees: number): 'horizontal' | 'diagonal-up' | 'verti
   return 'diagonal-up';
 }
 
+function measurementAcceptanceRange(observed: { min: number; max: number }, uncertainty: number) {
+  const lower = observed.min - uncertainty;
+  const upper = observed.max + uncertainty;
+  return {
+    min: Math.max(0, lower),
+    max: Math.max(0, upper),
+  };
+}
+
 export function deriveReferenceLevelImplementationContract(
   reconstructionValue: unknown,
   sourceReconstruction: { path: string; sha256: string },
@@ -111,6 +175,36 @@ export function deriveReferenceLevelImplementationContract(
     ...reconstruction.unknowns.map((unknown) => `unknown:${unknown}`),
     ...(reconstruction.spatialRelations.some((relation) => !relation.observed) ? ['unobserved-spatial-relation'] : []),
   ];
+  const sourceMeasurements = reconstruction.behaviorMeasurements;
+  if (sourceMeasurements !== undefined && sourceMeasurements.length < 2) blockers.push('behavior-measurements:at-least-two-required');
+  const behaviorMeasurements = sourceMeasurements?.map((measurement) => {
+    if (measurement.status !== 'OBSERVED' || measurement.observedRange === null || measurement.uncertainty === null) {
+      blockers.push(`behavior-measurement-unusable:${measurement.id}`);
+      return undefined;
+    }
+    if (measurement.coordinateSpace === 'unknown') {
+      blockers.push(`behavior-measurement-coordinate-space-unknown:${measurement.id}`);
+      return undefined;
+    }
+    return {
+      id: measurement.id,
+      measurementId: measurement.id,
+      kind: measurement.kind,
+      unit: measurement.unit,
+      fromCheckpointId: measurement.fromCheckpointId,
+      toCheckpointId: measurement.toCheckpointId,
+      subjectObjectId: measurement.subjectObjectId,
+      relatedObjectId: measurement.relatedObjectId,
+      expectedRange: measurement.observedRange,
+      acceptanceRange: measurementAcceptanceRange(measurement.observedRange, measurement.uncertainty),
+      uncertainty: measurement.uncertainty,
+      coordinateSpace: measurement.coordinateSpace,
+      sourceViewport: reconstruction.source.viewport,
+      applicability: measurement.applicability,
+      sourceFrameIds: measurement.sourceFrameIds,
+      source: sourceReconstruction,
+    };
+  }).filter((measurement): measurement is NonNullable<typeof measurement> => measurement !== undefined);
   const objectIds = new Set(requiredObjects.map((object) => object.semanticId));
   for (const relation of reconstruction.spatialRelations) {
     for (const endpoint of [relation.fromObjectId, relation.toObjectId]) if (!objectIds.has(endpoint)) blockers.push(`relation-object-unbound:${relation.id}:${endpoint}`);
@@ -157,6 +251,7 @@ export function deriveReferenceLevelImplementationContract(
     cameraSequence: [...reconstruction.cameraSequence].sort((left, right) => left.order - right.order),
     terminal: reconstruction.terminal,
     replay: reconstruction.replay,
+    ...(behaviorMeasurements && behaviorMeasurements.length > 0 ? { behaviorMeasurements } : {}),
     runtimeProbe: { globalName: '__REFERENCE_LEVEL_TEST__', readOnly: true, methods: ['getSnapshot', 'getNaturalInputTarget'] },
     originalityBoundary: { sourceCoordinatesExposedToBuilder: false, mustBeOriginal: ['code', 'assets', 'names-and-text', 'ui-expression', 'audio', 'raw-tuning-values'] },
     status: reconstruction.status === 'READY' && blockers.length === 0 ? 'READY' : 'BLOCKED',
@@ -187,6 +282,7 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
   const trace = ReferenceLevelRuntimeTraceSchema.parse(traceValue);
   const expectedContractHash = sha256Text(JSON.stringify(contract));
   const blockers: string[] = [];
+  const measurementResults: NonNullable<ReferenceLevelComparisonGate['measurementResults']> = [];
   if (trace.targetRunId !== contract.targetRunId) blockers.push('reference-level:trace-run-mismatch');
   if (trace.targetGame !== contract.targetGame) blockers.push('reference-level:trace-game-mismatch');
   if (trace.workspace !== contract.workspace) blockers.push('reference-level:trace-workspace-mismatch');
@@ -277,6 +373,38 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
   if (!trace.terminal.settlementVisible) blockers.push('reference-level:settlement-not-visible');
   if (!contract.replay || !trace.replay.naturalInput || trace.replay.actionId !== contract.replay.actionId || trace.replay.returnedToCheckpointId !== contract.replay.returnsToCheckpointId) blockers.push('reference-level:replay-mismatch');
 
+  if (contract.behaviorMeasurements !== undefined) {
+    const observed = new Map((trace.observedMeasurements ?? []).map((measurement) => [measurement.measurementId, measurement]));
+    for (const expected of contract.behaviorMeasurements) {
+      const actual = observed.get(expected.measurementId);
+      if (!actual || actual.status !== 'MEASURED' || actual.actualRange === undefined || actual.unit !== expected.unit
+        || actual.subjectObjectId !== expected.subjectObjectId || actual.relatedObjectId !== expected.relatedObjectId) {
+        measurementResults.push({ measurementId: expected.measurementId, result: 'INSUFFICIENT', expectedRange: expected.acceptanceRange, evidence: actual?.evidence ?? [], reason: actual?.basis ?? '候选运行没有提供该指标的真实测量区间。' });
+        blockers.push(`reference-level:measurement-insufficient:${expected.measurementId}`);
+        continue;
+      }
+      const outside = actual.actualRange.max < expected.acceptanceRange.min || actual.actualRange.min > expected.acceptanceRange.max;
+      const inside = actual.actualRange.min >= expected.acceptanceRange.min && actual.actualRange.max <= expected.acceptanceRange.max;
+      if (inside) {
+        measurementResults.push({ measurementId: expected.measurementId, result: 'CONFORMING', expectedRange: expected.acceptanceRange, actualRange: actual.actualRange, evidence: actual.evidence, reason: '候选区间完整落在预先冻结的参考接受区间内。' });
+      } else if (outside) {
+        measurementResults.push({ measurementId: expected.measurementId, result: 'DIFFERENT', expectedRange: expected.acceptanceRange, actualRange: actual.actualRange, evidence: actual.evidence, reason: '候选区间与预先冻结的参考接受区间完全分离。' });
+        blockers.push(`reference-level:measurement-different:${expected.measurementId}`);
+      } else {
+        measurementResults.push({ measurementId: expected.measurementId, result: 'INSUFFICIENT', expectedRange: expected.acceptanceRange, actualRange: actual.actualRange, evidence: actual.evidence, reason: '候选区间与接受区间重叠，现有采样分辨率不足以判定。' });
+        blockers.push(`reference-level:measurement-insufficient:${expected.measurementId}`);
+      }
+    }
+  }
+
+  const comparisonStatus = measurementResults.length === 0
+    ? undefined
+    : measurementResults.some((result) => result.result === 'DIFFERENT')
+      ? 'DIFFERENT' as const
+      : measurementResults.some((result) => result.result === 'INSUFFICIENT')
+        ? 'INSUFFICIENT' as const
+        : 'CONFORMING' as const;
+
   return ReferenceLevelComparisonGateSchema.parse({
     schemaVersion: 1,
     artifactType: 'reference-level-comparison-gate',
@@ -291,6 +419,7 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
     checkedPlacementRuleIds,
     checkedRelationIds,
     checkedActionIds,
+    ...(comparisonStatus ? { comparisonStatus, measurementResults } : {}),
     checkedAt: new Date().toISOString(),
   });
 }
@@ -305,7 +434,51 @@ export async function verifyReferenceLevelRuntimeTrace(
   const base = evaluateReferenceLevelRuntimeTrace(contract, trace, options.runtimeData);
   const blockers = [...base.blockers];
   if (options.verifyEvidenceFile) {
-    for (const evidence of [...trace.screenshots, trace.trace]) if (!await options.verifyEvidenceFile(evidence)) blockers.push(`reference-level:evidence-invalid:${evidence.path}`);
+    const measurementEvidence = (trace.observedMeasurements ?? []).flatMap((measurement) => measurement.evidence);
+    for (const evidence of [...trace.screenshots, trace.trace, ...measurementEvidence]) if (!await options.verifyEvidenceFile(evidence)) blockers.push(`reference-level:evidence-invalid:${evidence.path}`);
   }
   return ReferenceLevelComparisonGateSchema.parse({ ...base, passed: blockers.length === 0, blockers: [...new Set(blockers)], checkedAt: new Date().toISOString() });
+}
+
+/** Render the bounded comparison in product language. This is deliberately a
+ * run-local Markdown artifact, not a second reporting system. */
+export function renderReferenceLevelComparisonReport(contractValue: unknown, traceValue: unknown, gateValue: unknown, frameManifestValue?: unknown): string {
+  const contract = ReferenceLevelImplementationContractSchema.parse(contractValue);
+  const trace = ReferenceLevelRuntimeTraceSchema.parse(traceValue);
+  const gate = ReferenceLevelComparisonGateSchema.parse(gateValue);
+  const frames = frameManifestValue === undefined ? new Map<string, { path: string; sha256: string; actualMs: number }>() : new Map(ReferenceFrameManifestSchema.parse(frameManifestValue).frames.map((frame) => [frame.id, frame]));
+  const lines = [
+    '# 参考玩法差异报告',
+    '',
+    `- 参考行为契约：${contract.sourceReconstruction.path}（${contract.sourceReconstruction.sha256}）`,
+    `- 候选构建：${trace.buildHash}`,
+    `- 候选视口：${trace.viewport.width}×${trace.viewport.height}（${trace.viewport.label}）`,
+    `- 本地候选入口：${contract.workspace}/dist/index.html`,
+    `- 正常输入：${trace.naturalInputOnly ? '是' : '否'}；从重置开始：${trace.startedFromReset ? '是' : '否'}`,
+    '',
+  ];
+  if (gate.comparisonStatus) {
+    const title = gate.comparisonStatus === 'CONFORMING' ? '有证据支持符合' : gate.comparisonStatus === 'DIFFERENT' ? '确认存在行为差异' : '证据不足，暂不能判断';
+    lines.push(`## 行为测量：${gate.comparisonStatus} · ${title}`, '');
+    for (const result of gate.measurementResults ?? []) {
+      const target = contract.behaviorMeasurements?.find((measurement) => measurement.id === result.measurementId);
+      const sourceFrames = target?.sourceFrameIds.map((id) => {
+        const frame = frames.get(id);
+        return frame ? `${id} (${frame.actualMs}ms, ${frame.path}, SHA-256 ${frame.sha256})` : id;
+      }).join('；') ?? '未绑定源帧';
+      const actual = result.actualRange ? `${result.actualRange.min}–${result.actualRange.max}` : '未采到';
+      const expected = `${result.expectedRange.min}–${result.expectedRange.max}`;
+      const label = result.result === 'CONFORMING' ? '符合' : result.result === 'DIFFERENT' ? '确认不同' : '证据不足';
+      lines.push(`- **${result.measurementId} · ${label}**：${target?.kind ?? '未知指标'}，参考接受区间 ${expected} ${target?.unit ?? ''}，候选区间 ${actual} ${target?.unit ?? ''}。${result.reason}`);
+      if (target) lines.push(`  - 适用条件：${target.applicability}；源视口 ${target.sourceViewport ? `${target.sourceViewport.width}×${target.sourceViewport.height}` : '未记录'}。`);
+      lines.push(`  - 来源帧：${sourceFrames}`);
+      lines.push(`  - 候选证据：${result.evidence.length > 0 ? result.evidence.map((item) => item.path).join(', ') : '缺少候选证据'}`);
+      lines.push(`  - 下一步：${result.result === 'DIFFERENT' ? '检查候选实现对应的真实状态分支和响应参数。' : result.result === 'INSUFFICIENT' ? '补采对应参考帧或候选自然输入证据，再重新比较。' : '保留当前证据，继续由独立画面审查确认反馈可见性。'}`);
+    }
+  } else {
+    lines.push('## 行为测量：未执行', '', '当前契约没有 R1 行为测量，结果只覆盖既有对象、状态、粗位置、动作顺序、终态和重玩检查。');
+  }
+  lines.push('', '## 工程与产品边界', '', `- 工程对照门：${gate.passed ? '通过' : '未通过'}。`, '- 该门只判断来源绑定和可测行为；换皮颜色、装饰和 UI 表达不作为玩法差异。', '- 独立画面审查和产品经理接受仍由现有 fidelity review / human playtest 门负责。');
+  if (gate.blockers.length > 0) lines.push('', '## 当前阻塞', '', ...gate.blockers.map((blocker) => `- ${blocker}`));
+  return `${lines.join('\n')}\n`;
 }

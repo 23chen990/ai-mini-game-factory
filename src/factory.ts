@@ -61,7 +61,7 @@ import { evaluateTransitionHistory } from './core/state-machine.js';
 import { buildAcceptanceHandoff } from './core/acceptance-handoff.js';
 import { auditReferenceQuality } from './core/reference-quality-audit.js';
 import { extractReferenceRecordingFrames, selectReferenceResearchMedia, type ReferenceFrameExtractor } from './core/reference-recording.js';
-import { deriveReferenceLevelImplementationContract, verifyReferenceLevelImplementationContract, verifyReferenceLevelReconstruction, verifyReferenceLevelRuntimeTrace } from './core/reference-level.js';
+import { deriveReferenceLevelImplementationContract, renderReferenceLevelComparisonReport, verifyReferenceLevelImplementationContract, verifyReferenceLevelReconstruction, verifyReferenceLevelRuntimeTrace } from './core/reference-level.js';
 import { compileReferenceLevelRuntimeData, verifyReferenceLevelRuntimeData } from './core/reference-level-runtime.js';
 import { readReferenceLevelRuntimeData, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from './core/reference-level-binding.js';
 import { buildContentExpansionPlan, buildUiSkeleton } from './core/experience-production.js';
@@ -513,6 +513,8 @@ export function createFactory(options: FactoryOptions = {}) {
       const trace = ReferenceLevelRuntimeTraceSchema.parse(await store.readArtifact(runId, 'reference-level-runtime-trace.json'));
       const gate = await verifyReferenceLevelRuntimeTrace(contract, trace, { runtimeData, verifyEvidenceFile: (evidence) => verifyRunBoundEvidence(runRoot, evidence) });
       await store.writeArtifact(runId, 'reference-level-comparison-gate.json', gate);
+      const frameManifest = await store.readArtifact(runId, 'reference-frame-manifest.json').catch(() => undefined);
+      await writeFile(path.join(runRoot, 'artifacts/reference-level-difference-report.md'), renderReferenceLevelComparisonReport(contract, trace, gate, frameManifest));
       return gate.passed && gate.buildHash === buildHash;
     } catch { return false; }
   }
@@ -540,6 +542,8 @@ export function createFactory(options: FactoryOptions = {}) {
     const gate = ReferenceLevelComparisonGateSchema.parse({ ...verified, passed: reported.passed && blockers.length === 0, blockers, checkedAt: new Date().toISOString() });
     await store.writeArtifact(runId, 'reference-level-runtime-trace.json', trace);
     await store.writeArtifact(runId, 'reference-level-comparison-gate.json', gate);
+    const frameManifest = await store.readArtifact(runId, 'reference-frame-manifest.json').catch(() => undefined);
+    await writeFile(path.join(runRoot, 'artifacts/reference-level-difference-report.md'), renderReferenceLevelComparisonReport(contract, trace, gate, frameManifest));
     return { trace, gate };
   }
 
@@ -2815,14 +2819,19 @@ export function createFactory(options: FactoryOptions = {}) {
       try {
         let report = await qaAgent.run(workspace, runRoot, true);
         let referenceLevelEvidence: string[] = [];
+        let referenceMeasurementInsufficient = false;
         if (levelContract) {
           const levelResult = await executeReferenceLevelQa(runId, workspace, previewBuildHash);
           report = mergeReferenceLevelQaReport(report, levelResult.gate, levelResult.trace.screenshots.map((item) => item.path));
-          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'];
+          referenceMeasurementInsufficient = levelResult.gate.comparisonStatus === 'INSUFFICIENT';
+          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'];
           await refreshAcceptanceArtifacts(runRoot, true, report.passed, report.screenshots);
         }
         await store.writeArtifact(runId, 'qa-report.json', report);
         await complete(state, record, ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...referenceLevelEvidence], ['qa:preview', 'qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(levelContract ? ['qa:recording-level-comparison-when-declared'] : []), `passed:${report.passed}`]);
+        if (referenceMeasurementInsufficient) {
+          return setWaiting(state, 'QA', ['artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'], ['artifacts/reference-level-difference-report.md'], ['blocked:reference-level:measurement-insufficient', 'qa:fixer-not-routed:measurement-evidence-required']);
+        }
         if (!report.passed) {
           const fixInputs = ['artifacts/qa-report.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? [...recordingLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
           const fixRecord = await begin(state, 'FIX', fixInputs);
@@ -2866,7 +2875,7 @@ export function createFactory(options: FactoryOptions = {}) {
     }
     await recordControlStage(state, 'QA', 'completed',
       ['artifacts/build-report.json', 'artifacts/production-line-contract.json', 'artifacts/product-experience-contract.json', 'artifacts/core-spec-lock.json', 'artifacts/reference-fidelity-contract.json', ...(levelContract ? ['artifacts/reference-level-reconstruction.json', ...recordingLevelInputs] : []), 'artifacts/reference-fidelity-review.json'],
-      ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...(levelContract ? ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : []), 'artifacts/reference-fidelity-gate.json'],
+      ['artifacts/qa-report.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', 'artifacts/completion-gates.json', ...(levelContract ? ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'] : []), 'artifacts/reference-fidelity-gate.json'],
       ['qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(levelContract ? ['qa:recording-level-comparison-when-declared'] : []), 'qa:reference-fidelity:verified', `build-hash:${previewBuildHash}`]);
     const coreDemoAcceptancePath = path.join(runRoot, 'human/playtest-acceptance.json');
     let coreDemoAcceptance: ReturnType<typeof HumanPlaytestAcceptanceSchema.parse> | undefined;
@@ -3681,10 +3690,12 @@ export function createFactory(options: FactoryOptions = {}) {
           report = QaReportSchema.parse({ ...report, checks: [...report.checks, policyCheck], issues: [...report.issues, ...policyIssues], passed: report.passed && policyResult.passed });
         }
         let referenceLevelEvidence: string[] = [];
+        let referenceMeasurementInsufficient = false;
         if (referenceLevelInputs.length > 0) {
           const levelResult = await executeReferenceLevelQa(runId, workspace, buildHash);
           report = mergeReferenceLevelQaReport(report, levelResult.gate, levelResult.trace.screenshots.map((item) => item.path));
-          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'];
+          referenceMeasurementInsufficient = levelResult.gate.comparisonStatus === 'INSUFFICIENT';
+          referenceLevelEvidence = ['artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'];
           await refreshAcceptanceArtifacts(runRoot, await readBuildSuccess(runRoot), report.passed, report.screenshots);
         }
         const naturalLineEvidence = await persistNaturalLineEvidence(runId, report, buildHash);
@@ -3692,6 +3703,9 @@ export function createFactory(options: FactoryOptions = {}) {
         await store.writeArtifact(runId, 'qa-report.json', report);
         await store.writeArtifact(runId, 'qa-evidence.json', evidence);
         await complete(state, record, ['artifacts/qa-report.json', 'artifacts/completion-gates.json', 'artifacts/qa-evidence.json', 'artifacts/runtime-product-gates.json', ...referenceLevelEvidence, ...(naturalLineEvidence ? ['artifacts/production-line-play-evidence.json'] : []), 'logs/console.log', ...report.screenshots], [qaMode === 'playwright' ? 'playwright:completed' : 'qa:stub', 'qa:core', 'qa:normal-flow', 'qa:natural-e2e', 'qa:runtime-product', ...(referenceLevelInputs.length > 0 ? ['qa:recording-level-comparison-when-declared'] : []), `runtime-product:${runtimeProduct.passed}`, `qa:build-hash:${buildHash}`, `qa-build-path:${qaBuildPath}`, 'qa:provenance-bound', `passed:${report.passed}`]);
+        if (referenceMeasurementInsufficient) {
+          return setWaiting(state, 'QA', ['artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'], ['artifacts/reference-level-difference-report.md'], ['blocked:reference-level:measurement-insufficient', 'qa:fixer-not-routed:measurement-evidence-required']);
+        }
         if (enforceOperatingGates && !runtimeProduct.passed) {
           return setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/qa-report.json', 'artifacts/runtime-product-gates.json'], ['artifacts/runtime-product-gates.json'], ['runtime-product:startup-core-loop-terminal-replay-required']);
         }

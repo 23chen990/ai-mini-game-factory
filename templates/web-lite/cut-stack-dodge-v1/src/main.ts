@@ -189,9 +189,9 @@ type GameTestApi = {
 function placement(object: { x: number; y: number; width: number; height: number }, role?: CourseObjectState['role'] | 'player' | 'replay-control') {
   const centerX = (object.x + object.width / 2) / WORLD.width;
   const centerY = (object.y + object.height / 2) / WORLD.height;
-  const horizontalBand = centerX < 0.12 ? 'far-left' : centerX < 0.4 ? 'left' : centerX < 0.6 ? 'center' : centerX < 0.88 ? 'right' : 'far-right';
-  const verticalBand = centerY < 0.12 ? 'top' : centerY < 0.38 ? 'upper' : centerY < 0.64 ? 'middle' : centerY < 0.88 ? 'lower' : 'bottom';
-  const extent = (value: number) => value < 0.03 ? 'tiny' : value < 0.12 ? 'small' : value < 0.3 ? 'medium' : value < 0.7 ? 'large' : 'span';
+  const horizontalBand = centerX < 0.2 ? 'far-left' : centerX < 0.4 ? 'left' : centerX < 0.6 ? 'center' : centerX < 0.8 ? 'right' : 'far-right';
+  const verticalBand = centerY < 0.2 ? 'top' : centerY < 0.4 ? 'upper' : centerY < 0.6 ? 'middle' : centerY < 0.8 ? 'lower' : 'bottom';
+  const extent = (value: number) => value < 0.06 ? 'tiny' : value < 0.16 ? 'small' : value < 0.32 ? 'medium' : value < 0.62 ? 'large' : 'span';
   // Recording contracts describe the interaction-facing orientation of each
   // semantic object. Preserve the authored extent bands while keeping this
   // projection stable for circular players and vertical finish markers.
@@ -199,6 +199,15 @@ function placement(object: { x: number; y: number; width: number; height: number
     ? 'horizontal'
     : object.width > object.height ? 'horizontal' : 'vertical';
   return { horizontalBand, verticalBand, widthBand: extent(object.width / WORLD.width), heightBand: extent(object.height / WORLD.height), orientationBand };
+}
+
+function normalizedVisibleBounds(object: { x: number; y: number; width: number; height: number }) {
+  const left = Math.max(0, Math.min(WORLD.width, object.x));
+  const top = Math.max(0, Math.min(WORLD.height, object.y));
+  const right = Math.max(0, Math.min(WORLD.width, object.x + object.width));
+  const bottom = Math.max(0, Math.min(WORLD.height, object.y + object.height));
+  if (right <= left || bottom <= top) return undefined;
+  return { x: left / WORLD.width, y: top / WORLD.height, width: (right - left) / WORLD.width, height: (bottom - top) / WORLD.height };
 }
 
 function checkpointId(): string {
@@ -245,6 +254,7 @@ function getSnapshot() {
     ? !(phase === 'replay' && object.role !== 'support') && !(terminal && (object.role === 'hazard' || object.role === 'cuttable'))
     : object.lifecycle !== 'settled';
   const feedbackId = recording ? `feedback-${phase}` : undefined;
+  const playerBounds = { x: state.player.x - cameraX - state.player.radius, y: state.player.y - state.player.radius, width: state.player.radius * 2, height: state.player.radius * 2 };
   return {
     checkpointId: checkpointId(),
     phase,
@@ -254,14 +264,18 @@ function getSnapshot() {
         role: 'player',
         lifecycle: lifecycleForPlayer(),
         visible: true,
-        placement: placement({ x: state.player.x - cameraX - state.player.radius, y: state.player.y - state.player.radius, width: state.player.radius * 2, height: state.player.radius * 2 }, 'player'),
+        placement: placement(playerBounds, 'player'),
+        boundsNormalized: normalizedVisibleBounds(playerBounds),
+        coordinateSpace: 'screen-normalized',
       },
       ...state.objects.map((object) => ({
         semanticId: object.id,
         role: roleFor(object),
         lifecycle: lifecycleForObject(object),
         visible: visibleForObject(object),
-        placement: placement(object, object.role),
+        placement: placement({ ...object, x: object.x - cameraX }, object.role),
+        boundsNormalized: normalizedVisibleBounds({ ...object, x: object.x - cameraX }),
+        coordinateSpace: 'screen-normalized',
       })),
       {
         semanticId: 'replay-control',

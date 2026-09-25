@@ -11,6 +11,7 @@ import { verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } f
 
 type RuntimeSnapshot = {
   checkpointId: string;
+  capturedAtMs: number;
   runtimeBinding?: ReferenceLevelRuntimeTrace['checkpoints'][number]['runtimeBinding'];
   phase: ReferenceLevelRuntimeTrace['checkpoints'][number]['phase'];
   objectStates: ReferenceLevelRuntimeTrace['checkpoints'][number]['objectStates'];
@@ -42,6 +43,7 @@ function parseSnapshot(value: unknown): RuntimeSnapshot {
   const candidate = {
     sourceCheckpointId: String(raw.checkpointId ?? ''),
     ...(raw.runtimeBinding === undefined ? {} : { runtimeBinding: raw.runtimeBinding }),
+    capturedAtMs: typeof raw.capturedAtMs === 'number' && Number.isFinite(raw.capturedAtMs) ? raw.capturedAtMs : undefined,
     phase: raw.phase,
     objectStates,
     observedRelationIds: Array.isArray(raw.observedRelationIds) ? raw.observedRelationIds : Array.isArray(raw.relationIds) ? raw.relationIds : [],
@@ -49,14 +51,15 @@ function parseSnapshot(value: unknown): RuntimeSnapshot {
     visibleFeedbackIds: Array.isArray(raw.visibleFeedbackIds) ? raw.visibleFeedbackIds : [],
   };
   const parsed = ReferenceLevelRuntimeTraceSchema.shape.checkpoints.element.parse(candidate);
-  return { checkpointId: parsed.sourceCheckpointId, runtimeBinding: parsed.runtimeBinding, phase: parsed.phase, objectStates: parsed.objectStates, observedRelationIds: parsed.observedRelationIds, cameraMode: parsed.cameraMode, visibleFeedbackIds: parsed.visibleFeedbackIds, ...(raw.terminal && typeof raw.terminal === 'object' ? { terminal: raw.terminal as RuntimeSnapshot['terminal'] } : {}) };
+  return { checkpointId: parsed.sourceCheckpointId, capturedAtMs: parsed.capturedAtMs ?? Number.NaN, runtimeBinding: parsed.runtimeBinding, phase: parsed.phase, objectStates: parsed.objectStates, observedRelationIds: parsed.observedRelationIds, cameraMode: parsed.cameraMode, visibleFeedbackIds: parsed.visibleFeedbackIds, ...(raw.terminal && typeof raw.terminal === 'object' ? { terminal: raw.terminal as RuntimeSnapshot['terminal'] } : {}) };
 }
 
 async function snapshot(page: Page) {
   return parseSnapshot(await page.evaluate(() => {
     const api = (window as unknown as { __REFERENCE_LEVEL_TEST__?: { getSnapshot(): unknown } }).__REFERENCE_LEVEL_TEST__;
     if (!api || typeof api.getSnapshot !== 'function') throw new Error('window.__REFERENCE_LEVEL_TEST__.getSnapshot is unavailable');
-    return api.getSnapshot();
+    const value = api.getSnapshot();
+    return value && typeof value === 'object' ? { ...(value as Record<string, unknown>), capturedAtMs: performance.now() } : value;
   }));
 }
 
@@ -86,24 +89,65 @@ async function performNaturalInput(page: Page, action: ReferenceLevelImplementat
 }
 
 function addSnapshot(target: ReferenceLevelRuntimeTrace['checkpoints'], value: RuntimeSnapshot) {
-  const checkpoint = { sourceCheckpointId: value.checkpointId, runtimeBinding: value.runtimeBinding, phase: value.phase, objectStates: value.objectStates, observedRelationIds: value.observedRelationIds, cameraMode: value.cameraMode, visibleFeedbackIds: value.visibleFeedbackIds };
-  const encoded = JSON.stringify(checkpoint);
+  const checkpoint = { sourceCheckpointId: value.checkpointId, ...(Number.isFinite(value.capturedAtMs) ? { capturedAtMs: value.capturedAtMs } : {}), runtimeBinding: value.runtimeBinding, phase: value.phase, objectStates: value.objectStates, observedRelationIds: value.observedRelationIds, cameraMode: value.cameraMode, visibleFeedbackIds: value.visibleFeedbackIds };
+  const encoded = JSON.stringify({ ...checkpoint, capturedAtMs: undefined });
   if (target.some((item) => JSON.stringify(item) === encoded)) return;
   target.push(checkpoint);
 }
 
-async function pollSnapshots(page: Page, checkpoints: ReferenceLevelRuntimeTrace['checkpoints'], durationMs: number, expectedCheckpointId?: string) {
+async function pollSnapshots(page: Page, checkpoints: ReferenceLevelRuntimeTrace['checkpoints'], durationMs: number, expectedCheckpointId?: string, onSnapshot?: (snapshot: RuntimeSnapshot) => Promise<void>) {
   const deadline = Date.now() + durationMs;
   let latest = await snapshot(page);
   addSnapshot(checkpoints, latest);
+  await onSnapshot?.(latest);
   if (expectedCheckpointId && latest.checkpointId === expectedCheckpointId) return latest;
   while (Date.now() < deadline) {
     await page.waitForTimeout(50);
     latest = await snapshot(page);
     addSnapshot(checkpoints, latest);
+    await onSnapshot?.(latest);
     if (expectedCheckpointId && latest.checkpointId === expectedCheckpointId) return latest;
   }
   return latest;
+}
+
+type RuntimeMeasurement = NonNullable<ReferenceLevelRuntimeTrace['observedMeasurements']>[number];
+
+function runtimeMeasurementEvidence(evidence: Array<{ path: string; sha256: string }>) {
+  return evidence.length > 0 ? evidence : [{ path: 'logs/reference-level/measurement-unavailable.txt', sha256: sha256Text('measurement-unavailable') }];
+}
+
+function measureRuntimeBehaviors(contract: ReferenceLevelImplementationContract, checkpoints: ReferenceLevelRuntimeTrace['checkpoints'], evidence: Array<{ path: string; sha256: string }>, viewport: { width: number; height: number }): RuntimeMeasurement[] | undefined {
+  if (!contract.behaviorMeasurements || contract.behaviorMeasurements.length === 0) return undefined;
+  return contract.behaviorMeasurements.map((target): RuntimeMeasurement => {
+    const from = checkpoints.find((checkpoint) => checkpoint.sourceCheckpointId === target.fromCheckpointId && checkpoint.capturedAtMs !== undefined);
+    const to = checkpoints.find((checkpoint) => checkpoint.sourceCheckpointId === target.toCheckpointId && checkpoint.capturedAtMs !== undefined);
+    const sourceCheckpointIds = [...new Set([target.fromCheckpointId, target.toCheckpointId].filter(Boolean))];
+    const base = { measurementId: target.measurementId, unit: target.unit, sourceCheckpointIds, subjectObjectId: target.subjectObjectId, relatedObjectId: target.relatedObjectId, evidence: runtimeMeasurementEvidence(evidence) };
+    if (!from || !to || from.capturedAtMs === undefined || to.capturedAtMs === undefined || !Number.isFinite(from.capturedAtMs) || !Number.isFinite(to.capturedAtMs)) {
+      return { ...base, status: 'INSUFFICIENT', basis: '候选浏览器轨迹没有为测量所需的两个自然输入状态提供实际采样时间。' };
+    }
+    if (target.kind === 'checkpoint-interval') {
+      const delta = to.capturedAtMs - from.capturedAtMs;
+      if (delta <= 0 || target.unit !== 'ms') return { ...base, status: 'INSUFFICIENT', basis: '候选状态时间戳不递增，或量测单位与 checkpoint interval 不一致。' };
+      const uncertainty = 50;
+      return { ...base, status: 'MEASURED', actualRange: { min: Math.max(0, delta - uncertainty), max: delta + uncertainty }, basis: `浏览器 performance.now() 的自然输入状态差，轮询分辨率约 ${uncertainty}ms。` };
+    }
+    if (target.unit !== 'normalized-distance' || target.coordinateSpace !== 'screen-normalized') return { ...base, status: 'INSUFFICIENT', basis: '候选运行缺少可比的 screen-normalized 相对空间量测。' };
+    const fromSubject = target.subjectObjectId ? from.objectStates.find((object) => object.semanticId === target.subjectObjectId) : undefined;
+    const fromRelated = target.relatedObjectId ? from.objectStates.find((object) => object.semanticId === target.relatedObjectId) : undefined;
+    const toSubject = target.subjectObjectId ? to.objectStates.find((object) => object.semanticId === target.subjectObjectId) : undefined;
+    const toRelated = target.relatedObjectId ? to.objectStates.find((object) => object.semanticId === target.relatedObjectId) : undefined;
+    const bounds = (object: typeof fromSubject) => object?.boundsNormalized;
+    if (!bounds(fromSubject) || !bounds(fromRelated) || !bounds(toSubject) || !bounds(toRelated)) return { ...base, status: 'INSUFFICIENT', basis: '候选 probe 没有为两个语义对象提供可比的 normalized bounds。' };
+    const distance = (left: NonNullable<typeof fromSubject>, right: NonNullable<typeof fromRelated>) => {
+      const a = bounds(left)!; const b = bounds(right)!;
+      return Math.hypot((a.x + a.width / 2) - (b.x + b.width / 2), ((a.y + a.height / 2) - (b.y + b.height / 2)) * (viewport.height / viewport.width));
+    };
+    const delta = Math.abs(distance(toSubject!, toRelated!) - distance(fromSubject!, fromRelated!));
+    const uncertainty = 0.02;
+    return { ...base, status: 'MEASURED', actualRange: { min: Math.max(0, delta - uncertainty), max: delta + uncertainty }, basis: '候选 probe 在同一自然输入轨迹中提供的 screen-normalized 对象中心距离变化。' };
+  });
 }
 
 export function mergeReferenceLevelQaReport(reportValue: QaReport, gateValue: ReferenceLevelComparisonGate, screenshots: string[]) {
@@ -139,6 +183,7 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
   await mkdir(screenshotDir, { recursive: true });
   await mkdir(traceDir, { recursive: true });
   const screenshots: Array<{ path: string; sha256: string }> = [];
+  const checkpointScreenshots = new Set<string>();
   const checkpoints: ReferenceLevelRuntimeTrace['checkpoints'] = [];
   const actions: ReferenceLevelRuntimeTrace['actions'] = [];
   let failure: string | undefined;
@@ -146,6 +191,14 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
   let terminalObservation: RuntimeSnapshot['terminal'] | undefined;
   let replayReturned = '';
   let startedFromReset = false;
+  const captureCheckpoint = async (value: RuntimeSnapshot) => {
+    if (!page || checkpointScreenshots.has(value.checkpointId)) return;
+    checkpointScreenshots.add(value.checkpointId);
+    const checkpointSlug = value.checkpointId.replaceAll(/[^a-z0-9_-]+/giu, '-');
+    const checkpointPath = `screenshots/reference-level/${slug}-${checkpointSlug}.png`;
+    await page.screenshot({ path: path.join(input.runRoot, checkpointPath), fullPage: true });
+    screenshots.push({ path: checkpointPath, sha256: await sha256File(path.join(input.runRoot, checkpointPath)) });
+  };
   try {
     await verifyReferenceLevelRuntimeDataFile(input.workspace, runtimeData);
     await verifyReferenceLevelLayoutFile(input.workspace, runtimeData);
@@ -160,13 +213,14 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
     }, undefined, { timeout: 10_000 });
     latest = await snapshot(page);
     addSnapshot(checkpoints, latest);
+    await captureCheckpoint(latest);
     const orderedActions = [...contract.interactionSequence].sort((left, right) => left.order - right.order);
     startedFromReset = latest.phase === 'ready' && (orderedActions[0] === undefined || latest.checkpointId === orderedActions[0].fromCheckpointId);
     terminalObservation = latest.terminal?.reached ? latest.terminal : terminalObservation;
     for (const action of orderedActions) {
       const before = JSON.stringify(latest);
       await performNaturalInput(page, action, input.viewport);
-      latest = await pollSnapshots(page, checkpoints, action.responseClass === 'immediate' ? 1_000 : action.responseClass === 'short' ? 3_000 : 8_000, action.toCheckpointId);
+      latest = await pollSnapshots(page, checkpoints, action.responseClass === 'immediate' ? 1_000 : action.responseClass === 'short' ? 3_000 : 8_000, action.toCheckpointId, captureCheckpoint);
       terminalObservation = latest.terminal?.reached ? latest.terminal : terminalObservation;
       actions.push({ order: action.order, actionId: action.actionId, kind: action.kind, targetObjectId: action.targetObjectId, naturalInput: true, stateChanged: JSON.stringify(latest) !== before, observedCheckpointId: latest.checkpointId });
     }
@@ -179,19 +233,19 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
     while (continuation && latest.phase !== 'terminal' && Date.now() < terminalDeadline) {
       const before = JSON.stringify(latest);
       await performNaturalInput(page, continuation, input.viewport);
-      latest = await pollSnapshots(page, checkpoints, 900, contract.terminal?.checkpointId);
+      latest = await pollSnapshots(page, checkpoints, 900, contract.terminal?.checkpointId, captureCheckpoint);
       terminalObservation = latest.terminal?.reached ? latest.terminal : terminalObservation;
       actions.push({ order: actions.length + 1, actionId: continuation.actionId, kind: continuation.kind, targetObjectId: continuation.targetObjectId, naturalInput: true, stateChanged: JSON.stringify(latest) !== before, observedCheckpointId: latest.checkpointId });
     }
-    latest = await pollSnapshots(page, checkpoints, 1_000, contract.terminal?.checkpointId);
+    latest = await pollSnapshots(page, checkpoints, 1_000, contract.terminal?.checkpointId, captureCheckpoint);
     terminalObservation = latest.terminal?.reached ? latest.terminal : terminalObservation;
     const terminalPath = `screenshots/reference-level/${slug}-terminal.png`;
     await page.screenshot({ path: path.join(input.runRoot, terminalPath), fullPage: true });
     screenshots.push({ path: terminalPath, sha256: await sha256File(path.join(input.runRoot, terminalPath)) });
     if (!contract.replay) throw new Error('reference level contract has no replay action');
     await performNaturalInput(page, { order: 1, actionId: contract.replay.actionId, kind: 'tap', targetObjectId: contract.replay.targetObjectId, fromCheckpointId: contract.replay.checkpointId, toCheckpointId: contract.replay.returnsToCheckpointId, responseClass: 'short', expectedStateChange: 'replay returns to ready' }, input.viewport);
-    latest = await pollSnapshots(page, checkpoints, 120, contract.replay.checkpointId);
-    latest = await pollSnapshots(page, checkpoints, 1_000, contract.replay.returnsToCheckpointId);
+    latest = await pollSnapshots(page, checkpoints, 120, contract.replay.checkpointId, captureCheckpoint);
+    latest = await pollSnapshots(page, checkpoints, 1_000, contract.replay.returnsToCheckpointId, captureCheckpoint);
     replayReturned = latest.checkpointId;
     const replayPath = `screenshots/reference-level/${slug}-replay.png`;
     await page.screenshot({ path: path.join(input.runRoot, replayPath), fullPage: true });
@@ -216,6 +270,7 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
   const eventPath = `logs/reference-level/${slug}-events.json`;
   const eventBody = `${JSON.stringify({ schemaVersion: 1, failure: failure ?? null, actions, checkpoints, observedAt: new Date().toISOString() }, null, 2)}\n`;
   await writeFile(path.join(input.runRoot, eventPath), eventBody);
+  const observedMeasurements = measureRuntimeBehaviors(contract, checkpoints, [...screenshots, { path: eventPath, sha256: sha256Text(eventBody) }], input.viewport);
   const terminal = terminalObservation ?? latest?.terminal;
   const trace = ReferenceLevelRuntimeTraceSchema.parse({
     schemaVersion: 1,
@@ -230,6 +285,7 @@ export async function runReferenceLevelQa(input: ReferenceLevelQaInput) {
     naturalInputOnly: true,
     actions,
     checkpoints,
+    ...(observedMeasurements ? { observedMeasurements } : {}),
     terminal: { reached: terminal?.reached === true, result: String(terminal?.result ?? 'not-observed'), causeVisible: terminal?.causeVisible === true, settlementVisible: terminal?.settlementVisible === true },
     replay: { actionId: contract.replay?.actionId ?? 'replay-unavailable', returnedToCheckpointId: replayReturned || 'not-observed', naturalInput: failure === undefined },
     screenshots,
