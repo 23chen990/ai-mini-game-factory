@@ -201,6 +201,7 @@ export function deriveReferenceLevelImplementationContract(
       acceptanceRange: measurementAcceptanceRange(measurement.observedRange, measurement.uncertainty),
       uncertainty: measurement.uncertainty,
       coordinateSpace: measurement.coordinateSpace,
+      ...(measurement.direction === undefined ? {} : { direction: measurement.direction }),
       sourceViewport: reconstruction.source.viewport,
       applicability: measurement.applicability,
       sourceFrameIds: measurement.sourceFrameIds,
@@ -390,6 +391,16 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
         || !checkpointProvenanceMatches) {
         measurementResults.push({ measurementId: expected.measurementId, result: 'INSUFFICIENT', expectedRange: expected.acceptanceRange, evidence: actual?.evidence ?? [], reason: actual?.basis ?? '候选运行没有提供该指标的真实测量区间。' });
         blockers.push(`reference-level:measurement-insufficient:${expected.measurementId}`);
+        continue;
+      }
+      if (expected.direction !== undefined && actual.direction === undefined) {
+        measurementResults.push({ measurementId: expected.measurementId, result: 'INSUFFICIENT', expectedRange: expected.acceptanceRange, actualRange: actual.actualRange, evidence: actual.evidence, reason: '候选运行没有提供参考指标要求的接近/远离方向。' });
+        blockers.push(`reference-level:measurement-insufficient:${expected.measurementId}`);
+        continue;
+      }
+      if (expected.direction !== undefined && actual.direction !== expected.direction) {
+        measurementResults.push({ measurementId: expected.measurementId, result: 'DIFFERENT', expectedRange: expected.acceptanceRange, actualRange: actual.actualRange, evidence: actual.evidence, reason: `候选方向为 ${actual.direction}，参考方向为 ${expected.direction}。` });
+        blockers.push(`reference-level:measurement-different:${expected.measurementId}`);
         continue;
       }
       const outside = actual.actualRange.max < expected.acceptanceRange.min || actual.actualRange.min > expected.acceptanceRange.max;

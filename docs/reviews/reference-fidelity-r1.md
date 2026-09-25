@@ -32,3 +32,24 @@
 - `INFERRED`/`UNKNOWN` 来源量测不能携带观测值；验证发现的来源阻塞会进入 BLOCKED Builder 合约。
 - Builder 提示只接收功能目标摘要，源帧 ID、源证据路径和哈希仍留在研究/QA 证据中。
 - 终态截图使用独立路径，恢复校验不再无条件重写带新时间戳的 gate；QA 失效清单包含 R1 报告与 gate。
+
+## 本轮候选观测复查（基线 e49595b）
+
+### 根因与修复
+
+- 状态变化：`src/qa/reference-level-qa.ts` 原先把 `capturedAtMs` 纳入 JSON 比较，导致没有游戏状态变化的自然点击也被记录为 `stateChanged=true`。现在比较时只移除观测时间元数据；所有 checkpoint 样本仍保留，时间量测不会因状态去重丢样本。
+- 时间口径：候选量测原先按终点 checkpoint 找第一个动作开始时间，可能把 A→C 指标替换成 B→C。现在统一使用声明的起点 checkpoint 与后续终点 checkpoint 的实际采样时间；跨多个动作且采样/截图延迟不足时仍保留 `INSUFFICIENT`。
+- 距离方向：旧指标仍比较绝对变化量；新增可选 `direction`（`approaching`/`separating`/`stable`），只有冻结目标声明方向时才比较方向，旧目标含义和旧 artifact 兼容。
+- 下落几何：`templates/web-lite/cut-stack-dodge-v1/src/main.ts` 的观察边界现在包含 `fallOffset`、下落旋转后的实际绘制包围盒和 `settled` 隐藏状态；没有修改模拟物理参数。
+- 画面一致性：cut-stack 自然点击会读取 canvas 实际像素颜色边界，并与 runtime 观察边界比较；模板测试覆盖 390×844 和 430×932 两个视口。
+
+### 失败回归与通过证据
+
+- 修复前失败：自然点击无状态变化被时间戳差异判为变化；A→C 单元回归会被错误终点动作开始时间缩短；反向接近/远离样例在旧绝对值比较下无法区分；模板 canvas 边界与下落对象观察边界不一致。
+- 修复后定向回归：`tests/unit/reference-level-qa-measurements.test.ts`、`tests/e2e/reference-level-behavior-browser.test.ts`、`tests/e2e/cut-stack-playwright-qa.test.ts` 均通过；后者包含真实模板自然点击、canvas 像素边界读取和两个手机视口。
+
+### 真实竞品样本状态
+
+- 已核对 `runs/20260919050429-6b7e8c7a`：录屏证据已验证（SHA-256 `3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a`），但 `REFERENCE_DEEP_RESEARCH` 因 `codex exec timed out after 300000ms` 失败；恢复出的 `reference-level-reconstruction.json` 没有 `behaviorMeasurements`，因此不能作为 R1 真实量测通过证据。
+- 已核对 `runs/20260917065307-974ee21f` 与 `runs/20260919045632-6b7e8c7a`：已有录屏/接触表资料，但研究输出明确阻塞于 `recording-level:non-authoritative-provider:mock`，不得升级为真实竞品还原通过。
+- 本轮未让产品经理补填坐标、时间或技术规格，也未用自制样例替代真实参考。真实最小样本仍为 `BLOCKED`，最小缺口是使用权威研究输出从已验证录屏提取至少两项 source-bound 行为量测，并保留 frame/checkpoint provenance，然后才可进入 Builder→自然 QA→差异定位链路。

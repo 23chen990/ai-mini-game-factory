@@ -4,6 +4,7 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { WebLiteRuntimeAdapter } from '../../src/adapters/web-lite.js';
 import { lockProductionLine } from '../../src/core/production-lines.js';
+import { runCutStackDodgePlaywrightQa } from '../../src/qa/cut-stack-playwright-qa.js';
 import { runPlaywrightQa } from '../../src/qa/playwright-qa.js';
 import type { GameBlueprint, StyleLock } from '../../src/schemas/index.js';
 
@@ -67,4 +68,24 @@ describe('cut-stack-dodge natural runtime QA', () => {
       expect.objectContaining({ name: 'packaged-webkit-load', passed: true }),
     ]));
   }, 30_000);
+
+  it('keeps the rendered falling bounds aligned at the wider phone viewport', async () => {
+    const runRoot = await mkdtemp(path.join(tmpdir(), 'cut-stack-viewport-qa-'));
+    roots.push(runRoot);
+    const workspace = path.join(runRoot, 'workspace/game');
+    const adapter = new WebLiteRuntimeAdapter(process.cwd());
+    await mkdir(path.join(runRoot, 'artifacts'), { recursive: true });
+    await adapter.createProject(workspace, 'cut-stack-dodge-v1');
+    await adapter.applyBlueprint(workspace, blueprint, styleLock);
+    await adapter.buildWeb(workspace);
+    await writeFile(path.join(runRoot, 'artifacts/production-line-contract.json'), `${JSON.stringify(lockProductionLine('cut-stack-dodge'), null, 2)}\n`);
+
+    const report = await runCutStackDodgePlaywrightQa(adapter, workspace, runRoot, { width: 430, height: 932 });
+
+    expect(report.passed, JSON.stringify({ checks: report.checks, issues: report.issues }, null, 2)).toBe(true);
+    expect(report.checks).toEqual(expect.arrayContaining([
+      expect.objectContaining({ name: 'cut-stack-rendered-falling-bounds', passed: true }),
+    ]));
+  }, 30_000);
+
 });

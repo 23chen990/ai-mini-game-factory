@@ -99,6 +99,7 @@ export const MeasurementKindSchema = z.enum(['checkpoint-interval', 'relative-di
 export const MeasurementUnitSchema = z.enum(['ms', 'normalized-distance']);
 export const MeasurementStatusSchema = z.enum(['OBSERVED', 'INFERRED', 'UNKNOWN']);
 export const MeasurementCoordinateSpaceSchema = z.enum(['screen-normalized', 'world-relative', 'unknown']);
+export const MeasurementDirectionSchema = z.enum(['approaching', 'separating', 'stable']);
 
 /**
  * A small, source-bound observation that survives the projection into the
@@ -121,6 +122,7 @@ export const ReferenceBehaviorMeasurementSchema = z.object({
   observedRange: MeasurementRangeSchema.nullable(),
   uncertainty: z.number().nonnegative().nullable(),
   coordinateSpace: MeasurementCoordinateSpaceSchema,
+  direction: MeasurementDirectionSchema.optional(),
   sourceViewport: Viewport.optional(),
   applicability: Text,
   basis: Text,
@@ -146,6 +148,7 @@ export const ReferenceBehaviorTargetSchema = z.object({
   acceptanceRange: MeasurementRangeSchema,
   uncertainty: z.number().nonnegative(),
   coordinateSpace: MeasurementCoordinateSpaceSchema.exclude(['unknown']),
+  direction: MeasurementDirectionSchema.optional(),
   sourceViewport: Viewport.optional(),
   applicability: Text,
   sourceFrameIds: z.array(Text).min(1),
@@ -168,6 +171,7 @@ const RuntimeMeasurementSchema = z.object({
   // Optional for legacy runtime traces.  The comparison gate treats a missing
   // or mismatched space as INSUFFICIENT instead of rejecting the whole trace.
   coordinateSpace: z.enum(['screen-normalized', 'world-relative']).optional(),
+  direction: MeasurementDirectionSchema.optional(),
   sourceCheckpointIds: z.array(Text).min(1),
   subjectObjectId: Text.nullable(),
   relatedObjectId: Text.nullable(),

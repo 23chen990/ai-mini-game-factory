@@ -94,7 +94,7 @@ function check(name: string, passed: boolean, evidence: unknown): QaReport['chec
  * natural track comes from DOM pointer input; the test API is read-only until
  * the separate deterministic coverage track begins.
  */
-export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, workspace: string, runRoot: string): Promise<QaReport> {
+export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, workspace: string, runRoot: string, viewport = { width: 390, height: 844 }): Promise<QaReport> {
   await Promise.all([
     mkdir(path.join(runRoot, 'screenshots/cut-stack'), { recursive: true }),
     mkdir(path.join(runRoot, 'logs'), { recursive: true }),
@@ -110,7 +110,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
   let browser: Browser | undefined;
   try {
     browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+    const context = await browser.newContext({ viewport, hasTouch: true, isMobile: true });
     const page = await context.newPage();
     page.on('console', (message) => {
       consoleLines.push(`[chromium:${message.type()}] ${message.text()}`);
@@ -132,6 +132,48 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
     await capture(page, runRoot, 'natural-start', screenshots);
 
     await naturalTap(page, actions);
+    await page.waitForFunction(() => {
+      const current = (window as unknown as { __GAME_TEST__?: { getState?: () => { objects?: Array<{ lifecycle?: string; fallOffset?: number }> } } }).__GAME_TEST__?.getState?.();
+      return Boolean(current?.objects?.some((object) => object.lifecycle === 'falling' && Number(object.fallOffset) > 40));
+    }, undefined, { timeout: 8_000 });
+    const fallingGeometry = await page.evaluate(() => {
+      const game = (window as unknown as { __GAME_TEST__?: { getState?: () => { objects?: Array<{ id: string; lifecycle: string }> } } }).__GAME_TEST__?.getState?.();
+      const falling = game?.objects?.find((object) => object.lifecycle === 'falling');
+      const snapshot = (window as unknown as { __REFERENCE_LEVEL_TEST__?: { getSnapshot?: () => { objectStates?: Array<{ semanticId: string; boundsNormalized?: { x: number; y: number; width: number; height: number } }> } } }).__REFERENCE_LEVEL_TEST__?.getSnapshot?.();
+      const observed = falling && snapshot?.objectStates?.find((object) => object.semanticId === falling.id)?.boundsNormalized;
+      const canvas = document.querySelector<HTMLCanvasElement>('#game-canvas');
+      const context = canvas?.getContext('2d');
+      if (!falling || !observed || !canvas || !context) return { passed: false, reason: 'falling object, snapshot bounds, or canvas context unavailable' };
+      try {
+        const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
+        const palette = ['#ffb38a', '#7ec8ff', '#ffd36e', '#a7d8bc'];
+        const hex = palette[Math.abs(falling.id.length) % palette.length]!;
+        const expected = [Number.parseInt(hex.slice(1, 3), 16), Number.parseInt(hex.slice(3, 5), 16), Number.parseInt(hex.slice(5, 7), 16)];
+        const rect = canvas.getBoundingClientRect();
+        let minX = canvas.width; let minY = canvas.height; let maxX = -1; let maxY = -1;
+        for (let y = 0; y < canvas.height; y += 1) for (let x = 0; x < canvas.width; x += 1) {
+          const offset = (y * canvas.width + x) * 4;
+          const normalizedX = (rect.left + x / canvas.width * rect.width) / innerWidth;
+          const withinObservedColumn = normalizedX >= observed.x - 0.12 && normalizedX <= observed.x + observed.width + 0.12;
+          if (withinObservedColumn && Math.hypot(pixels[offset]! - expected[0]!, pixels[offset + 1]! - expected[1]!, pixels[offset + 2]! - expected[2]!) < 16) {
+            minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
+          }
+        }
+        if (maxX < minX || maxY < minY) return { passed: false, reason: 'falling object fill was not visible in canvas pixels', observed };
+        const rendered = {
+          x: (rect.left + minX / canvas.width * rect.width) / innerWidth,
+          y: (rect.top + minY / canvas.height * rect.height) / innerHeight,
+          width: ((maxX - minX + 1) / canvas.width * rect.width) / innerWidth,
+          height: ((maxY - minY + 1) / canvas.height * rect.height) / innerHeight,
+        };
+        const passed = Math.abs(observed.x - rendered.x) < 0.06 && Math.abs(observed.y - rendered.y) < 0.06
+          && Math.abs(observed.width - rendered.width) < 0.08 && Math.abs(observed.height - rendered.height) < 0.08;
+        return { passed, observed, rendered };
+      } catch (error) {
+        return { passed: false, reason: String(error), observed };
+      }
+    });
+    checks.push(check('cut-stack-rendered-falling-bounds', fallingGeometry.passed, fallingGeometry));
     const failed = await waitForPhase(page, 'failed');
     const failureEvents = await events(page);
     const cutObserved = hasEvent(failureEvents, 'cut');

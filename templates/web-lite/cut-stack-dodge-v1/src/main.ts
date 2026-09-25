@@ -201,16 +201,32 @@ function placement(object: { x: number; y: number; width: number; height: number
   return { horizontalBand, verticalBand, widthBand: extent(object.width / WORLD.width), heightBand: extent(object.height / WORLD.height), orientationBand };
 }
 
-function normalizedVisibleBounds(object: { x: number; y: number; width: number; height: number }) {
+function normalizedVisibleBounds(object: { x: number; y: number; width: number; height: number; fallOffset?: number; lifecycle?: CourseObjectState['lifecycle'] }, cameraX = 0) {
   const rect = canvas.getBoundingClientRect();
   if (rect.width <= 0 || rect.height <= 0 || window.innerWidth <= 0 || window.innerHeight <= 0) return undefined;
+  if (object.lifecycle === 'settled') return undefined;
+  let x = object.x - cameraX;
+  let y = object.y + (object.fallOffset ?? 0);
+  let width = object.width;
+  let height = object.height;
+  if (object.lifecycle === 'falling') {
+    const angle = (object.fallOffset ?? 0) * 0.018;
+    const halfWidth = (object.width + 16) / 2;
+    const halfHeight = object.height / 2;
+    const extentX = Math.abs(Math.cos(angle)) * halfWidth + Math.abs(Math.sin(angle)) * halfHeight;
+    const extentY = Math.abs(Math.sin(angle)) * halfWidth + Math.abs(Math.cos(angle)) * halfHeight;
+    x += object.width / 2 - extentX;
+    y += object.height / 2 - extentY;
+    width = extentX * 2;
+    height = extentY * 2;
+  }
   const scale = Math.min(rect.width / WORLD.width, rect.height / WORLD.height);
   const offsetX = (rect.width - WORLD.width * scale) / 2;
   const offsetY = (rect.height - WORLD.height * scale) / 2;
-  const left = Math.max(0, Math.min(window.innerWidth, rect.left + offsetX + object.x * scale));
-  const top = Math.max(0, Math.min(window.innerHeight, rect.top + offsetY + object.y * scale));
-  const right = Math.max(0, Math.min(window.innerWidth, rect.left + offsetX + (object.x + object.width) * scale));
-  const bottom = Math.max(0, Math.min(window.innerHeight, rect.top + offsetY + (object.y + object.height) * scale));
+  const left = Math.max(0, Math.min(window.innerWidth, rect.left + offsetX + x * scale));
+  const top = Math.max(0, Math.min(window.innerHeight, rect.top + offsetY + y * scale));
+  const right = Math.max(0, Math.min(window.innerWidth, rect.left + offsetX + (x + width) * scale));
+  const bottom = Math.max(0, Math.min(window.innerHeight, rect.top + offsetY + (y + height) * scale));
   if (right <= left || bottom <= top) return undefined;
   return { x: left / window.innerWidth, y: top / window.innerHeight, width: (right - left) / window.innerWidth, height: (bottom - top) / window.innerHeight };
 }
@@ -270,7 +286,6 @@ function getSnapshot() {
     ? !(phase === 'replay' && object.role !== 'support') && !(terminal && (object.role === 'hazard' || object.role === 'cuttable'))
     : object.lifecycle !== 'settled';
   const feedbackId = recording ? `feedback-${phase}` : undefined;
-  const playerBounds = { x: state.player.x - cameraX - state.player.radius, y: state.player.y - state.player.radius, width: state.player.radius * 2, height: state.player.radius * 2 };
   return {
     checkpointId: checkpointId(),
     phase,
@@ -280,8 +295,8 @@ function getSnapshot() {
         role: 'player',
         lifecycle: lifecycleForPlayer(),
         visible: true,
-        placement: placement(playerBounds, 'player'),
-        boundsNormalized: normalizedVisibleBounds(playerBounds),
+        placement: placement({ x: state.player.x - cameraX - state.player.radius, y: state.player.y - state.player.radius, width: state.player.radius * 2, height: state.player.radius * 2 }, 'player'),
+        boundsNormalized: normalizedVisibleBounds({ x: state.player.x - state.player.radius, y: state.player.y - state.player.radius, width: state.player.radius * 2, height: state.player.radius * 2 }, cameraX),
         coordinateSpace: 'screen-normalized',
       },
       ...state.objects.map((object) => ({
@@ -290,7 +305,7 @@ function getSnapshot() {
         lifecycle: lifecycleForObject(object),
         visible: visibleForObject(object),
         placement: placement({ ...object, x: object.x - cameraX }, object.role),
-        boundsNormalized: normalizedVisibleBounds({ ...object, x: object.x - cameraX }),
+        boundsNormalized: normalizedVisibleBounds(object, cameraX),
         coordinateSpace: 'screen-normalized',
       })),
       {
