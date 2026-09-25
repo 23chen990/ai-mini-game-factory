@@ -1,12 +1,14 @@
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { CodexAccountProvider, type CodexExecutor } from '../../src/providers/codex-account.js';
+import { ReferenceResearchAgent } from '../../src/agents/index.js';
 import type { CodexExecRequest, CodexExecResult } from '../../src/providers/codex-cli.js';
 import { normalizeReferenceBehaviorAnalysis } from '../../src/core/reference-evidence.js';
 import { deriveReferenceLevelImplementationContract, evaluateReferenceLevelRuntimeTrace } from '../../src/core/reference-level.js';
 import { sha256Text } from '../../src/core/files.js';
 import { ReferenceBehaviorAnalysisSchema } from '../../src/schemas/index.js';
 import { ReferenceLevelRuntimeTraceSchema } from '../../src/schemas/reference-recording.js';
+import { measureRuntimeBehaviors } from '../../src/qa/reference-level-qa.js';
 import { referenceBehaviorChecks } from '../fixtures/reference-behavior.js';
 
 const hash = (value: string) => sha256Text(value);
@@ -76,6 +78,24 @@ function runtimeTrace(raw: any, contract: any, observedMeasurements: any[]) {
   };
 }
 
+function assertStrictSchemaTree(value: unknown): void {
+  if (Array.isArray(value)) {
+    value.forEach(assertStrictSchemaTree);
+    return;
+  }
+  if (!value || typeof value !== 'object') return;
+  const node = value as Record<string, unknown>;
+  if (node.properties && typeof node.properties === 'object' && !Array.isArray(node.properties)) {
+    const properties = node.properties as Record<string, unknown>;
+    expect(node.additionalProperties).toBe(false);
+    expect(new Set(node.required as string[])).toEqual(new Set(Object.keys(properties)));
+    Object.values(properties).forEach(assertStrictSchemaTree);
+  }
+  Object.entries(node).forEach(([key, child]) => {
+    if (key !== 'properties' && key !== 'required') assertStrictSchemaTree(child);
+  });
+}
+
 describe('R1 time measurement direction pipeline', () => {
   it('allows null only for behavior measurement direction in the structured output schema', () => {
     const root = '/tmp/r1-direction-schema-test';
@@ -86,19 +106,60 @@ describe('R1 time measurement direction pipeline', () => {
       const schema = client.requests[0]?.outputSchema as any;
       const find = (value: any): any => value?.properties?.behaviorMeasurements ? value.properties.behaviorMeasurements.items : Array.isArray(value) ? value.map(find).find(Boolean) : value && typeof value === 'object' ? Object.values(value).map(find).find(Boolean) : undefined;
       const measurement = find(schema);
-      expect(measurement.required).not.toContain('direction');
-      expect(measurement.properties.direction.anyOf).toEqual(expect.arrayContaining([expect.objectContaining({ type: 'null' })]));
+      expect(measurement.required).toContain('direction');
+      expect(new Set(measurement.required)).toEqual(new Set(Object.keys(measurement.properties)));
+      expect(measurement.additionalProperties).toBe(false);
+      expect(measurement.properties.direction.anyOf).toEqual([
+        { type: 'string', enum: ['approaching', 'separating', 'stable'] },
+        { type: 'null' },
+      ]);
+      assertStrictSchemaTree(schema);
+
+      const findGestureDirection = (value: any): any => {
+        if (Array.isArray(value)) return value.map(findGestureDirection).find(Boolean);
+        if (!value || typeof value !== 'object') return undefined;
+        if (value.properties?.gestureDirection !== undefined) return value.properties.gestureDirection;
+        const propertyMatch = value.properties && typeof value.properties === 'object' ? Object.values(value.properties).map(findGestureDirection).find(Boolean) : undefined;
+        return propertyMatch ?? Object.entries(value).filter(([key]) => key !== 'properties' && key !== 'required').map(([, child]) => findGestureDirection(child)).find(Boolean);
+      };
+      expect(findGestureDirection(schema)).toEqual({ type: 'string', enum: ['none', 'up', 'down', 'left', 'right'] });
     });
   });
 
-  it('normalizes transport null before the canonical parse and keeps the Builder target directionless for time', () => {
+  it('runs the formal Research Agent, normalizes transport null before canonical parse, and keeps the Builder target directionless for time', async () => {
     const raw = analysis(makeLevel('approaching'));
-    const normalized = normalizeReferenceBehaviorAnalysis(raw, pack) as any;
-    const parsed = ReferenceBehaviorAnalysisSchema.parse(normalized);
+    const research = await new ReferenceResearchAgent(new CodexAccountProvider(new FakeExecutor([raw]))).run(pack as any, context('/tmp/r1-direction-agent-test'));
+    const parsed = ReferenceBehaviorAnalysisSchema.parse(research.value);
     const contract = deriveReferenceLevelImplementationContract(parsed.levelReconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('reconstruction') });
     expect((parsed.levelReconstruction?.behaviorMeasurements ?? [])[0]).not.toHaveProperty('direction');
+    expect((parsed.levelReconstruction?.behaviorMeasurements ?? [])[1]).toMatchObject({ direction: 'approaching' });
     expect(contract.behaviorMeasurements?.[0]).not.toHaveProperty('direction');
     expect(contract.behaviorMeasurements?.[1]).toMatchObject({ direction: 'approaching' });
+  });
+
+  it('projects the same canonical measurements into the Builder-visible targets', async () => {
+    const raw = analysis(makeLevel('approaching'));
+    const client = new FakeExecutor([raw, 'implemented']);
+    const provider = new CodexAccountProvider(client);
+    const research = await new ReferenceResearchAgent(provider).run(pack as any, context('/tmp/r1-direction-builder-test'));
+    const parsed = ReferenceBehaviorAnalysisSchema.parse(research.value);
+    const contract = deriveReferenceLevelImplementationContract(parsed.levelReconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('builder-reconstruction') });
+
+    await provider.build({
+      workspace: '/tmp/r1-direction-builder-test/workspace/game',
+      blueprint: { designMode: 'reference_reskin', runtime: 'web-lite', preferences: {} } as any,
+      styleLock: {} as any,
+      assets: {} as any,
+      template: 'cut-stack-dodge-v1',
+      referenceLevelBehaviorTargets: contract.behaviorMeasurements,
+    });
+
+    const prompt = client.requests.find((request) => request.label === 'BUILD')?.prompt ?? '';
+    expect(prompt).toContain('"kind":"checkpoint-interval"');
+    expect(prompt).toContain('"kind":"relative-distance"');
+    expect(prompt).toContain('"direction":"approaching"');
+    const timeTarget = prompt.match(/\{"id":"input-to-contact"[\s\S]*?\}/)?.[0] ?? '';
+    expect(timeTarget).not.toContain('"direction"');
   });
 
   it('does not require a candidate direction for the derived time target', () => {
@@ -109,7 +170,13 @@ describe('R1 time measurement direction pipeline', () => {
     expect(target).toBeDefined();
     if (!target) return;
     expect(target).not.toHaveProperty('direction');
-    const trace = ReferenceLevelRuntimeTraceSchema.parse(runtimeTrace(parsed.levelReconstruction, contract, [{ measurementId: target.measurementId, status: 'MEASURED', unit: 'ms', actualRange: { min: 600, max: 600 }, coordinateSpace: 'screen-normalized', sourceCheckpointIds: ['tap-1', 'cut-1'], subjectObjectId: null, relatedObjectId: null, basis: 'measured', evidence: [{ path: 'evidence/trace.json', sha256: hash('trace') }] }]));
+    const candidateMeasurements = measureRuntimeBehaviors(contract, [
+      { sourceCheckpointId: 'tap-1', capturedAtMs: 100, sampleGapMs: 20, phase: 'input', objectStates: [], observedRelationIds: [], cameraMode: 'follow', visibleFeedbackIds: [] },
+      { sourceCheckpointId: 'cut-1', capturedAtMs: 700, sampleGapMs: 20, phase: 'interaction', objectStates: [], observedRelationIds: [], cameraMode: 'follow', visibleFeedbackIds: [] },
+    ] as any, [{ path: 'evidence/trace.json', sha256: hash('trace') }], { width: 390, height: 844 });
+    expect(candidateMeasurements?.[0]).toMatchObject({ measurementId: target.measurementId, status: 'MEASURED', actualRange: { min: 580, max: 620 } });
+    expect(candidateMeasurements?.[0]).not.toHaveProperty('direction');
+    const trace = ReferenceLevelRuntimeTraceSchema.parse(runtimeTrace(parsed.levelReconstruction, contract, candidateMeasurements ?? []));
     const gate = evaluateReferenceLevelRuntimeTrace(contract, trace);
     expect(gate.measurementResults?.find((item) => item.measurementId === target.measurementId)?.result).toBe('CONFORMING');
     expect(gate.blockers).not.toContain(`reference-level:measurement-insufficient:${target.measurementId}`);

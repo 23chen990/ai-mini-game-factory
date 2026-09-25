@@ -106,7 +106,7 @@ function allowNullBehaviorMeasurementDirection(value: unknown, inBehaviorMeasure
   if (inBehaviorMeasurements && input.properties && typeof input.properties === 'object' && !Array.isArray(input.properties)) {
     const properties = input.properties as Record<string, unknown>;
     if (properties.direction !== undefined) {
-      const required = Array.isArray(input.required) ? input.required.filter((name): name is string => typeof name === 'string' && name !== 'direction') : undefined;
+      const required = Array.isArray(input.required) ? input.required.filter((name): name is string => typeof name === 'string') : undefined;
       return { ...input, properties: { ...properties, direction: { anyOf: [properties.direction, { type: 'null' }] } }, ...(required ? { required } : {}) };
     }
   }

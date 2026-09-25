@@ -62,3 +62,11 @@
 - `normalizeReferenceBehaviorAnalysis` 在正式 `ReferenceBehaviorAnalysisSchema.parse` 前删除量测 `direction: null`。因此时间量测在 canonical artifact 与 Builder-facing target 中都省略方向；relative-distance 仍可保留接近/远离/稳定方向。
 - source、target 与 runtime schema 显式拒绝 checkpoint-interval 的非空方向，防止方向要求重新进入时间链路。旧的缺省方向距离 artifact 保持原序列化形状和绝对距离比较语义。
 - 新增 `tests/unit/reference-direction-pipeline.test.ts` 覆盖 Provider schema、Research→canonical parse→contract、无方向候选时间量测和旧距离 artifact。
+
+### R1-FIX-01a 传输 required 收尾
+
+- 根因是 `allowNullBehaviorMeasurementDirection` 在给量测 `direction` 增加 `null` 分支时同时过滤了 `required`；本次只保留该节点原有的 `required`，没有改变 canonical schema 或其它方向字段。
+- 失败反例先在基线 `d9def26504281027197dc10b15aa409300710a0c` 上运行：`tests/unit/reference-direction-pipeline.test.ts` 因实际 `request.outputSchema` 的量测 `required` 缺少 `direction` 失败；修复后同一测试通过，并递归核对嵌套/联合分支的 strict 对象约束与 `gestureDirection` 枚举未被 nullable 扩散。
+- 合成接线证据经正式 `ReferenceResearchAgent.run → CodexAccountProvider → FakeExecutor`：传输时间量测 `direction:null` 在 canonical 和 Builder 目标中被省略，距离量测保留 `approaching`；Builder 请求同时包含无方向时间目标和有方向距离目标。
+- 候选时间量测由 `measureRuntimeBehaviors` 根据合成 `capturedAtMs`/`sampleGapMs` 生成，再交给 `evaluateReferenceLevelRuntimeTrace`，结果为 `CONFORMING`，没有缺少空间方向的阻塞。
+- 本次未读取或修改真实 `runs/`，未调用真实 Research/Builder/Fixer，未修改 QA 算法、阈值、冻结标准或共享 Git 配置。
