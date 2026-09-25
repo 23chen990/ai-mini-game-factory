@@ -9,6 +9,7 @@ import { sha256Text } from '../../src/core/files.js';
 import { ReferenceBehaviorAnalysisSchema } from '../../src/schemas/index.js';
 import { ReferenceLevelRuntimeTraceSchema } from '../../src/schemas/reference-recording.js';
 import { measureRuntimeBehaviors } from '../../src/qa/reference-level-qa.js';
+import { routeQaFailure } from '../../src/factory.js';
 import { referenceBehaviorChecks } from '../fixtures/reference-behavior.js';
 
 const hash = (value: string) => sha256Text(value);
@@ -243,5 +244,27 @@ describe('R1 time measurement direction pipeline', () => {
     ]));
     const gate = evaluateReferenceLevelRuntimeTrace(contract, trace);
     expect(gate.measurementResults?.find((item) => item.measurementId === distance.measurementId)?.result).toBe('CONFORMING');
+  });
+
+  it('waits for evidence and does not call Fixer for visual INSUFFICIENT', async () => {
+    let waited: string[] = [];
+    let fixerCalls = 0;
+    const route = await routeQaFailure({ schemaVersion: 1, passed: false, visualStatus: 'INSUFFICIENT', checks: [], issues: [], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date(0).toISOString() }, {
+      waitForEvidence: async (evidence) => { waited = evidence; },
+      runFixer: async () => { fixerCalls += 1; },
+    });
+    expect(route).toBe('WAITING_FOR_EVIDENCE');
+    expect(waited).toContain('qa:fixer-not-routed:visual-evidence-insufficient');
+    expect(fixerCalls).toBe(0);
+  });
+
+  it('routes a confirmed visual MISMATCH to Fixer', async () => {
+    let fixerCalls = 0;
+    const route = await routeQaFailure({ schemaVersion: 1, passed: false, visualStatus: 'MISMATCH', checks: [], issues: [], screenshots: [], consoleLog: 'logs/console.log', testedAt: new Date(0).toISOString() }, {
+      waitForEvidence: async () => undefined,
+      runFixer: async () => { fixerCalls += 1; },
+    });
+    expect(route).toBe('FIX');
+    expect(fixerCalls).toBe(1);
   });
 });

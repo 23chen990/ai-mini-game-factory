@@ -110,3 +110,43 @@
 - 合成接线证据经正式 `ReferenceResearchAgent.run → CodexAccountProvider → FakeExecutor`：传输时间量测 `direction:null` 在 canonical 和 Builder 目标中被省略，距离量测保留 `approaching`；Builder 请求同时包含无方向时间目标和有方向距离目标。
 - 候选时间量测由 `measureRuntimeBehaviors` 根据合成 `capturedAtMs`/`sampleGapMs` 生成，再交给 `evaluateReferenceLevelRuntimeTrace`，结果为 `CONFORMING`，没有缺少空间方向的阻塞。
 - 本次未读取或修改真实 `runs/`，未调用真实 Research/Builder/Fixer，未修改 QA 算法、阈值、冻结标准或共享 Git 配置。
+
+## R1-NEXT-02：候选方向证据与 cut-stack 视觉三态
+
+### 候选方向判定
+
+`src/qa/reference-level-qa.ts:measureRuntimeBehaviors` 保留候选起点到终点的有符号中心距离变化。相对距离目标现在用同一视口的 screen-normalized bounds 和浏览器像素分辨率推导端点分辨率，形成 signed interval；区间完整落在零点一侧才输出 `approaching` 或 `separating`。区间跨零时，方向目标为 `INSUFFICIENT`；只有 `stable` 目标的 absolute change 完整落在来源接受区间内才可输出稳定。没有 direction 的旧目标仍走 absolute-distance 语义。测试覆盖高分辨率接近、分辨率不足、反向远离、稳定、旧目标和浏览器自然输入。
+
+### cut-stack 视觉证据三态
+
+`src/qa/cut-stack-playwright-qa.ts:classifyCutStackGeometryObservation` 输出 `CONFORMING`、`MISMATCH` 或 `INSUFFICIENT`。缺少 falling object、runtime bounds、renderColor、canvas/context、像素、可见控制 boundingBox，或同色组件不能可靠隔离时保留证据不足；只有唯一或由观察框明显主导的局部连通块才进入冻结的 x/y `.06`、width/height `.08` 几何比较。没有扩大阈值，也没有修改游戏行为。每次诊断保留对象 ID、lifecycle、renderColor、观察框、像素连通块、视口、截图、检查和异常原因。
+
+`src/factory.ts:routeQaFailure` 已接入 preview 和 normal QA 决策层：视觉 `INSUFFICIENT` 进入 waiting，并记录 `qa:fixer-not-routed:visual-evidence-insufficient`；视觉 `MISMATCH` 才进入现有 Fixer 路径；`CONFORMING` 保持原通过路径。单元测试验证两条路由且确认不足证据不调用 Fixer。
+
+### 高保真信息传递盘点
+
+| 信息项目 | Research 当前如何保存 | contract 如何投影 | Builder 实际收到什么 | runtime 是否有可调入口 | QA 实际检查什么 | 丢失／压缩／未测量的位置 | 最小补齐建议 |
+|---|---|---|---|---|---|---|---|
+| 输入到反馈的时间 | `src/schemas/reference-recording.ts:ReferenceBehaviorMeasurementSchema` 保存 checkpoint interval、来源帧和区间 | `src/core/reference-level.ts:deriveReferenceLevelImplementationContract` 投影 expected/acceptance range | `src/providers/codex-account.ts:behaviorTargetInstruction` 收到语义 ID、区间和适用条件；原始时间戳不下发 | `src/qa/reference-level-qa.ts:runReferenceLevelQa` 可记录端点窗口；`observationDelayMs` 只延迟 QA 观察 | `measureRuntimeBehaviors` 比较端点窗口并保留 `INSUFFICIENT` | 反馈内部分段延迟已测时仍被压缩；未测时无法从坐标推断 | 下一批增加 source-bound 反馈事件序列和相邻窗口，保持原接受标准 |
+| 关键对象初始距离 | `ReferenceCheckpointSchema.objectStates` 可保存 bounds/relations，只有带来源帧的记录才算已测 | relative-distance target 保留范围和方向；placement 只保留语义 band | Builder 收到对象 ID、相对距离目标和粗 placement band | runtime `__REFERENCE_LEVEL_TEST__.getSnapshot` 返回实时 normalized bounds | 方向、距离区间和坐标空间 | 原始坐标有意不进入 Builder；Research 未量测时当前无法确认 | 仅在来源帧存在时补 source viewport 和距离窗口 |
+| 主角与目标尺寸、占屏比例 | `ReferenceCheckpointSchema.boundsNormalized` 能保存观察框 | `PlacementSignatureSchema` 只投影 width/height band | Builder 收到粗尺寸档位 | runtime 快照可读实时 bounds | 仅检查声明的 bounds 目标 | 精确占屏比例被压缩，部分行为没有目标故未测 | 增加 source-bound extent band，不填猜测坐标 |
+| 运动轨迹与旋转 | checkpoint lifecycle/placement 是离散状态；没有连续轨迹序列 | contract 传离散 orientation/lifecycle | Builder 收到离散朝向与生命周期，没有轨迹点 | runtime 只能观察当前 bounds/placement | cut-stack 检查 falling lifecycle 和像素几何，未检查完整曲线 | 连续轨迹、旋转曲线没测；候选可实现但 QA 未检查 | 只补少量有来源的轨迹锚点和旋转区间 |
+| 镜头运动 | `ReferenceLevelReconstructionSchema.cameraSequence` 保存 checkpoint、mode、focus role | contract 传 camera sequence | Builder 收到阶段和焦点角色 | runtime 快照报告 cameraMode | 检查模式和可见对象 | 平移/缩放幅度及延迟未测 | 为已有 camera sequence 补观察视口/幅度区间 |
+| 接触后的反馈顺序 | `ReferenceCheckpointSchema.visibleFeedbackIds` 和 interaction/terminal/replay 序列 | contract 传语义 ID 与顺序 | Builder 收到反馈 ID、失败原因和 replay topology | runtime 快照返回 visibleFeedbackIds 与终态 | 自然浏览器检查 cut/drop/hazard、终态与 replay | 事件间精确时间和并行关系未测 | 只补事件顺序及相邻窗口，逐项增加 QA 断言 |
+| 失败到重玩时间 | terminal/replay checkpoint 与 action sequence | contract 传终态/replay 拓扑 | Builder 收到失败原因和返回 checkpoint | `runReferenceLevelQa`/cut-stack 自然流走失败与 replay | 检查可见 retry/replay 和返回 ready | 按钮可用、点击到恢复的精确时间未测 | 增加两个 source-bound 时间窗口，保持玩法不变 |
+
+字段存在不等于 Research 已正确量测；当前已测但未传的是被 contract 压缩的精确窗口，粗档位是已传但降精度，传到候选但 QA 未检查的是连续轨迹、镜头幅度和事件间精确时间，Research 本来就没测到的是旋转曲线与细粒度反馈延迟，其余保持“当前无法确认”。`src/providers/codex-account.ts` 同时要求高保真语义和舍弃 source coordinates/timestamps，二者的可执行边界是传递可验证区间而不是伪造原始坐标精度。
+
+### 资料采集调用链状态
+
+已确认的调用链为 `factory.ts` 选择已验证录屏 → `src/core/reference-recording.ts:extractReferenceRecordingFrames/selectReferenceResearchMedia` 生成 run-bound frame manifest/contact sheets → `ReferenceResearchAgent` → contract 投影 → `runReferenceLevelQa` 候选 QA。当前没有可靠证据确认“参考 URL → 打开页面 → 操作 → 录屏 → 归档”的端到端自动链路；URL 打开、操作录制和归档继续标为未确认。未访问未授权账号，也未调用真实 Research/Builder/Fixer。
+
+### 证据边界
+
+历史 cut-stack 失败资料仍保留在 `/tmp/r1-next-01-evidence/`；本批诊断资料写入独立的 `/tmp/r1-next-02-cut-stack-evidence/`。新 manifest 不再写入旧提交 SHA，改为记录测试源码、QA 源码和构建文件 SHA-256；原始失败是否复现与本次定向诊断分开记录。视觉 `INSUFFICIENT` 不升级为颜色根因或几何 mismatch，执行异常、识别证据不足、画面与观察不一致、尚无法判断保持独立分类。
+
+### 本批验证记录
+
+- 定向 Vitest：5 个文件、38 个测试通过；包含方向量测、聚合规则、浏览器自然输入、cut-stack 三态和工厂路由。
+- 全量 Vitest：176 个文件、1028 个测试通过（`CI=1 pnpm exec vitest run --maxWorkers=1 --no-file-parallelism`）。
+- `pnpm lint`、`pnpm typecheck`、`git diff --check` 均通过。未运行真实 run，也未调用真实 Provider、Builder 或 Fixer。

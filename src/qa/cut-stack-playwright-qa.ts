@@ -16,6 +16,54 @@ type RuntimeState = {
   events?: unknown;
 };
 
+export type CutStackVisualStatus = 'CONFORMING' | 'MISMATCH' | 'INSUFFICIENT';
+type NormalizedBox = { x: number; y: number; width: number; height: number };
+
+export function classifyCutStackGeometryObservation(input: {
+  observed?: NormalizedBox;
+  renderColor?: string;
+  components?: NormalizedBox[];
+  observationFailure?: string;
+}): { status: CutStackVisualStatus; reason?: string; rendered?: NormalizedBox } {
+  if (input.observationFailure) return { status: 'INSUFFICIENT', reason: input.observationFailure };
+  if (!input.observed) return { status: 'INSUFFICIENT', reason: 'runtime snapshot bounds unavailable' };
+  if (!input.renderColor) return { status: 'INSUFFICIENT', reason: 'falling object renderColor evidence unavailable' };
+  const overlap = (left: NormalizedBox, right: NormalizedBox) => {
+    const width = Math.max(0, Math.min(left.x + left.width, right.x + right.width) - Math.max(left.x, right.x));
+    const height = Math.max(0, Math.min(left.y + left.height, right.y + right.height) - Math.max(left.y, right.y));
+    return width * height;
+  };
+  const candidates = (input.components ?? []).filter((component) => overlap(component, input.observed!) > 0);
+  if (candidates.length === 0) return { status: 'INSUFFICIENT', reason: 'falling object fill was not isolated in canvas pixels', rendered: undefined };
+  let rendered: NormalizedBox | undefined;
+  if (candidates.length === 1) {
+    rendered = candidates[0];
+  } else {
+    const observedArea = input.observed.width * input.observed.height;
+    const ranked = candidates.map((component) => ({ component, ratio: observedArea > 0 ? overlap(component, input.observed!) / observedArea : 0 }))
+      .sort((left, right) => right.ratio - left.ratio);
+    const best = ranked[0];
+    const next = ranked[1];
+    // The runtime bounds are the identity anchor. A component that covers
+    // almost all of that anchor and clearly dominates the next same-color
+    // component can be isolated locally; close coverage remains ambiguous.
+    if (best && next && best.ratio >= 0.75 && best.ratio >= next.ratio * 2) rendered = best.component;
+    else return { status: 'INSUFFICIENT', reason: `same-color pixel components cannot uniquely isolate target (${candidates.length} overlapping components)` };
+  }
+  const isolated = rendered!;
+  const passed = Math.abs(input.observed.x - isolated.x) < 0.06 && Math.abs(input.observed.y - isolated.y) < 0.06
+    && Math.abs(input.observed.width - isolated.width) < 0.08 && Math.abs(input.observed.height - isolated.height) < 0.08;
+  return passed ? { status: 'CONFORMING', rendered: isolated } : { status: 'MISMATCH', rendered: isolated, reason: 'isolated rendered bounds exceed frozen geometry tolerance' };
+}
+
+class VisualObservationInsufficientError extends Error {
+  readonly visualEvidence = 'INSUFFICIENT' as const;
+  constructor(message: string) {
+    super(message);
+    this.name = 'VisualObservationInsufficientError';
+  }
+}
+
 const MUTATING_TEST_METHODS = ['resetGame', 'setRandomSeed', 'advanceTicks', 'tap', 'replay'];
 
 async function state(page: Page): Promise<RuntimeState> {
@@ -76,7 +124,7 @@ async function naturalTap(page: Page, actions: string[]): Promise<void> {
   const control = page.locator('#primary-action');
   await control.waitFor({ state: 'visible', timeout: 10_000 });
   const box = await control.boundingBox();
-  if (!box) throw new Error('visible primary cut/flip control has no geometry');
+  if (!box) throw new VisualObservationInsufficientError('visible primary cut/flip control boundingBox unavailable');
   await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
   actions.push('pointer:tap-primary-action');
 }
@@ -109,6 +157,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
   const actions: string[] = ['page.goto'];
   const transitions: Array<{ name: string; changed: boolean; evidence: string }> = [];
   let naturalFlow: QaReport['naturalFlow'];
+  let visualStatus: CutStackVisualStatus | undefined;
   let browser: Browser | undefined;
   try {
     browser = await chromium.launch({ headless: true });
@@ -138,46 +187,70 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       const current = (window as unknown as { __GAME_TEST__?: { getState?: () => { objects?: Array<{ lifecycle?: string; fallOffset?: number }> } } }).__GAME_TEST__?.getState?.();
       return Boolean(current?.objects?.some((object) => object.lifecycle === 'falling' && Number(object.fallOffset) > 40));
     }, undefined, { timeout: 8_000 });
-    const fallingGeometry = await page.evaluate(() => {
-      const game = (window as unknown as { __GAME_TEST__?: { getState?: () => { objects?: Array<{ id: string; lifecycle: string }> } } }).__GAME_TEST__?.getState?.();
-      const falling = game?.objects?.find((object) => object.lifecycle === 'falling');
-      const snapshot = (window as unknown as { __REFERENCE_LEVEL_TEST__?: { getSnapshot?: () => { objectStates?: Array<{ semanticId: string; boundsNormalized?: { x: number; y: number; width: number; height: number }; renderColor?: string }> } } }).__REFERENCE_LEVEL_TEST__?.getSnapshot?.();
-      const observedObject = falling && snapshot?.objectStates?.find((object) => object.semanticId === falling.id);
-      const observed = observedObject?.boundsNormalized;
-      const canvas = document.querySelector<HTMLCanvasElement>('#game-canvas');
-      const context = canvas?.getContext('2d');
-      if (!falling || !observed || !canvas || !context) return { passed: false, reason: 'falling object, snapshot bounds, or canvas context unavailable' };
+    const rawFallingGeometry = await page.evaluate(() => {
       try {
+        const game = (window as unknown as { __GAME_TEST__?: { getState?: () => { objects?: Array<{ id: string; lifecycle: string }> } } }).__GAME_TEST__?.getState?.();
+        const falling = game?.objects?.find((object) => object.lifecycle === 'falling');
+        const snapshot = (window as unknown as { __REFERENCE_LEVEL_TEST__?: { getSnapshot?: () => { objectStates?: Array<{ semanticId: string; boundsNormalized?: { x: number; y: number; width: number; height: number }; renderColor?: string }> } } }).__REFERENCE_LEVEL_TEST__?.getSnapshot?.();
+        const observedObject = falling && snapshot?.objectStates?.find((object) => object.semanticId === falling.id);
+        const observed = observedObject?.boundsNormalized;
+        const canvas = document.querySelector<HTMLCanvasElement>('#game-canvas');
+        const context = canvas?.getContext('2d');
+        if (!falling) return { observationFailure: 'falling object lifecycle was not observed' };
+        if (!observed) return { objectId: falling.id, lifecycle: falling.lifecycle, observationFailure: 'falling object runtime bounds were not observed' };
+        if (!canvas || !context || canvas.width <= 0 || canvas.height <= 0) return { objectId: falling.id, lifecycle: falling.lifecycle, observed, observationFailure: 'canvas or 2D context was inaccessible' };
+        const renderColor = observedObject?.renderColor;
+        if (typeof renderColor !== 'string') return { objectId: falling.id, lifecycle: falling.lifecycle, observed, observationFailure: 'falling object renderColor evidence unavailable' };
+        const match = /^#([0-9a-f]{6})$/iu.exec(renderColor.trim());
+        if (!match) return { objectId: falling.id, lifecycle: falling.lifecycle, observed, renderColor, observationFailure: 'falling object renderColor is not a six-digit hex color' };
+        const expected = [Number.parseInt(match[1]!.slice(0, 2), 16), Number.parseInt(match[1]!.slice(2, 4), 16), Number.parseInt(match[1]!.slice(4, 6), 16)];
         const pixels = context.getImageData(0, 0, canvas.width, canvas.height).data;
-        if (!observedObject?.renderColor) return { passed: false, reason: 'falling object render color evidence unavailable', observed };
-        const hex = observedObject.renderColor;
-        const expected = [Number.parseInt(hex.slice(1, 3), 16), Number.parseInt(hex.slice(3, 5), 16), Number.parseInt(hex.slice(5, 7), 16)];
         const rect = canvas.getBoundingClientRect();
-        let minX = canvas.width; let minY = canvas.height; let maxX = -1; let maxY = -1;
+        if (rect.width <= 0 || rect.height <= 0 || innerWidth <= 0 || innerHeight <= 0) return { objectId: falling.id, lifecycle: falling.lifecycle, observed, renderColor, observationFailure: 'canvas viewport bounds were not measurable' };
+        const mask = new Uint8Array(canvas.width * canvas.height);
         for (let y = 0; y < canvas.height; y += 1) for (let x = 0; x < canvas.width; x += 1) {
-          const offset = (y * canvas.width + x) * 4;
           const normalizedX = (rect.left + x / canvas.width * rect.width) / innerWidth;
           const withinObservedColumn = normalizedX >= observed.x - 0.12 && normalizedX <= observed.x + observed.width + 0.12;
-          const matchesRenderedFill = Math.hypot(pixels[offset]! - expected[0]!, pixels[offset + 1]! - expected[1]!, pixels[offset + 2]! - expected[2]!) < 24;
-          if (withinObservedColumn && matchesRenderedFill) {
-            minX = Math.min(minX, x); minY = Math.min(minY, y); maxX = Math.max(maxX, x); maxY = Math.max(maxY, y);
-          }
+          const offset = (y * canvas.width + x) * 4;
+          const matchesRenderedFill = withinObservedColumn
+            && Math.hypot(pixels[offset]! - expected[0]!, pixels[offset + 1]! - expected[1]!, pixels[offset + 2]! - expected[2]!) < 24;
+          if (matchesRenderedFill) mask[y * canvas.width + x] = 1;
         }
-        if (maxX < minX || maxY < minY) return { passed: false, reason: 'falling object fill was not visible in canvas pixels', observed };
-        const rendered = {
-          x: (rect.left + minX / canvas.width * rect.width) / innerWidth,
-          y: (rect.top + minY / canvas.height * rect.height) / innerHeight,
-          width: ((maxX - minX + 1) / canvas.width * rect.width) / innerWidth,
-          height: ((maxY - minY + 1) / canvas.height * rect.height) / innerHeight,
-        };
-        const passed = Math.abs(observed.x - rendered.x) < 0.06 && Math.abs(observed.y - rendered.y) < 0.06
-          && Math.abs(observed.width - rendered.width) < 0.08 && Math.abs(observed.height - rendered.height) < 0.08;
-        return { passed, observed, rendered };
+        const components: NormalizedBox[] = [];
+        const queue: number[] = [];
+        for (let index = 0; index < mask.length; index += 1) {
+          if (mask[index] !== 1) continue;
+          mask[index] = 2;
+          queue.push(index);
+          let minX = index % canvas.width; let maxX = minX; let minY = Math.floor(index / canvas.width); let maxY = minY;
+          while (queue.length > 0) {
+            const current = queue.pop()!;
+            const x = current % canvas.width;
+            const y = Math.floor(current / canvas.width);
+            minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+            for (let dy = -1; dy <= 1; dy += 1) for (let dx = -1; dx <= 1; dx += 1) {
+              if (dx === 0 && dy === 0) continue;
+              const nx = x + dx; const ny = y + dy;
+              if (nx < 0 || ny < 0 || nx >= canvas.width || ny >= canvas.height) continue;
+              const neighbor = ny * canvas.width + nx;
+              if (mask[neighbor] === 1) { mask[neighbor] = 2; queue.push(neighbor); }
+            }
+          }
+          components.push({
+            x: (rect.left + minX / canvas.width * rect.width) / innerWidth,
+            y: (rect.top + minY / canvas.height * rect.height) / innerHeight,
+            width: ((maxX - minX + 1) / canvas.width * rect.width) / innerWidth,
+            height: ((maxY - minY + 1) / canvas.height * rect.height) / innerHeight,
+          });
+        }
+        return { objectId: falling.id, lifecycle: falling.lifecycle, observed, renderColor, components };
       } catch (error) {
-        return { passed: false, reason: String(error), observed };
+        return { observationFailure: `canvas pixel observation threw: ${error instanceof Error ? error.message : String(error)}` };
       }
     });
-    checks.push(check('cut-stack-rendered-falling-bounds', fallingGeometry.passed, fallingGeometry));
+    const fallingGeometry = classifyCutStackGeometryObservation(rawFallingGeometry);
+    visualStatus = fallingGeometry.status;
+    checks.push(check('cut-stack-rendered-falling-bounds', fallingGeometry.status === 'CONFORMING', { ...fallingGeometry, observation: rawFallingGeometry }));
     const failed = await waitForPhase(page, 'failed');
     const failureEvents = await events(page);
     const cutObserved = hasEvent(failureEvents, 'cut');
@@ -267,7 +340,11 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       && hasEvent(deterministicEvents, 'drop'), deterministic));
     await context.close();
   } catch (error) {
-    issues.push({ id: 'cut-stack-preview-runtime', severity: 'error', message: error instanceof Error ? error.message : String(error), evidence: 'Chromium cut-stack journey' });
+    if (error instanceof VisualObservationInsufficientError) {
+      visualStatus = visualStatus === 'MISMATCH' ? visualStatus : 'INSUFFICIENT';
+      if (!checks.some((item) => item.name === 'cut-stack-rendered-falling-bounds')) checks.push(check('cut-stack-rendered-falling-bounds', false, { status: 'INSUFFICIENT', reason: error.message }));
+    }
+    issues.push({ id: 'cut-stack-preview-runtime', severity: 'error', message: error instanceof Error ? error.stack ?? error.message : String(error), evidence: 'Chromium cut-stack journey' });
   } finally {
     await browser?.close();
     await preview.stop();
@@ -291,14 +368,15 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
     await capture(page, runRoot, 'packaged-webkit', screenshots);
   } catch (error) {
     checks.push(check('packaged-webkit-load', false, error instanceof Error ? error.message : String(error)));
-    issues.push({ id: 'cut-stack-package-runtime', severity: 'error', message: error instanceof Error ? error.message : String(error), evidence: 'WebKit file:// execution' });
+    issues.push({ id: 'cut-stack-package-runtime', severity: 'error', message: error instanceof Error ? error.stack ?? error.message : String(error), evidence: 'WebKit file:// execution' });
   } finally {
     await packagedBrowser?.close();
   }
 
   for (const item of checks) {
     if (!item.passed && !issues.some((issue) => issue.message.includes(item.name))) {
-      issues.push({ id: `check-${issues.length + 1}`, severity: 'error', message: `${item.name} failed`, evidence: item.evidence });
+      const insufficientVisual = visualStatus === 'INSUFFICIENT' && item.name === 'cut-stack-rendered-falling-bounds';
+      issues.push({ id: `check-${issues.length + 1}`, severity: insufficientVisual ? 'warning' : 'error', message: `${item.name} failed`, evidence: item.evidence });
     }
   }
   await writeFile(path.join(runRoot, 'logs/console.log'), `${consoleLines.join('\n')}\n`);
@@ -311,6 +389,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
     screenshots,
     consoleLog: 'logs/console.log',
     testedAt: new Date().toISOString(),
+    visualStatus: visualStatus ?? 'INSUFFICIENT',
     ...(naturalFlow ? { naturalFlow } : {}),
     evidence: [
       {

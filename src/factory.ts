@@ -33,7 +33,7 @@ import { buildPreviewPresentationDisclosure } from './core/preview-presentation-
 import { applyReferenceBehaviorAnalysis, buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis, referenceBlockersRequirePause, verifyReferenceFidelityReview } from './core/reference-evidence.js';
 import { enforceRecordingAnalysisAuthority } from './core/reference-analysis-authority.js';
 import { REFERENCE_BEHAVIOR_DIMENSIONS, ReferenceFidelityContractSchema, ReferenceFidelityGateSchema } from './schemas/reference-fidelity.js';
-import { BuildReportSchema, ProductionLineResolutionSchema } from './schemas/index.js';
+import { BuildReportSchema, ProductionLineResolutionSchema, type QaReport } from './schemas/index.js';
 import { snapshotModelPolicy, buildModelRouteDecision, evaluateModelPolicySnapshot } from './core/model-policy-artifact.js';
 import { assertPermissionOperation, buildPermissionManifestBundle, evaluatePermissionManifest, evaluatePermissionManifestBundle } from './core/permission-manifest.js';
 import { buildRandomnessPolicy } from './core/randomness-policy.js';
@@ -119,6 +119,29 @@ import { GameRunIdentityManifestSchema } from './schemas/game-identity.js';
 export type FactoryMode = 'mock' | 'live-art' | 'codex-account';
 export type FactoryValidationMode = 'fast' | 'production';
 export type FactoryOptions = { root?: string; repositoryRoot?: string; mode?: FactoryMode; qaMode?: 'stub' | 'playwright'; validationMode?: FactoryValidationMode; enforcePlayerAcceptance?: boolean; enforceOperatingGates?: boolean; enforceStageContracts?: boolean; enforceExplicitStageContracts?: boolean; operatingProfile?: Partial<FactoryOperatingProfile>; agentProvider?: AgentProvider; previewImageProvider?: ImageProvider; assetImageProvider?: ImageProvider; codexProvider?: CodexProvider; codexExecutor?: CodexExecutor; referenceFrameExtractor?: ReferenceFrameExtractor; referenceFrameFps?: number; referenceLevelQaRunner?: ReferenceLevelQaRunner; allowSyntheticReferenceAnalysisForTests?: boolean };
+
+export type QaFailureRoute = 'WAITING_FOR_EVIDENCE' | 'FIX' | 'PASS';
+
+/** Decide whether a failed QA report has enough visual evidence to enter FIX.
+ * This small decision layer is shared by the preview and normal factory paths
+ * so an observation gap cannot be mistaken for a confirmed product mismatch. */
+export async function routeQaFailure(
+  report: QaReport,
+  handlers: {
+    waitForEvidence: (evidence: string[]) => Promise<void>;
+    runFixer: () => Promise<void>;
+  },
+): Promise<QaFailureRoute> {
+  if (report.visualStatus === 'INSUFFICIENT') {
+    await handlers.waitForEvidence(['qa:fixer-not-routed:visual-evidence-insufficient']);
+    return 'WAITING_FOR_EVIDENCE';
+  }
+  if (!report.passed) {
+    await handlers.runFixer();
+    return 'FIX';
+  }
+  return 'PASS';
+}
 
 // Provider usage is a rolling audit summary, not an immutable stage output.
 // Keep it out of drift-triggered rewinds while retaining the file for cost and
@@ -2837,20 +2860,27 @@ export function createFactory(options: FactoryOptions = {}) {
         if (referenceMeasurementInsufficient) {
           return setWaiting(state, 'QA', ['artifacts/reference-level-comparison-gate.json', 'artifacts/reference-level-difference-report.md'], ['artifacts/reference-level-difference-report.md'], ['blocked:reference-level:measurement-insufficient', 'qa:fixer-not-routed:measurement-evidence-required']);
         }
-        if (!report.passed) {
-          const fixInputs = ['artifacts/qa-report.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? [...recordingLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
-          const fixRecord = await begin(state, 'FIX', fixInputs);
-          try {
-            const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Repair only the explicit preview QA issues against the frozen reference and recording-level contracts. Keep the core contract unchanged and add focused regression coverage.');
-            const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
-            addAgentMetrics(fixRecord, fix.metrics);
-            state.codexThreadId = fix.threadId;
-            state.fixAttempts += 1;
-            await saveUsage(state);
-            await complete(state, fixRecord, [previewBuild.webBuild], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
-          } catch (error) { return fail(state, fixRecord, error); }
-          return executeReplicaPreview(state, seed);
-        }
+        let waitingState: RunState | undefined;
+        const qaRoute = await routeQaFailure(report, {
+          waitForEvidence: async (evidence) => {
+            waitingState = await setWaiting(state, 'QA', ['artifacts/qa-report.json'], ['artifacts/qa-report.json'], evidence);
+          },
+          runFixer: async () => {
+            const fixInputs = ['artifacts/qa-report.json', ...resolutionInputs, ...pressureInputs, ...(levelContract ? [...recordingLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
+            const fixRecord = await begin(state, 'FIX', fixInputs);
+            try {
+              const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Repair only the explicit preview QA issues against the frozen reference and recording-level contracts. Keep the core contract unchanged and add focused regression coverage.');
+              const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
+              addAgentMetrics(fixRecord, fix.metrics);
+              state.codexThreadId = fix.threadId;
+              state.fixAttempts += 1;
+              await saveUsage(state);
+              await complete(state, fixRecord, [previewBuild.webBuild], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
+            } catch (error) { await fail(state, fixRecord, error); }
+          },
+        });
+        if (qaRoute === 'WAITING_FOR_EVIDENCE') return waitingState ?? state;
+        if (qaRoute === 'FIX') return executeReplicaPreview(state, seed);
       } catch (error) { return fail(state, record, error); }
     }
     const fidelityReview = await store.readArtifact(runId, 'reference-fidelity-review.json').catch(() => undefined);
@@ -3718,15 +3748,22 @@ export function createFactory(options: FactoryOptions = {}) {
         if (enforceOperatingGates && report.checks.some((check) => check.name === 'natural-input-policy' && !check.passed)) {
           return setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/qa-report.json', 'artifacts/natural-input-policy.json'], ['artifacts/qa-report.json'], ['natural-input-policy:line-specific-evidence-required']);
         }
-        qaPassed = report.passed;
-        if (!qaPassed) {
-          const fixInputs = ['artifacts/qa-report.json', ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...(referenceLevelInputs.length > 0 ? [...referenceLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
-          const fixRecord = await begin(state, 'FIX', fixInputs);
-          const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Fix only explicit QA issues; preserve the frozen acceptance standard and add regression coverage.');
-          const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
-          addAgentMetrics(fixRecord, fix.metrics); state.codexThreadId = fix.threadId; state.fixAttempts += 1; await saveUsage(state);
-          await complete(state, fixRecord, [qaBuildPath], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
-        }
+        let waitingState: RunState | undefined;
+        const qaRoute = await routeQaFailure(report, {
+          waitForEvidence: async (evidence) => {
+            waitingState = await setWaiting(state, 'NORMAL_FLOW_QA', ['artifacts/qa-report.json'], ['artifacts/qa-report.json'], evidence);
+          },
+          runFixer: async () => {
+            const fixInputs = ['artifacts/qa-report.json', ...referenceResolutionInputs, ...referenceFailurePressureInputs, ...(referenceLevelInputs.length > 0 ? [...referenceLevelInputs, 'artifacts/reference-level-runtime-trace.json', 'artifacts/reference-level-comparison-gate.json'] : [])];
+            const fixRecord = await begin(state, 'FIX', fixInputs);
+            const fixContext = await contextFor('FIX', runRoot, path.join(runRoot, 'logs/codex/FIX.last-message.txt'), fixInputs, 'Fix only explicit QA issues; preserve the frozen acceptance standard and add regression coverage.');
+            const fix = await fixerAgent.run(workspace, state.codexThreadId, report, fixContext);
+            addAgentMetrics(fixRecord, fix.metrics); state.codexThreadId = fix.threadId; state.fixAttempts += 1; await saveUsage(state);
+            await complete(state, fixRecord, [qaBuildPath], ['fix:explicit-issues', ...(fix.verification.includes('test:passed') ? ['fix:regression-test'] : ['fix:regression-test:contract']), `fix-attempt:${state.fixAttempts}`, fix.summary, `model:${fix.metrics.model}`]);
+          },
+        });
+        if (qaRoute === 'WAITING_FOR_EVIDENCE') return waitingState ?? state;
+        qaPassed = qaRoute === 'PASS' && report.passed;
       } catch (error) { return fail(state, record, error); }
     }
     const normalFlowReport = QaReportSchema.parse(await store.readArtifact(runId, 'qa-report.json'));

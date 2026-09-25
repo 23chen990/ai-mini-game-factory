@@ -134,6 +134,25 @@ async function pollSnapshots(page: Page, checkpoints: ReferenceLevelRuntimeTrace
 
 type RuntimeMeasurement = NonNullable<ReferenceLevelRuntimeTrace['observedMeasurements']>[number];
 
+function candidateDistanceResolution(viewport: { width: number; height: number }): number {
+  // Bounds are observed through the browser's screen-normalized channel. A
+  // center can move by at most half a physical pixel on each axis before the
+  // reported rectangle changes. Convert that quantization to the same
+  // aspect-corrected distance space used by the measurement below.
+  const pixelX = 0.5 / Math.max(1, viewport.width);
+  const pixelY = 0.5 / Math.max(1, viewport.height);
+  const aspect = viewport.height / Math.max(1, viewport.width);
+  // The signed change uses two object centers at two endpoints. Four
+  // independent half-pixel bound observations therefore contribute to the
+  // conservative interval: 4 × the one-bound resolution.
+  return Math.hypot(pixelX, pixelY * aspect) * 4;
+}
+
+function absoluteRangeFromSignedInterval(min: number, max: number) {
+  const values = [Math.abs(min), Math.abs(max), ...(min <= 0 && max >= 0 ? [0] : [])];
+  return { min: Math.min(...values), max: Math.max(...values) };
+}
+
 function runtimeMeasurementEvidence(evidence: Array<{ path: string; sha256: string }>) {
   return evidence.length > 0 ? evidence : [{ path: 'logs/reference-level/measurement-unavailable.txt', sha256: sha256Text('measurement-unavailable') }];
 }
@@ -174,10 +193,24 @@ export function measureRuntimeBehaviors(contract: ReferenceLevelImplementationCo
       return Math.hypot((a.x + a.width / 2) - (b.x + b.width / 2), ((a.y + a.height / 2) - (b.y + b.height / 2)) * (viewport.height / viewport.width));
     };
     const signedDelta = distance(toSubject!, toRelated!) - distance(fromSubject!, fromRelated!);
-    const delta = Math.abs(signedDelta);
-    const uncertainty = 0.02;
-    const direction = Math.abs(signedDelta) <= uncertainty ? 'stable' as const : signedDelta < 0 ? 'approaching' as const : 'separating' as const;
-    return { ...base, status: 'MEASURED', actualRange: { min: Math.max(0, delta - uncertainty), max: delta + uncertainty }, ...(target.direction === undefined ? {} : { direction }), basis: '候选运行在同一自然输入轨迹中提供的 screen-normalized 对象中心距离变化及方向。' };
+    const resolution = candidateDistanceResolution(viewport);
+    const signedInterval = { min: signedDelta - resolution, max: signedDelta + resolution };
+    const actualRange = absoluteRangeFromSignedInterval(signedInterval.min, signedInterval.max);
+    const basis = `候选 screen-normalized bounds 的浏览器像素分辨率（${viewport.width}×${viewport.height}）推导 signed change resolution ±${resolution}（两端点×两个对象中心×每个边界半像素）；signed interval [${signedInterval.min}, ${signedInterval.max}]。`;
+    if (target.direction === undefined) {
+      return { ...base, status: 'MEASURED', actualRange, basis: `${basis} 旧目标未声明方向，保留 absolute-distance 语义。` };
+    }
+    const direction = signedInterval.max < 0 ? 'approaching' as const : signedInterval.min > 0 ? 'separating' as const : undefined;
+    if (direction !== undefined) {
+      return { ...base, status: 'MEASURED', actualRange, direction, basis };
+    }
+    const stableWithinSourceAcceptance = target.direction === 'stable'
+      && actualRange.min >= target.acceptanceRange.min
+      && actualRange.max <= target.acceptanceRange.max;
+    if (stableWithinSourceAcceptance) {
+      return { ...base, status: 'MEASURED', actualRange, direction: 'stable', basis: `${basis} signed interval 跨过零，但 absolute change 完整落在 source-declared stable acceptance range。` };
+    }
+    return { ...base, status: 'INSUFFICIENT', actualRange, basis: `${basis} signed interval 跨过零，候选分辨率不足以证明 ${target.direction}；不能把 ambiguous movement 标成 stable。` };
   });
 }
 
