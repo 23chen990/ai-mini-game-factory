@@ -1,9 +1,9 @@
-import { cp, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { WebLiteRuntimeAdapter } from '../../src/adapters/web-lite.js';
-import { sha256File } from '../../src/core/files.js';
+import { listFiles, sha256File } from '../../src/core/files.js';
 import { lockProductionLine } from '../../src/core/production-lines.js';
 import { runCutStackDodgePlaywrightQa } from '../../src/qa/cut-stack-playwright-qa.js';
 import { runPlaywrightQa } from '../../src/qa/playwright-qa.js';
@@ -22,8 +22,8 @@ async function preserveCutStackDiagnostics(runRoot: string, report: unknown): Pr
   const sourceFiles = ['src/qa/cut-stack-playwright-qa.ts', 'tests/e2e/cut-stack-playwright-qa.test.ts'];
   const sourceIdentity = await Promise.all(sourceFiles.map(async (relativePath) => ({ path: relativePath, sha256: await sha256File(path.resolve(process.cwd(), relativePath)) })));
   const distRoot = path.join(runRoot, 'workspace/game/dist');
-  const buildFiles = await readdir(distRoot, { withFileTypes: true }).catch(() => []);
-  const buildIdentity = await Promise.all(buildFiles.filter((entry) => entry.isFile()).map(async (entry) => ({ path: path.join('workspace/game/dist', entry.name), sha256: await sha256File(path.join(distRoot, entry.name)) })));
+  const buildFiles = await listFiles(distRoot).catch(() => []);
+  const buildIdentity = await Promise.all(buildFiles.map(async (relativePath) => ({ path: path.join('workspace/game/dist', relativePath), sha256: await sha256File(path.join(distRoot, relativePath)) })));
   const manifest = {
     schemaVersion: 1,
     sourceRunRoot: runRoot,

@@ -95,7 +95,7 @@ import { CoreSpecLockSchema, ExperienceHypothesisSchema } from './schemas/experi
 import { InteractionContinuityContractSchema } from './schemas/interaction-continuity.js';
 import { AccountCapacityPlanSchema, BlindPlaytestSchema, ContentExpansionPlanSchema, DependencyPolicySchema, EvidenceProvenanceManifestSchema, PlatformPackageSetSchema, PortfolioGateEvaluationSchema, PortfolioStrategySchema, PresentationQualityReportSchema, ProductionLineDecisionSchema, ProfileExperienceBundleSchema, ReferenceFrameManifestSchema, ReferenceLevelComparisonGateSchema, ReferenceLevelImplementationContractSchema, ReferenceLevelReconstructionSchema, ReferenceLevelRuntimeTraceSchema, SideEffectCommandSchema, SideEffectJournalSchema, SupplyChainManifestSchema, UiSkeletonSchema, UnknownRegisterSchema, StageNameSchema, PlatformPolicySnapshotSchema, type ReferenceFrameManifest } from './schemas/index.js';
 import { MockAgentProvider, MockCodexProvider, MockImageProvider } from './providers/mock.js';
-import type { AgentProvider, AgentCallMetrics, CodexProvider, ImageProvider } from './providers/interfaces.js';
+import type { AgentProvider, AgentCallMetrics, CodexProvider, ImageProvider, QAProvider } from './providers/interfaces.js';
 import { OpenAIAgentProvider, OpenAIImageProvider, ProviderOutputError } from './providers/real.js';
 import { CodexAccountProvider, type CodexExecutor } from './providers/codex-account.js';
 import { CodexCliProvider, parseCodexJsonl } from './providers/codex-cli.js';
@@ -118,7 +118,7 @@ import { GameRunIdentityManifestSchema } from './schemas/game-identity.js';
 
 export type FactoryMode = 'mock' | 'live-art' | 'codex-account';
 export type FactoryValidationMode = 'fast' | 'production';
-export type FactoryOptions = { root?: string; repositoryRoot?: string; mode?: FactoryMode; qaMode?: 'stub' | 'playwright'; validationMode?: FactoryValidationMode; enforcePlayerAcceptance?: boolean; enforceOperatingGates?: boolean; enforceStageContracts?: boolean; enforceExplicitStageContracts?: boolean; operatingProfile?: Partial<FactoryOperatingProfile>; agentProvider?: AgentProvider; previewImageProvider?: ImageProvider; assetImageProvider?: ImageProvider; codexProvider?: CodexProvider; codexExecutor?: CodexExecutor; referenceFrameExtractor?: ReferenceFrameExtractor; referenceFrameFps?: number; referenceLevelQaRunner?: ReferenceLevelQaRunner; allowSyntheticReferenceAnalysisForTests?: boolean };
+export type FactoryOptions = { root?: string; repositoryRoot?: string; mode?: FactoryMode; qaMode?: 'stub' | 'playwright'; validationMode?: FactoryValidationMode; enforcePlayerAcceptance?: boolean; enforceOperatingGates?: boolean; enforceStageContracts?: boolean; enforceExplicitStageContracts?: boolean; operatingProfile?: Partial<FactoryOperatingProfile>; agentProvider?: AgentProvider; previewImageProvider?: ImageProvider; assetImageProvider?: ImageProvider; codexProvider?: CodexProvider; qaProvider?: QAProvider; codexExecutor?: CodexExecutor; referenceFrameExtractor?: ReferenceFrameExtractor; referenceFrameFps?: number; referenceLevelQaRunner?: ReferenceLevelQaRunner; allowSyntheticReferenceAnalysisForTests?: boolean };
 
 export type QaFailureRoute = 'WAITING_FOR_EVIDENCE' | 'FIX' | 'PASS';
 
@@ -256,7 +256,7 @@ export function createFactory(options: FactoryOptions = {}) {
   const webRuntime = runtimeProvider.runtime('web-lite');
   let runtime = webRuntime;
   let selectedRuntimeName: 'web-lite' | 'cocos-3d' = 'web-lite';
-  const qaProvider = qaMode === 'playwright' ? new PlaywrightQAProvider() : new MockQAProvider();
+  const qaProvider = options.qaProvider ?? (qaMode === 'playwright' ? new PlaywrightQAProvider() : new MockQAProvider());
   const referenceLevelQaRunner = options.referenceLevelQaRunner ?? runReferenceLevelQa;
   const referenceResearchAgent = new ReferenceResearchAgent(agents); const competitorResearchAgent = new CompetitorResearchAgent(agents); const openSourceResearchAgent = new OpenSourceResearchAgent(agents); const productionCostReviewerAgent = new ProductionCostReviewerAgent(agents); const iaaMonetizationReviewerAgent = new IaaMonetizationReviewerAgent(agents); const greenlightAgent = new GreenlightAgent(agents); const producerAgent = new ProducerAgent(agents); const artDirectorAgent = new ArtDirectorAgent(agents); const styleLockAgent = new StyleLockAgent(agents); const assetProducerAgent = new AssetProducerAgent(assetImages); let builderAgent = new BuilderAgent(codex, runtime); let qaAgent = new QAAgent(qaProvider, runtime); let fixerAgent = new FixerAgent(codex, runtime); const releaseAgent = new ReleaseAgent();
 

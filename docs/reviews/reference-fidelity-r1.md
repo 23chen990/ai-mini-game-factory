@@ -147,6 +147,7 @@
 
 ### 本批验证记录
 
-- 定向 Vitest：5 个文件、38 个测试通过；包含方向量测、聚合规则、浏览器自然输入、cut-stack 三态和工厂路由。
-- 全量 Vitest：176 个文件、1028 个测试通过（`CI=1 pnpm exec vitest run --maxWorkers=1 --no-file-parallelism`）。
+- 定向 Vitest：5 个文件、38 个测试通过；包含方向量测、聚合规则、浏览器自然输入和 cut-stack 三态。
+- 工厂路由集成回归：`tests/integration/stage-contract-enforcement.test.ts` 6 个测试通过，覆盖真实 factory QA decision path 的 visual `INSUFFICIENT` waiting/no-Fixer 与 visual `MISMATCH` Fixer/recheck。
+- 全量 Vitest：加入 factory 路由集成回归后，176 个文件、1030 个测试通过（`CI=1 pnpm exec vitest run --maxWorkers=1 --no-file-parallelism`）。
 - `pnpm lint`、`pnpm typecheck`、`git diff --check` 均通过。未运行真实 run，也未调用真实 Provider、Builder 或 Fixer。
