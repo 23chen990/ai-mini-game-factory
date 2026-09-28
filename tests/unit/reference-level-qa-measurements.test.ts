@@ -74,6 +74,25 @@ describe('reference-level QA measurement timing', () => {
     expect(result?.[0]).toMatchObject({ status: 'MEASURED', actualRange: { min: 880, max: 940 } });
   });
 
+  it('keeps a source-bound failure-to-replay interval as its own segment', () => {
+    const replayContract = {
+      behaviorMeasurements: [{
+        id: 'failure-to-replay', measurementId: 'failure-to-replay', kind: 'checkpoint-interval', unit: 'ms',
+        fromCheckpointId: 'failed', toCheckpointId: 'replayed', fromEvent: 'retry affordance visible', toEvent: 'ready restored',
+        subjectObjectId: null, relatedObjectId: null, expectedRange: { min: 350, max: 450 }, acceptanceRange: { min: 300, max: 500 }, uncertainty: 50,
+        coordinateSpace: 'screen-normalized', applicability: 'natural retry/replay input', sourceFrameIds: ['failed-frame', 'replay-frame'],
+        sourceViewport: { width: 390, height: 844 }, source: { path: 'artifacts/reference-level-reconstruction.json', sha256: 'a'.repeat(64) },
+      }],
+    } as unknown as ReferenceLevelImplementationContract;
+    const replayCheckpoints = [
+      { sourceCheckpointId: 'failed', capturedAtMs: 2_000, observationWindow: { startMs: 1_990, endMs: 2_000 }, phase: 'terminal', objectStates: [], observedRelationIds: [], cameraMode: 'static', visibleFeedbackIds: ['feedback-failure'] },
+      { sourceCheckpointId: 'replayed', capturedAtMs: 2_400, observationWindow: { startMs: 2_390, endMs: 2_400 }, phase: 'replay', objectStates: [], observedRelationIds: [], cameraMode: 'static', visibleFeedbackIds: ['feedback-ready'] },
+    ] as unknown as ReferenceLevelRuntimeTrace['checkpoints'];
+    const result = measureRuntimeBehaviors(replayContract, replayCheckpoints, [{ path: 'logs/trace.json', sha256: 'b'.repeat(64) }], { width: 390, height: 844 });
+
+    expect(result?.[0]).toMatchObject({ measurementId: 'failure-to-replay', status: 'MEASURED', actualRange: { min: 390, max: 410 } });
+  });
+
   it('declares approaching only when the signed interval is fully below zero', () => {
     const result = measureRuntimeBehaviors(distanceContract('approaching'), distanceCheckpoints(0.1, 0.2), [{ path: 'logs/trace.json', sha256: 'b'.repeat(64) }], { width: 390, height: 844 });
 

@@ -127,19 +127,32 @@
 
 | 信息项目 | Research 当前如何保存 | contract 如何投影 | Builder 实际收到什么 | runtime 是否有可调入口 | QA 实际检查什么 | 丢失／压缩／未测量的位置 | 最小补齐建议 |
 |---|---|---|---|---|---|---|---|
-| 输入到反馈的时间 | `src/schemas/reference-recording.ts:ReferenceBehaviorMeasurementSchema` 保存 checkpoint interval、来源帧和区间 | `src/core/reference-level.ts:deriveReferenceLevelImplementationContract` 投影 expected/acceptance range | `src/providers/codex-account.ts:behaviorTargetInstruction` 收到语义 ID、区间和适用条件；原始时间戳不下发 | `src/qa/reference-level-qa.ts:runReferenceLevelQa` 可记录端点窗口；`observationDelayMs` 只延迟 QA 观察 | `measureRuntimeBehaviors` 比较端点窗口并保留 `INSUFFICIENT` | 反馈内部分段延迟已测时仍被压缩；未测时无法从坐标推断 | 下一批增加 source-bound 反馈事件序列和相邻窗口，保持原接受标准 |
+| 输入到反馈的时间 | `src/schemas/reference-recording.ts:ReferenceBehaviorMeasurementSchema` 保存 checkpoint interval、`fromEvent/toEvent`、来源帧和区间 | `src/core/reference-level.ts:deriveReferenceLevelImplementationContract` 投影语义事件端点、source viewport 与 expected/acceptance range | `src/providers/codex-account.ts:behaviorTargetInstruction` 收到语义事件、视口、区间和适用条件；原始时间戳/帧路径不下发 | `src/qa/reference-level-qa.ts:runReferenceLevelQa` 可记录端点窗口；`observationDelayMs` 只延迟 QA 观察 | `measureRuntimeBehaviors` 比较端点窗口并保留 `INSUFFICIENT` | 反馈内部分段仍需由真实源帧提供；未测时不能推断 | Research 为每个可观察反馈段提供 source-bound interval；保持原接受标准 |
 | 关键对象初始距离 | `ReferenceCheckpointSchema.objectStates` 可保存 bounds/relations，只有带来源帧的记录才算已测 | relative-distance target 保留范围和方向；placement 只保留语义 band | Builder 收到对象 ID、相对距离目标和粗 placement band | runtime `__REFERENCE_LEVEL_TEST__.getSnapshot` 返回实时 normalized bounds | 方向、距离区间和坐标空间 | 原始坐标有意不进入 Builder；Research 未量测时当前无法确认 | 仅在来源帧存在时补 source viewport 和距离窗口 |
-| 主角与目标尺寸、占屏比例 | `ReferenceCheckpointSchema.boundsNormalized` 能保存观察框 | `PlacementSignatureSchema` 只投影 width/height band | Builder 收到粗尺寸档位 | runtime 快照可读实时 bounds | 仅检查声明的 bounds 目标 | 精确占屏比例被压缩，部分行为没有目标故未测 | 增加 source-bound extent band，不填猜测坐标 |
+| 主角与目标尺寸、占屏比例 | `ReferenceCheckpointSchema.boundsNormalized` 能保存观察框；仅在来源帧支持时算作已测 | relative-distance target 可投影 `sourceExtents`（对象 ID、width/height range、source viewport）；placement 仍只投影 width/height band | Builder 收到来源尺寸范围和视口，不收到位置坐标或原始帧路径 | runtime 快照可读实时 `boundsNormalized`；没有 bounds 时保持兼容 | 提供候选 bounds 时按声明的 source extent 检查，否则保留现有量测结果 | 精确占屏比例此前被压缩；连续尺寸变化仍未测 | 只从同一来源 checkpoint 投影宽高范围；后续再补有证据的变化锚点，不填猜测坐标 |
 | 运动轨迹与旋转 | checkpoint lifecycle/placement 是离散状态；没有连续轨迹序列 | contract 传离散 orientation/lifecycle | Builder 收到离散朝向与生命周期，没有轨迹点 | runtime 只能观察当前 bounds/placement | cut-stack 检查 falling lifecycle 和像素几何，未检查完整曲线 | 连续轨迹、旋转曲线没测；候选可实现但 QA 未检查 | 只补少量有来源的轨迹锚点和旋转区间 |
-| 镜头运动 | `ReferenceLevelReconstructionSchema.cameraSequence` 保存 checkpoint、mode、focus role | contract 传 camera sequence | Builder 收到阶段和焦点角色 | runtime 快照报告 cameraMode | 检查模式和可见对象 | 平移/缩放幅度及延迟未测 | 为已有 camera sequence 补观察视口/幅度区间 |
-| 接触后的反馈顺序 | `ReferenceCheckpointSchema.visibleFeedbackIds` 和 interaction/terminal/replay 序列 | contract 传语义 ID 与顺序 | Builder 收到反馈 ID、失败原因和 replay topology | runtime 快照返回 visibleFeedbackIds 与终态 | 自然浏览器检查 cut/drop/hazard、终态与 replay | 事件间精确时间和并行关系未测 | 只补事件顺序及相邻窗口，逐项增加 QA 断言 |
-| 失败到重玩时间 | terminal/replay checkpoint 与 action sequence | contract 传终态/replay 拓扑 | Builder 收到失败原因和返回 checkpoint | `runReferenceLevelQa`/cut-stack 自然流走失败与 replay | 检查可见 retry/replay 和返回 ready | 按钮可用、点击到恢复的精确时间未测 | 增加两个 source-bound 时间窗口，保持玩法不变 |
+| 镜头运动 | `ReferenceLevelReconstructionSchema.cameraSequence` 保存 checkpoint、mode、focus role；checkpoint 另有 motion | contract 传 camera mode、focus role 和可选 motion | Builder 收到阶段、焦点角色和离散镜头运动 | runtime 快照可选报告 cameraMode/cameraMotion | 有 cameraMotion 证据时检查模式与运动；无证据保持缺失 | 平移/缩放幅度、视口变化及延迟未测 | 为已有 camera sequence 补来源视口/幅度区间 |
+| 接触后的反馈顺序 | `ReferenceCheckpointSchema.visibleFeedbackIds` 和 interaction/terminal/replay 序列 | contract 传语义 ID 顺序；事件端点可由 measurement `fromEvent/toEvent` 绑定 | Builder 收到反馈 ID、失败原因、replay topology 和语义事件端点 | runtime 快照返回 visibleFeedbackIds 与终态 | QA 现在检查声明反馈 ID 的相对顺序 | 事件间精确时间和并行关系未测 | Research 为每个可观察相邻段提供 source-bound interval |
+| 失败到重玩时间 | terminal/replay checkpoint 与 action sequence；可用 checkpoint-interval 表达 | contract 保留 from/to checkpoint、事件端点、source viewport 和接受区间 | Builder 收到语义失败/重玩段目标，不收到原始时间戳 | `runReferenceLevelQa`/cut-stack 自然流走失败与 replay | `measureRuntimeBehaviors` 可独立测量失败→ready/replay 区间 | 真实源帧未提供时仍是 UNKNOWN；按钮可用到恢复的实测缺口保留 | Research 仅在来源帧支持时增加 failure-to-replay interval |
 
-字段存在不等于 Research 已正确量测；当前已测但未传的是被 contract 压缩的精确窗口，粗档位是已传但降精度，传到候选但 QA 未检查的是连续轨迹、镜头幅度和事件间精确时间，Research 本来就没测到的是旋转曲线与细粒度反馈延迟，其余保持“当前无法确认”。`src/providers/codex-account.ts` 同时要求高保真语义和舍弃 source coordinates/timestamps，二者的可执行边界是传递可验证区间而不是伪造原始坐标精度。
+字段存在不等于 Research 已正确量测；当前已测但未传的精确窗口已补语义事件端点和 source viewport，粗档位仍是已传但降精度，传到候选但 QA 未检查的是连续轨迹、镜头幅度和事件间精确时间，Research 本来就没测到的是旋转曲线与细粒度反馈延迟，其余保持“当前无法确认”。`src/providers/codex-account.ts` 同时要求高保真语义和舍弃 source coordinates/timestamps，二者的可执行边界是传递可验证区间而不是伪造原始坐标精度。
 
 ### 资料采集调用链状态
 
 已确认的调用链为 `factory.ts` 选择已验证录屏 → `src/core/reference-recording.ts:extractReferenceRecordingFrames/selectReferenceResearchMedia` 生成 run-bound frame manifest/contact sheets → `ReferenceResearchAgent` → contract 投影 → `runReferenceLevelQa` 候选 QA。当前没有可靠证据确认“参考 URL → 打开页面 → 操作 → 录屏 → 归档”的端到端自动链路；URL 打开、操作录制和归档继续标为未确认。未访问未授权账号，也未调用真实 Research/Builder/Fixer。
+
+### 授权下一批：source-bound timing 与尺寸证据投影
+
+本批补齐已有证据的传递缺口：`ReferenceBehaviorMeasurementSchema` 中的语义 `fromEvent/toEvent` 与 `sourceViewport` 现在会经过 `deriveReferenceLevelImplementationContract` 进入 Builder-facing target；relative-distance 目标在来源 checkpoint 有两个对象时还携带带半像素保护范围的 `sourceExtents`，传递来源宽高证据但不传位置坐标。Builder 仍收不到 source timestamps、source frame ids 或 source paths。`CodexAccountProvider` 的 Research prompt 也明确要求：像素支持时，为每个相邻反馈段产生 checkpoint-interval，并单独记录可观察的 `failure-to-replay` 区间；无法观察时保留 `UNKNOWN`，不能补猜测。
+
+这项修改没有读取真实 run、没有调用真实 Research/Builder/Fixer，也没有改变游戏玩法、参考接受区间、时间 observation-window、视觉阈值或原始坐标禁传边界。候选缺少实时 bounds 时不伪造尺寸精度；连续轨迹、旋转曲线、镜头幅度和真实录屏采集链仍是后续独立缺口。
+
+### 授权批验证
+
+- 定向 Vitest：5 个文件、42 个测试通过；增加了 source-bound 尺寸范围投影、Builder 传递、候选实时 bounds 的尺寸差异和缺少来源量测时不推断的回归。
+- 全量 Vitest：176 个文件、1035 个测试通过（`CI=1 pnpm exec vitest run --maxWorkers=1 --no-file-parallelism`）。
+- `pnpm lint`、`pnpm typecheck`、`git diff --check` 均通过。
+- 本批未读取或修改真实 `runs/`，未调用真实 Research/Builder/Fixer；没有修改距离方向算法、冻结参考接受标准、视觉算法或共享 Git 配置。
 
 ### 证据边界
 

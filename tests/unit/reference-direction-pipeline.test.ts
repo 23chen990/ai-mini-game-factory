@@ -45,7 +45,10 @@ function makeLevel(direction?: 'approaching') {
     terminal: { checkpointId: 'settled', result: 'level-complete', causeVisible: true, settlementVisible: true }, replay: { checkpointId: 'replayed', actionId: 'replay', targetObjectId: 'replay-control', returnsToCheckpointId: 'ready' },
     behaviorMeasurements: [
       { id: 'input-to-contact', kind: 'checkpoint-interval', status: 'OBSERVED', unit: 'ms', fromCheckpointId: 'tap-1', toCheckpointId: 'cut-1', fromEvent: 'tap accepted', toEvent: 'contact feedback', subjectObjectId: null, relatedObjectId: null, sourceCheckpointIds: ['tap-1', 'cut-1'], sourceFrameIds: ['frame-1', 'frame-2'], observedRange: { min: 550, max: 650 }, uncertainty: 300, coordinateSpace: 'screen-normalized', applicability: 'same source viewport', basis: 'adjacent frames bracket response', ...(direction === undefined ? {} : { direction: null }) },
-      { id: 'blade-fruit-spacing', kind: 'relative-distance', status: 'OBSERVED', unit: 'normalized-distance', fromCheckpointId: 'ready', toCheckpointId: 'cut-1', fromEvent: 'ready spacing', toEvent: 'contact spacing', subjectObjectId: 'blade', relatedObjectId: 'fruit-1', sourceCheckpointIds: ['ready', 'cut-1'], sourceFrameIds: ['frame-0', 'frame-2'], observedRange: { min: 0.05, max: 0.15 }, uncertainty: 0.05, coordinateSpace: 'screen-normalized', ...(direction === undefined ? {} : { direction }), applicability: 'same follow camera', basis: 'center distance changes across checkpoints' },
+      { id: 'blade-fruit-spacing', kind: 'relative-distance', status: 'OBSERVED', unit: 'normalized-distance', fromCheckpointId: 'ready', toCheckpointId: 'cut-1', fromEvent: 'ready spacing', toEvent: 'contact spacing', subjectObjectId: 'blade', relatedObjectId: 'fruit-1', sourceCheckpointIds: ['ready', 'cut-1'], sourceFrameIds: ['frame-0', 'frame-2'], observedRange: { min: 0.05, max: 0.15 }, uncertainty: 0.05, coordinateSpace: 'screen-normalized', ...(direction === undefined ? {} : { direction }), sourceExtents: [
+        { objectId: 'blade', width: { min: 0.09, max: 0.11 }, height: { min: 0.09, max: 0.11 }, sourceFrameIds: ['frame-0'], basis: 'visible blade bounds in source frame' },
+        { objectId: 'fruit-1', width: { min: 0.14, max: 0.16 }, height: { min: 0.14, max: 0.16 }, sourceFrameIds: ['frame-0'], basis: 'visible fruit bounds in source frame' },
+      ], applicability: 'same follow camera', basis: 'center distance changes across checkpoints' },
     ], observations: ['source loop'], inferences: [], unknowns: [], status: 'READY', blockers: [], analyzedAt: new Date(0).toISOString(),
   };
 }
@@ -137,6 +140,7 @@ function assertBuilderBehaviorTargets(value: unknown): void {
   const distance = distanceTargets[0] as Record<string, unknown>;
   if (time.kind !== 'checkpoint-interval' || Object.hasOwn(time, 'direction')) throw new Error('input-to-contact must be directionless checkpoint interval');
   if (distance.kind !== 'relative-distance' || distance.direction !== 'approaching') throw new Error('blade-fruit-spacing must preserve approaching direction');
+  if (!Array.isArray(distance.sourceExtents) || distance.sourceExtents.length !== 2) throw new Error('blade-fruit-spacing must preserve source-bound object extents');
 }
 
 describe('R1 time measurement direction pipeline', () => {
@@ -167,6 +171,17 @@ describe('R1 time measurement direction pipeline', () => {
       };
       expect(findGestureDirection(schema)).toEqual({ type: 'string', enum: ['none', 'up', 'down', 'left', 'right'] });
     });
+  });
+
+  it('asks Research for source-bound feedback segments and failure-to-replay timing', async () => {
+    const client = new FakeExecutor([analysis(makeLevel('approaching'))]);
+    const provider = new CodexAccountProvider(client);
+
+    await provider.analyzeReferenceEvidence(pack as any, context('/tmp/r1-direction-timing-prompt-test'));
+
+    const prompt = client.requests[0]?.prompt ?? '';
+    expect(prompt).toMatch(/one checkpoint-interval measurement per observed feedback segment/i);
+    expect(prompt).toMatch(/failure-to-replay/i);
   });
 
   it('runs the formal Research Agent, normalizes transport null before canonical parse, and keeps the Builder target directionless for time', async () => {
@@ -200,10 +215,57 @@ describe('R1 time measurement direction pipeline', () => {
     const prompt = client.requests.find((request) => request.label === 'BUILD')?.prompt ?? '';
     const capturedTargets = extractBuilderBehaviorTargets(prompt);
     assertBuilderBehaviorTargets(capturedTargets);
+    const projectedTime = contract.behaviorMeasurements?.find((target) => target.id === 'input-to-contact');
+    expect(projectedTime).toMatchObject({ fromEvent: 'tap accepted', toEvent: 'contact feedback', sourceViewport: { width: 1100, height: 720 } });
+    const projectedDistance = contract.behaviorMeasurements?.find((target) => target.id === 'blade-fruit-spacing');
+    expect(projectedDistance?.sourceExtents).toEqual(expect.arrayContaining([
+      expect.objectContaining({ objectId: 'blade', sourceViewport: { width: 1100, height: 720 }, width: { min: expect.any(Number), max: expect.any(Number) }, height: { min: expect.any(Number), max: expect.any(Number) } }),
+      expect.objectContaining({ objectId: 'fruit-1', sourceViewport: { width: 1100, height: 720 } }),
+    ]));
+    const builderTime = capturedTargets.find((target) => target && typeof target === 'object' && (target as Record<string, unknown>).id === 'input-to-contact');
+    expect(builderTime).toMatchObject({ fromEvent: 'tap accepted', toEvent: 'contact feedback', sourceViewport: { width: 1100, height: 720 } });
+    const builderDistance = capturedTargets.find((target) => target && typeof target === 'object' && (target as Record<string, unknown>).id === 'blade-fruit-spacing') as Record<string, unknown> | undefined;
+    expect(builderDistance?.sourceExtents).toEqual(projectedDistance?.sourceExtents);
     expect(() => assertBuilderBehaviorTargets(capturedTargets.map((target) => target && typeof target === 'object' && (target as Record<string, unknown>).id === 'input-to-contact' ? { ...(target as Record<string, unknown>), direction: 'approaching' } : target))).toThrow(/directionless/);
     expect(() => assertBuilderBehaviorTargets(capturedTargets.filter((target) => target && typeof target === 'object' && (target as Record<string, unknown>).id !== 'input-to-contact'))).toThrow(/input-to-contact/);
     expect(prompt).not.toContain('sourceFrameIds');
     expect(prompt).not.toContain('frame-a');
+  });
+
+  it('uses source-bound object extents when runtime bounds are available and keeps missing bounds non-blocking', () => {
+    const raw = analysis(makeLevel('approaching'));
+    const parsed = ReferenceBehaviorAnalysisSchema.parse(normalizeReferenceBehaviorAnalysis(raw, pack));
+    const contract = deriveReferenceLevelImplementationContract(parsed.levelReconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('extent-reconstruction') });
+    const distance = contract.behaviorMeasurements?.find((target) => target.id === 'blade-fruit-spacing');
+    expect(distance?.sourceExtents).toHaveLength(2);
+    const time = contract.behaviorMeasurements?.find((target) => target.id === 'input-to-contact');
+    if (!distance || !time) return;
+    const traceBase = runtimeTrace(parsed.levelReconstruction, contract, [
+      { measurementId: time.measurementId, status: 'MEASURED', unit: 'ms', actualRange: { min: 580, max: 620 }, coordinateSpace: 'screen-normalized', sourceCheckpointIds: ['tap-1', 'cut-1'], subjectObjectId: null, relatedObjectId: null, basis: 'timed browser observation', evidence: [{ path: 'evidence/trace.json', sha256: hash('trace') }] },
+      { measurementId: distance.measurementId, status: 'MEASURED', unit: 'normalized-distance', actualRange: { min: 0.08, max: 0.12 }, coordinateSpace: 'screen-normalized', direction: 'approaching', sourceCheckpointIds: ['ready', 'cut-1'], subjectObjectId: 'blade', relatedObjectId: 'fruit-1', basis: 'screen-normalized browser observation', evidence: [{ path: 'evidence/trace.json', sha256: hash('trace') }] },
+    ]);
+    const gateWithoutBounds = evaluateReferenceLevelRuntimeTrace(contract, ReferenceLevelRuntimeTraceSchema.parse(traceBase));
+    expect(gateWithoutBounds.measurementResults?.find((result) => result.measurementId === distance.measurementId)).toMatchObject({ result: 'CONFORMING' });
+    const traceWithBounds = {
+      ...traceBase,
+      viewport: { width: 1100, height: 720, label: 'matching source viewport' },
+      checkpoints: traceBase.checkpoints.map((checkpoint: any) => checkpoint.sourceCheckpointId === 'ready'
+        ? { ...checkpoint, objectStates: checkpoint.objectStates.map((object: any) => object.semanticId === 'blade'
+          ? { ...object, boundsNormalized: { x: 0.1, y: 0.4, width: 0.9, height: 0.1 }, coordinateSpace: 'screen-normalized' as const }
+          : object) }
+        : checkpoint),
+    };
+    const gate = evaluateReferenceLevelRuntimeTrace(contract, ReferenceLevelRuntimeTraceSchema.parse(traceWithBounds));
+    expect(gate.measurementResults?.find((result) => result.measurementId === distance.measurementId)).toMatchObject({ result: 'DIFFERENT' });
+    expect(gate.blockers).toContain('reference-level:extent-mismatch:ready:blade');
+  });
+
+  it('does not infer object-size evidence from checkpoint bounds alone', () => {
+    const raw = analysis(makeLevel('approaching')) as any;
+    delete raw.levelReconstruction.behaviorMeasurements[1].sourceExtents;
+    const parsed = ReferenceBehaviorAnalysisSchema.parse(normalizeReferenceBehaviorAnalysis(raw, pack));
+    const contract = deriveReferenceLevelImplementationContract(parsed.levelReconstruction, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('no-extent-observation') });
+    expect(contract.behaviorMeasurements?.find((target) => target.id === 'blade-fruit-spacing')).not.toHaveProperty('sourceExtents');
   });
 
   it('does not require a candidate direction for the derived time target', () => {

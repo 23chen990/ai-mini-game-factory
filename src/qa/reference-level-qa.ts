@@ -17,6 +17,7 @@ type RuntimeSnapshot = {
   objectStates: ReferenceLevelRuntimeTrace['checkpoints'][number]['objectStates'];
   observedRelationIds: string[];
   cameraMode: ReferenceLevelRuntimeTrace['checkpoints'][number]['cameraMode'];
+  cameraMotion?: ReferenceLevelRuntimeTrace['checkpoints'][number]['cameraMotion'];
   visibleFeedbackIds: string[];
   terminal?: { reached?: boolean; result?: string; causeVisible?: boolean; settlementVisible?: boolean };
 };
@@ -50,10 +51,11 @@ function parseSnapshot(value: unknown): RuntimeSnapshot {
     objectStates,
     observedRelationIds: Array.isArray(raw.observedRelationIds) ? raw.observedRelationIds : Array.isArray(raw.relationIds) ? raw.relationIds : [],
     cameraMode: raw.cameraMode,
+    ...(raw.cameraMotion === undefined ? {} : { cameraMotion: raw.cameraMotion }),
     visibleFeedbackIds: Array.isArray(raw.visibleFeedbackIds) ? raw.visibleFeedbackIds : [],
   };
   const parsed = ReferenceLevelRuntimeTraceSchema.shape.checkpoints.element.parse(candidate);
-  return { checkpointId: parsed.sourceCheckpointId, capturedAtMs: parsed.capturedAtMs ?? Number.NaN, runtimeBinding: parsed.runtimeBinding, phase: parsed.phase, objectStates: parsed.objectStates, observedRelationIds: parsed.observedRelationIds, cameraMode: parsed.cameraMode, visibleFeedbackIds: parsed.visibleFeedbackIds, ...(raw.terminal && typeof raw.terminal === 'object' ? { terminal: raw.terminal as RuntimeSnapshot['terminal'] } : {}) };
+  return { checkpointId: parsed.sourceCheckpointId, capturedAtMs: parsed.capturedAtMs ?? Number.NaN, runtimeBinding: parsed.runtimeBinding, phase: parsed.phase, objectStates: parsed.objectStates, observedRelationIds: parsed.observedRelationIds, cameraMode: parsed.cameraMode, ...(parsed.cameraMotion === undefined ? {} : { cameraMotion: parsed.cameraMotion }), visibleFeedbackIds: parsed.visibleFeedbackIds, ...(raw.terminal && typeof raw.terminal === 'object' ? { terminal: raw.terminal as RuntimeSnapshot['terminal'] } : {}) };
 }
 
 async function snapshot(page: Page, observationDelayMs = 0) {
@@ -99,7 +101,7 @@ function addSnapshot(target: ReferenceLevelRuntimeTrace['checkpoints'], value: R
   const observationWindow = prior?.capturedAtMs !== undefined && Number.isFinite(prior.capturedAtMs) && Number.isFinite(value.capturedAtMs)
     ? { startMs: prior.capturedAtMs, endMs: value.capturedAtMs }
     : undefined;
-  const checkpoint = { sourceCheckpointId: value.checkpointId, ...(Number.isFinite(value.capturedAtMs) ? { capturedAtMs: value.capturedAtMs } : {}), ...(sampleGapMs === undefined ? {} : { sampleGapMs }), ...(observationWindow === undefined ? {} : { observationWindow }), runtimeBinding: value.runtimeBinding, phase: value.phase, objectStates: value.objectStates, observedRelationIds: value.observedRelationIds, cameraMode: value.cameraMode, visibleFeedbackIds: value.visibleFeedbackIds };
+  const checkpoint = { sourceCheckpointId: value.checkpointId, ...(Number.isFinite(value.capturedAtMs) ? { capturedAtMs: value.capturedAtMs } : {}), ...(sampleGapMs === undefined ? {} : { sampleGapMs }), ...(observationWindow === undefined ? {} : { observationWindow }), runtimeBinding: value.runtimeBinding, phase: value.phase, objectStates: value.objectStates, observedRelationIds: value.observedRelationIds, cameraMode: value.cameraMode, ...(value.cameraMotion === undefined ? {} : { cameraMotion: value.cameraMotion }), visibleFeedbackIds: value.visibleFeedbackIds };
   // Keep every sampled checkpoint. The timestamp is measurement evidence; a
   // state-only dedupe here can erase the later occurrence needed for A→C or
   // repeated-action intervals.

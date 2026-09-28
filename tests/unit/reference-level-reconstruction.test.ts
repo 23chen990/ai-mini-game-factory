@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { deriveReferenceLevelImplementationContract, evaluateReferenceLevelRuntimeTrace, verifyReferenceLevelImplementationContract, verifyReferenceLevelReconstruction } from '../../src/core/reference-level.js';
-import { ReferenceFrameManifestSchema, ReferenceLevelReconstructionSchema, ReferenceLevelRuntimeTraceSchema } from '../../src/schemas/reference-recording.js';
+import { ReferenceFrameManifestSchema, ReferenceLevelImplementationContractSchema, ReferenceLevelReconstructionSchema, ReferenceLevelRuntimeTraceSchema } from '../../src/schemas/reference-recording.js';
 import { sha256Text } from '../../src/core/files.js';
 import { mergeReferenceLevelQaReport } from '../../src/qa/reference-level-qa.js';
 
@@ -62,6 +62,7 @@ describe('recording-derived level contracts', () => {
       checkpointSequence: expect.arrayContaining([expect.objectContaining({ id: 'ready', phase: 'ready' }), expect.objectContaining({ id: 'cut-1', phase: 'interaction' })]),
       placementRules: expect.arrayContaining([expect.objectContaining({ checkpointId: 'ready', semanticId: 'blade', horizontalBand: 'far-left', verticalBand: 'middle', orientationBand: 'horizontal' })]),
     });
+    expect(contract.cameraSequence.find((camera) => camera.checkpointId === 'ready')).toMatchObject({ mode: 'follow', motion: 'static' });
     expect(JSON.stringify(contract)).not.toContain('boundsNormalized');
     expect(JSON.stringify(contract)).not.toContain('atMs');
   });
@@ -164,7 +165,10 @@ describe('recording-derived level contracts', () => {
           id: 'blade-fruit-spacing', kind: 'relative-distance', status: 'OBSERVED', unit: 'normalized-distance',
           fromCheckpointId: 'ready', toCheckpointId: 'cut-1', fromEvent: 'ready spacing', toEvent: 'contact spacing',
           subjectObjectId: 'blade', relatedObjectId: 'fruit-1', sourceCheckpointIds: ['ready', 'cut-1'], sourceFrameIds: ['frame-0', 'frame-2'],
-          observedRange: { min: 0.05, max: 0.15 }, uncertainty: 0.05, coordinateSpace: 'screen-normalized', direction: 'approaching', applicability: 'same follow camera', basis: 'center distance changes across two stable source checkpoints',
+          observedRange: { min: 0.05, max: 0.15 }, uncertainty: 0.05, coordinateSpace: 'screen-normalized', direction: 'approaching', sourceExtents: [
+            { objectId: 'blade', width: { min: 0.09, max: 0.11 }, height: { min: 0.09, max: 0.11 }, sourceFrameIds: ['frame-0'], basis: 'blade bounds visible in ready frame' },
+            { objectId: 'fruit-1', width: { min: 0.14, max: 0.16 }, height: { min: 0.14, max: 0.16 }, sourceFrameIds: ['frame-0'], basis: 'fruit bounds visible in ready frame' },
+          ], applicability: 'same follow camera', basis: 'center distance changes across two stable source checkpoints',
         },
       ],
     });
@@ -172,7 +176,7 @@ describe('recording-derived level contracts', () => {
     const contract = deriveReferenceLevelImplementationContract(measured, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('reconstruction-with-measurements') });
     expect(contract.behaviorMeasurements).toHaveLength(2);
     expect(contract.behaviorMeasurements?.[0]).toMatchObject({ sourceViewport: { width: 1100, height: 720 }, sourceFrameIds: ['frame-1', 'frame-2'] });
-    expect(contract.behaviorMeasurements?.[1]).toMatchObject({ direction: 'approaching' });
+    expect(contract.behaviorMeasurements?.[1]).toMatchObject({ direction: 'approaching', sourceExtents: expect.arrayContaining([expect.objectContaining({ objectId: 'blade', sourceViewport: { width: 1100, height: 720 } })]) });
     expect(JSON.stringify(contract)).not.toContain('observedRange');
   });
 
@@ -261,6 +265,14 @@ describe('recording-derived level contracts', () => {
       screenshots: [{ path: 'screenshots/reference-level.png', sha256: hash('shot') }], trace: { path: 'logs/reference-level.json', sha256: hash('trace') }, reviewer: 'QAAgent', authorIndependent: true, observedAt: new Date(0).toISOString(),
     });
     expect(evaluateReferenceLevelRuntimeTrace(contract, trace)).toMatchObject({ passed: true, blockers: [] });
+    const wrongCameraMotion = {
+      ...trace,
+      checkpoints: trace.checkpoints.map((checkpoint) => checkpoint.sourceCheckpointId === 'ready' ? { ...checkpoint, cameraMotion: 'backward' as const } : checkpoint),
+    };
+    expect(evaluateReferenceLevelRuntimeTrace(contract, wrongCameraMotion)).toMatchObject({
+      passed: false,
+      blockers: expect.arrayContaining(['reference-level:camera-motion-mismatch:ready']),
+    });
     const runtimePayload = {
       schemaVersion: 1, artifactType: 'reference-level-runtime-data',
       targetRunId: contract.targetRunId, targetGame: contract.targetGame, workspace: contract.workspace,
@@ -302,6 +314,32 @@ describe('recording-derived level contracts', () => {
       passed: false,
       blockers: expect.arrayContaining(['reference-level:placement-mismatch:ready:blade']),
     });
+  });
+
+  it('rejects a runtime feedback sequence whose expected events are out of order', () => {
+    const source = reconstruction();
+    const baseContract = deriveReferenceLevelImplementationContract(source, { path: 'artifacts/reference-level-reconstruction.json', sha256: hash('reconstruction') });
+    const contract = ReferenceLevelImplementationContractSchema.parse({
+      ...baseContract,
+      checkpointSequence: baseContract.checkpointSequence.map((checkpoint) => checkpoint.id === 'ready'
+        ? { ...checkpoint, visibleFeedbackIds: ['feedback-ready-a', 'feedback-ready-b'] }
+        : checkpoint),
+    });
+    const trace = ReferenceLevelRuntimeTraceSchema.parse({
+      schemaVersion: 1, artifactType: 'reference-level-runtime-trace', targetRunId: 'run-1', targetGame: 'slice-game', workspace: '/tmp/run/workspace/game',
+      contractHash: hash(JSON.stringify(contract)), buildHash: hash('build'), viewport: { width: 390, height: 844, label: 'phone' }, startedFromReset: true, naturalInputOnly: true,
+      actions: [{ order: 1, actionId: 'flip', kind: 'tap', targetObjectId: 'blade', naturalInput: true, stateChanged: true, observedCheckpointId: 'cut-1' }],
+      checkpoints: source.checkpoints.map((checkpoint) => ({
+        sourceCheckpointId: checkpoint.id, phase: checkpoint.phase, cameraMode: checkpoint.camera.mode,
+        objectStates: checkpoint.objects.map((object) => ({ semanticId: object.semanticId, role: object.role, lifecycle: object.lifecycle, visible: object.visible })),
+        observedRelationIds: source.spatialRelations.filter((relation) => relation.checkpointIds.includes(checkpoint.id)).map((relation) => relation.id),
+        visibleFeedbackIds: checkpoint.id === 'ready' ? ['feedback-ready-b', 'feedback-ready-a'] : checkpoint.visibleFeedback.map((feedback) => feedback.id),
+      })),
+      terminal: { reached: true, result: 'level-complete', causeVisible: true, settlementVisible: true }, replay: { actionId: 'replay', returnedToCheckpointId: 'ready', naturalInput: true },
+      screenshots: [{ path: 'screenshots/reference-level.png', sha256: hash('shot') }], trace: { path: 'logs/reference-level.json', sha256: hash('trace') }, reviewer: 'QAAgent', authorIndependent: true, observedAt: new Date(0).toISOString(),
+    });
+    const gate = evaluateReferenceLevelRuntimeTrace(contract, trace);
+    expect(gate.blockers).toContain('reference-level:checkpoint-mismatch:ready');
   });
 
   it('turns a failed recording-level comparison into an explicit QA issue and carries its screenshots', () => {

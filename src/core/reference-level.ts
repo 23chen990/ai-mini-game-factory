@@ -76,6 +76,16 @@ export function verifyReferenceLevelReconstruction(
     const fromFrame = measurement.sourceFrameIds.map((frameId) => frames.get(frameId)).find((frame) => frame !== undefined && from.sourceFrameIds.includes(frame.id));
     const toFrame = measurement.sourceFrameIds.map((frameId) => frames.get(frameId)).find((frame) => frame !== undefined && to.sourceFrameIds.includes(frame.id));
     if (!fromFrame || !toFrame) continue;
+    for (const extent of measurement.sourceExtents ?? []) {
+      for (const frameId of extent.sourceFrameIds) {
+        if (!measurement.sourceFrameIds.includes(frameId)) blockers.push(`reference-level:measurement-extent-frame-unbound:${measurement.id}:${frameId}`);
+      }
+      if (!extent.sourceFrameIds.some((frameId) => from.sourceFrameIds.includes(frameId))) blockers.push(`reference-level:measurement-extent-frame-provenance:${measurement.id}:${extent.objectId}`);
+      const sourceObject = objectAt(from.id, extent.objectId);
+      if (!sourceObject) blockers.push(`reference-level:measurement-extent-object-provenance:${measurement.id}:${extent.objectId}`);
+      else if (sourceObject.boundsNormalized.width < extent.width.min || sourceObject.boundsNormalized.width > extent.width.max
+        || sourceObject.boundsNormalized.height < extent.height.min || sourceObject.boundsNormalized.height > extent.height.max) blockers.push(`reference-level:measurement-extent-range-does-not-cover-source:${measurement.id}:${extent.objectId}`);
+    }
     if (toFrame.actualMs <= fromFrame.actualMs) blockers.push(`reference-level:measurement-time-order:${measurement.id}`);
     if (measurement.kind === 'checkpoint-interval') {
       const observed = toFrame.actualMs - fromFrame.actualMs;
@@ -191,6 +201,12 @@ export function deriveReferenceLevelImplementationContract(
       blockers.push(`behavior-measurement-coordinate-space-unknown:${measurement.id}`);
       return undefined;
     }
+    const sourceExtents = measurement.sourceExtents?.map((extent) => ({
+      objectId: extent.objectId,
+      width: extent.width,
+      height: extent.height,
+      sourceViewport: reconstruction.source.viewport,
+    })) ?? [];
     return {
       id: measurement.id,
       measurementId: measurement.id,
@@ -198,6 +214,8 @@ export function deriveReferenceLevelImplementationContract(
       unit: measurement.unit,
       fromCheckpointId: measurement.fromCheckpointId,
       toCheckpointId: measurement.toCheckpointId,
+      fromEvent: measurement.fromEvent,
+      toEvent: measurement.toEvent,
       subjectObjectId: measurement.subjectObjectId,
       relatedObjectId: measurement.relatedObjectId,
       expectedRange: measurement.observedRange,
@@ -206,6 +224,7 @@ export function deriveReferenceLevelImplementationContract(
       coordinateSpace: measurement.coordinateSpace,
       ...(measurement.direction === undefined ? {} : { direction: measurement.direction }),
       sourceViewport: reconstruction.source.viewport,
+      ...(sourceExtents.length > 0 ? { sourceExtents } : {}),
       applicability: measurement.applicability,
       sourceFrameIds: measurement.sourceFrameIds,
       source: sourceReconstruction,
@@ -254,7 +273,10 @@ export function deriveReferenceLevelImplementationContract(
       checkpointIds: relation.checkpointIds,
     })),
     interactionSequence: canonicalInteractionSequence(reconstruction),
-    cameraSequence: [...reconstruction.cameraSequence].sort((left, right) => left.order - right.order),
+    cameraSequence: [...reconstruction.cameraSequence].sort((left, right) => left.order - right.order).map((camera) => {
+      const checkpoint = reconstruction.checkpoints.find((item) => item.id === camera.checkpointId);
+      return { ...camera, ...(checkpoint?.camera.motion === undefined ? {} : { motion: checkpoint.camera.motion }) };
+    }),
     terminal: reconstruction.terminal,
     replay: reconstruction.replay,
     ...(behaviorMeasurements && behaviorMeasurements.length > 0 ? { behaviorMeasurements } : {}),
@@ -332,9 +354,18 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
   const checkedCheckpointIds: string[] = [];
   for (const expected of contract.checkpointSequence) {
     const candidates = checkpointsById.get(expected.id) ?? [];
+    const feedbackOrder = (candidate: typeof candidates[number]) => {
+      let previous = -1;
+      return expected.visibleFeedbackIds.every((id) => {
+        const current = candidate.visibleFeedbackIds.indexOf(id);
+        const ordered = current >= 0 && current > previous;
+        previous = current;
+        return ordered;
+      });
+    };
     const matching = candidates.find((candidate) => candidate.phase === expected.phase
       && expected.requiredVisibleObjectIds.every((id) => candidate.objectStates.some((object) => object.semanticId === id && object.visible))
-      && expected.visibleFeedbackIds.every((id) => candidate.visibleFeedbackIds.includes(id)));
+      && feedbackOrder(candidate));
     if (!matching) blockers.push(`reference-level:checkpoint-mismatch:${expected.id}`);
     else checkedCheckpointIds.push(expected.id);
   }
@@ -370,8 +401,10 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
   }
 
   for (const camera of contract.cameraSequence) {
-    const observed = (checkpointsById.get(camera.checkpointId) ?? []).find((checkpoint) => checkpoint.cameraMode === camera.mode);
-    if (!observed) blockers.push(`reference-level:camera-mismatch:${camera.checkpointId}`);
+    const candidates = (checkpointsById.get(camera.checkpointId) ?? []).filter((checkpoint) => checkpoint.cameraMode === camera.mode);
+    if (candidates.length === 0) blockers.push(`reference-level:camera-mismatch:${camera.checkpointId}`);
+    else if (camera.motion !== undefined && candidates.some((checkpoint) => checkpoint.cameraMotion !== undefined)
+      && !candidates.some((checkpoint) => checkpoint.cameraMotion === camera.motion)) blockers.push(`reference-level:camera-motion-mismatch:${camera.checkpointId}`);
   }
   if (!trace.terminal.reached) blockers.push('reference-level:terminal-not-reached');
   if (!contract.terminal) blockers.push('reference-level:terminal-contract-missing');
@@ -403,6 +436,22 @@ export function evaluateReferenceLevelRuntimeTrace(contractValue: unknown, trace
       }
       if (expected.direction !== undefined && actual.direction !== expected.direction) {
         measurementResults.push({ measurementId: expected.measurementId, result: 'DIFFERENT', expectedRange: expected.acceptanceRange, actualRange: actual.actualRange, evidence: actual.evidence, reason: `候选方向为 ${actual.direction}，参考方向为 ${expected.direction}。` });
+        blockers.push(`reference-level:measurement-different:${expected.measurementId}`);
+        continue;
+      }
+      const sourceExtentMismatch = (expected.sourceExtents ?? []).find((extent) => {
+        const observed = (checkpointsById.get(expected.fromCheckpointId) ?? [])
+          .flatMap((checkpoint) => checkpoint.objectStates)
+          .find((object) => object.semanticId === extent.objectId && object.visible);
+        if (!observed?.boundsNormalized || observed.coordinateSpace === 'world-relative') return false;
+        return observed.boundsNormalized.width < extent.width.min
+          || observed.boundsNormalized.width > extent.width.max
+          || observed.boundsNormalized.height < extent.height.min
+          || observed.boundsNormalized.height > extent.height.max;
+      });
+      if (sourceExtentMismatch) {
+        measurementResults.push({ measurementId: expected.measurementId, result: 'DIFFERENT', expectedRange: expected.acceptanceRange, actualRange: actual.actualRange, evidence: actual.evidence, reason: `候选对象 ${sourceExtentMismatch.objectId} 的可见尺寸超出来源观察窗口。` });
+        blockers.push(`reference-level:extent-mismatch:${expected.fromCheckpointId}:${sourceExtentMismatch.objectId}`);
         blockers.push(`reference-level:measurement-different:${expected.measurementId}`);
         continue;
       }

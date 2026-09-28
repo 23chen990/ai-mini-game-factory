@@ -82,6 +82,7 @@ export const ReferenceLevelPhaseSchema = z.enum(REFERENCE_LEVEL_PHASES);
 export const ReferenceObjectRoleSchema = z.enum(['player', 'cuttable', 'support', 'hazard', 'finish', 'reward', 'hud', 'replay-control', 'decorative']);
 export const ReferenceObjectLifecycleSchema = z.enum(['not-spawned', 'ready', 'moving', 'contact', 'resolved', 'falling', 'settled', 'terminal', 'hidden']);
 export const ReferenceCameraModeSchema = z.enum(['static', 'follow', 'scroll', 'cut', 'unknown']);
+export const ReferenceCameraMotionSchema = z.enum(['static', 'forward', 'backward', 'vertical', 'cut', 'unknown']);
 export const ReferenceInputKindSchema = z.enum(['none', 'tap', 'press', 'release', 'swipe', 'drag']);
 export const ReferenceSpatialRelationSchema = z.enum(['supported-by', 'precedes', 'above', 'below', 'left-of', 'right-of', 'inside', 'attached-to', 'reachable-after', 'intersects-path', 'finish-after']);
 export const ReferenceHorizontalBandSchema = z.enum(['far-left', 'left', 'center', 'right', 'far-right']);
@@ -95,6 +96,16 @@ export const MeasurementRangeSchema = z.object({
 }).strict().superRefine((range, context) => {
   if (range.min > range.max) context.addIssue({ code: 'custom', path: ['min'], message: 'measurement range minimum cannot exceed maximum' });
 });
+const ReferenceSourceExtentTargetSchema = z.object({
+  objectId: Text,
+  width: MeasurementRangeSchema,
+  height: MeasurementRangeSchema,
+  sourceViewport: Viewport,
+}).strict();
+const ReferenceSourceExtentObservationSchema = ReferenceSourceExtentTargetSchema.omit({ sourceViewport: true }).extend({
+  sourceFrameIds: z.array(Text).min(1),
+  basis: Text,
+}).strict();
 export const MeasurementKindSchema = z.enum(['checkpoint-interval', 'relative-distance']);
 export const MeasurementUnitSchema = z.enum(['ms', 'normalized-distance']);
 export const MeasurementStatusSchema = z.enum(['OBSERVED', 'INFERRED', 'UNKNOWN']);
@@ -124,6 +135,7 @@ export const ReferenceBehaviorMeasurementSchema = z.object({
   coordinateSpace: MeasurementCoordinateSpaceSchema,
   direction: MeasurementDirectionSchema.optional(),
   sourceViewport: Viewport.optional(),
+  sourceExtents: z.array(ReferenceSourceExtentObservationSchema).length(2).optional(),
   applicability: Text,
   basis: Text,
 }).strict().superRefine((measurement, context) => {
@@ -133,6 +145,8 @@ export const ReferenceBehaviorMeasurementSchema = z.object({
   if (measurement.kind === 'checkpoint-interval' && measurement.unit !== 'ms') context.addIssue({ code: 'custom', path: ['unit'], message: 'checkpoint intervals must use milliseconds' });
   if (measurement.kind === 'checkpoint-interval' && measurement.direction !== undefined) context.addIssue({ code: 'custom', path: ['direction'], message: 'checkpoint interval measurements cannot carry spatial direction' });
   if (measurement.kind === 'relative-distance' && (measurement.subjectObjectId === null || measurement.relatedObjectId === null)) context.addIssue({ code: 'custom', path: ['subjectObjectId'], message: 'relative-distance measurements require two semantic objects' });
+  if (measurement.sourceExtents !== undefined && (measurement.kind !== 'relative-distance'
+    || measurement.sourceExtents.map((extent) => extent.objectId).sort().join('|') !== [measurement.subjectObjectId, measurement.relatedObjectId].sort().join('|'))) context.addIssue({ code: 'custom', path: ['sourceExtents'], message: 'source extents require the two measured relative-distance objects' });
 });
 export type ReferenceBehaviorMeasurement = z.infer<typeof ReferenceBehaviorMeasurementSchema>;
 
@@ -143,6 +157,10 @@ export const ReferenceBehaviorTargetSchema = z.object({
   unit: MeasurementUnitSchema,
   fromCheckpointId: Text,
   toCheckpointId: Text,
+  /** Semantic event labels survive the contract projection without exposing
+   * source timestamps or frame paths to Builder. */
+  fromEvent: Text.optional(),
+  toEvent: Text.optional(),
   subjectObjectId: Text.nullable(),
   relatedObjectId: Text.nullable(),
   expectedRange: MeasurementRangeSchema,
@@ -151,6 +169,9 @@ export const ReferenceBehaviorTargetSchema = z.object({
   coordinateSpace: MeasurementCoordinateSpaceSchema.exclude(['unknown']),
   direction: MeasurementDirectionSchema.optional(),
   sourceViewport: Viewport.optional(),
+  /** Source-bound normalized size evidence. It carries width/height ranges
+   * and the source viewport, never the source object's position or frame path. */
+  sourceExtents: z.array(ReferenceSourceExtentTargetSchema).length(2).optional(),
   applicability: Text,
   sourceFrameIds: z.array(Text).min(1),
   source: EvidenceFile,
@@ -160,6 +181,8 @@ export const ReferenceBehaviorTargetSchema = z.object({
   if (target.kind === 'checkpoint-interval' && target.unit !== 'ms') context.addIssue({ code: 'custom', path: ['unit'], message: 'checkpoint interval targets must use milliseconds' });
   if (target.kind === 'checkpoint-interval' && target.direction !== undefined) context.addIssue({ code: 'custom', path: ['direction'], message: 'checkpoint interval targets cannot carry spatial direction' });
   if (target.kind === 'relative-distance' && (target.unit !== 'normalized-distance' || target.subjectObjectId === null || target.relatedObjectId === null)) context.addIssue({ code: 'custom', path: ['unit'], message: 'relative distance targets require normalized-distance and two semantic objects' });
+  if (target.sourceExtents !== undefined && (target.kind !== 'relative-distance'
+    || target.sourceExtents.map((extent) => extent.objectId).sort().join('|') !== [target.subjectObjectId, target.relatedObjectId].sort().join('|'))) context.addIssue({ code: 'custom', path: ['sourceExtents'], message: 'source extent targets require the two measured relative-distance objects' });
   if (target.acceptanceRange.min > target.expectedRange.min || target.acceptanceRange.max < target.expectedRange.max) context.addIssue({ code: 'custom', path: ['acceptanceRange'], message: 'acceptance range cannot be narrower than expected range' });
 });
 export type ReferenceBehaviorTarget = z.infer<typeof ReferenceBehaviorTargetSchema>;
@@ -212,7 +235,7 @@ const ReferenceCheckpointSchema = z.object({
   atMs: z.number().int().nonnegative(),
   sourceFrameIds: z.array(Text).min(1),
   input: CheckpointInputSchema,
-  camera: z.object({ mode: ReferenceCameraModeSchema, focusObjectIds: z.array(Text), motion: z.enum(['static', 'forward', 'backward', 'vertical', 'cut', 'unknown']), confidence: z.number().min(0).max(1) }).strict(),
+  camera: z.object({ mode: ReferenceCameraModeSchema, focusObjectIds: z.array(Text), motion: ReferenceCameraMotionSchema, confidence: z.number().min(0).max(1) }).strict(),
   objects: z.array(z.object({
     semanticId: Text,
     role: ReferenceObjectRoleSchema,
@@ -255,7 +278,7 @@ export const ReferenceLevelReconstructionSchema = z.object({
   checkpoints: z.array(ReferenceCheckpointSchema),
   spatialRelations: z.array(SpatialRelationRecordSchema),
   interactionSequence: z.array(InteractionStepSchema),
-  cameraSequence: z.array(z.object({ order: z.number().int().positive(), checkpointId: Text, mode: ReferenceCameraModeSchema, focusObjectRole: ReferenceObjectRoleSchema }).strict()),
+  cameraSequence: z.array(z.object({ order: z.number().int().positive(), checkpointId: Text, mode: ReferenceCameraModeSchema, focusObjectRole: ReferenceObjectRoleSchema, motion: ReferenceCameraMotionSchema.optional() }).strict()),
   terminal: z.object({ checkpointId: Text, result: Text, causeVisible: z.boolean(), settlementVisible: z.boolean() }).strict().nullable(),
   replay: z.object({ checkpointId: Text, actionId: Text, targetObjectId: Text, returnsToCheckpointId: Text }).strict().nullable(),
   /** Optional R1 measurements. Omitted on legacy artifacts to preserve their
@@ -328,11 +351,12 @@ export const ReferenceLevelImplementationContractSchema = z.object({
   placementRules: z.array(z.object({ checkpointId: Text, semanticId: Text }).extend(PlacementSignatureSchema.shape).strict()),
   spatialRelations: z.array(SpatialRelationRecordSchema.omit({ observed: true })),
   interactionSequence: z.array(InteractionStepSchema),
-  cameraSequence: z.array(z.object({ order: z.number().int().positive(), checkpointId: Text, mode: ReferenceCameraModeSchema, focusObjectRole: ReferenceObjectRoleSchema }).strict()),
+  cameraSequence: z.array(z.object({ order: z.number().int().positive(), checkpointId: Text, mode: ReferenceCameraModeSchema, focusObjectRole: ReferenceObjectRoleSchema, motion: ReferenceCameraMotionSchema.optional() }).strict()),
   terminal: z.object({ checkpointId: Text, result: Text, causeVisible: z.literal(true), settlementVisible: z.literal(true) }).strict().nullable(),
   replay: z.object({ checkpointId: Text, actionId: Text, targetObjectId: Text, returnsToCheckpointId: Text }).strict().nullable(),
-  /** Frozen behavior goals for Builder/QA. Raw source bounds and timestamps
-   * remain in the research reconstruction and are never projected here. */
+  /** Frozen behavior goals for Builder/QA. Raw source bounds, positions and
+   * timestamps remain in the research reconstruction; optional source-bound
+   * width/height ranges are projected without exposing coordinates. */
   behaviorMeasurements: z.array(ReferenceBehaviorTargetSchema).optional(),
   runtimeProbe: z.object({ globalName: z.literal('__REFERENCE_LEVEL_TEST__'), readOnly: z.literal(true), methods: z.tuple([z.literal('getSnapshot'), z.literal('getNaturalInputTarget')]) }).strict(),
   originalityBoundary: z.object({
@@ -359,6 +383,7 @@ export const ReferenceLevelImplementationContractSchema = z.object({
         measurementIds.add(measurement.id);
         if (!checkpointIds.has(measurement.fromCheckpointId) || !checkpointIds.has(measurement.toCheckpointId)) context.addIssue({ code: 'custom', path: ['behaviorMeasurements', index], message: `behavior measurement ${measurement.id} must bind known checkpoints` });
         for (const objectId of [measurement.subjectObjectId, measurement.relatedObjectId]) if (objectId !== null && !objectIds.has(objectId)) context.addIssue({ code: 'custom', path: ['behaviorMeasurements', index], message: `behavior measurement ${measurement.id} references unknown object ${objectId}` });
+        for (const extent of measurement.sourceExtents ?? []) if (!objectIds.has(extent.objectId)) context.addIssue({ code: 'custom', path: ['behaviorMeasurements', index, 'sourceExtents'], message: `behavior measurement ${measurement.id} references unknown extent object ${extent.objectId}` });
         if (measurement.acceptanceRange.min > measurement.expectedRange.min || measurement.acceptanceRange.max < measurement.expectedRange.max) context.addIssue({ code: 'custom', path: ['behaviorMeasurements', index, 'acceptanceRange'], message: `behavior measurement ${measurement.id} acceptance range cannot be narrower than its expected range` });
       }
     }
@@ -402,6 +427,7 @@ export const ReferenceLevelRuntimeTraceSchema = z.object({
     objectStates: z.array(z.object({ semanticId: Text, role: ReferenceObjectRoleSchema, lifecycle: ReferenceObjectLifecycleSchema, visible: z.boolean(), placement: PlacementSignatureSchema.optional(), boundsNormalized: NormalizedBounds.optional(), coordinateSpace: z.enum(['screen-normalized', 'world-relative']).optional(), renderColor: z.string().regex(/^#[0-9a-f]{6}$/iu).optional() }).strict()),
     observedRelationIds: z.array(Text),
     cameraMode: ReferenceCameraModeSchema,
+    cameraMotion: ReferenceCameraMotionSchema.optional(),
     visibleFeedbackIds: z.array(Text),
   }).strict()),
   observedMeasurements: z.array(RuntimeMeasurementSchema).optional(),
