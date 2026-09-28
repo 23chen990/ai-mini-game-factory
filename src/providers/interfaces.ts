@@ -3,6 +3,7 @@ import type { GameplayIdea, IdeaGeneration, LowCostFilter, PlaytestTournament, P
 import type { ActionMechanicExperimentSpec, ActionPrototypeBuildReport } from '../schemas/action-mechanic-experiment.js';
 import type { FormalPrototypeFollowupConstraints, OpenSourceResearchArtifact } from '../schemas/index.js';
 import type { RuntimeAdapter } from '../adapters/runtime.js';
+import type { ReferenceBehaviorTarget } from '../schemas/reference-recording.js';
 
 export type TokenUsage = { inputTokens: number; outputTokens: number; totalTokens: number };
 export type AgentCallMetrics = { provider: string; model: string; calls: number; usage?: TokenUsage };
@@ -61,7 +62,7 @@ export interface CodexProvider {
   prototype?(input: { workspace: string; idea: GameplayIdea; slot: 'a' | 'b' | 'c'; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
   actionPrototype?(input: { workspace: string; spec: ActionMechanicExperimentSpec; variant: ActionMechanicExperimentSpec['prototypes'][number]; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
   formalPrototype?(input: FormalPrototypeBuildInput & { workspace: string; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
-  build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; template: string; gameplayRevision?: GameplayRevisionLock; interactionContinuityContract?: InteractionContinuityContract; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
+  build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; template: string; gameplayRevision?: GameplayRevisionLock; interactionContinuityContract?: InteractionContinuityContract; referenceLevelBehaviorTargets?: ReferenceBehaviorTarget[]; context?: AgentExecutionContext }): Promise<CodexBuildResult>;
   fix(input: { workspace: string; threadId?: string; qaReport: QaReport; context?: AgentExecutionContext }): Promise<CodexFixResult>;
 }
 export interface ImageProvider { produce(input: { outputDir: string; blueprint: GameBlueprint; styleLock: StyleLock }): Promise<unknown>; producePreviews?(input: { outputDir: string; directions: ArtDirections }): Promise<ArtPreviewManifest>; }

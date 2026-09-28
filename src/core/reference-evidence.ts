@@ -98,6 +98,15 @@ export function normalizeReferenceBehaviorAnalysis(value: unknown, packValue: un
   }
 
   const level = recordValue(root.levelReconstruction);
+  if (level && Array.isArray(level.behaviorMeasurements)) {
+    level.behaviorMeasurements = level.behaviorMeasurements.map((measurementValue) => {
+      const measurement = recordValue(measurementValue);
+      if (!measurement || measurement.direction !== null) return measurementValue;
+      const withoutDirection = { ...measurement };
+      delete withoutDirection.direction;
+      return withoutDirection;
+    });
+  }
   const replay = recordValue(level?.replay);
   if (level && replay && typeof replay.actionId === 'string' && typeof replay.checkpointId === 'string' && Array.isArray(level.interactionSequence)) {
     const checkpointPhases = new Map<string, string>();
