@@ -1,5 +1,14 @@
 # Codex handoff: keep the next steps small
 
+**Current verified engineering baseline:** code-fix commit `e29ea067` has 51/51
+native checks and 11/11 HTTP Chromium checks passing in GitHub Actions run
+https://github.com/23chen990/ai-mini-game-factory/actions/runs/38161723421.
+The previous 320x568 CSS failure is closed; keep its regression enabled.
+This does NOT complete human, physical-phone, commercial or release gates.
+Before changing code, inspect the latest PR head and its own CI; do not mistake
+historical local browser blocks for the current remote result.
+
+
 ## Scope
 
 Target: `grid-merge-v1` candidate mother template. Generated work must identify an exact
@@ -39,9 +48,10 @@ brand assets, music or font files are used. Do not infer permission for other pr
 
 ## Three work packages, not dozens of new task cards
 
-1. **Finish real browser/device verification.** Run `pilot:browser` on a host that allows
-   loopback navigation, then a real phone. Keep the current tests and thresholds. Classify
-   environmental failure separately from game failure. Screenshot the exact failing branch.
+1. **Retain HTTP browser verification and perform real-device checking.** The scripted
+   GitHub Chromium gate now passes, but run it again for every new code revision.
+   Test a physical phone separately, keep the current thresholds and capture real
+   screenshots. Classify environmental failures separately from game failures.
 2. **Collect a small uncoached human screen.** Five consenting anonymous participants;
    record prior familiarity, time to first merge, session duration and voluntary continuation.
    Use `human-review.example.json`; records bind run ID and build hash. Put evidence under

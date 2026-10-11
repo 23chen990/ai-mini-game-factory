@@ -1,4 +1,20 @@
-# Validation record - completion pass
+# Validation record — latest verified code and previous local evidence
+
+## GitHub verification update (2026-10-12)
+
+Code-fix commit: `e29ea067d151d2ab38b296426f6166fc68859855`.
+Actual passing GitHub Actions run: https://github.com/23chen990/ai-mini-game-factory/actions/runs/38161723421
+
+**offline-engineering: PASS** (51/51 native tests, 0 failed/skipped; change scope and syntax checks).
+**http-browser: PASS** (locked dependencies, scoped lint, typecheck, Chromium HTTP load,
+11/11 named checks and a successful report). The 320x568 regression stayed enabled.
+Four layout checks, five scripted normal-input checks and two declared injected-fixture
+checks passed. Do not count the fixtures as natural-play proof.
+**human: NOT_RUN; commercial: NOT_RUN; publishable: false.**
+
+The previous browser failure remains historically useful but is RESOLVED in this code commit.
+Any subsequent head must receive its own test run; passing an ancestor is not a release gate.
+
 
 ## Two builds that must not be confused
 
@@ -6,8 +22,9 @@
   `a1efa3864f790360913c395de4d5dae49daadc0e0fb172ba79228268dfadfae3`.
 - Locally corrected short-phone candidate:
   `a5abe420363f9fcdbe97a4dda387406bd2fc6eeb988f67e63de1f982cfabc79c`.
-- The stylesheet write for the second build was blocked by the GitHub connector. It is
-  NOT on the branch. Read REMOTE_LIMITATIONS.md before interpreting any screenshot.
+- The earlier attempt to upload this stylesheet was blocked; the corrected file was later
+  successfully uploaded and verified in code-fix commit `e29ea067`. The fixed build
+  hash above now identifies the branch runtime. Preserve evidence tied to its exact hash.
 - Audited factory base: `f38d9955575db5561eba40007640c00094add885`.
 
 ## Executed locally
@@ -25,7 +42,7 @@ The six offline DOM checks passed on the locally corrected build: four screen/th
 normal touch input producing movement/merge, and normal keyboard progression to loss/replay.
 The latest recorded normal terminal was 95 moves; no terminal state was injected. The
 320x568 correction was visually inspected after a failing first-viewport regression.
-The original remote stylesheet fails that stronger small-screen assertion.
+The previous remote stylesheet failed that stronger small-screen assertion; the new remote stylesheet passes it.
 
 Local browser environment: Chromium 144.0.7559.96, preinstalled Playwright core
 1.57.0-beta-1764944708000. This is not the repository's locked Playwright version.
@@ -43,22 +60,23 @@ A scoped change guard rejects unrelated factory files and changes to old package
 Three newly added tests were run failing before the corresponding fixes, then passing.
 
 A separate layout assertion failed at 320x568, then passed after the LOCAL style correction.
-That correction remains blocked from GitHub. The stricter assertion is retained, not weakened.
+That correction is now on GitHub and passed full HTTP CI with the stricter assertion unchanged.
 The complete-02 run was created because browser acceptance was strengthened; the before/after
 CSS builds within that same run consume two distinct candidate slots. Earlier failures
 remain in the local record. Fresh IDs must not be used to hide failed product revisions.
 
 ## Failed or not verified
 
-Full local-HTTP browser QA was attempted and hit `net::ERR_BLOCKED_BY_ADMINISTRATOR`.
-No browser policy was modified. Full HTTP loading, real-origin persistence, Safari/WebKit,
-iPhone hardware, original-reference field play, uncoached humans, retention, ads, platform
-packages, model quality and profitability are NOT verified by these local results.
+Local-HTTP browser QA was attempted and hit `net::ERR_BLOCKED_BY_ADMINISTRATOR`.
+No local browser policy was modified. **GitHub's separate Chromium HTTP CI later passed**, including
+real-origin persistence. Safari/WebKit, iPhone hardware, original-reference field play,
+uncoached humans, retention, ads, platform packages, model quality and profitability remain
+NOT verified. The distinction between local failure and remote success is intentional.
 The old factory's full lint/typecheck/test suite and PR #1 were not rerun locally.
 
 The new GitHub workflow has separate native and HTTP-browser jobs and uploads narrow
-synthetic artifacts. Read its actual latest-head result; this document does not assert a
-remote green run. Passing HTTP QA still does not prove human enjoyment or release readiness.
+synthetic artifacts. Run 38161723421 passed on code-fix commit e29ea067; verify the CI for any newer
+head rather than assuming ancestor results remain valid. Passing HTTP QA still does not prove human enjoyment or release readiness.
 No REA, model, payment, deployment or FORM business code execution is part of these checks.
 Local integrity checks are auditable safeguards, not protection against an operator forging
 all files and metadata together. Human records still need independent reviewer attestation.

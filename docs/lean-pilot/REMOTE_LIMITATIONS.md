@@ -1,29 +1,45 @@
-# Remote completion boundary
+# Remote completion boundary — updated after successful HTTP CI
 
-The supplemental tools, tests, examples and handoff are intended for the existing Draft PR #2.
-The active FORM development branch, old factory routing, dependencies and main are unchanged.
+PR: https://github.com/23chen990/ai-mini-game-factory/pull/2
+Code-fix commit: e29ea067d151d2ab38b296426f6166fc68859855
+Passing code-fix CI: https://github.com/23chen990/ai-mini-game-factory/actions/runs/38161723421
 
-## Outstanding implementation difference
+## Resolved: the short-portrait phone defect
 
-The proposed correction to `templates/web-lite/grid-merge-v1/style.css` was rejected by the
-GitHub connector with an undetermined-safety result. No alternate write method was used for
-that file. The branch therefore retains the original stylesheet. At 320x568, the whole board
-and primary controls do not fit the first viewport. This is a known UI defect, not a license,
-model or research failure. The strengthened layout assertion is intentionally retained.
+The earlier commit 389f322a96dba68f08153017b58b12b15cb2c3fd failed the
+320x568 first-viewport assertion because the game board and primary controls
+extended below the fold. The exact locally tested stylesheet was subsequently
+uploaded to the existing PR in commit e29ea067d151d2ab38b296426f6166fc68859855.
+The remote blob is d2544a2a49c3909134cc4cd32441527ce7a7eb54.
 
-A local correction exists and passes the six offline DOM checks, but its screenshots/hash
-must NOT be used to claim that the remote branch passes. Do not weaken the assertion or
-substitute screenshots from a larger phone. Publication and mother-template certification
-remain blocked. Resolve the stylesheet write through a normally authorized, functioning
-workflow before considering that defect closed.
+GitHub's actual code-fix run 38161723421 completed BOTH jobs successfully:
+51 native tests passed (zero failed/skipped), scoped lint and typecheck passed,
+and all 11 HTTP Chromium browser checks passed. These cover four layout variants,
+scripted normal touch, persistence after reload, cancelled touch, natural
+loss/replay, theme-save isolation and two explicitly labeled fixture tests.
+The stricter small-screen assertion was preserved, not weakened. Both jobs
+must be rerun against the latest head after any further code change.
 
-## Other evidence boundaries
+The local host still blocks loopback HTTP navigation; that is an environment
+limit of the local host, NOT a blocker to the successful GitHub HTTP run.
+Offline DOM screenshots and GitHub HTTP artifacts must stay separately labeled.
 
-- Local HTTP browser navigation is blocked by the host policy. Offline DOM is not HTTP QA.
-- Inspect the actual GitHub Actions run before claiming remote checks passed. Dependency
-  installation, linter failure, browser errors and product assertions are separate outcomes.
-- No human playtest, original-reference field session, iPhone test or commercial test exists.
-- No REA installation, paid model invocation, deployment or FORM business change occurred.
+## What is genuinely NOT verified
 
-For the next executor: read PILOT_START.md and HANDOFF.md first, preserve the exact failure,
-and report what is still blocked. Completing tool code does not approve a game for release.
+- No uncoached consenting human playtest has run. A passing scripted play
+  journey cannot certify discoverability, fun, retention or willingness to pay.
+- No physical iPhone/Safari/WeChat/Douyin/TapTap package or release QA.
+- No commercial, advertising or acquisition experiment. Publication remains
+  blocked and the mother template remains CANDIDATE.
+- No original-competitor field play session; research excerpt/code integrity
+  is not proof of market behavior, reported profit or gameplay enjoyment.
+- No REA setup, paid model, deployment, change to FORM business code, merge
+  into main, or launch.
+
+## Next executor
+
+Read PILOT_START.md, HANDOFF.md and VALIDATION.md. Verify the exact current
+head and CI before work; do NOT reopen the resolved CSS problem without a new
+reproduction. The next product decision is a small real-phone/uncoached
+human test, not more Agents or speculative features. Preserve authentic
+records; never invent human evidence or mark CANDIDATE as production-ready.
