@@ -88,3 +88,19 @@ Give the next coding model this instruction:
 > Do not alter FORM, the old factory, dependencies, acceptance thresholds or release settings.
 > Do not create human evidence, reset failed-run budgets or claim commercial validation.
 > Return the exact new commit, tests actually run, CI status and remaining blockers.
+
+## Optional REA evidence bridge
+
+Read [REA 接入与投入决策（中文）](docs/lean-pilot/REA_DECISION.md) and
+[the exact integration contract](docs/lean-pilot/REA_INTEGRATION.md).
+The new `rea-cli.mjs` supports offline plan/inspect/anchor/review only, with no REA installation,
+network request, model call, config write or automatic product change. Its tests use explicit
+synthetic exports, not a claim that live REA or a competitor binary has been tested.
+
+```sh
+node tools/lean-pilot/rea-cli.mjs plan examples/lean-pilot rea-job.example.json
+node --test tools/lean-pilot/tests/rea-bridge.test.mjs
+```
+
+The optional Codex TOML example is inert and disabled. Actual use requires separate approval
+for the research environment and target. Do not add REA as a mandatory stage or install it in FORM.
