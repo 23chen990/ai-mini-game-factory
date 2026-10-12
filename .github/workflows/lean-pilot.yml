@@ -4,6 +4,7 @@ on:
     paths:
       - 'tools/lean-pilot/**'
       - 'templates/web-lite/grid-merge-v1/**'
+      - 'templates/web-lite/clinic-queue-v1/**'
       - 'examples/lean-pilot/**'
       - 'docs/lean-pilot/**'
       - 'PILOT_START.md'
@@ -35,9 +36,11 @@ jobs:
       - name: Native tests - no dependency installation or provider calls
         shell: bash
         run: npm run pilot:test | tee "$RUNNER_TEMP/lean-pilot-native.tap"
+      - name: Clinic deterministic rule and strategy tests
+        run: node --test templates/web-lite/clinic-queue-v1/tests/engine.test.mjs
       - name: Check browser and tooling syntax
         run: |
-          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs .agents/skills/gameplay-loop-review/scripts/*.mjs; do
+          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs templates/web-lite/clinic-queue-v1/*.mjs .agents/skills/gameplay-loop-review/scripts/*.mjs; do
             node --check "$file"
           done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -62,36 +65,49 @@ jobs:
         run: npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
       - name: Install existing locked dependencies without lifecycle scripts
         run: pnpm install --frozen-lockfile --ignore-scripts
-      - name: Record versions and typecheck candidate
+      - name: Record versions and typecheck existing merge candidate
         run: |
           node --version
           pnpm --version
           pnpm exec playwright --version
           sha256sum pnpm-lock.yaml
           npm run pilot:typecheck
-          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1 .agents/skills/gameplay-loop-review/scripts src/cli/factory.ts
+          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1 templates/web-lite/clinic-queue-v1 .agents/skills/gameplay-loop-review/scripts src/cli/factory.ts
       - name: Verify the real shared factory CLI without starting a provider
         run: node tools/lean-pilot/workflow-integration.mjs
       - name: Install Chromium for the locked Playwright version
         run: pnpm exec playwright install --with-deps chromium
-      - name: Initialize one isolated CI run and verify its copied core
+      - name: Initialize original merge candidate and verify its copied core
         run: |
           npm run pilot -- init ci-pilot observatory
           npm run pilot -- check ci-pilot
-      - name: Test actual HTTP loading, touch, storage, failure and replay
+      - name: Preserve original HTTP input and persistence regression
         run: npm run pilot:browser -- ci-pilot
-      - name: Export replayable review files
+      - name: Export original review files
         run: |
           npm run pilot -- export ci-pilot observatory
           npm run pilot -- export ci-pilot orchard
-      - name: Write honest gate report even after failure
+      - name: Build the clinic from checked workflow and run its real engine
+        run: |
+          npm run pilot -- build ci-clinic
+          npm run pilot -- check ci-clinic
+          node tools/lean-pilot/clinic-balance.mjs ci-clinic > runs/ci-clinic/strategy-comparison.json
+      - name: Clinic HTTP touch, pause, save, full shift and replay
+        run: npm run pilot -- browser ci-clinic
+      - name: Export clinic and bounded next-developer handoff
+        run: |
+          npm run pilot -- export ci-clinic
+          node tools/lean-pilot/runner.mjs handoff ci-clinic > runs/ci-clinic/handoff.json
+      - name: Write honest gate reports even after failure
         if: always()
         shell: bash
         run: |
-          if test -f runs/ci-pilot/run.json; then
-            node tools/lean-pilot/runner.mjs report ci-pilot > runs/ci-pilot/report.json
-            cat runs/ci-pilot/report.json
-          fi
+          for id in ci-pilot ci-clinic; do
+            if test -f runs/$id/run.json; then
+              node tools/lean-pilot/runner.mjs report "$id" > "runs/$id/report.json"
+              cat "runs/$id/report.json"
+            fi
+          done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -103,5 +119,13 @@ jobs:
             runs/ci-pilot/report.json
             runs/ci-pilot/screenshots/*.png
             runs/ci-pilot/*.html
+            runs/ci-clinic/engineering.json
+            runs/ci-clinic/browser.json
+            runs/ci-clinic/report.json
+            runs/ci-clinic/strategy-comparison.json
+            runs/ci-clinic/clinic-trace.json
+            runs/ci-clinic/handoff.json
+            runs/ci-clinic/screenshots/*.png
+            runs/ci-clinic/*.html
           retention-days: 7
           if-no-files-found: warn

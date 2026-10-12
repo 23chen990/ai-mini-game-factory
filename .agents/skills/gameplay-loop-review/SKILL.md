@@ -43,3 +43,7 @@ description: Design or diagnose mobile mini-game loops and produce evidence-link
 技能会提供方法，不会自动拥有工具或保证被所有旧 Agent 加载。在仓库调用 `$gameplay-loop-review`，或用工厂 `workflow` 命令得到有版本绑定的工单。旧 `factory new/run` 的已有运行计划不得被静默重写。
 
 用户截图里的五种驱动力和六条循环原则作为设计启发，不是科学定律。TapTap 个体复盘的曝光/转化率不是平台承诺或通用阈值。不要复制帖子图片、专有游戏素材和源码进公开仓库。合法开源复用逐项核验许可；代码和素材许可分别检查。
+
+## 已有仓库中的可执行门诊试作
+
+在小游戏工厂仓库内，将通过审核的具体规格接到 `npm run pilot -- build RUN_ID`；随后用同一运行器 `check / browser / serve / export / report / handoff`。这条命令仅实现已有 `clinic-queue-v1` 配方，不会执行任意JSON或启动付费Codex。先读仓库 `docs/lean-pilot/CLINIC_PIPELINE_ZH.md`。离开该仓库安装的便携Skill没有游戏运行文件，不得声称已经安装完整工厂。依旧以真人和真实平台验证决定是否复用或发布。

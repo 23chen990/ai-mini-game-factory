@@ -5,11 +5,12 @@ import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
+import { candidateSpec } from './candidates.mjs';
+import { evaluateClinicPlaytest } from './clinic-review.mjs';
 import { sha256, safeRead, verifyEvidence, evaluateBudget, evaluatePlaytest, DEFAULT_BUDGET } from './policy.mjs';
 
 const ROOT = fileURLToPath(new URL('../../',import.meta.url));
 export const GAME_FILES = Object.freeze(['candidate.json','engine.mjs','index.html','main.mjs','style.css','themes.mjs']);
-const SOURCE_FILES = ['research.json','reference/LICENSE.txt','reference/move-excerpt.txt'];
 const ACCEPTANCE = 'tests/engine.test.mjs';
 export const BROWSER_CHECKS = Object.freeze([
   'layout-observatory-390x844', 'layout-observatory-320x568',
@@ -18,18 +19,21 @@ export const BROWSER_CHECKS = Object.freeze([
   'touch-cancel-is-not-a-move', 'normal-loss-settlement-and-replay',
   'theme-save-isolation', 'win-and-continue', 'storage-denial-preserves-play',
 ]);
-const BROWSER_SCREENSHOTS = [
-  'screenshots/observatory-390x844.png', 'screenshots/observatory-320x568.png',
-  'screenshots/observatory-844x390.png', 'screenshots/orchard-390x844.png',
-  'screenshots/normal-terminal.png',
-];
-export async function browserSuiteHash() {
-  return sha256(await safeRead(ROOT, 'tools/lean-pilot/browser-qa.mjs'));
+export async function browserSuiteHash(templateId='grid-merge-v1') {
+  const spec=candidateSpec(templateId);const scriptHash=sha256(await safeRead(ROOT,spec.browserScript));
+  return templateId==='grid-merge-v1'?scriptHash:sha256(JSON.stringify({scriptHash,checks:spec.checks,screenshots:spec.screenshots}));
 }
 export async function verifyRunInputs(root, run) {
   const game = path.join(root, 'workspace/game');
+  const currentCandidate=await json(game,'candidate.json');
+  if(currentCandidate.templateId!==run.templateId)throw new Error('Runtime candidate identity changed');
   if (sha256(await safeRead(game, ACCEPTANCE)) !== run.acceptanceHash) throw new Error('Frozen acceptance tests changed');
-  if (await browserSuiteHash() !== run.browserSuiteHash) throw new Error('Frozen browser acceptance changed');
+  if (await browserSuiteHash(run.templateId) !== run.browserSuiteHash) throw new Error('Frozen browser acceptance changed');
+  if (run.workflow) {
+    for (const [name,hash] of Object.entries(run.workflow)) {
+      if (!['request.json','contract.json'].includes(name) || sha256(await safeRead(root,'input/'+name)) !== hash) throw new Error('Frozen workflow input changed');
+    }
+  }
   const evidenceRoot = path.join(root, 'evidence');
   if (sha256(await safeRead(evidenceRoot, 'research.json')) !== run.researchHash) throw new Error('Frozen research manifest changed');
   const evidence = await verifyEvidence(evidenceRoot, await json(evidenceRoot, 'research.json'));
@@ -37,14 +41,15 @@ export async function verifyRunInputs(root, run) {
   return evidence;
 }
 async function browserArtifactsCurrent(root, report, run) {
+  const spec=candidateSpec(run.templateId); const checks=spec.checks;
   if (!report || report.suiteHash !== run.browserSuiteHash || report.scope !== 'HTTP_BROWSER' ||
     !Array.isArray(report.checks) || !Array.isArray(report.artifacts) ||
-    report.checks.length !== BROWSER_CHECKS.length ||
+    report.checks.length !== checks.length ||
     report.checks.some(c => !c || typeof c.name !== 'string' || c.passed !== true) ||
-    new Set(report.checks.map(c => c.name)).size !== BROWSER_CHECKS.length ||
-    !BROWSER_CHECKS.every(name => report.checks.some(c => c.name === name && c.passed === true))) return false;
+    new Set(report.checks.map(c => c.name)).size !== checks.length ||
+    !checks.every(name => report.checks.some(c => c.name === name && c.passed === true))) return false;
   try {
-    for (const name of BROWSER_SCREENSHOTS) {
+    for (const name of spec.screenshots) {
       const artifact = report.artifacts.find(a => a.path === name);
       if (!artifact || sha256(await safeRead(root, name)) !== artifact.sha256) return false;
     }
@@ -67,28 +72,40 @@ export async function buildHash(gameRoot) {
 }
 export async function loadRun(base,id) {
   assertId(id); const run = await json(base,`${id}/run.json`);
-  if (run.schemaVersion !== 1 || run.runId !== id || run.templateId !== 'grid-merge-v1' ||
-    !['observatory','orchard'].includes(run.theme) || run.policyHash !== sha256(JSON.stringify(run.budget))) throw new Error('Invalid run identity or changed budget');
+  const spec=candidateSpec(run.templateId);
+  if (run.templateId==='clinic-queue-v1' && (!run.workflow || !run.workflow['request.json'] || !run.workflow['contract.json'])) throw new Error('Clinic workflow binding missing');
+  if (run.schemaVersion !== 1 || run.runId !== id ||
+    !spec.themes.includes(run.theme) || run.policyHash !== sha256(JSON.stringify(run.budget))) throw new Error('Invalid run identity or changed budget');
   return {run,root:path.join(base,id),game:path.join(base,id,'workspace/game')};
 }
 
 /** Add only: never overwrite or reuse a previous run, including partial runs. */
-export async function createRun(base,id,theme='observatory') {
-  assertId(id); if (!['observatory','orchard'].includes(theme)) throw new Error('Unknown theme');
+export async function createRun(base,id,theme='observatory',options={}) {
+  const spec=candidateSpec(options.templateId??'grid-merge-v1');
+  assertId(id); if (!spec.themes.includes(theme)) throw new Error('Unknown theme');
+  if(spec.id==='clinic-queue-v1'&&!options.workflow)throw new Error('Use the checked workflow build entry for this candidate');
   await mkdir(base,{recursive:true}); const baseStat=await lstat(base);
   if (!baseStat.isDirectory() || baseStat.isSymbolicLink()) throw new Error('Unsafe runs directory');
   const root=path.join(base,id); await mkdir(root); // Deliberately fails if it exists.
   try {
     const game=path.join(root,'workspace/game');await mkdir(path.join(game,'tests'),{recursive:true});
     const evidence=path.join(root,'evidence');await mkdir(path.join(evidence,'reference'),{recursive:true});
-    for (const name of [...GAME_FILES,ACCEPTANCE]) await writeFile(path.join(game,name),await safeRead(path.join(ROOT,'templates/web-lite/grid-merge-v1'),name),{flag:'wx'});
-    for (const name of SOURCE_FILES) await writeFile(path.join(evidence,name),await safeRead(path.join(ROOT,'examples/lean-pilot'),name),{flag:'wx'});
+    for (const name of [...GAME_FILES,ACCEPTANCE]) await writeFile(path.join(game,name),await safeRead(path.join(ROOT,'templates/web-lite',spec.id),name),{flag:'wx'});
+    for (const name of spec.sourceFiles) await writeFile(path.join(evidence,name),await safeRead(path.join(ROOT,spec.evidenceRoot),name),{flag:'wx'});
     const research=await json(evidence,'research.json'); const evidenceResult=await verifyEvidence(evidence,research);
     if (!evidenceResult.passed) throw new Error(evidenceResult.blockers.join(', '));
-    const run={schemaVersion:1,runId:id,templateId:'grid-merge-v1',theme,createdAt:new Date().toISOString(),
+    const run={schemaVersion:1,runId:id,templateId:spec.id,theme,createdAt:new Date().toISOString(),
       budget:{...DEFAULT_BUDGET},policyHash:sha256(JSON.stringify(DEFAULT_BUDGET)),
-      browserSuiteHash:await browserSuiteHash(),acceptanceHash:sha256(await safeRead(game,ACCEPTANCE)),researchHash:sha256(await safeRead(evidence,'research.json')),
+      browserSuiteHash:await browserSuiteHash(spec.id),acceptanceHash:sha256(await safeRead(game,ACCEPTANCE)),researchHash:sha256(await safeRead(evidence,'research.json')),
       note:'Explicit engineering pilot only. Not connected to legacy production routing, Codex, REA, billing, deployment or platform publication.'};
+    if(options.workflow) {
+      await mkdir(path.join(root,'input'));run.workflow={};
+      for(const [name,value] of Object.entries(options.workflow)) {
+        if(!['request.json','contract.json'].includes(name))throw new Error('Unexpected workflow input');
+        const bytes=JSON.stringify(value,null,2)+'\n';
+        await writeFile(path.join(root,'input',name),bytes,{flag:'wx',mode:0o600});run.workflow[name]=sha256(bytes);
+      }
+    }
     await writeJson(root,'run.json',run);
     await writeJson(root,'ledger.json',{buildHashes:[],cashCents:0,elapsedMs:0,pending:false,attempts:[]});
     await writeJson(root,'human-review.json',{status:'NOT_RUN',runId:id,buildHash:await buildHash(game),reviewer:'',participants:[]});
@@ -149,7 +166,7 @@ export async function reportRun(base,id) {
     inputsCurrent=!engineering || sha256(await safeRead(root,'engineering.tap'))===engineering.logHash;
   } catch { inputsCurrent=false; }
   const browserCurrent=await browserArtifactsCurrent(root,browser,run);
-  const human=await evaluatePlaytest(root,await optionalJson(root,'human-review.json'),{runId:id,buildHash:hash});
+  const human=await (run.templateId==='clinic-queue-v1'?evaluateClinicPlaytest:evaluatePlaytest)(root,await optionalJson(root,'human-review.json'),{runId:id,buildHash:hash});
   const status=(report)=>!report?'NOT_RUN':!inputsCurrent||ledger.pending||report.buildHash!==hash||report.runId!==id?'STALE':
     report.passed!==true?(report.outcome==='ENVIRONMENT_BLOCKED'?'BLOCKED':'FAIL'):
     report===browser&&!browserCurrent?'STALE':'PASS';
@@ -185,18 +202,34 @@ export async function serveRun(base,id,port=4173) {
 }
 async function main() {
   const [command,id,arg]=process.argv.slice(2);
-  if(command==='init') console.log(JSON.stringify(await createRun(DEFAULT_RUNS,id,arg??'observatory'),null,2));
+  if(command==='build') {
+    if(arg&&arg!=='clinic-queue-v1')throw new Error('No implementation for this recipe; do not substitute another genre');
+    const {buildClinic}=await import('./build-workflow.mjs');
+    console.log(JSON.stringify(await buildClinic(DEFAULT_RUNS,id),null,2));
+  }
+  else if(command==='browser') {
+    const {run}=await loadRun(DEFAULT_RUNS,id);
+    const module=await import(pathToFileURL(path.join(ROOT,candidateSpec(run.templateId).browserScript)).href);
+    const result=await module.browserQa(id);console.log(JSON.stringify(result,null,2));if(!result.passed)process.exitCode=1;
+  }
+  else if(command==='handoff') {
+    const {root,game,run}=await loadRun(DEFAULT_RUNS,id);await verifyRunInputs(root,run);
+    console.log(JSON.stringify({runId:id,templateId:run.templateId,workspace:game,buildHash:await buildHash(game),status:await reportRun(DEFAULT_RUNS,id),
+      allowedFiles:GAME_FILES.map(name=>'workspace/game/'+name),frozen:['workspace/game/tests/engine.test.mjs','input/','evidence/'],
+      next:'Fix one evidenced gameplay problem inside this workspace, rerun pilot check and pilot browser, then report exact results. Do not edit frozen tests or reset the run budget.',paidModelStarted:false,releaseAllowed:false},null,2));
+  }
+  else if(command==='init') console.log(JSON.stringify(await createRun(DEFAULT_RUNS,id,arg??'observatory'),null,2));
   else if(command==='check') {const report=await checkRun(DEFAULT_RUNS,id);console.log(JSON.stringify(report,null,2));if(!report.passed)process.exitCode=1;}
   else if(command==='report')console.log(JSON.stringify(await reportRun(DEFAULT_RUNS,id),null,2));
   else if(command==='export') {
     const {root,game,run}=await loadRun(DEFAULT_RUNS,id);const {standaloneHtml}=await import('./standalone.mjs');
-    const bundle=await standaloneHtml(game,arg??run.theme);const name=`${bundle.theme}-${bundle.buildHash.slice(0,12)}.html`;
+    const bundle=await standaloneHtml(game,arg??run.theme,id);const name=`${bundle.theme}-${bundle.buildHash.slice(0,12)}.html`;
     await writeFile(path.join(root,name),bundle.html,{flag:'wx'});console.log(JSON.stringify({path:path.join(root,name),buildHash:bundle.buildHash},null,2));
   }
   else if(command==='serve') {
     const server=await serveRun(DEFAULT_RUNS,id,arg===undefined?4173:Number(arg));const {run}=await loadRun(DEFAULT_RUNS,id);
     console.log(`Local preview: http://127.0.0.1:${server.address().port}/?theme=${run.theme}`);
     const close=()=>server.close();process.once('SIGINT',close);process.once('SIGTERM',close);
-  } else throw new Error('Usage: node tools/lean-pilot/runner.mjs init|check|serve|export|report RUN_ID [theme|port]');
+  } else throw new Error('Usage: node tools/lean-pilot/runner.mjs build|init|check|browser|serve|export|report|handoff RUN_ID [theme|port]');
 }
 if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.meta.url)main().catch(error=>{console.error(error.message);process.exitCode=1;});

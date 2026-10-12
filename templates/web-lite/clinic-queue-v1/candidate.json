@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "templateId": "clinic-queue-v1",
+  "status": "CANDIDATE",
+  "profile": "STRATEGIC_SYSTEM",
+  "runtime": "web-lite",
+  "language": "zh-CN",
+  "scope": "Original 180-second dispatch experiment; not the existing Jinglan Hospital game, a medical simulator, a certified template or a platform release.",
+  "sourceEvidence": "Direct review of CorsixTH queue/GP source; our queue and economy values are independent design hypotheses. No REA execution or competitor runtime claimed.",
+  "human": "NOT_RUN",
+  "commercial": "NOT_RUN",
+  "implementationContractHash": "694a6406d5905d6c0a82ce3a61ba8f3ab70239cc2f2899781a08648dcf3582a3"
+}

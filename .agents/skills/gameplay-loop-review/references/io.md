@@ -43,3 +43,7 @@ openQuestions：问题数组。measurements的enjoyment/voluntaryContinuation/ne
 三个报告必须passed=true、runId/buildHash一致。browser还需scope=HTTP_BROWSER、非空全通过checks和实际artifacts文件引用。human还需profile/source=HUMAN/reviewer/decision=APPROVE_BOUNDED_VARIANTS及至少3条已同意、未经指导的独立sessions；每条id/consent/uncoached/finding/evidence。数量仅防止空凭证，不能推断人群留存；审核人需判断类型相关体验，不能靠计数自动发证。
 
 此格式为本工作单的独立复用评审收据，不是旧factory certification或旧human-review.json的替代物。不能把旧合并游戏firstMergeMs测试复制成剧情验收。核验声明和文件一致性不等于数字签名或真实人类身份验证，仍需独立审核与受控存储。当前仓库没有因此自动成为成熟的母版。
+
+## 已实现的仓库执行桥
+
+`tools/lean-pilot/build-workflow.mjs` 调用本Skill同一份plan/audit实现，核对已实现合同，再交原runner创建独立run。不是把任意合同送给旧Zod，也不是通用AI编译器。当前新配方仅为中文门诊3分钟实验；动作/剧情类型仍需各自真实代码。合同、测试、预算、证据与当前构建绑定，结构通过不能替代实际运行结果。
