@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 import { createHash } from 'node:crypto';
-import { mkdtemp, mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, rm, symlink, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { auditExistingGame } from '../../src/core/external-game-audit.js';
@@ -25,14 +25,21 @@ function fixture() {
   return { built, cases, evidence, content, filename };
 }
 
-async function isolated(testBody: (args: {root:string;manifestPath:string;manifest:Record<string,any>})=>Promise<void>) {
+type AuditFixtureManifest = {
+  schemaVersion: number; targetGame: string; repository: string; commit: string;
+  workspace: string; scope: string; playable: { path: string; sha256: string };
+  cases: ReturnType<typeof fixture>['cases'];
+  evidence: ReturnType<typeof fixture>['evidence'];
+  requireHumanPlaytest: boolean;
+};
+async function isolated(testBody: (args: {root:string;manifestPath:string;manifest:AuditFixtureManifest})=>Promise<void>) {
   const root = await mkdtemp(path.join(os.tmpdir(), 'external-qa-'));
   try {
     const {built,cases,evidence,content,filename}=fixture();
     await writeFile(path.join(root,'index.html'),built);
     for(const [i,row] of cases.entries()) { const kind=evidence[i]!.kind; await mkdir(path.join(root,'evidence',row.id),{recursive:true});
       await writeFile(path.join(root,'evidence',row.id,filename(kind)),content(kind)); }
-    const manifest:Record<string,any> = {schemaVersion:1,targetGame:'night-market-hero',repository:'23chen990/night-market-hero',
+    const manifest: AuditFixtureManifest = {schemaVersion:1,targetGame:'night-market-hero',repository:'23chen990/night-market-hero',
       commit:'a'.repeat(40),workspace:root,scope:'web-lite',playable:{path:'index.html',sha256:hash(built)},
       cases,evidence,requireHumanPlaytest:true};
     const manifestPath=path.join(root,'manifest.json');
@@ -83,7 +90,7 @@ describe('external game evidence verifier',()=>{
     expect((await auditExistingGame(manifestPath)).passed).toBe(false);
   }));
   test('missing independent human acceptance remains a blocking gap',async()=>isolated(async({manifestPath,manifest})=>{
-    manifest.evidence = manifest.evidence.filter((row:Record<string,unknown>)=>row.kind!=='human-playtest');
+    manifest.evidence = manifest.evidence.filter(row=>row.kind!=='human-playtest');
     await writeFile(manifestPath,JSON.stringify(manifest));
     const report=await auditExistingGame(manifestPath);
     expect(report.blockers).toContain('independent-human-playtest-missing');
