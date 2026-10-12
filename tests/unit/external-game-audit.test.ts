@@ -56,32 +56,32 @@ describe('external game evidence verifier',()=>{
     expect(report.cases.every(c=>c.status==='PASS')).toBe(true);
   }));
   test('missing a single viewport case cannot inherit a sibling dimension pass',async()=>isolated(async({manifestPath,manifest})=>{
-    manifest.cases[0].requiredEvidenceKinds.push('natural-input');
+    manifest.cases[0]!.requiredEvidenceKinds.push('natural-input');
     await writeFile(manifestPath,JSON.stringify(manifest));
     const report=await auditExistingGame(manifestPath);
     expect(report.passed).toBe(false);
-    expect(report.cases[0].blockers).toContain('required-evidence-count:natural-input:0');
+    expect(report.cases[0]!.blockers).toContain('required-evidence-count:natural-input:0');
   }));
   test('different build hashes invalidate natural player evidence',async()=>isolated(async({manifestPath,manifest})=>{
-    manifest.evidence[1].buildHash='f'.repeat(64);
+    manifest.evidence[1]!.buildHash='f'.repeat(64);
     await writeFile(manifestPath,JSON.stringify(manifest));
     const report=await auditExistingGame(manifestPath);
     expect(report.passed).toBe(false);
-    expect(report.cases[1].blockers).toContain('natural-input:wrong-build-hash');
+    expect(report.cases[1]!.blockers).toContain('natural-input:wrong-build-hash');
   }));
   test('a builder cannot sign an independent visual success',async()=>isolated(async({manifestPath,manifest})=>{
-    manifest.evidence[2].independentOfBuilder=false;
+    manifest.evidence[2]!.independentOfBuilder=false;
     await writeFile(manifestPath,JSON.stringify(manifest));
     const report=await auditExistingGame(manifestPath);
     expect(report.passed).toBe(false);
-    expect(report.cases[2].blockers).toContain('perceptual:reviewer-not-independent');
+    expect(report.cases[2]!.blockers).toContain('perceptual:reviewer-not-independent');
   }));
   test('path traversal, forged bytes and symlinks fail closed',async()=>isolated(async({root,manifestPath,manifest})=>{
-    manifest.evidence[0].files[0].path='../not-a-proof.json';
+    manifest.evidence[0]!.files[0]!.path='../not-a-proof.json';
     await writeFile(manifestPath,JSON.stringify(manifest));
     expect((await auditExistingGame(manifestPath)).passed).toBe(false);
-    manifest.evidence[0].files[0].path='evidence/case-0/proof.json';
-    manifest.evidence[0].files[0].sha256='1'.repeat(64);
+    manifest.evidence[0]!.files[0]!.path='evidence/case-0/proof.json';
+    manifest.evidence[0]!.files[0]!.sha256='1'.repeat(64);
     await writeFile(manifestPath,JSON.stringify(manifest));
     expect((await auditExistingGame(manifestPath)).passed).toBe(false);
     await rm(path.join(root,'evidence/case-0/proof.json'));
