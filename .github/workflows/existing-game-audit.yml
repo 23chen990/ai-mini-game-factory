@@ -20,4 +20,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
       - run: pnpm lint
-      - run: pnpm test
+      - name: Browser engines for runtime tests
+        run: pnpm exec playwright install --with-deps chromium webkit
+      - name: New external audit gates
+        run: pnpm exec vitest run tests/unit/existing-game-audit.test.ts
+      - name: Full factory regression
+        run: pnpm test
