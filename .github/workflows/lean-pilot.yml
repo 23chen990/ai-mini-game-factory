@@ -9,6 +9,10 @@ on:
       - 'PILOT_START.md'
       - '.github/workflows/lean-pilot.yml'
       - 'package.json'
+      - 'src/cli/factory.ts'
+      - '.agents/skills/gameplay-loop-review/**'
+      - '.agents/skills/seed-to-game-blueprint/SKILL.md'
+      - '.agents/skills/game-playtest/SKILL.md'
 permissions:
   contents: read
 concurrency:
@@ -33,7 +37,7 @@ jobs:
         run: npm run pilot:test | tee "$RUNNER_TEMP/lean-pilot-native.tap"
       - name: Check browser and tooling syntax
         run: |
-          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs; do
+          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs .agents/skills/gameplay-loop-review/scripts/*.mjs; do
             node --check "$file"
           done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -65,7 +69,9 @@ jobs:
           pnpm exec playwright --version
           sha256sum pnpm-lock.yaml
           npm run pilot:typecheck
-          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1
+          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1 .agents/skills/gameplay-loop-review/scripts src/cli/factory.ts
+      - name: Verify the real shared factory CLI without starting a provider
+        run: node tools/lean-pilot/workflow-integration.mjs
       - name: Install Chromium for the locked Playwright version
         run: pnpm exec playwright install --with-deps chromium
       - name: Initialize one isolated CI run and verify its copied core

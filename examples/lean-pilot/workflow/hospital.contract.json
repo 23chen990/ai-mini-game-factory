@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "gameId": "hospital-trial",
+  "policyHash": "ac7413cdcf51138d984cc3dab81d4ba34aea1d46239516a141b284b6b4a64825",
+  "requestHash": "78b87125d087c531cb972c22e8f4cb6d9c5b34c6a3922a426e2724ca597319ea",
+  "status": "PROPOSED",
+  "firstSession": {
+    "firstAction": "把空闲护士安排到已显示排队的接待处",
+    "firstResult": "护士走到接待处并开始服务，队首患者进入下一阶段",
+    "nextIntention": "试试把第二名护士调过去，能否清掉长队而不让诊室闲置",
+    "safeStop": "随时暂停，保存岗位和患者状态；离开不惩罚"
+  },
+  "loops": [
+    {
+      "id": "core",
+      "scale": "core",
+      "decision": "接待和诊室都缺人时先调去哪里",
+      "action": "选择护士并分配岗位",
+      "visibleChange": "实际到岗后服务开始，患者移动，队列和收入变化",
+      "nextIntention": "用下一批患者检验自己的分配是否更好",
+      "variation": "可见的来客组合改变，岗位操作规则保持一致",
+      "claim": "hypothesis",
+      "evidenceRefs": []
+    },
+    {
+      "id": "expansion",
+      "scale": "goal",
+      "decision": "有限现金先雇护士还是开放第二间诊室",
+      "action": "比较当前瓶颈后投资一项能力",
+      "visibleChange": "新员工或新诊室出现在地图，资金减少",
+      "nextIntention": "用新能力尝试同时处理两类服务需求",
+      "variation": "不同投资让下一轮可用的岗位安排不同",
+      "claim": "hypothesis",
+      "evidenceRefs": []
+    }
+  ],
+  "links": [
+    {
+      "from": "core",
+      "to": "expansion",
+      "kind": "feeds",
+      "effect": "实际服务结算收入用于招聘或开放诊室"
+    },
+    {
+      "from": "expansion",
+      "to": "core",
+      "kind": "changes-action",
+      "effect": "更多岗位和人员使调度选择改变，而不是只把金币倍增"
+    }
+  ],
+  "progression": {
+    "savedState": "岗位安排、设施、资金、服务进度与患者阶段",
+    "effectOnNextCore": "新诊室允许把接待和治疗并行安排",
+    "safeExit": "主动暂停和自动保存；恢复不重复收费或扣款"
+  },
+  "endingValue": "",
+  "cases": [
+    {
+      "id": "first-action-feedback",
+      "tag": "first-action-feedback",
+      "given": "接待有人等待，护士空闲",
+      "when": "把护士安排到接待处",
+      "thenState": "到岗后服务计时开始",
+      "thenVisible": "护士走过去，队首进入服务",
+      "contrastAction": "不安排护士",
+      "contrastExpected": "患者仍等待，没有后台假服务",
+      "evidenceRefs": []
+    },
+    {
+      "id": "safe-exit-or-recovery",
+      "tag": "safe-exit-or-recovery",
+      "given": "服务进行中且保存可用",
+      "when": "暂停、保存并重新打开",
+      "thenState": "恢复到相同服务阶段且没有重复结算",
+      "thenVisible": "地图与岗位安排保持",
+      "contrastAction": "使用损坏存档恢复",
+      "contrastExpected": "显示恢复失败和安全回退，不静默清空进度",
+      "evidenceRefs": []
+    },
+    {
+      "id": "bottleneck-relief",
+      "tag": "bottleneck-relief",
+      "given": "相同初始资金和固定来客序列，接待积压",
+      "when": "将空闲护士调去接待",
+      "thenState": "与不干预相比等待总量下降且完成量提高",
+      "thenVisible": "队列缩短，服务动作频率上升",
+      "contrastAction": "把护士派到当前没有需求的房间",
+      "contrastExpected": "接待积压不缓解，其他变量相同",
+      "evidenceRefs": []
+    },
+    {
+      "id": "resource-tradeoff",
+      "tag": "resource-tradeoff",
+      "given": "资金只够招聘或开诊室其中一项",
+      "when": "选择招聘",
+      "thenState": "资金扣除且可用护士增加，仍买不起诊室",
+      "thenVisible": "新护士出现，另一项价格与缺口仍可见",
+      "contrastAction": "选择开诊室",
+      "contrastExpected": "房间增加但没有自动凭空增加护士",
+      "evidenceRefs": []
+    },
+    {
+      "id": "progression-impact",
+      "tag": "progression-impact",
+      "given": "先前单诊室无法并行服务，已攒够扩张费用",
+      "when": "开放第二诊室并安排合格人员",
+      "thenState": "可并行处理，固定输入下吞吐能力改变",
+      "thenVisible": "两个诊室都出现真实服务行为",
+      "contrastAction": "仅开放诊室但不安排人员",
+      "contrastExpected": "第二诊室空闲，不产生无来源收益",
+      "evidenceRefs": []
+    }
+  ],
+  "evidence": [],
+  "openQuestions": [
+    "这是原创设计假设，不是对现有医院源码或竞品运行的已验证描述。",
+    "先取得授权参考的实际服务/队列证据，再确定来客与服务数值；不要把固定测试输入当调平结果。",
+    "尚未执行真实手机、玩家或广告实验。"
+  ],
+  "measurements": {
+    "enjoyment": "NOT_RUN",
+    "voluntaryContinuation": "NOT_RUN",
+    "nextDayReturn": "NOT_RUN",
+    "retrospectiveValue": "NOT_RUN"
+  }
+}
