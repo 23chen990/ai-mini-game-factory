@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "status": "NOT_RUN",
+  "jobHash": null,
+  "reportSha256": null,
+  "reviewer": null,
+  "publicSafe": false,
+  "targetScopeVerified": false,
+  "executedPackageVersion": null,
+  "measured": {
+    "setupMinutes": null,
+    "analysisMinutes": null,
+    "reviewMinutes": null,
+    "failedAttemptMinutes": null,
+    "cashCents": null,
+    "attempts": null
+  },
+  "findings": []
+}
