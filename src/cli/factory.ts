@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import path from 'node:path';
 import { createFactory } from '../factory.js';
+import { auditExistingGame } from '../core/existing-game-audit.js';
 import { runDoctor } from '../core/doctor.js';
 import { StageNameSchema } from '../schemas/index.js';
 
@@ -10,6 +11,16 @@ function option(name: string) { const index = args.indexOf(name); return index >
 async function main() {
   if (command === 'doctor') { const report = await runDoctor(); console.log(JSON.stringify(report, null, 2)); if (!report.healthy) process.exitCode = 1; return; }
   switch (command) {
+    case 'audit-existing': {
+      // Verifies an existing local Git worktree and the exact candidate build.
+      // This cannot generate missing browser or human QA evidence on its own.
+      const file = path.resolve(requireArg(args[0], 'audit-manifest-json'));
+      const raw = JSON.parse(await (await import('node:fs/promises')).readFile(file, 'utf8')) as unknown;
+      const report = await auditExistingGame(raw);
+      console.log(JSON.stringify(report, null, 2));
+      if (!report.passed) process.exitCode = 2;
+      break;
+    }
     case 'route': console.log(JSON.stringify(factory.routeRequest({ request: requireArg(args[0], 'request'), targetRunId: option('--run') }), null, 2)); break;
     case 'eval': console.log(JSON.stringify(await factory.persistFactoryEval(), null, 2)); break;
     case 'feedback': console.log(JSON.stringify(await factory.recordFeedback(requireArg(args[0], 'run-id'), requireArg(args[1], 'feedback')), null, 2)); break;
@@ -54,7 +65,7 @@ async function main() {
     case 'retry': console.log(JSON.stringify(await factory.retry(requireArg(args[0], 'run-id'), StageNameSchema.parse(requireArg(args[1], 'stage').toUpperCase())), null, 2)); break;
     case 'inspect': console.log(JSON.stringify(await factory.inspect(requireArg(args[0], 'run-id')), null, 2)); break;
     case 'demo': { const runId = await factory.demo(args[0] ? path.resolve(args[0]) : undefined); console.log(JSON.stringify({ runId, state: await factory.status(runId) }, null, 2)); break; }
-    default: throw new Error('Usage: factory <doctor|route|eval|feedback|feedback-structured|operating-status|set-portfolio|record-portfolio|set-portfolio-strategy|record-portfolio-strategy|record-platform-policy|record-side-effect|record-cost|authorize-cost-continuation|record-certification|record-launch-metrics|live-verify|approve-business|platform-qa|approve-playtest|approve-human|record-variation|record-baseline|record-originality|plan|validate|new|new-action|run|status|audit-reference|extract-reference-frames|recover-reference-research|reproject-reference|resume|approve-reference|approve-prototype|approve-action|implement-formal|preview|approve|verify-build|retry|inspect|demo> [...args]');
+    default: throw new Error('Usage: factory <audit-existing|doctor|route|eval|feedback|feedback-structured|operating-status|set-portfolio|record-portfolio|set-portfolio-strategy|record-portfolio-strategy|record-platform-policy|record-side-effect|record-cost|authorize-cost-continuation|record-certification|record-launch-metrics|live-verify|approve-business|platform-qa|approve-playtest|approve-human|record-variation|record-baseline|record-originality|plan|validate|new|new-action|run|status|audit-reference|extract-reference-frames|recover-reference-research|reproject-reference|resume|approve-reference|approve-prototype|approve-action|implement-formal|preview|approve|verify-build|retry|inspect|demo> [...args]');
   }
 }
 main().catch((error) => { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; });
