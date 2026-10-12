@@ -99,7 +99,6 @@ export async function auditExistingGame(value: unknown) {
   }
   const signals = Object.fromEntries(QUALITY_DIMENSIONS.map(dimension => {
     const rows = manifest.cases.filter(row => row.dimension === dimension);
-    const required = requiredIds.filter(id => manifest.cases.some(row => row.id === id && row.dimension === dimension));
     const dimensionMissing = requiredIds.some(id => !manifest.cases.some(row => row.id === id));
     const blockers = [
       ...(rows.length ? [] : [`no-evidence:${dimension}`]),
