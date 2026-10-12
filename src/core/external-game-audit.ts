@@ -95,6 +95,18 @@ async function verifiedFile(workspace: string, realRoot: string, relative: strin
   } catch { return false; }
 }
 
+// The author of a custom audit case cannot declare away the most important
+// evidence. These floors apply even if requiredEvidenceKinds is incomplete.
+const minimumEvidenceByDimension: Record<QualityDimensionId, Array<ExternalGameAuditManifest['evidence'][number]['kind']>> = {
+  functionality: ['engineering'],
+  coreExperience: ['natural-input', 'perceptual'],
+  contentDifficulty: ['natural-input', 'perceptual'],
+  visualUx: ['perceptual'],
+  performanceCompatibility: ['phone-performance'],
+  productIntegrity: ['engineering', 'human-playtest'],
+  releaseEngineering: ['engineering'],
+};
+
 const methodForKind: Record<ExternalGameAuditManifest['evidence'][number]['kind'], string> = {
   engineering: 'fixture',
   'natural-input': 'natural-input',
@@ -120,7 +132,12 @@ export async function auditExistingGame(manifestFilename: string) {
     const evidence: EvidenceResult[] = [];
     const caseBlockers: string[] = [];
     const supplied = manifest.evidence.filter(row => row.caseId === testCase.id);
-    for (const kind of testCase.requiredEvidenceKinds) {
+    const requiredKinds = [...new Set([
+      ...testCase.requiredEvidenceKinds,
+      ...minimumEvidenceByDimension[testCase.dimension],
+      ...(manifest.scope === 'commercial' && testCase.dimension === 'releaseEngineering' ? ['platform-package' as const] : []),
+    ])];
+    for (const kind of requiredKinds) {
       const matched = supplied.filter(row => row.kind === kind);
       if (matched.length !== 1) {
         caseBlockers.push(`required-evidence-count:${kind}:${matched.length}`);
@@ -168,7 +185,8 @@ export async function auditExistingGame(manifestFilename: string) {
   const matrix = buildQualityGateMatrix(signals, { candidateHash: buildHash, requireCandidateHash: true });
   const humanAccepted = caseReports.some(row => row.status === 'PASS'
     && manifest.evidence.some(e => e.caseId === row.id && e.kind === 'human-playtest' && e.status === 'PASS'));
-  if (manifest.requireHumanPlaytest && !humanAccepted) blockers.push('independent-human-playtest-missing');
+  if (!manifest.requireHumanPlaytest) blockers.push('human-playtest-waiver-not-supported');
+  if (!humanAccepted) blockers.push('independent-human-playtest-missing');
   if (!matrix.passed) blockers.push(...matrix.blockers.map(x => `quality-dimension:${x}`));
   // This checks artifact provenance and review declarations. It cannot
   // replace actually launching a browser or visually inspecting a video.
