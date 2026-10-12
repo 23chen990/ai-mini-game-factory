@@ -1,30 +1,42 @@
 /* global structuredClone */
 // Original bounded clinic simulation. Parameters are design hypotheses, not extracted competitor values.
 export const CONFIG = Object.freeze({
-  stepMs:250,durationMs:180000,startCash:8000,fee:1200,
+  stepMs:250,durationMs:180000,startCash:8000,fee:600,
   intakeMs:4500,careMs:8500,upgradedCareMs:5000,helperTravelMs:3000,
   intakePatienceMs:24000,carePatienceMs:32000,walkMs:1500,
   equipmentCost:3500,roomCost:6500,doctorCost:7000,
-  wageEveryMs:15000,baseWage:200,extraWage:250,maxEvents:120,
+  wageEveryMs:15000,baseWage:200,extraWage:250,maxEvents:160,goalCompleted:26,maxLost:5,
 });
 const PHASES=['arriving','intakeWait','intake','walk','careWait','care','exit','done','lost'];
 const STATUSES=['ready','running','paused','finished'];
 const integer=v=>Number.isSafeInteger(v)&&v>=0;
 const fail=(ok,message)=>{if(!ok)throw new Error(message);};
 const bounded=(v,max)=>integer(v)&&v<=max;
-function schedule(seed){
-  let r=seed>>>0;const a=[1000];let at=1000;
-  while(at<CONFIG.durationMs-4000){
-    r=(Math.imul(1664525,r)+1013904223)>>>0;
-    const interval=at<30000?6000:at<70000?3000:at<110000?5000:at<150000?2500:4000;
-    at+=Math.round((interval+(r%3-1)*250)/CONFIG.stepMs)*CONFIG.stepMs;
-    if(at<CONFIG.durationMs-4000)a.push(at);
-  }
-  return a;
+export const WAVES = Object.freeze([
+  {at:0, until:30000, count:7, kind:'new', intake:1.6, care:0.65, title:'第1批 初诊', cue:'初诊要建档，先顾挂号'},
+  {at:30000, until:60000, count:7, kind:'review', intake:0.7, care:1.55, title:'第2批 复诊', cue:'复诊登记快，诊疗用时更长'},
+  {at:60000, until:90000, count:8, kind:'new', intake:1.6, care:0.65, title:'第3批 初诊', cue:'初诊要建档，留意挂号积压'},
+  {at:90000, until:120000, count:8, kind:'review', intake:0.7, care:1.55, title:'第4批 复诊', cue:'这一批诊疗更慢，先让长队动起来'},
+  {at:120000, until:150000, count:9, kind:'new', intake:1.8, care:0.65, title:'第5批 初诊', cue:'建档需求又来了，挂号不要断人'},
+  {at:150000, until:166000, count:7, kind:'review', intake:0.7, care:1.4, title:'最后一批', cue:'最后的复诊，尽量接完等候的人'},
+]);
+export function waveAt(time){return WAVES.find(w=>time>=w.at&&time<w.until)??WAVES[WAVES.length-1];}
+export function schedule(seed){
+ let r=seed>>>0;const a=[];
+ for(const w of WAVES){for(let i=0;i<w.count;i++){
+   r=(Math.imul(1664525,r)+1013904223)>>>0;
+   const offset=i===0?250:Math.round((i*1700+(r%3)*150)/CONFIG.stepMs)*CONFIG.stepMs;
+   a.push(w.at+offset);
+ }}
+ return a;
+}
+export function serviceMs(s,p,kind){
+  const w=WAVES[p.wave??0];
+  return Math.ceil((kind==='intake'?CONFIG.intakeMs*w.intake:(s.equipment?CONFIG.upgradedCareMs:CONFIG.careMs)*w.care)/CONFIG.stepMs)*CONFIG.stepMs;
 }
 export function createInitial(seed=1){
   fail(integer(seed)&&seed<=0xffffffff,'Invalid seed');
-  return {version:1,seed,status:'ready',timeMs:0,cash:CONFIG.startCash,income:0,spent:0,wages:0,
+  return {version:2,seed,status:'ready',timeMs:0,cash:CONFIG.startCash,income:0,spent:0,wages:0,
     equipment:false,room2:false,doctor2:false,helper:{station:'idle',target:'idle',travelMs:0},
     schedule:schedule(seed),patients:[],arrived:0,completed:0,lost:0,
     lossReasons:{intake:0,care:0},peakQueue:0,totalWaitMs:0,events:[],nextEvent:1};
@@ -67,7 +79,7 @@ export function tick(state,deltaMs=CONFIG.stepMs){
   const s=structuredClone(state);s.timeMs+=deltaMs;
   if(s.helper.travelMs>0){s.helper.travelMs=Math.max(0,s.helper.travelMs-deltaMs);if(!s.helper.travelMs){s.helper.station=s.helper.target;emit(s,'helper-arrived',{station:s.helper.station});}}
   while(s.arrived<s.schedule.length&&s.schedule[s.arrived]<=s.timeMs){
-    const id=++s.arrived;s.patients.push({id,phase:'arriving',since:s.timeMs,progressMs:0,waitMs:0,station:null});emit(s,'arrive',{patient:id});
+    const id=++s.arrived;s.patients.push({id,wave:WAVES.indexOf(waveAt(s.schedule[id-1])),phase:'arriving',since:s.timeMs,progressMs:0,waitMs:0,station:null});emit(s,'arrive',{patient:id});
   }
   for(const p of s.patients){
     if(p.phase==='arriving'&&s.timeMs-p.since>=CONFIG.walkMs)enter(s,p,'intakeWait');
@@ -82,7 +94,7 @@ export function tick(state,deltaMs=CONFIG.stepMs){
       // One helper assists one care station, not every doctor at once.
       const assisted=!s.helper.travelMs&&s.helper.station===kind&&(kind==='intake'||p.station==='care1');
       p.progressMs+=deltaMs*(assisted?2:1);
-      const duration=kind==='intake'?CONFIG.intakeMs:(s.equipment?CONFIG.upgradedCareMs:CONFIG.careMs);
+      const duration=serviceMs(s,p,kind);
       if(p.progressMs>=duration){
         if(kind==='intake')enter(s,p,'walk');
         else {enter(s,p,'exit');s.completed++;s.cash+=CONFIG.fee;s.income+=CONFIG.fee;emit(s,'treated',{patient:p.id,amount:CONFIG.fee});}
@@ -102,14 +114,20 @@ export function tick(state,deltaMs=CONFIG.stepMs){
     const paid=Math.min(s.cash,CONFIG.baseWage+(s.doctor2?CONFIG.extraWage:0));
     s.cash-=paid;s.wages+=paid;emit(s,'wages',{amount:paid});
   }
-  if(s.timeMs===30000||s.timeMs===110000)emit(s,'rush');
+  for(const w of WAVES.slice(1)){if(s.timeMs===w.at-8000)emit(s,'wave-preview',{wave:WAVES.indexOf(w)});if(s.timeMs===w.at)emit(s,'rush',{wave:WAVES.indexOf(w)});}
   if(s.timeMs>=CONFIG.durationMs){s.status='finished';emit(s,'settlement',{completed:s.completed,lost:s.lost});}
   return s;
 }
 export function inspect(s){
   const count=phase=>s.patients.filter(p=>p.phase===phase).length;
   const intakeQueue=count('intakeWait'),careQueue=count('careWait');
-  return {intakeQueue,careQueue,arriving:count('arriving'),incomingCare:count('walk'),
+  const waiting=kind=>s.patients.filter(p=>p.phase===kind+'Wait');
+  const deadline=(kind,limit)=>{const ps=waiting(kind);return ps.length?Math.max(0,limit-(s.timeMs-ps[0].since)):null;};
+  const intakeDeadlineMs=deadline('intake',CONFIG.intakePatienceMs),careDeadlineMs=deadline('care',CONFIG.carePatienceMs);
+  const load=kind=>waiting(kind).reduce((n,p)=>n+serviceMs(s,p,kind),0);
+  const active=kind=>s.patients.find(p=>p.phase===kind&&(kind==='intake'||p.station==='care1'));
+  const meter=kind=>{const p=active(kind);return p?{progress:p.progressMs/Math.max(1,serviceMs(s,p,kind)),durationMs:serviceMs(s,p,kind),patientId:p.id}:null;};
+  return {intakeDeadlineMs,careDeadlineMs,intakeLoadMs:load('intake'),careLoadMs:load('care'),intakeService:meter('intake'),careService:meter('care'),wave:WAVES.indexOf(waveAt(s.timeMs)),upcomingWave:WAVES.find(w=>w.at>s.timeMs)??null,intakeQueue,careQueue,arriving:count('arriving'),incomingCare:count('walk'),
     intakeBusy:count('intake'),careBusy:count('care'),careCapacity:s.doctor2?2:1,
     intakeMs:CONFIG.intakeMs,careMs:s.equipment?CONFIG.upgradedCareMs:CONFIG.careMs,
     unfinished:s.arrived-s.completed-s.lost,completed:s.completed,lost:s.lost,
@@ -118,7 +136,7 @@ export function inspect(s){
     bottleneck:careQueue===0&&intakeQueue===0?'none':careQueue>=intakeQueue?'care':'intake'};
 }
 export function validateState(s){
-  fail(s&&typeof s==='object'&&!Array.isArray(s)&&s.version===1,'Invalid state version');
+  fail(s&&typeof s==='object'&&!Array.isArray(s)&&s.version===2,'Invalid state version');
   fail(integer(s.seed)&&s.seed<=0xffffffff&&STATUSES.includes(s.status),'Invalid state identity');
   fail(bounded(s.timeMs,CONFIG.durationMs)&&s.timeMs%CONFIG.stepMs===0,'Invalid time');
   fail(['cash','income','spent','wages','arrived','completed','lost','peakQueue','totalWaitMs','nextEvent'].every(k=>bounded(s[k],100000000)),'Invalid counter');
@@ -129,7 +147,7 @@ export function validateState(s){
   fail(Array.isArray(s.schedule)&&JSON.stringify(s.schedule)===JSON.stringify(schedule(s.seed)),'Invalid schedule');
   fail(Array.isArray(s.patients)&&s.patients.length===s.arrived&&s.arrived<=s.schedule.length,'Invalid patient count');
   for(let i=0;i<s.patients.length;i++){
-    const p=s.patients[i];fail(p&&p.id===i+1&&PHASES.includes(p.phase)&&bounded(p.since,s.timeMs)&&bounded(p.progressMs,CONFIG.careMs*2)&&bounded(p.waitMs,CONFIG.durationMs)&&[null,'intake','care1','care2'].includes(p.station),'Invalid patient');
+    const p=s.patients[i];fail(p&&p.id===i+1&&Number.isInteger(p.wave)&&p.wave===WAVES.indexOf(waveAt(s.schedule[i]))&&PHASES.includes(p.phase)&&bounded(p.since,s.timeMs)&&bounded(p.progressMs,CONFIG.careMs*2)&&bounded(p.waitMs,CONFIG.durationMs)&&[null,'intake','care1','care2'].includes(p.station),'Invalid patient');
     if(p.phase==='care')fail(['care1','care2'].includes(p.station)&&(p.station!=='care2'||s.doctor2),'Invalid active station');
   }
   fail(s.completed===s.patients.filter(p=>p.phase==='done'||p.phase==='exit').length&&s.lost===s.patients.filter(p=>p.phase==='lost').length,'Invalid outcomes');
@@ -139,8 +157,15 @@ export function validateState(s){
   fail((s.status==='finished')===(s.timeMs===CONFIG.durationMs),'Invalid terminal state');
   return true;
 }
-export function encodeSave(state,runId){validateState(state);fail(typeof runId==='string'&&/^[a-z0-9][a-z0-9-]{0,47}$/.test(runId),'Invalid save namespace');return JSON.stringify({format:1,runId,state});}
+export function encodeSave(state,runId){validateState(state);fail(typeof runId==='string'&&/^[a-z0-9][a-z0-9-]{0,47}$/.test(runId),'Invalid save namespace');return JSON.stringify({format:2,runId,state});}
 export function decodeSave(raw,runId){
   if(typeof raw!=='string'||raw.length>180000)return null;
-  try {const v=JSON.parse(raw);if(v.format!==1||v.runId!==runId)return null;validateState(v.state);return structuredClone(v.state);}catch{return null;}
+  try {const v=JSON.parse(raw);if(v.format!==2||v.runId!==runId)return null;validateState(v.state);return structuredClone(v.state);}catch{return null;}
+}
+
+/** The quality promise is displayed from the start; never award a count-only win mid-shift. */
+export function outcome(s){
+  const countMet=s.completed>=CONFIG.goalCompleted;
+  const lossMet=s.lost<=CONFIG.maxLost;
+  return {countMet,lossMet,goal:CONFIG.goalCompleted,maxLost:CONFIG.maxLost,passed:s.status==='finished'&&countMet&&lossMet,finished:s.status==='finished'};
 }

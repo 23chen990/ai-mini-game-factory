@@ -56,3 +56,16 @@ and player-visible signal. A field checklist cannot prove the game's core loop i
 On invalid seed, missing evidence or unsupported template/profile, report a structured stage error without partial output.
 On provider output validation failure, preserve the raw provider error in the stage log and stop for explicit retry.
 Do not rewrite historical frozen plans, invent supporting observations, or substitute an unrelated implemented template.
+
+## Mobile and active-play scope before implementation
+
+Declare whether management is active dispatch or idle; do not inherit an idle success criterion for a game promising
+ongoing decisions. Declare primary orientation, portrait handling, primary input and default speed before drawing UI.
+Write observable opening checkpoints: cue -> actionable scene object -> input -> visible result -> next reason.
+Do not substitute a permanent button panel, smaller map, text wall or global countdown for those relationships.
+
+For active dispatch, plan negative baselines (zero input and one action at different times), genuine changing demand,
+a visible warning and recovery window, and a viable adaptive response. Do not fix inactivity solely by raising a score
+target or requiring an arbitrary number of taps. Growth changes capacity and future decisions, not just a number.
+Use the current optional work-order experience contract where supported; it does not silently extend old Zod schemas.
+If the existing adapter cannot represent these requirements, report that gap instead of claiming they executed.

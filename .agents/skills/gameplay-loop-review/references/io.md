@@ -47,3 +47,7 @@ openQuestions：问题数组。measurements的enjoyment/voluntaryContinuation/ne
 ## 已实现的仓库执行桥
 
 `tools/lean-pilot/build-workflow.mjs` 调用本Skill同一份plan/audit实现，核对已实现合同，再交原runner创建独立run。不是把任意合同送给旧Zod，也不是通用AI编译器。当前新配方仅为中文门诊3分钟实验；动作/剧情类型仍需各自真实代码。合同、测试、预算、证据与当前构建绑定，结构通过不能替代实际运行结果。
+
+## Mobile/active extension
+
+New prototypes declare optional request.experience as defined in mobile-pacing.md. This enables typed checkpoints and additional counterexample tags. Legacy frozen v1 inputs remain readable, explicitly labeled as lacking this contract. The clinic builder requires the extension; a structure-only pass never closes a user-reported experience failure.

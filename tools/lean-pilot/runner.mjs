@@ -94,8 +94,9 @@ export async function createRun(base,id,theme='observatory',options={}) {
     for (const name of spec.sourceFiles) await writeFile(path.join(evidence,name),await safeRead(path.join(ROOT,spec.evidenceRoot),name),{flag:'wx'});
     const research=await json(evidence,'research.json'); const evidenceResult=await verifyEvidence(evidence,research);
     if (!evidenceResult.passed) throw new Error(evidenceResult.blockers.join(', '));
+    const budget={...DEFAULT_BUDGET,...(spec.checkBudget??{})};
     const run={schemaVersion:1,runId:id,templateId:spec.id,theme,createdAt:new Date().toISOString(),
-      budget:{...DEFAULT_BUDGET},policyHash:sha256(JSON.stringify(DEFAULT_BUDGET)),
+      budget,policyHash:sha256(JSON.stringify(budget)),
       browserSuiteHash:await browserSuiteHash(spec.id),acceptanceHash:sha256(await safeRead(game,ACCEPTANCE)),researchHash:sha256(await safeRead(evidence,'research.json')),
       note:'Explicit engineering pilot only. Not connected to legacy production routing, Codex, REA, billing, deployment or platform publication.'};
     if(options.workflow) {

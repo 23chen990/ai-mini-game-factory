@@ -71,3 +71,20 @@ real commercial measurement are separate; an AI actor completing a scripted jour
 Record reproducible issues for timeouts, missing adapter/renderer capabilities, assertion failures, console errors,
 unreachable required journeys or perceptual failures. Preserve evidence and the smallest causally linked change request.
 Do not lower a frozen threshold, add unrelated systems, or confuse a generated case specification with an executed test.
+
+## Mobile pacing regression: enforce intent through actual behaviour
+
+Read the declared `experience` mode and `gameplay-loop-review/references/mobile-pacing.md`.
+For active dispatch, test zero input, each single action at multiple timings, fixed roles and adaptive play.
+Check real early demand, warning before loss, recovery and the next decision after relief. A global timer,
+a successful optimized policy or a throughput improvement alone does not establish urgency.
+
+Use the default speed for the whole first session and record wall time. Faster runs remain useful engineering
+checks but cannot satisfy default-speed experience. Act on visible scene objects or the declared primary input;
+a pre-written selector journey only proves it can execute, not that a stranger discovers the controls.
+Check portrait reflow or explicitly declared rotate handling, touch cancellation and room-scoped actions.
+A 44-pixel button and no overflow do not establish a mobile interaction model.
+
+Keep a reproduced user failure open until its exact branch has new evidence. Do not clear it merely because
+old tests or known-regression repair exercises are green. Report engineering, scripted experience, independent
+model review and human sessions separately. Missing subjective review is not proof of an approved product.

@@ -22,7 +22,7 @@ concurrency:
 jobs:
   offline-engineering:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -33,7 +33,7 @@ jobs:
           node-version: '22.16.0'
       - name: Check narrowly approved change scope
         run: npm run pilot:scope
-      - name: Native tests - no dependency installation or provider calls
+      - name: Native tests including delayed single-action negative baselines
         shell: bash
         run: npm run pilot:test | tee "$RUNNER_TEMP/lean-pilot-native.tap"
       - name: Clinic deterministic rule and strategy tests
@@ -53,7 +53,7 @@ jobs:
   http-browser:
     needs: offline-engineering
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -87,16 +87,16 @@ jobs:
         run: |
           npm run pilot -- export ci-pilot observatory
           npm run pilot -- export ci-pilot orchard
-      - name: Build the clinic from checked workflow
+      - name: Build the active-dispatch clinic from the mobile experience contract
         run: |
           npm run pilot -- build ci-clinic
           node tools/lean-pilot/clinic-balance.mjs ci-clinic > runs/ci-clinic/strategy-comparison.json
-      - name: Internal rule, native, full HTTP and visible-interaction review before delivery
+      - name: Scene controls, negative baselines and full default-speed HTTP shift before delivery
         run: |
           npm run pilot -- prepare ci-clinic
           npm run pilot -- delivery ci-clinic
           node tools/lean-pilot/runner.mjs handoff ci-clinic > runs/ci-clinic/handoff.json
-      - name: Prove two observed failures are repaired and rechecked without an owner prompt
+      - name: Two known regressions repaired before a real default-speed recheck
         run: node tools/lean-pilot/quality-challenge.mjs ci-quality-challenge
       - name: Write honest gate reports even after failure
         if: always()

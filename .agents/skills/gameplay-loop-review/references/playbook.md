@@ -48,3 +48,7 @@ Daniel Cook, Loops and Arcs: https://lostgarden.com/2012/04/30/loops-and-arcs/ �
 TapTap 官方获得曝光: https://developer.taptap.cn/minigameapidoc/tap-operation/operation/basic-operation/exposure/ （2026-10-12查阅；上线前再次核实，不保存固定曝光承诺）
 OpenAI Skill说明: https://developers.openai.com/plugins/concepts/skills （Skill是工作指引和资源，不是执行权限或质量保证）
 四个主类型与先后顺序是针对本工厂的工程选择，允许以后用真实样例修订。
+
+## 已发生的误判要作为反例
+
+门诊旧版的常规工程验收通过，但一次派工后挂机就能达标。不要再只比较“全程不动”和“优秀策略”。主动经营还需要单次操作、多个时点的对照。按钮大小不是手机操作模型。详细执行要求见 [mobile-pacing.md](mobile-pacing.md)。

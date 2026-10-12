@@ -58,7 +58,7 @@ async function boundFile(root, ref) {
 }
 function parse(bytes) { const value = JSON.parse(bytes.toString('utf8')); canonical(value); return value; }
 export function validateRequest(r) {
-  assert(exact(r,['schemaVersion','gameId','profile','secondaryProfile','mode','platform','progression','changedAreas','template','repair','budget']), 'request:schema');
+  assert(exact(r,['schemaVersion','gameId','profile','secondaryProfile','mode','platform','progression','changedAreas','template','repair','budget'],['experience']), 'request:schema');
   assert(r.schemaVersion === 1 && typeof r.gameId === 'string' && /^[a-z0-9][a-z0-9-]{0,47}$/.test(r.gameId),'request:identity');
   assert((r.profile === null || PROFILE_IDS.includes(r.profile)) && (r.secondaryProfile === null || PROFILE_IDS.includes(r.secondaryProfile)) &&
     (!r.secondaryProfile || r.profile && r.profile !== r.secondaryProfile), 'request:profile');
@@ -69,11 +69,19 @@ export function validateRequest(r) {
   assert(r.repair === null || exact(r.repair,['targetState','actual','expected','evidence']) && ['targetState','actual','expected'].every(k=>str(r.repair[k])) && fileRef(r.repair.evidence), 'request:repair');
   assert(r.mode !== 'repair' || r.repair !== null,'request:repair-required');
   assert(exact(r.budget,['maxCashCents','maxWorkMinutes','maxFixAttempts']) && Object.values(r.budget).every(num) && r.budget.maxWorkMinutes > 0 && r.budget.maxFixAttempts <= 5,'request:budget');
+  if(r.experience!==undefined){
+    const e=r.experience;
+    assert(exact(e,['mode','primaryOrientation','portraitHandling','primaryInput','defaultSpeed','minTargetPx']), 'request:experience-schema');
+    assert(['active-dispatch','idle','action','narrative','puzzle'].includes(e.mode) && ['landscape','portrait'].includes(e.primaryOrientation) &&
+      ['reflow','pause-and-rotate'].includes(e.portraitHandling) && ['scene-tap','direct-control','choice-tap','board-tap'].includes(e.primaryInput) &&
+      e.defaultSpeed===1 && num(e.minTargetPx) && e.minTargetPx>=44 && e.minTargetPx<=72, 'request:experience-values');
+    assert(e.mode!=='active-dispatch'||r.profile==='STRATEGIC_SYSTEM','request:active-profile');
+  }
   canonical(r); return r;
 }
 function activeProfiles(r) { return [r.profile,r.secondaryProfile].filter(Boolean); }
 export function requiredCases(r) {
-  return [...COMMON_TAGS, ...new Set(activeProfiles(r).flatMap(id=>Object.keys(PROFILES[id].checks))), ...(r.secondaryProfile?['hybrid-link']:[])];
+  return [...COMMON_TAGS, ...new Set(activeProfiles(r).flatMap(id=>Object.keys(PROFILES[id].checks))), ...(r.secondaryProfile?['hybrid-link']:[]), ...(r.experience?['mobile-scene-action','default-speed-opening']:[]), ...(r.experience?.mode==='active-dispatch'?['single-action-baseline','signaled-pressure-recovery','next-decision-after-relief']:[])];
 }
 
 // Receipt files come from an independent review, not from a model's requested mode.
@@ -111,6 +119,7 @@ export async function planWorkflow(request, root) {
   const r = validateRequest(request); const blockers=[]; const reasons=[];
   let mode=r.mode, receipt=null;
   if(!r.profile) blockers.push('CLASSIFY_PRIMARY_EXPERIENCE');
+  if(!r.experience)reasons.push('LEGACY_REQUEST_HAS_NO_MOBILE_PACING_CONTRACT');
   if(r.mode==='variant') {
     try { receipt=await qualification(root,r); }
     catch { mode='discover'; reasons.push('NO_MATCHING_VERIFIED_TEMPLATE_OR_CHANGE_OUTSIDE_ENVELOPE'); }
@@ -143,7 +152,7 @@ export async function planWorkflow(request, root) {
 export function draftContract(request) {
   const r=validateRequest(request);
   return {schemaVersion:1,gameId:r.gameId,policyHash,requestHash:sha256(canonical(r)),status:'DRAFT',
-    firstSession:{firstAction:'',firstResult:'',nextIntention:'',safeStop:''},
+    firstSession:{firstAction:'',firstResult:'',nextIntention:'',safeStop:'',...(r.experience?{checkpoints:[]}: {})},
     loops:[{id:'core',scale:'core',decision:'',action:'',visibleChange:'',nextIntention:'',variation:'',claim:'hypothesis',evidenceRefs:[]}],
     links:[],progression:r.progression==='persistent'?{savedState:'',effectOnNextCore:'',safeExit:''}:null,
     endingValue:'',cases:requiredCases(r).map(tag=>({id:tag,tag,given:'',when:'',thenState:'',thenVisible:'',contrastAction:'',contrastExpected:'',evidenceRefs:[]})),
@@ -162,7 +171,14 @@ export async function auditContract(request, contract, root) {
   if(!['DRAFT','PROPOSED'].includes(c.status)) fail('INVALID_SPEC_STATUS');
   if(c.status==='DRAFT') fail('DRAFT_NOT_READY');
   const firstKeys=['firstAction','firstResult','nextIntention','safeStop'];
-  if(!exact(c.firstSession,firstKeys)||!firstKeys.every(k=>str(c.firstSession[k]))) fail('FIRST_SESSION_INCOMPLETE');
+  if(!exact(c.firstSession,firstKeys,r.experience?['checkpoints']:[])||!firstKeys.every(k=>str(c.firstSession[k]))) fail('FIRST_SESSION_INCOMPLETE');
+  if(r.experience){
+    const cp=c.firstSession?.checkpoints;
+    const cpKeys=['id','withinMs','visibleCue','sceneTarget','input','visibleResult','nextReason'];
+    if(!Array.isArray(cp)||cp.length<3||cp.length>8||!unique(cp.map(x=>x?.id))||cp.some(x=>!exact(x,cpKeys)||
+      !num(x.withinMs)||x.withinMs>180000||!cpKeys.filter(k=>k!=='withinMs').every(k=>str(x[k]))))fail('EXPERIENCE_CHECKPOINTS_INCOMPLETE');
+    else if(cp[0].withinMs>10000||cp.some((x,i)=>i>0&&x.withinMs<=cp[i-1].withinMs))fail('EXPERIENCE_CHECKPOINT_ORDER');
+  }
   if(rewardOnly(c.firstSession?.nextIntention)) fail('REWARD_WITHOUT_PLAYER_INTENTION');
   if(!Array.isArray(c.loops)||!c.loops.length||c.loops.length>3||!unique(c.loops.map(l=>l?.id))) fail('LOOP_SCHEMA');
   const loops=Array.isArray(c.loops)?c.loops:[];
