@@ -1,0 +1,29 @@
+name: External game QA verifier
+on:
+  push:
+    branches: [feat/external-game-audit-20261012]
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  typecheck-and-external-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - name: Install Chromium required by existing factory QA
+        run: pnpm exec playwright install --with-deps chromium webkit
+      - name: Targeted external-game acceptance tests
+        run: pnpm exec vitest run tests/unit/external-game-audit.test.ts
+      - name: Complete factory regressions with isolated browser workers
+        run: pnpm exec vitest run --maxWorkers=1 --no-file-parallelism

@@ -39,6 +39,19 @@ async function main() {
     case 'new-action': { const runId = await factory.newActionExperiment(path.resolve(requireArg(args[0], 'action-experiment-file'))); console.log(runId); break; }
     case 'run': console.log(JSON.stringify(await factory.run(requireArg(args[0], 'run-id')), null, 2)); break;
     case 'status': console.log(JSON.stringify(await factory.status(requireArg(args[0], 'run-id')), null, 2)); break;
+    case 'audit-external': {
+      const file = path.resolve(requireArg(args[0], 'manifest-json'));
+      const { auditExistingGame } = await import('../core/external-game-audit.js');
+      const report = await auditExistingGame(file);
+      const outputFile = option('--output');
+      if (outputFile) {
+        const { writeFile } = await import('node:fs/promises');
+        await writeFile(path.resolve(outputFile), JSON.stringify(report, null, 2) + '\n');
+      }
+      console.log(JSON.stringify(report, null, 2));
+      if (!report.passed) process.exitCode = 2;
+      break;
+    }
     case 'audit-reference': console.log(JSON.stringify(await factory.auditReference(requireArg(args[0], 'run-id'), { targetGame: option('--target-game'), targetWorkspace: option('--workspace') }), null, 2)); break;
     case 'extract-reference-frames': console.log(JSON.stringify(await factory.extractReferenceFrames(requireArg(args[0], 'run-id'), { evidenceId: option('--evidence-id'), ...(option('--fps') ? { fps: Number(option('--fps')) } : {}), ...(option('--max-frames') ? { maxFrames: Number(option('--max-frames')) } : {}) }), null, 2)); break;
     case 'recover-reference-research': console.log(JSON.stringify(await factory.recoverReferenceResearch(requireArg(args[0], 'run-id')), null, 2)); break;
@@ -54,7 +67,7 @@ async function main() {
     case 'retry': console.log(JSON.stringify(await factory.retry(requireArg(args[0], 'run-id'), StageNameSchema.parse(requireArg(args[1], 'stage').toUpperCase())), null, 2)); break;
     case 'inspect': console.log(JSON.stringify(await factory.inspect(requireArg(args[0], 'run-id')), null, 2)); break;
     case 'demo': { const runId = await factory.demo(args[0] ? path.resolve(args[0]) : undefined); console.log(JSON.stringify({ runId, state: await factory.status(runId) }, null, 2)); break; }
-    default: throw new Error('Usage: factory <doctor|route|eval|feedback|feedback-structured|operating-status|set-portfolio|record-portfolio|set-portfolio-strategy|record-portfolio-strategy|record-platform-policy|record-side-effect|record-cost|authorize-cost-continuation|record-certification|record-launch-metrics|live-verify|approve-business|platform-qa|approve-playtest|approve-human|record-variation|record-baseline|record-originality|plan|validate|new|new-action|run|status|audit-reference|extract-reference-frames|recover-reference-research|reproject-reference|resume|approve-reference|approve-prototype|approve-action|implement-formal|preview|approve|verify-build|retry|inspect|demo> [...args]');
+    default: throw new Error('Usage: factory <doctor|audit-external|route|eval|feedback|feedback-structured|operating-status|set-portfolio|record-portfolio|set-portfolio-strategy|record-portfolio-strategy|record-platform-policy|record-side-effect|record-cost|authorize-cost-continuation|record-certification|record-launch-metrics|live-verify|approve-business|platform-qa|approve-playtest|approve-human|record-variation|record-baseline|record-originality|plan|validate|new|new-action|run|status|audit-reference|extract-reference-frames|recover-reference-research|reproject-reference|resume|approve-reference|approve-prototype|approve-action|implement-formal|preview|approve|verify-build|retry|inspect|demo> [...args]');
   }
 }
 main().catch((error) => { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; });
