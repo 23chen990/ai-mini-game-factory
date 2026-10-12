@@ -21,4 +21,9 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
-      - run: pnpm test
+      - name: Install Chromium required by existing factory QA
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Targeted external-game acceptance tests
+        run: pnpm exec vitest run tests/unit/external-game-audit.test.ts
+      - name: Complete factory regressions
+        run: pnpm test
