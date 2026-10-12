@@ -3,12 +3,26 @@ import path from 'node:path';
 import { createFactory } from '../factory.js';
 import { runDoctor } from '../core/doctor.js';
 import { StageNameSchema } from '../schemas/index.js';
+import { main as runGameplayWorkflow } from '../../.agents/skills/gameplay-loop-review/scripts/workflow.mjs';
 
-const [command, ...args] = process.argv.slice(2); const repositoryRoot = process.cwd(); const factory = createFactory({ repositoryRoot, root: process.env.FACTORY_ROOT ? path.resolve(process.env.FACTORY_ROOT) : repositoryRoot });
+const [command, ...args] = process.argv.slice(2); const repositoryRoot = process.cwd();
 function requireArg(value: string | undefined, name: string): string { if (!value) throw new Error(`Missing ${name}`); return value; }
 function option(name: string) { const index = args.indexOf(name); return index >= 0 ? args[index + 1] : undefined; }
 async function main() {
+  // Preflight only: never construct the legacy factory/provider for a workflow request.
+  if (command === 'workflow') {
+    try {
+      const result = await runGameplayWorkflow(args);
+      console.log(JSON.stringify(result, null, 2));
+      if (result.status === 'BLOCKED') process.exitCode = 2;
+    } catch {
+      console.error('workflow: invalid, unreadable or incompatible input; inspect private inputs locally.');
+      process.exitCode = 1;
+    }
+    return;
+  }
   if (command === 'doctor') { const report = await runDoctor(); console.log(JSON.stringify(report, null, 2)); if (!report.healthy) process.exitCode = 1; return; }
+  const factory = createFactory({ repositoryRoot, root: process.env.FACTORY_ROOT ? path.resolve(process.env.FACTORY_ROOT) : repositoryRoot });
   switch (command) {
     case 'route': console.log(JSON.stringify(factory.routeRequest({ request: requireArg(args[0], 'request'), targetRunId: option('--run') }), null, 2)); break;
     case 'eval': console.log(JSON.stringify(await factory.persistFactoryEval(), null, 2)); break;
@@ -54,7 +68,7 @@ async function main() {
     case 'retry': console.log(JSON.stringify(await factory.retry(requireArg(args[0], 'run-id'), StageNameSchema.parse(requireArg(args[1], 'stage').toUpperCase())), null, 2)); break;
     case 'inspect': console.log(JSON.stringify(await factory.inspect(requireArg(args[0], 'run-id')), null, 2)); break;
     case 'demo': { const runId = await factory.demo(args[0] ? path.resolve(args[0]) : undefined); console.log(JSON.stringify({ runId, state: await factory.status(runId) }, null, 2)); break; }
-    default: throw new Error('Usage: factory <doctor|route|eval|feedback|feedback-structured|operating-status|set-portfolio|record-portfolio|set-portfolio-strategy|record-portfolio-strategy|record-platform-policy|record-side-effect|record-cost|authorize-cost-continuation|record-certification|record-launch-metrics|live-verify|approve-business|platform-qa|approve-playtest|approve-human|record-variation|record-baseline|record-originality|plan|validate|new|new-action|run|status|audit-reference|extract-reference-frames|recover-reference-research|reproject-reference|resume|approve-reference|approve-prototype|approve-action|implement-formal|preview|approve|verify-build|retry|inspect|demo> [...args]');
+    default: throw new Error('Usage: factory <workflow|doctor|route|eval|feedback|feedback-structured|operating-status|set-portfolio|record-portfolio|set-portfolio-strategy|record-portfolio-strategy|record-platform-policy|record-side-effect|record-cost|authorize-cost-continuation|record-certification|record-launch-metrics|live-verify|approve-business|platform-qa|approve-playtest|approve-human|record-variation|record-baseline|record-originality|plan|validate|new|new-action|run|status|audit-reference|extract-reference-frames|recover-reference-research|reproject-reference|resume|approve-reference|approve-prototype|approve-action|implement-formal|preview|approve|verify-build|retry|inspect|demo> [...args]');
   }
 }
 main().catch((error) => { console.error(error instanceof Error ? error.message : String(error)); process.exitCode = 1; });

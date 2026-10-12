@@ -1,73 +1,90 @@
 ---
 name: game-playtest
-description: Run deterministic Playwright smoke gameplay against a built web-lite game and emit QA evidence. Use for the factory QA stage.
+description: Run deterministic and normal-input Playwright gameplay against a built web-lite game and emit profile-appropriate QA evidence. Use for the factory QA stage; not a substitute for independent human enjoyment testing.
 ---
 
 # Game Playtest
 
-本阶段同时验证“工程真值”和“玩家体验真值”。确定性脚本只能证明实现可触发，不能代替自然操作和感知验收。
+工程正确、画面可理解、真人是否喜欢是不同证据。脚本正常输入也不是未经指导的真人试玩。
 
 ## Trigger
 
-Use after a successful Web build or after a repair rebuild. Do not perform subjective design expansion, mutate game
-source, or pass a run based only on screenshots.
+Use after a successful Web build or a repair rebuild. Do not expand the design, mutate game source,
+or pass a run based only on screenshots. Read the approved primary experience profile and frozen contract.
 
 ## Inputs and outputs
 
-- Inputs: `workspace/game/dist/`, build report, the Runtime Adapter preview endpoint，以及 blueprint/竞品研究产出的
-  failure-pressure contract（失败压力合同）和默认旅程声明。
-- Outputs: `artifacts/qa-report.json`（确定性结构 QA）、`artifacts/qa-natural-journey-report.json`（自然旅程
-  QA）、`artifacts/perceptual-qa-report.json`（感知/可读性 QA）、`logs/console.log`、
-  `screenshots/gameplay.png`。三个报告必须记录各自的证据来源，禁止用一个报告的状态覆盖另一个报告。
+- Inputs: `workspace/game/dist/`, build report, Runtime Adapter preview endpoint, reference/experience contract,
+  declared renderer and normal journey, and a gameplay work order when one was approved.
+- Outputs: existing `artifacts/qa-report.json`, `artifacts/qa-natural-journey-report.json`,
+  `artifacts/perceptual-qa-report.json`, console logs and screenshots. Keep their provenance separate.
+- New work-order case tags complement the existing Zod contracts; they do not silently modify old frozen schemas.
 
 ## Procedure
 
-1. Start preview on localhost and launch headless Chromium at a fixed viewport.
-2. Wait for `__GAME_TEST__`; reset and seed it. Exercise spawn, produce/deliver/reward, grant/upgrade, and inspect state.
-3. Confirm a visible Canvas and capture a full-page screenshot. Capture console errors and page exceptions.
-4. After the deterministic pass, open a separate fresh browser context and execute the declared default journey using only normal player input (mouse/touch/
-   keyboard/gamepad as applicable). Do not use `__GAME_TEST__` setters, debug scenario loaders, state injection,
-   fixture teleporting, or internal event dispatch for this pass. Record player-visible evidence for startup → core
-   loop → terminal/settlement → replay. If a step cannot be reached naturally, mark it `BLOCKED`, not `PASS`.
-5. Review perceptual gates against the failure-pressure contract: the pressure source is visible, escalation is
-   legible, feedback is causally attributable to the player's action, recovery/replay is understandable, and any
-   physics/collision result is visually natural (including 2D/3D no-penetration, settling, and no tunneling where
-   relevant). A fixture-only collision or hidden/internal event is implementation evidence, not player evidence.
-   Verify that critical reminders are conveyed by UI/visual affordances rather than tiny helper copy alone, at target
-   mobile viewport sizes and in both portrait and landscape orientations.
-   For every user-reported visual/physics issue, record a reproduction matrix with object type, lifecycle/state
-   branch, renderer/presentation path, and device/viewport. The natural trace and screenshots must exercise the
-   exact matrix cell; evidence from a sibling object or fixture does not satisfy the issue.
-   For level-based games, also run a level-variety gate: sample early/mid/late levels and record beat timeline,
-   pressure-source count/type, authored decision count, natural duration, terminal reward-zone choice, and bonus entry.
-   Passing a level because it reaches the finish is insufficient when the contract requires escalating hard obstacles,
-   varied cuttable objects, or a risk/reward terminal.
-   Also run an orphan-object gate: for each sampled interactive gameplay object (hazard, target, platform, reward,
-   trigger, enemy, resource, or hard surface), record whether normal input can touch it, intentionally avoid it, or use
-   it for recovery. If the object has no reachable interaction and is not explicitly decorative, mark the level
-   `BLOCKED` and route it back to Blueprint/Builder; level completion alone cannot waive it.
-6. Always close browser and preview in cleanup. Validate all report JSON before handoff.
+1. Start the owned preview and a fresh browser at declared mobile viewports. Register cleanup before actions.
+2. In a SEPARATE deterministic fixture context, use only the adapter's actual declared test API.
+   `__GAME_TEST__` is not universal. A shop may exercise spawn, produce/deliver/reward and upgrade;
+   an action game tests input/physics and recovery; a story tests facts/choices/consequences;
+   a puzzle tests rule transitions and its declared solvability/randomness. Missing adapters are explicit gaps,
+   not permission to call invented hooks, inject a PASS state, or run management checks on every game.
+3. Verify the DECLARED renderer is visibly working: Canvas/WebGL for those runtimes, or DOM/text/controls
+   for narrative and other DOM-based games. Do not require Canvas universally. Capture errors and screenshots.
+4. Open another fresh context for the default journey using only normal player inputs. No fixture loaders,
+   debug setters, teleporting, internal event dispatch or hidden test-target instructions in that trace.
+   Record startup -> core decision -> visible consequence -> appropriate ending/recovery/continuation.
+   Finite stories can end or continue a chapter; they need not fake a death screen or mandatory replay.
+   Every step REQUIRED BY THE FROZEN CONTRACT must remain required. If unreachable, mark BLOCKED.
+5. Select applicable profile checks from the approved work order or `gameplay-loop-review/references/profiles.json`:
+   - ACTION_FEEL: input response, visible loss cause and learned retry. Use target-device timing assumptions explicitly.
+   - STRATEGIC_SYSTEM: same incoming demand, different allocations; resource opportunity cost and visible progression.
+     An idle game need not create anxiety or timed punishment to pass.
+   - NARRATIVE_AGENCY: meaningful consequences, knowledge/relationship continuity and next-scene or ending value.
+     Reconverging branches are valid when declared differences are real.
+   - PUZZLE_CLARITY: understandable rules, appropriate solvability/randomness evidence, and explainable failure/retry.
+   Test at most one approved secondary profile and its cross-system interaction, not every specialist track.
+6. For applicable failure pressure, verify its source, escalation, attribution and recovery are visible. Test physical
+   overlap/settling/tunneling only where physics exists. Critical signals cannot depend solely on tiny helper text.
+   Preserve the object x state x renderer x viewport reproduction matrix and test the exact reported branch.
+7. For approved content expansion, sample early/mid/late levels or chapters under their contract; verify variation,
+   decision impact and all reachable required objects. First-slice tests do not pretend later content was tested.
+   If an object has no reachable interaction and is not decorative, record BLOCKED. Story nodes use state reachability.
+8. Close browser and preview in finally/cleanup, validate existing report JSON, and attach source/build/contract hashes.
 
 ## Acceptance
 
-For a reference preview, use the exact `behaviorChecks` in `reference-fidelity-contract.json`. Review each object's
-declared state at its declared viewport, including causal spatial relationships, feedback attachment and event order.
-Write `reference-fidelity-review.json` using `ReferenceFidelityReviewSchema` from `src/schemas/reference-fidelity.ts`.
-Record actual observations, the normalized contract hash, current build hash, trace and screenshot file hashes.
-Each natural trace uses `NaturalFlowEvidenceSchema`; its transition name identifies the corresponding check id.
-Never synthesize a comparison from generic counters or text matches. The control plane verifies identities and
-coverage, while the independent reviewer must inspect the actual pixels. Missing or failed comparisons stay BLOCKED.
+For a reference preview, use exact `behaviorChecks` from `reference-fidelity-contract.json` at declared viewports.
+Write `reference-fidelity-review.json` with `ReferenceFidelityReviewSchema`; retain actual observations, contract/build
+hashes, trace and screenshot hashes. Each natural trace uses `NaturalFlowEvidenceSchema` and the corresponding check id.
+Never synthesize comparisons from generic counters or text matches. Review actual pixels and relevant text/controls.
 
-Deterministic assertions pass, Canvas is visible, no error issue remains, evidence files exist, and
-`QaReportSchema.passed` is true only when checks truly passed. The release/product gate is green only when the
-deterministic report, natural-journey report, and perceptual report all pass with zero unresolved `BLOCKED` checks.
-Builder or Fixer self-reports, unit tests, and fixture traces cannot override an independent natural/perceptual
-failure. A repair remains BLOCKED when the exact reproduced object/state branch lacks natural player-visible evidence,
-even if another renderer branch passes. Keep infrastructure failures distinct from product failures, but both block
-release until resolved.
+The declared renderer is visible, deterministic and natural/perceptual assertions pass, all required evidence exists,
+and `QaReportSchema.passed` reflects those actual tests. Missing/failed required cases stay BLOCKED.
+A sibling branch, fixture trace or Builder self-report cannot close a reproduced user problem.
+Infrastructure failures and product failures remain distinct; neither silently allows release.
+
+Do not report enjoyment, voluntary retry, next-day return or retrospective value from these tests. Human review and
+real commercial measurement are separate; an AI actor completing a scripted journey is not a human participant.
 
 ## Failure
 
-Translate timeouts, browser launch failures, assertion failures, console errors, inability to complete the natural
-journey, and perceptual contract violations into explicit QA issues with reproducible evidence. A failed or blocked
-natural/perceptual report is valid output for Fixer; infrastructure failure also stops silent release.
+Record reproducible issues for timeouts, missing adapter/renderer capabilities, assertion failures, console errors,
+unreachable required journeys or perceptual failures. Preserve evidence and the smallest causally linked change request.
+Do not lower a frozen threshold, add unrelated systems, or confuse a generated case specification with an executed test.
+
+## Mobile pacing regression: enforce intent through actual behaviour
+
+Read the declared `experience` mode and `gameplay-loop-review/references/mobile-pacing.md`.
+For active dispatch, test zero input, each single action at multiple timings, fixed roles and adaptive play.
+Check real early demand, warning before loss, recovery and the next decision after relief. A global timer,
+a successful optimized policy or a throughput improvement alone does not establish urgency.
+
+Use the default speed for the whole first session and record wall time. Faster runs remain useful engineering
+checks but cannot satisfy default-speed experience. Act on visible scene objects or the declared primary input;
+a pre-written selector journey only proves it can execute, not that a stranger discovers the controls.
+Check portrait reflow or explicitly declared rotate handling, touch cancellation and room-scoped actions.
+A 44-pixel button and no overflow do not establish a mobile interaction model.
+
+Keep a reproduced user failure open until its exact branch has new evidence. Do not clear it merely because
+old tests or known-regression repair exercises are green. Report engineering, scripted experience, independent
+model review and human sessions separately. Missing subjective review is not proof of an approved product.

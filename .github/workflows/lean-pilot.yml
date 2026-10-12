@@ -4,11 +4,16 @@ on:
     paths:
       - 'tools/lean-pilot/**'
       - 'templates/web-lite/grid-merge-v1/**'
+      - 'templates/web-lite/clinic-queue-v1/**'
       - 'examples/lean-pilot/**'
       - 'docs/lean-pilot/**'
       - 'PILOT_START.md'
       - '.github/workflows/lean-pilot.yml'
       - 'package.json'
+      - 'src/cli/factory.ts'
+      - '.agents/skills/gameplay-loop-review/**'
+      - '.agents/skills/seed-to-game-blueprint/SKILL.md'
+      - '.agents/skills/game-playtest/SKILL.md'
 permissions:
   contents: read
 concurrency:
@@ -17,7 +22,7 @@ concurrency:
 jobs:
   offline-engineering:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 6
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -28,12 +33,14 @@ jobs:
           node-version: '22.16.0'
       - name: Check narrowly approved change scope
         run: npm run pilot:scope
-      - name: Native tests - no dependency installation or provider calls
+      - name: Native tests including delayed single-action negative baselines
         shell: bash
         run: npm run pilot:test | tee "$RUNNER_TEMP/lean-pilot-native.tap"
+      - name: Clinic deterministic rule and strategy tests
+        run: node --test templates/web-lite/clinic-queue-v1/tests/engine.test.mjs
       - name: Check browser and tooling syntax
         run: |
-          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs; do
+          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs templates/web-lite/clinic-queue-v1/*.mjs .agents/skills/gameplay-loop-review/scripts/*.mjs; do
             node --check "$file"
           done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -46,7 +53,7 @@ jobs:
   http-browser:
     needs: offline-engineering
     runs-on: ubuntu-24.04
-    timeout-minutes: 12
+    timeout-minutes: 18
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -58,34 +65,49 @@ jobs:
         run: npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
       - name: Install existing locked dependencies without lifecycle scripts
         run: pnpm install --frozen-lockfile --ignore-scripts
-      - name: Record versions and typecheck candidate
+      - name: Record versions and typecheck existing merge candidate
         run: |
           node --version
           pnpm --version
           pnpm exec playwright --version
           sha256sum pnpm-lock.yaml
           npm run pilot:typecheck
-          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1
+          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1 templates/web-lite/clinic-queue-v1 .agents/skills/gameplay-loop-review/scripts src/cli/factory.ts
+      - name: Verify the real shared factory CLI without starting a provider
+        run: node tools/lean-pilot/workflow-integration.mjs
       - name: Install Chromium for the locked Playwright version
         run: pnpm exec playwright install --with-deps chromium
-      - name: Initialize one isolated CI run and verify its copied core
+      - name: Initialize original merge candidate and verify its copied core
         run: |
           npm run pilot -- init ci-pilot observatory
           npm run pilot -- check ci-pilot
-      - name: Test actual HTTP loading, touch, storage, failure and replay
+      - name: Preserve original HTTP input and persistence regression
         run: npm run pilot:browser -- ci-pilot
-      - name: Export replayable review files
+      - name: Export original review files
         run: |
           npm run pilot -- export ci-pilot observatory
           npm run pilot -- export ci-pilot orchard
-      - name: Write honest gate report even after failure
+      - name: Build the active-dispatch clinic from the mobile experience contract
+        run: |
+          npm run pilot -- build ci-clinic
+          node tools/lean-pilot/clinic-balance.mjs ci-clinic > runs/ci-clinic/strategy-comparison.json
+      - name: Scene controls, negative baselines and full default-speed HTTP shift before delivery
+        run: |
+          npm run pilot -- prepare ci-clinic
+          npm run pilot -- delivery ci-clinic
+          node tools/lean-pilot/runner.mjs handoff ci-clinic > runs/ci-clinic/handoff.json
+      - name: Two known regressions repaired before a real default-speed recheck
+        run: node tools/lean-pilot/quality-challenge.mjs ci-quality-challenge
+      - name: Write honest gate reports even after failure
         if: always()
         shell: bash
         run: |
-          if test -f runs/ci-pilot/run.json; then
-            node tools/lean-pilot/runner.mjs report ci-pilot > runs/ci-pilot/report.json
-            cat runs/ci-pilot/report.json
-          fi
+          for id in ci-pilot ci-clinic ci-quality-challenge; do
+            if test -f runs/$id/run.json; then
+              node tools/lean-pilot/runner.mjs report "$id" > "runs/$id/report.json"
+              cat "runs/$id/report.json"
+            fi
+          done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -97,5 +119,17 @@ jobs:
             runs/ci-pilot/report.json
             runs/ci-pilot/screenshots/*.png
             runs/ci-pilot/*.html
+            runs/ci-clinic/engineering.json
+            runs/ci-clinic/browser.json
+            runs/ci-clinic/report.json
+            runs/ci-clinic/strategy-comparison.json
+            runs/ci-clinic/clinic-trace.json
+            runs/ci-clinic/handoff.json
+            runs/ci-clinic/screenshots/*.png
+            runs/ci-clinic/quality/*.json
+            runs/ci-clinic/quality/*.html
+            runs/ci-clinic/quality/visible-*/*.png
+            runs/ci-quality-challenge/quality/*.json
+            runs/ci-quality-challenge/quality/visible-*/*.png
           retention-days: 7
           if-no-files-found: warn

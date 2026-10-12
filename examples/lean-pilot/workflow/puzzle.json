@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "gameId": "puzzle-trial",
+  "profile": "PUZZLE_CLARITY",
+  "secondaryProfile": null,
+  "mode": "discover",
+  "platform": "web-lite",
+  "progression": "session",
+  "changedAreas": [
+    "core-rules"
+  ],
+  "template": null,
+  "repair": null,
+  "budget": {
+    "maxCashCents": 0,
+    "maxWorkMinutes": 240,
+    "maxFixAttempts": 2
+  }
+}

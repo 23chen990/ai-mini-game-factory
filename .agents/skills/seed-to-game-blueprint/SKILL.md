@@ -12,30 +12,60 @@ write game code, invent an unsupported runtime, revise an approved style, or pla
 
 ## Inputs and outputs
 
-- Input: `runs/<run-id>/input/seed.yaml`, validated with `SeedSchema`.
+- Input: `runs/<run-id>/input/seed.yaml`, validated with `SeedSchema`, plus the approved primary experience profile.
 - Output: `runs/<run-id>/artifacts/game-blueprint.json`, validated with `GameBlueprintSchema`.
+- When a gameplay work order is supplied, use its profile/case tags and request binding. It is a preflight artifact,
+  NOT a replacement for the frozen pipeline plan, an approved seed or any existing Zod artifact.
 
 ## Procedure
 
 1. Preserve title, theme, template, and preferences. Select only the runtime implied by the template registry.
-2. If the seed is a reference adaptation, require the validated competitor failure-pressure contract as an input. Keep observations, inferences, and unknowns separate; do not convert an unmeasured competitor detail into a copied value.
-3. Express one short original concept and a loop that includes customer, production, delivery, reward, and upgrade.
-4. For level-based games, emit a level-variation contract before implementation: at least four distinct level archetypes, per-level pressure source, signal, escalation, failure attribution, recovery/replay, terminal reward choice, and target duration. A list of named mechanics is not sufficient.
+   A missing/unvalidated template is a research/prototype gap, not permission to silently use idle-shop-v1.
+2. If the seed is a reference adaptation, require the validated reference evidence and failure/recovery or ending contract.
+   Keep observations, source-derived findings, design hypotheses and unknowns separate. Use lawful REA/source analysis
+   when helpful to understand the actual rules; never infer player enjoyment or server secrets from static output.
+3. Express ONE primary experience loop. Select the applicable guidance from `gameplay-loop-review/references/profiles.json`:
+   - ACTION_FEEL: player input, movement/collision where applicable, visible response, understandable loss and learned retry.
+   - STRATEGIC_SYSTEM: demand, scarce capacity/resources, a decision, visible outcome and a meaningful next decision.
+     Customer/production/delivery/reward/upgrade is an example for a shop, NOT a required loop for every game.
+   - NARRATIVE_AGENCY: understood context, choice, observable consequence, continuity and next-scene expectation or satisfying ending.
+   - PUZZLE_CLARITY: learnable rule, decision, state change, insight and a fair next challenge or ending.
+   Require classification when the profile is unclear. At most one secondary profile may add tests; explain its interaction.
+4. For level-based games, preserve the approved level-variation contract and every required reachable interaction.
+   During a first core experiment, implement the agreed slice only. Four distinct archetypes belong to approved content
+   expansion when required by that contract, not a universal prerequisite for every prototype or narrative chapter.
    For every authored interactive gameplay object (hazard, target, platform, reward, trigger, enemy, resource, or
-   hard surface), also declare `pathRole` (`main`, `branch`, `recovery`, or `decorative`), the reachable path/state
-   window, and the player decision it is intended to change. An object without a reachable path window and decision
-   impact is rejected as orphan content.
-5. Supply content nouns and integer balance values. Keep a three-minute-session MVP; do not add metagame systems.
-6. Return JSON only. Let the Orchestrator validate and atomically persist it; never write the game workspace.
+   hard surface), declare `pathRole` (`main`, `branch`, `recovery`, or `decorative`), the reachable path/state window,
+   and the player decision it is intended to change. Reject orphan content. Use narrative states for non-spatial choices.
+5. Supply original content and bounded numerical hypotheses only where the selected mechanics use them.
+   Do not invent a currency economy for a finite story or force metagame progression into a one-session puzzle.
+   Persistent games must explain what survives and how it affects the next core interaction; do not build a whole
+   metagame before the small loop works. Never change a frozen schema or contract just to make this guidance fit.
+6. Return the existing schema's JSON only. Let the Orchestrator validate and atomically persist it; never write the game
+   workspace. If the current schema/adapter cannot represent the chosen experience, report the capability gap explicitly.
 
 ## Acceptance
 
-The Schema passes; the template exists; every content string is theme-specific; starting currency is nonnegative and
-reward/cost are positive; no third-party names or copied balance tables appear. For reference adaptations, the
-blueprint must link the failure-pressure contract and level-variation contract, and each declared pressure must map to
-at least one authored level beat and one player-visible signal.
+The existing Schema passes; the selected template exists; content expression is original and profile-appropriate.
+Economy values obey the approved bounds when an economy exists. For reference adaptations, the blueprint links the
+reference contract and applicable level/choice cases. Every declared causal effect maps to an implemented state branch
+and player-visible signal. A field checklist cannot prove the game's core loop is good.
 
 ## Failure
 
-On invalid seed or unsupported template, report a structured stage error without partial output. On provider output
-validation failure, preserve the raw provider error in the stage log and stop the stage for explicit retry.
+On invalid seed, missing evidence or unsupported template/profile, report a structured stage error without partial output.
+On provider output validation failure, preserve the raw provider error in the stage log and stop for explicit retry.
+Do not rewrite historical frozen plans, invent supporting observations, or substitute an unrelated implemented template.
+
+## Mobile and active-play scope before implementation
+
+Declare whether management is active dispatch or idle; do not inherit an idle success criterion for a game promising
+ongoing decisions. Declare primary orientation, portrait handling, primary input and default speed before drawing UI.
+Write observable opening checkpoints: cue -> actionable scene object -> input -> visible result -> next reason.
+Do not substitute a permanent button panel, smaller map, text wall or global countdown for those relationships.
+
+For active dispatch, plan negative baselines (zero input and one action at different times), genuine changing demand,
+a visible warning and recovery window, and a viable adaptive response. Do not fix inactivity solely by raising a score
+target or requiring an arbitrary number of taps. Growth changes capacity and future decisions, not just a number.
+Use the current optional work-order experience contract where supported; it does not silently extend old Zod schemas.
+If the existing adapter cannot represent these requirements, report that gap instead of claiming they executed.

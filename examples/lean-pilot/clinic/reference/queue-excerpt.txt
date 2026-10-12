@@ -1,0 +1,12 @@
+-- CorsixTH/Lua/queue.lua, lines 116-126, revision 06b42b221c8da5497f07504fd01039090ccdb3d5
+--! Get the number of real patients in the queue.
+--!return (int) Number of real patients in the queue.
+function Queue:reportedSize()
+  return self.reported_size
+end
+
+--! Get the number of expected patients.
+--!return (int) Number of expected patients (in the near future).
+function Queue:expectedSize()
+  return self.expected_count
+end

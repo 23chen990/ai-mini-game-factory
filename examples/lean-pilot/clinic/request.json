@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "gameId": "clinic-first",
+  "profile": "STRATEGIC_SYSTEM",
+  "secondaryProfile": null,
+  "mode": "discover",
+  "platform": "web-lite",
+  "progression": "session",
+  "changedAreas": [
+    "core-rules",
+    "economy",
+    "controls",
+    "storage"
+  ],
+  "template": null,
+  "repair": null,
+  "budget": {
+    "maxCashCents": 0,
+    "maxWorkMinutes": 240,
+    "maxFixAttempts": 2
+  },
+  "experience": {
+    "mode": "active-dispatch",
+    "primaryOrientation": "landscape",
+    "portraitHandling": "reflow",
+    "primaryInput": "scene-tap",
+    "defaultSpeed": 1,
+    "minTargetPx": 44
+  }
+}

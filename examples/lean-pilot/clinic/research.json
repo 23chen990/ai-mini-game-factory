@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "targetId": "corsixth-queue-gp-reference",
+  "requiredClaimIds": [
+    "separate-queues",
+    "service-time"
+  ],
+  "sources": [
+    {
+      "id": "queue",
+      "path": "reference/queue-excerpt.txt",
+      "sha256": "10c2cd7e22e4514e720719e368c727cd59d6120883afdff79edea487a36a0d4d",
+      "url": "https://github.com/CorsixTH/CorsixTH/blob/06b42b221c8da5497f07504fd01039090ccdb3d5/CorsixTH/Lua/queue.lua",
+      "version": "06b42b221c8da5497f07504fd01039090ccdb3d5",
+      "collectedAt": "2026-10-12T06:30:46.275693+00:00",
+      "method": "CODE_READ",
+      "sourceRange": "116-126",
+      "artifactKind": "attributed-excerpt-with-source-label",
+      "collection": "Archived after GitHub connector reading; source range and label retained, no runtime observation."
+    },
+    {
+      "id": "gp",
+      "path": "reference/gp-excerpt.txt",
+      "sha256": "f18fa625dfc919e300990522c03cbe32de98f848097b4a44a975bc455984154a",
+      "url": "https://github.com/CorsixTH/CorsixTH/blob/06b42b221c8da5497f07504fd01039090ccdb3d5/CorsixTH/Lua/rooms/gp.lua",
+      "version": "06b42b221c8da5497f07504fd01039090ccdb3d5",
+      "collectedAt": "2026-10-12T06:30:46.275693+00:00",
+      "method": "CODE_READ",
+      "sourceRange": "61-64",
+      "artifactKind": "attributed-excerpt-with-source-label",
+      "collection": "Archived after GitHub connector reading; source range and label retained, no runtime observation."
+    },
+    {
+      "id": "license",
+      "path": "reference/LICENSE.txt",
+      "sha256": "5c6fc5d0bf8f1e6ee805aba9027cbd37d9aac243931b282480bddc7639c2001c",
+      "url": "https://github.com/CorsixTH/CorsixTH/blob/06b42b221c8da5497f07504fd01039090ccdb3d5/CorsixTH/Lua/rooms/gp.lua",
+      "version": "06b42b221c8da5497f07504fd01039090ccdb3d5",
+      "collectedAt": "2026-10-12T06:30:46.275693+00:00",
+      "method": "LICENSE",
+      "sourceRange": "1-19",
+      "artifactKind": "attributed-excerpt-with-source-label",
+      "collection": "Archived after GitHub connector reading; source range and label retained, no runtime observation."
+    }
+  ],
+  "claims": [
+    {
+      "id": "separate-queues",
+      "kind": "SOURCE_CODE",
+      "text": "The source distinguishes reported patient count from expected arrivals.",
+      "evidence": [
+        {
+          "sourceId": "queue",
+          "quote": "return self.expected_count"
+        }
+      ]
+    },
+    {
+      "id": "service-time",
+      "kind": "SOURCE_CODE",
+      "text": "GP desk work duration depends on doctor skill; this is not the full patient treatment time.",
+      "evidence": [
+        {
+          "sourceId": "gp",
+          "quote": "local inv_skill = 1 - humanoid.profile.skill"
+        }
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "reference-live-play",
+      "blocking": false,
+      "reason": "No reference gameplay recording or REA execution. This is a source-informed original prototype, not a fidelity certification."
+    },
+    {
+      "id": "enjoyment",
+      "blocking": false,
+      "reason": "No independent player sessions have occurred; automatic counterfactual tests do not prove fun."
+    }
+  ],
+  "reuseDecision": {
+    "code": "ORIGINAL_IMPLEMENTATION",
+    "values": "ORIGINAL_DESIGN_HYPOTHESES",
+    "assets": "ORIGINAL_CSS_SVG",
+    "referenceExcerpts": "MIT notice retained; not shipped in playable HTML"
+  }
+}

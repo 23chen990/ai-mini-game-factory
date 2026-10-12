@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "templateId": "clinic-queue-v1",
+  "rulesRevision": 2,
+  "status": "CANDIDATE",
+  "profile": "STRATEGIC_SYSTEM",
+  "runtime": "web-lite",
+  "language": "zh-CN",
+  "scope": "Original active-dispatch 180-second mobile experiment. Rule/goal/save revision 2; not an update to Jinglan Hospital or a certified product.",
+  "sourceEvidence": "Limited licensed queue and work-duration code reading. Appointment waves, values, UI and goals are original hypotheses; REA/runtime reference unobserved.",
+  "human": "NOT_RUN",
+  "commercial": "NOT_RUN",
+  "implementationContractHash": "2511122bd3277238b41741d0daa1ff785b44de0638d4cce4889b6aa10909027a"
+}

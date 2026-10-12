@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "gameId": "story-trial",
+  "policyHash": "7079818ffaaed60682f19edc1b61c086b2f5b7fad750942e3e4f157f505ab16b",
+  "requestHash": "6c154278ea5b83510ffa2db07d99119de9c2481585617796856a1daa0f10bac5",
+  "status": "PROPOSED",
+  "firstSession": {
+    "firstAction": "阅读醒来后有人呼唤自己名字的场景，并查看名牌",
+    "firstResult": "名字和现场线索让主角逐步意识到自己处于读过的小说中",
+    "nextIntention": "弄清眼前冲突与自己知道的剧情有什么关系，再决定如何回应",
+    "safeStop": "每个已读段落可以保存退出，回来续读"
+  },
+  "loops": [
+    {
+      "id": "core",
+      "scale": "core",
+      "decision": "先公开提醒还是私下求证，依据玩家当前已知信息选择",
+      "action": "选择一种回应方式",
+      "visibleChange": "对方反应与主角掌握的信息出现可读差异",
+      "nextIntention": "看看自己的应对会怎样影响下一次对话",
+      "variation": "新信息改变判断，已知事实和角色动机保持连续",
+      "claim": "hypothesis",
+      "evidenceRefs": []
+    }
+  ],
+  "links": [],
+  "progression": null,
+  "endingValue": "第一段冲突有明确结果，同时留下自然的下一幕问题；允许玩家在此满意结束。",
+  "cases": [
+    {
+      "id": "first-action-feedback",
+      "tag": "first-action-feedback",
+      "given": "主角刚醒来，尚未确认处境",
+      "when": "查看名牌与听取现场对话",
+      "thenState": "知道名字与小说人物相同，但还不知道未发生的事件",
+      "thenVisible": "出现具体线索和主角消化信息的反应",
+      "contrastAction": "跳过尚未展示的线索",
+      "contrastExpected": "不能凭空让主角知道现场所有秘密",
+      "evidenceRefs": []
+    },
+    {
+      "id": "safe-exit-or-recovery",
+      "tag": "safe-exit-or-recovery",
+      "given": "已读过第一段但未做关键选择",
+      "when": "退出保存后续读",
+      "thenState": "回到正确段落和相同已知事实",
+      "thenVisible": "已读进度与选项仍在",
+      "contrastAction": "重复恢复同一存档",
+      "contrastExpected": "不能重复发放关系变化或跳过未读选择",
+      "evidenceRefs": []
+    },
+    {
+      "id": "choice-consequence",
+      "tag": "choice-consequence",
+      "given": "玩家知道风险但未证明真相",
+      "when": "选择私下求证",
+      "thenState": "获得额外信息但错过一次公开表态机会",
+      "thenVisible": "一段不同对话明确展示所得信息与代价",
+      "contrastAction": "选择公开提醒",
+      "contrastExpected": "现场态度发生差异，而非完全相同反馈换措辞",
+      "evidenceRefs": []
+    },
+    {
+      "id": "knowledge-continuity",
+      "tag": "knowledge-continuity",
+      "given": "主角只认出了名字和场地",
+      "when": "进入下一段对话",
+      "thenState": "推断只依赖当前已知线索，疑问仍被保留",
+      "thenVisible": "主角明确区分记得的剧情和眼前未知",
+      "contrastAction": "进入未取得关键线索的分支",
+      "contrastExpected": "不能使用另一个分支才得到的信息",
+      "evidenceRefs": []
+    },
+    {
+      "id": "next-scene-hook",
+      "tag": "next-scene-hook",
+      "given": "当前对话已经产生具体后果",
+      "when": "读到本段结束",
+      "thenState": "本段问题有交代并揭示下一步可调查的问题",
+      "thenVisible": "结尾指出一个具体的人或线索",
+      "contrastAction": "直接结束体验",
+      "contrastExpected": "当前段落仍有价值，不靠强迫签到或惩罚退出",
+      "evidenceRefs": []
+    }
+  ],
+  "evidence": [],
+  "openQuestions": [
+    "示例是原创叙事设计假设；不是已检查全游戏剧情，也没有已执行的玩家记录。",
+    "需要原项目角色/设定与分支状态后才能绑定实现文件。",
+    "分支可以汇合，但应核对承诺的关系/信息差异在后续真的生效。"
+  ],
+  "measurements": {
+    "enjoyment": "NOT_RUN",
+    "voluntaryContinuation": "NOT_RUN",
+    "nextDayReturn": "NOT_RUN",
+    "retrospectiveValue": "NOT_RUN"
+  }
+}

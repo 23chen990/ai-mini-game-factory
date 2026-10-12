@@ -1,0 +1,241 @@
+{
+  "schemaVersion": 1,
+  "gameId": "clinic-first",
+  "policyHash": "7079818ffaaed60682f19edc1b61c086b2f5b7fad750942e3e4f157f505ab16b",
+  "requestHash": "0466431a595eebced91965a4411bde17eb0cb67673338dccf4655d2de5e6ef0f",
+  "status": "PROPOSED",
+  "firstSession": {
+    "firstAction": "直接点场景中的挂号处派助理",
+    "firstResult": "助理移动到岗，建档进度更快，等候的人开始移动",
+    "nextIntention": "想让下一批复诊不堵住诊室，决定调人或留钱改设备",
+    "safeStop": "暂停或切后台立即冻结模拟；V2独立存档不覆盖V1",
+    "checkpoints": [
+      {
+        "id": "first-room",
+        "withinMs": 10000,
+        "visibleCue": "初诊挂号处出现等队，显示点房间叫助理",
+        "sceneTarget": "#assign-intake",
+        "input": "点挂号处",
+        "visibleResult": "3秒后助理到岗，进度条加快",
+        "nextReason": "看队伍是否在缩短"
+      },
+      {
+        "id": "cohort-preview",
+        "withinMs": 30000,
+        "visibleCue": "挂号队伍开始移动，下批复诊有提前8秒预告",
+        "sceneTarget": "#assign-care",
+        "input": "点诊室叫助理，可选在房间面板买设备",
+        "visibleResult": "只显示选中房间的投资，工作速度真实变化",
+        "nextReason": "根据当前最长等候决定调度"
+      },
+      {
+        "id": "next-bottleneck",
+        "withinMs": 75000,
+        "visibleCue": "第三批初诊需要建档，挂号处再次积压",
+        "sceneTarget": "#assign-intake",
+        "input": "将同一助理调回挂号",
+        "visibleResult": "队伍和剩余耐心可见改善",
+        "nextReason": "收入可以用来配齐新诊位"
+      },
+      {
+        "id": "parallel-service",
+        "withinMs": 115000,
+        "visibleCue": "至少135元可以完成房间加医生配置",
+        "sceneTarget": "#open-expansion",
+        "input": "点扩建区，核对完整成本再建房招人",
+        "visibleResult": "空房不接诊；医生到岗后可并行接诊",
+        "nextReason": "用两个诊位应对最后两批的不同需求"
+      }
+    ]
+  },
+  "loops": [
+    {
+      "id": "service",
+      "scale": "core",
+      "decision": "根据实际队伍与剩余等候时间决定助理在哪边",
+      "action": "点场景岗位调动助理，付出3秒路程",
+      "visibleChange": "人物到岗、进度加快、队伍移动及耐心恢复",
+      "nextIntention": "想在下一批来前消化长队",
+      "variation": "六批初诊与复诊改变建档和诊疗工作量；不改变已入场患者的工作需求",
+      "claim": "hypothesis",
+      "evidenceRefs": [
+        "queue-source"
+      ]
+    },
+    {
+      "id": "investment",
+      "scale": "goal",
+      "decision": "花35买设备，或留钱配齐65+70的新诊位",
+      "action": "点房间的局部投资",
+      "visibleChange": "实际扣费，工作时间或并行位改变",
+      "nextIntention": "想让更多患者完成接诊，少人等不及离开",
+      "variation": "产能改善但不永久消除不同批次的瓶颈",
+      "claim": "hypothesis",
+      "evidenceRefs": [
+        "service-source"
+      ]
+    }
+  ],
+  "links": [
+    {
+      "from": "service",
+      "to": "investment",
+      "kind": "feeds",
+      "effect": "收入支持设备和新诊位"
+    },
+    {
+      "from": "investment",
+      "to": "service",
+      "kind": "changes-action",
+      "effect": "产能变化后需重新判断调人时机"
+    }
+  ],
+  "progression": null,
+  "endingValue": "180秒结束后同时评估接诊至少26人和等候离开不超5人；不以点击次数判赢，不中途假报胜利",
+  "cases": [
+    {
+      "id": "first-action-feedback",
+      "tag": "first-action-feedback",
+      "given": "助理空闲且挂号处出现队伍",
+      "when": "直接点挂号处",
+      "thenState": "助理开始3秒赶路",
+      "thenVisible": "岗位选中、人物移动、到岗后有提速",
+      "contrastAction": "不点击",
+      "contrastExpected": "助理继续待命，无伪造加速",
+      "evidenceRefs": []
+    },
+    {
+      "id": "safe-exit-or-recovery",
+      "tag": "safe-exit-or-recovery",
+      "given": "运行中的V2班次",
+      "when": "暂停并刷新",
+      "thenState": "进度精确恢复且暂停",
+      "thenVisible": "显示继续而非重开",
+      "contrastAction": "保持前台运行",
+      "contrastExpected": "班次时间继续推进",
+      "evidenceRefs": []
+    },
+    {
+      "id": "bottleneck-relief",
+      "tag": "bottleneck-relief",
+      "given": "同样的初诊复诊批次",
+      "when": "根据可见等候调人并投资",
+      "thenState": "完成至少26人且流失不超5",
+      "thenVisible": "长队缩短、红色警示缓解",
+      "contrastAction": "一次派人后不管",
+      "contrastExpected": "某些批次转移的压力无人处理",
+      "evidenceRefs": []
+    },
+    {
+      "id": "resource-tradeoff",
+      "tag": "resource-tradeoff",
+      "given": "开局80元",
+      "when": "点扩建后建房",
+      "thenState": "剩15元，仍一个诊位",
+      "thenVisible": "建前显示135总价，建后显示缺医生",
+      "contrastAction": "先买设备",
+      "contrastExpected": "剩45元，现有诊位处理更快",
+      "evidenceRefs": []
+    },
+    {
+      "id": "progression-impact",
+      "tag": "progression-impact",
+      "given": "新诊位配齐",
+      "when": "挂号调动提供更多供给",
+      "thenState": "两个医生可并行服务",
+      "thenVisible": "新房间里的人物和进度可见",
+      "contrastAction": "只建房不招人",
+      "contrastExpected": "空房不会开始治疗",
+      "evidenceRefs": []
+    },
+    {
+      "id": "mobile-scene-action",
+      "tag": "mobile-scene-action",
+      "given": "844x390或390x844或320x568视口",
+      "when": "触摸房间并打开局部操作",
+      "thenState": "派工和投资对应房间",
+      "thenVisible": "竖屏重排场景，不拉伸横版图",
+      "contrastAction": "取消触摸手势",
+      "contrastExpected": "不产生误派工",
+      "evidenceRefs": []
+    },
+    {
+      "id": "default-speed-opening",
+      "tag": "default-speed-opening",
+      "given": "默认1倍速度开班",
+      "when": "等待到第6秒",
+      "thenState": "挂号处真实等队",
+      "thenVisible": "有可点的岗位与明确当前行动",
+      "contrastAction": "采用3倍加速证明早期节奏",
+      "contrastExpected": "不算默认节奏证据",
+      "evidenceRefs": []
+    },
+    {
+      "id": "single-action-baseline",
+      "tag": "single-action-baseline",
+      "given": "3组种子与10个操作时点",
+      "when": "只执行一次派工或购买后停止",
+      "thenState": "参与120个结局对照",
+      "thenVisible": "不会只达人数就假报达标",
+      "contrastAction": "持续根据队伍重新安排",
+      "contrastExpected": "存在可以完成开局已说明目标的有效策略",
+      "evidenceRefs": []
+    },
+    {
+      "id": "signaled-pressure-recovery",
+      "tag": "signaled-pressure-recovery",
+      "given": "无操作班次",
+      "when": "观察队伍、预告和剩余等候",
+      "thenState": "真实流失前至少5秒可补救",
+      "thenVisible": "红色房间和患者警示与实际时间匹配",
+      "contrastAction": "待流失后才提示",
+      "contrastExpected": "验收失败",
+      "evidenceRefs": []
+    },
+    {
+      "id": "next-decision-after-relief",
+      "tag": "next-decision-after-relief",
+      "given": "首批挂号压力被缓解",
+      "when": "第二批复诊入场",
+      "thenState": "需求真实转向诊疗",
+      "thenVisible": "第一步完成后有当前原因与新可操作对象",
+      "contrastAction": "忽略下一批结构变化",
+      "contrastExpected": "新的队伍积压不会自动消失",
+      "evidenceRefs": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "queue-source",
+      "targetId": "CorsixTH/CorsixTH",
+      "version": "06b42b221c8da5497f07504fd01039090ccdb3d5",
+      "kind": "source",
+      "file": {
+        "path": "reference/queue-excerpt.txt",
+        "sha256": "10c2cd7e22e4514e720719e368c727cd59d6120883afdff79edea487a36a0d4d"
+      },
+      "locator": "queue.lua:116-126"
+    },
+    {
+      "id": "service-source",
+      "targetId": "CorsixTH/CorsixTH",
+      "version": "06b42b221c8da5497f07504fd01039090ccdb3d5",
+      "kind": "source",
+      "file": {
+        "path": "reference/gp-excerpt.txt",
+        "sha256": "f18fa625dfc919e300990522c03cbe32de98f848097b4a44a975bc455984154a"
+      },
+      "locator": "rooms/gp.lua:61-64"
+    }
+  ],
+  "openQuestions": [
+    "本轮数值为原创设计实验，不是竞品还原参数。",
+    "结构检查不能证明人类喜欢；未做真机Safari和商业验证。"
+  ],
+  "measurements": {
+    "enjoyment": "NOT_RUN",
+    "voluntaryContinuation": "NOT_RUN",
+    "nextDayReturn": "NOT_RUN",
+    "retrospectiveValue": "NOT_RUN"
+  }
+}

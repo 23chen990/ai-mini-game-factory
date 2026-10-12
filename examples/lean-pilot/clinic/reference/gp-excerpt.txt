@@ -1,0 +1,5 @@
+-- CorsixTH/Lua/rooms/gp.lua, lines 61-64, revision 06b42b221c8da5497f07504fd01039090ccdb3d5
+  -- A skilled doctor requires less time at the desk to diagnose the patient
+  local inv_skill = 1 - humanoid.profile.skill
+  local desk_use_time = math.random(math.floor(3 +  5 * inv_skill),
+                                    math.ceil (8 + 10 * inv_skill))
