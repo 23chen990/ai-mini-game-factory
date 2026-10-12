@@ -22,8 +22,8 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - name: Install Chromium required by existing factory QA
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install --with-deps chromium webkit
       - name: Targeted external-game acceptance tests
         run: pnpm exec vitest run tests/unit/external-game-audit.test.ts
-      - name: Complete factory regressions
-        run: pnpm test
+      - name: Complete factory regressions with isolated browser workers
+        run: pnpm exec vitest run --maxWorkers=1 --no-file-parallelism
