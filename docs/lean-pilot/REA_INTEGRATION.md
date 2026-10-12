@@ -1,4 +1,6 @@
-# REA: an optional research tool, not a second factory
+# REA: scoped offline JavaScript evidence bridge (legacy compatibility)
+
+> **2026-10-12 范围说明：此文件仅记录早期 JS/Electron 静态导出局部桥接实现。不是母版竞品研究的完整 REA 接入规范。** 用户指出母版做不好的上游原因是竞品研究过浅。完整母版应从 [REA_GAMEPLAY_FIRST.md](REA_GAMEPLAY_FIRST.md) 开始，早期应用 REA 的合法目标分析、真实行为/脚本/算法交叉验证；这里的“baseline-first/静态报告/最多三条建议/30 分钟”只适用于小问题研究，不得套用于整体游戏玩法逆向。
 
 ## Decision and current completion level
 

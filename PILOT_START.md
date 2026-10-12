@@ -4,6 +4,14 @@ This is a working engineering pilot, **not a certified game factory or a release
 The user approved implementing the lean plan and pushing reviewable code. This route does
 not call Codex or paid models, install REA, merge PRs, deploy, or change FORM business code.
 
+## 重大研究策略调整（2026-10-12）
+
+**用户反馈：以前竞品研究过浅，导致母版本身难以做对。先重建真实、可验证的玩法因果循环，再谈母版复用。**
+
+优先阅读 [母版研究优先 / REA 完整研究路线](docs/lean-pilot/REA_GAMEPLAY_FIRST.md) 与 [医院源码机制实证示例](docs/lean-pilot/HOSPITAL_SOURCE_MECHANICS_CASE.md)。旧 REA bridge 只是一种 JavaScript/Electron **局部静态证据适配器**，不代表已经接好浏览器游戏、Android、原生逆向研究。原本“先做母版、REA 偶尔用”的假设已被替换。可执行的后续任务书见 [CODEX_RESEARCH_FIRST_BRIEF.md](docs/lean-pilot/CODEX_RESEARCH_FIRST_BRIEF.md)。
+
+新优先级：真实规则证据 → 玩家可见的错误/压力/恢复链 → 3 分钟竖切对照 → 独立试玩 → 母版认证。不要再靠更多测试项或功能名冒充玩法研究。REA 和实玩必须互证，不能虚构 REA 已运行。
+
 ## Run it
 
 From this repository, using Node 22 or newer:

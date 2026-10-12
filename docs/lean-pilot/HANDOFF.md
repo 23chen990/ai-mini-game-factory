@@ -1,10 +1,6 @@
 # Codex handoff: keep the next steps small
 
-**Current verified engineering baseline:** code-fix commit `e29ea067` has 51/51
-native checks and 11/11 HTTP Chromium checks passing in GitHub Actions run
-https://github.com/23chen990/ai-mini-game-factory/actions/runs/38161723421.
-The previous 320x568 CSS failure is closed; keep its regression enabled.
-This does NOT complete human, physical-phone, commercial or release gates.
+**Last verified code baseline before research-strategy update:** commit 08cfad08b62e1f2d72e6d269ff26f23e68046563 has 84/84 native checks and 11/11 HTTP Chromium checks passing in GitHub Actions run https://github.com/23chen990/ai-mini-game-factory/actions/runs/38164529867. These include 33 synthetic bridge tests, NOT a live REA/gameplay study. The previous 320x568 CSS issue is closed. **The higher-priority blocker is the missing actual competitor mechanism research**, see REA_GAMEPLAY_FIRST.md and HOSPITAL_SOURCE_MECHANICS_CASE.md. This does NOT complete human, physical-phone, commercial or release gates.
 Before changing code, inspect the latest PR head and its own CI; do not mistake
 historical local browser blocks for the current remote result.
 
@@ -147,9 +143,6 @@ check process rather than leaving a Node test worker running after a timeout. It
 not an operating-system sandbox for hostile code; run only reviewed code in a clean host.
 
 
-## Known remote issue at this handoff
+## Current research-first handoff (2026-10-12)
 
-Read REMOTE_LIMITATIONS.md before the first browser run. The 320x568 first-viewport test
-is expected to expose an uncommitted CSS correction. Do not claim a local green image
-proves remote success. If a write or environment is blocked, preserve that state rather
-than switching channels or weakening the test to produce a green badge.
+The old 320x568 browser failure was fixed in an earlier commit. Do not revive the superseded statement that an uncommitted CSS correction remains. The current **mother-template blocker is insufficient real gameplay study**, not that legacy layout issue. Follow REA_GAMEPLAY_FIRST.md then CODEX_RESEARCH_FIRST_BRIEF.md. Do not install REA, spend money or analyze third-party binaries without specific authorization; don't treat a non-executed REA bridge as a live integration. Re-run latest tests and use the actual current HEAD/CI.
