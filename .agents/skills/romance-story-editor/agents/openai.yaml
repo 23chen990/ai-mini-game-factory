@@ -1,0 +1,4 @@
+interface:
+  display_name: "互动恋爱剧情编辑"
+  short_description: "查因果、角色声线与恋爱节奏，安全修订剧情并留下回归证据"
+  default_prompt: "使用 $romance-story-editor 审查当前文字恋爱选择游戏。先确认正式版本、角色记忆、分支因果，再编辑可用的 JSON 正文并验证，不仅提供示范台词。对条件/状态改动单列工单，不把机器通过称为真人好玩。"
