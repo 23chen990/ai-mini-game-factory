@@ -89,7 +89,7 @@ function paintPeople(q){
   let node=$('people').querySelector('[data-id="'+p.id+'"]');if(!node){node=document.createElement('div');node.dataset.id=String(p.id);node.className='patient';node.append(document.createElement('i'));node.firstChild.className='patience';$('people').append(node);}
   node.dataset.kind=WAVES[p.wave].kind;
   const kind=p.phase==='intake'||p.phase==='intakeWait'?'intake':'care',box=boxes[p.station==='care2'?'care2':kind];
-  let pt=point(box,.32,.5);const portrait=window.innerWidth<=700;
+  let pt=point(box,.32,.5);const portrait=window.innerHeight>window.innerWidth;
   if(p.phase==='intakeWait')pt=point(boxes.intake,portrait?.56+qi*.055:.12+qi*.12,portrait?.72:.71);
   else if(p.phase==='careWait')pt=point(boxes.care,.12+qi*.13,.7);
   else if(p.phase==='arriving'){const t=Math.min(1,(state.timeMs-p.since)/CONFIG.walkMs);const end=point(boxes.intake,portrait?.4:.14,.7);pt={x:Math.max(8,end.x*t),y:end.y};}
@@ -101,7 +101,7 @@ function paintPeople(q){
   node.classList.toggle('urgent',isWait&&remaining<=10000);node.firstChild.hidden=!isWait;node.firstChild.style.width=Math.max(0,remaining/lim)*100+'%';
  }
  for(const n of $('people').children)if(!keys.has(n.dataset.id))n.remove();
- const to=state.helper.target;const pos=to==='idle'?{x:scene.width*.35,y:scene.height*.86}:point(boxes[to],to==='intake'&&window.innerWidth<=700?.83:.76,.48);
+ const to=state.helper.target;const pos=to==='idle'?{x:scene.width*.35,y:scene.height*.86}:point(boxes[to],to==='intake'&&window.innerHeight>window.innerWidth?.83:.76,.48);
  $('helper').style.left=pos.x+'px';$('helper').style.top=pos.y+'px';$('helper').classList.toggle('moving',state.helper.travelMs>0);
  $('helper-effect').textContent=state.helper.travelMs?Math.ceil(state.helper.travelMs/1000)+'s':to==='idle'?'待命':'支援 ×2';
  for(const k of ['intake','care']){const met=q[k+'Service'];$(k+'-progress').style.width=met?Math.min(100,met.progress*100)+'%':'0%';}

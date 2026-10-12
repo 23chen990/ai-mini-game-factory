@@ -5,7 +5,7 @@ import { pathToFileURL, fileURLToPath } from 'node:url';
 import { loadRun, serveRun, buildHash, verifyRunInputs } from './runner.mjs';
 import { safeRead, sha256 } from './policy.mjs';
 import { standaloneHtml } from './standalone.mjs';
-export const VISIBLE_IDS=[...[[844,390],[390,844],[320,568]].flatMap(([w])=>['touch-targets','scene-control-bounds','scene-tap-dispatch','contextual-investment','orientation-layout'].map(n=>n+'@'+w)),'opening-cue-and-real-queue','continuous-input-and-cancel'];
+export const VISIBLE_IDS=[...[[844,390],[390,844],[320,568],[667,375],[568,320]].flatMap(([w])=>['touch-targets','scene-control-bounds','scene-tap-dispatch','contextual-investment','orientation-layout'].map(n=>n+'@'+w)),'opening-cue-and-real-queue','continuous-input-and-cancel'];
 const snapshot=page=>page.evaluate(()=>window.__CLINIC_VIEW__());
 async function tooling(){const name=process.env.LEAN_PLAYWRIGHT_MODULE;if(name&&!path.isAbsolute(name))throw new Error('Playwright module must be an absolute trusted tooling path');return import(name?pathToFileURL(name).href:'@playwright/test');}
 async function touch(page,selector){const b=await page.locator(selector).boundingBox();if(!b)throw new Error('Missing scene target '+selector);await page.touchscreen.tap(b.x+b.width*.5,b.y+b.height*.5);}
@@ -13,7 +13,7 @@ export async function inspectVisibleUi(browser,load,outDirectory){
  const checks=[],artifacts=[];await mkdir(outDirectory,{recursive:true});
  const record=(id,passed,evidence)=>checks.push({id,passed:passed===true,route:'IMPLEMENTATION',evidence});
  const shot=async(page,name)=>{const p=name+'.png';await page.screenshot({path:path.join(outDirectory,p),fullPage:false});artifacts.push({path:p,sha256:sha256(await safeRead(outDirectory,p))});};
- for(const [width,height] of [[844,390],[390,844],[320,568]]){
+ for(const [width,height] of [[844,390],[390,844],[320,568],[667,375],[568,320]]){
   const ctx=await browser.newContext({viewport:{width,height},hasTouch:true,isMobile:true,reducedMotion:'reduce'}),page=await ctx.newPage(),errors=[];
   page.setDefaultTimeout(5000);page.on('pageerror',e=>errors.push(e.message));
   try{
@@ -36,7 +36,7 @@ export async function inspectVisibleUi(browser,load,outDirectory){
    await touch(page,'#buy-room');const roomText=await page.locator('#second-status').innerText();
    record('contextual-investment@'+width,equipmentShown&&oneContext&&/65/.test(note)&&/70/.test(note)&&/135/.test(note)&&/\u533b\u751f/.test(roomText)&&await page.locator('#buy-doctor').isDisabled(),{note,roomText,equipmentShown,oneContext});
    const i=boxes['assign-intake'],c=boxes['assign-care'],e=boxes['open-expansion'];
-   record('orientation-layout@'+width,width>700?i.x+i.width<c.x+1&&c.x+c.width<e.x+1:i.y+i.height<c.y+1&&Math.abs(c.y-e.y)<2&&i.width>c.width*1.5,{primary:'landscape',portrait:'real reflow',boxes});
+   record('orientation-layout@'+width,width>height?i.x+i.width<c.x+1&&c.x+c.width<e.x+1:i.y+i.height<c.y+1&&Math.abs(c.y-e.y)<2&&i.width>c.width*1.5,{primary:'landscape',portrait:'real reflow',boxes});
    if(width===844){
     const frozenTarget=(await snapshot(page)).state.helper.target;
     const session=await ctx.newCDPSession(page),b=boxes['assign-intake'];

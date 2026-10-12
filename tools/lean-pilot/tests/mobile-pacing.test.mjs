@@ -50,7 +50,7 @@ test('missing pressure, default-speed or scene-interaction cases cannot pass pro
 test('speed-up and incompatible profile are rejected instead of weakening the experience request',async()=>{
  const r=await parse(path.join(input,'request.json'));r.experience.defaultSpeed=3;assert.throws(()=>validateRequest(r));r.experience.defaultSpeed=1;r.profile='NARRATIVE_AGENCY';assert.throws(()=>validateRequest(r),/active-profile/);
 });
-test('rule and visible suites have stable unique identities',()=>{assert.equal(VISIBLE_IDS.length,17);assert.equal(new Set(VISIBLE_IDS).size,17);assert.ok(VISIBLE_IDS.includes('opening-cue-and-real-queue'));assert.ok(VISIBLE_IDS.includes('scene-tap-dispatch@390'));});
+test('rule and visible suites have stable unique identities',()=>{assert.equal(VISIBLE_IDS.length,27);assert.equal(new Set(VISIBLE_IDS).size,27);assert.ok(VISIBLE_IDS.includes('opening-cue-and-real-queue'));assert.ok(VISIBLE_IDS.includes('scene-tap-dispatch@390'));});
 test('check budgets allow a real 180-second session but remain zero-cash bounded',async t=>{
  const {root}=await fixture(t);const r=await parse(path.join(root,'run.json'));assert.ok(r.budget.maxAttemptMs>=220000);assert.equal(r.budget.maxCashCents,0);assert.equal(r.budget.maxCandidateBuilds,3);
 });
