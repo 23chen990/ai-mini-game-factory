@@ -47,3 +47,11 @@ description: Design or diagnose mobile mini-game loops and produce evidence-link
 ## 已有仓库中的可执行门诊试作
 
 在小游戏工厂仓库内，将通过审核的具体规格接到 `npm run pilot -- build RUN_ID`；随后用同一运行器 `check / browser / serve / export / report / handoff`。这条命令仅实现已有 `clinic-queue-v1` 配方，不会执行任意JSON或启动付费Codex。先读仓库 `docs/lean-pilot/CLINIC_PIPELINE_ZH.md`。离开该仓库安装的便携Skill没有游戏运行文件，不得声称已经安装完整工厂。依旧以真人和真实平台验证决定是否复用或发布。
+
+## 交付前先完成内部返工
+
+在仓库的门诊试作中，使用 `npm run pilot -- prepare RUN_ID` 运行规则对照、原生测试、HTTP 浏览器和可见交互检查，再用 `delivery` 确认版本与证据仍有效。仅将该步产生的预览交给用户作产品取舍，不要让用户逐项测基础错误。
+
+默认返工器仅处理有明确证据和已审查补丁的少量回归，不是自主游戏设计模型。不支持的缺陷进入 `quality/developer-action.json`，由开发执行者在已批范围内处理并复测，不得伪造通过或请老板写修复方案。相关文件与停止条件见仓库 `docs/lean-pilot/INTERNAL_DELIVERY_ZH.md`。超预算、新权限、主方向改变仍需要一次明确决策。
+
+将自动规则检查、本轮助手看图审查、独立模型盲审与真人体验分开标记。没有真正执行的项目保留 NOT_RUN，不把故意植入的故障测试说成未知缺陷召回率。

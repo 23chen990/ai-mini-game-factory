@@ -5,20 +5,20 @@
   "requestHash": "1f489e97ed14d06d10b668e9cfdbadef0cbdeb0fadfe823487d31ec8958403d4",
   "status": "PROPOSED",
   "firstSession": {
-    "firstAction": "开诊后把机动助理派往挂号或诊療",
-    "firstResult": "助理走到岗位；对应服务变快，等待人数随之变化",
-    "nextIntention": "想用有限预算把这波积压消化掉，让更多患者完成就诊",
-    "safeStop": "暂停或后台停止模拟，返回不追算时间，随时结束"
+    "firstAction": "开诊后将同一名助理派往挂号或诊疗",
+    "firstResult": "助理走到岗位，对应服务进度加快。标明×2，不用文字消息代替实际效果。",
+    "nextIntention": "想把积压消化掉，让更多患者完成就诊",
+    "safeStop": "暂停或后台停止模拟，返回不追算时间；不清零历史最好成绩。"
   },
   "loops": [
     {
       "id": "service",
       "scale": "core",
-      "decision": "此刻哪条队列更值得支援",
-      "action": "把同一名助理派往挂号或诊疗，需要三秒路程",
-      "visibleChange": "人物换岗、对应进度加快、实际队列变化",
-      "nextIntention": "想让当前堵住的队伍重新移动",
-      "variation": "固定来客波次制造变化；同种子可对照",
+      "decision": "哪条队列更需要支援",
+      "action": "调动助理，付出三秒路程",
+      "visibleChange": "人物移动、岗位支援标记、进度速度与队列变化",
+      "nextIntention": "想让堵住的队伍重新移动",
+      "variation": "固定来客波次，同种子公平重玩",
       "claim": "hypothesis",
       "evidenceRefs": [
         "queue-source"
@@ -27,11 +27,11 @@
     {
       "id": "investment",
       "scale": "goal",
-      "decision": "即时提速，还是攒钱同时配齐诊室和医生",
-      "action": "花钱购设备或建第二诊室并增聘医生",
-      "visibleChange": "资金减少；设备缩短时长；空诊室不会凭空接诊",
-      "nextIntention": "想把新的诊位配好，应对后面的高峰",
-      "variation": "设备和第二诊位改变哪一处成为瓶颈",
+      "decision": "先买设备或留钱配齐新诊位",
+      "action": "花35元买设备，或花65元建房再花70元招医生",
+      "visibleChange": "金额减少、速度改善持续呈现；空房标明缺医生。",
+      "nextIntention": "想用新诊位处理后续高峰",
+      "variation": "设备与并行诊位改变瓶颈位置",
       "claim": "hypothesis",
       "evidenceRefs": [
         "service-source"
@@ -43,71 +43,93 @@
       "from": "service",
       "to": "investment",
       "kind": "feeds",
-      "effect": "每个完成诊疗的患者提供投资资金"
+      "effect": "完成诊疗收入用于投资"
     },
     {
       "from": "investment",
       "to": "service",
       "kind": "changes-action",
-      "effect": "诊位和设备改变吞吐瓶颈，使助理下一次的支援方向发生变化"
+      "effect": "产能改变后重新选择支援的岗位"
     }
   ],
   "progression": null,
-  "endingValue": "结束时看到接诊数、等待流失位置、未完成数和收支，愿意用同一来客序列尝试另一种安排。",
+  "endingValue": "结算呈现两岗流失和收支，保留最好成绩，可用同一来客尝试另一种安排；不强制重玩。",
   "cases": [
     {
       "id": "first-action-feedback",
       "tag": "first-action-feedback",
-      "given": "助理空闲，班次已开始",
-      "when": "触摸支援诊疗",
-      "thenState": "目标变为care，路程倒计时结束后支援生效",
-      "thenVisible": "助理移动到诊室，一号诊室服务速度变化",
-      "contrastAction": "不调动助理",
-      "contrastExpected": "助理空闲且无增速",
+      "given": "助理空闲且班次开始",
+      "when": "支援诊疗",
+      "thenState": "三秒后到岗",
+      "thenVisible": "人物移动和×2标记可见",
+      "contrastAction": "不调动",
+      "contrastExpected": "助理空闲且服务不加速",
       "evidenceRefs": []
     },
     {
       "id": "safe-exit-or-recovery",
       "tag": "safe-exit-or-recovery",
-      "given": "班次运行中",
-      "when": "暂停并重新打开",
-      "thenState": "保存的时间、患者和资金恢复，默认暂停",
-      "thenVisible": "继续接诊按钮出现；没有离线流失",
-      "contrastAction": "保持游戏运行",
-      "contrastExpected": "模拟时间和患者服务继续推进",
+      "given": "班次运行",
+      "when": "暂停后刷新",
+      "thenState": "精确状态恢复且暂停",
+      "thenVisible": "继续按钮可见",
+      "contrastAction": "保持运行",
+      "contrastExpected": "患者和时间继续变化",
       "evidenceRefs": []
     },
     {
       "id": "bottleneck-relief",
       "tag": "bottleneck-relief",
-      "given": "同种子来客，三种策略对照",
-      "when": "合理购买并按队列调人",
-      "thenState": "完成数高于不干预和只支援挂号，流失更少",
-      "thenVisible": "队伍缩短且结算接诊数更高",
+      "given": "同种子来客",
+      "when": "合理投资并调度",
+      "thenState": "完成更多且流失更少",
+      "thenVisible": "队列与结算差别可见",
       "contrastAction": "只支援挂号",
-      "contrastExpected": "诊疗积压仍在，患者因等诊疗流失",
+      "contrastExpected": "诊疗积压仍造成流失",
       "evidenceRefs": []
     },
     {
       "id": "resource-tradeoff",
       "tag": "resource-tradeoff",
-      "given": "有80元，尚无设备或二号诊室",
-      "when": "花65元开第二诊室但不聘医生",
-      "thenState": "剩15元，诊位能力仍为1",
-      "thenVisible": "空诊室标出缺医生；现金真实下降",
-      "contrastAction": "花35元添设备",
-      "contrastExpected": "剩45元，一号基础服务由8.5秒变5秒",
+      "given": "80元开局",
+      "when": "65元建空诊室",
+      "thenState": "剩15元，产能仍为1",
+      "thenVisible": "买前显示135元总成本；买后标明缺医生",
+      "contrastAction": "35元买设备",
+      "contrastExpected": "剩45元，基础诊疗由8.5秒变5秒",
       "evidenceRefs": []
     },
     {
       "id": "progression-impact",
       "tag": "progression-impact",
-      "given": "新增诊室已配齐医生",
-      "when": "把助理从诊疗调往挂号",
-      "thenState": "挂号供给增加，新增诊位能接到患者",
-      "thenVisible": "第二位医生工作，前台队列变化",
+      "given": "第二诊位配齐",
+      "when": "支援挂号",
+      "thenState": "新诊位获得更多供给",
+      "thenVisible": "第二医生有工作状态",
       "contrastAction": "仅建房不配人",
-      "contrastExpected": "没有第二位医生或额外并行接诊",
+      "contrastExpected": "产能未增加",
+      "evidenceRefs": []
+    },
+    {
+      "id": "investment-visible",
+      "tag": "investment-visible",
+      "given": "设备可购买",
+      "when": "买设备后收到收入",
+      "thenState": "购买和收入各自正常记账",
+      "thenVisible": "设备影响8.5→5秒持续可见",
+      "contrastAction": "未购买",
+      "contrastExpected": "无伪造速度改善",
+      "evidenceRefs": []
+    },
+    {
+      "id": "repeated-input",
+      "tag": "repeated-input",
+      "given": "运行且助理已在途",
+      "when": "连续触摸同一支援按钮",
+      "thenState": "模拟时间正常推进",
+      "thenVisible": "时钟继续倒计时",
+      "contrastAction": "点击暂停",
+      "contrastExpected": "时间暂停",
       "evidenceRefs": []
     }
   ],
@@ -136,7 +158,7 @@
     }
   ],
   "openQuestions": [
-    "具体数值、三分钟节奏、26人目标与玩家乐趣仍需真人验证；这是原创假设，不是竞品运行还原。"
+    "数值和模拟规则未改变；此版修复显示和连续输入。独立真人体验、商业表现与实机未验证。"
   ],
   "measurements": {
     "enjoyment": "NOT_RUN",

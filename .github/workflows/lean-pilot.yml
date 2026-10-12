@@ -87,22 +87,22 @@ jobs:
         run: |
           npm run pilot -- export ci-pilot observatory
           npm run pilot -- export ci-pilot orchard
-      - name: Build the clinic from checked workflow and run its real engine
+      - name: Build the clinic from checked workflow
         run: |
           npm run pilot -- build ci-clinic
-          npm run pilot -- check ci-clinic
           node tools/lean-pilot/clinic-balance.mjs ci-clinic > runs/ci-clinic/strategy-comparison.json
-      - name: Clinic HTTP touch, pause, save, full shift and replay
-        run: npm run pilot -- browser ci-clinic
-      - name: Export clinic and bounded next-developer handoff
+      - name: Internal rule, native, full HTTP and visible-interaction review before delivery
         run: |
-          npm run pilot -- export ci-clinic
+          npm run pilot -- prepare ci-clinic
+          npm run pilot -- delivery ci-clinic
           node tools/lean-pilot/runner.mjs handoff ci-clinic > runs/ci-clinic/handoff.json
+      - name: Prove two observed failures are repaired and rechecked without an owner prompt
+        run: node tools/lean-pilot/quality-challenge.mjs ci-quality-challenge
       - name: Write honest gate reports even after failure
         if: always()
         shell: bash
         run: |
-          for id in ci-pilot ci-clinic; do
+          for id in ci-pilot ci-clinic ci-quality-challenge; do
             if test -f runs/$id/run.json; then
               node tools/lean-pilot/runner.mjs report "$id" > "runs/$id/report.json"
               cat "runs/$id/report.json"
@@ -126,6 +126,10 @@ jobs:
             runs/ci-clinic/clinic-trace.json
             runs/ci-clinic/handoff.json
             runs/ci-clinic/screenshots/*.png
-            runs/ci-clinic/*.html
+            runs/ci-clinic/quality/*.json
+            runs/ci-clinic/quality/*.html
+            runs/ci-clinic/quality/visible-*/*.png
+            runs/ci-quality-challenge/quality/*.json
+            runs/ci-quality-challenge/quality/visible-*/*.png
           retention-days: 7
           if-no-files-found: warn

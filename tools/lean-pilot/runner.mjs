@@ -202,7 +202,16 @@ export async function serveRun(base,id,port=4173) {
 }
 async function main() {
   const [command,id,arg]=process.argv.slice(2);
-  if(command==='build') {
+  if(command==='prepare') {
+    if(arg)throw new Error('prepare takes one run id; model execution is not implicitly authorized');
+    const {prepareCandidate}=await import('./quality-cycle.mjs');
+    const result=await prepareCandidate(DEFAULT_RUNS,id);console.log(JSON.stringify(result,null,2));if(!result.previewReady)process.exitCode=2;
+  }
+  else if(command==='delivery') {
+    const {readDelivery}=await import('./quality-cycle.mjs');
+    const result=await readDelivery(DEFAULT_RUNS,id);console.log(JSON.stringify(result,null,2));if(!result.previewReady)process.exitCode=2;
+  }
+  else if(command==='build') {
     if(arg&&arg!=='clinic-queue-v1')throw new Error('No implementation for this recipe; do not substitute another genre');
     const {buildClinic}=await import('./build-workflow.mjs');
     console.log(JSON.stringify(await buildClinic(DEFAULT_RUNS,id),null,2));
@@ -216,7 +225,7 @@ async function main() {
     const {root,game,run}=await loadRun(DEFAULT_RUNS,id);await verifyRunInputs(root,run);
     console.log(JSON.stringify({runId:id,templateId:run.templateId,workspace:game,buildHash:await buildHash(game),status:await reportRun(DEFAULT_RUNS,id),
       allowedFiles:GAME_FILES.map(name=>'workspace/game/'+name),frozen:['workspace/game/tests/engine.test.mjs','input/','evidence/'],
-      next:'Fix one evidenced gameplay problem inside this workspace, rerun pilot check and pilot browser, then report exact results. Do not edit frozen tests or reset the run budget.',paidModelStarted:false,releaseAllowed:false},null,2));
+      next:'Run pilot prepare first. Read quality/developer-action.json only when an uncovered issue remains. The developer, not the owner, investigates routine defects. Rerun prepare after repairs; use delivery for a current verified preview. Never edit frozen tests or reset budgets.',paidModelStarted:false,releaseAllowed:false},null,2));
   }
   else if(command==='init') console.log(JSON.stringify(await createRun(DEFAULT_RUNS,id,arg??'observatory'),null,2));
   else if(command==='check') {const report=await checkRun(DEFAULT_RUNS,id);console.log(JSON.stringify(report,null,2));if(!report.passed)process.exitCode=1;}
@@ -230,6 +239,6 @@ async function main() {
     const server=await serveRun(DEFAULT_RUNS,id,arg===undefined?4173:Number(arg));const {run}=await loadRun(DEFAULT_RUNS,id);
     console.log(`Local preview: http://127.0.0.1:${server.address().port}/?theme=${run.theme}`);
     const close=()=>server.close();process.once('SIGINT',close);process.once('SIGTERM',close);
-  } else throw new Error('Usage: node tools/lean-pilot/runner.mjs build|init|check|browser|serve|export|report|handoff RUN_ID [theme|port]');
+  } else throw new Error('Usage: node tools/lean-pilot/runner.mjs build|init|prepare|delivery|check|browser|serve|export|report|handoff RUN_ID [theme|port]');
 }
 if(process.argv[1]&&pathToFileURL(path.resolve(process.argv[1])).href===import.meta.url)main().catch(error=>{console.error(error.message);process.exitCode=1;});

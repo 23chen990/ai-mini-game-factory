@@ -13,8 +13,8 @@ const view=page=>page.evaluate(()=>window.__CLINIC_VIEW__());
 const ready=page=>page.waitForFunction(()=>typeof window.__CLINIC_VIEW__==='function');
 
 /** Actual HTTP, normal touch actions, and a separately labeled denied-storage fixture. */
-export async function browserQa(runId){
-  const runs=path.join(ROOT,'runs');const {run,root,game}=await loadRun(runs,runId);
+export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
+  const runs=base;const {run,root,game}=await loadRun(runs,runId);
   if(run.templateId!=='clinic-queue-v1')throw new Error('Wrong candidate for clinic QA');
   await verifyRunInputs(root,run);const hash=await buildHash(game);
   const lock=await open(path.join(root,'.check-lock'),'wx',0o600);
