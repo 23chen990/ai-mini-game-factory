@@ -1,4 +1,4 @@
-/* global process, URL */
+/* global process, URL, structuredClone */
 // Synthetic structural fixtures only. These are not REA sessions or human playtests.
 import test from 'node:test';
 import assert from 'node:assert/strict';
