@@ -1,5 +1,5 @@
 /* global window, document, location, fetch, performance, requestAnimationFrame, localStorage, setTimeout, clearTimeout, structuredClone */
-import { CONFIG, WAVES, createInitial, act, tick, inspect, encodeSave, decodeSave, outcome } from './engine.mjs';
+import { CONFIG, WAVES, createInitial, act, tick, inspect, encodeSave, decodeSave, outcome, serviceMs } from './engine.mjs';
 import { THEMES } from './themes.mjs';
 const $=id=>document.getElementById(id);
 const T={intake:'挂号台',care:'一号诊室',helper:'助理',waiting:'人等待',seconds:'秒',recovery:'先消化长队，再准备下一批',save:'自动保存 · 离开即暂停'};
@@ -105,6 +105,12 @@ function paintPeople(q){
  $('helper').style.left=pos.x+'px';$('helper').style.top=pos.y+'px';$('helper').classList.toggle('moving',state.helper.travelMs>0);
  $('helper-effect').textContent=state.helper.travelMs?Math.ceil(state.helper.travelMs/1000)+'s':to==='idle'?'待命':'支援 ×2';
  for(const k of ['intake','care']){const met=q[k+'Service'];$(k+'-progress').style.width=met?Math.min(100,met.progress*100)+'%':'0%';}
+ const second=state.patients.find(p=>p.phase==='care'&&p.station==='care2');
+ $('second-progress').style.width=second?Math.min(100,second.progressMs/serviceMs(state,second,'care')*100)+'%':'0%';
+ $('second-work').hidden=!state.doctor2;
+ $('open-expansion').classList.toggle('staffed',state.doctor2);
+ $('build-mark').hidden=state.doctor2;
+ $('second-work').classList.toggle('working',Boolean(second)&&state.status==='running');
 }
 function render(){
  const q=inspect(state),o=outcome(state),secs=Math.ceil((CONFIG.durationMs-state.timeMs)/1000);

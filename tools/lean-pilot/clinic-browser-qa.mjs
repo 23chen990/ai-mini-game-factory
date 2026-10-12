@@ -65,16 +65,18 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
     await tap(p,'#assign-intake');await p.waitForTimeout(3300);assert.equal((await snapshot(p)).state.helper.station,'intake');assert.equal(await p.locator('#assign-intake').getAttribute('aria-pressed'),'true');record('clinic-dispatch-visible');
     await tap(p,'#pause');const frozen=(await snapshot(p)).state;await p.waitForTimeout(800);assert.deepEqual((await snapshot(p)).state,frozen);record('clinic-pause-freezes');
     await p.reload();await p.locator('#start').waitFor({state:'visible'});assert.deepEqual((await snapshot(p)).state,frozen);assert.equal((await snapshot(p)).runId,runId);record('clinic-save-resume');await tap(p,'#start');
-    const actor={at:0,equipment:false};let lastCheckpoint=0,investmentRecorded=false;
+    const actor={at:0,equipment:false};let lastCheckpoint=0,investmentRecorded=false,secondServiceObserved=false;
     while(!(await p.locator('#settlement').isVisible())){
      const publicRead=await actFromVisible(p,actor);
+     if(await p.locator('#second-work').isVisible() && Number.parseFloat(await p.locator('#second-progress').evaluate(el=>el.style.width))>0)secondServiceObserved=true;
      if(!investmentRecorded&&actor.equipment){const s=(await snapshot(p)).state;assert.equal(s.equipment,true);assert.ok(s.spent>=3500);assert.equal(s.cash,8000+s.income-s.spent-s.wages);investmentRecorded=true;record('clinic-investment-cash');}
      if(publicRead.elapsed>=lastCheckpoint+15){lastCheckpoint=publicRead.elapsed;trace.push({scope:'READ_ONLY_AFTER_PUBLIC_ACTION',visible:publicRead.visible,checkpoint:publicRead.elapsed,snapshot:await snapshot(p)});if([30,60,90,120,150].some(t=>Math.abs(t-lastCheckpoint)<2))await shot(p,'clinic-stage-'+lastCheckpoint);}
      await p.waitForTimeout(500);
     }
+    assert.ok(secondServiceObserved,'Second staffed room must show actual service progress, not a static open label');
     const end=await snapshot(p),elapsedWallMs=Date.now()-wallStart;assert.equal(end.state.timeMs,180000);assert.equal(end.speed,1);assert.ok(elapsedWallMs>=179000,'Default-speed run was shortened');assert.ok(end.outcome.passed,'Visible-policy journey did not meet the upfront quality goal');
     trace.push({checkpoint:'settlement',elapsedWallMs,snapshot:end});await shot(p,'clinic-settlement');await tap(p,'#start');const fresh=await snapshot(p);assert.equal(fresh.state.completed,0);assert.ok(fresh.state.timeMs<=1000);
-    record('clinic-natural-settlement-replay','SCRIPTED_NORMAL_INPUT',{speed:1,simulatedSeconds:180,elapsedWallMs,completed:end.state.completed,lost:end.state.lost,goalPassed:end.outcome.passed});
+    record('clinic-natural-settlement-replay','SCRIPTED_NORMAL_INPUT',{speed:1,simulatedSeconds:180,elapsedWallMs,completed:end.state.completed,lost:end.state.lost,goalPassed:end.outcome.passed,secondServiceObserved});
    }finally{await ctx.close();}
   }
   const denied=await browser.newContext({viewport:{width:390,height:844},hasTouch:true}),p=await denied.newPage();try{await p.addInitScript(()=>Object.defineProperty(Storage.prototype,'setItem',{value(){throw Error('Denied');}}));await p.goto(url);await p.locator('#start').waitFor({state:'visible'});await tap(p,'#start');await tap(p,'#assign-care');assert.ok(await p.locator('.save-state.warning').isVisible());assert.equal((await snapshot(p)).state.helper.target,'care');record('clinic-storage-denial','INJECTED_ENVIRONMENT_FIXTURE');}finally{await denied.close();}
