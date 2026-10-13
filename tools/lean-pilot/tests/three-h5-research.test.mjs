@@ -1,3 +1,4 @@
+/* global Buffer */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, readFile, writeFile, rm } from 'node:fs/promises';
