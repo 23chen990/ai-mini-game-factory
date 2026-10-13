@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "gameId": "h5-cf-mobile-20261013",
+  "gameId": "h5-cf-challenges-20261013",
   "profile": "ACTION_FEEL",
   "secondaryProfile": null,
   "mode": "discover",
@@ -8,8 +8,7 @@
   "progression": "persistent",
   "changedAreas": [
     "controls",
-    "storage",
-    "platform"
+    "storage"
   ],
   "template": null,
   "repair": null,

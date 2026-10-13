@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "gameId": "h5-qq-mobile-20261013",
+  "gameId": "h5-qq-challenges-20261013",
   "policyHash": "7079818ffaaed60682f19edc1b61c086b2f5b7fad750942e3e4f157f505ab16b",
-  "requestHash": "5a72e25cc097e014fe6d1608a2628f10f0ad34f92c70c025b7e75709f721e208",
+  "requestHash": "c5816557102a15739b87f0353095545eaee742b5a8f6788cdbf2806cd7144b8c",
   "status": "PROPOSED",
   "firstSession": {
     "firstAction": "点开始后用可见触控进行转向/移动",
@@ -56,11 +56,11 @@
   ],
   "links": [],
   "progression": {
-    "savedState": "本机最佳成绩、局数、补给与已发广告奖励的局号",
+    "savedState": "保留PR10格式的成绩/补给；单独存所选挑战、每关最佳、尝试与完成次数。",
     "effectOnNextCore": "最佳成绩提供重试目标；骑行补给可兑换一局前段追鱼辅助",
     "safeExit": "原生游戏后台暂停，刷新保留成长并明确重开未结束本局"
   },
-  "endingValue": "原生结算或90秒抓鱼挑战结算后可重试",
+  "endingValue": "所选挑战完成或倒计时结束后显示明确成功/失败，可重试或选择另一挑战。",
   "cases": [
     {
       "id": "first-action-feedback",
