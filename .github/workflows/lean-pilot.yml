@@ -133,3 +133,77 @@ jobs:
             runs/ci-quality-challenge/quality/visible-*/*.png
           retention-days: 7
           if-no-files-found: warn
+
+  # Ephemeral, branch-gated REAL tool research. No merges, deploys or credentials.
+  three-h5-real-rea:
+    if: github.event.pull_request.head.ref == 'research/three-h5-rea-taptap-20261013'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.11.0'
+      - name: Audit pinned source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/three-h5-results" "$RUNNER_TEMP/upstream"
+          git -C "$RUNNER_TEMP/upstream" init -q
+          git -C "$RUNNER_TEMP/upstream" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$RUNNER_TEMP/upstream" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$RUNNER_TEMP/upstream" checkout -q FETCH_HEAD
+          node tools/lean-pilot/three-h5-research.mjs anchors "$RUNNER_TEMP/upstream" "$RUNNER_TEMP/three-h5-results/pinned-source.json"
+      - name: Install REA 6.4.0 only into runner temp
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm install --prefix "$RUNNER_TEMP/rea" --ignore-scripts --no-audit --no-fund --no-save --package-lock=false rea-agents@6.4.0
+          "$RUNNER_TEMP/rea/node_modules/.bin/rea" --version
+      - name: Actual REA on owned static JavaScript fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/own-smoke"
+          printf '%s\n' '{"name":"owned-rea-smoke","version":"1.0.0","private":true}' > "$RUNNER_TEMP/own-smoke/package.json"
+          printf '%s\n' 'export function calc(a,b){return a+b}; export const value=calc(2,3)' > "$RUNNER_TEMP/own-smoke/app.js"
+          "$RUNNER_TEMP/rea/node_modules/.bin/rea" analyze-javascript-application "$RUNNER_TEMP/own-smoke" --json --analysis-timeout-ms 45000 --max-heap-mb 256 > "$RUNNER_TEMP/smoke-rea.json" 2> "$RUNNER_TEMP/smoke-progress.log"
+          node -e 'const f=require("node:fs"),r=JSON.parse(f.readFileSync(process.argv[1],"utf8"));if(!r.evidence_id||!r.normalized_result)process.exit(1);f.writeFileSync(process.argv[2],JSON.stringify({status:"REAL_REA_SMOKE_PASS",evidenceId:r.evidence_id},null,2));console.log("REAL_REA_SMOKE_PASS",r.evidence_id)' "$RUNNER_TEMP/smoke-rea.json" "$RUNNER_TEMP/three-h5-results/own-smoke.json"
+      - name: Blind static REA on the three supplied CDN games
+        shell: bash
+        run: |
+          set -euo pipefail
+          failures=0
+          mkdir -p "$RUNNER_TEMP/three-h5-artifacts"
+          for game in qq-speed cf-transport-ship pelican-bike; do
+            case "$game" in
+              qq-speed) url="https://lf3-static.bytednsdoc.com/obj/eden-cn/nulojnulwlo/qqfeiche3d/index.html" ;;
+              cf-transport-ship) url="https://lf3-static.bytednsdoc.com/obj/eden-cn/nulojnulwlo/cf-transport-ship/transport-ship.html" ;;
+              pelican-bike) url="https://lf3-static.bytednsdoc.com/obj/eden-cn/nulojnulwlo/pelican-bike/index.html" ;;
+            esac
+            if ! curl --fail --location --silent --show-error --retry 1 --connect-timeout 12 --max-time 70 "$url" -o "$RUNNER_TEMP/three-h5-artifacts/$game.html"; then
+              echo "REFERENCE_DOWNLOAD_FAILED $game"; failures=$((failures+1)); continue
+            fi
+            if ! node tools/lean-pilot/three-h5-research.mjs stage "$game" "$RUNNER_TEMP/three-h5-artifacts/$game.html" "$RUNNER_TEMP/three-h5-artifacts/$game" "$RUNNER_TEMP/three-h5-results/$game-stage.json"; then
+              failures=$((failures+1)); continue
+            fi
+            start=$(date +%s)
+            set +e
+            "$RUNNER_TEMP/rea/node_modules/.bin/rea" analyze-javascript-application "$RUNNER_TEMP/three-h5-artifacts/$game" --integrity-policy fail --analysis-timeout-ms 85000 --max-heap-mb 768 --max-semantic-nodes 6000 --max-semantic-nodes-per-file 6000 --json --filter-output evidence_id,normalized_result.statistics > "$RUNNER_TEMP/three-h5-artifacts/$game-rea.json" 2> "$RUNNER_TEMP/three-h5-artifacts/$game-rea-progress.log"
+            code=$?
+            set -e
+            echo "REA_GAME $game EXIT $code ELAPSED_SECONDS $(($(date +%s)-start))"
+            if ! node tools/lean-pilot/three-h5-research.mjs receipt "$game" "$RUNNER_TEMP/three-h5-artifacts/$game-rea.json" "$code" "$RUNNER_TEMP/three-h5-results/$game-stage.json" "$RUNNER_TEMP/three-h5-results/$game-rea-receipt.json"; then
+              failures=$((failures+1))
+            fi
+          done
+          test "$failures" -eq 0
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: three-h5-rea-receipts-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/three-h5-results/*.json
+          retention-days: 7
+          if-no-files-found: warn
