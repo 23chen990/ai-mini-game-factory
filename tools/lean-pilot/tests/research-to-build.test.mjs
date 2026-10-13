@@ -1,7 +1,7 @@
 /* global process */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdtemp, rm, mkdir, cp } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, rm, cp } from 'node:fs/promises';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -69,7 +69,7 @@ test('claims labeled as mere inference are not proof of a reference mechanic', a
 });
 test('a stale or changed contract is blocked', async t => {
   const root=await fixture(t);
-  await edit(root,'contract.json',p=>{p.endingValue='tampered ending';});
+  await edit(root,'contract.json',p=>{p.policyHash='0'.repeat(64);});
   const r=await auditResearchToBuild(root,'research-to-build.json');
   assert.ok(r.blockers.some(x=>x.startsWith('SPEC_')));
 });
