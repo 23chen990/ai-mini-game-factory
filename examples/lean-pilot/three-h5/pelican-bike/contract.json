@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "gameId": "h5-pelican-mobile-20261013",
+  "gameId": "h5-pelican-challenges-20261013",
   "policyHash": "7079818ffaaed60682f19edc1b61c086b2f5b7fad750942e3e4f157f505ab16b",
-  "requestHash": "32ffd5559652b3ca3727c3b42ca4e6bc21309134efe8a946c8157b4c11e48f39",
+  "requestHash": "675b987b0aa39a314f421eb13ab03e27a6e9ab1847cd4fb24b227832467f5ccf",
   "status": "PROPOSED",
   "firstSession": {
     "firstAction": "点开始后用可见触控进行转向/移动",
@@ -56,11 +56,11 @@
   ],
   "links": [],
   "progression": {
-    "savedState": "本机最佳成绩、局数、补给与已发广告奖励的局号",
+    "savedState": "保留PR10格式的成绩/补给；单独存所选挑战、每关最佳、尝试与完成次数。",
     "effectOnNextCore": "最佳成绩提供重试目标；骑行补给可兑换一局前段追鱼辅助",
     "safeExit": "原生游戏后台暂停，刷新保留成长并明确重开未结束本局"
   },
-  "endingValue": "原生结算或90秒抓鱼挑战结算后可重试",
+  "endingValue": "所选挑战完成或倒计时结束后显示明确成功/失败，可重试或选择另一挑战。",
   "cases": [
     {
       "id": "first-action-feedback",

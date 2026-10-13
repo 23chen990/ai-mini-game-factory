@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "basePr": 10,
+  "baseCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+  "branch": "codex/three-h5-challenges-20261013",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "deduplication": {
+    "pr9Commit": "9f80b1cd25d561498247ec5ee056918e4a707df3",
+    "pr9RewardGuardImported": false,
+    "pr10SourceAndAdGluePreserved": true,
+    "newRuntimeDependencies": 0
+  },
+  "packages": [
+    {
+      "runId": "h5-pelican-challenges-20261013",
+      "gameId": "pelican-bike",
+      "buildHash": "131553e334899eccc3db0fd8c6547306e4ce2d5d90ef46cedeaddc65bab08820",
+      "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory/runs/h5-pelican-challenges-20261013/pelican-bike-131553e33489-challenges-trial.zip",
+      "filename": "pelican-bike-131553e33489-challenges-trial.zip",
+      "sha256": "c2f24946b31cc87c27870bb6725dbdd5495bcd11c5aa071219fb5e9a272dd4c0",
+      "bytes": 282451,
+      "htmlSha256": "2b61914fc2b377c12565bbca6ed1fc9d6522747a9c149e928e19e7a226cfddab",
+      "assetId": 637306873,
+      "remoteDigest": "sha256:c2f24946b31cc87c27870bb6725dbdd5495bcd11c5aa071219fb5e9a272dd4c0",
+      "downloadUrl": "https://github.com/23chen990/ai-mini-game-factory/releases/download/untagged-45efe3944aa730a1cb75/pelican-bike-131553e33489-challenges-trial.zip"
+    },
+    {
+      "runId": "h5-qq-challenges-20261013",
+      "gameId": "qq-speed",
+      "buildHash": "723678fe5e412b017566023990a5b4395c95d44191b94e7d4ca801ef8e46463f",
+      "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory/runs/h5-qq-challenges-20261013/qq-speed-723678fe5e41-challenges-trial.zip",
+      "filename": "qq-speed-723678fe5e41-challenges-trial.zip",
+      "sha256": "bf322369e53ef0594db020becfe64a878107baa7b7fe56e63a03aa88257885c2",
+      "bytes": 235744,
+      "htmlSha256": "97f12db6b79048e5359e30d50ea7539056dde7592225a1694352b15e0369c91e",
+      "assetId": 637306874,
+      "remoteDigest": "sha256:bf322369e53ef0594db020becfe64a878107baa7b7fe56e63a03aa88257885c2",
+      "downloadUrl": "https://github.com/23chen990/ai-mini-game-factory/releases/download/untagged-45efe3944aa730a1cb75/qq-speed-723678fe5e41-challenges-trial.zip"
+    },
+    {
+      "runId": "h5-cf-challenges-20261013",
+      "gameId": "cf-transport-ship",
+      "buildHash": "782f8a41609b5f04f4e6a76b470b551e73906e689ec04a5602790788fae16071",
+      "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory/runs/h5-cf-challenges-20261013/cf-transport-ship-782f8a41609b-challenges-trial.zip",
+      "filename": "cf-transport-ship-782f8a41609b-challenges-trial.zip",
+      "sha256": "cc419ee64ae54244443f50833bf1a180ef9587c20d9a20a9ca253a7159ba95ce",
+      "bytes": 288795,
+      "htmlSha256": "a9c05b47590de3271cf3808bdddd34b6d4cd8e86a26ba5fbdc7b85bef7ed8c74",
+      "assetId": 637306875,
+      "remoteDigest": "sha256:cc419ee64ae54244443f50833bf1a180ef9587c20d9a20a9ca253a7159ba95ce",
+      "downloadUrl": "https://github.com/23chen990/ai-mini-game-factory/releases/download/untagged-45efe3944aa730a1cb75/cf-transport-ship-782f8a41609b-challenges-trial.zip"
+    }
+  ],
+  "baselines": [
+    {
+      "gameId": "pelican-bike",
+      "baselineRunId": "h5-pelican-mobile-20261013",
+      "baselineBuildHash": "5067196c6c7cdbd007be27ec4879d25666e35d05ec2fe3682bd246131ee7be57",
+      "currentRunId": "h5-pelican-challenges-20261013",
+      "currentBuildHash": "131553e334899eccc3db0fd8c6547306e4ce2d5d90ef46cedeaddc65bab08820",
+      "sourceHtmlSha256": "f0da6560cbdbd2def5ccbe6e0e233fe5c0f501104c69e1ce6d593d80293620c0",
+      "sourceHtmlUnchanged": true,
+      "adsModuleSha256": "0753983c593393a79d95c05af2ec8208f5637a02577d78ebd1321028d39b1de3",
+      "adsModuleUnchanged": true,
+      "oldFrozenInputsPassed": true,
+      "newFrozenInputsPassed": true
+    },
+    {
+      "gameId": "qq-speed",
+      "baselineRunId": "h5-qq-mobile-20261013",
+      "baselineBuildHash": "887691527da597223dabe45a45b0d7d71b87a4a8fb719c64bd4cf6967816c5e0",
+      "currentRunId": "h5-qq-challenges-20261013",
+      "currentBuildHash": "723678fe5e412b017566023990a5b4395c95d44191b94e7d4ca801ef8e46463f",
+      "sourceHtmlSha256": "9aee8c67f8e6ffa38efa9bfacfec691d94ebd25bfbe9a56e27768c49d891f07c",
+      "sourceHtmlUnchanged": true,
+      "adsModuleSha256": "0753983c593393a79d95c05af2ec8208f5637a02577d78ebd1321028d39b1de3",
+      "adsModuleUnchanged": true,
+      "oldFrozenInputsPassed": true,
+      "newFrozenInputsPassed": true
+    },
+    {
+      "gameId": "cf-transport-ship",
+      "baselineRunId": "h5-cf-mobile-20261013",
+      "baselineBuildHash": "d9bb338fc0694e5025dbc95968eb1a647614da456305952290335927b4963c44",
+      "currentRunId": "h5-cf-challenges-20261013",
+      "currentBuildHash": "782f8a41609b5f04f4e6a76b470b551e73906e689ec04a5602790788fae16071",
+      "sourceHtmlSha256": "d3ff4a99b4f70a298a0d661a1b998071bc7c457f4543465f02a8fc5d2e48bd6d",
+      "sourceHtmlUnchanged": true,
+      "adsModuleSha256": "0753983c593393a79d95c05af2ec8208f5637a02577d78ebd1321028d39b1de3",
+      "adsModuleUnchanged": true,
+      "oldFrozenInputsPassed": true,
+      "newFrozenInputsPassed": true
+    }
+  ],
+  "qa": [
+    {
+      "path": "qa-pelican/qa-pelican.json",
+      "sha256": "4e65212a19614b94e1e972d541f5f305d846d12cbd82073c7fd7f5805498573d",
+      "observedBuildHash": "cd4ec1a083c5b194b16b575ed8d0146ff72d2425d1939428166ad42759b11712",
+      "status": {
+        "buildHash": "PASS",
+        "normalVisibleInputs": "PASS",
+        "selectionPersistence": "PASS",
+        "terminalAndReplay": "PASS",
+        "jumpVisibleSpaceAccepted": "PASS",
+        "sourceModified": false,
+        "challengeWinVerification": "NO_SUCCESS_OBSERVED"
+      }
+    },
+    {
+      "path": "qa-pelican-header-retest/qa-pelican-header-retest.json",
+      "sha256": "666d4ae67be7415861891c12de17e6c5dec8edf266edbc6421bd1b7b1b58a547",
+      "observedBuildHash": "131553e334899eccc3db0fd8c6547306e4ce2d5d90ef46cedeaddc65bab08820",
+      "status": {
+        "sourceDeltaOnly": "PASS",
+        "finalBuildHash": "PASS",
+        "sprintTitleNeutralAllObservedStates": "PASS",
+        "sprintReadyRunningTerminalBothViewports": "PASS",
+        "freshDefaultCoastTerminalReplayAndRecord": "PASS",
+        "sprintTerminalReplayAndRecord": "PASS",
+        "targetedPerceptualGate": "PASS",
+        "screenshotsHashVerified": "PASS",
+        "sourceModified": false
+      }
+    },
+    {
+      "path": "qa-race/qa-race.json",
+      "sha256": "1436f629cc406f04ef031f6a99d292354080e0ecc86082a9778cc947cdfd73b5",
+      "observedBuildHash": "723678fe5e412b017566023990a5b4395c95d44191b94e7d4ca801ef8e46463f",
+      "status": "PARTIAL"
+    },
+    {
+      "path": "qa-race-supplement/qa-race-supplement.json",
+      "sha256": "b5c802d3a701a24a42fa165fdeea5ace5cccfc824f87fbbd0e8c69fd26f4387b",
+      "observedBuildHash": "723678fe5e412b017566023990a5b4395c95d44191b94e7d4ca801ef8e46463f",
+      "status": "PARTIAL"
+    },
+    {
+      "path": "qa-race-save/report.json",
+      "sha256": "5b73c213eab1f3c375cc4bca2d088f0de8d4951e35fbbcfda4a4ed99e1c4573e",
+      "observedBuildHash": "723678fe5e412b017566023990a5b4395c95d44191b94e7d4ca801ef8e46463f",
+      "status": true
+    },
+    {
+      "path": "qa-fps/fps-runtime-qa.json",
+      "sha256": "413fd308692ffb2f728feb3c507ae336a5f353c0daf833402ae73518e7c82697",
+      "observedBuildHash": "782f8a41609b5f04f4e6a76b470b551e73906e689ec04a5602790788fae16071",
+      "status": "PASS"
+    },
+    {
+      "path": "file-open-qa/report.json",
+      "sha256": "bd9bb23533950b537234916ee32b9f4ae4bc25b9a77bfcbd90f27a11ceb504ef",
+      "observedBuildHash": null,
+      "status": "STARTUP_ONLY"
+    }
+  ],
+  "artifactVerification": {
+    "passed": true,
+    "entries": 160,
+    "reportSha256": "7ef57849bce088cf99a9b9f1f05b871d9d603e6dc32c610f8248608b98634507"
+  },
+  "checks": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "pilotNodeTests": "193/193 PASS",
+    "ownedH5Tests": "21/21 PASS",
+    "perGameFrozenTests": "19/19 PASS for all three; inputs and suite fingerprints unchanged",
+    "rootVitest": "NOT_PASS: Node test suites collected by Vitest + unchanged expired-waiver assertion. A concurrent unrelated cut-stack timeout was retested 1/1 PASS",
+    "logs": [
+      {
+        "path": "red-challenges.tap",
+        "sha256": "884a3980207a9ed1a895a1ad1d886fa817795d1b0a442b2301b34afebdcb3c64"
+      },
+      {
+        "path": "red-points.tap",
+        "sha256": "8eee32f21e914bce83661deb3a3eeb4944ae552879e3b25a6ce635e1e3d29b8e"
+      },
+      {
+        "path": "red-baseline.tap",
+        "sha256": "a3a5b5c32752953ee77937bd95e405c3a663b94467fd704ed5b679dee781d75d"
+      },
+      {
+        "path": "red-header-assertion.log",
+        "sha256": "063a8f742fa0dd4c49f10dfb191f5fffe2f9be232d7ee44a6e01ff5e0311bfaf"
+      },
+      {
+        "path": "pilot.tap",
+        "sha256": "9b5ff3929f3ec6794a79cd51f72be2ca7894cf0be5de19a990c983759c3f8a41"
+      },
+      {
+        "path": "final-mobile.tap",
+        "sha256": "bcda734c731854d8f23f19d1f482e3de5bcc85e9b310433a67ca34c53eb1689f"
+      },
+      {
+        "path": "lint-final.log",
+        "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+      },
+      {
+        "path": "typecheck-final.log",
+        "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+      },
+      {
+        "path": "root-vitest.log",
+        "sha256": "fea25569e79bbf2c90e33a3b97fd5c1d98695bffb331d9da247cce38901da6ff"
+      },
+      {
+        "path": "cut-stack-retest.log",
+        "sha256": "5c5df00f1298e785a92ed2f2f4bea8582b9d172526928a00a6cd3e4247fb212f"
+      },
+      {
+        "path": "file-open.log",
+        "sha256": "7bb9e1c6cc00587f07063469339a26bf1a69f2f36928d45c9ceb59960c86726f"
+      },
+      {
+        "path": "race-save-check.log",
+        "sha256": "1db6ce9a3072f14cdd9a7dcc1f2299bec0ce8e0e09dde6e8859403a50db87eba"
+      }
+    ]
+  },
+  "observed": {
+    "pelicanFinal": "coast won 8/8; sprint lost 1/5; terminal, replay and records verified on final hash. Jump lost 3/8 with 3 accepted jumps on the pre-title-fix hash; report not rebound.",
+    "race": "finish DNF + replay; podium true one-lap finish in 6th place (challenge lost), drift DNF 0/2 + replay. Supplement records UNKNOWN; separate default-finish save check verifies record retained.",
+    "fps": "tags lost 0/3 hits; precision lost 0/1 kill; survive won after 45 seconds with 0 deaths. Correct starting weapons, paused settlement, replay and records observed."
+  },
+  "unknowns": [
+    "Physical phone and human30-second comprehension NOT_RUN",
+    "New phone feedback NOT_PROVIDED",
+    "Natural jump/sprint win, race podium win/effective drift and FPS hit/kill success branches not observed",
+    "Race podium/drift permanent challenge-record retention was not independently observed",
+    "Actual TapTap H5 application and placement still unselected; live IAA NOT_RUN",
+    "New challenge runs canonical Chromium browser.json suite NOT_RUN; independent WebKit QA is separately reported"
+  ],
+  "protectedPrs": [
+    {
+      "branch": "feat/lean-grid-merge-pilot-20261012",
+      "draft": true,
+      "head": "2ffcd5bda398373d94bbaa264ccf81e1ee6e8ed6",
+      "number": 2,
+      "state": "open"
+    },
+    {
+      "branch": "feat/profiled-gameplay-workflow-20261012",
+      "draft": true,
+      "head": "f7dd75bda9fc79254ab15cb403a58f076bdbd5a6",
+      "number": 3,
+      "state": "open"
+    },
+    {
+      "branch": "feat/reverse-research-evidence-gate-20261013",
+      "draft": true,
+      "head": "b4d34871854811943ef9f82d50006b0040507d50",
+      "number": 7,
+      "state": "open"
+    },
+    {
+      "branch": "research/three-h5-rea-taptap-20261013",
+      "draft": true,
+      "head": "0919f504a53d7665bcfe2806917cd453c4842a89",
+      "number": 8,
+      "state": "open"
+    },
+    {
+      "branch": "feat/authorized-h5-quickport-plan-20261013",
+      "draft": true,
+      "head": "9f80b1cd25d561498247ec5ee056918e4a707df3",
+      "number": 9,
+      "state": "open"
+    },
+    {
+      "branch": "codex/three-h5-iaa-pilot-20261013",
+      "draft": true,
+      "head": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "number": 10,
+      "state": "open"
+    }
+  ],
+  "github": {
+    "pullRequest": "https://github.com/23chen990/ai-mini-game-factory/pull/11",
+    "draftRelease": "https://github.com/23chen990/ai-mini-game-factory/releases/tag/untagged-45efe3944aa730a1cb75",
+    "releaseId": 411778361,
+    "tagName": "h5-challenges-trial-20261013",
+    "isDraft": true,
+    "codeCommit": "0fa0c00fbd94cf9a246b6311a8b77808113359c5",
+    "assetsVerifiedByGitHubSha256": true,
+    "ci": {
+      "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38414829715",
+      "headSha": "0fa0c00fbd94cf9a246b6311a8b77808113359c5",
+      "offlineEngineering": "PASS",
+      "httpBrowser": "IN_PROGRESS_AT_RECEIPT",
+      "rea": "SKIPPED_EXPECTED",
+      "note": "HTTP job exercises unchanged merge/clinic flows; three new game loops have separately bound local WebKit evidence."
+    }
+  },
+  "publishable": false,
+  "qaArchive": {
+    "filename": "three-h5-challenges-20261013-qa.zip",
+    "path": "/tmp/three-h5-challenges-20261013/three-h5-challenges-20261013-qa.zip",
+    "sha256": "47bc2ff6d19bb061514cb808c7fe420a925b158dfd15d44bc1200b46b2bd1ea6",
+    "bytes": 74594272,
+    "assetId": 637306877,
+    "remoteDigest": "sha256:47bc2ff6d19bb061514cb808c7fe420a925b158dfd15d44bc1200b46b2bd1ea6",
+    "downloadUrl": "https://github.com/23chen990/ai-mini-game-factory/releases/download/untagged-45efe3944aa730a1cb75/three-h5-challenges-20261013-qa.zip"
+  },
+  "packageIntegrity": {
+    "schemaVersion": 1,
+    "passed": true,
+    "results": [
+      {
+        "filename": "pelican-bike-131553e33489-challenges-trial.zip",
+        "zipIntegrity": true,
+        "htmlExact": true
+      },
+      {
+        "filename": "qq-speed-723678fe5e41-challenges-trial.zip",
+        "zipIntegrity": true,
+        "htmlExact": true
+      },
+      {
+        "filename": "cf-transport-ship-782f8a41609b-challenges-trial.zip",
+        "zipIntegrity": true,
+        "htmlExact": true
+      }
+    ],
+    "qaZipIntegrity": true
+  },
+  "protectedPrsVerifiedUnchangedAfterDelivery": true
+}

@@ -11,12 +11,23 @@ import { canonical } from '../../.agents/skills/gameplay-loop-review/scripts/wor
 import { SOURCE_COMMIT, TARGETS } from './three-h5-research.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url)), exec = promisify(execFile);
 
+export function assertPr10Baseline(gameId,runId,hash) {
+  const baselines = {
+    'pelican-bike':['h5-pelican-mobile-20261013','5067196c6c7cdbd007be27ec4879d25666e35d05ec2fe3682bd246131ee7be57'],
+    'qq-speed':['h5-qq-mobile-20261013','887691527da597223dabe45a45b0d7d71b87a4a8fb719c64bd4cf6967816c5e0'],
+    'cf-transport-ship':['h5-cf-mobile-20261013','d9bb338fc0694e5025dbc95968eb1a647614da456305952290335927b4963c44'],
+  };
+  if(!baselines[gameId]||baselines[gameId][0]!==runId||baselines[gameId][1]!==hash)throw Error('PR10 baseline game or build hash mismatch');
+}
+
 /** Explicit private source fork, checked by PR7. No download, publishing or rights grant is implied. */
-export async function buildSourceMobile(base, runId, gameId, { sourceRoot = process.env.H5_PINNED_SOURCE_ROOT } = {}) {
-  if (!Object.hasOwn(TARGETS, gameId) || !sourceRoot) throw Error('Select a known game and H5_PINNED_SOURCE_ROOT at the pinned revision');
-  const {stdout} = await exec('git', ['rev-parse', 'HEAD'], {cwd:sourceRoot});
-  if (stdout.trim() !== SOURCE_COMMIT) throw Error('Reference revision mismatch');
-  await exec('git', ['diff', '--quiet', SOURCE_COMMIT, '--', gameId], {cwd:sourceRoot});
+export async function buildSourceMobile(base, runId, gameId, { sourceRoot = process.env.H5_PINNED_SOURCE_ROOT, baselineRunId = process.env.H5_PR10_BASELINE_RUN } = {}) {
+  if (!Object.hasOwn(TARGETS, gameId) || (!sourceRoot&&!baselineRunId)) throw Error('Select a known game and H5_PINNED_SOURCE_ROOT at the pinned revision');
+  if(!baselineRunId) {
+    const {stdout} = await exec('git', ['rev-parse', 'HEAD'], {cwd:sourceRoot});
+    if (stdout.trim() !== SOURCE_COMMIT) throw Error('Reference revision mismatch');
+    await exec('git', ['diff', '--quiet', SOURCE_COMMIT, '--', gameId], {cwd:sourceRoot});
+  }
   // Resume a completed exact build; do not reset tests, evidence, cash or revision budgets.
   let previous;
   try { previous=JSON.parse(await safeRead(base,runId+'/source-build.json')); }
@@ -36,7 +47,17 @@ export async function buildSourceMobile(base, runId, gameId, { sourceRoot = proc
   FailurePressureContractSchema.parse(JSON.parse(await safeRead(inputRoot,'failure-pressure.json')));
   const request = JSON.parse(await safeRead(inputRoot,'request.json')), contract = JSON.parse(await safeRead(inputRoot,'contract.json'));
   if (request.gameId !== runId) throw Error('Use the exact run id declared in the checked mobile contract');
+  let baseline,baselineHash;
+  if(baselineRunId) {baseline=await loadRun(base,baselineRunId);await verifyRunInputs(baseline.root,baseline.run);baselineHash=await buildHash(baseline.game);assertPr10Baseline(gameId,baselineRunId,baselineHash);}
   const result = await createRun(base, runId, gameId, {templateId:'h5-source-mobile-v1',workflow:{'request.json':request,'contract.json':contract}});
+  if(baselineRunId) {
+    const {root,game}=await loadRun(base,runId);
+    for(const file of ['index.html','LICENSE.three.txt','platform.json'])await writeFile(path.join(game,file),await safeRead(baseline.game,file));
+    const candidate=JSON.parse(await safeRead(game,'candidate.json'));candidate.referenceId=gameId;candidate.sourceRevision=SOURCE_COMMIT;candidate.implementationContractHash=sha256(canonical(contract));await writeFile(path.join(game,'candidate.json'),JSON.stringify(candidate,null,2)+'\n');
+    const report={schemaVersion:1,runId,gameId,sourceRevision:SOURCE_COMMIT,workspace:path.join(root,'workspace'),baselineRunId,baselineBuildHash:baselineHash,baselineGitRevision:'b3e9e41dbafd9fecff972e0838aec8bed8220afc',sourceHtmlSha256:sha256(await safeRead(game,'index.html')),buildHash:await buildHash(game),reusedPr10Source:true,compiledSourceAgain:false,researchGate:gate,route:'direct-builder',routeReason:'Requested challenge feature on the verified PR10 source build.',codeRights:'GRANTED_USER_CONFIRMED',physicalMobile:'NOT_RUN',liveIAA:'NOT_RUN',publishable:false};
+    await writeFile(path.join(root,'source-build.json'),JSON.stringify(report,null,2)+'\n');
+    return {...result,buildHash:report.buildHash,sourceReceipt:path.join(root,'source-build.json'),reusedPr10Source:true,publishable:false};
+  }
   const {root, game} = await loadRun(base,runId), fork = path.join(root,'workspace/source'); await mkdir(fork,{recursive:true});
   // Read only tracked, regular files from this one project; never share another game's workspace.
   const {stdout:listing} = await exec('git',['ls-files','-z','--',gameId],{cwd:sourceRoot});

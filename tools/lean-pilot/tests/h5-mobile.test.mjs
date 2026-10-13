@@ -65,3 +65,10 @@ test('the additive recipe and lint exception are in scope, generated third-party
  assert.equal(evaluateScope(['templates/web-lite/h5-source-mobile-v1/engine.mjs','eslint.config.js'],p,p).passed,true);
  assert.equal(evaluateScope(['runs/h5-pelican-mobile-20261013/workspace/source/pelican-bike/src/main.js'],p,p).passed,false);
 });
+test('PR10 source cache reuse rejects a wrong game or changed baseline before cloning',async()=>{
+ const {assertPr10Baseline}=await import('../h5-mobile-build.mjs');
+ const id='h5-pelican-mobile-20261013',hash='5067196c6c7cdbd007be27ec4879d25666e35d05ec2fe3682bd246131ee7be57';
+ assert.doesNotThrow(()=>assertPr10Baseline('pelican-bike',id,hash));
+ assert.throws(()=>assertPr10Baseline('qq-speed',id,hash),/baseline/i);
+ assert.throws(()=>assertPr10Baseline('pelican-bike',id,'0'.repeat(64)),/baseline/i);
+});
