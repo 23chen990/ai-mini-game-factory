@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "status": "PROPOSAL_ONLY_NOT_IN_GAME",
+  "source": {
+    "repository": "riba2534/claude-opus-5-5-demo",
+    "revision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+    "permission": "USER_ATTESTED_AUTHOR_COMMERCIAL_MODIFICATION_PERMISSION",
+    "thirdPartyIpClearance": "NOT_VERIFIED"
+  },
+  "scope": "Existing THREE.js + esbuild H5 only; never build a replacement engine",
+  "games": [
+    {
+      "id": "pelican-bike",
+      "firstShip": true,
+      "currentHooks": [
+        "pelican-bike/src/main.js:S",
+        "pelican-bike/src/main.js:updateRide",
+        "pelican-bike/src/main.js:updateFishes",
+        "pelican-bike/src/main.js:frame",
+        "pelican-bike/index.template.html:.touch"
+      ],
+      "gameMode": "challenge",
+      "proposedChanges": [
+        "Challenge mode: settings.autopilot=false; free-ride mode remains unchanged",
+        "Track cumulative fish, jumps, and fish points without altering procedural 3D models",
+        "Add result/restart and per-level goal; keep existing coarse-pointer controls"
+      ],
+      "levels": [
+        {
+          "id": "bike-1",
+          "limitSeconds": 90,
+          "goal": {
+            "fishAtLeast": 3
+          },
+          "challenge": "manual-lane-collect"
+        },
+        {
+          "id": "bike-2",
+          "limitSeconds": 120,
+          "goal": {
+            "fishAtLeast": 5,
+            "jumpsAtLeast": 1
+          },
+          "challenge": "collect-and-jump"
+        },
+        {
+          "id": "bike-3",
+          "limitSeconds": 150,
+          "goal": {
+            "fishPointsAtLeast": 12
+          },
+          "challenge": "risk-reward-golden-fish-bonus"
+        }
+      ],
+      "note": "Gold fish has random spawn chance. Never make a gold fish mandatory without a deterministic guarantee or alternative path."
+    },
+    {
+      "id": "qq-speed",
+      "currentHooks": [
+        "qq-speed/src/main.js:startRace",
+        "qq-speed/src/main.js:updateProgress",
+        "qq-speed/src/main.js:showResults",
+        "qq-speed/src/main.js:settings",
+        "qq-speed/src/input.js:bindTouch",
+        "qq-speed/src/maps.js:MAPS"
+      ],
+      "proposedChanges": [
+        "Reuse existing race, maps, laps, AI, drift statistics and result UI",
+        "Add a mission objective label and clear pass/fail/retry prompt",
+        "Do not create new tracks or change core driving physics for MVP"
+      ],
+      "levels": [
+        {
+          "id": "race-1",
+          "map": "city",
+          "laps": 2,
+          "goal": {
+            "placeAtMost": 3
+          },
+          "challenge": "podium"
+        },
+        {
+          "id": "race-2",
+          "map": "city",
+          "laps": 2,
+          "goal": {
+            "placeAtMost": 3,
+            "perfectSmallBoostAtLeast": 2
+          },
+          "challenge": "drift-control"
+        },
+        {
+          "id": "race-3",
+          "map": "aegean",
+          "laps": 2,
+          "goal": {
+            "placeAtMost": 2
+          },
+          "challenge": "harder-route"
+        }
+      ],
+      "note": "The upstream official-inspired map identifiers/visuals/name must be cleared/replaced before commercial release; levels are design hypotheses, not tested difficulty."
+    },
+    {
+      "id": "cf-transport-ship",
+      "currentHooks": [
+        "cf-transport-ship/src/game.js:startMatch",
+        "cf-transport-ship/src/game.js:endMatch",
+        "cf-transport-ship/src/game.js:timeLeft",
+        "cf-transport-ship/src/hud.js:buildMenu",
+        "cf-transport-ship/src/touch.js:TouchControls",
+        "cf-transport-ship/src/actor.js:spawn"
+      ],
+      "proposedChanges": [
+        "Add short-match goal with timeLimitSeconds under 180 and separate per-player result metric",
+        "Keep original bots/weapons/map with lightweight mobile aim/control defaults",
+        "Reproduce and fix no-ammo nontermination (upstream issue #4) before publish"
+      ],
+      "levels": [
+        {
+          "id": "fps-1",
+          "timeLimitSeconds": 90,
+          "difficulty": "easy",
+          "goal": {
+            "playerKillsAtLeast": 3
+          },
+          "challenge": "kills"
+        },
+        {
+          "id": "fps-2",
+          "timeLimitSeconds": 120,
+          "difficulty": "normal",
+          "goal": {
+            "playerKillsAtLeast": 4,
+            "playerDeathsAtMost": 3
+          },
+          "challenge": "survive-and-kill"
+        },
+        {
+          "id": "fps-3",
+          "timeLimitSeconds": 150,
+          "difficulty": "hard",
+          "goal": {
+            "playerKillsAtLeast": 5,
+            "teamScoreLead": true
+          },
+          "challenge": "carry-team"
+        }
+      ],
+      "note": "Current game is 600-second team match; changing time/goal is new code and must be checked with real simulation and touch. Official-game IP is not covered by demo author permission."
+    }
+  ],
+  "validationStatus": {
+    "realMobile": "NOT_RUN",
+    "levelsConnected": "NOT_RUN",
+    "adPlatform": "NOT_CONNECTED",
+    "actualRevenue": "UNKNOWN"
+  }
+}
