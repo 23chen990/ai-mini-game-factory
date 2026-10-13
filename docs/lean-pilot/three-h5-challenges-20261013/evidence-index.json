@@ -19,7 +19,10 @@
       "filename": "pelican-bike-131553e33489-challenges-trial.zip",
       "sha256": "c2f24946b31cc87c27870bb6725dbdd5495bcd11c5aa071219fb5e9a272dd4c0",
       "bytes": 282451,
-      "htmlSha256": "2b61914fc2b377c12565bbca6ed1fc9d6522747a9c149e928e19e7a226cfddab"
+      "htmlSha256": "2b61914fc2b377c12565bbca6ed1fc9d6522747a9c149e928e19e7a226cfddab",
+      "assetId": 637306873,
+      "remoteDigest": "sha256:c2f24946b31cc87c27870bb6725dbdd5495bcd11c5aa071219fb5e9a272dd4c0",
+      "downloadUrl": "https://github.com/23chen990/ai-mini-game-factory/releases/download/untagged-45efe3944aa730a1cb75/pelican-bike-131553e33489-challenges-trial.zip"
     },
     {
       "runId": "h5-qq-challenges-20261013",
@@ -29,7 +32,10 @@
       "filename": "qq-speed-723678fe5e41-challenges-trial.zip",
       "sha256": "bf322369e53ef0594db020becfe64a878107baa7b7fe56e63a03aa88257885c2",
       "bytes": 235744,
-      "htmlSha256": "97f12db6b79048e5359e30d50ea7539056dde7592225a1694352b15e0369c91e"
+      "htmlSha256": "97f12db6b79048e5359e30d50ea7539056dde7592225a1694352b15e0369c91e",
+      "assetId": 637306874,
+      "remoteDigest": "sha256:bf322369e53ef0594db020becfe64a878107baa7b7fe56e63a03aa88257885c2",
+      "downloadUrl": "https://github.com/23chen990/ai-mini-game-factory/releases/download/untagged-45efe3944aa730a1cb75/qq-speed-723678fe5e41-challenges-trial.zip"
     },
     {
       "runId": "h5-cf-challenges-20261013",
@@ -39,7 +45,10 @@
       "filename": "cf-transport-ship-782f8a41609b-challenges-trial.zip",
       "sha256": "cc419ee64ae54244443f50833bf1a180ef9587c20d9a20a9ca253a7159ba95ce",
       "bytes": 288795,
-      "htmlSha256": "a9c05b47590de3271cf3808bdddd34b6d4cd8e86a26ba5fbdc7b85bef7ed8c74"
+      "htmlSha256": "a9c05b47590de3271cf3808bdddd34b6d4cd8e86a26ba5fbdc7b85bef7ed8c74",
+      "assetId": 637306875,
+      "remoteDigest": "sha256:cc419ee64ae54244443f50833bf1a180ef9587c20d9a20a9ca253a7159ba95ce",
+      "downloadUrl": "https://github.com/23chen990/ai-mini-game-factory/releases/download/untagged-45efe3944aa730a1cb75/cf-transport-ship-782f8a41609b-challenges-trial.zip"
     }
   ],
   "baselines": [
@@ -266,14 +275,53 @@
     }
   ],
   "github": {
-    "pullRequest": "PENDING_CREATION",
-    "draftRelease": "PENDING_UPLOAD"
+    "pullRequest": "https://github.com/23chen990/ai-mini-game-factory/pull/11",
+    "draftRelease": "https://github.com/23chen990/ai-mini-game-factory/releases/tag/untagged-45efe3944aa730a1cb75",
+    "releaseId": 411778361,
+    "tagName": "h5-challenges-trial-20261013",
+    "isDraft": true,
+    "codeCommit": "0fa0c00fbd94cf9a246b6311a8b77808113359c5",
+    "assetsVerifiedByGitHubSha256": true,
+    "ci": {
+      "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38414829715",
+      "headSha": "0fa0c00fbd94cf9a246b6311a8b77808113359c5",
+      "offlineEngineering": "PASS",
+      "httpBrowser": "IN_PROGRESS_AT_RECEIPT",
+      "rea": "SKIPPED_EXPECTED",
+      "note": "HTTP job exercises unchanged merge/clinic flows; three new game loops have separately bound local WebKit evidence."
+    }
   },
   "publishable": false,
   "qaArchive": {
     "filename": "three-h5-challenges-20261013-qa.zip",
     "path": "/tmp/three-h5-challenges-20261013/three-h5-challenges-20261013-qa.zip",
     "sha256": "47bc2ff6d19bb061514cb808c7fe420a925b158dfd15d44bc1200b46b2bd1ea6",
-    "bytes": 74594272
-  }
+    "bytes": 74594272,
+    "assetId": 637306877,
+    "remoteDigest": "sha256:47bc2ff6d19bb061514cb808c7fe420a925b158dfd15d44bc1200b46b2bd1ea6",
+    "downloadUrl": "https://github.com/23chen990/ai-mini-game-factory/releases/download/untagged-45efe3944aa730a1cb75/three-h5-challenges-20261013-qa.zip"
+  },
+  "packageIntegrity": {
+    "schemaVersion": 1,
+    "passed": true,
+    "results": [
+      {
+        "filename": "pelican-bike-131553e33489-challenges-trial.zip",
+        "zipIntegrity": true,
+        "htmlExact": true
+      },
+      {
+        "filename": "qq-speed-723678fe5e41-challenges-trial.zip",
+        "zipIntegrity": true,
+        "htmlExact": true
+      },
+      {
+        "filename": "cf-transport-ship-782f8a41609b-challenges-trial.zip",
+        "zipIntegrity": true,
+        "htmlExact": true
+      }
+    ],
+    "qaZipIntegrity": true
+  },
+  "protectedPrsVerifiedUnchangedAfterDelivery": true
 }

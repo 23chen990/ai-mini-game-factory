@@ -1,6 +1,6 @@
 # 三款 H5 挑战试玩交接
 
-本轮从 [PR #10](https://github.com/23chen990/ai-mini-game-factory/pull/10) 的 `b3e9e41dbafd9fecff972e0838aec8bed8220afc` 继续，分支 `codex/three-h5-challenges-20261013`。沿用原 Three.js 场景、操作、手机 UI、暂停、存档与广告生命周期；没有重新开发三款游戏。三个旧 run 保持原样，新挑战分别位于：
+本轮从 [PR #10](https://github.com/23chen990/ai-mini-game-factory/pull/10) 的 `b3e9e41dbafd9fecff972e0838aec8bed8220afc` 继续，分支 `codex/three-h5-challenges-20261013`，[Draft PR #11](https://github.com/23chen990/ai-mini-game-factory/pull/11)，功能提交 `0fa0c00fbd94cf9a246b6311a8b77808113359c5`。沿用原 Three.js 场景、操作、手机 UI、暂停、存档与广告生命周期；没有重新开发三款游戏。三个旧 run 保持原样，新挑战分别位于：
 
 - `runs/h5-pelican-challenges-20261013/workspace/game`
 - `runs/h5-qq-challenges-20261013/workspace/game`
@@ -34,7 +34,7 @@
 
 ## 试玩与验证
 
-[中文手机验收页](mobile-acceptance.html) 使用三个本地端口 4317/4318/4319；手机和电脑需同一 Wi-Fi。GitHub Draft Release 提供三个 ZIP，每包的 `index.html` 是完整独立 H5，可用静态 HTTP 服务托管。它们是未发布的测试包。
+[中文手机验收页](mobile-acceptance.html) 使用三个本地端口 4317/4318/4319；本机已启动的入口是 `http://172.16.133.209:4316/mobile-acceptance.html`，手机和电脑需同一 Wi-Fi。[未发布 Draft Release](https://github.com/23chen990/ai-mini-game-factory/releases/tag/untagged-45efe3944aa730a1cb75) 提供三个 ZIP，每包约230–290KB，`index.html` 是完整独立 H5，可用静态 HTTP 服务托管。完整 QA 附件另存为74.6MB ZIP，四个远端 SHA-256 已与本地核对。它们是未发布的测试包。
 
 独立 QA 使用 WebKit 手机尺寸、可见按钮和正常输入；动作、截图、失败及中断日志都保留。旧哈希上的证据不会被改写成新哈希；抓鱼的45秒标题问题有原始 QA、一次修复、精确状态补测。详细观测、覆盖缺口和包哈希见检查记录及随包 evidence。
 
