@@ -191,10 +191,11 @@ jobs:
             fi
             start=$(date +%s)
             set +e
-            "$RUNNER_TEMP/rea/node_modules/.bin/rea" analyze-javascript-application "$RUNNER_TEMP/three-h5-artifacts/$game" --integrity-policy fail --analysis-timeout-ms 85000 --max-heap-mb 768 --max-semantic-nodes 6000 --max-semantic-nodes-per-file 6000 --json --filter-output evidence_id,normalized_result.statistics > "$RUNNER_TEMP/three-h5-artifacts/$game-rea.json" 2> "$RUNNER_TEMP/three-h5-artifacts/$game-rea-progress.log"
+            "$RUNNER_TEMP/rea/node_modules/.bin/rea" analyze-javascript-application "$RUNNER_TEMP/three-h5-artifacts/$game" --integrity-policy fail --analysis-timeout-ms 85000 --max-heap-mb 768 --json > "$RUNNER_TEMP/three-h5-artifacts/$game-rea.json" 2> "$RUNNER_TEMP/three-h5-artifacts/$game-rea-progress.log"
             code=$?
             set -e
             echo "REA_GAME $game EXIT $code ELAPSED_SECONDS $(($(date +%s)-start))"
+            if [ "$code" -ne 0 ]; then sed -n '1,12p' "$RUNNER_TEMP/three-h5-artifacts/$game-rea-progress.log" | sed -E 's@(/home/runner/[^ ]+)@[private-path]@g'; fi
             if ! node tools/lean-pilot/three-h5-research.mjs receipt "$game" "$RUNNER_TEMP/three-h5-artifacts/$game-rea.json" "$code" "$RUNNER_TEMP/three-h5-results/$game-stage.json" "$RUNNER_TEMP/three-h5-results/$game-rea-receipt.json"; then
               failures=$((failures+1))
             fi
