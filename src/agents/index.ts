@@ -19,6 +19,7 @@ import { buildDeterministicReferenceLevelLayout } from '../core/reference-level-
 import { normalizeReferenceBehaviorAnalysis } from '../core/reference-evidence.js';
 import { assertReferenceLevelRuntimeDataWritePath, readReferenceLevelRuntimeData, runtimeForTemplate, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from '../core/reference-level-binding.js';
 import { referenceLevelRuntimeDataPath } from '../core/reference-level-runtime.js';
+import { ReferenceLevelImplementationContractSchema } from '../schemas/reference-recording.js';
 export { AgentPackageSchema, buildAgentPackageInstruction, packageForStage, type AgentPackage } from './packages.js';
 export { compileAgentContext } from './context-compiler.js';
 
@@ -154,6 +155,16 @@ export class BuilderAgent {
       runtime: blueprint.runtime,
     });
   }
+  private async loadReferenceBehaviorTargets(runRoot: string, blueprint: GameBlueprint) {
+    const contractPath = path.join(runRoot, 'artifacts/reference-level-implementation-contract.json');
+    const raw = await readFile(contractPath, 'utf8').catch(() => undefined);
+    if (raw === undefined) return undefined;
+    const contract = ReferenceLevelImplementationContractSchema.parse(JSON.parse(raw));
+    if (contract.targetRunId !== path.basename(runRoot) || contract.targetGame !== blueprint.gameId || path.resolve(contract.workspace) !== path.resolve(path.join(runRoot, 'workspace/game'))) {
+      throw new Error('reference-level behavior targets are bound to a different run, game, or workspace');
+    }
+    return contract.behaviorMeasurements;
+  }
   private async assertPreflight(workspace: string, blueprint: GameBlueprint, context?: AgentExecutionContext) {
     if (!context?.enforceBoundary) return;
     if (context.targetGameId !== undefined && context.targetGameId !== blueprint.gameId) throw new Error(`Builder target game mismatch: ${context.targetGameId} !== ${blueprint.gameId}`);
@@ -188,6 +199,7 @@ export class BuilderAgent {
     await this.assertPreflight(workspace, blueprint, context);
     const runRoot = context?.runRoot ?? path.resolve(workspace, '../..');
     const referenceRuntimeData = await this.loadReferenceRuntimeData(runRoot, workspace, blueprint, template);
+    const referenceLevelBehaviorTargets = await this.loadReferenceBehaviorTargets(runRoot, blueprint);
     if (referenceRuntimeData) await assertReferenceLevelRuntimeDataWritePath(workspace, referenceRuntimeData.production.runtime);
     await this.runtime.createProject(workspace, template);
     await this.runtime.applyBlueprint(workspace, blueprint, styleLock);
@@ -207,7 +219,7 @@ export class BuilderAgent {
       const stagedPath = path.join(workspace, referenceLevelRuntimeDataPath(referenceRuntimeData.production.runtime));
       await writeJsonAtomic(stagedPath, referenceRuntimeData);
     }
-    const codexResult = await this.provider.build({ workspace, blueprint, styleLock, assets, template, gameplayRevision: validatedGameplayRevision, interactionContinuityContract: validatedContinuity, context });
+    const codexResult = await this.provider.build({ workspace, blueprint, styleLock, assets, template, gameplayRevision: validatedGameplayRevision, interactionContinuityContract: validatedContinuity, ...(referenceLevelBehaviorTargets ? { referenceLevelBehaviorTargets } : {}), context });
     if (referenceRuntimeData && codexResult.metrics.provider === 'mock' && template === 'cut-stack-dodge-v1') {
       // The mock Builder has no model turn to author numeric layout values.
       // Keep this explicit preview-only fallback inside BuilderAgent so a

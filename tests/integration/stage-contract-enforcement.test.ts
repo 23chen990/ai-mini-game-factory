@@ -3,13 +3,76 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { createFactory } from '../../src/factory.js';
-import { MockAgentProvider } from '../../src/providers/mock.js';
+import { MockAgentProvider, MockCodexProvider } from '../../src/providers/mock.js';
+import { MockQAProvider } from '../../src/providers/runtime-qa.js';
 import { verifyHandoffPacketIntegrity } from '../../src/core/context-budget.js';
 
 const roots: string[] = [];
 afterEach(async () => { await Promise.all(roots.splice(0).map((root) => rm(root, { recursive: true, force: true }))); });
 
+class VisualStatusQaFixture extends MockQAProvider {
+  calls = 0;
+  constructor(private readonly statuses: Array<'CONFORMING' | 'MISMATCH' | 'INSUFFICIENT'>) { super(); }
+  override async playtest() {
+    const visualStatus = this.statuses[Math.min(this.calls++, this.statuses.length - 1)] ?? 'CONFORMING';
+    return {
+      schemaVersion: 1 as const,
+      passed: visualStatus === 'CONFORMING',
+      visualStatus,
+      checks: [{ name: 'visual-fixture', passed: visualStatus === 'CONFORMING', evidence: `fixture:${visualStatus}` }],
+      issues: [],
+      screenshots: [],
+      consoleLog: 'logs/console.log',
+      testedAt: new Date(0).toISOString(),
+    };
+  }
+}
+
+class CountingCodexProvider extends MockCodexProvider {
+  fixCalls = 0;
+  override async fix(input: { threadId?: string }) {
+    this.fixCalls += 1;
+    return super.fix(input);
+  }
+}
+
 describe('stage contract enforcement', () => {
+  async function runApprovedFactory(root: string, factory: ReturnType<typeof createFactory>) {
+    const seed = path.join(root, 'seed.yaml');
+    await writeFile(seed, 'title: Visual Route Fixture\ntheme: spirits\ntemplate: idle-shop-v1\ndesignMode: prototype_tournament\n');
+    const runId = await factory.newRun(seed);
+    await factory.run(runId);
+    await factory.approvePrototype(runId, { decision: 'APPROVE', notes: 'route fixture' });
+    await factory.resume(runId);
+    await factory.approve(runId, { direction: 'direction_a', notes: 'route fixture' });
+    return { runId, state: await factory.resume(runId) };
+  }
+
+  it('uses the real factory QA decision path to wait on visual INSUFFICIENT without Fixer', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'factory-visual-insufficient-'));
+    roots.push(root);
+    const qa = new VisualStatusQaFixture(['INSUFFICIENT']);
+    const codex = new CountingCodexProvider();
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', enforceStageContracts: true, qaProvider: qa, codexProvider: codex });
+    const { state } = await runApprovedFactory(root, factory);
+    expect(state.stage).toBe('NORMAL_FLOW_QA');
+    expect(state.status).toBe('waiting');
+    expect(state.stages.NORMAL_FLOW_QA?.evidence).toContain('qa:fixer-not-routed:visual-evidence-insufficient');
+    expect(codex.fixCalls).toBe(0);
+  });
+
+  it('keeps a confirmed visual MISMATCH on the factory Fixer path', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'factory-visual-mismatch-'));
+    roots.push(root);
+    const qa = new VisualStatusQaFixture(['MISMATCH', 'CONFORMING']);
+    const codex = new CountingCodexProvider();
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', enforceStageContracts: true, qaProvider: qa, codexProvider: codex });
+    const { state } = await runApprovedFactory(root, factory);
+    expect(state.stage).toBe('COMPLETED');
+    expect(codex.fixCalls).toBe(1);
+    expect(qa.calls).toBe(2);
+  });
+
   it('does not reject the normal prototype path when hard contracts are enabled', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'factory-contracts-'));
     roots.push(root);
