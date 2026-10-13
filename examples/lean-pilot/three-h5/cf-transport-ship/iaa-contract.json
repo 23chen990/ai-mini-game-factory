@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "gameId": "h5-cf-mobile-20261013",
+  "monetization": "IAA",
+  "placements": [
+    {
+      "id": "settlement-bonus",
+      "format": "rewarded",
+      "trigger": "首次关卡后且启动60秒后，结算时自愿点击；只有服务端广告资格确认后启用",
+      "playerValue": "本局补给翻倍；骑行10补给兑换下局前15秒追鱼辅助",
+      "frequencyCapSeconds": 120,
+      "maxPerSession": 1,
+      "optional": true
+    }
+  ],
+  "delivery": {
+    "firstRun": "ENDING_ONLY",
+    "minSecondsBetweenAds": 120,
+    "maxAdsPerSession": 1,
+    "rewardRequiredForRewarded": true,
+    "noFill": "continue-without-ad",
+    "closeBehavior": "immediate",
+    "backgroundBehavior": "pause-and-resume"
+  },
+  "analyticsEvents": [
+    "ad_requested",
+    "ad_completed",
+    "ad_cancelled",
+    "ad_failed"
+  ],
+  "safety": {
+    "consent": true,
+    "ageGate": false,
+    "testUnitsExcluded": false,
+    "rewardGrantTerminalOnly": true,
+    "rewardIdempotent": true,
+    "forbiddenContexts": [
+      "first-run",
+      "first-60-seconds",
+      "mid-action",
+      "before-terminal-state"
+    ]
+  },
+  "status": "BLOCKED",
+  "blockers": [
+    "REAL_H5_APP_AND_AD_PERMISSION_UNKNOWN",
+    "LIVE_AD_AND_PHONE_NOT_RUN"
+  ],
+  "sourceReview": "https://developer.taptap.cn/minigameapidoc/quick-start/mcp-guide/ad-integration-guide/；官方MCP 1.24.14 明确H5使用全局tap；真实配置只能来自当前应用check_ads_status。",
+  "createdAt": "2026-10-13T08:52:53.114Z"
+}

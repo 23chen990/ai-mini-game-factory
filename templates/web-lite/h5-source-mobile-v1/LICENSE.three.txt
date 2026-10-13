@@ -1,0 +1,1 @@
+This private recipe must copy the complete MIT notice from the exact Three.js package used to build the selected upstream project. Placeholder recipes cannot be delivered.

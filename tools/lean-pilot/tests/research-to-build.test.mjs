@@ -1,4 +1,4 @@
-/* global process */
+/* global process, URL */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdtemp, rm, cp } from 'node:fs/promises';

@@ -6,8 +6,8 @@ import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 
 export const BASE_COMMIT = 'f38d9955575db5561eba40007640c00094add885';
-const PREFIXES = ['tools/lean-pilot/', 'templates/web-lite/grid-merge-v1/', 'templates/web-lite/clinic-queue-v1/', 'examples/lean-pilot/', 'docs/lean-pilot/', '.agents/skills/gameplay-loop-review/'];
-const EXACT = ['PILOT_START.md', 'package.json', '.github/workflows/lean-pilot.yml', 'src/cli/factory.ts',
+const PREFIXES = ['tools/lean-pilot/', 'templates/web-lite/grid-merge-v1/', 'templates/web-lite/clinic-queue-v1/', 'templates/web-lite/h5-source-mobile-v1/', 'examples/lean-pilot/', 'docs/lean-pilot/', '.agents/skills/gameplay-loop-review/'];
+const EXACT = ['PILOT_START.md', 'package.json', 'eslint.config.js', '.github/workflows/lean-pilot.yml', 'src/cli/factory.ts',
   '.agents/skills/seed-to-game-blueprint/SKILL.md', '.agents/skills/game-playtest/SKILL.md'];
 
 /** A narrow PR scope check. It is not permission to weaken frozen acceptance. */
@@ -37,7 +37,7 @@ export function checkScope(root = process.cwd(), base = BASE_COMMIT) {
   const after = JSON.parse(readFileSync(path.join(root, 'package.json'), 'utf8'));
   const result = evaluateScope([...new Set([...changed, ...untracked])], before, after);
   return { ...result, base, changedFiles: changed.length, untrackedFiles: untracked.length,
-    limitation: 'Scope only. Includes the shared runner and one clinic candidate; no permission to modify other games or the legacy orchestrator. Review content and run tests separately.' };
+    limitation: 'Scope only. Includes the shared runner and explicitly registered private H5 recipe. Generated source/builds remain excluded. Review content and run tests separately.' };
 }
 if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url) {
   try { const result = checkScope(); console.log(JSON.stringify(result, null, 2)); if (!result.passed) process.exitCode = 1; }

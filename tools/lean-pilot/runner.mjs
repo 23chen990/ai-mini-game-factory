@@ -5,6 +5,8 @@ import { spawn } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
+import {networkInterfaces} from 'node:os';
+import {isIPv4} from 'node:net';
 import { candidateSpec } from './candidates.mjs';
 import { evaluateClinicPlaytest } from './clinic-review.mjs';
 import { sha256, safeRead, verifyEvidence, evaluateBudget, evaluatePlaytest, DEFAULT_BUDGET } from './policy.mjs';
@@ -28,6 +30,7 @@ export async function verifyRunInputs(root, run) {
   const currentCandidate=await json(game,'candidate.json');
   if(currentCandidate.templateId!==run.templateId)throw new Error('Runtime candidate identity changed');
   if (sha256(await safeRead(game, ACCEPTANCE)) !== run.acceptanceHash) throw new Error('Frozen acceptance tests changed');
+  for(const [name,hash]of Object.entries(run.extraAcceptanceHashes??{}))if(sha256(await safeRead(game,name))!==hash)throw new Error('Frozen extra acceptance changed');
   if (await browserSuiteHash(run.templateId) !== run.browserSuiteHash) throw new Error('Frozen browser acceptance changed');
   if (run.workflow) {
     for (const [name,hash] of Object.entries(run.workflow)) {
@@ -67,13 +70,14 @@ async function writeJson(root, name, value) {
 }
 export async function buildHash(gameRoot) {
   const entries=[];
-  for (const name of GAME_FILES) entries.push([name,sha256(await safeRead(gameRoot,name))]);
+  const candidate=await json(gameRoot,'candidate.json');
+  for (const name of [...GAME_FILES,...(candidateSpec(candidate.templateId).runtimeFiles??[])]) entries.push([name,sha256(await safeRead(gameRoot,name))]);
   return sha256(JSON.stringify(entries));
 }
 export async function loadRun(base,id) {
   assertId(id); const run = await json(base,`${id}/run.json`);
   const spec=candidateSpec(run.templateId);
-  if (run.templateId==='clinic-queue-v1' && (!run.workflow || !run.workflow['request.json'] || !run.workflow['contract.json'])) throw new Error('Clinic workflow binding missing');
+  if (['clinic-queue-v1','h5-source-mobile-v1'].includes(run.templateId) && (!run.workflow || !run.workflow['request.json'] || !run.workflow['contract.json'])) throw new Error('Candidate workflow binding missing');
   if (run.schemaVersion !== 1 || run.runId !== id ||
     !spec.themes.includes(run.theme) || run.policyHash !== sha256(JSON.stringify(run.budget))) throw new Error('Invalid run identity or changed budget');
   return {run,root:path.join(base,id),game:path.join(base,id,'workspace/game')};
@@ -83,15 +87,15 @@ export async function loadRun(base,id) {
 export async function createRun(base,id,theme='observatory',options={}) {
   const spec=candidateSpec(options.templateId??'grid-merge-v1');
   assertId(id); if (!spec.themes.includes(theme)) throw new Error('Unknown theme');
-  if(spec.id==='clinic-queue-v1'&&!options.workflow)throw new Error('Use the checked workflow build entry for this candidate');
+  if(['clinic-queue-v1','h5-source-mobile-v1'].includes(spec.id)&&!options.workflow)throw new Error('Use the checked workflow build entry for this candidate');
   await mkdir(base,{recursive:true}); const baseStat=await lstat(base);
   if (!baseStat.isDirectory() || baseStat.isSymbolicLink()) throw new Error('Unsafe runs directory');
   const root=path.join(base,id); await mkdir(root); // Deliberately fails if it exists.
   try {
     const game=path.join(root,'workspace/game');await mkdir(path.join(game,'tests'),{recursive:true});
     const evidence=path.join(root,'evidence');await mkdir(path.join(evidence,'reference'),{recursive:true});
-    for (const name of [...GAME_FILES,ACCEPTANCE]) await writeFile(path.join(game,name),await safeRead(path.join(ROOT,'templates/web-lite',spec.id),name),{flag:'wx'});
-    for (const name of spec.sourceFiles) await writeFile(path.join(evidence,name),await safeRead(path.join(ROOT,spec.evidenceRoot),name),{flag:'wx'});
+    for (const name of [...GAME_FILES,...(spec.runtimeFiles??[]),ACCEPTANCE,...(spec.acceptanceFiles??[])]) await writeFile(path.join(game,name),await safeRead(path.join(ROOT,'templates/web-lite',spec.id),name),{flag:'wx'});
+    for (const name of spec.sourceFiles) await writeFile(path.join(evidence,name),await safeRead(path.join(ROOT,spec.evidenceRoot,spec.perThemeEvidence?theme:''),name),{flag:'wx'});
     const research=await json(evidence,'research.json'); const evidenceResult=await verifyEvidence(evidence,research);
     if (!evidenceResult.passed) throw new Error(evidenceResult.blockers.join(', '));
     const budget={...DEFAULT_BUDGET,...(spec.checkBudget??{})};
@@ -99,6 +103,7 @@ export async function createRun(base,id,theme='observatory',options={}) {
       budget,policyHash:sha256(JSON.stringify(budget)),
       browserSuiteHash:await browserSuiteHash(spec.id),acceptanceHash:sha256(await safeRead(game,ACCEPTANCE)),researchHash:sha256(await safeRead(evidence,'research.json')),
       note:'Explicit engineering pilot only. Not connected to legacy production routing, Codex, REA, billing, deployment or platform publication.'};
+    if(spec.acceptanceFiles){run.extraAcceptanceHashes={};for(const name of spec.acceptanceFiles)run.extraAcceptanceHashes[name]=sha256(await safeRead(game,name));}
     if(options.workflow) {
       await mkdir(path.join(root,'input'));run.workflow={};
       for(const [name,value] of Object.entries(options.workflow)) {
@@ -141,7 +146,7 @@ export async function checkRun(base,id) {
     if (!ledger.buildHashes.includes(hash)) ledger.buildHashes.push(hash);
     ledger.pending=true;await writeJson(root,'ledger.json',ledger);const started=Date.now();
     let result;
-    try { result=await runNode(['--test','--experimental-test-isolation=none',ACCEPTANCE],game,request.timeoutMs); }
+    try { result=await runNode(['--test','--experimental-test-isolation=none',ACCEPTANCE,...Object.keys(run.extraAcceptanceHashes??{})],game,request.timeoutMs); }
     catch(error) { result={passed:false,exitCode:null,signal:null,timedOut:false,stdout:'',stderr:String(error)}; }
     const elapsedMs=Math.max(0,Date.now()-started);const afterHash=await buildHash(game);
     if(sha256(await safeRead(game,ACCEPTANCE))!==run.acceptanceHash){result.passed=false;result.stderr+='\nAcceptance changed during checks';}
@@ -178,18 +183,23 @@ export async function reportRun(base,id) {
 }
 
 /** Local preview only, with an explicit file allowlist and no run data exposure. */
-export async function serveRun(base,id,port=4173) {
+export async function serveRun(base,id,port=4173,{bindAddress='127.0.0.1'}={}) {
   const {run,game}=await loadRun(base,id);
+  if(bindAddress!=='127.0.0.1') {
+    const local=Object.values(networkInterfaces()).flat().some(n=>n?.address===bindAddress&&!n.internal);
+    const privateAddress=isIPv4(bindAddress)&&(/^(10\.|192\.168\.)/.test(bindAddress)||/^172\.(1[6-9]|2\d|3[01])\./.test(bindAddress));
+    if(!local||!privateAddress)throw Error('Phone preview must bind an assigned private LAN address');
+  }
   if (!Number.isInteger(port)||port<0||port>65535) throw new Error('Invalid port');
-  const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json'};
-  const allowed=new Set(GAME_FILES);
+  const types={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json','.txt':'text/plain; charset=utf-8'};
+  const spec=candidateSpec(run.templateId);const allowed=new Set([...GAME_FILES,...(spec.runtimeFiles??[])]);
   const server=createServer(async(req,res)=>{
     const headers={'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','Cache-Control':'no-store',
-      'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"};
+      'Content-Security-Policy':"default-src 'self'; script-src 'self'"+(spec.inlineReference?" 'unsafe-inline'; font-src 'self' data:":"")+"; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"};
     const end=(code,body,type='text/plain; charset=utf-8')=>{res.writeHead(code,{...headers,'Content-Type':type});res.end(body);};
     if(req.method!=='GET'&&req.method!=='HEAD') return end(405,'Method not allowed');
     const expectedPort=server.address().port;
-    if(![`127.0.0.1:${expectedPort}`,`localhost:${expectedPort}`].includes(req.headers.host??''))return end(403,'Unexpected host');
+    if(![`${bindAddress}:${expectedPort}`,`localhost:${expectedPort}`].includes(req.headers.host??''))return end(403,'Unexpected host');
     try {
       const raw=decodeURIComponent((req.url??'/').split('?')[0]);
       if(raw==='/build.json')return end(200,JSON.stringify({runId:id,buildHash:await buildHash(game),theme:run.theme}),'application/json');
@@ -198,11 +208,11 @@ export async function serveRun(base,id,port=4173) {
       const bytes=await safeRead(game,name);return end(200,req.method==='HEAD'?Buffer.alloc(0):bytes,types[path.extname(name)]);
     } catch{return end(400,'Invalid request');}
   });
-  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,'127.0.0.1',()=>{server.off('error',reject);resolve();});});
+  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(port,bindAddress,()=>{server.off('error',reject);resolve();});});
   return server;
 }
 async function main() {
-  const [command,id,arg]=process.argv.slice(2);
+  const [command,id,arg,bindAddress]=process.argv.slice(2);
   if(command==='prepare') {
     if(arg)throw new Error('prepare takes one run id; model execution is not implicitly authorized');
     const {prepareCandidate}=await import('./quality-cycle.mjs');
@@ -213,6 +223,9 @@ async function main() {
     const result=await readDelivery(DEFAULT_RUNS,id);console.log(JSON.stringify(result,null,2));if(!result.previewReady)process.exitCode=2;
   }
   else if(command==='build') {
+    if(arg&&['qq-speed','cf-transport-ship','pelican-bike'].includes(arg)) {
+      const {buildSourceMobile}=await import('./h5-mobile-build.mjs');console.log(JSON.stringify(await buildSourceMobile(DEFAULT_RUNS,id,arg),null,2));return;
+    }
     if(arg&&arg!=='clinic-queue-v1')throw new Error('No implementation for this recipe; do not substitute another genre');
     const {buildClinic}=await import('./build-workflow.mjs');
     console.log(JSON.stringify(await buildClinic(DEFAULT_RUNS,id),null,2));
@@ -237,8 +250,8 @@ async function main() {
     await writeFile(path.join(root,name),bundle.html,{flag:'wx'});console.log(JSON.stringify({path:path.join(root,name),buildHash:bundle.buildHash},null,2));
   }
   else if(command==='serve') {
-    const server=await serveRun(DEFAULT_RUNS,id,arg===undefined?4173:Number(arg));const {run}=await loadRun(DEFAULT_RUNS,id);
-    console.log(`Local preview: http://127.0.0.1:${server.address().port}/?theme=${run.theme}`);
+    const server=await serveRun(DEFAULT_RUNS,id,arg===undefined?4173:Number(arg),{bindAddress});const {run}=await loadRun(DEFAULT_RUNS,id);
+    console.log(`Local preview: http://${bindAddress??'127.0.0.1'}:${server.address().port}/?theme=${run.theme}`);
     const close=()=>server.close();process.once('SIGINT',close);process.once('SIGTERM',close);
   } else throw new Error('Usage: node tools/lean-pilot/runner.mjs build|init|prepare|delivery|check|browser|serve|export|report|handoff RUN_ID [theme|port]');
 }

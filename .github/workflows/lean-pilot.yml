@@ -5,6 +5,8 @@ on:
       - 'tools/lean-pilot/**'
       - 'templates/web-lite/grid-merge-v1/**'
       - 'templates/web-lite/clinic-queue-v1/**'
+      - 'templates/web-lite/h5-source-mobile-v1/**'
+      - 'eslint.config.js'
       - 'examples/lean-pilot/**'
       - 'docs/lean-pilot/**'
       - 'PILOT_START.md'
@@ -38,9 +40,11 @@ jobs:
         run: npm run pilot:test | tee "$RUNNER_TEMP/lean-pilot-native.tap"
       - name: Clinic deterministic rule and strategy tests
         run: node --test templates/web-lite/clinic-queue-v1/tests/engine.test.mjs
+      - name: Owned H5 glue and ad lifecycle fixtures (no reference code or live ads)
+        run: node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
       - name: Check browser and tooling syntax
         run: |
-          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs templates/web-lite/clinic-queue-v1/*.mjs .agents/skills/gameplay-loop-review/scripts/*.mjs; do
+          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs templates/web-lite/clinic-queue-v1/*.mjs templates/web-lite/h5-source-mobile-v1/*.mjs .agents/skills/gameplay-loop-review/scripts/*.mjs; do
             node --check "$file"
           done
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -72,7 +76,7 @@ jobs:
           pnpm exec playwright --version
           sha256sum pnpm-lock.yaml
           npm run pilot:typecheck
-          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1 templates/web-lite/clinic-queue-v1 .agents/skills/gameplay-loop-review/scripts src/cli/factory.ts
+          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1 templates/web-lite/clinic-queue-v1 templates/web-lite/h5-source-mobile-v1 .agents/skills/gameplay-loop-review/scripts src/cli/factory.ts
       - name: Verify the real shared factory CLI without starting a provider
         run: node tools/lean-pilot/workflow-integration.mjs
       - name: Install Chromium for the locked Playwright version

@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "evidenceType": "DIRECT_PINNED_SOURCE_AUDIT",
+  "sourceRepo": "riba2534/claude-opus-5-5-demo",
+  "revision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "files": [
+    {
+      "file": "qq-speed/src/vehicle.js",
+      "bytes": 12765,
+      "sha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104"
+    },
+    {
+      "file": "qq-speed/src/items.js",
+      "bytes": 8157,
+      "sha256": "a078b59d034af2a15f208a7ad8a3fb6c301affd6b59a21453d5cd50d02b31e93"
+    },
+    {
+      "file": "qq-speed/src/main.js",
+      "bytes": 43801,
+      "sha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14"
+    },
+    {
+      "file": "cf-transport-ship/src/bots.js",
+      "bytes": 13266,
+      "sha256": "85a6fca01d831d53dfa9a81e8ae87ecedc2ccb1f90590126937b16261cb2adad"
+    },
+    {
+      "file": "cf-transport-ship/src/weapons.js",
+      "bytes": 5686,
+      "sha256": "fde708d6cf079e14e3b3f0efa6b48f6f161676d8aaf34aa73b6c31ac1b7d6d3c"
+    },
+    {
+      "file": "cf-transport-ship/src/game.js",
+      "bytes": 33214,
+      "sha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126"
+    },
+    {
+      "file": "pelican-bike/src/main.js",
+      "bytes": 48996,
+      "sha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586"
+    }
+  ],
+  "anchors": [
+    {
+      "id": "RACE_01",
+      "game": "qq-speed",
+      "file": "qq-speed/src/vehicle.js",
+      "line": 14,
+      "lineSha256": "b320e524c93c003d755fa9457149c37149803da75b67d7d1dd2e25a3926f4869",
+      "meaning": "漂移须达到最低车速",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/vehicle.js#L14"
+    },
+    {
+      "id": "RACE_02",
+      "game": "qq-speed",
+      "file": "qq-speed/src/vehicle.js",
+      "line": 20,
+      "lineSha256": "006e23661b5546e60ac96d4aaa3fab8868d9468a86f49e835c42e28e1c77c04d",
+      "meaning": "出弯小喷输入窗口为0.5秒",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/vehicle.js#L20"
+    },
+    {
+      "id": "RACE_03",
+      "game": "qq-speed",
+      "file": "qq-speed/src/vehicle.js",
+      "line": 139,
+      "lineSha256": "e7c6b4543fa525d2db3ee5ae57e76714660bfc36f8892a9421385face7da65b7",
+      "meaning": "小喷输入窗口前0.2秒是精准判定",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/vehicle.js#L139"
+    },
+    {
+      "id": "RACE_04",
+      "game": "qq-speed",
+      "file": "qq-speed/src/vehicle.js",
+      "line": 22,
+      "lineSha256": "115ba8dd99aa6cacb4181500e3390803ae353a9d66db0b8abd1d91dbd3149a79",
+      "meaning": "氮气基础持续2.8秒",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/vehicle.js#L22"
+    },
+    {
+      "id": "RACE_05",
+      "game": "qq-speed",
+      "file": "qq-speed/src/items.js",
+      "line": 74,
+      "lineSha256": "3d5dd3682da5dc1350d8ae7b8c78413dbfc9c72712e386155d3ef472c6e74a14",
+      "meaning": "道具概率分为领先/中游/后排",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/items.js#L74"
+    },
+    {
+      "id": "RACE_06",
+      "game": "qq-speed",
+      "file": "qq-speed/src/main.js",
+      "line": 609,
+      "lineSha256": "41a94ca53bcb88042bc53dd86039f4fd2aa4b40f1540523a38ab6ad5d52e1689",
+      "meaning": "圈数使用起终点跨越校验",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/main.js#L609"
+    },
+    {
+      "id": "FPS_01",
+      "game": "cf-transport-ship",
+      "file": "cf-transport-ship/src/bots.js",
+      "line": 6,
+      "lineSha256": "625bca196aa118142539087653e388b9f1b8f9bf928126cc1ea20a54c97c69e0",
+      "meaning": "简单Bot反应区间为0.55至0.90秒",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/bots.js#L6"
+    },
+    {
+      "id": "FPS_02",
+      "game": "cf-transport-ship",
+      "file": "cf-transport-ship/src/bots.js",
+      "line": 9,
+      "lineSha256": "be7ae4b42a8370df7991119312f2e8a2e58a770b0017ef28864179f9937b879c",
+      "meaning": "最高难度Bot反应区间为0.12至0.20秒",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/bots.js#L9"
+    },
+    {
+      "id": "FPS_03",
+      "game": "cf-transport-ship",
+      "file": "cf-transport-ship/src/bots.js",
+      "line": 94,
+      "lineSha256": "f173ce02a428ed55e75138163d7df8638c538cf5bcee8668190ab6c67c8dd861",
+      "meaning": "感知采用视场角判断，6米内另处理",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/bots.js#L94"
+    },
+    {
+      "id": "FPS_04",
+      "game": "cf-transport-ship",
+      "file": "cf-transport-ship/src/weapons.js",
+      "line": 5,
+      "lineSha256": "f4757261ed93918a725aa0bf587e84df4a5695ecc149a9fc4c4cce284a4bad84",
+      "meaning": "AK基础伤害、部位倍率、射速有显式定义",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/weapons.js#L5"
+    },
+    {
+      "id": "FPS_05",
+      "game": "cf-transport-ship",
+      "file": "cf-transport-ship/src/game.js",
+      "line": 492,
+      "lineSha256": "0309b54d4037839a96cc5d6160a01dd856bb8e01f7f30b16604c94079aad94c5",
+      "meaning": "死亡后复活延迟为4秒",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/game.js#L492"
+    },
+    {
+      "id": "BIKE_01",
+      "game": "pelican-bike",
+      "file": "pelican-bike/src/main.js",
+      "line": 557,
+      "lineSha256": "bd3a6525e52f3e9252493bac17a37425fefa5a6e9a655b514cf5c6b4c9e215cb",
+      "meaning": "骑行速度限制至15.5米每秒",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/pelican-bike/src/main.js#L557"
+    },
+    {
+      "id": "BIKE_02",
+      "game": "pelican-bike",
+      "file": "pelican-bike/src/main.js",
+      "line": 591,
+      "lineSha256": "3c66a6867ae6026767c26077a520f244918547f04bc940b222377e987630c69e",
+      "meaning": "4秒无主动转向后可执行自动追鱼",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/pelican-bike/src/main.js#L591"
+    },
+    {
+      "id": "BIKE_03",
+      "game": "pelican-bike",
+      "file": "pelican-bike/src/main.js",
+      "line": 683,
+      "lineSha256": "4bfaeec0f82bd32ce3f348c57727656ff67f5faf23febb8ae3759732a2987dff",
+      "meaning": "金鱼出生判定阈值12%",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/pelican-bike/src/main.js#L683"
+    },
+    {
+      "id": "BIKE_04",
+      "game": "pelican-bike",
+      "file": "pelican-bike/src/main.js",
+      "line": 696,
+      "lineSha256": "5e2ea6dc5a5b1bad1061f6f0f56f4379def5a30373259e37079f6507f6140ff5",
+      "meaning": "下一条鱼与当前距离间隔16至34米",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/pelican-bike/src/main.js#L696"
+    },
+    {
+      "id": "BIKE_05",
+      "game": "pelican-bike",
+      "file": "pelican-bike/src/main.js",
+      "line": 726,
+      "lineSha256": "faaffb2547bc7854970044eecdf3dd69e81908cbb1849d9bdd0d006fe0f2fa36",
+      "meaning": "金鱼加5，普通鱼加1",
+      "sourceLink": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/pelican-bike/src/main.js#L726"
+    }
+  ],
+  "count": 16,
+  "claimLimit": "Static source anchors only: no REA invocation, no runtime observation, no license grant."
+}

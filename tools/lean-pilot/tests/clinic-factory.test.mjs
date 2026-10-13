@@ -13,7 +13,7 @@ import { comparePolicies } from '../clinic-balance.mjs';
 
 async function fixture(t){const base=await mkdtemp(path.join(tmpdir(),'clinic-factory-'));t.after(()=>rm(base,{recursive:true,force:true}));await buildClinic(base,'clinic-test');return {base,...await loadRun(base,'clinic-test')};}
 test('registry describes actual candidates, never invents an implementation from genre',()=>{
-  assert.equal(listCandidates().length,2);assert.equal(candidateSpec('clinic-queue-v1').profile,'STRATEGIC_SYSTEM');
+  assert.deepEqual(listCandidates().map(c=>c.id).sort(),['clinic-queue-v1','grid-merge-v1','h5-source-mobile-v1']);assert.equal(candidateSpec('clinic-queue-v1').profile,'STRATEGIC_SYSTEM');
   assert.throws(()=>candidateSpec('NARRATIVE_AGENCY'));assert.throws(()=>candidateSpec('__proto__'));
 });
 test('checked workflow produces isolated real runtime, source archive and frozen request/contract',async t=>{

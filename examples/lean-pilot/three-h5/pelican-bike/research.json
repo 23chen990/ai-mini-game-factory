@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "targetId": "pelican-bike",
+  "sources": [
+    {
+      "id": "source-note",
+      "url": "https://github.com/riba2534/claude-opus-5-5-demo/tree/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "version": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "method": "CODE_READ",
+      "path": "reference/source-review.json",
+      "sha256": "80ef0a5d1adb6620a5cfa8eef10cdb52b0fa141468975585076c5d5f4db99468",
+      "collectedAt": "2026-10-13T08:52:53.116Z"
+    },
+    {
+      "id": "runtime-note",
+      "url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/nulojnulwlo/pelican-bike/index.html",
+      "version": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "method": "BROWSER_PLAY",
+      "path": "reference/runtime-observation.json",
+      "sha256": "47074bfb761f1d7c90ef320d65b8b308f5b6a633a8fddba75fc295f422cbd501",
+      "collectedAt": "2026-10-13T09:40:10.274Z"
+    }
+  ],
+  "claims": [
+    {
+      "id": "bike-touch",
+      "text": "触屏指针按钮实现左右变道、加减速与跳跃。",
+      "kind": "SOURCE_CODE",
+      "evidence": [
+        {
+          "sourceId": "source-note",
+          "locator": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/pelican-bike/src/main.js#L1093",
+          "quote": "触屏指针按钮实现左右变道、加减速与跳跃。"
+        }
+      ]
+    },
+    {
+      "id": "bike-catch",
+      "text": "嘴与鱼在三个空间轴的接近条件决定捕获；捕获后鱼分数和可见反馈改变。",
+      "kind": "SOURCE_CODE",
+      "evidence": [
+        {
+          "sourceId": "source-note",
+          "locator": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/pelican-bike/src/main.js#L718",
+          "quote": "嘴与鱼在三个空间轴的接近条件决定捕获；捕获后鱼分数和可见反馈改变。"
+        }
+      ]
+    },
+    {
+      "id": "reference-runtime",
+      "kind": "OBSERVATION",
+      "text": "原始参考H5经过手机尺寸浏览器触控实跑；各原生操作、未观察终局与证据哈希如下。此声明不含实体手机、许可或商业通过。",
+      "evidence": [
+        {
+          "sourceId": "runtime-note",
+          "locator": "sessions: normal input and explicitly unobserved branches",
+          "quote": "原始参考H5经过手机尺寸浏览器触控实跑；各原生操作、未观察终局与证据哈希如下。此声明不含实体手机、许可或商业通过。"
+        }
+      ]
+    }
+  ],
+  "requiredClaimIds": [
+    "bike-touch",
+    "bike-catch",
+    "reference-runtime"
+  ],
+  "unknowns": [
+    {
+      "id": "author-grant-archive",
+      "reason": "User confirms permission; original author grant/attribution terms must be kept for platform review. This does not block authorized development.",
+      "blocking": false
+    }
+  ]
+}

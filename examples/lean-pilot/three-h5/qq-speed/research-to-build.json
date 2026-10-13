@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "gameId": "h5-qq-mobile-20261013",
+  "referenceId": "qq-speed",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "sourcePermission": {
+    "basis": "WRITTEN_PERMISSION",
+    "notes": "User written confirmation of author authorization: 现在没有版权问题，原作者已授权. Original grant document not archived; no independently verified standard OSS license is asserted. Authorization sha256 638f1a47019523c768a1c92a71085f6bce974331f69710c0551c4bf6cd5502c9"
+  },
+  "inputs": {
+    "request": "request.json",
+    "research": "research.json",
+    "contract": "contract.json"
+  },
+  "mechanisms": [
+    {
+      "id": "race-touch",
+      "claimIds": [
+        "race-touch",
+        "reference-runtime"
+      ],
+      "loopId": "source-core",
+      "caseIds": [
+        "first-action-feedback",
+        "safe-exit-or-recovery"
+      ],
+      "originalDesign": "保留用户已确认获原作者授权的工程，新增自有手机/暂停/存档/广告适配；平台发布和广告资格另行验收。",
+      "playerVisibleFeedback": "原项目场景反馈＋可见手机控制与暂停/结算",
+      "failureRecovery": "广告取消或加载失败无额外奖励且可重开；原生终局继续可恢复。"
+    },
+    {
+      "id": "race-end",
+      "claimIds": [
+        "race-end"
+      ],
+      "loopId": "source-core",
+      "caseIds": [
+        "first-action-feedback",
+        "safe-exit-or-recovery"
+      ],
+      "originalDesign": "保留用户已确认获原作者授权的工程，新增自有手机/暂停/存档/广告适配；平台发布和广告资格另行验收。",
+      "playerVisibleFeedback": "原项目场景反馈＋可见手机控制与暂停/结算",
+      "failureRecovery": "广告取消或加载失败无额外奖励且可重开；原生终局继续可恢复。"
+    }
+  ],
+  "counterfactual": {
+    "seed": "native-default",
+    "initialState": "fresh-private-source-build",
+    "timeLimitSeconds": 180,
+    "visibleMetrics": [
+      "score",
+      "elapsed",
+      "terminal"
+    ],
+    "scenarios": [
+      {
+        "id": "no-action",
+        "role": "no-action",
+        "inputMode": "NORMAL_VISIBLE_INPUT",
+        "actions": [],
+        "expectedVisibleDifference": "如实记录原项目默认不操作的结果，不预设必败。"
+      },
+      {
+        "id": "single-action",
+        "role": "single-action",
+        "inputMode": "NORMAL_VISIBLE_INPUT",
+        "actions": [
+          {
+            "atSeconds": 5,
+            "input": "hold",
+            "target": "一个可见移动/转向按钮"
+          }
+        ],
+        "expectedVisibleDifference": "移动/转向产生可见差异；不要求所有游戏同一胜负规则。"
+      },
+      {
+        "id": "adaptive",
+        "role": "adaptive",
+        "inputMode": "NORMAL_VISIBLE_INPUT",
+        "actions": [
+          {
+            "atSeconds": 5,
+            "input": "hold",
+            "target": "向可见鱼/赛道/敌人调整"
+          },
+          {
+            "atSeconds": 15,
+            "input": "hold",
+            "target": "根据下一可见目标再调整"
+          }
+        ],
+        "expectedVisibleDifference": "记录原生得分、结束和重开。触屏仿真不替代真手机或真人体验。"
+      }
+    ]
+  },
+  "rea": {
+    "status": "NOT_RUN",
+    "job": null,
+    "export": null,
+    "review": null
+  }
+}

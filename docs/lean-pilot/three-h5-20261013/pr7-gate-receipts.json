@@ -1,0 +1,374 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-13T10:07:44.205Z",
+  "authorizationSha256": "638f1a47019523c768a1c92a71085f6bce974331f69710c0551c4bf6cd5502c9",
+  "gates": [
+    {
+      "schemaVersion": 1,
+      "status": "SOURCE_BOUND_PROTOTYPE_HYPOTHESIS",
+      "candidateBuildAllowed": true,
+      "releaseAllowed": false,
+      "referenceRuntimeObserved": false,
+      "referenceFidelityProven": false,
+      "reaExecutedVerified": false,
+      "humanFunValidated": false,
+      "commercialValidated": false,
+      "gameId": "h5-qq-mobile-20261013",
+      "referenceId": "qq-speed",
+      "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "sourcePermissionBasisDeclared": "WRITTEN_PERMISSION",
+      "inputs": {
+        "packetSha256": "7c55f738e2bb50613f4292c8c89c6c769b831e8c705645c4e3149edc7b500f72",
+        "requestSha256": "0affeab8823fa5b5e06c6573328ae2ba0d1b6e6aadcdec15d47217aca56f1a47",
+        "researchSha256": "a73374da2bc74012470c366b59201cadf9887194da2497d6dc59f94e0fc70694",
+        "contractSha256": "c34d48062163e494a623389ff7b6904170501a229df7c763f7dd52512555f899",
+        "frozenContractCanonicalSha256": "13cd46c143ae78bccc50c706671125c6019df198647be7a5eb7fdcb4f824a056"
+      },
+      "verifiedEvidenceFiles": 2,
+      "mechanismCount": 2,
+      "mechanisms": [
+        {
+          "id": "race-touch",
+          "evidenceClaimIds": [
+            "race-touch",
+            "reference-runtime"
+          ],
+          "implementationLoopId": "source-core",
+          "acceptanceCaseIds": [
+            "first-action-feedback",
+            "safe-exit-or-recovery"
+          ],
+          "originalDesign": "保留用户已确认获原作者授权的工程，新增自有手机/暂停/存档/广告适配；平台发布和广告资格另行验收。",
+          "playerVisibleFeedback": "原项目场景反馈＋可见手机控制与暂停/结算",
+          "failureRecovery": "广告取消或加载失败无额外奖励且可重开；原生终局继续可恢复。",
+          "basis": "SOURCE_OR_OBSERVATION_LINKED_DESIGN_HYPOTHESIS"
+        },
+        {
+          "id": "race-end",
+          "evidenceClaimIds": [
+            "race-end"
+          ],
+          "implementationLoopId": "source-core",
+          "acceptanceCaseIds": [
+            "first-action-feedback",
+            "safe-exit-or-recovery"
+          ],
+          "originalDesign": "保留用户已确认获原作者授权的工程，新增自有手机/暂停/存档/广告适配；平台发布和广告资格另行验收。",
+          "playerVisibleFeedback": "原项目场景反馈＋可见手机控制与暂停/结算",
+          "failureRecovery": "广告取消或加载失败无额外奖励且可重开；原生终局继续可恢复。",
+          "basis": "SOURCE_OR_OBSERVATION_LINKED_DESIGN_HYPOTHESIS"
+        }
+      ],
+      "counterfactual": {
+        "seed": "native-default",
+        "initialState": "fresh-private-source-build",
+        "timeLimitSeconds": 180,
+        "visibleMetrics": [
+          "score",
+          "elapsed",
+          "terminal"
+        ],
+        "scenarios": [
+          {
+            "id": "no-action",
+            "role": "no-action",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [],
+            "expectedVisibleDifference": "如实记录原项目默认不操作的结果，不预设必败。"
+          },
+          {
+            "id": "single-action",
+            "role": "single-action",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [
+              {
+                "atSeconds": 5,
+                "input": "hold",
+                "target": "一个可见移动/转向按钮"
+              }
+            ],
+            "expectedVisibleDifference": "移动/转向产生可见差异；不要求所有游戏同一胜负规则。"
+          },
+          {
+            "id": "adaptive",
+            "role": "adaptive",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [
+              {
+                "atSeconds": 5,
+                "input": "hold",
+                "target": "向可见鱼/赛道/敌人调整"
+              },
+              {
+                "atSeconds": 15,
+                "input": "hold",
+                "target": "根据下一可见目标再调整"
+              }
+            ],
+            "expectedVisibleDifference": "记录原生得分、结束和重开。触屏仿真不替代真手机或真人体验。"
+          }
+        ]
+      },
+      "rea": {
+        "status": "NOT_RUN",
+        "evidenceId": null,
+        "reviewSha256": null
+      },
+      "qaStatus": "NOT_RUN",
+      "humanStatus": "NOT_RUN",
+      "blockers": [],
+      "warnings": [
+        "unknown:nonblocking:author-grant-archive",
+        "Hash integrity cannot establish factual truth, legal permission or reviewer independence.",
+        "Reference gameplay has not been observed or mechanically compared by this gate.",
+        "No release, copying third-party expression, REA execution or auto-apply is authorized."
+      ],
+      "nextStage": "CORE_SLICE_BUILD_WITH_INDEPENDENT_QA"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "SOURCE_BOUND_PROTOTYPE_HYPOTHESIS",
+      "candidateBuildAllowed": true,
+      "releaseAllowed": false,
+      "referenceRuntimeObserved": false,
+      "referenceFidelityProven": false,
+      "reaExecutedVerified": false,
+      "humanFunValidated": false,
+      "commercialValidated": false,
+      "gameId": "h5-cf-mobile-20261013",
+      "referenceId": "cf-transport-ship",
+      "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "sourcePermissionBasisDeclared": "WRITTEN_PERMISSION",
+      "inputs": {
+        "packetSha256": "570f11a307401c8bf5715679fd4c690f55d1cacc6535ab39b5c45f99e0656e69",
+        "requestSha256": "6e08356297369fb45bab78d57644cf0f589e5bc33214ba6d9349fa5ef9ebadb0",
+        "researchSha256": "c62ca4f45c44087ba208dccfe2236821e6287322b61cd5b372e66bcecdbd3e69",
+        "contractSha256": "e4b2a024799fabe5f4d752cb6568b0bb53bf90f8c6501ca6efa8207e9a367a67",
+        "frozenContractCanonicalSha256": "141be63d2dba274ca2d863be5d07e57037d6060ad6113ee687332ab68531cc2a"
+      },
+      "verifiedEvidenceFiles": 2,
+      "mechanismCount": 2,
+      "mechanisms": [
+        {
+          "id": "fps-touch",
+          "evidenceClaimIds": [
+            "fps-touch",
+            "reference-runtime"
+          ],
+          "implementationLoopId": "source-core",
+          "acceptanceCaseIds": [
+            "first-action-feedback",
+            "safe-exit-or-recovery"
+          ],
+          "originalDesign": "保留用户已确认获原作者授权的工程，新增自有手机/暂停/存档/广告适配；平台发布和广告资格另行验收。",
+          "playerVisibleFeedback": "原项目场景反馈＋可见手机控制与暂停/结算",
+          "failureRecovery": "广告取消或加载失败无额外奖励且可重开；原生终局继续可恢复。",
+          "basis": "SOURCE_OR_OBSERVATION_LINKED_DESIGN_HYPOTHESIS"
+        },
+        {
+          "id": "fps-end",
+          "evidenceClaimIds": [
+            "fps-end"
+          ],
+          "implementationLoopId": "source-core",
+          "acceptanceCaseIds": [
+            "first-action-feedback",
+            "safe-exit-or-recovery"
+          ],
+          "originalDesign": "保留用户已确认获原作者授权的工程，新增自有手机/暂停/存档/广告适配；平台发布和广告资格另行验收。",
+          "playerVisibleFeedback": "原项目场景反馈＋可见手机控制与暂停/结算",
+          "failureRecovery": "广告取消或加载失败无额外奖励且可重开；原生终局继续可恢复。",
+          "basis": "SOURCE_OR_OBSERVATION_LINKED_DESIGN_HYPOTHESIS"
+        }
+      ],
+      "counterfactual": {
+        "seed": "native-default",
+        "initialState": "fresh-private-source-build",
+        "timeLimitSeconds": 180,
+        "visibleMetrics": [
+          "score",
+          "elapsed",
+          "terminal"
+        ],
+        "scenarios": [
+          {
+            "id": "no-action",
+            "role": "no-action",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [],
+            "expectedVisibleDifference": "如实记录原项目默认不操作的结果，不预设必败。"
+          },
+          {
+            "id": "single-action",
+            "role": "single-action",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [
+              {
+                "atSeconds": 5,
+                "input": "hold",
+                "target": "一个可见移动/转向按钮"
+              }
+            ],
+            "expectedVisibleDifference": "移动/转向产生可见差异；不要求所有游戏同一胜负规则。"
+          },
+          {
+            "id": "adaptive",
+            "role": "adaptive",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [
+              {
+                "atSeconds": 5,
+                "input": "hold",
+                "target": "向可见鱼/赛道/敌人调整"
+              },
+              {
+                "atSeconds": 15,
+                "input": "hold",
+                "target": "根据下一可见目标再调整"
+              }
+            ],
+            "expectedVisibleDifference": "记录原生得分、结束和重开。触屏仿真不替代真手机或真人体验。"
+          }
+        ]
+      },
+      "rea": {
+        "status": "NOT_RUN",
+        "evidenceId": null,
+        "reviewSha256": null
+      },
+      "qaStatus": "NOT_RUN",
+      "humanStatus": "NOT_RUN",
+      "blockers": [],
+      "warnings": [
+        "unknown:nonblocking:author-grant-archive",
+        "Hash integrity cannot establish factual truth, legal permission or reviewer independence.",
+        "Reference gameplay has not been observed or mechanically compared by this gate.",
+        "No release, copying third-party expression, REA execution or auto-apply is authorized."
+      ],
+      "nextStage": "CORE_SLICE_BUILD_WITH_INDEPENDENT_QA"
+    },
+    {
+      "schemaVersion": 1,
+      "status": "SOURCE_BOUND_PROTOTYPE_HYPOTHESIS",
+      "candidateBuildAllowed": true,
+      "releaseAllowed": false,
+      "referenceRuntimeObserved": false,
+      "referenceFidelityProven": false,
+      "reaExecutedVerified": false,
+      "humanFunValidated": false,
+      "commercialValidated": false,
+      "gameId": "h5-pelican-mobile-20261013",
+      "referenceId": "pelican-bike",
+      "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "sourcePermissionBasisDeclared": "WRITTEN_PERMISSION",
+      "inputs": {
+        "packetSha256": "be25846a76d0ea1081deb93a8dbd36929523f5e2e25a3f7589014baee69d7b7e",
+        "requestSha256": "fd43c6c891e40512adc24c9a9cb21f3849d7ba4c795176d03c3f9b85d1b094f9",
+        "researchSha256": "72caeca1c7101f1c16d23f5173b1bceca8c030623116396a7c3b64a62a6a6aae",
+        "contractSha256": "9056d88c94fc8e7cc78a3a9ae72f828c3f56a5454c78d6783fc40ddc09dc797e",
+        "frozenContractCanonicalSha256": "1c31048d00c8977f856e45e60f718834fdc0e222e2db41327f5a3ae6b94766da"
+      },
+      "verifiedEvidenceFiles": 2,
+      "mechanismCount": 2,
+      "mechanisms": [
+        {
+          "id": "bike-touch",
+          "evidenceClaimIds": [
+            "bike-touch",
+            "reference-runtime"
+          ],
+          "implementationLoopId": "source-core",
+          "acceptanceCaseIds": [
+            "first-action-feedback",
+            "safe-exit-or-recovery"
+          ],
+          "originalDesign": "保留用户已确认获原作者授权的工程，新增自有手机/暂停/存档/广告适配；平台发布和广告资格另行验收。",
+          "playerVisibleFeedback": "原项目场景反馈＋可见手机控制与暂停/结算",
+          "failureRecovery": "广告取消或加载失败无额外奖励且可重开；原生终局继续可恢复。",
+          "basis": "SOURCE_OR_OBSERVATION_LINKED_DESIGN_HYPOTHESIS"
+        },
+        {
+          "id": "bike-catch",
+          "evidenceClaimIds": [
+            "bike-catch"
+          ],
+          "implementationLoopId": "source-core",
+          "acceptanceCaseIds": [
+            "first-action-feedback",
+            "safe-exit-or-recovery"
+          ],
+          "originalDesign": "保留用户已确认获原作者授权的工程，新增自有手机/暂停/存档/广告适配；平台发布和广告资格另行验收。",
+          "playerVisibleFeedback": "原项目场景反馈＋可见手机控制与暂停/结算",
+          "failureRecovery": "广告取消或加载失败无额外奖励且可重开；原生终局继续可恢复。",
+          "basis": "SOURCE_OR_OBSERVATION_LINKED_DESIGN_HYPOTHESIS"
+        }
+      ],
+      "counterfactual": {
+        "seed": "native-default",
+        "initialState": "fresh-private-source-build",
+        "timeLimitSeconds": 180,
+        "visibleMetrics": [
+          "score",
+          "elapsed",
+          "terminal"
+        ],
+        "scenarios": [
+          {
+            "id": "no-action",
+            "role": "no-action",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [],
+            "expectedVisibleDifference": "如实记录原项目默认不操作的结果，不预设必败。"
+          },
+          {
+            "id": "single-action",
+            "role": "single-action",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [
+              {
+                "atSeconds": 5,
+                "input": "hold",
+                "target": "一个可见移动/转向按钮"
+              }
+            ],
+            "expectedVisibleDifference": "移动/转向产生可见差异；不要求所有游戏同一胜负规则。"
+          },
+          {
+            "id": "adaptive",
+            "role": "adaptive",
+            "inputMode": "NORMAL_VISIBLE_INPUT",
+            "actions": [
+              {
+                "atSeconds": 5,
+                "input": "hold",
+                "target": "向可见鱼/赛道/敌人调整"
+              },
+              {
+                "atSeconds": 15,
+                "input": "hold",
+                "target": "根据下一可见目标再调整"
+              }
+            ],
+            "expectedVisibleDifference": "记录原生得分、结束和重开。触屏仿真不替代真手机或真人体验。"
+          }
+        ]
+      },
+      "rea": {
+        "status": "NOT_RUN",
+        "evidenceId": null,
+        "reviewSha256": null
+      },
+      "qaStatus": "NOT_RUN",
+      "humanStatus": "NOT_RUN",
+      "blockers": [],
+      "warnings": [
+        "unknown:nonblocking:author-grant-archive",
+        "Hash integrity cannot establish factual truth, legal permission or reviewer independence.",
+        "Reference gameplay has not been observed or mechanically compared by this gate.",
+        "No release, copying third-party expression, REA execution or auto-apply is authorized."
+      ],
+      "nextStage": "CORE_SLICE_BUILD_WITH_INDEPENDENT_QA"
+    }
+  ],
+  "note": "Current source/BROWSER_PLAY packet plus user-confirmed author permission. Historical run snapshots unchanged; conservative release/semantic/runtime flags preserved."
+}

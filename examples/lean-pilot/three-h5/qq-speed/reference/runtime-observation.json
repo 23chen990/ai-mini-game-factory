@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "summary": "原始参考H5经过手机尺寸浏览器触控实跑；各原生操作、未观察终局与证据哈希如下。此声明不含实体手机、许可或商业通过。",
+  "authority": "REAL_BROWSER_NORMAL_INPUT",
+  "originalReportSha256": "cd09182ea8ae0650601685ef1b0430d9eba1e375b3098cb4943cfcdc2cfc6bc5",
+  "referenceHtmlSha256": "8765c7eee4cd33e00fa4265d22b1e961852189dffdf27ecb42f76148a3934eff",
+  "sessions": [
+    {
+      "gameId": "qq-speed",
+      "htmlSha256": "8765c7eee4cd33e00fa4265d22b1e961852189dffdf27ecb42f76148a3934eff",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "browser": "Chromium headless (Playwright HTTP session)",
+      "touch": true,
+      "elapsedWallMs": 176783,
+      "actions": [
+        {
+          "atMs": 11335,
+          "input": "touch tap",
+          "target": "选择一圈"
+        },
+        {
+          "atMs": 13968,
+          "input": "touch swipe 320,804 to 320,50 (340ms)",
+          "target": "scroll menu toward #start"
+        },
+        {
+          "atMs": 17560,
+          "input": "touch tap",
+          "target": "开始比赛"
+        },
+        {
+          "atMs": 25534,
+          "input": "touch hold 900ms",
+          "target": "按住左转"
+        },
+        {
+          "atMs": 27144,
+          "input": "touch hold 900ms",
+          "target": "按住右转"
+        },
+        {
+          "atMs": 29715,
+          "input": "touch tap",
+          "target": "触摸 #t-drift"
+        },
+        {
+          "atMs": 31386,
+          "input": "touch tap",
+          "target": "触摸 #t-nitro"
+        },
+        {
+          "atMs": 32919,
+          "input": "touch tap",
+          "target": "触摸 #t-boost"
+        },
+        {
+          "atMs": 33747,
+          "input": "按 Esc 暂停",
+          "target": "page"
+        },
+        {
+          "atMs": 35720,
+          "input": "touch tap",
+          "target": "触摸/点击暂停层继续"
+        },
+        {
+          "atMs": 171071,
+          "input": "click visible replay button",
+          "target": "结算页重开"
+        }
+      ],
+      "observed": [
+        "One-lap mobile race began at 23.2s from navigation and automatic throttle advanced speed.",
+        "Result screen displayed “未完成比赛”; player was 6th of 6 after 11 collisions.",
+        "“再来一局” started a new race."
+      ],
+      "checks": [
+        {
+          "id": "http_entry_and_exact_html_identity",
+          "status": "PASS",
+          "evidence": "HTTP 200; response SHA-256 8765c7eee4cd33e00fa4265d22b1e961852189dffdf27ecb42f76148a3934eff; exact local source /tmp/three-h5-study-20261013-d6UWHt/cdn/qq-speed/index.html."
+        },
+        {
+          "id": "visible_entry",
+          "status": "PASS",
+          "evidence": "Entry screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/qq-speed/mobile-portrait-normal-input-entry.png SHA-256 553613ff905892239cfde0c5641549f45967dfeef14d4f29c9133ff2826884e1."
+        },
+        {
+          "id": "one_lap_race_started_within_30s",
+          "status": "PASS",
+          "evidence": "Touch selected 1 lap; live race began at 23206ms. /tmp/three-h5-study-20261013-d6UWHt/browser-review/qq-speed/mobile-portrait-normal-input-race-start.png."
+        },
+        {
+          "id": "automatic_throttle_and_progress",
+          "status": "PASS",
+          "evidence": "Touch session showed 142 km/h and later 242 km/h maximum; race timer advanced."
+        },
+        {
+          "id": "visible_steering_response",
+          "status": "NOT_OBSERVED",
+          "evidence": "Left/right touch holds were sent, but steering effect was not isolated; result stats showed 0 drift and 0 boost."
+        },
+        {
+          "id": "pause_resume",
+          "status": "PASS",
+          "evidence": "Esc opened a pause layer; “继续比赛” resumed the live race."
+        },
+        {
+          "id": "natural_terminal",
+          "status": "PASS",
+          "evidence": "Normal one-lap run reached the “未完成比赛” result screen after 11 collisions; player was listed 6th of 6."
+        },
+        {
+          "id": "player_completed_race",
+          "status": "FAIL",
+          "evidence": "Results explicitly marked “未完成比赛”; player was last of six."
+        },
+        {
+          "id": "replay_from_results",
+          "status": "PASS",
+          "evidence": "Touching “再来一局” started a fresh race HUD: /tmp/three-h5-study-20261013-d6UWHt/browser-review/qq-speed/mobile-portrait-normal-input-replay-start.png."
+        },
+        {
+          "id": "page_errors",
+          "status": "PASS",
+          "evidence": "No pageerror, console error, or failed network request was recorded."
+        }
+      ],
+      "errors": [],
+      "artifacts": [
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-portrait-normal-input-entry.png",
+          "sha256": "553613ff905892239cfde0c5641549f45967dfeef14d4f29c9133ff2826884e1"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-portrait-normal-input-settings.png",
+          "sha256": "c92db80092b52362af9ea380f74db48ed46a73a8e9900211404be946c4bc95b0"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-portrait-normal-input-race-start.png",
+          "sha256": "eb7f0e42dbd5d49f6e89e85f73da79d010a078bbba38f9d7ec371c574d48c29d"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-portrait-normal-input-paused.png",
+          "sha256": "0feeaa22aa92ee3e9f8b47fb114d218c9da36d02242911fa331bbb7348caec48"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-portrait-normal-input-resumed.png",
+          "sha256": "b099e557d549055415e8e562c18e87be633a0aec3872a1660cdecaa6d1fc9a43"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-portrait-normal-input-terminal.png",
+          "sha256": "f6aa50e8523aa6351b21d84677b0a6cd66c45c59621a036651f033d17cc0ed0d"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-portrait-normal-input-replay-start.png",
+          "sha256": "9c5222ffa5a3ae70ae29540462a98f8014c2f79233b413c46285d101511cefb5"
+        }
+      ],
+      "unknowns": [
+        "Touch steering effect was attempted but not isolated.",
+        "Chromium hasTouch emulation is not a physical phone."
+      ]
+    },
+    {
+      "gameId": "qq-speed",
+      "htmlSha256": "8765c7eee4cd33e00fa4265d22b1e961852189dffdf27ecb42f76148a3934eff",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "browser": "Chromium headless (Playwright HTTP session)",
+      "touch": true,
+      "elapsedWallMs": 92151,
+      "actions": [
+        {
+          "atMs": 13487,
+          "input": "touch swipe 692,350 to 692,50 (340ms)",
+          "target": "scroll menu toward #laps .opt"
+        },
+        {
+          "atMs": 20599,
+          "input": "touch tap",
+          "target": "选择一圈"
+        },
+        {
+          "atMs": 22899,
+          "input": "touch swipe 692,350 to 692,50 (340ms)",
+          "target": "scroll menu toward #start"
+        },
+        {
+          "atMs": 26721,
+          "input": "touch swipe 692,350 to 692,50 (340ms)",
+          "target": "scroll menu toward #start"
+        },
+        {
+          "atMs": 31131,
+          "input": "touch tap",
+          "target": "开始比赛"
+        },
+        {
+          "atMs": 42360,
+          "input": "touch hold 900ms",
+          "target": "按住左转"
+        },
+        {
+          "atMs": 44053,
+          "input": "touch hold 900ms",
+          "target": "按住右转"
+        },
+        {
+          "atMs": 46935,
+          "input": "touch tap",
+          "target": "触摸 #t-drift"
+        },
+        {
+          "atMs": 49061,
+          "input": "touch tap",
+          "target": "触摸 #t-nitro"
+        },
+        {
+          "atMs": 51901,
+          "input": "touch tap",
+          "target": "触摸 #t-boost"
+        },
+        {
+          "atMs": 53034,
+          "input": "按 Esc 暂停",
+          "target": "page"
+        },
+        {
+          "atMs": 55822,
+          "input": "touch tap",
+          "target": "触摸/点击暂停层继续"
+        }
+      ],
+      "observed": [
+        "Landscape one-lap race started and reached 112 km/h; pause/resume worked.",
+        "Session ended before race result after the parent priority update."
+      ],
+      "checks": [
+        {
+          "id": "http_entry_and_exact_html_identity",
+          "status": "PASS",
+          "evidence": "HTTP 200; response SHA-256 8765c7eee4cd33e00fa4265d22b1e961852189dffdf27ecb42f76148a3934eff; exact local source /tmp/three-h5-study-20261013-d6UWHt/cdn/qq-speed/index.html."
+        },
+        {
+          "id": "visible_entry",
+          "status": "PASS",
+          "evidence": "Entry screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/qq-speed/mobile-landscape-normal-input-entry.png SHA-256 c7fdb57cdc94011dff5c580c55fa62b3af228e41b22d6a30a9ae473ba1aa235f."
+        },
+        {
+          "id": "race_started",
+          "status": "PASS",
+          "evidence": "One-lap race HUD appeared at 36747ms; visible speed reached 112 km/h."
+        },
+        {
+          "id": "touch_pause_resume",
+          "status": "PASS",
+          "evidence": "Pause panel offered “继续比赛”; touch resumed the race."
+        },
+        {
+          "id": "terminal_and_replay",
+          "status": "NOT_OBSERVED",
+          "evidence": "No result/replay before parent requested the long run stop."
+        },
+        {
+          "id": "page_errors",
+          "status": "PASS",
+          "evidence": "No pageerror, console error, or failed network request was recorded."
+        }
+      ],
+      "errors": [],
+      "artifacts": [
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-landscape-normal-input-entry.png",
+          "sha256": "c7fdb57cdc94011dff5c580c55fa62b3af228e41b22d6a30a9ae473ba1aa235f"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-landscape-normal-input-settings.png",
+          "sha256": "741e4592c6ac432a362465302c34b4a6cbe94c58c2a8607edacb489e87838043"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-landscape-normal-input-race-start.png",
+          "sha256": "71d5485beadb4d655927c8af6eefbd881d03d8728dce98be8f3af613ff089d8b"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-landscape-normal-input-paused.png",
+          "sha256": "7954f50e6320f4f1da463014527aafed6de1efeab1273bfd29c8ab2c3994f07d"
+        },
+        {
+          "path": "[private]/browser-review/qq-speed/mobile-landscape-normal-input-resumed.png",
+          "sha256": "a5f639ed59b28c430a4d0f5ac2ece838ae25e9d22c88e5ce518a22525c1e3578"
+        }
+      ],
+      "unknowns": [
+        "Terminal and replay remain NOT_OBSERVED because the run was intentionally stopped.",
+        "Touch steering effect and physical phone behavior were not established."
+      ]
+    }
+  ],
+  "physicalMobile": "NOT_RUN",
+  "human": "NOT_RUN",
+  "license": "NOT_CLEARED",
+  "note": "Browser observations are evidence for manual review. PR7 deliberately retains its conservative flags; no semantic or revenue certificate."
+}
