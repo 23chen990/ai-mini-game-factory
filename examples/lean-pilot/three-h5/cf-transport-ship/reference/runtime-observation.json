@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "gameId": "cf-transport-ship",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "summary": "原始参考H5经过手机尺寸浏览器触控实跑；各原生操作、未观察终局与证据哈希如下。此声明不含实体手机、许可或商业通过。",
+  "authority": "REAL_BROWSER_NORMAL_INPUT",
+  "originalReportSha256": "cd09182ea8ae0650601685ef1b0430d9eba1e375b3098cb4943cfcdc2cfc6bc5",
+  "referenceHtmlSha256": "f4f05b85295b85e0aa244bf314a667b3b396d7eda10715332c42f62e50c165ec",
+  "sessions": [
+    {
+      "gameId": "cf-transport-ship",
+      "htmlSha256": "f4f05b85295b85e0aa244bf314a667b3b396d7eda10715332c42f62e50c165ec",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "browser": "Chromium headless (Playwright HTTP session)",
+      "touch": true,
+      "elapsedWallMs": 52340,
+      "actions": [
+        {
+          "atMs": 10816,
+          "input": "touch tap",
+          "target": "选择对战选项 4v4"
+        },
+        {
+          "atMs": 12248,
+          "input": "touch tap",
+          "target": "选择对战选项 30"
+        },
+        {
+          "atMs": 13079,
+          "input": "touch tap",
+          "target": "选择对战选项 简单"
+        },
+        {
+          "atMs": 14661,
+          "input": "touch swipe 320,804 to 320,50 (340ms)",
+          "target": "scroll menu toward #btnStart"
+        },
+        {
+          "atMs": 16369,
+          "input": "touch tap",
+          "target": "开始游戏"
+        },
+        {
+          "atMs": 27009,
+          "input": "touch tap",
+          "target": "触摸开火"
+        },
+        {
+          "atMs": 27679,
+          "input": "simultaneous touch hold 12s on left joystick forward and right fire",
+          "target": "移动并开火"
+        },
+        {
+          "atMs": 38402,
+          "input": "按 Esc 暂停",
+          "target": "page"
+        }
+      ],
+      "observed": [
+        "4v4 / target30 / simple selection was visibly active.",
+        "Movement plus fire changed the view and ammo state; team score reached 4-3.",
+        "Portrait menu content clips at the right edge; crouch/joystick and fire/switch hit regions intersect.",
+        "Touch pause was unavailable: Escape did not pause, and score/clock continued."
+      ],
+      "checks": [
+        {
+          "id": "http_entry_and_exact_html_identity",
+          "status": "PASS",
+          "evidence": "HTTP 200; response SHA-256 f4f05b85295b85e0aa244bf314a667b3b396d7eda10715332c42f62e50c165ec; exact local source /tmp/three-h5-study-20261013-d6UWHt/cdn/cf-transport-ship/index.html."
+        },
+        {
+          "id": "visible_entry",
+          "status": "PASS",
+          "evidence": "Entry screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/cf-transport-ship/mobile-portrait-normal-input-entry.png SHA-256 e7d7d549942b080158047b0672c4be2f3127aaac270a1bb0b6f34f2c35b65d28."
+        },
+        {
+          "id": "4v4_target30_simple_settings",
+          "status": "PASS",
+          "evidence": "Selected UI values: 4v4, 30, 简单."
+        },
+        {
+          "id": "match_started_within_30s",
+          "status": "PASS",
+          "evidence": "Live match HUD appeared at 25848ms from navigation; screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/cf-transport-ship/mobile-portrait-normal-input-match-start.png."
+        },
+        {
+          "id": "touch_movement_and_fire",
+          "status": "PASS",
+          "evidence": "Touched left movement pad and held fire. View changed from container to close wall; ammunition/reload state changed. Team score reached 4-3 during the natural window."
+        },
+        {
+          "id": "touch_pause_resume",
+          "status": "FAIL",
+          "evidence": "No visible pause overlay after Escape; clock and score continued. The visible touch controls contain no pause button."
+        },
+        {
+          "id": "portrait_menu_fits_390px",
+          "status": "FAIL",
+          "evidence": "Portrait setup is clipped at 390px: team card starts at x=299 with width267 and weapon buttons extend to x=566."
+        },
+        {
+          "id": "touch_hit_regions_do_not_overlap",
+          "status": "FAIL",
+          "evidence": "Measured overlaps: [{\"a\":\"pad\",\"b\":\"蹲\",\"intersectionPx\":[42,54]},{\"a\":\"开火\",\"b\":\"切\",\"intersectionPx\":[10,50]}]; portrait crouch overlaps joystick by 42×54px and small fire overlaps weapon switch by 10×50px."
+        },
+        {
+          "id": "natural_match_terminal_and_replay",
+          "status": "NOT_OBSERVED",
+          "evidence": "After 10 seconds score was 4-3, below target30; no terminal, death or replay."
+        },
+        {
+          "id": "page_errors",
+          "status": "PASS",
+          "evidence": "No pageerror, console error, or failed network request was recorded."
+        }
+      ],
+      "errors": [],
+      "artifacts": [
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-portrait-normal-input-entry.png",
+          "sha256": "e7d7d549942b080158047b0672c4be2f3127aaac270a1bb0b6f34f2c35b65d28"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-portrait-normal-input-settings.png",
+          "sha256": "c6986139b0b3d22fe0e14ccb35db006b0c59b35f72a4280496f4fbaff252fcd9"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-portrait-normal-input-match-start.png",
+          "sha256": "355df873a6b1c700bd090a78ff3a976ad2bfee0c4072d8d40562eeb40da20cd1"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-portrait-normal-input-paused.png",
+          "sha256": "e2850c7589eaacf9d1bfc96522b9344e512397a3c1ed41d03047e7881730d564"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-portrait-normal-input-resumed.png",
+          "sha256": "7421298fbb9b43f93d1c9848c6c03169ea59e18ac252722307ba17393d707648"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-portrait-normal-input-window-end.png",
+          "sha256": "2a21bb8df5d2e76ca135823b6dc76603866d71a1f726f2ccff5c15b8b9a0a430"
+        }
+      ],
+      "unknowns": [
+        "No death, target30 end, or post-result replay within the 10s portrait / 20s landscape window.",
+        "The FPS counter is headless Chromium emulation, not mobile hardware performance.",
+        "Physical touch device and player enjoyment were not tested."
+      ]
+    },
+    {
+      "gameId": "cf-transport-ship",
+      "htmlSha256": "f4f05b85295b85e0aa244bf314a667b3b396d7eda10715332c42f62e50c165ec",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "browser": "Chromium headless (Playwright HTTP session)",
+      "touch": true,
+      "elapsedWallMs": 62413,
+      "actions": [
+        {
+          "atMs": 10212,
+          "input": "touch tap",
+          "target": "选择对战选项 4v4"
+        },
+        {
+          "atMs": 11048,
+          "input": "touch tap",
+          "target": "选择对战选项 30"
+        },
+        {
+          "atMs": 11747,
+          "input": "touch tap",
+          "target": "选择对战选项 简单"
+        },
+        {
+          "atMs": 13054,
+          "input": "touch swipe 692,350 to 692,50 (340ms)",
+          "target": "scroll menu toward #btnStart"
+        },
+        {
+          "atMs": 15236,
+          "input": "touch tap",
+          "target": "开始游戏"
+        },
+        {
+          "atMs": 25043,
+          "input": "touch tap",
+          "target": "触摸开火"
+        },
+        {
+          "atMs": 25733,
+          "input": "simultaneous touch hold 12s on left joystick forward and right fire",
+          "target": "移动并开火"
+        },
+        {
+          "atMs": 38480,
+          "input": "按 Esc 暂停",
+          "target": "page"
+        }
+      ],
+      "observed": [
+        "4v4 / target30 / simple selection was visibly active.",
+        "Movement plus fire changed the view and ammo state; team score reached 8-5.",
+        "Landscape touch regions were clear except the intended joystick base/knob overlap.",
+        "Touch pause was unavailable: Escape did not pause, and score/clock continued."
+      ],
+      "checks": [
+        {
+          "id": "http_entry_and_exact_html_identity",
+          "status": "PASS",
+          "evidence": "HTTP 200; response SHA-256 f4f05b85295b85e0aa244bf314a667b3b396d7eda10715332c42f62e50c165ec; exact local source /tmp/three-h5-study-20261013-d6UWHt/cdn/cf-transport-ship/index.html."
+        },
+        {
+          "id": "visible_entry",
+          "status": "PASS",
+          "evidence": "Entry screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/cf-transport-ship/mobile-landscape-normal-input-entry.png SHA-256 11c2dba973045507bffeea6f8f8cd16769e9f03881028749779b571b3f7fd654."
+        },
+        {
+          "id": "4v4_target30_simple_settings",
+          "status": "PASS",
+          "evidence": "Selected UI values: 4v4, 30, 简单."
+        },
+        {
+          "id": "match_started_within_30s",
+          "status": "PASS",
+          "evidence": "Live match HUD appeared at 24470ms from navigation; screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/cf-transport-ship/mobile-landscape-normal-input-match-start.png."
+        },
+        {
+          "id": "touch_movement_and_fire",
+          "status": "PASS",
+          "evidence": "Touched left movement pad and held fire. View changed from container to close wall; ammunition/reload state changed. Team score reached 8-5 during the natural window."
+        },
+        {
+          "id": "touch_pause_resume",
+          "status": "FAIL",
+          "evidence": "No visible pause overlay after Escape; clock and score continued. The visible touch controls contain no pause button."
+        },
+        {
+          "id": "portrait_menu_fits_390px",
+          "status": "PASS",
+          "evidence": "Landscape setup options fit the width; start was reached with a short upward swipe."
+        },
+        {
+          "id": "touch_hit_regions_do_not_overlap",
+          "status": "PASS",
+          "evidence": "Only the joystick knob/base geometry overlaps."
+        },
+        {
+          "id": "natural_match_terminal_and_replay",
+          "status": "NOT_OBSERVED",
+          "evidence": "After 20 seconds score was 8-5, below target30; no terminal, death or replay."
+        },
+        {
+          "id": "page_errors",
+          "status": "PASS",
+          "evidence": "No pageerror, console error, or failed network request was recorded."
+        }
+      ],
+      "errors": [],
+      "artifacts": [
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-landscape-normal-input-entry.png",
+          "sha256": "11c2dba973045507bffeea6f8f8cd16769e9f03881028749779b571b3f7fd654"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-landscape-normal-input-settings.png",
+          "sha256": "f16d76de10d2ffbcb409a4565fd808e2e052c056427a458419b3c2fbb9037234"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-landscape-normal-input-match-start.png",
+          "sha256": "b8fafcfa6f455c420aec8aaaf2da686f51a3543b030d0be06d44144ef7f8fc1d"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-landscape-normal-input-paused.png",
+          "sha256": "50a2dc7ca395ae66d27835d29da504b1ee8d34bbc9fd086ca6f4b737c782b3b2"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-landscape-normal-input-resumed.png",
+          "sha256": "c7a41598d1ce487db1ed9e5171d2624932ef2b8bd1db337510f4b191972eae01"
+        },
+        {
+          "path": "[private]/browser-review/cf-transport-ship/mobile-landscape-normal-input-window-end.png",
+          "sha256": "ab1c571209efb6406d8621b95e9cc17993264db66c1b9181d8f99c5071c44140"
+        }
+      ],
+      "unknowns": [
+        "No death, target30 end, or post-result replay within the 10s portrait / 20s landscape window.",
+        "The FPS counter is headless Chromium emulation, not mobile hardware performance.",
+        "Physical touch device and player enjoyment were not tested."
+      ]
+    }
+  ],
+  "physicalMobile": "NOT_RUN",
+  "human": "NOT_RUN",
+  "license": "NOT_CLEARED",
+  "note": "Browser observations are evidence for manual review. PR7 deliberately retains its conservative flags; no semantic or revenue certificate."
+}

@@ -1,0 +1,739 @@
+{
+  "schemaVersion": 1,
+  "revision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "games": [
+    {
+      "gameId": "qq-speed",
+      "mechanisms": [
+        {
+          "id": "keyboard-controls",
+          "category": "controls",
+          "claim": "键盘输入以按住集合表达持续驾驶，以 pressed 集合表达单帧边沿；方向键油门/刹车/转向，Shift 漂移，Ctrl 或空格氮气/道具，Alt 换位，W 小喷，R 复位。窗口失焦会清空持续按键。",
+          "file": "qq-speed/src/input.js",
+          "lineStart": 1,
+          "lineEnd": 49,
+          "fileSha256": "2f8a5030ba326cfe17692dd57f5a783813a571dad79696c4b0c1646a45506174",
+          "branch": "Input.frame 每帧读取 down 与 pressed；随后清空边沿集合；window blur 清 down。",
+          "unknowns": [
+            "没有验证不同键盘布局、浏览器快捷键或实际操作手感。"
+          ]
+        },
+        {
+          "id": "touch-controls",
+          "category": "controls",
+          "claim": "触屏绑定左/右、漂移、刹车、氮气、小喷与换位按钮；按下/抬起/取消分别更新按钮状态，触屏加速键没有在该绑定表中。",
+          "file": "qq-speed/src/input.js",
+          "lineStart": 51,
+          "lineEnd": 78,
+          "fileSha256": "2f8a5030ba326cfe17692dd57f5a783813a571dad79696c4b0c1646a45506174",
+          "branch": "bindTouch 仅绑定 HTML 中已有触控按钮；按钮以 touchstart/touchend/touchcancel 处理。",
+          "unknowns": [
+            "没有在真机检查多点触控、触控取消、手指遮挡或按钮可达性。"
+          ]
+        },
+        {
+          "id": "touch-autothrottle-layout",
+          "category": "controls",
+          "claim": "step 在触屏竞赛状态强制 up 油门，并在离开竞赛状态时清除该触屏油门。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 511,
+          "lineEnd": 518,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "Game.step 的玩家输入分支；由 IS_TOUCH 与 racing 条件保护。",
+          "unknowns": [
+            "静态布局不证明手机尺寸、横竖屏或目标小程序中的可读性和操控效果。"
+          ]
+        },
+        {
+          "id": "acceleration-steering-motion",
+          "category": "movement",
+          "claim": "玩家车有常规/氮气极速与加速度参数；地面油门加速、刹车可减速并倒车、松开会滚阻减速；转向经阻尼平滑，之后按速度和朝向积分世界坐标并投影回赛道。",
+          "file": "qq-speed/src/vehicle.js",
+          "lineStart": 108,
+          "lineEnd": 170,
+          "fileSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+          "branch": "PlayerCar.update；纵向输入仅在地面分支改变速度，坡度另作用于速度。",
+          "unknowns": [
+            "参数是源码中的数值；未验证车辆是否按预期速度、稳定性或帧率运行。"
+          ]
+        },
+        {
+          "id": "drift-charge-and-small-boost",
+          "category": "movement",
+          "claim": "地面速度高于漂移阈值时，按住 Shift 加方向进入漂移；漂移改变偏航并损失速度，非道具模式按漂移角与速度增加集气，至多持有两个氮气。干净结束且持续足够久会打开小喷窗口，及时点按油门边沿或 W 可得到完美小喷。",
+          "file": "qq-speed/src/vehicle.js",
+          "lineStart": 85,
+          "lineEnd": 213,
+          "fileSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+          "branch": "PlayerCar.triggerNitro/endDrift/update；干净结束、失速或碰撞结束走不同分支；漂移和落地窗口按 smallWindow/windowKind 区分。",
+          "unknowns": [
+            "窗口提示的实际显著性、容错与操作节奏未做玩家观察。"
+          ]
+        },
+        {
+          "id": "item-pickup-and-rank-weighting",
+          "category": "interaction",
+          "claim": "道具掉落按名次使用不同权重表加权随机抽取；持有满两件时不会再发放，抽取后加入物品队列。",
+          "file": "qq-speed/src/items.js",
+          "lineStart": 4,
+          "lineEnd": 78,
+          "fileSha256": "a078b59d034af2a15f208a7ad8a3fb6c301affd6b59a21453d5cd50d02b31e93",
+          "branch": "WEIGHTS/pick 与 ItemSystem.giveRandom 的名次分支。",
+          "unknowns": [
+            "未运行验证拾取碰撞体、两槽提示或每种名次下的实际掉落分布。"
+          ]
+        },
+        {
+          "id": "item-use-targeting",
+          "category": "interaction",
+          "claim": "道具使用先移除首槽道具；氮气可加速，护盾/磁铁设置限时状态，香蕉皮置于使用者车后，导弹选取前方车手为目标并追踪。",
+          "file": "qq-speed/src/items.js",
+          "lineStart": 84,
+          "lineEnd": 142,
+          "fileSha256": "a078b59d034af2a15f208a7ad8a3fb6c301affd6b59a21453d5cd50d02b31e93",
+          "branch": "ItemSystem.use 中逐类型处理道具；导弹创建后通知目标为玩家的锁定分支。",
+          "unknowns": [
+            "未在运行时核对追踪、命中、护盾免疫与视听提示。"
+          ]
+        },
+        {
+          "id": "ai-driving-pressure",
+          "category": "movement",
+          "claim": "AI 依据技能、难度追赶倍率与前方曲率计算目标速度，在弯道降速、直道周期性使用氮气，并沿弯道调整赛车线。",
+          "file": "qq-speed/src/ai.js",
+          "lineStart": 51,
+          "lineEnd": 121,
+          "fileSha256": "2a399dad5831ec9ac8c22b76d837b908ed171f66e7510e5ef80679ef19b78f7e",
+          "branch": "AICar.update；活跃比赛才推进速度/氮气；曲率和 skill 限制目标速度。排名分支见 main.js 541–546。",
+          "unknowns": [
+            "AI 水平、追赶倍率和比赛压力没有实际对局观察。"
+          ]
+        },
+        {
+          "id": "race-randomness",
+          "category": "randomness",
+          "claim": "比赛生成以 Date.now 派生种子打乱 AI 名称/车辆并抽取技能与初始道具计时；道具箱使用注入随机数并按名次加权抽取。源码另用 Math.random 改变火焰、火花等表现。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 380,
+          "lineEnd": 443,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "startRace/makeRacers 将时间派生随机源传入赛车与道具系统；外观随机另见 vehicle.js 354–366。",
+          "unknowns": [
+            "没有执行或审计随机数实现；没有验证不同重开是否复现相同种子或掉落。"
+          ]
+        },
+        {
+          "id": "rank-and-race-stats",
+          "category": "score",
+          "claim": "实时名次按已完赛车手的 finishTime 优先、未完赛车手的 progress 排序。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 541,
+          "lineEnd": 546,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "standings sort 完赛优先；结果表与 lapTimes/stats 分支见 main.js 628–689。",
+          "unknowns": [
+            "同进度/同 finishTime 的平局与实际结果展示没有运行验证。"
+          ]
+        },
+        {
+          "id": "lap-counting-and-terminal-results",
+          "category": "terminal",
+          "claim": "玩家圈数用赛道长度的四分之一/中点区段确认起终点穿越；初始 lapsDone=-1/owed=true 的首次正向起点穿越只清 owed 并计为 0，之后要求先通过中点再正向过线才加圈。达到设置圈数即标记完赛；结果等待所有车完赛或首位完赛后十秒，也受四秒/十二秒门槛约束。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 604,
+          "lineEnd": 694,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "updateProgress 的玩家、AI 分支不同；onLap 在 lapsDone 达设定圈数时 finish；checkRaceEnd/showResults 负责结果等待与未完成结算。",
+          "unknowns": [
+            "未模拟起终点边界、倒车过线、短路线重叠或多车同时完赛等边界。"
+          ]
+        },
+        {
+          "id": "pause-restart-recovery",
+          "category": "recovery",
+          "claim": "Escape/P 在比赛、倒计时或暂停时切换暂停；暂停保存之前的状态供继续，并提供重新开始与回大厅入口；重新开始按钮调用 startRace。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 240,
+          "lineEnd": 280,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "菜单按钮绑定与 togglePause 暂存/恢复 pausedFrom。",
+          "unknowns": [
+            "复位/暂停是否足够易发现、重开是否符合玩家预期没有观察。"
+          ]
+        },
+        {
+          "id": "settings-only-persistence",
+          "category": "persistence",
+          "claim": "load/save 通过 localStorage 读写 this.settings；保存对象是配置而非运行中比赛状态。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 149,
+          "lineEnd": 150,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "load/save 仅对 this.settings 调用 JSON.parse/stringify；存储键由 settings-storage-key 单独记录。",
+          "unknowns": [
+            "未测试浏览器存储禁用、清理、跨标签页或刷新时的行为；未检查指定文件外的构建注入。"
+          ]
+        },
+        {
+          "id": "item-hit-consequences",
+          "category": "interaction",
+          "claim": "护盾会吸收一次命中；否则香蕉皮/导弹命中令车辆旋转并把速度乘以 0.35，导弹另令车辆腾空。玩家会看到具体命中消息、闪屏和镜头震动。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 757,
+          "lineEnd": 774,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "Game.hitRacer 的护盾与非护盾分支。",
+          "unknowns": [
+            "没有运行验证命中、护盾或反馈的玩家可见效果。"
+          ]
+        },
+        {
+          "id": "lap-times-and-results",
+          "category": "score",
+          "claim": "每圈以 raceTime 差记录圈时；结算行展示名次、总时间或未完成进度、最佳单圈，并展示漂移、小喷、氮气、最高时速和碰撞统计。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 628,
+          "lineEnd": 689,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "Game.onLap 追加 lapTimes；Game.showResults 组装结算统计和车手行。",
+          "unknowns": [
+            "没有验证平局规则或玩家对结算信息的理解。"
+          ]
+        },
+        {
+          "id": "in-race-reset",
+          "category": "recovery",
+          "claim": "R 复位到玩家当前赛道投影位置并朝向赛道，设置速度为 12；保留圈数状态、集气值和氮气数量。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 585,
+          "lineEnd": 594,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "resetPlayer 保存 keepLap 后调用 PlayerCar.reset，再恢复圈数与资源。",
+          "unknowns": [
+            "复位是否容易发现、所处位置是否公平、复位时间成本没有运行观察。"
+          ]
+        },
+        {
+          "id": "settings-storage-key",
+          "category": "persistence",
+          "claim": "浏览器设置存储键名为 feiche3d.v1。",
+          "file": "qq-speed/src/main.js",
+          "lineStart": 24,
+          "lineEnd": 24,
+          "fileSha256": "aa7de8ec0254f2027e8e9fa77b04ef4bb860cc5226092c40505d0ec611caec14",
+          "branch": "模块级 STORE 常量供 load/save 使用。",
+          "unknowns": [
+            "未测试浏览器存储权限或兼容性。"
+          ]
+        },
+        {
+          "id": "touch-controls-markup",
+          "category": "controls",
+          "claim": "触控覆盖层声明左转、右转、刹车、漂移、氮气、小喷与换位按钮；没有加速或暂停按钮。",
+          "file": "qq-speed/src/index.html",
+          "lineStart": 217,
+          "lineEnd": 220,
+          "fileSha256": "f85b73d61abfa6b779785af296970bbaf319be9b3b38277d008a319e0fb275e5",
+          "branch": "#touch 节点内的按钮列表。",
+          "unknowns": [
+            "没有观察对应视口中按钮是否覆盖赛道或其他重要信息。"
+          ]
+        },
+        {
+          "id": "track-box-pickup-respawn",
+          "category": "interaction",
+          "claim": "道具箱碰撞时会消失并设置 2.5 秒 respawn，之后重新显示；车手与箱子的距离/高度满足碰撞条件才拾取。",
+          "file": "qq-speed/src/items.js",
+          "lineStart": 144,
+          "lineEnd": 166,
+          "fileSha256": "a078b59d034af2a15f208a7ad8a3fb6c301affd6b59a21453d5cd50d02b31e93",
+          "branch": "ItemSystem.update 的箱子 respawn 与拾取碰撞分支。",
+          "unknowns": [
+            "没有运行检查碰撞门槛、刷新计时或玩家反馈。"
+          ]
+        },
+        {
+          "id": "landing-small-boost-window",
+          "category": "movement",
+          "claim": "腾空时间超过阈值后落地会创建落地喷输入窗口；落地与漂移小喷共用触发输入，但以 windowKind 区分事件。",
+          "file": "qq-speed/src/vehicle.js",
+          "lineStart": 272,
+          "lineEnd": 303,
+          "fileSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+          "branch": "PlayerCar.update 的 airborne 落地分支；落地持续时间超过 0.3 秒时设置 0.45 秒窗口。",
+          "unknowns": [
+            "未动态验证落地时刻、窗口触发或对玩家可感知的提示。"
+          ]
+        }
+      ]
+    },
+    {
+      "gameId": "cf-transport-ship",
+      "mechanisms": [
+        {
+          "id": "desktop-input-routing",
+          "category": "controls",
+          "claim": "键盘按下事件只路由到 playing 时的当前玩家；WASD/方向键、Space、Shift、C、1–4、Q、R、B、F、Tab 等进入 keys/pressed；鼠标左/右键置 fire/alt，指针锁定时鼠标增量进入瞄准。",
+          "file": "cf-transport-ship/src/player.js",
+          "lineStart": 17,
+          "lineEnd": 93,
+          "fileSha256": "470a7c96bc5deb44bc4375149600e536521fcee353c4de08ec3f99391020681e",
+          "branch": "keydown 使用 P()（仅 g.playing 时返回 g.player）；首个未锁定鼠标按下请求 pointer lock，后续按键按鼠标键号设置 l/r 和 lp/rp。",
+          "unknowns": [
+            "键盘布局、浏览器指针锁行为及实机输入延迟未运行验证。"
+          ]
+        },
+        {
+          "id": "touch-input-routing",
+          "category": "controls",
+          "claim": "触控在 coarse pointer 或 URL 含 touch 参数时启用；左侧摇杆提供移动轴，右侧滑动累计视角增量，按钮分别触发开火、跳、蹲切换、R、Q 与开镜。",
+          "file": "cf-transport-ship/src/touch.js",
+          "lineStart": 4,
+          "lineEnd": 65,
+          "fileSha256": "8130f9032d881cb682c74ec65c107b05bd13784c60c6accba82f852d035e1ad0",
+          "branch": "enabled 为假时构造器提前返回；启用后通过 window touchstart/move/end/cancel 识别两指摇杆与视角，并在触点结束时清零移动和开火状态。",
+          "unknowns": [
+            "触控区域命中、横竖屏布局、浏览器手势冲突与设备适配均未做运行观察。"
+          ]
+        },
+        {
+          "id": "movement-input-transform",
+          "category": "movement",
+          "claim": "玩家视角由鼠标或触屏增量更新 yaw/pitch；键盘与触控移动轴合并后按 yaw 转成世界方向，再交给 Actor.move；跳跃为按住 Space 或单次触控 jump，蹲伏来自 C 或触控 toggle。",
+          "file": "cf-transport-ship/src/player.js",
+          "lineStart": 48,
+          "lineEnd": 72,
+          "fileSha256": "470a7c96bc5deb44bc4375149600e536521fcee353c4de08ec3f99391020681e",
+          "branch": "alive 时才更新视角、移动和武器；死亡分支丢弃 R 与鼠标点击边沿。",
+          "unknowns": [
+            "速度曲线和视角手感是静态参数推断，未进行自然输入观察。"
+          ]
+        },
+        {
+          "id": "movement-actor-physics",
+          "category": "movement",
+          "claim": "Actor.move 按当前武器速度倍率和站立/蹲伏/静步/瞄准倍率设速度；地面有摩擦与加速，空中有较弱空中控制，跳跃设置竖直速度并施加重力，世界越界低于 y=-3 时把角色拉回。",
+          "file": "cf-transport-ship/src/actor.js",
+          "lineStart": 56,
+          "lineEnd": 124,
+          "fileSha256": "0c63f30df571f1cb21e435efe4462f35bf28a6957497be21daa3b5ce8a2dd4be",
+          "branch": "onGround 与 airborne 使用不同加速分支；站起受碰撞空间检查；实际移动调用 World.move。",
+          "unknowns": [
+            "跳跃高度、卡角、蹲跳可达性和移动碰撞质量未在运行时验证。"
+          ]
+        },
+        {
+          "id": "movement-world-collision",
+          "category": "movement",
+          "claim": "World.move 按每步不超过约 0.12 米拆分子步，处理水平实体碰撞、台阶上升、速度法线分量消除及竖直支撑/落地。",
+          "file": "cf-transport-ship/src/physics.js",
+          "lineStart": 200,
+          "lineEnd": 261,
+          "fileSha256": "595316049d0b68b17b598167d3525929be66bfcb6f435469d9450f8df460877e",
+          "branch": "水平碰撞最多迭代三次；下降时查询支撑面并设置 onGround，向上时检查顶头。",
+          "unknowns": [
+            "复杂箱体边缘与所有地图位置的碰撞结果需运行复核。"
+          ]
+        },
+        {
+          "id": "movement-map-lanes",
+          "category": "movement",
+          "claim": "地图源码定义集装箱管道、二楼、主甲板半场障碍和中路 V 形斜放集装箱等具体拓扑，属于运输船地图表达风险。",
+          "file": "cf-transport-ship/src/map.js",
+          "lineStart": 278,
+          "lineEnd": 457,
+          "fileSha256": "82ba3f2eaee4abb86524c14654782f3c762e25dbc848ebcbf3269800eeb67c8e",
+          "branch": "buildMap 对两侧管道和不同阵营半场布置固定坐标障碍；中路另设两只不同角度集装箱。",
+          "unknowns": [
+            "未运行渲染场景；此条只确认源码中的坐标布局和注释。"
+          ]
+        },
+        {
+          "id": "weapon-ammo-definitions",
+          "category": "interaction",
+          "claim": "枪械数据为每种武器声明弹匣、备弹、射速、换弹时长等；刀为 melee 且无弹药消耗，手雷为单枚有限库存；canReload 要求非近战/非手雷、弹匣未满、reserve>0 且当前未换弹。",
+          "file": "cf-transport-ship/src/weapons.js",
+          "lineStart": 2,
+          "lineEnd": 79,
+          "fileSha256": "fde708d6cf079e14e3b3f0efa6b48f6f161676d8aaf34aa73b6c31ac1b7d6d3c",
+          "branch": "WeaponState 初始化为武器定义的满弹匣与 reserve；finishReload 只补至弹匣容量并扣除 reserve。",
+          "unknowns": [
+            "各武器命中伤害和参数是否导致预期节奏，单凭源码无法验证。"
+          ]
+        },
+        {
+          "id": "weapon-fire-reload-switch",
+          "category": "interaction",
+          "claim": "Actor.weaponUpdate 先处理切枪与换弹状态；自动武器读取持续 fire，半自动读取 firePressed；枪弹匣为零时不发射，若按下边沿则报告 dry fire，并仅在 canReload 时开始换弹；射击后扣一发并调用 fireWeapon。",
+          "file": "cf-transport-ship/src/actor.js",
+          "lineStart": 125,
+          "lineEnd": 226,
+          "fileSha256": "0c63f30df571f1cb21e435efe4462f35bf28a6957497be21daa3b5ce8a2dd4be",
+          "branch": "枪械、近战、手雷在 weapon type 分支中分开处理；玩家空弹不会自动换弹，AI 只有弹匣空且仍可换弹时才自动开始换弹。",
+          "unknowns": [
+            "弹道命中率、武器动画与声音对换弹时序的玩家可读性未运行验证。"
+          ]
+        },
+        {
+          "id": "weapon-ammo-ui",
+          "category": "interaction",
+          "claim": "HUD 显示当前弹匣和备弹；弹匣为零且有备弹时显示按 R 换弹，弹匣与备弹均为零时显示弹药耗尽；换弹中显示换弹提示。",
+          "file": "cf-transport-ship/src/hud.js",
+          "lineStart": 107,
+          "lineEnd": 117,
+          "fileSha256": "3467380ad1a972d577a781467d9743c930c30a546259ce8e1a973fa4abd56807",
+          "branch": "melee 显示无限符号，grenade 单独显示数量；普通枪械显示 mag/reserve。",
+          "unknowns": [
+            "HUD 文案可见性、移动端字号与低弹提示显著度未做视觉运行检查。"
+          ]
+        },
+        {
+          "id": "bot-difficulty-and-role-rng",
+          "category": "randomness",
+          "claim": "AI 难度表分别配置反应区间、瞄准误差、转身/跟踪速度、爆头概率、横移与视野；生成时随机初始思考时间、投掷物计时，重生时随机 rush/flank 角色与通道，狙击主武器固定 hold 角色。",
+          "file": "cf-transport-ship/src/bots.js",
+          "lineStart": 5,
+          "lineEnd": 68,
+          "fileSha256": "85a6fca01d831d53dfa9a81e8ae87ecedc2ccb1f90590126937b16261cb2adad",
+          "branch": "primary==='awm' 走 hold；其他重生角色由 Math.random 分支选择；普通目标点或导航自由点也带随机选择。",
+          "unknowns": [
+            "随机种子、每局差异分布和各难度的实际体验尚未测试。"
+          ]
+        },
+        {
+          "id": "bot-sensing-rng",
+          "category": "randomness",
+          "claim": "AI 感知敌人时按视距、视场角和射线遮挡筛选；发现目标后按难度随机反应延迟、瞄准误差和瞄头概率，丢失目标后按随机条件追击听到的位置。",
+          "file": "cf-transport-ship/src/bots.js",
+          "lineStart": 86,
+          "lineEnd": 168,
+          "fileSha256": "85a6fca01d831d53dfa9a81e8ae87ecedc2ccb1f90590126937b16261cb2adad",
+          "branch": "best 目标只在敌方存活且通过 canSee 时选取；无可见目标时按 lastSeen/heard 与时间窗分支。",
+          "unknowns": [
+            "射线可见性与玩家体验中的反应公平性需要自然对局验证。"
+          ]
+        },
+        {
+          "id": "bot-aim-fire-rng",
+          "category": "randomness",
+          "claim": "AI 以限速转向追踪目标并叠加波动；开火取决于反应时间、瞄准容差、readyAt、武器类型及 burst pause，手枪发射采用每帧随机概率，连射会随机暂停。",
+          "file": "cf-transport-ship/src/bots.js",
+          "lineStart": 170,
+          "lineEnd": 260,
+          "fileSha256": "85a6fca01d831d53dfa9a81e8ae87ecedc2ccb1f90590126937b16261cb2adad",
+          "branch": "visible target 与目标存活时执行瞄准/射击判断；狙击枪另要求开镜、scopeReady 和更小容差。",
+          "unknowns": [
+            "不同帧率和随机序列下的命中/胜负分布未实测。"
+          ]
+        },
+        {
+          "id": "score-kill-credit",
+          "category": "score",
+          "claim": "有效伤害在 HP<=0 时进入 kill；受害者死亡数加一；非自身击杀的攻击者击杀数加一、所在队伍得一分，爆头另记数；Game 调用 hud.killFeed 并传入攻击者/受害者/武器/爆头/穿透标记。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 464,
+          "lineEnd": 515,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "伤害会被出生保护与同队伤害分支拒绝；只有 att 且 att!==v 时增加 team score。",
+          "unknowns": [
+            "源码路径确定记分条件，但对局中各类击杀是否均能自然触发未验证。"
+          ]
+        },
+        {
+          "id": "terminal-score-cap",
+          "category": "terminal",
+          "claim": "endMatch 设置 ended=true、playing=false，并按玩家阵营比分比较判胜负，平分则平局。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 266,
+          "lineEnd": 275,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "此方法执行结算 UI 与退出指针锁；击杀目标触发和倒计时触发由独立代码路径调用。",
+          "unknowns": [
+            "达到目标后的 1.2 秒窗口可能发生的额外事件未运行观察。"
+          ]
+        },
+        {
+          "id": "terminal-clock",
+          "category": "terminal",
+          "claim": "主循环仅在 playing 且非 paused 时调用 simulate；simulate 每步递减 timeLeft，当 timeLeft<=0 且未 ended 时调用 endMatch。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 556,
+          "lineEnd": 616,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "主循环只在 playing 且非 paused 时调用 simulate；倒计时到期按当前比分给出胜负或平局。",
+          "unknowns": [
+            "浏览器挂起、掉帧或页面关闭时主循环能否继续推进未测；主动暂停期间计时停止是源码事实。"
+          ]
+        },
+        {
+          "id": "recovery-death-feedback",
+          "category": "recovery",
+          "claim": "kill 把角色设为死亡、记录 4 秒 respawnT 并加死亡数；玩家死亡时转入 death cam，并构造包含击杀者/武器/爆头标记的 killedBy 文案供 HUD 显示。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 491,
+          "lineEnd": 524,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "仅 v===player 设置玩家 killedBy 和 death camera；所有 actor 死亡均进入 respawnT 倒计时。",
+          "unknowns": [
+            "死亡镜头、倒计时可读性与复活时可控性未运行验证。"
+          ]
+        },
+        {
+          "id": "recovery-respawn-reset",
+          "category": "recovery",
+          "claim": "Actor.spawn 将 HP/护甲恢复到 100、重新初始化完整 loadout、设置 3 秒出生保护并清零连杀。",
+          "file": "cf-transport-ship/src/actor.js",
+          "lineStart": 43,
+          "lineEnd": 55,
+          "fileSha256": "0c63f30df571f1cb21e435efe4462f35bf28a6957497be21daa3b5ce8a2dd4be",
+          "branch": "spawn 调用 giveLoadout，为主武器、副武器、刀、手雷创建新的 WeaponState；nextPrimary 优先于本地 primary。",
+          "unknowns": [
+            "地图出生点的实际安全性与 spawn protection 的实战效果未验证。"
+          ]
+        },
+        {
+          "id": "recovery-pause-resume",
+          "category": "recovery",
+          "claim": "指针锁状态变更时在指定游玩条件下调用 pause；pause 设置 paused 并显示暂停层，resume 清除 paused 并可重新请求锁定；quitToMenu 清除 actors/tags/player 并返回菜单。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 209,
+          "lineEnd": 236,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "pointerlockchange 在 playing、未 ended、非 loadout 且非 nolock 时失锁调用 pause；获得锁且 paused 时调用 resume(true)。",
+          "unknowns": [
+            "不同浏览器退出 pointer lock 的时序与暂停 UI 焦点行为未运行验证。"
+          ]
+        },
+        {
+          "id": "recovery-replay-reset",
+          "category": "recovery",
+          "claim": "startMatch 会移除旧 actor/tag/grenade，清空 actors/nades/tags/timers，重置两队分数、goal 和 600 秒时限后重新建局。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 124,
+          "lineEnd": 165,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "每次 startMatch 都创建新的 Player/Bot 列表并设置 playing=true、paused=false、ended=false。",
+          "unknowns": [
+            "再次开始时的浏览器锁定授权与音频解锁体验未运行验证。"
+          ]
+        },
+        {
+          "id": "persistence-options-only",
+          "category": "persistence",
+          "claim": "HUD 从 localStorage 的 cf_ship_opts 读取 JSON 并将 opts 整体写回；读取/写入异常由 catch 忽略。",
+          "file": "cf-transport-ship/src/hud.js",
+          "lineStart": 27,
+          "lineEnd": 31,
+          "fileSha256": "3467380ad1a972d577a781467d9743c930c30a546259ce8e1a973fa4abd56807",
+          "branch": "读取失败时保留默认 opts；保存通过 JSON.stringify(this.opts) 覆盖同一 key。",
+          "unknowns": [
+            "未在不同存储权限、隐私模式或配额环境下运行；源码外浏览器行为不在本项范围。"
+          ]
+        },
+        {
+          "id": "entrypoint-startup-fallback",
+          "category": "recovery",
+          "claim": "main.js 创建 Game 并调用 init；初始化 Promise 拒绝时写 console.error，并将错误文字写入 loadTxt（若元素存在）。",
+          "file": "cf-transport-ship/src/main.js",
+          "lineStart": 1,
+          "lineEnd": 9,
+          "fileSha256": "a0f4469978b14d0ebbcc4d73599e9364b8b9735585d8382b05233978f05e0e05",
+          "branch": "init 成功路径由 Game.init 建 HUD、渲染器、地图、回到菜单；catch 路径显示加载失败文本。",
+          "unknowns": [
+            "启动错误覆盖 UI 的可读性和 WebGL 初始化行为未运行验证。"
+          ]
+        },
+        {
+          "id": "terminal-score-trigger",
+          "category": "terminal",
+          "claim": "kill 在任一队达到 goal 时安排 1.2 秒后结束比赛，但仅当回调时仍 playing 才调用 endMatch。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 491,
+          "lineEnd": 525,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "score.BL>=goal 或 score.GR>=goal；定时回调再次检查 this.playing。",
+          "unknowns": [
+            "达到目标后的延迟窗口中玩家可见状态与额外击杀计分未运行验证。"
+          ]
+        },
+        {
+          "id": "score-feed-dom",
+          "category": "score",
+          "claim": "HUD killFeed 将击杀者与受害者姓名、武器图标及可选穿透/爆头图标插入事件 feed，并保留最多六条；命中标记用不同状态显示。",
+          "file": "cf-transport-ship/src/hud.js",
+          "lineStart": 166,
+          "lineEnd": 178,
+          "fileSha256": "3467380ad1a972d577a781467d9743c930c30a546259ce8e1a973fa4abd56807",
+          "branch": "击杀者为空时不生成 killer 字段；mine 控制本方事件高亮。",
+          "unknowns": [
+            "feed 实际可读性、短时事件叠加与视觉辨识度未运行检查。"
+          ]
+        },
+        {
+          "id": "recovery-death-hud",
+          "category": "recovery",
+          "claim": "玩家不存活且 respawnIn>0 时，HUD 中央区显示 killedBy 文案和复活秒数，并提示按 B 更换武器。",
+          "file": "cf-transport-ship/src/hud.js",
+          "lineStart": 144,
+          "lineEnd": 149,
+          "fileSha256": "3467380ad1a972d577a781467d9743c930c30a546259ce8e1a973fa4abd56807",
+          "branch": "死亡倒计时分支显示 center；存活或倒计时不大于 0 时隐藏。",
+          "unknowns": [
+            "不同 viewport 与设备上的死亡信息可读性未运行验证。"
+          ]
+        },
+        {
+          "id": "recovery-respawn-trigger",
+          "category": "recovery",
+          "claim": "simulate 对死亡 actor 递减 respawnT；计时归零且比赛未结束时调用 spawnActor。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 602,
+          "lineEnd": 606,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "仅死亡 actor 进入分支；ended 为真时不重生。",
+          "unknowns": [
+            "具体地图出生点选择和多人同时复活的位置安全性未运行验证。"
+          ]
+        },
+        {
+          "id": "recovery-replay-controls",
+          "category": "recovery",
+          "claim": "HUD 将开始按钮与再来一局按钮绑定到 startMatch，将继续按钮绑定到 resume，将退出/主菜单按钮绑定到 quitToMenu。",
+          "file": "cf-transport-ship/src/hud.js",
+          "lineStart": 59,
+          "lineEnd": 63,
+          "fileSha256": "3467380ad1a972d577a781467d9743c930c30a546259ce8e1a973fa4abd56807",
+          "branch": "buildMenu 在 HUD 初始化时注册按钮 click handler。",
+          "unknowns": [
+            "按钮焦点、触屏点击和重开后 pointer lock 授权未运行验证。"
+          ]
+        },
+        {
+          "id": "weapon-trace-and-hit",
+          "category": "interaction",
+          "claim": "Game.fireWeapon 从角色 eye 与 Actor.forward 得到射线方向，对方向按散布随机扰动后调用 traceBullet；traceBullet 检查世界碰撞和存活敌方角色命中，按命中部位、距离衰减、护甲和穿透分支施加伤害。",
+          "file": "cf-transport-ship/src/game.js",
+          "lineStart": 278,
+          "lineEnd": 359,
+          "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+          "branch": "traceBullet 只对存活、非射手、敌对角色进行 hitTest；有命中则 damage 后返回，墙体是否穿透取决于 collider.bullet 与剩余 power。",
+          "unknowns": [
+            "准星对齐、散布、射线命中反馈和遮挡表现未做运行验证。"
+          ]
+        }
+      ]
+    },
+    {
+      "gameId": "pelican-bike",
+      "mechanisms": [
+        {
+          "id": "bike-source-1",
+          "category": "controls",
+          "claim": "Keyboard held state and edge actions are separate; blur clears continuous input.",
+          "file": "pelican-bike/src/main.js",
+          "lineStart": 996,
+          "lineEnd": 1058,
+          "fileSha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+          "branch": "Pinned source; normal-input receipts supplied separately.",
+          "unknowns": [
+            "Normal touch input was observed separately; physical multitouch remains untested."
+          ]
+        },
+        {
+          "id": "bike-source-2",
+          "category": "movement",
+          "claim": "Forward cruise and spring-damped lateral targeting move the rider; jump has airborne and landing states.",
+          "file": "pelican-bike/src/main.js",
+          "lineStart": 568,
+          "lineEnd": 629,
+          "fileSha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+          "branch": "Pinned source; normal-input receipts supplied separately.",
+          "unknowns": [
+            "No physical-device feel or collision stress claim."
+          ]
+        },
+        {
+          "id": "bike-source-3",
+          "category": "interaction",
+          "claim": "Fish capture compares mouth and fish positions on three axes, then updates score and audiovisual feedback.",
+          "file": "pelican-bike/src/main.js",
+          "lineStart": 669,
+          "lineEnd": 742,
+          "fileSha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+          "branch": "Pinned source; normal-input receipts supplied separately.",
+          "unknowns": [
+            "The new wrapper reads the actual native score; it does not implement a parallel capture model."
+          ]
+        },
+        {
+          "id": "bike-source-4",
+          "category": "generation",
+          "claim": "Inactive fish objects are reused; spawn-ahead placement selects a lane, height and golden state randomly.",
+          "file": "pelican-bike/src/main.js",
+          "lineStart": 658,
+          "lineEnd": 697,
+          "fileSha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+          "branch": "Pinned source; normal-input receipts supplied separately.",
+          "unknowns": [
+            "No distribution test or deterministic RNG recovery claim."
+          ]
+        },
+        {
+          "id": "bike-source-5",
+          "category": "score",
+          "claim": "Native captures award score and trigger achievement thresholds.",
+          "file": "pelican-bike/src/main.js",
+          "lineStart": 724,
+          "lineEnd": 741,
+          "fileSha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+          "branch": "Pinned source; normal-input receipts supplied separately.",
+          "unknowns": [
+            "These native values remain only in private source builds, not in generic factory modules."
+          ]
+        },
+        {
+          "id": "bike-source-6",
+          "category": "terminal",
+          "claim": "The original ride has started/paused state but no game-over challenge. A bounded challenge is an owned adaptation.",
+          "file": "pelican-bike/src/main.js",
+          "lineStart": 252,
+          "lineEnd": 288,
+          "fileSha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+          "branch": "Pinned source; normal-input receipts supplied separately.",
+          "unknowns": [
+            "The 90-second/8-score goal is a new test hypothesis, not recovered original gameplay."
+          ]
+        },
+        {
+          "id": "bike-source-7",
+          "category": "lifecycle",
+          "claim": "Pause and focus handling exist; the wrapper separately persists best/supplies and explicitly restarts unfinished rounds.",
+          "file": "pelican-bike/src/main.js",
+          "lineStart": 1043,
+          "lineEnd": 1063,
+          "fileSha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+          "branch": "Pinned source; normal-input receipts supplied separately.",
+          "unknowns": [
+            "No exact mid-ride snapshot or cloud save is claimed."
+          ]
+        },
+        {
+          "id": "bike-source-8",
+          "category": "performance",
+          "claim": "The frame loop updates simulation, world, fish, animation and render passes. Rendering quality is adjustable.",
+          "file": "pelican-bike/src/main.js",
+          "lineStart": 1263,
+          "lineEnd": 1337,
+          "fileSha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+          "branch": "Pinned source; normal-input receipts supplied separately.",
+          "unknowns": [
+            "Desktop software and Apple-GPU measurements are distinct; renderer.info final-pass counts are not total scene complexity."
+          ]
+        }
+      ]
+    }
+  ],
+  "commercialRights": "GRANTED_USER_CONFIRMED",
+  "purpose": "Mechanism/source references and approved task reuse under user-confirmed author grant; platform approval, physical mobile and live IAA remain separate.",
+  "authorizationSha256": "638f1a47019523c768a1c92a71085f6bce974331f69710c0551c4bf6cd5502c9"
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "targetId": "cf-transport-ship",
+  "sources": [
+    {
+      "id": "source-note",
+      "url": "https://github.com/riba2534/claude-opus-5-5-demo/tree/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "version": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "method": "CODE_READ",
+      "path": "reference/source-review.json",
+      "sha256": "04134aff2b92d785ab0775b9215f2ec2c8e89624d6e2282efc1c0cef29fda99b",
+      "collectedAt": "2026-10-13T08:52:53.114Z"
+    },
+    {
+      "id": "runtime-note",
+      "url": "https://lf3-static.bytednsdoc.com/obj/eden-cn/nulojnulwlo/cf-transport-ship/transport-ship.html",
+      "version": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "method": "BROWSER_PLAY",
+      "path": "reference/runtime-observation.json",
+      "sha256": "a98eef82e8db0771dac20dddbd74ba1fb75fa43c072eabc40e72e91e93351051",
+      "collectedAt": "2026-10-13T09:40:10.269Z"
+    }
+  ],
+  "claims": [
+    {
+      "id": "fps-touch",
+      "text": "已有左摇杆、右侧滑动视角、开火及换弹按钮。",
+      "kind": "SOURCE_CODE",
+      "evidence": [
+        {
+          "sourceId": "source-note",
+          "locator": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/touch.js#L4",
+          "quote": "已有左摇杆、右侧滑动视角、开火及换弹按钮。"
+        }
+      ]
+    },
+    {
+      "id": "fps-end",
+      "text": "团队目标击杀及时间上限决定原生终局；死亡后延迟复活。",
+      "kind": "SOURCE_CODE",
+      "evidence": [
+        {
+          "sourceId": "source-note",
+          "locator": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/game.js#L132",
+          "quote": "团队目标击杀及时间上限决定原生终局；死亡后延迟复活。"
+        }
+      ]
+    },
+    {
+      "id": "reference-runtime",
+      "kind": "OBSERVATION",
+      "text": "原始参考H5经过手机尺寸浏览器触控实跑；各原生操作、未观察终局与证据哈希如下。此声明不含实体手机、许可或商业通过。",
+      "evidence": [
+        {
+          "sourceId": "runtime-note",
+          "locator": "sessions: normal input and explicitly unobserved branches",
+          "quote": "原始参考H5经过手机尺寸浏览器触控实跑；各原生操作、未观察终局与证据哈希如下。此声明不含实体手机、许可或商业通过。"
+        }
+      ]
+    }
+  ],
+  "requiredClaimIds": [
+    "fps-touch",
+    "fps-end",
+    "reference-runtime"
+  ],
+  "unknowns": [
+    {
+      "id": "author-grant-archive",
+      "reason": "User confirms permission; original author grant/attribution terms must be kept for platform review. This does not block authorized development.",
+      "blocking": false
+    }
+  ]
+}

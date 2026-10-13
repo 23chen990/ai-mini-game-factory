@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "researchId": "three-h5-infrastructure-20261013",
+  "targetGame": "cf-transport-ship private mobile adaptation",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory/runs/h5-cf-mobile-20261013/workspace",
+  "researchedAt": "2026-10-13T08:58:55.407Z",
+  "candidates": [
+    {
+      "name": "Three.js 0.186.0",
+      "repositoryUrl": "https://github.com/mrdoob/three.js",
+      "immutableRevision": "148ef33ecb6d2502ff796d4554abd1549c95d519",
+      "version": "0.186.0",
+      "directLicenseEvidence": "https://github.com/mrdoob/three.js/blob/148ef33ecb6d2502ff796d4554abd1549c95d519/LICENSE",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "Pinned upstream lock installs Three.js 0.186.0 with integrity checked by npm; its MIT text was directly read locally."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "Outside this user-authorized H5 pilot; no adapter or package tested."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "Outside this user-authorized H5 pilot; no adapter or package tested."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "H5 browser form only. Global tap is documented for H5 in official MCP 1.24.14; host injection and GPU behavior require the actual H5 development package."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "LOW",
+      "attributionDuties": [
+        "Retain full Three.js MIT copyright and license in vendor and standalone HTML.",
+        "Record npm tarball integrity and exact module SHA; do not pull a floating CDN version."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Three.js core WebGL rendering and primitive geometry only; no competitor modules, models, textures, audio or values."
+      ],
+      "rationale": "Keep the user's JavaScript/Three.js stack. Pinned core works without network or a new factory dependency. Use no loaders or remote media; an old fixed version is acceptable only within this bounded local test. Security risk is scope-specific, not a vulnerability scan."
+    },
+    {
+      "name": "Existing user-owned lean pilot runner and PR #7 gate",
+      "repositoryUrl": "https://github.com/23chen990/ai-mini-game-factory",
+      "immutableRevision": "0919f504a53d7665bcfe2806917cd453c4842a89",
+      "version": "PR8-baseline",
+      "directLicenseEvidence": "https://github.com/23chen990/ai-mini-game-factory/blob/0919f504a53d7665bcfe2806917cd453c4842a89/AGENTS.md",
+      "licenseSpdx": "LicenseRef-UserOwned-TaskAuthorization",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "Existing createRun/check/browser/serve/export and frozen evidence interfaces; reviewed in this checkout."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "No new platform work authorized by this H5 request."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "No new platform work authorized by this H5 request."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Development H5 only; no account, platform upload, advertising permission or publishing evidence."
+        }
+      },
+      "maintenanceRisk": "LOW",
+      "securityRisk": "LOW",
+      "attributionDuties": [
+        "User-owned infrastructure is reused under this task's authorization; this does not grant third parties an open-source license.",
+        "Preserve PR2/3/7/8 branch heads, frozen checks and failed evidence."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Register one original action candidate in the current runner; bind research, contract, tests and output hashes."
+      ],
+      "rationale": "Reuse the existing control layer and installed build tools. Do not create another factory, agent framework or backend."
+    },
+    {
+      "name": "Author-authorized three H5 implementations",
+      "repositoryUrl": "https://github.com/riba2534/claude-opus-5-5-demo",
+      "immutableRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "version": "54adc1f",
+      "directLicenseEvidence": "https://github.com/23chen990/ai-mini-game-factory/blob/codex/three-h5-iaa-pilot-20261013/docs/lean-pilot/three-h5-20261013/author-authorization.json",
+      "licenseSpdx": "LicenseRef-AuthorPermission-UserConfirmed",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "User confirms author permission and no copyright issues; task authorization sha256 638f1a47019523c768a1c92a71085f6bce974331f69710c0551c4bf6cd5502c9. This is a user-confirmed proprietary grant, not an independently verified OSS license."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "No adapter/package evidence; code and IP clearance missing."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "No adapter/package evidence; code and IP clearance missing."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "User-confirmed author permission; H5 account, platform review, actual SDK/ads and phone remain unverified."
+        }
+      },
+      "maintenanceRisk": "HIGH",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "Preserve Three.js and other third-party notices.",
+        "Archive original author grant and any attribution terms for platform review.",
+        "No formal release, paid review or deployment without the user confirmation required by this task."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Reuse the existing source for this user's mobile H5 adaptation and TapTap IAA test preparation."
+      ],
+      "rationale": "Original author grant now confirmed by the user. Continue source reuse for this task; platform eligibility and runtime QA remain separate."
+    }
+  ],
+  "conclusion": {
+    "approvedCandidateNames": [
+      "Three.js 0.186.0",
+      "Existing user-owned lean pilot runner and PR #7 gate",
+      "Author-authorized three H5 implementations"
+    ],
+    "rejectedCandidateNames": [],
+    "noSuitablePlatformAdapter": true,
+    "architectureDecision": "Keep the original engines and reuse the existing runner/PR7. Source adaptation is now author-authorized by user confirmation; preserve historical evidence and test gates. No new factory, backend or platform publication."
+  }
+}

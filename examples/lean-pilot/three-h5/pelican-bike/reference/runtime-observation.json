@@ -1,0 +1,317 @@
+{
+  "schemaVersion": 1,
+  "gameId": "pelican-bike",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "summary": "原始参考H5经过手机尺寸浏览器触控实跑；各原生操作、未观察终局与证据哈希如下。此声明不含实体手机、许可或商业通过。",
+  "authority": "REAL_BROWSER_NORMAL_INPUT",
+  "originalReportSha256": "cd09182ea8ae0650601685ef1b0430d9eba1e375b3098cb4943cfcdc2cfc6bc5",
+  "referenceHtmlSha256": "6b7419fe2c92f8e068ea9e5a6379d3ffa33f6784f8ff68fc8381911d9a40d761",
+  "sessions": [
+    {
+      "gameId": "pelican-bike",
+      "htmlSha256": "6b7419fe2c92f8e068ea9e5a6379d3ffa33f6784f8ff68fc8381911d9a40d761",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "browser": "Chromium headless (Playwright HTTP session)",
+      "touch": true,
+      "elapsedWallMs": 108026,
+      "actions": [
+        {
+          "atMs": 23692,
+          "input": "touch tap",
+          "target": "开始骑行"
+        },
+        {
+          "atMs": 31878,
+          "input": "touch tap",
+          "target": "触摸 button[data-key=\"left\"]"
+        },
+        {
+          "atMs": 35015,
+          "input": "touch tap",
+          "target": "触摸 button[data-key=\"right\"]"
+        },
+        {
+          "atMs": 38155,
+          "input": "touch tap",
+          "target": "触摸 button[data-act=\"jump\"]"
+        },
+        {
+          "atMs": 41236,
+          "input": "touch tap",
+          "target": "触摸 button[data-act=\"trick\"]"
+        },
+        {
+          "atMs": 44400,
+          "input": "touch tap",
+          "target": "触摸 button[data-act=\"bell\"]"
+        },
+        {
+          "atMs": 47467,
+          "input": "按 P 暂停",
+          "target": "page"
+        },
+        {
+          "atMs": 49899,
+          "input": "再按 P 恢复",
+          "target": "page"
+        },
+        {
+          "atMs": 83706,
+          "input": "browser reload",
+          "target": "重新打开页面验证入口"
+        },
+        {
+          "atMs": 104839,
+          "input": "touch tap",
+          "target": "重新打开后开始骑行"
+        }
+      ],
+      "observed": [
+        "Normal ride started; HUD speed reached about 27 km/h and odometer advanced.",
+        "After 30 seconds fish count was 0; achievements showed 2/14.",
+        "Touch control buttons were separated in portrait and landscape; pause/resume messages were visible.",
+        "Page reload returned to entry and a second ride started."
+      ],
+      "checks": [
+        {
+          "id": "http_entry_and_exact_html_identity",
+          "status": "PASS",
+          "evidence": "HTTP 200; response SHA-256 6b7419fe2c92f8e068ea9e5a6379d3ffa33f6784f8ff68fc8381911d9a40d761; exact local source /tmp/three-h5-study-20261013-d6UWHt/cdn/pelican-bike/index.html."
+        },
+        {
+          "id": "visible_entry",
+          "status": "PASS",
+          "evidence": "Entry screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/pelican-bike/mobile-portrait-normal-input-entry.png SHA-256 4d4ae6309ee547c9bdf54e0e6a663aefeda1a829adadb2555c9c8a0220aedbc5."
+        },
+        {
+          "id": "normal_start",
+          "status": "PASS",
+          "evidence": "Ride HUD appeared at 27519ms from navigation; entry-to-start was under 30s."
+        },
+        {
+          "id": "touch_control_feedback",
+          "status": "PASS",
+          "evidence": "CDP touch tapped left/right, jump, trick and bell. Achievement count moved 0/14→2/14; speed reached about 27 km/h. Screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/pelican-bike/mobile-portrait-normal-input-touch-actions.png."
+        },
+        {
+          "id": "touch_control_overlap",
+          "status": "PASS",
+          "evidence": "No actionable button rectangle intersections in this viewport."
+        },
+        {
+          "id": "pause_resume_feedback",
+          "status": "PASS",
+          "evidence": "P displayed “已暂停”; the next P displayed “继续骑行”."
+        },
+        {
+          "id": "fish_catch_in_30s",
+          "status": "NOT_OBSERVED",
+          "evidence": "Visible fish count after the 30-second natural window: 0."
+        },
+        {
+          "id": "terminal_and_replay",
+          "status": "NOT_OBSERVED",
+          "evidence": "No terminal/settlement appeared during 30 seconds of normal riding."
+        },
+        {
+          "id": "reload_and_reopen",
+          "status": "PASS",
+          "evidence": "Normal page reload showed entry again, then touch started another ride: /tmp/three-h5-study-20261013-d6UWHt/browser-review/pelican-bike/mobile-portrait-normal-input-reopened-entry.png; /tmp/three-h5-study-20261013-d6UWHt/browser-review/pelican-bike/mobile-portrait-normal-input-reopened-ride.png."
+        },
+        {
+          "id": "page_errors",
+          "status": "PASS",
+          "evidence": "No pageerror, console error, or failed network request was recorded."
+        }
+      ],
+      "errors": [],
+      "artifacts": [
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-portrait-normal-input-entry.png",
+          "sha256": "4d4ae6309ee547c9bdf54e0e6a663aefeda1a829adadb2555c9c8a0220aedbc5"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-portrait-normal-input-ride-start.png",
+          "sha256": "d01e71f2dd589d2d3f1f69e4d2d27339f5ad08d37d8fe01419d1fd8fc75c9419"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-portrait-normal-input-touch-actions.png",
+          "sha256": "0c4f570380de4a3695656db83f12aeabdd463507787626742eaebdb31d718bcf"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-portrait-normal-input-paused.png",
+          "sha256": "10953752e58b7f61a0dc036945409214a63c97d7a9749e8c468f940e23ee75ab"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-portrait-normal-input-resumed.png",
+          "sha256": "b7039aed3a8ff411e50da01fb48523498ddce7e0daefd86ec34c7a52cce62493"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-portrait-normal-input-natural-window-end.png",
+          "sha256": "9070b4f449164162a8a3fa63101a8a865b2f4c32ef5cd2d1df117493f8fa8dfc"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-portrait-normal-input-reopened-entry.png",
+          "sha256": "b1836d4da9e781c76986747868926582ae911844d00718812362aec7e8afc568"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-portrait-normal-input-reopened-ride.png",
+          "sha256": "31cc1ed9bf88024ea426939034fd709fa8039592e0b89dccc1b4432de1a07a0c"
+        }
+      ],
+      "unknowns": [
+        "hasTouch is Chromium device emulation, not a physical phone run.",
+        "Fish collection and terminal/replay were not observed during this 30-second window."
+      ]
+    },
+    {
+      "gameId": "pelican-bike",
+      "htmlSha256": "6b7419fe2c92f8e068ea9e5a6379d3ffa33f6784f8ff68fc8381911d9a40d761",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "browser": "Chromium headless (Playwright HTTP session)",
+      "touch": true,
+      "elapsedWallMs": 86679,
+      "actions": [
+        {
+          "atMs": 28029,
+          "input": "touch tap",
+          "target": "开始骑行"
+        },
+        {
+          "atMs": 34612,
+          "input": "touch tap",
+          "target": "触摸 button[data-key=\"left\"]"
+        },
+        {
+          "atMs": 37826,
+          "input": "touch tap",
+          "target": "触摸 button[data-key=\"right\"]"
+        },
+        {
+          "atMs": 40916,
+          "input": "touch tap",
+          "target": "触摸 button[data-act=\"jump\"]"
+        },
+        {
+          "atMs": 44720,
+          "input": "touch tap",
+          "target": "触摸 button[data-act=\"trick\"]"
+        },
+        {
+          "atMs": 47749,
+          "input": "touch tap",
+          "target": "触摸 button[data-act=\"bell\"]"
+        },
+        {
+          "atMs": 50846,
+          "input": "按 P 暂停",
+          "target": "page"
+        },
+        {
+          "atMs": 52977,
+          "input": "再按 P 恢复",
+          "target": "page"
+        }
+      ],
+      "observed": [
+        "Normal ride started; HUD speed reached about 27 km/h and odometer advanced.",
+        "After 30 seconds fish count was 0; achievements showed 2/14.",
+        "Touch control buttons were separated in portrait and landscape; pause/resume messages were visible.",
+        "No terminal state was observed."
+      ],
+      "checks": [
+        {
+          "id": "http_entry_and_exact_html_identity",
+          "status": "PASS",
+          "evidence": "HTTP 200; response SHA-256 6b7419fe2c92f8e068ea9e5a6379d3ffa33f6784f8ff68fc8381911d9a40d761; exact local source /tmp/three-h5-study-20261013-d6UWHt/cdn/pelican-bike/index.html."
+        },
+        {
+          "id": "visible_entry",
+          "status": "PASS",
+          "evidence": "Entry screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/pelican-bike/mobile-landscape-normal-input-entry.png SHA-256 cd41af9941e70657353875dcafddfd34ba529d26b1e24e3817825aafb8310447."
+        },
+        {
+          "id": "normal_start",
+          "status": "PASS",
+          "evidence": "Ride HUD appeared at 31675ms from navigation; entry-to-start was under 30s."
+        },
+        {
+          "id": "touch_control_feedback",
+          "status": "PASS",
+          "evidence": "CDP touch tapped left/right, jump, trick and bell. Achievement count moved 0/14→2/14; speed reached about 27 km/h. Screenshot /tmp/three-h5-study-20261013-d6UWHt/browser-review/pelican-bike/mobile-landscape-normal-input-touch-actions.png."
+        },
+        {
+          "id": "touch_control_overlap",
+          "status": "PASS",
+          "evidence": "No actionable button rectangle intersections in this viewport."
+        },
+        {
+          "id": "pause_resume_feedback",
+          "status": "PASS",
+          "evidence": "P displayed “已暂停”; the next P displayed “继续骑行”."
+        },
+        {
+          "id": "fish_catch_in_30s",
+          "status": "NOT_OBSERVED",
+          "evidence": "Visible fish count after the 30-second natural window: 0."
+        },
+        {
+          "id": "terminal_and_replay",
+          "status": "NOT_OBSERVED",
+          "evidence": "No terminal/settlement appeared during 30 seconds of normal riding."
+        },
+        {
+          "id": "reload_and_reopen",
+          "status": "NOT_OBSERVED",
+          "evidence": "No reload/reopen action in this viewport session."
+        },
+        {
+          "id": "page_errors",
+          "status": "PASS",
+          "evidence": "No pageerror, console error, or failed network request was recorded."
+        }
+      ],
+      "errors": [],
+      "artifacts": [
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-landscape-normal-input-entry.png",
+          "sha256": "cd41af9941e70657353875dcafddfd34ba529d26b1e24e3817825aafb8310447"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-landscape-normal-input-ride-start.png",
+          "sha256": "432f27fd78aa61a34bebafc1be267508d2acfbb6eab8cb406fc617d2050083a4"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-landscape-normal-input-touch-actions.png",
+          "sha256": "07cf50e8d484ced15386b884030ee9d9b10db0883658adff9a9570f1addf9c64"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-landscape-normal-input-paused.png",
+          "sha256": "b50aad7431d6ede10037a417ba434f22266b960d3951d378e69ec96524d88384"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-landscape-normal-input-resumed.png",
+          "sha256": "968b89933742ca240f43b46fddc09f9c3cf4017b6240f480c6ca0f15749d5cc5"
+        },
+        {
+          "path": "[private]/browser-review/pelican-bike/mobile-landscape-normal-input-natural-window-end.png",
+          "sha256": "0c22b220ba24a3cb14b0496f6bcbf1e0c54a7a932a2ca327af5bef3f3b9c1bd9"
+        }
+      ],
+      "unknowns": [
+        "hasTouch is Chromium device emulation, not a physical phone run.",
+        "Fish collection and terminal/replay were not observed during this 30-second window."
+      ]
+    }
+  ],
+  "physicalMobile": "NOT_RUN",
+  "human": "NOT_RUN",
+  "license": "NOT_CLEARED",
+  "note": "Browser observations are evidence for manual review. PR7 deliberately retains its conservative flags; no semantic or revenue certificate."
+}

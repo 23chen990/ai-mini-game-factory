@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "target": "TAPTAP_H5_TRIAL",
+  "accountLogin": "VERIFIED_OFFICIAL_MCP_DEVICE_AUTH",
+  "loginReceiptSha256": "c0d109f8086409c99c428148a1126270838a37e7880ca2c60ad6049ebec49c00",
+  "appListRead": "PASS",
+  "userReportedAccountAds": "OPEN",
+  "newGamesAppCreated": false,
+  "perGameAdStatus": "NOT_VERIFIED_NO_NEW_APP",
+  "actualAppId": null,
+  "actualAdSpaceId": null,
+  "decisionAuthority": "USER",
+  "userDecision": "暂不创建，只完成试玩包和 Draft PR；你先弄试玩包吧，上架的事以后再说",
+  "appCreation": "DEFERRED_USER_REQUEST",
+  "upload": "NOT_RUN",
+  "review": "NOT_SUBMITTED",
+  "liveAdPlayback": "NOT_RUN",
+  "SDKFixtures": "SIX_TESTS_PASS_NO_LIVE_ADS",
+  "publication": "NOT_RUN",
+  "note": "Existing account apps were not selected or modified. OAuth token and app details remain outside Git. Existing-account activation is not claimed as activation of these new games."
+}

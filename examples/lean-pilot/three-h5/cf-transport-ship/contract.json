@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "gameId": "h5-cf-mobile-20261013",
+  "policyHash": "7079818ffaaed60682f19edc1b61c086b2f5b7fad750942e3e4f157f505ab16b",
+  "requestHash": "181b56d91dbffc81f8eaf90d266ca27f13934e88676b04f50907039ae11962b8",
+  "status": "PROPOSED",
+  "firstSession": {
+    "firstAction": "点开始后用可见触控进行转向/移动",
+    "firstResult": "人物/车辆方向与得分或弹药立即响应",
+    "nextIntention": "尝试更早转向、抓到下一条鱼或躲开对手",
+    "safeStop": "手机暂停按钮及后台自动暂停；最佳成绩和补给存档，刷新本局重开。",
+    "checkpoints": [
+      {
+        "id": "start",
+        "withinMs": 5000,
+        "visibleCue": "▶ 开始按钮及简单操作图标",
+        "sceneTarget": "开始",
+        "input": "tap",
+        "visibleResult": "原生游戏开始运行",
+        "nextReason": "前方鱼/弯道/对手可见"
+      },
+      {
+        "id": "move",
+        "withinMs": 15000,
+        "visibleCue": "左右/摇杆触控区域",
+        "sceneTarget": "移动或转向",
+        "input": "hold",
+        "visibleResult": "原场景角色/车身方向改变",
+        "nextReason": "调整路线或瞄准下一目标"
+      },
+      {
+        "id": "result",
+        "withinMs": 30000,
+        "visibleCue": "得分/鱼数/击杀或弹药",
+        "sceneTarget": "可见目标",
+        "input": "hold",
+        "visibleResult": "原生计数与场景反馈改变",
+        "nextReason": "继续完成当前短局"
+      }
+    ]
+  },
+  "loops": [
+    {
+      "id": "source-core",
+      "scale": "core",
+      "decision": "用简单触控对当前可见场景作选择",
+      "action": "持续转向、移动或开火",
+      "visibleChange": "原项目保留的场景、得分和终局",
+      "nextIntention": "同一玩法再试一次更早的操作",
+      "variation": "已有源码关卡、随机生成和原生行为；不新建游戏引擎",
+      "claim": "hypothesis",
+      "evidenceRefs": [
+        "source-note"
+      ]
+    }
+  ],
+  "links": [],
+  "progression": {
+    "savedState": "本机最佳成绩、局数、补给与已发广告奖励的局号",
+    "effectOnNextCore": "最佳成绩提供重试目标；骑行补给可兑换一局前段追鱼辅助",
+    "safeExit": "原生游戏后台暂停，刷新保留成长并明确重开未结束本局"
+  },
+  "endingValue": "原生结算或90秒抓鱼挑战结算后可重试",
+  "cases": [
+    {
+      "id": "first-action-feedback",
+      "tag": "first-action-feedback",
+      "given": "当前目标游戏的新浏览器，原生默认1倍速度",
+      "when": "用可见触屏first-action-feedback操作",
+      "thenState": "该具体对象/状态按绑定源码和手机适配合同改变",
+      "thenVisible": "对应角色、得分/弹药、暂停或结算反馈可见",
+      "contrastAction": "取消操作或使用另一可见输入",
+      "contrastExpected": "取消不继续移动/不发奖励；另一输入产生不同结果",
+      "evidenceRefs": [
+        "source-note"
+      ]
+    },
+    {
+      "id": "safe-exit-or-recovery",
+      "tag": "safe-exit-or-recovery",
+      "given": "当前目标游戏的新浏览器，原生默认1倍速度",
+      "when": "用可见触屏safe-exit-or-recovery操作",
+      "thenState": "该具体对象/状态按绑定源码和手机适配合同改变",
+      "thenVisible": "对应角色、得分/弹药、暂停或结算反馈可见",
+      "contrastAction": "取消操作或使用另一可见输入",
+      "contrastExpected": "取消不继续移动/不发奖励；另一输入产生不同结果",
+      "evidenceRefs": [
+        "source-note"
+      ]
+    },
+    {
+      "id": "input-response",
+      "tag": "input-response",
+      "given": "当前目标游戏的新浏览器，原生默认1倍速度",
+      "when": "用可见触屏input-response操作",
+      "thenState": "该具体对象/状态按绑定源码和手机适配合同改变",
+      "thenVisible": "对应角色、得分/弹药、暂停或结算反馈可见",
+      "contrastAction": "取消操作或使用另一可见输入",
+      "contrastExpected": "取消不继续移动/不发奖励；另一输入产生不同结果",
+      "evidenceRefs": [
+        "source-note"
+      ]
+    },
+    {
+      "id": "loss-attribution",
+      "tag": "loss-attribution",
+      "given": "当前目标游戏的新浏览器，原生默认1倍速度",
+      "when": "用可见触屏loss-attribution操作",
+      "thenState": "该具体对象/状态按绑定源码和手机适配合同改变",
+      "thenVisible": "对应角色、得分/弹药、暂停或结算反馈可见",
+      "contrastAction": "取消操作或使用另一可见输入",
+      "contrastExpected": "取消不继续移动/不发奖励；另一输入产生不同结果",
+      "evidenceRefs": [
+        "source-note"
+      ]
+    },
+    {
+      "id": "retry-learning",
+      "tag": "retry-learning",
+      "given": "当前目标游戏的新浏览器，原生默认1倍速度",
+      "when": "用可见触屏retry-learning操作",
+      "thenState": "该具体对象/状态按绑定源码和手机适配合同改变",
+      "thenVisible": "对应角色、得分/弹药、暂停或结算反馈可见",
+      "contrastAction": "取消操作或使用另一可见输入",
+      "contrastExpected": "取消不继续移动/不发奖励；另一输入产生不同结果",
+      "evidenceRefs": [
+        "source-note"
+      ]
+    },
+    {
+      "id": "mobile-scene-action",
+      "tag": "mobile-scene-action",
+      "given": "当前目标游戏的新浏览器，原生默认1倍速度",
+      "when": "用可见触屏mobile-scene-action操作",
+      "thenState": "该具体对象/状态按绑定源码和手机适配合同改变",
+      "thenVisible": "对应角色、得分/弹药、暂停或结算反馈可见",
+      "contrastAction": "取消操作或使用另一可见输入",
+      "contrastExpected": "取消不继续移动/不发奖励；另一输入产生不同结果",
+      "evidenceRefs": [
+        "source-note"
+      ]
+    },
+    {
+      "id": "default-speed-opening",
+      "tag": "default-speed-opening",
+      "given": "当前目标游戏的新浏览器，原生默认1倍速度",
+      "when": "用可见触屏default-speed-opening操作",
+      "thenState": "该具体对象/状态按绑定源码和手机适配合同改变",
+      "thenVisible": "对应角色、得分/弹药、暂停或结算反馈可见",
+      "contrastAction": "取消操作或使用另一可见输入",
+      "contrastExpected": "取消不继续移动/不发奖励；另一输入产生不同结果",
+      "evidenceRefs": [
+        "source-note"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "source-note",
+      "targetId": "cf-transport-ship",
+      "version": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "kind": "source",
+      "file": {
+        "path": "reference/source-review.json",
+        "sha256": "04134aff2b92d785ab0775b9215f2ec2c8e89624d6e2282efc1c0cef29fda99b"
+      },
+      "locator": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/touch.js#L4 https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/game.js#L132"
+    }
+  ],
+  "openQuestions": [
+    "真实手机、TapTap H5宿主广告、原作者代码授权与第三方IP尚待确认。"
+  ],
+  "measurements": {
+    "enjoyment": "NOT_RUN",
+    "voluntaryContinuation": "NOT_RUN",
+    "nextDayReturn": "NOT_RUN",
+    "retrospectiveValue": "NOT_RUN"
+  }
+}

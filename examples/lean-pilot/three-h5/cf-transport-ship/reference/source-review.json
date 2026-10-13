@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "gameId": "cf-transport-ship",
+  "revision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "authority": "PINNED_SOURCE_READ",
+  "claims": [
+    {
+      "id": "fps-touch",
+      "text": "已有左摇杆、右侧滑动视角、开火及换弹按钮。",
+      "file": "cf-transport-ship/src/touch.js",
+      "line": 4,
+      "fileSha256": "8130f9032d881cb682c74ec65c107b05bd13784c60c6accba82f852d035e1ad0",
+      "sourceRef": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/touch.js#L4"
+    },
+    {
+      "id": "fps-end",
+      "text": "团队目标击杀及时间上限决定原生终局；死亡后延迟复活。",
+      "file": "cf-transport-ship/src/game.js",
+      "line": 132,
+      "fileSha256": "d2141fd61af6df30d4a46c3ecf74d78fcc8ec960ac70156d298b64e25fb9a126",
+      "sourceRef": "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/cf-transport-ship/src/game.js#L132"
+    }
+  ],
+  "unknowns": [
+    "上游代码商业许可未确认；所有引用仅支持本地私有原工程验证。",
+    "并非完整逆向复刻或第三方IP授权。"
+  ]
+}

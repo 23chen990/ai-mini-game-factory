@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "gameId": "h5-qq-mobile-20261013",
+  "profile": "ACTION_FEEL",
+  "secondaryProfile": null,
+  "mode": "discover",
+  "platform": "web-lite",
+  "progression": "persistent",
+  "changedAreas": [
+    "controls",
+    "storage",
+    "platform"
+  ],
+  "template": null,
+  "repair": null,
+  "budget": {
+    "maxCashCents": 0,
+    "maxWorkMinutes": 180,
+    "maxFixAttempts": 3
+  },
+  "experience": {
+    "mode": "action",
+    "primaryOrientation": "landscape",
+    "portraitHandling": "pause-and-rotate",
+    "primaryInput": "direct-control",
+    "defaultSpeed": 1,
+    "minTargetPx": 48
+  }
+}

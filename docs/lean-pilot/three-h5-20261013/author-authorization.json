@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "sourceRepository": "https://github.com/riba2534/claude-opus-5-5-demo",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "games": ["qq-speed", "cf-transport-ship", "pelican-bike"],
+  "authority": "USER_CONFIRMATION",
+  "userStatement": "现在没有版权问题，原作者已授权",
+  "authorPermission": "GRANTED_USER_CONFIRMED",
+  "copyrightIssues": "RESOLVED_USER_CONFIRMED",
+  "approvedTaskScope": "Reuse the existing source for this user's mobile H5 adaptation and TapTap IAA test preparation.",
+  "originalGrantDocument": "NOT_ARCHIVED_IN_REPOSITORY",
+  "independentlyVerifiedStandardOpenSourceLicense": false,
+  "platformApproval": "NOT_RUN",
+  "liveAdPermission": "NOT_RUN",
+  "note": "The user confirmation is accepted for continuing authorized work. Keep the original authorization and attribution terms for TapTap review; do not fabricate a public OSS license, financial qualification or platform approval. Historical build/research snapshots predate this confirmation."
+}

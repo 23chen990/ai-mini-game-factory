@@ -1,4 +1,3 @@
-/* global process */
 /**
  * Evidence-first gate before a prototype is built. This never runs REA, never
  * executes untrusted reference code, and never certifies fun or publication.
@@ -11,7 +10,6 @@ const isRecord = v => v !== null && typeof v === 'object' && !Array.isArray(v);
 const nonblank = v => typeof v === 'string' && v.trim().length > 0 && v.length <= 4000;
 const safeId = v => typeof v === 'string' && /^[a-z0-9][a-z0-9-]{0,79}$/.test(v);
 const hex40 = v => typeof v === 'string' && /^[a-f0-9]{40}$/.test(v);
-const hex64 = v => typeof v === 'string' && /^[a-f0-9]{64}$/.test(v);
 const distinct = values => new Set(values).size === values.length;
 const keys = (value, required, optional = []) => isRecord(value) &&
   required.every(k => Object.hasOwn(value, k)) &&
