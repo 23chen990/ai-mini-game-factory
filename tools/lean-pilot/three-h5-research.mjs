@@ -1,4 +1,4 @@
-/* global process, console */
+/* global process, console, Buffer */
 /**
  * Isolated study helper. Does not execute a reference game, download URLs,
  * launch REA or grant a gameplay/build/release gate. Uses only Node built-ins.
@@ -18,7 +18,6 @@ export const TARGETS = Object.freeze({
 const MB = 1024 * 1024;
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
 const assertTarget = id => { if (!Object.hasOwn(TARGETS, id)) throw new Error('unknown-target:' + id); };
-const checked = (value, label) => { if (!value) throw new Error('invalid:' + label); return value; };
 
 // Short literal anchors: never store or distribute third-party source files.
 export const SOURCE_RULES = Object.freeze([
