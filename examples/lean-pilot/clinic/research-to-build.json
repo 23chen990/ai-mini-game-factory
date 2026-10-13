@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "gameId": "clinic-first",
+  "referenceId": "corsixth-queue-gp-reference",
+  "sourceRevision": "06b42b221c8da5497f07504fd01039090ccdb3d5",
+  "sourcePermission": {
+    "basis": "OPEN_SOURCE_CODE_REVIEW",
+    "notes": "CorsixTH GitHub commit pinned. Mechanisms only; separate license review before copying code/assets."
+  },
+  "inputs": {
+    "request": "request.json",
+    "research": "research.json",
+    "contract": "contract.json"
+  },
+  "mechanisms": [
+    {
+      "id": "queue-separation",
+      "claimIds": [
+        "separate-queues"
+      ],
+      "loopId": "service",
+      "caseIds": [
+        "bottleneck-relief",
+        "signaled-pressure-recovery"
+      ],
+      "originalDesign": "Keep incoming vs waiting vs serving phases as original simplified clinic states.",
+      "playerVisibleFeedback": "Queue signs and moving people show workload and relief on screen.",
+      "failureRecovery": "Allow worker reassignment before the visible deadline."
+    },
+    {
+      "id": "doctor-time",
+      "claimIds": [
+        "service-time"
+      ],
+      "loopId": "investment",
+      "caseIds": [
+        "progression-impact",
+        "resource-tradeoff"
+      ],
+      "originalDesign": "Use original timings; upgrade changes throughput with a visible cash tradeoff.",
+      "playerVisibleFeedback": "A visible worker speed change and queue reduction follow the upgrade.",
+      "failureRecovery": "Allow choosing staff allocation if funds cannot purchase equipment."
+    }
+  ],
+  "counterfactual": {
+    "seed": "clinic-seed-a",
+    "initialState": "default-clinic-opening",
+    "timeLimitSeconds": 180,
+    "visibleMetrics": [
+      "queue-length",
+      "income",
+      "completed-patients",
+      "lost-patients"
+    ],
+    "scenarios": [
+      {
+        "id": "idle",
+        "role": "no-action",
+        "inputMode": "NORMAL_VISIBLE_INPUT",
+        "actions": [],
+        "expectedVisibleDifference": "Unstaffed queues accumulate visibly; worse outcome than appropriate dispatch."
+      },
+      {
+        "id": "one",
+        "role": "single-action",
+        "inputMode": "NORMAL_VISIBLE_INPUT",
+        "actions": [
+          {
+            "atSeconds": 6,
+            "input": "tap",
+            "target": "#assign-intake"
+          }
+        ],
+        "expectedVisibleDifference": "Initial queue relief occurs, followed by visible later bottleneck without adaptation."
+      },
+      {
+        "id": "active",
+        "role": "adaptive",
+        "inputMode": "NORMAL_VISIBLE_INPUT",
+        "actions": [
+          {
+            "atSeconds": 6,
+            "input": "tap",
+            "target": "#assign-intake"
+          },
+          {
+            "atSeconds": 34,
+            "input": "tap",
+            "target": "#assign-care"
+          },
+          {
+            "atSeconds": 75,
+            "input": "tap",
+            "target": "#assign-intake"
+          }
+        ],
+        "expectedVisibleDifference": "The clinic visibly handles changing bottlenecks; comparative outcomes are measured, not presumed."
+      }
+    ]
+  },
+  "rea": {
+    "status": "NOT_RUN",
+    "job": null,
+    "export": null,
+    "review": null
+  }
+}
