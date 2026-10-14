@@ -60,7 +60,7 @@ export function patchRaceItems(source) {
   return imported+'\n'+source.replace(anchor, "    "+hook+"\n"+anchor);
 }
 
-/** Insert the generated IIFE without applying String.replace's /** Insert the generated IIFE without applying String.replace's $& substitutions. */ substitutions. */
+/** Insert the generated IIFE without replacement-string token expansion. */
 export function injectRaceBundle(html, bundleText) {
   if (typeof bundleText !== 'string' || typeof html !== 'string' || html.split('</body>').length !== 2)
     throw Error('Expected exactly one HTML body closing tag and a JavaScript bundle');
