@@ -82,7 +82,10 @@ export function awardCornerPass(game) {
   if (!game?.player || game.state !== 'race') return 'none';
   const p = game.player;
   if (game.itemMode && game.items && p.items.length < 2) {
-    game.items.giveRandom(p, game.standings.indexOf(p) + 1, game.racers.length);
+    // Keep a genuine item-box pickup distinct from an earned corner-pass gift.
+    game.__RACE_BONUS_DROP__ = true;
+    try { game.items.giveRandom(p, game.standings.indexOf(p) + 1, game.racers.length); }
+    finally { game.__RACE_BONUS_DROP__ = false; }
     return 'item';
   }
   if (!game.itemMode && p.slowTime <= 0 && p.spin <= 0 && p.smallBoost <= 0) {
