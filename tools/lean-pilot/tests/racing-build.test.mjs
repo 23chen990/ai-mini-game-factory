@@ -45,3 +45,11 @@ test('race text labels remove known third-party signboards in build output', () 
   for (const name of ['11城','SPEEDQQ.COM','QQ飞车','情迷爱琴海','法老金字塔','雪地大冒险']) assert.ok(!got.includes(name), name);
   assert.equal(api.neutralizeRaceBranding(got), got);
 });
+
+test('instrument clean native drift without changing dynamics, and reject unknown source', () => {
+  const native = "  this.emit('driftEnd', { time: this.driftTime });";
+  const result = api.annotateDriftResult(native);
+  assert.match(result, /time: this.driftTime, clean/);
+  assert.equal(api.annotateDriftResult(result), result);
+  assert.throws(() => api.annotateDriftResult('no drift logic'), /anchor changed/);
+});
