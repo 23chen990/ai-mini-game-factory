@@ -74,3 +74,27 @@ test('actual esbuild script injection keeps valid $& tokens and exactly one clos
   assert.equal(api.injectRaceBundle(native,'x').includes('<script>x</script></body>'),true);
   assert.throws(()=>api.injectRaceBundle('<main>missing body</main>','ok'),/one HTML body/);
 });
+
+test('V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes',()=>{
+  const layouts = "export const LAYOUTS = { city: {}, egypt: {}, snow: {}, aegean: {} };";
+  const patchedLayouts = api.patchRaceLayouts(layouts);
+  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS\)/);
+  assert.equal(api.patchRaceLayouts(patchedLayouts),patchedLayouts);
+  assert.throws(()=>api.patchRaceLayouts('const X = {};'), /Pinned track/);
+  const src = "import * as THREE from 'three';\nexport class ItemSystem {\n  constructor() {\n    this.foo=1;\n  }\n\n  reset() {}\n}";
+  const patched = api.patchRaceItems(src);
+  assert.match(patched, /upgradeItemBoxes\(this, THREE\)/);
+  assert.match(patched, /from '.\/race-item-visuals.mjs'/);
+  assert.equal(api.patchRaceItems(patched),patched);
+  assert.throws(()=>api.patchRaceItems('class OtherItems {}'),/Pinned item constructor/);
+});
+test('V3.1 model and spline modules are hashed into H5 build and kept scoped to racing',async()=>{
+  const source=await readFile(new URL('../racing-mobile-build.mjs', import.meta.url),'utf8');
+  for(const name of ['track-design.mjs','item-visuals.mjs','recovery.mjs'])
+    assert.ok(source.includes(name),name);
+  assert.ok(source.includes('patchRaceLayouts'));
+  assert.ok(source.includes('patchRaceItems'));
+  const runtime=await readFile(new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs',import.meta.url),'utf8');
+  assert.match(runtime,/game.items.applyMobileVisuals\?\.\(\)/);
+  assert.match(runtime,/new WrongWayRecovery\(\)/);
+});
