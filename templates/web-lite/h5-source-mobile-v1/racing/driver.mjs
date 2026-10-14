@@ -76,7 +76,7 @@ export class RaceDriver {
       const lead = wrap(p.h - ahead.hd) * p.driftDir;
       input.shift = safe && dir === p.driftDir && Math.abs(p.driftAngle) < .55 && lead < .18 && p.driftTime < 1.4 && dir * bend > .001;
     } else if (!p.drifting) {
-      input.shift = safe && p.s >= 18 && this.holdTime >= .2 && this.cooldown === 0 && Math.abs(p.steer) >= .35 && dir * bend > .0025 && !this.boost;
+      input.shift = safe && p.s >= 21 && this.holdTime >= .28 && this.cooldown === 0 && Math.abs(p.steer) >= .35 && dir * bend > .0032 && !this.boost;
     }
     if (this.wasDrifting && !p.drifting) {
       const session = this.session;
@@ -85,7 +85,8 @@ export class RaceDriver {
         this.boost = { delay: perfect ? 0 : .22, issued: false };
       }
       this.session = null;
-      this.cooldown = .35;
+      // Prevent multiple automatic micro-drifts inside one gentle corner.
+      this.cooldown = .82;
       input.shift = false;
     }
     if (this.boost && !this.boost.issued) {
