@@ -3,7 +3,7 @@ import { RaceDriver, TouchSteering } from './driver.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS } from './items.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey } from './career.mjs';
-import { clearNativeInput, settleNative, QualityMonitor, raceReady, stageTrackReady, tuneRaceFx } from './session.mjs';
+import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, raceReady, stageTrackReady, tuneRaceFx } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
@@ -26,6 +26,7 @@ let g, phase = 'ready', started = false, result = null, loading = true, previous
 let events = [], best = {};
 let lastDriftToastAt = -100, lastNoticeAt = -100;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1';
+const QUALITY_STORE = 'h5-qq-mobile-20261013:graphics-quality:v1';
 try { best = JSON.parse(localStorage.getItem(STORE) || '{}'); } catch { best = {}; }
 let storageRef;
 try { storageRef = localStorage; }
@@ -200,7 +201,12 @@ $('fuel-ad').addEventListener('click', async () => {
   renderLobby();
   $('note').textContent = out.status === 'completed' ? '加油成功，可以继续参赛' : '广告未完整播放或暂不可用，油量不变';
 });
-$('quality').addEventListener('change', () => { quality.manual = true;g.settings.quality = $('quality').value;g.setupQuality();g.save();$('quality-note').textContent = '已使用你选择的画质'; });
+$('quality').addEventListener('change', () => {
+  quality.manual = true;g.settings.quality = normalizeRaceQuality($('quality').value);
+  g.setupQuality();g.save();
+  try {localStorage.setItem(QUALITY_STORE,g.settings.quality);} catch { /* Private browsing stays playable. */ }
+  $('quality-note').textContent = '已保存画质偏好，下次打开继续生效';
+});
 for (const button of root.querySelectorAll('[data-race-direction]')) {
   button.addEventListener('pointerdown', e => {
     e.preventDefault();if (!g || phase !== 'race') return;
@@ -224,7 +230,10 @@ async function boot() {
   }
   if (!g) throw Error('赛道加载未完成，请刷新或使用支持 WebGL 的浏览器');
   const loadedMap = g.map?.id;
-  g.mobileMode = mobile;g.camMode = 1;g.settings.quality = 'mid';career.configure(g);g.setupQuality();
+  let rememberedQuality;
+  try {rememberedQuality = localStorage.getItem(QUALITY_STORE);} catch {rememberedQuality = null;}
+  g.mobileMode = mobile;g.camMode = 1;g.settings.quality = normalizeRaceQuality(rememberedQuality);
+  career.configure(g);g.setupQuality();
   career.patchNative(g);
   career.setupAd(window.__PLATFORM_META__ ?? { status: 'PENDING' }, window.tap);
   if (!window.__PLATFORM_META__) fetch('platform.json').then(r => r.ok ? r.json() : null).then(meta => {
