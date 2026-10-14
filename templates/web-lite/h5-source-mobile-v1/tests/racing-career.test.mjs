@@ -310,3 +310,15 @@ test('自动救援只影响完美三星，不额外扣油，不会误判为过�
   assert.equal(count,1);assert.equal(c.metrics.rescues,1);
   assert.equal(c.metrics.cleanPasses,0);
 });
+
+
+test('双键道具：背包只剩一件没有目标的护盾，超过18秒自动使用而非一直闲置',()=>{
+  const player={isPlayer:true,progress:100,d:100,s:35,spin:0,items:['shield'],drifting:false,finished:false};
+  const g={state:'race',itemMode:true,player,raceTime:3,racers:[player],standings:[player],
+    missileWarn:0,track:{curvAhead:()=>.01},items:{swap(){}}};
+  const auto=new AutoItems();
+  assert.equal(auto.frame(g),false);
+  g.raceTime=19;assert.equal(auto.frame(g),false,'preserve item for a useful moment');
+  g.raceTime=22;assert.equal(auto.frame(g),true,'eventual auto-use frees the only slot');
+  assert.equal(auto.frame(g),false,'cannot auto-use twice in same instant');
+});
