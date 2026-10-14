@@ -315,6 +315,9 @@ const matrixPaths = [
   { triage: 'head-triage-v3.json', matrix: 'head-reproduction-matrix-v3.json' },
   { triage: 'reward-trail-and-ci-triage-v3.json', matrix: 'reward-trail-and-ci-reproduction-matrix-v3.json' },
   { triage: 'clipped-route-touch-triage-v3.json', matrix: 'clipped-route-touch-reproduction-matrix-v3.json' },
+  { triage: 'native-pose-observation-triage-v3.json', matrix: 'native-pose-observation-reproduction-matrix-v3.json' },
+  { triage: 'qa-observation-latency-triage-v3.json', matrix: 'qa-observation-latency-reproduction-matrix-v3.json' },
+  { triage: 'compact-rider-overlay-triage-v3.json', matrix: 'compact-rider-overlay-reproduction-matrix-v3.json' },
 ];
 
 const { ProductExperienceContractSchema, PerceptualQaReportSchema, PerceptualQaGateSchema } = await tsImport('../../../src/schemas/product-experience.ts', import.meta.url);

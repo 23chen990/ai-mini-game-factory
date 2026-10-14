@@ -4,6 +4,19 @@ import {readFile} from 'node:fs/promises';
 import {URL} from 'node:url';
 import {parse} from 'yaml';
 import {preparedJumpSeen} from './queued-cue-observation.mjs';
+import {compactPresentationPassed,routePresentationPassed} from './qa-presentation.mjs';
+test('route text stays inside its card and adjacent rows never overlap',()=>{
+ const r={ready:true,rows:[{box:{x:12,y:200,right:308,bottom:280},contents:[{x:68,y:210,right:244,bottom:270}],titleFont:15},{box:{x:12,y:285,right:308,bottom:365},contents:[{x:68,y:295,right:244,bottom:355}],titleFont:15}]};
+ assert.equal(routePresentationPassed(r),true);
+ assert.equal(routePresentationPassed({...r,rows:[{...r.rows[0],contents:[{x:68,y:195,right:244,bottom:290}]},r.rows[1]]}),false,'Inherited fixed48px height lets title and mastery overflow');
+});
+test('compact mastery stays in the instrument area with all five readable goals',()=>{
+ const good={running:true,buttons:[{x:14,y:484,width:90,height:66,right:104,bottom:550},{x:114,y:484,width:90,height:66,right:204,bottom:550},{x:214,y:484,width:90,height:66,right:304,bottom:550}],font:12,bar:{x:12,y:122,right:308,bottom:164},goalBottom:118,radarLabel:{y:174},goalFonts:[12,12,12,12,12],bodyWidth:320};
+ assert.equal(compactPresentationPassed(good),true);
+ assert.equal(compactPresentationPassed({...good,bar:{...good.bar,y:412,bottom:470}}),false,'Old compact panel hides the rider');
+ assert.equal(compactPresentationPassed({...good,bar:{...good.bar,y:110}}),false,'Do not fix rider clipping by hiding primary goals');
+ assert.equal(compactPresentationPassed({...good,goalFonts:[12,12,12,12]}),false,'No omitted time or no-hit criterion');
+});
 test('prepared jump evidence requires the exact buffered obstacle and visible cue',()=>{
  const visible={queued:true,buttonVisible:true,feedbackVisible:true,feedback:'↟ 已准备起跳',bufferedJump:'l1-o1'};
  assert.equal(preparedJumpSeen([visible],'l1-o1'),true);

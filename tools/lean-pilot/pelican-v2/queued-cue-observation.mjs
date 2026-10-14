@@ -19,8 +19,8 @@ export function observePreparedJump() {
  };
  const observe=source=>{
   if(!button.classList.contains('queued'))return;
-  const feedback=document.querySelector('#co-feedback strong');
-  frames.push({at:window.performance.now(),source,queued:true,buttonVisible:visible(button,true),feedbackVisible:visible(feedback),feedback:feedback?.textContent??'',bufferedJump:window.__coast?.snapshot().bufferedJump??null});
+  const feedback=document.querySelector('#co-feedback strong'),feedbackPanel=feedback?.parentElement;
+  frames.push({at:window.performance.now(),source,queued:true,buttonVisible:visible(button,true),feedbackVisible:visible(feedback),feedbackOpacity:feedbackPanel?Number(window.getComputedStyle(feedbackPanel).opacity):null,feedback:feedback?.textContent??'',bufferedJump:window.__coast?.snapshot().bufferedJump??null});
   if(frames.length>256)frames.shift();
  };
  new MutationObserver(()=>observe('actual-control-class-mutation')).observe(button,{attributes:true,attributeFilter:['class']});

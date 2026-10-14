@@ -8,6 +8,7 @@ import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
 import {swipe,tapVisible} from './touch.mjs';
 import {observePreparedJump,preparedJumpSeen} from './queued-cue-observation.mjs';
+import {readCompactPresentation,compactPresentationPassed,readRoutePresentation,routePresentationPassed} from './qa-presentation.mjs';
 const engine=process.env.QA_ENGINE??'webkit',build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const dir=path.join(RUN,'attempts','attempt-'+build.attempt,'experience-'+engine);await mkdir(dir,{recursive:true});
 const driver=await readFile(new URL(import.meta.url));await writeFile(path.join(dir,'driver-source.mjs'),driver);
@@ -43,7 +44,7 @@ try{
    }
   }
   if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){await tap('[data-action="jump"]');const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Actual loaded-control class mutation, rendered frames and immediate DOM observation require visible unobscured button and prepared feedback for exact buffered l1-o1; no assumption that a later protocol reply precedes auto-launch.'});await shot('jump-queued');jumped=true;}}
+  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o1. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
@@ -90,21 +91,13 @@ const detour=await snap();await shot('safe-detour');
   return {ready:document.querySelector('#coast')?.dataset.phase==='ready',start:{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom},
    routeScrollable:route.scrollHeight>route.clientHeight,documentWidth:document.documentElement.scrollWidth};
  });
- check('small-phone-start-visible-and-menu-not-overflow',menu.ready&&menu.start.x>=0&&menu.start.bottom<=568&&menu.start.height>=36&&menu.documentWidth<=320,menu);
+ const routePresentation=await page.evaluate(readRoutePresentation);
+ check('small-phone-start-visible-and-menu-not-overflow',menu.ready&&menu.start.x>=0&&menu.start.bottom<=568&&menu.start.height>=36&&menu.documentWidth<=320&&routePresentationPassed(routePresentation),{...menu,routePresentation});
  await shot('small-phone-route-menu');
  await tap('#co-start');await page.waitForTimeout(450);
- const small=await page.evaluate(()=>{
-  const toBox=n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
-  const buttons=[...document.querySelectorAll('#co-controls button')].map(toBox);
-  const mastery=document.querySelector('#co-mastery');
-  const bar=toBox(mastery),font=parseFloat(window.getComputedStyle(mastery).fontSize);
-  return {running:document.querySelector('#coast')?.dataset.phase==='running',buttons,bar,font,
-   controlTop:Math.min(...buttons.map(b=>b.y)),bodyWidth:document.documentElement.scrollWidth,
-   canvas:toBox(document.querySelector('canvas'))};
- });
+ const small=await page.evaluate(readCompactPresentation);
  check('small-phone-touch-buttons-and-mastery-readable',
-  small.running&&small.buttons.length===3&&small.buttons.every(b=>b.width>=54&&b.height>=44&&b.x>=0&&b.right<=320&&b.bottom<=568)&&
-  small.font>=12&&small.bar.right<=320&&small.bar.bottom<small.controlTop&&small.bodyWidth<=320,small);
+  compactPresentationPassed(small),small);
  await shot('small-phone-running');
 }catch(e){report.errors.push(e.stack);await shot('failure').catch(()=>{});}
 finally{const video=await page.video().path();await ctx.close();report.video={path:path.relative(RUN,video),sha256:sha(await readFile(video))};await browser.close();server.close();report.passed=report.checks.every(c=>c.passed)&&report.errors.length===0;await json(path.join(dir,'report.json'),report);if(!report.passed)process.exitCode=1;}

@@ -35,9 +35,12 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
  #coast[data-phase="ready"] .co-card h1{font-size:24px!important;margin:0 0 4px!important}
  #coast[data-phase="ready"] .co-card h1 br,#coast[data-phase="ready"] .co-eyebrow,#coast[data-phase="ready"] #co-notice:empty{display:none}
  #coast[data-phase="ready"] #co-copy{font-size:11px;margin:5px 0}
- #co-feedback.catch,#co-feedback.tutorial{top:139px;bottom:auto;left:12px;padding:4px 8px}
+ .co-goal{padding:4px 6px}.co-goal span,.co-goal b{line-height:1.1}.co-goal progress{height:3px;margin-top:3px}
+ #co-feedback.catch,#co-feedback.tutorial{top:246px;bottom:auto;left:12px;padding:4px 8px}
  #co-feedback.catch strong,#co-feedback.tutorial strong{font-size:12px}
  #co-radar{top:190px}#co-radar-label{top:174px}
- #co-mastery{bottom:98px}
+ #co-mastery{top:130px;bottom:auto;left:12px;max-width:calc(100% - 24px);padding:3px 5px;gap:2px}
+ #co-mastery span{padding:1px 3px}
 }
+@media(orientation:portrait){#coast[data-phase="ready"] .co-route{grid-auto-rows:min-content;align-content:start}#coast[data-phase="ready"] .co-route button{height:auto!important;min-height:66px!important}#coast[data-phase="ready"] .co-route button span{min-width:0}}
 @media(orientation:landscape){#coast[data-phase="ready"] .co-card{height:calc(100vh - 24px);max-height:calc(100vh - 24px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);display:flex;flex-direction:column;overflow:hidden}#coast[data-phase="ready"] .co-card>*{flex-shrink:0}#coast[data-phase="ready"] .co-eyebrow{display:none}#coast[data-phase="ready"] .co-card h1{margin:0 0 4px!important}#coast[data-phase="ready"] .co-card h1 br{display:none}#coast[data-phase="ready"] .co-rules span{flex-direction:row;align-items:center;gap:4px;font-size:10px}#coast[data-phase="ready"] .co-route{flex:1 1 auto;min-height:0;overflow:auto;padding:3px 2px;overscroll-behavior:contain}#coast[data-phase="ready"] #co-notice:empty{display:none}}
