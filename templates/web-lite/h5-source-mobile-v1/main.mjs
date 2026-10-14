@@ -72,7 +72,7 @@ async function boot() {
         };
         g.__mkAwmKillHooked = true;
       }
-      native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(); };
+      native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,travel:fpsUx?.distanceMeters()||0}); native.simulatedSeconds = () => g.time; fpsUx = createFpsMobileUx(g, root, document); break; }
     await wait();
   }
