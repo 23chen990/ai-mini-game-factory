@@ -185,6 +185,13 @@ try {
   // Explicit QA-only synthetic DNF. This tests lobby recovery, NEVER counts as a completed race.
   await page.evaluate(() => window.game.showResults());
   await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
+  // Only the "返回选关" button is visible after results; the stage menu is intentionally hidden.
+  await page.locator('#race-lobby').tap();
+  await page.waitForFunction(() => {
+    const g=window.game;
+    return document.querySelector('#race-kit')?.dataset.phase==='ready' &&
+      g?.state==='menu' && !g.player && g.map?.id==='snow';
+  },null,{timeout:12000});
   await page.selectOption('#race-stage','0');
   await page.waitForFunction(() => {
     const g=window.game;
