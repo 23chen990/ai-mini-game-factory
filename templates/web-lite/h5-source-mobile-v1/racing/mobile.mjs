@@ -1,4 +1,4 @@
-/* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout */
+/* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout, fetch */
 import { RaceDriver, TouchSteering } from './driver.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked } from './career.mjs';
