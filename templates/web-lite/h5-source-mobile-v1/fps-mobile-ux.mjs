@@ -180,6 +180,11 @@ export function createFpsMobileUx(game, root, doc) {
   return {
     onStart(challenge) {
       activeChallenge = challenge || null;
+      guide.textContent = activeChallenge?.kind === 'kills'
+        ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先点开镜，再滑动瞄准开火'
+        : activeChallenge?.kind === 'survive'
+          ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手移动躲避，右侧观察敌人'
+          : '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手前进，右侧瞄准并开火';
       started = performance.now();
       nextUpdate = 0;
       lastBoard = '';
