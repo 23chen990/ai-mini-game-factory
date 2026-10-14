@@ -275,3 +275,22 @@ test('thinned native item routes dispose deleted box geometries, leave shared sk
   assert.equal(meshClean,12);assert.equal(materialClean,0);
   assert.equal(system.boxes.length,8);
 });
+
+test('career skilled opponents stay competitive after repeated player crashes without changing grid or progress',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  for(let i=0;i<5;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  c.setStage(5);g.racers[1].skill=.85;g.racers[2].skill=1.05;
+  const before=g.racers.map(r=>r.progress);c.begin(g);
+  assert.ok(Math.abs(g.racers[1].skill-1.18)<1e-9);
+  assert.ok(Math.abs(g.racers[2].skill-1.34)<1e-9);
+  assert.deepEqual(g.racers.map(r=>r.progress),before);
+  assert.equal(g.player.skill,undefined);
+});
+test('career expert skill band and named boss escalate while tutorial difficulty stays native',()=>{
+  const c=new RacingCareer(memory()),g=game();g.racers[1].skill=.55;g.racers[2].skill=.75;
+  c.begin(g);assert.equal(g.racers[1].skill,.55);assert.equal(g.racers[2].skill,.75);
+  for(let i=0;i<12;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  c.setStage(12);g.racers[1].skill=1.2;g.racers[2].skill=1.38;c.begin(g);
+  assert.equal(c.boss.skill,1.58);
+  assert.ok(Math.abs(g.racers[2].skill-1.54)<1e-9);
+});

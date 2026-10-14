@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "overall": "BLOCKED",
+  "findings": [
+    {
+      "id": "upstream-revision-and-package-metadata",
+      "status": "PASS",
+      "observation": "Observed: the supplied upstream checkout HEAD is exactly 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8. At that revision qq-speed/package.json declares license ISC, author is empty, and private is true. This verifies the inspected code identity and metadata only; private means npm publication is refused, not that app-store commercial rights are granted or denied.",
+      "evidence": [
+        "/private/tmp/three-h5-study-20261013-d6UWHt/upstream: git rev-parse HEAD = 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/package.json#L11-L20",
+        "https://docs.npmjs.com/cli/v11/configuring-npm/package-json#private (npm documents private:true as refusing npm publish)",
+        "/private/tmp/three-h5-study-20261013-d6UWHt/upstream/qq-speed/package.json:11-20"
+      ],
+      "requiredAction": "Keep this immutable source revision in the release inventory; do not interpret the ISC field or private flag as proof of rights in every bundled work."
+    },
+    {
+      "id": "isc-notice-and-rights-chain",
+      "status": "BLOCKED",
+      "observation": "Observed: neither the upstream repository root nor qq-speed contains a LICENSE/NOTICE file at the pinned revision; the package declares ISC but has an empty author field. The exact attempt-10 workspace contains only game/LICENSE.three.txt among license/notice-named files; its final H5 embeds the Three.js MIT notice, but no ISC copyright/permission notice. The standard ISC text requires a copyright owner/year and says copies must include the copyright and permission notices. Inference: ISC is a declaration for package software if made by an authorized rights holder; it does not establish rights to third-party characters, marks, or map expression. Do not conclude that package ISC alone clears all assets.",
+      "evidence": [
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/package.json#L11-L19",
+        "https://github.com/riba2534/claude-opus-5-5-demo/tree/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed (pinned tree; no LICENSE or NOTICE file)",
+        "/private/tmp/three-h5-study-20261013-d6UWHt/upstream: git ls-tree -r --name-only 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8 qq-speed | rg -i \"license|notice|copying\" returned no matches; repository root lists only .gitignore, README.md, and the three game folders",
+        "https://spdx.org/licenses/ISC.html#licenseText (ISC text requires copyright and permission notices)",
+        "https://docs.npmjs.com/cli/v11/configuring-npm/package-json#license (npm says license metadata identifies package terms)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/package.json#L14-L20 (ISC declaration; author empty; private true)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/LICENSE.three.txt#L1-L21 (only the Three.js MIT notice; SHA-256 4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/index.html#L174-L197 (embedded Three.js MIT notice; no ISC notice)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace: license/notice filename scan found only game/LICENSE.three.txt",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/tools/lean-pilot/racing-mobile-build.mjs#L115-L118 (builder inserts the Three.js MIT text only)"
+      ],
+      "requiredAction": "Archive the original rights holder's permission or complete license notice with owner/year and terms, and include required ISC attribution text with source and bundled H5. Separately clear map, character, and trademark rights; the package field cannot do that for works the author does not own."
+    },
+    {
+      "id": "author-permission-scope",
+      "status": "UNKNOWN",
+      "observation": "Observed: a prior authorization record stores the user's statement '原作者已授权' and marks permission GRANTED_USER_CONFIRMED for mobile H5 adaptation and TapTap IAA preparation. The same record says the original grant document is NOT_ARCHIVED_IN_REPOSITORY and independently verified standard OSS license is false. The record supports continuing this authorized work, but the actual grant text, commercial redistribution scope, attribution terms, and authority over third-party game IP remain unknown.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory/docs/lean-pilot/three-h5-20261013/author-authorization.json#L3-L15 (SHA-256 638f1a47019523c768a1c92a71085f6bce974331f69710c0551c4bf6cd5502c9)",
+        "https://github.com/23chen990/ai-mini-game-factory/blob/980a2669656783f5ffdb4ea811f1a71c24e417ff/docs/lean-pilot/three-h5-20261013/author-authorization.json#L6-L15",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/docs/race-two-button-20261014/open-source-research.json#L83-L118 (records user-confirmed permission and says archive the original grant for platform review)"
+      ],
+      "requiredAction": "Archive the original author's grant with explicit modification, commercial distribution, standalone H5/source, attribution, and platform terms; document separately whether that person can authorize any referenced Tencent or other third-party content."
+    },
+    {
+      "id": "threejs-mit-attribution",
+      "status": "PASS",
+      "observation": "Observed in the exact requested workspace: attempt-10 standalone H5 racing-two-button-fec68179be2f.html embeds the full Three.js MIT notice, and game/LICENSE.three.txt is byte-identical to the pinned three@0.169.0 package LICENSE (SHA-256 4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454). The raw source build at source/qq-speed/dist/index.html has no embedded notice because build.mjs sets legalComments:\"none\"; its distribution status is not established, so do not ship that intermediate as a standalone package without adding the notice.",
+      "evidence": [
+        "https://github.com/mrdoob/three.js/blob/37d6f280a5cd642e801469bb048f52300d31258e/LICENSE (pinned Three.js MIT notice)",
+        "https://threejs.org/license/ (official Three.js license page)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/LICENSE.three.txt (SHA-256 4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454); byte-identical to /Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/LICENSE",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/index.html#L174-L197 (embedded MIT notice)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/racing-two-button-fec68179be2f.html (attempt-10 standalone H5 SHA-256 c7c3eba66f63b8b6cf477ceeb51b229c4f3129bf91f9203cd028a4d82597c418; embedded notice verified)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/build.mjs#L4-L18 (esbuild legalComments:\"none\"; raw dist build has no Three.js notice; dist/index.html SHA-256 3dc87e0b0fe3d7e244533ac26672e2ba34ef234d58eae6f801e63755ef3d9f2b0)"
+      ],
+      "requiredAction": "Keep the full notice in the standalone H5 and any eventual platform package. Add it to source/qq-speed/dist/index.html before distributing that raw build; keep the ISC/source rights issue separately unresolved until its notice and grant are documented."
+    },
+    {
+      "id": "branding-neutralization-output",
+      "status": "BLOCKED",
+      "observation": "Observed in the exact attempt-10 output: the natural startup screenshot shows the new player-facing heading 双键飞驰 and generic stage label 01 · 城市起航, with no visible literal QQ飞车, QQ Speed, or SPEEDQQ.COM. However, the emitted H5 still embeds the legacy menu labels 飞车 3D, 双键赛车 同人还原, and 非官方同人作品，致敬 双键赛车, plus GitHub/X author links. Its bundled map props also retain rendered-sign strings SPEED / 极速飞车 and AEGEAN. The target HTML includes data-reference-game=\"qq-speed\". Thus some names were changed, but the package still carries source-identifying/fan-game content; this observation does not establish rights or commercial clearance. The report does not establish whether every legacy menu element is reachable from the current default journey.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/artifacts/build-racing.json#L6-L13,L30-L33 (attempt 10, buildHash fec68179be2f3b3b40a362027a97018081f35d7b3db2d5871ea2ccbad6866829, trial SHA-256 c7c3eba66f63b8b6cf477ceeb51b229c4f3129bf91f9203cd028a4d82597c418)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/baseline-attempt10/startup.png (exact-run startup evidence; visible heading 双键飞驰 and stage 01 · 城市起航)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/index.html#L2,L6-L7 (internal qq-speed reference metadata; neutral product title and description)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/index.html#L238,L245-L254 (embedded legacy menu labels, fan-game copy, and GitHub/X links)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/index.html#L6-L7,L215,L223-L254 (source title/description, author links, and menu/footer copy)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/maps.js#L1-L3,L27-L55 (official-map-art reference and named theme descriptions)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/props.js#L603,L886 (SPEED / 极速飞车 billboard text and AEGEAN sign strings remain in bundled scene code)"
+      ],
+      "requiredAction": "Before commercial release, decide a genuinely original player-facing identity and replace remaining source-identifying/fan-game labels and in-scene text on all reachable paths. Preserve required source attribution in a proper legal notice rather than relying on UI wording; independently document the author grant and third-party rights. Do not treat text cleanup as commercial clearance."
+    },
+    {
+      "id": "residual-map-expression",
+      "status": "BLOCKED",
+      "observation": "Observed in the exact requested workspace: current maps.js still documents that its scenes reference the source game’s official map artwork, names distinctive scene elements, and retains four source-themed map descriptions. props.js still contains source-sign text. Most concretely, workspace/source/qq-speed/src/layouts.js is byte-identical to the pinned upstream layouts.js (SHA-256 5d2fbfc2f6f28b1c5d8c4646d12f149d057e2d305fd598a5387ea10f674b4b35), so the route control-point geometry remains unchanged. The attempt-10 startup screenshot shows the city environment in the output. Inference: visible name substitutions do not remove the source route layout and scene dressing. The protectability and ownership of particular elements have not been independently determined; this remains a commercial-clearance blocker, not a conclusion on legal ownership.",
+      "evidence": [
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/maps.js#L1-L3 (immutable upstream explicitly references official QQ Speed map artwork and specific scene elements)",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/layouts.js#L1-L50 (immutable upstream layout definitions)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/maps.js#L1-L3,L27-L55,L74-L95 (exact workspace map-art reference and scene theme names)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/layouts.js (SHA-256 5d2fbfc2f6f28b1c5d8c4646d12f149d057e2d305fd598a5387ea10f674b4b35; byte-identical to the pinned upstream layouts.js)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/props.js#L603,L886 (remaining source-sign and themed billboard strings)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/baseline-attempt10/startup.png (scene rendered in the exact target run)",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/README.md#L58-L60 (upstream describes the four tracks as based on official map styles)"
+      ],
+      "requiredAction": "Before commercial release, independently rebuild the four route geometries and distinctive scene dressing from generic themes, or obtain rights-holder permission expressly covering the referenced map/character expression. Do not treat procedural generation, text replacement, or package ISC metadata as clearance."
+    },
+    {
+      "id": "platform-and-security-fit",
+      "status": "BLOCKED",
+      "observation": "Observed in the exact requested workspace and attempt-10 records: this is a web-lite H5 output, game/platform.json remains PENDING with no App ID or platform configuration, candidate.json marks commercial PLATFORM_QA_PENDING, and build-racing.json says publishable:false. The source package uses Wrangler/Cloudflare Pages. No WeChat/Douyin/TapTap adapter package or platform acceptance evidence is bound to this workspace; a dependency vulnerability audit and platform security review have not been performed. H5 runtime evidence does not establish mini-game package fit.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/candidate.json#L1-L13 (runtime web-lite; commercial platform QA pending; sourceRights are user-confirmed only)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/platform.json#L1 (status PENDING; AppID null)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/artifacts/build-racing.json#L30-L33 (attempt-10 trial; publishable:false)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/package.json#L1-L22 and /Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/wrangler.jsonc#L1-L10 (Wrangler/Cloudflare Pages-oriented source package)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/docs/race-two-button-20261014/open-source-research.json#L15-L31,L89-L105 (platform-fit findings and adapter gaps)"
+      ],
+      "requiredAction": "Treat the H5 as development/QA evidence only. Build and verify the selected mini-game adapter/package, complete platform and dependency/security review, and retain separate evidence for each target platform before release."
+    },
+    {
+      "id": "requested-workspace-binding",
+      "status": "PASS",
+      "observation": "Observed: the exact requested workspace now exists and is bound to the attempt-10 build. Its local build record pins sourceRevision 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8, buildHash fec68179be2f3b3b40a362027a97018081f35d7b3db2d5871ea2ccbad6866829, and trial racing-two-button-fec68179be2f.html with SHA-256 c7c3eba66f63b8b6cf477ceeb51b229c4f3129bf91f9203cd028a4d82597c418. Exact workspace game/index.html SHA-256 is b59fa2e6a638cce8e9c787a7598a5b73348cfdf6e211870286c7cf6ebf6a376e; raw source dist/index.html SHA-256 is 3dc87e0b0fe3d7e244533ac26672e2ba34ef234d58eae6f801e63755ef3d9f2b. This fixes path/evidence binding only and does not clear rights or platform concerns.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace (directory exists; contains game/ and source/qq-speed/)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/artifacts/build-racing.json#L6-L13,L30-L33 (attempt 10, fixed source revision, buildHash fec68179be2f3b3b40a362027a97018081f35d7b3db2d5871ea2ccbad6866829, trial name and exact trial SHA-256 c7c3eba66f63b8b6cf477ceeb51b229c4f3129bf91f9203cd028a4d82597c418)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/game/index.html (SHA-256 b59fa2e6a638cce8e9c787a7598a5b73348cfdf6e211870286c7cf6ebf6a376e)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/dist/index.html (SHA-256 3dc87e0b0fe3d7e244533ac26672e2ba34ef234d58eae6f801e63755ef3d9f2b)",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/baseline-attempt10/report.json#L1-L10 (attempt-10 natural run tied to the same buildHash)"
+      ],
+      "requiredAction": "Continue binding future QA and release evidence to this exact workspace, source revision, buildHash, and trial file hash. Do not treat workspace binding as commercial approval."
+    }
+  ],
+  "checkedAt": "2026-10-14T10:57:21.062Z"
+}
