@@ -2,14 +2,28 @@ import {makeLevel,LANES,BOUNDS} from './levels.mjs';
 import {springLane,riderFeel,cameraTarget} from './feel.mjs';
 import {fishPoints,normalizeBest,rateStars,updateBest} from './engagement.mjs';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+// Casual touch assist: early press arms only the next same-lane low barrier.
+// The actual jump is still integrated by the normal collision/physics loop.
+export const JUMP_BUFFER_SECONDS=1.45;
+export const JUMP_TRIGGER_METERS=3.0;
 const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500)r.events.shift();};
-export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,jumpedBarriers:0,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false}; }
+export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false}; }
 export function input(r,action) {
  if(action==='pause'&&r.phase==='running'){r.phase='paused';event(r,'pause');return;}
  if(action==='resume'&&r.phase==='paused'){r.phase='running';event(r,'resume');return;}
  if(r.phase!=='running'||r.stun>0)return;
- if(action==='left'||action==='right'){r.laneIndex=clamp(r.laneIndex+(action==='left'?-1:1),0,2);event(r,'lane-input',{lane:r.laneIndex});}
- if(action==='jump'&&r.y===0){r.vy=4.4;event(r,'jump');}
+ if(action==='left'||action==='right'){
+  const next=clamp(r.laneIndex+(action==='left'?-1:1),0,2);
+  if(next!==r.laneIndex)r.bufferedJump=null;
+  r.laneIndex=next;event(r,'lane-input',{lane:r.laneIndex});
+ }
+ if(action==='jump'&&r.y===0&&r.vy===0&&!r.bufferedJump){
+  const next=r.obstacles.filter(o=>o.kind==='barrier'&&!o.hit&&!o.passed&&o.lane===r.laneIndex&&o.x>r.distance).sort((a,b)=>a.x-b.x)[0];
+  const remaining=next?(next.x-r.distance)/Math.max(r.speed,.01):Infinity;
+  if(next&&remaining<=JUMP_BUFFER_SECONDS&&next.x-r.distance>JUMP_TRIGGER_METERS+.15&&Math.abs(r.lane-LANES[r.laneIndex])<.75){
+   r.bufferedJump=next.id;event(r,'jump-buffered',{objectId:next.id});
+  }else{r.vy=4.4;event(r,'jump');}
+ }
 }
 export function sweptHit(a,b,hx,hz) {
  let min=0,max=1;
@@ -33,6 +47,13 @@ function step(r,dt){
  const lateral=springLane(r.lane,r.laneV,LANES[r.laneIndex],dt,r.level.weather==='rain'?13.7:14.5);
  r.lane=clamp(lateral.position,LANES[0],LANES[2]);r.laneV=lateral.velocity;
  riderFeel(r,previousV,dt);
+ if(r.bufferedJump){
+  const target=r.obstacles.find(o=>o.id===r.bufferedJump);
+  if(!target||target.hit||target.passed||target.lane!==r.laneIndex||r.stun>0)r.bufferedJump=null;
+  else if(target.x-r.distance<=JUMP_TRIGGER_METERS){
+   const objectId=r.bufferedJump;r.bufferedJump=null;r.vy=4.4;event(r,'jump',{objectId,buffered:true});
+  }
+ }
  if(r.y>0||r.vy>0){r.vy-=13*dt;r.y=Math.max(0,r.y+r.vy*dt);if(r.y===0){r.vy=0;event(r,'land');}}
  for(const o of r.obstacles){
   const oldX=o.x,oldOZ=o.z??LANES[o.lane];if(o.z===undefined)o.z=oldOZ;

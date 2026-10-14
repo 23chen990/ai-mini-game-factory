@@ -7,7 +7,7 @@ import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
 import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
 import {LEVELS} from './runtime/levels.mjs';
-import {CAPTURE_HOLD_MS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
+import {CAPTURE_HOLD_MS,JUMP_WINDOW_SECONDS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
 
 const engine=process.env.QA_ENGINE??'webkit';
 if(!['webkit','chromium'].includes(engine))throw Error('QA_ENGINE must be webkit or chromium');
@@ -18,7 +18,7 @@ const report={
  schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,engine,
  runtime:`${engine} desktop browser with 390×844 mobile touch emulation at DPR ${qaDpr()}; not physical mobile`,
  performanceEvidenceNote:'Read-only RAF and renderer observations from desktop browser emulation; not physical-device proof.',
- inputDecisionSource:'Visible HUD distance, radar text/classes, lane indicator and harness elapsed time for the 1.7-second capture hold.',
+ inputDecisionSource:'Visible HUD distance, radar text/classes, lane indicator and harness elapsed time for the 2.6-second capture hold.',
  snapshotRole:'Acceptance and evidence only; snapshots never feed risk-policy input decisions.',
  storagePersistence:'A new temporary persistent browser profile is reused across per-level browser restarts; no storageState or direct save writes are used.',
  normalInputOnly:true,stateInjection:false,checks:[],actions:[],decisions:[],screenshots:[],snapshots:[],levels:[],videos:[],errors:[],passed:false,
@@ -77,7 +77,10 @@ async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,dec
  if(decisionView)action.visibleDecisionView=decisionView;
  if(policyDecision)action.policyDecision=policyDecision;
  report.actions.push(action);
- await page.locator(selector).tap({timeout:12000});
+ if(selector.startsWith('[data-action')&&before.value.phase!=='running')throw Error('Gameplay stopped: '+before.value.reason+' at '+before.value.distance+'m');
+  const rect=await page.locator(selector).evaluate(n=>{const b=n.getBoundingClientRect();return {x:b.left+b.width/2,y:b.top+b.height/2,w:b.width,h:b.height,disabled:n.disabled};});
+  if(rect.w<=0||rect.h<=0||rect.disabled)throw Error('Untouchable control '+selector);
+  await page.touchscreen.tap(rect.x,rect.y);
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  const after=await recordSnapshot(page,'after-touch-tap',{levelId,targetBarrierId});
  const touches=await page.evaluate(start=>window.__riskTouchEvidence?.slice(start)??[],touchStart);
@@ -277,7 +280,7 @@ async function runLevel(level){
 function verifyEpisode(level,episode){
  const prefix=`level-${level.id}-${episode.barrierId}`;
  check(`${prefix}-visible-jump-reward-route`,episode.hudSeen,{lane:episode.hudLane,snapshotId:episode.hudSnapshotId,screenshot:episode.approachScreenshot,distance:episode.distance});
- check(`${prefix}-one-jump-at-decimal-window`,Boolean(episode.jump)&&episode.jump.countdown<=.4&&episode.jump.countdown>=0,{jump:episode.jump});
+ check(`${prefix}-one-jump-at-decimal-window`,Boolean(episode.jump)&&episode.jump.countdown<=JUMP_WINDOW_SECONDS&&episode.jump.countdown>=0,{jump:episode.jump});
  const jumpActions=report.actions.filter(action=>action.levelId===level.id&&action.targetBarrierId===episode.barrierId&&action.selector==='[data-action="jump"]');
  check(`${prefix}-no-repeat-jump`,jumpActions.length===1,{jumpActions:jumpActions.map(action=>({at:action.at,selector:action.selector}))});
  const barrierSnapshot=report.snapshots.find(item=>item.id===episode.barrierClearSnapshotId);

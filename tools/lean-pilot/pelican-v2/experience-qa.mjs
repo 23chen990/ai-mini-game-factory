@@ -14,7 +14,9 @@ const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:tru
 const snap=()=>page.evaluate(()=>window.__coast.snapshot());
 const shot=async name=>{const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({path:path.relative(RUN,file),sha256:sha(await readFile(file))});};
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(name+' '+passed);};
-const tap=async selector=>{report.actions.push({at:new Date().toISOString(),type:'tap',selector});await page.locator(selector).tap();};
+const tap=async selector=>{report.actions.push({at:new Date().toISOString(),type:'tap',selector});const before=await snap();if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const rect=await page.locator(selector).evaluate(n=>{const b=n.getBoundingClientRect();return {x:b.left+b.width/2,y:b.top+b.height/2,w:b.width,h:b.height,disabled:n.disabled};});
+ if(rect.w<=0||rect.h<=0||rect.disabled)throw Error('Untouchable control '+selector);
+ await page.touchscreen.tap(rect.x,rect.y);};
 async function gesture(name,from,to,cancel=false){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
@@ -35,7 +37,7 @@ try{
   const seconds=i=>Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99);
   const risky=i=>v.lanes[i].danger&&seconds(i)<=3;
   let want=v.lane;
-  if(v.lanes[1].bonus&&(!jumped||!bonusShot)){want=1;if(!jumped&&v.lane===1&&seconds(1)<=.4){await tap('[data-action="jump"]');jumped=true;}}
+  if(v.lanes[1].bonus&&(!jumped||!bonusShot)){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.15){await tap('[data-action="jump"]');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
