@@ -27,8 +27,10 @@ test('unlock is linear, rank alone cannot pass an objective',()=>{
 });
 test('valid drift counts real driftEnd above .22 seconds',()=>{
   assert.equal(validDrift({type:'driftStart',data:{time:5}}),false);
-  assert.equal(validDrift({type:'driftEnd',data:{time:.19}}),false);
-  assert.equal(validDrift({type:'driftEnd',data:{time:.4}}),true);
+  assert.equal(validDrift({type:'driftEnd',data:{time:.19,clean:true}}),false);
+  assert.equal(validDrift({type:'driftEnd',data:{time:.4,clean:false}}),false);
+  assert.equal(validDrift({type:'driftEnd',data:{time:.4}}),false);
+  assert.equal(validDrift({type:'driftEnd',data:{time:.4,clean:true}}),true);
 });
 test('time / relay / boss / elimination gates never auto-pass',()=>{
   assert.ok(gradeStage(STAGES[6],result(),{}));
@@ -64,12 +66,14 @@ test('automatic item use waits for relevant player context and cooldown',()=>{
   p.items=['nitro'];p.drifting=true;assert.equal(auto.frame(g),false);
 });
 test('real corner overtakes need rank gains and curvature, cannot award repeated rewards',()=>{
-  const p={s:40,d:20,impact:0,airborne:false,stats:{crash:0},isPlayer:true};
-  const other={},g={player:p,state:'race',raceTime:4,standings:[other,p],track:{curvAhead:()=>.008}};
+  const p={s:40,d:20,progress:99,impact:0,airborne:false,stats:{crash:0},isPlayer:true};
+  const other={progress:100,isPlayer:false},g={player:p,state:'race',raceTime:4,standings:[other,p],racers:[p,other],track:{curvAhead:()=>.008}};
   const t=new OvertakeTracker();assert.equal(t.frame(g),false);
-  g.raceTime=5;g.standings=[p,other];assert.equal(t.frame(g),true);assert.equal(t.frame(g),false);
+  g.raceTime=5;p.progress=101;g.standings=[p,other];assert.equal(t.frame(g),true);assert.equal(t.frame(g),false);
   g.player.smallBoost=0;g.player.smallBoostPower=0;g.player.slowTime=0;g.player.spin=0;g.itemMode=false;
   assert.equal(awardCornerPass(g),'boost');assert.ok(p.smallBoost>0);
+  t.reset();g.raceTime=6;p.progress=99;g.standings=[other,p];t.frame(g);
+  g.raceTime=7;g.standings=[p,other];assert.equal(t.frame(g),false, 'rank-only improvement cannot grant a real overtake');
 });
 test('elimination removes AI model and stands but never removes the player',()=>{
   const ai={isPlayer:false,model:{traverse(){}}},p={isPlayer:true},gone=[];
