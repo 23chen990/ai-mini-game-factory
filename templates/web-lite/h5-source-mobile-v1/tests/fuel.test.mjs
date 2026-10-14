@@ -19,11 +19,25 @@ test('spending fuel never restarts a partially elapsed recharge',()=>{
   assert.equal(s.updatedAt,T); assert.equal(fuelTimeLeft(s,T+4*M),M);
   s=syncFuel(s,T+5*M); assert.equal(s.amount,9);
 });
-test('reopening after long offline period fills only to max and handles clock rollback',()=>{
-  let s=spendRaceFuel(newFuelState(T),T).state;
+test('reopening after long offline period fills only to max; clock rollback cannot manufacture fuel',()=>{
+  const s=spendRaceFuel(newFuelState(T),T).state;
   assert.equal(syncFuel(s,T+100*M).amount,10);
-  assert.equal(syncFuel(s,T-20*M).amount,9);
-  assert.equal(syncFuel(syncFuel(s,T-20*M),T-15*M).amount,10);
+  const rolled=syncFuel(s,T-20*M);
+  assert.deepEqual(rolled,s,'clock rollback must not reset stored recharge origin');
+  assert.equal(syncFuel(rolled,T-15*M).amount,9,'forward from fake clock must not regenerate fuel');
+  assert.equal(syncFuel(rolled,T+4*M).amount,9);
+  assert.equal(syncFuel(rolled,T+5*M).amount,10);
+});
+test('clock rollback cannot erase the rewarded ad cooldown or generate duplicate fuel',()=>{
+  let s=spendRaceFuel(newFuelState(T),T).state;
+  s=spendRaceFuel(s,T).state;
+  const a=grantAdvertFuel(s,'completed','unique-video-attempt-31',T+1000);
+  assert.equal(a.ok,true);
+  const rolled=syncFuel(a.state,T-20*M);
+  assert.equal(rolled.lastAdAt,T+1000);
+  assert.equal(rolled.updatedAt,T);
+  assert.equal(grantAdvertFuel(rolled,'completed','unique-video-attempt-32',T-15*M).ok,false);
+  assert.equal(grantAdvertFuel(rolled,'completed','unique-video-attempt-32',T+5000).ok,false);
 });
 test('cancelled, timed out, duplicated, cooled down or already-full ads never grant fuel',()=>{
   let s=spendRaceFuel(newFuelState(T),T).state;
