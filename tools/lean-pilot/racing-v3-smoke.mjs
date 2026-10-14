@@ -86,7 +86,10 @@ async function raceStart(page, index, name) {
   if(before.disabled)fail('start button disabled for '+name);
   await page.click('#race-start');
   try {
-    await page.waitForFunction(()=>window.game?.state === 'race',null,{timeout:15000});
+    // GitHub's software WebGL renderer advances fixed-step time at ~1/10 real speed.
+    // This is a browser-start smoke, not a latency benchmark on production phones.
+    await page.waitForFunction(()=>window.game?.state === 'race',null,{timeout:70000});
+    await page.waitForFunction(()=>!document.querySelector('#race-controls')?.hidden,null,{timeout:15000});
   } catch (error) {
     const state=await page.evaluate(()=>({
       nativeState:window.game?.state,cdT:window.game?.cdT,raceTime:window.game?.raceTime,
@@ -109,7 +112,7 @@ async function raceStart(page, index, name) {
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
   }));
-  await page.waitForTimeout(2200);
+  await page.waitForTimeout(6500);
   const after=await page.evaluate(()=>({
     state:window.game?.state,progress:window.game?.player?.progress ?? 0,
     rank:window.game?.standings?.indexOf(window.game?.player) + 1,
