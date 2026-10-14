@@ -109,6 +109,10 @@ async function raceStart(page, index, name) {
     map:window.game?.map?.id,mode:window.game?.settings?.mode,
     laps:window.game?.settings?.laps, state:window.game?.state,
     itemBoxes:window.game?.items?.boxes?.length ?? 0,
+    itemShape:window.game?.items?.boxes?.[0]?.cube?.geometry?.type ?? null,
+    itemBillboards:window.game?.items?.boxes?.[0]?.g?.children?.filter(x=>x.isSprite)?.length ?? 0,
+    roadWidth:(window.game?.track?.halfW ?? 0)*2,
+    trackSamples:window.game?.track?.N ?? 0,
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
   }));
@@ -128,7 +132,11 @@ async function raceStart(page, index, name) {
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
     fail(name+': native vehicle did not progress with real auto throttle');
-  if(index===4 && early.itemBoxes!==8)fail('native item mode must have 8 spaced boxes, got '+early.itemBoxes);
+  const expectedWidth={city:23,egypt:23,aegean:21,snow:22}[expectedMap];
+  if (Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
+    fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
+  if(index===4 && (early.itemBoxes!==8 || early.itemShape!=='IcosahedronGeometry' || early.itemBillboards!==1))
+    fail('native V3.1 item boxes must be diamond + visible question billboard: '+JSON.stringify(early));
   for(const [key,rect] of [['left',after.left],['right',after.right]]) {
     if(!rect || rect.x < 0 || rect.y < 0 || rect.right > 852 || rect.bottom > 393 || rect.width < 70)
       fail(name+': thumb control out of horizontal safe bounds: '+key);
@@ -169,6 +177,11 @@ try {
   await page.locator('#race-resume').tap();
   await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:8000});
   report.touch={actualCDPTouch:true,leftPressObserved:held,released:true,paused:true,cleared,resumed:true,audioMuted:true};
+  // QA-only injected wrong-way meter: tests native reset integration, NOT natural 180-degree steering.
+  await page.evaluate(()=>{window.game.player.wrongWay=2.8;});
+  await page.waitForFunction(()=>window.game?.player?.wrongWay===0 && window.game?.player?.s>=12,
+    null,{timeout:14000});
+  report.recovery={qaInjectedWrongWay:true,nativeResetObserved:true,noNewButton:true};
   // Explicit synthetic progress: tests the stage ENTRY chain only, never claims playthrough.
   report.seededCampaign=true;
   await page.evaluate(() => {
