@@ -9,7 +9,7 @@ const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(sec
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
 root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button>
-  <div id="race-live-goal" hidden></div><div id="race-held-item" hidden role="status"></div><div id="race-controls" hidden><button id="race-left" data-race-direction="left" aria-label="按住向左转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 11 16 24l13 13"/></svg></button><button id="race-right" data-race-direction="right" aria-label="按住向右转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m19 11 13 13-13 13"/></svg></button></div>
+  <div id="race-live-goal" hidden></div><div id="race-held-item" hidden aria-live="off"></div><div id="race-controls" hidden><button id="race-left" data-race-direction="left" aria-label="按住向左转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 11 16 24l13 13"/></svg></button><button id="race-right" data-race-direction="right" aria-label="按住向右转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m19 11 13 13-13 13"/></svg></button></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">3D 赛车 · 双键驾驶</div><h1 id="race-heading">双键飞驰</h1>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>‹</span><span>›</span></div><p>按住左右转弯，松手回正<br><small>漂移、出弯小喷和氮气自动触发</small></p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><p id="race-stage-goal"></p><div id="race-fuel-box"><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
@@ -24,6 +24,7 @@ const pointers = new TouchSteering(), driver = new RaceDriver(), quality = new Q
 driver.enabled = mobile;
 let g, phase = 'ready', started = false, result = null, loading = true, previousRank = null, lastFrame = performance.now(), inputTime = performance.now(), noticeUntil = 0;
 let events = [], best = {};
+let lastDriftToastAt = -100, lastNoticeAt = -100;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1';
 try { best = JSON.parse(localStorage.getItem(STORE) || '{}'); } catch { best = {}; }
 let storageRef;
@@ -99,6 +100,7 @@ function start() {
     display('ready');fuelView();return;
   }
   releaseInput();result = null;previousRank = null;events = [];started = true;
+  lastDriftToastAt = -100;lastNoticeAt = -100;
   try {
     career.configure(g);
     g.camMode = 1;g.mobileMode = driver.enabled;g.startRace();
@@ -226,7 +228,7 @@ async function boot() {
     const pending = player.events.map(event => ({ ...event, data: { ...event.data } }));nativeEvents(player);
     for (const event of pending) {
       career.onEvent(event, g);events.push({ atRaceSec: g.raceTime, type: event.type, ...event.data }); if (events.length > 800) events.shift();
-      if (event.type === 'driftStart') feedback('漂移集气', 'drift');
+      if (event.type === 'driftStart' && g.raceTime - lastDriftToastAt >= 5) { feedback('漂移集气', 'drift');lastDriftToastAt = g.raceTime; }
       if (event.type === 'crash') feedback('碰撞减速', 'crash');
     }
   };
@@ -246,11 +248,18 @@ async function boot() {
       else if (g.state !== phase && ['race', 'countdown', 'paused'].includes(g.state)) display(g.state);
       if (g.state === 'race') {
         const failure = career.frame(g);
-        for (const message of career.drainNotices()) feedback(message);
-        $('live-goal').textContent = career.timerLabel(g);
+        if (g.raceTime - lastNoticeAt >= .9) {
+          const message = career.nextNotice();
+          if (message) {feedback(message);lastNoticeAt = g.raceTime;}
+        }
+        const goal = career.objectiveLabel(g);
+        if ($('live-goal').textContent !== goal) $('live-goal').textContent = goal;
         const held = g.player.items?.[0];
         $('held-item').hidden = !g.itemMode || !held;
-        if (held) $('held-item').textContent = '道具：' + (ITEM_LABELS[held] ?? '已拾取') + ' · 自动使用';
+        if (held) {
+          const info = '道具：' + (ITEM_LABELS[held] ?? '已拾取') + ' · 自动使用';
+          if ($('held-item').textContent !== info) $('held-item').textContent = info;
+        }
         if (failure) {feedback(failure, 'crash');if (!g.resultShown) g.showResults();finish();}
         root.classList.toggle('drifting', g.player.drifting);
         const rank = g.standings.indexOf(g.player) + 1;
