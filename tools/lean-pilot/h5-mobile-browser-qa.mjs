@@ -29,6 +29,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      firstScoutPathReady:g.__mobileBalanceReview?.firstRendezvousPath??false,
      trainingScoutPlaced:g.__mobileBalanceReview?.trainingScout??false,
      trainingScoutRange:g.__mobileBalanceReview?.trainingScoutRange??null,
+     configuredTeamSize:g.opts.size,
      autoFireActivations:g.__mobileBalanceReview?.autoFireActivations??0,
      playerEngaged:g.__mobileBalanceReview?.playerEngaged??false,
      hintVisible:(()=>{const e=document.querySelector('#mk-fps-guide');return e&&getComputedStyle(e).display!=='none'?e.textContent:'';})()
@@ -172,6 +173,24 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    }else{
      await page.waitForFunction(() => document.documentElement.dataset.fpsActive === 'true', {timeout:10000});
      const shotsBefore = await page.evaluate(() => window.__H5NativeGame?.player?.stats?.shots ?? 0);
+     // Try one short, ordinary human tap while still facing the actual
+     // visible 1v1 training scout. A full 1.5s burst can end the tutorial
+     // before movement/pause tests have had a chance to run.
+     const firstTap=page.locator('#touch .btn[data-mk-action="fire"]');
+     if(await page.locator('#mobile-kit').getAttribute('data-phase')==='running'){
+       const tapBox=await firstTap.boundingBox();
+       const t=await context.newCDPSession(page);
+       await t.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[
+         {x:tapBox.x+tapBox.width/2,y:tapBox.y+tapBox.height/2,id:15}
+       ]});
+       await page.waitForTimeout(220);
+       await t.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+       await t.detach();
+       actions.push({atMs:Date.now()-started,input:'short-first-shot-from-natural-start',durationMs:220});
+       const opening=await readFpsThreat();
+       if(opening)fpsThreatTrace.push(opening);
+       await shot('mobile-first-shot');
+     }
      const layout = await page.evaluate(() => {
        const actions=['fire','jump','reload','scope','duplicate-fire','crouch','switch'];
        const nodes=actions.map(action=>{
@@ -282,6 +301,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        firstScoutPathReady:fpsThreatTrace[0]?.firstScoutPathReady??null,
        trainingScoutPlaced:fpsThreatTrace[0]?.trainingScoutPlaced??false,
        trainingScoutRange:fpsThreatTrace[0]?.trainingScoutRange??null,
+       teamSize:fpsThreatTrace[0]?.configuredTeamSize??null,
        autoFireActivations:fpsThreatTrace.at(-1)?.autoFireActivations??null,
        snapshots:fpsThreatTrace
      };
@@ -289,14 +309,14 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      // Extra FPS difficulty gate. The five factory gate IDs are untouched.
      // In a first-session M4 drill the actual hit must occur during the
      // opening 30 *simulation* seconds, using real bullets and visible input.
-     const introPass=summary.trainingScoutPlaced &&
+     const introPass=summary.trainingScoutPlaced && summary.teamSize===1 &&
        summary.trainingScoutRange>=7 && summary.trainingScoutRange<=10 &&
        summary.firstPlayerHitAtGameSec!==null &&
        summary.firstPlayerHitAtGameSec<=30;
      fpsExtendedChecks.push({
        name:'cf-first-natural-hit-by-30s',passed:introPass,
        detail:{trainingScoutPlaced:summary.trainingScoutPlaced,
-         scoutRangeMeters:summary.trainingScoutRange,
+         teamSize:summary.teamSize,scoutRangeMeters:summary.trainingScoutRange,
          firstVisibleAtGameSec:summary.firstVisibleAtGameSec,
          firstHitAtGameSec:summary.firstPlayerHitAtGameSec,
          finalHits:summary.finalPlayerHits,finalDeaths:summary.finalPlayerDeaths,
