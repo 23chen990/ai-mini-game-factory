@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { TRACK_RESHAPES, applyTrackDesign } from '../racing/track-design.mjs';
 import { WrongWayRecovery } from '../racing/recovery.mjs';
+import { roadHint } from '../racing/road-coach.mjs';
 
 function fixture() {
   const layouts={};
@@ -81,4 +82,25 @@ test('空中、暂停、结束和没有原生复位接口时均不复位',()=>{
   assert.equal(assist.frame(g),null);
   g.player.finished=false;delete g.resetPlayer;
   assert.equal(assist.frame(g),null);
+});
+
+test('地形导向只在真正要过弯时提示左右，不占用驾驶按钮',()=>{
+  let curvature=.018;
+  const car={d:200,s:43,wrongWay:0,airborne:false,finished:false};
+  const g={state:'race',player:car,track:{length:2400,curvAhead(){return curvature;}},itemMode:false};
+  assert.match(roadHint(g),/左急弯/);
+  curvature=-.02;assert.match(roadHint(g),/右急弯/);
+  curvature=.004;assert.equal(roadHint(g),'');
+  car.wrongWay=2;curvature=.03;assert.equal(roadHint(g),'');
+  car.wrongWay=0;g.state='paused';assert.equal(roadHint(g),'');
+});
+test('道具路线提醒只说左右车道，不伪称随机道具已确定',()=>{
+  const car={d:190,s:35,wrongWay:0,airborne:false,finished:false};
+  const g={state:'race',player:car,track:{length:2500,curvAhead(){return 0;}},itemMode:true,
+    items:{boxes:[{}]}};
+  const hint=roadHint(g);
+  assert.match(hint,/左右选择车道/);
+  assert.ok(!/导弹|护盾|氮气/.test(hint));
+  car.d=280;assert.equal(roadHint(g),'');
+  g.itemMode=false;car.d=190;assert.equal(roadHint(g),'');
 });
