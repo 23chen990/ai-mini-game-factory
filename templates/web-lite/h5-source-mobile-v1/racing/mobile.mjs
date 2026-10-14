@@ -103,6 +103,15 @@ function resume() {
 }
 function start() {
   if (!g || loading || portrait() || career.adBusy) return;
+  if (career.dailySnapshot && career.dailySnapshot.id !== 'daily-' + localDayKey()) {
+    career.setDaily();renderLobby();loadTrack(career.stage.map, false);
+    return; // Never charge for yesterday's stale challenge.
+  }
+  if (!stageTrackReady(g, career.stage)) {
+    $('note').textContent = '赛道尚未载入，正在重试…';
+    loadTrack(career.stage.map, false);
+    return; // The native physical map must match the stage objective.
+  }
   if (!career.canStart()) {
     $('note').textContent = '油量不足，等待自然恢复或主动看广告加油';
     display('ready');fuelView();return;
@@ -116,8 +125,8 @@ function start() {
     career.begin(g);
     inputTime = performance.now();$('heading').textContent = career.stage.name;display('countdown');
   } catch (error) {
-    started = false;$('note').textContent = '比赛启动失败：' + error.message;
-    display('ready');renderLobby();
+    started = false;display('ready');renderLobby();
+    $('note').textContent = '比赛启动失败：' + error.message;
   }
 }
 function finish() {
