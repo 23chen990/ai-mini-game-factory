@@ -19,13 +19,13 @@ export async function standaloneHtml(gameRoot,theme='observatory',runId='standal
     platform=`window.__PLATFORM_META__=${JSON.stringify(config)};\n`;
   }
   const css=(await safeRead(gameRoot,'style.css')).toString('utf8');const scripts=[];
-  for(const name of ['engine.mjs','themes.mjs','main.mjs']){
+  for(const name of ['engine.mjs','themes.mjs','fps-mobile-ux.mjs','main.mjs']){
     const source=(await safeRead(gameRoot,name)).toString('utf8');let imports=0;
     const bundled=source.replace(/^import .*?;\r?\n/gm,line=>{
-      if(name!=='main.mjs'||!/^import \{[^}]+\} from '\.\/(engine|themes)\.mjs';\r?\n$/.test(line))throw new Error(`Unsupported import in ${name}`);
+      if(name!=='main.mjs'||!/^import \{[^}]+\} from '\.\/(engine|themes|fps-mobile-ux)\.mjs';\r?\n$/.test(line))throw new Error(`Unsupported import in ${name}`);
       imports++;return '';
     }).replace(/^export /gm,'');
-    if(/^\s*(?:import|export)\s/m.test(bundled)||(name==='main.mjs'&&imports!==2))throw new Error(`Unsupported module syntax in ${name}`);
+    if(/^\s*(?:import|export)\s/m.test(bundled)||(name==='main.mjs'&&imports!==3))throw new Error(`Unsupported module syntax in ${name}`);
     scripts.push(`// ${name}\n${bundled}`);
   }
   const replaceOne=(marker,replacement)=>{if(html.split(marker).length!==2)throw new Error(`Missing or repeated entry marker: ${marker}`);html=html.replace(marker,()=>replacement);};
