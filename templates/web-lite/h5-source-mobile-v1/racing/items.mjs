@@ -6,10 +6,38 @@ export function thinItemBoxes(system) {
   const before = system.boxes.length;
   system.boxes = system.boxes.filter((box, index) => {
     const keep = rows[Math.floor(index / 5) % rows.length].includes(index % 5);
-    if (!keep) system.group.remove(box.g);
+    if (!keep) {
+      system.group.remove(box.g);
+      // Mesh geometry is allocated per box; do not dispose shared box materials here.
+      box.g.traverse?.(mesh => mesh.geometry?.dispose?.());
+    }
     return keep;
   });
   return before - system.boxes.length;
+}
+/** Native ItemSystem.dispose only detaches the group. Clean its unique GPU assets at replay. */
+export function installItemCleanup(system) {
+  if (!system?.group?.traverse || system.__RACE_ITEM_CLEANUP__) return false;
+  const original = system.dispose.bind(system);
+  let disposed = false;
+  system.dispose = () => {
+    if (disposed) return;
+    disposed = true;
+    const seen = new Set();
+    const clean = resource => {
+      if (!resource || seen.has(resource) || typeof resource.dispose !== 'function') return;
+      seen.add(resource);resource.dispose();
+    };
+    system.group.traverse(mesh => {
+      clean(mesh.geometry);
+      const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+      for (const mat of materials) { if (mat) { clean(mat.map);clean(mat); } }
+    });
+    clean(system.missileGeo);
+    original();
+  };
+  system.__RACE_ITEM_CLEANUP__ = true;
+  return true;
 }
 export function itemDecision(game) {
   if (!game?.itemMode || game.state !== 'race' || !game.items || !game.player || game.player.finished) return false;
