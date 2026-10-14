@@ -1,6 +1,8 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
+import { FUEL_KEY, FUEL_RULES, newFuelState, syncFuel, spendRaceFuel, fuelTimeLeft,
+  grantAdvertFuel, fuelAdEligible, fuelPlatformReady, loadFuel, saveFuel } from './fuel.mjs';
 
 async function boot() {
   const id = document.documentElement.dataset.referenceGame;
@@ -14,10 +16,14 @@ async function boot() {
   try { challengeProgress = loadChallengeProgress(localStorage.getItem(challengeKey), id) ?? challengeProgress; } catch { storageAvailable = false; }
   let selected = levels.find(c => c.id === challengeProgress.selected), activeChallenge;
   let round = null, startedAt = performance.now(), last = performance.now(), native, fishStart = 0, jumpStart = 0, lastNativePhase = 'ready', assistActive = false;
+  let fuel = newFuelState(), fuelEnabled = false, fuelBusy = false, fuelAttemptSerial = 0;
+  if (id === 'qq-speed') {
+    try { fuel = loadFuel(localStorage.getItem(FUEL_KEY)) ?? newFuelState(); } catch { storageAvailable = false; }
+  }
   const root = document.createElement('section'); root.id = 'mobile-kit';
   root.innerHTML = `<header class="mk-header"><b id="mk-title"></b><span>最佳 <b id="mk-best">0</b></span><button id="mk-pause" aria-label="暂停">⏸ 暂停</button></header>
     <div class="mk-meter"><span id="mk-status">准备出发</span><span>积分 <b id="mk-score">0</b></span><span id="mk-time"></span><progress id="mk-goal" max="8" value="0"></progress></div>
-    <div id="mk-panel"><h2 id="mk-heading"></h2><p id="mk-copy"></p><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
+    <div id="mk-panel"><h2 id="mk-heading"></h2><p id="mk-copy"></p><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-start" disabled>▶ 场景准备中</button><div id="mk-fuel-box" hidden><span id="mk-fuel-info"></span><button id="mk-fuel-ad" hidden>看广告加油 +2</button></div><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
@@ -25,7 +31,27 @@ async function boot() {
   $('title').textContent = names[id]; $('heading').textContent = names[id]; $('best').textContent = progress.best;
   $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '保留原游戏玩法。点击开始进入原菜单；手机新增暂停，离开页面自动暂停。成绩保存在这台设备。';
   if (!storageAvailable) $('storage').textContent = '存储不可用，本次仍可游玩';
+  const persistFuel = () => {
+    if (id !== 'qq-speed') return;
+    try { localStorage.setItem(FUEL_KEY, saveFuel(fuel)); }
+    catch { storageAvailable = false; $('storage').textContent = '存储不可用，本次仍可游玩'; }
+  };
   const persist = () => { try { localStorage.setItem(key, saveProgress(progress, id)); localStorage.setItem(challengeKey, saveChallengeProgress(challengeProgress)); } catch { storageAvailable = false; $('storage').textContent = '存储不可用，本次仍可游玩'; } };
+  const fuelView = () => {
+    if (id !== 'qq-speed') return;
+    $('fuel-box').hidden = false;
+    if (!fuelEnabled) {
+      $('fuel-info').textContent = '油量系统：广告位待开通，试玩不限油';
+      $('fuel-ad').hidden = true;
+      return;
+    }
+    fuel = syncFuel(fuel);
+    const ms = fuelTimeLeft(fuel);
+    const timer = ms > 0 ? ' · 下次恢复 ' + Math.ceil(ms/60000) + '分钟' : '';
+    $('fuel-info').textContent = '⛽ 油量 ' + fuel.amount + '/' + FUEL_RULES.max + timer + ' · 每局 -1';
+    $('fuel-ad').hidden = !fuelAdEligible(fuel, { rounds: progress.rounds, sessionMs: performance.now() - startedAt, adReady: fuelEnabled });
+    $('fuel-ad').disabled = fuelBusy;
+  };
   const renderSelection = () => {
     $('heading').textContent = selected.title; $('copy').textContent = selected.instructions;
     $('challenges').innerHTML = levels.map(c => `<button data-challenge-id="${c.id}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${challengeProgress.records[c.id]?.wins ? '✓ 已完成' : Math.ceil(c.limitMs/1000)+'秒'}</small></button>`).join('');
@@ -71,7 +97,32 @@ async function boot() {
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
   const portraitBlocked = () => id !== 'pelican-bike' && window.innerHeight > window.innerWidth;
-  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); last = performance.now(); showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
+  const start = async () => {
+    if (portraitBlocked() || root.dataset.phase !== 'ready' || fuelBusy) return;
+    if (id === 'qq-speed' && fuelEnabled) {
+      fuel = syncFuel(fuel);
+      if (fuel.amount < FUEL_RULES.raceCost) {
+        $('notice').textContent = '油量不足，可等待恢复或看广告加油';
+        fuelView();
+        return;
+      }
+    }
+    activeChallenge = selected; $('start').disabled = true;
+    $('heading').textContent = '准备场景…'; showPhase('loading');
+    try {
+      await native.start(activeChallenge);
+      if (id === 'qq-speed' && fuelEnabled) {
+        const spend = spendRaceFuel(fuel);
+        if (!spend.ok) throw Error('油量不足，未开始比赛');
+        fuel = spend.state; persistFuel();
+      }
+      round = startRound(progress, activeChallenge.limitMs);
+      last = performance.now(); showPhase('running'); persist(); if (portraitBlocked()) pause();
+    } catch (error) {
+      $('copy').textContent = '准备失败：' + error.message;
+      showPhase('ready'); fuelView();
+    } finally { $('start').disabled = false; }
+  };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
@@ -80,6 +131,22 @@ async function boot() {
   const orientation = () => { const blocked = portraitBlocked(); $('rotate').hidden = !blocked; if (blocked) pause(); };
   window.addEventListener('resize', orientation); orientation();
   const config = window.__PLATFORM_META__ ?? await fetch('platform.json').then(r => r.json()).catch(() => ({status:'PENDING',source:'NOT_RUN'}));
+  fuelEnabled = id === 'qq-speed' && fuelPlatformReady(config, window.tap);
+  fuelView();
+  $('fuel-ad').addEventListener('click', async () => {
+    if (id !== 'qq-speed' || !fuelEnabled || fuelBusy || !['ready','finished'].includes(root.dataset.phase)) return;
+    if (!fuelAdEligible(fuel, { rounds: progress.rounds, sessionMs: performance.now() - startedAt, adReady: true })) return;
+    fuelBusy = true; $('fuel-ad').disabled = true; $('notice').textContent = '加油广告加载中…';
+    const attemptId = 'fuel-' + Date.now() + '-' + (++fuelAttemptSerial);
+    try {
+      const result = await requestRewardedVideo({ tap: window.tap, config });
+      const granted = grantAdvertFuel(fuel, result.status, attemptId);
+      if (granted.ok) { fuel = granted.state; persistFuel(); $('notice').textContent = '加油成功 +' + FUEL_RULES.adGrant + ' 格'; }
+      else $('notice').textContent = '广告未完成或暂不可用，没有扣油';
+    } catch {
+      $('notice').textContent = '广告暂不可用，没有扣油';
+    } finally { fuelBusy = false; fuelView(); }
+  });
   $('assist').hidden = id !== 'pelican-bike';
   $('assist').addEventListener('click', () => { const bought = purchaseAssist(progress); persist(); $('notice').textContent = bought ? '已准备下局追鱼辅助' : '需要10补给，且一次只准备一个辅助'; });
   $('ad').addEventListener('click', async () => {
@@ -92,8 +159,12 @@ async function boot() {
     $('notice').textContent = rewarded ? '补给已翻倍' : '没有发放额外奖励，仍可直接重开'; $('ad').disabled = false; $('ad').hidden = rewarded;
   });
   showPhase('ready');
+  let lastFuelViewAt = 0;
   function frame(now) {
     const dt = Math.min(1000, Math.max(0, now - last)); last = now;
+    if (id === 'qq-speed' && (root.dataset.phase === 'ready' || root.dataset.phase === 'finished') && now - lastFuelViewAt >= 1000) {
+      lastFuelViewAt = now; fuelView();
+    }
     const phase = native.phase();
     if (round && round.phase === 'running') {
       if (phase === 'paused') pause();
@@ -109,7 +180,7 @@ async function boot() {
           $('heading').textContent = result.outcome === 'won' ? '✓ ' + activeChallenge.title + '完成！' : '本次挑战未完成';
           $('copy').textContent = `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
           $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent = result.outcome === 'won' ? '✓ 已完成' : '可重试';
-          $('best').textContent = progress.best; showPhase('finished');
+          $('best').textContent = progress.best; showPhase('finished'); fuelView();
           // The placement is wired but hidden until the actual H5 account's check_ads_status is verified.
           $('ad').hidden = config.status !== 1 || !adAllowed(round, progress, now - startedAt);
         }
