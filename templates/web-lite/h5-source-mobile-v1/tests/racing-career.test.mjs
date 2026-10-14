@@ -204,3 +204,23 @@ test('daily wins update best and streak once per day but never grant story stars
   assert.equal(restored.daily.streak,2);assert.equal(restored.daily.lastWonDate,'2026-10-15');
   assert.equal(careerStars(restored),before);
 });
+
+
+test('雪地末位淘汰：正常赛道进度触发一次预警，末位淘汰不会悄悄发生',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  for(let i=0;i<11;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  assert.equal(c.setStage(11),true);
+  c.begin(g);
+  const first=c.frame(g);
+  assert.equal(first,null);
+  assert.match(c.objectiveLabel(g),/末位|淘汰/);
+  assert.equal(c.metrics.knockoutWarnings,1);
+  assert.ok(c.drainNotices().some(x=>x.includes('警告')));
+  c.frame(g);
+  assert.equal(c.metrics.knockoutWarnings,1,'同一个淘汰点不能每帧重复弹出');
+  assert.equal(c.drainNotices().length,0);
+  g.racers[1].progress=360;g.racers[2].progress=405;
+  g.standings=[g.racers[2],g.racers[1],g.player];
+  assert.match(c.frame(g),/末位/);
+  assert.equal(c.metrics.eliminated,true);
+});
