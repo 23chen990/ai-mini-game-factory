@@ -45,7 +45,7 @@ export function itemDecision(game) {
   const p = game.player, it = p.items?.[0], track = game.track;
   if (!it || p.spin > 0 || !track || p.s < 12) return false;
   const bend = Math.abs(track.curvAhead(p.d, 95));
-  const ahead = game.racerAhead(p), gap = ahead?.progress - p.progress;
+  const ahead = game.racerAhead?.(p) ?? null, gap = ahead?.progress - p.progress;
   switch (it) {
     case 'nitro': return p.s > 30 && bend < .006 && !p.drifting;
     case 'missile': return ahead && gap > 3 && gap < 180;
