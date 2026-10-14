@@ -324,10 +324,27 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      });
    }
    if(phase==='finished'){
-     const best=await page.locator('#mk-best').innerText();await page.locator('#mk-replay').tap();
+     const best=await page.locator('#mk-best').innerText();
+     const shooter=run.theme==='cf-transport-ship';
+     const won=shooter && (await page.locator('#mobile-kit').getAttribute('data-outcome'))==='won';
+     const nextButton=page.locator('#mk-next');
+     const hasNext=shooter && (await nextButton.isVisible());
+     if(shooter)fpsExtendedChecks.push({
+       name:'cf-next-mission-gated-by-real-win',
+       passed:won?hasNext:!hasNext,
+       detail:{won,hasNext,reason:'No easy advance after a failed drill'}
+     });
+     if(won&&hasNext)await nextButton.tap();
+     else await page.locator('#mk-replay').tap();
      await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:45000});
-     const restored=best===await page.locator('#mk-best').innerText();check('mobile-save-reload',restored,{savedBest:best,restored,unfinishedRound:'RESTARTS_EXPLICITLY'});
-     if(run.theme==='cf-transport-ship') await page.locator('#mk-challenges [data-challenge-id="precision"]').tap();
+     const restored=best===await page.locator('#mk-best').innerText();
+     check('mobile-save-reload',restored,{savedBest:best,restored,unfinishedRound:'RESTARTS_EXPLICITLY',advance:won&&hasNext});
+     if(shooter && !(won&&hasNext)) await page.locator('#mk-challenges [data-challenge-id="precision"]').tap();
+     if(shooter && won&&hasNext) {
+       const chosen=await page.locator('#mk-challenges [data-challenge-id="precision"]').getAttribute('aria-pressed');
+       fpsExtendedChecks.push({name:'cf-next-mission-persists-awm-selection',passed:chosen==='true',
+         detail:{selectedPrecision:chosen,advanceClickUsed:true}});
+     }
      await page.locator('#mk-start').tap();await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
      let sniperControl=null;
      if(run.theme==='cf-transport-ship'){
