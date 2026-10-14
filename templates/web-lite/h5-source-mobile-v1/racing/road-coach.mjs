@@ -13,6 +13,17 @@ export function roadHint(game) {
       if(dd>=28 && dd<=95) return '🎁 前方道具：左右选择车道';
     }
   }
+  if (tr.boostPads?.length && tr.length>0) {
+    const current=((p.d%tr.length)+tr.length)%tr.length;
+    let closest=null;
+    for(const pad of tr.boostPads) {
+      const ahead=(pad.d-current+tr.length)%tr.length;
+      if(ahead>=25 && ahead<=95 && (!closest || ahead<closest.distance))
+        closest={distance:ahead,lat:pad.lat};
+    }
+    if(closest && Math.abs(closest.lat)>=3)
+      return closest.lat>0 ? '⚡ 左侧有加速带 · 提前选线' : '⚡ 右侧有加速带 · 提前选线';
+  }
   const bend=tr.curvAhead?.(p.d+25,95) ?? 0;
   if(Math.abs(bend)<.014 || !Number.isFinite(bend))return '';
   return bend>0 ? '↶ 前方左急弯 · 提前转向' : '↷ 前方右急弯 · 提前转向';
