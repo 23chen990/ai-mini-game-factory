@@ -32,6 +32,14 @@ export function patchRacingSource(source) {
   return output;
 }
 
+/** Event-only instrumentation; do not alter car dynamics from licensed original. */
+export function annotateDriftResult(source) {
+  const original = "this.emit('driftEnd', { time: this.driftTime });";
+  const annotated = "this.emit('driftEnd', { time: this.driftTime, clean });";
+  if (source.includes(annotated)) return source;
+  if (source.split(original).length !== 2) throw Error('Native driftEnd event anchor changed');
+  return source.replace(original, annotated);
+}
 /** Only neutral names / text textures: no claim that artwork and map shapes are licensed. */
 export function neutralizeRaceBranding(text) {
   return text
@@ -74,6 +82,14 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     const neutral = neutralizeRaceBranding(original);
     if (neutral !== original) await writeFile(path.join(project, 'src', name), neutral);
   }
+  const nativeVehiclePath = path.join(project, 'src/vehicle.js');
+  const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
+  const annotatedVehicle = annotateDriftResult(originalVehicle);
+  if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
+  const canonicalVehicle = originalVehicle.replace(
+    "this.emit('driftEnd', { time: this.driftTime, clean });",
+    "this.emit('driftEnd', { time: this.driftTime });",
+  );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   await writeFile(path.join(project, 'src/main.js'), patchRacingSource(beforeMain));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
@@ -95,7 +111,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const standalone = html.replace('<link rel="stylesheet" href="style.css">', '<style>' + inputFiles[3] + '</style>');
   const trialName = 'racing-two-button-' + hash.slice(0, 12) + '.html';
   await writeFile(path.join(root, trialName), standalone);
-  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(await readFile(path.join(project, 'src/vehicle.js'))), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
+  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
   history.attempts.at(-1).status = 'AWAITING_PLAYWRIGHT_QA';
   history.attempts.at(-1).buildHash = hash;
   await writeFile(path.join(root, 'artifacts/repair-history.json'), JSON.stringify(history, null, 2) + '\n');
