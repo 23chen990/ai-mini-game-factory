@@ -195,6 +195,9 @@ export function createFpsMobileUx(game, root, doc) {
       html.dataset.fpsActive = String(active);
       const p = game.player;
       html.dataset.fpsSniper = String(p?.weapon?.def?.type === 'sniper');
+      if (/按 R|按 B|Esc|Tab/.test(game.hud?.el?.aHint?.textContent || '')) {
+        game.hud.el.aHint.textContent = '点“换弹”';
+      }
       if (p && !p.alive && game.hud?.el?.cSmall) {
         game.hud.el.cSmall.textContent = '即将自动复活';
       }
