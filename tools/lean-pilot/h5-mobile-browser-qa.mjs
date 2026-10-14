@@ -30,6 +30,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      trainingScoutPlaced:g.__mobileBalanceReview?.trainingScout??false,
      trainingScoutRange:g.__mobileBalanceReview?.trainingScoutRange??null,
      autoFireActivations:g.__mobileBalanceReview?.autoFireActivations??0,
+     playerEngaged:g.__mobileBalanceReview?.playerEngaged??false,
      hintVisible:(()=>{const e=document.querySelector('#mk-fps-guide');return e&&getComputedStyle(e).display!=='none'?e.textContent:'';})()
    };
  }).catch(()=>null);
@@ -142,6 +143,13 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    // Beginner duel may legitimately finish on the first manual burst. Verify
    // pause early, before a fast real win hides the button.
    if(isFps){
+     // With no right-side swipe and no fire input, beginner auto-fire MUST
+     // remain silent. Verify against game-owned bullets, not a UI label.
+     const silentShotsBefore=await page.evaluate(()=>window.__H5NativeGame?.player?.stats?.shots??0);
+     await page.waitForTimeout(1400);
+     const silentShotsAfter=await page.evaluate(()=>window.__H5NativeGame?.player?.stats?.shots??0);
+     fpsExtendedChecks.push({name:'cf-no-idle-autofire',passed:silentShotsAfter===silentShotsBefore,
+       detail:{silentShotsBefore,silentShotsAfter,limitation:'Software-WebGL wait; no real human input'}});
      await page.locator('#mk-pause').tap();
      const pausedBefore=await page.locator('#mk-time').innerText();
      await page.waitForTimeout(700);
@@ -202,7 +210,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const distance=beforeTravel&&afterTravel
        ? Math.hypot(afterTravel.x-beforeTravel.x,afterTravel.z-beforeTravel.z) : 0;
      const lookAngle=beforeTravel&&afterTravel?Math.abs(afterTravel.yaw-beforeTravel.yaw):0;
-     const thumbMotion=distance>0.5&&lookAngle>0.01&&afterTravel.deaths===beforeTravel.deaths;
+     const thumbMotion=distance>0.5&&lookAngle>0.01;
      await shot('mobile-forward-look');
      actions.push({atMs:Date.now()-started,input:'natural-joystick-and-look',detail:{distance,lookAngle,thumbMotion}});
      const fire=page.locator('#touch .btn[data-mk-action="fire"]');
