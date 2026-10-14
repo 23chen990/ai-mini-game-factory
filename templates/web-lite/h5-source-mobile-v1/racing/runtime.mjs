@@ -24,7 +24,7 @@ export class RacingCareer {
   get stage() { return this.dailySnapshot ?? STAGES[this.index]; }
   canDaily() { return (this.progress.stars['04'] ?? 0) > 0; }
   setDaily(date = new Date()) { if (!this.canDaily()) return false;this.dailySnapshot = dailyStage(date);return true; }
-  freshMetrics() { return { pickups: 0, bonusItems: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, timeAllowance: 0 }; }
+  freshMetrics() { return { pickups: 0, bonusItems: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, knockoutWarnings: 0, timeAllowance: 0 }; }
   save() {
     try {
       this.storage.setItem(CAREER_KEY, JSON.stringify(this.progress));
@@ -142,7 +142,12 @@ export class RacingCareer {
     if (this.stage.kind === 'elimination' && m.checkpoints < 2) {
       const thresholds = [.35, .70];
       const leader = Math.max(...game.racers.map(r => r.progress));
-      if (leader >= distance * thresholds[m.checkpoints]) {
+      const nextGate=distance*thresholds[m.checkpoints];
+      if (leader >= nextGate-300 && m.knockoutWarnings === m.checkpoints) {
+        m.knockoutWarnings++;
+        this.notice.push(game.standings.at(-1) === p ? '警告：你在末位，即将淘汰！' : '淘汰点将至，避免跌到末位');
+      }
+      if (leader >= nextGate) {
         const last = game.standings.at(-1);
         m.checkpoints++;
         if (last === p) { m.eliminated = true;return '淘汰：处于末位'; }
@@ -165,7 +170,16 @@ export class RacingCareer {
       case 'overtake':return '弯道超车 ' + Math.min(m.cleanPasses,s.target) + '/' + s.target;
       case 'item':return '已拾取道具 ' + Math.min(m.pickups,s.target) + '/' + s.target;
       case 'speed':return '测速 ' + m.gateSpeed + '/' + s.target + ' km/h · ' + m.checkedSpeed + '/3 次';
-      case 'elimination':return '存活淘汰点 ' + m.survived + '/2';
+      case 'elimination': {
+        if (m.checkpoints >= 2) return '淘汰结束 · 已存活 2/2';
+        const gate = (game.track?.length ?? 0) * s.laps * [.35,.70][m.checkpoints];
+        const leader = Math.max(...game.racers.map(r => r.progress));
+        const remaining = Math.max(0,Math.ceil(gate - leader));
+        if (remaining <= 400)
+          return (game.standings.at(-1) === game.player ? '⚠ 末位！' : '') +
+            '距离淘汰 ' + remaining + 'm';
+        return '存活淘汰点 ' + m.survived + '/2';
+      }
       case 'boss':return '超越车神 ' + this.bossName + ' · 当前第 ' + (game.standings.indexOf(game.player)+1) + ' 名';
       default:return '';
     }
