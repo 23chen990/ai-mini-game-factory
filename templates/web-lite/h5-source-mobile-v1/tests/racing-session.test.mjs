@@ -23,6 +23,18 @@ test('画质偏好：首次使用均衡，用户选流畅后刷新仍优先流�
   for(const value of ['low','mid','high']) assert.equal(normalize(value),value);
   for(const value of [null,undefined,'','ultra','manual',{},0]) assert.equal(normalize(value),'mid');
 });
+test('暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复',()=>{
+  const mute=need('setRaceSound');
+  assert.equal(mute(null,false),false);
+  assert.equal(mute({master:null},false),false);
+  const output={value:0.8,setTargetAtTime(value,time,fade){this.value=value;this.args=[time,fade];}};
+  const audio={master:{gain:output},ctx:{currentTime:12}};
+  assert.equal(mute(audio,false),true);
+  assert.equal(output.value,0);assert.deepEqual(output.args,[12,.035]);
+  assert.equal(mute(audio,true),true);assert.equal(output.value,.8);
+  const fallback={master:{gain:{value:.8}},ctx:null};
+  assert.equal(mute(fallback,false),true);assert.equal(fallback.master.gain.value,0);
+});
 test('成绩读取真实玩家，不将AI冲线计为玩家完赛', () => {
   const summary = need('resultSummary'), player = { finished: false, progress: 200, stats: { small: 2, drift: 3, nitro: 1, perfect: 1 }, lapTimes: [], name: '我' }, ai = { finished: true, finishTime: 42, name: '对手', lapTimes: [42] };
   const g = { player, standings: [ai, player], track: { length: 400 }, settings: { laps: 1, map: 'city' }, raceTime: 50 };
