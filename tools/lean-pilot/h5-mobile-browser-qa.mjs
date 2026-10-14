@@ -9,7 +9,7 @@ const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const{run,root,game}=await loadRun(base,runId),hash=await buildHash(game),server=await serveRun(base,runId,0);
  const url='http://127.0.0.1:'+server.address().port,checks=[],artifacts=[],errors=[],actions=[];
- const fpsThreatTrace=[],fpsExtendedChecks=[]; let fpsScriptSteps=0,fpsEnemySeenCount=0;
+ const fpsThreatTrace=[],fpsExtendedChecks=[]; let fpsScriptSteps=0,fpsEnemySeenCount=0,fpsRouteTurns=0,fpsContactScreenshot=false;
  const readFpsThreat = async () => page.evaluate(() => {
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
@@ -25,7 +25,10 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      botReactSec:opponents[0]?.diff?.react?.[0]??null,
      botTrack:opponents[0]?.diff?.track??null,
      botStrafe:opponents[0]?.diff?.strafe??null,
-     clearStartingLane:g.__mobileBalanceReview?.startingLaneMeters??null
+     clearStartingLane:g.__mobileBalanceReview?.startingLaneMeters??null,
+     firstScoutPathReady:g.__mobileBalanceReview?.firstRendezvousPath??false,
+     autoFireActivations:g.__mobileBalanceReview?.autoFireActivations??0,
+     hintVisible:(()=>{const e=document.querySelector('#mk-fps-guide');return e&&getComputedStyle(e).display!=='none'?e.textContent:'';})()
    };
  }).catch(()=>null);
  await mkdir(path.join(root,'screenshots'),{recursive:true});
@@ -49,31 +52,50 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  };
  const coachedFpsStep=async () => {
    fpsScriptSteps++;
+   const aimed=page.locator('#mk-fps-target[data-side="enemy"]');
+   if(await aimed.count()&&await aimed.isVisible()){
+     fpsEnemySeenCount++;
+     // Give simple mode time to fire before using the manual fallback.
+     const before=await page.evaluate(()=>window.__H5NativeGame?.player?.stats?.shots??0);
+     await page.waitForTimeout(1400);
+     const after=await page.evaluate(()=>window.__H5NativeGame?.player?.stats?.shots??0);
+     if(after===before) await hold('#touch .btn[data-mk-action="fire"]',850);
+     if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
+     return;
+   }
    const target=page.locator('.mk-fps-enemy:not([hidden])').first();
    if(await target.count() && await target.isVisible()){
      fpsEnemySeenCount++;
-     for(let n=0;n<3;n++){
+     if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
+     for(let n=0;n<4;n++){
        const rect=await target.boundingBox();
-       if(!rect)break;
+       if(!rect||!(await target.isVisible()))break;
        const center={x:844/2,y:390/2};
        const desiredX=rect.x+rect.width/2, desiredY=rect.y+rect.height+22;
        const dx=Math.max(-75,Math.min(75,(desiredX-center.x)*0.40));
        const dy=Math.max(-48,Math.min(48,(desiredY-center.y)*0.40));
        if(Math.abs(dx)+Math.abs(dy)<7)break;
-       await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},180,12+n);
+       await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},230,12+n);
      }
-     await hold('#touch .btn[data-mk-action="fire"]',900);
-   }else{
-     const pad=await page.locator('#touch .pad').first().boundingBox();
-     if(!pad)return;
-     const center={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
-     const stride=fpsScriptSteps%6;
-     const dx=stride===2?-45:stride===4?45:0;
-     const dy=stride===2||stride===4?-30:-55;
-     await mobileStroke(center,{x:center.x+dx,y:center.y+dy},1350,20+stride);
-     if(stride===3||stride===5)
-       await mobileStroke({x:530,y:185},{x:530+(stride===3?60:-50),y:185},260,40+stride);
+     await hold('#touch .btn[data-mk-action="fire"]',1100);
+     return;
    }
+   // A real novice can read the screen's route hint, so the script should
+   // follow that hint before it tries random blind strafing.
+   const guide=page.locator('#mk-fps-guide');
+   const guidance=await guide.isVisible()?await guide.textContent():'';
+   if(guidance?.startsWith('←')||guidance?.startsWith('→')){
+     const right=guidance.startsWith('→');
+     fpsRouteTurns++;
+     await mobileStroke({x:530,y:185},{x:530+(right?58:-58),y:185},320,41);
+     return;
+   }
+   const pad=await page.locator('#touch .pad').first().boundingBox();
+   if(!pad)return;
+   const center={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
+   await mobileStroke(center,{x:center.x,y:center.y-55},1350,20);
+   if(!guidance&&fpsScriptSteps%6===0)
+     await mobileStroke({x:530,y:185},{x:578,y:185},280,43);
  };
  const hold=async(selector,ms)=>{
    const box=await page.locator(selector).boundingBox();if(!box)throw Error('Missing visible target '+selector);
@@ -222,7 +244,9 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        finalPlayerHits:fpsThreatTrace.at(-1)?.hits??null,
        finalPlayerDeaths:fpsThreatTrace.at(-1)?.deaths??null,
        scriptedThumbSteps:fpsScriptSteps,scriptedVisibleEnemyLabels:fpsEnemySeenCount,
-       guidedByOnscreenLabelsOnly:true,
+       followingActualVisibleHud:true,scriptedRouteTurns:fpsRouteTurns,
+       firstScoutPathReady:fpsThreatTrace[0]?.firstScoutPathReady??null,
+       autoFireActivations:fpsThreatTrace.at(-1)?.autoFireActivations??null,
        snapshots:fpsThreatTrace
      };
    }
