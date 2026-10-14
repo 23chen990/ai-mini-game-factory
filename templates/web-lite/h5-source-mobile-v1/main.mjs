@@ -1,6 +1,7 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
+import { createFpsMobileUx } from './fps-mobile-ux.mjs';
 
 async function boot() {
   const id = document.documentElement.dataset.referenceGame;
@@ -13,6 +14,7 @@ async function boot() {
   let challengeProgress = newChallengeProgress(id);
   try { challengeProgress = loadChallengeProgress(localStorage.getItem(challengeKey), id) ?? challengeProgress; } catch { storageAvailable = false; }
   let selected = levels.find(c => c.id === challengeProgress.selected), activeChallenge;
+  let fpsUx = null;
   let round = null, startedAt = performance.now(), last = performance.now(), native, fishStart = 0, jumpStart = 0, lastNativePhase = 'ready', assistActive = false;
   const root = document.createElement('section'); root.id = 'mobile-kit';
   root.innerHTML = `<header class="mk-header"><b id="mk-title"></b><span>最佳 <b id="mk-best">0</b></span><button id="mk-pause" aria-label="暂停">⏸ 暂停</button></header>
@@ -56,7 +58,7 @@ async function boot() {
       native.metrics = () => ({finished:!!g.player?.finished,place:g.standings.indexOf(g.player)+1,drifts:g.player?.stats?.drift||0});
       break;
     }
-    if (id === 'cf-transport-ship' && window.__H5NativeGame?.hud && !document.getElementById('menu')?.classList.contains('hidden')) { const g = window.__H5NativeGame; native = createFpsAdapter(g, document); const originalStart = native.start; native.start = c => { g.opts.primary = c.weapon; originalStart(); }; native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,deaths:g.player?.stats?.d||0}); break; }
+    if (id === 'cf-transport-ship' && window.__H5NativeGame?.hud && !document.getElementById('menu')?.classList.contains('hidden')) { const g = window.__H5NativeGame; native = createFpsAdapter(g, document); const originalStart = native.start; native.start = c => { g.opts.primary = c.weapon; originalStart(); }; native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,deaths:g.player?.stats?.d||0}); fpsUx = createFpsMobileUx(g, root, document); break; }
     await wait();
   }
   if (!native) { $('copy').textContent = '加载尚未完成，请刷新或换用支持 WebGL 的浏览器。'; return; }
@@ -71,7 +73,7 @@ async function boot() {
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
   const portraitBlocked = () => id !== 'pelican-bike' && window.innerHeight > window.innerWidth;
-  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); last = performance.now(); showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
+  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(); last = performance.now(); showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
@@ -95,6 +97,7 @@ async function boot() {
   function frame(now) {
     const dt = Math.min(1000, Math.max(0, now - last)); last = now;
     const phase = native.phase();
+    fpsUx?.update(round?.phase === 'running', now);
     if (round && round.phase === 'running') {
       if (phase === 'paused') pause();
       else {
