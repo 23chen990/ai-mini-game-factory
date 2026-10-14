@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "policy-before-start",
+      "passed": false,
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "name": "native-zero-bypass",
+      "passed": false,
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "name": "zero-fuel-gauge",
+      "passed": false,
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "name": "countdown-duplicate-entry",
+      "passed": false,
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "name": "background-start",
+      "passed": false,
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "name": "storage-warning",
+      "passed": false,
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    }
+  ],
+  "issues": [
+    {
+      "id": "policy-before-start",
+      "severity": "error",
+      "message": "Reproduced by default V3 mobile.mjs engineering fixture; see exact test assertion.",
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "id": "native-zero-bypass",
+      "severity": "error",
+      "message": "Reproduced by default V3 mobile.mjs engineering fixture; see exact test assertion.",
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "id": "zero-fuel-gauge",
+      "severity": "error",
+      "message": "Reproduced by default V3 mobile.mjs engineering fixture; see exact test assertion.",
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "id": "countdown-duplicate-entry",
+      "severity": "error",
+      "message": "Reproduced by default V3 mobile.mjs engineering fixture; see exact test assertion.",
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "id": "background-start",
+      "severity": "error",
+      "message": "Reproduced by default V3 mobile.mjs engineering fixture; see exact test assertion.",
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    },
+    {
+      "id": "storage-warning",
+      "severity": "error",
+      "message": "Reproduced by default V3 mobile.mjs engineering fixture; see exact test assertion.",
+      "evidence": "docs/race-career-20261014/evidence/fuel-red.log"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "docs/race-career-20261014/evidence/fuel-red.log",
+  "testedAt": "2026-10-14T10:56:02.964Z"
+}

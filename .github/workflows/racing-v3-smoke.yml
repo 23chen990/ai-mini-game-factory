@@ -5,6 +5,8 @@ on:
       - 'templates/web-lite/h5-source-mobile-v1/**'
       - 'tools/lean-pilot/racing-mobile-build.mjs'
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
+      - 'tools/lean-pilot/racing-fuel-lifecycle-qa.mjs'
+      - 'tools/lean-pilot/racing-career-qa.mjs'
       - '.github/workflows/racing-v3-smoke.yml'
   workflow_dispatch:
 permissions:
@@ -53,6 +55,7 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
       - name: Launch actual bundled WebGL racing in Chromium
         run: |
+          node --test tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
           node tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
       - name: Package playable H5 evidence, hashes and demo ZIP
         if: always()

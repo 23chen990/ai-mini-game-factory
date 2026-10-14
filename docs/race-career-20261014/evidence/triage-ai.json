@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "熟练档多圈城市道具赛9次碰撞仍第一、海湾限时赛6次碰撞仍第一；前9关全部冠军。",
+  "classification": [
+    "core-experience",
+    "failure-attribution",
+    "mobile-readability",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Fuel persistence/lifecycle and career economy/core journey require structured QA→repair→natural/perceptual retest.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "PR12/14 full code replacements",
+      "unrelated factory history",
+      "competitor private code"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Empty save; unchanged V3 attempt10 build",
+      "Observe visible minimap pixels; send normal CDP touch left/right",
+      "03/06/07/08/09 actual earned progress and terminal snapshots"
+    ],
+    "observed": [
+      "01 rank 1 crashes 7 time 43.54350000000047",
+      "02 rank 1 crashes 13 time 88.2669999997617",
+      "03 rank 1 crashes 9 time 82.70550000000036",
+      "04 rank 1 crashes 3 time 88.49200000000029",
+      "05 rank 1 crashes 3 time 86.31349999999992",
+      "06 rank 1 crashes 9 time 86.54010000002408",
+      "07 rank 1 crashes 6 time 90.3388999998566",
+      "08 rank 1 crashes 3 time 72.50000000000071",
+      "09 rank 1 crashes 3 time 81.7765999999053"
+    ],
+    "evidence": [
+      {
+        "path": "docs/race-career-20261014/evidence/baseline-first-nine.json",
+        "sha256": "e6cda3f9affef107b95919859d1c18c1f1e4400efd7fc6a79cfbc830b26b38c9",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Apply authored skill scaling only to native AI, preserve player physics/grid/progress",
+    "Tutorial stays native; skilled and expert fields escalate",
+    "Fresh natural earned campaign still reaches special goals and replay",
+    "Compare before/after ordinary input, collisions/ranks/times, never claim human win-rate evidence"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T10:46:14.342Z"
+}

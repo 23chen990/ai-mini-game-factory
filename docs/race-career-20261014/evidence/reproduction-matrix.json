@@ -1,0 +1,385 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "career",
+      "items",
+      "fuel"
+    ],
+    "lifecycleStateBranches": [
+      "01 unlock",
+      "03/11 overtake",
+      "04 drift",
+      "02/14 speed",
+      "07 time",
+      "09 relay",
+      "12 elimination",
+      "13/16 boss",
+      "daily",
+      "05 egypt",
+      "06 city",
+      "10 city 3 laps",
+      "15 snow 3 laps",
+      "PENDING free",
+      "LIVE mocked zero",
+      "storage denied",
+      "failed start",
+      "background loading",
+      "duplicate start",
+      "ad cancel/error/timeout/dedup"
+    ],
+    "rendererPaths": [
+      "built V3 default racing/mobile.mjs"
+    ],
+    "viewports": [
+      {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "cell-0",
+      "objectType": "career",
+      "lifecycleStateBranch": "01 unlock",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-1",
+      "objectType": "career",
+      "lifecycleStateBranch": "03/11 overtake",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-2",
+      "objectType": "career",
+      "lifecycleStateBranch": "04 drift",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-3",
+      "objectType": "career",
+      "lifecycleStateBranch": "02/14 speed",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-4",
+      "objectType": "career",
+      "lifecycleStateBranch": "07 time",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-5",
+      "objectType": "career",
+      "lifecycleStateBranch": "09 relay",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-6",
+      "objectType": "career",
+      "lifecycleStateBranch": "12 elimination",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-7",
+      "objectType": "career",
+      "lifecycleStateBranch": "13/16 boss",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-8",
+      "objectType": "career",
+      "lifecycleStateBranch": "daily",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-9",
+      "objectType": "items",
+      "lifecycleStateBranch": "05 egypt",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-10",
+      "objectType": "items",
+      "lifecycleStateBranch": "06 city",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-11",
+      "objectType": "items",
+      "lifecycleStateBranch": "10 city 3 laps",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-12",
+      "objectType": "items",
+      "lifecycleStateBranch": "15 snow 3 laps",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-13",
+      "objectType": "fuel",
+      "lifecycleStateBranch": "PENDING free",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-14",
+      "objectType": "fuel",
+      "lifecycleStateBranch": "LIVE mocked zero",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Exact V3 module engineering assertion failure; no natural/LIVE claim",
+      "evidence": [
+        {
+          "path": "docs/race-career-20261014/evidence/fuel-red.log",
+          "sha256": "7c6a7fd3f2ca9a11d8e5a69b9ceb21d4167b0cc3d2ed27a33f170a4c01779c74",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "cell-15",
+      "objectType": "fuel",
+      "lifecycleStateBranch": "storage denied",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Exact V3 module engineering assertion failure; no natural/LIVE claim",
+      "evidence": [
+        {
+          "path": "docs/race-career-20261014/evidence/fuel-red.log",
+          "sha256": "7c6a7fd3f2ca9a11d8e5a69b9ceb21d4167b0cc3d2ed27a33f170a4c01779c74",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "cell-16",
+      "objectType": "fuel",
+      "lifecycleStateBranch": "failed start",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    },
+    {
+      "id": "cell-17",
+      "objectType": "fuel",
+      "lifecycleStateBranch": "background loading",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Exact V3 module engineering assertion failure; no natural/LIVE claim",
+      "evidence": [
+        {
+          "path": "docs/race-career-20261014/evidence/fuel-red.log",
+          "sha256": "7c6a7fd3f2ca9a11d8e5a69b9ceb21d4167b0cc3d2ed27a33f170a4c01779c74",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "cell-18",
+      "objectType": "fuel",
+      "lifecycleStateBranch": "duplicate start",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Exact V3 module engineering assertion failure; no natural/LIVE claim",
+      "evidence": [
+        {
+          "path": "docs/race-career-20261014/evidence/fuel-red.log",
+          "sha256": "7c6a7fd3f2ca9a11d8e5a69b9ceb21d4167b0cc3d2ed27a33f170a4c01779c74",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "cell-19",
+      "objectType": "fuel",
+      "lifecycleStateBranch": "ad cancel/error/timeout/dedup",
+      "rendererPath": "built V3 default racing/mobile.mjs",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch uses ordinary input and visible feedback; deterministic fixtures kept separate",
+      "observed": "Awaiting exact-branch run",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "Default V3 fuel policy, native gate, zero-state presentation and background guard gaps reproduced by engineering tests."
+  ],
+  "remainingGaps": [
+    "Fresh natural and perceptual evidence",
+    "Physical Android/iPhone",
+    "Official live ad entitlement",
+    "Commercial authorization"
+  ],
+  "createdAt": "2026-10-14T10:46:14.342Z"
+}
