@@ -11,7 +11,10 @@ import { canonical } from '../../.agents/skills/gameplay-loop-review/scripts/wor
 import { SOURCE_COMMIT, TARGETS } from './three-h5-research.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url)), exec = promisify(execFile);
 
-/** Explicit private source fork, checked by PR7. No download, publishing or rights grant is implied. */
+/** Explicit private source fork, checked by PR7. No download, publishing or rights grant is implied.
+ * Source-adaptation acceptance: docs/lean-pilot/source-adaptation-checks.md.
+ * The checklist records the pelican v2 findings without changing other games' builds.
+ */
 export async function buildSourceMobile(base, runId, gameId, { sourceRoot = process.env.H5_PINNED_SOURCE_ROOT } = {}) {
   if (!Object.hasOwn(TARGETS, gameId) || !sourceRoot) throw Error('Select a known game and H5_PINNED_SOURCE_ROOT at the pinned revision');
   const {stdout} = await exec('git', ['rev-parse', 'HEAD'], {cwd:sourceRoot});
