@@ -27,12 +27,23 @@ export function itemDecision(game) {
   }
 }
 export class AutoItems {
-  constructor() { this.nextAt = 0; }
-  reset() { this.nextAt = 0; }
+  constructor() { this.reset(); }
+  reset() { this.nextAt = 0; this.held = null; this.heldSince = 0; }
   frame(game, canStep = true) {
-    if (!canStep || !game || game.state !== 'race' || game.raceTime < this.nextAt) return false;
-    if (!itemDecision(game)) return false;
-    this.nextAt = game.raceTime + 1.25;
+    if (!game || game.state !== 'race' || !game.player) return false;
+    const p = game.player, item = p.items?.[0] ?? null;
+    if (item !== this.held) { this.held = item; this.heldSince = game.raceTime; }
+    if (!canStep || game.raceTime < this.nextAt || !item) return false;
+    let useful = itemDecision(game);
+    if (!useful && p.items.length > 1 && typeof game.items?.swap === 'function') {
+      game.items.swap(p);
+      useful = itemDecision(game);
+      if (!useful) game.items.swap(p);
+    }
+    // Avoid permanent full-inventory deadlocks on later item challenges.
+    if (!useful && p.items.length >= 2 && game.raceTime - this.heldSince >= 12) useful = true;
+    if (!useful) return false;
+    this.nextAt = game.raceTime + 1.25;this.held = null;
     return true;
   }
 }
