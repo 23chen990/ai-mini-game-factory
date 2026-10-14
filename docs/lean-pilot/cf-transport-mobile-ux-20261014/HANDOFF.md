@@ -50,3 +50,20 @@
 - 临时真实源码 QA workflow 已在测试后删除，原 `pilot:scope` 门禁不变；不可将该 Actions 成功称作用户手机实机/发布 PASS。
 
 **仍未闭环：** 最重要的是 *首次有效命中及三种挑战自然成功*；本次任务失败，score=0。自动脚本只前进、转头和射击，没有像真人一样找敌人，0 命中不能直接证明难度失衡，但不能声称战斗成功路径已通过。完整真人首30秒敌我理解、Android/iOS 真机流畅度、跨设备画质、真实 IAA、最新 REA 实时执行同样需要单独证据。不要增加武器/大地图作为掩盖，优先让真实初学者看见敌人并完成首次命中。
+
+## 2026-10-14 V4 真实首战成功、难度验收与剩余限制（最新）
+
+用户授权 ChatGPT 持续自验收，不要求用户本人试玩；本轮以原授权 Three.js `54adc1fb64155f9dd7c1c90ecae7b8185ac540b8` 真实源为运行时，`h5-source-mobile-v1` 自有适配，执行真实 HTTP + Playwright 触屏输入、场景画面、碰撞和结算，不注入 kills/hits 或瞬移玩家。
+
+**本轮关键证据：[GitHub Actions #38565196437](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38565196437)**，全流程 job SUCCESS，0 页面脚本错误，五项原始浏览器 QA 门禁全部 PASS，所有新增 FPS 扩展门禁 PASS：
+
+- 新手第一关 1v1，原地图已存在、无遮挡通行区域的合法敌人模型，10 米位置。开场敌我可视标识与不穿墙识别。
+- **首次发现 1.2 模拟秒、首次有效命中 5.7 模拟秒、3 次命中获胜、0 次死亡**。由真实触屏的手动开火操作与原版伤害碰撞产生；`first-natural-hit-by-30s` PASS。
+- 纯无操作开局弹药不减少（`cf-no-idle-autofire` PASS），真实获胜才可进入狙击挑战（`cf-next-mission-gated-by-real-win` PASS），选择 AWM 在刷新后保留（`cf-next-mission-persists-awm-selection` PASS）。
+- 第一关太快获胜可能结束在移动测试之前，新增 **狙击关独立真实摇杆+滑动视角检查**，再次确认位移和旋转，而不是取消控制门禁；原 `mobile-controls` PASS。狙击关触控开镜成功。
+- 生存关静置 45 个模拟秒，移动 0/20 米，被判定失败（`cf-survive-idle-rejected` PASS）。步枪、狙击、生存胜负规则分别约束玩家命中、AWM 击杀、时间和实际移动，禁止代打或纯挂机。
+- 实际导出的独立可运行 ZIP SHA-256：`6ecfb88ab3a88886b6b309fc4437c6dc0bd565fd9df226fcd941c2e5777e1e4a`，独立 HTML SHA-256：`01d204d3eae0f5a6eb54974fe76095db3a5787301d750dec3a96fdef32e165f6`。
+- 本次新包对应测试提交 `07c4520bd72c181c43f930b159dc16b3dc3ef879`；之后仅追加了**结算面板关闭战斗中目标标记的 CSS** 并删除临时 QA workflow，两项改动未包含于前述浏览器证据。不能将包哈希误认为最后 CSS 微调后重建结果。
+- 运行中曾有 30 秒首次命中测试不达标、标签瞬时消失引发 Playwright 超时、快速通关导致移动测试来不及执行、工厂 scope 暂时拒绝测试专用 workflow，均已按根因修复，相关失败 Actions 保留。临时 workflow **已从 PR 净改动删除**，不修改原工厂 scope 的规则。
+
+**不宣称的范围：** 并非真人无讲解盲测，不证明 iOS WebKit/Android 真机手感、低端 GPU 帧率、正式 IAA 收益，不证明 AWM 自然击杀和移动生存关自然胜利均通过；这几项仍需后续专项测试。当前 PR 继续 Draft，不可合并发布。用户无需现在参与试玩。
