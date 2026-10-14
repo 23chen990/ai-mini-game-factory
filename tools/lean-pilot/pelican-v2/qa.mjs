@@ -21,7 +21,7 @@ function segment(name){segments.push({name,checkStart,checkEnd:report.checks.len
 const LANES_FOR_QA=[-1.7,0,1.7];
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(JSON.stringify({name,passed,evidence}));};
 const shot=async name=>{const p=path.join(qaDir,name+'.png');await page.screenshot({path:p});report.screenshots.push({path:path.relative(RUN,p),sha256:sha(await readFile(p))});};
-const tap=async selector=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance}};report.actions.push(action);const touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance},events:after.events?.slice(-2)});};
+const tap=async selector=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance}};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance},events:after.events?.slice(-2)});};
 const snapshot=()=>page.evaluate(()=>window.__coast.snapshot());
 async function fresh(){context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir:qaDir,size:{width:390,height:844}}});page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('framenavigated',f=>{if(f===page.mainFrame())navs++;});
  await page.addInitScript(()=>{window.__qaFrames=[];let prev;const f=t=>{if(prev&&window.__qaFrames.length<100000)window.__qaFrames.push(t-prev);prev=t;requestAnimationFrame(f);};requestAnimationFrame(f);});await page.goto(base);await page.waitForSelector('#coast[data-loaded="true"]');}
@@ -31,7 +31,7 @@ async function drive({maxMs=135000,stage=0,stopAtDistance=Infinity,avoidFish=fal
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  const end=Date.now()+maxMs;let lastTap=0,nearShot=false;
  while(Date.now()<end){const v=await view();if(v.phase==='finished'||v.distance>=stopAtDistance)return snapshot();if(v.phase==='paused'){await tap('#co-resume');continue;}
-  const imminent=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=3;
+  const imminent=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=4;
   let want=v.lane;
   if(imminent(v.lane)){const safe=[0,1,2].filter(i=>!imminent(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!imminent(i));if(fish>=0)want=fish;}

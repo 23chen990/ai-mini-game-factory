@@ -1,5 +1,5 @@
-export const CAPTURE_HOLD_MS = 1700;
-export const JUMP_WINDOW_SECONDS = 0.4;
+export const CAPTURE_HOLD_MS = 2600;
+export const JUMP_WINDOW_SECONDS = 1.15;
 export const TARGET_WINDOW_LEAD_METERS = 48;
 export const TARGET_WINDOW_TRAIL_METERS = 10;
 
