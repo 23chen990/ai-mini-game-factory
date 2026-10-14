@@ -21,7 +21,7 @@ export class RacingCareer {
     this.metrics = this.freshMetrics();
   }
   get stage() { return STAGES[this.index]; }
-  freshMetrics() { return { pickups: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, timeAllowance: 0 }; }
+  freshMetrics() { return { pickups: 0, bonusItems: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, timeAllowance: 0 }; }
   save() {
     try {
       this.storage.setItem(CAREER_KEY, JSON.stringify(this.progress));
@@ -74,10 +74,11 @@ export class RacingCareer {
       else { this.fuelEnabled = false;this.notice.push('油量同步异常，当前比赛不扣油'); }
     }
   }
-  onItemGet(item) {
+  onItemGet(item, source = 'box') {
     if (!this.active) return;
-    this.metrics.pickups++;
-    this.notice.push('获得' + (ITEM_LABELS[item] ?? '道具') + ' · 自动使用');
+    if (source === 'box') this.metrics.pickups++;
+    else this.metrics.bonusItems++;
+    this.notice.push((source === 'box' ? '拾取' : '超车奖励') + (ITEM_LABELS[item] ?? '道具') + ' · 自动使用');
   }
   onEvent(event, game) {
     if (!this.active) return;
@@ -114,7 +115,7 @@ export class RacingCareer {
       nativeEnd(dt);
     };
     const itemGet = game.onItemGet.bind(game);
-    game.onItemGet = item => { itemGet(item);this.onItemGet(item); };
+    game.onItemGet = item => { itemGet(item);this.onItemGet(item, game.__RACE_BONUS_DROP__ ? 'overtake' : 'box'); };
     game.__RACE_CAREER_PATCHED__ = true;
   }
   frame(game) {
