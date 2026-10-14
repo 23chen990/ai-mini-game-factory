@@ -50,7 +50,10 @@ export function neutralizeRaceBranding(text) {
     .replaceAll('法老金字塔', '沙丘古城')
     .replaceAll('雪地大冒险', '雪岭环线')
     .replaceAll('小橘子', '闪电选手')
-    .replaceAll('秋名山车神', '山路高手');
+    .replaceAll('秋名山车神', '山路高手')
+    // Replace the recognizable character-head mascot with the already authored generic balloon.
+    .replaceAll("buildMascotBalloon(bcols[i % bcols.length])",
+                "buildHotAirBalloon(i % 2 ? '#61c9ff' : '#ffc96c', '#ffffff')");
 }
 /** A qq-speed-only extension of PR10. No other game's source or adapter is written. */
 export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), sourceRoot = process.env.H5_PINNED_SOURCE_ROOT, hypothesis = process.env.RACE_REPAIR_HYPOTHESIS ?? 'Reuse native vehicle physics and edge inputs; gate two-button assists by track/state, and replace the stacked HUD with one mobile presentation.' } = {}) {
