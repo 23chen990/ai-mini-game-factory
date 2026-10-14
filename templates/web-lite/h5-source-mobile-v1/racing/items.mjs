@@ -52,12 +52,14 @@ export class OvertakeTracker {
   constructor() { this.reset(); }
   reset() {
     this.previous = null;this.lastAt = -1e5;this.lastCrashes = 0;this.passes = 0;
-    this.gaps = new Map();
+    this.gaps = new Map();this.lastCornerAt = -1e5;
   }
   frame(game) {
     if (!game?.player || game.state !== 'race' || !game.track) return false;
     const p = game.player, rank = game.standings.indexOf(p) + 1;
     const crash = p.stats?.crash ?? 0;
+    // Overtakes on the short corner exit still count; straight-line pass minutes later does not.
+    if (p.s >= 20 && Math.abs(game.track.curvAhead(p.d, 60)) >= .0025) this.lastCornerAt = game.raceTime;
     // Actual player-vs-rival distance crossing, not rank-only drops, AI removals, or teleportation.
     let crossed = false;
     for (const rival of game.racers ?? game.standings) {
@@ -70,7 +72,7 @@ export class OvertakeTracker {
     const valid = crossed && this.previous !== null && this.previous > rank && rank >= 1 &&
       game.raceTime > 3 && game.raceTime - this.lastAt > 7 && crash === this.lastCrashes &&
       p.impact <= 4 && !p.airborne && p.s >= 24 &&
-      Math.abs(game.track.curvAhead(p.d, 60)) >= .0025;
+      game.raceTime - this.lastCornerAt <= 1.8;
     this.previous = rank;this.lastCrashes = crash;
     if (valid) { this.lastAt = game.raceTime;this.passes++; }
     return valid;
