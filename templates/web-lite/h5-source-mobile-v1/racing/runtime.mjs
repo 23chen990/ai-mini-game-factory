@@ -45,7 +45,7 @@ export class RacingCareer {
     return this.fuel.amount >= FUEL_RULES.raceCost;
   }
   begin(game) {
-    this.active = true;this.boss = null;this.notice = [];this.metrics = this.freshMetrics();
+    this.active = true;this.boss = null;this.bossName = '';this.notice = [];this.metrics = this.freshMetrics();
     this.metrics.timeAllowance = this.stage.kind === 'relay' ? this.stage.baseTime : this.stage.kind === 'time' ? this.stage.target : 0;
     this.auto.reset();this.passes.reset();
     this.passes.previous = game.standings.indexOf(game.player) + 1;
@@ -66,7 +66,7 @@ export class RacingCareer {
     }
     if (this.stage.kind === 'boss') {
       this.boss = game.racers.find(r => !r.isPlayer) ?? null;
-      if (this.boss) { this.boss.name = '疾风车神';this.boss.skill = Math.max(this.boss.skill, 1.48); }
+      if (this.boss) { this.bossName = this.boss.name;this.boss.skill = Math.max(this.boss.skill, 1.48); }
     }
     if (this.fuelEnabled) {
       const spent = spendRaceFuel(this.fuel);
@@ -162,7 +162,7 @@ export class RacingCareer {
       case 'item':return '已拾取道具 ' + Math.min(m.pickups,s.target) + '/' + s.target;
       case 'speed':return '测速 ' + m.gateSpeed + '/' + s.target + ' km/h · ' + m.checkedSpeed + '/3 次';
       case 'elimination':return '存活淘汰点 ' + m.survived + '/2';
-      case 'boss':return '挑战疾风车神 · 当前第 ' + (game.standings.indexOf(game.player)+1) + ' 名';
+      case 'boss':return '超越车神 ' + this.bossName + ' · 当前第 ' + (game.standings.indexOf(game.player)+1) + ' 名';
       default:return '';
     }
   }
