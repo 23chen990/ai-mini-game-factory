@@ -159,9 +159,16 @@ try {
   await page.waitForFunction(()=>window.game?.state==='paused',null,{timeout:8000});
   const cleared=await page.evaluate(()=> !window.game?.input?.touch?.left && !window.game?.input?.touch?.right);
   if (!cleared) fail('Pause left a held steering input behind');
+  await page.locator('#race-sound').tap();
+  const audioMuted=await page.evaluate(()=>({
+    button:document.querySelector('#race-sound')?.getAttribute('aria-pressed'),
+    preference:localStorage.getItem('h5-qq-mobile-20261013:audio-enabled:v1'),
+  }));
+  if(audioMuted.button!=='false' || audioMuted.preference!=='0')
+    fail('Pause sound toggle did not mute and persist: '+JSON.stringify(audioMuted));
   await page.locator('#race-resume').tap();
   await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:8000});
-  report.touch={actualCDPTouch:true,leftPressObserved:held,released:true,paused:true,cleared,resumed:true};
+  report.touch={actualCDPTouch:true,leftPressObserved:held,released:true,paused:true,cleared,resumed:true,audioMuted:true};
   // Explicit synthetic progress: tests the stage ENTRY chain only, never claims playthrough.
   report.seededCampaign=true;
   await page.evaluate(() => {
@@ -212,6 +219,9 @@ try {
   const quality=await page.evaluate(() => window.game?.settings?.quality);
   if(quality!=='low') fail('Explicit low-graphics preference lost on reload: '+quality);
   report.persistedGraphicsQuality=quality;
+  const savedAudio=await page.evaluate(()=>localStorage.getItem('h5-qq-mobile-20261013:audio-enabled:v1'));
+  if(savedAudio!=='0') fail('Mute preference lost on reload');
+  report.persistedAudioEnabled=false;
   if(jsErrors.length) fail('Browser errors: '+jsErrors.slice(0,4).join(' | '));
   report.passed=true;report.smallView=small;
 } catch(e) {report.errors.push(String(e?.stack || e));process.exitCode=1;}
