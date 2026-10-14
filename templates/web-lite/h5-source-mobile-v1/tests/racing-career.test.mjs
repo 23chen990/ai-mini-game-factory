@@ -224,3 +224,28 @@ test('雪地末位淘汰：正常赛道进度触发一次预警，末位淘汰�
   assert.match(c.frame(g),/末位/);
   assert.equal(c.metrics.eliminated,true);
 });
+
+
+test('完整奖励视频后发生存档故障：临时补油但不虚报永久保存，玩家本次可自由参赛',async()=>{
+  const rows=new Map();let failWrite=false;
+  const store={getItem:k=>rows.get(k)??null,
+    setItem(k,value){if(failWrite)throw Error('Storage quota exceeded');rows.set(k,value);}};
+  const c=new RacingCareer(store);
+  c.progress.stars['01']=1;c.progress.rounds=4;c.startedAt=Date.now()-120000;
+  c.fuel.amount=2;
+  const ad={
+    closed:null,
+    onClose(fn){this.closed=fn;},offClose(){},onError(){},offError(){},
+    load(){return Promise.resolve();},
+    show(){this.closed({isEnded:true});return Promise.resolve();},
+  };
+  c.setupAd({status:1,source:'check_ads_status',appId:'qa-app',
+    screenOrientation:1,spaceId:'qa-slot'}, {createRewardedVideoAd(){return ad;}});
+  assert.equal(c.canOfferAd(),true);
+  failWrite=true;
+  const out=await c.watchFuelAd();
+  assert.equal(out.status,'session-credit');
+  assert.equal(out.fuel,4);
+  assert.equal(c.storageOK,false);assert.equal(c.fuelEnabled,false);
+  assert.equal(c.canStart(),true,'do not punish user who fully watched the ad');
+});
