@@ -18,3 +18,16 @@ export function experienceReportDirectory(engine, label) {
  if(!/^[a-z0-9-]+$/u.test(label))throw Error('Unsafe experience retest directory label');
  return 'experience-'+engine+'-'+label;
 }
+
+export function experienceMotionPreference(requested) {
+ if(requested===undefined)return 'no-preference';
+ if(requested==='reduce')return 'reduce';
+ throw Error('Unsupported browser motion preference: '+requested);
+}
+
+export const earnedPrizeRouteSeen = (frames, barrierId, fishId) => frames.some(frame =>
+ frame.phase==='running' && frame.clearedBarriers.includes(barrierId) && !frame.caughtBonusFish.includes(fishId) &&
+ frame.lanes.some(lane=>lane.index===1&&lane.kind==='fish'&&lane.text.includes('🌟')&&lane.visible===true));
+
+export const pedestrianWarningSeen = (frames, index) => frames.some(frame =>
+ frame.phase==='running' && frame.lanes.some(lane=>lane.index===index&&lane.kind==='pedestrian'&&lane.visible===true&&Number(lane.text.match(/(\d+(?:\.\d+)?)s/u)?.[1]??0)>=2));

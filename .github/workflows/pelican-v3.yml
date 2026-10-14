@@ -27,6 +27,9 @@ jobs:
       QA_USE_MESA: 1
       # Existing menu preset via trusted taps; game speed/collision unchanged.
       QA_TOUCH_QUALITY: efficient
+      # Shipped accessibility CSS. Native-GPU default-animation evidence is
+      # reviewed separately; retain the failed default software profile too.
+      QA_TOUCH_MOTION: reduce
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:

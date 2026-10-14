@@ -6,6 +6,8 @@ export function observePreparedJump() {
  if(!button)throw Error('Actual jump control is not loaded');
  const frames=[];
  window.__qaPreparedJumpFrames=frames;
+ const signals=[];let lastSignal='';
+ window.__qaExperienceSignals=signals;
  const visible=(node,interactive=false)=>{
   if(!node)return false;
   const r=node.getBoundingClientRect(),style=window.getComputedStyle(node);
@@ -18,6 +20,15 @@ export function observePreparedJump() {
   return !!hit&&(node===hit||node.contains(hit));
  };
  const observe=source=>{
+  const state=window.__coast?.snapshot();
+  if(document.querySelector('#coast')?.dataset.phase==='running'&&state?.phase==='running'){
+   const signal={at:window.performance.now(),source,phase:'running',
+    clearedBarriers:state.events.filter(e=>e.type==='barrier-cleared'&&e.jumped===true).map(e=>e.objectId),
+    caughtBonusFish:state.events.filter(e=>e.type==='fish-caught'&&e.golden&&e.bonus).map(e=>e.objectId),
+    lanes:[...document.querySelectorAll('.co-lane')].map((node,index)=>({index,kind:node.dataset.kind??'',text:node.textContent??'',visible:visible(node)}))};
+   const key=JSON.stringify([signal.clearedBarriers,signal.caughtBonusFish,signal.lanes]);
+   if(key!==lastSignal){signals.push(signal);lastSignal=key;}
+  }
   if(!button.classList.contains('queued'))return;
   const feedback=document.querySelector('#co-feedback strong'),feedbackPanel=feedback?.parentElement;
   frames.push({at:window.performance.now(),source,queued:true,buttonVisible:visible(button,true),feedbackVisible:visible(feedback),feedbackOpacity:feedbackPanel?Number(window.getComputedStyle(feedbackPanel).opacity):null,feedback:feedback?.textContent??'',bufferedJump:window.__coast?.snapshot().bufferedJump??null});

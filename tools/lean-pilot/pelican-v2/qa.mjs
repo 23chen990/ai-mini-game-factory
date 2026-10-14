@@ -8,6 +8,7 @@ import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
 import {tapVisible} from './touch.mjs';
 import {campaignWallBudgetMs} from './runtime/qa-budget.mjs';
+import {capturePath} from './qa-capture-paths.mjs';
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const mode=process.argv[2]??'campaign',engine=process.env.QA_ENGINE??'webkit';
 const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'qa-'+mode+'-'+engine);await mkdir(qaDir,{recursive:true});
@@ -16,12 +17,12 @@ await json(path.join(qaDir,'driver-provenance.json'),{path:'tools/lean-pilot/pel
 const server=await serve(),base='http://127.0.0.1:'+server.address().port+'/game/index.html';
 const browser=await (engine==='chromium'?chromium:webkit).launch(browserOptions(engine));
 const report={schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,runtime:engine+' desktop touch emulation; not physical mobile',mode,normalInputOnly:true,stateInjection:false,checks:[],actions:[],screenshots:[],errors:[],levels:[],driveBudgets:[],physicalIPhone:'NOT_RUN',liveAds:'NOT_RUN',startedAt:new Date().toISOString(),passed:false};
-let context,page,navs=0;
+let context,page,navs=0,captureSection='setup';
 const segments=[];let checkStart=0,shotStart=0,errorStart=0;
 function segment(name){segments.push({name,checkStart,checkEnd:report.checks.length,shotStart,shotEnd:report.screenshots.length,actionEnd:report.actions.length,errorStart,errorEnd:report.errors.length});checkStart=report.checks.length;shotStart=report.screenshots.length;errorStart=report.errors.length;}
 const LANES_FOR_QA=[-1.7,0,1.7];
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(JSON.stringify({name,passed,evidence}));};
-const shot=async name=>{const p=path.join(qaDir,name+'.png');await page.screenshot({path:p});report.screenshots.push({path:path.relative(RUN,p),sha256:sha(await readFile(p))});};
+const shot=async name=>{const p=path.join(qaDir,capturePath(captureSection,name));await mkdir(path.dirname(p),{recursive:true});await page.screenshot({path:p});report.screenshots.push({path:path.relative(RUN,p),sha256:sha(await readFile(p))});};
 const tap=async selector=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance,level:before.level}};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
 const snapshot=()=>page.evaluate(()=>window.__coast.snapshot());
 async function fresh(){context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir:qaDir,size:{width:390,height:844}}});page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('framenavigated',f=>{if(f===page.mainFrame())navs++;});
@@ -60,6 +61,7 @@ async function waitDistance(target,maxMs=70000){await page.evaluate(()=>new Prom
 try{
  await fresh();await shot('menu');check('locked-new-save',await page.locator('[data-level="2"]').isDisabled(),{newBrowser:true});
  if(mode==='campaign'||mode==='all'){
+  captureSection='campaign';
   const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});await shot('first-fish');const first=await snapshot(),firstEvent=first.events.find(e=>e.type==='fish-caught'&&e.first);check('first-seconds-objective-and-fish',first.count>=1&&firstEvent?.at<3,{count:first.count,elapsed:first.elapsed,firstCatchGameSeconds:firstEvent?.at,runnerWallMs:Date.now()-firstStarted,note:'Actual first event time, with runner wall time kept separate; software-renderer wall delay is not phone performance.'});
   const ri=await page.evaluate(()=>window.__coast.renderInfo());check('renderer-composer-resolution',ri.pixelRatio>=Math.min(1.25,qaDpr())&&ri.canvas[0]===ri.composer[0]&&ri.canvas[1]===ri.composer[1],ri);
   await tap('#co-pause');const before=await snapshot();await page.waitForTimeout(1100);const after=await snapshot();check('pause-freezes-world-and-timer',before.distance===after.distance&&before.elapsed===after.elapsed,{before,after});await shot('pause');await tap('#co-resume');
@@ -80,6 +82,7 @@ try{
   segment('campaign');if(mode==='all'&&report.levels.filter(l=>l.reason==='complete').length!==5)throw Error('Five natural unlocks required before continuing');
  }
  if(mode==='collisions'||mode==='all'){
+  captureSection='collisions';
   // Observe DOM presentation on each render frame. A slow inspection RPC
   // after failure cannot decide whether the earlier 650ms crash was visible.
   await page.evaluate(()=>{
@@ -104,6 +107,7 @@ try{
   segment('collisions');
  }
  if(mode==='safety'||mode==='all'){
+  captureSection='safety';
   if(mode==='all'){await tap('#co-pause');await tap('#co-select');await tap('[data-level="3"]');await tap('#co-start');}else{await tap('#co-start');for(let id=1;id<=2;id++){const r=await drive({stage:id});check('unlock-prerequisite-'+id,r.reason==='complete',r);if(r.reason!=='complete')throw Error('Unlock prerequisite failed');await tap('#co-next');}}
   const approach=await drive({stage:3,stopAtDistance:185});check('van-target-distance-reached',approach.distance>=185&&approach.level===3,approach);while((await view()).lane<2)await tap('[data-action="right"]');await shot('van-approach');
   await page.waitForSelector('#coast[data-phase="finished"]',{timeout:15000});const van=await snapshot();await shot('van-impact');check('van-ends-round',van.reason==='vehicle'&&van.events.some(e=>e.type==='failed'&&e.kind==='van'),van);
