@@ -7,6 +7,7 @@ import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
 import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
 import {tapVisible} from './touch.mjs';
+import {campaignWallBudgetMs} from './runtime/qa-budget.mjs';
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const mode=process.argv[2]??'campaign',engine=process.env.QA_ENGINE??'webkit';
 const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'qa-'+mode+'-'+engine);await mkdir(qaDir,{recursive:true});
@@ -14,7 +15,7 @@ const driver=await readFile(new URL(import.meta.url));await writeFile(path.join(
 await json(path.join(qaDir,'driver-provenance.json'),{path:'tools/lean-pilot/pelican-v2/qa.mjs',snapshot:path.relative(RUN,path.join(qaDir,'driver-source.mjs')),sha256:sha(driver),buildHash:build.buildHash,normalInputOnly:true});
 const server=await serve(),base='http://127.0.0.1:'+server.address().port+'/game/index.html';
 const browser=await (engine==='chromium'?chromium:webkit).launch(browserOptions(engine));
-const report={schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,runtime:engine+' desktop touch emulation; not physical mobile',mode,normalInputOnly:true,stateInjection:false,checks:[],actions:[],screenshots:[],errors:[],levels:[],physicalIPhone:'NOT_RUN',liveAds:'NOT_RUN',startedAt:new Date().toISOString(),passed:false};
+const report={schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,runtime:engine+' desktop touch emulation; not physical mobile',mode,normalInputOnly:true,stateInjection:false,checks:[],actions:[],screenshots:[],errors:[],levels:[],driveBudgets:[],physicalIPhone:'NOT_RUN',liveAds:'NOT_RUN',startedAt:new Date().toISOString(),passed:false};
 let context,page,navs=0;
 const segments=[];let checkStart=0,shotStart=0,errorStart=0;
 function segment(name){segments.push({name,checkStart,checkEnd:report.checks.length,shotStart,shotEnd:report.screenshots.length,actionEnd:report.actions.length,errorStart,errorEnd:report.errors.length});checkStart=report.checks.length;shotStart=report.screenshots.length;errorStart=report.errors.length;}
@@ -26,11 +27,18 @@ const snapshot=()=>page.evaluate(()=>window.__coast.snapshot());
 async function fresh(){context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir:qaDir,size:{width:390,height:844}}});page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('framenavigated',f=>{if(f===page.mainFrame())navs++;});
  await page.addInitScript(()=>{window.__qaFrames=[];let prev;const f=t=>{if(prev&&window.__qaFrames.length<100000)window.__qaFrames.push(t-prev);prev=t;requestAnimationFrame(f);};requestAnimationFrame(f);});await page.goto(base);await page.waitForSelector('#coast[data-loaded="true"]');}
 const view=()=>page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(x=>x.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish')}))}));
-async function drive({maxMs=135000,stage=0,stopAtDistance=Infinity,avoidFish=false}={}){
- // Read the newly painted UI, rather than the previous run's synchronous DOM text.
+async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={}){
+ // Host software WebGL can run below real-time. Bound wall time by authored ride length;
+ // never accelerate game simulation, inject scores or fabricate unlocks.
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
- const end=Date.now()+maxMs;let lastTap=0,nearShot=false;
- while(Date.now()<end){const v=await view();if(v.phase==='finished'||v.distance>=stopAtDistance)return snapshot();if(v.phase==='paused'){await tap('#co-resume');continue;}
+ const wallStarted=Date.now(),budgetMs=campaignWallBudgetMs(stage,maxMs),end=wallStarted+budgetMs;let lastTap=0,nearShot=false;
+ const finish=async status=>{
+  const result=await snapshot();
+  report.driveBudgets.push({stage,status,budgetMs,wallElapsedMs:Date.now()-wallStarted,gameElapsedSeconds:result.elapsed??null,
+   distance:result.distance??null,phase:result.phase,reason:result.reason??null});
+  return result;
+ };
+ while(Date.now()<end){const v=await view();if(v.phase==='finished'||v.distance>=stopAtDistance)return finish(v.phase==='finished'?'settled':'distance-reached');if(v.phase==='paused'){await tap('#co-resume');continue;}
   const imminent=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=4;
   let want=v.lane;
   if(imminent(v.lane)){const safe=[0,1,2].filter(i=>!imminent(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
@@ -42,7 +50,11 @@ async function drive({maxMs=135000,stage=0,stopAtDistance=Infinity,avoidFish=fal
   if(!nearShot&&v.lanes.some(l=>l.danger&&Number(l.text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=3)){nearShot=true;await shot('level-'+stage+'-hazard');}
   await page.waitForTimeout(90);
  }
- return snapshot();
+ const result=await finish('runner-wall-budget-exhausted');
+ check('wall-budget-exhausted-level-'+stage,false,{budgetMs,wallMs:Date.now()-wallStarted,phase:result.phase,reason:result.reason,
+  gameElapsedSeconds:result.elapsed,distance:result.distance,note:'Did not settle; no fast forward or score injection.'});
+ await shot('level-'+stage+'-wall-budget').catch(()=>{});
+ return result;
 }
 async function waitDistance(target,maxMs=70000){await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));const end=Date.now()+maxMs;while(Date.now()<end){const v=await view();if(v.phase==='finished')throw Error('Finished before '+target);if(v.distance>=target)return;await page.waitForTimeout(40);}throw Error('Distance timeout '+target);}
 try{

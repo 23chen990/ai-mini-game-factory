@@ -56,5 +56,28 @@ try{
 const detour=await snap();await shot('safe-detour');
  check('safe-detour-does-not-require-jump',detour.phase==='running'&&!detour.events.some(e=>e.type==='jump')&&detour.events.some(e=>e.type==='barrier-cleared'&&!e.jumped),detour);
  await tap('#co-pause');await tap('#co-select');const selected=await page.locator('[data-level="1"]').innerText();const progress=await page.locator('#co-progress').innerText();check('mastery-saved-and-visible-on-route',selected.includes('★★★')&&selected.includes('纪录 '+best.fish+' 鱼')&&progress.includes('3/15'),{selected,progress,best});await shot('saved-mastery');
+ // Small-phone acceptance: only normal viewport resize and true taps, no state edits.
+ await page.setViewportSize({width:320,height:568});await page.waitForTimeout(250);
+ const menu=await page.evaluate(()=>{
+  const start=document.querySelector('#co-start'),r=start.getBoundingClientRect(),route=document.querySelector('#co-route');
+  return {ready:document.querySelector('#coast')?.dataset.phase==='ready',start:{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom},
+   routeScrollable:route.scrollHeight>route.clientHeight,documentWidth:document.documentElement.scrollWidth};
+ });
+ check('small-phone-start-visible-and-menu-not-overflow',menu.ready&&menu.start.x>=0&&menu.start.bottom<=568&&menu.start.height>=36&&menu.documentWidth<=320,menu);
+ await shot('small-phone-route-menu');
+ await tap('#co-start');await page.waitForTimeout(450);
+ const small=await page.evaluate(()=>{
+  const toBox=n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
+  const buttons=[...document.querySelectorAll('#co-controls button')].map(toBox);
+  const mastery=document.querySelector('#co-mastery');
+  const bar=toBox(mastery),font=parseFloat(window.getComputedStyle(mastery).fontSize);
+  return {running:document.querySelector('#coast')?.dataset.phase==='running',buttons,bar,font,
+   controlTop:Math.min(...buttons.map(b=>b.y)),bodyWidth:document.documentElement.scrollWidth,
+   canvas:toBox(document.querySelector('canvas'))};
+ });
+ check('small-phone-touch-buttons-and-mastery-readable',
+  small.running&&small.buttons.length===3&&small.buttons.every(b=>b.width>=54&&b.height>=44&&b.x>=0&&b.right<=320&&b.bottom<=568)&&
+  small.font>=12&&small.bar.right<=320&&small.bar.bottom<small.controlTop&&small.bodyWidth<=320,small);
+ await shot('small-phone-running');
 }catch(e){report.errors.push(e.stack);await shot('failure').catch(()=>{});}
 finally{const video=await page.video().path();await ctx.close();report.video={path:path.relative(RUN,video),sha256:sha(await readFile(video))};await browser.close();server.close();report.passed=report.checks.every(c=>c.passed)&&report.errors.length===0;await json(path.join(dir,'report.json'),report);if(!report.passed)process.exitCode=1;}
