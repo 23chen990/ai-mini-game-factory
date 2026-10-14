@@ -219,3 +219,79 @@ jobs:
           path: ${{ runner.temp }}/three-h5-results/*.json
           retention-days: 7
           if-no-files-found: warn
+
+  # Only the delegated pelican PR runs this resource-heavy immutable-source build.
+  # All evidence is generated from this PR's own code, never the old v2 archive.
+  pelican-v32-real-h5:
+    if: github.event.pull_request.head.ref == 'chatgpt/pelican-feel-v3-20261014'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/pelican-author-source
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.x'
+      - name: Install pinned factory dependencies
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+      - name: Pelican source and authored rules before expensive browser setup
+        run: |
+          node --test tools/lean-pilot/pelican-v2/core.node.mjs tools/lean-pilot/pelican-v2/runtime/feel-safety.node.mjs tools/lean-pilot/pelican-v2/runtime/engagement.node.mjs tools/lean-pilot/pelican-v2/runtime/engagement.integration.node.mjs
+          pnpm exec eslint tools/lean-pilot/pelican-v2
+          pnpm exec tsc --noEmit
+      - name: Fetch immutable authorized reference source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git init -q "$H5_PINNED_SOURCE_ROOT"
+          git -C "$H5_PINNED_SOURCE_ROOT" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$H5_PINNED_SOURCE_ROOT" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$H5_PINNED_SOURCE_ROOT" checkout --detach FETCH_HEAD
+          test "$(git -C "$H5_PINNED_SOURCE_ROOT" rev-parse HEAD)" = 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+      - name: Prepare and actually rebuild this PR's H5
+        run: |
+          node tools/lean-pilot/pelican-v2/prepare.mjs
+          node tools/lean-pilot/pelican-v2/artifacts.mjs
+          node tools/lean-pilot/pelican-v2/build.mjs
+          sha256sum runs/pelican-coast-v2-20261014/workspace/game/index.html
+      - name: Install true browser engines
+        run: pnpm exec playwright install --with-deps chromium webkit
+      - name: Fresh touch-only five-level campaign in WebKit and Chromium
+        shell: bash
+        run: |
+          set +e
+          QA_ENGINE=webkit node tools/lean-pilot/pelican-v2/qa.mjs campaign
+          webkit_exit=$?
+          QA_ENGINE=chromium node tools/lean-pilot/pelican-v2/qa.mjs campaign
+          chromium_exit=$?
+          echo "WEBKIT_QA=$webkit_exit CHROMIUM_QA=$chromium_exit"
+          test "$webkit_exit" -eq 0 && test "$chromium_exit" -eq 0
+      - name: Package only the rebuilt candidate and hash it
+        if: always()
+        shell: bash
+        run: |
+          if test -f runs/pelican-coast-v2-20261014/workspace/game/index.html; then
+            cd runs/pelican-coast-v2-20261014/workspace
+            zip -qr "$RUNNER_TEMP/pelican-v32-h5.zip" game
+            sha256sum game/index.html "$RUNNER_TEMP/pelican-v32-h5.zip" > "$RUNNER_TEMP/pelican-v32-hashes.txt"
+          else
+            echo 'BUILD_NOT_AVAILABLE - do not reuse v2 H5.'
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pelican-v32-build-and-playtest-${{ github.event.pull_request.head.sha }}
+          path: |
+            ${{ runner.temp }}/pelican-v32-h5.zip
+            ${{ runner.temp }}/pelican-v32-hashes.txt
+            runs/pelican-coast-v2-20261014/attempts/attempt-*/qa-*/report.json
+            runs/pelican-coast-v2-20261014/attempts/attempt-*/qa-*/*.png
+            runs/pelican-coast-v2-20261014/attempts/attempt-*/qa-*/*.webm
+            runs/pelican-coast-v2-20261014/attempts/attempt-*/qa-*/driver-provenance.json
+          retention-days: 7
+          if-no-files-found: warn
