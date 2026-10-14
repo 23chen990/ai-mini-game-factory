@@ -133,8 +133,11 @@ function finish() {
   }
   const newSkin = SKIN_STARS.findIndex((required,i) => i > 0 && beforeStars < required && graded?.total >= required);
   $('result-copy').textContent = stars
-    ? '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星' +
-      (newSkin > 0 ? ' · 解锁车漆：' + SKIN_NAMES[newSkin] : '')
+    ? (career.dailySnapshot
+      ? '每日挑战成功 · 第 ' + result.place + ' 名 · ' + time(result.time) + ' · 当日最佳 ' + time(graded.best) +
+        ' · 连续挑战 ' + career.progress.daily.streak + ' 天'
+      : '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星' +
+        (newSkin > 0 ? ' · 解锁车漆：' + SKIN_NAMES[newSkin] : ''))
     : '目标未完成：' + career.stage.goal + ' · ' + (result.finished ? '名次 ' + result.place : '已完成 ' + Math.floor(result.completion * 100) + '%');
   $('result-stats').innerHTML = [['有效漂移', graded?.metric.cleanDrifts ?? 0], ['弯道超车', graded?.metric.cleanPasses ?? 0], ['拾取道具', graded?.metric.pickups ?? 0], ['小喷', result.stats.small]].map(([label, value]) => `<span><b>${value ?? 0}</b>${label}</span>`).join('');
   $('results').replaceChildren();
