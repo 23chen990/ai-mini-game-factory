@@ -101,3 +101,10 @@ test('冷却中的广告和反复回拨不会制造额外的两格体力',()=>{
   assert.equal(rolled.state.updatedAt,reward.state.updatedAt,'rollback never rewinds recharge anchor');
   assert.equal(grantAdvertFuel(rolled.state,'completed','reward-attempt-two',T+2000).ok,false,'reward cooldown persists');
 });
+
+
+test('设备时间回拨时，下一格油的等待提示不会虚增到二十分钟',()=>{
+  const s=spendRaceFuel(newFuelState(T),T).state;
+  assert.equal(fuelTimeLeft(s,T-20*M),5*M);
+  assert.equal(fuelTimeLeft(s,T+2*M),3*M);
+});
