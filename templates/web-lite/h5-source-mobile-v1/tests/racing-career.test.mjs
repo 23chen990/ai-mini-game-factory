@@ -100,8 +100,37 @@ test('relay pads are counted only when spaced and give real clock extension',()=
   assert.equal(c.metrics.padCount,2);
 });
 test('each race clears telemetry; a loss does not unlock another stage',()=>{
-  const c=new RacingCareer(memory()),g=game();c.begin(g);c.onEvent({type:'driftEnd',data:{time:.35}},g);
+  const c=new RacingCareer(memory()),g=game();c.begin(g);c.onEvent({type:'driftEnd',data:{time:.35,clean:true}},g);
   assert.equal(c.metrics.cleanDrifts,1);
   const o=c.finalize(g,{finished:false,place:6,time:null,stats:{crash:0}});
   assert.equal(o.stars,0);assert.equal(c.progress.rounds,1);c.begin(g);assert.equal(c.metrics.cleanDrifts,0);
+});
+
+test('invalid drift endings, including wall collisions, cannot unlock the drift challenge', () => {
+  const c=new RacingCareer(memory()),g=game();
+  for(let i=0;i<3;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  assert.equal(c.setStage(3),true);c.begin(g);
+  c.onEvent({type:'driftEnd',data:{time:.8,clean:false}},g);
+  c.onEvent({type:'driftEnd',data:{time:.5}},g);
+  assert.equal(c.metrics.cleanDrifts,0);
+  c.onEvent({type:'driftEnd',data:{time:.4,clean:true}},g);
+  assert.equal(c.metrics.cleanDrifts,1);
+  assert.match(c.objectiveLabel(g),/1\/3/);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),0);
+});
+test('career UI objectives reflect real progress, not dummy counters',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  for(let i=0;i<2;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  c.setStage(2);c.begin(g);
+  assert.match(c.objectiveLabel(g),/0\/1/);
+  c.metrics.cleanPasses=1;assert.match(c.objectiveLabel(g),/1\/1/);
+  assert.ok(gradeStage(c.stage,result(),c.metrics));
+});
+test('advertising cannot be offered before tutorial is actually completed',()=>{
+  const c=new RacingCareer(memory());
+  c.fuelEnabled=true;c.progress.rounds=12;c.startedAt=Date.now()-900000;
+  c.fuel.amount=2;
+  assert.equal(c.canOfferAd(),false);
+  c.progress.stars['01']=1;
+  assert.equal(c.canOfferAd(),true);
 });
