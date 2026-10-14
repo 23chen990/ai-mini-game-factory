@@ -21,7 +21,7 @@ export class RacingCareer {
     this.metrics = this.freshMetrics();
   }
   get stage() { return STAGES[this.index]; }
-  freshMetrics() { return { pickups: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: false, checkpoints: 0, timeAllowance: 0 }; }
+  freshMetrics() { return { pickups: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, timeAllowance: 0 }; }
   save() {
     try {
       this.storage.setItem(CAREER_KEY, JSON.stringify(this.progress));
@@ -81,7 +81,11 @@ export class RacingCareer {
   }
   onEvent(event, game) {
     if (!this.active) return;
-    if (validDrift(event)) this.metrics.cleanDrifts++;
+    if (validDrift(event)) {
+      this.metrics.cleanDrifts++;
+      if (this.stage.kind === 'drift')
+        this.notice.push('有效漂移 ' + Math.min(this.metrics.cleanDrifts, this.stage.target) + '/' + this.stage.target);
+    }
     if (event?.type === 'pad' && game.raceTime - this.metrics.lastPadAt >= 3) {
       this.metrics.padCount++;this.metrics.lastPadAt = game.raceTime;
       if (this.stage.kind === 'relay') {
@@ -119,13 +123,17 @@ export class RacingCareer {
     const distance = track.length * this.stage.laps;
     if (this.passes.frame(game)) {
       m.cleanPasses++;
+      if (this.stage.kind === 'overtake')
+        this.notice.push('有效弯道超车 ' + Math.min(m.cleanPasses, this.stage.target) + '/' + this.stage.target);
       const bonus = awardCornerPass(game);
       this.notice.push(bonus === 'item' ? '弯道超车！奖励道具' : bonus === 'boost' ? '弯道超车！额外加速' : '漂亮超车！');
     }
-    if (this.stage.kind === 'speed' && !m.checkedSpeed && fractionPassed(m.previousProgress, p.progress, distance, .45)) {
-      m.gateSpeed = Math.round(p.speedKmh ?? Math.abs(p.s) * 3.6);
-      m.checkedSpeed = true;
-      this.notice.push('测速点 ' + m.gateSpeed + ' km/h');
+    if (this.stage.kind === 'speed' && m.checkedSpeed < 3 &&
+        fractionPassed(m.previousProgress, p.progress, distance, [.22,.55,.83][m.checkedSpeed])) {
+      const reading = Math.round(p.speedKmh ?? Math.abs(p.s) * 3.6);
+      m.gateSpeed = Math.max(m.gateSpeed, reading);
+      m.checkedSpeed++;
+      this.notice.push('第 ' + m.checkedSpeed + ' 个测速点 ' + reading + ' km/h · 最佳 ' + m.gateSpeed);
     }
     if (this.stage.kind === 'elimination' && m.checkpoints < 2) {
       const thresholds = [.35, .70];
@@ -143,10 +151,22 @@ export class RacingCareer {
     }
     return null;
   }
-  timerLabel(game) {
-    if (!this.active || !['time', 'relay'].includes(this.stage.kind) || !game) return '';
-    return '剩余 ' + Math.max(0, Math.ceil(this.metrics.timeAllowance - game.raceTime)) + ' 秒';
+  objectiveLabel(game) {
+    if (!this.active || !game) return '';
+    const s = this.stage, m = this.metrics;
+    switch (s.kind) {
+      case 'time':case 'relay':return '剩余 ' + Math.max(0, Math.ceil(m.timeAllowance - game.raceTime)) + ' 秒' +
+        (s.kind === 'relay' ? ' · 加速带 +' + s.bonus + '秒' : '');
+      case 'drift':return '有效漂移 ' + Math.min(m.cleanDrifts,s.target) + '/' + s.target;
+      case 'overtake':return '弯道超车 ' + Math.min(m.cleanPasses,s.target) + '/' + s.target;
+      case 'item':return '已拾取道具 ' + Math.min(m.pickups,s.target) + '/' + s.target;
+      case 'speed':return '测速 ' + m.gateSpeed + '/' + s.target + ' km/h · ' + m.checkedSpeed + '/3 次';
+      case 'elimination':return '存活淘汰点 ' + m.survived + '/2';
+      case 'boss':return '挑战疾风车神 · 当前第 ' + (game.standings.indexOf(game.player)+1) + ' 名';
+      default:return '';
+    }
   }
+  timerLabel(game) { return this.objectiveLabel(game); }
   drainNotices() { return this.notice.splice(0, this.notice.length); }
   finalize(game, result) {
     if (!this.active) return null;
@@ -158,6 +178,7 @@ export class RacingCareer {
     return { ...outcome, best: this.progress.times[this.stage.id], metric: { ...this.metrics } };
   }
   fuelText() {
+    if (!this.storageOK) return '本地存储不可用 · 试玩不限油，关卡进度可能不会保留';
     if (!this.fuelEnabled) return '油量系统未开通 · 当前不限油试玩';
     this.fuel = syncFuel(this.fuel);
     const left = fuelTimeLeft(this.fuel);
@@ -165,7 +186,7 @@ export class RacingCareer {
     return '⛽ ' + this.fuel.amount + '/' + FUEL_RULES.max + ' · 每场 -1' + mm;
   }
   canOfferAd() {
-    return this.fuelEnabled && !this.adBusy && fuelAdEligible(this.fuel, {
+    return this.fuelEnabled && !this.adBusy && (this.progress.stars['01'] ?? 0) > 0 && fuelAdEligible(this.fuel, {
       rounds: this.progress.rounds, sessionMs: Date.now() - this.startedAt, adReady: true,
     });
   }
