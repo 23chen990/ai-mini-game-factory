@@ -36,3 +36,17 @@
 - 验证对应**实际构建 hash**：`8208e5903755a155ea91a5de3769fe04cb3c10c1f61b2fb698d7a825c6be419a`。试玩包 ZIP SHA-256：`ca4e21eb2df68c015fe130562d4b733c25b34a5ba56abccd06d744ec56c58e0e`；单页 HTML SHA-256：`91e4754d91ab9b99cdf93fd6d465ca33e4bcbd645d0d1ad4c4c9a98ead80937c`。
 - **不可变的 GitHub Actions 证据**：[实际完整源构建/自动试玩与截图](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38521787772)，附件 `cf-transport-review-6498084fe0f9e058746857149cac6d749e746321`（Actions Artifacts 有保留期）。历史失败证据 [第一次云端试玩](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38520975457) 同样保留，未涂改。
 - 临时 `.github/workflows/cf-mobile-qa.yml` 仅用于获取正式源文件及真实浏览器证据，已**从 PR 的最终净改动移除**，不调整既有 `pilot:scope` 门禁。新包仅是可供验收的 H5 候选，不是平台发行。
+
+## 2026-10-14 V3 手机优先体验复核（最新）
+
+**反馈驱动：** 用户最新截图指出仍像电脑版操作说明，要求无需用户亲自试玩，先由 ChatGPT 自查。V3 把隐藏旧 PC 菜单升级为真正移动端专属 UI：入口仅保留「左手摇杆移动 / 右侧滑动瞄准 / 点按或按住开火」，去掉原生键盘教程、Esc 和 R 提示、数字键切枪栏、重复开火键，简化为开火/跳/换弹/狙击时开镜；血甲离开左摇杆。暂停清除蓄积的开火、跳跃、鼠标增量和滑动数据。小队生存进度条改按存活时间上涨而不是按死亡次数。
+
+**不可变真实源码、自然触控复核：** [GitHub Actions #38526715200](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38526715200)。执行固定上游授权源码编译、冻结工程和移动单测、Playwright Chromium 软件 WebGL；5/5 浏览器流程 PASS，0 page errors。额外验证 844×390、667×375 入口布局，手机教程可见且旧桌面菜单隐藏；火力按钮按住后 0→7 发，左手摇杆位移约 5.51m，右侧滑动偏航变化约 0.229 rad；模拟狙击挑战启动后触控开镜，scope=1。按钮均在视窗内、无重叠，重复开火/蹲/切枪不可见。QA 自然失败终局、重玩和本地最佳数据读回通过。
+
+- 新候选 buildHash：`73e63062fe4e4298abc1108773ac2f7a260728066cacdf28814e695357d20d6e`。
+- 独立 ZIP SHA-256：`404cbec37fca9d29487cb993304024753ea752795d2e703e2d74e632e086f126`。
+- 独立 HTML SHA-256：`7f259db6c7fce9fa155078e20c1c786530a925cab7f38f2ba758f0c1070a5cb6`。
+- 新截图：`mobile-entry.png`, `mobile-entry-667x375.png`, `mobile-controls.png`, `mobile-forward-look.png`, `mobile-sniper-controls.png`, `mobile-terminal.png`；在 Actions Artifacts 中（有保留期限）。
+- 临时真实源码 QA workflow 已在测试后删除，原 `pilot:scope` 门禁不变；不可将该 Actions 成功称作用户手机实机/发布 PASS。
+
+**仍未闭环：** 最重要的是 *首次有效命中及三种挑战自然成功*；本次任务失败，score=0。自动脚本只前进、转头和射击，没有像真人一样找敌人，0 命中不能直接证明难度失衡，但不能声称战斗成功路径已通过。完整真人首30秒敌我理解、Android/iOS 真机流畅度、跨设备画质、真实 IAA、最新 REA 实时执行同样需要单独证据。不要增加武器/大地图作为掩盖，优先让真实初学者看见敌人并完成首次命中。
