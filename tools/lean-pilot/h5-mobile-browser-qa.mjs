@@ -139,20 +139,25 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      {readyMs,viewport,actualHTTP:true,entryMobile});
    await page.locator('#mk-start').tap();actions.push({atMs:Date.now()-started,input:'tap',target:'#mk-start'});
    await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
+   // Beginner duel may legitimately finish on the first manual burst. Verify
+   // pause early, before a fast real win hides the button.
+   if(isFps){
+     await page.locator('#mk-pause').tap();
+     const pausedBefore=await page.locator('#mk-time').innerText();
+     await page.waitForTimeout(700);
+     const pauseFrozen=pausedBefore===await page.locator('#mk-time').innerText();
+     const phaseDuringPause=await page.locator('#mobile-kit').getAttribute('data-phase');
+     await page.locator('#mk-resume').tap();
+     check('mobile-pause-resume',pauseFrozen&&phaseDuringPause==='paused',
+       {visiblePaused:phaseDuringPause,clockFrozen:pauseFrozen,checkedBeforeFastBeginnerWin:true});
+   }
    if(run.theme==='pelican-bike'){
      await hold('[data-code="ArrowLeft"]',1200);await hold('[data-code="ArrowRight"]',1200);
    }else if(run.theme==='qq-speed'){
      await hold('#t-left',1000);await hold('#t-right',1000);
    }else{
      await page.waitForFunction(() => document.documentElement.dataset.fpsActive === 'true', {timeout:10000});
-     const fire=page.locator('#touch .btn[data-mk-action="fire"]');
      const shotsBefore = await page.evaluate(() => window.__H5NativeGame?.player?.stats?.shots ?? 0);
-     const b=await fire.boundingBox(),cdp=await context.newCDPSession(page);
-     actions.push({atMs:Date.now()-started,input:'touch-hold',target:'visible-fire',durationMs:1500});
-     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:b.x+b.width/2,y:b.y+b.height/2,id:1}]});
-     await page.waitForTimeout(1500);
-     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.detach();
-     const shotsAfter = await page.evaluate(() => window.__H5NativeGame?.player?.stats?.shots ?? 0);
      const layout = await page.evaluate(() => {
        const actions=['fire','jump','reload','scope','duplicate-fire','crouch','switch'];
        const nodes=actions.map(action=>{
@@ -200,6 +205,17 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const thumbMotion=distance>0.5&&lookAngle>0.01&&afterTravel.deaths===beforeTravel.deaths;
      await shot('mobile-forward-look');
      actions.push({atMs:Date.now()-started,input:'natural-joystick-and-look',detail:{distance,lookAngle,thumbMotion}});
+     const fire=page.locator('#touch .btn[data-mk-action="fire"]');
+     if(await page.locator('#mobile-kit').getAttribute('data-phase')==='running'){
+       const b=await fire.boundingBox(),cdp=await context.newCDPSession(page);
+     actions.push({atMs:Date.now()-started,input:'touch-hold',target:'visible-fire',durationMs:1500});
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:b.x+b.width/2,y:b.y+b.height/2,id:1}]});
+     await page.waitForTimeout(1500);
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.detach();
+     }
+     const shotsAfter = await page.evaluate(() => window.__H5NativeGame?.player?.stats?.shots ?? 0);
+     const earlyCombat = await readFpsThreat();
+     if(earlyCombat)fpsThreatTrace.push(earlyCombat);
      const working = shotsAfter > shotsBefore && thumbMotion && !layout.overlap && layout.desktopMenuHidden &&
        layout.labelsPresent && layout.active === 'true' && layout.actions.every(n=>!n.visible||n.fits) &&
        ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible)) &&
@@ -213,10 +229,12 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await shot('mobile-controls');
      check('mobile-controls',true,{authority:'NORMAL_TOUCH_INPUT_AND_SCREENSHOTS',note:'Control response needs screenshot/perceptual review; this does not prove every weapon or drift branch.'});
    }
-   await page.locator('#mk-pause').tap();const time=await page.locator('#mk-time').innerText();
-   await page.waitForTimeout(1000);const frozen=time===await page.locator('#mk-time').innerText();
-   const paused=await page.locator('#mobile-kit').getAttribute('data-phase');await page.locator('#mk-resume').tap();
-   check('mobile-pause-resume',frozen&&paused==='paused',{visiblePaused:paused,clockFrozen:frozen});
+   if(!isFps){
+     await page.locator('#mk-pause').tap();const time=await page.locator('#mk-time').innerText();
+     await page.waitForTimeout(1000);const frozen=time===await page.locator('#mk-time').innerText();
+     const paused=await page.locator('#mobile-kit').getAttribute('data-phase');await page.locator('#mk-resume').tap();
+     check('mobile-pause-resume',frozen&&paused==='paused',{visiblePaused:paused,clockFrozen:frozen});
+   }
    const loopStart=Date.now();
    let lastFpsTraceAt=0;
    while(await page.locator('#mobile-kit').getAttribute('data-phase')!=='finished'&&Date.now()-loopStart<(run.theme==='cf-transport-ship'?540000:240000)){
