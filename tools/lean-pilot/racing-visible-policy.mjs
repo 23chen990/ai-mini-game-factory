@@ -49,10 +49,10 @@ export function recoverVisibleHeading(policy, memory, now) {
 }
 export function itemBoxPolicy({ width: W, height: H, data }) {
   const mask = new Uint8Array(W * H), seen = new Uint8Array(W * H), candidates = [];
-  const y0 = Math.floor(H * .34), y1 = Math.floor(H * .53);
-  for (let y = y0; y < y1; y++) for (let x = Math.floor(W * .2); x < W * .8; x++) {
+  const y0 = Math.floor(H * .34), y1 = Math.floor(H * .60);
+  for (let y = y0; y < y1; y++) for (let x = Math.floor(W * .1); x < W * .9; x++) {
     const i = y * W + x, j = i * 4;
-    mask[i] = data[j] < 170 && data[j + 1] > 130 && data[j + 1] < 246 && data[j + 2] > 236 && data[j + 2] - data[j] > 70 ? 1 : 0;
+    mask[i] = data[j] < 160 && data[j + 1] > 95 && data[j + 1] < 230 && data[j + 2] > 190 && data[j + 2] - data[j] > 65 && data[j + 2] - data[j + 1] > 38 ? 1 : 0;
   }
   for (let i = y0 * W; i < y1 * W; i++) {
     if (!mask[i] || seen[i]) continue;

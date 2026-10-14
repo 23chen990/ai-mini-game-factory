@@ -12,8 +12,8 @@ const run = path.resolve('runs/h5-qq-mobile-20261013'), root = path.join(run, 'w
 const build = JSON.parse(await readFile(path.join(run, 'artifacts/build-racing.json')));
 const out = path.join(run, 'evidence/browser-experience-attempt' + build.attempt);
 await mkdir(out, { recursive: true });
-const sourceReport = process.env.RACE_QA_REPORT ?? path.join(run, 'evidence/final-attempt12/report.json');
-const sourceStorage = process.env.RACE_QA_STORAGE ?? path.join(run, 'evidence/final-attempt12/natural-earned-storage.json');
+const sourceReport = process.env.RACE_QA_REPORT ?? path.join(run, 'evidence/final-attempt' + build.attempt + '/report.json');
+const sourceStorage = process.env.RACE_QA_STORAGE ?? path.join(run, 'evidence/final-attempt' + build.attempt + '/natural-earned-storage.json');
 const report = JSON.parse(await readFile(sourceReport)), storage = JSON.parse(await readFile(sourceStorage));
 const origin = earnedResumeOrigin(report, storage, build.buildHash);
 const checks = [], errors = [];

@@ -57,7 +57,9 @@ export class RacingCareer {
     // Two natural expert retests with2–3crashes finished sixth after the earlier
     // expert increase. Retain the submitted expert speeds and all objective gates.
     // Native physics, grid, progress, variability and rubber-banding stay intact.
-    const band = this.stage.diff === 1 ? [.85, 1.05, 1.18, 1.34] : null;
+    // Item fields add weapon slowdowns and recovery time. Two real stage06
+    // attempts finished sixth after late hits even with2physical pickups.
+    const band = this.stage.diff === 1 ? (this.stage.mode === 'item' ? [.85, 1.05, 1.03, 1.18] : [.85, 1.05, 1.18, 1.34]) : null;
     if (band) for (const rival of game.racers.filter(r => !r.isPlayer)) {
       const fraction = Math.max(0, Math.min(1, ((rival.skill ?? band[0]) - band[0]) / (band[1] - band[0])));
       rival.skill = band[2] + fraction * (band[3] - band[2]);

@@ -14,6 +14,11 @@ test('visible cyan cube chooses an ordinary steering direction; sky and HUD are 
 test('long blue rails and the car boost behind the player cannot act as boxes', () => {
   assert.equal(itemBoxPolicy(image([[80, 85, 180, 5, [90, 205, 255, 255]], [190, 120, 15, 30, [90, 205, 255, 255]]])), null);
 });
+test('the shaded blue cube color remains visible without mistaking pale sky for an item', () => {
+  assert.equal(itemBoxPolicy(image([[260, 92, 12, 12, [38, 148, 227, 255]]])).direction, 'right');
+  assert.equal(itemBoxPolicy(image([[130, 92, 12, 12, [39, 118, 204, 255]]])).direction, 'left');
+  assert.equal(itemBoxPolicy(image([[130, 92, 12, 12, [185, 215, 244, 255]]])), null);
+});
 test('resume binds the earned report to its exact origin and rejects invented progress', () => {
   const buildHash = 'a'.repeat(64), saved = '{"stars":{"01":2,"02":3,"03":2,"04":2,"05":3}}';
   const report = { buildHash, races: [{ stage: '06', saved, status: 'BLOCKED' }] };

@@ -276,15 +276,21 @@ test('thinned native item routes dispose deleted box geometries, leave shared sk
   assert.equal(system.boxes.length,8);
 });
 
-test('career skilled opponents stay competitive after repeated player crashes without changing grid or progress',()=>{
+test('middle item rivals allow physical pickup and hit recovery without changing grid or progress',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<5;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(5);g.racers[1].skill=.85;g.racers[2].skill=1.05;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.18)<1e-9);
-  assert.ok(Math.abs(g.racers[2].skill-1.34)<1e-9);
+  assert.ok(Math.abs(g.racers[1].skill-1.03)<1e-9);
+  assert.ok(Math.abs(g.racers[2].skill-1.18)<1e-9);
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
+});
+test('middle speed rivals retain the competitive calibrated band',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  c.progress.stars['02']=1;c.setStage(2);g.racers[1].skill=.85;g.racers[2].skill=1.05;c.begin(g);
+  assert.ok(Math.abs(g.racers[1].skill-1.18)<1e-9);
+  assert.ok(Math.abs(g.racers[2].skill-1.34)<1e-9);
 });
 test('career retains the submitted expert field speeds while boss and middle field still escalate',()=>{
   const c=new RacingCareer(memory()),g=game();g.racers[1].skill=.55;g.racers[2].skill=.75;
