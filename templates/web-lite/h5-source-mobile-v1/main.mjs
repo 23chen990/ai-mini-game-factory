@@ -121,10 +121,12 @@ async function boot() {
         if (id === 'cf-transport-ship' && native.simulatedSeconds) lastFpsNativeSec = native.simulatedSeconds();
         tickRound(round, roundTickMs, native.score());
         if (assistActive && round.elapsedMs >= 15000) { window.__pelican.settings.autopilot = false; assistActive = false; }
-        const result = challengeResult(activeChallenge, native.metrics(), round.phase === 'finished' || phase === 'finished');
+        const metrics = native.metrics();
+        const result = challengeResult(activeChallenge, metrics, round.phase === 'finished' || phase === 'finished');
         round.score = result.rewardScore;
         $('status').textContent = activeChallenge.kind === 'survive'
-          ? '❤ 可失误 ' + Math.max(0, activeChallenge.target - (native.metrics().deaths || 0)) + ' 次'
+          ? '❤ 余' + Math.max(0, activeChallenge.target - (metrics.deaths || 0)) + '次 · ↗ ' +
+            Math.floor(metrics.travel || 0) + '/' + (activeChallenge.minTravel || 0) + 'm'
           : result.label;
         $('goal').value = activeChallenge.kind === 'survive'
           ? Math.min(activeChallenge.limitMs / 1000, Math.round(round.elapsedMs / 1000))
@@ -137,7 +139,12 @@ async function boot() {
           $('copy').textContent = id === 'cf-transport-ship'
             ? (result.outcome === 'won'
               ? '任务成功！本局 ' + round.score + ' 分 · 累计补给 ' + progress.bank
-              : '这次未达成：' + mobileChallengeCopy(activeChallenge) + '。再试一次吧。')
+              : (activeChallenge.kind === 'hits'
+                ? '已命中 ' + (metrics.hits||0) + '/' + activeChallenge.target + '次；继续练习移动与点射。'
+                : activeChallenge.kind === 'kills'
+                  ? 'AWM击杀 ' + (metrics.awmKills||0) + '/' + activeChallenge.target + '；开镜后瞄准胸部再开火。'
+                  : '移动 ' + Math.floor(metrics.travel||0) + '/' + (activeChallenge.minTravel||0) +
+                    '米 · 阵亡 ' + (metrics.deaths||0) + '/' + activeChallenge.target + '次。再试一次。'))
             : `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
           $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent = result.outcome === 'won' ? '✓ 已完成' : '可重试';
           $('best').textContent = progress.best; showPhase('finished');
