@@ -1,0 +1,3115 @@
+{
+  "schemaVersion": 1,
+  "targetRunId": "h5-qq-mobile-20261013",
+  "targetGame": "3D 赛车 H5 / qq-speed",
+  "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+  "preview": "http://127.0.0.1:4334/",
+  "browser": "Headless Chromium, fresh mobile contexts, CDP Input.dispatchTouchEvent trusted touch pointers",
+  "inputPolicy": "Only visible button taps, trusted CDP touch input, viewport resize, and read-only window.game/input assertions; no state injection or internal start/pause calls.",
+  "integrity": {
+    "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+    "localHtmlSha256": "b1943c72857a57db7de4c175fee3cbb6ba116b058d4bd64f1f8a3a7b0d87c953",
+    "servedHtmlSha256": "b1943c72857a57db7de4c175fee3cbb6ba116b058d4bd64f1f8a3a7b0d87c953",
+    "status": 200
+  },
+  "observations": [
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "fresh startup",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "ready",
+        "gameState": "menu",
+        "raceTime": 0.9824000000953673,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-start"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/entry-844x390.png",
+        "sha256": "e2a780dafe271667fea89d94d5780b3e26a633a5965f7545531824f783dc6ba5"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "default race countdown",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "countdown",
+        "gameState": "countdown",
+        "raceTime": 0,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 765,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/countdown-844x390.png",
+        "sha256": "0ea1d8370c4d964fcc1a312418c24696dc67c97b06fe57c126ffb97ea1909ccb"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "race HUD",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 0.23160000002384187,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 765,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-844x390.png",
+        "sha256": "ce461ffa919fd53181467c0b9d6a104e211e4b7fe6b10b09267c4cda52b248a2"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "two directions simultaneously held",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 2.1567000000476835,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": true,
+          "right": true,
+          "shift": false
+        },
+        "held": [
+          "race-left",
+          "race-right"
+        ],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 765,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-844x390.png",
+        "sha256": "a07b0c5085269227c78776a9904d29a66017a5f7baa893508f3171eda5722920"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "primary right touch held",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 3.6817000000476834,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": true,
+          "shift": false
+        },
+        "held": [
+          "race-right"
+        ],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 765,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-844x390.png",
+        "sha256": "70b0a33aa76189cf5fe6398412e70f6bce3d94438b09c5fe3f9d8875e4c92258"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "second finger pause while right stays held",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 3.831600000023841,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 765,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-844x390.png",
+        "sha256": "6056a92fd49e278c7cec30fcb04ea954da85db63030fd70b9e553211b169eb4b"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "resume after second-finger pause",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 4.06060000002384,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 765,
+            "bottom": 89
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "rotate to portrait while left held",
+      "state": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 4.18560000002384,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": true,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "right": 390,
+            "bottom": 844
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "right": 390,
+            "bottom": 844
+          },
+          {
+            "x": 233,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 311,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-844x390.png",
+        "sha256": "2c4b1a156b151f152bac3154ca5ee21ad64ea58f259aa643527d012a37269ce1"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "return to landscape stays paused",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 4.18560000002384,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 765,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-844x390.png",
+        "sha256": "43ce663c916c57ce366ba990251e65dbcfd0908d65ebd2250f479cb7d1ad6d70"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "point": "manual resume after rotation",
+      "state": {
+        "viewport": {
+          "width": 844,
+          "height": 390,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 4.224200000047682,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390,
+            "right": 844,
+            "bottom": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 765,
+            "bottom": 89
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "fresh startup",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "ready",
+        "gameState": "menu",
+        "raceTime": 0.11359999990463257,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-start"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/entry-852x393.png",
+        "sha256": "cf0e320822cdb193d1f4327a74666550c84a10e7d8fbec1c001874b582aa56a5"
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "default race countdown",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "countdown",
+        "gameState": "countdown",
+        "raceTime": 0,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 773,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/countdown-852x393.png",
+        "sha256": "d2b405f3de3e99619708f84a46aa1bc4a52648fcfe663a0a9b8e52f088fedef5"
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "race HUD",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 0.2408999999761581,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 773,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-852x393.png",
+        "sha256": "fc03b13a9e54d03681f76ae4afe524ad054355634accf2fbb605ec4882313bcb"
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "two directions simultaneously held",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 1.6162000000476822,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": true,
+          "right": true,
+          "shift": false
+        },
+        "held": [
+          "race-left",
+          "race-right"
+        ],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 773,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-852x393.png",
+        "sha256": "efb06154ee518bcbbf5b7244c890c75ff86e8e016f67fe4a5e5614f9f9f1f9ca"
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "primary right touch held",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 2.966600000023841,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": true,
+          "shift": false
+        },
+        "held": [
+          "race-right"
+        ],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 773,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-852x393.png",
+        "sha256": "3f8ff8e0d873ee7082b1eb82280a98496d9e21f13d873e2d90bf87cf0fa1f297"
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "second finger pause while right stays held",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 3.0832000000476834,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 773,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-852x393.png",
+        "sha256": "3e6804905f6f445caa0abd559031d3f73c37fbaa36d4f025f1a4847dd69297d6"
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "resume after second-finger pause",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 3.213700000047684,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 773,
+            "bottom": 89
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "rotate to portrait while left held",
+      "state": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 3.3790000000000004,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": true,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "right": 390,
+            "bottom": 844
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "right": 390,
+            "bottom": 844
+          },
+          {
+            "x": 233,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 311,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-852x393.png",
+        "sha256": "d6c9fc2515cc217b8531702703af6a54e8ce7225fd51533567b9379f7c691ee3"
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "return to landscape stays paused",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 3.3790000000000004,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 773,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-852x393.png",
+        "sha256": "01c82e3bf735f8f158afd076e8dbdff150ba46d8661b0d65f5ddb13aa6a1efa8"
+      }
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "point": "manual resume after rotation",
+      "state": {
+        "viewport": {
+          "width": 852,
+          "height": 393,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 3.3790000000000004,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393,
+            "right": 852,
+            "bottom": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 773,
+            "bottom": 89
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "fresh startup",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "ready",
+        "gameState": "menu",
+        "raceTime": 0.13030000007152556,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-start"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/entry-740x360.png",
+        "sha256": "3a2e7d4971f6bc4dde66af793bd82328f27178e495ca3eefb4ce4fed8d0563a6"
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "default race countdown",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "countdown",
+        "gameState": "countdown",
+        "raceTime": 0,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 661,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/countdown-740x360.png",
+        "sha256": "b47f218c88fb7d4cfab4435c0ee572cff300b4c373fa34a42c3bb32fc9c51f77"
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "race HUD",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 0.32529999995231645,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 661,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-740x360.png",
+        "sha256": "0fbf1d6af3df87f49d7d61f0248babf163f75baa33da93441c9fc8d62c805949"
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "two directions simultaneously held",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 1.741799999952315,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": true,
+          "right": true,
+          "shift": false
+        },
+        "held": [
+          "race-left",
+          "race-right"
+        ],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 661,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-740x360.png",
+        "sha256": "360d9ab9751aff1e485cc05157d9ab6a343768c64bfd0cbc49aff2f8ba3887fb"
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "primary right touch held",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 3.065899999976155,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": true,
+          "shift": false
+        },
+        "held": [
+          "race-right"
+        ],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 661,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-740x360.png",
+        "sha256": "93f922d8ba86a170df03d2a347836556f0ee9467d89150d14c88c724cc4d9ac2"
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "second finger pause while right stays held",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 3.1664999999999965,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 661,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-740x360.png",
+        "sha256": "8c20119f509f56ecea1d18a9fea597ca465c73114d094db0ac0b8716bebe6888"
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "resume after second-finger pause",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 3.289299999952312,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 661,
+            "bottom": 89
+          }
+        ]
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "rotate to portrait while left held",
+      "state": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 3.4051000000238374,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": true,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "right": 390,
+            "bottom": 844
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 390,
+            "height": 844,
+            "right": 390,
+            "bottom": 844
+          },
+          {
+            "x": 233,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 311,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-740x360.png",
+        "sha256": "bcdfca8d6df125cfe50d801946a8e1d272d974d8677f3c1afca940e5497f62f4"
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "return to landscape stays paused",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "paused",
+        "gameState": "paused",
+        "raceTime": 3.4051000000238374,
+        "touch": {
+          "up": false,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-resume",
+          "race-restart"
+        ],
+        "visibleDirections": [],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 661,
+            "bottom": 89
+          }
+        ]
+      },
+      "screenshot": {
+        "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-740x360.png",
+        "sha256": "72f9e013bf9478eb5c6869030b26b549c70acdb4c56c91f102a1775988a25996"
+      }
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "point": "manual resume after rotation",
+      "state": {
+        "viewport": {
+          "width": 740,
+          "height": 360,
+          "devicePixelRatio": 1
+        },
+        "phase": "race",
+        "gameState": "race",
+        "raceTime": 3.409700000047679,
+        "touch": {
+          "up": true,
+          "down": false,
+          "left": false,
+          "right": false,
+          "shift": false
+        },
+        "held": [],
+        "rotateVisible": false,
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "visibleDirections": [
+          "left",
+          "right"
+        ],
+        "visibleLegacy": [],
+        "visibleCanvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360,
+            "right": 740,
+            "bottom": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78,
+            "right": 661,
+            "bottom": 89
+          }
+        ]
+      }
+    }
+  ],
+  "cases": [
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "phaseSequence": [
+        "ready",
+        "countdown",
+        "race",
+        "paused",
+        "paused"
+      ],
+      "pointerEvents": [
+        {
+          "type": "pointerdown",
+          "id": 2,
+          "primary": true,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 2,
+          "primary": true,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 2,
+          "primary": false,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 3,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 3,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 3,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 4,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 4,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 4,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 5,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 6,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 5,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 6,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 7,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 7,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 7,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 8,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 8,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 8,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 9,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 9,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 9,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 10,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 10,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 10,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 11,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 11,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 11,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 12,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 12,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 12,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 13,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 13,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 13,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 14,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 14,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 14,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 15,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 16,
+          "primary": false,
+          "target": "race-pause",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 16,
+          "primary": false,
+          "target": "race-pause",
+          "trusted": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "phaseSequence": [
+        "ready",
+        "countdown",
+        "race",
+        "paused",
+        "paused"
+      ],
+      "pointerEvents": [
+        {
+          "type": "pointerdown",
+          "id": 2,
+          "primary": true,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 2,
+          "primary": true,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 2,
+          "primary": false,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 3,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 3,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 3,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 4,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 4,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 4,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 5,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 6,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 5,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 6,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 7,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 7,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 7,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 8,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 8,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 8,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 9,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 9,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 9,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 10,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 10,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 10,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 11,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 11,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 11,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 12,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 12,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 12,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 13,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 13,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 13,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 14,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 14,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 14,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 15,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 16,
+          "primary": false,
+          "target": "race-pause",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 16,
+          "primary": false,
+          "target": "race-pause",
+          "trusted": true
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "phaseSequence": [
+        "ready",
+        "countdown",
+        "race",
+        "paused",
+        "paused"
+      ],
+      "pointerEvents": [
+        {
+          "type": "pointerdown",
+          "id": 2,
+          "primary": true,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 2,
+          "primary": true,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 2,
+          "primary": false,
+          "target": "race-start",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 3,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 3,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 3,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 4,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 4,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 4,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 5,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 6,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 5,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 6,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 7,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 7,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 7,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 8,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 8,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 8,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 9,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 9,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 9,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 10,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 10,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 10,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 11,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 11,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 11,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 12,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 12,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 12,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 13,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 13,
+          "primary": true,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 13,
+          "primary": false,
+          "target": "race-left",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 14,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 14,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "click",
+          "id": 14,
+          "primary": false,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 15,
+          "primary": true,
+          "target": "race-right",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 16,
+          "primary": false,
+          "target": "race-pause",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 16,
+          "primary": false,
+          "target": "race-pause",
+          "trusted": true
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "errors": [],
+  "checks": [
+    {
+      "name": "attempt-9-build-and-preview-integrity",
+      "passed": true,
+      "evidence": "buildHash=82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa; local=b1943c72857a57db7de4c175fee3cbb6ba116b058d4bd64f1f8a3a7b0d87c953; served=b1943c72857a57db7de4c175fee3cbb6ba116b058d4bd64f1f8a3a7b0d87c953; status=200"
+    },
+    {
+      "name": "fresh-startup-844x390",
+      "passed": true,
+      "evidence": "phase=ready; start=true; rotate=false; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/entry-844x390.png"
+    },
+    {
+      "name": "default-start-phase-order-844x390",
+      "passed": true,
+      "evidence": "observed=ready→countdown→race; phaseAtCountdownCapture=countdown; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/countdown-844x390.png; exact phase history is in runtime observations"
+    },
+    {
+      "name": "race-hud-three-controls-844x390",
+      "passed": true,
+      "evidence": "buttons=race-pause,race-left,race-right; directions=left,right; legacy=[]; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-844x390.png"
+    },
+    {
+      "name": "race-central-canvas-844x390",
+      "passed": true,
+      "evidence": "canvas=[{\"x\":0,\"y\":0,\"width\":844,\"height\":390,\"right\":844,\"bottom\":390},{\"x\":0,\"y\":0,\"width\":844,\"height\":390,\"right\":844,\"bottom\":390},{\"x\":687,\"y\":11,\"width\":78,\"height\":78,\"right\":765,\"bottom\":89}]; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-844x390.png"
+    },
+    {
+      "name": "short-left-tap-releases-844x390",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}"
+    },
+    {
+      "name": "700ms-left-hold-registers-844x390",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":true,\"right\":false,\"shift\":false}; held=race-left"
+    },
+    {
+      "name": "700ms-left-hold-releases-844x390",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "dual-finger-directions-held-844x390",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":true,\"right\":true,\"shift\":false}; held=race-left,race-right; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-844x390.png"
+    },
+    {
+      "name": "dual-finger-independent-release-844x390",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":true,\"shift\":false}; held=race-right"
+    },
+    {
+      "name": "dual-finger-no-sticky-release-844x390",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "rapid-alternating-touch-no-sticky-844x390",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "direction-hold-visible-844x390",
+      "passed": true,
+      "evidence": "touch={\"up\":true,\"down\":false,\"left\":false,\"right\":true,\"shift\":false}; held=race-right; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-844x390.png"
+    },
+    {
+      "name": "trusted-second-finger-pauses-while-steering-844x390",
+      "passed": true,
+      "evidence": "state=paused; phase=paused; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held=; pausePointerDown={\"type\":\"pointerdown\",\"id\":16,\"primary\":false,\"target\":\"race-pause\",\"trusted\":true}; pausePointerUp={\"type\":\"pointerup\",\"id\":16,\"primary\":false,\"target\":\"race-pause\",\"trusted\":true}; pauseClick=false; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-844x390.png"
+    },
+    {
+      "name": "pause-freezes-race-844x390",
+      "passed": true,
+      "evidence": "paused raceTime before=3.831600000023841; after 240ms=3.831600000023841"
+    },
+    {
+      "name": "resume-clears-held-input-844x390",
+      "passed": true,
+      "evidence": "phase=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "portrait-rotation-pauses-and-clears-844x390",
+      "passed": true,
+      "evidence": "state=paused; rotate=true; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-844x390.png"
+    },
+    {
+      "name": "landscape-return-stays-paused-844x390",
+      "passed": true,
+      "evidence": "state=paused; rotate=false; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-844x390.png"
+    },
+    {
+      "name": "manual-resume-no-sticky-input-844x390",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "fresh-startup-852x393",
+      "passed": true,
+      "evidence": "phase=ready; start=true; rotate=false; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/entry-852x393.png"
+    },
+    {
+      "name": "default-start-phase-order-852x393",
+      "passed": true,
+      "evidence": "observed=ready→countdown→race; phaseAtCountdownCapture=countdown; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/countdown-852x393.png; exact phase history is in runtime observations"
+    },
+    {
+      "name": "race-hud-three-controls-852x393",
+      "passed": true,
+      "evidence": "buttons=race-pause,race-left,race-right; directions=left,right; legacy=[]; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-852x393.png"
+    },
+    {
+      "name": "race-central-canvas-852x393",
+      "passed": true,
+      "evidence": "canvas=[{\"x\":0,\"y\":0,\"width\":852,\"height\":393,\"right\":852,\"bottom\":393},{\"x\":0,\"y\":0,\"width\":852,\"height\":393,\"right\":852,\"bottom\":393},{\"x\":695,\"y\":11,\"width\":78,\"height\":78,\"right\":773,\"bottom\":89}]; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-852x393.png"
+    },
+    {
+      "name": "short-left-tap-releases-852x393",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}"
+    },
+    {
+      "name": "700ms-left-hold-registers-852x393",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":true,\"right\":false,\"shift\":false}; held=race-left"
+    },
+    {
+      "name": "700ms-left-hold-releases-852x393",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "dual-finger-directions-held-852x393",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":true,\"right\":true,\"shift\":false}; held=race-left,race-right; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-852x393.png"
+    },
+    {
+      "name": "dual-finger-independent-release-852x393",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":true,\"shift\":false}; held=race-right"
+    },
+    {
+      "name": "dual-finger-no-sticky-release-852x393",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "rapid-alternating-touch-no-sticky-852x393",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "direction-hold-visible-852x393",
+      "passed": true,
+      "evidence": "touch={\"up\":true,\"down\":false,\"left\":false,\"right\":true,\"shift\":false}; held=race-right; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-852x393.png"
+    },
+    {
+      "name": "trusted-second-finger-pauses-while-steering-852x393",
+      "passed": true,
+      "evidence": "state=paused; phase=paused; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held=; pausePointerDown={\"type\":\"pointerdown\",\"id\":16,\"primary\":false,\"target\":\"race-pause\",\"trusted\":true}; pausePointerUp={\"type\":\"pointerup\",\"id\":16,\"primary\":false,\"target\":\"race-pause\",\"trusted\":true}; pauseClick=false; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-852x393.png"
+    },
+    {
+      "name": "pause-freezes-race-852x393",
+      "passed": true,
+      "evidence": "paused raceTime before=3.0832000000476834; after 240ms=3.0832000000476834"
+    },
+    {
+      "name": "resume-clears-held-input-852x393",
+      "passed": true,
+      "evidence": "phase=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "portrait-rotation-pauses-and-clears-852x393",
+      "passed": true,
+      "evidence": "state=paused; rotate=true; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-852x393.png"
+    },
+    {
+      "name": "landscape-return-stays-paused-852x393",
+      "passed": true,
+      "evidence": "state=paused; rotate=false; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-852x393.png"
+    },
+    {
+      "name": "manual-resume-no-sticky-input-852x393",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "fresh-startup-740x360",
+      "passed": true,
+      "evidence": "phase=ready; start=true; rotate=false; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/entry-740x360.png"
+    },
+    {
+      "name": "default-start-phase-order-740x360",
+      "passed": true,
+      "evidence": "observed=ready→countdown→race; phaseAtCountdownCapture=countdown; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/countdown-740x360.png; exact phase history is in runtime observations"
+    },
+    {
+      "name": "race-hud-three-controls-740x360",
+      "passed": true,
+      "evidence": "buttons=race-pause,race-left,race-right; directions=left,right; legacy=[]; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-740x360.png"
+    },
+    {
+      "name": "race-central-canvas-740x360",
+      "passed": true,
+      "evidence": "canvas=[{\"x\":0,\"y\":0,\"width\":740,\"height\":360,\"right\":740,\"bottom\":360},{\"x\":0,\"y\":0,\"width\":740,\"height\":360,\"right\":740,\"bottom\":360},{\"x\":583,\"y\":11,\"width\":78,\"height\":78,\"right\":661,\"bottom\":89}]; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-740x360.png"
+    },
+    {
+      "name": "short-left-tap-releases-740x360",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}"
+    },
+    {
+      "name": "700ms-left-hold-registers-740x360",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":true,\"right\":false,\"shift\":false}; held=race-left"
+    },
+    {
+      "name": "700ms-left-hold-releases-740x360",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "dual-finger-directions-held-740x360",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":true,\"right\":true,\"shift\":false}; held=race-left,race-right; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-740x360.png"
+    },
+    {
+      "name": "dual-finger-independent-release-740x360",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":true,\"shift\":false}; held=race-right"
+    },
+    {
+      "name": "dual-finger-no-sticky-release-740x360",
+      "passed": true,
+      "evidence": "input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "rapid-alternating-touch-no-sticky-740x360",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "direction-hold-visible-740x360",
+      "passed": true,
+      "evidence": "touch={\"up\":true,\"down\":false,\"left\":false,\"right\":true,\"shift\":false}; held=race-right; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-740x360.png"
+    },
+    {
+      "name": "trusted-second-finger-pauses-while-steering-740x360",
+      "passed": true,
+      "evidence": "state=paused; phase=paused; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held=; pausePointerDown={\"type\":\"pointerdown\",\"id\":16,\"primary\":false,\"target\":\"race-pause\",\"trusted\":true}; pausePointerUp={\"type\":\"pointerup\",\"id\":16,\"primary\":false,\"target\":\"race-pause\",\"trusted\":true}; pauseClick=false; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-740x360.png"
+    },
+    {
+      "name": "pause-freezes-race-740x360",
+      "passed": true,
+      "evidence": "paused raceTime before=3.1664999999999965; after 240ms=3.1664999999999965"
+    },
+    {
+      "name": "resume-clears-held-input-740x360",
+      "passed": true,
+      "evidence": "phase=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    },
+    {
+      "name": "portrait-rotation-pauses-and-clears-740x360",
+      "passed": true,
+      "evidence": "state=paused; rotate=true; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-740x360.png"
+    },
+    {
+      "name": "landscape-return-stays-paused-740x360",
+      "passed": true,
+      "evidence": "state=paused; rotate=false; input={\"up\":false,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; screenshot=runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-740x360.png"
+    },
+    {
+      "name": "manual-resume-no-sticky-input-740x360",
+      "passed": true,
+      "evidence": "state=race; input={\"up\":true,\"down\":false,\"left\":false,\"right\":false,\"shift\":false}; held="
+    }
+  ],
+  "checkedAt": "2026-10-14T04:57:37.158Z"
+}

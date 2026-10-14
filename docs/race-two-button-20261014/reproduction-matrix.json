@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "3D 赛车 H5 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/race-two-button/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "race-hud",
+      "steering",
+      "drift-boost-nitro",
+      "lifecycle",
+      "settlement-replay"
+    ],
+    "lifecycleStateBranches": [
+      "race",
+      "race-tap-and-hold",
+      "race-turn-release-collision",
+      "countdown-pause-background-resume",
+      "race→finish→countdown"
+    ],
+    "rendererPaths": [
+      "DOM native HUD + mobile overlay",
+      "native Input.frame→Vehicle.step→Three.js",
+      "DOM + native state machine"
+    ],
+    "viewports": [
+      {
+        "label": "iPhone 13 landscape",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "iPhone 15 landscape",
+        "width": 852,
+        "height": 393
+      },
+      {
+        "label": "small Android landscape",
+        "width": 740,
+        "height": 360
+      },
+      {
+        "label": "iPhone portrait rotation",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "race-hud-844x390",
+      "objectType": "race-hud",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "DOM native HUD + mobile overlay",
+      "viewport": {
+        "label": "iPhone 13 landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "旧版native HUD与mobile overlay同时可见，七个驾驶控件。",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/baseline/race-844x390.png",
+          "sha256": "2ca54e3dc261baacd1e83ceda4b97c722fb8a7851f395de64a5c88f58ac4912f",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "race-hud-852x393",
+      "objectType": "race-hud",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "DOM native HUD + mobile overlay",
+      "viewport": {
+        "label": "iPhone 15 landscape",
+        "width": 852,
+        "height": 393
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "race-hud-740x360",
+      "objectType": "race-hud",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "DOM native HUD + mobile overlay",
+      "viewport": {
+        "label": "small Android landscape",
+        "width": 740,
+        "height": 360
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "race-hud-390x844",
+      "objectType": "race-hud",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "DOM native HUD + mobile overlay",
+      "viewport": {
+        "label": "iPhone portrait rotation",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "steering-844x390",
+      "objectType": "steering",
+      "lifecycleStateBranch": "race-tap-and-hold",
+      "rendererPath": "native Input.frame→Vehicle.step→Three.js",
+      "viewport": {
+        "label": "iPhone 13 landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "steering-852x393",
+      "objectType": "steering",
+      "lifecycleStateBranch": "race-tap-and-hold",
+      "rendererPath": "native Input.frame→Vehicle.step→Three.js",
+      "viewport": {
+        "label": "iPhone 15 landscape",
+        "width": 852,
+        "height": 393
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "steering-740x360",
+      "objectType": "steering",
+      "lifecycleStateBranch": "race-tap-and-hold",
+      "rendererPath": "native Input.frame→Vehicle.step→Three.js",
+      "viewport": {
+        "label": "small Android landscape",
+        "width": 740,
+        "height": 360
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "steering-390x844",
+      "objectType": "steering",
+      "lifecycleStateBranch": "race-tap-and-hold",
+      "rendererPath": "native Input.frame→Vehicle.step→Three.js",
+      "viewport": {
+        "label": "iPhone portrait rotation",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "drift-boost-nitro-844x390",
+      "objectType": "drift-boost-nitro",
+      "lifecycleStateBranch": "race-turn-release-collision",
+      "rendererPath": "native Input.frame→Vehicle.step→Three.js",
+      "viewport": {
+        "label": "iPhone 13 landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "drift-boost-nitro-852x393",
+      "objectType": "drift-boost-nitro",
+      "lifecycleStateBranch": "race-turn-release-collision",
+      "rendererPath": "native Input.frame→Vehicle.step→Three.js",
+      "viewport": {
+        "label": "iPhone 15 landscape",
+        "width": 852,
+        "height": 393
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "drift-boost-nitro-740x360",
+      "objectType": "drift-boost-nitro",
+      "lifecycleStateBranch": "race-turn-release-collision",
+      "rendererPath": "native Input.frame→Vehicle.step→Three.js",
+      "viewport": {
+        "label": "small Android landscape",
+        "width": 740,
+        "height": 360
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "drift-boost-nitro-390x844",
+      "objectType": "drift-boost-nitro",
+      "lifecycleStateBranch": "race-turn-release-collision",
+      "rendererPath": "native Input.frame→Vehicle.step→Three.js",
+      "viewport": {
+        "label": "iPhone portrait rotation",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "lifecycle-844x390",
+      "objectType": "lifecycle",
+      "lifecycleStateBranch": "countdown-pause-background-resume",
+      "rendererPath": "DOM + native state machine",
+      "viewport": {
+        "label": "iPhone 13 landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "lifecycle-852x393",
+      "objectType": "lifecycle",
+      "lifecycleStateBranch": "countdown-pause-background-resume",
+      "rendererPath": "DOM + native state machine",
+      "viewport": {
+        "label": "iPhone 15 landscape",
+        "width": 852,
+        "height": 393
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "lifecycle-740x360",
+      "objectType": "lifecycle",
+      "lifecycleStateBranch": "countdown-pause-background-resume",
+      "rendererPath": "DOM + native state machine",
+      "viewport": {
+        "label": "small Android landscape",
+        "width": 740,
+        "height": 360
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "lifecycle-390x844",
+      "objectType": "lifecycle",
+      "lifecycleStateBranch": "countdown-pause-background-resume",
+      "rendererPath": "DOM + native state machine",
+      "viewport": {
+        "label": "iPhone portrait rotation",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "settlement-replay-844x390",
+      "objectType": "settlement-replay",
+      "lifecycleStateBranch": "race→finish→countdown",
+      "rendererPath": "DOM + native state machine",
+      "viewport": {
+        "label": "iPhone 13 landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "settlement-replay-852x393",
+      "objectType": "settlement-replay",
+      "lifecycleStateBranch": "race→finish→countdown",
+      "rendererPath": "DOM + native state machine",
+      "viewport": {
+        "label": "iPhone 15 landscape",
+        "width": 852,
+        "height": 393
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "settlement-replay-740x360",
+      "objectType": "settlement-replay",
+      "lifecycleStateBranch": "race→finish→countdown",
+      "rendererPath": "DOM + native state machine",
+      "viewport": {
+        "label": "small Android landscape",
+        "width": 740,
+        "height": 360
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    },
+    {
+      "id": "settlement-replay-390x844",
+      "objectType": "settlement-replay",
+      "lifecycleStateBranch": "race→finish→countdown",
+      "rendererPath": "DOM + native state machine",
+      "viewport": {
+        "label": "iPhone portrait rotation",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "按任务验收精确对象/状态/渲染/设备分支。",
+      "observed": "待基线和新版运行证据。",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "仅race-hud×race×native/mobile DOM×844x390已自然复现；其他分支仍待测试。"
+  ],
+  "remainingGaps": [
+    "旧截图未提供，不得代用。",
+    "基线和自然完赛待运行。"
+  ],
+  "createdAt": "2026-10-14T03:26:16.120Z"
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "runId": "h5-qq-mobile-20261013",
+  "gameId": "qq-speed",
+  "route": "formal-fixer",
+  "attempt": 9,
+  "inputHash": "c7e8026bd5b41abdc6a49399bbd9aab57e7aa321169ddddaee9b7290090c8a16",
+  "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "originalPhysicsSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+  "originalAiSha256": "2a399dad5831ec9ac8c22b76d837b908ed171f66e7510e5ef80679ef19b78f7e",
+  "buildLog": "dist/index.html 700 KB",
+  "runtimeEntrypoints": [
+    "workspace/source/qq-speed/src/main.js (original Three.js racing)",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.css"
+  ],
+  "compatibilityOnly": [
+    "workspace/game/main.mjs",
+    "workspace/game/engine.mjs",
+    "workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)"
+  ],
+  "trialName": "racing-two-button-82a53d7f6fd2.html",
+  "trialSha256": "c682a6b665fc10117c9215ce6026405645127aa5132036f507f02fba1f5c48e1",
+  "builtAt": "2026-10-14T04:50:36.693Z",
+  "publishable": false
+}

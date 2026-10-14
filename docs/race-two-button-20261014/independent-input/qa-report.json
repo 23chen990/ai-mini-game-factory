@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "target-build-and-audit-boundary",
+      "passed": true,
+      "evidence": "目标为 3D 赛车 H5 / qq-speed，workspace=/Users/kker/.codex/worktrees/race-two-button/妖怪夜市/runs/h5-qq-mobile-20261013/workspace，attempt=9，buildHash=82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa；三份自然 trace 均绑定该 hash。本次仅复核 driver/session 输入边沿、原生车物理和 AI 字节哈希、三份已提供自然 trace 的事件预算与完赛/重开状态；未复查其他游戏、视觉体验、性能发布或真机操作。"
+    },
+    {
+      "name": "startboost-edge-per-player-and-pause-safe",
+      "passed": true,
+      "evidence": "driver.mjs:32-44 在构造时创建 WeakSet，suspend() 不清理它，且仅在 canStep 时为每个原生 PlayerCar 发一次 upPressed；racing-driver.test.mjs:20-28 验证倒计时不发、无物理步不消费、race 发一次、暂停不重放、新 PlayerCar 可重新获得一次。15 项 driver 单测全部通过。"
+    },
+    {
+      "name": "144hz-input-to-120hz-native-step-edge",
+      "passed": true,
+      "evidence": "mobile.mjs:125-130 按 g.acc + dt >= 1/120 保留可消费边沿；原生 main.js:527-535 使用 1/120 固定步长并仅在首个物理子步传递 upPressed/wPressed/nitroPressed。racing-native-physics.test.mjs:33-45 使用真实 PlayerCar/Track 验证 144Hz 输入与 120Hz 物理只消费一次氮气边沿；3 项原生 fixture 全通过。"
+    },
+    {
+      "name": "original-native-vehicle-and-ai-hashes",
+      "passed": true,
+      "evidence": "artifacts/build-racing.json 的 originalPhysicsSha256=667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104、originalAiSha256=2a399dad5831ec9ac8c22b76d837b908ed171f66e7510e5ef80679ef19b78f7e；当前 workspace/source/qq-speed/src/vehicle.js 与 ai.js 的 SHA-256 分别完全相同。"
+    },
+    {
+      "name": "natural-smallboosts-match-distinct-eligible-drifts",
+      "passed": true,
+      "evidence": "从三份 trace 的 observed.events 累积帧快照按 type + atRaceSec + 排序稳定 payload 去重；只将 time > 0.22 秒的 driftEnd 视作可触发结束，并要求 smallBoost 在 0.5 秒原生窗口内匹配最近一个未使用的合格 driftEnd。844x390 为 16/16、852x393 为 15/15、740x360 为 16/16 各自一对一匹配，均无孤立奖励或重复消费；normal/perfect 分别为 15/1、13/2、12/4，perfect 未覆盖每次小喷。与原生 vehicle.js:20、98-105、134-148 的窗口和判定一致；详见 event-budget.json。"
+    },
+    {
+      "name": "natural-nitro-inventory-is-bounded",
+      "passed": true,
+      "evidence": "三个 viewport 的首帧库存均为 0，各记录 gaugeFull=3、nitro=1、终场 nitroCount=2，因此每局均满足 0 + 3 = 1 + 2，终场 nitro 统计也为 1。原生 vehicle.js:85-95 只有有库存时才消耗氮气；三份 trace 的库存和使用量未超出已获得数量。"
+    },
+    {
+      "name": "provided-natural-core-journey-finished-and-reset",
+      "passed": true,
+      "evidence": "三份已提供 CDP Input.dispatchTouchEvent 自然输入 trace 均标记 forbiddenOperations=[]、normalTouchInput=true、coreJourneyPassed=true；各自然终态均 finished=true 且 lapsDone=1。844x390 与 740x360 的 replay 进入新 race 并重置统计；852x393 的 next 进入 aegean 新 race 并重置统计。这里仅复核已提供的浏览器证据，不是本次新运行。"
+    },
+    {
+      "name": "real-background-gate-remains-blocked",
+      "passed": false,
+      "evidence": "三个自然报告均为 passed=false；gates.realBackground=BLOCKED 且 lifecycle.passed=false，尽管 coreJourneyPassed=true。依照保留的 QA 状态，本输入审查不将核心完赛证据当成整体 QA 通过。"
+    },
+    {
+      "name": "physical-device-acceptance-gap-disclosed",
+      "passed": true,
+      "evidence": "自然输入证据来自 CDP 浏览器触控，工程证据来自单测和原生 fixture；本次没有真实手机触屏、系统后台切换或设备帧率测量。该范围限制已明确记录，不作为本代码审查中的实现失败判定。"
+    },
+    {
+      "name": "qa-report-zod-schema-validated",
+      "passed": true,
+      "evidence": "This saved artifact was parsed with QaReportSchema from src/schemas/index.ts using the local tsx runtime; testedAt was also checked as ISO."
+    }
+  ],
+  "issues": [
+    {
+      "id": "RACE-NATURAL-BACKGROUND-GATE-BLOCKED",
+      "severity": "warning",
+      "message": "Attempt 9 三个自然报告都保留 realBackground=BLOCKED、lifecycle.passed=false 和 overall passed=false；本审查确认的代码、事件预算和核心完赛路径通过，不覆盖该未完成门禁，也不代表整体 QA 或真机验收通过。",
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/report.json、natural-attempt9-852x393/report.json、natural-attempt9-740x360/report.json；逐 viewport 输入与库存核对见 runs/h5-qq-mobile-20261013/evidence/independent-input-final9/event-budget.json。"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "READ_ONLY_FINAL9_SOURCE_UNIT_AND_PROVIDED_TRACE_AUDIT; driver unit 15/15; native fixture 3/3; QaReportSchema.parse passed; no new browser run",
+  "testedAt": "2026-10-14T05:00:13.000Z"
+}

@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "targetGame": "3D 赛车 H5 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/race-two-button/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "priorRepairAttempt": 2,
+  "repairAttempt": 9,
+  "builderCodexThreadId": null,
+  "replacementThreadId": "01a1386d-75ee-7060-835b-0197e6f2498d",
+  "replacementKind": "EXISTING_WORKSPACE_SCOPED_CODEX_CHAT",
+  "priorEvidence": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory/runs/h5-qq-mobile-20261013/fix-evidence-score.json",
+  "attempts": [
+    {
+      "attempt": 3,
+      "inputHash": "85d571c31ca35d0172983bdea08baa0cab7b70b8463c120b6ede6621e64f6d53",
+      "hypothesis": "Reuse native vehicle physics and edge inputs; gate two-button assists by track/state, and replace the stacked HUD with one mobile presentation.",
+      "status": "FAILED_RUNTIME_STARTUP",
+      "buildHash": "a704f72716e662d247b865b63438a1267a1de28932d57c0d56153cc6f8200cb8",
+      "qaEvidence": "evidence/attempt3-failed-smoke/report.json"
+    },
+    {
+      "attempt": 4,
+      "inputHash": "b97ebe5d816c9d78fcf1db244c5248d66b8fcd1f9507022d22f71482c0bc9af5",
+      "hypothesis": "Original menu contains only AI demo cars, so readiness must require track/input rather than a player; replay creates the player on normal start.",
+      "status": "FAILED_COMPACT_TIMER_CHECK",
+      "buildHash": "e37404491a74a37a8c5f7a2dcfdbb6a74a481cce8817c961e3b4578276630580",
+      "qaEvidence": "artifacts/timer-red.log",
+      "evidenceNote": "Original timer assertion measured inherited 190px; ui-red was subsequently reused for contrast, so it is not timer evidence."
+    },
+    {
+      "attempt": 5,
+      "inputHash": "b2b22640332eb54701c5b4c7c08f685d63dadcedbebbdfe03d7d5bfea17a4a73",
+      "hypothesis": "Independent input audit found the missing native start edge; emit it once per player only on a physics frame. Browser regression reproduced the inherited 190px timer; override its minimum width.",
+      "status": "FAILED_PRIMARY_ACTION_CONTRAST",
+      "buildHash": "adb974f65659d80b0f1b9d9a2ef7462a4e8188173afbc1b5e847b852b629a34c",
+      "qaEvidence": "evidence/ui-red/report.json",
+      "naturalJourneyEvidence": "evidence/natural-attempt5-policy3/report.json"
+    },
+    {
+      "attempt": 6,
+      "inputHash": "9b484d17071e2da1a812dd0f297fc8c7a5ba6930e52f1eb2b9e902712f1d3e8e",
+      "hypothesis": "Natural race and replay passed on attempt 5, but browser contrast check measured 1.19:1 on the primary action: correct the racing action selector specificity; also resolve the reported ESLint global declarations.",
+      "status": "FAILED_SMALL_VIEWPORT_OBSTRUCTION",
+      "buildHash": "29256c3f48e6de3b330b42c8c5ef5eb9b2c6cbe5c7f330a14817dd0e533c5da4",
+      "qaEvidence": "evidence/independent-mobile-qa/qa-report.json",
+      "naturalJourneyEvidence": "evidence/natural-final/report.json"
+    },
+    {
+      "attempt": 7,
+      "inputHash": "1bd0d81723b7246229e6ae435f6a11cee174ee614742dd1e961c31d525da3e63",
+      "hypothesis": "Independent QA found a purple rival partly under the small-screen left control and default favicon 404s. Reduce neutral control fill alpha from .46 to .22 while preserving target size and outlines; declare an inline empty icon. Headed Chromium will retest actual background delivery without synthetic blur.",
+      "status": "FAILED_NON_PRIMARY_POINTER_PAUSE",
+      "buildHash": "477141dd55e0eabb963367ce3072354e8a23bbcce986e310813b7fbc2224246e",
+      "qaEvidence": "evidence/controls-multitouch-red/report.json",
+      "rootCauseEvidence": "evidence/controls-final/pointer-diagnostic.json",
+      "retainedGaps": [
+        "Real blur/hidden transition not delivered by browser environment",
+        "Physical phone touch feel/performance and cutout pending"
+      ]
+    },
+    {
+      "attempt": 8,
+      "inputHash": "1d2656cc8b1402c46f5cdcb2e0e62416195424fd67a9639ebc16bb1139378ec0",
+      "hypothesis": "Trusted non-primary pointerdown/up produces no click while steering remains held; handle pause at pointerdown with idempotent state guard and clear native input. Corrected transport red test reproduces this exact branch on three phone viewports.",
+      "status": "FAILED_PERCEPTUAL_FX_READABILITY",
+      "buildHash": "663095ae67098e01fc18b1d98dc97eb03eb5045609d0b5df2ec104d6150acb8b",
+      "qaEvidence": "artifacts/qa-fx-red.json",
+      "controlsEvidence": "evidence/controls-attempt8/report.json",
+      "naturalJourneyEvidence": "evidence/natural-attempt8-740x360/report.json",
+      "renderEvidence": [
+        "evidence/natural-attempt8-740x360/smallBoost-normal.png",
+        "evidence/natural-attempt8-740x360/nitro.png"
+      ],
+      "retainedGaps": [
+        "Actual background trigger not delivered",
+        "Physical phone feel/performance/safe-area unverified"
+      ]
+    },
+    {
+      "attempt": 9,
+      "inputHash": "c7e8026bd5b41abdc6a49399bbd9aab57e7aa321169ddddaee9b7290090c8a16",
+      "hypothesis": "Independent natural QA found mobile additive glow and large drift smoke obscuring the player during boost. Preserve particle events/counts/lifetimes/colors and native flames; reduce only mobile sprite sizes/opacity and bloom strength, then require three natural touch races and independent perceptual retest.",
+      "status": "BROWSER_CORE_PASS_RELEASE_BLOCKED",
+      "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+      "qaEvidence": "artifacts/qa-final.json",
+      "independentEvidence": "evidence/independent-final-qa-attempt-9/qa-report-addendum.json",
+      "naturalJourneyEvidence": [
+        "evidence/natural-attempt9-844x390/report.json",
+        "evidence/natural-attempt9-852x393/report.json",
+        "evidence/natural-attempt9-740x360/report.json"
+      ],
+      "retainedGaps": [
+        "Real app-background lifecycle remains BLOCKED: all attempt-9 background checks stayed focused=true and visibility=visible. Ordinary pause/rotation does not substitute.",
+        "Physical device notch/safe-area fit, real-device touch feel, and device performance remain untested."
+      ]
+    }
+  ],
+  "status": "BROWSER_CORE_PASS_RELEASE_BLOCKED"
+}

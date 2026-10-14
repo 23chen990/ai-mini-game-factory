@@ -1,0 +1,393 @@
+{
+  "schemaVersion": 1,
+  "checks": [
+    {
+      "name": "primary-action-text-readable",
+      "passed": true,
+      "evidence": {
+        "color": "rgb(18, 51, 69)",
+        "background": "rgb(183, 238, 234)",
+        "contrast": 10.365590483295973
+      }
+    },
+    {
+      "name": "only-two-driving-buttons-and-pause",
+      "passed": true,
+      "evidence": {
+        "state": "race",
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "legacyTouch": 0,
+        "duplicateHud": false,
+        "legacyRanks": false,
+        "rects": [
+          {
+            "id": "lapbox",
+            "rect": {
+              "x": 114,
+              "y": 12,
+              "width": 43.875,
+              "height": 46,
+              "top": 12,
+              "right": 157.875,
+              "bottom": 58,
+              "left": 114
+            }
+          },
+          {
+            "id": "timebox",
+            "rect": {
+              "x": 365.25,
+              "y": 14,
+              "width": 113.671875,
+              "height": 38.796875,
+              "top": 14,
+              "right": 478.921875,
+              "bottom": 52.796875,
+              "left": 365.25
+            }
+          },
+          {
+            "id": "minimap",
+            "rect": {
+              "x": 686,
+              "y": 10,
+              "width": 80,
+              "height": 80,
+              "top": 10,
+              "right": 766,
+              "bottom": 90,
+              "left": 686
+            }
+          },
+          {
+            "id": "bigrank",
+            "rect": {
+              "x": 16,
+              "y": 10,
+              "width": 58.78125,
+              "height": 48,
+              "top": 10,
+              "right": 74.78125,
+              "bottom": 58,
+              "left": 16
+            }
+          },
+          {
+            "id": "gaugebox",
+            "rect": {
+              "x": 312.25,
+              "y": 345,
+              "width": 219.4375,
+              "height": 27,
+              "top": 345,
+              "right": 531.6875,
+              "bottom": 372,
+              "left": 312.25
+            }
+          },
+          {
+            "id": "race-pause",
+            "rect": {
+              "x": 782,
+              "y": 10,
+              "width": 46,
+              "height": 46,
+              "top": 10,
+              "right": 828,
+              "bottom": 56,
+              "left": 782
+            }
+          },
+          {
+            "id": "race-left",
+            "rect": {
+              "x": 16,
+              "y": 292.203125,
+              "width": 101.265625,
+              "height": 85.796875,
+              "top": 292.203125,
+              "right": 117.265625,
+              "bottom": 378,
+              "left": 16
+            }
+          },
+          {
+            "id": "race-right",
+            "rect": {
+              "x": 726.734375,
+              "y": 292.203125,
+              "width": 101.265625,
+              "height": 85.796875,
+              "top": 292.203125,
+              "right": 828,
+              "bottom": 378,
+              "left": 726.734375
+            }
+          }
+        ],
+        "quality": "mid"
+      }
+    },
+    {
+      "name": "no-legacy-hud-or-touch",
+      "passed": true,
+      "evidence": {
+        "state": "race",
+        "visibleButtons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "legacyTouch": 0,
+        "duplicateHud": false,
+        "legacyRanks": false,
+        "rects": [
+          {
+            "id": "lapbox",
+            "rect": {
+              "x": 114,
+              "y": 12,
+              "width": 43.875,
+              "height": 46,
+              "top": 12,
+              "right": 157.875,
+              "bottom": 58,
+              "left": 114
+            }
+          },
+          {
+            "id": "timebox",
+            "rect": {
+              "x": 365.25,
+              "y": 14,
+              "width": 113.671875,
+              "height": 38.796875,
+              "top": 14,
+              "right": 478.921875,
+              "bottom": 52.796875,
+              "left": 365.25
+            }
+          },
+          {
+            "id": "minimap",
+            "rect": {
+              "x": 686,
+              "y": 10,
+              "width": 80,
+              "height": 80,
+              "top": 10,
+              "right": 766,
+              "bottom": 90,
+              "left": 686
+            }
+          },
+          {
+            "id": "bigrank",
+            "rect": {
+              "x": 16,
+              "y": 10,
+              "width": 58.78125,
+              "height": 48,
+              "top": 10,
+              "right": 74.78125,
+              "bottom": 58,
+              "left": 16
+            }
+          },
+          {
+            "id": "gaugebox",
+            "rect": {
+              "x": 312.25,
+              "y": 345,
+              "width": 219.4375,
+              "height": 27,
+              "top": 345,
+              "right": 531.6875,
+              "bottom": 372,
+              "left": 312.25
+            }
+          },
+          {
+            "id": "race-pause",
+            "rect": {
+              "x": 782,
+              "y": 10,
+              "width": 46,
+              "height": 46,
+              "top": 10,
+              "right": 828,
+              "bottom": 56,
+              "left": 782
+            }
+          },
+          {
+            "id": "race-left",
+            "rect": {
+              "x": 16,
+              "y": 292.203125,
+              "width": 101.265625,
+              "height": 85.796875,
+              "top": 292.203125,
+              "right": 117.265625,
+              "bottom": 378,
+              "left": 16
+            }
+          },
+          {
+            "id": "race-right",
+            "rect": {
+              "x": 726.734375,
+              "y": 292.203125,
+              "width": 101.265625,
+              "height": 85.796875,
+              "top": 292.203125,
+              "right": 828,
+              "bottom": 378,
+              "left": 726.734375
+            }
+          }
+        ],
+        "quality": "mid"
+      }
+    },
+    {
+      "name": "compact-race-timer",
+      "passed": true,
+      "evidence": {
+        "id": "timebox",
+        "rect": {
+          "x": 365.25,
+          "y": 14,
+          "width": 113.671875,
+          "height": 38.796875,
+          "top": 14,
+          "right": 478.921875,
+          "bottom": 52.796875,
+          "left": 365.25
+        }
+      }
+    },
+    {
+      "name": "hud-stays-out-of-central-driving-view",
+      "passed": true,
+      "evidence": [
+        {
+          "id": "lapbox",
+          "rect": {
+            "x": 114,
+            "y": 12,
+            "width": 43.875,
+            "height": 46,
+            "top": 12,
+            "right": 157.875,
+            "bottom": 58,
+            "left": 114
+          }
+        },
+        {
+          "id": "timebox",
+          "rect": {
+            "x": 365.25,
+            "y": 14,
+            "width": 113.671875,
+            "height": 38.796875,
+            "top": 14,
+            "right": 478.921875,
+            "bottom": 52.796875,
+            "left": 365.25
+          }
+        },
+        {
+          "id": "minimap",
+          "rect": {
+            "x": 686,
+            "y": 10,
+            "width": 80,
+            "height": 80,
+            "top": 10,
+            "right": 766,
+            "bottom": 90,
+            "left": 686
+          }
+        },
+        {
+          "id": "bigrank",
+          "rect": {
+            "x": 16,
+            "y": 10,
+            "width": 58.78125,
+            "height": 48,
+            "top": 10,
+            "right": 74.78125,
+            "bottom": 58,
+            "left": 16
+          }
+        },
+        {
+          "id": "gaugebox",
+          "rect": {
+            "x": 312.25,
+            "y": 345,
+            "width": 219.4375,
+            "height": 27,
+            "top": 345,
+            "right": 531.6875,
+            "bottom": 372,
+            "left": 312.25
+          }
+        },
+        {
+          "id": "race-pause",
+          "rect": {
+            "x": 782,
+            "y": 10,
+            "width": 46,
+            "height": 46,
+            "top": 10,
+            "right": 828,
+            "bottom": 56,
+            "left": 782
+          }
+        },
+        {
+          "id": "race-left",
+          "rect": {
+            "x": 16,
+            "y": 292.203125,
+            "width": 101.265625,
+            "height": 85.796875,
+            "top": 292.203125,
+            "right": 117.265625,
+            "bottom": 378,
+            "left": 16
+          }
+        },
+        {
+          "id": "race-right",
+          "rect": {
+            "x": 726.734375,
+            "y": 292.203125,
+            "width": 101.265625,
+            "height": 85.796875,
+            "top": 292.203125,
+            "right": 828,
+            "bottom": 378,
+            "left": 726.734375
+          }
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "normalTouchInput": true,
+  "viewport": {
+    "width": 844,
+    "height": 390
+  },
+  "checkedAt": "2026-10-14T04:57:56.251Z"
+}

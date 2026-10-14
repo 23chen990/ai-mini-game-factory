@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "passed": true,
+  "checks": [
+    {
+      "name": "native-track-load-start-city",
+      "passed": true,
+      "evidence": "buildHash=82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa; normal map select→start; {\"map\":\"city\",\"state\":\"race\",\"racers\":6,\"player\":true,\"track\":true,\"buttons\":[\"race-pause\",\"race-left\",\"race-right\"]}; runs/h5-qq-mobile-20261013/evidence/tracks-final/city.png"
+    },
+    {
+      "name": "native-track-load-start-aegean",
+      "passed": true,
+      "evidence": "buildHash=82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa; normal map select→start; {\"map\":\"aegean\",\"state\":\"race\",\"racers\":6,\"player\":true,\"track\":true,\"buttons\":[\"race-pause\",\"race-left\",\"race-right\"]}; runs/h5-qq-mobile-20261013/evidence/tracks-final/aegean.png"
+    },
+    {
+      "name": "native-track-load-start-egypt",
+      "passed": true,
+      "evidence": "buildHash=82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa; normal map select→start; {\"map\":\"egypt\",\"state\":\"race\",\"racers\":6,\"player\":true,\"track\":true,\"buttons\":[\"race-pause\",\"race-left\",\"race-right\"]}; runs/h5-qq-mobile-20261013/evidence/tracks-final/egypt.png"
+    },
+    {
+      "name": "native-track-load-start-snow",
+      "passed": true,
+      "evidence": "buildHash=82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa; normal map select→start; {\"map\":\"snow\",\"state\":\"race\",\"racers\":6,\"player\":true,\"track\":true,\"buttons\":[\"race-pause\",\"race-left\",\"race-right\"]}; runs/h5-qq-mobile-20261013/evidence/tracks-final/snow.png"
+    }
+  ],
+  "issues": [],
+  "screenshots": [
+    "runs/h5-qq-mobile-20261013/evidence/tracks-final/city.png",
+    "runs/h5-qq-mobile-20261013/evidence/tracks-final/aegean.png",
+    "runs/h5-qq-mobile-20261013/evidence/tracks-final/egypt.png",
+    "runs/h5-qq-mobile-20261013/evidence/tracks-final/snow.png"
+  ],
+  "consoleLog": "Fresh WebKit contexts; normal select/tap only; this is track startup evidence, not four complete races.",
+  "testedAt": "2026-10-14T04:59:32.382Z"
+}
