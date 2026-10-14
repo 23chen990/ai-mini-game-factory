@@ -27,7 +27,34 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  try{
    await page.goto(url);await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:45000});
    const readyMs=Date.now()-started;await shot('mobile-entry');
-   const startBox=await page.locator('#mk-start').boundingBox();check('mobile-entry',readyMs<=30000&&startBox?.width>=44&&startBox?.height>=44,{readyMs,viewport,actualHTTP:true});
+   const isFps = run.theme === 'cf-transport-ship';
+   let entryMobile = null;
+   if (isFps) {
+     entryMobile = await page.evaluate(() => {
+       const modal = document.querySelector('#mk-panel'), nativeMenu = document.getElementById('menu');
+       const tutorial = document.getElementById('mk-fps-tutorial');
+       const r = modal.getBoundingClientRect();
+       return {
+         desktopMenuHidden: !!nativeMenu && getComputedStyle(nativeMenu).display === 'none',
+         tutorialShown: !!tutorial && getComputedStyle(tutorial).display !== 'none' && /左手|右侧|开火/.test(tutorial.textContent),
+         tutorialText: tutorial?.textContent?.trim(),
+         panelFits: r.left >= 0 && r.top >= 0 && r.right <= window.innerWidth && r.bottom <= window.innerHeight,
+         mobileTitle: document.querySelector('#mk-title')?.textContent,
+       };
+     });
+     // Mobile-first is a layout property, not a desktop viewport with a touch flag.
+     await page.setViewportSize({width:667,height:375});await shot('mobile-entry-667x375');
+     const smallFits = await page.locator('#mk-panel').evaluate(el => {
+       const r=el.getBoundingClientRect();
+       return r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight;
+     });
+     entryMobile.smallFits = smallFits;
+     await page.setViewportSize(viewport);
+   }
+   const startBox=await page.locator('#mk-start').boundingBox();
+   check('mobile-entry', readyMs<=30000&&startBox?.width>=44&&startBox?.height>=44&&
+     (!isFps || entryMobile.desktopMenuHidden&&entryMobile.tutorialShown&&entryMobile.panelFits&&entryMobile.smallFits),
+     {readyMs,viewport,actualHTTP:true,entryMobile});
    await page.locator('#mk-start').tap();actions.push({atMs:Date.now()-started,input:'tap',target:'#mk-start'});
    await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
    if(run.theme==='pelican-bike'){
@@ -35,13 +62,47 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    }else if(run.theme==='qq-speed'){
      await hold('#t-left',1000);await hold('#t-right',1000);
    }else{
-     const fire=page.locator('#touch .btn').filter({hasText:'开火'}).first();
+     await page.waitForFunction(() => document.documentElement.dataset.fpsActive === 'true', {timeout:10000});
+     const fire=page.locator('#touch .btn[data-mk-action="fire"]');
+     const shotsBefore = await page.evaluate(() => window.__H5NativeGame?.player?.stats?.shots ?? 0);
      const b=await fire.boundingBox(),cdp=await context.newCDPSession(page);
      actions.push({atMs:Date.now()-started,input:'touch-hold',target:'visible-fire',durationMs:1500});
-     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:b.x+b.width/2,y:b.y+b.height/2,id:1}]});await page.waitForTimeout(1500);await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.detach();
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:b.x+b.width/2,y:b.y+b.height/2,id:1}]});
+     await page.waitForTimeout(1500);
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await cdp.detach();
+     const shotsAfter = await page.evaluate(() => window.__H5NativeGame?.player?.stats?.shots ?? 0);
+     const layout = await page.evaluate(() => {
+       const actions=['fire','jump','reload','scope','duplicate-fire','crouch','switch'];
+       const nodes=actions.map(action=>{
+         const e=document.querySelector('#touch .btn[data-mk-action="'+action+'"]');
+         if (!e)return {action,visible:false};
+         const r=e.getBoundingClientRect();
+         const cs=getComputedStyle(e);
+         return {action,visible:cs.display!=='none'&&cs.visibility!=='hidden',
+           left:r.left,top:r.top,width:r.width,height:r.height,
+           fits:r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight};
+       });
+       const visible=nodes.filter(n=>n.visible);
+       const overlap=visible.some((a,i)=>visible.slice(i+1).some(b=>
+         a.left<b.left+b.width && b.left<a.left+a.width &&
+         a.top<b.top+b.height && b.top<a.top+a.height));
+       return {actions:nodes,overlap,active:document.documentElement.dataset.fpsActive,
+         desktopMenuHidden:getComputedStyle(document.getElementById('menu')).display==='none',
+         labelsPresent:!!document.getElementById('mk-fps-target')&&!!document.getElementById('mk-fps-board')};
+     });
+     const working = shotsAfter > shotsBefore && !layout.overlap && layout.desktopMenuHidden &&
+       layout.labelsPresent && layout.active === 'true' && layout.actions.every(n=>!n.visible||n.fits) &&
+       ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible)) &&
+       ['duplicate-fire','crouch','switch'].every(a=>layout.actions.some(n=>n.action===a&&!n.visible));
+     actions.push({atMs:Date.now()-started,input:'visual-layout-audit',detail:{shotsBefore,shotsAfter,layout}});
+     await shot('mobile-controls');
+     check('mobile-controls',working,{authority:'NORMAL_TOUCH_AND_VISIBLE_DOM',shotsBefore,shotsAfter,layout,
+       limitation:'Checks that shots occur, NOT that hits or successful combat have been proven.'});
    }
-   await shot('mobile-controls');
-   check('mobile-controls',true,{authority:'NORMAL_TOUCH_INPUT_AND_SCREENSHOTS',note:'Control response needs screenshot/perceptual review; this does not prove every weapon or drift branch.'});
+   if (!isFps) {
+     await shot('mobile-controls');
+     check('mobile-controls',true,{authority:'NORMAL_TOUCH_INPUT_AND_SCREENSHOTS',note:'Control response needs screenshot/perceptual review; this does not prove every weapon or drift branch.'});
+   }
    await page.locator('#mk-pause').tap();const time=await page.locator('#mk-time').innerText();
    await page.waitForTimeout(1000);const frozen=time===await page.locator('#mk-time').innerText();
    const paused=await page.locator('#mobile-kit').getAttribute('data-phase');await page.locator('#mk-resume').tap();
