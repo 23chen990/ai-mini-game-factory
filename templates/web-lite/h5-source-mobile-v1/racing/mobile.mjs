@@ -3,7 +3,7 @@ import { RaceDriver, TouchSteering } from './driver.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS } from './items.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey } from './career.mjs';
-import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, raceReady, stageTrackReady, tuneRaceFx } from './session.mjs';
+import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
@@ -14,7 +14,7 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>‹</span><span>›</span></div><p>按住左右转弯，松手回正<br><small>漂移、出弯小喷和氮气自动触发</small></p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><p id="race-stage-goal"></p><div id="race-fuel-box"><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
     <p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
-    <div id="race-settings" hidden><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">均衡画质，性能不足时自动调低</small></div>
+    <div id="race-settings" hidden><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">均衡画质，性能不足时自动调低</small></div>
     <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-lobby" class="race-secondary" hidden>返回选关</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
     <p id="race-note">漂移集气，干净出弯更容易获得完美小喷</p>
   </div><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>横过来，准备出发</b><span>左右拇指各管一键</span><small>转回横屏后，点击继续比赛</small></aside>`;
@@ -28,6 +28,9 @@ let lastDriftToastAt = -100, lastNoticeAt = -100;
 let adNotice = '', adNoticeUntil = 0;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1';
 const QUALITY_STORE = 'h5-qq-mobile-20261013:graphics-quality:v1';
+const SOUND_STORE = 'h5-qq-mobile-20261013:audio-enabled:v1';
+let soundEnabled = true;
+try { soundEnabled = localStorage.getItem(SOUND_STORE) !== '0'; } catch { /* Private browsing keeps audio on. */ }
 try { best = JSON.parse(localStorage.getItem(STORE) || '{}'); } catch { best = {}; }
 let storageRef;
 try { storageRef = localStorage; }
@@ -86,7 +89,7 @@ function display(next) {
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && !!career.objectiveLabel(g));$('held-item').hidden = !racing || career.stage.mode !== 'item';
   for (const button of root.querySelectorAll('[data-race-direction]')) button.disabled = next !== 'race';
-  if (next === 'paused') { $('heading').textContent = '休息一下'; $('quality').value = g.settings.quality; $('note').textContent = '已松开所有按键，准备好再继续'; }
+  if (next === 'paused') { $('heading').textContent = '休息一下'; $('quality').value = g.settings.quality; $('sound').textContent = soundEnabled ? '声音：开' : '声音：关'; $('sound').setAttribute('aria-pressed', String(soundEnabled)); $('note').textContent = '已松开所有按键，准备好再继续'; }
 }
 function feedback(text, kind = 'boost') {
   if (!g || (phase !== 'race' && phase !== 'countdown')) return;
@@ -206,6 +209,13 @@ $('fuel-ad').addEventListener('click', async () => {
   renderLobby();fuelView();
   if (phase === 'ready') $('note').textContent = adNotice;
 });
+$('sound').addEventListener('click', () => {
+  soundEnabled = !soundEnabled;
+  if (g) setRaceSound(g.audio,soundEnabled);
+  $('sound').textContent = soundEnabled ? '声音：开' : '声音：关';
+  $('sound').setAttribute('aria-pressed',String(soundEnabled));
+  try { localStorage.setItem(SOUND_STORE,soundEnabled ? '1' : '0'); } catch { /* Keep playing. */ }
+});
 $('quality').addEventListener('change', () => {
   quality.manual = true;g.settings.quality = normalizeRaceQuality($('quality').value);
   g.setupQuality();g.save();
@@ -235,6 +245,13 @@ async function boot() {
   }
   if (!g) throw Error('赛道加载未完成，请刷新或使用支持 WebGL 的浏览器');
   const loadedMap = g.map?.id;
+  const nativeAudioInit = g.audio.init.bind(g.audio);
+  g.audio.init = (...args) => {
+    const out = nativeAudioInit(...args);
+    setRaceSound(g.audio,soundEnabled);
+    return out;
+  };
+  setRaceSound(g.audio,soundEnabled);
   let rememberedQuality;
   try {rememberedQuality = localStorage.getItem(QUALITY_STORE);} catch {rememberedQuality = null;}
   g.mobileMode = mobile;g.camMode = 1;g.settings.quality = normalizeRaceQuality(rememberedQuality);
