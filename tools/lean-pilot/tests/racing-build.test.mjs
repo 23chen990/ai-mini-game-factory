@@ -82,6 +82,11 @@ test('V3.1 build adds pinned geometry and question-box source patches once, reje
   assert.equal(api.patchRaceLayouts(patchedLayouts),patchedLayouts);
   assert.throws(()=>api.patchRaceLayouts('const X = {};'), /Pinned track/);
   const src = "import * as THREE from 'three';\nexport class ItemSystem {\n  constructor() {\n    this.foo=1;\n  }\n\n  reset() {}\n}";
+  const maps="export const MAPS = [{ id: 'city' }];";
+  const lanePatched=api.patchRaceMaps(maps);
+  assert.match(lanePatched,/applyLaneDesign\(MAPS\)/);
+  assert.equal(api.patchRaceMaps(lanePatched),lanePatched);
+  assert.throws(()=>api.patchRaceMaps('const MAPS = []'),/MAPS export changed/);
   const patched = api.patchRaceItems(src);
   assert.match(patched, /upgradeItemBoxes\(this, THREE\)/);
   assert.match(patched, /from '.\/race-item-visuals.mjs'/);
@@ -90,7 +95,7 @@ test('V3.1 build adds pinned geometry and question-box source patches once, reje
 });
 test('V3.1 model and spline modules are hashed into H5 build and kept scoped to racing',async()=>{
   const source=await readFile(new URL('../racing-mobile-build.mjs', import.meta.url),'utf8');
-  for(const name of ['track-design.mjs','item-visuals.mjs','recovery.mjs'])
+  for(const name of ['track-design.mjs','lane-design.mjs','item-visuals.mjs','recovery.mjs'])
     assert.ok(source.includes(name),name);
   assert.ok(source.includes('patchRaceLayouts'));
   assert.ok(source.includes('patchRaceItems'));
