@@ -156,7 +156,7 @@ export function createFpsMobileUx(game, root, doc) {
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0;
-  let walkedMeters = 0, previousPosition = null;
+  let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -295,6 +295,7 @@ export function createFpsMobileUx(game, root, doc) {
           ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手移动躲避，右侧观察敌人'
           : '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手前进，右侧瞄准并开火';
       started = performance.now();
+      startedGameSeconds = Number(game.time) || 0;
       nextUpdate = 0;
       nextBalanceAt = 0;
       lastHits = 0;
@@ -343,7 +344,7 @@ export function createFpsMobileUx(game, root, doc) {
       const elapsed = Math.max(0, (now - started) / 1000);
       if (now >= nextBalanceAt) {
         nextBalanceAt = now + 1000;
-        applyBalance(elapsed);
+        applyBalance(Math.max(0,(Number(game.time) || 0)-startedGameSeconds));
       }
       if (now >= nextUpdate) {
         nextUpdate = now + 120;
