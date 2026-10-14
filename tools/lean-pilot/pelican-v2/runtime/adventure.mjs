@@ -1,7 +1,8 @@
 import {makeLevel,LANES,BOUNDS} from './levels.mjs';
+import {springLane,riderFeel,cameraTarget} from './feel.mjs';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500)r.events.shift();};
-export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneV:0,distance:0,elapsed:0,count:0,gold:0,score:0,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false}; }
+export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false}; }
 export function input(r,action) {
  if(action==='pause'&&r.phase==='running'){r.phase='paused';event(r,'pause');return;}
  if(action==='resume'&&r.phase==='paused'){r.phase='running';event(r,'resume');return;}
@@ -26,8 +27,11 @@ function step(r,dt){
  r.elapsed+=dt;
  if(r.stun>0){r.stun=Math.max(0,r.stun-dt);r.speed=0;if(r.stun===0)event(r,'recovered');}
  else{r.speed=r.level.speed;r.distance=Math.min(r.level.distance,r.distance+r.speed*dt);}
- // Critical damping via exponential interpolation; 90% adjacent-lane travel <.28 s.
- r.lane+=(LANES[r.laneIndex]-r.lane)*(1-Math.exp(-12*dt));r.laneV=(r.lane-oldZ)/dt;
+ // Continuous-velocity critically damped spring: one tap still moves exactly one lane.
+ const previousV=r.laneV;
+ const lateral=springLane(r.lane,r.laneV,LANES[r.laneIndex],dt,r.level.weather==='rain'?13.7:14.5);
+ r.lane=clamp(lateral.position,LANES[0],LANES[2]);r.laneV=lateral.velocity;
+ riderFeel(r,previousV,dt);
  if(r.y>0||r.vy>0){r.vy-=13*dt;r.y=Math.max(0,r.y+r.vy*dt);if(r.y===0){r.vy=0;event(r,'land');}}
  for(const o of r.obstacles){
   const oldX=o.x,oldOZ=o.z??LANES[o.lane];if(o.z===undefined)o.z=oldOZ;
@@ -48,7 +52,7 @@ function step(r,dt){
    if(o.kind==='pedestrian'){r.stun=3;r.speed=0;event(r,'pedestrian-hit',{objectId:o.id});}
    else {finish(r,o.kind==='barrier'?'barrier':'vehicle',o);return;}
   }
-  if(o.x-r.distance<-(bounds.x+.75)){o.passed=true;event(r,o.kind==='barrier'?'barrier-cleared':'obstacle-avoided',{objectId:o.id,kind:o.kind});}
+  if(o.x-r.distance<-(bounds.x+.75)){o.passed=true;event(r,o.kind==='barrier'?'barrier-cleared':'obstacle-avoided',{objectId:o.id,kind:o.kind,jumped:o.kind==='barrier'&&r.y>.31});}
  }
  // Fish use swept relative coordinates as well. No score is awarded after a terminal collision.
  for(const f of r.fishes){if(f.caught||r.stun>0)continue;
@@ -60,9 +64,12 @@ export function newSave() { return {version:2,unlocked:1,stars:[0,0,0,0,0],compl
 export function loadSave(raw) {try{if(typeof raw!=='string'||raw.length>1500)return null;const s=JSON.parse(raw);if(s.version!==2||!Number.isInteger(s.unlocked)||s.unlocked<1||s.unlocked>5||!Array.isArray(s.stars)||s.stars.length!==5||s.stars.some(n=>!Number.isInteger(n)||n<0||n>3)||!Array.isArray(s.completed)||s.completed.length!==5||s.completed.some(x=>typeof x!=='boolean'))return null;return {version:2,unlocked:s.unlocked,stars:s.stars,completed:s.completed};}catch{return null;} }
 export function settle(save,r) {
  if(r.phase!=='finished'||r.settled)return false;r.settled=true;r.rewardScore=r.score+(r.reason==='complete'?r.level.reward:0);
- if(r.reason==='complete'){save.unlocked=Math.max(save.unlocked,Math.min(5,r.level.id+1));save.completed[r.level.id-1]=true;const stars=1+Number(r.hits===0)+Number(r.elapsed<=r.level.seconds*.85);save.stars[r.level.id-1]=Math.max(save.stars[r.level.id-1],stars);r.stars=stars;}return true;
+ if(r.reason==='complete'){save.unlocked=Math.max(save.unlocked,Math.min(5,r.level.id+1));save.completed[r.level.id-1]=true;const goodCatch=r.count>=r.level.goal.count+Math.ceil(r.level.goal.count*.18);
+  const greatCatch=r.count>=r.level.goal.count+Math.ceil(r.level.goal.count*.4);
+  const bonusGold=r.level.goal.gold===0?0:1;
+  const stars=1+Number(r.hits===0&&goodCatch)+Number(r.hits===0&&greatCatch&&r.gold>=r.level.goal.gold+bonusGold&&r.elapsed<=r.level.seconds*.92);save.stars[r.level.id-1]=Math.max(save.stars[r.level.id-1],stars);r.stars=stars;}return true;
 }
-export function cameraPose(lane,aspect) {const landscape=aspect>1;return {position:[landscape?-7.8:-6.8,landscape?4.2:4.32,lane*.24],look:[landscape?10:12,.42,lane*.22],fov:landscape?58:54}; }
+export function cameraPose(lane,aspect) {return cameraTarget(lane,0,0,aspect,8);}
 export function qualityStep(q,fps,dpr) {
  if(fps>=42)return q;
  if(q.tier>0)return {...q,tier:q.tier-1};

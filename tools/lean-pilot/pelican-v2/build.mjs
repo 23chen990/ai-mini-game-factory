@@ -18,9 +18,10 @@ export function patchMain(original){
  if(cameraStart<0||cameraEnd<0)throw Error('camera anchors');s=s.slice(0,cameraStart)+'function cameraUpdate(dt) { coast.afterRide(dt); }\n'+s.slice(cameraEnd);
  s=once(s,"setCamMode(Q.has('cam') ? camMode : 'orbit');","setCamMode('chase', true);");
  const rideStart=s.indexOf('  const up = keys.up;',s.indexOf('function updateRide')),rideEnd=s.indexOf('  // 自动变速',rideStart);
- s=s.slice(0,rideStart)+`  coast.beforeRide(timer.getDelta());\n  const down = false;\n  const acc = (settings.cruise - S.speed) * .7;\n  S.accel = damp(S.accel, acc, 6, dt);\n  S.pedaling = !S.airborne && S.speed > .25;\n  S.wheel += (S.speed / WHEEL_R) * dt;\n\n`+s.slice(rideEnd);
+ s=s.slice(0,rideStart)+`  coast.beforeRide(dt);\n  const down = false;\n  const acc = (settings.cruise - S.speed) * .7;\n  S.accel = damp(S.accel, acc, 6, dt);\n  S.pedaling = !S.airborne && S.speed > .25;\n  S.wheel += (S.speed / WHEEL_R) * dt;\n\n`+s.slice(rideEnd);
  const laneStart=s.indexOf('  // 变道 / 自动驾驶',s.indexOf('function updateRide')),laneEnd=s.indexOf('  // 特技：',laneStart);
  s=s.slice(0,laneStart)+'  // Adventure owns discrete lane input, bounded jump integration and swept hazards.\n'+s.slice(laneEnd);
+ s=once(s,'rider.rotation.set(S.lean, -Math.atan2(S.laneV, Math.max(S.speed, 1.5)), 0);','rider.rotation.set(S.lean, S.yaw, 0);');
  const fishStart=s.indexOf('function updateFishes(dt) {'),fishEnd=s.indexOf('\n// 跃出海面的鱼',fishStart);
  s=s.slice(0,fishStart)+'function updateFishes() { coast.updateFishVisuals(); }\n'+s.slice(fishEnd);
  const adaptStart=s.indexOf('function adaptQuality(fps) {'),adaptEnd=s.indexOf('\nfunction setPixelRatio',adaptStart);
@@ -39,7 +40,7 @@ export async function build({hypothesis='P0: synchronize composer and renderer, 
  let original;
  try{original=await readFile(path.join(RUN,'original-main.js'),'utf8');}catch(e){if(e.code!=='ENOENT')throw e;original=before;await writeFile(path.join(RUN,'original-main.js'),original);}
  const originalHash=receipt.files.find(f=>f.path==='pelican-bike/src/main.js').sha256;if(sha(original)!==originalHash)throw Error('Native preimage mismatch');
- const runtimeFiles=['levels.mjs','adventure.mjs','coast-ui.mjs','coast.css'];const inputHashes=[];
+ const runtimeFiles=['levels.mjs','adventure.mjs','coast-ui.mjs','coast.css','feel.mjs','safety.mjs'];const inputHashes=[];
  for(const f of runtimeFiles){const bytes=await readFile(path.join(HERE,'runtime',f));await writeFile(path.join(SOURCE,'src',f),bytes);inputHashes.push({path:f,sha256:sha(bytes)});}
  const patched=patchMain(original);await writeFile(path.join(SOURCE,'src/main.js'),patched);
  const texturePath=path.join(SOURCE,'src/textures.js');let textureOriginal;

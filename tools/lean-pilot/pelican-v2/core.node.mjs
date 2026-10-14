@@ -60,7 +60,11 @@ test('authored courses have a no-hit path meeting distance and fish/type goals a
   }assert.equal(r.reason,'complete',`level ${level.id} at ${dt}: ${r.reason}`);assert.equal(r.hits,0);}
 });
 test('camera tracks forward distance in a floating world, ignores jump height and follows lane gently',()=>{
- const a=cameraPose(0,390/844),b=cameraPose(1.7,390/844);assert.ok(a.position[0]<-6);assert.equal(a.fov,54);assert.ok(Math.abs(a.position[2]-b.position[2])<.7);assert.ok(a.look[0]>=10);
+ const a=cameraPose(0,390/844),b=cameraPose(1.7,390/844);assert.ok(a.position[0]<-6);assert.equal(a.fov,52);assert.ok(Math.abs(a.position[2]-b.position[2])<.7);assert.ok(a.look[0]>=10);
+});
+test('star reward is based on fishing mastery, not just elapsed seconds',()=>{
+ const s=newSave(),minimal=newRun(1);minimal.phase='finished';minimal.reason='complete';minimal.count=minimal.level.goal.count;minimal.score=minimal.count;minimal.elapsed=35;settle(s,minimal);assert.equal(minimal.stars,1);
+ const great=newRun(1);great.phase='finished';great.reason='complete';great.count=17;great.gold=2;great.score=20;great.elapsed=40;settle(s,great);assert.equal(great.stars,3);
 });
 test('quality sheds expensive effects first and never falls below 1.25 pixels on DPR3',()=>{
  let q={tier:2,pr:1.5};q=qualityStep(q,28,3);assert.equal(q.tier,1);assert.equal(q.pr,1.5);q=qualityStep(q,28,3);assert.equal(q.tier,0);assert.equal(q.pr,1.5);q=qualityStep(q,28,3);assert.equal(q.pr,1.25);for(let i=0;i<10;i++)q=qualityStep(q,20,3);assert.equal(q.pr,1.25);
