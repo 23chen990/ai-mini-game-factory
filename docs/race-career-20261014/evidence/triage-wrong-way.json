@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Post-item-spin wrong-way recovery is obstructed by constant auto-throttle. Normal touch-held steering can remain pinned to barrier at speed; no brake exists in the two-button UI. Fixed-left and visible-heading controllers both show repeated backward multi-lap driving. Add bounded auto-throttle braking/crawl during genuine grounded post-spin wrong-way state; retain player steering.",
+  "classification": [
+    "core-experience",
+    "failure-attribution"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Core input/physics lifecycle needs test-first adaptation and exact natural wrong-way branch QA, not a new driving feature or native physics rewrite.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "old main replacements",
+      "unrelated factory tests",
+      "third-party private code"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Actual city3-lapitemrace,onlytrustedleftright touches",
+      "A real weapon spin leaves car pointing backward; followvisiblewarning/arrow withnormalturn input",
+      "Observe sustainedbackwardprogress/barrierlateralpositionuntil450scap"
+    ],
+    "observed": [
+      "Build11session3:5385continuousrecoveryframes,lat11.9againstwall,DNF",
+      "Build12retakewithvisibleheadingmemory againreverses fromt80 through>280s;completedphysicalpickupsbutnotrace",
+      "Nativevmax55m/s;at55m/sturnrate1.9*(1-.55)=.855rad/s gives~64mradius,farwiderthan~26mroad. Auto-throttle neverallowslowspeedU-turn",
+      "NativePlayerCar/update and all progress/rank/finish fields remain untouched"
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt11-session3/10-trace.json",
+        "sha256": "1d5a7e24f05ea855c36d38723b32e855fc3533e3c630453cc1bf7f27c11367ca",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt11-session3/report.json",
+        "sha256": "88973dd26f9ec66ab00f48592fccb9128c169ab56b9acd398547c43d73be65b4",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+        "sha256": "54c30c6a0ee0f763138ad20c051b6c2c4c9a8828f43c8a2878d304d284f93d0e",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Duringgroundedpost-spinwrong-way,brake/crawlthroughnativeup/downinput whileallleftrightinputremainsplayerowned",
+    "Neverwritecarh/x/z/progress/rank/finished orgrantstars/metrics",
+    "Resumeoriginalautothrottleonlyafterfacingforward;pause/replayclearrecoverymode",
+    "Existingnormaldrift/nitro/inputedge testsremainpassing",
+    "Freshnatural13buildcampaign,specificvisiblewrong-way→forwardrecoveryproof,andallitem/expertgoalsmustreallypass"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T13:02:25.352Z"
+}

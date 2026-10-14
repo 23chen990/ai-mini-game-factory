@@ -1,3 +1,4 @@
+/* global structuredClone */
 import test from 'node:test';
 import assert from 'node:assert/strict';
 const module = await import('../racing/driver.mjs').catch(() => ({}));
@@ -16,6 +17,30 @@ test('比赛自动油门，倒计时、终局和暂停不驱动', () => {
   assert.equal(d.frame(.02, idle, p, track(), 'race').up, true);
   for (const state of ['menu', 'countdown', 'paused', 'finish']) assert.equal(d.frame(.02, left, p, track(), state).up, false);
   assert.equal(d.frame(.02, left, car({ finished: true }), track(), 'race').up, false);
+});
+test('道具旋转后的真实逆行先降速，仍只由玩家左右输入转回来', () => {
+  const d = make(), p = car({ h: Math.PI, m: Math.PI, s: 45, lat: 11.9, wrongWay: 1.6 });
+  const before = structuredClone(p), input = d.frame(.02, left, p, track(0), 'race');
+  assert.equal(input.up, false); assert.equal(input.down, true);
+  assert.equal(input.left, true); assert.equal(input.right, false);
+  assert.equal(input.shift, false); assert.equal(input.nitroPressed, false);
+  assert.deepEqual(p, before, '适配器不能改坐标、航向、进度、速度或完成状态');
+});
+test('逆行低速转向不会自动倒车，转回正向后恢复油门', () => {
+  const d = make(), road = track(0), p = car({ h: Math.PI, s: 45, wrongWay: 1.5 });
+  d.frame(.02, left, p, road, 'race');
+  Object.assign(p, { h: 1.2, wrongWay: 0, s: 6 });
+  const turning = d.frame(.02, left, p, road, 'race'); assert.equal(turning.up, false); assert.equal(turning.down, false);
+  p.s = 3.5; const crawl = d.frame(.02, left, p, road, 'race'); assert.equal(crawl.up, true); assert.equal(crawl.down, false);
+  p.h = .5; const forward = d.frame(.02, idle, p, road, 'race'); assert.equal(forward.up, true); assert.equal(forward.down, false);
+});
+test('普通转弯和道具仍在旋转时不误触降速，暂停清除逆行恢复状态', () => {
+  const d = make(), road = track(0);
+  assert.equal(d.frame(.02, left, car({ h: 1.2, s: 55 }), road, 'race').up, true);
+  assert.equal(d.frame(.02, left, car({ h: Math.PI, wrongWay: 1.5, spin: .3 }), road, 'race').down, false);
+  d.frame(.02, left, car({ h: Math.PI, wrongWay: 1.5 }), road, 'race');
+  assert.equal(d.frame(.02, left, car(), road, 'paused').down, false);
+  assert.equal(d.frame(.02, idle, car(), road, 'race').up, true);
 });
 test('自动油门的起步边沿每辆新赛车仅一次，暂停与无物理步不会重放', () => {
   const d = make(), p = car(), road = track(0);

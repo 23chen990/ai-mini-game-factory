@@ -23,10 +23,17 @@ export function recoverVisibleHeading(policy, memory, now) {
   if (!memory.recovery && (abrupt || (policy.wrongWay && !memory.warningHandled))) {
     const target = memory.forward ?? [-h[0], -h[1]];
     const angle = angleTo(target);
-    memory.recovery = { target, started: now, direction: angle >= 0 ? 'left' : 'right' };
+    const center = policy.roadPoints?.reduce((v, p) => [v[0] + p[0], v[1] + p[1]], [0, 0]);
+    const cross = center ? (h[0] * center[1] - h[1] * center[0]) / policy.roadPoints.length : 0;
+    memory.recovery = { target, started: now, direction: Math.abs(cross) > .7 ? cross > 0 ? 'left' : 'right' : angle >= 0 ? 'left' : 'right' };
   }
   memory.heading = h; memory.at = now;
   if (memory.recovery) {
+    const forwardRoad = policy.roadPoints?.filter(p => (p[0] * memory.recovery.target[0] + p[1] * memory.recovery.target[1]) / Math.hypot(...p) > .35);
+    if (forwardRoad?.length) {
+      const target = forwardRoad.reduce((v, p) => [v[0] + p[0], v[1] + p[1]], [0, 0]), length = Math.hypot(...target);
+      if (length) memory.recovery.target = target.map(v => v / length);
+    }
     const { target, started, direction } = memory.recovery, angle = angleTo(target);
     if (now - started >= 1200 && Math.abs(angle) < .30) {
       memory.recovery = null; memory.warningHandled = true;

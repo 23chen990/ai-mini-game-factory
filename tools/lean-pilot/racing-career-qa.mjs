@@ -79,17 +79,20 @@ function minimapPolicy(radius) {
   const xx = points.reduce((s, p) => s + (p.x - cx) ** 2, 0), yy = points.reduce((s, p) => s + (p.y - cy) ** 2, 0), xy = points.reduce((s, p) => s + (p.x - cx) * (p.y - cy), 0);
   const axis = .5 * Math.atan2(2 * xy, xx - yy); let hx = Math.cos(axis), hy = Math.sin(axis);
   if (points.reduce((s, p) => s + ((p.x - cx) * hx + (p.y - cy) * hy) ** 3, 0) < 0) { hx *= -1; hy *= -1; }
-  const targets = [];
+  const targets = [], roadPoints = [];
   for (let y = Math.max(0, Math.floor(cy - radius - 2)); y < Math.min(H, cy + radius + 2); y++) for (let x = Math.max(0, Math.floor(cx - radius - 2)); x < Math.min(W, cx + radius + 2); x++) {
     const dx = x - cx, dy = y - cy, r = Math.hypot(dx, dy), i = (y * W + x) * 4;
     const white = rgba[i] > 205 && rgba[i + 1] > 205 && rgba[i + 2] > 205;
     const bridge = rgba[i] < 110 && rgba[i + 1] > 145 && rgba[i + 2] > 190;
-    if (Math.abs(r - radius) < 1.5 && (hx * dx + hy * dy) / r > .35 && (white || bridge)) targets.push({ x: dx, y: dy });
+    if (Math.abs(r - radius) < 1.5 && (white || bridge)) {
+      roadPoints.push([dx, dy]);
+      if ((hx * dx + hy * dy) / r > .35) targets.push({ x: dx, y: dy });
+    }
   }
-  if (!targets.length) return { direction: null, reason: 'ahead-road-not-visible', heading: [hx, hy], wrongWay };
+  if (!targets.length) return { direction: null, reason: 'ahead-road-not-visible', heading: [hx, hy], wrongWay, roadPoints };
   const tx = targets.reduce((s, p) => s + p.x, 0) / targets.length, ty = targets.reduce((s, p) => s + p.y, 0) / targets.length;
   const angle = Math.atan2(hx * ty - hy * tx, hx * tx + hy * ty);
-  return { direction: angle > .10 ? 'left' : angle < -.10 ? 'right' : null, angle, position: [cx, cy], target: [tx, ty], heading: [hx, hy], wrongWay };
+  return { direction: angle > .10 ? 'left' : angle < -.10 ? 'right' : null, angle, position: [cx, cy], target: [tx, ty], heading: [hx, hy], wrongWay, roadPoints };
 }
 async function observed(full = false) {
   return page.evaluate(full => {
@@ -98,6 +101,7 @@ async function observed(full = false) {
       map: g.map.id, laps: g.settings.laps, diff: g.settings.diff, mode: g.settings.mode,
       progress: p?.progress ?? 0, finished: !!p?.finished, finishTime: p?.finishTime ?? null,
       place: g.standings.indexOf(p) + 1, speed: p?.speedKmh ?? 0, lat: p?.lat ?? 0,
+      wrongWaySec: p?.wrongWay ?? 0, forwardHeadingDot: p ? Math.cos(p.h - p.proj.hd) : null,
       firstFinish: g.firstFinish, racers: g.racers.map(r => ({ name: r.name, isPlayer: r.isPlayer, skill: r.skill ?? null,
         finished: !!r.finished, finishTime: r.finishTime, progress: r.progress })),
       stats: { ...p?.stats }, items: [...(p?.items ?? [])],
@@ -158,6 +162,8 @@ try {
         if (condition && !captures.has(key)) { captures.add(key); await page.waitForTimeout(180); await page.screenshot({ path: path.join(out, name + '-' + key + '.png') }); }
       }
       lastPickups = pickups;
+      if (o.wrongWaySec > .2 && o.forwardHeadingDot < -.3 && !captures.has('wrong-way')) { captures.add('wrong-way'); await page.screenshot({ path: path.join(out, name + '-wrong-way.png') }); }
+      if (captures.has('wrong-way') && o.wrongWaySec === 0 && o.forwardHeadingDot > .7 && !captures.has('recovered')) { captures.add('recovered'); await page.screenshot({ path: path.join(out, name + '-recovered.png') }); }
       if (name === '04' && o.raceTime >= lastScene + 5) { lastScene = Math.floor(o.raceTime / 5) * 5; await page.screenshot({ path: path.join(out, name + '-scene-' + lastScene + '.png') }); }
       if (o.raceTime - lastLog >= 20) { lastLog = o.raceTime; console.log(JSON.stringify({ stage: index + 1, time: +o.raceTime.toFixed(1), progress: Math.round(o.progress), place: o.place, goal: o.goal, crashes: o.stats.crash })); }
       if (o.phase === 'finished') { terminal = await observed(true); break; }

@@ -57,3 +57,11 @@ test('old saved stars cannot turn a failed replay or AI finish into a natural vi
   assert.equal(qualifiedVisibleFinish({ finished: false, heading: '挑战成功！★' }, 3), false);
   assert.equal(qualifiedVisibleFinish({ finished: true, heading: '挑战成功！★★' }, 2), true);
 });
+test('a reversed arrow turns into the visible road rather than the outside barrier', () => {
+  const memory = {};
+  recoverVisibleHeading({ direction: null, heading: [1, 0], target: [21, 0], wrongWay: false }, memory, 1000);
+  const recover = recoverVisibleHeading({ direction: null, heading: [-1, 0], wrongWay: true,
+    roadPoints: [[-20, -4], [-20, -5], [20, -4], [20, -5]] }, memory, 1300);
+  assert.equal(recover.direction, 'left');
+  assert.ok(recover.recoveryTarget[0] > 0 && recover.recoveryTarget[1] < 0);
+});

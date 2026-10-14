@@ -22,6 +22,8 @@ async function setup(t, { amount = 10, delay = 0, denied = false } = {}) {
   t.after(() => new Promise(resolve => server.close(resolve)));
   const browser = await chromium.launch({ headless: true }); t.after(() => browser.close());
   const page = await browser.newPage({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(15000);
   const errors = []; page.on('pageerror', e => errors.push(e.message)); t.after(() => assert.deepEqual(errors, []));
   await page.addInitScript(({ key, value, denied }) => {
     localStorage.setItem(key, value);
@@ -81,7 +83,7 @@ test('V3 ignores background starts and requires explicit foreground input', asyn
 test('V3 failed native start preserves fuel and retry remains usable', async t => {
   const page = await setup(t); await ready(page);
   await page.evaluate(() => { window.game.loading = true; }); // engineering ignored-start fixture
-  await page.locator('#race-start').tap(); assert.equal(await amount(page), 10);
+  await page.locator('#native-start').click(); assert.equal(await amount(page), 10);
   await page.evaluate(() => { window.game.loading = false; });
   await page.locator('#race-start').tap(); assert.equal(await amount(page), 9);
 });

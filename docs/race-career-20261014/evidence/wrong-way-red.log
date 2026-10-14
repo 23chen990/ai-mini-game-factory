@@ -1,0 +1,71 @@
+✔ 比赛自动油门，倒计时、终局和暂停不驱动 (1.475792ms)
+✖ 道具旋转后的真实逆行先降速，仍只由玩家左右输入转回来 (0.575666ms)
+✖ 逆行低速转向不会自动倒车，转回正向后恢复油门 (0.171041ms)
+✔ 普通转弯和道具仍在旋转时不误触降速，暂停清除逆行恢复状态 (0.171792ms)
+✔ 自动油门的起步边沿每辆新赛车仅一次，暂停与无物理步不会重放 (0.248625ms)
+✔ 轻点/长按直道微调不会漂移；不代替玩家转向 (0.968208ms)
+✔ 连续同向弯道驾驶可进入原生shift分支 (0.265625ms)
+✔ 低速、腾空、旋转、错误方向和墙边不触发 (0.301709ms)
+✔ 松手、反向与过大侧滑都释放shift (0.122834ms)
+✔ 快速反向不能立刻开启另一段漂移 (0.150791ms)
+✔ 有质量的松手出弯小喷只发一次边沿 (0.117959ms)
+✔ 不好的出弯延迟到普通小喷窗口，不能总给完美 (0.111875ms)
+✔ 无有效漂移的松手不能凭空创建小喷 (0.147833ms)
+✔ 碰撞中止的漂移无小喷，恢复期不自动氮气 (0.102041ms)
+✔ 氮气仅在稳定直道发一次，不凭空生产或反复消耗 (0.363041ms)
+✔ 没有物理子步时保留小喷边沿直到可消费帧 (0.084708ms)
+✔ 暂停/恢复丢弃旧喷射边沿，经典键盘原输入保持 (0.294ms)
+✔ 触控支持双指、同方向多指、短按缓冲和彻底清空 (0.356708ms)
+✔ automatic drifting cannot repeatedly farm the same soft corner (0.179584ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 17
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 59.454709
+
+✖ failing tests:
+
+test at templates/web-lite/h5-source-mobile-v1/tests/racing-driver.test.mjs:20:1
+✖ 道具旋转后的真实逆行先降速，仍只由玩家左右输入转回来 (0.575666ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/templates/web-lite/h5-source-mobile-v1/tests/racing-driver.test.mjs:23:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:358:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at templates/web-lite/h5-source-mobile-v1/tests/racing-driver.test.mjs:28:1
+✖ 逆行低速转向不会自动倒车，转回正向后恢复油门 (0.171041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/templates/web-lite/h5-source-mobile-v1/tests/racing-driver.test.mjs:32:63)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

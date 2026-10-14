@@ -35,6 +35,7 @@ export class RaceDriver {
     this.session = null; this.boost = null; this.cooldown = .28;
     this.recovery = 0; this.stableTime = 0; this.crashes = null;
     this.nitroLocked = false; this.lastNitroCount = null;
+    this.wrongWayRecovery = false;
   }
   frame(dt, raw, p, track, state, { canStep = true } = {}) {
     if (!this.enabled) return raw;
@@ -45,6 +46,16 @@ export class RaceDriver {
     const dir = Number(input.left) - Number(input.right);
     const roadHeading = p.proj?.hd ?? track.hd[p.hint];
     const error = Math.abs(wrap(p.h - roadHeading));
+    // The two-key UI has no brake. Full auto-throttle after an item spin makes
+    // the U-turn radius wider than the road and keeps the car pinned to a rail.
+    // Use native brake/crawl inputs only; the player still owns all steering.
+    if (!p.airborne && p.spin <= 0 && p.wrongWay > .2 && error > 1.65) this.wrongWayRecovery = true;
+    if (error < .65) this.wrongWayRecovery = false;
+    if (this.wrongWayRecovery && !p.airborne && p.spin <= 0) {
+      input.up = p.s < 4;
+      input.down = p.s > 6;
+      this.boost = null; this.stableTime = 0;
+    }
     const ahead = track.sample(p.d + Math.max(6, p.s * .3), {});
     const middle = track.sample(p.d + Math.max(3, p.s * .15), {});
     const bend = ((track.curv[p.hint] ?? 0) + (track.curv[middle.i] ?? 0) + (track.curv[ahead.i] ?? 0)) / 3;
