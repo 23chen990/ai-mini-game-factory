@@ -97,7 +97,7 @@ export function gradeStage(stage, result, stats = {}) {
   if (!ordinary || !extra || stats.timedOut || stats.eliminated) return 0;
   let stars = 1;
   if (place <= Math.max(1, stage.rank - 1)) stars++;
-  const clean = finite(result?.stats?.crash) <= (stage.laps === 1 ? 2 : 4);
+  const clean = finite(result?.stats?.crash) <= (stage.laps === 1 ? 2 : 4) && finite(stats.rescues) === 0;
   const mastery = stage.kind === 'time' ? time <= stage.target * .87 :
     stage.kind === 'speed' ? metric >= stage.target + 20 :
     stage.kind === 'drift' || stage.kind === 'overtake' ? metric >= stage.target + 1 :
