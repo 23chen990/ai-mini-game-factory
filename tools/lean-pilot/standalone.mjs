@@ -19,14 +19,15 @@ export async function standaloneHtml(gameRoot,theme='observatory',runId='standal
     platform=`window.__PLATFORM_META__=${JSON.stringify(config)};\n`;
   }
   const css=(await safeRead(gameRoot,'style.css')).toString('utf8');const scripts=[];
-  const bundleModules=spec.id==='h5-source-mobile-v1'?['engine.mjs','themes.mjs','fps-mobile-ux.mjs','main.mjs']:['engine.mjs','themes.mjs','main.mjs'];
+  const hasFpsUx=spec.id==='h5-source-mobile-v1'&&candidate.fpsUxVersion===1;
+  const bundleModules=hasFpsUx?['engine.mjs','themes.mjs','fps-mobile-ux.mjs','main.mjs']:['engine.mjs','themes.mjs','main.mjs'];
   for(const name of bundleModules){
     const source=(await safeRead(gameRoot,name)).toString('utf8');let imports=0;
     const bundled=source.replace(/^import .*?;\r?\n/gm,line=>{
       if(name!=='main.mjs'||!/^import \{[^}]+\} from '\.\/(engine|themes|fps-mobile-ux)\.mjs';\r?\n$/.test(line))throw new Error(`Unsupported import in ${name}`);
       imports++;return '';
     }).replace(/^export /gm,'');
-    if(/^\s*(?:import|export)\s/m.test(bundled)||(name==='main.mjs'&&imports!==(spec.id==='h5-source-mobile-v1'?3:2)))throw new Error(`Unsupported module syntax in ${name}`);
+    if(/^\s*(?:import|export)\s/m.test(bundled)||(name==='main.mjs'&&imports!==(hasFpsUx?3:2)))throw new Error(`Unsupported module syntax in ${name}`);
     scripts.push(`// ${name}\n${bundled}`);
   }
   const replaceOne=(marker,replacement)=>{if(html.split(marker).length!==2)throw new Error(`Missing or repeated entry marker: ${marker}`);html=html.replace(marker,()=>replacement);};
