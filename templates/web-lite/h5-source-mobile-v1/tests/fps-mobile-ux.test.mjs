@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -102,4 +102,21 @@ test('simple fire is crosshair-driven with real bullets, never fires at teammate
   {distance:29},{distance:0},{heldSeconds:0.05},
   {yawError:0.10},{pitchError:0.15},{pitchError:NaN}
  ]) assert.equal(mobileSimpleFireAllowed({...base,...v}),false,JSON.stringify(v));
+});
+
+test('first M4 encounter places a normal rival on the visible clear route for both teams',()=>{
+ const playerFor=team=>({pos:{x:team==='BL'?-31.5:31.5,y:0,z:-6.8},yaw:team==='BL'?-Math.PI/2:Math.PI/2,eyeH:1.6});
+ const nav={idx(x,z){return Math.abs(x)<35&&Math.abs(z)<11?1:-1;},walkable(k){return k>=0;}};
+ const world={blocked:()=>false,raycast:()=>null};
+ for(const team of ['BL','GR']){
+   const p=playerFor(team);
+   const hit=chooseFirstEncounterSpot({player:p,world,nav,actors:[]});
+   assert.ok(hit,team);assert.ok(hit.distance>=7&&hit.distance<=10);
+   assert.ok((hit.x-p.pos.x)*(team==='BL'?1:-1)>6);
+   assert.ok(Math.abs(hit.z-p.pos.z)<2);
+ }
+ const p=playerFor('BL');
+ assert.equal(chooseFirstEncounterSpot({player:p,world:{...world,raycast:()=>({t:2})},nav}),null);
+ assert.equal(chooseFirstEncounterSpot({player:p,world:{...world,blocked:()=>true},nav}),null);
+ assert.equal(chooseFirstEncounterSpot({player:p,world,nav:{idx:()=>-1,walkable:()=>false}}),null);
 });
