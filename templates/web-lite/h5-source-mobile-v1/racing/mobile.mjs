@@ -2,7 +2,7 @@
 import { RaceDriver, TouchSteering } from './driver.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS } from './items.mjs';
-import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked } from './career.mjs';
+import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey } from './career.mjs';
 import { clearNativeInput, settleNative, QualityMonitor, raceReady, tuneRaceFx } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
@@ -47,16 +47,24 @@ function renderLobby() {
     option.textContent = open ? (s.id + ' · ' + s.name + ' ' + '★'.repeat(stars)) : ('🔒 ' + s.id + ' · ' + s.name);
     $('stage').append(option);
   }
-  $('stage').value = String(career.index);
-  $('stage-tag').textContent = '第 ' + stage.chapter + ' 章 · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · 6 车起步';
-  $('stage-goal').textContent = '目标：' + stage.goal + ' · 累计 ' + careerStars(career.progress) + ' 星';
+  const dailyOption = document.createElement('option');
+  dailyOption.value = 'daily';dailyOption.disabled = !career.canDaily();
+  const today = localDayKey();
+  const earnedToday = career.progress.daily.date === today ? career.progress.daily.stars : 0;
+  dailyOption.textContent = career.canDaily() ? '📅 每日挑战 ' + '★'.repeat(earnedToday) : '🔒 每日挑战（通过第4关解锁）';
+  $('stage').append(dailyOption);
+  $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
+  $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · 6 车起步';
+  $('stage-goal').textContent = '目标：' + stage.goal + ' · 累计 ' + careerStars(career.progress) + ' 星' +
+    (career.dailySnapshot ? ' · 连续挑战 ' + career.progress.daily.streak + ' 天' : '');
   $('skin').replaceChildren();
   for (let i = 0; i < SKIN_NAMES.length; i++) {
     const opt = document.createElement('option');opt.value = String(i);opt.disabled = !skinUnlocked(career.progress, i);
     opt.textContent = SKIN_NAMES[i] + (opt.disabled ? ' · 需 ' + SKIN_STARS[i] + ' 星' : '');$('skin').append(opt);
   }
   $('skin').value = String(career.progress.skin);
-  if (phase === 'ready') $('note').textContent = stage.mode === 'item' ? '选择车道拾取道具，合适时机自动使用' : '贴近弯道内线超车，成功可获得短暂加速';
+  if (phase === 'ready') $('note').textContent = career.dailySnapshot ? '每天轮换一个现有赛事，无需联网。' : stage.mode === 'item' ? '选择车道拾取道具，合适时机自动使用' : '贴近弯道内线超车，成功可获得短暂加速';
   fuelView();
 }
 Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality }) });
@@ -163,7 +171,9 @@ $('next').addEventListener('click', () => {
   career.setStage(next);renderLobby();loadTrack(career.stage.map, true);
 });
 $('stage').addEventListener('change', () => {
-  if (!career.setStage(Number($('stage').value))) {renderLobby();return;}
+  const value = $('stage').value;
+  const selected = value === 'daily' ? career.setDaily() : career.setStage(Number(value));
+  if (!selected) {renderLobby();return;}
   renderLobby();loadTrack(career.stage.map, false);
 });
 $('skin').addEventListener('change', () => {
