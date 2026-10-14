@@ -138,10 +138,11 @@ export class RacingCareer {
     const p = game.player, m = this.metrics, track = game.track;
     const rescue = this.recovery.frame(game);
     if (rescue === 'warning') this.notice.push('⚠ 方向反了，即将自动回正');
-    if (rescue === 'recovered') {
+    if (rescue === 'stuck-warning') this.notice.push('⚠ 赛车卡住了，即将自动脱困');
+    if (rescue === 'recovered' || rescue === 'stuck-recovered') {
       m.rescues++;
       this.passes.reset();this.passes.previous = game.standings.indexOf(game.player)+1;
-      this.notice.push('↻ 已自动回正，继续向前！');
+      this.notice.push(rescue === 'recovered' ? '↻ 已自动回正，继续向前！' : '↻ 已脱离护栏，继续向前！');
       return null; // Native reset must never register a synthetic overtake.
     }
     const distance = track.length * this.stage.laps;
