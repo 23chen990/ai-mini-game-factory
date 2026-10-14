@@ -161,12 +161,12 @@ function finish() {
 }
 async function loadTrack(id, autoStart) {
   if (!g || loading) return;
-  releaseInput();loading = true; $('start').disabled = true; $('next').disabled = true; $('map').disabled = true;
+  releaseInput();started = false;result = null;loading = true; $('start').disabled = true; $('next').disabled = true; $('map').disabled = true;
   $('heading').textContent = '准备下一场…';
   try {
     const sameMap = g.map?.id === id && !!g.track;
     if (!sameMap) { g.settings.map = id;g.save();await g.loadMap(id); }
-    g.startDemo();result = null;loading = false;$('map').value = id;
+    g.startDemo();loading = false;$('map').value = id;
     if (autoStart && career.canStart()) start();
     else { $('heading').textContent = '双键飞驰';display('ready');renderLobby(); }
   } catch (error) { $('note').textContent = '赛道加载失败：' + error.message;display('ready'); }
@@ -279,7 +279,7 @@ async function boot() {
   const frame = now => {
     const dt = (now - lastFrame) / 1000;lastFrame = now;
     if ((phase === 'ready' || phase === 'finished') && now - lastFuelTick > 1000) { lastFuelTick = now;fuelView(); }
-    if (started && !result) {
+    if (started && !result && g.player) {
       if (g.player.finished || g.resultShown) finish();
       else if (g.state !== phase && ['race', 'countdown', 'paused'].includes(g.state)) display(g.state);
       if (g.state === 'race') {
