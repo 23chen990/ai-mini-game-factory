@@ -42,6 +42,13 @@ jobs:
         run: node --test templates/web-lite/clinic-queue-v1/tests/engine.test.mjs
       - name: Owned H5 glue and ad lifecycle fixtures (no reference code or live ads)
         run: node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+      - name: Pelican-specific feel, hazard, jump reward and save migration tests
+        if: hashFiles('tools/lean-pilot/pelican-v2/runtime/engagement.mjs') != ''
+        run: |
+          node --test tools/lean-pilot/pelican-v2/core.node.mjs tools/lean-pilot/pelican-v2/runtime/feel-safety.node.mjs tools/lean-pilot/pelican-v2/runtime/engagement.node.mjs tools/lean-pilot/pelican-v2/runtime/engagement.integration.node.mjs
+          for file in tools/lean-pilot/pelican-v2/runtime/*.mjs tools/lean-pilot/pelican-v2/*.mjs; do
+            node --check "$file"
+          done
       - name: Check browser and tooling syntax
         run: |
           for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs templates/web-lite/clinic-queue-v1/*.mjs templates/web-lite/h5-source-mobile-v1/*.mjs .agents/skills/gameplay-loop-review/scripts/*.mjs; do

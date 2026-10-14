@@ -1,8 +1,9 @@
 import {makeLevel,LANES,BOUNDS} from './levels.mjs';
 import {springLane,riderFeel,cameraTarget} from './feel.mjs';
+import {fishPoints,normalizeBest,rateStars,updateBest} from './engagement.mjs';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500)r.events.shift();};
-export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false}; }
+export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,jumpedBarriers:0,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false}; }
 export function input(r,action) {
  if(action==='pause'&&r.phase==='running'){r.phase='paused';event(r,'pause');return;}
  if(action==='resume'&&r.phase==='paused'){r.phase='running';event(r,'resume');return;}
@@ -52,22 +53,25 @@ function step(r,dt){
    if(o.kind==='pedestrian'){r.stun=3;r.speed=0;event(r,'pedestrian-hit',{objectId:o.id});}
    else {finish(r,o.kind==='barrier'?'barrier':'vehicle',o);return;}
   }
-  if(o.x-r.distance<-(bounds.x+.75)){o.passed=true;event(r,o.kind==='barrier'?'barrier-cleared':'obstacle-avoided',{objectId:o.id,kind:o.kind,jumped:o.kind==='barrier'&&r.y>.31});}
+  if(o.x-r.distance<-(bounds.x+.75)){o.passed=true;
+   const jumped=o.kind==='barrier'&&r.y>.31;
+   if(jumped)r.jumpedBarriers++;
+   event(r,o.kind==='barrier'?'barrier-cleared':'obstacle-avoided',{objectId:o.id,kind:o.kind,jumped,combo:r.jumpedBarriers});}
  }
  // Fish use swept relative coordinates as well. No score is awarded after a terminal collision.
  for(const f of r.fishes){if(f.caught||r.stun>0)continue;
-  if(sweptHit({x:f.x-oldD-.55,z:LANES[f.lane]-oldZ},{x:f.x-r.distance-.55,z:LANES[f.lane]-r.lane},.55,.58)&&r.y<.85){f.caught=true;r.count++;if(f.golden)r.gold++;r.score+=f.golden?5:1;event(r,'fish-caught',{objectId:f.id,golden:f.golden});}}
+  if(sweptHit({x:f.x-oldD-.55,z:LANES[f.lane]-oldZ},{x:f.x-r.distance-.55,z:LANES[f.lane]-r.lane},.55,.58)&&r.y<.85){f.caught=true;r.count++;if(f.golden)r.gold++;r.score+=fishPoints(f);event(r,'fish-caught',{objectId:f.id,golden:f.golden,bonus:!!f.bonus,first:r.count===1,count:r.count});}}
  if(r.distance>=r.level.distance)finish(r,r.count<r.level.goal.count?'fish-short':r.gold<r.level.goal.gold?'gold-short':'complete');
  else if(r.elapsed>=r.level.seconds)finish(r,'timeout');
 }
-export function newSave() { return {version:2,unlocked:1,stars:[0,0,0,0,0],completed:[false,false,false,false,false]}; }
-export function loadSave(raw) {try{if(typeof raw!=='string'||raw.length>1500)return null;const s=JSON.parse(raw);if(s.version!==2||!Number.isInteger(s.unlocked)||s.unlocked<1||s.unlocked>5||!Array.isArray(s.stars)||s.stars.length!==5||s.stars.some(n=>!Number.isInteger(n)||n<0||n>3)||!Array.isArray(s.completed)||s.completed.length!==5||s.completed.some(x=>typeof x!=='boolean'))return null;return {version:2,unlocked:s.unlocked,stars:s.stars,completed:s.completed};}catch{return null;} }
+export function newSave() { return {version:2,unlocked:1,stars:[0,0,0,0,0],completed:[false,false,false,false,false],best:normalizeBest(null)}; }
+export function loadSave(raw) {try{if(typeof raw!=='string'||raw.length>2500)return null;const s=JSON.parse(raw);if(s.version!==2||!Number.isInteger(s.unlocked)||s.unlocked<1||s.unlocked>5||!Array.isArray(s.stars)||s.stars.length!==5||s.stars.some(n=>!Number.isInteger(n)||n<0||n>3)||!Array.isArray(s.completed)||s.completed.length!==5||s.completed.some(x=>typeof x!=='boolean'))return null;return {version:2,unlocked:s.unlocked,stars:s.stars,completed:s.completed,best:normalizeBest(s.best)};}catch{return null;} }
 export function settle(save,r) {
  if(r.phase!=='finished'||r.settled)return false;r.settled=true;r.rewardScore=r.score+(r.reason==='complete'?r.level.reward:0);
- if(r.reason==='complete'){save.unlocked=Math.max(save.unlocked,Math.min(5,r.level.id+1));save.completed[r.level.id-1]=true;const goodCatch=r.count>=r.level.goal.count+Math.ceil(r.level.goal.count*.18);
-  const greatCatch=r.count>=r.level.goal.count+Math.ceil(r.level.goal.count*.4);
-  const bonusGold=r.level.goal.gold===0?0:1;
-  const stars=1+Number(r.hits===0&&goodCatch)+Number(r.hits===0&&greatCatch&&r.gold>=r.level.goal.gold+bonusGold&&r.elapsed<=r.level.seconds*.92);save.stars[r.level.id-1]=Math.max(save.stars[r.level.id-1],stars);r.stars=stars;}return true;
+ if(r.reason==='complete'){save.unlocked=Math.max(save.unlocked,Math.min(5,r.level.id+1));save.completed[r.level.id-1]=true;
+  const stars=rateStars(r.level,r);save.stars[r.level.id-1]=Math.max(save.stars[r.level.id-1],stars);r.stars=stars;}
+ updateBest(save,r);
+ return true;
 }
 export function cameraPose(lane,aspect) {return cameraTarget(lane,0,0,aspect,8);}
 export function qualityStep(q,fps,dpr) {
