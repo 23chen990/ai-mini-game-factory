@@ -14,8 +14,8 @@ export function playerRelativeScore(score, ownTeam) {
 /** Render enemy badges only if actually visible; never give the player a wallhack. */
 export function enemyBadgeAllowed({ side, alive, distance, x, y, z, coverDistance }) {
   return side === 'enemy' && alive === true &&
-    Number.isFinite(distance) && distance > 0 && distance <= 32 &&
-    Number.isFinite(x) && Math.abs(x) < 0.87 &&
+    Number.isFinite(distance) && distance > 0 && distance <= 44 &&
+    Number.isFinite(x) && Math.abs(x) < 0.93 &&
     Number.isFinite(y) && y > -0.76 && y < 0.79 &&
     Number.isFinite(z) && z >= -1 && z <= 1 &&
     (coverDistance === null || (Number.isFinite(coverDistance) && coverDistance >= distance - 0.45));
@@ -43,8 +43,8 @@ export function mobileEnemyDifficulty(kind, seconds = 0, stats = {}) {
   const hits = Math.max(0, Number(stats.hits) || 0);
   const kills = Math.max(0, Number(stats.k) || 0);
   const deaths = Math.max(0, Number(stats.d) || 0);
-  const ramp = clamp((elapsed - 10) / 35 + (hits >= 2 ? 0.25 : 0) +
-    (kills >= 1 ? 0.25 : 0) - (deaths >= 2 ? 0.14 : 0));
+  const ramp = clamp((elapsed - 22) / 40 + (hits >= 2 ? 0.24 : 0) +
+    (kills >= 1 ? 0.18 : 0) - (deaths >= 2 ? 0.16 : 0));
   const lerp = (a, b) => +(a + (b - a) * ramp).toFixed(3);
   const sniper = kind === 'kills';
   const survivor = kind === 'survive';
@@ -81,14 +81,33 @@ export function selectMobileSpawn(spawns, team, actors, world) {
 
 // Small manual-aim correction only when aiming closely at an unobstructed
 // opponent. Never snap across the screen, through walls or into a teammate.
+export function firstEncounterDestination(team) {
+  // Reviewed cargo lane: never derived from a hidden opponent's location.
+  if (team === 'BL') return [-17.5, -7.0];
+  if (team === 'GR') return [17.5, 7.0];
+  return null;
+}
+export function routeArrow(player, goal) {
+  if (!player || !goal) return null;
+  const dx = goal[0] - player.pos.x, dz = goal[1] - player.pos.z;
+  const distance = Math.hypot(dx,dz);
+  if (!Number.isFinite(distance) || distance < 2.2) return null;
+  const angle = Math.atan2(-dx,-dz);
+  const offset = Math.atan2(Math.sin(angle-player.yaw),Math.cos(angle-player.yaw));
+  return {
+    symbol:offset>0.42?'←':offset< -0.42?'→':'↑',
+    label:offset>0.42?'往左绕行':offset< -0.42?'往右绕行':'沿通道前进',
+    distance:Math.round(distance)
+  };
+}
 export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady }) {
   if (!visible || !firing || sniperReady === false ||
     !Number.isFinite(distance) || distance < 1 || distance > 27 ||
     !Number.isFinite(yawError) || !Number.isFinite(pitchError) ||
-    Math.abs(yawError) > 0.105 || Math.abs(pitchError) > 0.08) return {yaw:0,pitch:0};
+    Math.abs(yawError) > 0.14 || Math.abs(pitchError) > 0.105) return {yaw:0,pitch:0};
   return {
-    yaw: Math.max(-0.013, Math.min(0.013, yawError * 0.24)),
-    pitch: Math.max(-0.010, Math.min(0.010, pitchError * 0.24))
+    yaw: Math.max(-0.019, Math.min(0.019, yawError * 0.30)),
+    pitch: Math.max(-0.014, Math.min(0.014, pitchError * 0.30))
   };
 }
 
@@ -156,6 +175,7 @@ export function createFpsMobileUx(game, root, doc) {
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0;
+  let routePath = null, routeLastAt = 0;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
 
   function recolorNativeAllies() {
@@ -181,6 +201,28 @@ export function createFpsMobileUx(game, root, doc) {
     }
   }
 
+  function prepareFirstEncounter() {
+    const p=game.player, destination=firstEncounterDestination(p?.team);
+    if (!destination || !game.nav?.findPath) return false;
+    const candidates=(game.actors||[]).filter(a =>
+      a && !a.isPlayer && a.team!==p.team && a.alive && a.primary!=='awm');
+    for(const bot of candidates) {
+      const path=game.nav.findPath(bot.pos.x,bot.pos.z,destination[0],destination[1]);
+      if(!Array.isArray(path) || path.length<2)continue;
+      bot.role='rush';bot.stage=0;bot.path=path;bot.pi=1;
+      bot.goal=[...destination];bot.__mobileFirstEncounter=true;
+      return true;
+    }
+    return false;
+  }
+  function findRoute() {
+    const p=game.player, dest=firstEncounterDestination(p?.team);
+    if(!p || !dest || !game.nav?.findPath) return null;
+    const path=game.nav.findPath(p.pos.x,p.pos.z,dest[0],dest[1]);
+    if(!Array.isArray(path) || path.length<2)return null;
+    return path.find((pt,i)=>i>0 && Array.isArray(pt) &&
+      Math.hypot(pt[0]-p.pos.x,pt[1]-p.pos.z)>2.2) || dest;
+  }
   function applyBalance(elapsed) {
     const p = game.player;
     if (!p) return;
@@ -252,18 +294,25 @@ export function createFpsMobileUx(game, root, doc) {
     for (const actor of game.actors || []) {
       if (teamSide(p.team, actor.team) !== 'enemy' || !actor.alive || !actor.soldier) continue;
       // A projected head location is not enough: an obstruction ray is required.
-      const head = actor.soldier.headWorld(cam.position.clone());
-      head.y += 0.36;
-      const dir = head.clone().sub(cam.position);
-      const distance = dir.length();
-      if (!(distance > 0 && distance <= 32)) continue;
-      const projected = head.clone().project(cam);
-      const hit = game.world.raycast(cam.position.x, cam.position.y, cam.position.z,
-        dir.x / distance, dir.y / distance, dir.z / distance, distance, 'sight');
-      if (!enemyBadgeAllowed({
-        side: 'enemy', alive: true, distance,
-        x: projected.x, y: projected.y, z: projected.z, coverDistance: hit ? hit.t : null
-      })) continue;
+      const candidates=[
+        actor.soldier.headWorld(cam.position.clone()),
+        actor.soldier.chestWorld(cam.position.clone())
+      ];
+      let projected=null;
+      for(const body of candidates) {
+        const dir=body.clone().sub(cam.position);
+        const distance=dir.length();
+        if(!(distance>0 && distance<=44))continue;
+        const pos=body.clone().project(cam);
+        const cover=game.world.raycast(cam.position.x,cam.position.y,cam.position.z,
+          dir.x/distance,dir.y/distance,dir.z/distance,Math.max(0,distance-0.18),'sight');
+        if(!enemyBadgeAllowed({
+          side:'enemy',alive:true,distance,
+          x:pos.x,y:pos.y,z:pos.z,coverDistance:cover?.t??null
+        }) || cover)continue;
+        projected=pos;break;
+      }
+      if(!projected)continue;
       let el = markers.get(actor);
       if (!el) {
         el = doc.createElement('div');
@@ -296,6 +345,7 @@ export function createFpsMobileUx(game, root, doc) {
           : '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手前进，右侧瞄准并开火';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
+      routePath=null;routeLastAt=0;
       nextUpdate = 0;
       nextBalanceAt = 0;
       lastHits = 0;
@@ -312,6 +362,8 @@ export function createFpsMobileUx(game, root, doc) {
         p.vel.set(0, 0, 0);
       }
       game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null, challenge: activeChallenge?.id};
+      const rendezvousOk=prepareFirstEncounter();
+      game.__mobileBalanceReview.firstRendezvousPath=rendezvousOk;
       applyBalance(0);
       recolorNativeAllies();
     },
@@ -346,6 +398,10 @@ export function createFpsMobileUx(game, root, doc) {
         nextBalanceAt = now + 1000;
         applyBalance(Math.max(0,(Number(game.time) || 0)-startedGameSeconds));
       }
+      if(now >= routeLastAt) {
+        routeLastAt=now+1500;
+        routePath=findRoute();
+      }
       if (now >= nextUpdate) {
         nextUpdate = now + 120;
         recolorNativeAllies();
@@ -357,10 +413,12 @@ export function createFpsMobileUx(game, root, doc) {
           lastHits = hits;
         }
         const seen = [...markers.values()].some(el => !el.hidden);
-        if (hits === 0 && elapsed >= 6) {
+        if (hits === 0 && elapsed >= 5) {
+          const turn=routeArrow(p,routePath);
           guide.textContent = seen
-            ? '▼ 发现敌人！右侧滑动靠近目标，然后点开火'
-            : '沿集装箱两侧前进，绕到开阔处寻找红色敌人';
+            ? '▼ 前方有敌人！右侧瞄准，按住开火'
+            : turn ? turn.symbol+' '+turn.label+' · '+turn.distance+'米后进入交火区'
+              : '沿集装箱外侧通道推进，寻找红色敌人';
         }
       }
       guide.hidden = elapsed > (p.stats?.hits ? 8 : 23) || !p.alive;
