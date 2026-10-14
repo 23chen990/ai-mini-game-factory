@@ -21,7 +21,7 @@ export function itemDecision(game) {
     case 'nitro': return p.s > 30 && bend < .006 && !p.drifting;
     case 'missile': return ahead && gap > 3 && gap < 180;
     case 'magnet': return ahead && gap > 4 && gap < 125;
-    case 'shield': return game.missileWarn > 0 || game.racers.some(r => !r.isPlayer && r.progress < p.progress && p.progress - r.progress < 60);
+    case 'shield': return game.missileWarn > 0 || game.racers.some(r => !r.isPlayer && r.progress < p.progress && p.progress - r.progress < 18 && r.items?.includes('missile'));
     case 'banana': return game.racers.some(r => !r.isPlayer && r.progress < p.progress && p.progress - r.progress < 55);
     default: return false;
   }
@@ -50,17 +50,29 @@ export class AutoItems {
 /** Resolve clean overtakes from real ranking, curvature, distance and collisions. */
 export class OvertakeTracker {
   constructor() { this.reset(); }
-  reset() { this.previous = null; this.lastAt = -1e5; this.lastCrashes = 0; this.passes = 0; }
+  reset() {
+    this.previous = null;this.lastAt = -1e5;this.lastCrashes = 0;this.passes = 0;
+    this.gaps = new Map();
+  }
   frame(game) {
-    if (!game?.player || game.state !== 'race') return false;
+    if (!game?.player || game.state !== 'race' || !game.track) return false;
     const p = game.player, rank = game.standings.indexOf(p) + 1;
     const crash = p.stats?.crash ?? 0;
-    const valid = this.previous !== null && this.previous > rank && rank >= 1 &&
+    // Actual player-vs-rival distance crossing, not rank-only drops, AI removals, or teleportation.
+    let crossed = false;
+    for (const rival of game.racers ?? game.standings) {
+      if (rival.isPlayer || !Number.isFinite(rival.progress) || !Number.isFinite(p.progress)) continue;
+      const gap = rival.progress - p.progress;
+      const previousGap = this.gaps.get(rival);
+      if (previousGap > 0 && previousGap < 70 && gap <= 0 && gap >= -35) crossed = true;
+      this.gaps.set(rival, gap);
+    }
+    const valid = crossed && this.previous !== null && this.previous > rank && rank >= 1 &&
       game.raceTime > 3 && game.raceTime - this.lastAt > 7 && crash === this.lastCrashes &&
       p.impact <= 4 && !p.airborne && p.s >= 24 &&
       Math.abs(game.track.curvAhead(p.d, 60)) >= .0025;
-    this.previous = rank; this.lastCrashes = crash;
-    if (valid) { this.lastAt = game.raceTime; this.passes++; }
+    this.previous = rank;this.lastCrashes = crash;
+    if (valid) { this.lastAt = game.raceTime;this.passes++; }
     return valid;
   }
 }
