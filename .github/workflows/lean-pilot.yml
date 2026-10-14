@@ -227,7 +227,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     env:
-      H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/pelican-author-source
+      H5_PINNED_SOURCE_ROOT: /tmp/pelican-author-source
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
