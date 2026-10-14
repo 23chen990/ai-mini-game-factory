@@ -61,3 +61,16 @@ test('recognizable character balloons are replaced with generic scene assets',()
   assert.match(modern,/buildHotAirBalloon/);
   assert.ok(!modern.includes('buildMascotBalloon'));
 });
+
+test('actual esbuild script injection keeps valid $& tokens and exactly one closing body',()=>{
+  // Previous build used html.replace('</body>', '<script>'+minifiedJs+...).
+  // JS identifier '$' followed by '&' gets turned into literal '</body>' there.
+  const native = '<!doctype html><html><body><main>Game</main></body></html>';
+  const minified = 'let $=1,f=2;if($&!f){window.live=true}';
+  const html = api.injectRaceBundle(native,minified);
+  assert.ok(html.includes(minified), 'the JS bytes must be preserved across HTML injection');
+  assert.equal(html.split('</body>').length,2,'exactly one body close outside the script');
+  assert.equal(html.split('<script>').length,2);
+  assert.equal(api.injectRaceBundle(native,'x').includes('<script>x</script></body>'),true);
+  assert.throws(()=>api.injectRaceBundle('<main>missing body</main>','ok'),/one HTML body/);
+});
