@@ -85,7 +85,23 @@ async function raceStart(page, index, name) {
   }));
   if(before.disabled)fail('start button disabled for '+name);
   await page.click('#race-start');
-  await page.waitForFunction(()=>window.game?.state === 'race',null,{timeout:15000});
+  try {
+    await page.waitForFunction(()=>window.game?.state === 'race',null,{timeout:15000});
+  } catch (error) {
+    const state=await page.evaluate(()=>({
+      nativeState:window.game?.state,cdT:window.game?.cdT,raceTime:window.game?.raceTime,
+      nativeResult:window.game?.resultShown,nativeMap:window.game?.map?.id,
+      loaded:document.querySelector('#race-kit')?.dataset.loaded,
+      phase:document.querySelector('#race-kit')?.dataset.phase,
+      heading:document.querySelector('#race-heading')?.textContent,
+      note:document.querySelector('#race-note')?.textContent,
+      pausedFrom:window.game?.pausedFrom,
+      startHidden:document.querySelector('#race-start')?.hidden,
+      player:!!window.game?.player,
+    }));
+    report.errors.push('Start transition diagnostics '+JSON.stringify({name,before,state,jsErrors:jsErrors.slice(-5)}));
+    throw error;
+  }
   const early=await page.evaluate(() => ({
     map:window.game?.map?.id,mode:window.game?.settings?.mode,
     laps:window.game?.settings?.laps, state:window.game?.state,
