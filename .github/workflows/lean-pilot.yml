@@ -228,6 +228,7 @@ jobs:
     timeout-minutes: 35
     env:
       H5_PINNED_SOURCE_ROOT: /tmp/pelican-author-source
+      QA_DPR: 1
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -241,7 +242,7 @@ jobs:
           pnpm install --frozen-lockfile --ignore-scripts
       - name: Pelican source and authored rules before expensive browser setup
         run: |
-          node --test tools/lean-pilot/pelican-v2/core.node.mjs tools/lean-pilot/pelican-v2/runtime/feel-safety.node.mjs tools/lean-pilot/pelican-v2/runtime/engagement.node.mjs tools/lean-pilot/pelican-v2/runtime/engagement.integration.node.mjs
+          pnpm run pilot:pelican:test
           pnpm exec eslint tools/lean-pilot/pelican-v2
           npm run pilot:typecheck
       - name: Fetch immutable authorized reference source

@@ -30,4 +30,13 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 @media(orientation:portrait){#coast[data-phase="ready"] .co-card{height:calc(100vh - 168px);max-height:calc(100vh - 168px);height:calc(100dvh - 168px);max-height:calc(100dvh - 168px);display:flex;flex-direction:column;overflow:hidden}#coast[data-phase="ready"] .co-card>*{flex-shrink:0}#coast[data-phase="ready"] .co-route{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:3px 2px;margin-top:10px}#coast[data-phase="ready"] .co-actions{margin-top:10px}}
 @media(orientation:landscape){#co-feedback.catch,#co-feedback.tutorial{top:auto;bottom:80px;left:16px;transform:none}}
 @media(orientation:landscape){.co-lane-indicator{left:50%}}
+@media(max-height:650px) and (orientation:portrait){
+ #coast[data-phase="ready"] .co-card h1{font-size:24px!important;margin:0 0 4px!important}
+ #coast[data-phase="ready"] .co-card h1 br,#coast[data-phase="ready"] .co-eyebrow,#coast[data-phase="ready"] #co-notice:empty{display:none}
+ #coast[data-phase="ready"] #co-copy{font-size:11px;margin:5px 0}
+ #co-feedback.catch,#co-feedback.tutorial{top:139px;bottom:auto;left:12px;padding:4px 8px}
+ #co-feedback.catch strong,#co-feedback.tutorial strong{font-size:12px}
+ #co-radar{top:190px}#co-radar-label{top:174px}
+ #co-mastery{bottom:98px}
+}
 @media(orientation:landscape){#coast[data-phase="ready"] .co-card{height:calc(100vh - 24px);max-height:calc(100vh - 24px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);display:flex;flex-direction:column;overflow:hidden}#coast[data-phase="ready"] .co-card>*{flex-shrink:0}#coast[data-phase="ready"] .co-eyebrow{display:none}#coast[data-phase="ready"] .co-card h1{margin:0 0 4px!important}#coast[data-phase="ready"] .co-card h1 br{display:none}#coast[data-phase="ready"] .co-rules span{flex-direction:row;align-items:center;gap:4px;font-size:10px}#coast[data-phase="ready"] .co-route{flex:1 1 auto;min-height:0;overflow:auto;padding:3px 2px;overscroll-behavior:contain}#coast[data-phase="ready"] #co-notice:empty{display:none}}
