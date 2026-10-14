@@ -153,6 +153,9 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const silentShotsAfter=await page.evaluate(()=>window.__H5NativeGame?.player?.stats?.shots??0);
      fpsExtendedChecks.push({name:'cf-no-idle-autofire',passed:silentShotsAfter===silentShotsBefore,
        detail:{silentShotsBefore,silentShotsAfter,limitation:'Software-WebGL wait; no real human input'}});
+     const introSnapshot=await readFpsThreat();
+     if(introSnapshot)fpsThreatTrace.push(introSnapshot);
+     await shot('mobile-pre-input-scout');
      await page.locator('#mk-pause').tap();
      const pausedBefore=await page.locator('#mk-time').innerText();
      await page.waitForTimeout(700);
