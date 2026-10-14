@@ -21,20 +21,26 @@ export function recoverVisibleHeading(policy, memory, now) {
   const abrupt = memory.heading && now - memory.at <= 240 && turn > .85;
   if (!policy.wrongWay) memory.warningHandled = false;
   if (!memory.recovery && (abrupt || (policy.wrongWay && !memory.warningHandled))) {
-    const target = memory.forward ?? [-h[0], -h[1]];
+    // A visible warning is authoritative when the fast spin was not sampled.
+    // Do not trust a backward "forward" vector learned before the warning appeared.
+    let target = policy.wrongWay ? [-h[0], -h[1]] : memory.forward ?? [-h[0], -h[1]];
+    const forwardRoad = policy.roadPoints?.filter(p => (p[0] * target[0] + p[1] * target[1]) / Math.hypot(...p) > .35);
+    if (forwardRoad?.length) {
+      const average = forwardRoad.reduce((v, p) => [v[0] + p[0], v[1] + p[1]], [0, 0]), length = Math.hypot(...average);
+      if (length) target = average.map(v => v / length);
+    }
     const angle = angleTo(target);
     const center = policy.roadPoints?.reduce((v, p) => [v[0] + p[0], v[1] + p[1]], [0, 0]);
     const cross = center ? (h[0] * center[1] - h[1] * center[0]) / policy.roadPoints.length : 0;
-    memory.recovery = { target, started: now, direction: Math.abs(cross) > .7 ? cross > 0 ? 'left' : 'right' : angle >= 0 ? 'left' : 'right' };
+    memory.recovery = { target, started: now, switched: now, direction: Math.abs(cross) > .7 ? cross > 0 ? 'left' : 'right' : angle >= 0 ? 'left' : 'right' };
   }
   memory.heading = h; memory.at = now;
   if (memory.recovery) {
-    const forwardRoad = policy.roadPoints?.filter(p => (p[0] * memory.recovery.target[0] + p[1] * memory.recovery.target[1]) / Math.hypot(...p) > .35);
-    if (forwardRoad?.length) {
-      const target = forwardRoad.reduce((v, p) => [v[0] + p[0], v[1] + p[1]], [0, 0]), length = Math.hypot(...target);
-      if (length) memory.recovery.target = target.map(v => v / length);
+    const { target, started } = memory.recovery, angle = angleTo(target);
+    if (Math.abs(angle) > 1.7 && now - memory.recovery.switched > 2500) {
+      memory.recovery.direction = memory.recovery.direction === 'left' ? 'right' : 'left'; memory.recovery.switched = now;
     }
-    const { target, started, direction } = memory.recovery, angle = angleTo(target);
+    const direction = memory.recovery.direction;
     if (now - started >= 1200 && Math.abs(angle) < .30) {
       memory.recovery = null; memory.warningHandled = true;
     } else {
@@ -64,10 +70,26 @@ export function itemBoxPolicy({ width: W, height: H, data }) {
       for (const n of [k - W, k + W, x ? k - 1 : -1, x < W - 1 ? k + 1 : -1]) if (n >= 0 && n < mask.length && mask[n] && !seen[n]) { seen[n] = 1; queue.push(n); }
     }
     const width = x1 - x0 + 1, height = yb - ya + 1;
-    if (queue.length >= 12 && width >= 4 && height >= 4 && width <= 45 && height <= 45 && width / height < 2.5 && height / width < 2.5)
-      candidates.push({ x: (x0 + x1) / 2, y: (ya + yb) / 2, width, height, pixels: queue.length });
+    if (queue.length < 12 || width < 4 || height < 4 || width > 45 || height > 45 || width / height >= 2.5 || height / width >= 2.5) continue;
+    // The now-visible question hook and detached dot separate boxes from blue
+    // rival roofs, windows and billboard patches; use actual framebuffer only.
+    const white = new Set(), groups = [];
+    for (let y = ya; y <= yb; y++) for (let x = x0; x <= x1; x++) {
+      const k = y * W + x, j = k * 4;
+      if (data[j] > 180 && data[j + 1] > 180 && data[j + 2] > 180) white.add(k);
+    }
+    while (white.size) {
+      const start = white.values().next().value, q = [start]; white.delete(start); let sumY = 0;
+      for (let j = 0; j < q.length; j++) {
+        const k = q[j]; sumY += Math.floor(k / W);
+        for (const n of [k - W, k + W, k - 1, k + 1]) if (white.delete(n)) q.push(n);
+      }
+      groups.push({ count: q.length, y: sumY / q.length });
+    }
+    const mark = groups.some(top => groups.some(dot => top.count >= 3 && dot.count >= 1 && top.count > dot.count && dot.y - top.y >= 2));
+    if (mark) candidates.push({ x: (x0 + x1) / 2, y: (ya + yb) / 2, width, height, pixels: queue.length });
   }
   const target = candidates.sort((a, b) => b.y - a.y || b.pixels - a.pixels)[0];
   if (!target) return null;
-  return { direction: target.x < W / 2 - 14 ? 'left' : target.x > W / 2 + 14 ? 'right' : null, target, source: 'visible-cyan-cube-pixels' };
+  return { direction: target.x < W / 2 - 14 ? 'left' : target.x > W / 2 + 14 ? 'right' : null, target, source: 'visible-blue-question-cube-pixels' };
 }

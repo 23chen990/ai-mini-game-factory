@@ -6,18 +6,23 @@ function image(rectangles) {
   for (const [x0, y0, w, h, color] of rectangles) for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) data.set(color, (y * width + x) * 4);
   return { width, height, data };
 }
+const question = (x, y) => [[x + 4, y + 2, 4, 4, [245, 245, 245, 255]], [x + 5, y + 9, 2, 2, [245, 245, 245, 255]]];
 test('visible cyan cube chooses an ordinary steering direction; sky and HUD are excluded', () => {
-  const sample = image([[250, 85, 12, 12, [90, 205, 255, 255]], [290, 5, 25, 25, [90, 205, 255, 255]], [80, 70, 50, 30, [211, 233, 252, 255]]]);
+  const sample = image([[250, 85, 12, 12, [90, 205, 255, 255]], ...question(250,85), [290, 5, 25, 25, [90, 205, 255, 255]], [80, 70, 50, 30, [211, 233, 252, 255]]]);
   assert.equal(itemBoxPolicy(sample).direction, 'right');
-  assert.equal(itemBoxPolicy(image([[130, 85, 12, 12, [90, 205, 255, 255]]])).direction, 'left');
+  assert.equal(itemBoxPolicy(image([[130, 85, 12, 12, [90, 205, 255, 255]], ...question(130,85)])).direction, 'left');
 });
 test('long blue rails and the car boost behind the player cannot act as boxes', () => {
   assert.equal(itemBoxPolicy(image([[80, 85, 180, 5, [90, 205, 255, 255]], [190, 120, 15, 30, [90, 205, 255, 255]]])), null);
 });
 test('the shaded blue cube color remains visible without mistaking pale sky for an item', () => {
-  assert.equal(itemBoxPolicy(image([[260, 92, 12, 12, [38, 148, 227, 255]]])).direction, 'right');
-  assert.equal(itemBoxPolicy(image([[130, 92, 12, 12, [39, 118, 204, 255]]])).direction, 'left');
+  assert.equal(itemBoxPolicy(image([[260, 92, 12, 12, [38, 148, 227, 255]], ...question(260,92)])).direction, 'right');
+  assert.equal(itemBoxPolicy(image([[130, 92, 12, 12, [39, 118, 204, 255]], ...question(130,92)])).direction, 'left');
   assert.equal(itemBoxPolicy(image([[130, 92, 12, 12, [185, 215, 244, 255]]])), null);
+});
+test('blue windows or car panels without the actual white question hook and dot do not steer toward scenery', () => {
+  assert.equal(itemBoxPolicy(image([[260, 92, 12, 12, [38, 148, 227, 255]]])), null);
+  assert.equal(itemBoxPolicy(image([[260, 92, 12, 12, [38, 148, 227, 255]], [261, 96, 10, 2, [245,245,245,255]]])), null);
 });
 test('resume binds the earned report to its exact origin and rejects invented progress', () => {
   const buildHash = 'a'.repeat(64), saved = '{"stars":{"01":2,"02":3,"03":2,"04":2,"05":3}}';
@@ -69,4 +74,18 @@ test('a reversed arrow turns into the visible road rather than the outside barri
     roadPoints: [[-20, -4], [-20, -5], [20, -4], [20, -5]] }, memory, 1300);
   assert.equal(recover.direction, 'left');
   assert.ok(recover.recoveryTarget[0] > 0 && recover.recoveryTarget[1] < 0);
+});
+test('a late visible wrong-way warning overrides a stale backward route after an unseen spin', () => {
+  const memory = {};
+  recoverVisibleHeading({ direction: null, heading: [1, 0], target: [21, 0], wrongWay: false }, memory, 1000);
+  recoverVisibleHeading({ direction: null, heading: [-1, 0], target: [-21, 0], wrongWay: false }, memory, 1600);
+  const warning = recoverVisibleHeading({ direction: null, heading: [-1, 0], target: [-21, 0], wrongWay: true }, memory, 1800);
+  assert.ok(warning.recoveryTarget[0] > 0);
+  assert.ok(warning.direction);
+});
+test('if a recovery turn cannot leave the visible outside rail, normal input can try the opposite key', () => {
+  const memory = {};
+  const first = recoverVisibleHeading({ direction: null, heading: [-1, 0], wrongWay: true }, memory, 1000);
+  const stalled = recoverVisibleHeading({ direction: null, heading: [-1, 0], wrongWay: true }, memory, 3800);
+  assert.notEqual(stalled.direction, first.direction);
 });

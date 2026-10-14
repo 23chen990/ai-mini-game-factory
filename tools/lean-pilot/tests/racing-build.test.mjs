@@ -3,6 +3,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const api = await import('../racing-mobile-build.mjs').catch(() => ({}));
+test('native item question labels sit on four outer cube faces and move with the cube without altering interactions', () => {
+  assert.equal(typeof api.patchRacingItemVisuals, 'function');
+  const source = 'for (const r of [0, Math.PI / 2]) {\n          const q = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 1.5), qMat);\n          q.rotation.y = r;\n          g.add(q);\n        }\nif (dx * dx + dz * dz < 6.5) { b.respawn = 2.5; this.giveRandom(r, rank, racers.length); }';
+  const output = api.patchRacingItemVisuals(source);
+  assert.ok(output.includes('[0, Math.PI / 2, Math.PI, Math.PI * 1.5]'));
+  assert.ok(output.includes('q.position.set(Math.sin(r) * .91, 0, Math.cos(r) * .91)'));
+  assert.ok(output.includes('cube.add(q)'));
+  assert.equal(output.slice(output.indexOf('if (dx')), source.slice(source.indexOf('if (dx')));
+  assert.equal(api.patchRacingItemVisuals(output), output);
+  assert.throws(() => api.patchRacingItemVisuals('unrecognized item source'), /anchor/u);
+});
 const patchFixture = `const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);
 if (P.nitroTime > 0) {
       cam.position.x += jitter;
