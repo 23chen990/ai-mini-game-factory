@@ -33,6 +33,65 @@ export function mobileChallengeCopy(challenge) {
   return challenge.instructions || '';
 }
 
+
+// Mobile-first tuning: soften the first encounter; increase pressure with time
+// and demonstrated player success. These are bot perception/behavior knobs,
+// not health, weapon damage, hitboxes, spawn cheats or automatic player kills.
+export function mobileEnemyDifficulty(kind, seconds = 0, stats = {}) {
+  const clamp = v => Math.max(0, Math.min(1, v));
+  const elapsed = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
+  const hits = Math.max(0, Number(stats.hits) || 0);
+  const kills = Math.max(0, Number(stats.k) || 0);
+  const deaths = Math.max(0, Number(stats.d) || 0);
+  const ramp = clamp((elapsed - 10) / 35 + (hits >= 2 ? 0.25 : 0) +
+    (kills >= 1 ? 0.25 : 0) - (deaths >= 2 ? 0.14 : 0));
+  const lerp = (a, b) => +(a + (b - a) * ramp).toFixed(3);
+  const sniper = kind === 'kills';
+  const survivor = kind === 'survive';
+  return {
+    react: [lerp(survivor ? 0.9 : 1.1, 0.55), lerp(survivor ? 1.4 : 1.65, 0.94)],
+    aimErr: lerp(survivor ? 0.105 : 0.13, 0.074),
+    turn: lerp(2.6, 3.7),
+    track: lerp(1.65, 2.45),
+    headP: lerp(0.005, sniper ? 0.035 : 0.075),
+    ctrl: lerp(1.0, 0.94),
+    comp: lerp(0.4, 0.58),
+    strafe: lerp(sniper ? 0.10 : 0.14, sniper ? 0.28 : 0.42),
+    see: lerp(38, 52), fov: lerp(1.48, 1.75), bunny: 0
+  };
+}
+
+// Select among *existing authored spawn points* instead of teleporting into
+// combat. A clear forward route reduces first-session container dead ends.
+export function selectMobileSpawn(spawns, team, actors, world) {
+  if (!Array.isArray(spawns) || !spawns.length || !world?.raycast) return null;
+  const others = (actors || []).filter(a => a.alive && a.team === team && !a.isPlayer);
+  let best = null;
+  for (const sp of spawns) {
+    if (![sp.x, sp.z, sp.yaw].every(Number.isFinite)) continue;
+    const fx = -Math.sin(sp.yaw), fz = -Math.cos(sp.yaw);
+    const hit = world.raycast(sp.x, 1.55, sp.z, fx, 0, fz, 24, 'sight');
+    const clearance = hit && Number.isFinite(hit.t) ? Math.max(0, hit.t) : 24;
+    const nearAlly = others.some(a => Math.hypot(a.pos.x - sp.x, a.pos.z - sp.z) < 2.0);
+    const score = clearance - (nearAlly ? 18 : 0);
+    if (!best || score > best.score) best = { spawn: sp, clearance, score };
+  }
+  return best;
+}
+
+// Small manual-aim correction only when aiming closely at an unobstructed
+// opponent. Never snap across the screen, through walls or into a teammate.
+export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady }) {
+  if (!visible || !firing || sniperReady === false ||
+    !Number.isFinite(distance) || distance < 1 || distance > 27 ||
+    !Number.isFinite(yawError) || !Number.isFinite(pitchError) ||
+    Math.abs(yawError) > 0.105 || Math.abs(pitchError) > 0.08) return {yaw:0,pitch:0};
+  return {
+    yaw: Math.max(-0.013, Math.min(0.013, yawError * 0.24)),
+    pitch: Math.max(-0.010, Math.min(0.010, pitchError * 0.24))
+  };
+}
+
 export function createFpsMobileUx(game, root, doc) {
   const html = doc.documentElement;
   const header = root.querySelector('.mk-header');
