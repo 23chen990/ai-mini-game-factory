@@ -12,7 +12,7 @@ import { evaluateClinicPlaytest } from './clinic-review.mjs';
 import { sha256, safeRead, verifyEvidence, evaluateBudget, evaluatePlaytest, DEFAULT_BUDGET } from './policy.mjs';
 
 const ROOT = fileURLToPath(new URL('../../',import.meta.url));
-export const GAME_FILES = Object.freeze(['candidate.json','engine.mjs','index.html','main.mjs','style.css','themes.mjs','fps-mobile-ux.mjs']);
+export const GAME_FILES = Object.freeze(['candidate.json','engine.mjs','index.html','main.mjs','style.css','themes.mjs']);
 const ACCEPTANCE = 'tests/engine.test.mjs';
 export const BROWSER_CHECKS = Object.freeze([
   'layout-observatory-390x844', 'layout-observatory-320x568',
