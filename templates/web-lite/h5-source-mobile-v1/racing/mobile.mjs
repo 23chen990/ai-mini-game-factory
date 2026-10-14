@@ -25,6 +25,7 @@ driver.enabled = mobile;
 let g, phase = 'ready', started = false, result = null, loading = true, previousRank = null, lastFrame = performance.now(), inputTime = performance.now(), noticeUntil = 0;
 let events = [], best = {};
 let lastDriftToastAt = -100, lastNoticeAt = -100;
+let adNotice = '', adNoticeUntil = 0;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1';
 const QUALITY_STORE = 'h5-qq-mobile-20261013:graphics-quality:v1';
 try { best = JSON.parse(localStorage.getItem(STORE) || '{}'); } catch { best = {}; }
@@ -33,7 +34,7 @@ try { storageRef = localStorage; }
 catch { storageRef = { getItem() { throw Error('本地存储不可用'); }, setItem() { throw Error('本地存储不可用'); } }; }
 const career = new RacingCareer(storageRef, best);
 function fuelView() {
-  $('fuel-info').textContent = career.fuelText();
+  $('fuel-info').textContent = career.fuelText() + (performance.now() < adNoticeUntil ? ' · ' + adNotice : '');
   $('fuel-ad').hidden = !career.canOfferAd();
   $('fuel-ad').disabled = career.adBusy;
 }
@@ -198,8 +199,12 @@ $('fuel-ad').addEventListener('click', async () => {
   if (!['ready','finished'].includes(phase) || career.adBusy) return;
   $('fuel-ad').disabled = true;$('fuel-info').textContent = '广告加载中…';
   const out = await career.watchFuelAd();
-  renderLobby();
-  $('note').textContent = out.status === 'completed' ? '加油成功，可以继续参赛' : '广告未完整播放或暂不可用，油量不变';
+  adNotice = out.status === 'completed' ? '已加油 +2' :
+    out.status === 'session-credit' ? '广告已完成但存档失败，本次不限油' :
+    '广告未完成，油量不变';
+  adNoticeUntil = performance.now() + 7000;
+  renderLobby();fuelView();
+  if (phase === 'ready') $('note').textContent = adNotice;
 });
 $('quality').addEventListener('change', () => {
   quality.manual = true;g.settings.quality = normalizeRaceQuality($('quality').value);
