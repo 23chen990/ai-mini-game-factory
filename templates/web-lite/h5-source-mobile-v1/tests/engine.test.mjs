@@ -16,6 +16,8 @@ test('FPS bridge reads actual actor stats and releases every held movement/fire 
   a.pause(); assert.equal(a.phase(), 'paused'); a.resume(); assert.equal(a.phase(), 'running');
   assert.equal(pauses, 1); assert.equal(resumes, 1); a.clearInput(); assert.equal(g.player.keys.size, 0);
   assert.equal(g.player.mouse.l, false); assert.equal(g.player.touch.fire, false);
+  assert.equal(g.player.touch.jump, false); assert.equal(g.player.touch.firePressed, false);
+  assert.equal(g.player.mouse.lp, false); assert.equal(g.player.mouse.rp, false);
   g.ended = true; assert.equal(a.phase(), 'finished');
 });
 test('clock has a complete start, pause, resume, terminal and replay lifecycle', () => {
