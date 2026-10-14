@@ -20,8 +20,8 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 .co-lane.jump-reward{background:#866427e6;border-color:#ffd16c;font-size:18px}
 #co-controls button.ready{animation:co-pulse .75s infinite alternate;outline:3px solid #fff2b0}
 #co-controls button.queued{outline:3px solid #7de8b8;animation:none}
-#co-mastery{position:absolute;left:16px;bottom:132px;display:flex;flex-wrap:wrap;max-width:calc(100% - 32px);gap:3px;align-items:center;padding:5px 7px;border-radius:10px;background:#143e4bdc;color:#fff3cf;font-size:10px;pointer-events:none}
-#co-mastery span{opacity:.65;padding:2px;border-bottom:2px solid #ffffff40}#co-mastery span.done{opacity:1;border-color:#a8e69a}#co-mastery span.missed{color:#ffb69e}
+#co-mastery{position:absolute;left:16px;bottom:132px;display:flex;flex-wrap:wrap;max-width:calc(100% - 32px);gap:3px;align-items:center;padding:5px 7px;border-radius:10px;background:#143e4bf2;color:#fff9e8;font-size:12px;font-weight:650;line-height:1.2;pointer-events:none}
+#co-mastery span{opacity:.88;padding:3px 4px;border-bottom:2px solid #ffffff65}#co-mastery span.done{opacity:1;border-color:#a8e69a}#co-mastery span.missed{color:#ffb69e}
 #coast:not([data-phase="running"]) #co-mastery{display:none}
 @media(orientation:landscape){#co-mastery{bottom:17px;left:16px;max-width:300px}}
 @media(max-width:375px){.co-card{padding:17px}.co-card h1{font-size:27px!important}.co-goals{gap:4px}.co-goal{padding:7px}.co-goal b{font-size:16px}.co-top b{font-size:14px}}
