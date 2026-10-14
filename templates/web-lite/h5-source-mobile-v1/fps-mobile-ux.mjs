@@ -100,6 +100,32 @@ export function routeArrow(player, goal) {
     distance:Math.round(distance)
   };
 }
+// A genuine, hittable intro opponent placed inside an existing clear cargo
+// lane. Candidate positions are derived from the user's forward bearing and
+// checked against real world geometry, nav walkability and line of sight.
+export function chooseFirstEncounterSpot({player, world, nav, actors = []}) {
+  if (!player?.pos || !world?.blocked || !world?.raycast || !nav?.walkable || !nav?.idx) return null;
+  const forwardX=-Math.sin(player.yaw), forwardZ=-Math.cos(player.yaw);
+  const rightX=Math.cos(player.yaw), rightZ=-Math.sin(player.yaw);
+  for(const range of [10.0,8.5,7.0]) {
+    for(const lateral of [0.65,-0.65,0]) {
+      const x=player.pos.x+forwardX*range+rightX*lateral;
+      const z=player.pos.z+forwardZ*range+rightZ*lateral;
+      const id=nav.idx(x,z);
+      if(id<0 || !nav.walkable(id) || world.blocked(x,0.05,z,0.38,1.9))continue;
+      if(actors.some(a=>a?.alive && Math.hypot(a.pos.x-x,a.pos.z-z)<1.65))continue;
+      const sy=player.pos.y+(Number.isFinite(player.eyeH)?player.eyeH:1.6);
+      const ex=x-player.pos.x, ez=z-player.pos.z, ey=1.45-sy;
+      const dist=Math.hypot(ex,ey,ez);
+      if(world.raycast(player.pos.x,sy,player.pos.z,
+        ex/dist,ey/dist,ez/dist,Math.max(0,dist-0.65),'sight'))continue;
+      const yaw=Math.atan2(player.pos.x-x,player.pos.z-z)*-1;
+      return {x,z,yaw,distance:+range.toFixed(1)};
+    }
+  }
+  return null;
+}
+
 export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady }) {
   if (!visible || !firing || sniperReady === false ||
     !Number.isFinite(distance) || distance < 1 || distance > 27 ||
@@ -212,17 +238,37 @@ export function createFpsMobileUx(game, root, doc) {
 
   function prepareFirstEncounter() {
     const p=game.player, destination=firstEncounterDestination(p?.team);
-    if (!destination || !game.nav?.findPath) return false;
-    const candidates=(game.actors||[]).filter(a =>
+    if(!p || !destination || !game.nav?.findPath) return {path:false,trainingScout:false};
+    const enemies=(game.actors||[]).filter(a=>
       a && !a.isPlayer && a.team!==p.team && a.alive && a.primary!=='awm');
-    for(const bot of candidates) {
+    if(activeChallenge?.kind==='hits' && enemies.length) {
+      const spot=chooseFirstEncounterSpot({player:p,world:game.world,nav:game.nav,actors:game.actors});
+      if(spot) {
+        // Scripted level opening: reposition one EXISTING enemy before play,
+        // rather than spawning a dummy or giving the player free hits.
+        const scout=enemies[0];
+        scout.spawn({x:spot.x,z:spot.z,yaw:spot.yaw});
+        scout.onSpawn?.();
+        scout.role='rush';
+        scout.goal=[p.pos.x,p.pos.z];
+        scout.path=game.nav.findPath(scout.pos.x,scout.pos.z,p.pos.x,p.pos.z);
+        scout.pi=1;
+        scout.protectT=0;
+        // Allow new players several *simulation seconds* to recognize, aim
+        // and shoot. Afterward the standard Bot can shoot normally.
+        scout.readyAt=Math.max(scout.readyAt,game.time+7);
+        scout.__mobileTrainingScout=true;
+        return {path:!!scout.path,trainingScout:true,range:spot.distance};
+      }
+    }
+    for(const bot of enemies) {
       const path=game.nav.findPath(bot.pos.x,bot.pos.z,destination[0],destination[1]);
       if(!Array.isArray(path) || path.length<2)continue;
       bot.role='rush';bot.stage=0;bot.path=path;bot.pi=1;
       bot.goal=[...destination];bot.__mobileFirstEncounter=true;
-      return true;
+      return {path:true,trainingScout:false};
     }
-    return false;
+    return {path:false,trainingScout:false};
   }
   function findRoute() {
     const p=game.player, dest=firstEncounterDestination(p?.team);
@@ -362,7 +408,8 @@ export function createFpsMobileUx(game, root, doc) {
       if (!el) {
         el = doc.createElement('div');
         el.className = 'mk-fps-enemy';
-        el.textContent = '▼ 敌人';
+        el.textContent = actor.__mobileTrainingScout ? '▼ 首战敌人' : '▼ 敌人';
+        if(actor.__mobileTrainingScout)el.classList.add('mk-fps-training-enemy');
         el.setAttribute('aria-hidden', 'true');
         root.append(el);
         markers.set(actor, el);
@@ -415,8 +462,10 @@ export function createFpsMobileUx(game, root, doc) {
       }
       game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null,
         challenge: activeChallenge?.id,autoFireActivations:0};
-      const rendezvousOk=prepareFirstEncounter();
-      game.__mobileBalanceReview.firstRendezvousPath=rendezvousOk;
+      const rendezvous=prepareFirstEncounter();
+      game.__mobileBalanceReview.firstRendezvousPath=rendezvous.path;
+      game.__mobileBalanceReview.trainingScout=rendezvous.trainingScout;
+      game.__mobileBalanceReview.trainingScoutRange=rendezvous.range??null;
       applyBalance(0);
       recolorNativeAllies();
     },
