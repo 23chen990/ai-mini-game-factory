@@ -53,3 +53,11 @@ test('instrument clean native drift without changing dynamics, and reject unknow
   assert.equal(api.annotateDriftResult(result), result);
   assert.throws(() => api.annotateDriftResult('no drift logic'), /anchor changed/);
 });
+
+
+test('recognizable character balloons are replaced with generic scene assets',()=>{
+  const native = "const b = buildMascotBalloon(bcols[i % bcols.length]);";
+  const modern = api.neutralizeRaceBranding(native);
+  assert.match(modern,/buildHotAirBalloon/);
+  assert.ok(!modern.includes('buildMascotBalloon'));
+});
