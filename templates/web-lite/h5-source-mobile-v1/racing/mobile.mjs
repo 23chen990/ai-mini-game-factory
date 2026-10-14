@@ -73,7 +73,7 @@ function display(next) {
   $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || career.nextStage() === career.index; $('lobby').hidden = next !== 'finished';
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
-  $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && ['time','relay'].includes(career.stage.kind));$('held-item').hidden = !racing || career.stage.mode !== 'item';
+  $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && !!career.objectiveLabel(g));$('held-item').hidden = !racing || career.stage.mode !== 'item';
   for (const button of root.querySelectorAll('[data-race-direction]')) button.disabled = next !== 'race';
   if (next === 'paused') { $('heading').textContent = '休息一下'; $('quality').value = g.settings.quality; $('note').textContent = '已松开所有按键，准备好再继续'; }
 }
@@ -101,7 +101,9 @@ function start() {
   releaseInput();result = null;previousRank = null;events = [];started = true;
   try {
     career.configure(g);
-    g.camMode = 1;g.mobileMode = driver.enabled;g.startRace();career.begin(g);
+    g.camMode = 1;g.mobileMode = driver.enabled;g.startRace();
+    if (g.state !== 'countdown') throw Error('原生比赛未进入倒计时');
+    career.begin(g);
     inputTime = performance.now();$('heading').textContent = career.stage.name;display('countdown');
   } catch (error) {
     started = false;$('note').textContent = '比赛启动失败：' + error.message;
@@ -112,14 +114,17 @@ function finish() {
   if (result) return;
   if (!g.resultShown) g.showResults();
   result = settleNative(g);releaseInput();
+  const beforeStars = careerStars(career.progress);
   const graded = career.finalize(g, result);
   const stars = graded?.stars ?? 0;
   $('heading').textContent = stars ? '挑战成功！' + '★'.repeat(stars) : '再试一次，争取过关';
   if (result.finished && (!best[result.map] || result.time < best[result.map])) {
     best[result.map] = result.time;try { localStorage.setItem(STORE, JSON.stringify(best)); } catch { /* Play remains available. */ }
   }
+  const newSkin = SKIN_STARS.findIndex((required,i) => i > 0 && beforeStars < required && graded?.total >= required);
   $('result-copy').textContent = stars
-    ? '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 本关最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星'
+    ? '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星' +
+      (newSkin > 0 ? ' · 解锁车漆：' + SKIN_NAMES[newSkin] : '')
     : '目标未完成：' + career.stage.goal + ' · ' + (result.finished ? '名次 ' + result.place : '已完成 ' + Math.floor(result.completion * 100) + '%');
   $('result-stats').innerHTML = [['有效漂移', graded?.metric.cleanDrifts ?? 0], ['弯道超车', graded?.metric.cleanPasses ?? 0], ['拾取道具', graded?.metric.pickups ?? 0], ['小喷', result.stats.small]].map(([label, value]) => `<span><b>${value ?? 0}</b>${label}</span>`).join('');
   $('results').replaceChildren();
@@ -159,7 +164,11 @@ $('stage').addEventListener('change', () => {
   if (!career.setStage(Number($('stage').value))) {renderLobby();return;}
   renderLobby();loadTrack(career.stage.map, false);
 });
-$('skin').addEventListener('change', () => {career.setSkin(Number($('skin').value));renderLobby();});
+$('skin').addEventListener('change', () => {
+  if (!career.setSkin(Number($('skin').value))) {renderLobby();return;}
+  if (g && !loading && phase === 'ready') {career.configure(g);g.startDemo();}
+  renderLobby();
+});
 $('fuel-ad').addEventListener('click', async () => {
   if (!['ready','finished'].includes(phase) || career.adBusy) return;
   $('fuel-ad').disabled = true;$('fuel-info').textContent = '广告加载中…';
