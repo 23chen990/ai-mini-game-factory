@@ -48,7 +48,7 @@ try{
  await page.locator('#co-modal').waitFor({state:'visible'});const finished=await snap();await shot('earned-three-stars');
  check('natural-jump-gold-advances-mastery',bonusShot&&finished.events.some(e=>e.type==='barrier-cleared'&&e.jumped),finished);
  check('buffered-jump-clears-exact-target',finished.events.some(e=>e.type==='jump'&&e.buffered&&finished.events.some(c=>c.type==='barrier-cleared'&&c.objectId===e.objectId&&c.jumped)),finished);
- check('natural-three-star-settlement',finished.reason==='complete'&&finished.save.stars[0]===3&&(await page.locator('#co-copy').innerText()).includes('★★★'),finished);
+ check('natural-three-star-settlement',finished.reason==='complete'&&finished.save.stars[0]===3&&(await page.locator('#co-copy').innerText()).includes('★★★')&&(await page.locator('#co-heading').innerText()).includes('三星达成'),finished);
  check('both-crossing-directions-observed',leftWarning&&rightWarning,{leftWarning,rightWarning});
  const best=finished.save.best[0];check('real-personal-best-recorded',best.fish===finished.count&&best.gold===finished.gold&&best.jumps===finished.jumpedBarriers&&best.jumps>=1,best);
  await tap('#co-replay');await page.waitForTimeout(1000);
