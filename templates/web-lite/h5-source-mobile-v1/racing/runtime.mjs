@@ -167,6 +167,7 @@ export class RacingCareer {
     }
   }
   timerLabel(game) { return this.objectiveLabel(game); }
+  nextNotice() { return this.notice.shift() ?? null; }
   drainNotices() { return this.notice.splice(0, this.notice.length); }
   finalize(game, result) {
     if (!this.active) return null;
