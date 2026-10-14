@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -15,10 +15,11 @@ test('enemy marker blocks allies, hidden or dead enemies, offscreen and wall-occ
  const base={side:'enemy',alive:true,distance:12,x:0,y:0,z:0.5,coverDistance:null};
  assert.equal(enemyBadgeAllowed(base),true);
  for(const c of [
- {side:'ally'}, {alive:false}, {distance:35}, {x:1.1}, {y:0.91},
+ {side:'ally'}, {alive:false}, {distance:47}, {x:1.1}, {y:0.91},
  {z:1.2},{coverDistance:7},{distance:Infinity},{x:NaN}
  ]) assert.equal(enemyBadgeAllowed({...base,...c}),false,JSON.stringify(c));
  assert.equal(enemyBadgeAllowed({...base,coverDistance:11.8}),true);
+ assert.equal(enemyBadgeAllowed({...base,distance:41}),true);
 });
 test('standalone runtime import is owned, not an external fetched plugin', () => {
  assert.equal(typeof createFpsMobileUx,'function');
@@ -74,9 +75,20 @@ test('mobile lane is authored, obstacle aware and avoids teammate collision', ()
 test('aim nudge is small, human driven and never sees allies behind walls', () => {
  const base={yawError:0.08,pitchError:0.06,distance:15,visible:true,firing:true,sniperReady:true};
  const a=mobileAimCorrection(base);
- assert.ok(a.yaw>0&&a.yaw<=0.013&&a.pitch>0&&a.pitch<=0.010);
+ assert.ok(a.yaw>0&&a.yaw<=0.019&&a.pitch>0&&a.pitch<=0.014);
  for(const changes of [{visible:false},{firing:false},{sniperReady:false},{distance:35},
  {yawError:0.3},{pitchError:0.2},{distance:0},{yawError:NaN}]){
   assert.deepEqual(mobileAimCorrection({...base,...changes}),{yaw:0,pitch:0});
  }
+});
+
+test('mobile scout approach keeps symmetric reviewed cargo lanes and honest directions',()=>{
+ assert.deepEqual(firstEncounterDestination('BL'),[-17.5,-7]);
+ assert.deepEqual(firstEncounterDestination('GR'),[17.5,7]);
+ assert.equal(firstEncounterDestination('unknown'),null);
+ const p={pos:{x:-32,z:-7},yaw:-Math.PI/2};
+ assert.equal(routeArrow(p,[-17.5,-7]).symbol,'↑');
+ assert.equal(routeArrow({...p,yaw:0},[-17.5,-7]).symbol,'←');
+ assert.equal(routeArrow({...p,yaw:-Math.PI},[-17.5,-7]).symbol,'→');
+ assert.equal(routeArrow(p,[-31,-7]),null);
 });
