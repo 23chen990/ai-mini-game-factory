@@ -5,6 +5,12 @@ import {URL} from 'node:url';
 import {parse} from 'yaml';
 import {preparedJumpSeen} from './queued-cue-observation.mjs';
 import {compactPresentationPassed,routePresentationPassed} from './qa-presentation.mjs';
+import {RiskSnapshotValueSchema} from './qa-risk-schema.mjs';
+test('ready-menu snapshots have no running events, while live risk snapshots must retain their actual events',()=>{
+ assert.equal(RiskSnapshotValueSchema.safeParse({phase:'ready',save:{unlocked:5,completed:[true,true,true,true,true]}}).success,true);
+ assert.equal(RiskSnapshotValueSchema.safeParse({phase:'running',level:5,events:[{type:'barrier-cleared',objectId:'l5-o10',jumped:true}]}).success,true);
+ for(const phase of ['running','paused','finished'])assert.equal(RiskSnapshotValueSchema.safeParse({phase,save:{unlocked:5}}).success,false,phase+' cannot omit actual gameplay events');
+});
 test('route text stays inside its card and adjacent rows never overlap',()=>{
  const r={ready:true,rows:[{box:{x:12,y:200,right:308,bottom:280},contents:[{x:68,y:210,right:244,bottom:270}],titleFont:15},{box:{x:12,y:285,right:308,bottom:365},contents:[{x:68,y:295,right:244,bottom:355}],titleFont:15}]};
  assert.equal(routePresentationPassed(r),true);

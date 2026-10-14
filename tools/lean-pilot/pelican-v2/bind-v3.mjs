@@ -6,6 +6,7 @@ import {tsImport} from 'tsx/esm/api';
 import {z} from 'zod';
 import {RUN,WORKSPACE,REPO,json,sha} from './prepare.mjs';
 import {RISK_LEVELS} from './runtime/risk-policy.mjs';
+import {RiskSnapshotValueSchema} from './qa-risk-schema.mjs';
 // Reuse the existing campaign/collision/viewport bindings; append V3 traces.
 execFileSync(process.execPath,['tools/lean-pilot/pelican-v2/bind-qa.mjs'],{cwd:REPO,stdio:'inherit'});
 const read=async p=>JSON.parse(await readFile(path.join(RUN,p),'utf8'));
@@ -47,7 +48,7 @@ for(const engine of ['webkit','chromium']){
 }
 const {ProductExperienceContractSchema:C}=await tsImport('../../../src/schemas/product-experience.ts',import.meta.url);
 const contract=C.parse(await read('product-experience-contract.json'));
-const Risk=z.object({targetGame:z.literal('鹈鹕海岸冒险'),workspace:z.literal(WORKSPACE),buildHash:z.literal(build.buildHash),attempt:z.literal(build.attempt),normalInputOnly:z.literal(true),stateInjection:z.literal(false),passed:z.literal(true),checks:z.array(z.object({name:z.string(),passed:z.literal(true)}).passthrough()),actions:z.array(z.object({type:z.literal('touch-tap'),selector:z.string(),trustedTouch:z.literal(true)}).passthrough()),screenshots:z.array(z.object({path:z.string(),sha256:z.string()})),levels:z.array(z.object({id:z.number(),terminal:z.object({phase:z.literal('finished'),reason:z.literal('complete')}).passthrough(),targetEpisodes:z.array(z.object({barrierId:z.string(),goldFishId:z.string(),barrierClearSnapshotId:z.string(),bonusFishCatchSnapshotId:z.string()}).passthrough())}).passthrough()).length(5),snapshots:z.array(z.object({id:z.string(),value:z.object({events:z.array(z.object({type:z.string(),objectId:z.string().optional()}).passthrough())}).passthrough()}).passthrough()),videos:z.array(z.object({path:z.string(),sha256:z.string()})),errors:z.array(z.unknown()).length(0)}).passthrough();
+const Risk=z.object({targetGame:z.literal('鹈鹕海岸冒险'),workspace:z.literal(WORKSPACE),buildHash:z.literal(build.buildHash),attempt:z.literal(build.attempt),normalInputOnly:z.literal(true),stateInjection:z.literal(false),passed:z.literal(true),checks:z.array(z.object({name:z.string(),passed:z.literal(true)}).passthrough()),actions:z.array(z.object({type:z.literal('touch-tap'),selector:z.string(),trustedTouch:z.literal(true)}).passthrough()),screenshots:z.array(z.object({path:z.string(),sha256:z.string()})),levels:z.array(z.object({id:z.number(),terminal:z.object({phase:z.literal('finished'),reason:z.literal('complete')}).passthrough(),targetEpisodes:z.array(z.object({barrierId:z.string(),goldFishId:z.string(),barrierClearSnapshotId:z.string(),bonusFishCatchSnapshotId:z.string()}).passthrough())}).passthrough()).length(5),snapshots:z.array(z.object({id:z.string(),value:RiskSnapshotValueSchema}).passthrough()),videos:z.array(z.object({path:z.string(),sha256:z.string()})),errors:z.array(z.unknown()).length(0)}).passthrough();
 for(const engine of ['webkit','chromium']){
  const rawPath=base+'/risk-'+engine+'/report.json',r=Risk.parse(await read(rawPath));
  const transitions=['jump-clearance','jump-choice','five-configured-levels','replay-mastery-records'];
