@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "purpose": "QQ飞车 H5 的源码分支压力契约；所有 observed 均是固定版本源码事实，不是运行/真人/真机观察。仅提取抽象压力机制，拒绝复制原表达。",
+  "evidence": [
+    {
+      "id": "drift_window_source",
+      "competitor": "QQ Speed H5 source study",
+      "sourceRefs": [
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/input.js#L31-L49",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/vehicle.js#L98-L106",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/vehicle.js#L134-L150",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/vehicle.js#L171-L213",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/hud.js#L193-L215",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/main.js#L792-L827"
+      ],
+      "observed": [
+        "SOURCE_CODE branch fact: 地面、未旋转且速度超过漂移阈值时，Shift 与左右方向一起进入漂移；漂移会改偏航並损失速度，非道具模式才累积氮气表，最多两个氮气。",
+        "SOURCE_CODE branch fact: 只有干净结束且 driftTime>0.22 秒才打开漂移小喷窗口；窗口为 0.5 秒，窗口起始 0.2 秒内按油门边沿或 W 标记为 perfect；过窗无小喷事件。",
+        "SOURCE_CODE signal: HUD 更新集气进度、满格状态、氮气格与加速边缘光；成功事件显示“完美小喷!”或“小喷!”并播放/显示加速效果。",
+        "SOURCE_CODE escalation and outcome: 漂移角影响集气率且漂移会减速；完美激活比普通激活给予更长/更强小喷。源码没有为漏按或窗口过期产生对应说明事件。",
+        "SOURCE_CODE recovery: 漏掉窗口不会淘汰车辆；正常比赛仍可继续，车辆之后可再次进入漂移并尝试新窗口。"
+      ],
+      "inferred": [
+        "把转向风险与一次限时释放输入相连，会让弯道技能形成可练习的短时机窗口；本结论是从分支结构推断，不代表已验证的实际手感。"
+      ],
+      "applicability": "adapt",
+      "applicabilityRationale": "可借鉴抽象的风险/回报与时机反馈；需在原创玩法中重新定义输入、容错、窗口反馈与数值。",
+      "rejectExpression": [
+        "拒绝复制 QQ飞车品牌、赛道与地图、赛车模型、原 HUD/按钮/特效表达及其数值调参。"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "guardrail_reset_source",
+      "competitor": "QQ Speed H5 source study",
+      "sourceRefs": [
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/vehicle.js#L237-L269",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/main.js#L585-L594",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/main.js#L792-L852",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/input.js#L31-L49"
+      ],
+      "observed": [
+        "SOURCE_CODE branch fact: 玩家横向位置超过赛道 halfW-1.1 时会被推回边界；向外速度分量被修正，碰撞会降低速度，强撞发 crash 事件，漂移可能被非干净地结束。",
+        "SOURCE_CODE signal: crash 分支播放撞击音、震动镜头并产生火花；较轻 scrape 的火花/音效使用随机触发；这条护栏碰撞分支没有清晰的 HUD 碰撞文字。",
+        "SOURCE_CODE failure outcome: 护栏碰撞不会直接结束比赛；玩家需承受速度损失，赛后 crash 计数记录强 crash 分支。",
+        "SOURCE_CODE recovery: 竞赛中未完赛时按 R 会以当前赛道投影位置和方向复位，速度设为 12，并保留圈数状态、集气与氮气数量。"
+      ],
+      "inferred": [
+        "镜头/声音/火花提供碰撞因果反馈，但没有文字提示时，轻微擦碰的具体损失可能较难归因；这是从表现调用方式推断。"
+      ],
+      "applicability": "adapt",
+      "applicabilityRationale": "可借鉴可归因的速度损失与低成本恢复并存；原创项目需独立设计碰撞提示和复位代价。",
+      "rejectExpression": [
+        "拒绝复制 QQ飞车品牌、地图与赛道轮廓、模型、HUD/碰撞效果及原碰撞或复位调参。"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "rank_weighted_item_attacks_source",
+      "competitor": "QQ Speed H5 source study",
+      "sourceRefs": [
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/items.js#L4-L19",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/items.js#L72-L142",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/items.js#L144-L212",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/main.js#L757-L790",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/hud.js#L193-L215"
+      ],
+      "observed": [
+        "SOURCE_CODE branch fact: 道具模式中撞到赛道箱会暂时消耗箱子并随机抽取道具；领先、中段、后段使用不同权重；车手至多持有两件，AI 会按与前车距离决定何时使用部分道具。",
+        "SOURCE_CODE pressure/escalation: 导弹瞄准前车并追踪，最长存活 6 秒；玩家被锁定时有约 1.6 秒 warning 和提示音；香蕉皮布在使用者身后并等待其他车辆经过。",
+        "SOURCE_CODE outcome: 未被护盾拦截的导弹/香蕉命中会让车手旋转、速度乘 0.35；导弹还会将车手置为空中。命中玩家时显示对应文字、红色闪屏与镜头震动。",
+        "SOURCE_CODE signal and recovery: HUD 显示两格道具；护盾命中时消耗护盾而阻止该次惩罚。命中不会直接淘汰车手，车辆之后可恢复速度。"
+      ],
+      "inferred": [
+        "按名次加权的随机资源可能用于追赶补偿，追踪攻击与短暂预警形成资源压力；公平性及玩家理解程度尚未观察。"
+      ],
+      "applicability": "adapt",
+      "applicabilityRationale": "可以研究可读的预警、命中归因和反制窗口；原创项目必须自建道具内容、概率、界面和调参。",
+      "rejectExpression": [
+        "拒绝复制 QQ飞车品牌、命名道具、地图/箱子位置、赛车模型、UI、音效/视觉资产与掉落/命中数值。"
+      ],
+      "confidence": "medium"
+    },
+    {
+      "id": "lap_finish_pressure_source",
+      "competitor": "QQ Speed H5 source study",
+      "sourceRefs": [
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/main.js#L541-L546",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/main.js#L604-L694",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/index.html#L181-L211",
+        "https://github.com/riba2534/claude-opus-5-5-demo/blob/54adc1fb64155f9dd7c1c90ecae7b8185ac540b8/qq-speed/src/index.html#L270-L280"
+      ],
+      "observed": [
+        "SOURCE_CODE branch fact: 排名按完赛时间优先，其余按进度；玩家通过起点穿越与先前通过中点区段更新圈数，达到配置圈数后进入 finish。",
+        "SOURCE_CODE pressure/escalation: HUD 有当前圈、计时、最佳单圈与排名；接近最后一圈时显示最后一圈消息；第一位车手完赛后，未完赛者进入十秒倒计时分支。",
+        "SOURCE_CODE failure outcome/attribution: 结果标题区分冠军、名次或未完成；列表按名次显示总时间或完成百分比及最佳单圈，因此源码能按进度/完赛顺序归因结果。",
+        "SOURCE_CODE recovery: 结果按钮调用 startRace 或回大厅；暂停页重开也会创建新车手并重新倒计时；当前比赛进度没有恢复入口。"
+      ],
+      "inferred": [
+        "圈数/排名/首位完赛后的剩余时间共同给玩家提供接近比赛终局的压力；实际玩家能否读懂与赶上尚无测试。"
+      ],
+      "applicability": "adapt",
+      "applicabilityRationale": "可借鉴明确终局信号、进度归因与可重开的结构；圈数、名次表达、版式和时间规则须原创。",
+      "rejectExpression": [
+        "拒绝复制 QQ飞车品牌、命名赛道、路线/地图布局、赛车模型、HUD/结果 UI 与其终局时限或调参。"
+      ],
+      "confidence": "medium"
+    }
+  ],
+  "rules": [
+    {
+      "id": "drift-release-window",
+      "pressureType": "timing",
+      "trigger": "在地面且超过漂移速度门槛时，以漂移键加方向进入弯道漂移；满足干净结束与最短持续时间后，短暂出现小喷窗口。",
+      "playerSignal": "集气条及氮气格显示资源，释放成功会显示普通/完美小喷文字和加速特效；源码未提供漏按窗口的明确文字信号。",
+      "escalation": "弯中偏航越大，集气分支可更快累积但同时损失速度；需要在窗口内按下触发键，较早触发有更强结果。",
+      "failureOutcome": "窗口到期则没有小喷；较晚触发仍获得较弱小喷。源码未把错过窗口升级为淘汰或整场失败。",
+      "attribution": "成功分支明确区分完美与普通；过期分支没有显式事件，因此漏掉增益的原因不能由专门提示直接确认。",
+      "recovery": "继续驾驶并在之后的漂移中重新建立释放窗口；该分支不会移除车手或清除比赛进度。",
+      "sourceEvidenceRefs": [
+        "drift_window_source"
+      ],
+      "implementationImplications": [
+        "若原创玩法采用限时释放，应在窗口出现/到期时给出玩家可见信号，并能从即时反馈理解输入是否成功。"
+      ]
+    },
+    {
+      "id": "guardrail-impact-and-reset",
+      "pressureType": "hazard",
+      "trigger": "高速行驶偏出赛道有效横向范围时，护栏分支将车辆推回并处理向外速度。",
+      "playerSignal": "强撞有声音、镜头震动和火花；轻擦效果可能随机出现且没有明确碰撞文字。",
+      "escalation": "碰撞强度随向外速度分量增长；高强度碰撞会打断漂移并增加赛后 crash 统计。",
+      "failureOutcome": "玩家损失速度且需重新加速，但护栏分支不会立即淘汰或终止比赛。",
+      "attribution": "明显碰撞有声画反馈；轻擦没有明确文字，统计只记录 crash 分支，轻擦的具体损失未被单独标注。",
+      "recovery": "比赛中按 R 在当前进度附近朝赛道方向复位，速度设为低速，保留圈数、集气与氮气数量。",
+      "sourceEvidenceRefs": [
+        "guardrail_reset_source"
+      ],
+      "implementationImplications": [
+        "原创障碍可以把损失限制在可恢复范围，同时让碰撞来源和复位后果清楚可见。"
+      ]
+    },
+    {
+      "id": "rank-weighted-item-pressure",
+      "pressureType": "resource_loss",
+      "trigger": "车手经过道具箱会获得按当前名次加权的随机道具；竞争者可向前方车手发射追踪道具或在后方留下障碍。",
+      "playerSignal": "屏幕显示道具槽；被导弹锁定有短暂警告和音效；实际命中会显示命中类型文字并闪屏、震动。",
+      "escalation": "追踪导弹会在存活期内朝目标转向；命中后造成旋转、大幅速度损失，导弹还会造成腾空；可持有的资源有上限。",
+      "failureOutcome": "命中会造成短时失控与速度下降，但不是立即淘汰；持有护盾的命中分支消耗护盾并阻断该次损失。",
+      "attribution": "命中提示区分导弹与香蕉皮；导弹锁定提示在命中前提供危险来源。",
+      "recovery": "命中后的车手仍留在比赛中，可继续加速；护盾可作为命中前反制资源。",
+      "sourceEvidenceRefs": [
+        "rank_weighted_item_attacks_source"
+      ],
+      "implementationImplications": [
+        "原创对抗资源应把预警、命中原因、惩罚和反制串成可理解的因果链，并独立确定概率与强度。"
+      ]
+    },
+    {
+      "id": "lap-and-finish-deadline",
+      "pressureType": "timing",
+      "trigger": "玩家需按检测分支逐圈经过赛道起点；达到菜单选择的圈数后完赛。首位车手结束后，尚未完赛的玩家进入短暂剩余时间。",
+      "playerSignal": "圈数、赛时、最佳单圈和实时名次常驻 HUD；最后一圈与首位冲线剩余秒数有消息；结算显示排名、用时或未完成百分比。",
+      "escalation": "完成所需圈数限定总进度；首位冲线后，未完成车辆只能在倒计时结束前到达终点。",
+      "failureOutcome": "未在倒计时内完赛会以未完成及当前进度进入结算；不会从赛果中隐藏失败状态。",
+      "attribution": "结算用名次排序和完成用时/百分比展示成绩，分辨完赛与未完赛；圈数依赖中点标记和起点穿越。",
+      "recovery": "可通过再来一局或暂停页重新开始完整新赛；源码没有从中断圈数继续比赛的保存恢复分支。",
+      "sourceEvidenceRefs": [
+        "lap_finish_pressure_source"
+      ],
+      "implementationImplications": [
+        "原创比赛应在接近终局时持续呈现进度、失败时限和结算依据，并提供清晰的重赛路径。"
+      ]
+    }
+  ],
+  "noCopyBoundary": [
+    "这里只记录固定版本源码分支事实和明确标注的推断；没有真人体验、浏览器运行或真机观察。",
+    "拒绝复制 QQ飞车品牌、命名赛道与地图表达、路线布局、赛车模型、UI、图像/音频及其调参；ISC package metadata 不构成这些内容已获商用授权的证据。",
+    "任何可采用内容仅限抽象机制线索，并须单独研究、原创实现和验证。"
+  ]
+}

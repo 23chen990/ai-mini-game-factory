@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "新浏览器上下文正常触屏点击开始",
+    "只根据可见小地图像素发送左右触控",
+    "真实冲线并观察结算",
+    "正常触屏点击再来一次"
+  ],
+  "transitions": [
+    {
+      "name": "startup→countdown→race",
+      "changed": true,
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/entry.png；racing-touch-qa.mjs fresh context + normal tap"
+    },
+    {
+      "name": "race→native finish→settlement",
+      "changed": true,
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/report.json；finished=true，lapsDone=1，41.8046秒，实际名次1/6"
+    },
+    {
+      "name": "settlement→replay→new race",
+      "changed": true,
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/report.json replay.phase=race，playerFinished=false，统计重置"
+    }
+  ],
+  "completion": "settlement",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/entry.png",
+    "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/terminal.png",
+    "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/replay.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "Playwright Chromium / trusted CDP normal touch; root-authored, independently reviewed",
+  "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+  "runtime": "web-lite",
+  "device": {
+    "width": 844,
+    "height": 390,
+    "label": "iPhone 13 landscape browser viewport; not a physical handset"
+  },
+  "observedAt": "2026-10-14T04:53:17.577Z"
+}

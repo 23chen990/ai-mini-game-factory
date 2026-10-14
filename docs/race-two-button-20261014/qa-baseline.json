@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "two-driving-buttons",
+      "passed": false,
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/baseline/race-844x390.png：7个原版触屏控件仍可见。"
+    },
+    {
+      "name": "one-mobile-hud",
+      "passed": false,
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/baseline/race-844x390.png：原版HUD与mk-header、mk-meter叠加。"
+    },
+    {
+      "name": "mobile-default-auto-feel",
+      "passed": false,
+      "evidence": "原版Input.frame要求独立shift/wPressed/nitroPressed；H5层未提供自动适配，需求缺失。"
+    }
+  ],
+  "issues": [
+    {
+      "id": "RACE-MOBILE-INPUT",
+      "severity": "error",
+      "message": "双键驾驶缺少车速/赛道曲率/方向/碰撞状态驱动的原生漂移、小喷与氮气适配；须保留原物理并验证一次性边沿。",
+      "evidence": "workspace/source/qq-speed/src/input.js:30, vehicle.js:98, main.js:474；runs/h5-qq-mobile-20261013/evidence/baseline/race-844x390.png"
+    },
+    {
+      "id": "RACE-MOBILE-HUD",
+      "severity": "error",
+      "message": "844×390比赛双HUD和七个驾驶按钮严重遮挡；精简横屏UI，保留两键与暂停。",
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/baseline/race-844x390.png"
+    },
+    {
+      "id": "RACE-MOBILE-JOURNEY",
+      "severity": "error",
+      "message": "默认旅程需简短引导、真实排名/计时结算、重玩/下一场、旋转/后台释放输入；须正常触控完赛。",
+      "evidence": "docs/race-two-button-20261014/requirements.zh-CN.md"
+    }
+  ],
+  "screenshots": [
+    "runs/h5-qq-mobile-20261013/evidence/baseline/race-844x390.png"
+  ],
+  "consoleLog": "runs/h5-qq-mobile-20261013/evidence/baseline/baseline.json (pageerrors=[])",
+  "testedAt": "2026-10-14T03:34:44.162Z"
+}

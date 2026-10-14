@@ -1,0 +1,3440 @@
+{
+  "schemaVersion": 1,
+  "target": {
+    "game": "3D 赛车 H5 / qq-speed",
+    "runId": "h5-qq-mobile-20261013",
+    "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa"
+  },
+  "method": "Read-only trace audit: each recorded nitro event was mapped from observed.progress through the original attempt-9 city Track.sample; current, middle, and ahead curv[] samples were checked against RaceDriver.frame straight/nitro thresholds. No browser/game state was changed.",
+  "sources": {
+    "eventBudget": {
+      "path": "runs/h5-qq-mobile-20261013/evidence/independent-input-final9/event-budget.json",
+      "sha256": "cbf01384278f302a8718bde1065c7bec796dc6856cd0c2a86f6767d79f9c4597"
+    },
+    "track": {
+      "path": "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/track.js",
+      "sha256": "2305a0e17aefd312fde1c218699539f54889e11689ce4a53ea1da85ecadf37eb"
+    },
+    "layouts": {
+      "path": "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/layouts.js",
+      "sha256": "5d2fbfc2f6f28b1c5d8c4646d12f149d057e2d305fd598a5387ea10f674b4b35"
+    },
+    "driver": {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+      "sha256": "2ddbc43d6cc4fcbeda4e6a984f3a482df460ab3fcb68ec90b4813cdfdda77772"
+    }
+  },
+  "passed": true,
+  "viewports": [
+    {
+      "viewport": "844x390",
+      "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+      "trace": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/natural-input-trace.json",
+      "nitroEvent": {
+        "atRaceSec": 32.86760000002414,
+        "eventType": "nitro",
+        "frameRaceTime": 32.85870000004798,
+        "frameDeltaSec": 0.008899999976158313
+      },
+      "track": {
+        "layout": "city",
+        "source": "workspace/source/qq-speed/src/track.js + layouts.js",
+        "lengthMeters": 2355.054593330713,
+        "sampleSpacingMeters": 1.5000347728221102,
+        "halfWidthMeters": 13
+      },
+      "lookbackIntervalSeconds": 0.36,
+      "safeStraightChecksInInterval": 37,
+      "intervalBounds": {
+        "firstRaceTime": 32.56760000002414,
+        "lastRaceTime": 32.86760000002414
+      },
+      "allObservedFramesMeetDriverStraightGeometry": true,
+      "eventFrameGeometry": {
+        "raceTime": 32.85870000004798,
+        "progress": 1864.07618069606,
+        "speedMetersPerSecond": 62.56062665515455,
+        "drifting": false,
+        "headingErrorRadians": 0.03241589967616878,
+        "lateralOffset": 1.56421763769042,
+        "sampleIndices": [
+          1242,
+          1248,
+          1255
+        ],
+        "curvatureAtCurrentMiddleAhead": [
+          -0.002054198645055294,
+          -0.0009821240091696382,
+          0.00028041613404639065
+        ],
+        "averageDriverBend": -0.0009186355067261805,
+        "upcomingCurvatureMagnitude": 0.002054198645055294,
+        "checks": {
+          "driverStraightCurvatureThreshold": true,
+          "speedAboveDriverNitroThreshold": true,
+          "headingErrorBelowDriverLimit": true,
+          "centeredWithinDriverLimit": true,
+          "noSteeringInput": true,
+          "notDrifting": true
+        }
+      },
+      "intervalFrames": [
+        {
+          "raceTime": 32.56760000002414,
+          "progress": 1845.650512697117,
+          "speedMetersPerSecond": 63.03206863331522,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.05044777895522731,
+          "lateralOffset": 1.3143207823155563,
+          "sampleIndices": [
+            1230,
+            1236,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004439529497176409,
+            -0.0031852407846599817,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.0031658437801524997,
+          "upcomingCurvatureMagnitude": 0.004439529497176409,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.575933333357476,
+          "progress": 1846.1757546977315,
+          "speedMetersPerSecond": 63.03356232700137,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.04614089697261001,
+          "lateralOffset": 1.3504040722215422,
+          "sampleIndices": [
+            1230,
+            1237,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004439529497176409,
+            -0.002990610897541046,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.0031009671511128545,
+          "upcomingCurvatureMagnitude": 0.004439529497176409,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.58426666669081,
+          "progress": 1846.700996698346,
+          "speedMetersPerSecond": 63.03505602068752,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.041868335534089175,
+          "lateralOffset": 1.3864873621275282,
+          "sampleIndices": [
+            1231,
+            1237,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.002990610897541046,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.003027542921093603,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.59260000002414,
+          "progress": 1847.2262386989605,
+          "speedMetersPerSecond": 63.03654971437367,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.03767540789063226,
+          "lateralOffset": 1.422570652033514,
+          "sampleIndices": [
+            1231,
+            1237,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.002990610897541046,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.00296749461752673,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.600933333357474,
+          "progress": 1847.751480699575,
+          "speedMetersPerSecond": 63.03804340805982,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.03348248024717713,
+          "lateralOffset": 1.4586539419394997,
+          "sampleIndices": [
+            1231,
+            1238,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.0027977507561445236,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.002903207903727889,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.60926666669081,
+          "progress": 1848.2767227001898,
+          "speedMetersPerSecond": 63.03953710174597,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.029340146109736877,
+          "lateralOffset": 1.4947372318454857,
+          "sampleIndices": [
+            1232,
+            1238,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.0027977507561445236,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.002831479146455725,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.61760000002414,
+          "progress": 1848.8019647008043,
+          "speedMetersPerSecond": 63.04103079543212,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.025260838873314848,
+          "lateralOffset": 1.5308205217514717,
+          "sampleIndices": [
+            1232,
+            1238,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.0027977507561445236,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.002772151376120746,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.62593333335747,
+          "progress": 1849.3272067014188,
+          "speedMetersPerSecond": 63.04252448911827,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.021181531636892827,
+          "lateralOffset": 1.5669038116574574,
+          "sampleIndices": [
+            1232,
+            1239,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.0026080056559294462,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.002708903009382387,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.63426666669081,
+          "progress": 1849.8525524648094,
+          "speedMetersPerSecond": 63.04394643466449,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.01719887994939093,
+          "lateralOffset": 1.6023990731243034,
+          "sampleIndices": [
+            1233,
+            1239,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.0026080056559294462,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.0026387248265867433,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.642600000024146,
+          "progress": 1850.382982604196,
+          "speedMetersPerSecond": 63.04185272135448,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.014715241786653377,
+          "lateralOffset": 1.6090809410752367,
+          "sampleIndices": [
+            1233,
+            1239,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.0026080056559294462,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.002579538345647355,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.65093333335748,
+          "progress": 1850.9134127435827,
+          "speedMetersPerSecond": 63.03975900804447,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.012231603623918485,
+          "lateralOffset": 1.6157628090261702,
+          "sampleIndices": [
+            1233,
+            1240,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.002420899225398898,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.0025171695354705057,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.65926666669081,
+          "progress": 1851.4438428829694,
+          "speedMetersPerSecond": 63.03766529473446,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.009826793461703542,
+          "lateralOffset": 1.6224446769771035,
+          "sampleIndices": [
+            1234,
+            1240,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.002420899225398898,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.00244851716949294,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.667600000024144,
+          "progress": 1851.9742730223559,
+          "speedMetersPerSecond": 63.03557158142445,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.007447443856680035,
+          "lateralOffset": 1.629126544928037,
+          "sampleIndices": [
+            1234,
+            1240,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.002420899225398898,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.002389298907170693,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.67593333335748,
+          "progress": 1852.5047031617426,
+          "speedMetersPerSecond": 63.03347786811444,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.005068094251660082,
+          "lateralOffset": 1.6358084128789705,
+          "sampleIndices": [
+            1234,
+            1241,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.0022364521864801645,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.0023278165608644485,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.68426666669081,
+          "progress": 1853.0351333011292,
+          "speedMetersPerSecond": 63.03138415480443,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.002785123390454313,
+          "lateralOffset": 1.6424902808299038,
+          "sampleIndices": [
+            1235,
+            1241,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0033843661658465862,
+            -0.0022364521864801645,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.0022600789864857993,
+          "upcomingCurvatureMagnitude": 0.0033843661658465862,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.69260000002414,
+          "progress": 1853.565563440516,
+          "speedMetersPerSecond": 63.02929044149442,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0005096408049200856,
+          "lateralOffset": 1.6491721487808373,
+          "sampleIndices": [
+            1235,
+            1241,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0033843661658465862,
+            -0.0022364521864801645,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.002200980787165463,
+          "upcomingCurvatureMagnitude": 0.0033843661658465862,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.700933333357476,
+          "progress": 1854.0959935799026,
+          "speedMetersPerSecond": 63.027196728184414,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0017550730815216972,
+          "lateralOffset": 1.6558540167317708,
+          "sampleIndices": [
+            1236,
+            1242,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.002054198645055294,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.0020738544796283045,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.70926666669081,
+          "progress": 1854.6264237192893,
+          "speedMetersPerSecond": 63.025103014874404,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.003922810495868202,
+          "lateralOffset": 1.662535884682704,
+          "sampleIndices": [
+            1236,
+            1242,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.002054198645055294,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.0020738544796283045,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.71760000002414,
+          "progress": 1855.156853858676,
+          "speedMetersPerSecond": 63.02300930156439,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.00609054791021737,
+          "lateralOffset": 1.6692177526336376,
+          "sampleIndices": [
+            1236,
+            1243,
+            1249
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.0018727610586211085,
+            -0.0008044056594371796
+          ],
+          "averageDriverBend": -0.0019541358342394233,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.725933333357474,
+          "progress": 1855.6872839980626,
+          "speedMetersPerSecond": 63.02091558825438,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.008229943139939768,
+          "lateralOffset": 1.675899620584571,
+          "sampleIndices": [
+            1237,
+            1243,
+            1249
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.0018727610586211085,
+            -0.0008044056594371796
+          ],
+          "averageDriverBend": -0.001889259205199778,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.73426666669081,
+          "progress": 1856.2177141374493,
+          "speedMetersPerSecond": 63.01882187494437,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.010293476304220197,
+          "lateralOffset": 1.6825814885355044,
+          "sampleIndices": [
+            1237,
+            1243,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.0018727610586211085,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0018301362870261073,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.74260000002414,
+          "progress": 1856.748144276836,
+          "speedMetersPerSecond": 63.01672816163436,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.01235700946849796,
+          "lateralOffset": 1.6892633564864379,
+          "sampleIndices": [
+            1237,
+            1244,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.0016926161479204893,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0017700879834592342,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.75093333335747,
+          "progress": 1857.2782126667416,
+          "speedMetersPerSecond": 63.012140073985094,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.014348506096642202,
+          "lateralOffset": 1.694670743426318,
+          "sampleIndices": [
+            1238,
+            1244,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0016926161479204893,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0017058012696603935,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.75926666669081,
+          "progress": 1857.803882944179,
+          "speedMetersPerSecond": 62.97722564321406,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.015932869334625257,
+          "lateralOffset": 1.6845831231272814,
+          "sampleIndices": [
+            1238,
+            1244,
+            1251
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0016926161479204893,
+            -0.00044876753236167133
+          ],
+          "averageDriverBend": -0.0016463781454755615,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.767600000024146,
+          "progress": 1858.329553221616,
+          "speedMetersPerSecond": 62.94231121244306,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.01751723257260298,
+          "lateralOffset": 1.6744955028282533,
+          "sampleIndices": [
+            1238,
+            1245,
+            1251
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0015146328369155526,
+            -0.00044876753236167133
+          ],
+          "averageDriverBend": -0.0015870503751405824,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.77593333335748,
+          "progress": 1858.8552234990527,
+          "speedMetersPerSecond": 62.907396781672055,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.01904439298736651,
+          "lateralOffset": 1.6644078825292254,
+          "sampleIndices": [
+            1239,
+            1245,
+            1251
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0015146328369155526,
+            -0.00044876753236167133
+          ],
+          "averageDriverBend": -0.0015238020084022235,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.78426666669081,
+          "progress": 1859.3808937764898,
+          "speedMetersPerSecond": 62.872482350901045,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.020532421802960134,
+          "lateralOffset": 1.6543202622301976,
+          "sampleIndices": [
+            1239,
+            1245,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0015146328369155526,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.0014639055880252272,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.792600000024144,
+          "progress": 1859.9065640539266,
+          "speedMetersPerSecond": 62.83756792013004,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.022020450618553757,
+          "lateralOffset": 1.6442326419311697,
+          "sampleIndices": [
+            1239,
+            1246,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0013370733940973878,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.001404719107085839,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.80093333335748,
+          "progress": 1860.4322343313634,
+          "speedMetersPerSecond": 62.80265348935904,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.023434696089722953,
+          "lateralOffset": 1.6341450216321416,
+          "sampleIndices": [
+            1240,
+            1246,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0013370733940973878,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.0013423502969089895,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.80926666669081,
+          "progress": 1860.9579046088004,
+          "speedMetersPerSecond": 62.767739058588035,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.02482304843878882,
+          "lateralOffset": 1.6240574013331137,
+          "sampleIndices": [
+            1240,
+            1246,
+            1253
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0013370733940973878,
+            -0.00008800090290606022
+          ],
+          "averageDriverBend": -0.0012819911741341155,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.81760000002414,
+          "progress": 1861.4835748862372,
+          "speedMetersPerSecond": 62.73282462781703,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.026211400787856463,
+          "lateralOffset": 1.6139697810340858,
+          "sampleIndices": [
+            1240,
+            1247,
+            1253
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0011594186071306467,
+            -0.00008800090290606022
+          ],
+          "averageDriverBend": -0.0012227729118118684,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.825933333357476,
+          "progress": 1862.0092451636742,
+          "speedMetersPerSecond": 62.69791019704603,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.027517596614322203,
+          "lateralOffset": 1.603882160735058,
+          "sampleIndices": [
+            1241,
+            1247,
+            1253
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0022364521864801645,
+            -0.0011594186071306467,
+            -0.00008800090290606022
+          ],
+          "averageDriverBend": -0.0011612905655056238,
+          "upcomingCurvatureMagnitude": 0.0022364521864801645,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.83426666669081,
+          "progress": 1862.534915441111,
+          "speedMetersPerSecond": 62.662995766275024,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.02881329078955932,
+          "lateralOffset": 1.59379454043603,
+          "sampleIndices": [
+            1241,
+            1247,
+            1254
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0022364521864801645,
+            -0.0011594186071306467,
+            0.0000952910486375913
+          ],
+          "averageDriverBend": -0.0011001932483244066,
+          "upcomingCurvatureMagnitude": 0.0022364521864801645,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.84260000002414,
+          "progress": 1863.060585718548,
+          "speedMetersPerSecond": 62.62808133550402,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.030105677721716153,
+          "lateralOffset": 1.583706920137002,
+          "sampleIndices": [
+            1242,
+            1248,
+            1254
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002054198645055294,
+            -0.0009821240091696382,
+            0.0000952910486375913
+          ],
+          "averageDriverBend": -0.0009803438685291137,
+          "upcomingCurvatureMagnitude": 0.002054198645055294,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.850933333357474,
+          "progress": 1863.5862559959849,
+          "speedMetersPerSecond": 62.59316690473302,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.03130144477711585,
+          "lateralOffset": 1.573619299837974,
+          "sampleIndices": [
+            1242,
+            1248,
+            1254
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002054198645055294,
+            -0.0009821240091696382,
+            0.0000952910486375913
+          ],
+          "averageDriverBend": -0.0009803438685291137,
+          "upcomingCurvatureMagnitude": 0.002054198645055294,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.85926666669081,
+          "progress": 1864.1142798923825,
+          "speedMetersPerSecond": 62.586478039439164,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.03249537573892727,
+          "lateralOffset": 1.5627838931012732,
+          "sampleIndices": [
+            1242,
+            1248,
+            1255
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002054198645055294,
+            -0.0009821240091696382,
+            0.00028041613404639065
+          ],
+          "averageDriverBend": -0.0009186355067261805,
+          "upcomingCurvatureMagnitude": 0.002054198645055294,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.86760000002414,
+          "progress": 1864.674562214817,
+          "speedMetersPerSecond": 62.96664547138405,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.033640990617389364,
+          "lateralOffset": 1.541699412962033,
+          "sampleIndices": [
+            1243,
+            1249,
+            1255
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0018727610586211085,
+            -0.0008044056594371796,
+            0.00028041613404639065
+          ],
+          "averageDriverBend": -0.0007989168613372991,
+          "upcomingCurvatureMagnitude": 0.0018727610586211085,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        }
+      ],
+      "nitroAccounting": {
+        "initial": 0,
+        "gaugeFull": 3,
+        "used": 1,
+        "remaining": 2,
+        "balanced": true
+      },
+      "nitroAccountingBalanced": true
+    },
+    {
+      "viewport": "852x393",
+      "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+      "trace": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/natural-input-trace.json",
+      "nitroEvent": {
+        "atRaceSec": 32.99219999992869,
+        "eventType": "nitro",
+        "frameRaceTime": 33.017199999928685,
+        "frameDeltaSec": 0.02499999999999858
+      },
+      "track": {
+        "layout": "city",
+        "source": "workspace/source/qq-speed/src/track.js + layouts.js",
+        "lengthMeters": 2355.054593330713,
+        "sampleSpacingMeters": 1.5000347728221102,
+        "halfWidthMeters": 13
+      },
+      "lookbackIntervalSeconds": 0.36,
+      "safeStraightChecksInInterval": 37,
+      "intervalBounds": {
+        "firstRaceTime": 32.69219999992869,
+        "lastRaceTime": 32.99219999992869
+      },
+      "allObservedFramesMeetDriverStraightGeometry": true,
+      "eventFrameGeometry": {
+        "raceTime": 33.017199999928685,
+        "progress": 1863.6480992918187,
+        "speedMetersPerSecond": 59.452543945398304,
+        "drifting": false,
+        "headingErrorRadians": 0.0512272932033995,
+        "lateralOffset": 1.2408576587091054,
+        "sampleIndices": [
+          1242,
+          1248,
+          1254
+        ],
+        "curvatureAtCurrentMiddleAhead": [
+          -0.002054198645055294,
+          -0.0009821240091696382,
+          0.0000952910486375913
+        ],
+        "averageDriverBend": -0.0009803438685291137,
+        "upcomingCurvatureMagnitude": 0.002054198645055294,
+        "checks": {
+          "driverStraightCurvatureThreshold": true,
+          "speedAboveDriverNitroThreshold": true,
+          "headingErrorBelowDriverLimit": true,
+          "centeredWithinDriverLimit": true,
+          "noSteeringInput": true,
+          "notDrifting": true
+        }
+      },
+      "intervalFrames": [
+        {
+          "raceTime": 32.69219999992869,
+          "progress": 1845.5348118017212,
+          "speedMetersPerSecond": 55.00410730118126,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.006983918109307407,
+          "lateralOffset": 1.6704529163967323,
+          "sampleIndices": [
+            1230,
+            1235,
+            1241
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004439529497176409,
+            -0.0033843661658465862,
+            -0.0022364521864801645
+          ],
+          "averageDriverBend": -0.00335344928316772,
+          "upcomingCurvatureMagnitude": 0.004439529497176409,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.70053333326202,
+          "progress": 1845.997080176398,
+          "speedMetersPerSecond": 55.004086815377164,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.004932897143866665,
+          "lateralOffset": 1.67422168490307,
+          "sampleIndices": [
+            1230,
+            1236,
+            1241
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004439529497176409,
+            -0.0031852407846599817,
+            -0.0022364521864801645
+          ],
+          "averageDriverBend": -0.0032870741561055183,
+          "upcomingCurvatureMagnitude": 0.004439529497176409,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.708866666595355,
+          "progress": 1846.4593485510745,
+          "speedMetersPerSecond": 55.004066329573064,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0028818761784259227,
+          "lateralOffset": 1.6779904534094074,
+          "sampleIndices": [
+            1230,
+            1236,
+            1241
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004439529497176409,
+            -0.0031852407846599817,
+            -0.0022364521864801645
+          ],
+          "averageDriverBend": -0.0032870741561055183,
+          "upcomingCurvatureMagnitude": 0.004439529497176409,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.71719999992869,
+          "progress": 1846.9216169257513,
+          "speedMetersPerSecond": 55.004045843768964,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0009130406121166994,
+          "lateralOffset": 1.6817592219157451,
+          "sampleIndices": [
+            1231,
+            1236,
+            1242
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.0031852407846599817,
+            -0.002054198645055294
+          ],
+          "averageDriverBend": -0.00315289874561131,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.72553333326202,
+          "progress": 1847.383885300428,
+          "speedMetersPerSecond": 55.00402535796487,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0010376885124368193,
+          "lateralOffset": 1.6855279904220826,
+          "sampleIndices": [
+            1231,
+            1237,
+            1242
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.002990610897541046,
+            -0.002054198645055294
+          ],
+          "averageDriverBend": -0.003088022116571665,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.733866666595354,
+          "progress": 1847.8461536751047,
+          "speedMetersPerSecond": 55.00400487216077,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0029884176369921137,
+          "lateralOffset": 1.6892967589284202,
+          "sampleIndices": [
+            1231,
+            1237,
+            1242
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.002990610897541046,
+            -0.002054198645055294
+          ],
+          "averageDriverBend": -0.003088022116571665,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.74219999992869,
+          "progress": 1848.3084220497815,
+          "speedMetersPerSecond": 55.00398438635668,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.004881696048758567,
+          "lateralOffset": 1.6930655274347577,
+          "sampleIndices": [
+            1232,
+            1237,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.002990610897541046,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.002955814163821439,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.75053333326202,
+          "progress": 1848.770690424458,
+          "speedMetersPerSecond": 55.00396390055258,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.006732427227932792,
+          "lateralOffset": 1.6968342959410954,
+          "sampleIndices": [
+            1232,
+            1237,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.002990610897541046,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.002955814163821439,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.75886666659536,
+          "progress": 1849.2329575567198,
+          "speedMetersPerSecond": 55.003944082171415,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.00858303600254853,
+          "lateralOffset": 1.7004964092222534,
+          "sampleIndices": [
+            1232,
+            1238,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.0027977507561445236,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.0028915274500225983,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.76719999992869,
+          "progress": 1849.6950706294117,
+          "speedMetersPerSecond": 55.004007024264254,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.010385519416687108,
+          "lateralOffset": 1.6909332698168023,
+          "sampleIndices": [
+            1233,
+            1238,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.0027977507561445236,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.0027613009636600814,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.775533333262025,
+          "progress": 1850.1571837021036,
+          "speedMetersPerSecond": 55.00406996635709,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.012120912220565461,
+          "lateralOffset": 1.6813701304113513,
+          "sampleIndices": [
+            1233,
+            1238,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.0027977507561445236,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.0027613009636600814,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.78386666659536,
+          "progress": 1850.6192967747957,
+          "speedMetersPerSecond": 55.00413290844993,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.013856305024445592,
+          "lateralOffset": 1.6718069910059001,
+          "sampleIndices": [
+            1233,
+            1239,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.0026080056559294462,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.002698052596921722,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.79219999992869,
+          "progress": 1851.0814098474875,
+          "speedMetersPerSecond": 55.00419585054277,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.01558412825701463,
+          "lateralOffset": 1.6622438516004492,
+          "sampleIndices": [
+            1234,
+            1239,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.0026080056559294462,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.0025700724606091776,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.800533333262024,
+          "progress": 1851.5435229201794,
+          "speedMetersPerSecond": 55.00425879263561,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.017228664410275728,
+          "lateralOffset": 1.652680712194998,
+          "sampleIndices": [
+            1234,
+            1239,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.0026080056559294462,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.0025700724606091776,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.80886666659536,
+          "progress": 1852.0056359928712,
+          "speedMetersPerSecond": 55.00432173472846,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.018873200563535055,
+          "lateralOffset": 1.6431175727895468,
+          "sampleIndices": [
+            1234,
+            1240,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.002420899225398898,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.0025077036504323282,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.81719999992869,
+          "progress": 1852.4677490655633,
+          "speedMetersPerSecond": 55.004384676821296,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.020517736716796152,
+          "lateralOffset": 1.633554433384096,
+          "sampleIndices": [
+            1234,
+            1240,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.002420899225398898,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.0025077036504323282,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.82553333326202,
+          "progress": 1852.9298621382552,
+          "speedMetersPerSecond": 55.004447618914135,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.02208650796605152,
+          "lateralOffset": 1.6239912939786447,
+          "sampleIndices": [
+            1235,
+            1240,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0033843661658465862,
+            -0.002420899225398898,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.0023807795951142907,
+          "upcomingCurvatureMagnitude": 0.0033843661658465862,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.833866666595355,
+          "progress": 1853.391975210947,
+          "speedMetersPerSecond": 55.004510561006974,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.023640554714653452,
+          "lateralOffset": 1.6144281545731938,
+          "sampleIndices": [
+            1235,
+            1241,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0033843661658465862,
+            -0.0022364521864801645,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.0023192972488080463,
+          "upcomingCurvatureMagnitude": 0.0033843661658465862,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.84219999992869,
+          "progress": 1853.8540882836392,
+          "speedMetersPerSecond": 55.00457350309981,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.025194601463254498,
+          "lateralOffset": 1.6048650151677426,
+          "sampleIndices": [
+            1235,
+            1241,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0033843661658465862,
+            -0.0022364521864801645,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.0023192972488080463,
+          "upcomingCurvatureMagnitude": 0.0033843661658465862,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.85053333326202,
+          "progress": 1854.316201356331,
+          "speedMetersPerSecond": 55.00463644519265,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.02669314916505552,
+          "lateralOffset": 1.5953018757622917,
+          "sampleIndices": [
+            1236,
+            1241,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.0022364521864801645,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.002193703859423598,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.858866666595354,
+          "progress": 1854.7783144290229,
+          "speedMetersPerSecond": 55.00469938728549,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.028153327846162556,
+          "lateralOffset": 1.5857387363568405,
+          "sampleIndices": [
+            1236,
+            1241,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.0022364521864801645,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.002193703859423598,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.86719999992869,
+          "progress": 1855.2404275017147,
+          "speedMetersPerSecond": 55.00476232937833,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.029613506527268706,
+          "lateralOffset": 1.5761755969513893,
+          "sampleIndices": [
+            1236,
+            1242,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.002054198645055294,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.002132952678948641,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.87553333326202,
+          "progress": 1855.7025405744068,
+          "speedMetersPerSecond": 55.00482527147117,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.031042345833401506,
+          "lateralOffset": 1.5666124575459384,
+          "sampleIndices": [
+            1237,
+            1242,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.002054198645055294,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.0020089778505886593,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.88386666659536,
+          "progress": 1856.1648325622482,
+          "speedMetersPerSecond": 55.01376376058064,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.03241217156252165,
+          "lateralOffset": 1.5567236066763823,
+          "sampleIndices": [
+            1237,
+            1242,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.002054198645055294,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.0020089778505886593,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.89219999992869,
+          "progress": 1856.6325367328463,
+          "speedMetersPerSecond": 55.29118752213174,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.033795012335991595,
+          "lateralOffset": 1.5369819849284276,
+          "sampleIndices": [
+            1237,
+            1243,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.0018727610586211085,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.0019484986551105976,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.900533333262025,
+          "progress": 1857.1002409034445,
+          "speedMetersPerSecond": 55.56861128368285,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.03516741751779076,
+          "lateralOffset": 1.5172403631804727,
+          "sampleIndices": [
+            1238,
+            1243,
+            1249
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0018727610586211085,
+            -0.0008044056594371796
+          ],
+          "averageDriverBend": -0.0018249724914009373,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.90886666659536,
+          "progress": 1857.5679450740427,
+          "speedMetersPerSecond": 55.84603504523395,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.03646491843650803,
+          "lateralOffset": 1.497498741432518,
+          "sampleIndices": [
+            1238,
+            1243,
+            1249
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0018727610586211085,
+            -0.0008044056594371796
+          ],
+          "averageDriverBend": -0.0018249724914009373,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.91719999992869,
+          "progress": 1858.0356492446408,
+          "speedMetersPerSecond": 56.12345880678505,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.037762419355225306,
+          "lateralOffset": 1.4777571196845631,
+          "sampleIndices": [
+            1238,
+            1244,
+            1249
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0016926161479204893,
+            -0.0008044056594371796
+          ],
+          "averageDriverBend": -0.0017649241878340642,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.925533333262024,
+          "progress": 1858.503353415239,
+          "speedMetersPerSecond": 56.40088256833616,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.03905992027394259,
+          "lateralOffset": 1.4580154979366082,
+          "sampleIndices": [
+            1238,
+            1244,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0016926161479204893,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0017058012696603935,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.93386666659536,
+          "progress": 1858.9710575858371,
+          "speedMetersPerSecond": 56.67830632988726,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.040278990595452834,
+          "lateralOffset": 1.4382738761886535,
+          "sampleIndices": [
+            1239,
+            1244,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0016926161479204893,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0016425529029220343,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.94219999992869,
+          "progress": 1859.4387617564353,
+          "speedMetersPerSecond": 56.95573009143837,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.04149077997015584,
+          "lateralOffset": 1.4185322544406986,
+          "sampleIndices": [
+            1239,
+            1245,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0015146328369155526,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0015832251325870554,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.95053333326202,
+          "progress": 1859.9064659270334,
+          "speedMetersPerSecond": 57.23315385298947,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.042702569344857964,
+          "lateralOffset": 1.398790632692744,
+          "sampleIndices": [
+            1239,
+            1245,
+            1251
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0015146328369155526,
+            -0.00044876753236167133
+          ],
+          "averageDriverBend": -0.0015238020084022235,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.958866666595355,
+          "progress": 1860.3741700976316,
+          "speedMetersPerSecond": 57.51057761454057,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.04385158539015624,
+          "lateralOffset": 1.379049010944789,
+          "sampleIndices": [
+            1240,
+            1245,
+            1251
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0015146328369155526,
+            -0.00044876753236167133
+          ],
+          "averageDriverBend": -0.001461433198225374,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.96719999992869,
+          "progress": 1860.8418742682297,
+          "speedMetersPerSecond": 57.78800137609168,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.044974689706740706,
+          "lateralOffset": 1.3593073891968341,
+          "sampleIndices": [
+            1240,
+            1246,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0013370733940973878,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.0013423502969089895,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.97553333326202,
+          "progress": 1861.3095784388279,
+          "speedMetersPerSecond": 58.065425137642784,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.046097794023325166,
+          "lateralOffset": 1.3395657674488795,
+          "sampleIndices": [
+            1240,
+            1246,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0013370733940973878,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.0013423502969089895,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.983866666595354,
+          "progress": 1861.777282609426,
+          "speedMetersPerSecond": 58.34284889919389,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.047179629095125436,
+          "lateralOffset": 1.3198241457009245,
+          "sampleIndices": [
+            1241,
+            1246,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0022364521864801645,
+            -0.0013370733940973878,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.001280867950602745,
+          "upcomingCurvatureMagnitude": 0.0022364521864801645,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.99219999992869,
+          "progress": 1862.2449867800242,
+          "speedMetersPerSecond": 58.62027266074499,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.048220292733209186,
+          "lateralOffset": 1.3000825239529699,
+          "sampleIndices": [
+            1241,
+            1247,
+            1253
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0022364521864801645,
+            -0.0011594186071306467,
+            -0.00008800090290606022
+          ],
+          "averageDriverBend": -0.0011612905655056238,
+          "upcomingCurvatureMagnitude": 0.0022364521864801645,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        }
+      ],
+      "nitroAccounting": {
+        "initial": 0,
+        "gaugeFull": 3,
+        "used": 1,
+        "remaining": 2,
+        "balanced": true
+      },
+      "nitroAccountingBalanced": true
+    },
+    {
+      "viewport": "740x360",
+      "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+      "trace": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/natural-input-trace.json",
+      "nitroEvent": {
+        "atRaceSec": 33.07920000004817,
+        "eventType": "nitro",
+        "frameRaceTime": 33.05320000004817,
+        "frameDeltaSec": 0.02599999999999625
+      },
+      "track": {
+        "layout": "city",
+        "source": "workspace/source/qq-speed/src/track.js + layouts.js",
+        "lengthMeters": 2355.054593330713,
+        "sampleSpacingMeters": 1.5000347728221102,
+        "halfWidthMeters": 13
+      },
+      "lookbackIntervalSeconds": 0.36,
+      "safeStraightChecksInInterval": 37,
+      "intervalBounds": {
+        "firstRaceTime": 32.77920000004817,
+        "lastRaceTime": 33.07920000004817
+      },
+      "allObservedFramesMeetDriverStraightGeometry": true,
+      "eventFrameGeometry": {
+        "raceTime": 33.05320000004817,
+        "progress": 1861.694966251962,
+        "speedMetersPerSecond": 59.57774273120049,
+        "drifting": false,
+        "headingErrorRadians": 0.01693012574229005,
+        "lateralOffset": -1.3375469449678903,
+        "sampleIndices": [
+          1241,
+          1247,
+          1253
+        ],
+        "curvatureAtCurrentMiddleAhead": [
+          -0.0022364521864801645,
+          -0.0011594186071306467,
+          -0.00008800090290606022
+        ],
+        "averageDriverBend": -0.0011612905655056238,
+        "upcomingCurvatureMagnitude": 0.0022364521864801645,
+        "checks": {
+          "driverStraightCurvatureThreshold": true,
+          "speedAboveDriverNitroThreshold": true,
+          "headingErrorBelowDriverLimit": true,
+          "centeredWithinDriverLimit": true,
+          "noSteeringInput": true,
+          "notDrifting": true
+        }
+      },
+      "intervalFrames": [
+        {
+          "raceTime": 32.77920000004817,
+          "progress": 1845.1836671054275,
+          "speedMetersPerSecond": 61.278549130315575,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.003044654705347515,
+          "lateralOffset": -1.0348658427073891,
+          "sampleIndices": [
+            1230,
+            1236,
+            1242
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004439529497176409,
+            -0.0031852407846599817,
+            -0.002054198645055294
+          ],
+          "averageDriverBend": -0.0032263229756305614,
+          "upcomingCurvatureMagnitude": 0.004439529497176409,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.787533333381504,
+          "progress": 1845.683827257092,
+          "speedMetersPerSecond": 61.22086517804425,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0035704018403268415,
+          "lateralOffset": -1.0465465122342659,
+          "sampleIndices": [
+            1230,
+            1236,
+            1242
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004439529497176409,
+            -0.0031852407846599817,
+            -0.002054198645055294
+          ],
+          "averageDriverBend": -0.0032263229756305614,
+          "upcomingCurvatureMagnitude": 0.004439529497176409,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.795866666714836,
+          "progress": 1846.1839874087564,
+          "speedMetersPerSecond": 61.163181225772924,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0040961489753070564,
+          "lateralOffset": -1.0582271817611424,
+          "sampleIndices": [
+            1230,
+            1236,
+            1242
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004439529497176409,
+            -0.0031852407846599817,
+            -0.002054198645055294
+          ],
+          "averageDriverBend": -0.0032263229756305614,
+          "upcomingCurvatureMagnitude": 0.004439529497176409,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.80420000004817,
+          "progress": 1846.6841475604208,
+          "speedMetersPerSecond": 61.10549727350159,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.004652561134880639,
+          "lateralOffset": -1.069907851288019,
+          "sampleIndices": [
+            1231,
+            1237,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.002990610897541046,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.003027542921093603,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.8125333333815,
+          "progress": 1847.1843077120852,
+          "speedMetersPerSecond": 61.047813321230265,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.005286820954473836,
+          "lateralOffset": -1.0815885208148956,
+          "sampleIndices": [
+            1231,
+            1237,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.002990610897541046,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.003027542921093603,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.820866666714835,
+          "progress": 1847.6844678637497,
+          "speedMetersPerSecond": 60.99012936895894,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.00592108077406348,
+          "lateralOffset": -1.0932691903417722,
+          "sampleIndices": [
+            1231,
+            1237,
+            1243
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004219256807118654,
+            -0.002990610897541046,
+            -0.0018727610586211085
+          ],
+          "averageDriverBend": -0.003027542921093603,
+          "upcomingCurvatureMagnitude": 0.004219256807118654,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.82920000004817,
+          "progress": 1848.1846280154143,
+          "speedMetersPerSecond": 60.932445416687614,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.006586012167387278,
+          "lateralOffset": -1.1049498598686487,
+          "sampleIndices": [
+            1232,
+            1238,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.0027977507561445236,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.002831479146455725,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.8375333333815,
+          "progress": 1848.6847881670788,
+          "speedMetersPerSecond": 60.87476146441628,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.007328466685704282,
+          "lateralOffset": -1.1166305293955252,
+          "sampleIndices": [
+            1232,
+            1238,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.0027977507561445236,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.002831479146455725,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.84586666671484,
+          "progress": 1849.1849483187436,
+          "speedMetersPerSecond": 60.817077512144905,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.008070921204021286,
+          "lateralOffset": -1.128311198922412,
+          "sampleIndices": [
+            1232,
+            1238,
+            1244
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.004004070535302162,
+            -0.0027977507561445236,
+            -0.0016926161479204893
+          ],
+          "averageDriverBend": -0.002831479146455725,
+          "upcomingCurvatureMagnitude": 0.004004070535302162,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.85420000004817,
+          "progress": 1849.6887317415242,
+          "speedMetersPerSecond": 60.76437606056115,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.007022772471515925,
+          "lateralOffset": -1.1361892155217161,
+          "sampleIndices": [
+            1233,
+            1239,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.0026080056559294462,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.0026387248265867433,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.862533333381506,
+          "progress": 1850.1927139090876,
+          "speedMetersPerSecond": 60.71194791063942,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.005952199687694315,
+          "lateralOffset": -1.143858647831652,
+          "sampleIndices": [
+            1233,
+            1239,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.0026080056559294462,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.0026387248265867433,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.87086666671484,
+          "progress": 1850.6966960766513,
+          "speedMetersPerSecond": 60.65951976071768,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.004881626903872703,
+          "lateralOffset": -1.151528080141588,
+          "sampleIndices": [
+            1233,
+            1239,
+            1245
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0037935359869152308,
+            -0.0026080056559294462,
+            -0.0015146328369155526
+          ],
+          "averageDriverBend": -0.0026387248265867433,
+          "upcomingCurvatureMagnitude": 0.0037935359869152308,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.87920000004817,
+          "progress": 1851.2006782442147,
+          "speedMetersPerSecond": 60.60709161079595,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.003842073205544171,
+          "lateralOffset": -1.1591975124515237,
+          "sampleIndices": [
+            1234,
+            1240,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.002420899225398898,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.00244851716949294,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.887533333381505,
+          "progress": 1851.7046604117784,
+          "speedMetersPerSecond": 60.55466346087421,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0028705890093927203,
+          "lateralOffset": -1.1668669447614595,
+          "sampleIndices": [
+            1234,
+            1240,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.002420899225398898,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.00244851716949294,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.89586666671484,
+          "progress": 1852.2086425793418,
+          "speedMetersPerSecond": 60.50223531095247,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0018991048132403813,
+          "lateralOffset": -1.1745363770713955,
+          "sampleIndices": [
+            1234,
+            1240,
+            1246
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0035875788889825344,
+            -0.002420899225398898,
+            -0.0013370733940973878
+          ],
+          "averageDriverBend": -0.00244851716949294,
+          "upcomingCurvatureMagnitude": 0.0035875788889825344,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.90420000004817,
+          "progress": 1852.7126247469055,
+          "speedMetersPerSecond": 60.44980716103074,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.00096084683657136,
+          "lateralOffset": -1.1822058093813312,
+          "sampleIndices": [
+            1235,
+            1241,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0033843661658465862,
+            -0.0022364521864801645,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.0022600789864857993,
+          "upcomingCurvatureMagnitude": 0.0033843661658465862,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.912533333381504,
+          "progress": 1853.216606914469,
+          "speedMetersPerSecond": 60.397379011109,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.00008805070833492954,
+          "lateralOffset": -1.1898752416912672,
+          "sampleIndices": [
+            1235,
+            1241,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0033843661658465862,
+            -0.0022364521864801645,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.0022600789864857993,
+          "upcomingCurvatureMagnitude": 0.0033843661658465862,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.920866666714836,
+          "progress": 1853.7205890820323,
+          "speedMetersPerSecond": 60.34495086118727,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0007847454199032773,
+          "lateralOffset": -1.197544674001203,
+          "sampleIndices": [
+            1235,
+            1241,
+            1247
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0033843661658465862,
+            -0.0022364521864801645,
+            -0.0011594186071306467
+          ],
+          "averageDriverBend": -0.0022600789864857993,
+          "upcomingCurvatureMagnitude": 0.0033843661658465862,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.92920000004817,
+          "progress": 1854.224571249596,
+          "speedMetersPerSecond": 60.29252271126553,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0016206551343762815,
+          "lateralOffset": -1.2052141063111388,
+          "sampleIndices": [
+            1236,
+            1242,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.002054198645055294,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.0020738544796283045,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.9375333333815,
+          "progress": 1854.7285534171594,
+          "speedMetersPerSecond": 60.240094561343795,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.002391078412945969,
+          "lateralOffset": -1.2128835386210748,
+          "sampleIndices": [
+            1236,
+            1242,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.002054198645055294,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.0020738544796283045,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.945866666714835,
+          "progress": 1855.232535584723,
+          "speedMetersPerSecond": 60.187666411422065,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.00316150169151388,
+          "lateralOffset": -1.2205529709310106,
+          "sampleIndices": [
+            1236,
+            1242,
+            1248
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0031852407846599817,
+            -0.002054198645055294,
+            -0.0009821240091696382
+          ],
+          "averageDriverBend": -0.0020738544796283045,
+          "upcomingCurvatureMagnitude": 0.0031852407846599817,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.95420000004817,
+          "progress": 1855.736488630533,
+          "speedMetersPerSecond": 60.135304205906316,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0039007989095625425,
+          "lateralOffset": -1.228240780324925,
+          "sampleIndices": [
+            1237,
+            1243,
+            1249
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.0018727610586211085,
+            -0.0008044056594371796
+          ],
+          "averageDriverBend": -0.001889259205199778,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.9625333333815,
+          "progress": 1856.238043985872,
+          "speedMetersPerSecond": 60.08837142184017,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.00514623115670989,
+          "lateralOffset": -1.2374416359346012,
+          "sampleIndices": [
+            1237,
+            1243,
+            1249
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.0018727610586211085,
+            -0.0008044056594371796
+          ],
+          "averageDriverBend": -0.001889259205199778,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.97086666671484,
+          "progress": 1856.7395993412115,
+          "speedMetersPerSecond": 60.04143863777399,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.006391663403862569,
+          "lateralOffset": -1.2466424915442853,
+          "sampleIndices": [
+            1237,
+            1243,
+            1249
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002990610897541046,
+            -0.0018727610586211085,
+            -0.0008044056594371796
+          ],
+          "averageDriverBend": -0.001889259205199778,
+          "upcomingCurvatureMagnitude": 0.002990610897541046,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.97920000004817,
+          "progress": 1857.2411546965507,
+          "speedMetersPerSecond": 59.99450585370785,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.0076009481598282806,
+          "lateralOffset": -1.2558433471539618,
+          "sampleIndices": [
+            1238,
+            1244,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0016926161479204893,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0017058012696603935,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.987533333381506,
+          "progress": 1857.7427100518896,
+          "speedMetersPerSecond": 59.947573069641706,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.008754863880366306,
+          "lateralOffset": -1.2650442027636382,
+          "sampleIndices": [
+            1238,
+            1244,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0016926161479204893,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0017058012696603935,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 32.99586666671484,
+          "progress": 1858.2442654072288,
+          "speedMetersPerSecond": 59.90064028557556,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.009908779600906104,
+          "lateralOffset": -1.2742450583733145,
+          "sampleIndices": [
+            1238,
+            1244,
+            1250
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0027977507561445236,
+            -0.0016926161479204893,
+            -0.0006270369049161673
+          ],
+          "averageDriverBend": -0.0017058012696603935,
+          "upcomingCurvatureMagnitude": 0.0027977507561445236,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.00420000004817,
+          "progress": 1858.745820762568,
+          "speedMetersPerSecond": 59.85370750150942,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.011025541661891647,
+          "lateralOffset": -1.2834459139829908,
+          "sampleIndices": [
+            1239,
+            1245,
+            1251
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0015146328369155526,
+            -0.00044876753236167133
+          ],
+          "averageDriverBend": -0.0015238020084022235,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.012533333381505,
+          "progress": 1859.247376117907,
+          "speedMetersPerSecond": 59.806774717443275,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.012087542264675366,
+          "lateralOffset": -1.292646769592667,
+          "sampleIndices": [
+            1239,
+            1245,
+            1251
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0015146328369155526,
+            -0.00044876753236167133
+          ],
+          "averageDriverBend": -0.0015238020084022235,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.02086666671484,
+          "progress": 1859.748931473246,
+          "speedMetersPerSecond": 59.75984193337713,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.013149542867459976,
+          "lateralOffset": -1.3018476252023434,
+          "sampleIndices": [
+            1239,
+            1245,
+            1251
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0026080056559294462,
+            -0.0015146328369155526,
+            -0.00044876753236167133
+          ],
+          "averageDriverBend": -0.0015238020084022235,
+          "upcomingCurvatureMagnitude": 0.0026080056559294462,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.02920000004817,
+          "progress": 1860.2504868285853,
+          "speedMetersPerSecond": 59.71290914931099,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.014172222696090553,
+          "lateralOffset": -1.31104848081202,
+          "sampleIndices": [
+            1240,
+            1246,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0013370733940973878,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.0013423502969089895,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.037533333381504,
+          "progress": 1860.7520421839242,
+          "speedMetersPerSecond": 59.66597636524485,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.015139119451969019,
+          "lateralOffset": -1.3202493364216963,
+          "sampleIndices": [
+            1240,
+            1246,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0013370733940973878,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.0013423502969089895,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.045866666714836,
+          "progress": 1861.2535975392634,
+          "speedMetersPerSecond": 59.61904358117871,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.016106016207848375,
+          "lateralOffset": -1.3294501920313726,
+          "sampleIndices": [
+            1240,
+            1246,
+            1252
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002420899225398898,
+            -0.0013370733940973878,
+            -0.00026907827123068273
+          ],
+          "averageDriverBend": -0.0013423502969089895,
+          "upcomingCurvatureMagnitude": 0.002420899225398898,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.05420000004817,
+          "progress": 1861.7579443503819,
+          "speedMetersPerSecond": 59.62776042600282,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.01706229273143858,
+          "lateralOffset": -1.339189393109951,
+          "sampleIndices": [
+            1241,
+            1247,
+            1253
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0022364521864801645,
+            -0.0011594186071306467,
+            -0.00008800090290606022
+          ],
+          "averageDriverBend": -0.0011612905655056238,
+          "upcomingCurvatureMagnitude": 0.0022364521864801645,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.0625333333815,
+          "progress": 1862.2827618372164,
+          "speedMetersPerSecond": 60.04457454935657,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.018163684307679583,
+          "lateralOffset": -1.352876460960489,
+          "sampleIndices": [
+            1241,
+            1247,
+            1253
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0022364521864801645,
+            -0.0011594186071306467,
+            -0.00008800090290606022
+          ],
+          "averageDriverBend": -0.0011612905655056238,
+          "upcomingCurvatureMagnitude": 0.0022364521864801645,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.070866666714835,
+          "progress": 1862.8075793240512,
+          "speedMetersPerSecond": 60.461388672710314,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.019265075883921477,
+          "lateralOffset": -1.366563528811027,
+          "sampleIndices": [
+            1241,
+            1247,
+            1253
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.0022364521864801645,
+            -0.0011594186071306467,
+            -0.00008800090290606022
+          ],
+          "averageDriverBend": -0.0011612905655056238,
+          "upcomingCurvatureMagnitude": 0.0022364521864801645,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        },
+        {
+          "raceTime": 33.07920000004817,
+          "progress": 1863.3323968108857,
+          "speedMetersPerSecond": 60.87820279606405,
+          "touch": null,
+          "drifting": false,
+          "headingErrorRadians": 0.020311490376185647,
+          "lateralOffset": -1.3802505966615648,
+          "sampleIndices": [
+            1242,
+            1248,
+            1254
+          ],
+          "curvatureAtCurrentMiddleAhead": [
+            -0.002054198645055294,
+            -0.0009821240091696382,
+            0.0000952910486375913
+          ],
+          "averageDriverBend": -0.0009803438685291137,
+          "upcomingCurvatureMagnitude": 0.002054198645055294,
+          "checks": {
+            "driverStraightCurvatureThreshold": true,
+            "speedAboveDriverNitroThreshold": true,
+            "headingErrorBelowDriverLimit": true,
+            "centeredWithinDriverLimit": true,
+            "noSteeringInput": true,
+            "notDrifting": true
+          }
+        }
+      ],
+      "nitroAccounting": {
+        "initial": 0,
+        "gaugeFull": 3,
+        "used": 1,
+        "remaining": 2,
+        "balanced": true
+      },
+      "nitroAccountingBalanced": true
+    }
+  ],
+  "limitation": "The trace records snapshots at roughly 100 ms intervals; 120 Hz points in the 300 ms interval are reconstructed by linear interpolation of observed.progress, speed, heading, and lateral offset before resolving original Track.sample/curv values. Trace snapshots omit instantaneous native flags (airborne, spin, slowTime, wrongWay, recovery), so this confirms geometry, speed, heading, centeredness, steering release, and non-drifting evidence around each emitted natural nitro event; fixture test evidence remains necessary for other safety predicates and collision-recovery negatives.",
+  "checkedAt": "2026-10-14T05:11:36.382Z"
+}

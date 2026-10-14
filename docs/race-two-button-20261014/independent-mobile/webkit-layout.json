@@ -1,0 +1,200 @@
+{
+  "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+  "browser": "Headless WebKit",
+  "integrity": {
+    "localSha256": "b1943c72857a57db7de4c175fee3cbb6ba116b058d4bd64f1f8a3a7b0d87c953",
+    "servedSha256": "b1943c72857a57db7de4c175fee3cbb6ba116b058d4bd64f1f8a3a7b0d87c953",
+    "status": 200
+  },
+  "cases": [
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "iPhone 13 landscape"
+      },
+      "entry": {
+        "phase": "ready",
+        "startVisible": true,
+        "rotateVisible": false
+      },
+      "race": {
+        "phase": "race",
+        "buttons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "directions": [
+          "left",
+          "right"
+        ],
+        "legacyVisible": [],
+        "canvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 844,
+            "height": 390
+          },
+          {
+            "x": 687,
+            "y": 11,
+            "width": 78,
+            "height": 78
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      "screenshots": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/webkit-entry-844x390.png",
+          "sha256": "78a7c43086599d037c450c2088accebee2a7f04a5eea2c7b0e9c3ce347051939"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/webkit-race-844x390.png",
+          "sha256": "ab09a02bcca06cdd02e4d58eb60176f011eb49006665b9432fa4365300b790db"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 852,
+        "height": 393,
+        "label": "iPhone 15 landscape"
+      },
+      "entry": {
+        "phase": "ready",
+        "startVisible": true,
+        "rotateVisible": false
+      },
+      "race": {
+        "phase": "race",
+        "buttons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "directions": [
+          "left",
+          "right"
+        ],
+        "legacyVisible": [],
+        "canvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 852,
+            "height": 393
+          },
+          {
+            "x": 695,
+            "y": 11,
+            "width": 78,
+            "height": 78
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      "screenshots": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/webkit-entry-852x393.png",
+          "sha256": "38156217167bf187ed614dec930b3e7030921c9d80098564f42fcfb5faba1f25"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/webkit-race-852x393.png",
+          "sha256": "663766a531a371d3a11a2753124c3675dde19e4934658995dd63c230cb6175f4"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "viewport": {
+        "width": 740,
+        "height": 360,
+        "label": "small Android landscape"
+      },
+      "entry": {
+        "phase": "ready",
+        "startVisible": true,
+        "rotateVisible": false
+      },
+      "race": {
+        "phase": "race",
+        "buttons": [
+          "race-pause",
+          "race-left",
+          "race-right"
+        ],
+        "directions": [
+          "left",
+          "right"
+        ],
+        "legacyVisible": [],
+        "canvas": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 740,
+            "height": 360
+          },
+          {
+            "x": 583,
+            "y": 11,
+            "width": 78,
+            "height": 78
+          },
+          {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      "screenshots": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/webkit-entry-740x360.png",
+          "sha256": "6512c0c3cd3c7fbf6191b0c2690cb56d9c716133aaf41721c385f002d407641f"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/webkit-race-740x360.png",
+          "sha256": "06c6b677157a3481e767f678c0a7eb53f96082d4a904bdc40a0bc4251b4c9b8c"
+        }
+      ],
+      "errors": []
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "checkedAt": "2026-10-14T04:53:26.275Z"
+}

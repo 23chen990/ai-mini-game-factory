@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "3D 赛车 H5 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/race-two-button/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "玩家赛车与加速粒子"
+    ],
+    "lifecycleStateBranches": [
+      "race→driftEnd→smallBoost-normal",
+      "race→gaugeFull→nitro"
+    ],
+    "rendererPaths": [
+      "原生Three.js mid粒子/UnrealBloomPass"
+    ],
+    "viewports": [
+      {
+        "label": "844×390",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "852×393",
+        "width": 852,
+        "height": 393
+      },
+      {
+        "label": "740×360",
+        "width": 740,
+        "height": 360
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "fx-0-0",
+      "objectType": "玩家赛车与加速粒子",
+      "lifecycleStateBranch": "race→driftEnd→smallBoost-normal",
+      "rendererPath": "原生Three.js mid粒子/UnrealBloomPass",
+      "viewport": {
+        "label": "844×390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "喷射明显且车身与道路可辨认",
+      "observed": "最终构建待三尺寸自然输入像素复核",
+      "evidence": []
+    },
+    {
+      "id": "fx-0-1",
+      "objectType": "玩家赛车与加速粒子",
+      "lifecycleStateBranch": "race→gaugeFull→nitro",
+      "rendererPath": "原生Three.js mid粒子/UnrealBloomPass",
+      "viewport": {
+        "label": "844×390",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "喷射明显且车身与道路可辨认",
+      "observed": "最终构建待三尺寸自然输入像素复核",
+      "evidence": []
+    },
+    {
+      "id": "fx-1-0",
+      "objectType": "玩家赛车与加速粒子",
+      "lifecycleStateBranch": "race→driftEnd→smallBoost-normal",
+      "rendererPath": "原生Three.js mid粒子/UnrealBloomPass",
+      "viewport": {
+        "label": "852×393",
+        "width": 852,
+        "height": 393
+      },
+      "status": "BLOCKED",
+      "expected": "喷射明显且车身与道路可辨认",
+      "observed": "最终构建待三尺寸自然输入像素复核",
+      "evidence": []
+    },
+    {
+      "id": "fx-1-1",
+      "objectType": "玩家赛车与加速粒子",
+      "lifecycleStateBranch": "race→gaugeFull→nitro",
+      "rendererPath": "原生Three.js mid粒子/UnrealBloomPass",
+      "viewport": {
+        "label": "852×393",
+        "width": 852,
+        "height": 393
+      },
+      "status": "BLOCKED",
+      "expected": "喷射明显且车身与道路可辨认",
+      "observed": "最终构建待三尺寸自然输入像素复核",
+      "evidence": []
+    },
+    {
+      "id": "fx-2-0",
+      "objectType": "玩家赛车与加速粒子",
+      "lifecycleStateBranch": "race→driftEnd→smallBoost-normal",
+      "rendererPath": "原生Three.js mid粒子/UnrealBloomPass",
+      "viewport": {
+        "label": "740×360",
+        "width": 740,
+        "height": 360
+      },
+      "status": "REPRODUCED",
+      "expected": "喷射明显且车身与道路可辨认",
+      "observed": "独立QA与主线程检查自然截图：中央车身被白/蓝光粒子遮蔽",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/smallBoost-normal.png",
+          "sha256": "8fdf107ad9ef46c46f22a92ce9b565edaf119ba03341125330c01732da3f0dbb",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fx-2-1",
+      "objectType": "玩家赛车与加速粒子",
+      "lifecycleStateBranch": "race→gaugeFull→nitro",
+      "rendererPath": "原生Three.js mid粒子/UnrealBloomPass",
+      "viewport": {
+        "label": "740×360",
+        "width": 740,
+        "height": 360
+      },
+      "status": "REPRODUCED",
+      "expected": "喷射明显且车身与道路可辨认",
+      "observed": "独立QA与主线程检查自然截图：中央车身被白/蓝光粒子遮蔽",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/nitro.png",
+          "sha256": "09c32a6a3648bea67628246df8edd29c568b8bc877953a515526b5dcc228ef91",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "精确分支是小喷/氮气时的原生3D粒子与bloom，不是HUD叠层。"
+  ],
+  "remainingGaps": [
+    "最终三尺寸自然触屏截图的独立感知门禁"
+  ],
+  "createdAt": "2026-10-14T04:47:56.274Z"
+}

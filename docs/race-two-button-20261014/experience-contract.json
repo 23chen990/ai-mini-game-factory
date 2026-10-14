@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "contractId": "racing-two-button-20261014",
+  "targetGame": "3D 赛车 H5 / qq-speed",
+  "targetWorkspace": "/Users/kker/.codex/worktrees/race-two-button/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "lockedBy": "human",
+  "pillars": [
+    {
+      "id": "two-button",
+      "name": "双键驾驶",
+      "observable": "比赛只有左、右和暂停；转向由玩家负责"
+    },
+    {
+      "id": "native-feel",
+      "name": "原生漂移喷射",
+      "observable": "车身甩尾、烟雾、声音、真实集气和有限喷射"
+    },
+    {
+      "id": "clear-road",
+      "name": "清爽横屏",
+      "observable": "赛车和前方赛道占主要视野，HUD在边缘"
+    },
+    {
+      "id": "real-finish",
+      "name": "真实冲线和再来一次",
+      "observable": "玩家完成原生一圈，真实名次/成绩，触屏重开/下一场"
+    }
+  ],
+  "feedbackTiming": {
+    "impactMs": 120,
+    "settleMs": 1050,
+    "inputNeverBlocked": true
+  },
+  "motionInvariants": [
+    "原版 vehicle.js 与 ai.js 字节不变",
+    "只适配原 shift/upPressed/wPressed/nitroPressed 输入",
+    "不自动转向、不注入位置或强行胜利",
+    "暂停/背景/旋转清空输入和过期喷射"
+  ],
+  "causalRules": [
+    "弯道、车速与持续转向共同门控漂移",
+    "合格漂移结束产生单次小喷；完美取决于松手与出弯质量",
+    "氮气由原生漂移积累且安全路段有限消耗",
+    "原生圈数/排名/碰撞决定成绩和失败"
+  ],
+  "antiPatterns": [
+    "重复HUD或七键遮挡",
+    "松手无限加速或每帧喷射",
+    "AI先冲线被误称玩家完赛",
+    "把测试状态注入或桌面GPU冒称真机验收"
+  ],
+  "acceptanceIds": [
+    "RACE-MOBILE-HUD",
+    "RACE-MOBILE-INPUT",
+    "RACE-MOBILE-DRIFT",
+    "RACE-MOBILE-BOOST",
+    "RACE-MOBILE-NITRO",
+    "RACE-MOBILE-LIFECYCLE",
+    "RACE-MOBILE-JOURNEY"
+  ]
+}

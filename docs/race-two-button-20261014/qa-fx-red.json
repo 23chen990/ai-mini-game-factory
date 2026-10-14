@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "smallboost-car-readable-740x360",
+      "passed": false,
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/smallBoost-normal.png"
+    },
+    {
+      "name": "nitro-car-readable-740x360",
+      "passed": false,
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/nitro.png"
+    }
+  ],
+  "issues": [
+    {
+      "id": "boost-particles-obscure-car",
+      "severity": "error",
+      "message": "白色烟雾及加法光晕遮住中央车身，需要限制手机粒子尺寸/透明度和bloom。",
+      "evidence": "runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/smallBoost-normal.png; runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/nitro.png"
+    }
+  ],
+  "screenshots": [
+    "runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/smallBoost-normal.png",
+    "runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/nitro.png"
+  ],
+  "consoleLog": "runs/h5-qq-mobile-20261013/evidence/natural-final-740x360/report.json",
+  "testedAt": "2026-10-14T04:47:56.274Z"
+}

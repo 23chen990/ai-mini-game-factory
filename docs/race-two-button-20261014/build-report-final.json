@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "success": true,
+  "runtime": "web-lite",
+  "template": "h5-source-mobile-v1 / qq-speed two-button",
+  "workspace": "/Users/kker/.codex/worktrees/race-two-button/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "webBuild": "/Users/kker/.codex/worktrees/race-two-button/妖怪夜市/runs/h5-qq-mobile-20261013/workspace/game",
+  "files": [
+    "index.html",
+    "style.css",
+    "LICENSE.three.txt",
+    "racing-two-button-82a53d7f6fd2.html",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.css",
+    "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/main.js"
+  ],
+  "verification": [
+    "最终构建hash与三个自然触屏运行、独立QA绑定一致。",
+    "相同输入重新构建reused=true，修复次数仍为9。",
+    "核心比赛路径通过，真实后台/实体手机阻塞保留；H5 Draft候选非平台发布包。"
+  ],
+  "builtAt": "2026-10-14T04:50:36.693Z",
+  "completion": {
+    "status": "RELEASE_BLOCKED",
+    "blockers": [
+      "normalFlow",
+      "humanPlaytest"
+    ]
+  }
+}

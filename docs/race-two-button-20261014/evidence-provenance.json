@@ -1,0 +1,706 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "3D 赛车 H5 / qq-speed",
+  "targetRunId": "h5-qq-mobile-20261013",
+  "targetWorkspace": "/Users/kker/.codex/worktrees/race-two-button/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "buildHash": "82a53d7f6fd2c99cb749473b4642bc860c3ad444a4f03d502b11da678ced37fa",
+  "capturedAt": "2026-10-14T05:23:54.123Z",
+  "files": [
+    {
+      "sourcePath": "docs/race-two-button-20261014/requirements.zh-CN.md",
+      "sourceSha256": "38ce6e91a30e5cba8bd7c70c57f4a115044a51b7fa7498801a247b0c4bbd1bdc",
+      "archivePath": "docs/race-two-button-20261014/requirements.zh-CN.md",
+      "archiveSha256": "38ce6e91a30e5cba8bd7c70c57f4a115044a51b7fa7498801a247b0c4bbd1bdc",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/triage.json",
+      "sourceSha256": "2f54f341e0111dd8dc58acd8b8c94957037ac5617e0a6238bb4307c3f6aaa5c8",
+      "archivePath": "docs/race-two-button-20261014/triage.json",
+      "archiveSha256": "2f54f341e0111dd8dc58acd8b8c94957037ac5617e0a6238bb4307c3f6aaa5c8",
+      "encoding": "copy",
+      "schema": "triage"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/triage-multitouch.json",
+      "sourceSha256": "2557f2465c03852106d3ed2d897be696c4f863907dcdfb970585ee3f2fc6023b",
+      "archivePath": "docs/race-two-button-20261014/triage-multitouch.json",
+      "archiveSha256": "2557f2465c03852106d3ed2d897be696c4f863907dcdfb970585ee3f2fc6023b",
+      "encoding": "copy",
+      "schema": "triage"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/triage-fx.json",
+      "sourceSha256": "e483dff091fcc8c143f5023877218c5a00bac8a8a4faf4c4a1165e2532f19bd5",
+      "archivePath": "docs/race-two-button-20261014/triage-fx.json",
+      "archiveSha256": "e483dff091fcc8c143f5023877218c5a00bac8a8a4faf4c4a1165e2532f19bd5",
+      "encoding": "copy",
+      "schema": "triage"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/reproduction-matrix.json",
+      "sourceSha256": "8a6c71397d7a8b7a63caa139a2f25c7e898f0bbd307e9323ff589ea8d53fd136",
+      "archivePath": "docs/race-two-button-20261014/reproduction-matrix.json",
+      "archiveSha256": "8a6c71397d7a8b7a63caa139a2f25c7e898f0bbd307e9323ff589ea8d53fd136",
+      "encoding": "copy",
+      "schema": "reproduction"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/reproduction-multitouch.json",
+      "sourceSha256": "7026d953c5b3cb0d32737739b5d5dbb9178b936f411c2c8766c9a57f421d3a19",
+      "archivePath": "docs/race-two-button-20261014/reproduction-multitouch.json",
+      "archiveSha256": "7026d953c5b3cb0d32737739b5d5dbb9178b936f411c2c8766c9a57f421d3a19",
+      "encoding": "copy",
+      "schema": "reproduction"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/reproduction-fx.json",
+      "sourceSha256": "36bddafbf56d62391ac5ab06724ecd7fe2e86de82f6472c561ea784e7687b7cf",
+      "archivePath": "docs/race-two-button-20261014/reproduction-fx.json",
+      "archiveSha256": "36bddafbf56d62391ac5ab06724ecd7fe2e86de82f6472c561ea784e7687b7cf",
+      "encoding": "copy",
+      "schema": "reproduction"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/reproduction-matrix-final.json",
+      "sourceSha256": "8909cb42f5c063d21f95ac05f635012a445a7da41f9af4d0e00ba0468477d013",
+      "archivePath": "docs/race-two-button-20261014/reproduction-matrix-final.json",
+      "archiveSha256": "8909cb42f5c063d21f95ac05f635012a445a7da41f9af4d0e00ba0468477d013",
+      "encoding": "copy",
+      "schema": "reproduction"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/open-source-research.json",
+      "sourceSha256": "cd94e50df2c107fe4bd8983a1d3042e56e0322e3a20bec39e05608ef650b3d23",
+      "archivePath": "docs/race-two-button-20261014/open-source-research.json",
+      "archiveSha256": "cd94e50df2c107fe4bd8983a1d3042e56e0322e3a20bec39e05608ef650b3d23",
+      "encoding": "copy",
+      "schema": "research"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/failure-pressure-contract.json",
+      "sourceSha256": "6bc286bf63454a7a79ea67007858fa7319b7528019ba2ce07ad04cd9707d1286",
+      "archivePath": "docs/race-two-button-20261014/failure-pressure-contract.json",
+      "archiveSha256": "6bc286bf63454a7a79ea67007858fa7319b7528019ba2ce07ad04cd9707d1286",
+      "encoding": "copy",
+      "schema": "pressure"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/experience-contract.json",
+      "sourceSha256": "27a4a482b3830bf1e9468b8415e584c4d266350f86c6b9ef891e84f4ad7ee7be",
+      "archivePath": "docs/race-two-button-20261014/experience-contract.json",
+      "archiveSha256": "27a4a482b3830bf1e9468b8415e584c4d266350f86c6b9ef891e84f4ad7ee7be",
+      "encoding": "copy",
+      "schema": "experience"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/product-experience-contract.json",
+      "sourceSha256": "9775dcd2d7858e19eb0586510acc338a5878135f027303eae48b2b9b3466caf5",
+      "archivePath": "docs/race-two-button-20261014/product-experience-contract.json",
+      "archiveSha256": "9775dcd2d7858e19eb0586510acc338a5878135f027303eae48b2b9b3466caf5",
+      "encoding": "copy",
+      "schema": "product"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/qa-baseline.json",
+      "sourceSha256": "34e0fb6951f0400d523dbd8ff82ff86113f30e68a10e4a84feb517caa884cb51",
+      "archivePath": "docs/race-two-button-20261014/qa-baseline.json",
+      "archiveSha256": "34e0fb6951f0400d523dbd8ff82ff86113f30e68a10e4a84feb517caa884cb51",
+      "encoding": "copy",
+      "schema": "qa"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/qa-multitouch-red.json",
+      "sourceSha256": "64237af105117173c6dcdbbebb81b3ad72647c2e0a3d889ec9f3e5714c05c484",
+      "archivePath": "docs/race-two-button-20261014/qa-multitouch-red.json",
+      "archiveSha256": "64237af105117173c6dcdbbebb81b3ad72647c2e0a3d889ec9f3e5714c05c484",
+      "encoding": "copy",
+      "schema": "qa"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/qa-fx-red.json",
+      "sourceSha256": "3315094b83ffb1d6f4b0d4778d976e51028fa1bc50725ac5d3c2db8ed460cf04",
+      "archivePath": "docs/race-two-button-20261014/qa-fx-red.json",
+      "archiveSha256": "3315094b83ffb1d6f4b0d4778d976e51028fa1bc50725ac5d3c2db8ed460cf04",
+      "encoding": "copy",
+      "schema": "qa"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/qa-final.json",
+      "sourceSha256": "93925766ea18c23c1b968590c2357c1b39824a57a68b6166d475f71a1285afcd",
+      "archivePath": "docs/race-two-button-20261014/qa-final.json",
+      "archiveSha256": "93925766ea18c23c1b968590c2357c1b39824a57a68b6166d475f71a1285afcd",
+      "encoding": "copy",
+      "schema": "qa"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/natural-flow-final.json",
+      "sourceSha256": "55bd4c453f7ca73537bc0e7b5c1d293a54512b499e9e8cf45770323a4fe03a61",
+      "archivePath": "docs/race-two-button-20261014/natural-flow-final.json",
+      "archiveSha256": "55bd4c453f7ca73537bc0e7b5c1d293a54512b499e9e8cf45770323a4fe03a61",
+      "encoding": "copy",
+      "schema": "natural"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/build-report-final.json",
+      "sourceSha256": "c143b70a4ee9f65c0ce4c80549a3981767d16bc0dc1502e09b5f2a93db8915dd",
+      "archivePath": "docs/race-two-button-20261014/build-report-final.json",
+      "archiveSha256": "c143b70a4ee9f65c0ce4c80549a3981767d16bc0dc1502e09b5f2a93db8915dd",
+      "encoding": "copy",
+      "schema": "build"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/perceptual-gate-final.json",
+      "sourceSha256": "b5460771c3a17220ab77aa092e67a1bb17ce06eea7615441432871d2d82f13ce",
+      "archivePath": "docs/race-two-button-20261014/perceptual-gate-final.json",
+      "archiveSha256": "b5460771c3a17220ab77aa092e67a1bb17ce06eea7615441432871d2d82f13ce",
+      "encoding": "copy",
+      "schema": "perceptualGate"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+      "sourceSha256": "19e5ff3a04cdf19aded586e3239e59abfa44128bf0412cd177733a91807fbd8b",
+      "archivePath": "docs/race-two-button-20261014/build-racing.json",
+      "archiveSha256": "19e5ff3a04cdf19aded586e3239e59abfa44128bf0412cd177733a91807fbd8b",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/build-idempotent-final.json",
+      "sourceSha256": "255e62e50db43011e03957be0bd439ae660d538e4126b6e093f40fb2c75c99fb",
+      "archivePath": "docs/race-two-button-20261014/build-idempotent-final.json",
+      "archiveSha256": "255e62e50db43011e03957be0bd439ae660d538e4126b6e093f40fb2c75c99fb",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/repair-history.json",
+      "sourceSha256": "2466322edccbb5aaedc955bee3a8f49cbbf8a0ab9c7ec96c60a85f756f31aa62",
+      "archivePath": "docs/race-two-button-20261014/repair-history.json",
+      "archiveSha256": "2466322edccbb5aaedc955bee3a8f49cbbf8a0ab9c7ec96c60a85f756f31aa62",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/runtime-product-gate.json",
+      "sourceSha256": "bb813c34bc86e8811d87da225f94c1eb5e5956a321b430511f694b2a5bc98577",
+      "archivePath": "docs/race-two-button-20261014/runtime-product-gate.json",
+      "archiveSha256": "bb813c34bc86e8811d87da225f94c1eb5e5956a321b430511f694b2a5bc98577",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/owned-tests-final.tap",
+      "sourceSha256": "8aeebd3031644f5cbd59ff273f1a0ee551913eb480eff81752ded9ae4f473e72",
+      "archivePath": "docs/race-two-button-20261014/logs/owned-tests-final.tap.gz",
+      "archiveSha256": "92ccafcabf995cc0852f7516c6bec45e3d6565431459af7a41a1a70f42f44ec1",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/native-physics-final.tap",
+      "sourceSha256": "5e6653330d19c82eae1fb7d8ecbede7159475883513c438feb97c5ef08fd1a76",
+      "archivePath": "docs/race-two-button-20261014/logs/native-physics-final.tap.gz",
+      "archiveSha256": "00b32775360b7cf6be907273dca6fa0b0e8cd69b0f50fff076ff4fea51380bd1",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/lint-final.log",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archivePath": "docs/race-two-button-20261014/logs/lint-final.log.gz",
+      "archiveSha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/typecheck-final.log",
+      "sourceSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archivePath": "docs/race-two-button-20261014/logs/typecheck-final.log.gz",
+      "archiveSha256": "f1b651238a58fe290baec6c5e32f3bdb1943dd2bd582f02569231f7a757c7837",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/tests-factory.log",
+      "sourceSha256": "87bd91b0538cb9c3fffee2f0a3d054cffe9dcd8de0989d8d60de48157123671b",
+      "archivePath": "docs/race-two-button-20261014/logs/tests-factory.log.gz",
+      "archiveSha256": "58315d69a03ada8290acf3167ea78fe16e12f92676197bdfef21046052825dcf",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/driver-red.tap",
+      "sourceSha256": "28a4ed34194b6ef9a024e145ba3cdd53f6e58ed5e78f3c0da5054c7e08d51542",
+      "archivePath": "docs/race-two-button-20261014/logs/driver-red.tap.gz",
+      "archiveSha256": "2e4486a440361818cb4e1ac98b3facf5e9eadc36e070e346e352fc3401950d41",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/session-red.tap",
+      "sourceSha256": "f54481bdcc7cf49ac3354adc5f2dfc667c306393766f68d921bc3eef0309dd27",
+      "archivePath": "docs/race-two-button-20261014/logs/session-red.tap.gz",
+      "archiveSha256": "0282e923194a2aa302cf02ad7d7ba9d1049e9f121c3b471a2529ddc6c360445b",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/readiness-red.tap",
+      "sourceSha256": "9630436bc2f742e03942f0cd21546d3f0a5bfb57512ea97c5d7edac66a558040",
+      "archivePath": "docs/race-two-button-20261014/logs/readiness-red.tap.gz",
+      "archiveSha256": "5ff6825e9145400cfeb07e57bcd7e1abe7b38d768d531353978665655c1ca453",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/start-edge-red.tap",
+      "sourceSha256": "22a4e2d6c8871cc117c7950e28d6d5a1d11d10bd6b719d69992e1628051b2c33",
+      "archivePath": "docs/race-two-button-20261014/logs/start-edge-red.tap.gz",
+      "archiveSha256": "9a5be4d5e7eac25980c6801f74a474bf3292002b1a45431b02dab6962fd6f256",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/build-red.tap",
+      "sourceSha256": "3d939777c9e8032b2d1fbf817d4493423601613d24fecee9a9e8c873c272b1f5",
+      "archivePath": "docs/race-two-button-20261014/logs/build-red.tap.gz",
+      "archiveSha256": "12598a92929c0af39849d0349fcb6cca56ec79dd0bb6b0efce2757a3dda93532",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/fx-red.tap",
+      "sourceSha256": "5a2daa4145dd966009724d148caeb3a67c94170ffafaa1781a78861109d66d92",
+      "archivePath": "docs/race-two-button-20261014/logs/fx-red.tap.gz",
+      "archiveSha256": "3f8942aace2b7a64e598b66f09021ec42488569d963b2f362192a5c1a157ded8",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/fx-source-red.tap",
+      "sourceSha256": "992bf4d685815e6cfe8b6d53179414ef16e05b267bac1340e65012f427380038",
+      "archivePath": "docs/race-two-button-20261014/logs/fx-source-red.tap.gz",
+      "archiveSha256": "ccac3bdc76185fd950b0056eff991986d706c8a7336b60c6ee3f1d900729afc4",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/timer-red.log",
+      "sourceSha256": "e0c62d2ccb32dc2d9cf253d8fb890bcb81e769d685d208fbe252291659fe2c32",
+      "archivePath": "docs/race-two-button-20261014/logs/timer-red.log.gz",
+      "archiveSha256": "72196c1dcb8d3d14b7732c2dc002c646926a5e2fe856267c46b9cff8b1a0d673",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/artifacts/contrast-red.log",
+      "sourceSha256": "9041da0bbd03e36a9bfc1611b4310adc9cdc2b0e35e25e3976bae59c5d11b548",
+      "archivePath": "docs/race-two-button-20261014/logs/contrast-red.log.gz",
+      "archiveSha256": "dc6779d0eb18a7e5bda79f972777bd8ea647a47aaa2fc990e2acb540fa20abc7",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-input-final9/qa-report.json",
+      "sourceSha256": "dd323ba54e8f9047d3966efedc3fe115b33a8d688f1e0038ffb98371d5b5bb22",
+      "archivePath": "docs/race-two-button-20261014/independent-input/qa-report.json",
+      "archiveSha256": "dd323ba54e8f9047d3966efedc3fe115b33a8d688f1e0038ffb98371d5b5bb22",
+      "encoding": "copy",
+      "schema": "qa"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-input-final9/event-budget.json",
+      "sourceSha256": "cbf01384278f302a8718bde1065c7bec796dc6856cd0c2a86f6767d79f9c4597",
+      "archivePath": "docs/race-two-button-20261014/independent-input/event-budget.json",
+      "archiveSha256": "cbf01384278f302a8718bde1065c7bec796dc6856cd0c2a86f6767d79f9c4597",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/qa-report.json",
+      "sourceSha256": "fe2df3ecf9b2aa53ed4d353492615260b7eec8d7101db7fc28b26fe30f222e33",
+      "archivePath": "docs/race-two-button-20261014/independent-mobile/qa-report.json",
+      "archiveSha256": "fe2df3ecf9b2aa53ed4d353492615260b7eec8d7101db7fc28b26fe30f222e33",
+      "encoding": "copy",
+      "schema": "qa"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/perceptual-report.json",
+      "sourceSha256": "6ee69e8ed8d4b52e8fc4c7d9c9f990d42fcf19dac748e5fa7db59915fbf3ac7b",
+      "archivePath": "docs/race-two-button-20261014/independent-mobile/perceptual-report.json",
+      "archiveSha256": "6ee69e8ed8d4b52e8fc4c7d9c9f990d42fcf19dac748e5fa7db59915fbf3ac7b",
+      "encoding": "copy",
+      "schema": "perceptual"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/qa-report-addendum.json",
+      "sourceSha256": "ae243baebd51ef81dbee44e9eaac2595cbdaf8fa5402b6d5837c620ce9e7187e",
+      "archivePath": "docs/race-two-button-20261014/independent-mobile/qa-addendum.json",
+      "archiveSha256": "ae243baebd51ef81dbee44e9eaac2595cbdaf8fa5402b6d5837c620ce9e7187e",
+      "encoding": "copy",
+      "schema": "qa"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/perceptual-report-addendum.json",
+      "sourceSha256": "f415f44eabf19fc465dc3b770c38b2cc4b5ccda967b232cfc4e2cebcbf88be71",
+      "archivePath": "docs/race-two-button-20261014/independent-mobile/perceptual-addendum.json",
+      "archiveSha256": "f415f44eabf19fc465dc3b770c38b2cc4b5ccda967b232cfc4e2cebcbf88be71",
+      "encoding": "copy",
+      "schema": "perceptual"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/runtime-observations.json",
+      "sourceSha256": "7a5648e2272be77866ed8dde6afe2630e1318a0bbd4d6169b038efdbee87f428",
+      "archivePath": "docs/race-two-button-20261014/independent-mobile/runtime-observations.json",
+      "archiveSha256": "7a5648e2272be77866ed8dde6afe2630e1318a0bbd4d6169b038efdbee87f428",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/webkit-layout.json",
+      "sourceSha256": "3d28c8311a44d2557af37d36888443c6a6352f376d1b3e3f0a8a523bf7ae276a",
+      "archivePath": "docs/race-two-button-20261014/independent-mobile/webkit-layout.json",
+      "archiveSha256": "3d28c8311a44d2557af37d36888443c6a6352f376d1b3e3f0a8a523bf7ae276a",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/nitro-safe-straight.json",
+      "sourceSha256": "4690ea50937a0646e64207ab42aa043342dc6de94947637083159a05e7472b21",
+      "archivePath": "docs/race-two-button-20261014/independent-mobile/nitro-safe-straight.json",
+      "archiveSha256": "4690ea50937a0646e64207ab42aa043342dc6de94947637083159a05e7472b21",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/ui-attempt9/report.json",
+      "sourceSha256": "a40c8e70d20cab4e21beb3d0945d026a7e69f5a625dce53e9d1d14f4e5e49cd3",
+      "archivePath": "docs/race-two-button-20261014/ui/report.json",
+      "archiveSha256": "a40c8e70d20cab4e21beb3d0945d026a7e69f5a625dce53e9d1d14f4e5e49cd3",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/controls-attempt9/report.json",
+      "sourceSha256": "1fe26f83f99631c647e9fd070fa45af3e49332982df4aca3cce24ab938211256",
+      "archivePath": "docs/race-two-button-20261014/controls/report.json",
+      "archiveSha256": "1fe26f83f99631c647e9fd070fa45af3e49332982df4aca3cce24ab938211256",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/tracks-final/qa-report.json",
+      "sourceSha256": "b72db577114e634082cf545814b1dcf8f4a16e123b2796045fb3b2719f6b6a50",
+      "archivePath": "docs/race-two-button-20261014/tracks/qa-report.json",
+      "archiveSha256": "b72db577114e634082cf545814b1dcf8f4a16e123b2796045fb3b2719f6b6a50",
+      "encoding": "copy",
+      "schema": "qa"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/report.json",
+      "sourceSha256": "b7dad4b9b97d95bcc499fc9f16fe3ef0ffd2e9bdf0049bef65ede62b84b42889",
+      "archivePath": "docs/race-two-button-20261014/natural-844x390/report.json",
+      "archiveSha256": "b7dad4b9b97d95bcc499fc9f16fe3ef0ffd2e9bdf0049bef65ede62b84b42889",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/natural-input-trace.json",
+      "sourceSha256": "7ed42409c0490d3cf5f4205cc950e09d3e9797a1cb8373cfee19c1b03f755b89",
+      "archivePath": "docs/race-two-button-20261014/natural-844x390/natural-input-trace.json.gz",
+      "archiveSha256": "d15bb995de14a5711c190ff9ab39c3b1c4fddff316533e3faab69fb03d3e5411",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/report.json",
+      "sourceSha256": "de3bf295fa45425892bddead2ee3ab2a9600abd0028f721a2e1cb6f58b44d8de",
+      "archivePath": "docs/race-two-button-20261014/natural-852x393/report.json",
+      "archiveSha256": "de3bf295fa45425892bddead2ee3ab2a9600abd0028f721a2e1cb6f58b44d8de",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/natural-input-trace.json",
+      "sourceSha256": "18a11c02ee8827b1fd0739817cfc54c4c5c00ed89b12623aea5d7ffff76432d2",
+      "archivePath": "docs/race-two-button-20261014/natural-852x393/natural-input-trace.json.gz",
+      "archiveSha256": "c0e54981b1add3f96836ded241bb48f4dbb0ac2b9981802cf854776c8dd5820d",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/report.json",
+      "sourceSha256": "b8c655688fb33dd334304e3f2560f2fe7d12da1bebd37f4b4efc3f3106f21427",
+      "archivePath": "docs/race-two-button-20261014/natural-740x360/report.json",
+      "archiveSha256": "b8c655688fb33dd334304e3f2560f2fe7d12da1bebd37f4b4efc3f3106f21427",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/natural-input-trace.json",
+      "sourceSha256": "a03bab38b96cab450b9f7047146e73cecf8d369f403c75186ad8d46dbc42f34c",
+      "archivePath": "docs/race-two-button-20261014/natural-740x360/natural-input-trace.json.gz",
+      "archiveSha256": "c73d7ab3dd082b051de8aa5df1a5c251157d05cb17251795fa05d56c5b51d9da",
+      "encoding": "gzip"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/baseline/race-844x390.png",
+      "sourceSha256": "2ca54e3dc261baacd1e83ceda4b97c722fb8a7851f395de64a5c88f58ac4912f",
+      "archivePath": "docs/race-two-button-20261014/screenshots/before-844x390.png",
+      "archiveSha256": "2ca54e3dc261baacd1e83ceda4b97c722fb8a7851f395de64a5c88f58ac4912f",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-844x390.png",
+      "sourceSha256": "ce461ffa919fd53181467c0b9d6a104e211e4b7fe6b10b09267c4cda52b248a2",
+      "archivePath": "docs/race-two-button-20261014/screenshots/after-844x390.png",
+      "archiveSha256": "ce461ffa919fd53181467c0b9d6a104e211e4b7fe6b10b09267c4cda52b248a2",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/smallBoost-normal.png",
+      "sourceSha256": "9f19d7fd9d8bc997c0f625583e34781dfa79792755138b09739d1935c91f8f6f",
+      "archivePath": "docs/race-two-button-20261014/screenshots/small-740x360.png",
+      "archiveSha256": "9f19d7fd9d8bc997c0f625583e34781dfa79792755138b09739d1935c91f8f6f",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/nitro.png",
+      "sourceSha256": "39ce4002567002a71a9cc61adf0141b3cc1ebbca7ce1c970d1a1877a9da48ab1",
+      "archivePath": "docs/race-two-button-20261014/screenshots/nitro-740x360.png",
+      "archiveSha256": "39ce4002567002a71a9cc61adf0141b3cc1ebbca7ce1c970d1a1877a9da48ab1",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-852x393.png",
+      "sourceSha256": "fc03b13a9e54d03681f76ae4afe524ad054355634accf2fbb605ec4882313bcb",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/race-852x393.png",
+      "archiveSha256": "fc03b13a9e54d03681f76ae4afe524ad054355634accf2fbb605ec4882313bcb",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/race-740x360.png",
+      "sourceSha256": "0fbf1d6af3df87f49d7d61f0248babf163f75baa33da93441c9fc8d62c805949",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/race-740x360.png",
+      "archiveSha256": "0fbf1d6af3df87f49d7d61f0248babf163f75baa33da93441c9fc8d62c805949",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-844x390.png",
+      "sourceSha256": "70b0a33aa76189cf5fe6398412e70f6bce3d94438b09c5fe3f9d8875e4c92258",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/right-held-844x390.png",
+      "archiveSha256": "70b0a33aa76189cf5fe6398412e70f6bce3d94438b09c5fe3f9d8875e4c92258",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-844x390.png",
+      "sourceSha256": "a07b0c5085269227c78776a9904d29a66017a5f7baa893508f3171eda5722920",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/dual-held-844x390.png",
+      "archiveSha256": "a07b0c5085269227c78776a9904d29a66017a5f7baa893508f3171eda5722920",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-852x393.png",
+      "sourceSha256": "3f8ff8e0d873ee7082b1eb82280a98496d9e21f13d873e2d90bf87cf0fa1f297",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/right-held-852x393.png",
+      "archiveSha256": "3f8ff8e0d873ee7082b1eb82280a98496d9e21f13d873e2d90bf87cf0fa1f297",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-852x393.png",
+      "sourceSha256": "efb06154ee518bcbbf5b7244c890c75ff86e8e016f67fe4a5e5614f9f9f1f9ca",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/dual-held-852x393.png",
+      "archiveSha256": "efb06154ee518bcbbf5b7244c890c75ff86e8e016f67fe4a5e5614f9f9f1f9ca",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/right-held-740x360.png",
+      "sourceSha256": "93f922d8ba86a170df03d2a347836556f0ee9467d89150d14c88c724cc4d9ac2",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/right-held-740x360.png",
+      "archiveSha256": "93f922d8ba86a170df03d2a347836556f0ee9467d89150d14c88c724cc4d9ac2",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/dual-held-740x360.png",
+      "sourceSha256": "360d9ab9751aff1e485cc05157d9ab6a343768c64bfd0cbc49aff2f8ba3887fb",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/dual-held-740x360.png",
+      "archiveSha256": "360d9ab9751aff1e485cc05157d9ab6a343768c64bfd0cbc49aff2f8ba3887fb",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/driftStart.png",
+      "sourceSha256": "296226961400db93ecccdbc334d555ebc23e65a5a3d5a39ce9ab2e8397c46c67",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-844x390/driftStart.png",
+      "archiveSha256": "296226961400db93ecccdbc334d555ebc23e65a5a3d5a39ce9ab2e8397c46c67",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/driftStart.png",
+      "sourceSha256": "86233e0ecb73b19861638a892399f879819f7f1f69d0b123423ee5478671f96c",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-852x393/driftStart.png",
+      "archiveSha256": "86233e0ecb73b19861638a892399f879819f7f1f69d0b123423ee5478671f96c",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/driftStart.png",
+      "sourceSha256": "b50fc3369114463b35f6815e220de02885f1cde01688e925746dcd459ad14d73",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-740x360/driftStart.png",
+      "archiveSha256": "b50fc3369114463b35f6815e220de02885f1cde01688e925746dcd459ad14d73",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/smallBoost-normal.png",
+      "sourceSha256": "e17ddc93ba851c254a71dee5a5ef25ff52fbdd8a5db3ed67977f9bb65d820375",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-844x390/smallBoost-normal.png",
+      "archiveSha256": "e17ddc93ba851c254a71dee5a5ef25ff52fbdd8a5db3ed67977f9bb65d820375",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/smallBoost-perfect.png",
+      "sourceSha256": "d86e91179faaec9848fd3464e71a460c7c71cd9d4843301ccec277bfad52eaec",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-844x390/smallBoost-perfect.png",
+      "archiveSha256": "d86e91179faaec9848fd3464e71a460c7c71cd9d4843301ccec277bfad52eaec",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/smallBoost-normal.png",
+      "sourceSha256": "4742c54c6948f01c9f4657a04b9ab1c68270802a6aab6ae20b6770cfe747955b",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-852x393/smallBoost-normal.png",
+      "archiveSha256": "4742c54c6948f01c9f4657a04b9ab1c68270802a6aab6ae20b6770cfe747955b",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/smallBoost-perfect.png",
+      "sourceSha256": "a8503590906a47dde0c62177e0a757e05c65d2a0f2afafabf168678fc7f08b8f",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-852x393/smallBoost-perfect.png",
+      "archiveSha256": "a8503590906a47dde0c62177e0a757e05c65d2a0f2afafabf168678fc7f08b8f",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/smallBoost-perfect.png",
+      "sourceSha256": "e60f592f5ef55d4aad7dbf66929475719b2c94279f700064df3e114df7bc88ce",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-740x360/smallBoost-perfect.png",
+      "archiveSha256": "e60f592f5ef55d4aad7dbf66929475719b2c94279f700064df3e114df7bc88ce",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/gaugeFull.png",
+      "sourceSha256": "aa89f4d362d215b02e881217822c34477470946f09d8391605d5b072f6534b7d",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-844x390/gaugeFull.png",
+      "archiveSha256": "aa89f4d362d215b02e881217822c34477470946f09d8391605d5b072f6534b7d",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/nitro.png",
+      "sourceSha256": "c29b4c1ed8b8b1382de6ecfccecb923ecd29ed7a2e345bf8b8334563ff4bb93c",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-844x390/nitro.png",
+      "archiveSha256": "c29b4c1ed8b8b1382de6ecfccecb923ecd29ed7a2e345bf8b8334563ff4bb93c",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/gaugeFull.png",
+      "sourceSha256": "dc8eeb9c447118e126669299c59d5a5ab8f2083d5f99ae5db9bf6e231b37de6e",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-852x393/gaugeFull.png",
+      "archiveSha256": "dc8eeb9c447118e126669299c59d5a5ab8f2083d5f99ae5db9bf6e231b37de6e",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/nitro.png",
+      "sourceSha256": "3e49f1744d34a5a856e95d2a35c593e3b111b16d717406d0537735b4702033de",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-852x393/nitro.png",
+      "archiveSha256": "3e49f1744d34a5a856e95d2a35c593e3b111b16d717406d0537735b4702033de",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/gaugeFull.png",
+      "sourceSha256": "648970fbbb9415c9eb6f86b2cf080e3b27140e5a820cebc638fca26c48c63956",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-740x360/gaugeFull.png",
+      "archiveSha256": "648970fbbb9415c9eb6f86b2cf080e3b27140e5a820cebc638fca26c48c63956",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-844x390.png",
+      "sourceSha256": "6056a92fd49e278c7cec30fcb04ea954da85db63030fd70b9e553211b169eb4b",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/second-finger-paused-844x390.png",
+      "archiveSha256": "6056a92fd49e278c7cec30fcb04ea954da85db63030fd70b9e553211b169eb4b",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-844x390.png",
+      "sourceSha256": "2c4b1a156b151f152bac3154ca5ee21ad64ea58f259aa643527d012a37269ce1",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/portrait-rotation-844x390.png",
+      "archiveSha256": "2c4b1a156b151f152bac3154ca5ee21ad64ea58f259aa643527d012a37269ce1",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-844x390.png",
+      "sourceSha256": "43ce663c916c57ce366ba990251e65dbcfd0908d65ebd2250f479cb7d1ad6d70",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/landscape-return-844x390.png",
+      "archiveSha256": "43ce663c916c57ce366ba990251e65dbcfd0908d65ebd2250f479cb7d1ad6d70",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-852x393.png",
+      "sourceSha256": "3e6804905f6f445caa0abd559031d3f73c37fbaa36d4f025f1a4847dd69297d6",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/second-finger-paused-852x393.png",
+      "archiveSha256": "3e6804905f6f445caa0abd559031d3f73c37fbaa36d4f025f1a4847dd69297d6",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-852x393.png",
+      "sourceSha256": "d6c9fc2515cc217b8531702703af6a54e8ce7225fd51533567b9379f7c691ee3",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/portrait-rotation-852x393.png",
+      "archiveSha256": "d6c9fc2515cc217b8531702703af6a54e8ce7225fd51533567b9379f7c691ee3",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-852x393.png",
+      "sourceSha256": "01c82e3bf735f8f158afd076e8dbdff150ba46d8661b0d65f5ddb13aa6a1efa8",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/landscape-return-852x393.png",
+      "archiveSha256": "01c82e3bf735f8f158afd076e8dbdff150ba46d8661b0d65f5ddb13aa6a1efa8",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/second-finger-paused-740x360.png",
+      "sourceSha256": "8c20119f509f56ecea1d18a9fea597ca465c73114d094db0ac0b8716bebe6888",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/second-finger-paused-740x360.png",
+      "archiveSha256": "8c20119f509f56ecea1d18a9fea597ca465c73114d094db0ac0b8716bebe6888",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/portrait-rotation-740x360.png",
+      "sourceSha256": "bcdfca8d6df125cfe50d801946a8e1d272d974d8677f3c1afca940e5497f62f4",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/portrait-rotation-740x360.png",
+      "archiveSha256": "bcdfca8d6df125cfe50d801946a8e1d272d974d8677f3c1afca940e5497f62f4",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/independent-final-qa-attempt-9/landscape-return-740x360.png",
+      "sourceSha256": "72f9e013bf9478eb5c6869030b26b549c70acdb4c56c91f102a1775988a25996",
+      "archivePath": "docs/race-two-button-20261014/screenshots/independent-final-qa-attempt-9/landscape-return-740x360.png",
+      "archiveSha256": "72f9e013bf9478eb5c6869030b26b549c70acdb4c56c91f102a1775988a25996",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/terminal.png",
+      "sourceSha256": "6136e812a4ad79e7ca4948670bc9506c99ab3ba0a8c55f173d98f329f9b0aed7",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-844x390/terminal.png",
+      "archiveSha256": "6136e812a4ad79e7ca4948670bc9506c99ab3ba0a8c55f173d98f329f9b0aed7",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/replay.png",
+      "sourceSha256": "31df9cd6f0b3d6dd11825b96b3acd853030636c151ff404bd28b4ad8015b091f",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-844x390/replay.png",
+      "archiveSha256": "31df9cd6f0b3d6dd11825b96b3acd853030636c151ff404bd28b4ad8015b091f",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/terminal.png",
+      "sourceSha256": "4d1105b40584597656b869c20c2ec838937e059d7c34c92abe80e2777a289d31",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-852x393/terminal.png",
+      "archiveSha256": "4d1105b40584597656b869c20c2ec838937e059d7c34c92abe80e2777a289d31",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-852x393/next.png",
+      "sourceSha256": "8ff5ab47f760a48c3aa06a98537615fa5ef6edc5ca7fa05cce5d9c53673625aa",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-852x393/next.png",
+      "archiveSha256": "8ff5ab47f760a48c3aa06a98537615fa5ef6edc5ca7fa05cce5d9c53673625aa",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/terminal.png",
+      "sourceSha256": "e2055d56adafaada84b0663130876fb119f019851cc3e2cbd980cd167ee1470c",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-740x360/terminal.png",
+      "archiveSha256": "e2055d56adafaada84b0663130876fb119f019851cc3e2cbd980cd167ee1470c",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-740x360/replay.png",
+      "sourceSha256": "bc4c4f90806ef74cb4e225a3c5e7dfb290949dad0af2adc62560fb71e8e32626",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-740x360/replay.png",
+      "archiveSha256": "bc4c4f90806ef74cb4e225a3c5e7dfb290949dad0af2adc62560fb71e8e32626",
+      "encoding": "copy"
+    },
+    {
+      "sourcePath": "runs/h5-qq-mobile-20261013/evidence/natural-attempt9-844x390/entry.png",
+      "sourceSha256": "7a474bac46202ae36d4565e74bebf50aca0fea1ea1774d94a1122b0d33fd2c6e",
+      "archivePath": "docs/race-two-button-20261014/screenshots/natural-attempt9-844x390/entry.png",
+      "archiveSha256": "7a474bac46202ae36d4565e74bebf50aca0fea1ea1774d94a1122b0d33fd2c6e",
+      "encoding": "copy"
+    }
+  ]
+}
