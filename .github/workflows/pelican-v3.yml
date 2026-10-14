@@ -24,6 +24,7 @@ jobs:
       # Software runner functional input coverage. Local perceptual/quality
       # captures remain DPR3 on native GPUs and are committed separately.
       QA_DPR: 1
+      QA_USE_MESA: 1
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -55,9 +56,9 @@ jobs:
           H5_PINNED_SOURCE_ROOT="$RUNNER_TEMP/pelican-source" node tools/lean-pilot/pelican-v2/prepare.mjs
           REPAIR_HYPOTHESIS='CI fresh V3 immutable-source build; isolated from developer repair history' node tools/lean-pilot/pelican-v2/build.mjs
       - name: Real default-speed touch campaign, five earned unlocks and replay
-        run: node tools/lean-pilot/pelican-v2/qa.mjs campaign
+        run: xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs campaign
       - name: Real touch swipes, cancel, jump choice and first-minute feedback
-        run: node tools/lean-pilot/pelican-v2/experience-qa.mjs
+        run: xvfb-run -a node tools/lean-pilot/pelican-v2/experience-qa.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:

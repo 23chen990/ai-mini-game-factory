@@ -229,6 +229,7 @@ jobs:
     env:
       H5_PINNED_SOURCE_ROOT: /tmp/pelican-author-source
       QA_DPR: 1
+      QA_USE_MESA: 1
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -266,9 +267,9 @@ jobs:
         shell: bash
         run: |
           set +e
-          QA_ENGINE=webkit node tools/lean-pilot/pelican-v2/qa.mjs campaign
+          QA_ENGINE=webkit xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs campaign
           webkit_exit=$?
-          QA_ENGINE=chromium node tools/lean-pilot/pelican-v2/qa.mjs campaign
+          QA_ENGINE=chromium xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs campaign
           chromium_exit=$?
           echo "WEBKIT_QA=$webkit_exit CHROMIUM_QA=$chromium_exit"
           test "$webkit_exit" -eq 0 && test "$chromium_exit" -eq 0
