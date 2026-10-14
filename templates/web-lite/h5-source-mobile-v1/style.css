@@ -165,3 +165,12 @@ html[data-reference-game="cf-transport-ship"] #mk-next{
  font-size:16px;min-height:48px;font-weight:800
 }
 html[data-reference-game="cf-transport-ship"] #mk-next:not([hidden]) + #mk-assist{display:none!important}
+
+/* A very fast 1v1 victory may transition during a rendered frame.
+   Do not paint any combat-only labels or hints above result/pause dialogs. */
+html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-guide,
+html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-target,
+html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) .mk-fps-enemy,
+html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-tutorial {
+  display:none!important;
+}
