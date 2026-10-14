@@ -92,3 +92,16 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit #race-held-item { position:fixed;right:calc(var(--race-right) + 60px);top:calc(var(--race-top) + 87px);z-index:10;
   max-width:220px;pointer-events:none;border-radius:9px;background:#052b42d6;border:1px solid #68d7ed77;
   color:#d6ffff;font-size:11px;font-weight:650;padding:5px 10px;text-align:right; }
+
+/* V3.1 informational cues stay clear of the minimap, rank and thumb zones. */
+#race-kit #race-road-hint { position:fixed;left:50%;bottom:calc(var(--race-bottom) + 57px);
+  transform:translateX(-50%);z-index:11;pointer-events:none;max-width:40vw;
+  border:1px solid #ffd89190;border-radius:12px;padding:6px 12px;
+  background:#2d2534c9;color:#fff3b4;text-align:center;white-space:nowrap;
+  font-size:clamp(10px,1.25vw,13px);font-weight:750;text-shadow:0 1px 2px #0008; }
+#race-kit #race-held-item { font-size:clamp(11px,1.2vw,14px);font-weight:800;
+  border-color:#d6f5ff9e;color:#fff9d2;background:#072943e8;
+  padding:7px 11px;max-width:min(226px,31vw); }
+@media (max-height:375px) {
+  #race-kit #race-road-hint { bottom:calc(var(--race-bottom) + 54px);padding:4px 8px; }
+}
