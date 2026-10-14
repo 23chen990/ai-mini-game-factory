@@ -8,12 +8,21 @@ import { once } from 'node:events';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
+import { createRequire } from 'node:module';
+import { itemBoxPolicy, earnedResumeOrigin } from './racing-visible-policy.mjs';
+const require = createRequire(import.meta.url), testRequire = createRequire(require.resolve('@playwright/test'));
+const playwrightRequire = createRequire(testRequire.resolve('playwright'));
+const { PNG } = require(path.join(path.dirname(playwrightRequire.resolve('playwright-core/package.json')), 'lib/utilsBundle.js'));
 const run = path.resolve('runs/h5-qq-mobile-20261013');
 const root = path.join(run, 'workspace/game');
 const label = process.env.RACE_QA_LABEL ?? 'v3-natural';
 const out = path.join(run, 'evidence', label);
 await mkdir(out, { recursive: true });
 const build = JSON.parse(await readFile(path.join(run, 'artifacts/build-racing.json')));
+const resumeReport = process.env.RACE_QA_RESUME_REPORT ? JSON.parse(await readFile(process.env.RACE_QA_RESUME_REPORT)) : null;
+const resumeStorage = resumeReport ? JSON.parse(await readFile(process.env.RACE_QA_RESUME_STORAGE)) : null;
+const resumeOrigin = resumeReport ? earnedResumeOrigin(resumeReport, resumeStorage, build.buildHash) : null;
+if (resumeReport && path.dirname(path.resolve(process.env.RACE_QA_RESUME_REPORT)) === out) throw Error('Resume must write a new evidence directory');
 const viewport = { width: Number(process.env.RACE_QA_WIDTH ?? 844), height: Number(process.env.RACE_QA_HEIGHT ?? 390) };
 const snapshot = new Map();
 for (const entry of await readdir(root, { withFileTypes: true })) if (entry.isFile()) snapshot.set(path.join(root, entry.name), await readFile(path.join(root, entry.name)));
@@ -26,13 +35,15 @@ const server = createServer(async (req, res) => {
     res.end(snapshot.get(file));
   } catch { res.writeHead(404); res.end('missing'); }
 });
-server.listen(0, '127.0.0.1'); await once(server, 'listening');
+server.listen(resumeOrigin ? Number(new URL(resumeOrigin).port) : 0, '127.0.0.1'); await once(server, 'listening');
 const browser = await chromium.launch({ headless: process.env.RACE_QA_HEADLESS === '1', args: ['--use-angle=metal'] });
 const context = await browser.newContext({ viewport, isMobile: true, hasTouch: true, deviceScaleFactor: 1,
+  ...(resumeStorage ? { storageState: resumeStorage } : {}),
   ...(process.env.RACE_QA_VIDEO === '1' ? { recordVideo: { dir: out, size: viewport } } : {}) });
 const page = await context.newPage();
 const cdp = await context.newCDPSession(page);
 const errors = [], races = [], controls = [];
+let startIndex = 0;
 page.on('pageerror', e => errors.push(e.message));
 page.on('dialog', dialog => dialog.accept());
 let touching = null, buttons;
@@ -46,7 +57,8 @@ async function steer(direction) {
 function minimapPolicy(radius) {
   // Recover from an item spin using the same visible wrong-way warning a player sees.
   // The former QA policy blindly followed its arrow backwards around the whole track.
-  if (document.querySelector('#warn')?.textContent.includes('方向错误')) return { direction: 'left', reason: 'visible-wrong-way-recovery' };
+  const warning = document.querySelector('#warn');
+  if (warning?.getClientRects().length && !warning.classList.contains('hidden') && warning.textContent.includes('方向错误')) return { direction: 'left', reason: 'visible-wrong-way-recovery' };
   const c = document.querySelector('#mm');
   const W = c.width, H = c.height, rgba = c.getContext('2d').getImageData(0, 0, W, H).data;
   const yellow = new Uint8Array(W * H), seen = new Uint8Array(W * H), components = [];
@@ -79,8 +91,8 @@ function minimapPolicy(radius) {
   const angle = Math.atan2(hx * ty - hy * tx, hx * tx + hy * ty);
   return { direction: angle > .10 ? 'left' : angle < -.10 ? 'right' : null, angle, position: [cx, cy], target: [tx, ty] };
 }
-async function observed() {
-  return page.evaluate(() => {
+async function observed(full = false) {
+  return page.evaluate(full => {
     const g = window.game, p = g.player;
     return { phase: document.querySelector('#race-kit').dataset.phase, state: g.state, raceTime: g.raceTime,
       map: g.map.id, laps: g.settings.laps, diff: g.settings.diff, mode: g.settings.mode,
@@ -91,12 +103,12 @@ async function observed() {
       stats: { ...p?.stats }, items: [...(p?.items ?? [])],
       goal: document.querySelector('#race-live-goal').textContent,
       feedback: document.querySelector('#msgs').textContent,
-      events: window.__RACE_EVIDENCE__.events,
+      events: full ? window.__RACE_EVIDENCE__.events : window.__RACE_EVIDENCE__.events.filter(e => ['driftEnd', 'nitro', 'crash', 'pad', 'item'].includes(e.type)).slice(-8),
       heading: document.querySelector('#race-heading').textContent,
       result: document.querySelector('#race-result-copy').textContent,
       resultStats: document.querySelector('#race-result-stats').textContent,
       saved: localStorage.getItem('h5-mobile:qq-speed:career:v1') };
-  });
+  }, full);
 }
 try {
   await page.goto('http://127.0.0.1:' + server.address().port + '/');
@@ -104,7 +116,14 @@ try {
   await page.screenshot({ path: path.join(out, 'startup.png') });
   const limit = Number(process.env.RACE_QA_STAGES ?? 16);
   const count = limit + (limit === 16 ? 1 : 0);
-  for (let index = 0; index < count; index++) {
+  if (resumeReport) {
+    const actualSaved = await page.evaluate(() => localStorage.getItem('h5-mobile:qq-speed:career:v1'));
+    if (actualSaved !== resumeReport.races.at(-1).saved) throw Error('Browser did not restore the exact earned campaign');
+    startIndex = Number(await page.locator('#race-stage').inputValue());
+    races.push(...resumeReport.races.filter(r => r.status === 'PASS' && Number(r.stage) <= startIndex).map(r => ({ ...r, inheritedEvidence: process.env.RACE_QA_RESUME_REPORT })));
+    await writeFile(path.join(out, 'resume-provenance.json'), JSON.stringify({ buildHash: build.buildHash, report: process.env.RACE_QA_RESUME_REPORT, reportSha256: createHash('sha256').update(await readFile(process.env.RACE_QA_RESUME_REPORT)).digest('hex'), storage: process.env.RACE_QA_RESUME_STORAGE, storageSha256: createHash('sha256').update(await readFile(process.env.RACE_QA_RESUME_STORAGE)).digest('hex'), origin: resumeOrigin, startIndex, injectedProgress: false }, null, 2));
+  }
+  for (let index = startIndex; index < count; index++) {
     const name = index === 16 ? 'daily' : String(index + 1).padStart(2, '0');
     if (index) {
       await page.locator('#race-stage').selectOption(index === 16 ? 'daily' : String(index));
@@ -116,9 +135,18 @@ try {
     buttons = await page.evaluate(() => Object.fromEntries(['left', 'right'].map(d => { const r = document.querySelector('#race-' + d).getBoundingClientRect(); return [d, { x: r.x + r.width / 2, y: r.y + r.height / 2 }]; })));
     const trace = [], captures = new Set(); let terminal = null, lastLog = 0;
     const startedAt = Date.now(), deadline = startedAt + 600000;
+    const isItemRace = (await page.locator('#race-stage-tag').textContent()).includes('道具赛');
+    let lastBoxScan = 0, box = null;
     console.log(JSON.stringify({ stage: index + 1, entry, status: 'DRIVING' }));
     while (Date.now() < deadline) {
       const policy = await page.evaluate(minimapPolicy, Number(process.env.RACE_QA_LOOKAHEAD ?? 21));
+      if (isItemRace && Date.now() - lastBoxScan > 350) {
+        lastBoxScan = Date.now();
+        box = itemBoxPolicy(PNG.sync.read(await page.screenshot()));
+      }
+      if (box?.direction && Math.abs(policy.angle ?? 1) < .18) {
+        policy.roadDirection = policy.direction; policy.direction = box.direction; policy.box = box;
+      }
       await steer(policy.direction);
       const o = await observed();
       const telemetry = { ...o }; delete telemetry.events; delete telemetry.saved;
@@ -129,8 +157,8 @@ try {
         if (condition && !captures.has(key)) { captures.add(key); await page.screenshot({ path: path.join(out, name + '-' + key + '.png') }); }
       }
       if (o.raceTime - lastLog >= 20) { lastLog = o.raceTime; console.log(JSON.stringify({ stage: index + 1, time: +o.raceTime.toFixed(1), progress: Math.round(o.progress), place: o.place, goal: o.goal, crashes: o.stats.crash })); }
-      if (o.phase === 'finished') { terminal = o; break; }
-      await page.waitForTimeout(65);
+      if (o.phase === 'finished') { terminal = await observed(true); break; }
+      await page.waitForTimeout(40);
     }
     await steer(null);
     await page.screenshot({ path: path.join(out, name + '-terminal.png') });
@@ -142,9 +170,9 @@ try {
     }));
     const race = { stage: name, entry, ...t, earnedStars: stars, wallDurationMs: Date.now() - startedAt,
       terminalButtons, actionsFit: terminalButtons.every(b => b.top >= 0 && b.bottom <= viewport.height && b.height >= 44),
-      status: t.finished && stars > 0 ? 'PASS' : 'BLOCKED', input: 'visible-minimap-pixels + trusted CDP touch only', forbiddenOperations: [] };
+      status: t.finished && stars > 0 ? 'PASS' : 'BLOCKED', input: 'visible minimap + cyan cube pixels + visible wrong-way warning; trusted CDP touch only', forbiddenOperations: [] };
     races.push(race);
-    await writeFile(path.join(out, name + '-trace.json'), JSON.stringify({ buildHash: build.buildHash, driverPolicy: 'player-visible minimap pixels only', inputTransport: 'CDP Input.dispatchTouchEvent', forbiddenOperations: [], controls: controls.splice(0), frames: trace, terminal: race }, null, 2));
+    await writeFile(path.join(out, name + '-trace.json'), JSON.stringify({ buildHash: build.buildHash, driverPolicy: race.input, inputTransport: 'CDP Input.dispatchTouchEvent', forbiddenOperations: [], controls: controls.splice(0), frames: trace, terminal: race }, null, 2));
     await writeFile(path.join(out, 'checkpoint.json'), JSON.stringify({ buildHash: build.buildHash, races, errors }, null, 2));
     await context.storageState({ path: path.join(out, 'natural-earned-storage.json') });
     console.log(JSON.stringify({ stage: name, status: race.status, finished: t.finished, time: t.finishTime, place: t.place, stars, result: t.result, resultStats: t.resultStats }));
@@ -167,7 +195,7 @@ finally {
     viewport: z.object({ width: z.number(), height: z.number() }), naturalInputsOnly: z.literal(true), seededCampaign: z.literal(false),
     driverPolicy: z.string(), races: z.array(z.any()), errors: z.array(z.string()), passed: z.boolean(), checkedAt: z.string() });
   const report = Schema.parse({ schemaVersion: 1, gameId: 'qq-speed', buildHash: build.buildHash, viewport,
-    naturalInputsOnly: true, seededCampaign: false, driverPolicy: 'player-visible minimap pixels only; native state read for assertions',
+    naturalInputsOnly: true, seededCampaign: false, driverPolicy: 'visible minimap, cyan cube pixels and visible wrong-way warning; native state read only for assertions',
     races, errors, passed: races.length === Number(process.env.RACE_QA_STAGES ?? 16) + (Number(process.env.RACE_QA_STAGES ?? 16) === 16 ? 1 : 0) && races.every(r => r.status === 'PASS' && r.actionsFit) && !errors.length, checkedAt: new Date().toISOString() });
   await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
   const video = page.video(); await context.close(); if (video) await video.saveAs(path.join(out, 'natural-career.webm'));
