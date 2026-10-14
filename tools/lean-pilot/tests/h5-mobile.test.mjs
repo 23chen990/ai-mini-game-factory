@@ -19,7 +19,7 @@ test('private source-mobile recipe reuses the factory and keeps three targets ex
  let spec;assert.doesNotThrow(()=>{spec=candidateSpec('h5-source-mobile-v1');});
  assert.deepEqual(spec.themes,['qq-speed','cf-transport-ship','pelican-bike']);
  assert.equal(spec.publishable,false);assert.equal(spec.perThemeEvidence,true);
- assert.deepEqual(spec.runtimeFiles,['platform.json','LICENSE.three.txt']);
+ assert.deepEqual(spec.runtimeFiles,['platform.json','LICENSE.three.txt','fps-mobile-ux.mjs']);
 });
 test('all three studies feed PR7 source and runtime evidence without promoting release or semantic truth',async()=>{
  for(const game of candidateSpec('h5-source-mobile-v1').themes){
