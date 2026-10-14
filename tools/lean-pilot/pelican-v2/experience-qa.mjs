@@ -9,8 +9,9 @@ import {browserOptions,qaDpr} from './browser-options.mjs';
 import {swipe,tapVisible} from './touch.mjs';
 import {observePreparedJump,preparedJumpSeen} from './queued-cue-observation.mjs';
 import {readCompactPresentation,compactPresentationPassed,readRoutePresentation,routePresentationPassed} from './qa-presentation.mjs';
+import {earnedJumpRewardVisible,softwareQualityActions,experienceReportDirectory} from './experience-policy.mjs';
 const engine=process.env.QA_ENGINE??'webkit',build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
-const dir=path.join(RUN,'attempts','attempt-'+build.attempt,'experience-'+engine);await mkdir(dir,{recursive:true});
+const dir=path.join(RUN,'attempts','attempt-'+build.attempt,experienceReportDirectory(engine,process.env.QA_EXPERIENCE_LABEL));await mkdir(dir,{recursive:true});
 const driver=await readFile(new URL(import.meta.url));await writeFile(path.join(dir,'driver-source.mjs'),driver);
 const report={driverSha256:sha(driver),schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,normalInputOnly:true,stateInjection:false,checks:[],actions:[],screenshots:[],errors:[],passed:false};
 const server=await serve(),browser=await(engine==='webkit'?webkit:chromium).launch(browserOptions(engine));
@@ -23,20 +24,22 @@ async function gesture(name,from,to,cancel=false){const at=new Date().toISOStrin
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
  await page.evaluate(observePreparedJump);
+ for(const selector of softwareQualityActions(process.env.QA_TOUCH_QUALITY))await tap(selector);
+ report.graphicsProfile={requested:process.env.QA_TOUCH_QUALITY??'default',menuLabel:await page.locator('#co-quality').innerText(),render:await page.evaluate(()=>window.__coast.renderInfo().quality)};
  const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});const first=await snap();report.firstCatchRunnerWallMs=Date.now()-firstStarted;check('first-catch-under-three-seconds',first.count>=1&&first.events.some(e=>e.type==='fish-caught'&&e.first&&e.at<3),first);await shot('first-catch');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
- let jumped=false,prizeFeedbackSeen=false,bonusShot=false,choiceShot=false,goldShot=false,leftWarning=false,rightWarning=false,earnedPrizeCue=false;
+ let jumped=false,prizeFeedbackSeen=false,bonusShot=false,choiceShot=false,goldShot=false,leftWarning=false,rightWarning=false,earnedPrizeCue=false,jumpProgressBefore={gold:Infinity,jumps:Infinity};
  const end=Date.now()+65000;
  while(Date.now()<end){
-  const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),bonus:n.classList.contains('jump-reward'),kind:n.dataset.kind})),feedback:document.querySelector('#co-feedback strong')?.textContent??''}));
+  const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),bonus:n.classList.contains('jump-reward'),kind:n.dataset.kind})),feedback:document.querySelector('#co-feedback strong')?.textContent??'',gold:Number(document.querySelector('[data-goal="gold"]')?.textContent.match(/\d+/u)?.[0]??NaN),jumps:Number(document.querySelector('[data-goal="jump"]')?.textContent.match(/\d+/u)?.[0]??NaN)}));
   if(v.phase==='finished')break;
   if(!choiceShot&&v.lanes.some(l=>l.bonus)){choiceShot=true;check('jump-gold-route-signalled-with-safe-detour',true,v);await shot('jump-choice');}
   if(!goldShot){const firstGold=(await snap()).events.find(e=>e.type==='fish-caught'&&e.golden&&!e.bonus);if(firstGold){goldShot=true;check('first-gold-before-ten-seconds',firstGold.at<10,firstGold);await shot('first-gold');}}
   const seconds=i=>Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99);
   const risky=i=>v.lanes[i].danger&&seconds(i)<=3;
   let want=v.lane;
-  prizeFeedbackSeen ||= v.feedback.includes('奖励金鱼');
+  prizeFeedbackSeen ||= earnedJumpRewardVisible(v,jumpProgressBefore);
   if(jumped&&!prizeFeedbackSeen&&!earnedPrizeCue&&v.lanes[1].kind==='fish'&&v.lanes[1].text.includes('🌟')){
    const observed=await snap();
    if(observed.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o1'&&e.jumped)&&!observed.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o1')){
@@ -44,7 +47,7 @@ try{
    }
   }
   if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o1. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
+  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o1. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;

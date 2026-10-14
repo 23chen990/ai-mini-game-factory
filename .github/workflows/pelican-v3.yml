@@ -25,6 +25,8 @@ jobs:
       # captures remain DPR3 on native GPUs and are committed separately.
       QA_DPR: 1
       QA_USE_MESA: 1
+      # Existing menu preset via trusted taps; game speed/collision unchanged.
+      QA_TOUCH_QUALITY: efficient
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
