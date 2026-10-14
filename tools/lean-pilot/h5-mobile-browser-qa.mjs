@@ -67,12 +67,15 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      return;
    }
    const target=page.locator('.mk-fps-enemy:not([hidden])').first();
-   if(await target.count() && await target.isVisible()){
+   if(await target.count() && await target.isVisible().catch(()=>false)){
      fpsEnemySeenCount++;
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
      for(let n=0;n<4;n++){
-       const rect=await target.boundingBox();
-       if(!rect||!(await target.isVisible()))break;
+       // Enemies may die, enter cover or move out of frame between the
+       // locator check and measurement. A real touch player keeps going;
+       // do not wait 30 seconds for a vanished HUD badge.
+       const rect=await target.boundingBox({timeout:700}).catch(()=>null);
+       if(!rect||!(await target.isVisible().catch(()=>false)))break;
        const center={x:844/2,y:390/2};
        const desiredX=rect.x+rect.width/2, desiredY=rect.y+rect.height+22;
        const dx=Math.max(-75,Math.min(75,(desiredX-center.x)*0.40));
