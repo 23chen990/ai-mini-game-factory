@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -38,4 +38,45 @@ test('mobile challenge instructions are short and use touch mechanics not PC key
    assert.equal(/WASD|Esc|Tab|鼠标|键盘|按 R/.test(text),false,text);
  }
  assert.match(mobileChallengeCopy({kind:'survive'}),/45秒/);
+});
+
+test('AI goes from readable beginner reaction to meaningful counter-pressure', () => {
+ const beginner=mobileEnemyDifficulty('hits',0);
+ const last=mobileEnemyDifficulty('hits',54);
+ assert.ok(beginner.react[0]>last.react[0]);
+ assert.ok(beginner.react[1]>last.react[1]);
+ assert.ok(beginner.aimErr>last.aimErr);
+ assert.ok(beginner.track<last.track && beginner.strafe<last.strafe);
+ assert.ok(beginner.headP<last.headP);
+ assert.ok(last.aimErr>0.04 && last.react[0]>=0.5);
+ assert.ok(last.strafe>0.2 && last.headP>0.02);
+ const skilled=mobileEnemyDifficulty('hits',12,{hits:3,k:1,d:0});
+ const struggling=mobileEnemyDifficulty('hits',12,{hits:0,k:0,d:2});
+ assert.ok(skilled.track>struggling.track && skilled.react[0]<struggling.react[0]);
+ const sniper=mobileEnemyDifficulty('kills',32), ordinary=mobileEnemyDifficulty('hits',32);
+ assert.ok(sniper.strafe<ordinary.strafe && sniper.headP<ordinary.headP);
+ const survive=mobileEnemyDifficulty('survive',0);
+ assert.ok(survive.react[0] < beginner.react[0]); // survival is not a free AFK tutorial
+});
+test('mobile lane is authored, obstacle aware and avoids teammate collision', () => {
+ const spawns=[{x:-30,z:-3,yaw:-Math.PI/2},{x:-30,z:-7,yaw:-Math.PI/2}];
+ const world={raycast(x,y,z,dx,dy,dz,len,kind){
+  assert.equal(kind,'sight');assert.ok(Math.abs(dx-1)<0.001);
+  return {t:z===-3?5:22};
+ }};
+ const noTeammates=selectMobileSpawn(spawns,'BL',[],world);
+ assert.equal(noTeammates.spawn.z,-7);
+ assert.equal(noTeammates.clearance,22);
+ const teammate={alive:true,team:'BL',isPlayer:false,pos:{x:-30,z:-7}};
+ assert.equal(selectMobileSpawn(spawns,'BL',[teammate],world).spawn.z,-3);
+ assert.equal(selectMobileSpawn([], 'BL',[],world),null);
+});
+test('aim nudge is small, human driven and never sees allies behind walls', () => {
+ const base={yawError:0.08,pitchError:0.06,distance:15,visible:true,firing:true,sniperReady:true};
+ const a=mobileAimCorrection(base);
+ assert.ok(a.yaw>0&&a.yaw<=0.013&&a.pitch>0&&a.pitch<=0.010);
+ for(const changes of [{visible:false},{firing:false},{sniperReady:false},{distance:35},
+ {yawError:0.3},{pitchError:0.2},{distance:0},{yawError:NaN}]){
+  assert.deepEqual(mobileAimCorrection({...base,...changes}),{yaw:0,pitch:0});
+ }
 });
