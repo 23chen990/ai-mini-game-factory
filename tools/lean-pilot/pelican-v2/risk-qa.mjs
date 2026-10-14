@@ -1,6 +1,7 @@
 /* global process,console,window,document,requestAnimationFrame,performance,Element */
 import {webkit,chromium} from '@playwright/test';
-import {mkdtemp,mkdir,readFile,rename,rm} from 'node:fs/promises';
+import {mkdtemp,mkdir,readFile,rename,rm,writeFile} from 'node:fs/promises';
+import {URL} from 'node:url';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
@@ -15,8 +16,9 @@ if(!['webkit','chromium'].includes(engine))throw Error('QA_ENGINE must be webkit
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,`risk-${engine}`);
 await mkdir(qaDir,{recursive:true});
+const driverSource=await readFile(new URL(import.meta.url));await writeFile(path.join(qaDir,'driver-source.mjs'),driverSource);
 const report={
- schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,engine,
+ schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,engine,driverSha256:sha(driverSource),
  runtime:`${engine} desktop browser with 390×844 mobile touch emulation at DPR ${qaDpr()}; not physical mobile`,
  performanceEvidenceNote:'Read-only RAF and renderer observations from desktop browser emulation; not physical-device proof.',
  inputDecisionSource:'Visible HUD distance, radar text/classes, lane indicator and harness elapsed time for the 2.6-second capture hold.',
@@ -261,6 +263,22 @@ async function runLevel(level){
     const replay=await recordSnapshot(page,'visible-final-replay',{levelId:level.id});
     await shot(page,'level-5-final-replay',{levelId:level.id,kind:'visible-replay'});
     check('final-settlement-and-reopen',replay.value.phase==='running'&&replay.value.level===5&&replay.value.save.completed[4]===true,replay.value);
+    // Exercise the actual earned route cards in the compact scroll container.
+    // Public locator actionability may reveal static cards; captured touches
+    // and actual selected IDs remain mandatory, with no save or game writes.
+    await tap(page,'#co-pause',{levelId:5});await tap(page,'#co-select',{levelId:5});
+    await page.setViewportSize({width:320,height:568});await page.waitForTimeout(200);
+    for(const id of [5,1]){
+     await tap(page,`[data-level="${id}"]`,{levelId:id});
+     const selected=await page.locator('[data-level].selected').getAttribute('data-level');
+     check(`earned-compact-route-${id}-touch-selects-exact-target`,selected===String(id),{selected,action:report.actions.at(-1)});
+     await shot(page,`earned-compact-route-${id}`,{levelId:id,kind:'exact-earned-menu-target'});
+     if(selected!==String(id))throw Error('Actual compact route selection failed for '+id);
+    }
+    await tap(page,'#co-start',{levelId:1});await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:8000});
+    const exact=await recordSnapshot(page,'earned-compact-menu-level-one-replay',{levelId:1});
+    check('earned-compact-menu-replay-is-actual-level-one',exact.value.phase==='running'&&exact.value.level===1&&exact.value.save.completed.every(Boolean)&&exact.value.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-f0'),exact.value);
+    await shot(page,'earned-compact-level-one-replay',{levelId:1,kind:'exact-stage-one-replay'});
    }
   }
   const samples=await page.evaluate(({start,end})=>(window.__riskRafSamples??[]).filter(sample=>sample.at>=start&&sample.at<=end),{start:result.rafStartAt,end:result.rafEndAt});

@@ -22,6 +22,13 @@ export function syncRidePose(state,run){
  Object.assign(state,{distance:run.distance,lane:run.lane,laneTarget:LANES[run.laneIndex],laneV:run.laneV,speed:run.speed,y:run.y,vy:run.vy,airborne:run.y>0,fish:run.score,golden:run.gold,paused:run.phase!=='running',latAcc:run.latAcc,lean:run.lean,steer:run.steer,yaw:run.yaw});
 }
 
+// Inspection only: copy native mesh joints, never substitute finite fallbacks
+// or return mutable scene objects. This lets QA compare actual articulation
+// with requested movement even when the rear camera partly hides the fork.
+export function renderedRidePose({S,rider,bike,pelican}){
+ return {requested:{lean:S.lean,steer:S.steer,yaw:S.yaw},riderRotation:rider.rotation.toArray().slice(0,3),frontSteeringMatrix:Array.from(bike.steerMatrix().elements),headRotation:pelican.head.rotation.toArray().slice(0,3),bodyRotation:pelican.body.rotation.toArray().slice(0,3)};
+}
+
 // Exact solution of x'' + 2*w*x' + w*w*(x - target) = 0 for fixed target.
 // Keeps velocity continuous under rapid alternating taps, unlike positional easing.
 export function springLane(position, velocity, target, dt, frequency = FEEL.laneFrequency) {

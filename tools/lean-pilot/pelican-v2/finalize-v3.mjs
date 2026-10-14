@@ -13,6 +13,38 @@ const SHA256 = z.string().regex(/^[a-f0-9]{64}$/u);
 const Text = z.string().trim().min(1);
 const BrowserCheckSchema = z.object({ name: Text, passed: z.boolean() }).passthrough();
 const ScreenshotBindingSchema = z.object({ path: Text, sha256: SHA256 }).passthrough();
+const FEEL_STATE_CHECKS = ['normal-barrier-terminal', 'normal-replay', 'six-state-correlated-running-frames'];
+const FEEL_STATE_TRANSITIONS = ['lane-inertia', 'inertial-turn', 'camera-follow', ...FEEL_STATE_CHECKS];
+const FEEL_STATE_FRAME_MS = [900, 1300, 1500, 1750, 2480, 3200];
+const FeelStateCameraSchema = z.object({
+  position: z.array(z.number().finite()).length(3),
+  quaternion: z.array(z.number().finite()).length(4),
+  fov: z.number().finite(),
+}).passthrough();
+const FeelStatePoseSchema = z.object({
+  requested: z.object({ lean: z.number().finite(), steer: z.number().finite(), yaw: z.number().finite() }).passthrough(),
+  riderRotation: z.array(z.number().finite()).length(3),
+  frontSteeringMatrix: z.array(z.number().finite()).length(16),
+  headRotation: z.array(z.number().finite()).length(3),
+  bodyRotation: z.array(z.number().finite()).length(3),
+}).passthrough();
+const FeelStateMotionStateSchema = z.object({ phase: Text, level: z.number().int(), distance: z.number().finite() }).passthrough();
+const FeelStateFrameSchema = z.object({
+  plannedMs: z.number().finite(), completedMs: z.number().finite(),
+  before: z.object({ state: FeelStateMotionStateSchema, render: z.object({ camera: FeelStateCameraSchema, pose: FeelStatePoseSchema }).passthrough() }).passthrough(),
+  after: z.object({ state: FeelStateMotionStateSchema, render: z.object({ camera: FeelStateCameraSchema, pose: FeelStatePoseSchema }).passthrough() }).passthrough(),
+  image: ScreenshotBindingSchema,
+}).passthrough();
+const FeelStateReportSchema = z.object({
+  schemaVersion: z.literal(1), targetGame: z.literal(GAME), workspace: z.literal(WORKSPACE), buildHash: SHA256,
+  engine: z.enum(['webkit', 'chromium']), driverSha256: SHA256, normalInputOnly: z.literal(true), stateInjection: z.literal(false),
+  actions: z.array(z.object({ type: z.enum(['tap', 'trusted-touch-press']), selector: Text, action: z.string().optional(), heldMs: z.number().finite().optional() }).passthrough()),
+  frames: z.array(FeelStateFrameSchema), screenshots: z.array(ScreenshotBindingSchema),
+  checks: z.array(BrowserCheckSchema), errors: z.array(z.string()), passed: z.boolean(),
+  terminal: z.object({ state: z.object({ phase: Text, level: z.number().int(), reason: z.string(), events: z.array(z.object({ type: Text }).passthrough()) }).passthrough() }).passthrough(),
+  replay: z.object({ state: z.object({ phase: Text, level: z.number().int(), distance: z.number().finite() }).passthrough() }).passthrough(),
+  video: ScreenshotBindingSchema,
+}).passthrough();
 const RiskEpisodeSchema = z.object({
   barrierId: Text, goldFishId: Text, hudSeen: z.boolean(),
   jump: z.object({ countdown: z.number(), actionIndex: z.number().int().nonnegative() }).passthrough().optional(),
@@ -160,10 +192,129 @@ async function verifyBindings(bindings, attempt, sourceReport) {
   return { failures, verified };
 }
 
+function feelStateSemanticBlockers(report, expected) {
+  const blockers = [];
+  const prefix = 'attempts/attempt-' + expected.attempt + '/feel-state-' + expected.engine + '/';
+  const exactChecks = expected.requiredChecks;
+  if (report.targetGame !== expected.game || report.workspace !== expected.workspace || report.engine !== expected.engine) blockers.push('feel-state-target-or-engine-mismatch');
+  if (report.buildHash !== expected.buildHash) blockers.push('feel-state-build-hash-mismatch');
+  if (report.normalInputOnly !== true || report.stateInjection !== false) blockers.push('feel-state-normal-input-provenance-invalid');
+  if (report.passed !== true || !Array.isArray(report.errors) || report.errors.length !== 0) blockers.push('feel-state-report-failed-or-has-errors');
+  const checks = Array.isArray(report.checks) ? report.checks : [];
+  const checkNames = checks.map((item) => item?.name);
+  if (checks.length !== exactChecks.length || new Set(checkNames).size !== exactChecks.length || exactChecks.some((name) => !checks.some((item) => item?.name === name && item.passed === true))) blockers.push('feel-state-required-check-set-incomplete-or-failed');
+
+  const expectedActions = [
+    { type: 'tap', selector: '#co-start' },
+    { type: 'trusted-touch-press', selector: '[data-action="right"]', action: 'right' },
+    { type: 'trusted-touch-press', selector: '[data-action="left"]', action: 'left' },
+    { type: 'trusted-touch-press', selector: '[data-action="right"]', action: 'right' },
+    { type: 'trusted-touch-press', selector: '[data-action="left"]', action: 'left' },
+    { type: 'trusted-touch-press', selector: '[data-action="jump"]', action: 'jump' },
+    { type: 'trusted-touch-press', selector: '[data-action="right"]', action: 'right' },
+    { type: 'trusted-touch-press', selector: '[data-action="left"]', action: 'left' },
+    { type: 'tap', selector: '#co-replay' },
+  ];
+  const actions = Array.isArray(report.actions) ? report.actions : [];
+  if (actions.length !== expectedActions.length || expectedActions.some((expectedAction, index) => {
+    const action = actions[index];
+    return !action || action.type !== expectedAction.type || action.selector !== expectedAction.selector
+      || (expectedAction.action !== undefined && (action.action !== expectedAction.action || action.heldMs !== 90));
+  })) blockers.push('feel-state-actions-are-not-the-recorded-normal-touch-sequence');
+
+  const expectedMs = expected.plannedMs;
+  const frames = Array.isArray(report.frames) ? report.frames : [];
+  if (frames.length !== expectedMs.length || frames.some((frame, index) => frame?.plannedMs !== expectedMs[index] || !Number.isFinite(frame?.completedMs) || frame.completedMs < frame.plannedMs)) blockers.push('feel-state-six-frame-schedule-incomplete');
+  const validCamera = (camera) => Array.isArray(camera?.position) && camera.position.length === 3
+    && Array.isArray(camera?.quaternion) && camera.quaternion.length === 4
+    && [...camera.position, ...camera.quaternion, camera.fov].every(Number.isFinite);
+  if (frames.length !== expectedMs.length || frames.some((frame) => frame?.before?.state?.phase !== 'running' || frame?.after?.state?.phase !== 'running'
+      || frame.before.state.level !== 1 || frame.after.state.level !== 1
+      || !Number.isFinite(frame.before.state.distance) || !Number.isFinite(frame.after.state.distance) || frame.after.state.distance <= frame.before.state.distance
+      || !validCamera(frame.before.render?.camera) || !validCamera(frame.after.render?.camera))) blockers.push('feel-state-running-brackets-or-actual-camera-invalid');
+  blockers.push(...feelStatePoseBlockers(report));
+
+  const expectedNames = [...expectedMs.map((value) => 'state-' + value + '.png'), 'terminal.png', 'replay.png'];
+  const bindings = Array.isArray(report.screenshots) ? report.screenshots : [];
+  const bindingNames = bindings.map((item) => item?.path?.startsWith(prefix) ? item.path.slice(prefix.length) : null);
+  if (bindings.length !== expectedNames.length || new Set(bindingNames).size !== expectedNames.length
+      || expectedNames.some((name, index) => bindingNames[index] !== name)
+      || bindings.some((item) => !/^[a-f0-9]{64}$/u.test(item?.sha256 ?? ''))) blockers.push('feel-state-screenshot-set-or-path-invalid');
+  if (frames.length === expectedMs.length && bindings.length === expectedNames.length && frames.some((frame, index) => frame.image?.path !== bindings[index]?.path || frame.image?.sha256 !== bindings[index]?.sha256)) blockers.push('feel-state-frame-screenshot-binding-mismatch');
+  if (!/^[a-f0-9]{64}$/u.test(report.driverSha256 ?? '')) blockers.push('feel-state-driver-hash-invalid');
+  if (report.video?.path !== undefined && (!report.video.path.startsWith(prefix) || !/^page@[a-f0-9]{32}\.webm$/u.test(report.video.path.slice(prefix.length)) || !/^[a-f0-9]{64}$/u.test(report.video.sha256 ?? ''))) blockers.push('feel-state-video-binding-invalid');
+  if (!report.video?.path) blockers.push('feel-state-video-binding-missing');
+  if (report.terminal?.state?.phase !== 'finished' || report.terminal.state.level !== 1 || report.terminal.state.reason !== 'barrier'
+      || !report.terminal.state.events?.some((event) => event.type === 'failed' && event.reason === 'barrier' && event.kind === 'barrier' && typeof event.objectId === 'string')) blockers.push('feel-state-real-barrier-terminal-missing');
+  if (report.replay?.state?.phase !== 'running' || report.replay.state.level !== 1 || !Number.isFinite(report.replay.state.distance)
+      || !actions.some((action) => action.type === 'tap' && action.selector === '#co-replay')) blockers.push('feel-state-real-level-one-replay-missing');
+  return [...new Set(blockers)];
+}
+
+function feelStatePoseBlockers(report) {
+  const blockers = [];
+  const frames = Array.isArray(report?.frames) ? report.frames : [];
+  const poses = frames.flatMap((frame) => [frame?.before?.render?.pose, frame?.after?.render?.pose]);
+  const isFiniteArray = (value, length) => Array.isArray(value) && value.length === length && value.every(Number.isFinite);
+  const validPose = (pose) => pose && pose.requested
+    && ['lean', 'steer', 'yaw'].every((key) => Number.isFinite(pose.requested[key]))
+    && isFiniteArray(pose.riderRotation, 3)
+    && isFiniteArray(pose.frontSteeringMatrix, 16)
+    && isFiniteArray(pose.headRotation, 3)
+    && isFiniteArray(pose.bodyRotation, 3);
+  if (frames.length !== 6 || poses.length !== 12 || poses.some((pose) => !validPose(pose))) blockers.push('feel-state-native-pose-shape-or-finite-channels-invalid');
+
+  const validPoses = poses.filter(validPose);
+  if (validPoses.length === 12 && validPoses.some((pose) => Math.abs(pose.riderRotation[0] - pose.requested.lean) > 1e-6
+      || Math.abs(pose.riderRotation[1] - pose.requested.yaw) > 1e-6)) blockers.push('feel-state-native-rider-bank-heading-disconnected');
+  const steeringAngle = (pose) => Math.acos(Math.max(-1, Math.min(1,
+    (pose.frontSteeringMatrix[0] + pose.frontSteeringMatrix[5] + pose.frontSteeringMatrix[10] - 1) / 2)));
+  if (validPoses.length === 12 && validPoses.some((pose) => Math.abs(steeringAngle(pose) - Math.abs(pose.requested.steer)) > 1e-6)) blockers.push('feel-state-native-steering-matrix-disconnected');
+  const peakNativeSteer = Math.max(0, ...validPoses.map(steeringAngle));
+  const peakNativeBank = Math.max(0, ...validPoses.map((pose) => Math.abs(pose.riderRotation[0])));
+  if (peakNativeSteer <= 0.05 || peakNativeBank <= 0.02) blockers.push('feel-state-native-steering-or-bank-motion-below-threshold');
+  return blockers;
+}
+
+const feelStateEvidenceFiles = [];
+const requireFeelState = async (rawReport, engine, attempt, buildHash) => {
+  const parsed = FeelStateReportSchema.safeParse(rawReport);
+  if (!parsed.success) return { blockers: ['feel-state-report-schema-invalid'] };
+  const report = parsed.data;
+  const blockers = feelStateSemanticBlockers(report, {
+    game: GAME, workspace: WORKSPACE, engine, buildHash, attempt,
+    requiredChecks: FEEL_STATE_CHECKS, plannedMs: FEEL_STATE_FRAME_MS,
+  });
+  const prefix = `attempts/attempt-${attempt}/feel-state-${engine}/`;
+  const driverPath = `${prefix}driver-source.mjs`;
+  let driverBytes = null;
+  try { driverBytes = await readRunBytes(driverPath); }
+  catch { blockers.push('feel-state-driver-source-missing'); }
+  if (driverBytes && sha(driverBytes) !== report.driverSha256) blockers.push('feel-state-driver-source-hash-mismatch');
+  if (driverBytes) {
+    const source = driverBytes.toString('utf8');
+    if (!source.includes('window.__coast.snapshot()') || !source.includes('window.__coast.renderInfo()') || !source.includes('Input.dispatchTouchEvent')) blockers.push('feel-state-driver-does-not-capture-read-only-runtime-and-trusted-touch');
+  }
+  for (const binding of report.screenshots) {
+    try { if (sha(await readRunBytes(binding.path)) !== binding.sha256) blockers.push(`feel-state-screenshot-hash-mismatch:${binding.path}`); }
+    catch { blockers.push(`feel-state-screenshot-missing:${binding.path}`); }
+  }
+  try { if (sha(await readRunBytes(report.video.path)) !== report.video.sha256) blockers.push('feel-state-video-hash-mismatch'); }
+  catch { blockers.push('feel-state-video-missing'); }
+  if (blockers.length === 0) {
+    feelStateEvidenceFiles.push({ kind: `feel-state-driver:${engine}`, path: driverPath, sha256: report.driverSha256 });
+    feelStateEvidenceFiles.push(...report.screenshots.map((item) => ({ kind: `feel-state-screenshot:${engine}`, path: item.path, sha256: item.sha256 })));
+    feelStateEvidenceFiles.push({ kind: `feel-state-video:${engine}`, path: report.video.path, sha256: report.video.sha256 });
+  }
+  return { blockers: [...new Set(blockers)] };
+};
+
 const matrixPaths = [
   { triage: 'triage.json', matrix: 'reproduction-matrix.json' },
   { triage: 'triage-v3.json', matrix: 'reproduction-matrix-v3.json' },
   { triage: 'head-triage-v3.json', matrix: 'head-reproduction-matrix-v3.json' },
+  { triage: 'reward-trail-and-ci-triage-v3.json', matrix: 'reward-trail-and-ci-reproduction-matrix-v3.json' },
+  { triage: 'clipped-route-touch-triage-v3.json', matrix: 'clipped-route-touch-reproduction-matrix-v3.json' },
 ];
 
 const { ProductExperienceContractSchema, PerceptualQaReportSchema, PerceptualQaGateSchema } = await tsImport('../../../src/schemas/product-experience.ts', import.meta.url);
@@ -244,6 +395,7 @@ const experienceChecks = [
   'right-pedestrian-warns-left-at-least-two-seconds', 'natural-jump-gold-advances-mastery',
   'natural-three-star-settlement', 'both-crossing-directions-observed',
   'safe-detour-does-not-require-jump', 'mastery-saved-and-visible-on-route',
+  'earned-jump-prize-has-visible-route-cue',
 ];
 const requireExperience = (report) => experienceChecks.filter((name) => !checkStatus(report, name)).map((name) => `required-check-failed:${name}`);
 const requireHead = (report) => {
@@ -525,6 +677,7 @@ for (const engine of ['webkit', 'chromium']) {
   await addFixedReport({ kind: 'experience', engine, relative: `${attemptRoot}/experience-${engine}/report.json`, validate: requireExperience });
   await addFixedReport({ kind: 'head', engine, relative: `${attemptRoot}/head-${engine}/report.json`, validate: requireHead });
   await addFixedReport({ kind: 'risk', engine, relative: `${attemptRoot}/risk-${engine}/report.json`, validate: (report) => requireRisk(report, engine) });
+  await addFixedReport({ kind: 'feel-state', engine, relative: `${attemptRoot}/feel-state-${engine}/report.json`, validate: (report) => requireFeelState(report, engine, attempt, receipt.buildHash) });
 }
 await addFixedReport({
   kind: 'visual', engine: 'webkit', relative: `${attemptRoot}/visual/report.json`,
@@ -600,6 +753,8 @@ const naturalPaths = [
   { kind: 'v3-experience-natural-flow-chromium', path: 'artifacts/natural/v3-experience-chromium.json', features: ['lane-inertia', 'jump-choice', 'pedestrian-forecast', 'first-minute-mastery'] },
   { kind: 'v3-risk-natural-flow-webkit', path: 'artifacts/natural/v3-risk-webkit.json', features: ['jump-clearance', 'jump-choice', 'five-configured-levels', 'replay-mastery-records'], engine: 'webkit', riskReportPath: `${attemptRoot}/risk-webkit/report.json` },
   { kind: 'v3-risk-natural-flow-chromium', path: 'artifacts/natural/v3-risk-chromium.json', features: ['jump-clearance', 'jump-choice', 'five-configured-levels', 'replay-mastery-records'], engine: 'chromium', riskReportPath: `${attemptRoot}/risk-chromium/report.json` },
+  { kind: 'v3-feel-state-natural-flow-webkit', path: 'artifacts/natural/v3-feel-state-webkit.json', features: FEEL_STATE_TRANSITIONS, engine: 'webkit', feelStateReportPath: `${attemptRoot}/feel-state-webkit/report.json` },
+  { kind: 'v3-feel-state-natural-flow-chromium', path: 'artifacts/natural/v3-feel-state-chromium.json', features: FEEL_STATE_TRANSITIONS, engine: 'chromium', feelStateReportPath: `${attemptRoot}/feel-state-chromium/report.json` },
 ];
 const headViewports = [
   { width: 390, height: 844, label: 'mobile-portrait' },
@@ -630,7 +785,7 @@ for (const spec of naturalPaths) {
     if (flow.buildHash !== receipt.buildHash || flow.runtime !== 'web-lite') blockers.push('natural-flow-build-or-runtime-mismatch');
     if (spec.viewport && (flow.completion !== 'terminal' || flow.device?.width !== spec.viewport.width || flow.device?.height !== spec.viewport.height || flow.device?.label !== spec.viewport.label)) blockers.push('head-natural-flow-viewport-or-terminal-mismatch');
     for (const feature of spec.features) if (!flow.transitions.some((transition) => transition.name === feature && transition.changed)) blockers.push(`natural-transition-missing:${feature}`);
-    const kind = spec.kind.startsWith('campaign') ? 'campaign' : spec.kind.startsWith('collision') ? 'collision' : spec.kind.startsWith('v3-head') ? 'head' : spec.kind.startsWith('v3-risk') ? 'risk' : 'experience';
+    const kind = spec.kind.startsWith('campaign') ? 'campaign' : spec.kind.startsWith('collision') ? 'collision' : spec.kind.startsWith('v3-head') ? 'head' : spec.kind.startsWith('v3-risk') ? 'risk' : spec.kind.startsWith('v3-feel-state') ? 'feel-state' : 'experience';
     const engine = spec.engine ?? (spec.kind.endsWith('chromium') ? 'chromium' : 'webkit');
     const correspondingEntry = reports.find((entry) => entry.kind === kind && entry.engine === engine);
     const corresponding = correspondingEntry?.value;
@@ -665,6 +820,17 @@ for (const spec of naturalPaths) {
         if (!transition || !transition.evidence.includes(spec.riskReportPath)) blockers.push(`risk-natural-flow-transition-not-bound:${feature}`);
       }
       if (!flow.screenshots.length || flow.screenshots.some((screenshot) => !allowedShots.has(screenshot))) blockers.push('risk-natural-flow-screenshots-not-bound-to-current-risk-report');
+    }
+    if (spec.feelStateReportPath) {
+      if (correspondingEntry?.path !== spec.feelStateReportPath || correspondingEntry.status !== 'PASS') blockers.push('feel-state-natural-flow-source-report-not-passing-current-attempt');
+      const expectedViewport = { width: 390, height: 844, label: 'mobile-portrait' };
+      if (flow.completion !== 'terminal' || !flow.replayObserved || flow.device?.width !== expectedViewport.width || flow.device?.height !== expectedViewport.height || flow.device?.label !== expectedViewport.label) blockers.push('feel-state-natural-flow-terminal-replay-or-viewport-mismatch');
+      const rawActions = (corresponding?.actions ?? []).map((action) => `${action.type} ${action.selector}`);
+      if (JSON.stringify(flow.actions) !== JSON.stringify(rawActions)) blockers.push('feel-state-natural-flow-actions-do-not-match-raw-normal-input');
+      const rawScreenshots = (corresponding?.screenshots ?? []).map((item) => item.path);
+      if (JSON.stringify(flow.screenshots) !== JSON.stringify(rawScreenshots)) blockers.push('feel-state-natural-flow-screenshots-do-not-match-raw-report');
+      const observedTransitions = flow.transitions.map((transition) => transition.name);
+      if (JSON.stringify(observedTransitions) !== JSON.stringify(FEEL_STATE_TRANSITIONS) || flow.transitions.some((transition) => !transition.changed || !transition.evidence.includes(spec.feelStateReportPath))) blockers.push('feel-state-natural-flow-transition-order-or-source-binding-invalid');
     }
   }
   naturalTraces.push({ kind: spec.kind, path: spec.path, sha256: loaded.sha256 ?? '0'.repeat(64), status: blockers.length ? loaded.value ? 'FAIL' : 'BLOCKED' : 'PASS', blockers, value: parsed.success ? parsed.data : null });
@@ -743,7 +909,8 @@ const desktopEvidencePassed = [
   reportPass('collision', 'webkit'), reportPass('collision', 'chromium'),
   reportPass('experience', 'webkit'), reportPass('experience', 'chromium'),
   reportPass('head', 'webkit'), reportPass('head', 'chromium'),
-  reportPass('risk', 'webkit'), reportPass('risk', 'chromium'), reportPass('visual', 'webkit'), safetyEvidenceAcceptable,
+  reportPass('risk', 'webkit'), reportPass('risk', 'chromium'),
+  reportPass('feel-state', 'webkit'), reportPass('feel-state', 'chromium'), reportPass('visual', 'webkit'), safetyEvidenceAcceptable,
   naturalTraces.every((trace) => trace.status === 'PASS'), perceptualGate.passed,
   runtimeGate.passed, preflightBlockers.length === 0,
 ].every(Boolean);
@@ -793,8 +960,11 @@ for (const [kind, loaded] of [['experience-contract', contractLoaded], ['percept
 reportBindings.push({ kind: 'perceptual-gate-v3', path: 'artifacts/perceptual-qa-gate-v3.json', sha256: sha(JSON.stringify(perceptualGate, null, 2) + '\n'), status: perceptualGate.passed ? 'PASS' : 'BLOCKED' });
 reportBindings.push({ kind: 'runtime-product-gate-v3', path: 'artifacts/runtime-product-gates-v3.json', sha256: sha(JSON.stringify(runtimeGate, null, 2) + '\n'), status: runtimeGate.passed ? 'PASS' : 'BLOCKED' });
 reportBindings.push({ kind: 'runtime-wiring-v3', path: 'artifacts/runtime-wiring-verification-v3.json', sha256: sha(JSON.stringify(wired, null, 2) + '\n'), status: wired.passed ? 'PASS' : 'BLOCKED' });
-const copyKinds = new Set(['campaign', 'collision', 'safety', 'experience', 'head', 'risk', 'visual', 'lifecycle', 'campaign-natural-flow', 'collision-natural-flow', 'v3-experience-natural-flow-webkit', 'v3-experience-natural-flow-chromium', 'v3-risk-natural-flow-webkit', 'v3-risk-natural-flow-chromium', 'experience-contract', 'perceptual-report', 'perceptual-gate-v3', 'runtime-product-gate-v3', 'runtime-wiring-v3']);
-const copyFiles = reportBindings.filter((entry) => copyKinds.has(entry.kind.split(':')[0]) || entry.kind.startsWith('v3-head-natural-flow-'));
+const copyKinds = new Set(['campaign', 'collision', 'safety', 'experience', 'head', 'risk', 'feel-state', 'visual', 'lifecycle', 'campaign-natural-flow', 'collision-natural-flow', 'v3-experience-natural-flow-webkit', 'v3-experience-natural-flow-chromium', 'v3-risk-natural-flow-webkit', 'v3-risk-natural-flow-chromium', 'v3-feel-state-natural-flow-webkit', 'v3-feel-state-natural-flow-chromium', 'experience-contract', 'perceptual-report', 'perceptual-gate-v3', 'runtime-product-gate-v3', 'runtime-wiring-v3']);
+const copyFiles = [
+  ...reportBindings.filter((entry) => copyKinds.has(entry.kind.split(':')[0]) || entry.kind.startsWith('v3-head-natural-flow-')),
+  ...feelStateEvidenceFiles,
+].filter((item, index, all) => all.findIndex((candidate) => candidate.path === item.path) === index);
 const manifest = EvidenceManifestSchema.parse({
   schemaVersion: 1, targetGame: GAME, targetRunId: RUN_ID, workspace: WORKSPACE, attempt, buildHash: receipt.buildHash,
   createdAt: new Date().toISOString(),

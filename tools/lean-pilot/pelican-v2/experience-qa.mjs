@@ -13,6 +13,7 @@ const driver=await readFile(new URL(import.meta.url));await writeFile(path.join(
 const report={driverSha256:sha(driver),schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,normalInputOnly:true,stateInjection:false,checks:[],actions:[],screenshots:[],errors:[],passed:false};
 const server=await serve(),browser=await(engine==='webkit'?webkit:chromium).launch(browserOptions(engine));
 const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir,size:{width:390,height:844}}}),page=await ctx.newPage();
+await page.addInitScript(()=>{window.__qaPreparedJumpFrames=[];const observe=t=>{const n=document.querySelector('[data-action="jump"]');if(n?.classList.contains('queued'))window.__qaPreparedJumpFrames.push({at:t,queued:true,feedback:document.querySelector('#co-feedback strong')?.textContent??'',bufferedJump:window.__coast?.snapshot().bufferedJump??null});requestAnimationFrame(observe);};requestAnimationFrame(observe);});
 const snap=()=>page.evaluate(()=>window.__coast.snapshot());
 const shot=async name=>{const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({path:path.relative(RUN,file),sha256:sha(await readFile(file))});};
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(name+' '+passed);};
@@ -20,12 +21,8 @@ const tap=async selector=>{const before=await snap();const action={at:new Date()
 async function gesture(name,from,to,cancel=false){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
- await tap('#co-start');await page.waitForTimeout(2100);const first=await snap();check('first-catch-under-three-seconds',first.count>=1&&first.events.some(e=>e.type==='fish-caught'&&e.first&&e.at<3),first);await shot('first-catch');
+ const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});const first=await snap();report.firstCatchRunnerWallMs=Date.now()-firstStarted;check('first-catch-under-three-seconds',first.count>=1&&first.events.some(e=>e.type==='fish-caught'&&e.first&&e.at<3),first);await shot('first-catch');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
- const a=await gesture('right',[140,420],[250,420]);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
- const b=await gesture('left',[250,420],[140,420]);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
- const c=await gesture('cancel',[140,420],[250,420],true);check('cancelled-touch-does-not-turn',c.after.laneIndex===c.before.laneIndex,c);
- const d=await gesture('up',[200,480],[200,380]);check('trusted-up-swipe-jumps',d.after.events.filter(e=>e.type==='jump').length>d.before.events.filter(e=>e.type==='jump').length,d);await shot('up-swipe');
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  let jumped=false,prizeFeedbackSeen=false,bonusShot=false,choiceShot=false,goldShot=false,leftWarning=false,rightWarning=false,earnedPrizeCue=false;
  const end=Date.now()+65000;
@@ -45,7 +42,7 @@ try{
    }
   }
   if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.15){await tap('[data-action="jump"]');await page.locator('[data-action="jump"].queued').waitFor({state:'visible',timeout:1000});const armed=await snap();check('early-jump-buffer-visible',typeof armed.bufferedJump==='string'&&await page.locator('[data-action="jump"].queued').isVisible(),armed);await shot('jump-queued');jumped=true;}}
+  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){await tap('[data-action="jump"]');const armed=await snap(),prepared=await page.evaluate(()=>window.__qaPreparedJumpFrames);check('early-jump-buffer-visible',prepared.some(f=>f.queued&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),{armed,prepared,note:'Actual continuously observed prepared-button frames; no assumption that a later protocol reply arrives before auto-launch.'});await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
@@ -62,7 +59,15 @@ try{
  check('natural-three-star-settlement',finished.reason==='complete'&&finished.save.stars[0]===3&&(await page.locator('#co-copy').innerText()).includes('★★★')&&(await page.locator('#co-heading').innerText()).includes('三星达成'),finished);
  check('both-crossing-directions-observed',leftWarning&&rightWarning,{leftWarning,rightWarning});
  const best=finished.save.best[0];check('real-personal-best-recorded',best.fish===finished.count&&best.gold===finished.gold&&best.jumps===finished.jumpedBarriers&&best.jumps>=1,best);
- await tap('#co-replay');await page.waitForTimeout(1000);
+ // Gesture coverage has its own normal replay. A software renderer's slow
+ // screenshot replies cannot consume the first-minute route before it is played.
+ await tap('#co-replay');await page.waitForTimeout(250);
+ const a=await gesture('right',[140,420],[250,420]);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
+ const b=await gesture('left',[250,420],[140,420]);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
+ const c=await gesture('cancel',[140,420],[250,420],true);check('cancelled-touch-does-not-turn',c.after.laneIndex===c.before.laneIndex,c);
+ const d=await gesture('up',[200,480],[200,380]);check('trusted-up-swipe-jumps',d.after.events.filter(e=>e.type==='jump').length>d.before.events.filter(e=>e.type==='jump').length,d);await shot('up-swipe');
+ if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
+ if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
  const safeEnd=Date.now()+50000;
  while(Date.now()<safeEnd){const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish')}))}));if(v.distance>=238||v.phase==='finished')break;const blocked=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=3;let want=v.lane;if(blocked(want)){const safe=[0,1,2].filter(i=>!blocked(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??want;}else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!blocked(i));if(fish>=0)want=fish;}if(want!==v.lane&&!blocked(v.lane)&&blocked(v.lane+Math.sign(want-v.lane)))want=v.lane;if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);await page.waitForTimeout(90);}
 const detour=await snap();await shot('safe-detour');

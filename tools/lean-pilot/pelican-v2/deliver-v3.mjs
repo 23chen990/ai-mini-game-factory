@@ -12,6 +12,7 @@ import { BASE, REPO, RUN, RUN_ID, WORKSPACE } from './prepare.mjs';
 
 const GAME = '鹈鹕海岸冒险';
 const SHA256 = z.string().regex(/^[a-f0-9]{64}$/u);
+const Text = z.string().trim().min(1);
 const Candidate = path.join(REPO, 'docs/lean-pilot/pelican-feel-v3-20261014/release-candidate');
 const RISK_TARGETS = [
   { level: 1, barrierIds: ['l1-o1', 'l1-o3'] },
@@ -21,6 +22,34 @@ const RISK_TARGETS = [
   { level: 5, barrierIds: ['l5-o3', 'l5-o5', 'l5-o10'] },
 ];
 const RISK_TARGET_COUNT = RISK_TARGETS.reduce((count, level) => count + level.barrierIds.length, 0);
+const FEEL_STATE_CHECKS = ['normal-barrier-terminal', 'normal-replay', 'six-state-correlated-running-frames'];
+const FEEL_STATE_TRANSITIONS = ['lane-inertia', 'inertial-turn', 'camera-follow', ...FEEL_STATE_CHECKS];
+const FEEL_STATE_FRAME_MS = [900, 1300, 1500, 1750, 2480, 3200];
+const FeelStateCameraSchema = z.object({ position: z.array(z.number().finite()).length(3), quaternion: z.array(z.number().finite()).length(4), fov: z.number().finite() }).passthrough();
+const FeelStatePoseSchema = z.object({
+  requested: z.object({ lean: z.number().finite(), steer: z.number().finite(), yaw: z.number().finite() }).passthrough(),
+  riderRotation: z.array(z.number().finite()).length(3),
+  frontSteeringMatrix: z.array(z.number().finite()).length(16),
+  headRotation: z.array(z.number().finite()).length(3),
+  bodyRotation: z.array(z.number().finite()).length(3),
+}).passthrough();
+const FeelStateMotionStateSchema = z.object({ phase: Text, level: z.number().int(), distance: z.number().finite() }).passthrough();
+const FeelStateFrameSchema = z.object({
+  plannedMs: z.number().finite(), completedMs: z.number().finite(),
+  before: z.object({ state: FeelStateMotionStateSchema, render: z.object({ camera: FeelStateCameraSchema, pose: FeelStatePoseSchema }).passthrough() }).passthrough(),
+  after: z.object({ state: FeelStateMotionStateSchema, render: z.object({ camera: FeelStateCameraSchema, pose: FeelStatePoseSchema }).passthrough() }).passthrough(),
+  image: z.object({ path: Text, sha256: SHA256 }).passthrough(),
+}).passthrough();
+const FeelStateReportSchema = z.object({
+  schemaVersion: z.literal(1), targetGame: z.literal(GAME), workspace: z.literal(WORKSPACE), buildHash: SHA256,
+  engine: z.enum(['webkit', 'chromium']), driverSha256: SHA256, normalInputOnly: z.literal(true), stateInjection: z.literal(false),
+  actions: z.array(z.object({ type: z.enum(['tap', 'trusted-touch-press']), selector: Text, action: z.string().optional(), heldMs: z.number().finite().optional() }).passthrough()),
+  frames: z.array(FeelStateFrameSchema), screenshots: z.array(z.object({ path: Text, sha256: SHA256 }).passthrough()),
+  checks: z.array(z.object({ name: Text, passed: z.boolean() }).passthrough()), errors: z.array(z.string()), passed: z.boolean(),
+  terminal: z.object({ state: z.object({ phase: Text, level: z.number().int(), reason: z.string(), events: z.array(z.object({ type: Text }).passthrough()) }).passthrough() }).passthrough(),
+  replay: z.object({ state: z.object({ phase: Text, level: z.number().int(), distance: z.number().finite() }).passthrough() }).passthrough(),
+  video: z.object({ path: Text, sha256: SHA256 }).passthrough(),
+}).passthrough();
 const BuildReceiptSchema = z.object({ attempt: z.number().int().positive(), route: z.literal('formal-fixer'), buildHash: SHA256, workspace: z.literal(WORKSPACE), buildExit: z.literal(0), threadId: z.string().min(1) }).passthrough();
 const SummarySchema = z.object({
   schemaVersion: z.literal(1), targetGame: z.literal(GAME), runId: z.literal(RUN_ID), workspace: z.literal(WORKSPACE),
@@ -103,6 +132,113 @@ async function readRunBytes(relative) {
 async function readRunJson(relative) {
   return JSON.parse((await readRunBytes(relative)).toString('utf8'));
 }
+
+function feelStateSemanticBlockers(report, expected) {
+  const blockers = [];
+  const prefix = 'attempts/attempt-' + expected.attempt + '/feel-state-' + expected.engine + '/';
+  if (report.targetGame !== expected.game || report.workspace !== expected.workspace || report.engine !== expected.engine) blockers.push('feel-state-target-or-engine-mismatch');
+  if (report.buildHash !== expected.buildHash) blockers.push('feel-state-build-hash-mismatch');
+  if (report.normalInputOnly !== true || report.stateInjection !== false) blockers.push('feel-state-normal-input-provenance-invalid');
+  if (report.passed !== true || !Array.isArray(report.errors) || report.errors.length !== 0) blockers.push('feel-state-report-failed-or-has-errors');
+  const checks = Array.isArray(report.checks) ? report.checks : [];
+  const checkNames = checks.map((item) => item?.name);
+  if (checks.length !== expected.requiredChecks.length || new Set(checkNames).size !== expected.requiredChecks.length
+      || expected.requiredChecks.some((name) => !checks.some((item) => item?.name === name && item.passed === true))) blockers.push('feel-state-required-check-set-incomplete-or-failed');
+  const expectedActions = [
+    { type: 'tap', selector: '#co-start' },
+    { type: 'trusted-touch-press', selector: '[data-action="right"]', action: 'right' },
+    { type: 'trusted-touch-press', selector: '[data-action="left"]', action: 'left' },
+    { type: 'trusted-touch-press', selector: '[data-action="right"]', action: 'right' },
+    { type: 'trusted-touch-press', selector: '[data-action="left"]', action: 'left' },
+    { type: 'trusted-touch-press', selector: '[data-action="jump"]', action: 'jump' },
+    { type: 'trusted-touch-press', selector: '[data-action="right"]', action: 'right' },
+    { type: 'trusted-touch-press', selector: '[data-action="left"]', action: 'left' },
+    { type: 'tap', selector: '#co-replay' },
+  ];
+  const actions = Array.isArray(report.actions) ? report.actions : [];
+  if (actions.length !== expectedActions.length || expectedActions.some((expectedAction, index) => {
+    const action = actions[index];
+    return !action || action.type !== expectedAction.type || action.selector !== expectedAction.selector
+      || (expectedAction.action !== undefined && (action.action !== expectedAction.action || action.heldMs !== 90));
+  })) blockers.push('feel-state-actions-are-not-the-recorded-normal-touch-sequence');
+  const frames = Array.isArray(report.frames) ? report.frames : [];
+  if (frames.length !== expected.plannedMs.length || frames.some((frame, index) => frame?.plannedMs !== expected.plannedMs[index]
+      || !Number.isFinite(frame?.completedMs) || frame.completedMs < frame.plannedMs)) blockers.push('feel-state-six-frame-schedule-incomplete');
+  const validCamera = (camera) => Array.isArray(camera?.position) && camera.position.length === 3
+    && Array.isArray(camera?.quaternion) && camera.quaternion.length === 4
+    && [...camera.position, ...camera.quaternion, camera.fov].every(Number.isFinite);
+  if (frames.length !== expected.plannedMs.length || frames.some((frame) => frame?.before?.state?.phase !== 'running' || frame?.after?.state?.phase !== 'running'
+      || frame.before.state.level !== 1 || frame.after.state.level !== 1
+      || !Number.isFinite(frame.before.state.distance) || !Number.isFinite(frame.after.state.distance) || frame.after.state.distance <= frame.before.state.distance
+      || !validCamera(frame.before.render?.camera) || !validCamera(frame.after.render?.camera))) blockers.push('feel-state-running-brackets-or-actual-camera-invalid');
+  blockers.push(...feelStatePoseBlockers(report));
+  const expectedNames = [...expected.plannedMs.map((value) => 'state-' + value + '.png'), 'terminal.png', 'replay.png'];
+  const bindings = Array.isArray(report.screenshots) ? report.screenshots : [];
+  const bindingNames = bindings.map((item) => item?.path?.startsWith(prefix) ? item.path.slice(prefix.length) : null);
+  if (bindings.length !== expectedNames.length || new Set(bindingNames).size !== expectedNames.length
+      || expectedNames.some((name, index) => bindingNames[index] !== name)
+      || bindings.some((item) => !/^[a-f0-9]{64}$/u.test(item?.sha256 ?? ''))) blockers.push('feel-state-screenshot-set-or-path-invalid');
+  if (frames.length === expected.plannedMs.length && bindings.length === expectedNames.length && frames.some((frame, index) => frame.image?.path !== bindings[index]?.path || frame.image?.sha256 !== bindings[index]?.sha256)) blockers.push('feel-state-frame-screenshot-binding-mismatch');
+  if (!/^[a-f0-9]{64}$/u.test(report.driverSha256 ?? '')) blockers.push('feel-state-driver-hash-invalid');
+  if (!report.video?.path?.startsWith(prefix) || !/^page@[a-f0-9]{32}\.webm$/u.test(report.video.path.slice(prefix.length)) || !/^[a-f0-9]{64}$/u.test(report.video.sha256 ?? '')) blockers.push('feel-state-video-binding-invalid');
+  if (report.terminal?.state?.phase !== 'finished' || report.terminal.state.level !== 1 || report.terminal.state.reason !== 'barrier'
+      || !report.terminal.state.events?.some((event) => event.type === 'failed' && event.reason === 'barrier' && event.kind === 'barrier' && typeof event.objectId === 'string')) blockers.push('feel-state-real-barrier-terminal-missing');
+  if (report.replay?.state?.phase !== 'running' || report.replay.state.level !== 1 || !Number.isFinite(report.replay.state.distance)
+      || !actions.some((action) => action.type === 'tap' && action.selector === '#co-replay')) blockers.push('feel-state-real-level-one-replay-missing');
+  return [...new Set(blockers)];
+}
+
+function feelStatePoseBlockers(report) {
+  const blockers = [];
+  const frames = Array.isArray(report?.frames) ? report.frames : [];
+  const poses = frames.flatMap((frame) => [frame?.before?.render?.pose, frame?.after?.render?.pose]);
+  const isFiniteArray = (value, length) => Array.isArray(value) && value.length === length && value.every(Number.isFinite);
+  const validPose = (pose) => pose && pose.requested
+    && ['lean', 'steer', 'yaw'].every((key) => Number.isFinite(pose.requested[key]))
+    && isFiniteArray(pose.riderRotation, 3)
+    && isFiniteArray(pose.frontSteeringMatrix, 16)
+    && isFiniteArray(pose.headRotation, 3)
+    && isFiniteArray(pose.bodyRotation, 3);
+  if (frames.length !== 6 || poses.length !== 12 || poses.some((pose) => !validPose(pose))) blockers.push('feel-state-native-pose-shape-or-finite-channels-invalid');
+
+  const validPoses = poses.filter(validPose);
+  if (validPoses.length === 12 && validPoses.some((pose) => Math.abs(pose.riderRotation[0] - pose.requested.lean) > 1e-6
+      || Math.abs(pose.riderRotation[1] - pose.requested.yaw) > 1e-6)) blockers.push('feel-state-native-rider-bank-heading-disconnected');
+  const steeringAngle = (pose) => Math.acos(Math.max(-1, Math.min(1,
+    (pose.frontSteeringMatrix[0] + pose.frontSteeringMatrix[5] + pose.frontSteeringMatrix[10] - 1) / 2)));
+  if (validPoses.length === 12 && validPoses.some((pose) => Math.abs(steeringAngle(pose) - Math.abs(pose.requested.steer)) > 1e-6)) blockers.push('feel-state-native-steering-matrix-disconnected');
+  const peakNativeSteer = Math.max(0, ...validPoses.map(steeringAngle));
+  const peakNativeBank = Math.max(0, ...validPoses.map((pose) => Math.abs(pose.riderRotation[0])));
+  if (peakNativeSteer <= 0.05 || peakNativeBank <= 0.02) blockers.push('feel-state-native-steering-or-bank-motion-below-threshold');
+  return blockers;
+}
+
+const verifyFeelStateReport = async (rawReport, engine, attempt, buildHash) => {
+  const parsed = FeelStateReportSchema.safeParse(rawReport);
+  if (!parsed.success) throw new Error('Current-build feel-state/' + engine + ' report schema is invalid');
+  const report = parsed.data;
+  const blockers = feelStateSemanticBlockers(report, {
+    game: GAME, workspace: WORKSPACE, engine, attempt, buildHash,
+    requiredChecks: FEEL_STATE_CHECKS, plannedMs: FEEL_STATE_FRAME_MS,
+  });
+  if (blockers.length) throw new Error('Current-build feel-state/' + engine + ' rejected: ' + blockers.join('; '));
+  const prefix = 'attempts/attempt-' + attempt + '/feel-state-' + engine + '/';
+  const driverPath = prefix + 'driver-source.mjs';
+  const driverBytes = await readRunBytes(driverPath);
+  if (sha(driverBytes) !== report.driverSha256) throw new Error('Current-build feel-state/' + engine + ' driver source hash mismatch');
+  const driverSource = driverBytes.toString('utf8');
+  if (!driverSource.includes('window.__coast.snapshot()') || !driverSource.includes('window.__coast.renderInfo()') || !driverSource.includes('Input.dispatchTouchEvent')) throw new Error('Current-build feel-state/' + engine + ' driver does not prove read-only runtime capture and trusted touch');
+  for (const screenshot of report.screenshots) if (sha(await readRunBytes(screenshot.path)) !== screenshot.sha256) throw new Error('Current-build feel-state/' + engine + ' screenshot hash mismatch: ' + screenshot.path);
+  if (sha(await readRunBytes(report.video.path)) !== report.video.sha256) throw new Error('Current-build feel-state/' + engine + ' video hash mismatch');
+  return {
+    path: prefix + 'report.json', report,
+    files: [
+      { kind: 'feel-state-driver:' + engine, path: driverPath, sha256: report.driverSha256 },
+      ...report.screenshots.map((item) => ({ kind: 'feel-state-screenshot:' + engine, path: item.path, sha256: item.sha256 })),
+      { kind: 'feel-state-video:' + engine, path: report.video.path, sha256: report.video.sha256 },
+    ],
+  };
+};
 
 const riskCheckNames = (level, barrierId) => {
   const prefix = `level-${level}-${barrierId}`;
@@ -210,10 +346,22 @@ if (!summary.blockers.some((item) => /Physical iPhone|Android playtest/iu.test(i
 const requiredReports = [
   ['campaign', 'webkit'], ['campaign', 'chromium'], ['collision', 'webkit'], ['collision', 'chromium'],
   ['experience', 'webkit'], ['experience', 'chromium'], ['head', 'webkit'], ['head', 'chromium'],
-  ['risk', 'webkit'], ['risk', 'chromium'], ['visual', 'webkit'],
+  ['risk', 'webkit'], ['risk', 'chromium'], ['feel-state', 'webkit'], ['feel-state', 'chromium'], ['visual', 'webkit'],
 ];
 for (const [kind, engine] of requiredReports) {
   if (!summary.reports.some((report) => report.kind === kind && report.engine === engine && report.status === 'PASS')) throw new Error(`Current-build ${kind}/${engine} report is not PASS`);
+}
+for (const engine of ['webkit', 'chromium']) {
+  const expectedPath = `attempts/attempt-${receipt.attempt}/experience-${engine}/report.json`;
+  const summaryReport = summary.reports.find((report) => report.kind === 'experience' && report.engine === engine);
+  const manifestReport = evidenceManifest.reports.find((report) => report.kind === 'experience' && report.engine === engine);
+  const copyBinding = evidenceManifest.copyFiles.find((item) => item.path === expectedPath && item.kind === `experience:${engine}`);
+  if (!summaryReport || !manifestReport || !copyBinding || summaryReport.path !== expectedPath || manifestReport.path !== expectedPath || summaryReport.status !== 'PASS' || manifestReport.status !== 'PASS' || summaryReport.sha256 !== manifestReport.sha256 || copyBinding.sha256 !== manifestReport.sha256) throw new Error(`Current-build experience/${engine} raw report is not manifest-bound`);
+  const experienceBytes = await readRunBytes(expectedPath);
+  if (sha(experienceBytes) !== manifestReport.sha256) throw new Error(`Current-build experience/${engine} report hash mismatch`);
+  const experienceReport = JSON.parse(experienceBytes.toString('utf8'));
+  const prizeCueChecks = experienceReport.checks?.filter((check) => check.name === 'earned-jump-prize-has-visible-route-cue') ?? [];
+  if (experienceReport.targetGame !== GAME || experienceReport.workspace !== WORKSPACE || experienceReport.buildHash !== receipt.buildHash || experienceReport.normalInputOnly !== true || experienceReport.stateInjection !== false || experienceReport.errors?.length || prizeCueChecks.length !== 1 || prizeCueChecks[0].passed !== true) throw new Error(`Current-build experience/${engine} lacks the earned jump prize visible-route-cue check`);
 }
 const currentRiskReports = new Map();
 for (const engine of ['webkit', 'chromium']) {
@@ -247,6 +395,46 @@ for (const engine of ['webkit', 'chromium']) {
   const transitionNames = trace.transitions.map((transition) => transition.name);
   if (new Set(transitionNames).size !== transitionNames.length || requiredRiskTransitions.some((name) => !trace.transitions.some((transition) => transition.name === name && transition.changed && transition.evidence.includes(source.path)))) throw new Error(`Current-build risk natural flow/${engine} transitions are missing or unbound to its risk report`);
   if (!trace.screenshots.length || trace.screenshots.some((screenshot) => !allowedShots.has(screenshot))) throw new Error(`Current-build risk natural flow/${engine} screenshots are not bound to its matching raw report`);
+}
+const currentFeelStateReports = new Map();
+for (const engine of ['webkit', 'chromium']) {
+  const expectedPath = `attempts/attempt-${receipt.attempt}/feel-state-${engine}/report.json`;
+  const summaryReport = summary.reports.find((report) => report.kind === 'feel-state' && report.engine === engine);
+  const manifestReport = evidenceManifest.reports.find((report) => report.kind === 'feel-state' && report.engine === engine);
+  const copyBinding = evidenceManifest.copyFiles.find((item) => item.path === expectedPath && item.kind === `feel-state:${engine}`);
+  if (!summaryReport || !manifestReport || !copyBinding || summaryReport.path !== expectedPath || manifestReport.path !== expectedPath
+      || summaryReport.status !== 'PASS' || manifestReport.status !== 'PASS' || summaryReport.sha256 !== manifestReport.sha256 || copyBinding.sha256 !== manifestReport.sha256) throw new Error(`Current-build feel-state/${engine} report binding is incomplete or stale`);
+  const rawBytes = await readRunBytes(expectedPath);
+  if (sha(rawBytes) !== manifestReport.sha256) throw new Error(`Current-build feel-state/${engine} report hash mismatch`);
+  const verified = await verifyFeelStateReport(JSON.parse(rawBytes.toString('utf8')), engine, receipt.attempt, receipt.buildHash);
+  const requiredFiles = verified.files;
+  const bindings = requiredFiles.map((file) => evidenceManifest.copyFiles.find((item) => item.kind === file.kind && item.path === file.path && item.sha256 === file.sha256));
+  if (bindings.some((item) => !item) || new Set(bindings.map((item) => item.path)).size !== requiredFiles.length) throw new Error(`Current-build feel-state/${engine} source/media files are not fully manifest-bound`);
+  const shotBindings = evidenceManifest.screenshots.filter((item) => item.sourceReport === expectedPath);
+  if (shotBindings.length !== verified.report.screenshots.length || verified.report.screenshots.some((shot) => !shotBindings.some((item) => item.path === shot.path && item.sha256 === shot.sha256))) throw new Error(`Current-build feel-state/${engine} screenshots are not report-bound in the manifest`);
+  currentFeelStateReports.set(engine, verified);
+}
+for (const engine of ['webkit', 'chromium']) {
+  const kind = `v3-feel-state-natural-flow-${engine}`;
+  const expectedPath = `artifacts/natural/v3-feel-state-${engine}.json`;
+  const summaryFlow = summary.naturalFlows.find((flow) => flow.kind === kind);
+  const manifestTrace = evidenceManifest.naturalTraces.find((trace) => trace.kind === kind && trace.path === expectedPath);
+  const copyBinding = evidenceManifest.copyFiles.find((item) => item.path === expectedPath && item.kind === kind);
+  if (!summaryFlow || !manifestTrace || !copyBinding || summaryFlow.path !== expectedPath || summaryFlow.status !== 'PASS' || manifestTrace.status !== 'PASS'
+      || summaryFlow.sha256 !== manifestTrace.sha256 || copyBinding.sha256 !== manifestTrace.sha256 || summaryFlow.blockers.length) throw new Error(`Current-build feel-state natural flow/${engine} is missing, stale, or not PASS`);
+  const traceBytes = await readRunBytes(expectedPath);
+  if (sha(traceBytes) !== manifestTrace.sha256) throw new Error(`Current-build feel-state natural flow/${engine} hash mismatch`);
+  const trace = NaturalFlowEvidenceSchema.parse(JSON.parse(traceBytes.toString('utf8')));
+  const source = currentFeelStateReports.get(engine);
+  const expectedActions = source.report.actions.map((action) => `${action.type} ${action.selector}`);
+  const expectedScreenshots = source.report.screenshots.map((item) => item.path);
+  const transitionNames = trace.transitions.map((transition) => transition.name);
+  if (!trace.passed || !trace.startedFromReset || trace.buildHash !== receipt.buildHash || trace.runtime !== 'web-lite'
+      || trace.completion !== 'terminal' || !trace.replayObserved || trace.forbiddenOperations.length
+      || trace.device?.width !== 390 || trace.device?.height !== 844 || trace.device?.label !== 'mobile-portrait'
+      || JSON.stringify(trace.actions) !== JSON.stringify(expectedActions) || JSON.stringify(trace.screenshots) !== JSON.stringify(expectedScreenshots)) throw new Error(`Current-build feel-state natural flow/${engine} does not match its raw normal-input terminal/replay report`);
+  if (JSON.stringify(transitionNames) !== JSON.stringify(FEEL_STATE_TRANSITIONS)
+      || trace.transitions.some((transition) => !transition.changed || !transition.evidence.includes(source.path))) throw new Error(`Current-build feel-state natural flow/${engine} transition set/order is missing or unbound to its raw report`);
 }
 const safetyCheckNames = [
   'van-target-distance-reached', 'van-ends-round', 'car-not-jumpable',
@@ -334,12 +522,18 @@ written.push(await writeCandidateFile('index.html', htmlBytes));
 written.push(await writeCandidateFile('LICENSE.three.txt', licenseBytes));
 written.push(await writeCandidateFile('platform.json', platformBytes));
 
-// Copy only the JSON sources named by the current-run manifest. Screenshots
-// and videos stay in their attempt folder and never enter the H5 archive.
+// Copy only manifest-bound current-run JSON plus the verified feel-state
+// driver, screenshots, and videos from this attempt.
 const copiedEvidence = [];
 for (const entry of evidenceManifest.copyFiles) {
   const relative = normalizeRelative(entry.path);
-  if (!relative.endsWith('.json')) throw new Error(`Non-JSON evidence is not eligible for delivery copy: ${relative}`);
+  if (!relative.endsWith('.json')) {
+    const match = /^feel-state-(driver|screenshot|video):(webkit|chromium)$/u.exec(entry.kind);
+    const source = match ? currentFeelStateReports.get(match[2]) : null;
+    if (!source || !source.files.some((file) => file.kind === entry.kind && file.path === relative && file.sha256 === entry.sha256)) throw new Error(`Non-JSON evidence is not a verified current feel-state file: ${relative}`);
+    const expectedExtension = match[1] === 'driver' ? '.mjs' : match[1] === 'screenshot' ? '.png' : '.webm';
+    if (!relative.endsWith(expectedExtension)) throw new Error(`Feel-state evidence extension does not match its manifest kind: ${relative}`);
+  }
   const bytes = await readRunBytes(relative);
   if (sha(bytes) !== entry.sha256) throw new Error(`Current-run manifest hash mismatch: ${relative}`);
   const destination = `evidence/attempt-${receipt.attempt}/${relative}`;
@@ -350,7 +544,7 @@ written.push(...copiedEvidence);
 const levels = summary.levels.length ? summary.levels.map((level) => `| ${level.level} | ${level.distance ?? '—'} m | ${level.fish ?? '—'} 条 / 金鱼 ${level.gold ?? '—'} | ${Number.isFinite(level.elapsedSeconds) ? `${level.elapsedSeconds.toFixed(1)} 秒` : '—'} | ${level.result ?? '—'} |`).join('\n') : '| — | 当前 attempt 报告未提供五关结果 | — | — | BLOCKED |';
 const reportTable = evidenceManifest.reports.map((item) => `| ${item.kind} | ${item.engine ?? '—'} | ${item.status} | \`${item.path}\` |`).join('\n');
 const naturalFlowTable = summary.naturalFlows.map((item) => `| ${item.kind} | ${item.status} | \`${item.path}\` |`).join('\n');
-const readme = `# ${GAME} V3 · H5 开发试玩候选\n\n状态：**BLOCKED，未通过 release gate**。此包只用于本地/设备 H5 试玩，不是 WeChat、Douyin 或 TapTap 原生发布包，也不代表生产放行。\n\n- 目标游戏：${GAME}\n- 工作区：\`${WORKSPACE}\`\n- Run：\`${RUN_ID}\` · attempt ${receipt.attempt}\n- 已测试 HTML SHA-256：\`${receipt.buildHash}\`\n- 产品合约：15 个 feature / 30 个 viewport case，含 engagement runtime entrypoint\n- 基线提交：\`${BASE}\`\n\n解压后用静态 HTTP 服务打开 \`index.html\`。包内包含实际通过本轮 build receipt 绑定的单文件 H5、Three.js license、平台状态、机器报告副本及 manifest 指定的本轮 JSON 证据。\n\n## 当前构建的桌面浏览器证据\n\n| QA 类别 | 浏览器 | 状态 | 当前 attempt 报告 |\n|---|---|---|---|\n${reportTable}\n\n## 自然流程与风险追踪\n\n| 轨迹 | 状态 | 报告 |\n|---|---|---|\n${naturalFlowTable}\n\n风险报告逐一绑定 12 个指定障碍跳跃、实际 earned golden fish objectId、五关结算/存档与最终重玩；静态 fish-source association 仅作为工程映射证据。\n\n## 五关自然流程\n\n| 关卡 | 路程 | 捕鱼 | 用时 | 结果 |\n|---|---:|---:|---:|---|\n${levels}\n\n## 仍为 BLOCKED 的发布条件\n\n- iPhone/Android 真机操作、低端设备性能、发热和长局稳定性尚未验证。\n- 手机真实切后台、锁屏、来电中断与恢复尚未验证；桌面浏览器或注入事件不能替代真机证据。\n- TapTap 实际广告尚未接入，不存在模拟广告奖励。\n- WeChat Mini Game 与 Douyin Mini Game 原生包未打包。\n- 独立人类玩家的乐趣、可用性与留存测试和生产发布仍未完成。\n\n平台状态：WeChat=${platform.wechatMiniGame.status}，Douyin=${platform.douyinMiniGame.status}，TapTap Ads=${platform.tapTapH5.status}，production=${platform.production}。\n\n包内 \`qa-report-v3.json\`、\`build-report-v3.json\`、\`qa-summary-v3.json\` 和 \`qa-evidence-manifest-v3.json\` 可机器复核。\n`;
+const readme = `# ${GAME} V3 · H5 开发试玩候选\n\n状态：**BLOCKED，未通过 release gate**。此包只用于本地/设备 H5 试玩，不是 WeChat、Douyin 或 TapTap 原生发布包，也不代表生产放行。\n\n- 目标游戏：${GAME}\n- 工作区：\`${WORKSPACE}\`\n- Run：\`${RUN_ID}\` · attempt ${receipt.attempt}\n- 已测试 HTML SHA-256：\`${receipt.buildHash}\`\n- 产品合约：15 个 feature / 30 个 viewport case，含 engagement runtime entrypoint\n- 基线提交：\`${BASE}\`\n\n解压后用静态 HTTP 服务打开 \`index.html\`。包内包含实际通过本轮 build receipt 绑定的单文件 H5、Three.js license、平台状态、机器报告副本及 manifest 指定的本轮 JSON 证据与 feel-state driver、截图和视频。feel-state 材料只证明当前构建的观测与正常触控路径，不证明独立玩家的乐趣或留存。\n\n## 当前构建的桌面浏览器证据\n\n| QA 类别 | 浏览器 | 状态 | 当前 attempt 报告 |\n|---|---|---|---|\n${reportTable}\n\n## 自然流程与风险追踪\n\n| 轨迹 | 状态 | 报告 |\n|---|---|---|\n${naturalFlowTable}\n\n风险报告逐一绑定 12 个指定障碍跳跃、实际 earned golden fish objectId、五关结算/存档与最终重玩；静态 fish-source association 仅作为工程映射证据。\n\n## 五关自然流程\n\n| 关卡 | 路程 | 捕鱼 | 用时 | 结果 |\n|---|---:|---:|---:|---|\n${levels}\n\n## 仍为 BLOCKED 的发布条件\n\n- iPhone/Android 真机操作、低端设备性能、发热和长局稳定性尚未验证。\n- 手机真实切后台、锁屏、来电中断与恢复尚未验证；桌面浏览器或注入事件不能替代真机证据。\n- TapTap 实际广告尚未接入，不存在模拟广告奖励。\n- WeChat Mini Game 与 Douyin Mini Game 原生包未打包。\n- 独立人类玩家的乐趣、可用性与留存测试和生产发布仍未完成。\n\n平台状态：WeChat=${platform.wechatMiniGame.status}，Douyin=${platform.douyinMiniGame.status}，TapTap Ads=${platform.tapTapH5.status}，production=${platform.production}。\n\n包内 \`qa-report-v3.json\`、\`build-report-v3.json\`、\`qa-summary-v3.json\` 和 \`qa-evidence-manifest-v3.json\` 可机器复核。\n`;
 written.push(await writeCandidateFile('README.zh-CN.md', Buffer.from(readme, 'utf8')));
 
 const payloadNames = [
