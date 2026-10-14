@@ -157,3 +157,16 @@ test('real corner-exit pass is accepted but late straight or AI ranking changes 
   curve=0;g.raceTime=13;p.progress=101;g.standings=[p,o];
   assert.equal(pass.frame(g),false);
 });
+
+
+test('corner-pass gift cannot counterfeit a required physical item-box pickup',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  for(let i=0;i<4;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  assert.equal(c.setStage(4),true);c.begin(g);
+  c.onItemGet('nitro','overtake');
+  assert.equal(c.metrics.bonusItems,1);assert.equal(c.metrics.pickups,0);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),0);
+  c.onItemGet('shield','box');
+  assert.equal(c.metrics.pickups,1);
+  assert.ok(gradeStage(c.stage,result(),c.metrics)>0);
+});
