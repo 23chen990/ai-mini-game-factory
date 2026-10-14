@@ -26,3 +26,13 @@
 - 从开始→M4命中3次/失败→结算→重玩，以及 AWM 击杀、MP5 生存、暂停/回来、换弹/切枪/开镜、设备方向切换、后台恢复、低端帧率全部按**玩家可见的自然输入**验证，模拟注入只作为辅助工程证据。
 - 默认第一局难度须让新玩家能在15–30秒内找到并伤害敌人，不能把 AI 击杀充当玩家战果；失败归因、再次挑战入口要明确。
 - 要进行两次真人无讲解30秒理解测试，记录敌我识别成功、首次有效命中耗时、误操作/误解按钮；保留截图/视频和 SHA，对应新 buildHash，未通过则继续 Draft。
+
+## 2026-10-14 真实源码构建与浏览器复核补充（以此为最新结果）
+
+- **实测范围**：独立云端临时 QA 使用固定来源 `riba2534/claude-opus-5-5-demo@54adc1fb64155f9dd7c1c90ecae7b8185ac540b8`，完成 Three.js 源码编译、工厂冻结工程测试与 H5 模板测试（24/24）。非虚构演示、无游戏行为注入。
+- **本轮真实浏览器自动化**：Chromium 软件 WebGL 触控模拟，844×390，`mobile-entry`、`mobile-controls`、`mobile-pause-resume`、`mobile-save-reload`、`mobile-terminal-replay` **5/5 流程门禁通过**，page errors 0；首屏就绪约 14.1 秒。
+- **重要限制**：`mobile-controls` 只记录了真实触摸事件和截图，**没有断言成功命中**；本轮玩家击杀/命中分数是 **0**，终局为“本次挑战未完成”。因此三关成功路径、真实手机手感、两指操作、玩家敌我理解、广告和 REA 新一轮实测仍不可标记 PASS。软件渲染卡顿，也不能代表真机帧率。
+- 修复迭代：首轮把 FPS 专用文件错误注册为所有候选模板的公共文件，导致非射击项目 54 项 ENOENT；已改为 `h5-source-mobile-v1` 专属 runtimeFiles，并以 candidate 版本位区分新旧 run。第一次云端实景 QA 因开始按钮尺寸不达标失败、截图揭示原生菜单重叠；已隐藏旧菜单/暂停/结算/配装蒙层且保留内部事件处理，恢复 48px 触控尺寸，再次构建与复测通过。
+- 验证对应**实际构建 hash**：`8208e5903755a155ea91a5de3769fe04cb3c10c1f61b2fb698d7a825c6be419a`。试玩包 ZIP SHA-256：`ca4e21eb2df68c015fe130562d4b733c25b34a5ba56abccd06d744ec56c58e0e`；单页 HTML SHA-256：`91e4754d91ab9b99cdf93fd6d465ca33e4bcbd645d0d1ad4c4c9a98ead80937c`。
+- **不可变的 GitHub Actions 证据**：[实际完整源构建/自动试玩与截图](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38521787772)，附件 `cf-transport-review-6498084fe0f9e058746857149cac6d749e746321`（Actions Artifacts 有保留期）。历史失败证据 [第一次云端试玩](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38520975457) 同样保留，未涂改。
+- 临时 `.github/workflows/cf-mobile-qa.yml` 仅用于获取正式源文件及真实浏览器证据，已**从 PR 的最终净改动移除**，不调整既有 `pilot:scope` 门禁。新包仅是可供验收的 H5 候选，不是平台发行。
