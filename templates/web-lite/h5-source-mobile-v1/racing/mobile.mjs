@@ -69,7 +69,7 @@ function display(next) {
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
   $('start').hidden = next !== 'ready'; $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
   $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || career.nextStage() === career.index;
-  $('guide').hidden = next !== 'ready'; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
+  $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && ['time','relay'].includes(career.stage.kind));
   for (const button of root.querySelectorAll('[data-race-direction]')) button.disabled = next !== 'race';
@@ -133,7 +133,7 @@ async function loadTrack(id, autoStart) {
   releaseInput();loading = true; $('start').disabled = true; $('next').disabled = true; $('map').disabled = true;
   $('heading').textContent = '准备下一场…';
   try {
-    const sameMap = g.settings.map === id && !!g.track;
+    const sameMap = g.map?.id === id && !!g.track;
     if (!sameMap) { g.settings.map = id;g.save();await g.loadMap(id); }
     g.startDemo();result = null;loading = false;$('map').value = id;
     if (autoStart && career.canStart()) start();
@@ -184,6 +184,7 @@ async function boot() {
     await new Promise(resolve => setTimeout(resolve, 30));
   }
   if (!g) throw Error('赛道加载未完成，请刷新或使用支持 WebGL 的浏览器');
+  const loadedMap = g.map?.id;
   g.mobileMode = mobile;g.camMode = 1;g.settings.quality = 'mid';career.configure(g);g.setupQuality();
   career.patchNative(g);
   career.setupAd(window.__PLATFORM_META__ ?? { status: 'PENDING' }, window.tap);
@@ -216,6 +217,7 @@ async function boot() {
   const nativeCountdown = g.hud.countdown.bind(g.hud);g.hud.countdown = text => nativeCountdown(text === 'GO!' ? '出发' : text);
   g.hud.drawSpeedo = () => {}; // Desktop speedo is compatibility-only and absent from this HUD.
   loading = false;root.dataset.loaded = 'true';$('start').disabled = false;$('start').textContent = '开始比赛';$('map').value = g.settings.map;renderLobby();
+  if (loadedMap !== career.stage.map) await loadTrack(career.stage.map, false);
   if (!mobile) $('note').textContent = '键盘保留原操作；点按左右按钮可切入双键驾驶';
   display('ready');
   let lastFuelTick = 0;
