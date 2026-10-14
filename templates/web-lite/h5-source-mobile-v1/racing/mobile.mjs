@@ -201,6 +201,8 @@ async function boot() {
     const held = pointers.snapshot(performance.now());g.input.touch.left = held.left;g.input.touch.right = held.right;
     const raw = nativeFrame(), canStep = g.acc + dt >= 1 / 120;
     const translated = driver.frame(dt, raw, g.player, g.track, g.state, { canStep });
+    // The tutorial grants free starting boost; later races must earn position on the track.
+    if (career.index > 0 && g.state === 'race' && g.raceTime < .28 && driver.enabled) translated.upPressed = false;
     if (g.itemMode && driver.enabled) translated.nitroPressed = career.itemInput(g, canStep);
     return translated;
   };
