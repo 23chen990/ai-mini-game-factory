@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { itemBoxPolicy, earnedResumeOrigin, warningVisible } from '../racing-visible-policy.mjs';
+import { itemBoxPolicy, earnedResumeOrigin, warningVisible, recoverVisibleHeading, qualifiedVisibleFinish } from '../racing-visible-policy.mjs';
 function image(rectangles) {
   const width = 400, height = 200, data = new Uint8Array(width * height * 4);
   for (const [x0, y0, w, h, color] of rectangles) for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) data.set(color, (y * width + x) * 4);
@@ -30,4 +30,30 @@ test('wrong-way recovery ignores the text retained after the native warning beco
   assert.equal(warningVisible({ ...el, classList: { contains: () => true } }), false);
   assert.equal(warningVisible({ ...el, getClientRects: () => [] }), false);
   assert.equal(warningVisible(null), false);
+});
+test('visible sudden arrow rotation keeps the pre-spin route and does not flip it again during a lingering warning', () => {
+  const memory = {};
+  recoverVisibleHeading({ direction: null, heading: [1, 0], target: [21, 0], wrongWay: false }, memory, 1000);
+  const spin = recoverVisibleHeading({ direction: null, heading: [-1, 0], target: [-21, 0], wrongWay: false }, memory, 1100);
+  assert.equal(spin.reason, 'visible-arrow-spin-recovery');
+  assert.deepEqual(spin.recoveryTarget, [1, 0]);
+  const aligned = recoverVisibleHeading({ direction: null, heading: [1, 0], target: [21, 0], wrongWay: true }, memory, 2500);
+  assert.equal(aligned.direction, null);
+  const lingering = recoverVisibleHeading({ direction: null, heading: [1, 0], target: [21, 0], wrongWay: true }, memory, 2600);
+  assert.equal(lingering.direction, null);
+  assert.equal(memory.recovery, null);
+});
+test('ordinary corner rotation is followed normally and opposite-heading jitter does not alternate recovery keys', () => {
+  const memory = {};
+  recoverVisibleHeading({ direction: 'left', heading: [1, 0], target: [21, 0], wrongWay: false }, memory, 1000);
+  const corner = recoverVisibleHeading({ direction: 'left', heading: [.8, .6], target: [17, 12], wrongWay: false }, memory, 1300);
+  assert.equal(corner.direction, 'left'); assert.equal(corner.reason, undefined);
+  const first = recoverVisibleHeading({ direction: null, heading: [-.8, -.6], wrongWay: true }, memory, 1400);
+  const jitter = recoverVisibleHeading({ direction: null, heading: [-.81, -.59], wrongWay: true }, memory, 1450);
+  assert.equal(jitter.direction, first.direction);
+});
+test('old saved stars cannot turn a failed replay or AI finish into a natural victory', () => {
+  assert.equal(qualifiedVisibleFinish({ finished: true, heading: '再试一次，争取过关' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ finished: false, heading: '挑战成功！★' }, 3), false);
+  assert.equal(qualifiedVisibleFinish({ finished: true, heading: '挑战成功！★★' }, 2), true);
 });

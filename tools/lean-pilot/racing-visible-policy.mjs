@@ -9,6 +9,37 @@ export function earnedResumeOrigin(report, storage, buildHash) {
 export function warningVisible(element) {
   return !!element && !element.hidden && !element.classList.contains('hidden') && element.getClientRects().length > 0;
 }
+export function qualifiedVisibleFinish(terminal, savedStars) {
+  return terminal.finished === true && savedStars > 0 && terminal.heading.startsWith('挑战成功！');
+}
+/** Remember only the rendered arrow/road. No native car/track/item state is read. */
+export function recoverVisibleHeading(policy, memory, now) {
+  if (!policy.heading) return policy;
+  const h = policy.heading;
+  const angleTo = target => Math.atan2(h[0] * target[1] - h[1] * target[0], h[0] * target[0] + h[1] * target[1]);
+  const turn = memory.heading ? Math.abs(angleTo(memory.heading)) : 0;
+  const abrupt = memory.heading && now - memory.at <= 240 && turn > .85;
+  if (!policy.wrongWay) memory.warningHandled = false;
+  if (!memory.recovery && (abrupt || (policy.wrongWay && !memory.warningHandled))) {
+    const target = memory.forward ?? [-h[0], -h[1]];
+    const angle = angleTo(target);
+    memory.recovery = { target, started: now, direction: angle >= 0 ? 'left' : 'right' };
+  }
+  memory.heading = h; memory.at = now;
+  if (memory.recovery) {
+    const { target, started, direction } = memory.recovery, angle = angleTo(target);
+    if (now - started >= 1200 && Math.abs(angle) < .30) {
+      memory.recovery = null; memory.warningHandled = true;
+    } else {
+      return { ...policy, direction: Math.abs(angle) < .15 ? null : Math.abs(angle) > 1.7 ? direction : angle > 0 ? 'left' : 'right', reason: 'visible-arrow-spin-recovery', angle, recoveryTarget: target };
+    }
+  }
+  if (!policy.wrongWay && policy.target) {
+    const length = Math.hypot(...policy.target);
+    if (length) memory.forward = policy.target.map(v => v / length);
+  }
+  return policy;
+}
 export function itemBoxPolicy({ width: W, height: H, data }) {
   const mask = new Uint8Array(W * H), seen = new Uint8Array(W * H), candidates = [];
   const y0 = Math.floor(H * .34), y1 = Math.floor(H * .53);

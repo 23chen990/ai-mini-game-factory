@@ -53,11 +53,11 @@ export class RacingCareer {
     this.auto.reset();this.passes.reset();
     this.passes.previous = game.standings.indexOf(game.player) + 1;
     this.passes.lastCrashes = game.player?.stats?.crash ?? 0;
-    // Natural V3 QA: skilled fields still lost to 6–9 wall impacts. Keep native
-    // variability/rubber-banding, but place career rivals in competitive bands.
-    // No player physics, position, grid slot or progress is changed.
-    const band = this.stage.diff === 1 ? [.85, 1.05, 1.18, 1.34] :
-      this.stage.diff === 2 ? [1.2, 1.38, 1.38, 1.54] : null;
+    // Skilled fields lost to 6–9 wall impacts; raise only the middle band.
+    // Two natural expert retests with2–3crashes finished sixth after the earlier
+    // expert increase. Retain the submitted expert speeds and all objective gates.
+    // Native physics, grid, progress, variability and rubber-banding stay intact.
+    const band = this.stage.diff === 1 ? [.85, 1.05, 1.18, 1.34] : null;
     if (band) for (const rival of game.racers.filter(r => !r.isPlayer)) {
       const fraction = Math.max(0, Math.min(1, ((rival.skill ?? band[0]) - band[0]) / (band[1] - band[0])));
       rival.skill = band[2] + fraction * (band[3] - band[2]);

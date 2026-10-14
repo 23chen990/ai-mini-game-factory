@@ -286,11 +286,20 @@ test('career skilled opponents stay competitive after repeated player crashes wi
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });
-test('career expert skill band and named boss escalate while tutorial difficulty stays native',()=>{
+test('career retains the submitted expert field speeds while boss and middle field still escalate',()=>{
   const c=new RacingCareer(memory()),g=game();g.racers[1].skill=.55;g.racers[2].skill=.75;
   c.begin(g);assert.equal(g.racers[1].skill,.55);assert.equal(g.racers[2].skill,.75);
   for(let i=0;i<12;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(12);g.racers[1].skill=1.2;g.racers[2].skill=1.38;c.begin(g);
   assert.equal(c.boss.skill,1.58);
-  assert.ok(Math.abs(g.racers[2].skill-1.54)<1e-9);
+  assert.ok(Math.abs(g.racers[2].skill-1.38)<1e-9);
+});
+test('expert corner-pass stage keeps native speed variability and never changes player progress',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  for(let i=0;i<10;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  c.setStage(10);g.racers[1].skill=1.2;g.racers[2].skill=1.38;
+  const before=g.racers.map(r=>r.progress);c.begin(g);
+  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.2,1.38]);
+  assert.deepEqual(g.racers.map(r=>r.progress),before);
+  assert.equal(g.player.skill,undefined);
 });

@@ -9,7 +9,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { createRequire } from 'node:module';
-import { itemBoxPolicy, earnedResumeOrigin } from './racing-visible-policy.mjs';
+import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish } from './racing-visible-policy.mjs';
 const require = createRequire(import.meta.url), testRequire = createRequire(require.resolve('@playwright/test'));
 const playwrightRequire = createRequire(testRequire.resolve('playwright'));
 const { PNG } = require(path.join(path.dirname(playwrightRequire.resolve('playwright-core/package.json')), 'lib/utilsBundle.js'));
@@ -58,7 +58,7 @@ function minimapPolicy(radius) {
   // Recover from an item spin using the same visible wrong-way warning a player sees.
   // The former QA policy blindly followed its arrow backwards around the whole track.
   const warning = document.querySelector('#warn');
-  if (warning?.getClientRects().length && !warning.classList.contains('hidden') && warning.textContent.includes('方向错误')) return { direction: 'left', reason: 'visible-wrong-way-recovery' };
+  const wrongWay = !!warning?.getClientRects().length && !warning.classList.contains('hidden') && warning.textContent.includes('方向错误');
   const c = document.querySelector('#mm');
   const W = c.width, H = c.height, rgba = c.getContext('2d').getImageData(0, 0, W, H).data;
   const yellow = new Uint8Array(W * H), seen = new Uint8Array(W * H), components = [];
@@ -86,10 +86,10 @@ function minimapPolicy(radius) {
     const bridge = rgba[i] < 110 && rgba[i + 1] > 145 && rgba[i + 2] > 190;
     if (Math.abs(r - radius) < 1.5 && (hx * dx + hy * dy) / r > .35 && (white || bridge)) targets.push({ x: dx, y: dy });
   }
-  if (!targets.length) return { direction: null, reason: 'ahead-road-not-visible' };
+  if (!targets.length) return { direction: null, reason: 'ahead-road-not-visible', heading: [hx, hy], wrongWay };
   const tx = targets.reduce((s, p) => s + p.x, 0) / targets.length, ty = targets.reduce((s, p) => s + p.y, 0) / targets.length;
   const angle = Math.atan2(hx * ty - hy * tx, hx * tx + hy * ty);
-  return { direction: angle > .10 ? 'left' : angle < -.10 ? 'right' : null, angle, position: [cx, cy], target: [tx, ty] };
+  return { direction: angle > .10 ? 'left' : angle < -.10 ? 'right' : null, angle, position: [cx, cy], target: [tx, ty], heading: [hx, hy], wrongWay };
 }
 async function observed(full = false) {
   return page.evaluate(full => {
@@ -136,15 +136,15 @@ try {
     const trace = [], captures = new Set(); let terminal = null, lastLog = 0;
     const startedAt = Date.now(), deadline = startedAt + 600000;
     const isItemRace = (await page.locator('#race-stage-tag').textContent()).includes('道具赛');
-    let lastBoxScan = 0, box = null;
+    let lastBoxScan = 0, box = null; const visibleMemory = {}; let lastScene = 0, lastPickups = 0;
     console.log(JSON.stringify({ stage: index + 1, entry, status: 'DRIVING' }));
     while (Date.now() < deadline) {
-      const policy = await page.evaluate(minimapPolicy, Number(process.env.RACE_QA_LOOKAHEAD ?? 21));
+      const policy = recoverVisibleHeading(await page.evaluate(minimapPolicy, Number(process.env.RACE_QA_LOOKAHEAD ?? 21)), visibleMemory, Date.now());
       if (isItemRace && Date.now() - lastBoxScan > 350) {
         lastBoxScan = Date.now();
         box = itemBoxPolicy(PNG.sync.read(await page.screenshot()));
       }
-      if (box?.direction && Math.abs(policy.angle ?? 1) < .18) {
+      if (box?.direction && !policy.reason?.includes('recovery') && Math.abs(policy.angle ?? 1) < .18) {
         policy.roadDirection = policy.direction; policy.direction = box.direction; policy.box = box;
       }
       await steer(policy.direction);
@@ -153,9 +153,12 @@ try {
       trace.push({ at: Date.now(), policy, touch: touching, observed: telemetry });
       const capture = o.events.find(e => !captures.has(e.type) && ['driftEnd', 'nitro', 'crash', 'pad'].includes(e.type) && (e.type !== 'driftEnd' || e.clean));
       if (capture) { captures.add(capture.type); await page.screenshot({ path: path.join(out, `${name}-${capture.type}.png`) }); }
-      for (const [key, condition] of [['elimination', o.goal.includes('距离淘汰')], ['item-use', o.feedback.includes('已使用')]]) {
-        if (condition && !captures.has(key)) { captures.add(key); await page.screenshot({ path: path.join(out, name + '-' + key + '.png') }); }
+      const pickups = Number(o.goal.match(/已拾取道具 (\d+)\//u)?.[1] ?? 0);
+      for (const [key, condition] of [['elimination', o.goal.includes('距离淘汰')], ['item-use', pickups > 0 && o.feedback.includes('已使用')], ['pickup', pickups > lastPickups]]) {
+        if (condition && !captures.has(key)) { captures.add(key); await page.waitForTimeout(180); await page.screenshot({ path: path.join(out, name + '-' + key + '.png') }); }
       }
+      lastPickups = pickups;
+      if (name === '04' && o.raceTime >= lastScene + 5) { lastScene = Math.floor(o.raceTime / 5) * 5; await page.screenshot({ path: path.join(out, name + '-scene-' + lastScene + '.png') }); }
       if (o.raceTime - lastLog >= 20) { lastLog = o.raceTime; console.log(JSON.stringify({ stage: index + 1, time: +o.raceTime.toFixed(1), progress: Math.round(o.progress), place: o.place, goal: o.goal, crashes: o.stats.crash })); }
       if (o.phase === 'finished') { terminal = await observed(true); break; }
       await page.waitForTimeout(40);
@@ -170,7 +173,7 @@ try {
     }));
     const race = { stage: name, entry, ...t, earnedStars: stars, wallDurationMs: Date.now() - startedAt,
       terminalButtons, actionsFit: terminalButtons.every(b => b.top >= 0 && b.bottom <= viewport.height && b.height >= 44),
-      status: t.finished && stars > 0 ? 'PASS' : 'BLOCKED', input: 'visible minimap + cyan cube pixels + visible wrong-way warning; trusted CDP touch only', forbiddenOperations: [] };
+      status: qualifiedVisibleFinish(t, stars) ? 'PASS' : 'BLOCKED', input: 'visible minimap + cyan cube pixels + visible wrong-way warning; trusted CDP touch only', forbiddenOperations: [] };
     races.push(race);
     await writeFile(path.join(out, name + '-trace.json'), JSON.stringify({ buildHash: build.buildHash, driverPolicy: race.input, inputTransport: 'CDP Input.dispatchTouchEvent', forbiddenOperations: [], controls: controls.splice(0), frames: trace, terminal: race }, null, 2));
     await writeFile(path.join(out, 'checkpoint.json'), JSON.stringify({ buildHash: build.buildHash, races, errors }, null, 2));
