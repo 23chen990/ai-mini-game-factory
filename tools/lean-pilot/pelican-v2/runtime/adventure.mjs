@@ -48,13 +48,13 @@ function step(r,dt){
   if(o.hit||o.passed||r.stun>0)continue;
   const bounds=BOUNDS[o.kind];
   if(sweptHit({x:oldX-oldD,z:oldOZ-oldZ},{x:o.x-r.distance,z:o.z-r.lane},bounds.x+.58,bounds.z+.27)){
-   if(o.kind==='barrier'&&Math.min(oldY,r.y)>.31){continue;}
+   if(o.kind==='barrier'&&Math.min(oldY,r.y)>.31){o.jumped=true;continue;}
    o.hit=true;o.fallAt=r.elapsed;r.hits++;
    if(o.kind==='pedestrian'){r.stun=3;r.speed=0;event(r,'pedestrian-hit',{objectId:o.id});}
    else {finish(r,o.kind==='barrier'?'barrier':'vehicle',o);return;}
   }
   if(o.x-r.distance<-(bounds.x+.75)){o.passed=true;
-   const jumped=o.kind==='barrier'&&r.y>.31;
+   const jumped=o.kind==='barrier'&&o.jumped===true;
    if(jumped)r.jumpedBarriers++;
    event(r,o.kind==='barrier'?'barrier-cleared':'obstacle-avoided',{objectId:o.id,kind:o.kind,jumped,combo:r.jumpedBarriers});}
  }

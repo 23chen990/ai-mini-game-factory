@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {springLane,riderFeel,cameraTarget} from './feel.mjs';
-import {unsafeFishLanes, hazardForecast, pedestrianZAtArrival, LANES} from './safety.mjs';
+import {unsafeFishLanes, hazardForecast, pedestrianZAtArrival} from './safety.mjs';
 function travel(dt,events=[{at:0,target:1.7}],duration=1.1){
  const x={position:0,velocity:0,latAcc:0,lean:0,steer:0,yaw:0,elapsed:0,speed:8};
  let t=0,target=0,index=0,samples=[];
@@ -31,4 +31,3 @@ test('fish routing never guides near predicted danger lane',()=>{assert.ok(unsaf
 test('hazards forecast respects warning window',()=>{const o=mkPed(90,0);assert.equal(hazardForecast(o,mkRun(0)),null);assert.ok(hazardForecast(o,mkRun(65)));});
 test('vehicle forecast includes closing speed',()=>{const o={kind:'car',x:100,lane:1,speed:1.7},r=mkRun(65,8.8);const v=hazardForecast(o,r);assert.ok(v);assert.equal(v.lanes[0],1);assert.ok(v.seconds<3.4);});
 test('no hazard forecast after impact',()=>{const o=mkPed(90,0);o.hit=true;assert.equal(hazardForecast(o,mkRun(85)),null);});
-console.log('Pelican feel/safety spec loaded');

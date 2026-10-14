@@ -3,8 +3,8 @@ import css from './coast.css';
 import { LEVELS, LANES } from './levels.mjs';
 import { newRun, input, advance, newSave, loadSave, settle, qualityStep } from './adventure.mjs';
 import {upcomingHazards} from './safety.mjs';
-import {cameraTarget,smooth,FEEL} from './feel.mjs';
-import {allStars,nextStarTip,starRequirements} from './engagement.mjs';
+import {cameraTarget,smooth,FEEL,syncRidePose} from './feel.mjs';
+import {allStars,nextStarTip,starRequirements,masteryStatus} from './engagement.mjs';
 import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound,adAllowed} from './reward-engine.mjs';
 import {requestRewardedVideo} from './reward-adapter.mjs';
 
@@ -20,6 +20,7 @@ export function createCoastAdventure(api) {
  <div id="co-feedback" role="status"><strong></strong><small></small></div><div id="co-crash"></div>
  <div id="co-modal"><div class="co-card"><span class="co-eyebrow">A LITTLE COASTAL ESCAPE</span><h1 id="co-heading">鹈鹕<br>海岸冒险</h1><p id="co-copy">骑着单车追鱼，沿着海岸去下一站。</p><div id="co-rules" class="co-rules"><span><b>◀ ▶</b>轻点或左右滑动</span><span><b>🐟</b>靠近自动抓鱼</span><span><b>↟</b>点跳跃或上滑</span></div><p id="co-progress" class="co-progress"></p><div id="co-route" class="co-route"></div><div class="co-actions"><button id="co-start" class="primary">▶ 出发 · 海岸出发</button><button id="co-resume" class="primary" hidden>▶ 继续骑行</button><button id="co-next" class="primary" hidden>下一关 →</button><button id="co-replay" class="secondary" hidden>↻ 重开当前关卡</button><button id="co-select" class="secondary" hidden>海岸路线 · 选择关卡</button><button id="co-ad" class="secondary" hidden>自愿观看广告 · 额外补给（未接入）</button></div><div class="co-settings"><button id="co-quality">画质 · 均衡</button><button id="co-sound">声音 · 关</button></div><div id="co-notice" role="status"></div><p id="co-storage" class="co-meta">本机保存关卡进度 · 广告未接入 · H5 开发试玩</p></div></div>
  <div class="co-lane-indicator"><i></i><i class="on"></i><i></i></div><nav id="co-controls" aria-label="骑行操作"><button data-action="left" aria-label="向左变道">◀<small>向左变道</small></button><button data-action="right" aria-label="向右变道">▶<small>向右变道</small></button><button data-action="jump" aria-label="跳跃">↟<small>跳跃</small></button></nav>`;
+ const mastery=document.createElement('div');mastery.id='co-mastery';mastery.setAttribute('aria-label','三星挑战进度');root.append(mastery);
  document.body.append(root);const $=id=>root.querySelector('#co-'+id);
  const SAVE='pelican-coast:campaign:v2',REWARD='h5-mobile:pelican-coast-v2-20261014:pelican-bike:v1';
  let save=newSave(),progress=newProgress(),storage=true;
@@ -58,8 +59,8 @@ export function createCoastAdventure(api) {
   const route=$('route'),earned=allStars(save);
   $('progress').textContent=`🌟 全海岸 ${earned}/15 星 · ${earned===15?'渔王挑战已达成':'重玩关卡可冲三星'}`;
   route.innerHTML=LEVELS.map(l=>{
-   const best=save.best?.[l.id-1],record=save.completed[l.id-1]?` · 最多 ${best?.fish??0} 鱼`:'';
-   return `<button data-level="${l.id}" ${l.id>save.unlocked?'disabled':''} class="${l.id===selected?'selected':''} ${l.id>save.unlocked?'locked':''}"><strong>${l.id>save.unlocked?'🔒':l.id}</strong><span><b>${l.name}</b><small>${l.distance} m · ${l.goal.count} 条鱼${l.goal.gold?' · 金鱼 '+l.goal.gold:''}${record}</small><small class="co-master">三星挑战：跳过 ${l.mastery.jumps} 个路障</small></span><em>${save.completed[l.id-1]?'★'.repeat(save.stars[l.id-1]):l.id===save.unlocked?'出发 →':''}</em></button>`;
+   const req=starRequirements(l),best=save.best?.[l.id-1],record=save.completed[l.id-1]?` · 最多 ${best?.fish??0} 鱼`:'';
+   return `<button data-level="${l.id}" ${l.id>save.unlocked?'disabled':''} class="${l.id===selected?'selected':''} ${l.id>save.unlocked?'locked':''}"><strong>${l.id>save.unlocked?'🔒':l.id}</strong><span><b>${l.name}</b><small>${l.distance} m · ${l.goal.count} 条鱼${l.goal.gold?' · 金鱼 '+l.goal.gold:''}${record}</small><small class="co-master">★★★ 🐟${req.gold} · 🌟${req.goldFish} · ↟${req.jumps} · 🛡 · ◷≤${req.time.toFixed(1)}s</small></span><em>${save.completed[l.id-1]?'★'.repeat(save.stars[l.id-1]):l.id===save.unlocked?'出发 →':''}</em></button>`;
   }).join('');
   $('start').textContent='▶ 出发 · '+LEVELS[selected-1].name;
   if(!run)$('copy').textContent=LEVELS[selected-1].subtitle;
@@ -94,11 +95,11 @@ export function createCoastAdventure(api) {
  for(const b of root.querySelectorAll('[data-action]')){b.addEventListener('pointerdown',e=>{e.preventDefault();if(!run)return;b.setPointerCapture(e.pointerId);input(run,b.dataset.action);b.classList.add('pressed');});const release=()=>b.classList.remove('pressed');for(const e of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(e,release);}
   // Optional one-finger gestures on the 3D scene; UI buttons remain fully usable.
   let swipe=null;renderer.domElement.style.touchAction='none';
-  renderer.domElement.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'&&run?.phase==='running')swipe={id:e.pointerId,x:e.clientX,y:e.clientY};});
-  renderer.domElement.addEventListener('pointerup',e=>{if(!swipe||swipe.id!==e.pointerId)return;const dx=e.clientX-swipe.x,dy=e.clientY-swipe.y;swipe=null;if(run?.phase!=='running')return;
+  renderer.domElement.addEventListener('touchstart',e=>{const t=e.touches[0];if(e.touches.length===1&&run?.phase==='running')swipe={id:t.identifier,x:t.clientX,y:t.clientY};else swipe=null;},{passive:true});
+  renderer.domElement.addEventListener('touchend',e=>{const t=[...e.changedTouches].find(t=>t.identifier===swipe?.id);if(!swipe||!t)return;const dx=t.clientX-swipe.x,dy=t.clientY-swipe.y;swipe=null;if(run?.phase!=='running')return;
    if(Math.abs(dx)>36&&Math.abs(dx)>Math.abs(dy)*1.15)input(run,dx<0?'left':'right');
    else if(dy< -48)input(run,'jump');
-  });renderer.domElement.addEventListener('pointercancel',()=>{swipe=null;});
+  });renderer.domElement.addEventListener('touchcancel',()=>{swipe=null;});
  // Own the three gameplay actions before the legacy demo's shortcuts/held controls.
  window.addEventListener('keydown',e=>{const action={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',Escape:'pause',KeyP:'pause'}[e.code];if(!action)return;e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;if(action==='pause'){if(run?.phase==='paused')resume();else pause();}else if(run)input(run,action);},true);
  window.addEventListener('blur',()=>pause(true));window.addEventListener('pagehide',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});
@@ -112,11 +113,11 @@ export function createCoastAdventure(api) {
  // An inspection-only surface: no set score, teleport, unlock, or finish helpers.
  window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneIndex:run.laneIndex,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,reason:run.reason,events:run.events,save,pausedBySystem})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},quality:{...quality},calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
  phase('ready');routes();persist();applyRender();root.dataset.loaded='true';
- function beforeRide(dt){now=performance.now();if(run)advance(run,dt);
-  if(run){Object.assign(S,{distance:run.distance,lane:run.lane,laneTarget:LANES[run.laneIndex],laneV:run.laneV,speed:run.speed,y:run.y,vy:run.vy,airborne:run.y>0,fish:run.score,golden:run.gold,paused:run.phase!=='running',latAcc:run.latAcc,lean:run.lean,steer:run.steer,yaw:run.yaw});
+ function beforeRide(dt){now=performance.now();if(run)advance(run,dt);syncRidePose(S,run);
+  if(run){
    while(eventCursor<run.events.length){const e=run.events[eventCursor++];if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',`${e.count} / ${run.level.goal.count} 条`, 'catch');}if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
    if(run.phase==='finished'&&lastPhase!=='finished')terminal();lastPhase=run.phase;
-  }else Object.assign(S,{speed:0,lane:0,y:0,paused:true});
+  }
  }
  function updateFishVisuals(){if(!run)return;
   const visible=run.fishes.filter(f=>!f.caught&&f.x-run.distance>-3&&f.x-run.distance<105);
@@ -147,12 +148,18 @@ export function createCoastAdventure(api) {
   const fish=run.fishes.find(f=>!f.caught&&f.x-run.distance>1&&f.x-run.distance<35);
   const lanes=[0,1,2].map(lane=>{
    const hazard=upcoming.find(h=>h.lanes.includes(lane)&&(!next||Math.abs(h.seconds-next.seconds)<1.8));
-   if(hazard){const kind=hazard.obstacle.kind;return {kind:'danger',icon:kind==='barrier'?'↟':kind==='pedestrian'?'🚶':'🚗',seconds:Math.max(1,Math.ceil(hazard.seconds)),label:kind};}
+   if(hazard){const kind=hazard.obstacle.kind,bonus=kind==='barrier'&&run.fishes.some(f=>f.bonus&&f.sourceObstacleId===hazard.obstacle.id&&!f.caught);return {kind:bonus?'danger jump-reward':'danger',icon:bonus?'↟🌟':kind==='barrier'?'↟':kind==='pedestrian'?'🚶':'🚗',seconds:kind==='barrier'&&hazard.seconds<1.5?Math.max(.1,hazard.seconds).toFixed(1):Math.max(1,Math.ceil(hazard.seconds)),label:kind};}
    return fish?.lane===lane?{kind:'fish',icon:fish.golden?'🌟':'🐟',seconds:'',label:'fish'}:{kind:'',icon:'·',seconds:'',label:'clear'};
   });const rkey=JSON.stringify(lanes);if(rkey!==lastRadar){lastRadar=rkey;for(let i=0;i<3;i++){const n=root.querySelector(`[data-lane="${i}"]`),r=lanes[i];n.className='co-lane '+r.kind;n.innerHTML=r.icon+(r.seconds?`<small>${r.seconds}s</small>`:'');n.dataset.kind=r.label;}}
   $('radar').classList.toggle('active',!!next||!!fish);$('radar-label').hidden=!next&&!fish;
   const prizeAhead=next?.obstacle.kind==='barrier'&&run.fishes.some(f=>f.bonus&&!f.caught&&f.sourceObstacleId===next.obstacle.id&&f.x-run.distance<50);
    $('radar-label').textContent=next?.obstacle.kind==='pedestrian'?'前方有人横穿 · 提前避开红色车道':prizeAhead?'前方路障 · 跳过去追奖励金鱼（也可绕开）':'前方路况 · 红色危险车道';
+ 
+  const barrier=upcoming.find(h=>h.obstacle.kind==='barrier'&&h.obstacle.lane===run.laneIndex&&h.seconds>.15&&h.seconds<.6);
+  root.querySelector('[data-action="jump"]').classList.toggle('ready',!!barrier&&run.y===0);
+  const m=masteryStatus(run),mark=v=>v?'done':'missed';
+  const mastery=`<b>★★★</b><span data-goal="catch" class="${m.catch.done?'done':''}">🐟 ${m.catch.value}/${m.catch.target}</span><span data-goal="gold" class="${m.gold.done?'done':''}">🌟 ${m.gold.value}/${m.gold.target}</span><span data-goal="jump" class="${m.jump.done?'done':''}">↟ ${m.jump.value}/${m.jump.target}</span><span data-goal="no-hit" title="无碰撞" class="${mark(m.noHit.done)}">🛡${m.noHit.done?'✓':'×'}</span><span data-goal="time" title="三星用时上限" class="${mark(m.time.done)}">◷≤${m.time.target.toFixed(1)}s</span>`;
+  if($('mastery').innerHTML!==mastery)$('mastery').innerHTML=mastery;
  }
  let sampleAt=performance.now(),sampleFrames=0;
  function performanceSample(){sampleFrames++;const current=performance.now();if(current-sampleAt<3000)return;const fps=sampleFrames*1000/(current-sampleAt);sampleAt=current;sampleFrames=0;if(run?.phase!=='running'||manualQuality==='sharp')return;if(fps<38)lowSeconds+=3;else lowSeconds=0;if(lowSeconds>=6){quality=qualityStep(quality,fps,window.devicePixelRatio||1);applyRender();lowSeconds=0;}}

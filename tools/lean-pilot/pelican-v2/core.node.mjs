@@ -48,7 +48,7 @@ test('save validates corrupt input; success unlocks next; failure does not; sett
  const f=newRun(3);f.phase='finished';f.reason='vehicle';settle(s,f);assert.equal(s.unlocked,2);
 });
 test('authored courses have a no-hit path meeting distance and fish/type goals at both 30 and 60 Hz',()=>{
- for(const dt of [1/30,1/60])for(const level of LEVELS){const r=newRun(level.id);let decisions=0;
+ for(const dt of [1/30,1/60,1/120])for(const level of LEVELS){const r=newRun(level.id);let decisions=0;
   while(r.phase==='running'){
    if(decisions++%Math.round(.12/dt)===0){const close=r.obstacles.filter(o=>!o.hit&&!o.passed&&o.x-r.distance>-(BOUNDS[o.kind].x+.75)&&o.x-r.distance<65);
     const blocked=lane=>close.some(o=>Math.abs(o.z-LANES[lane])<.8&&(o.x-r.distance)/(level.speed+o.speed)<=3);
@@ -60,7 +60,7 @@ test('authored courses have a no-hit path meeting distance and fish/type goals a
   }assert.equal(r.reason,'complete',`level ${level.id} at ${dt}: ${r.reason}`);assert.equal(r.hits,0);}
 });
 test('camera tracks forward distance in a floating world, ignores jump height and follows lane gently',()=>{
- const a=cameraPose(0,390/844),b=cameraPose(1.7,390/844);assert.ok(a.position[0]<-6);assert.equal(a.fov,52);assert.ok(Math.abs(a.position[2]-b.position[2])<1.3);assert.ok(a.look[0]>=8);
+ const a=cameraPose(0,390/844),b=cameraPose(1.7,390/844);assert.ok(a.position[0]<-6);assert.equal(a.fov,52);assert.ok(Math.abs(a.position[2]-b.position[2])<.7);assert.ok(a.look[0]>=10);
 });
 test('star reward is based on fishing mastery, not just elapsed seconds',()=>{
  const s=newSave(),minimal=newRun(1);minimal.phase='finished';minimal.reason='complete';minimal.count=minimal.level.goal.count;minimal.score=minimal.count;minimal.elapsed=35;settle(s,minimal);assert.equal(minimal.stars,1);

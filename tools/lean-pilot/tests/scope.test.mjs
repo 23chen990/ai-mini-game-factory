@@ -2,6 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { evaluateScope } from '../scope-check.mjs';
 const base = { name: 'factory', dependencies: { zod: '4' }, scripts: { test: 'vitest run' } };
+test('scope registers only the dedicated pelican workflow, not arbitrary workflows',()=>{
+ assert.equal(evaluateScope(['.github/workflows/pelican-v3.yml'],base,base).passed,true);
+ assert.equal(evaluateScope(['.github/workflows/anything-else.yml'],base,base).passed,false);
+});
 test('scope permits only the isolated pilot and additive pilot scripts', () => {
   const after = { ...base, scripts: { ...base.scripts, pilot: 'node runner.mjs', 'pilot:test': 'node --test' } };
   assert.equal(evaluateScope(['PILOT_START.md', 'tools/lean-pilot/runner.mjs'], base, after).passed, true);

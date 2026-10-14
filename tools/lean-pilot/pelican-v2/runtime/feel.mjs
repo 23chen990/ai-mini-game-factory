@@ -1,5 +1,6 @@
 // Frame-rate independent critically damped lane motion and soft chase-camera targets.
 // Input changes the destination lane; this module restores physical follow-through.
+import {LANES} from './safety.mjs';
 export const FEEL = Object.freeze({
   laneFrequency: 14.5,
   leanRate: 9.5,
@@ -11,6 +12,15 @@ export const FEEL = Object.freeze({
 });
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 export const smooth = (current, target, rate, dt) => current + (target - current) * (1 - Math.exp(-rate * dt));
+// Rules already substep at120Hz. Preserve normal low-frame elapsed time while
+// bounding a suspension/stall; background pause still requires manual resume.
+export const frameDelta = seconds => Number.isFinite(seconds)&&seconds>0?Math.min(seconds,.25):0;
+// The pinned demo has no yaw field. Copy the complete adventure pose even in
+// the pre-start/menu branch, before worldToLocal() drives the native head IK.
+export function syncRidePose(state,run){
+ if(!run){Object.assign(state,{speed:0,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,y:0,vy:0,airborne:false,paused:true});return;}
+ Object.assign(state,{distance:run.distance,lane:run.lane,laneTarget:LANES[run.laneIndex],laneV:run.laneV,speed:run.speed,y:run.y,vy:run.vy,airborne:run.y>0,fish:run.score,golden:run.gold,paused:run.phase!=='running',latAcc:run.latAcc,lean:run.lean,steer:run.steer,yaw:run.yaw});
+}
 
 // Exact solution of x'' + 2*w*x' + w*w*(x - target) = 0 for fixed target.
 // Keeps velocity continuous under rapid alternating taps, unlike positional easing.
@@ -45,8 +55,8 @@ export function cameraTarget(lane, lateralVelocity, jumpHeight, aspect, speed = 
   const velocityBias = clamp(lateralVelocity * 0.032, -0.17, 0.17);
   const height = Math.min(0.16, Math.max(0, jumpHeight) * 0.16);
   return {
-    position: [landscape ? -6.5 : -6.75, (landscape ? 3.55 : 3.62) + height, 0.2 + lane * 0.6 - velocityBias],
-    look: [landscape ? 9.2 : 9.4, 0.92 + height * .42, lane * 0.56 + velocityBias],
+    position: [landscape ? -6.5 : -6.75, (landscape ? 3.55 : 3.62) + height, 0.2 + lane * 0.4 - velocityBias],
+    look: [landscape ? 10 : 10.2, 0.92 + height * .42, lane * 0.48 + velocityBias],
     fov: clamp((landscape ? 51 : 52) + (speed - 8) * .22, 50, 54),
   };
 }

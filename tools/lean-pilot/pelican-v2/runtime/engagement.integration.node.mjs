@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {LEVELS,LANES,BOUNDS,validateLevel,makeLevel} from './levels.mjs';
-import {newRun,advance,input,settle,newSave,loadSave} from './adventure.mjs';
-import {nextStarTip,starRequirements,allStars} from './engagement.mjs';
+import {newRun,advance,input,settle,loadSave} from './adventure.mjs';
+import {starRequirements,allStars} from './engagement.mjs';
 const tick=(r,seconds)=>{for(let t=0;t<seconds-1e-7;t+=1/120)advance(r,Math.min(1/120,seconds-t));};
 test('all five hand-authored fish placement maps are safe',()=>{
   for(const l of LEVELS){const issues=validateLevel(makeLevel(l.id));assert.deepEqual(issues,[],`level ${l.id}: ${issues.join(';')}`);

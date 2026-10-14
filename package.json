@@ -19,6 +19,7 @@
     "evidence:check": "tsx tools/verify-evidence-provenance.ts",
     "evidence:ingest": "tsx tools/ingest-reference-media.ts",
     "evidence:review": "tsx tools/review-reference-media.ts",
+    "pilot:pelican:test": "node --test tools/lean-pilot/pelican-v2/core.node.mjs tools/lean-pilot/pelican-v2/runtime/*.node.mjs tools/lean-pilot/pelican-v2/ci.node.mjs",
     "pilot": "node tools/lean-pilot/runner.mjs",
     "pilot:test": "node --test tools/lean-pilot/tests/*.test.mjs templates/web-lite/grid-merge-v1/tests/*.test.mjs",
     "pilot:typecheck": "tsc -p templates/web-lite/grid-merge-v1/tsconfig.json",

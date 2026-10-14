@@ -1,0 +1,71 @@
+name: Pelican V3 real-game regression
+on:
+  pull_request:
+    paths:
+      - 'tools/lean-pilot/pelican-v2/**'
+      - 'docs/lean-pilot/pelican-feel-v3-20261014/**'
+      - '.github/workflows/pelican-v3.yml'
+      - 'package.json'
+permissions:
+  contents: read
+concurrency:
+  group: pelican-v3-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  pelican-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [webkit, chromium]
+    env:
+      QA_ENGINE: ${{ matrix.engine }}
+      # Software runner functional input coverage. Local perceptual/quality
+      # captures remain DPR3 on native GPUs and are committed separately.
+      QA_DPR: 1
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.x'
+      - name: Install locked toolchain
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm exec playwright install --with-deps $QA_ENGINE
+      - name: Actual Pelican rules, integration contract, lint and typecheck
+        run: |
+          pnpm run pilot:pelican:test
+          pnpm exec eslint tools/lean-pilot/pelican-v2
+          pnpm exec tsc --noEmit
+      - name: Fetch the immutable authorized source
+        run: |
+          mkdir -p "$RUNNER_TEMP/pelican-source"
+          git -C "$RUNNER_TEMP/pelican-source" init -q
+          git -C "$RUNNER_TEMP/pelican-source" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$RUNNER_TEMP/pelican-source" fetch --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$RUNNER_TEMP/pelican-source" checkout --detach FETCH_HEAD
+      - name: Fresh isolated Pelican build with source and attempt receipts
+        run: |
+          test ! -e runs/pelican-coast-v2-20261014/baseline-receipt.json
+          test ! -e runs/pelican-coast-v2-20261014/repair-state.json
+          H5_PINNED_SOURCE_ROOT="$RUNNER_TEMP/pelican-source" node tools/lean-pilot/pelican-v2/prepare.mjs
+          REPAIR_HYPOTHESIS='CI fresh V3 immutable-source build; isolated from developer repair history' node tools/lean-pilot/pelican-v2/build.mjs
+      - name: Real default-speed touch campaign, five earned unlocks and replay
+        run: node tools/lean-pilot/pelican-v2/qa.mjs campaign
+      - name: Real touch swipes, cancel, jump choice and first-minute feedback
+        run: node tools/lean-pilot/pelican-v2/experience-qa.mjs
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pelican-v3-${{ matrix.engine }}-${{ github.event.pull_request.head.sha }}
+          path: |
+            runs/pelican-coast-v2-20261014/baseline-receipt.json
+            runs/pelican-coast-v2-20261014/build-receipt.json
+            runs/pelican-coast-v2-20261014/repair-state.json
+            runs/pelican-coast-v2-20261014/attempts/**
+          retention-days: 14
+          if-no-files-found: error

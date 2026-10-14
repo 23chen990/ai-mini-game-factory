@@ -7,7 +7,7 @@ import {serve} from './serve.mjs';
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const dir=path.join(RUN,'attempts','attempt-'+build.attempt,'visual');await mkdir(dir,{recursive:true});
 const server=await serve(),browser=await webkit.launch();const reports=[];
-try{for(const viewport of [{width:390,height:844},{width:360,height:740},{width:844,height:390}]){
+try{for(const viewport of [{width:390,height:844},{width:360,height:740},{width:320,height:568},{width:844,height:390}]){
  const context=await browser.newContext({viewport,deviceScaleFactor:3,isMobile:true,hasTouch:true}),page=await context.newPage(),errors=[];
  const shots=[];const shot=async name=>{const f=path.join(dir,viewport.width+'-'+name+'.png');await page.screenshot({path:f});shots.push({path:path.relative(RUN,f),sha256:sha(await readFile(f))});};
  page.on('pageerror',e=>errors.push(e.message));await page.addInitScript(()=>{window.__visualFrames=[];let last;function f(t){if(last)window.__visualFrames.push(t-last);last=t;requestAnimationFrame(f);}requestAnimationFrame(f);});
@@ -16,7 +16,7 @@ try{for(const viewport of [{width:390,height:844},{width:360,height:740},{width:
  await page.addStyleTag({content:'#coast{display:none!important}'});await shot('same-pose');await page.addStyleTag({content:'#coast{display:block!important}'});
  await page.locator('#co-start').tap();await page.waitForTimeout(2100);await shot('first-fish');const catchBox=await page.locator('#co-feedback').boundingBox();
  const catchClear=!!catchBox&&(catchBox.x+catchBox.width<viewport.width*.5||catchBox.y>viewport.height*.65);
- await page.evaluate(()=>{window.__visualFrames=[];});await page.waitForTimeout(10000);
+ await page.evaluate(()=>{window.__visualFrames=[];});await page.waitForTimeout(3000);
  const render=await page.evaluate(()=>window.__coast.renderInfo()),frames=await page.evaluate(()=>window.__visualFrames),state=await page.evaluate(()=>window.__coast.snapshot());
  await shot('running');await page.locator('#co-pause').tap();await shot('paused');await page.locator('#co-resume').tap();await page.waitForTimeout(150);await shot('resumed');
  const controls=await page.locator('#co-controls button').evaluateAll(nodes=>nodes.map(n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height};}));

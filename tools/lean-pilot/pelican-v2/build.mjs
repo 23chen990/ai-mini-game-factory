@@ -8,7 +8,8 @@ const HERE=fileURLToPath(new URL('.',import.meta.url));
 function once(text,from,to){if(text.split(from).length!==2)throw Error('Pinned source anchor changed: '+from.slice(0,70));return text.replace(from,to);}
 export function patchMain(original){
  let s=original;
- s="import { createCoastAdventure } from './coast-ui.mjs';\n"+s;
+ s="import { createCoastAdventure } from './coast-ui.mjs';\nimport { frameDelta } from './feel.mjs';\n"+s;
+ s=once(s,'let dt = Math.min(timer.getDelta(), 1 / 20);','let dt = frameDelta(timer.getDelta());');
  s=once(s,"low: { name: '流畅', pr: Math.min(DPR, 1) * 0.8, shadow: 1024, bloom: false, msaa: 0, density: 0.5 }","low: { name: '省电', pr: Math.min(DPR, 1.25), shadow: 1024, bloom: false, msaa: 2, density: 0.5 }");
  s=once(s,"medium: { name: '均衡', pr: Math.min(DPR, 1.25), shadow: 2048, bloom: true, msaa: 2, density: 0.8 }","medium: { name: '均衡', pr: Math.min(DPR, 1.5), shadow: 1024, bloom: false, msaa: 2, density: 0.65 }");
  s=once(s,"let qualityKey = qp('q', isTouch ? 'medium' : 'high');","let qualityKey = 'medium';");
@@ -43,6 +44,10 @@ export async function build({hypothesis='P0: synchronize composer and renderer, 
  const runtimeFiles=['levels.mjs','adventure.mjs','coast-ui.mjs','coast.css','feel.mjs','safety.mjs','engagement.mjs'];const inputHashes=[];
  for(const f of runtimeFiles){const bytes=await readFile(path.join(HERE,'runtime',f));await writeFile(path.join(SOURCE,'src',f),bytes);inputHashes.push({path:f,sha256:sha(bytes)});}
  const patched=patchMain(original);await writeFile(path.join(SOURCE,'src/main.js'),patched);
+ const pelicanPath=path.join(SOURCE,'src/pelican.js');let pelicanOriginal;
+ try{pelicanOriginal=await readFile(path.join(RUN,'original-pelican.js'),'utf8');}catch(e){if(e.code!=='ENOENT')throw e;pelicanOriginal=await readFile(pelicanPath,'utf8');await writeFile(path.join(RUN,'original-pelican.js'),pelicanOriginal);}
+ if(sha(pelicanOriginal)!==receipt.files.find(f=>f.path==='pelican-bike/src/pelican.js').sha256)throw Error('Pelican preimage mismatch');
+ await writeFile(pelicanPath,pelicanOriginal);inputHashes.push({path:'pelican.js',sha256:sha(pelicanOriginal)});
  const texturePath=path.join(SOURCE,'src/textures.js');let textureOriginal;
  try{textureOriginal=await readFile(path.join(RUN,'original-textures.js'),'utf8');}catch(e){if(e.code!=='ENOENT')throw e;textureOriginal=await readFile(texturePath,'utf8');await writeFile(path.join(RUN,'original-textures.js'),textureOriginal);}
  if(sha(textureOriginal)!==receipt.files.find(f=>f.path==='pelican-bike/src/textures.js').sha256)throw Error('Texture preimage mismatch');

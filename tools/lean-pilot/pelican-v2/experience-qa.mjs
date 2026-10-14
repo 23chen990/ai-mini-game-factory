@@ -1,0 +1,57 @@
+/* global process,console,window,document */
+import {webkit,chromium} from '@playwright/test';
+import {readFile,mkdir} from 'node:fs/promises';
+import path from 'node:path';
+import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
+import {serve} from './serve.mjs';
+import {browserOptions,qaDpr} from './browser-options.mjs';
+import {swipe} from './touch.mjs';
+const engine=process.env.QA_ENGINE??'webkit',build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
+const dir=path.join(RUN,'attempts','attempt-'+build.attempt,'experience-'+engine);await mkdir(dir,{recursive:true});
+const report={schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,normalInputOnly:true,stateInjection:false,checks:[],actions:[],screenshots:[],errors:[],passed:false};
+const server=await serve(),browser=await(engine==='webkit'?webkit:chromium).launch(browserOptions(engine));
+const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir,size:{width:390,height:844}}}),page=await ctx.newPage();
+const snap=()=>page.evaluate(()=>window.__coast.snapshot());
+const shot=async name=>{const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({path:path.relative(RUN,file),sha256:sha(await readFile(file))});};
+const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(name+' '+passed);};
+const tap=async selector=>{report.actions.push({at:new Date().toISOString(),type:'tap',selector});await page.locator(selector).tap();};
+async function gesture(name,from,to,cancel=false){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
+try{
+ page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
+ await tap('#co-start');await page.waitForTimeout(2100);const first=await snap();check('first-catch-under-three-seconds',first.count>=1&&first.elapsed<3,first);await shot('first-catch');
+ const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
+ const a=await gesture('right',[140,420],[250,420]);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
+ const b=await gesture('left',[250,420],[140,420]);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
+ const c=await gesture('cancel',[140,420],[250,420],true);check('cancelled-touch-does-not-turn',c.after.laneIndex===c.before.laneIndex,c);
+ const d=await gesture('up',[200,480],[200,380]);check('trusted-up-swipe-jumps',d.after.events.filter(e=>e.type==='jump').length>d.before.events.filter(e=>e.type==='jump').length,d);await shot('up-swipe');
+ const until=Date.now()+36000;while(Date.now()<until&&(await snap()).distance<200)await page.waitForTimeout(50);
+ const bonus=await page.locator('.co-lane.jump-reward').count();check('jump-gold-route-signalled-with-safe-detour',bonus>=1,{bonus,radar:await page.locator('#co-radar').innerText()});await shot('jump-choice');
+ if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
+ let jumped=false,bonusShot=false,leftWarning=false,rightWarning=false;
+ const end=Date.now()+65000;
+ while(Date.now()<end){
+  const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),bonus:n.classList.contains('jump-reward'),kind:n.dataset.kind}))}));
+  if(v.phase==='finished')break;
+  const seconds=i=>Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99);
+  const risky=i=>v.lanes[i].danger&&seconds(i)<=3;
+  let want=v.lane;
+  if(v.lanes[1].bonus&&(!jumped||!bonusShot)){want=1;if(!jumped&&v.lane===1&&seconds(1)<=.4){await tap('[data-action="jump"]');jumped=true;}}
+  else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
+  else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
+  if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
+  if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
+  if(!bonusShot&&(await snap()).events.some(e=>e.type==='fish-caught'&&e.bonus&&e.golden)){bonusShot=true;await shot('jump-gold-earned');}
+  if(!leftWarning&&v.lanes[2].kind==='pedestrian'&&seconds(2)>=2){leftWarning=true;check('left-pedestrian-warns-right-at-least-two-seconds',true,v);await shot('left-pedestrian-warning');}
+  if(!rightWarning&&v.lanes[0].kind==='pedestrian'&&seconds(0)>=2){rightWarning=true;check('right-pedestrian-warns-left-at-least-two-seconds',true,v);await shot('right-pedestrian-warning');}
+  await page.waitForTimeout(65);
+ }
+ await page.locator('#co-modal').waitFor({state:'visible'});const finished=await snap();await shot('earned-three-stars');
+ check('natural-jump-gold-advances-mastery',bonusShot&&finished.events.some(e=>e.type==='barrier-cleared'&&e.jumped),finished);
+ check('natural-three-star-settlement',finished.reason==='complete'&&finished.save.stars[0]===3&&(await page.locator('#co-copy').innerText()).includes('★★★'),finished);
+ check('both-crossing-directions-observed',leftWarning&&rightWarning,{leftWarning,rightWarning});
+ await tap('#co-replay');await page.waitForTimeout(2000);await tap('[data-action="left"]');
+ await page.waitForFunction(()=>window.__coast.snapshot().distance>=238,null,{timeout:45000});const detour=await snap();await shot('safe-detour');
+ check('safe-detour-does-not-require-jump',detour.phase==='running'&&!detour.events.some(e=>e.type==='jump')&&detour.events.some(e=>e.type==='barrier-cleared'&&!e.jumped),detour);
+ await tap('#co-pause');await tap('#co-select');const selected=await page.locator('[data-level="1"]').innerText();check('mastery-saved-and-visible-on-route',selected.includes('★★★'),{selected});await shot('saved-mastery');
+}catch(e){report.errors.push(e.stack);await shot('failure').catch(()=>{});}
+finally{const video=await page.video().path();await ctx.close();report.video={path:path.relative(RUN,video),sha256:sha(await readFile(video))};await browser.close();server.close();report.passed=report.checks.every(c=>c.passed)&&report.errors.length===0;await json(path.join(dir,'report.json'),report);if(!report.passed)process.exitCode=1;}

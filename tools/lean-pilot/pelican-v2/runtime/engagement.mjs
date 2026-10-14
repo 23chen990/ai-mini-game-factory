@@ -36,6 +36,9 @@ export function starRequirements(level) {
   };
 }
 
+export function starChallengeText(level){const r=starRequirements(level);return `${r.gold} 条鱼、${r.goldFish} 条金鱼、跳过 ${r.jumps} 个路障、无碰撞及 ${r.time.toFixed(1)} 秒内完成`;}
+export function masteryStatus(run){const r=starRequirements(run.level);return {catch:{value:run.count,target:r.gold,done:run.count>=r.gold},gold:{value:run.gold,target:r.goldFish,done:run.gold>=r.goldFish},jump:{value:run.jumpedBarriers,target:r.jumps,done:run.jumpedBarriers>=r.jumps},noHit:{done:run.hits===0},time:{target:r.time,done:run.elapsed<=r.time}};}
+
 export function rateStars(level, run) {
   const req = starRequirements(level);
   if (run.reason !== 'complete') return 0;
