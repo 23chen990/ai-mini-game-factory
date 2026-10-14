@@ -21,9 +21,64 @@ export function enemyBadgeAllowed({ side, alive, distance, x, y, z, coverDistanc
     (coverDistance === null || (Number.isFinite(coverDistance) && coverDistance >= distance - 0.45));
 }
 
+export function mobileTouchAction(index) {
+  return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
+}
+
+export function mobileChallengeCopy(challenge) {
+  if (!challenge) return '';
+  if (challenge.kind === 'hits') return '60秒内，射中敌人3次';
+  if (challenge.kind === 'kills') return '90秒内，用狙击枪击倒1名敌人';
+  if (challenge.kind === 'survive') return '坚持45秒，最多被击倒2次';
+  return challenge.instructions || '';
+}
+
 export function createFpsMobileUx(game, root, doc) {
   const html = doc.documentElement;
   const header = root.querySelector('.mk-header');
+  // A source-first FPS still contains desktop tutorial and menu markup. Remove
+  // the desktop-only directions while retaining the programmatic start buttons.
+  const nativeMenu = doc.getElementById('menu');
+  nativeMenu?.querySelector('.keys')?.remove();
+  nativeMenu?.querySelectorAll('.note').forEach(el => el.remove());
+  const legacyTouchNote = doc.getElementById('touchNote');
+  if (legacyTouchNote) legacyTouchNote.textContent = '';
+  const touchControls = doc.getElementById('touch');
+  const buttons = touchControls ? [...touchControls.querySelectorAll('.btn')] : [];
+  for (const [index, button] of buttons.entries()) {
+    const action = mobileTouchAction(index);
+    button.dataset.mkAction = action;
+    if (action === 'fire') button.textContent = '开火';
+    if (action === 'reload') button.textContent = '换弹';
+    if (action === 'jump') button.textContent = '跳';
+    if (action === 'scope') button.textContent = '开镜';
+    if (action === 'duplicate-fire' || action === 'crouch' || action === 'switch') {
+      button.hidden = true;
+      button.setAttribute('aria-hidden', 'true');
+      button.setAttribute('tabindex', '-1');
+    }
+    // The original source only handles touchend, not cancellation.
+    button.addEventListener('touchcancel', () => {
+      if (action === 'fire' && game.player?.touch) {
+        game.player.touch.fire = false;
+        game.player.touch.firePressed = false;
+      }
+    }, { passive: true });
+  }
+  const tutorial = doc.createElement('div');
+  tutorial.id = 'mk-fps-tutorial';
+  tutorial.setAttribute('aria-label', '手机操作指南');
+  tutorial.innerHTML = '<span><b>①</b> 左手摇杆移动</span><span><b>②</b> 右侧滑动瞄准</span><span><b>③</b> 点按或按住开火</span>';
+  root.querySelector('#mk-panel')?.insertBefore(tutorial, root.querySelector('#mk-challenges'));
+  const originalToast = game.hud.toast.bind(game.hud);
+  game.hud.toast = (value, duration) => {
+    let message = String(value);
+    if (message.includes('团队竞技') && message.includes('率先达到')) return;
+    if (/Esc|Tab|按 R|按 B|鼠标|键盘/.test(message)) {
+      message = '手机操作：左手移动，右手瞄准；需要时点“暂停”';
+    }
+    originalToast(message, duration);
+  };
   const board = doc.createElement('strong');
   board.id = 'mk-fps-board';
   board.setAttribute('aria-label', '当前比分');
@@ -40,6 +95,7 @@ export function createFpsMobileUx(game, root, doc) {
   root.append(guide);
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
+  let activeChallenge = null;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -121,7 +177,8 @@ export function createFpsMobileUx(game, root, doc) {
   }
 
   return {
-    onStart() {
+    onStart(challenge) {
+      activeChallenge = challenge || null;
       started = performance.now();
       nextUpdate = 0;
       lastBoard = '';
@@ -131,6 +188,11 @@ export function createFpsMobileUx(game, root, doc) {
       const active = !!(running && game.playing && !game.paused && !game.ended);
       html.dataset.fpsActive = String(active);
       const p = game.player;
+      html.dataset.fpsSniper = String(p?.weapon?.def?.type === 'sniper');
+      if (p && !p.alive && game.hud?.el?.cSmall) {
+        game.hud.el.cSmall.textContent = '即将自动复活';
+      }
+      tutorial.hidden = active && now - started > 6500;
       if (!p) { target.hidden = true; guide.hidden = true; clearMarkers(); return; }
       html.dataset.fpsOwnTeam = p.team;
       if (!active) { target.hidden = true; guide.hidden = true; clearMarkers(); return; }
@@ -148,7 +210,10 @@ export function createFpsMobileUx(game, root, doc) {
     destroy() {
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
-      board.remove(); target.remove(); guide.remove();
+      board.remove(); target.remove(); guide.remove(); tutorial.remove();
+      for (const button of buttons) {
+        button.removeAttribute('data-mk-action');
+      }
       for (const el of markers.values()) el.remove();
       markers.clear();
     }
