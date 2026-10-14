@@ -88,7 +88,7 @@ test('mobile scout approach keeps symmetric reviewed cargo lanes and honest dire
  assert.equal(firstEncounterDestination('unknown'),null);
  const p={pos:{x:-32,z:-7},yaw:-Math.PI/2};
  assert.equal(routeArrow(p,[-17.5,-7]).symbol,'↑');
- assert.equal(routeArrow({...p,yaw:0},[-17.5,-7]).symbol,'←');
- assert.equal(routeArrow({...p,yaw:-Math.PI},[-17.5,-7]).symbol,'→');
+ assert.equal(routeArrow({...p,yaw:0},[-17.5,-7]).symbol,'→');
+ assert.equal(routeArrow({...p,yaw:-Math.PI},[-17.5,-7]).symbol,'←');
  assert.equal(routeArrow(p,[-31,-7]),null);
 });
