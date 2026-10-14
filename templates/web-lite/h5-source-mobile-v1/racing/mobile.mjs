@@ -3,7 +3,6 @@ import { RaceDriver, TouchSteering } from './driver.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { roadHint } from './road-coach.mjs';
-import * as THREE from 'three';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey } from './career.mjs';
 import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx } from './session.mjs';
@@ -182,7 +181,7 @@ async function loadTrack(id, autoStart) {
     const sameMap = g.map?.id === id && !!g.track;
     if (!sameMap) {
       disposeCornerSigns(g);g.settings.map = id;g.save();await g.loadMap(id);
-      installCornerSigns(g,THREE,document);
+      installCornerSigns(g,window.__RACE_THREE__,document);
     }
     g.startDemo();loading = false;$('map').value = id;
     if (autoStart && career.canStart()) start();
@@ -264,7 +263,7 @@ async function boot() {
   nativeStartRace = g.startRace.bind(g);
   g.startRace = start; // Native menu/Enter/restart share the same V3 fuel and lifecycle gate.
   const loadedMap = g.map?.id;
-  installCornerSigns(g,THREE,document);
+  installCornerSigns(g,window.__RACE_THREE__,document);
   const nativeAudioInit = g.audio.init.bind(g.audio);
   g.audio.init = (...args) => {
     const out = nativeAudioInit(...args);
