@@ -24,7 +24,7 @@ async function boot() {
   const root = document.createElement('section'); root.id = 'mobile-kit';
   root.innerHTML = `<header class="mk-header"><b id="mk-title"></b><span>最佳 <b id="mk-best">0</b></span><button id="mk-pause" aria-label="暂停">⏸ 暂停</button></header>
     <div class="mk-meter"><span id="mk-status">准备出发</span><span>积分 <b id="mk-score">0</b></span><span id="mk-time"></span><progress id="mk-goal" max="8" value="0"></progress></div>
-    <div id="mk-panel"><h2 id="mk-heading"></h2><p id="mk-copy"></p><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
+    <div id="mk-panel"><h2 id="mk-heading"></h2><p id="mk-copy"></p><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
@@ -84,6 +84,11 @@ async function boot() {
     $('panel').hidden = phase === 'running'; $('start').hidden = phase !== 'ready';
     $('challenges').hidden = !['ready','finished'].includes(phase);
     $('resume').hidden = phase !== 'paused'; $('replay').hidden = phase !== 'finished';
+    const nextIndex = activeChallenge ? levels.findIndex(c => c.id === activeChallenge.id)+1 : -1;
+    const next = id === 'cf-transport-ship' && phase === 'finished' &&
+      root.dataset.outcome === 'won' ? levels[nextIndex] : null;
+    $('next').hidden = !next;
+    if(next)$('next').textContent = '▶ 下一关：' + next.title;
     $('pause').disabled = !round || !['running', 'paused'].includes(round.phase);
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
@@ -93,6 +98,16 @@ async function boot() {
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
   $('replay').addEventListener('click', () => location.reload());
+  $('next').addEventListener('click', () => {
+    if (id !== 'cf-transport-ship' || root.dataset.phase !== 'finished' ||
+        root.dataset.outcome !== 'won') return;
+    const index = levels.findIndex(c => c.id === activeChallenge?.id);
+    const next = levels[index + 1];
+    if(!next)return;
+    challengeProgress.selected=next.id;
+    persist();
+    location.reload();
+  });
   window.addEventListener('blur', pause); document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
   const orientation = () => { const blocked = portraitBlocked(); $('rotate').hidden = !blocked; if (blocked) pause(); };
   window.addEventListener('resize', orientation); orientation();
