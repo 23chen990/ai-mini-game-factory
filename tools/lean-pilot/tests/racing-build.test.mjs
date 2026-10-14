@@ -3,7 +3,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const api = await import('../racing-mobile-build.mjs').catch(() => ({}));
-const patchFixture = `const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);
+const patchFixture = `import * as THREE from 'three';
+const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);
 if (P.nitroTime > 0) {
       cam.position.x += jitter;
 const k = this.shake * this.shake;
@@ -20,6 +21,8 @@ test('赛车源补丁保留原输入、物理和AI流程，只约束手机镜头
   const output = api.patchRacingSource(source);
   assert.ok(output.includes('raceCameraFov(P.s'));
   assert.ok(output.includes('this.mobileMode ? raceBloomStrength('));
+  assert.ok(output.includes('window.__RACE_THREE__ = THREE;'),'do not bundle duplicate Three.js in mobile');
+  assert.equal(output.split('window.__RACE_THREE__ = THREE;').length,2,'inject native namespace only once');
   for (const exact of ['const inp = this.input.frame();', 'P.update(DT, first ? pin : noEdge, active, this.itemMode);', 'r.update(DT, aiActive, this.raceTime, this.rubber(r));', 'if (r.half)']) {
     if (source.includes(exact)) assert.ok(output.includes(exact), exact);
   }
