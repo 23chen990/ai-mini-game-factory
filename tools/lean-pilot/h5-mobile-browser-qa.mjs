@@ -207,10 +207,32 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      check('mobile-terminal-replay',restarted,{...terminal,naturalInputOnly:true,replayObserved:restarted,
        sniperControl,fishCaptureObserved:run.theme!=='pelican-bike'||score>0});
    }else{check('mobile-save-reload',false,{reason:'Terminal was not observed, so replay/save case remains blocked.'});check('mobile-terminal-replay',false,terminal);}
+   if(run.theme==='cf-transport-ship'){
+     // One real-input idle run: survival must NOT be winnable by doing nothing.
+     // This is a separate negative balance gate, not scripted player success.
+     await page.reload();
+     await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:45000});
+     await page.locator('#mk-challenges [data-challenge-id="survive"]').tap();
+     await page.locator('#mk-start').tap();
+     await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
+     const afkStart=Date.now();
+     while(await page.locator('#mobile-kit').getAttribute('data-phase')!=='finished'&&Date.now()-afkStart<100000)
+       await page.waitForTimeout(1200);
+     const afk=await page.evaluate(()=>{
+       const root=document.querySelector('#mobile-kit');
+       return {phase:root.dataset.phase,outcome:root.dataset.outcome,
+         instructions:document.querySelector('#mk-copy')?.textContent,
+         playerDeaths:window.__H5NativeGame?.player?.stats?.d??null,
+         shotCount:window.__H5NativeGame?.player?.stats?.shots??null};
+     });
+     const idleRejected=afk.phase==='finished'&&afk.outcome==='lost'&&afk.shotCount===0;
+     checks.push({name:'cf-survive-idle-rejected',passed:idleRejected,detail:afk});
+     await shot('mobile-survival-idle-end');
+   }
  }catch(e){errors.push(String(e.message).slice(0,500));}
  const frames=await page.evaluate(()=>window.__mobileFrames||[]).catch(()=>[]);frames.sort((a,b)=>a-b);
  const report={schemaVersion:1,runId,referenceId:run.theme,buildHash:hash,suiteHash:run.browserSuiteHash,scope:'HTTP_BROWSER',defaultSpeed:1,checks,artifacts,errors,actions,
-   passed:checks.length===5&&checks.every(c=>c.passed)&&errors.length===0,checkedAt:new Date().toISOString(),human:'NOT_RUN',physicalMobile:'NOT_RUN',liveIAA:'NOT_RUN',publishable:false,
+   passed:checks.length===(run.theme==='cf-transport-ship'?6:5)&&checks.every(c=>c.passed)&&errors.length===0,checkedAt:new Date().toISOString(),human:'NOT_RUN',physicalMobile:'NOT_RUN',liveIAA:'NOT_RUN',publishable:false,
    perceptualGate:'PENDING_SCREENSHOT_REVIEW',performance:{environment:'Desktop Chromium software WebGL + touch emulation, not phone hardware',frameP95Ms:frames[Math.floor(frames.length*.95)]??null,frames:frames.length},
    runtimeProductGate:{entrypoints:['index.html (pinned original Three.js bundle)','main.mjs (owned mobile glue)','engine.mjs (owned lifecycle)','themes.mjs (owned ad lifecycle)','platform.json'],referenceImplementationRetained:true,compatibilityLegacy:'Original game remains the intended runtime; no zero-rewrite claim.',terminalObserved:checks.some(c=>c.name==='mobile-terminal-replay'&&c.passed)}};
  await writeFile(path.join(root,'browser.json'),JSON.stringify(report,null,2)+'\n');
