@@ -21,7 +21,18 @@ export const STAGES = Object.freeze([
 ]);
 export const SKIN_STARS = Object.freeze([0, 3, 6, 10, 14, 19, 25, 34]);
 export const SKIN_NAMES = Object.freeze(['烈焰红', '冰蓝', '紫电', '黄金', '珍珠白', '樱粉', '翡翠', '暗夜']);
-export const newCareer = () => ({ version: 1, stars: {}, times: {}, skin: 0, rounds: 0 });
+export const newCareer = () => ({ version: 1, stars: {}, times: {}, skin: 0, rounds: 0,
+  daily: { date: '', best: 0, stars: 0, streak: 0, lastWonDate: '' } });
+export function localDayKey(date = new Date()) {
+  return [date.getFullYear(), String(date.getMonth()+1).padStart(2,'0'), String(date.getDate()).padStart(2,'0')].join('-');
+}
+export function dailyStage(date = new Date()) {
+  const key = localDayKey(date);
+  const pool = [STAGES[2], STAGES[4], STAGES[6], STAGES[8], STAGES[11], STAGES[12], STAGES[14]];
+  const index = Number(key.replaceAll('-','')) % pool.length;
+  const original = pool[index];
+  return Object.freeze({ ...original, id: 'daily-' + key, chapter: 5, name: '每日挑战 · ' + original.name });
+}
 export const careerStars = career => STAGES.reduce((n, stage) => n + (career?.stars?.[stage.id] ?? 0), 0);
 export function stageUnlocked(career, index) {
   return index === 0 || (index > 0 && index < STAGES.length && (career?.stars?.[STAGES[index - 1].id] ?? 0) > 0);
@@ -49,6 +60,15 @@ export function loadCareer(raw, legacyBest) {
     }
     state.rounds = Number.isSafeInteger(v.rounds) && v.rounds >= 0 ? Math.min(v.rounds, 1_000_000) : 0;
     state.skin = skinUnlocked(state, v.skin) ? v.skin : 0;
+    const d = v.daily;
+    const day = x => typeof x === 'string' && /^\\d{4}-\\d{2}-\\d{2}$/.test(x) ? x : '';
+    if (d && typeof d === 'object') {
+      state.daily.date = day(d.date);
+      state.daily.lastWonDate = day(d.lastWonDate);
+      state.daily.stars = Number.isInteger(d.stars) && d.stars >= 0 && d.stars <= 3 ? d.stars : 0;
+      state.daily.best = typeof d.best === 'number' && Number.isFinite(d.best) && d.best > 0 && d.best < 100000 ? d.best : 0;
+      state.daily.streak = Number.isSafeInteger(d.streak) && d.streak >= 0 && d.streak <= 9999 ? d.streak : 0;
+    }
     return state;
   } catch { return newCareer(); }
 }
