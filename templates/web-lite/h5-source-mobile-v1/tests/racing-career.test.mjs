@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { STAGES, newCareer, loadCareer, localDayKey, dailyStage, careerStars, stageUnlocked, skinUnlocked, recordStage, gradeStage, validDrift, fractionPassed } from '../racing/career.mjs';
-import { thinItemBoxes, itemDecision, AutoItems, OvertakeTracker, awardCornerPass, removeEliminatedAi } from '../racing/items.mjs';
+import { thinItemBoxes, installItemCleanup, itemDecision, AutoItems, OvertakeTracker, awardCornerPass, removeEliminatedAi } from '../racing/items.mjs';
 import { RacingCareer } from '../racing/runtime.mjs';
 const result=(n=1)=>({finished:true,place:n,time:90,stats:{crash:1}});
 const memory=()=>{const m=new Map();return {getItem:k=>m.get(k)??null,setItem:(k,v)=>m.set(k,v)};};
@@ -248,4 +248,30 @@ test('完整奖励视频后发生存档故障：临时补油但不虚报永久�
   assert.equal(out.fuel,4);
   assert.equal(c.storageOK,false);assert.equal(c.fuelEnabled,false);
   assert.equal(c.canStart(),true,'do not punish user who fully watched the ad');
+});
+
+
+test('replaying item mode disposes unique item GPUs exactly once without double-disposing shared materials',()=>{
+  const records={geometry:0,material:0,texture:0,missile:0,detach:0};
+  const g={dispose(){records.geometry++;}},
+    tex={dispose(){records.texture++;}},
+    m={map:tex,dispose(){records.material++;}},
+    missile={dispose(){records.missile++;}};
+  const system={missileGeo:missile,
+    group:{traverse(fn){fn({geometry:g,material:m});fn({geometry:g,material:m});}},
+    dispose(){records.detach++;}};
+  assert.equal(installItemCleanup(system),true);
+  assert.equal(installItemCleanup(system),false);
+  system.dispose();system.dispose();
+  assert.deepEqual(records,{geometry:1,material:1,texture:1,missile:1,detach:1});
+});
+test('thinned native item routes dispose deleted box geometries, leave shared skins intact',()=>{
+  let meshClean=0,materialClean=0;
+  const removed=[],boxes=Array.from({length:20},(_,i)=>({g:{
+    i,traverse(fn){fn({geometry:{dispose(){meshClean++;}},
+      material:{dispose(){materialClean++;}}});}}}));
+  const system={boxes,group:{remove(g){removed.push(g);}}};
+  assert.equal(thinItemBoxes(system),12);
+  assert.equal(meshClean,12);assert.equal(materialClean,0);
+  assert.equal(system.boxes.length,8);
 });
