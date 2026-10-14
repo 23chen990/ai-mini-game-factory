@@ -113,3 +113,15 @@ test('触控支持双指、同方向多指、短按缓冲和彻底清空', () =>
   t.press(4, 'left', 200);t.release(4, 220);assert.equal(t.snapshot(240).left, true);assert.equal(t.snapshot(290).left, false);
   t.clear();t.press(5, 'left', 300);t.release(5, 310);t.press(6, 'right', 320);assert.deepEqual(t.snapshot(330), { left: false, right: true });
 });
+
+
+test('automatic drifting cannot repeatedly farm the same soft corner', () => {
+  const d = make(), p = car(), road = track(.008);
+  assert.ok(run(d,p,road,left,.5).some(f=>f.shift), 'valid corner should still drift');
+  p.drifting = true;p.driftTime=.5;
+  d.frame(.02,left,p,road,'race');
+  p.drifting = false;p.smallWindow=0;p.windowKind='';
+  d.frame(.02,idle,p,road,'race');
+  assert.ok(run(d,p,road,left,.5).every(f=>!f.shift), 'release cooldown blocks instant re-drift');
+  assert.ok(run(d,p,road,left,.5).some(f=>f.shift), 'later meaningful corner remains possible');
+});
