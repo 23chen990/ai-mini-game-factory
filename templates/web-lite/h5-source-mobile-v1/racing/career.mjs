@@ -61,7 +61,7 @@ export function loadCareer(raw, legacyBest) {
     state.rounds = Number.isSafeInteger(v.rounds) && v.rounds >= 0 ? Math.min(v.rounds, 1_000_000) : 0;
     state.skin = skinUnlocked(state, v.skin) ? v.skin : 0;
     const d = v.daily;
-    const day = x => typeof x === 'string' && /^\\d{4}-\\d{2}-\\d{2}$/.test(x) ? x : '';
+    const day = x => typeof x === 'string' && /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(x) ? x : '';
     if (d && typeof d === 'object') {
       state.daily.date = day(d.date);
       state.daily.lastWonDate = day(d.lastWonDate);
