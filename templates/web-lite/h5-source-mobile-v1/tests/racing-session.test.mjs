@@ -18,6 +18,11 @@ test('切关加载失败或仍处于旧赛道时，禁止用错误赛道开新�
   game.loading=false;game.track=null;assert.equal(ready(game,stage),false);
   assert.equal(ready(null,stage),false);
 });
+test('画质偏好：首次使用均衡，用户选流畅后刷新仍优先流畅',()=>{
+  const normalize=need('normalizeRaceQuality');
+  for(const value of ['low','mid','high']) assert.equal(normalize(value),value);
+  for(const value of [null,undefined,'','ultra','manual',{},0]) assert.equal(normalize(value),'mid');
+});
 test('成绩读取真实玩家，不将AI冲线计为玩家完赛', () => {
   const summary = need('resultSummary'), player = { finished: false, progress: 200, stats: { small: 2, drift: 3, nitro: 1, perfect: 1 }, lapTimes: [], name: '我' }, ai = { finished: true, finishTime: 42, name: '对手', lapTimes: [42] };
   const g = { player, standings: [ai, player], track: { length: 400 }, settings: { laps: 1, map: 'city' }, raceTime: 50 };
