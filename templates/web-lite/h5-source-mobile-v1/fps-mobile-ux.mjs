@@ -27,7 +27,7 @@ export function mobileTouchAction(index) {
 
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
-  if (challenge.kind === 'hits') return '60秒内对准敌人自动开火，命中3次';
+  if (challenge.kind === 'hits') return '1v1入门对决：对准敌人开火，命中3次';
   if (challenge.kind === 'kills') return '90秒内，使用 AWM 狙击枪击杀1名敌人';
   if (challenge.kind === 'survive') return '坚持45秒，移动20米，最多被击倒2次';
   return challenge.instructions || '';
@@ -285,7 +285,7 @@ export function createFpsMobileUx(game, root, doc) {
         scout.protectT=0;
         // Allow new players several *simulation seconds* to recognize, aim
         // and shoot. Afterward the standard Bot can shoot normally.
-        scout.readyAt=Math.max(scout.readyAt,game.time+7);
+        scout.readyAt=Math.max(scout.readyAt,game.time+13);
         scout.__mobileTrainingScout=true;
         scout.__mobileTrainingHoldUntil=game.time+7;
         return {path:true,trainingScout:true,range:spot.distance};
@@ -502,6 +502,7 @@ export function createFpsMobileUx(game, root, doc) {
       game.__mobileBalanceReview.firstRendezvousPath=rendezvous.path;
       game.__mobileBalanceReview.trainingScout=rendezvous.trainingScout;
       game.__mobileBalanceReview.trainingScoutRange=rendezvous.range??null;
+      game.__mobileBalanceReview.teamSize=game.opts.size;
       applyBalance(0);
       recolorNativeAllies();
     },
