@@ -144,3 +144,16 @@ test('a full item queue eventually resolves instead of blocking future pickups',
   g.raceTime=18;assert.equal(auto.frame(g),true);
   assert.equal(auto.frame(g),false);
 });
+
+test('real corner-exit pass is accepted but late straight or AI ranking changes are rejected',()=>{
+  const p={isPlayer:true,progress:99,s:39,d:10,impact:0,airborne:false,stats:{crash:0}};
+  const o={isPlayer:false,progress:100};
+  let curve=.008;
+  const g={state:'race',raceTime:5,player:p,racers:[p,o],standings:[o,p],track:{curvAhead:()=>curve}};
+  const pass=new OvertakeTracker();pass.frame(g);
+  curve=0;g.raceTime=6;p.progress=101;g.standings=[p,o];
+  assert.equal(pass.frame(g),true);
+  pass.reset();g.raceTime=10;p.progress=99;g.standings=[o,p];curve=.008;pass.frame(g);
+  curve=0;g.raceTime=13;p.progress=101;g.standings=[p,o];
+  assert.equal(pass.frame(g),false);
+});
