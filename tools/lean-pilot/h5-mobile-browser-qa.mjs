@@ -27,6 +27,8 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      botStrafe:opponents[0]?.diff?.strafe??null,
      clearStartingLane:g.__mobileBalanceReview?.startingLaneMeters??null,
      firstScoutPathReady:g.__mobileBalanceReview?.firstRendezvousPath??false,
+     trainingScoutPlaced:g.__mobileBalanceReview?.trainingScout??false,
+     trainingScoutRange:g.__mobileBalanceReview?.trainingScoutRange??null,
      autoFireActivations:g.__mobileBalanceReview?.autoFireActivations??0,
      hintVisible:(()=>{const e=document.querySelector('#mk-fps-guide');return e&&getComputedStyle(e).display!=='none'?e.textContent:'';})()
    };
@@ -246,9 +248,28 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        scriptedThumbSteps:fpsScriptSteps,scriptedVisibleEnemyLabels:fpsEnemySeenCount,
        followingActualVisibleHud:true,scriptedRouteTurns:fpsRouteTurns,
        firstScoutPathReady:fpsThreatTrace[0]?.firstScoutPathReady??null,
+       trainingScoutPlaced:fpsThreatTrace[0]?.trainingScoutPlaced??false,
+       trainingScoutRange:fpsThreatTrace[0]?.trainingScoutRange??null,
        autoFireActivations:fpsThreatTrace.at(-1)?.autoFireActivations??null,
        snapshots:fpsThreatTrace
      };
+     const summary=terminal.fpsThreatSummary;
+     // Extra FPS difficulty gate. The five factory gate IDs are untouched.
+     // In a first-session M4 drill the actual hit must occur during the
+     // opening 30 *simulation* seconds, using real bullets and visible input.
+     const introPass=summary.trainingScoutPlaced &&
+       summary.trainingScoutRange>=7 && summary.trainingScoutRange<=10 &&
+       summary.firstPlayerHitAtGameSec!==null &&
+       summary.firstPlayerHitAtGameSec<=30;
+     fpsExtendedChecks.push({
+       name:'cf-first-natural-hit-by-30s',passed:introPass,
+       detail:{trainingScoutPlaced:summary.trainingScoutPlaced,
+         scoutRangeMeters:summary.trainingScoutRange,
+         firstVisibleAtGameSec:summary.firstVisibleAtGameSec,
+         firstHitAtGameSec:summary.firstPlayerHitAtGameSec,
+         finalHits:summary.finalPlayerHits,finalDeaths:summary.finalPlayerDeaths,
+         guidance:'Real on-screen touch motions and original bullet collision; no stat injection'}
+     });
    }
    if(phase==='finished'){
      const best=await page.locator('#mk-best').innerText();await page.locator('#mk-replay').tap();
