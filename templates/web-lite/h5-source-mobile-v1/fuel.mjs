@@ -24,8 +24,10 @@ export function newFuelState(now = Date.now()) {
 /** No time-based catch-up at full capacity, no regeneration in a backward clock. */
 export function syncFuel(state, now = Date.now()) {
   const t = clock(now);
+  // A clock rollback never earns fuel or shifts the original recharge/cooldown anchors.
+  // Otherwise moving the clock backwards and forwards would grant free refills.
   if (t < state.updatedAt || (state.lastAdAt > 0 && t < state.lastAdAt))
-    return { ...state, updatedAt: Math.min(t, state.updatedAt), lastAdAt: Math.min(t, state.lastAdAt) };
+    return state;
   if (state.amount >= FUEL_RULES.max) return state;
   const earned = Math.floor((t - state.updatedAt) / FUEL_RULES.regenMs);
   if (earned < 1) return state;
