@@ -83,3 +83,9 @@ export function updateBest(save, run) {
 export function allStars(save) {
   return Array.isArray(save.stars) ? save.stars.reduce((s, n) => s + n, 0) : 0;
 }
+// Keep the visible prize trail after a real jump while side fish remain optional.
+// This changes only the HUD cue; collection still uses the ordinary hit test.
+export function selectFishCue(run){
+ const available=run.fishes.filter(f=>!f.caught&&f.x-run.distance>1&&f.x-run.distance<35);
+ return available.find(f=>f.bonus&&run.obstacles.some(o=>o.id===f.sourceObstacleId&&o.jumped===true&&o.passed===true))??available[0];
+}

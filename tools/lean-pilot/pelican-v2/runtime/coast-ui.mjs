@@ -4,7 +4,7 @@ import { LEVELS, LANES } from './levels.mjs';
 import { newRun, input, advance, newSave, loadSave, settle, qualityStep } from './adventure.mjs';
 import {upcomingHazards} from './safety.mjs';
 import {cameraTarget,smooth,FEEL,syncRidePose} from './feel.mjs';
-import {allStars,nextStarTip,starRequirements,masteryStatus} from './engagement.mjs';
+import {selectFishCue,allStars,nextStarTip,starRequirements,masteryStatus} from './engagement.mjs';
 import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound,adAllowed} from './reward-engine.mjs';
 import {requestRewardedVideo} from './reward-adapter.mjs';
 
@@ -150,7 +150,7 @@ export function createCoastAdventure(api) {
   if(signature!==hudLast){hudLast=signature;$('distance').textContent=`${Math.floor(run.distance)} / ${run.level.distance} m`;$('distance-bar').max=run.level.distance;$('distance-bar').value=run.distance;$('fish').textContent=`${run.count} / ${run.level.goal.count} 条`;$('fish-label').textContent=run.level.goal.gold?`🐟 捕鱼 · 🌟 ${run.gold}/${run.level.goal.gold}`:'🐟 捕鱼目标';$('fish-bar').max=run.level.goal.count;$('fish-bar').value=run.count;$('time').textContent=remaining+' 秒';$('fish-box').classList.toggle('done',run.count>=run.level.goal.count&&run.gold>=run.level.goal.gold);$('distance-box').classList.toggle('done',run.distance>=run.level.distance);$('time-box').classList.toggle('urgent',remaining<=12);root.querySelectorAll('.co-lane-indicator i').forEach((n,i)=>n.classList.toggle('on',i===run.laneIndex));}
   if(run.phase!=='running')return;
   const upcoming=upcomingHazards(run), next=upcoming[0];
-  const fish=run.fishes.find(f=>!f.caught&&f.x-run.distance>1&&f.x-run.distance<35);
+  const fish=selectFishCue(run);
   const lanes=[0,1,2].map(lane=>{
    const hazard=upcoming.find(h=>h.lanes.includes(lane)&&(!next||Math.abs(h.seconds-next.seconds)<1.8));
    if(hazard){const kind=hazard.obstacle.kind,bonus=kind==='barrier'&&run.fishes.some(f=>f.bonus&&f.sourceObstacleId===hazard.obstacle.id&&!f.caught);return {kind:bonus?'danger jump-reward':'danger',icon:bonus?'↟🌟':kind==='barrier'?'↟':kind==='pedestrian'?'🚶':'🚗',seconds:kind==='barrier'&&hazard.seconds<1.5?Math.max(.1,hazard.seconds).toFixed(1):Math.max(1,Math.ceil(hazard.seconds)),label:kind};}
