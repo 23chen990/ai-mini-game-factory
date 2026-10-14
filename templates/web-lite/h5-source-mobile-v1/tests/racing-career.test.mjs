@@ -134,3 +134,13 @@ test('advertising cannot be offered before tutorial is actually completed',()=>{
   c.progress.stars['01']=1;
   assert.equal(c.canOfferAd(),true);
 });
+
+
+test('a full item queue eventually resolves instead of blocking future pickups',()=>{
+  const p={isPlayer:true,s:35,d:100,progress:100,spin:0,items:['shield','banana'],drifting:false};
+  const g={state:'race',itemMode:true,player:p,items:{swap:r=>r.items.reverse()},raceTime:5,
+    track:{curvAhead:()=>0},racerAhead:()=>null,racers:[p]};
+  const auto=new AutoItems();assert.equal(auto.frame(g),false);
+  g.raceTime=18;assert.equal(auto.frame(g),true);
+  assert.equal(auto.frame(g),false);
+});
