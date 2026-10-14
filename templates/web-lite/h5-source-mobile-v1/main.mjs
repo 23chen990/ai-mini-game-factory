@@ -2,6 +2,11 @@
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy } from './fps-mobile-ux.mjs';
+export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
+  const a = Number(previousSeconds), b = Number(nowSeconds);
+  return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
+}
+
 
 async function boot() {
   const id = document.documentElement.dataset.referenceGame;
@@ -15,7 +20,7 @@ async function boot() {
   try { challengeProgress = loadChallengeProgress(localStorage.getItem(challengeKey), id) ?? challengeProgress; } catch { storageAvailable = false; }
   let selected = levels.find(c => c.id === challengeProgress.selected), activeChallenge;
   let fpsUx = null;
-  let round = null, startedAt = performance.now(), last = performance.now(), native, fishStart = 0, jumpStart = 0, lastNativePhase = 'ready', assistActive = false;
+  let round = null, startedAt = performance.now(), last = performance.now(), lastFpsNativeSec = 0, native, fishStart = 0, jumpStart = 0, lastNativePhase = 'ready', assistActive = false;
   const root = document.createElement('section'); root.id = 'mobile-kit';
   root.innerHTML = `<header class="mk-header"><b id="mk-title"></b><span>最佳 <b id="mk-best">0</b></span><button id="mk-pause" aria-label="暂停">⏸ 暂停</button></header>
     <div class="mk-meter"><span id="mk-status">准备出发</span><span>积分 <b id="mk-score">0</b></span><span id="mk-time"></span><progress id="mk-goal" max="8" value="0"></progress></div>
@@ -68,7 +73,7 @@ async function boot() {
         g.__mkAwmKillHooked = true;
       }
       native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(); };
-      native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,travel:fpsUx?.distanceMeters()||0}); fpsUx = createFpsMobileUx(g, root, document); break; }
+      native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,travel:fpsUx?.distanceMeters()||0}); native.simulatedSeconds = () => g.time; fpsUx = createFpsMobileUx(g, root, document); break; }
     await wait();
   }
   if (!native) { $('copy').textContent = '加载尚未完成，请刷新或换用支持 WebGL 的浏览器。'; return; }
@@ -83,7 +88,7 @@ async function boot() {
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
   const portraitBlocked = () => id !== 'pelican-bike' && window.innerHeight > window.innerWidth;
-  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
+  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
@@ -111,7 +116,10 @@ async function boot() {
     if (round && round.phase === 'running') {
       if (phase === 'paused') pause();
       else {
-        tickRound(round, dt, native.score());
+        const roundTickMs = id === 'cf-transport-ship' && native.simulatedSeconds
+          ? fpsSimulatedDeltaMs(lastFpsNativeSec, native.simulatedSeconds()) : dt;
+        if (id === 'cf-transport-ship' && native.simulatedSeconds) lastFpsNativeSec = native.simulatedSeconds();
+        tickRound(round, roundTickMs, native.score());
         if (assistActive && round.elapsedMs >= 15000) { window.__pelican.settings.autopilot = false; assistActive = false; }
         const result = challengeResult(activeChallenge, native.metrics(), round.phase === 'finished' || phase === 'finished');
         round.score = result.rewardScore;
