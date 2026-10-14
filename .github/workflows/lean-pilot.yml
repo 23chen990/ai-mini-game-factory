@@ -243,7 +243,7 @@ jobs:
         run: |
           node --test tools/lean-pilot/pelican-v2/core.node.mjs tools/lean-pilot/pelican-v2/runtime/feel-safety.node.mjs tools/lean-pilot/pelican-v2/runtime/engagement.node.mjs tools/lean-pilot/pelican-v2/runtime/engagement.integration.node.mjs
           pnpm exec eslint tools/lean-pilot/pelican-v2
-          pnpm exec tsc --noEmit
+          npm run pilot:typecheck
       - name: Fetch immutable authorized reference source
         shell: bash
         run: |
