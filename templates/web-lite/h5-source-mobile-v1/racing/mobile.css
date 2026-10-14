@@ -86,3 +86,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   #race-kit #race-stage-goal {margin-bottom:2px;}
   #race-kit #race-fuel-box {margin-bottom:4px;font-size:10px;}
 }
+
+#race-kit #race-held-item { position:fixed;right:calc(var(--race-right) + 60px);top:calc(var(--race-top) + 87px);z-index:10;
+  max-width:220px;pointer-events:none;border-radius:9px;background:#052b42d6;border:1px solid #68d7ed77;
+  color:#d6ffff;font-size:11px;font-weight:650;padding:5px 10px;text-align:right; }
