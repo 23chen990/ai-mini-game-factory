@@ -70,7 +70,7 @@ const detour=await snap();await shot('safe-detour');
   const toBox=n=>{const r=n.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,right:r.right,bottom:r.bottom};};
   const buttons=[...document.querySelectorAll('#co-controls button')].map(toBox);
   const mastery=document.querySelector('#co-mastery');
-  const bar=toBox(mastery),font=parseFloat(getComputedStyle(mastery).fontSize);
+  const bar=toBox(mastery),font=parseFloat(window.getComputedStyle(mastery).fontSize);
   return {running:document.querySelector('#coast')?.dataset.phase==='running',buttons,bar,font,
    controlTop:Math.min(...buttons.map(b=>b.y)),bodyWidth:document.documentElement.scrollWidth,
    canvas:toBox(document.querySelector('canvas'))};
