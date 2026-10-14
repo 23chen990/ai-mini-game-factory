@@ -36,15 +36,33 @@ const report = { stage:'BUILT_H5_CHROMIUM_ENTRY_SMOKE', assertion:'source-level/
 let browser;
 const fail = reason => {report.errors.push(String(reason));throw Error(reason);};
 async function waitLoaded(page) {
-  await page.waitForFunction(() => {
-    const kit=document.querySelector('#race-kit');
-    const selected=kit?.querySelector('#race-stage')?.value;
-    return kit?.dataset.loaded === 'true' &&
-      !kit.querySelector('#race-start')?.disabled &&
-      !!window.game?.map &&
-      window.game.map.id === window.game.settings.map &&
-      !!selected;
-  },null,{timeout:90000});
+  try {
+    await page.waitForFunction(() => {
+      const kit=document.querySelector('#race-kit');
+      const selected=kit?.querySelector('#race-stage')?.value;
+      return kit?.dataset.loaded === 'true' &&
+        !kit.querySelector('#race-start')?.disabled &&
+        !!window.game?.map &&
+        window.game.map.id === window.game.settings.map &&
+        !!selected;
+    },null,{timeout:45000});
+  } catch(error) {
+    const state=await page.evaluate(() => {
+      const kit=document.querySelector('#race-kit'),game=window.game;
+      return {kit:!!kit,loaded:kit?.dataset.loaded,error:kit?.dataset.error,
+        note:kit?.querySelector('#race-note')?.textContent,
+        stage:kit?.querySelector('#race-stage')?.value,
+        stageCount:kit?.querySelector('#race-stage')?.options?.length,
+        disabled:kit?.querySelector('#race-start')?.disabled,
+        nativeState:game?.state,loading:game?.loading,
+        nativeMap:game?.map?.id,settingsMap:game?.settings?.map,
+        track:!!game?.track,canvas:!!document.querySelector('canvas'),
+        title:document.title};
+    }).catch(e=>({evaluateError:String(e)}));
+    report.diagnostics=state;
+    report.errors.push('Startup diagnostics: '+JSON.stringify(state));
+    throw error;
+  }
   const problem = await page.evaluate(() => document.querySelector('#race-kit')?.dataset.error);
   if (problem) fail('race boot error: ' + problem);
 }
