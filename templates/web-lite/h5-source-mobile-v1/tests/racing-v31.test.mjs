@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { TRACK_RESHAPES, applyTrackDesign } from '../racing/track-design.mjs';
 import { WrongWayRecovery } from '../racing/recovery.mjs';
 import { roadHint } from '../racing/road-coach.mjs';
+import { chooseCornerSigns, installCornerSigns, disposeCornerSigns } from '../racing/corner-signs.mjs';
 import { applyLaneDesign, PAD_LANES } from '../racing/lane-design.mjs';
 
 function fixture() {
@@ -162,4 +163,45 @@ test('正常通过慢弯或恢复前进时，不得错误判定被困',()=>{
     assert.equal(assist.frame(g),null,'forward road progress resets stall timer');
   }
   assert.equal(g.resetCount,0);
+});
+
+
+test('四张地图的路边转向标识采用曲率热点，每圈不超过7个且互不扎堆',()=>{
+  const curv=new Float32Array(1500);
+  for(const i of [160,320,480,640,800,960,1120,1280])curv[i]=i%320===0?-.028:.031;
+  const track={curv,N:curv.length,ds:1.5,length:2250};
+  const turns=chooseCornerSigns(track);
+  assert.equal(turns.length,7);
+  assert.ok(turns.every(s=>s.d>=170&&s.d<=track.length-140));
+  assert.ok(turns.every((s,i)=>i===0||s.d-turns[i-1].d>=180));
+  assert.ok(turns.some(s=>s.curve<0)&&turns.some(s=>s.curve>0));
+  assert.deepEqual(chooseCornerSigns(null),[]);
+});
+test('弯道牌只建轻量 Sprite，换图时会释放图标材质/贴图而不修改物理',()=>{
+  const tracker={texture:0,material:0,removed:0};
+  const canvasContext={beginPath(){},roundRect(){},fill(){},stroke(){},save(){},restore(){},
+    translate(){},scale(){},moveTo(){},lineTo(){},quadraticCurveTo(){},closePath(){}};
+  const fakeDocument={createElement:()=>({getContext:()=>canvasContext})};
+  const makeVec=()=>({set(x,y,z){this.value=[x,y,z];}});
+  const THREE={
+    SRGBColorSpace:'srgb',
+    CanvasTexture:class {dispose(){tracker.texture++;}},
+    SpriteMaterial:class {constructor(options){this.map=options.map;}dispose(){tracker.material++;}},
+    Sprite:class {constructor(mat){this.material=mat;this.position=makeVec();this.scale=makeVec();this.parent=null;}},
+  };
+  const curv=new Float32Array(1400);for(const i of [160,320,480,640,800,960])curv[i]=.022;
+  const level={objects:[],add(s){this.objects.push(s);s.parent=this;},
+    remove(s){this.objects=this.objects.filter(x=>x!==s);s.parent=null;tracker.removed++;}};
+  const track={curv,N:1400,ds:1.5,length:2100,halfW:11,
+    sample(d){return{x:d,y:0,z:d,rx:-1,rz:0};}};
+  const game={track,level};
+  const a=installCornerSigns(game,THREE,fakeDocument);
+  assert.equal(a,6);assert.equal(level.objects.length,6);
+  assert.ok(level.objects.every(s=>s.position.value.length===3));
+  const b=installCornerSigns(game,THREE,fakeDocument);
+  assert.equal(b,6);assert.equal(level.objects.length,6);
+  assert.equal(tracker.texture,2,'replace road signs frees old shared atlas textures');
+  disposeCornerSigns(game);
+  assert.equal(tracker.texture,4);assert.equal(tracker.material,4);
+  assert.equal(level.objects.length,0);
 });
