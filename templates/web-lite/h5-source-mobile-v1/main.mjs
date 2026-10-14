@@ -58,7 +58,17 @@ async function boot() {
       native.metrics = () => ({finished:!!g.player?.finished,place:g.standings.indexOf(g.player)+1,drifts:g.player?.stats?.drift||0});
       break;
     }
-    if (id === 'cf-transport-ship' && window.__H5NativeGame?.hud && !document.getElementById('menu')?.classList.contains('hidden')) { const g = window.__H5NativeGame; native = createFpsAdapter(g, document); const originalStart = native.start; native.start = c => { g.opts.primary = c.weapon; originalStart(); }; native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,deaths:g.player?.stats?.d||0}); fpsUx = createFpsMobileUx(g, root, document); break; }
+    if (id === 'cf-transport-ship' && window.__H5NativeGame?.hud && !document.getElementById('menu')?.classList.contains('hidden')) { const g = window.__H5NativeGame; native = createFpsAdapter(g, document); const originalStart = native.start; if (!g.__mkAwmKillHooked) {
+        const underlyingKill = g.kill;
+        g.__mkAwmKills = 0;
+        g.kill = function (victim, attacker, weapon, ...rest) {
+          if (attacker === g.player && victim !== attacker && victim?.team !== attacker?.team && weapon === 'awm') g.__mkAwmKills++;
+          return underlyingKill.call(this, victim, attacker, weapon, ...rest);
+        };
+        g.__mkAwmKillHooked = true;
+      }
+      native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(); };
+      native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,travel:fpsUx?.distanceMeters()||0}); fpsUx = createFpsMobileUx(g, root, document); break; }
     await wait();
   }
   if (!native) { $('copy').textContent = '加载尚未完成，请刷新或换用支持 WebGL 的浏览器。'; return; }
