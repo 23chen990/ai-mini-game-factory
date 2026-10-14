@@ -143,3 +143,18 @@ html[data-reference-game="cf-transport-ship"] #mk-fps-guide{
  html[data-reference-game="cf-transport-ship"] #mk-fps-tutorial{padding:4px 0}
  html[data-reference-game="cf-transport-ship"] #mk-fps-tutorial span{font-size:10px}
 }
+
+
+/* Mobile first combat: the first legitimate scout is visually distinct.
+   Marker is created only after actual sight-ray confirmation. */
+html[data-reference-game="cf-transport-ship"] .mk-fps-training-enemy{
+  background:#8a1717e8!important;
+  outline:2px solid #ffddd2;outline-offset:2px;
+  box-shadow:0 0 0 5px #ff554133;
+  font-size:13px!important;padding:3px 7px!important;
+  animation:mkScoutPulse 1.2s ease-in-out infinite
+}
+@keyframes mkScoutPulse {50%{box-shadow:0 0 0 9px #ff554115}}
+@media (prefers-reduced-motion:reduce) {
+ html[data-reference-game="cf-transport-ship"] .mk-fps-training-enemy{animation:none}
+}
