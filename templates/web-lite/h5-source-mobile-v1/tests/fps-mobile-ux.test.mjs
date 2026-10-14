@@ -95,10 +95,10 @@ test('mobile scout approach keeps symmetric reviewed cargo lanes and honest dire
 
 test('simple fire is crosshair-driven with real bullets, never fires at teammates or behind cover',()=>{
  const base={kind:'hits',weapon:'m4a1',side:'enemy',alive:true,distance:17,
-   blocked:false,heldSeconds:0.2,yawError:0.01,pitchError:0.01};
+   blocked:false,heldSeconds:0.2,yawError:0.01,pitchError:0.01,engaged:true};
  assert.equal(mobileSimpleFireAllowed(base),true);
  for(const v of [
-  {kind:'kills'},{weapon:'awm'},{side:'ally'},{alive:false},{blocked:true},
+  {engaged:false},{kind:'kills'},{weapon:'awm'},{side:'ally'},{alive:false},{blocked:true},
   {distance:29},{distance:0},{heldSeconds:0.05},
   {yawError:0.10},{pitchError:0.15},{pitchError:NaN}
  ]) assert.equal(mobileSimpleFireAllowed({...base,...v}),false,JSON.stringify(v));
