@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { STAGES, newCareer, loadCareer, careerStars, stageUnlocked, skinUnlocked, recordStage, gradeStage, validDrift, fractionPassed } from '../racing/career.mjs';
+import { STAGES, newCareer, loadCareer, localDayKey, dailyStage, careerStars, stageUnlocked, skinUnlocked, recordStage, gradeStage, validDrift, fractionPassed } from '../racing/career.mjs';
 import { thinItemBoxes, itemDecision, AutoItems, OvertakeTracker, awardCornerPass, removeEliminatedAi } from '../racing/items.mjs';
 import { RacingCareer } from '../racing/runtime.mjs';
 const result=(n=1)=>({finished:true,place:n,time:90,stats:{crash:1}});
@@ -169,4 +169,38 @@ test('corner-pass gift cannot counterfeit a required physical item-box pickup',(
   c.onItemGet('shield','box');
   assert.equal(c.metrics.pickups,1);
   assert.ok(gradeStage(c.stage,result(),c.metrics)>0);
+});
+
+test('offline daily stage rotates by local date and stays locked until chapter one is complete',()=>{
+  const a=new Date(2026,9,14,12),b=new Date(2026,9,15,12);
+  assert.equal(localDayKey(a),'2026-10-14');
+  assert.equal(dailyStage(a).id,'daily-2026-10-14');
+  assert.equal(dailyStage(a).map,dailyStage(new Date(2026,9,14,18)).map);
+  assert.notEqual(dailyStage(a).id,dailyStage(b).id);
+  const c=new RacingCareer(memory());
+  assert.equal(c.canDaily(),false);assert.equal(c.setDaily(a),false);
+  for(let i=0;i<4;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  assert.equal(c.canDaily(),true);assert.equal(c.setDaily(a),true);
+  assert.equal(c.stage.id,'daily-2026-10-14');assert.equal(c.nextStage(),c.index);
+  c.setStage(3);assert.equal(c.dailySnapshot,null);
+});
+test('daily wins update best and streak once per day but never grant story stars or skins',()=>{
+  const c=new RacingCareer(memory());
+  for(let i=0;i<4;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
+  const before=careerStars(c.progress);
+  const pass=date=>{
+    const g=game();g.standings=[g.player,...g.racers.filter(x=>!x.isPlayer)];
+    assert.equal(c.setDaily(date),true);c.begin(g);
+    Object.assign(c.metrics,{pickups:9,cleanDrifts:9,cleanPasses:9,padCount:9,gateSpeed:250,survived:2,beatBoss:true});
+    const out=c.finalize(g,{finished:true,place:1,time:80,stats:{crash:0}});
+    assert.ok(out.stars>0);return out;
+  };
+  pass(new Date(2026,9,14,12));
+  assert.equal(c.progress.daily.streak,1);assert.equal(c.progress.daily.best,80);
+  assert.equal(careerStars(c.progress),before);
+  pass(new Date(2026,9,14,18));assert.equal(c.progress.daily.streak,1);
+  pass(new Date(2026,9,15,12));assert.equal(c.progress.daily.streak,2);
+  const restored=loadCareer(JSON.stringify(c.progress));
+  assert.equal(restored.daily.streak,2);assert.equal(restored.daily.lastWonDate,'2026-10-15');
+  assert.equal(careerStars(restored),before);
 });
