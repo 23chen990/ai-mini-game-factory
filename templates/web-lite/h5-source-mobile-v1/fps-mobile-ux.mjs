@@ -137,8 +137,8 @@ export function mobileAimCorrection({ yawError, pitchError, distance, visible, f
   };
 }
 
-export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked,heldSeconds,yawError,pitchError}) {
-  return kind==='hits' && weapon==='m4a1' && side==='enemy' &&
+export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked,heldSeconds,yawError,pitchError,engaged}) {
+  return engaged===true && kind==='hits' && weapon==='m4a1' && side==='enemy' &&
     alive===true && blocked===false && Number.isFinite(distance) &&
     distance>0 && distance<=28 && Number.isFinite(heldSeconds) && heldSeconds>=0.14 &&
     Number.isFinite(yawError) && Number.isFinite(pitchError) &&
@@ -156,6 +156,29 @@ export function createFpsMobileUx(game, root, doc) {
   const legacyTouchNote = doc.getElementById('touchNote');
   if (legacyTouchNote) legacyTouchNote.textContent = '';
   const touchControls = doc.getElementById('touch');
+  let playerEngaged=false;
+  const aimTouchStarts=new Map();
+  const onTouchStart=e=>{
+    if(activeChallenge?.kind!=='hits'||!game.playing||game.paused)return;
+    if(e.target?.closest?.('.btn,.pad'))return;
+    const limit=(doc.defaultView?.innerWidth||844)*0.44;
+    for(const t of e.changedTouches||[])if(t.clientX>limit)
+      aimTouchStarts.set(t.identifier,{x:t.clientX,y:t.clientY});
+  };
+  const onTouchMove=e=>{
+    if(activeChallenge?.kind!=='hits'||!game.playing||game.paused)return;
+    for(const t of e.changedTouches||[]){
+      const v=aimTouchStarts.get(t.identifier);
+      if(v&&Math.hypot(t.clientX-v.x,t.clientY-v.y)>12)playerEngaged=true;
+    }
+  };
+  const onTouchEnd=e=>{
+    for(const t of e.changedTouches||[])aimTouchStarts.delete(t.identifier);
+  };
+  doc.addEventListener('touchstart',onTouchStart,{capture:true,passive:true});
+  doc.addEventListener('touchmove',onTouchMove,{capture:true,passive:true});
+  doc.addEventListener('touchend',onTouchEnd,{capture:true,passive:true});
+  doc.addEventListener('touchcancel',onTouchEnd,{capture:true,passive:true});
   const buttons = touchControls ? [...touchControls.querySelectorAll('.btn')] : [];
   for (const [index, button] of buttons.entries()) {
     const action = mobileTouchAction(index);
@@ -170,7 +193,10 @@ export function createFpsMobileUx(game, root, doc) {
       button.setAttribute('tabindex', '-1');
     }
     // The original source only handles touchend, not cancellation.
-    if (action === 'fire') button.addEventListener('touchstart', () => nudgeAim(true), {capture:true,passive:true});
+    if (action === 'fire') button.addEventListener('touchstart', () => {
+      if(activeChallenge?.kind==='hits')playerEngaged=true;
+      nudgeAim(true);
+    }, {capture:true,passive:true});
     button.addEventListener('touchcancel', () => {
       if (action === 'fire' && game.player?.touch) {
         game.player.touch.fire = false;
@@ -295,7 +321,7 @@ export function createFpsMobileUx(game, root, doc) {
     const p = game.player, cam = game.renderer?.camera;
     const simple = activeChallenge?.kind==='hits' && p?.weapon?.id==='m4a1';
     if (!p?.alive || !game.playing || game.paused || !cam ||
-        !(forceFiring || p.touch?.fire || simple)) return;
+        !(forceFiring || p.touch?.fire || (simple&&playerEngaged))) return;
     const sniper = p.weapon?.def?.type === 'sniper';
     const ready = !sniper || (p.scoped > 0 && p.scopeReady);
     if (!ready) return;
@@ -329,7 +355,7 @@ export function createFpsMobileUx(game, root, doc) {
   function updateAutoFire() {
     const p=game.player, actor=game.aimTarget;
     const simple=activeChallenge?.kind==='hits';
-    if (!simple || !p?.alive || !game.playing || game.paused) {
+    if (!simple || !p?.alive || !game.playing || game.paused || !playerEngaged) {
       if (simple && p) p.mouse.l=false;
       autoAimActor=null;autoFireActive=false;
       return;
@@ -351,9 +377,10 @@ export function createFpsMobileUx(game, root, doc) {
     const allowed=mobileSimpleFireAllowed({
       kind:activeChallenge?.kind,weapon:p.weapon?.id,side:teamSide(p.team,actor.team),
       alive:p.alive,distance,blocked,heldSeconds:(Number(game.time)||0)-autoAimSince,
-      yawError,pitchError
+      yawError,pitchError,engaged:playerEngaged
     });
     p.mouse.l=allowed;
+    if(game.__mobileBalanceReview)game.__mobileBalanceReview.playerEngaged=playerEngaged;
     if(allowed&&!autoFireActive) {
       game.__mobileBalanceReview.autoFireActivations++;
     }
@@ -436,7 +463,7 @@ export function createFpsMobileUx(game, root, doc) {
         : activeChallenge?.kind==='kills'
           ? '<b>③</b> 开镜后点开火'
           : '<b>③</b> 点按或按住开火';
-      autoAimActor=null;autoAimSince=0;autoFireActive=false;
+      autoAimActor=null;autoAimSince=0;autoFireActive=false;playerEngaged=false;aimTouchStarts.clear();
       guide.textContent = activeChallenge?.kind === 'kills'
         ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先点开镜，再滑动瞄准开火'
         : activeChallenge?.kind === 'survive'
@@ -461,7 +488,7 @@ export function createFpsMobileUx(game, root, doc) {
         p.vel.set(0, 0, 0);
       }
       game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null,
-        challenge: activeChallenge?.id,autoFireActivations:0};
+        challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
       const rendezvous=prepareFirstEncounter();
       game.__mobileBalanceReview.firstRendezvousPath=rendezvous.path;
       game.__mobileBalanceReview.trainingScout=rendezvous.trainingScout;
@@ -535,6 +562,11 @@ export function createFpsMobileUx(game, root, doc) {
     },
     destroy() {
       if(activeChallenge?.kind==='hits'&&game.player)game.player.mouse.l=false;
+      doc.removeEventListener('touchstart',onTouchStart,true);
+      doc.removeEventListener('touchmove',onTouchMove,true);
+      doc.removeEventListener('touchend',onTouchEnd,true);
+      doc.removeEventListener('touchcancel',onTouchEnd,true);
+      aimTouchStarts.clear();
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); guide.remove(); tutorial.remove();
