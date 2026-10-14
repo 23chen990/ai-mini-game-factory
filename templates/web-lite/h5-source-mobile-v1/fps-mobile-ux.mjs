@@ -117,6 +117,7 @@ export function createFpsMobileUx(game, root, doc) {
       button.setAttribute('tabindex', '-1');
     }
     // The original source only handles touchend, not cancellation.
+    if (action === 'fire') button.addEventListener('touchstart', () => nudgeAim(true), {capture:true,passive:true});
     button.addEventListener('touchcancel', () => {
       if (action === 'fire' && game.player?.touch) {
         game.player.touch.fire = false;
@@ -154,7 +155,7 @@ export function createFpsMobileUx(game, root, doc) {
   root.append(guide);
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
-  let activeChallenge = null;
+  let activeChallenge = null, nextBalanceAt = 0, lastHits = 0;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -176,6 +177,53 @@ export function createFpsMobileUx(game, root, doc) {
       tex.needsUpdate = true;
       sprite.scale.x = Math.max(1.55, sprite.scale.x);
       tag.__mkAllyLabel = true;
+    }
+  }
+
+  function applyBalance(elapsed) {
+    const p = game.player;
+    if (!p) return;
+    const profile = mobileEnemyDifficulty(activeChallenge?.kind, elapsed, p.stats);
+    // Both teams stay comparable: do not let allied bots farm all enemies
+    // before a novice player gets a first encounter.
+    for (const actor of game.actors || []) {
+      if (!actor || actor.isPlayer || !actor.diff) continue;
+      actor.diff = {...profile, react: [...profile.react]};
+      actor.recoilControl = profile.ctrl;
+    }
+  }
+
+  function nudgeAim(forceFiring = false) {
+    const p = game.player, cam = game.renderer?.camera;
+    if (!p?.alive || !game.playing || game.paused || !cam ||
+        !(forceFiring || p.touch?.fire)) return;
+    const sniper = p.weapon?.def?.type === 'sniper';
+    const ready = !sniper || (p.scoped > 0 && p.scopeReady);
+    if (!ready) return;
+    const eye = p.eye(cam.position.clone());
+    let best = null, bestScore = Infinity;
+    for (const actor of game.actors || []) {
+      if (!actor.alive || actor.protectT > 0 || actor.team === p.team || !actor.soldier) continue;
+      const chest = actor.soldier.chestWorld(cam.position.clone());
+      const dir = chest.sub(eye), distance = dir.length();
+      if (!(distance > 1 && distance <= 27)) continue;
+      const trueYaw = Math.atan2(-dir.x, -dir.z);
+      const errYaw = Math.atan2(Math.sin(trueYaw-p.yaw), Math.cos(trueYaw-p.yaw));
+      const errPitch = Math.atan2(dir.y, Math.hypot(dir.x, dir.z)) - p.pitch;
+      const aim = mobileAimCorrection({
+        yawError: errYaw, pitchError: errPitch, distance, visible: true,
+        firing: true, sniperReady: ready
+      });
+      if (!aim.yaw && !aim.pitch) continue;
+      const hit = game.world.raycast(eye.x, eye.y, eye.z,
+        dir.x / distance, dir.y / distance, dir.z / distance, distance - 0.15, 'sight');
+      if (hit) continue;
+      const score = Math.abs(errYaw) + Math.abs(errPitch);
+      if (score < bestScore) { bestScore = score; best = aim; }
+    }
+    if (best) {
+      p.yaw += best.yaw;
+      p.pitch = Math.max(-1.5, Math.min(1.5, p.pitch + best.pitch));
     }
   }
 
@@ -246,7 +294,20 @@ export function createFpsMobileUx(game, root, doc) {
           : '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手前进，右侧瞄准并开火';
       started = performance.now();
       nextUpdate = 0;
+      nextBalanceAt = 0;
+      lastHits = 0;
       lastBoard = '';
+      const p = game.player;
+      const spawns = game.map?.spawns?.[p?.team];
+      const clear = selectMobileSpawn(spawns, p?.team, game.actors, game.world);
+      if (p && clear && clear.clearance > 4) {
+        p.pos.set(clear.spawn.x, 0.02, clear.spawn.z);
+        p.yaw = clear.spawn.yaw;
+        p.pitch = 0;
+        p.vel.set(0, 0, 0);
+      }
+      game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null, challenge: activeChallenge?.id};
+      applyBalance(0);
       recolorNativeAllies();
     },
     update(running, now = performance.now()) {
@@ -268,12 +329,29 @@ export function createFpsMobileUx(game, root, doc) {
       const msg = '◆ 我方 ' + score.ally + ' : ' + score.enemy + ' 敌方 ▼';
       if (msg !== lastBoard) { board.textContent = msg; lastBoard = msg; }
       updateAim();
-      guide.hidden = now - started > 8000 || ((p.stats?.shots || 0) > 0 && now - started > 3500);
+      const elapsed = Math.max(0, (now - started) / 1000);
+      if (now >= nextBalanceAt) {
+        nextBalanceAt = now + 1000;
+        applyBalance(elapsed);
+      }
       if (now >= nextUpdate) {
         nextUpdate = now + 120;
         recolorNativeAllies();
         updateEnemyMarkers();
+        nudgeAim();
+        const hits = p.stats?.hits || 0;
+        if (hits > lastHits) {
+          originalToast('✓ 命中！继续对准红色敌人', 1.8);
+          lastHits = hits;
+        }
+        const seen = [...markers.values()].some(el => !el.hidden);
+        if (hits === 0 && elapsed >= 6) {
+          guide.textContent = seen
+            ? '▼ 发现敌人！右侧滑动靠近目标，然后点开火'
+            : '沿集装箱两侧前进，绕到开阔处寻找红色敌人';
+        }
       }
+      guide.hidden = elapsed > (p.stats?.hits ? 8 : 23) || !p.alive;
     },
     destroy() {
       html.removeAttribute('data-fps-active');
