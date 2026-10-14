@@ -59,7 +59,7 @@ export function createCoastAdventure(api) {
   const route=$('route'),earned=allStars(save);
   $('progress').textContent=`🌟 全海岸 ${earned}/15 星 · ${earned===15?'渔王挑战已达成':'重玩关卡可冲三星'}`;
   route.innerHTML=LEVELS.map(l=>{
-   const req=starRequirements(l),best=save.best?.[l.id-1],record=save.completed[l.id-1]?` · 最多 ${best?.fish??0} 鱼`:'';
+   const req=starRequirements(l),best=save.best?.[l.id-1],record=save.completed[l.id-1]&&best?.fish>0?` · 纪录 ${best.fish} 鱼`:'';
    return `<button data-level="${l.id}" ${l.id>save.unlocked?'disabled':''} class="${l.id===selected?'selected':''} ${l.id>save.unlocked?'locked':''}"><strong>${l.id>save.unlocked?'🔒':l.id}</strong><span><b>${l.name}</b><small>${l.distance} m · ${l.goal.count} 条鱼${l.goal.gold?' · 金鱼 '+l.goal.gold:''}${record}</small><small class="co-master">★★★ 🐟${req.gold} · 🌟${req.goldFish} · ↟${req.jumps} · 🛡 · ◷≤${req.time.toFixed(1)}s</small></span><em>${save.completed[l.id-1]?'★'.repeat(save.stars[l.id-1]):l.id===save.unlocked?'出发 →':''}</em></button>`;
   }).join('');
   $('start').textContent='▶ 出发 · '+LEVELS[selected-1].name;

@@ -12,7 +12,7 @@
 
 1. `node --test tools/lean-pilot/pelican-v2/core.node.mjs tools/lean-pilot/pelican-v2/runtime/{feel-safety,engagement,engagement.integration}.node.mjs`，lint、typecheck、完整 GitHub CI。发现断言不成立，要以实际实现为准定位并修复，不要绕过。
 2. 固定作者源码 revision `54adc1fb64155f9dd7c1c90ecae7b8185ac540b8`，重新跑 prepare/build，生成 V3.2 完整 H5，记录 SHA256。绝不复用旧 ZIP 的哈希。
-3. WebKit 和 Chromium 真正触屏正常通关五关。额外跑第一关两条路线：跳过 x225 中车道路障→抓 x234 中车道奖励金鱼；提前变到侧车道安全避障→不强制拿金鱼。确认两条路线均不发生诡异死亡。
+3. WebKit 和 Chromium 真正触屏正常通关五关。额外跑第一关两条路线：跳过 x140 中车道路障→抓 x149 奖励金鱼（另有 x225→x234 的第二次机会）；提前变到侧车道安全避障→不强制拿金鱼。确认两条路线均不发生诡异死亡。
 4. 录“首鱼/首金鱼/首行人/首跳障/第一关通关”五个可见节点，核对前 40 秒是否真的有清晰反馈；测试一次三星条件包含真实跳障，而不是仅按距离给满星。
 5. 真机屏幕和旋转/低性能/后台恢复、真实广告未接入保持 BLOCKED，不能声称发布完成；需要真人判断 V3.2 转向/镜头是否优于 V2。
 6. 最终提交新 H5 ZIP、视频、截图、QA 日志和中文交接至当前 Draft PR，不要一点一点让我反复验收。
