@@ -81,3 +81,23 @@ test('reload keeps earned fuel and rejects tampered/corrupted persisted JSON',()
   assert.equal(loadFuel(JSON.stringify({...state,lastAdId:7}),T),null);
   assert.equal(loadFuel(JSON.stringify({...state,updatedAt:-2}),T),null);
 });
+
+
+test('满油时回拨时钟开赛，扣油不可把恢复计时基准挪到过去',()=>{
+  const start=newFuelState(T);
+  const rolled=spendRaceFuel(start,T-20*M);
+  assert.equal(rolled.ok,true);
+  assert.equal(rolled.state.amount,9);
+  assert.equal(rolled.state.updatedAt,T,'remember original full-tank timestamp');
+  assert.equal(syncFuel(rolled.state,T+4*M).amount,9,'4 real minutes is not enough');
+  assert.equal(syncFuel(rolled.state,T+5*M).amount,10,'only after 5 real minutes refill');
+});
+test('冷却中的广告和反复回拨不会制造额外的两格体力',()=>{
+  const s=spendRaceFuel(spendRaceFuel(newFuelState(T),T).state,T).state;
+  const reward=grantAdvertFuel(s,'completed','reward-attempt-one',T+1000);
+  assert.equal(reward.ok,true);
+  const rolled=spendRaceFuel(reward.state,T-1000);
+  assert.equal(rolled.ok,true);
+  assert.equal(rolled.state.updatedAt,reward.state.updatedAt,'rollback never rewinds recharge anchor');
+  assert.equal(grantAdvertFuel(rolled.state,'completed','reward-attempt-two',T+2000).ok,false,'reward cooldown persists');
+});
