@@ -27,7 +27,7 @@ export function mobileTouchAction(index) {
 
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
-  if (challenge.kind === 'hits') return '60秒内，射中敌人3次';
+  if (challenge.kind === 'hits') return '60秒内对准敌人自动开火，命中3次';
   if (challenge.kind === 'kills') return '90秒内，使用 AWM 狙击枪击杀1名敌人';
   if (challenge.kind === 'survive') return '坚持45秒，移动20米，最多被击倒2次';
   return challenge.instructions || '';
@@ -111,10 +111,12 @@ export function mobileAimCorrection({ yawError, pitchError, distance, visible, f
   };
 }
 
-export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked,heldSeconds}) {
+export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked,heldSeconds,yawError,pitchError}) {
   return kind==='hits' && weapon==='m4a1' && side==='enemy' &&
     alive===true && blocked===false && Number.isFinite(distance) &&
-    distance>0 && distance<=28 && Number.isFinite(heldSeconds) && heldSeconds>=0.14;
+    distance>0 && distance<=28 && Number.isFinite(heldSeconds) && heldSeconds>=0.14 &&
+    Number.isFinite(yawError) && Number.isFinite(pitchError) &&
+    Math.abs(yawError)<=0.047 && Math.abs(pitchError)<=0.050;
 }
 
 export function createFpsMobileUx(game, root, doc) {
@@ -297,9 +299,13 @@ export function createFpsMobileUx(game, root, doc) {
     if (actor!==autoAimActor) {
       autoAimActor=actor;autoAimSince=Number(game.time)||0;
     }
+    const toYaw=Math.atan2(-aim.x,-aim.z), horiz=Math.hypot(aim.x,aim.z);
+    const yawError=Math.atan2(Math.sin(toYaw-p.yaw),Math.cos(toYaw-p.yaw));
+    const pitchError=Math.atan2(aim.y,horiz)-p.pitch;
     const allowed=mobileSimpleFireAllowed({
       kind:activeChallenge?.kind,weapon:p.weapon?.id,side:teamSide(p.team,actor.team),
-      alive:p.alive,distance,blocked,heldSeconds:(Number(game.time)||0)-autoAimSince
+      alive:p.alive,distance,blocked,heldSeconds:(Number(game.time)||0)-autoAimSince,
+      yawError,pitchError
     });
     p.mouse.l=allowed;
     if(allowed&&!autoFireActive) {
