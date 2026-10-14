@@ -84,9 +84,14 @@ export function createCoastAdventure(api) {
  function terminal(){
   if(!settle(save,run))return;round.score=run.rewardScore;finishRound(round,progress);persist();S.paused=true;settledAt=now;audio.mute(true);phase('finished');
   const reasons={vehicle:'撞到汽车了',barrier:'碰到了低矮路障','fish-short':'抵达终点，鱼还没抓够','gold-short':'抵达终点，还缺少金鱼',timeout:'时间到了',complete:'海岸这一站，完成！'};
-  $('heading').textContent=reasons[run.reason];
-   const earned=allStars(save),best=save.best?.[run.level.id-1];
-   $('copy').textContent=run.reason==='complete'?`${'★'.repeat(run.stars)} · ${run.count} 条鱼 / 金鱼 ${run.gold} · 跳障 ${run.jumpedBarriers} 次 · 最多 ${best?.fish??run.count} 鱼。${nextStarTip(run.level,run)}。全海岸 ${earned}/15 星。${run.level.id<5?'下一站已解锁。':'全部路线已解锁，可回头冲满星。'}`:run.reason==='vehicle'?'🚗 汽车不能跳过。看见红色车道预警后，提前换道。':run.reason==='barrier'?'↟ 跳过去有奖励金鱼，绕开也可以安全前进。':run.reason==='timeout'?'行人碰撞会停车 3 秒，但倒计时继续。留意斑马线。':`🐟 已抓 ${run.count}/${run.level.goal.count} 条 · 金鱼 ${run.gold}/${run.level.goal.gold}。下次沿着发光的鱼走，留意红色危险车道。`;
+  $('heading').textContent=run.reason==='complete'?(run.stars===3?'🏆 三星达成！':run.stars===2?'★★ 二星通关！':'★ 成功抵达！'):reasons[run.reason];
+  const earned=allStars(save),best=save.best?.[run.level.id-1];
+  if(run.reason==='complete'){
+   const icons='★'.repeat(run.stars);
+   $('copy').textContent=[`${icons} · 🐟${run.count} · 🌟${run.gold} · ↟${run.jumpedBarriers}`,
+    `${run.stars===3?'本关满星，继续挑战捕鱼纪录':nextStarTip(run.level,run)} · 最多 ${best?.fish??run.count} 鱼`,
+    `全海岸 ${earned}/15 星 · ${run.level.id<5?'下一站已解锁':'全部五关已解锁'}`].join('\n');
+  }else $('copy').textContent=run.reason==='vehicle'?'🚗 汽车不能跳过。看见红色车道预警后，提前换道。':run.reason==='barrier'?'↟ 跳过去有奖励金鱼，绕开也可以安全前进。':run.reason==='timeout'?'行人碰撞会停车 3 秒，但倒计时继续。留意斑马线。':`🐟 已抓 ${run.count}/${run.level.goal.count} 条 · 金鱼 ${run.gold}/${run.level.goal.gold}。下次沿着发光的鱼走，留意红色危险车道。`;
   $('next').textContent=run.level.id<5?'下一关 · '+LEVELS[run.level.id].name+' →':'海岸已完成';
   if(run.reason==='vehicle'||run.reason==='barrier'){root.classList.add('crashing');$('crash').classList.add('active');rider.rotation.x=0;notice('💥 '+(run.reason==='vehicle'?'撞车了':'没越过路障'),'轻点重开，马上再试','collision');}
   $('ad').disabled=false;$('ad').textContent='自愿观看广告 · 额外补给（未接入）';
