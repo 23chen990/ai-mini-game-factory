@@ -275,16 +275,20 @@ export function createFpsMobileUx(game, root, doc) {
         const scout=enemies[0];
         scout.spawn({x:spot.x,z:spot.z,yaw:spot.yaw});
         scout.onSpawn?.();
-        scout.role='rush';
-        scout.goal=[p.pos.x,p.pos.z];
-        scout.path=game.nav.findPath(scout.pos.x,scout.pos.z,p.pos.x,p.pos.z);
-        scout.pi=1;
+        // Hold the first readable sight line briefly; never grant fake hits.
+        scout.role='hold';
+        scout.goal=[spot.x,spot.z];
+        scout.path=null;
+        scout.pi=0;
+        scout.holdYaw=spot.yaw;
+        scout.holdT=0;
         scout.protectT=0;
         // Allow new players several *simulation seconds* to recognize, aim
         // and shoot. Afterward the standard Bot can shoot normally.
         scout.readyAt=Math.max(scout.readyAt,game.time+7);
         scout.__mobileTrainingScout=true;
-        return {path:!!scout.path,trainingScout:true,range:spot.distance};
+        scout.__mobileTrainingHoldUntil=game.time+7;
+        return {path:true,trainingScout:true,range:spot.distance};
       }
     }
     for(const bot of enemies) {
@@ -312,6 +316,11 @@ export function createFpsMobileUx(game, root, doc) {
     // before a novice player gets a first encounter.
     for (const actor of game.actors || []) {
       if (!actor || actor.isPlayer || !actor.diff) continue;
+      if(actor.__mobileTrainingScout && game.time > actor.__mobileTrainingHoldUntil) {
+        actor.__mobileTrainingScout=false;
+        actor.role='rush';
+        actor.pickGoal?.();
+      }
       actor.diff = {...profile, react: [...profile.react]};
       actor.recoilControl = profile.ctrl;
     }
