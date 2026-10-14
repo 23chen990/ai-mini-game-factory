@@ -1,3 +1,4 @@
+/* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
 export function teamSide(ownTeam, actorTeam) {
   if (!['BL', 'GR'].includes(ownTeam) || !['BL', 'GR'].includes(actorTeam)) return 'unknown';
