@@ -32,6 +32,18 @@ export function patchRacingSource(source) {
   return output;
 }
 
+/** Only neutral names / text textures: no claim that artwork and map shapes are licensed. */
+export function neutralizeRaceBranding(text) {
+  return text
+    .replaceAll('SPEEDQQ.COM', 'RACEWAY.GAME')
+    .replaceAll('QQ飞车', '双键赛车')
+    .replaceAll('11城', '滨海都市')
+    .replaceAll('情迷爱琴海', '海湾山路')
+    .replaceAll('法老金字塔', '沙丘古城')
+    .replaceAll('雪地大冒险', '雪岭环线')
+    .replaceAll('小橘子', '闪电选手')
+    .replaceAll('秋名山车神', '山路高手');
+}
 /** A qq-speed-only extension of PR10. No other game's source or adapter is written. */
 export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), sourceRoot = process.env.H5_PINNED_SOURCE_ROOT, hypothesis = process.env.RACE_REPAIR_HYPOTHESIS ?? 'Reuse native vehicle physics and edge inputs; gate two-button assists by track/state, and replace the stacked HUD with one mobile presentation.' } = {}) {
   const root = path.resolve(base, RUN);
@@ -41,8 +53,10 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   if (run.theme !== 'qq-speed' || run.templateId !== 'h5-source-mobile-v1') throw Error('Wrong target racing run');
   const project = path.join(root, 'workspace/source/qq-speed');
   const owned = path.join(ROOT, 'templates/web-lite/h5-source-mobile-v1/racing');
-  const inputFiles = await Promise.all(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css'].map(name => readFile(path.join(owned, name), 'utf8')));
-  const inputHash = sha256(inputFiles.join('\n') + await readFile(fileURLToPath(import.meta.url), 'utf8'));
+  const ownedNames = ['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs'];
+  const inputFiles = await Promise.all(ownedNames.map(name => readFile(path.join(owned, name), 'utf8')));
+  const sharedDeps = await Promise.all(['fuel.mjs', 'themes.mjs'].map(name => readFile(path.join(ROOT, 'templates/web-lite/h5-source-mobile-v1', name), 'utf8')));
+  const inputHash = sha256([...inputFiles, ...sharedDeps, await readFile(fileURLToPath(import.meta.url), 'utf8')].join('\n'));
   let previous;
   try { previous = JSON.parse(await readFile(path.join(root, 'artifacts/build-racing.json'), 'utf8')); } catch { /* Initial build. */ }
   if (previous?.inputHash === inputHash && previous.buildHash === await buildHash(game)) return { ...previous, reused: true };
@@ -54,6 +68,12 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const attempt = history.repairAttempt;
   history.attempts.push({ attempt, inputHash, hypothesis, status: 'BUILDING' });
   await writeFile(path.join(root, 'artifacts/repair-history.json'), JSON.stringify(history, null, 2) + '\n');
+  // This takes place in a generated worktree, never in the pinned upstream source.
+  for (const name of ['maps.js', 'props.js', 'textures.js', 'ai.js', 'index.html']) {
+    const original = await readFile(path.join(project, 'src', name), 'utf8');
+    const neutral = neutralizeRaceBranding(original);
+    if (neutral !== original) await writeFile(path.join(project, 'src', name), neutral);
+  }
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   await writeFile(path.join(project, 'src/main.js'), patchRacingSource(beforeMain));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
@@ -75,7 +95,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const standalone = html.replace('<link rel="stylesheet" href="style.css">', '<style>' + inputFiles[3] + '</style>');
   const trialName = 'racing-two-button-' + hash.slice(0, 12) + '.html';
   await writeFile(path.join(root, trialName), standalone);
-  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(await readFile(path.join(project, 'src/vehicle.js'))), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (original Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
+  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(await readFile(path.join(project, 'src/vehicle.js'))), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
   history.attempts.at(-1).status = 'AWAITING_PLAYWRIGHT_QA';
   history.attempts.at(-1).buildHash = hash;
   await writeFile(path.join(root, 'artifacts/repair-history.json'), JSON.stringify(history, null, 2) + '\n');
