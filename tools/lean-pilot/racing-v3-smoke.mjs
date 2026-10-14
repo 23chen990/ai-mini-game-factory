@@ -34,6 +34,7 @@ const url = 'http://127.0.0.1:' + server.address().port + '/';
 const report = { stage:'BUILT_H5_CHROMIUM_ENTRY_SMOKE', assertion:'source-level/real browser, not human natural victory', testStart:new Date().toISOString(),
   views:[], errors:[], seededCampaign:false, passed:false };
 let browser;
+const jsErrors=[];
 const fail = reason => {report.errors.push(String(reason));throw Error(reason);};
 async function waitLoaded(page) {
   try {
@@ -57,10 +58,12 @@ async function waitLoaded(page) {
         nativeState:game?.state,loading:game?.loading,
         nativeMap:game?.map?.id,settingsMap:game?.settings?.map,
         track:!!game?.track,canvas:!!document.querySelector('canvas'),
-        title:document.title};
+        title:document.title,
+        scripts:[...document.scripts].map((s,i)=>({index:i,src:s.src||'',chars:s.textContent.length,hasRaceKit:s.textContent.includes('race-kit')}))};
     }).catch(e=>({evaluateError:String(e)}));
     report.diagnostics=state;
     report.errors.push('Startup diagnostics: '+JSON.stringify(state));
+    report.errors.push('Browser JS errors: '+JSON.stringify(jsErrors.slice(0,10)));
     throw error;
   }
   const problem = await page.evaluate(() => document.querySelector('#race-kit')?.dataset.error);
@@ -118,7 +121,7 @@ try {
   browser=await chromium.launch({headless:true,args:['--enable-webgl','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader','--disable-gpu-sandbox']});
   const context=await browser.newContext({viewport:{width:844,height:390},deviceScaleFactor:1,isMobile:true,hasTouch:true});
   const page=await context.newPage();
-  const jsErrors=[];page.on('pageerror',e=>jsErrors.push(e.message));page.on('console',m=>{if(m.type()==='error')jsErrors.push(m.text())});
+  page.on('pageerror',e=>jsErrors.push(e.message));page.on('console',m=>{if(m.type()==='error')jsErrors.push(m.text())});
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});await waitLoaded(page);
   const title=await page.locator('#race-stage').locator('option').count();
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
