@@ -1,5 +1,6 @@
 /** The original ItemSystem remains authoritative: only decide when to press use. */
 export const ITEM_LABELS = Object.freeze({ nitro: '氮气加速', shield: '防护盾', missile: '追踪导弹', magnet: '追击磁铁', banana: '香蕉皮' });
+export const ITEM_ICONS = Object.freeze({ nitro:'⚡', shield:'🛡', missile:'🚀', magnet:'🧲', banana:'🍌' });
 export function thinItemBoxes(system) {
   if (!system?.boxes || system.boxes.length < 15) return 0;
   const rows = [[0, 3], [1, 4], [0, 2], [1, 3]];
