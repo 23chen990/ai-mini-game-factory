@@ -69,8 +69,11 @@ export class AutoItems {
       useful = itemDecision(game);
       if (!useful) game.items.swap(p);
     }
-    // Avoid permanent full-inventory deadlocks on later item challenges.
-    if (!useful && p.items.length >= 2 && game.raceTime - this.heldSince >= 12) useful = true;
+    // Steering-only players have no 'use item' button. Even one defensive
+    // pickup must eventually show an effect and make room for the next box.
+    // Favor a useful moment first; only fall back after a long quiet interval.
+    const age = game.raceTime - this.heldSince;
+    if (!useful && p.s >= 12 && age >= (p.items.length >= 2 ? 12 : 18)) useful = true;
     if (!useful) return false;
     this.nextAt = game.raceTime + 1.25;this.held = null;
     return true;
