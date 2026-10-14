@@ -182,6 +182,29 @@ try {
   if(small.left.left<0||small.right.right>740||small.left.bottom>360||small.right.bottom>360)
     fail('740x360 horizontal thumb controls are clipped');
   await page.screenshot({path:path.join(dest,'08-snow-740x360.png')});
+  // Explicit QA-only synthetic DNF. This tests lobby recovery, NEVER counts as a completed race.
+  await page.evaluate(() => window.game.showResults());
+  await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
+  await page.selectOption('#race-stage','0');
+  await page.waitForFunction(() => {
+    const g=window.game;
+    return document.querySelector('#race-kit')?.dataset.phase==='ready' &&
+      g?.state==='menu' && !g.player && g.map?.id==='city';
+  },null,{timeout:50000});
+  await page.waitForTimeout(900);
+  if(jsErrors.length) fail('Switching from results to AI-only lobby crashed script: '+jsErrors.slice(-4).join(' | '));
+  await page.selectOption('#race-stage','1');
+  await page.waitForFunction(() => window.game?.state==='menu' && window.game?.map?.id==='egypt',null,{timeout:50000});
+  await page.click('#race-start');
+  await page.waitForFunction(() => window.game?.state==='countdown' && !!window.game?.player,null,{timeout:12000});
+  report.lobbyRecovery={syntheticDNF:true,resultsToAIOnlyMenu:true,changedTracksTwice:true,secondRaceCreatedPlayer:true};
+
+  // Verify saved low-end-device quality is respected on a subsequent launch.
+  await page.evaluate(() => localStorage.setItem('h5-qq-mobile-20261013:graphics-quality:v1','low'));
+  await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
+  const quality=await page.evaluate(() => window.game?.settings?.quality);
+  if(quality!=='low') fail('Explicit low-graphics preference lost on reload: '+quality);
+  report.persistedGraphicsQuality=quality;
   if(jsErrors.length) fail('Browser errors: '+jsErrors.slice(0,4).join(' | '));
   report.passed=true;report.smallView=small;
 } catch(e) {report.errors.push(String(e?.stack || e));process.exitCode=1;}
