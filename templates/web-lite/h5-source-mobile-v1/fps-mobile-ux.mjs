@@ -124,6 +124,7 @@ export function createFpsMobileUx(game, root, doc) {
     const p = game.player, actor = game.aimTarget;
     const side = p?.alive && actor?.alive ? teamSide(p.team, actor.team) : 'unknown';
     const label = side === 'ally' ? '◆ 队友 · 不要射击' : side === 'enemy' ? '▼ 敌人 · 可以射击' : '';
+    html.dataset.fpsAimSide = side;
     target.hidden = !label;
     if (label !== lastTarget) {
       target.textContent = label;
