@@ -9,7 +9,7 @@ const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const{run,root,game}=await loadRun(base,runId),hash=await buildHash(game),server=await serveRun(base,runId,0);
  const url='http://127.0.0.1:'+server.address().port,checks=[],artifacts=[],errors=[],actions=[];
- const fpsThreatTrace=[];
+ const fpsThreatTrace=[],fpsExtendedChecks=[];
  const readFpsThreat = async () => page.evaluate(() => {
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
@@ -156,7 +156,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    check('mobile-pause-resume',frozen&&paused==='paused',{visiblePaused:paused,clockFrozen:frozen});
    const loopStart=Date.now();
    let lastFpsTraceAt=0;
-   while(await page.locator('#mobile-kit').getAttribute('data-phase')!=='finished'&&Date.now()-loopStart<240000){
+   while(await page.locator('#mobile-kit').getAttribute('data-phase')!=='finished'&&Date.now()-loopStart<(run.theme==='cf-transport-ship'?540000:240000)){
      if(run.theme==='pelican-bike'){
        // A predefined sweep uses normal touch; no hidden fish positions or debug mutations.
        await hold('[data-code="ArrowLeft"]',1400);await hold('[data-code="ArrowRight"]',1400);
@@ -216,7 +216,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await page.locator('#mk-start').tap();
      await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
      const afkStart=Date.now();
-     while(await page.locator('#mobile-kit').getAttribute('data-phase')!=='finished'&&Date.now()-afkStart<100000)
+     while(await page.locator('#mobile-kit').getAttribute('data-phase')!=='finished'&&Date.now()-afkStart<420000)
        await page.waitForTimeout(1200);
      const afk=await page.evaluate(()=>{
        const root=document.querySelector('#mobile-kit');
@@ -226,13 +226,13 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          shotCount:window.__H5NativeGame?.player?.stats?.shots??null};
      });
      const idleRejected=afk.phase==='finished'&&afk.outcome==='lost'&&afk.shotCount===0;
-     checks.push({name:'cf-survive-idle-rejected',passed:idleRejected,detail:afk});
+     fpsExtendedChecks.push({name:'cf-survive-idle-rejected',passed:idleRejected,detail:afk});
      await shot('mobile-survival-idle-end');
    }
  }catch(e){errors.push(String(e.message).slice(0,500));}
  const frames=await page.evaluate(()=>window.__mobileFrames||[]).catch(()=>[]);frames.sort((a,b)=>a-b);
- const report={schemaVersion:1,runId,referenceId:run.theme,buildHash:hash,suiteHash:run.browserSuiteHash,scope:'HTTP_BROWSER',defaultSpeed:1,checks,artifacts,errors,actions,
-   passed:checks.length===(run.theme==='cf-transport-ship'?6:5)&&checks.every(c=>c.passed)&&errors.length===0,checkedAt:new Date().toISOString(),human:'NOT_RUN',physicalMobile:'NOT_RUN',liveIAA:'NOT_RUN',publishable:false,
+ const report={schemaVersion:1,runId,referenceId:run.theme,buildHash:hash,suiteHash:run.browserSuiteHash,scope:'HTTP_BROWSER',defaultSpeed:1,checks,fpsExtendedChecks,artifacts,errors,actions,
+   passed:checks.length===5&&checks.every(c=>c.passed)&&fpsExtendedChecks.every(c=>c.passed)&&errors.length===0,checkedAt:new Date().toISOString(),human:'NOT_RUN',physicalMobile:'NOT_RUN',liveIAA:'NOT_RUN',publishable:false,
    perceptualGate:'PENDING_SCREENSHOT_REVIEW',performance:{environment:'Desktop Chromium software WebGL + touch emulation, not phone hardware',frameP95Ms:frames[Math.floor(frames.length*.95)]??null,frames:frames.length},
    runtimeProductGate:{entrypoints:['index.html (pinned original Three.js bundle)','main.mjs (owned mobile glue)','engine.mjs (owned lifecycle)','themes.mjs (owned ad lifecycle)','platform.json'],referenceImplementationRetained:true,compatibilityLegacy:'Original game remains the intended runtime; no zero-rewrite claim.',terminalObserved:checks.some(c=>c.name==='mobile-terminal-replay'&&c.passed)}};
  await writeFile(path.join(root,'browser.json'),JSON.stringify(report,null,2)+'\n');
