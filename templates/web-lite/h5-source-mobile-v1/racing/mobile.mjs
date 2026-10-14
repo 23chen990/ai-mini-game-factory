@@ -1,6 +1,7 @@
 /* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout, fetch */
 import { RaceDriver, TouchSteering } from './driver.mjs';
 import { RacingCareer } from './runtime.mjs';
+import { ITEM_LABELS } from './items.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked } from './career.mjs';
 import { clearNativeInput, settleNative, QualityMonitor, raceReady, tuneRaceFx } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
@@ -8,7 +9,7 @@ const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(sec
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
 root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button>
-  <div id="race-live-goal" hidden></div><div id="race-controls" hidden><button id="race-left" data-race-direction="left" aria-label="按住向左转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 11 16 24l13 13"/></svg></button><button id="race-right" data-race-direction="right" aria-label="按住向右转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m19 11 13 13-13 13"/></svg></button></div>
+  <div id="race-live-goal" hidden></div><div id="race-held-item" hidden role="status"></div><div id="race-controls" hidden><button id="race-left" data-race-direction="left" aria-label="按住向左转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 11 16 24l13 13"/></svg></button><button id="race-right" data-race-direction="right" aria-label="按住向右转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m19 11 13 13-13 13"/></svg></button></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">3D 赛车 · 双键驾驶</div><h1 id="race-heading">双键飞驰</h1>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>‹</span><span>›</span></div><p>按住左右转弯，松手回正<br><small>漂移、出弯小喷和氮气自动触发</small></p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><p id="race-stage-goal"></p><div id="race-fuel-box"><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
@@ -72,7 +73,7 @@ function display(next) {
   $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || career.nextStage() === career.index; $('lobby').hidden = next !== 'finished';
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
-  $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && ['time','relay'].includes(career.stage.kind));
+  $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && ['time','relay'].includes(career.stage.kind));$('held-item').hidden = !racing || career.stage.mode !== 'item';
   for (const button of root.querySelectorAll('[data-race-direction]')) button.disabled = next !== 'race';
   if (next === 'paused') { $('heading').textContent = '休息一下'; $('quality').value = g.settings.quality; $('note').textContent = '已松开所有按键，准备好再继续'; }
 }
@@ -236,8 +237,11 @@ async function boot() {
       else if (g.state !== phase && ['race', 'countdown', 'paused'].includes(g.state)) display(g.state);
       if (g.state === 'race') {
         const failure = career.frame(g);
-        for (const message of career.drainNotices()) feedback(message, message.includes('超车') ? 'pass' : 'boost');
+        for (const message of career.drainNotices()) feedback(message);
         $('live-goal').textContent = career.timerLabel(g);
+        const held = g.player.items?.[0];
+        $('held-item').hidden = !g.itemMode || !held;
+        if (held) $('held-item').textContent = '道具：' + (ITEM_LABELS[held] ?? '已拾取') + ' · 自动使用';
         if (failure) {feedback(failure, 'crash');if (!g.resultShown) g.showResults();finish();}
         root.classList.toggle('drifting', g.player.drifting);
         const rank = g.standings.indexOf(g.player) + 1;
