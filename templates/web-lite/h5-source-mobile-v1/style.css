@@ -14,3 +14,16 @@ html[data-reference-game="cf-transport-ship"] #touch .btn{min-width:48px;min-hei
 @media(orientation:portrait){html[data-reference-game="qq-speed"] #menu,html[data-reference-game="cf-transport-ship"] #menu{padding-top:116px!important;padding-bottom:20px!important;overflow:auto!important}html[data-reference-game="cf-transport-ship"] #touch .btn:nth-of-type(4){display:none!important}}
 @media(max-height:450px){.mk-header{padding-top:4px}.mk-meter{position:absolute;left:10px;top:52px;max-width:250px;margin:0;font-size:12px}#mk-panel{max-height:calc(100% - 70px);top:55%;padding:12px}#mk-panel h2{font-size:18px}#mk-controls button{height:50px;min-height:48px}#mk-controls{right:35%;bottom:8px}}
 #mk-challenges{display:flex;gap:6px;margin:10px 0}#mk-challenges button{flex:1;padding:8px 4px;min-height:58px;font-size:12px}#mk-challenges b,#mk-challenges small{display:block}#mk-challenges small{color:#b7d3df;font-size:11px}#mk-challenges [aria-pressed="true"]{border:2px solid #efc56a;background:#4a4636}#mobile-kit[data-outcome="won"] #mk-heading{color:#8ef2bd}#mobile-kit[data-outcome="lost"] #mk-heading{color:#ffb489}
+
+/* Race-only: fuel is a quiet lobby resource; no fuel UI while driving. */
+html[data-reference-game="qq-speed"] #mk-fuel-box{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin:9px 0;padding:9px;border:1px solid #e6bf6652;border-radius:12px;
+  background:#071f31b8;color:#ffe3a2;font-size:12px
+}
+html[data-reference-game="qq-speed"] #mk-fuel-ad{
+  min-height:44px;padding:8px 14px;margin:2px 0 0;background:#e6bf66;color:#142436;
+  border-color:#fbe9b9
+}
+html[data-reference-game="qq-speed"] #mobile-kit[data-phase="running"] #mk-fuel-box,
+html[data-reference-game="qq-speed"] #mobile-kit[data-phase="paused"] #mk-fuel-box{display:none!important}
