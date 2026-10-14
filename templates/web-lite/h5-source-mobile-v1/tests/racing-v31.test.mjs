@@ -138,3 +138,28 @@ test('左右加速带提示依照原生横向坐标，避免把右边说成左�
   g.track.boostPads=[{d:300,lat:-5}];assert.equal(roadHint(g),'');
   g.track.boostPads=[{d:63,lat:0}];assert.equal(roadHint(g),'');
 });
+
+
+test('双键贴护栏持续无进展：先警告、6秒后原生脱困，不瞬移或改圈数',()=>{
+  const g=game(),assist=new WrongWayRecovery();
+  g.player.progress=980;g.player.lat=9;g.player.s=4;
+  g.player.lapsDone=1;g.player.owed=true;g.player.half=true;
+  g.raceTime=4;assert.equal(assist.frame(g),null);
+  g.raceTime=7.6;assert.equal(assist.frame(g),'stuck-warning');
+  g.raceTime=9;assert.equal(assist.frame(g),null,'only warn once');
+  g.raceTime=10.1;assert.equal(assist.frame(g),'stuck-recovered');
+  assert.equal(g.resetCount,1);
+  assert.equal(g.player.progress,980);assert.equal(g.player.lapsDone,1);
+  assert.equal(g.player.owed,true);assert.equal(g.player.half,true);
+  g.raceTime=11;assert.equal(assist.frame(g),null,'cooldown blocks a second rescue');
+});
+test('正常通过慢弯或恢复前进时，不得错误判定被困',()=>{
+  const g=game(),assist=new WrongWayRecovery();
+  g.player.progress=100;g.player.s=3;g.raceTime=4;
+  assert.equal(assist.frame(g),null);
+  for(const [time,progress] of [[6,108],[8,119],[10,132],[13,145],[16,160]]){
+    g.raceTime=time;g.player.progress=progress;
+    assert.equal(assist.frame(g),null,'forward road progress resets stall timer');
+  }
+  assert.equal(g.resetCount,0);
+});
