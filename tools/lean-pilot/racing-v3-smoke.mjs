@@ -112,6 +112,7 @@ async function raceStart(page, index, name) {
     itemShape:window.game?.items?.boxes?.[0]?.cube?.geometry?.type ?? null,
     itemBillboards:window.game?.items?.boxes?.[0]?.g?.children?.filter(x=>x.isSprite)?.length ?? 0,
     roadWidth:(window.game?.track?.halfW ?? 0)*2,
+    padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
     trackSamples:window.game?.track?.N ?? 0,
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
@@ -132,6 +133,9 @@ async function raceStart(page, index, name) {
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
     fail(name+': native vehicle did not progress with real auto throttle');
+  const expectedPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];
+  if(JSON.stringify(early.padLanes)!==JSON.stringify(expectedPadLanes))
+    fail(name+': native speed-pad lane choices missing: '+JSON.stringify(early.padLanes));
   const expectedWidth={city:23,egypt:23,aegean:21,snow:22}[expectedMap];
   if (Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
