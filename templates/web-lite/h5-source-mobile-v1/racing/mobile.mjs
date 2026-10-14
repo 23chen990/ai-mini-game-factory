@@ -91,35 +91,55 @@ function resume() {
   releaseInput(); g.togglePause(); inputTime = performance.now(); display(g.state);
 }
 function start() {
-  if (!g || loading || portrait()) return;
-  releaseInput(); result = null; previousRank = null; events = []; started = true;
-  g.camMode = 1; g.mobileMode = driver.enabled; g.startRace();
-  inputTime = performance.now(); $('heading').textContent = '双键飞驰'; display('countdown');
+  if (!g || loading || portrait() || career.adBusy) return;
+  if (!career.canStart()) {
+    $('note').textContent = '油量不足，等待自然恢复或主动看广告加油';
+    display('ready');fuelView();return;
+  }
+  releaseInput();result = null;previousRank = null;events = [];started = true;
+  try {
+    career.configure(g);
+    g.camMode = 1;g.mobileMode = driver.enabled;g.startRace();career.begin(g);
+    inputTime = performance.now();$('heading').textContent = career.stage.name;display('countdown');
+  } catch (error) {
+    started = false;$('note').textContent = '比赛启动失败：' + error.message;
+    display('ready');renderLobby();
+  }
 }
 function finish() {
   if (result) return;
   if (!g.resultShown) g.showResults();
-  result = settleNative(g); releaseInput();
-  $('heading').textContent = result.finished ? result.place === 1 ? '拿下冠军！' : `第 ${result.place} 名！` : '这次差一点';
+  result = settleNative(g);releaseInput();
+  const graded = career.finalize(g, result);
+  const stars = graded?.stars ?? 0;
+  $('heading').textContent = stars ? '挑战成功！' + '★'.repeat(stars) : '再试一次，争取过关';
   if (result.finished && (!best[result.map] || result.time < best[result.map])) {
     best[result.map] = result.time;try { localStorage.setItem(STORE, JSON.stringify(best)); } catch { /* Play remains available. */ }
   }
-  $('result-copy').textContent = result.finished ? `完赛 ${time(result.time)} · 本机最佳 ${time(best[result.map])}` : `完成 ${Math.floor(result.completion * 100)}% · 再试一次，提前看弯道`;
-  $('result-stats').innerHTML = [['漂移', result.stats.drift], ['小喷', result.stats.small], ['完美', result.stats.perfect], ['氮气', result.stats.nitro]].map(([label, value]) => `<span><b>${value ?? 0}</b>${label}</span>`).join('');
+  $('result-copy').textContent = stars
+    ? '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 本关最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星'
+    : '目标未完成：' + career.stage.goal + ' · ' + (result.finished ? '名次 ' + result.place : '已完成 ' + Math.floor(result.completion * 100) + '%');
+  $('result-stats').innerHTML = [['有效漂移', graded?.metric.cleanDrifts ?? 0], ['弯道超车', graded?.metric.cleanPasses ?? 0], ['拾取道具', graded?.metric.pickups ?? 0], ['小喷', result.stats.small]].map(([label, value]) => `<span><b>${value ?? 0}</b>${label}</span>`).join('');
   $('results').replaceChildren();
   for (const row of result.rows) {
     const li = document.createElement('li'); if (row.me) li.className = 'me';
     for (const value of [row.place, row.me ? '我' : row.name, time(row.time)]) { const span = document.createElement('span'); span.textContent = String(value); li.append(span); }
     $('results').append(li);
   }
-  display('finished');
+  display('finished');renderLobby();
 }
 async function loadTrack(id, autoStart) {
   if (!g || loading) return;
   releaseInput();loading = true; $('start').disabled = true; $('next').disabled = true; $('map').disabled = true;
   $('heading').textContent = '准备下一场…';
-  try { g.settings.map = id; g.save(); await g.loadMap(id); g.startDemo(); result = null; loading = false; $('map').value = id; if (autoStart) start(); else { $('heading').textContent = '双键飞驰'; display('ready'); } }
-  finally { loading = false; $('start').disabled = false; $('next').disabled = false; $('map').disabled = false; }
+  try {
+    const sameMap = g.settings.map === id && !!g.track;
+    if (!sameMap) { g.settings.map = id;g.save();await g.loadMap(id); }
+    g.startDemo();result = null;loading = false;$('map').value = id;
+    if (autoStart && career.canStart()) start();
+    else { $('heading').textContent = '双键飞驰';display('ready');renderLobby(); }
+  } catch (error) { $('note').textContent = '赛道加载失败：' + error.message;display('ready'); }
+  finally { loading = false;$('start').disabled = false;$('next').disabled = false;$('map').disabled = false; }
 }
 $('start').addEventListener('click', start); $('pause').addEventListener('click', pause); $('resume').addEventListener('click', resume);
 // A second finger is not guaranteed to synthesize click while the steering finger stays down.
