@@ -1,7 +1,7 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
-import { createFpsMobileUx } from './fps-mobile-ux.mjs';
+import { createFpsMobileUx, mobileChallengeCopy } from './fps-mobile-ux.mjs';
 
 async function boot() {
   const id = document.documentElement.dataset.referenceGame;
@@ -23,15 +23,15 @@ async function boot() {
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
-  const names = { 'pelican-bike': '骑行抓鱼 · 挑战', 'qq-speed': '赛车 · 私有触控试玩', 'cf-transport-ship': '运输船 · 私有触控试玩' };
+  const names = { 'pelican-bike': '骑行抓鱼 · 挑战', 'qq-speed': '赛车 · 私有触控试玩', 'cf-transport-ship': '运输船 · 任务挑战' };
   $('title').textContent = names[id]; $('heading').textContent = names[id]; $('best').textContent = progress.best;
-  $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '保留原游戏玩法。点击开始进入原菜单；手机新增暂停，离开页面自动暂停。成绩保存在这台设备。';
+  $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '左手移动、右手瞄准，按住开火。手机横屏游玩；离开页面自动暂停。';
   if (!storageAvailable) $('storage').textContent = '存储不可用，本次仍可游玩';
   const persist = () => { try { localStorage.setItem(key, saveProgress(progress, id)); localStorage.setItem(challengeKey, saveChallengeProgress(challengeProgress)); } catch { storageAvailable = false; $('storage').textContent = '存储不可用，本次仍可游玩'; } };
   const renderSelection = () => {
-    $('heading').textContent = selected.title; $('copy').textContent = selected.instructions;
+    $('heading').textContent = selected.title; $('copy').textContent = id === 'cf-transport-ship' ? mobileChallengeCopy(selected) : selected.instructions;
     $('challenges').innerHTML = levels.map(c => `<button data-challenge-id="${c.id}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${challengeProgress.records[c.id]?.wins ? '✓ 已完成' : Math.ceil(c.limitMs/1000)+'秒'}</small></button>`).join('');
-    $('goal').max = selected.target; $('goal').value = 0; root.dataset.challenge = selected.id;
+    $('goal').max = id === 'cf-transport-ship' && selected.kind === 'survive' ? selected.limitMs / 1000 : selected.target; $('goal').value = 0; root.dataset.challenge = selected.id;
   };
   $('challenges').addEventListener('click', e => { const c = levels.find(c => c.id === e.target.closest('[data-challenge-id]')?.dataset.challengeId); if (!c || round?.phase === 'running' || round?.phase === 'paused') return; selected = c; challengeProgress.selected = c.id; persist(); if (round?.phase === 'finished') location.reload(); else renderSelection(); });
   renderSelection();
@@ -73,7 +73,7 @@ async function boot() {
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
   const portraitBlocked = () => id !== 'pelican-bike' && window.innerHeight > window.innerWidth;
-  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(); last = performance.now(); showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
+  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
@@ -104,13 +104,21 @@ async function boot() {
         tickRound(round, dt, native.score());
         if (assistActive && round.elapsedMs >= 15000) { window.__pelican.settings.autopilot = false; assistActive = false; }
         const result = challengeResult(activeChallenge, native.metrics(), round.phase === 'finished' || phase === 'finished');
-        round.score = result.rewardScore; $('status').textContent = result.label; $('goal').value = Math.min(result.value, activeChallenge.target);
+        round.score = result.rewardScore;
+        $('status').textContent = activeChallenge.kind === 'survive'
+          ? '❤ 可失误 ' + Math.max(0, activeChallenge.target - (native.metrics().deaths || 0)) + ' 次'
+          : result.label;
+        $('goal').value = activeChallenge.kind === 'survive'
+          ? Math.min(activeChallenge.limitMs / 1000, Math.round(round.elapsedMs / 1000))
+          : Math.min(result.value, activeChallenge.target);
         if (result.outcome !== 'running') {
           finishRound(round, progress); native.pause(); clearInput(); persist();
           recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome); persist();
           root.dataset.outcome = result.outcome;
           $('heading').textContent = result.outcome === 'won' ? '✓ ' + activeChallenge.title + '完成！' : '本次挑战未完成';
-          $('copy').textContent = `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
+          $('copy').textContent = result.outcome === 'won'
+            ? '任务成功！本局 ' + round.score + ' 分 · 累计补给 ' + progress.bank
+            : '这次未达成：' + mobileChallengeCopy(activeChallenge) + '。再试一次吧。';
           $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent = result.outcome === 'won' ? '✓ 已完成' : '可重试';
           $('best').textContent = progress.best; showPhase('finished');
           // The placement is wired but hidden until the actual H5 account's check_ads_status is verified.
