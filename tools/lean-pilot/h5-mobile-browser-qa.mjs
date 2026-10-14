@@ -1,4 +1,4 @@
-/* global process, console, window, performance, requestAnimationFrame */
+/* global process, console, window, document, getComputedStyle, innerWidth, innerHeight, performance, requestAnimationFrame */
 import {chromium} from '@playwright/test';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
 import path from 'node:path';
