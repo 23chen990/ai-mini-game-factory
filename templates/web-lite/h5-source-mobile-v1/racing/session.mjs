@@ -1,4 +1,6 @@
 export const raceReady = game => !!(game?.track && game.input && !game.loading);
+/** Never begin or charge fuel for a stage if its physical track failed to load. */
+export const stageTrackReady = (game, stage) => !!(game?.track && !game.loading && game.map?.id === stage?.map);
 export function clearNativeInput(input) {
   input.down.clear(); input.pressed.clear(); input.touchPressed.clear();
   for (const key of Object.keys(input.touch)) input.touch[key] = false;
