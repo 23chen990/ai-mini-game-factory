@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -91,4 +91,15 @@ test('mobile scout approach keeps symmetric reviewed cargo lanes and honest dire
  assert.equal(routeArrow({...p,yaw:0},[-17.5,-7]).symbol,'→');
  assert.equal(routeArrow({...p,yaw:-Math.PI},[-17.5,-7]).symbol,'←');
  assert.equal(routeArrow(p,[-31,-7]),null);
+});
+
+test('simple fire is crosshair-driven with real bullets, never fires at teammates or behind cover',()=>{
+ const base={kind:'hits',weapon:'m4a1',side:'enemy',alive:true,distance:17,
+   blocked:false,heldSeconds:0.2,yawError:0.01,pitchError:0.01};
+ assert.equal(mobileSimpleFireAllowed(base),true);
+ for(const v of [
+  {kind:'kills'},{weapon:'awm'},{side:'ally'},{alive:false},{blocked:true},
+  {distance:29},{distance:0},{heldSeconds:0.05},
+  {yawError:0.10},{pitchError:0.15},{pitchError:NaN}
+ ]) assert.equal(mobileSimpleFireAllowed({...base,...v}),false,JSON.stringify(v));
 });
