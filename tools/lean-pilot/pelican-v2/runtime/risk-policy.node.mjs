@@ -62,7 +62,7 @@ test('turning toward a reward route moves exactly one adjacent lane at a time',(
 
 test('the target manifest matches authored V3.2 barriers and exact bonus-fish ids',()=>{
  assert.deepEqual(policy.RISK_LEVELS.map(level=>level.targets.map(({barrierId,distance,goldFishId})=>[barrierId,distance,goldFishId])),[
-  [['l1-o2',225,'l1-jump-l1-o2']],
+  [['l1-o1',140,'l1-jump-l1-o1'],['l1-o3',225,'l1-jump-l1-o3']],
   [['l2-o3',246,'l2-jump-l2-o3'],['l2-o5',356,'l2-jump-l2-o5']],
   [['l3-o3',222,'l3-jump-l3-o3'],['l3-o5',360,'l3-jump-l3-o5']],
   [['l4-o3',225,'l4-jump-l4-o3'],['l4-o5',350,'l4-jump-l4-o5'],['l4-o10',593,'l4-jump-l4-o10']],
