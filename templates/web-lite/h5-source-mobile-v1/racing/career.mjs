@@ -54,7 +54,7 @@ export function loadCareer(raw, legacyBest) {
 }
 const finite = value => typeof value === 'number' && Number.isFinite(value) ? value : 0;
 /** A qualified drift is the *end*, not the native 'driftStart' counter. */
-export const validDrift = event => event?.type === 'driftEnd' && finite(event.data?.time ?? event.time) > .22;
+export const validDrift = event => event?.type === 'driftEnd' && event.data?.clean === true && finite(event.data?.time ?? event.time) > .22;
 export function stageMetric(stage, stats = {}) {
   switch (stage.kind) {
     case 'speed': return finite(stats.gateSpeed);
