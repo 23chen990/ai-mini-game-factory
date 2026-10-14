@@ -1,4 +1,4 @@
-import { CAREER_KEY, STAGES, newCareer, loadCareer, stageUnlocked, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
+import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, stageUnlocked, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
 import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, awardCornerPass, removeEliminatedAi } from './items.mjs';
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
@@ -15,12 +15,15 @@ export class RacingCareer {
     }
     this.index = STAGES.findIndex((_, i) => !stageUnlocked(this.progress, i));
     this.index = this.index < 0 ? STAGES.length - 1 : Math.max(0, this.index - 1);
+    this.dailySnapshot = null;
     this.auto = new AutoItems();this.passes = new OvertakeTracker();
     this.config = null;this.tap = null;this.fuelEnabled = false;this.adBusy = false;this.attempt = 0;
     this.startedAt = Date.now();this.active = false;this.notice = [];this.boss = null;
     this.metrics = this.freshMetrics();
   }
-  get stage() { return STAGES[this.index]; }
+  get stage() { return this.dailySnapshot ?? STAGES[this.index]; }
+  canDaily() { return (this.progress.stars['04'] ?? 0) > 0; }
+  setDaily(date = new Date()) { if (!this.canDaily()) return false;this.dailySnapshot = dailyStage(date);return true; }
   freshMetrics() { return { pickups: 0, bonusItems: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, timeAllowance: 0 }; }
   save() {
     try {
@@ -29,9 +32,9 @@ export class RacingCareer {
       return true;
     } catch { this.storageOK = false;this.fuelEnabled = false;return false; }
   }
-  setStage(index) { if (!stageUnlocked(this.progress, index)) return false;this.index = index;return true; }
+  setStage(index) { if (!stageUnlocked(this.progress, index)) return false;this.index = index;this.dailySnapshot = null;return true; }
   setSkin(index) { if (!skinUnlocked(this.progress, index)) return false;this.progress.skin = index;this.save();return true; }
-  nextStage() { return this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
+  nextStage() { return !this.dailySnapshot && this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
   configure(game) {
     const s = this.stage;
     Object.assign(game.settings, { map: s.map, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin });
@@ -39,7 +42,7 @@ export class RacingCareer {
   }
   setupAd(config, tap) { this.config = config;this.tap = tap;this.fuelEnabled = this.storageOK && fuelPlatformReady(config, tap);return this.fuelEnabled; }
   canStart() {
-    if (this.adBusy || !stageUnlocked(this.progress, this.index)) return false;
+    if (this.adBusy || (this.dailySnapshot ? !this.canDaily() : !stageUnlocked(this.progress, this.index))) return false;
     if (!this.fuelEnabled) return true;
     this.fuel = syncFuel(this.fuel);
     return this.fuel.amount >= FUEL_RULES.raceCost;
@@ -174,10 +177,30 @@ export class RacingCareer {
     if (!this.active) return null;
     this.active = false;
     if (this.boss) this.metrics.beatBoss = game.standings.indexOf(game.player) < game.standings.indexOf(this.boss);
-    const outcome = recordStage(this.progress, this.stage, result, this.metrics);
+    const stage = this.stage, outcome = recordStage(this.progress, stage, result, this.metrics);
+    let best = outcome.career.times[stage.id] ?? null;
+    if (this.dailySnapshot) {
+      // A local daily badge/streak is separate from campaign stars and skin unlocks.
+      delete outcome.career.stars[stage.id];
+      delete outcome.career.times[stage.id];
+      const day = stage.id.slice(6), daily = { ...outcome.career.daily };
+      if (daily.date !== day) {daily.date = day;daily.best = 0;daily.stars = 0;}
+      if (outcome.stars > 0) {
+        if (daily.lastWonDate !== day) {
+          const yesterday = new Date(day + 'T12:00:00');
+          yesterday.setDate(yesterday.getDate() - 1);
+          daily.streak = daily.lastWonDate === localDayKey(yesterday) ? daily.streak + 1 : 1;
+        }
+        daily.lastWonDate = day;
+        daily.stars = Math.max(daily.stars, outcome.stars);
+        if (result.finished && result.time > 0) daily.best = daily.best ? Math.min(daily.best, result.time) : result.time;
+      }
+      outcome.career.daily = daily;
+      best = daily.best || null;
+    }
     this.progress = outcome.career;
     this.save();
-    return { ...outcome, best: this.progress.times[this.stage.id], metric: { ...this.metrics } };
+    return { ...outcome, best, metric: { ...this.metrics } };
   }
   fuelText() {
     if (!this.storageOK) return '本地存储不可用 · 试玩不限油，关卡进度可能不会保留';
