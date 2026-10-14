@@ -1,4 +1,4 @@
-import { CAREER_KEY, STAGES, newCareer, loadCareer, careerStars, stageUnlocked, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
+import { CAREER_KEY, STAGES, newCareer, loadCareer, stageUnlocked, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
 import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, awardCornerPass, removeEliminatedAi } from './items.mjs';
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
