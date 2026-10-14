@@ -79,7 +79,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit[data-phase="paused"] #race-fuel-box,#race-kit[data-phase="race"] #race-stage-goal,
 #race-kit[data-phase="countdown"] #race-stage-goal,#race-kit[data-phase="paused"] #race-stage-goal,
 #race-kit[data-phase="finished"] #race-stage-goal { display:none!important; }
-#race-kit #race-live-goal { position:fixed;left:50%;top:calc(var(--race-top) + 57px);transform:translateX(-50%);text-align:center;border-radius:11px;background:#09273dda;padding:5px 12px;font-weight:750;font-size:12px;color:#ffe19c;white-space:nowrap;z-index:10;pointer-events:none; }
+#race-kit #race-live-goal { position:fixed;left:var(--race-left);top:calc(var(--race-top) + 66px);max-width:min(230px,36vw);transform:none;text-align:left;border-radius:11px;background:#09273dda;padding:5px 12px;font-weight:750;font-size:12px;color:#ffe19c;white-space:nowrap;z-index:10;pointer-events:none; }
 @media(max-height:375px) {
   #race-kit #race-panel { padding:12px 19px; }
   #race-kit #race-heading {margin:3px 0 8px;}
