@@ -275,3 +275,19 @@ test('thinned native item routes dispose deleted box geometries, leave shared sk
   assert.equal(meshClean,12);assert.equal(materialClean,0);
   assert.equal(system.boxes.length,8);
 });
+
+test('自动救援只影响完美三星，不额外扣油，不会误判为过弯超车',()=>{
+  const s=STAGES[0];
+  const normal=gradeStage(s,{finished:true,place:1,time:70,stats:{crash:0}},{rescues:0});
+  const rescued=gradeStage(s,{finished:true,place:1,time:70,stats:{crash:0}},{rescues:1});
+  assert.equal(normal,3);
+  assert.equal(rescued,2);
+  const c=new RacingCareer(memory()),g=game();
+  let count=0;
+  g.player.h=Math.PI;g.player.wrongWay=3;g.track.sample=()=>({hd:0});
+  g.resetPlayer=()=>{count++;g.player.wrongWay=0;};
+  c.begin(g);
+  assert.equal(c.frame(g),null);
+  assert.equal(count,1);assert.equal(c.metrics.rescues,1);
+  assert.equal(c.metrics.cleanPasses,0);
+});
