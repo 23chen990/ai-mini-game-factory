@@ -111,6 +111,12 @@ export function mobileAimCorrection({ yawError, pitchError, distance, visible, f
   };
 }
 
+export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked,heldSeconds}) {
+  return kind==='hits' && weapon==='m4a1' && side==='enemy' &&
+    alive===true && blocked===false && Number.isFinite(distance) &&
+    distance>0 && distance<=28 && Number.isFinite(heldSeconds) && heldSeconds>=0.14;
+}
+
 export function createFpsMobileUx(game, root, doc) {
   const html = doc.documentElement;
   const header = root.querySelector('.mk-header');
@@ -175,6 +181,7 @@ export function createFpsMobileUx(game, root, doc) {
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0;
+  let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
   let routePath = null, routeLastAt = 0;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
 
@@ -238,8 +245,9 @@ export function createFpsMobileUx(game, root, doc) {
 
   function nudgeAim(forceFiring = false) {
     const p = game.player, cam = game.renderer?.camera;
+    const simple = activeChallenge?.kind==='hits' && p?.weapon?.id==='m4a1';
     if (!p?.alive || !game.playing || game.paused || !cam ||
-        !(forceFiring || p.touch?.fire)) return;
+        !(forceFiring || p.touch?.fire || simple)) return;
     const sniper = p.weapon?.def?.type === 'sniper';
     const ready = !sniper || (p.scoped > 0 && p.scopeReady);
     if (!ready) return;
@@ -270,10 +278,41 @@ export function createFpsMobileUx(game, root, doc) {
     }
   }
 
+  function updateAutoFire() {
+    const p=game.player, actor=game.aimTarget;
+    const simple=activeChallenge?.kind==='hits';
+    if (!simple || !p?.alive || !game.playing || game.paused) {
+      if (simple && p) p.mouse.l=false;
+      autoAimActor=null;autoFireActive=false;
+      return;
+    }
+    if (!actor?.alive || actor.team===p.team || !actor.soldier) {
+      p.mouse.l=false;autoAimActor=null;autoFireActive=false;return;
+    }
+    const eye=p.eye(game.renderer.camera.position.clone());
+    const aim=actor.soldier.chestWorld(eye.clone()).sub(eye);
+    const distance=aim.length();
+    const blocked=distance>0 && !!game.world.raycast(eye.x,eye.y,eye.z,
+      aim.x/distance,aim.y/distance,aim.z/distance,Math.max(0,distance-0.18),'sight');
+    if (actor!==autoAimActor) {
+      autoAimActor=actor;autoAimSince=Number(game.time)||0;
+    }
+    const allowed=mobileSimpleFireAllowed({
+      kind:activeChallenge?.kind,weapon:p.weapon?.id,side:teamSide(p.team,actor.team),
+      alive:p.alive,distance,blocked,heldSeconds:(Number(game.time)||0)-autoAimSince
+    });
+    p.mouse.l=allowed;
+    if(allowed&&!autoFireActive) {
+      game.__mobileBalanceReview.autoFireActivations++;
+    }
+    autoFireActive=allowed;
+  }
   function updateAim() {
     const p = game.player, actor = game.aimTarget;
     const side = p?.alive && actor?.alive ? teamSide(p.team, actor.team) : 'unknown';
-    const label = side === 'ally' ? '◆ 队友 · 不要射击' : side === 'enemy' ? '▼ 敌人 · 可以射击' : '';
+    const label = side === 'ally' ? '◆ 队友 · 不要射击' : side === 'enemy'
+      ? activeChallenge?.kind==='hits' ? '▼ 敌人 · 对准自动开火' : '▼ 敌人 · 可以射击'
+      : '';
     html.dataset.fpsAimSide = side;
     target.hidden = !label;
     if (label !== lastTarget) {
@@ -338,11 +377,18 @@ export function createFpsMobileUx(game, root, doc) {
     distanceMeters() { return +walkedMeters.toFixed(2); },
     onStart(challenge) {
       activeChallenge = challenge || null;
+      const tip=tutorial.querySelector('span:last-child');
+      if(tip)tip.innerHTML=activeChallenge?.kind==='hits'
+        ? '<b>③</b> 对准敌人自动开火'
+        : activeChallenge?.kind==='kills'
+          ? '<b>③</b> 开镜后点开火'
+          : '<b>③</b> 点按或按住开火';
+      autoAimActor=null;autoAimSince=0;autoFireActive=false;
       guide.textContent = activeChallenge?.kind === 'kills'
         ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先点开镜，再滑动瞄准开火'
         : activeChallenge?.kind === 'survive'
           ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手移动躲避，右侧观察敌人'
-          : '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手前进，右侧瞄准并开火';
+          : '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先找目标，对准自动开火';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
       routePath=null;routeLastAt=0;
@@ -361,7 +407,8 @@ export function createFpsMobileUx(game, root, doc) {
         p.pitch = 0;
         p.vel.set(0, 0, 0);
       }
-      game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null, challenge: activeChallenge?.id};
+      game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null,
+        challenge: activeChallenge?.id,autoFireActivations:0};
       const rendezvousOk=prepareFirstEncounter();
       game.__mobileBalanceReview.firstRendezvousPath=rendezvousOk;
       applyBalance(0);
@@ -388,12 +435,17 @@ export function createFpsMobileUx(game, root, doc) {
         }
         previousPosition = { x:p.pos.x, z:p.pos.z };
       } else previousPosition = null;
-      if (!active) { target.hidden = true; guide.hidden = true; clearMarkers(); return; }
+      if (!active) {
+        if (activeChallenge?.kind==='hits') p.mouse.l=false;
+        autoAimActor=null;autoFireActive=false;
+        target.hidden = true; guide.hidden = true; clearMarkers(); return;
+      }
       const score = playerRelativeScore(game.score, p.team);
       const msg = '◆ 我方 ' + score.ally + ' : ' + score.enemy + ' 敌方 ▼';
       if (msg !== lastBoard) { board.textContent = msg; lastBoard = msg; }
       updateAim();
-      const elapsed = Math.max(0, (now - started) / 1000);
+      updateAutoFire();
+      const elapsed = Math.max(0,(Number(game.time)||0)-startedGameSeconds);
       if (now >= nextBalanceAt) {
         nextBalanceAt = now + 1000;
         applyBalance(Math.max(0,(Number(game.time) || 0)-startedGameSeconds));
@@ -416,14 +468,16 @@ export function createFpsMobileUx(game, root, doc) {
         if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
-            ? '▼ 前方有敌人！右侧瞄准，按住开火'
+            ? '▼ 前方有敌人！滑动准星对准目标自动开火'
             : turn ? turn.symbol+' '+turn.label+' · '+turn.distance+'米后进入交火区'
               : '沿集装箱外侧通道推进，寻找红色敌人';
         }
       }
-      guide.hidden = elapsed > (p.stats?.hits ? 8 : 23) || !p.alive;
+      guide.hidden = !p.alive ||
+        (p.stats?.hits ? elapsed>8 : elapsed>23 && elapsed%12>5);
     },
     destroy() {
+      if(activeChallenge?.kind==='hits'&&game.player)game.player.mouse.l=false;
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); guide.remove(); tutorial.remove();
