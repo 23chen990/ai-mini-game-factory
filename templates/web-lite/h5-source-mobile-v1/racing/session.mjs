@@ -1,3 +1,12 @@
+export function setRaceSound(audio, enabled) {
+  if (!audio?.master?.gain) return false;
+  const gain = audio.master.gain;
+  const volume = enabled ? .8 : 0;
+  if (typeof gain.setTargetAtTime === 'function' && Number.isFinite(audio.ctx?.currentTime)) {
+    gain.setTargetAtTime(volume, audio.ctx.currentTime, .035);
+  } else gain.value = volume;
+  return true;
+}
 export const normalizeRaceQuality = value => ['low', 'mid', 'high'].includes(value) ? value : 'mid';
 export const raceReady = game => !!(game?.track && game.input && !game.loading);
 /** Never begin or charge fuel for a stage if its physical track failed to load. */
