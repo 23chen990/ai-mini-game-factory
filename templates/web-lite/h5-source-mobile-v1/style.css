@@ -103,6 +103,7 @@ html[data-reference-game="cf-transport-ship"] #vitals{
  transform:scale(.69)!important;transform-origin:bottom left!important
 }
 html[data-reference-game="cf-transport-ship"] #radarWrap .lbl{display:none!important}
+html[data-reference-game="cf-transport-ship"] #slots{display:none!important}
 html[data-reference-game="cf-transport-ship"] #feed .kf:nth-child(n+3){display:none!important}
 html[data-reference-game="cf-transport-ship"][data-fps-own-team="BL"] #feed .BL,
 html[data-reference-game="cf-transport-ship"][data-fps-own-team="GR"] #feed .GR{color:#8edcff!important}
