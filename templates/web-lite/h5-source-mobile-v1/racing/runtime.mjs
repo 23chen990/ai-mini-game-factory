@@ -55,7 +55,15 @@ export class RacingCareer {
       const challengers = game.racers.filter(r => !r.isPlayer).slice(0, 2);
       for (const rival of challengers) rival.skill = Math.max(rival.skill, 1.12);
     }
-    if (game.itemMode && game.items) thinItemBoxes(game.items);
+    if (game.itemMode && game.items) {
+      thinItemBoxes(game.items);
+      const use = game.items.use.bind(game.items);
+      game.items.use = racer => {
+        const item = racer.items?.[0];
+        use(racer);
+        if (racer.isPlayer && item) this.notice.push('已使用' + (ITEM_LABELS[item] ?? '道具'));
+      };
+    }
     if (this.stage.kind === 'boss') {
       this.boss = game.racers.find(r => !r.isPlayer) ?? null;
       if (this.boss) { this.boss.name = '疾风车神';this.boss.skill = Math.max(this.boss.skill, 1.48); }
