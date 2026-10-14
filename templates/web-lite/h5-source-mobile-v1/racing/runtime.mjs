@@ -1,5 +1,5 @@
 import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, stageUnlocked, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
-import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, awardCornerPass, removeEliminatedAi } from './items.mjs';
+import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemCleanup, awardCornerPass, removeEliminatedAi } from './items.mjs';
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
 
@@ -60,6 +60,7 @@ export class RacingCareer {
     }
     if (game.itemMode && game.items) {
       thinItemBoxes(game.items);
+      installItemCleanup(game.items);
       const use = game.items.use.bind(game.items);
       game.items.use = racer => {
         const item = racer.items?.[0];
