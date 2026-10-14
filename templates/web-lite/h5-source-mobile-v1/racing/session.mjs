@@ -1,3 +1,4 @@
+export const normalizeRaceQuality = value => ['low', 'mid', 'high'].includes(value) ? value : 'mid';
 export const raceReady = game => !!(game?.track && game.input && !game.loading);
 /** Never begin or charge fuel for a stage if its physical track failed to load. */
 export const stageTrackReady = (game, stage) => !!(game?.track && !game.loading && game.map?.id === stage?.map);
