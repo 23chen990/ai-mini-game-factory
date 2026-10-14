@@ -37,13 +37,6 @@ export function patchRacingSource(source) {
     if (output.split(threeAnchor).length !== 2) throw Error('Native Three.js entry anchor changed');
     output = output.replace(threeAnchor, () => threeAnchor + '\n' + sharedThree);
   }
-  // Share the already bundled native Three.js namespace with mobile signs;
-  // never import a SECOND copy of three from the isolated UI bundle.
-  if (!output.includes('window.game.__RACE_THREE__ = THREE;')) {
-    const boot = 'window.game = new Game();';
-    if (output.split(boot).length !== 2) throw Error('Native Game boot anchor changed');
-    output = output.replace(boot, boot + '\n    window.game.__RACE_THREE__ = THREE;');
-  }
   return output;
 }
 
