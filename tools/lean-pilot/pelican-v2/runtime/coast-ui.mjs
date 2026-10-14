@@ -4,7 +4,7 @@ import { LEVELS, LANES } from './levels.mjs';
 import { newRun, input, advance, newSave, loadSave, settle, qualityStep } from './adventure.mjs';
 import {upcomingHazards} from './safety.mjs';
 import {cameraTarget,smooth,FEEL} from './feel.mjs';
-import {allStars,nextStarTip,starRequirements} from './engagement.mjs';
+import {allStars,nextStarTip} from './engagement.mjs';
 import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound,adAllowed} from './reward-engine.mjs';
 import {requestRewardedVideo} from './reward-adapter.mjs';
 
