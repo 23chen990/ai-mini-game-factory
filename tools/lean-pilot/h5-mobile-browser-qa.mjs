@@ -9,6 +9,25 @@ const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const{run,root,game}=await loadRun(base,runId),hash=await buildHash(game),server=await serveRun(base,runId,0);
  const url='http://127.0.0.1:'+server.address().port,checks=[],artifacts=[],errors=[],actions=[];
+ const fpsThreatTrace=[];
+ const readFpsThreat = async () => page.evaluate(() => {
+   const g=window.__H5NativeGame, p=g?.player;
+   if(!g||!p)return null;
+   const opponents=g.actors.filter(a=>a.team!==p.team);
+   return {
+     gameTime:+g.time.toFixed(1),
+     challenge:document.getElementById('mobile-kit')?.dataset.challenge,
+     shots:p.stats.shots,hits:p.stats.hits,kills:p.stats.k,deaths:p.stats.d,
+     hp:Math.max(0,Math.round(p.hp)),alive:p.alive,
+     position:{x:+p.pos.x.toFixed(1),z:+p.pos.z.toFixed(1)},
+     nearestEnemyMeters:opponents.length?+Math.min(...opponents.map(a=>a.pos.distanceTo(p.pos))).toFixed(1):null,
+     visibleEnemyMarkers:[...document.querySelectorAll('.mk-fps-enemy')].filter(e=>!e.hidden).length,
+     botReactSec:opponents[0]?.diff?.react?.[0]??null,
+     botTrack:opponents[0]?.diff?.track??null,
+     botStrafe:opponents[0]?.diff?.strafe??null,
+     clearStartingLane:g.__mobileBalanceReview?.startingLaneMeters??null
+   };
+ }).catch(()=>null);
  await mkdir(path.join(root,'screenshots'),{recursive:true});
  const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']});
  const viewport=run.theme==='pelican-bike'?{width:390,height:844}:{width:844,height:390};
@@ -136,15 +155,36 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    const paused=await page.locator('#mobile-kit').getAttribute('data-phase');await page.locator('#mk-resume').tap();
    check('mobile-pause-resume',frozen&&paused==='paused',{visiblePaused:paused,clockFrozen:frozen});
    const loopStart=Date.now();
+   let lastFpsTraceAt=0;
    while(await page.locator('#mobile-kit').getAttribute('data-phase')!=='finished'&&Date.now()-loopStart<240000){
      if(run.theme==='pelican-bike'){
        // A predefined sweep uses normal touch; no hidden fish positions or debug mutations.
        await hold('[data-code="ArrowLeft"]',1400);await hold('[data-code="ArrowRight"]',1400);
+     }else if(run.theme==='cf-transport-ship'){
+       if(Date.now()-lastFpsTraceAt>3000){
+         lastFpsTraceAt=Date.now();
+         const sample=await readFpsThreat();
+         if(sample)fpsThreatTrace.push(sample);
+       }
+       await page.waitForTimeout(1000);
      }else await page.waitForTimeout(1000);
    }
    const phase=await page.locator('#mobile-kit').getAttribute('data-phase'),score=Number(await page.locator('#mk-score').innerText());
    await shot('mobile-terminal');
    const terminal={phase,visibleHeading:await page.locator('#mk-heading').innerText(),score,wallMs:Date.now()-started};
+   if(run.theme==='cf-transport-ship'){
+     terminal.fpsThreatSummary={
+       firstVisibleAtGameSec:fpsThreatTrace.find(x=>x.visibleEnemyMarkers>0)?.gameTime??null,
+       firstPlayerHitAtGameSec:fpsThreatTrace.find(x=>x.hits>0)?.gameTime??null,
+       maxEnemyThreat:fpsThreatTrace.length?Math.max(...fpsThreatTrace.map(x=>x.botTrack??0)):null,
+       firstEnemyReact:fpsThreatTrace[0]?.botReactSec??null,
+       lastEnemyReact:fpsThreatTrace.at(-1)?.botReactSec??null,
+       firstLaneMeters:fpsThreatTrace[0]?.clearStartingLane??null,
+       finalPlayerHits:fpsThreatTrace.at(-1)?.hits??null,
+       finalPlayerDeaths:fpsThreatTrace.at(-1)?.deaths??null,
+       snapshots:fpsThreatTrace
+     };
+   }
    if(phase==='finished'){
      const best=await page.locator('#mk-best').innerText();await page.locator('#mk-replay').tap();
      await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:45000});
