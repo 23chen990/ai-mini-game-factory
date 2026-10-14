@@ -28,8 +28,8 @@ export function mobileTouchAction(index) {
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
   if (challenge.kind === 'hits') return '60秒内，射中敌人3次';
-  if (challenge.kind === 'kills') return '90秒内，用狙击枪击倒1名敌人';
-  if (challenge.kind === 'survive') return '坚持45秒，最多被击倒2次';
+  if (challenge.kind === 'kills') return '90秒内，使用 AWM 狙击枪击杀1名敌人';
+  if (challenge.kind === 'survive') return '坚持45秒，移动20米，最多被击倒2次';
   return challenge.instructions || '';
 }
 
@@ -156,6 +156,7 @@ export function createFpsMobileUx(game, root, doc) {
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0;
+  let walkedMeters = 0, previousPosition = null;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -285,6 +286,7 @@ export function createFpsMobileUx(game, root, doc) {
   }
 
   return {
+    distanceMeters() { return +walkedMeters.toFixed(2); },
     onStart(challenge) {
       activeChallenge = challenge || null;
       guide.textContent = activeChallenge?.kind === 'kills'
@@ -296,6 +298,8 @@ export function createFpsMobileUx(game, root, doc) {
       nextUpdate = 0;
       nextBalanceAt = 0;
       lastHits = 0;
+      walkedMeters = 0;
+      previousPosition = null;
       lastBoard = '';
       const p = game.player;
       const spawns = game.map?.spawns?.[p?.team];
@@ -324,6 +328,13 @@ export function createFpsMobileUx(game, root, doc) {
       tutorial.hidden = active && now - started > 6500;
       if (!p) { target.hidden = true; guide.hidden = true; clearMarkers(); return; }
       html.dataset.fpsOwnTeam = p.team;
+      if (active && p.alive) {
+        if (previousPosition) {
+          const step = Math.hypot(p.pos.x - previousPosition.x, p.pos.z - previousPosition.z);
+          if (step < 2.4 && Number.isFinite(step)) walkedMeters += step;
+        }
+        previousPosition = { x:p.pos.x, z:p.pos.z };
+      } else previousPosition = null;
       if (!active) { target.hidden = true; guide.hidden = true; clearMarkers(); return; }
       const score = playerRelativeScore(game.score, p.team);
       const msg = '◆ 我方 ' + score.ally + ' : ' + score.enemy + ' 敌方 ▼';
