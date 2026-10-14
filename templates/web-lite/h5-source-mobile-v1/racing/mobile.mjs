@@ -238,6 +238,7 @@ async function boot() {
   let rememberedQuality;
   try {rememberedQuality = localStorage.getItem(QUALITY_STORE);} catch {rememberedQuality = null;}
   g.mobileMode = mobile;g.camMode = 1;g.settings.quality = normalizeRaceQuality(rememberedQuality);
+  quality.manual = rememberedQuality === 'low' || rememberedQuality === 'mid' || rememberedQuality === 'high';
   career.configure(g);g.setupQuality();
   career.patchNative(g);
   career.setupAd(window.__PLATFORM_META__ ?? { status: 'PENDING' }, window.tap);
