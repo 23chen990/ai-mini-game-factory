@@ -236,7 +236,11 @@ export class RacingCareer {
     try {
       const outcome = await requestRewardedVideo({ tap: this.tap, config: this.config });
       const granted = grantAdvertFuel(this.fuel, outcome.status, ticket);
-      if (granted.ok) { this.fuel = granted.state;this.save();return { status: 'completed', fuel: this.fuel.amount }; }
+      if (granted.ok) {
+        this.fuel = granted.state;
+        if (!this.save()) return { status: 'session-credit', fuel: this.fuel.amount };
+        return { status: 'completed', fuel: this.fuel.amount };
+      }
       return { status: outcome.status };
     } catch { return { status: 'failed' }; }
     finally { this.adBusy = false; }
