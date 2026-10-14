@@ -16,8 +16,15 @@ async function open(engine,headless,url){
  const browser=await engine.launch({...browserOptions(engine===chromium?'chromium':'webkit'),headless});
  const context=await browser.newContext({viewport:{width:390,height:844},deviceScaleFactor:3,isMobile:true,hasTouch:true});const page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));
  await page.addInitScript(()=>{window.__lifecycleEvents=[];for(const type of ['blur','focus','visibilitychange','pagehide']){(type==='visibilitychange'?document:window).addEventListener(type,()=>window.__lifecycleEvents.push({type,hidden:document.hidden,at:Date.now()}));}window.__gpuViewports={};const viewport=WebGL2RenderingContext.prototype.viewport;WebGL2RenderingContext.prototype.viewport=function(...a){const result=viewport.apply(this,a);const actual=[...this.getParameter(this.VIEWPORT)].slice(2);window.__gpuViewports[actual.join('x')]=(window.__gpuViewports[actual.join('x')]||0)+1;return result;};});
- if(url.startsWith('file:'))await context.setOffline(true);
- await page.goto(url);await page.waitForSelector('#coast[data-loaded="true"]');return {browser,context,page};
+ // WebKit offline emulation rejects even file: navigation. Deny all HTTP
+ // requests before local startup, then disconnect before any gameplay input.
+ const fileUrl=url.startsWith('file:'),externalRequests=[];
+ try{
+  if(fileUrl)await context.route(/^https?:\/\//u,route=>{externalRequests.push(route.request().url());return route.abort('internetdisconnected');});
+  await page.goto(url);await page.waitForSelector('#coast[data-loaded="true"]');
+  if(fileUrl)await context.setOffline(true);
+  return {browser,context,page,externalRequests};
+ }catch(error){await browser.close();throw error;}
 }
 async function background(context,page){const before=await observe(page);const other=await context.newPage();await other.goto('about:blank');await other.bringToFront();await page.waitForTimeout(800);const away=await observe(page);await page.bringToFront();await other.close();return {before,away,returned:await observe(page)};}
 try{
@@ -37,11 +44,11 @@ try{
    await page.locator('#co-pause').tap();await page.setViewportSize({width:844,height:390});await page.locator('#co-resume').tap();await page.waitForTimeout(400);const rotated=await page.evaluate(()=>window.__coast.renderInfo());check('portrait-to-landscape-live-resize',rotated.canvas[0]>rotated.canvas[1]&&rotated.canvas.every((n,i)=>n===rotated.composer[i])&&rotated.camera.fov>=50&&rotated.camera.fov<=54,rotated);await shot(page,'live-rotation');
  }finally{await browser.close();}}
  // The shipped single file must work without a module server or remote asset fetch.
- {const {browser,page}=await open(webkit,true,pathToFileURL(path.join(WORKSPACE,'game/index.html')).href);try{
+ {const {browser,page,externalRequests}=await open(webkit,true,pathToFileURL(path.join(WORKSPACE,'game/index.html')).href);try{
    const modes=[];for(let i=0;i<3;i++){await page.evaluate(()=>{window.__gpuViewports={};});await page.locator('#co-quality').tap();await page.waitForTimeout(200);modes.push(await page.evaluate(()=>({...window.__coast.renderInfo(),actualGpuViewports:window.__gpuViewports})));}
    // Three.js stores logical target dimensions as floats; WebGL viewport/texture dimensions are integers.
    check('all-quality-presets-keep-composer-size',modes.every(r=>r.canvas.every((n,i)=>n===Math.floor(r.composer[i]))&&r.actualGpuViewports[r.canvas.join('x')]>=2&&r.pixelRatio>=1.25),modes);
-   await page.locator('#co-start').tap();await page.waitForTimeout(2500);const local=await observe(page);check('offline-single-html-normal-touch-catch',local.state.phase==='running'&&local.state.count>=1,local);await shot(page,'standalone-file');
+   await page.locator('#co-start').tap();await page.waitForTimeout(2500);const local=await observe(page);check('offline-single-html-normal-touch-catch',local.state.phase==='running'&&local.state.count>=1&&externalRequests.length===0,{...local,externalRequests,networkPolicy:'Every HTTP(S) startup request denied; file navigation allowed; context offline before normal touch gameplay',singleFileSha256:sha(await readFile(path.join(WORKSPACE,'game/index.html')))});await shot(page,'standalone-file');
    // GPU fault injection is engineering evidence only, never natural gameplay
    // or proof of a physical phone background/lock-screen journey.
    const available=await page.evaluate(()=>{const gl=document.querySelector('canvas').getContext('webgl2');window.__qaContextLoss=gl?.getExtension('WEBGL_lose_context');if(window.__qaContextLoss)window.__qaContextLoss.loseContext();return !!window.__qaContextLoss;});

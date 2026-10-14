@@ -18,7 +18,7 @@ const tap=async selector=>{const before=await snap();const action={at:new Date()
 async function gesture(name,from,to,cancel=false){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
- await tap('#co-start');await page.waitForTimeout(2100);const first=await snap();check('first-catch-under-three-seconds',first.count>=1&&first.elapsed<3,first);await shot('first-catch');
+ await tap('#co-start');await page.waitForTimeout(2100);const first=await snap();check('first-catch-under-three-seconds',first.count>=1&&first.events.some(e=>e.type==='fish-caught'&&e.first&&e.at<3),first);await shot('first-catch');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  const a=await gesture('right',[140,420],[250,420]);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
  const b=await gesture('left',[250,420],[140,420]);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
@@ -35,7 +35,7 @@ try{
   const seconds=i=>Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99);
   const risky=i=>v.lanes[i].danger&&seconds(i)<=3;
   let want=v.lane;
-  if(v.lanes[1].bonus&&(!jumped||!bonusShot)){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.15){await tap('[data-action="jump"]');jumped=true;}}
+  if(v.lanes[1].bonus&&(!jumped||!bonusShot)){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.15){await tap('[data-action="jump"]');await page.locator('[data-action="jump"].queued').waitFor({state:'visible',timeout:1000});const armed=await snap();check('early-jump-buffer-visible',typeof armed.bufferedJump==='string'&&await page.locator('[data-action="jump"].queued').isVisible(),armed);await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
@@ -47,6 +47,7 @@ try{
  }
  await page.locator('#co-modal').waitFor({state:'visible'});const finished=await snap();await shot('earned-three-stars');
  check('natural-jump-gold-advances-mastery',bonusShot&&finished.events.some(e=>e.type==='barrier-cleared'&&e.jumped),finished);
+ check('buffered-jump-clears-exact-target',finished.events.some(e=>e.type==='jump'&&e.buffered&&finished.events.some(c=>c.type==='barrier-cleared'&&c.objectId===e.objectId&&c.jumped)),finished);
  check('natural-three-star-settlement',finished.reason==='complete'&&finished.save.stars[0]===3&&(await page.locator('#co-copy').innerText()).includes('★★★'),finished);
  check('both-crossing-directions-observed',leftWarning&&rightWarning,{leftWarning,rightWarning});
  const best=finished.save.best[0];check('real-personal-best-recorded',best.fish===finished.count&&best.gold===finished.gold&&best.jumps===finished.jumpedBarriers&&best.jumps>=1,best);
@@ -56,6 +57,8 @@ try{
 const detour=await snap();await shot('safe-detour');
  check('safe-detour-does-not-require-jump',detour.phase==='running'&&!detour.events.some(e=>e.type==='jump')&&detour.events.some(e=>e.type==='barrier-cleared'&&!e.jumped),detour);
  await tap('#co-pause');await tap('#co-select');const selected=await page.locator('[data-level="1"]').innerText();const progress=await page.locator('#co-progress').innerText();check('mastery-saved-and-visible-on-route',selected.includes('★★★')&&selected.includes('纪录 '+best.fish+' 鱼')&&progress.includes('3/15'),{selected,progress,best});await shot('saved-mastery');
+ // Start another normal replay to verify that a safe turn cancels an armed jump.
+ await tap('[data-level="1"]');await tap('#co-start');await page.locator('[data-action="jump"].ready').waitFor({state:'visible',timeout:25000});await tap('[data-action="jump"]');const queued=await snap();await shot('cancel-jump-queued');await tap('[data-action="right"]');await page.waitForFunction(()=>Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0)>=152,{},{timeout:10000});const cancelled=await snap();check('safe-lane-change-cancels-buffer-without-fake-mastery',typeof queued.bufferedJump==='string'&&cancelled.bufferedJump===null&&cancelled.phase==='running'&&!cancelled.events.some(e=>e.type==='jump')&&cancelled.events.some(e=>e.type==='barrier-cleared'&&e.objectId===queued.bufferedJump&&!e.jumped)&&cancelled.jumpedBarriers===0,{queued,cancelled});await shot('cancel-jump-safe-detour');await tap('#co-pause');await tap('#co-select');
  // Small-phone acceptance: only normal viewport resize and true taps, no state edits.
  await page.setViewportSize({width:320,height:568});await page.waitForTimeout(250);
  const menu=await page.evaluate(()=>{

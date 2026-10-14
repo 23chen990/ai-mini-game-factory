@@ -6,6 +6,7 @@ import path from 'node:path';
 import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
 import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
+import {tapVisible} from './touch.mjs';
 import {LEVELS} from './runtime/levels.mjs';
 import {CAPTURE_HOLD_MS,JUMP_WINDOW_SECONDS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
 
@@ -73,14 +74,12 @@ async function shot(page,name,{levelId=activeLevelId,targetBarrierId=null,kind='
 async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,decisionView=null,decision:policyDecision=null}={}){
  const touchStart=await page.evaluate(()=>window.__riskTouchEvidence?.length??0);
  const before=await recordSnapshot(page,'before-touch-tap',{levelId,targetBarrierId});
- const action={at:new Date().toISOString(),type:'touch-tap',input:'Playwright locator.tap',selector,levelId,targetBarrierId,normalInputOnly:true,stateInjection:false};
+ const action={at:new Date().toISOString(),type:'touch-tap',input:'Playwright public touchscreen.tap at visible button center',selector,levelId,targetBarrierId,normalInputOnly:true,stateInjection:false};
  if(decisionView)action.visibleDecisionView=decisionView;
  if(policyDecision)action.policyDecision=policyDecision;
  report.actions.push(action);
  if(selector.startsWith('[data-action')&&before.value.phase!=='running')throw Error('Gameplay stopped: '+before.value.reason+' at '+before.value.distance+'m');
-  const rect=await page.locator(selector).evaluate(n=>{const b=n.getBoundingClientRect();return {x:b.left+b.width/2,y:b.top+b.height/2,w:b.width,h:b.height,disabled:n.disabled};});
-  if(rect.w<=0||rect.h<=0||rect.disabled)throw Error('Untouchable control '+selector);
-  await page.touchscreen.tap(rect.x,rect.y);
+ action.touchPoint=await tapVisible(page,selector);
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  const after=await recordSnapshot(page,'after-touch-tap',{levelId,targetBarrierId});
  const touches=await page.evaluate(start=>window.__riskTouchEvidence?.slice(start)??[],touchStart);
@@ -294,7 +293,7 @@ function verifyEpisode(level,episode){
  const goldenFeedbackVisible=Boolean(episode.goldHud?.goldFeedback.includes('金鱼'));
  const goalCounterVisible=level.id===1?episode.goldHud?.goldAndFishGoal.includes('🐟'):episode.goldHud?.goldAndFishGoal.includes('🌟');
  check(`${prefix}-gold-feedback-visible-in-hud`,goldenFeedbackVisible&&Boolean(goalCounterVisible),{hud:episode.goldHud,goldenFeedbackVisible,goalCounterVisible,screenshot:episode.screenshots.find(file=>file.includes('golden-bonus-fish-caught'))??null});
- check(`${prefix}-held-route-for-1.7-second-capture`,episode.holdComplete===true&&episode.holdDurationMs>=CAPTURE_HOLD_MS&&!episode.earlyTurnAfterJump,{holdComplete:episode.holdComplete,holdDurationMs:episode.holdDurationMs,earlyTurnAfterJump:episode.earlyTurnAfterJump??false,samples:episode.holdSamples});
+ check(`${prefix}-held-route-through-bonus-fish`,episode.holdComplete===true&&episode.holdDurationMs>=CAPTURE_HOLD_MS&&!episode.earlyTurnAfterJump,{holdComplete:episode.holdComplete,holdDurationMs:episode.holdDurationMs,earlyTurnAfterJump:episode.earlyTurnAfterJump??false,samples:episode.holdSamples});
  if(episode.barrierId==='l3-o3'){
   const simultaneousVehicle=report.decisions.filter(item=>item.levelId===3&&item.targetBarrierId==='l3-o3').some(item=>item.visibleView.lanes.some(lane=>lane.danger&&lane.kind==='vehicle'));
   const enteredVehicle=report.actions.some(action=>action.levelId===3&&action.targetBarrierId==='l3-o3'&&['left','right'].includes(action.policyDecision?.action)&&action.visibleDecisionView.lanes[action.policyDecision.toLane]?.kind==='vehicle');

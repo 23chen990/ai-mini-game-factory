@@ -13,6 +13,27 @@ const SHA256 = z.string().regex(/^[a-f0-9]{64}$/u);
 const Text = z.string().trim().min(1);
 const BrowserCheckSchema = z.object({ name: Text, passed: z.boolean() }).passthrough();
 const ScreenshotBindingSchema = z.object({ path: Text, sha256: SHA256 }).passthrough();
+const RiskEpisodeSchema = z.object({
+  barrierId: Text, goldFishId: Text, hudSeen: z.boolean(),
+  jump: z.object({ countdown: z.number(), actionIndex: z.number().int().nonnegative() }).passthrough().optional(),
+  holdComplete: z.boolean(), holdDurationMs: z.number().nullable().optional(),
+  barrierClearSnapshotId: Text.nullable(), bonusFishCatchSnapshotId: Text.nullable(), screenshots: z.array(Text),
+}).passthrough();
+const RiskReportSchema = z.object({
+  schemaVersion: z.literal(1), targetGame: z.literal(GAME), workspace: z.literal(WORKSPACE),
+  buildHash: SHA256, attempt: z.number().int().positive(), engine: z.enum(['webkit', 'chromium']),
+  normalInputOnly: z.literal(true), stateInjection: z.literal(false), passed: z.boolean(),
+  checks: z.array(BrowserCheckSchema),
+  actions: z.array(z.object({ type: z.literal('touch-tap'), selector: Text, levelId: z.number().int().positive(), targetBarrierId: Text.nullable(), trustedTouch: z.boolean() }).passthrough()),
+  screenshots: z.array(ScreenshotBindingSchema).min(1),
+  snapshots: z.array(z.object({ id: Text, levelId: z.number().int().positive(), targetBarrierId: Text.nullable(), label: Text, value: z.object({ events: z.array(z.record(z.string(), z.unknown())).optional() }).passthrough() }).passthrough()),
+  levels: z.array(z.object({
+    id: z.number().int().positive(), targetEpisodes: z.array(RiskEpisodeSchema),
+    terminal: z.object({ phase: z.string(), reason: z.string(), level: z.number(), jumpedBarriers: z.number(), save: z.object({ completed: z.array(z.boolean()), best: z.array(z.record(z.string(), z.unknown())) }).passthrough() }).passthrough(),
+  }).passthrough()),
+  videos: z.array(z.object({ levelId: z.number().int().positive(), path: Text, sha256: SHA256 }).passthrough()),
+  errors: z.array(z.unknown()),
+}).passthrough();
 const CommonBrowserReportSchema = z.object({
   targetGame: z.literal(GAME),
   workspace: z.literal(WORKSPACE),
@@ -175,7 +196,7 @@ const addFixedReport = async ({ kind, engine = null, relative, validate = () => 
   if (!loaded.value) blockers = [`report-missing-or-invalid:${loaded.error}`];
   else {
     const baseBlockers = reportBaseBlockers(loaded.value, attempt, receipt.buildHash, basePolicy);
-    const validation = validate(loaded.value);
+    const validation = await validate(loaded.value);
     const validationBlockers = Array.isArray(validation) ? validation : (validation?.blockers ?? []);
     blockers = [...baseBlockers, ...validationBlockers];
     if (!Array.isArray(validation)) {
@@ -216,6 +237,9 @@ const experienceChecks = [
   'first-catch-under-three-seconds', 'mastery-target-visible-before-first-obstacle',
   'trusted-right-swipe-one-lane', 'trusted-left-swipe-one-lane',
   'cancelled-touch-does-not-turn', 'trusted-up-swipe-jumps',
+  'early-jump-buffer-visible', 'buffered-jump-clears-exact-target',
+  'safe-lane-change-cancels-buffer-without-fake-mastery',
+  'small-phone-start-visible-and-menu-not-overflow', 'small-phone-touch-buttons-and-mastery-readable',
   'jump-gold-route-signalled-with-safe-detour', 'left-pedestrian-warns-right-at-least-two-seconds',
   'right-pedestrian-warns-left-at-least-two-seconds', 'natural-jump-gold-advances-mastery',
   'natural-three-star-settlement', 'both-crossing-directions-observed',
@@ -317,6 +341,14 @@ const safetyChecks = [
   'replay-resources-plateau',
 ];
 const safetyBackgroundChecks = new Set(['tab-blur-pauses', 'background-manual-resume']);
+const RISK_TARGETS = [
+  { level: 1, barrierIds: ['l1-o1', 'l1-o3'] },
+  { level: 2, barrierIds: ['l2-o3', 'l2-o5'] },
+  { level: 3, barrierIds: ['l3-o3', 'l3-o5'] },
+  { level: 4, barrierIds: ['l4-o3', 'l4-o5', 'l4-o10'] },
+  { level: 5, barrierIds: ['l5-o3', 'l5-o5', 'l5-o10'] },
+];
+const RISK_TARGET_COUNT = RISK_TARGETS.reduce((count, level) => count + level.barrierIds.length, 0);
 const noSignalDiagnostic = (lifecycle, engine) => {
   const diagnosticName = engine === 'webkit' ? 'headless-webkit-tab-capability' : 'headless-chromium-tab-capability';
   const diagnostic = lifecycle?.diagnostics?.find((item) => item.name === diagnosticName);
@@ -363,12 +395,136 @@ const requireSafety = (report, engine, lifecycle) => {
     },
   };
 };
+const riskCheckNames = (level, barrierId) => {
+  const prefix = `level-${level}-${barrierId}`;
+  return [
+    `${prefix}-visible-jump-reward-route`, `${prefix}-one-jump-at-decimal-window`,
+    `${prefix}-no-repeat-jump`, `${prefix}-exact-barrier-cleared-jumped`,
+    `${prefix}-exact-golden-bonus-fish-maps-to-barrier`, `${prefix}-gold-feedback-visible-in-hud`,
+    `${prefix}-held-route-through-bonus-fish`,
+  ];
+};
+const riskCheck = (byName, blockers, name) => {
+  const item = byName.get(name);
+  if (!item || item.passed !== true) blockers.push(`required-risk-check-failed:${name}`);
+  return item;
+};
+const requireRisk = async (rawReport, engine) => {
+  const blockers = [];
+  const parsed = RiskReportSchema.safeParse(rawReport);
+  if (!parsed.success) return { blockers: ['risk-report-schema-invalid'] };
+  const report = parsed.data;
+  if (report.engine !== engine) blockers.push('risk-engine-mismatch');
+  if (report.passed !== true || report.errors.length > 0) blockers.push('risk-report-not-passed-or-has-errors');
+  if (report.checks.some((check) => check.passed !== true)) blockers.push('risk-raw-check-failed');
+  const byName = new Map(report.checks.map((check) => [check.name, check]));
+  if (byName.size !== report.checks.length) blockers.push('risk-check-duplicated');
+  const snapshots = new Map(report.snapshots.map((snapshot) => [snapshot.id, snapshot]));
+  const levelById = new Map(report.levels.map((level) => [level.id, level]));
+  if (report.levels.length !== 5 || levelById.size !== 5 || [1, 2, 3, 4, 5].some((level) => !levelById.has(level))) blockers.push('risk-five-level-report-set-incomplete');
+  const barrierEvidence = [];
+  for (const spec of RISK_TARGETS) {
+    const level = levelById.get(spec.level);
+    if (!level || level.targetEpisodes.length !== spec.barrierIds.length) {
+      blockers.push(`risk-target-episode-count-mismatch:level-${spec.level}`);
+      continue;
+    }
+    const episodeById = new Map(level.targetEpisodes.map((episode) => [episode.barrierId, episode]));
+    if (episodeById.size !== spec.barrierIds.length || spec.barrierIds.some((id) => !episodeById.has(id))) blockers.push(`risk-target-barrier-set-mismatch:level-${spec.level}`);
+    for (const barrierId of spec.barrierIds) {
+      const fishId = `l${spec.level}-jump-${barrierId}`;
+      const episode = episodeById.get(barrierId);
+      if (!episode) continue;
+      const names = riskCheckNames(spec.level, barrierId);
+      const checks = names.map((name) => riskCheck(byName, blockers, name));
+      const authoredName = `authored-level-${spec.level}-${barrierId}-exact-golden-fish`;
+      const authored = riskCheck(byName, blockers, authoredName);
+      const authoredEvidence = authored?.evidence;
+      if (episode.goldFishId !== fishId || authoredEvidence?.barrierId !== barrierId || authoredEvidence?.expectedFishId !== fishId || authoredEvidence?.authoredFishId !== fishId || !String(authoredEvidence?.source ?? '').includes('sourceObstacleId -> fish.id')) {
+        blockers.push(`risk-authored-golden-fish-association-invalid:${barrierId}`);
+      }
+      const barrierEvidenceValue = checks[3]?.evidence;
+      const goldEvidenceValue = checks[4]?.evidence;
+      const barrierEvent = barrierEvidenceValue?.event;
+      const goldEvent = goldEvidenceValue?.event;
+      if (barrierEvidenceValue?.barrierId !== barrierId || barrierEvent?.type !== 'barrier-cleared' || barrierEvent.objectId !== barrierId || barrierEvent.jumped !== true) blockers.push(`risk-real-barrier-event-invalid:${barrierId}`);
+      if (goldEvidenceValue?.expectedBarrierId !== barrierId || goldEvidenceValue?.expectedObjectId !== fishId || goldEvidenceValue?.authoredFishId !== fishId || goldEvent?.type !== 'fish-caught' || goldEvent.objectId !== fishId || goldEvent.golden !== true || goldEvent.bonus !== true || !String(goldEvidenceValue?.associationSource ?? '').includes('sourceObstacleId -> fish.id')) {
+        blockers.push(`risk-earned-golden-fish-event-invalid:${barrierId}`);
+      }
+      const barrierSnapshot = snapshots.get(episode.barrierClearSnapshotId);
+      const fishSnapshot = snapshots.get(episode.bonusFishCatchSnapshotId);
+      const barrierSnapshotEvent = barrierSnapshot?.value.events?.find((event) => event.type === 'barrier-cleared' && event.objectId === barrierId && event.jumped === true);
+      const fishSnapshotEvent = fishSnapshot?.value.events?.find((event) => event.type === 'fish-caught' && event.objectId === fishId && event.golden === true && event.bonus === true);
+      if (!barrierSnapshot || barrierSnapshot.levelId !== spec.level || barrierSnapshot.targetBarrierId !== barrierId || barrierSnapshot.label !== 'exact-barrier-cleared-event' || !barrierSnapshotEvent) blockers.push(`risk-barrier-snapshot-invalid:${barrierId}`);
+      if (!fishSnapshot || fishSnapshot.levelId !== spec.level || fishSnapshot.targetBarrierId !== barrierId || fishSnapshot.label !== 'exact-golden-bonus-fish-caught' || !fishSnapshotEvent) blockers.push(`risk-golden-fish-snapshot-invalid:${barrierId}`);
+      if (Number.isFinite(barrierEvent?.at) && Number.isFinite(goldEvent?.at) && goldEvent.at < barrierEvent.at) blockers.push(`risk-golden-fish-event-precedes-barrier:${barrierId}`);
+      const jumpActionCount = report.actions.filter((action) => action.levelId === spec.level && action.targetBarrierId === barrierId && action.selector === '[data-action="jump"]').length;
+      const indexedJump = Number.isInteger(episode.jump?.actionIndex) ? report.actions[episode.jump.actionIndex] : null;
+      if (!episode.hudSeen || !episode.jump || !Number.isFinite(episode.jump.countdown) || episode.jump.countdown < 0 || episode.jump.countdown > 1.15 || jumpActionCount !== 1 || indexedJump?.selector !== '[data-action="jump"]' || indexedJump?.trustedTouch !== true || episode.holdComplete !== true || !(episode.holdDurationMs >= 2600)) blockers.push(`risk-natural-jump-input-or-2600ms-capture-invalid:${barrierId}`);
+      const episodeShotPaths = new Set(Array.isArray(episode.screenshots) ? episode.screenshots : []);
+      const reportShotPaths = new Set(report.screenshots.map((item) => item.path));
+      for (const suffix of ['barrier-cleared.png', 'golden-bonus-fish-caught.png']) {
+        const expectedSuffix = `-${barrierId}-${suffix}`;
+        const found = [...episodeShotPaths].some((item) => item.endsWith(expectedSuffix) && reportShotPaths.has(item));
+        if (!found) blockers.push(`risk-target-screenshot-missing:${barrierId}:${suffix}`);
+      }
+      barrierEvidence.push({
+        level: spec.level, barrierId, goldFishId: fishId,
+        checks: names, barrierSnapshotId: episode.barrierClearSnapshotId ?? null,
+        goldFishSnapshotId: episode.bonusFishCatchSnapshotId ?? null,
+        barrierEventObjectId: barrierEvent?.objectId ?? null, goldFishEventObjectId: goldEvent?.objectId ?? null,
+        goldFishGolden: goldEvent?.golden === true, goldFishBonus: goldEvent?.bonus === true,
+        naturalJumpPassed: checks.every((check) => check?.passed === true)
+          && barrierEvidenceValue?.barrierId === barrierId && barrierEvent?.type === 'barrier-cleared' && barrierEvent.objectId === barrierId && barrierEvent.jumped === true
+          && goldEvidenceValue?.expectedBarrierId === barrierId && goldEvidenceValue?.expectedObjectId === fishId && goldEvent?.type === 'fish-caught' && goldEvent.objectId === fishId && goldEvent.golden === true && goldEvent.bonus === true
+          && Boolean(barrierSnapshotEvent && fishSnapshotEvent && episode.hudSeen && episode.jump && jumpActionCount === 1 && episode.holdComplete === true && episode.holdDurationMs >= 2600),
+      });
+    }
+  }
+  const settlements = [];
+  for (const spec of RISK_TARGETS) {
+    const level = levelById.get(spec.level);
+    if (!level) continue;
+    const terminal = level.terminal;
+    const naturalName = `level-${spec.level}-natural-terminal-settlement`;
+    const saveName = `level-${spec.level}-save-earned-through-play`;
+    const jumpCountName = `level-${spec.level}-exact-target-jump-count`;
+    riskCheck(byName, blockers, naturalName);
+    riskCheck(byName, blockers, saveName);
+    const jumpCountCheck = riskCheck(byName, blockers, jumpCountName);
+    const earned = terminal.save.completed[spec.level - 1] === true && terminal.save.best[spec.level - 1]?.fish > 0;
+    const completionEvent = terminal.events?.find((event) => event.type === 'complete' && event.reason === 'complete');
+    if (terminal.phase !== 'finished' || terminal.reason !== 'complete' || terminal.level !== spec.level || !completionEvent || !earned || terminal.jumpedBarriers !== spec.barrierIds.length || jumpCountCheck?.evidence?.expected !== spec.barrierIds.length || jumpCountCheck?.evidence?.jumpedBarriers !== spec.barrierIds.length) blockers.push(`risk-real-earned-settlement-invalid:level-${spec.level}`);
+    if (spec.level === 1 && !checkStatus(report, 'new-browser-starts-with-new-save')) blockers.push('risk-first-level-fresh-save-check-failed');
+    if (spec.level > 1 && !checkStatus(report, `level-${spec.level}-prior-levels-earned`)) blockers.push(`risk-prior-save-progression-check-failed:level-${spec.level}`);
+    settlements.push({ level: spec.level, status: terminal.phase === 'finished' && terminal.reason === 'complete' && Boolean(completionEvent) && earned ? 'PASS' : 'FAIL', completionEvent: Boolean(completionEvent), earnedSave: earned });
+  }
+  if (!checkStatus(report, 'five-level-natural-campaign-completed')) blockers.push('risk-five-level-natural-campaign-check-failed');
+  const replayCheck = byName.get('final-settlement-and-reopen');
+  const replaySnapshot = report.snapshots.find((snapshot) => snapshot.label === 'visible-final-replay');
+  if (replayCheck?.passed !== true || replaySnapshot?.value.phase !== 'running' || replaySnapshot?.value.level !== 5 || replaySnapshot?.value.save?.completed?.[4] !== true) blockers.push('risk-earned-final-replay-not-observed');
+  if (report.videos.length !== 5 || new Set(report.videos.map((video) => video.levelId)).size !== 5) blockers.push('risk-five-level-video-set-incomplete');
+  for (const video of report.videos) {
+    if (video.path !== `${attemptRoot}/risk-${engine}/level-${video.levelId}.webm`) blockers.push(`risk-video-path-not-current-attempt:${video.levelId}`);
+    try {
+      if (sha(await readRunBytes(video.path)) !== video.sha256) blockers.push(`risk-video-hash-mismatch:${video.levelId}`);
+    } catch { blockers.push(`risk-video-missing:${video.levelId}`); }
+  }
+  return {
+    blockers: unique(blockers),
+    classification: {
+      targetCount: RISK_TARGET_COUNT, targetsByLevel: RISK_TARGETS.map((item) => ({ level: item.level, count: item.barrierIds.length, barrierIds: item.barrierIds })),
+      barrierEvidence, settlements, replayObserved: replayCheck?.passed === true && replaySnapshot?.value.phase === 'running',
+    },
+  };
+};
 
 for (const engine of ['webkit', 'chromium']) {
   await addFixedReport({ kind: 'campaign', engine, relative: `${attemptRoot}/qa-campaign-${engine}/report.json`, validate: requireCampaign });
   await addFixedReport({ kind: 'collision', engine, relative: `${attemptRoot}/qa-collisions-${engine}/report.json`, validate: requireCollision });
   await addFixedReport({ kind: 'experience', engine, relative: `${attemptRoot}/experience-${engine}/report.json`, validate: requireExperience });
   await addFixedReport({ kind: 'head', engine, relative: `${attemptRoot}/head-${engine}/report.json`, validate: requireHead });
+  await addFixedReport({ kind: 'risk', engine, relative: `${attemptRoot}/risk-${engine}/report.json`, validate: (report) => requireRisk(report, engine) });
 }
 await addFixedReport({
   kind: 'visual', engine: 'webkit', relative: `${attemptRoot}/visual/report.json`,
@@ -410,11 +566,14 @@ if (!contractParsed.success) preflightBlockers.push('product-experience-contract
 else {
   const caseCount = contractParsed.data.features.reduce((count, feature) => count + feature.requiredViewports.length, 0);
   const headFeature = contractParsed.data.features.find((feature) => feature.id === 'native-head-visible');
-  if (contractParsed.data.features.length !== 14 || caseCount !== 29) preflightBlockers.push('v3-product-contract-does-not-match-14-features-and-29-required-cases');
+  const replayFeature = contractParsed.data.features.find((feature) => feature.id === 'replay-mastery-records');
+  if (contractParsed.data.targetGame !== GAME || contractParsed.data.targetRunId !== RUN_ID || contractParsed.data.targetWorkspace !== WORKSPACE) preflightBlockers.push('v3-product-contract-target-identity-mismatch');
+  if (contractParsed.data.features.length !== 15 || caseCount !== 30) preflightBlockers.push('v3-product-contract-does-not-match-15-features-and-30-required-cases');
   if (!headFeature || headFeature.requiredViewports.length !== 4 || JSON.stringify(headFeature.expectedEventOrder) !== JSON.stringify([
     'native-head-visible', 'fish-catch', 'reverse-jump', 'barrier-terminal', 'replay', 'pedestrian-stun', 'recovered',
   ])) preflightBlockers.push('native-head-contract-case-sequence-invalid');
-  if (!contractParsed.data.runtimeEntrypoints.includes('source/pelican-bike/src/pelican.js')) preflightBlockers.push('runtime-entrypoint-pelican-source-missing');
+  if (!replayFeature || replayFeature.requiredViewports.length !== 1 || JSON.stringify(replayFeature.expectedEventOrder) !== JSON.stringify(['earned-settlement', 'visible-best-and-total-stars', 'replay'])) preflightBlockers.push('replay-mastery-records-contract-case-invalid');
+  if (!contractParsed.data.runtimeEntrypoints.includes('source/pelican-bike/src/pelican.js') || !contractParsed.data.runtimeEntrypoints.includes('source/pelican-bike/src/engagement.mjs')) preflightBlockers.push('runtime-entrypoint-pelican-or-engagement-source-missing');
 }
 let perceptualGate;
 try {
@@ -439,6 +598,8 @@ const naturalPaths = [
   { kind: 'collision-natural-flow', path: 'artifacts/natural/collisions.json', features: ['vehicle-impact', 'pedestrian-stun', 'jump-clearance'] },
   { kind: 'v3-experience-natural-flow-webkit', path: 'artifacts/natural/v3-experience-webkit.json', features: ['lane-inertia', 'jump-choice', 'pedestrian-forecast', 'first-minute-mastery'] },
   { kind: 'v3-experience-natural-flow-chromium', path: 'artifacts/natural/v3-experience-chromium.json', features: ['lane-inertia', 'jump-choice', 'pedestrian-forecast', 'first-minute-mastery'] },
+  { kind: 'v3-risk-natural-flow-webkit', path: 'artifacts/natural/v3-risk-webkit.json', features: ['jump-clearance', 'jump-choice', 'five-configured-levels', 'replay-mastery-records'], engine: 'webkit', riskReportPath: `${attemptRoot}/risk-webkit/report.json` },
+  { kind: 'v3-risk-natural-flow-chromium', path: 'artifacts/natural/v3-risk-chromium.json', features: ['jump-clearance', 'jump-choice', 'five-configured-levels', 'replay-mastery-records'], engine: 'chromium', riskReportPath: `${attemptRoot}/risk-chromium/report.json` },
 ];
 const headViewports = [
   { width: 390, height: 844, label: 'mobile-portrait' },
@@ -469,7 +630,7 @@ for (const spec of naturalPaths) {
     if (flow.buildHash !== receipt.buildHash || flow.runtime !== 'web-lite') blockers.push('natural-flow-build-or-runtime-mismatch');
     if (spec.viewport && (flow.completion !== 'terminal' || flow.device?.width !== spec.viewport.width || flow.device?.height !== spec.viewport.height || flow.device?.label !== spec.viewport.label)) blockers.push('head-natural-flow-viewport-or-terminal-mismatch');
     for (const feature of spec.features) if (!flow.transitions.some((transition) => transition.name === feature && transition.changed)) blockers.push(`natural-transition-missing:${feature}`);
-    const kind = spec.kind.startsWith('campaign') ? 'campaign' : spec.kind.startsWith('collision') ? 'collision' : spec.kind.startsWith('v3-head') ? 'head' : 'experience';
+    const kind = spec.kind.startsWith('campaign') ? 'campaign' : spec.kind.startsWith('collision') ? 'collision' : spec.kind.startsWith('v3-head') ? 'head' : spec.kind.startsWith('v3-risk') ? 'risk' : 'experience';
     const engine = spec.engine ?? (spec.kind.endsWith('chromium') ? 'chromium' : 'webkit');
     const correspondingEntry = reports.find((entry) => entry.kind === kind && entry.engine === engine);
     const corresponding = correspondingEntry?.value;
@@ -494,6 +655,16 @@ for (const spec of naturalPaths) {
         const observedTransitions = flow.transitions.map((transition) => transition.name);
         if (JSON.stringify(observedTransitions) !== JSON.stringify(expectedTransitions) || flow.transitions.some((transition) => !transition.changed)) blockers.push('head-natural-flow-transition-order-mismatch');
       }
+    }
+    if (spec.riskReportPath) {
+      if (correspondingEntry?.path !== spec.riskReportPath || correspondingEntry.status !== 'PASS') blockers.push('risk-natural-flow-source-report-not-passing-current-attempt');
+      const expectedViewport = { width: 390, height: 844, label: 'mobile-portrait' };
+      if (flow.device?.width !== expectedViewport.width || flow.device?.height !== expectedViewport.height || flow.device?.label !== expectedViewport.label) blockers.push('risk-natural-flow-viewport-mismatch');
+      for (const feature of spec.features) {
+        const transition = flow.transitions.find((item) => item.name === feature && item.changed);
+        if (!transition || !transition.evidence.includes(spec.riskReportPath)) blockers.push(`risk-natural-flow-transition-not-bound:${feature}`);
+      }
+      if (!flow.screenshots.length || flow.screenshots.some((screenshot) => !allowedShots.has(screenshot))) blockers.push('risk-natural-flow-screenshots-not-bound-to-current-risk-report');
     }
   }
   naturalTraces.push({ kind: spec.kind, path: spec.path, sha256: loaded.sha256 ?? '0'.repeat(64), status: blockers.length ? loaded.value ? 'FAIL' : 'BLOCKED' : 'PASS', blockers, value: parsed.success ? parsed.data : null });
@@ -571,7 +742,8 @@ const desktopEvidencePassed = [
   reportPass('campaign', 'webkit'), reportPass('campaign', 'chromium'),
   reportPass('collision', 'webkit'), reportPass('collision', 'chromium'),
   reportPass('experience', 'webkit'), reportPass('experience', 'chromium'),
-  reportPass('head', 'webkit'), reportPass('head', 'chromium'), reportPass('visual', 'webkit'), safetyEvidenceAcceptable,
+  reportPass('head', 'webkit'), reportPass('head', 'chromium'),
+  reportPass('risk', 'webkit'), reportPass('risk', 'chromium'), reportPass('visual', 'webkit'), safetyEvidenceAcceptable,
   naturalTraces.every((trace) => trace.status === 'PASS'), perceptualGate.passed,
   runtimeGate.passed, preflightBlockers.length === 0,
 ].every(Boolean);
@@ -583,6 +755,7 @@ const blockedGaps = [
   { id: 'MOBILE-BACKGROUND', message: 'Real mobile app background, lock-screen, call interruption, and return behavior remain BLOCKED; desktop browser or injected lifecycle events do not close this gap.' },
   { id: 'LIVE-ADS', message: 'Live TapTap advertising is BLOCKED / NOT INTEGRATED; no ad reward is simulated.' },
   { id: 'NATIVE-PACKAGES', message: 'WeChat and Douyin native mini-game packages are BLOCKED / NOT PACKAGED.' },
+  { id: 'HUMAN-PLAYTEST', message: 'Independent human enjoyment, usability, and retention playtesting are BLOCKED / NOT RUN.' },
   { id: 'PRODUCTION', message: 'Production release is BLOCKED. This artifact is an H5 device-playtest candidate only.' },
 ];
 const qaChecks = [];
@@ -620,7 +793,7 @@ for (const [kind, loaded] of [['experience-contract', contractLoaded], ['percept
 reportBindings.push({ kind: 'perceptual-gate-v3', path: 'artifacts/perceptual-qa-gate-v3.json', sha256: sha(JSON.stringify(perceptualGate, null, 2) + '\n'), status: perceptualGate.passed ? 'PASS' : 'BLOCKED' });
 reportBindings.push({ kind: 'runtime-product-gate-v3', path: 'artifacts/runtime-product-gates-v3.json', sha256: sha(JSON.stringify(runtimeGate, null, 2) + '\n'), status: runtimeGate.passed ? 'PASS' : 'BLOCKED' });
 reportBindings.push({ kind: 'runtime-wiring-v3', path: 'artifacts/runtime-wiring-verification-v3.json', sha256: sha(JSON.stringify(wired, null, 2) + '\n'), status: wired.passed ? 'PASS' : 'BLOCKED' });
-const copyKinds = new Set(['campaign', 'collision', 'safety', 'experience', 'head', 'visual', 'lifecycle', 'campaign-natural-flow', 'collision-natural-flow', 'v3-experience-natural-flow-webkit', 'v3-experience-natural-flow-chromium', 'experience-contract', 'perceptual-report', 'perceptual-gate-v3', 'runtime-product-gate-v3', 'runtime-wiring-v3']);
+const copyKinds = new Set(['campaign', 'collision', 'safety', 'experience', 'head', 'risk', 'visual', 'lifecycle', 'campaign-natural-flow', 'collision-natural-flow', 'v3-experience-natural-flow-webkit', 'v3-experience-natural-flow-chromium', 'v3-risk-natural-flow-webkit', 'v3-risk-natural-flow-chromium', 'experience-contract', 'perceptual-report', 'perceptual-gate-v3', 'runtime-product-gate-v3', 'runtime-wiring-v3']);
 const copyFiles = reportBindings.filter((entry) => copyKinds.has(entry.kind.split(':')[0]) || entry.kind.startsWith('v3-head-natural-flow-'));
 const manifest = EvidenceManifestSchema.parse({
   schemaVersion: 1, targetGame: GAME, targetRunId: RUN_ID, workspace: WORKSPACE, attempt, buildHash: receipt.buildHash,
@@ -633,6 +806,23 @@ const manifest = EvidenceManifestSchema.parse({
 await json(path.join(RUN, 'qa-evidence-manifest-v3.json'), manifest);
 
 const flowSummary = naturalTraces.map(({ kind, path: flowPath, sha256: hash, status, blockers }) => ({ kind, path: flowPath, sha256: hash, status, blockers }));
+const productContractSummary = {
+  path: 'product-experience-contract.json', sha256: contractLoaded.sha256 ?? '0'.repeat(64),
+  featureCount: contractParsed.success ? contractParsed.data.features.length : 0,
+  requiredCaseCount: contractParsed.success ? contractParsed.data.features.reduce((count, feature) => count + feature.requiredViewports.length, 0) : 0,
+  runtimeEntrypoints: contractParsed.success ? contractParsed.data.runtimeEntrypoints : [],
+};
+const riskEvidence = ['webkit', 'chromium'].map((engine) => {
+  const item = reports.find((report) => report.kind === 'risk' && report.engine === engine);
+  const classified = item?.classification;
+  return {
+    engine, path: item?.path ?? `${attemptRoot}/risk-${engine}/report.json`, sha256: item?.sha256 ?? '0'.repeat(64),
+    status: item?.status ?? 'BLOCKED', targetCount: classified?.targetCount ?? 0,
+    targetsByLevel: classified?.targetsByLevel ?? [], barrierEvidence: classified?.barrierEvidence ?? [],
+    settlements: classified?.settlements ?? [], replayObserved: classified?.replayObserved === true,
+    blockers: item?.blockers ?? ['risk-report-missing'],
+  };
+});
 const summary = {
   schemaVersion: 1,
   targetGame: GAME,
@@ -654,8 +844,10 @@ const summary = {
   productionReady: false,
   readiness: { h5DevicePlaytestCandidate: scriptedCoreJourneyPassed, physicalDevice: false, liveAds: false, nativePackages: false, production: false },
   levels: (reports.find((item) => item.kind === 'campaign' && item.engine === 'webkit')?.value?.levels ?? []).map((level) => ({ level: level.level, distance: level.distance, fish: level.count, gold: level.gold, elapsedSeconds: level.elapsed, result: level.reason, unlocked: typeof level.save === 'number' ? level.save : level.save?.unlocked })),
+  productContract: productContractSummary,
   reports: results,
   safetyEvidence,
+  riskEvidence,
   naturalFlows: flowSummary,
   matricesPreserved: matrixDetails,
   repairHistoryPreserved: repairHistory,
