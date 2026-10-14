@@ -1,0 +1,82 @@
+name: Racing V3 H5 build and Chromium entry smoke
+on:
+  pull_request:
+    paths:
+      - 'templates/web-lite/h5-source-mobile-v1/**'
+      - 'tools/lean-pilot/racing-mobile-build.mjs'
+      - 'tools/lean-pilot/racing-v3-smoke.mjs'
+      - '.github/workflows/racing-v3-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: racing-v3-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  racing-v3:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/racing-career-items-iaa-20261014'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 26
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.x'
+      - name: Locked factory dependencies only
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+      - name: Locked racing code tests and TypeScript/lint
+        run: |
+          node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+          node --test tools/lean-pilot/tests/racing-build.test.mjs
+          pnpm exec eslint tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          pnpm typecheck
+      - name: Obtain the exact pinned public racing reference
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/racing-source"
+          git -C "$RUNNER_TEMP/racing-source" init -q
+          git -C "$RUNNER_TEMP/racing-source" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$RUNNER_TEMP/racing-source" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$RUNNER_TEMP/racing-source" checkout -q FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/racing-source" rev-parse HEAD)" = '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8'
+          git -C "$RUNNER_TEMP/racing-source" diff --exit-code
+      - name: Build V3 racing actual standalone and H5
+        env:
+          H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/racing-source
+        run: node tools/lean-pilot/racing-mobile-build.mjs
+      - name: Install matching Chromium browser
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Launch actual bundled WebGL racing in Chromium
+        run: |
+          node tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
+      - name: Package playable H5 evidence, hashes and demo ZIP
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          dir=runs/h5-qq-mobile-20261013
+          mkdir -p "$dir/artifacts/racing-v3-delivery"
+          if test -f "$dir/workspace/game/index.html"; then
+            (
+              cd "$dir/workspace/game"
+              zip -q -r "$OLDPWD/$dir/artifacts/racing-v3-delivery/qq-speed-v3-h5.zip" ./
+            )
+            sha256sum "$dir/artifacts/racing-v3-delivery/qq-speed-v3-h5.zip" > "$dir/artifacts/racing-v3-delivery/SHA256SUMS.txt"
+          fi
+          if test -f "$dir/artifacts/build-racing.json"; then
+            cp "$dir/artifacts/build-racing.json" "$dir/artifacts/racing-v3-delivery/build-racing.json"
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: racing-v3-h5-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            runs/h5-qq-mobile-20261013/artifacts/racing-v3-delivery/*
+            runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/*
+          retention-days: 7
+          if-no-files-found: warn
