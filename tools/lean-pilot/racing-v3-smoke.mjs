@@ -36,7 +36,15 @@ const report = { stage:'BUILT_H5_CHROMIUM_ENTRY_SMOKE', assertion:'source-level/
 let browser;
 const fail = reason => {report.errors.push(String(reason));throw Error(reason);};
 async function waitLoaded(page) {
-  await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.loaded === 'true',null,{timeout:90000});
+  await page.waitForFunction(() => {
+    const kit=document.querySelector('#race-kit');
+    const selected=kit?.querySelector('#race-stage')?.value;
+    return kit?.dataset.loaded === 'true' &&
+      !kit.querySelector('#race-start')?.disabled &&
+      !!window.game?.map &&
+      window.game.map.id === window.game.settings.map &&
+      !!selected;
+  },null,{timeout:90000});
   const problem = await page.evaluate(() => document.querySelector('#race-kit')?.dataset.error);
   if (problem) fail('race boot error: ' + problem);
 }
