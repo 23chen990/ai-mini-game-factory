@@ -349,6 +349,39 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      let sniperControl=null;
      if(run.theme==='cf-transport-ship'){
        await page.waitForFunction(() => document.documentElement.dataset.fpsSniper === 'true');
+       // A true first-round win can occur before the thumb movement audit.
+       // Verify that movement and look really work in the subsequent AWM
+       // mission, rather than waiving the gate for a fast early success.
+       const controlCheck=checks.find(c=>c.name==='mobile-controls');
+       if(controlCheck && !controlCheck.passed && controlCheck.detail?.thumbMotion===false){
+         const before=await page.evaluate(()=>{
+           const p=window.__H5NativeGame?.player;
+           return p?{x:p.pos.x,z:p.pos.z,yaw:p.yaw}:null;
+         });
+         const pad=await page.locator('#touch .pad').first().boundingBox();
+         const pcenter={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
+         await mobileStroke(pcenter,{x:pcenter.x,y:pcenter.y-55},2200,61);
+         await mobileStroke({x:520,y:180},{x:575,y:180},650,62);
+         const after=await page.evaluate(()=>{
+           const p=window.__H5NativeGame?.player;
+           return p?{x:p.pos.x,z:p.pos.z,yaw:p.yaw}:null;
+         });
+         const dist=before&&after?Math.hypot(after.x-before.x,after.z-before.z):0;
+         const look=before&&after?Math.abs(after.yaw-before.yaw):0;
+         const moved=dist>0.5&&look>0.01;
+         // Keep the original combat, button layout, and offscreen checks.
+         const d=controlCheck.detail;
+         const layout=d.layout;
+         const layoutOkay=!layout.overlap&&layout.desktopMenuHidden&&layout.labelsPresent&&
+           layout.actions.every(n=>!n.visible||n.fits)&&
+           ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible))&&
+           ['duplicate-fire','crouch','switch'].every(a=>layout.actions.some(n=>n.action===a&&!n.visible));
+         controlCheck.passed=(d.shotsAfter>d.shotsBefore)&&layoutOkay&&moved;
+         controlCheck.detail={...d,thumbMotion:moved,firstWinEndedBeforeOriginalAudit:true,
+           movementVerifiedIn:'AWM challenge after real first win',
+           separateMissionMeters:dist,separateMissionYawRad:look};
+         await shot('mobile-sniper-thumb-audit');
+       }
        const scope=page.locator('#touch .btn[data-mk-action="scope"]');
        const visible=await scope.isVisible();
        await page.waitForTimeout(900);
