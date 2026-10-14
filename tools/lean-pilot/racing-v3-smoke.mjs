@@ -1,4 +1,4 @@
-/* global process, console, Buffer */
+/* global process, console, URL, window, document, localStorage, innerWidth, innerHeight */
 import { chromium } from '@playwright/test';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:http';
