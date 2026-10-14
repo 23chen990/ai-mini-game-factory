@@ -7,13 +7,13 @@ import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
 import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
 import {swipe,tapVisible} from './touch.mjs';
+import {observePreparedJump,preparedJumpSeen} from './queued-cue-observation.mjs';
 const engine=process.env.QA_ENGINE??'webkit',build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const dir=path.join(RUN,'attempts','attempt-'+build.attempt,'experience-'+engine);await mkdir(dir,{recursive:true});
 const driver=await readFile(new URL(import.meta.url));await writeFile(path.join(dir,'driver-source.mjs'),driver);
 const report={driverSha256:sha(driver),schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,normalInputOnly:true,stateInjection:false,checks:[],actions:[],screenshots:[],errors:[],passed:false};
 const server=await serve(),browser=await(engine==='webkit'?webkit:chromium).launch(browserOptions(engine));
 const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir,size:{width:390,height:844}}}),page=await ctx.newPage();
-await page.addInitScript(()=>{window.__qaPreparedJumpFrames=[];const observe=t=>{const n=document.querySelector('[data-action="jump"]');if(n?.classList.contains('queued'))window.__qaPreparedJumpFrames.push({at:t,queued:true,feedback:document.querySelector('#co-feedback strong')?.textContent??'',bufferedJump:window.__coast?.snapshot().bufferedJump??null});requestAnimationFrame(observe);};requestAnimationFrame(observe);});
 const snap=()=>page.evaluate(()=>window.__coast.snapshot());
 const shot=async name=>{const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({path:path.relative(RUN,file),sha256:sha(await readFile(file))});};
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(name+' '+passed);};
@@ -21,6 +21,7 @@ const tap=async selector=>{const before=await snap();const action={at:new Date()
 async function gesture(name,from,to,cancel=false){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
+ await page.evaluate(observePreparedJump);
  const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});const first=await snap();report.firstCatchRunnerWallMs=Date.now()-firstStarted;check('first-catch-under-three-seconds',first.count>=1&&first.events.some(e=>e.type==='fish-caught'&&e.first&&e.at<3),first);await shot('first-catch');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
@@ -42,7 +43,7 @@ try{
    }
   }
   if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){await tap('[data-action="jump"]');const armed=await snap(),prepared=await page.evaluate(()=>window.__qaPreparedJumpFrames);check('early-jump-buffer-visible',prepared.some(f=>f.queued&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),{armed,prepared,note:'Actual continuously observed prepared-button frames; no assumption that a later protocol reply arrives before auto-launch.'});await shot('jump-queued');jumped=true;}}
+  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){await tap('[data-action="jump"]');const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Actual loaded-control class mutation, rendered frames and immediate DOM observation require visible unobscured button and prepared feedback for exact buffered l1-o1; no assumption that a later protocol reply precedes auto-launch.'});await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;

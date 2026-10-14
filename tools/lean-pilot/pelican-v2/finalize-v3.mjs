@@ -836,10 +836,10 @@ for (const spec of naturalPaths) {
   naturalTraces.push({ kind: spec.kind, path: spec.path, sha256: loaded.sha256 ?? '0'.repeat(64), status: blockers.length ? loaded.value ? 'FAIL' : 'BLOCKED' : 'PASS', blockers, value: parsed.success ? parsed.data : null });
 }
 
-const wiredFiles = [
+const wiredFiles = [...new Set([
   'workspace/game/index.html',
   ...(contractParsed.success ? contractParsed.data.runtimeEntrypoints.map((entry) => `workspace/${entry}`) : []),
-];
+])];
 const wired = await verifyRuntimeWiredFiles({ runRoot: RUN, files: wiredFiles });
 const campaignFlow = naturalTraces.find((trace) => trace.kind === 'campaign-natural-flow')?.value;
 let runtimeGate = deriveRuntimeProductGate({
