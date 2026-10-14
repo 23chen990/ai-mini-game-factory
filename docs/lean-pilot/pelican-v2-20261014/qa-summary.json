@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "runId": "pelican-coast-v2-20261014",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "buildHash": "d2a913aaa65d332254112a83328493cb47deb2c589d76dd2ed3d561b1dfe1437",
+  "attempt": 5,
+  "route": "formal-fixer",
+  "scriptedCoreJourneyPassed": true,
+  "independentPerceptualPassed": true,
+  "overallAcceptance": "BLOCKED_PHYSICAL_MOBILE_LIFECYCLE",
+  "productionReady": false,
+  "readiness": {
+    "h5DevicePlaytest": true,
+    "liveIaaTest": false,
+    "nativePlatformPublishing": false,
+    "production": false
+  },
+  "levels": [
+    {
+      "id": 1,
+      "distance": 300,
+      "fish": 18,
+      "gold": 3,
+      "elapsedSeconds": 40.00633333333171,
+      "reason": "complete",
+      "unlocked": 2
+    },
+    {
+      "id": 2,
+      "distance": 420,
+      "fish": 21,
+      "gold": 2,
+      "elapsedSeconds": 52.50633333333042,
+      "reason": "complete",
+      "unlocked": 3
+    },
+    {
+      "id": 3,
+      "distance": 540,
+      "fish": 27,
+      "gold": 3,
+      "elapsedSeconds": 61.36433333332919,
+      "reason": "complete",
+      "unlocked": 4
+    },
+    {
+      "id": 4,
+      "distance": 630,
+      "fish": 30,
+      "gold": 3,
+      "elapsedSeconds": 68.48333333333154,
+      "reason": "complete",
+      "unlocked": 5
+    },
+    {
+      "id": 5,
+      "distance": 720,
+      "fish": 39,
+      "gold": 5,
+      "elapsedSeconds": 75.0020000000019,
+      "reason": "complete",
+      "unlocked": 5
+    }
+  ],
+  "performance": {
+    "scope": "Desktop WebKit mobile viewports, DPR3; not physical mobile",
+    "samePoseStaticFixture": {
+      "source": "evidence/same-pose-performance.json",
+      "beforeFps": 59.7722003830259,
+      "afterFps": 59.5706078016329,
+      "acceptedAsGameplay": false
+    },
+    "baseline": {
+      "internal": [
+        312,
+        675
+      ],
+      "canvas": [
+        390,
+        844
+      ],
+      "fps": 59.110298598415596,
+      "p95Ms": 18
+    },
+    "after": [
+      {
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "internal": [
+          585,
+          1266
+        ],
+        "canvas": [
+          585,
+          1266
+        ],
+        "pixelRatio": 1.5,
+        "fps": 60.09882020772411,
+        "p95Ms": 18,
+        "drawCalls": 420,
+        "triangles": 293035
+      },
+      {
+        "viewport": {
+          "width": 360,
+          "height": 740
+        },
+        "internal": [
+          540,
+          1110
+        ],
+        "canvas": [
+          540,
+          1110
+        ],
+        "pixelRatio": 1.5,
+        "fps": 60.00403388463089,
+        "p95Ms": 18,
+        "drawCalls": 421,
+        "triangles": 294531
+      },
+      {
+        "viewport": {
+          "width": 844,
+          "height": 390
+        },
+        "internal": [
+          1266,
+          585
+        ],
+        "canvas": [
+          1266,
+          585
+        ],
+        "pixelRatio": 1.5,
+        "fps": 59.04877065699315,
+        "p95Ms": 19,
+        "drawCalls": 450,
+        "triangles": 298250
+      }
+    ]
+  },
+  "collisionChecks": [
+    {
+      "name": "accident-visible-before-settlement",
+      "passed": true
+    },
+    {
+      "name": "car-ends-round",
+      "passed": true
+    },
+    {
+      "name": "crash-freezes-score",
+      "passed": true
+    },
+    {
+      "name": "failure-replay-without-navigation",
+      "passed": true
+    },
+    {
+      "name": "pedestrian-stops-but-countdown-runs",
+      "passed": true
+    },
+    {
+      "name": "pedestrian-recovers-once",
+      "passed": true
+    },
+    {
+      "name": "visible-barrier-jump-clears",
+      "passed": true
+    },
+    {
+      "name": "one-touch-one-lane",
+      "passed": true
+    }
+  ],
+  "safetyChecks": [
+    {
+      "name": "locked-new-save",
+      "passed": true
+    },
+    {
+      "name": "unlock-prerequisite-1",
+      "passed": true
+    },
+    {
+      "name": "unlock-prerequisite-2",
+      "passed": true
+    },
+    {
+      "name": "van-target-distance-reached",
+      "passed": true
+    },
+    {
+      "name": "van-ends-round",
+      "passed": true
+    },
+    {
+      "name": "car-not-jumpable",
+      "passed": true
+    },
+    {
+      "name": "distance-and-fish-jointly-required",
+      "passed": true
+    },
+    {
+      "name": "tab-blur-pauses",
+      "passed": false
+    },
+    {
+      "name": "background-manual-resume",
+      "passed": false
+    },
+    {
+      "name": "replay-resources-plateau",
+      "passed": true
+    }
+  ],
+  "memoryReplaySamples": [
+    {
+      "geometries": 288,
+      "textures": 19
+    },
+    {
+      "geometries": 288,
+      "textures": 19
+    },
+    {
+      "geometries": 288,
+      "textures": 19
+    },
+    {
+      "geometries": 288,
+      "textures": 19
+    },
+    {
+      "geometries": 288,
+      "textures": 19
+    },
+    {
+      "geometries": 288,
+      "textures": 19
+    }
+  ],
+  "tests": {
+    "core": "13/13",
+    "inheritedRewardSafety": "15/15",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "repositoryFull": "973/975 assertions; 17 node:test files incorrectly collected by Vitest; clock-dependent waiver assertion fails on unchanged PR10; unrelated cut-stack timeout passes isolated retest"
+  },
+  "remaining": [
+    "Physical iPhone and low/mid-end hardware performance, thermal behavior and longer soak NOT_RUN",
+    "Real background/resume remains BLOCKED: automated browsers stay visible/focused and send no lifecycle signal; synthetic events cannot close it",
+    "Independent model pixel review is not a human enjoyment/retention test",
+    "TapTap live ads NOT_INTEGRATED; no simulated ad reward",
+    "WeChat/Douyin/TapTap native packages NOT_PACKAGED",
+    "Inherited full-repository test runner/date fixture failures are preserved, not weakened",
+    "Concurrent captures had delayed actions/frames and terminal-state action timeouts; immutable-build serial regression passes, all raw failures retained; original timing cause not fully established"
+  ],
+  "rawReports": [
+    "attempts/attempt-5/qa-campaign-webkit/report.json",
+    "attempts/attempt-5/qa-collisions-webkit/report.json",
+    "attempts/attempt-5/qa-safety-webkit/report.json",
+    "attempts/attempt-5/visual/report.json",
+    "perceptual-qa-report.json",
+    "artifacts/perceptual-qa-gate.json"
+  ],
+  "createdAt": "2026-10-14T05:03:41.280Z"
+}
