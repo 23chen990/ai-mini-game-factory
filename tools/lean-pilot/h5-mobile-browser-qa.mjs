@@ -90,13 +90,41 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          desktopMenuHidden:getComputedStyle(document.getElementById('menu')).display==='none',
          labelsPresent:!!document.getElementById('mk-fps-target')&&!!document.getElementById('mk-fps-board')};
      });
-     const working = shotsAfter > shotsBefore && !layout.overlap && layout.desktopMenuHidden &&
+     // Normal touch path for both thumbs. Read-only position/yaw snapshots are
+     // evidence; no injection of actor coordinates, player stats or game state.
+     const beforeTravel=await page.evaluate(() => {
+       const p=window.__H5NativeGame?.player;
+       return p?{x:p.pos.x,z:p.pos.z,yaw:p.yaw,deaths:p.stats.d}:null;
+     });
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     const moveSession=await context.newCDPSession(page);
+     const px=pad.x+pad.width/2, py=pad.y+pad.height/2;
+     await moveSession.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:px,y:py,id:5}]});
+     await moveSession.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:px,y:py-55,id:5}]});
+     await page.waitForTimeout(2500);
+     await moveSession.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+     await moveSession.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:500,y:190,id:6}]});
+     await moveSession.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:565,y:190,id:6}]});
+     await page.waitForTimeout(850);
+     await moveSession.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+     await moveSession.detach();
+     const afterTravel=await page.evaluate(() => {
+       const p=window.__H5NativeGame?.player;
+       return p?{x:p.pos.x,z:p.pos.z,yaw:p.yaw,deaths:p.stats.d}:null;
+     });
+     const distance=beforeTravel&&afterTravel
+       ? Math.hypot(afterTravel.x-beforeTravel.x,afterTravel.z-beforeTravel.z) : 0;
+     const lookAngle=beforeTravel&&afterTravel?Math.abs(afterTravel.yaw-beforeTravel.yaw):0;
+     const thumbMotion=distance>0.5&&lookAngle>0.01&&afterTravel.deaths===beforeTravel.deaths;
+     await shot('mobile-forward-look');
+     actions.push({atMs:Date.now()-started,input:'natural-joystick-and-look',detail:{distance,lookAngle,thumbMotion}});
+     const working = shotsAfter > shotsBefore && thumbMotion && !layout.overlap && layout.desktopMenuHidden &&
        layout.labelsPresent && layout.active === 'true' && layout.actions.every(n=>!n.visible||n.fits) &&
        ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible)) &&
        ['duplicate-fire','crouch','switch'].every(a=>layout.actions.some(n=>n.action===a&&!n.visible));
-     actions.push({atMs:Date.now()-started,input:'visual-layout-audit',detail:{shotsBefore,shotsAfter,layout}});
+     actions.push({atMs:Date.now()-started,input:'visual-layout-audit',detail:{shotsBefore,shotsAfter,layout,thumbMotion,distance,lookAngle}});
      await shot('mobile-controls');
-     check('mobile-controls',working,{authority:'NORMAL_TOUCH_AND_VISIBLE_DOM',shotsBefore,shotsAfter,layout,
+     check('mobile-controls',working,{authority:'NORMAL_TOUCH_AND_VISIBLE_DOM',shotsBefore,shotsAfter,layout,thumbMotion,distance,lookAngle,
        limitation:'Checks that shots occur, NOT that hits or successful combat have been proven.'});
    }
    if (!isFps) {
@@ -121,8 +149,23 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const best=await page.locator('#mk-best').innerText();await page.locator('#mk-replay').tap();
      await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:45000});
      const restored=best===await page.locator('#mk-best').innerText();check('mobile-save-reload',restored,{savedBest:best,restored,unfinishedRound:'RESTARTS_EXPLICITLY'});
+     if(run.theme==='cf-transport-ship') await page.locator('#mk-challenges [data-challenge-id="precision"]').tap();
      await page.locator('#mk-start').tap();await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
-     check('mobile-terminal-replay',true,{...terminal,naturalInputOnly:true,replayObserved:true,fishCaptureObserved:run.theme!=='pelican-bike'||score>0});
+     let sniperControl=null;
+     if(run.theme==='cf-transport-ship'){
+       await page.waitForFunction(() => document.documentElement.dataset.fpsSniper === 'true');
+       const scope=page.locator('#touch .btn[data-mk-action="scope"]');
+       const visible=await scope.isVisible();
+       await page.waitForTimeout(900);
+       if(visible) await scope.tap();
+       await page.waitForTimeout(700);
+       const scoped=await page.evaluate(() => window.__H5NativeGame?.player?.scoped ?? 0);
+       sniperControl={visible,scoped,activeChallenge:await page.locator('#mobile-kit').getAttribute('data-challenge')};
+       await shot('mobile-sniper-controls');
+     }
+     const restarted=!sniperControl||sniperControl.visible&&sniperControl.scoped>0&&sniperControl.activeChallenge==='precision';
+     check('mobile-terminal-replay',restarted,{...terminal,naturalInputOnly:true,replayObserved:restarted,
+       sniperControl,fishCaptureObserved:run.theme!=='pelican-bike'||score>0});
    }else{check('mobile-save-reload',false,{reason:'Terminal was not observed, so replay/save case remains blocked.'});check('mobile-terminal-replay',false,terminal);}
  }catch(e){errors.push(String(e.message).slice(0,500));}
  const frames=await page.evaluate(()=>window.__mobileFrames||[]).catch(()=>[]);frames.sort((a,b)=>a-b);
