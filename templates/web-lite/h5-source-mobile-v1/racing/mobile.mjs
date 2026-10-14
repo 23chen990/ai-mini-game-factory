@@ -144,9 +144,23 @@ async function loadTrack(id, autoStart) {
 $('start').addEventListener('click', start); $('pause').addEventListener('click', pause); $('resume').addEventListener('click', resume);
 // A second finger is not guaranteed to synthesize click while the steering finger stays down.
 $('pause').addEventListener('pointerdown', event => { event.preventDefault();pause(); });
-$('replay').addEventListener('click', start); $('restart').addEventListener('click', start);
-$('next').addEventListener('click', () => loadTrack(MAPS[(MAPS.findIndex(m => m.id === g.settings.map) + 1) % MAPS.length].id, true));
-$('map').addEventListener('change', () => loadTrack($('map').value, false));
+$('replay').addEventListener('click', start);$('restart').addEventListener('click', start);
+$('next').addEventListener('click', () => {
+  const next = career.nextStage();if (next === career.index) return;
+  career.setStage(next);renderLobby();loadTrack(career.stage.map, true);
+});
+$('stage').addEventListener('change', () => {
+  if (!career.setStage(Number($('stage').value))) {renderLobby();return;}
+  renderLobby();loadTrack(career.stage.map, false);
+});
+$('skin').addEventListener('change', () => {career.setSkin(Number($('skin').value));renderLobby();});
+$('fuel-ad').addEventListener('click', async () => {
+  if (!['ready','finished'].includes(phase) || career.adBusy) return;
+  $('fuel-ad').disabled = true;$('fuel-info').textContent = '广告加载中…';
+  const out = await career.watchFuelAd();
+  renderLobby();
+  $('note').textContent = out.status === 'completed' ? '加油成功，可以继续参赛' : '广告未完整播放或暂不可用，油量不变';
+});
 $('quality').addEventListener('change', () => { quality.manual = true;g.settings.quality = $('quality').value;g.setupQuality();g.save();$('quality-note').textContent = '已使用你选择的画质'; });
 for (const button of root.querySelectorAll('[data-race-direction]')) {
   button.addEventListener('pointerdown', e => {
@@ -170,7 +184,12 @@ async function boot() {
     await new Promise(resolve => setTimeout(resolve, 30));
   }
   if (!g) throw Error('赛道加载未完成，请刷新或使用支持 WebGL 的浏览器');
-  g.mobileMode = mobile;g.camMode = 1;g.settings.laps = 1;g.settings.diff = 0;g.settings.mode = 'speed';g.settings.quality = 'mid';g.setupQuality();g.save();
+  g.mobileMode = mobile;g.camMode = 1;g.settings.quality = 'mid';career.configure(g);g.setupQuality();
+  career.patchNative(g);
+  career.setupAd(window.__PLATFORM_META__ ?? { status: 'PENDING' }, window.tap);
+  if (!window.__PLATFORM_META__) fetch('platform.json').then(r => r.ok ? r.json() : null).then(meta => {
+    if (meta) {career.setupAd(meta, window.tap);fuelView();}
+  }).catch(() => { /* The racing preview remains free-to-play. */ });
   tuneRaceFx(g);
   document.getElementById('gaugelbl').textContent = '集气';
   document.querySelector('#lapbox .s').textContent = '圈数';
@@ -179,13 +198,16 @@ async function boot() {
   g.input.frame = () => {
     const now = g.last ?? performance.now(), dt = Math.min(.05, Math.max(0, (now - inputTime) / 1000)); inputTime = now;
     const held = pointers.snapshot(performance.now());g.input.touch.left = held.left;g.input.touch.right = held.right;
-    const raw = nativeFrame();return driver.frame(dt, raw, g.player, g.track, g.state, { canStep: g.acc + dt >= 1 / 120 });
+    const raw = nativeFrame(), canStep = g.acc + dt >= 1 / 120;
+    const translated = driver.frame(dt, raw, g.player, g.track, g.state, { canStep });
+    if (g.itemMode && driver.enabled) translated.nitroPressed = career.itemInput(g, canStep);
+    return translated;
   };
   const nativeEvents = g.handleEvents.bind(g);
   g.handleEvents = player => {
     const pending = player.events.map(event => ({ ...event, data: { ...event.data } }));nativeEvents(player);
     for (const event of pending) {
-      events.push({ atRaceSec: g.raceTime, type: event.type, ...event.data }); if (events.length > 800) events.shift();
+      career.onEvent(event, g);events.push({ atRaceSec: g.raceTime, type: event.type, ...event.data }); if (events.length > 800) events.shift();
       if (event.type === 'driftStart') feedback('漂移集气', 'drift');
       if (event.type === 'crash') feedback('碰撞减速', 'crash');
     }
@@ -193,15 +215,21 @@ async function boot() {
   g.hud.message = text => feedback(text.replace('集气完成 +1 N₂O', '集气满 · 出弯加速').replaceAll('!', ''));
   const nativeCountdown = g.hud.countdown.bind(g.hud);g.hud.countdown = text => nativeCountdown(text === 'GO!' ? '出发' : text);
   g.hud.drawSpeedo = () => {}; // Desktop speedo is compatibility-only and absent from this HUD.
-  loading = false;root.dataset.loaded = 'true';$('start').disabled = false;$('start').textContent = '开始比赛';$('map').value = g.settings.map;
+  loading = false;root.dataset.loaded = 'true';$('start').disabled = false;$('start').textContent = '开始比赛';$('map').value = g.settings.map;renderLobby();
   if (!mobile) $('note').textContent = '键盘保留原操作；点按左右按钮可切入双键驾驶';
   display('ready');
+  let lastFuelTick = 0;
   const frame = now => {
     const dt = (now - lastFrame) / 1000;lastFrame = now;
+    if ((phase === 'ready' || phase === 'finished') && now - lastFuelTick > 1000) { lastFuelTick = now;fuelView(); }
     if (started && !result) {
       if (g.player.finished || g.resultShown) finish();
       else if (g.state !== phase && ['race', 'countdown', 'paused'].includes(g.state)) display(g.state);
       if (g.state === 'race') {
+        const failure = career.frame(g);
+        for (const message of career.drainNotices()) feedback(message, message.includes('超车') ? 'pass' : 'boost');
+        $('live-goal').textContent = career.timerLabel(g);
+        if (failure) {feedback(failure, 'crash');if (!g.resultShown) g.showResults();finish();}
         root.classList.toggle('drifting', g.player.drifting);
         const rank = g.standings.indexOf(g.player) + 1;
         if (previousRank !== null && rank < previousRank && g.raceTime > 1) feedback(`超车 +${previousRank - rank}`, 'pass');
