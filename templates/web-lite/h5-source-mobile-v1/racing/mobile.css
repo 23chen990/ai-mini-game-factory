@@ -61,6 +61,8 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-results li { display:grid;grid-template-columns:25px 1fr 80px;gap:8px;text-align:left;padding:4px 10px;border-bottom:1px solid #ffffff0b;color:#a9c5d5; }
 #race-results li span:last-child { text-align:right;font-variant-numeric:tabular-nums; }#race-results li.me { background:#4aa2a929;color:#effeff;border-radius:7px; }
 #race-settings small { display:block;width:100%;font-size:10px; }
+#race-kit #race-settings #race-sound { min-height:36px;padding:7px 12px;border:1px solid #75a2b355;border-radius:9px;background:#164354;color:#e5fcff;font-size:12px; }
+#race-kit #race-settings #race-sound[aria-pressed="false"] { background:#142c3a;border-color:#66839666;color:#b9cfde; }
 #race-rotate { pointer-events:auto;position:absolute;inset:0;z-index:60;background:#0b2437f5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;text-align:center; }
 .race-phone { width:72px;height:116px;border:3px solid #b4e8eb;border-radius:18px;display:grid;place-items:center;color:#b4e8eb;font-size:40px;transform:rotate(-90deg);margin:25px; }
 #race-rotate b { font-size:22px;color:#f1ffff; }#race-rotate span { font-size:14px;color:#b8d7e5; }#race-rotate small { font-size:12px;color:#8faeba; }
