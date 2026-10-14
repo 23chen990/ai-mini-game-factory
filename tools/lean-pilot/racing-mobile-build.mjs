@@ -40,7 +40,27 @@ export function annotateDriftResult(source) {
   if (source.split(original).length !== 2) throw Error('Native driftEnd event anchor changed');
   return source.replace(original, annotated);
 }
-/** Insert the generated IIFE without applying String.replace's $& substitutions. */
+/** Strict, idempotent extensions to the GENERATED copy only, never the pinned source. */
+export function patchRaceLayouts(source) {
+  const imported = "import { applyTrackDesign } from './race-track-design.mjs';";
+  const invoke = "applyTrackDesign(LAYOUTS);";
+  if (source.includes(imported) && source.includes(invoke)) return source;
+  if (!source.includes('export const LAYOUTS = {')) throw Error('Pinned track layout export changed');
+  if (source.includes(imported) || source.includes(invoke)) throw Error('Partial track patch');
+  return imported+'\n'+source+'\n'+invoke+'\n';
+}
+export function patchRaceItems(source) {
+  const imported = "import { upgradeItemBoxes } from './race-item-visuals.mjs';";
+  const hook = "this.applyMobileVisuals = () => upgradeItemBoxes(this, THREE);";
+  if (source.includes(imported) && source.includes(hook)) return source;
+  if (source.includes(imported) || source.includes(hook)) throw Error('Partial item visual patch');
+  const anchor = "  }\n\n  reset() {";
+  if (source.split(anchor).length !== 2 || !source.includes('export class ItemSystem'))
+    throw Error('Pinned item constructor changed; cannot attach safe visual patch');
+  return imported+'\n'+source.replace(anchor, "    "+hook+"\n"+anchor);
+}
+
+/** Insert the generated IIFE without applying String.replace's /** Insert the generated IIFE without applying String.replace's $& substitutions. */ substitutions. */
 export function injectRaceBundle(html, bundleText) {
   if (typeof bundleText !== 'string' || typeof html !== 'string' || html.split('</body>').length !== 2)
     throw Error('Expected exactly one HTML body closing tag and a JavaScript bundle');
@@ -72,7 +92,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   if (run.theme !== 'qq-speed' || run.templateId !== 'h5-source-mobile-v1') throw Error('Wrong target racing run');
   const project = path.join(root, 'workspace/source/qq-speed');
   const owned = path.join(ROOT, 'templates/web-lite/h5-source-mobile-v1/racing');
-  const ownedNames = ['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs'];
+  const ownedNames = ['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'track-design.mjs', 'item-visuals.mjs'];
   const inputFiles = await Promise.all(ownedNames.map(name => readFile(path.join(owned, name), 'utf8')));
   const sharedDeps = await Promise.all(['fuel.mjs', 'themes.mjs'].map(name => readFile(path.join(ROOT, 'templates/web-lite/h5-source-mobile-v1', name), 'utf8')));
   const inputHash = sha256([...inputFiles, ...sharedDeps, await readFile(fileURLToPath(import.meta.url), 'utf8')].join('\n'));
@@ -92,6 +112,16 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     const original = await readFile(path.join(project, 'src', name), 'utf8');
     const neutral = neutralizeRaceBranding(original);
     if (neutral !== original) await writeFile(path.join(project, 'src', name), neutral);
+  }
+  // Keep the original four bridges/tunnels and all the native physics/checkpoints/AI.
+  for (const [nativeName, adapterName, transform] of [
+    ['layouts.js', 'race-track-design.mjs', patchRaceLayouts],
+    ['items.js', 'race-item-visuals.mjs', patchRaceItems],
+  ]) {
+    const nativePath = path.join(project, 'src', nativeName);
+    await writeFile(nativePath, transform(await readFile(nativePath, 'utf8')));
+    await writeFile(path.join(project, 'src', adapterName),
+      await readFile(path.join(owned, nativeName === 'layouts.js' ? 'track-design.mjs' : 'item-visuals.mjs'), 'utf8'));
   }
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
@@ -122,7 +152,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const standalone = html.replace('<link rel="stylesheet" href="style.css">', '<style>' + inputFiles[3] + '</style>');
   const trialName = 'racing-two-button-' + hash.slice(0, 12) + '.html';
   await writeFile(path.join(root, trialName), standalone);
-  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
+  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), trackGeometrySha256: sha256(await readFile(path.join(project, 'src/layouts.js'))), itemVisualSourceSha256: sha256(await readFile(path.join(project, 'src/items.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
   history.attempts.at(-1).status = 'AWAITING_PLAYWRIGHT_QA';
   history.attempts.at(-1).buildHash = hash;
   await writeFile(path.join(root, 'artifacts/repair-history.json'), JSON.stringify(history, null, 2) + '\n');
