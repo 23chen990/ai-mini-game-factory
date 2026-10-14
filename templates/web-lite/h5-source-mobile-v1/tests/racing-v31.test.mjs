@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { TRACK_RESHAPES, applyTrackDesign } from '../racing/track-design.mjs';
 import { WrongWayRecovery } from '../racing/recovery.mjs';
 import { roadHint } from '../racing/road-coach.mjs';
+import { applyLaneDesign, PAD_LANES } from '../racing/lane-design.mjs';
 
 function fixture() {
   const layouts={};
@@ -103,4 +104,37 @@ test('道具路线提醒只说左右车道，不伪称随机道具已确定',()=
   assert.ok(!/导弹|护盾|氮气/.test(hint));
   car.d=280;assert.equal(roadHint(g),'');
   g.itemMode=false;car.d=190;assert.equal(roadHint(g),'');
+});
+
+
+test('四图原生加速带不增加数量，偏移到合法左右车道形成真实路线抉择',()=>{
+  const original=Object.entries(PAD_LANES).map(([id,pads])=>({
+    id,track:{boostPads:pads.map(p=>({at:[...p.at]}))}
+  }));
+  assert.equal(applyLaneDesign(original),4);
+  assert.equal(applyLaneDesign(original),4,'repeat build must be idempotent');
+  for(const map of original) {
+    const expected=PAD_LANES[map.id];
+    assert.equal(map.track.boostPads.length,expected.length);
+    assert.deepEqual(map.track.boostPads.map(p=>p.lat),expected.map(p=>p.lat));
+    if(map.id!=='egypt')assert.ok(map.track.boostPads.some(p=>p.lat>0));
+    assert.ok(map.track.boostPads.some(p=>p.lat<0));
+  }
+  const tampered=Object.entries(PAD_LANES).map(([id,pads])=>({
+    id,track:{boostPads:pads.map(p=>({at:[...p.at]}))}
+  }));
+  tampered[0].track.boostPads[0].at[0]+=50;
+  assert.throws(()=>applyLaneDesign(tampered),/anchor changed/);
+  assert.throws(()=>applyLaneDesign([]),/list changed/);
+});
+test('左右加速带提示依照原生横向坐标，避免把右边说成左边',()=>{
+  const p={d:0,s:28,wrongWay:0,airborne:false,finished:false};
+  const g={state:'race',player:p,itemMode:false,track:{
+    length:1000,curvAhead(){return 0;},
+    boostPads:[{d:52,lat:5}],
+  }};
+  assert.match(roadHint(g),/左侧有加速带/);
+  g.track.boostPads=[{d:63,lat:-5}];assert.match(roadHint(g),/右侧有加速带/);
+  g.track.boostPads=[{d:300,lat:-5}];assert.equal(roadHint(g),'');
+  g.track.boostPads=[{d:63,lat:0}];assert.equal(roadHint(g),'');
 });
