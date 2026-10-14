@@ -9,7 +9,7 @@ const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const{run,root,game}=await loadRun(base,runId),hash=await buildHash(game),server=await serveRun(base,runId,0);
  const url='http://127.0.0.1:'+server.address().port,checks=[],artifacts=[],errors=[],actions=[];
- const fpsThreatTrace=[],fpsExtendedChecks=[];
+ const fpsThreatTrace=[],fpsExtendedChecks=[]; let fpsScriptSteps=0,fpsEnemySeenCount=0;
  const readFpsThreat = async () => page.evaluate(() => {
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
@@ -36,6 +36,45 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  page.on('pageerror',e=>errors.push(e.message));const started=Date.now();
  const shot=async name=>{const p='screenshots/'+name+'.png';await page.screenshot({path:path.join(root,p)});artifacts.push({path:p,sha256:sha256(await readFile(path.join(root,p)))});};
  const check=(name,passed,detail)=>checks.push({name,passed:passed===true,detail});
+ // Coached player approximation: uses ONLY visible enemy labels and the exact
+ // on-screen thumb controls. Never reads private bot positions to steer/aim.
+ const mobileStroke=async (start,end,duration=650,touchId=11) => {
+   const cdp=await context.newCDPSession(page);
+   try {
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:start.x,y:start.y,id:touchId}]});
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:end.x,y:end.y,id:touchId}]});
+     await page.waitForTimeout(duration);
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   } finally { await cdp.detach(); }
+ };
+ const coachedFpsStep=async () => {
+   fpsScriptSteps++;
+   const target=page.locator('.mk-fps-enemy:not([hidden])').first();
+   if(await target.count() && await target.isVisible()){
+     fpsEnemySeenCount++;
+     for(let n=0;n<3;n++){
+       const rect=await target.boundingBox();
+       if(!rect)break;
+       const center={x:844/2,y:390/2};
+       const desiredX=rect.x+rect.width/2, desiredY=rect.y+rect.height+22;
+       const dx=Math.max(-75,Math.min(75,(desiredX-center.x)*0.40));
+       const dy=Math.max(-48,Math.min(48,(desiredY-center.y)*0.40));
+       if(Math.abs(dx)+Math.abs(dy)<7)break;
+       await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},180,12+n);
+     }
+     await hold('#touch .btn[data-mk-action="fire"]',900);
+   }else{
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     if(!pad)return;
+     const center={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
+     const stride=fpsScriptSteps%6;
+     const dx=stride===2?-45:stride===4?45:0;
+     const dy=stride===2||stride===4?-30:-55;
+     await mobileStroke(center,{x:center.x+dx,y:center.y+dy},1350,20+stride);
+     if(stride===3||stride===5)
+       await mobileStroke({x:530,y:185},{x:530+(stride===3?60:-50),y:185},260,40+stride);
+   }
+ };
  const hold=async(selector,ms)=>{
    const box=await page.locator(selector).boundingBox();if(!box)throw Error('Missing visible target '+selector);
    const cdp=await context.newCDPSession(page),point={x:box.x+box.width/2,y:box.y+box.height/2,id:1};
@@ -166,7 +205,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          const sample=await readFpsThreat();
          if(sample)fpsThreatTrace.push(sample);
        }
-       await page.waitForTimeout(1000);
+       await coachedFpsStep();
      }else await page.waitForTimeout(1000);
    }
    const phase=await page.locator('#mobile-kit').getAttribute('data-phase'),score=Number(await page.locator('#mk-score').innerText());
@@ -182,6 +221,8 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        firstLaneMeters:fpsThreatTrace[0]?.clearStartingLane??null,
        finalPlayerHits:fpsThreatTrace.at(-1)?.hits??null,
        finalPlayerDeaths:fpsThreatTrace.at(-1)?.deaths??null,
+       scriptedThumbSteps:fpsScriptSteps,scriptedVisibleEnemyLabels:fpsEnemySeenCount,
+       guidedByOnscreenLabelsOnly:true,
        snapshots:fpsThreatTrace
      };
    }
