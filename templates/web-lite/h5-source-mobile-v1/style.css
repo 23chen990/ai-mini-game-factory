@@ -14,3 +14,41 @@ html[data-reference-game="cf-transport-ship"] #touch .btn{min-width:48px;min-hei
 @media(orientation:portrait){html[data-reference-game="qq-speed"] #menu,html[data-reference-game="cf-transport-ship"] #menu{padding-top:116px!important;padding-bottom:20px!important;overflow:auto!important}html[data-reference-game="cf-transport-ship"] #touch .btn:nth-of-type(4){display:none!important}}
 @media(max-height:450px){.mk-header{padding-top:4px}.mk-meter{position:absolute;left:10px;top:52px;max-width:250px;margin:0;font-size:12px}#mk-panel{max-height:calc(100% - 70px);top:55%;padding:12px}#mk-panel h2{font-size:18px}#mk-controls button{height:50px;min-height:48px}#mk-controls{right:35%;bottom:8px}}
 #mk-challenges{display:flex;gap:6px;margin:10px 0}#mk-challenges button{flex:1;padding:8px 4px;min-height:58px;font-size:12px}#mk-challenges b,#mk-challenges small{display:block}#mk-challenges small{color:#b7d3df;font-size:11px}#mk-challenges [aria-pressed="true"]{border:2px solid #efc56a;background:#4a4636}#mobile-kit[data-outcome="won"] #mk-heading{color:#8ef2bd}#mobile-kit[data-outcome="lost"] #mk-heading{color:#ffb489}
+
+
+/* FPS-specific landscape HUD: reserve the central aiming field and thumb zones. */
+html[data-reference-game="cf-transport-ship"] .mk-header{position:absolute;top:0;left:35%;right:35%;justify-content:center;padding:5px 6px;background:transparent}
+html[data-reference-game="cf-transport-ship"] .mk-header>b,
+html[data-reference-game="cf-transport-ship"] .mk-header>span{display:none}
+html[data-reference-game="cf-transport-ship"] #mk-fps-board{display:block;padding:5px 12px;border-radius:0 0 12px 12px;background:#092638da;color:#eaf8ff;font-size:clamp(12px,2.3vw,17px);white-space:nowrap;text-shadow:0 1px 2px #000}
+html[data-reference-game="cf-transport-ship"] #mk-pause{position:fixed;right:7px;top:max(5px,env(safe-area-inset-top));min-width:48px;min-height:42px;font-size:12px;padding:4px 8px;background:#12394ac9}
+html[data-reference-game="cf-transport-ship"] .mk-meter{position:absolute;top:50px;left:50%;transform:translateX(-50%);margin:0;padding:4px 10px;width:max-content;max-width:38%;background:#0b2638bd;font-size:12px;gap:7px}
+html[data-reference-game="cf-transport-ship"] .mk-meter>span:nth-child(2){display:none}
+html[data-reference-game="cf-transport-ship"] .mk-meter progress{width:54px;height:7px}
+html[data-reference-game="cf-transport-ship"] #score{display:none!important}
+html[data-reference-game="cf-transport-ship"] #radarWrap{width:clamp(80px,14vw,116px)!important;height:clamp(72px,22vh,100px)!important;top:6px!important;left:max(5px,env(safe-area-inset-left))!important}
+html[data-reference-game="cf-transport-ship"] #feed{top:58px!important;width:min(190px,25vw)!important;right:5px!important;opacity:.8}
+html[data-reference-game="cf-transport-ship"] #vitals{left:max(8px,env(safe-area-inset-left))!important;bottom:5px!important;transform:scale(.8);transform-origin:bottom left}
+html[data-reference-game="cf-transport-ship"] #ammo{right:max(8px,env(safe-area-inset-right))!important;bottom:4px!important;transform:scale(.78);transform-origin:bottom right}
+html[data-reference-game="cf-transport-ship"] #touch .btn{box-sizing:border-box;background:#102b3bad!important;border:1px solid #c9e2eb8c!important;box-shadow:0 2px 8px #0006!important;font-weight:700!important;display:grid;place-items:center}
+html[data-reference-game="cf-transport-ship"] #touch .btn:nth-of-type(4){display:none!important}
+html[data-reference-game="cf-transport-ship"] #touch .pad{background:#b8dfff12!important;border-color:#b8dfff60!important}
+html[data-reference-game="cf-transport-ship"] #touch .btn:nth-of-type(3){background:#8f2d2dd9!important;border:2px solid #ffb4a3!important}
+html[data-reference-game="cf-transport-ship"] #mk-fps-guide{pointer-events:none;position:absolute;top:26%;left:50%;transform:translateX(-50%);border-radius:9px;background:#071d2cdd;color:#d5f4ff;padding:5px 12px;font-size:12px;white-space:nowrap;text-shadow:0 1px 2px black}
+html[data-reference-game="cf-transport-ship"] #mk-fps-target{pointer-events:none;position:absolute;top:calc(50% + 32px);left:50%;transform:translateX(-50%);border-radius:6px;padding:3px 9px;background:#07121bce;font-size:14px;white-space:nowrap;text-shadow:0 1px 3px #000}
+html[data-reference-game="cf-transport-ship"] #mk-fps-target[data-side="ally"]{color:#89d8ff;border:1px solid #56c9ff}
+html[data-reference-game="cf-transport-ship"] #mk-fps-target[data-side="enemy"]{color:#ffb4a5;border:1px solid #ff6254}
+html[data-reference-game="cf-transport-ship"] .mk-fps-enemy{pointer-events:none;position:absolute;transform:translate(-50%,-100%);background:#390909c8;border:1px solid #ff746a;border-radius:5px;padding:1px 5px;color:#ffe3df;font-size:12px;font-weight:800;text-shadow:0 1px 2px #000;white-space:nowrap}
+html[data-reference-game="cf-transport-ship"] #nameTip{display:none!important}
+html[data-reference-game="cf-transport-ship"] #mk-panel{top:50%;max-height:calc(100% - 18px);width:min(420px,calc(100% - 120px));padding:12px}
+html[data-reference-game="cf-transport-ship"] #mk-panel h2{font-size:19px}
+html[data-reference-game="cf-transport-ship"] #mk-panel p{margin:5px 0;font-size:12px}
+html[data-reference-game="cf-transport-ship"] #mk-panel button{min-height:42px}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button{min-height:49px}
+html[data-reference-game="cf-transport-ship"] #mk-rotate{z-index:8}
+@media (max-height:390px){
+ html[data-reference-game="cf-transport-ship"] .mk-meter{top:39px;font-size:11px}
+ html[data-reference-game="cf-transport-ship"] #mk-panel{padding:8px;overflow:auto}
+ html[data-reference-game="cf-transport-ship"] #mk-challenges button{min-height:40px}
+ html[data-reference-game="cf-transport-ship"] #mk-fps-guide{top:22%;font-size:10px}
+}
