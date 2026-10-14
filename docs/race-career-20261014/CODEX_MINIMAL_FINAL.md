@@ -8,6 +8,15 @@ PR：https://github.com/23chen990/ai-mini-game-factory/pull/17
 完整问题矩阵：`docs/race-career-20261014/README.md`
 原交接：`docs/race-career-20261014/CODEX_NEXT.md`
 
+## 最后一次自动化验证（代码提交 `d46dce676ef182a4ef77e06bb93cdbe19ecdae24`）
+
+- [Racing V3 H5 build and Chromium entry smoke：PASS](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38549373776)；固定上游源码构建、对应 Node tests/lint/typecheck、真实打包后的 Chromium/WebGL、4地图、1次道具赛、双键真实触摸、暂停清键、返回大厅换关再次开赛、画质与声音开关的存储回读均通过。
+- [CI H5 原始证据产物](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38549373776/artifacts/11886805617)，包含试玩 ZIP、两种横屏尺寸截图、`smoke.json` 和 `SHA256SUMS.txt`。
+- 独立校验 H5 ZIP SHA-256：`98f2eb9b4c492396350b561a2d97dc19ef3dddf7af2aa8890e024290174a17fe`，容量约 223 KB。其中文本、HTML 内嵌两段 JS 均通过独立 Node 语法检查。
+- 注意 `smoke.json.seededCampaign === true`：除真实触摸/启动外，有些章节用虚拟本地星级**仅解锁选关**，且专用回大厅测试利用 `showResults()` 模拟 DNF；**不等于正常物理通关、不给 16 关自然 QA 打勾**。
+- 额外 QA 边界测试覆盖：满油设备时钟回拨后不会倒置回油基准，广告冷却时钟不会提前结束，倒计时文本最长 5 分钟；暂停声音开关走原生 WebAudio master，音效/音乐同时关闭，本机偏好在刷新后保留。
+- 文档补充提交只含文字，不改变通过 CI 的游戏代码；如果 Codex 又修改了 `templates/` 或 `tools/`，必须重新执行此流水线并以新 SHA 交付。
+
 ## 已由 ChatGPT 提交，切勿重新开发
 
 - 16 主线关卡（1/2/3 圈、四地图、三档 AI、不同赛制）和本地每日挑战；三星与八款既有车漆。
