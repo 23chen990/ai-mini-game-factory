@@ -114,6 +114,8 @@ async function raceStart(page, index, name) {
     roadWidth:(window.game?.track?.halfW ?? 0)*2,
     padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
     trackSamples:window.game?.track?.N ?? 0,
+    cornerSigns:window.game?.__RACE_CORNER_SIGNS__?.sprites?.length ?? 0,
+    nativeThreeLoaded:!!window.__RACE_THREE__?.Sprite,
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
   }));
@@ -139,6 +141,8 @@ async function raceStart(page, index, name) {
   const expectedWidth={city:23,egypt:23,aegean:21,snow:22}[expectedMap];
   if (Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
+  if(!early.nativeThreeLoaded || early.cornerSigns<2 || early.cornerSigns>7)
+    fail(name+': lightweight native Three.js corner signage did not mount: '+JSON.stringify(early));
   if(index===4 && (early.itemBoxes!==8 || early.itemShape!=='IcosahedronGeometry' || early.itemBillboards!==1))
     fail('native V3.1 item boxes must be diamond + visible question billboard: '+JSON.stringify(early));
   for(const [key,rect] of [['left',after.left],['right',after.right]]) {
