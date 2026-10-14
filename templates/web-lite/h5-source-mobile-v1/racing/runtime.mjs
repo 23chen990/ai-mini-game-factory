@@ -48,10 +48,17 @@ export class RacingCareer {
     this.active = true;this.boss = null;this.notice = [];this.metrics = this.freshMetrics();
     this.metrics.timeAllowance = this.stage.kind === 'relay' ? this.stage.baseTime : this.stage.kind === 'time' ? this.stage.target : 0;
     this.auto.reset();this.passes.reset();
+    this.passes.previous = game.standings.indexOf(game.player) + 1;
+    this.passes.lastCrashes = game.player?.stats?.crash ?? 0;
+    if (this.stage.kind === 'overtake') {
+      // A visible rival survives beyond the first straight without scripted teleportation.
+      const challengers = game.racers.filter(r => !r.isPlayer).slice(0, 2);
+      for (const rival of challengers) rival.skill = Math.max(rival.skill, 1.12);
+    }
     if (game.itemMode && game.items) thinItemBoxes(game.items);
     if (this.stage.kind === 'boss') {
       this.boss = game.racers.find(r => !r.isPlayer) ?? null;
-      if (this.boss) { this.boss.name = '疾风车神';this.boss.skill = Math.max(this.boss.skill, 1.32); }
+      if (this.boss) { this.boss.name = '疾风车神';this.boss.skill = Math.max(this.boss.skill, 1.48); }
     }
     if (this.fuelEnabled) {
       const spent = spendRaceFuel(this.fuel);
@@ -82,8 +89,12 @@ export class RacingCareer {
     if (game.__RACE_CAREER_PATCHED__) return;
     const nativeEnd = game.checkRaceEnd.bind(game);
     game.checkRaceEnd = dt => {
+      if (game.firstFinish < 0) game.__RACE_FIRST_FINISH_NOTIFIED__ = false;
       if (game.state === 'race' && game.firstFinish >= 0 && game.player && !game.player.finished) {
-        game.hud.finalCount('对手已冲线，继续完成自己的比赛');
+        if (!game.__RACE_FIRST_FINISH_NOTIFIED__) {
+          game.hud.finalCount('对手已冲线，继续完成自己的比赛');
+          game.__RACE_FIRST_FINISH_NOTIFIED__ = true;
+        }
         const cap = Math.max(210, game.settings.laps * 150);
         if (game.raceTime > cap) game.showResults();
         return;
