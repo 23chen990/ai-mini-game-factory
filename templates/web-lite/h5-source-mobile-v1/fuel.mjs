@@ -42,7 +42,8 @@ export function spendRaceFuel(state, now = Date.now()) {
   return {
     ok: true,
     state: { ...s, amount: s.amount - FUEL_RULES.raceCost,
-      updatedAt: s.amount === FUEL_RULES.max ? t : s.updatedAt },
+      // Spending from a full tank starts a recharge window, but never in the past.
+      updatedAt: s.amount === FUEL_RULES.max ? Math.max(t, s.updatedAt) : s.updatedAt },
   };
 }
 
