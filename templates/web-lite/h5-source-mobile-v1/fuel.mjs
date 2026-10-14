@@ -50,7 +50,7 @@ export function spendRaceFuel(state, now = Date.now()) {
 export function fuelTimeLeft(state, now = Date.now()) {
   const s = syncFuel(state, now);
   if (s.amount >= FUEL_RULES.max) return 0;
-  return Math.max(0, FUEL_RULES.regenMs - (clock(now) - s.updatedAt));
+  return Math.max(0, Math.min(FUEL_RULES.regenMs, FUEL_RULES.regenMs - (clock(now) - s.updatedAt)));
 }
 
 /** Ad reward is opt-in and once per completed attempt. No ad receipt is trusted. */
