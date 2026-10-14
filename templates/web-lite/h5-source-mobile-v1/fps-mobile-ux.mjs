@@ -119,7 +119,7 @@ export function chooseFirstEncounterSpot({player, world, nav, actors = []}) {
       const dist=Math.hypot(ex,ey,ez);
       if(world.raycast(player.pos.x,sy,player.pos.z,
         ex/dist,ey/dist,ez/dist,Math.max(0,dist-0.65),'sight'))continue;
-      const yaw=Math.atan2(player.pos.x-x,player.pos.z-z)*-1;
+      const yaw=Math.atan2(-(player.pos.x-x),-(player.pos.z-z));
       return {x,z,yaw,distance:+range.toFixed(1)};
     }
   }
@@ -441,7 +441,7 @@ export function createFpsMobileUx(game, root, doc) {
         ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先点开镜，再滑动瞄准开火'
         : activeChallenge?.kind === 'survive'
           ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手移动躲避，右侧观察敌人'
-          : '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先找目标，对准自动开火';
+          : '▼ 首战敌人就在前方 · 滑动瞄准，对准会自动开火';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
       routePath=null;routeLastAt=0;
@@ -523,7 +523,9 @@ export function createFpsMobileUx(game, root, doc) {
         if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
-            ? '▼ 前方有敌人！滑动准星对准目标自动开火'
+            ? activeChallenge?.kind==='hits'
+              ? '▼ 首战目标已出现！准星对准敌人就会开火'
+              : '▼ 前方有敌人！点按开火'
             : turn ? turn.symbol+' '+turn.label+' · '+turn.distance+'米后进入交火区'
               : '沿集装箱外侧通道推进，寻找红色敌人';
         }
