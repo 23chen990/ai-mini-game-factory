@@ -192,6 +192,24 @@ try {
   for(const [index,name] of cases) {
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
+    if (index===4) {
+      // QA-only close-up for ART READABILITY; this is camera/vehicle staging,
+      // not legitimate progress, rank, a real item pickup, or a stage clear.
+      const visual=await page.evaluate(()=>{
+        const g=window.game,p=g.player,track=g.track;
+        const distance=track.length*.1-24;
+        p.reset(distance,0);p.lastD=distance;p.progress=distance;
+        p.lapsDone=0;p.half=false;p.owed=false;
+        const candidate=g.items?.boxes?.find(b=>b.respawn<=0);
+        return {staged:true,boxDistance:24,shape:candidate?.cube?.geometry?.type??null,
+          spriteCount:candidate?.g?.children?.filter(x=>x.isSprite)?.length??0};
+      });
+      await page.waitForTimeout(1100);
+      await page.screenshot({path:path.join(dest,'05-item-question-closeup-qa-staged.png')});
+      if (visual.shape!=='IcosahedronGeometry'||visual.spriteCount!==1)
+        fail('Item art close-up source does not have question sprites: '+JSON.stringify(visual));
+      report.itemCloseup=visual;
+    }
   }
   await page.setViewportSize({width:740,height:360});
   const small=await page.evaluate(()=>{
