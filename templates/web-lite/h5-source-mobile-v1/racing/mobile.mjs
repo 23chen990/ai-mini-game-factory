@@ -14,7 +14,7 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><p id="race-stage-goal"></p><div id="race-fuel-box"><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
     <p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
     <div id="race-settings" hidden><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">均衡画质，性能不足时自动调低</small></div>
-    <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
+    <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-lobby" class="race-secondary" hidden>返回选关</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
     <p id="race-note">漂移集气，干净出弯更容易获得完美小喷</p>
   </div><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>横过来，准备出发</b><span>左右拇指各管一键</span><small>转回横屏后，点击继续比赛</small></aside>`;
 document.body.append(root);
@@ -54,6 +54,7 @@ function renderLobby() {
     opt.textContent = SKIN_NAMES[i] + (opt.disabled ? ' · 需 ' + SKIN_STARS[i] + ' 星' : '');$('skin').append(opt);
   }
   $('skin').value = String(career.progress.skin);
+  if (phase === 'ready') $('note').textContent = stage.mode === 'item' ? '选择车道拾取道具，合适时机自动使用' : '贴近弯道内线超车，成功可获得短暂加速';
   fuelView();
 }
 Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality }) });
@@ -68,7 +69,7 @@ function display(next) {
   const racing = next === 'race' || next === 'countdown';
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
   $('start').hidden = next !== 'ready'; $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
-  $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || career.nextStage() === career.index;
+  $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || career.nextStage() === career.index; $('lobby').hidden = next !== 'finished';
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && ['time','relay'].includes(career.stage.kind));
@@ -123,7 +124,7 @@ function finish() {
   $('results').replaceChildren();
   for (const row of result.rows) {
     const li = document.createElement('li'); if (row.me) li.className = 'me';
-    for (const value of [row.place, row.me ? '我' : row.name, time(row.time)]) { const span = document.createElement('span'); span.textContent = String(value); li.append(span); }
+    for (const value of [row.place, row.me ? '我' : row.name, row.time == null && result.finished ? '比赛中' : time(row.time)]) { const span = document.createElement('span'); span.textContent = String(value); li.append(span); }
     $('results').append(li);
   }
   display('finished');renderLobby();
@@ -145,6 +146,10 @@ $('start').addEventListener('click', start); $('pause').addEventListener('click'
 // A second finger is not guaranteed to synthesize click while the steering finger stays down.
 $('pause').addEventListener('pointerdown', event => { event.preventDefault();pause(); });
 $('replay').addEventListener('click', start);$('restart').addEventListener('click', start);
+$('lobby').addEventListener('click', () => {
+  if (!g || loading) return;
+  releaseInput();started = false;result = null;g.startDemo();display('ready');renderLobby();
+});
 $('next').addEventListener('click', () => {
   const next = career.nextStage();if (next === career.index) return;
   career.setStage(next);renderLobby();loadTrack(career.stage.map, true);
