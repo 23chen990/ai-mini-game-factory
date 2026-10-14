@@ -29,3 +29,19 @@ test('未知源版本不能静默套用补丁', () => {
   assert.equal(typeof api.patchRacingSource, 'function', '缺少隔离赛车构建');
   assert.throws(() => api.patchRacingSource('class OtherGame {}'), /anchor|锚点/u);
 });
+
+
+test('registered build includes live career, items, runtime and fuel dependencies', async () => {
+  const source = await readFile(new URL('../racing-mobile-build.mjs', import.meta.url), 'utf8');
+  for (const name of ['career.mjs', 'items.mjs', 'runtime.mjs', 'fuel.mjs', 'themes.mjs']) assert.ok(source.includes(name), name);
+  const mobile = await readFile(new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', import.meta.url), 'utf8');
+  assert.ok(mobile.includes("from './runtime.mjs'"));
+  assert.ok(mobile.includes('career.patchNative(g)'));
+  assert.ok(mobile.includes('career.itemInput(g, canStep)'));
+});
+test('race text labels remove known third-party signboards in build output', () => {
+  const data = 'START · 11城 SPEEDQQ.COM QQ飞车 情迷爱琴海 法老金字塔 雪地大冒险';
+  const got = api.neutralizeRaceBranding(data);
+  for (const name of ['11城','SPEEDQQ.COM','QQ飞车','情迷爱琴海','法老金字塔','雪地大冒险']) assert.ok(!got.includes(name), name);
+  assert.equal(api.neutralizeRaceBranding(got), got);
+});
