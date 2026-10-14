@@ -35,7 +35,7 @@ test('clock rollback cannot erase the rewarded ad cooldown or generate duplicate
   assert.equal(a.ok,true);
   const rolled=syncFuel(a.state,T-20*M);
   assert.equal(rolled.lastAdAt,T+1000);
-  assert.equal(rolled.updatedAt,T);
+  assert.equal(rolled.updatedAt,T+1000,'filling the tank resets the recharge baseline to reward time');
   assert.equal(grantAdvertFuel(rolled,'completed','unique-video-attempt-32',T-15*M).ok,false);
   assert.equal(grantAdvertFuel(rolled,'completed','unique-video-attempt-32',T+5000).ok,false);
 });
