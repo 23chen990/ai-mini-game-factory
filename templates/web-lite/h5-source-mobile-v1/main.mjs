@@ -116,9 +116,11 @@ async function boot() {
           recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome); persist();
           root.dataset.outcome = result.outcome;
           $('heading').textContent = result.outcome === 'won' ? '✓ ' + activeChallenge.title + '完成！' : '本次挑战未完成';
-          $('copy').textContent = result.outcome === 'won'
-            ? '任务成功！本局 ' + round.score + ' 分 · 累计补给 ' + progress.bank
-            : '这次未达成：' + mobileChallengeCopy(activeChallenge) + '。再试一次吧。';
+          $('copy').textContent = id === 'cf-transport-ship'
+            ? (result.outcome === 'won'
+              ? '任务成功！本局 ' + round.score + ' 分 · 累计补给 ' + progress.bank
+              : '这次未达成：' + mobileChallengeCopy(activeChallenge) + '。再试一次吧。')
+            : `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
           $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent = result.outcome === 'won' ? '✓ 已完成' : '可重试';
           $('best').textContent = progress.best; showPhase('finished');
           // The placement is wired but hidden until the actual H5 account's check_ads_status is verified.
