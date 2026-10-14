@@ -22,13 +22,13 @@ export function upgradeItemBoxes(system, THREE) {
   });
   const ringGeometry = new THREE.TorusGeometry(2.2, .09, 5, 22);
   let changed = 0;
-  for (const [index, box] of system.boxes.entries()) {
+  for (const box of system.boxes) {
     if (!box?.cube || !box.g) continue;
     const previousGeometry = box.cube.geometry;
     box.cube.geometry = new THREE.IcosahedronGeometry(2.05, 0);
     previousGeometry?.dispose?.();
-    box.cube.material.color.setHex(index % 2 === 0 ? 0x23a3df : 0x25c5ad);
-    box.cube.material.emissive.setHex(index % 2 === 0 ? 0x2361ff : 0x10b49a);
+    box.cube.material.color.setHex(0x19aee3);
+    box.cube.material.emissive.setHex(0x0b69e8);
     box.cube.material.emissiveIntensity = 1.1;
     box.cube.material.opacity = .92;
     for (const child of box.g.children) if (child !== box.cube) child.visible = false;
