@@ -145,6 +145,23 @@ try {
   const title=await page.locator('#race-stage').locator('option').count();
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
   await raceStart(page,0,'01-city-tutorial');
+  // Exercise a genuine browser touch pointer and pause/resume instead of JS state writes.
+  const left=await page.locator('#race-left').boundingBox();
+  if (!left) fail('Left thumb control has no hitbox');
+  const cdp=await context.newCDPSession(page);
+  const touch={x:left.x+left.width/2,y:left.y+left.height/2,id:101};
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch]});
+  await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',null,{timeout:8000});
+  const held=await page.evaluate(()=>document.querySelector('#race-left')?.classList.contains('held'));
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='false',null,{timeout:8000});
+  await page.locator('#race-pause').tap();
+  await page.waitForFunction(()=>window.game?.state==='paused',null,{timeout:8000});
+  const cleared=await page.evaluate(()=> !window.game?.input?.touch?.left && !window.game?.input?.touch?.right);
+  if (!cleared) fail('Pause left a held steering input behind');
+  await page.locator('#race-resume').tap();
+  await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:8000});
+  report.touch={actualCDPTouch:true,leftPressObserved:held,released:true,paused:true,cleared,resumed:true};
   // Explicit synthetic progress: tests the stage ENTRY chain only, never claims playthrough.
   report.seededCampaign=true;
   await page.evaluate(() => {
