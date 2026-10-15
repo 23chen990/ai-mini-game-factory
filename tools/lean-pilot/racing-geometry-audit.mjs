@@ -42,7 +42,11 @@ function inspect(layout, key){
     if(Math.hypot(pts[i].x-pts[j].x,pts[i].z-pts[j].z)<layout.width+1)pairs++;
   }
   const padAnchors=(PAD_LANES[key]??[]).map(p=>Math.min(...pts.map(pt=>Math.hypot(pt.x-p.at[0],pt.z-p.at[1]))));
+  // At 45 m/s normal native steering can follow roughly 0.023 1/m curvature
+  // without a native drift; not a verified mobile handling benchmark.
+  const normalTurnCap=1.9/45-1.9*.55/55;
   return {lengthM:Math.round(len),widthM:layout.width,directionChanges:changes,
+    sharpNormalSteeringAt45Pct:Math.round(curvature.filter(c=>Math.abs(c)>normalTurnCap).length/n*100),
     maxPadAnchorOffsetM:+Math.max(0,...padAnchors).toFixed(1),
     p95Curvature:+abs[Math.floor(n*.95)].toFixed(5),
     sharpPct:Math.round(curvature.filter(x=>Math.abs(x)>=.018).length/n*100),

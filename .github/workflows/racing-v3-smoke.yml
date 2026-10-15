@@ -73,6 +73,7 @@ jobs:
           RACE_QA_HEADLESS: '1'
           RACE_QA_STAGES: '1'
           RACE_QA_MAX_MS: '480000'
+          RACE_QA_DIAGNOSTIC_RACE_SECS: '25'
           RACE_QA_LABEL: 'v32-natural-ci'
         run: node tools/lean-pilot/racing-career-qa.mjs
       - name: Package playable H5 evidence, hashes and demo ZIP

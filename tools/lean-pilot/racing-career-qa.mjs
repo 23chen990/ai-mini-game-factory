@@ -44,6 +44,8 @@ const context = await browser.newContext({ viewport, isMobile: true, hasTouch: t
   ...(resumeStorage ? { storageState: resumeStorage } : {}),
   ...(process.env.RACE_QA_VIDEO === '1' ? { recordVideo: { dir: out, size: viewport } } : {}) });
 const recordingBeforePageMs = Date.now();
+if (ciHeadless) await context.addInitScript({ content:
+  "try { localStorage.setItem('h5-qq-mobile-20261013:graphics-quality:v1', 'low'); } catch {}" });
 const page = await context.newPage();
 const recordingAfterPageMs = Date.now();
 const cdp = await context.newCDPSession(page);
@@ -109,7 +111,8 @@ async function observed(full = false) {
       spinSec: p?.spin ?? 0, wrongWaySec: p?.wrongWay ?? 0, forwardHeadingDot: p ? Math.cos(p.h - p.proj.hd) : null,
       firstFinish: g.firstFinish, racers: g.racers.map(r => ({ name: r.name, isPlayer: r.isPlayer, skill: r.skill ?? null,
         finished: !!r.finished, finishTime: r.finishTime, progress: r.progress })),
-      stats: { ...p?.stats }, items: [...(p?.items ?? [])],
+      throttle: p?.throttle ?? null, stats: { ...p?.stats }, items: [...(p?.items ?? [])],
+      roadHint: document.querySelector('#race-road-hint')?.textContent ?? '',
       goal: document.querySelector('#race-live-goal').textContent,
       feedback: document.querySelector('#msgs').textContent,
       events: full ? window.__RACE_EVIDENCE__.events : window.__RACE_EVIDENCE__.events.filter(e => ['driftEnd', 'nitro', 'crash', 'pad', 'item'].includes(e.type)).slice(-8),
@@ -139,10 +142,34 @@ try {
       await page.waitForFunction(() => !document.querySelector('#race-start').disabled, null, { timeout: 45000 });
     }
     const entry = await page.locator('#race-stage option:checked').textContent();
-    await page.locator('#race-start').tap();
-    await page.waitForFunction(() => window.game.state === 'race', null, { timeout: 45000 });
+    await page.bringToFront();
+    await page.locator('#race-start').tap(); // actual trusted UI touch, no stage manipulation
+    try {
+      // On Linux software WebGL, a native 3-second countdown can take >45s
+      // wall clock even when the real native game started correctly.
+      await page.waitForFunction(() => window.game.state === 'race', null,
+        { timeout: ciHeadless ? 125000 : 45000 });
+    } catch(error) {
+      const snapshot=await page.evaluate(()=>{
+        const g=window.game,root=document.querySelector('#race-kit');
+        return {nativeState:g?.state,phase:root?.dataset.phase,
+          nativeCountdown:g?.cdT,raceTime:g?.raceTime,
+          note:document.querySelector('#race-note')?.textContent,
+          map:g?.map?.id,settingsMap:g?.settings?.map,
+          visible:document.visibilityState,focus:document.hasFocus(),
+          pausedFrom:g?.pausedFrom,quality:g?.settings?.quality,
+          startHidden:document.querySelector('#race-start')?.hidden,
+          started:!!g?.player};
+      });
+      await writeFile(path.join(out,name+'-start-diagnostic.json'),
+        JSON.stringify({snapshot,error:String(error)},null,2));
+      await page.screenshot({path:path.join(out,name+'-start-timeout.png')});
+      throw error;
+    }
     buttons = await page.evaluate(() => Object.fromEntries(['left', 'right'].map(d => { const r = document.querySelector('#race-' + d).getBoundingClientRect(); return [d, { x: r.x + r.width / 2, y: r.y + r.height / 2 }]; })));
     const trace = [], captures = new Set(); let terminal = null, lastLog = 0;
+    const diagnosticSeconds = Math.max(0,Number(process.env.RACE_QA_DIAGNOSTIC_RACE_SECS ?? 0));
+    let diagnosticStop = false;
     const startedAt = Date.now(), deadline = startedAt + Math.max(30000, Math.min(600000, Number(process.env.RACE_QA_MAX_MS ?? 600000)));
     const visibleStageTag = await page.locator('#race-stage-tag').textContent();
     const isItemRace = visibleStageTag.includes('道具赛');
@@ -174,10 +201,13 @@ try {
       if (name === '04' && o.raceTime >= lastScene + 5) { lastScene = Math.floor(o.raceTime / 5) * 5; await page.screenshot({ path: path.join(out, name + '-scene-' + lastScene + '.png') }); }
       if (o.raceTime - lastLog >= 20) { lastLog = o.raceTime; console.log(JSON.stringify({ stage: index + 1, time: +o.raceTime.toFixed(1), progress: Math.round(o.progress), place: o.place, goal: o.goal, crashes: o.stats.crash })); }
       if (o.phase === 'finished') { terminal = await observed(true); break; }
+      if (diagnosticSeconds > 0 && o.raceTime >= diagnosticSeconds) {
+        diagnosticStop = true;break; // Evidence-only: never spoof win/stars.
+      }
       await page.waitForTimeout(40);
     }
     await steer(null);
-    await page.screenshot({ path: path.join(out, name + '-terminal.png') });
+    await page.screenshot({ path: path.join(out,name+(terminal?'-terminal.png':'-diagnostic.png')) });
     const t = terminal ?? await observed();
     const saved = JSON.parse(t.saved ?? '{}'), stars = name === 'daily' ? saved.daily?.stars ?? 0 : saved.stars?.[name] ?? 0;
     const terminalButtons = await page.evaluate(() => ['replay', 'next', 'lobby'].filter(id => !document.querySelector('#race-' + id).hidden).map(id => {
@@ -186,7 +216,8 @@ try {
     }));
     const race = { stage: name, entry, ...t, earnedStars: stars, wallDurationMs: Date.now() - startedAt,
       terminalButtons, actionsFit: terminalButtons.every(b => b.top >= 0 && b.bottom <= viewport.height && b.height >= 44),
-      status: qualifiedVisibleFinish(t, stars) ? 'PASS' : 'BLOCKED', input: 'visible minimap + cyan cube pixels + visible wrong-way warning; trusted CDP touch only', forbiddenOperations: [] };
+      status: terminal ? (qualifiedVisibleFinish(t, stars) ? 'PASS' : 'BLOCKED') :
+        diagnosticStop ? 'DIAGNOSTIC_ONLY' : 'BLOCKED', input: 'visible minimap + cyan cube pixels + visible wrong-way warning; trusted CDP touch only', forbiddenOperations: [] };
     races.push(race);
     await writeFile(path.join(out, name + '-trace.json'), JSON.stringify({ buildHash: build.buildHash, driverPolicy: race.input, inputTransport: 'CDP Input.dispatchTouchEvent', forbiddenOperations: [], controls: controls.splice(0), frames: trace, terminal: race }, null, 2));
     await writeFile(path.join(out, 'checkpoint.json'), JSON.stringify({ buildHash: build.buildHash, races, errors }, null, 2));
