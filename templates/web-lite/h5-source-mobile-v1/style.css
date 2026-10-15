@@ -121,8 +121,9 @@ html[data-reference-game="cf-transport-ship"] #mk-fps-tutorial span{
 }
 html[data-reference-game="cf-transport-ship"] #mk-fps-tutorial b{color:#f2cb79}
 html[data-reference-game="cf-transport-ship"] #mk-fps-tutorial[hidden]{display:none!important}
-html[data-reference-game="cf-transport-ship"] #mobile-kit[data-phase="running"] #mk-fps-tutorial,
-html[data-reference-game="cf-transport-ship"] #mobile-kit[data-phase="finished"] #mk-fps-tutorial{display:none!important}
+/* Onboarding belongs to the pre-game READY panel. Keep it off live combat,
+   pause and result overlays; never hide it from someone choosing their mode. */
+html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="ready"]) #mk-fps-tutorial{display:none!important}
 html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) .mk-meter,
 html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-board{display:none!important}
 html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]):not([data-phase="paused"]) #mk-pause{display:none!important}
@@ -170,7 +171,6 @@ html[data-reference-game="cf-transport-ship"] #mk-next:not([hidden]) + #mk-assis
    Do not paint any combat-only labels or hints above result/pause dialogs. */
 html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-guide,
 html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-target,
-html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) .mk-fps-enemy,
-html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-tutorial {
+html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) .mk-fps-enemy {
   display:none!important;
 }
