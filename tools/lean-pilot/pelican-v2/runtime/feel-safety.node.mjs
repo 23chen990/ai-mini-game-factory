@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {springLane,riderFeel,cameraTarget} from './feel.mjs';
+import {newRun,input,advance,steerTo,steerBy,FREE_ROAD_EDGE} from './adventure.mjs';
 import {unsafeFishLanes, hazardForecast, pedestrianZAtArrival} from './safety.mjs';
 function travel(dt,events=[{at:0,target:1.7}],duration=1.1){
  const x={position:0,velocity:0,latAcc:0,lean:0,steer:0,yaw:0,elapsed:0,speed:8};
@@ -31,3 +32,47 @@ test('fish routing never guides near predicted danger lane',()=>{assert.ok(unsaf
 test('hazards forecast respects warning window',()=>{const o=mkPed(90,0);assert.equal(hazardForecast(o,mkRun(0)),null);assert.ok(hazardForecast(o,mkRun(65)));});
 test('vehicle forecast includes closing speed',()=>{const o={kind:'car',x:100,lane:1,speed:1.7},r=mkRun(65,8.8);const v=hazardForecast(o,r);assert.ok(v);assert.equal(v.lanes[0],1);assert.ok(v.seconds<3.4);});
 test('no hazard forecast after impact',()=>{const o=mkPed(90,0);o.hit=true;assert.equal(hazardForecast(o,mkRun(85)),null);});
+
+test('original free steering is restored: real positions between lane centers persist',()=>{
+ const r=newRun(1);
+ assert.equal(r.laneTarget,0);
+ input(r,'right');
+ assert.ok(r.laneTarget>1.1&&r.laneTarget<1.3);
+ for(let i=0;i<90;i++)advance(r,1/120);
+ assert.ok(r.lane>.9&&r.lane<1.5);
+ assert.ok(Math.abs(r.lane-1.7)>.2,'must not auto-snap to painted lane');
+ assert.equal(steerTo(r,.38),true);
+ for(let i=0;i<150;i++)advance(r,1/120);
+ assert.ok(Math.abs(r.lane-.38)<.002);
+ assert.ok(Math.abs(r.laneTarget-.38)<1e-6);
+});
+test('continuous steering clamps at road edges, ignores invalid input and remains stable on pause',()=>{
+ const r=newRun(1);assert.equal(steerTo(r,99),true);assert.equal(r.laneTarget,FREE_ROAD_EDGE);
+ advance(r,1);assert.ok(r.lane<=FREE_ROAD_EDGE);
+ assert.equal(steerTo(r,Number.NaN),false);
+ input(r,'pause');assert.equal(steerBy(r,-1),false);assert.equal(r.laneTarget,FREE_ROAD_EDGE);
+ input(r,'resume');assert.equal(steerTo(r,-.43),true);
+ advance(r,1);assert.ok(Math.abs(r.lane+.43)<.01);
+});
+test('continuous path genuinely avoids a car off-center and catches an authored fish',()=>{
+ const r=newRun(1);
+ r.obstacles=[{id:'car-free',kind:'car',x:45,lane:1,z:0,speed:1.7,hit:false,passed:false,triggerAt:null}];
+ r.fishes=[{id:'fish-free',x:48,lane:2,golden:false,caught:false}];
+ steerTo(r,1.27);
+ for(let i=0;i<1050&&r.phase==='running';i++)advance(r,1/120);
+ assert.equal(r.hits,0);assert.equal(r.phase,'running');assert.equal(r.count,1);
+ assert.ok(r.events.some(e=>e.type==='near-miss'&&e.objectId==='car-free'));
+});
+test('actual consecutive caught fish earn a small streak reward; missed fish break it',()=>{
+ const r=newRun(1);r.obstacles=[];r.fishes=[
+  {id:'s1',x:15,lane:1,golden:false,caught:false},
+  {id:'s2',x:31,lane:1,golden:false,caught:false},
+  {id:'s3',x:47,lane:1,golden:false,caught:false},
+  {id:'skip',x:63,lane:2,golden:false,caught:false}
+ ];
+ for(let i=0;i<780;i++)advance(r,1/120);
+ assert.equal(r.count,3);assert.equal(r.bestStreak,3);assert.equal(r.score,5);
+ assert.ok(r.events.some(e=>e.type==='fish-caught'&&e.streak===3&&e.comboPoints===2));
+ for(let i=0;i<450;i++)advance(r,1/120);
+ assert.equal(r.streak,0);assert.equal(r.bestStreak,3);
+});
