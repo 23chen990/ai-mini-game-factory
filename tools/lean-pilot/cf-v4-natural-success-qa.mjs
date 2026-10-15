@@ -42,6 +42,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
       deaths: p?.stats?.d ?? 0, awmKills: game?.__mkAwmKills ?? 0,
       travelLabel: document.getElementById('mk-status')?.textContent ?? '',
       visibleEnemies,
+      firstTrainingScoutRange:game?.__mobileBalanceReview?.trainingScoutRange??null,
       visibleAllyTags:(game?.tags||[]).filter(t=>t.__mkAllyLabel && t.sprite?.material?.opacity>.01).length,
       targetSide: document.getElementById('mk-fps-target')?.dataset.side ?? null,
       guide: document.getElementById('mk-fps-guide')?.textContent ?? '',
@@ -106,7 +107,10 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
     trace.push({ ...start, action: 'entered-real-native-game' });
     check('correct-real-weapon', mode === 'awm' ? start.weapon === 'awm' : start.challenge === 'survive',
       { weapon: start.weapon, challenge: start.challenge });
-    await screenshot('combat');
+    // A screenshot here delayed the first visible AWM enemy until it vanished.
+    // Preserve it after input rather than spend the only opening sightline.
+    if(mode!=='awm')await screenshot('combat');
+    let firstObservation=mode==='awm'?start:null;
     const startWall = Date.now();
     const MAX_WALL_MS = mode === 'awm' ? 620000 : 310000;
     let steps = 0, sawEnemy = false, travelSeen = 0, looked = false, validFire = false;
@@ -118,7 +122,8 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
         await page.locator('#touch .btn[data-mk-action="scope"]').isVisible());
     }
     while (Date.now() - startWall < MAX_WALL_MS && steps < (mode === 'awm' ? 220 : 120)) {
-      const state = await inspect();
+      const state = firstObservation || await inspect();
+      firstObservation = null;
       if (steps % 3 === 0) trace.push({ ...state, action: 'ordinary-controls' });
       if (state.phase === 'finished') break;
       if (state.phase !== 'running') { await wait(400); continue; }
@@ -129,7 +134,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
         const aimVisible = await page.locator('#mk-fps-target[data-side="enemy"]').isVisible().catch(() => false);
         if (visible || aimVisible) {
           sawEnemy = true;
-          if (visible && shotCount === 0) await screenshot('visible-target');
+          // Do not pause the first target for a costly WebGL screenshot before aiming.
           // Follow real on-screen red badges. A human scans with the wide view,
           // then brings a visible target into the scope circle to shoot.
           for(let n=0;n<12 && await target.isVisible().catch(()=>false);n++){

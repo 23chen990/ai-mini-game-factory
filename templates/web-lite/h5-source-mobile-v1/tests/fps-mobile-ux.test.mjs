@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, teammateTagOpacity, withinScopedLens } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -142,4 +142,17 @@ test('AWM gets a real nav/cover validated longer first sightline',()=>{
   const spot=chooseFirstEncounterSpot({player:p,world,nav,distances:[18,16,14,12,10,8.5]});
   assert.ok(spot && spot.distance>=10 && spot.distance<=18);
   assert.equal(chooseFirstEncounterSpot({player:p,world:{...world,blocked:()=>true},nav,distances:[18,16]}),null);
+});
+
+test('AWM opening preserves native 3v3 but leaves a fair player shot window',()=>{
+ const players=[
+   {team:'BL',isPlayer:true,alive:true,readyAt:0},
+   {team:'BL',alive:true,readyAt:1},
+   {team:'BL',alive:true,readyAt:20},
+   {team:'GR',alive:true,readyAt:0},
+   {team:'BL',alive:false,readyAt:0}
+ ];
+ assert.equal(holdOpeningTeammateFire(players,'BL',7),2);
+ assert.deepEqual(players.map(x=>x.readyAt),[0,20,20,0,0]);
+ assert.equal(holdOpeningTeammateFire(players,'BL',Infinity),0);
 });

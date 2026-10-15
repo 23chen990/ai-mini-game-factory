@@ -32,6 +32,17 @@ export function withinScopedLens({x,y,width,height,scoped}) {
   if (![x,y,width,height].every(Number.isFinite) || width<=0 || height<=0) return false;
   return Math.hypot(x*width/2,y*height/2) <= Math.min(width,height)*.455;
 }
+/** Let a novice actually take the AWM opening shot while native 3v3 continues. */
+export function holdOpeningTeammateFire(actors,ownTeam,now) {
+  if(!Number.isFinite(now)) return 0;
+  let held=0;
+  for(const actor of actors||[]) {
+    if(!actor || actor.isPlayer || !actor.alive || actor.team!==ownTeam)continue;
+    actor.readyAt=Math.max(Number(actor.readyAt)||0,now+13);
+    held++;
+  }
+  return held;
+}
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
@@ -313,7 +324,8 @@ export function createFpsMobileUx(game, root, doc) {
         scout.readyAt=Math.max(scout.readyAt,game.time+(sniper?7:13));
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
-        scout.__mobileTrainingHoldUntil=game.time+(sniper?5:7);
+        if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
+        scout.__mobileTrainingHoldUntil=game.time+(sniper?12:7);
         return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance};
       }
     }
