@@ -61,6 +61,8 @@ jobs:
         run: node tools/lean-pilot/racing-mobile-build.mjs
       - name: Audit all four original/reshaped native centerlines
         run: node tools/lean-pilot/racing-geometry-audit.mjs
+      - name: Compare two native AI laps on original and reshaped tracks
+        run: node tools/lean-pilot/racing-ai-pace-audit.mjs
       - name: Install matching Chromium browser
         run: pnpm exec playwright install --with-deps chromium
       - name: Launch actual bundled WebGL racing in Chromium
