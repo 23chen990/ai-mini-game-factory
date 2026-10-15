@@ -2,6 +2,7 @@
 // Original-vs-V3.1 centerline audit. Static geometry is NOT natural driving QA.
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { Buffer } from 'node:buffer';
 import { createRequire } from 'node:module';
 import { applyTrackDesign } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 
@@ -14,7 +15,7 @@ if(!source.startsWith(prefix) || !source.trimEnd().endsWith(suffix))
   throw Error('Unrecognized pinned generated layouts.js');
 const originalSource=source.slice(prefix.length).trimEnd().slice(0,-suffix.length);
 const original=(await import('data:text/javascript;base64,'+Buffer.from(originalSource).toString('base64'))).LAYOUTS;
-const modified=structuredClone(original);applyTrackDesign(modified);
+const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified);
 const THREE=createRequire(path.join(src,'package.json'))('three');
 const wrap=x=>Math.atan2(Math.sin(x),Math.cos(x));
 function inspect(layout){
