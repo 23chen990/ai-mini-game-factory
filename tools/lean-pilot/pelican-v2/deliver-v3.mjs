@@ -9,6 +9,7 @@ import path from 'node:path';
 import { tsImport } from 'tsx/esm/api';
 import { z } from 'zod';
 import { BASE, REPO, RUN, RUN_ID, WORKSPACE } from './prepare.mjs';
+import { matchesBrowserIdentity } from './qa-report-identity.mjs';
 
 const GAME = '鹈鹕海岸冒险';
 const SHA256 = z.string().regex(/^[a-f0-9]{64}$/u);
@@ -466,7 +467,7 @@ for (const engine of ['webkit', 'chromium']) {
   const safetyBytes = await readRunBytes(safety.path);
   if (sha(safetyBytes) !== manifestReport.sha256 || !evidenceManifest.copyFiles.some((item) => item.path === safety.path && item.sha256 === manifestReport.sha256)) throw new Error(`Current-build safety/${engine} report is not bound by the current-run manifest`);
   const rawSafety = JSON.parse(safetyBytes.toString('utf8'));
-  if (rawSafety.targetGame !== GAME || rawSafety.workspace !== WORKSPACE || rawSafety.buildHash !== receipt.buildHash || rawSafety.attempt !== receipt.attempt || rawSafety.mode !== 'safety' || rawSafety.engine !== engine || rawSafety.errors?.length) throw new Error(`Current-build safety/${engine} report identity or error state is invalid`);
+  if (rawSafety.targetGame !== GAME || rawSafety.workspace !== WORKSPACE || rawSafety.buildHash !== receipt.buildHash || rawSafety.attempt !== receipt.attempt || rawSafety.mode !== 'safety' || !matchesBrowserIdentity(rawSafety,engine) || rawSafety.errors?.length) throw new Error(`Current-build safety/${engine} report identity or error state is invalid`);
   for (const name of expected) {
     const rawCheck = rawSafety.checks?.find((item) => item.name === name);
     if (!rawCheck || (rawCheck.passed === true) !== (checks.get(name) === 'PASS')) throw new Error(`Safety summary/raw-check mismatch: ${engine}/${name}`);
