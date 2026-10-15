@@ -31,3 +31,14 @@ export const earnedPrizeRouteSeen = (frames, barrierId, fishId) => frames.some(f
 
 export const pedestrianWarningSeen = (frames, index) => frames.some(frame =>
  frame.phase==='running' && frame.lanes.some(lane=>lane.index===index&&lane.kind==='pedestrian'&&lane.visible===true&&Number(lane.text.match(/(\d+(?:\.\d+)?)s/u)?.[1]??0)>=2));
+
+// Ordinary drag cancellation and collision stun are different input branches.
+// Keep the target/index assertion strict and require real native cancellation.
+export function cancelledDragPassed(gesture, events) {
+ const valid=s=>s?.phase==='running'&&s.stun===0&&Number.isFinite(s.laneTarget)&&
+  Number.isInteger(s.laneIndex)&&s.laneIndex>=0&&s.laneIndex<=2;
+ const before=gesture?.before,after=gesture?.after;
+ return valid(before)&&valid(after)&&before.laneIndex===after.laneIndex&&
+  Math.abs(after.laneTarget-before.laneTarget)<.01&&Array.isArray(events)&&
+  events.some(e=>(e.type==='touchcancel'||e.type==='pointercancel')&&e.isTrusted===true);
+}

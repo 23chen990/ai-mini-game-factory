@@ -10,7 +10,7 @@ import {swipe,tapVisible,touchSession} from './touch.mjs';
 import {queueTapSequence} from './touch-sequence.mjs';
 import {observePreparedJump,preparedJumpSeen} from './queued-cue-observation.mjs';
 import {readCompactPresentation,compactPresentationPassed,readRoutePresentation,routePresentationPassed} from './qa-presentation.mjs';
-import {earnedJumpRewardVisible,softwareQualityActions,experienceReportDirectory,experienceMotionPreference,earnedPrizeRouteSeen,pedestrianWarningSeen} from './experience-policy.mjs';
+import {earnedJumpRewardVisible,softwareQualityActions,experienceReportDirectory,experienceMotionPreference,earnedPrizeRouteSeen,pedestrianWarningSeen,cancelledDragPassed} from './experience-policy.mjs';
 const engine=process.env.QA_ENGINE??'webkit',build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const dir=path.join(RUN,'attempts','attempt-'+build.attempt,experienceReportDirectory(engine,process.env.QA_EXPERIENCE_LABEL));await mkdir(dir,{recursive:true});
 const driver=await readFile(new URL(import.meta.url));await writeFile(path.join(dir,'driver-source.mjs'),driver);
@@ -112,6 +112,12 @@ try{
   fractional.after.laneTarget>fractional.before.laneTarget+.3&&
   fractional.after.laneTarget<fractional.before.laneTarget+.8&&
   Math.abs(fractional.after.lane-fractional.after.laneTarget)<.12,fractional);
+ // The software-rendered three preceding gestures can reach the first crossing
+ // pedestrian. Test ordinary cancellation from an actual new replay, retaining
+ // a non-centred origin. Never treat a collision/stun as the same input branch.
+ if((await snap()).phase==='running')await tap('#co-pause');
+ await tap('#co-replay');
+ const cancelOrigin=await gesture('cancel-origin-fractional-drag',[140,420],[171,420]);
  // Log native events passively; never dispatch fake DOM events or set state.
  await page.evaluate(()=>{window.__qaCancellationEvents=[];
   for(const type of ['touchcancel','pointercancel','touchend','pointerup'])
@@ -122,9 +128,9 @@ try{
  });
  const c=await gesture('cancel',[140,420],[250,420],true);
  const cancellationEvents=await page.evaluate(()=>window.__qaCancellationEvents);
- check('cancelled-touch-does-not-turn',c.after.laneIndex===c.before.laneIndex&&
-  Math.abs(c.after.laneTarget-c.before.laneTarget)<.01,
-  {gesture:c,cancellationEvents});
+ check('cancelled-touch-does-not-turn',cancelOrigin.after.laneTarget>.3&&cancelOrigin.after.laneTarget<.8&&
+  cancelledDragPassed(c,cancellationEvents),
+  {gesture:c,cancellationEvents,cancelOrigin,branch:'running-nonstunned-fractional-target'});
  // Independent legitimate replay. Extra precise steering gestures now consume
  // enough in-game time to reach the first solid barrier: a late arbitrary
  // up-swipe there is a REAL crash, not a touch-handler failure. Start again

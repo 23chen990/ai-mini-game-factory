@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "continuous-physical-rider-and-intended-target"
+    ],
+    "lifecycleStateBranches": [
+      "short-fractional-drag",
+      "cancel-input-delivery",
+      "physical-return-after-cancel"
+    ],
+    "rendererPaths": [
+      "CI-Chromium-Mesa-DPR1-efficient-reduced-motion",
+      "Mac-native-DPR3-balanced"
+    ],
+    "viewports": [
+      {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "short-fractional-drag:CI-Chromium-Mesa-DPR1-efficient-reduced-motion",
+      "objectType": "continuous-physical-rider-and-intended-target",
+      "lifecycleStateBranch": "short-fractional-drag",
+      "rendererPath": "CI-Chromium-Mesa-DPR1-efficient-reduced-motion",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Trusted cancel restores intent and rider returns under unchanged physics; assess actual state/time",
+      "observed": "Failed aggregate assertion; exact raw branch pending",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/ci-followup/failed-chromium-ci.log.txt",
+          "sha256": "7c1731b8922c54438a7289283a7674893023de02ca5c7f7f1a2b7709ae635399",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "short-fractional-drag:Mac-native-DPR3-balanced",
+      "objectType": "continuous-physical-rider-and-intended-target",
+      "lifecycleStateBranch": "short-fractional-drag",
+      "rendererPath": "Mac-native-DPR3-balanced",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Trusted cancel restores intent and rider returns under unchanged physics; assess actual state/time",
+      "observed": "Earlier native local26-check report passes; sibling evidence cannot close CI branch",
+      "evidence": []
+    },
+    {
+      "id": "cancel-input-delivery:CI-Chromium-Mesa-DPR1-efficient-reduced-motion",
+      "objectType": "continuous-physical-rider-and-intended-target",
+      "lifecycleStateBranch": "cancel-input-delivery",
+      "rendererPath": "CI-Chromium-Mesa-DPR1-efficient-reduced-motion",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Trusted cancel restores intent and rider returns under unchanged physics; assess actual state/time",
+      "observed": "Failed aggregate assertion; exact raw branch pending",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/ci-followup/failed-chromium-ci.log.txt",
+          "sha256": "7c1731b8922c54438a7289283a7674893023de02ca5c7f7f1a2b7709ae635399",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "cancel-input-delivery:Mac-native-DPR3-balanced",
+      "objectType": "continuous-physical-rider-and-intended-target",
+      "lifecycleStateBranch": "cancel-input-delivery",
+      "rendererPath": "Mac-native-DPR3-balanced",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Trusted cancel restores intent and rider returns under unchanged physics; assess actual state/time",
+      "observed": "Earlier native local26-check report passes; sibling evidence cannot close CI branch",
+      "evidence": []
+    },
+    {
+      "id": "physical-return-after-cancel:CI-Chromium-Mesa-DPR1-efficient-reduced-motion",
+      "objectType": "continuous-physical-rider-and-intended-target",
+      "lifecycleStateBranch": "physical-return-after-cancel",
+      "rendererPath": "CI-Chromium-Mesa-DPR1-efficient-reduced-motion",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Trusted cancel restores intent and rider returns under unchanged physics; assess actual state/time",
+      "observed": "Failed aggregate assertion; exact raw branch pending",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/ci-followup/failed-chromium-ci.log.txt",
+          "sha256": "7c1731b8922c54438a7289283a7674893023de02ca5c7f7f1a2b7709ae635399",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "physical-return-after-cancel:Mac-native-DPR3-balanced",
+      "objectType": "continuous-physical-rider-and-intended-target",
+      "lifecycleStateBranch": "physical-return-after-cancel",
+      "rendererPath": "Mac-native-DPR3-balanced",
+      "viewport": {
+        "label": "390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Trusted cancel restores intent and rider returns under unchanged physics; assess actual state/time",
+      "observed": "Earlier native local26-check report passes; sibling evidence cannot close CI branch",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [],
+  "remainingGaps": [
+    "Exact CI cancellation trace",
+    "Distinct evidence-backed hypothesis and renderer-matched retest"
+  ],
+  "createdAt": "2026-10-15T12:46:55.267Z"
+}

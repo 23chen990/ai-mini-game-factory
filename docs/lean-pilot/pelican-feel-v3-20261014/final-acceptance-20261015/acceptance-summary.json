@@ -10,7 +10,7 @@
   "formalFixCompleted": false,
   "newRepairAttempts": 0,
   "results": {
-    "pelicanNode": "122/122 PASS",
+    "pelicanNode": "125/125 PASS after QA-only branch correction; original122/122 log retained",
     "lint": "PASS full repository",
     "typecheck": "PASS full repository",
     "vitestAllRepository": "FAIL:170/188 files,974/975 assertions pass; existing17 runner mismatches and1 expired-fixture assertion",
@@ -265,10 +265,17 @@
     },
     "backgroundLifecycle": "BLOCKED: two independent actual-window/app activation probes produced no browser blur/hidden event",
     "physicalPhone": "NOT_RUN: user owns updatedP1",
-    "humanPlaytest": "NOT_RUN: blank two-player form delivered"
+    "humanPlaytest": "NOT_RUN: blank two-player form delivered",
+    "delivery849687fCi": "Factory success;WebKit success;Chromium ordinary-cancel aggregate fails after actual pedestrian stun. Exact failed trace retained in ci-followup. Subsequent CI must be independently checked.",
+    "stunnedCancellation": "EXISTING_RULE_NOT_CHANGED; trusted cancel received during stun, steering ignored; subjective phone behavior NOT_RUN"
   },
   "internalPlaytest": "READY_TO_BEGIN_SMALL_CONTROLLED_PLAYTEST",
   "formalRelease": "BLOCKED",
   "minimumUserAction": "Open LAN URL on a real phone, play three rounds and report model/browser/first issue; then invite two uncoached first-time players. No account purchase/deployment needed for this local test.",
-  "latestDeliveryCi": "See final-acceptance banner on PR16 and final chat; sourceCommit CI evidence is separately pinned in ci-verification.json."
+  "latestDeliveryCi": "See final-acceptance banner on PR16 and final chat; sourceCommit CI evidence is separately pinned in ci-verification.json.",
+  "qaOnlyChangedPaths": [
+    "tools/lean-pilot/pelican-v2/experience-qa.mjs",
+    "tools/lean-pilot/pelican-v2/experience-policy.mjs",
+    "tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs"
+  ]
 }

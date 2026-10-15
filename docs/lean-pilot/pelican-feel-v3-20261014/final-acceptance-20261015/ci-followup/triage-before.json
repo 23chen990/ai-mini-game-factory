@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "交付提交849687f的新CI38736011062中Chromium cancelled-touch-does-not-turn=false；此前自然五关、三星和31px连续拖动均通过。先保留失败，等待精确before/after取消事件，不能以本地PASS关闭软件渲染分支。",
+  "classification": [
+    "qa-false-positive",
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Existing validated CI QA assertion needs formal diagnosis and exact retest. No runtime repair accepted yet; do not rebuild unchanged H5 or weaken acceptance.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "其他游戏",
+      "完整历史对话",
+      "无来源媒体"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Use exact849687f CI job116425368818 in run38736011062",
+      "Inspect trusted short fractional drag then cancel gesture at390x844,DPR1,efficient,reduced-motion,Mesa",
+      "Download exact artifact11973432894 and compare cancellation target, physical state, elapsed game time and native events"
+    ],
+    "observed": [
+      "CI log records cancelled-touch-does-not-turn=false",
+      "Finger fractional-target check before it and natural three-star settlement both pass",
+      "Local Chrome155/WebKit26.5 nativeDPR3 cancellation passed, but is not the same presentation path"
+    ],
+    "evidence": [
+      {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/ci-followup/failed-chromium-ci.log.txt",
+        "sha256": "7c1731b8922c54438a7289283a7674893023de02ca5c7f7f1a2b7709ae635399",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Preserve failed CI raw report/video/log and exact build identity",
+    "Cancellation must deliver trusted touch/pointer cancellation and restore original intended target",
+    "Physical rider must return naturally under unchanged physics within a bounded observation, without state injection",
+    "Same CI engine/profile must pass exact branch; reject missing cancel events or wrong targets"
+  ],
+  "status": "OPEN",
+  "createdAt": "2026-10-15T12:46:55.265Z"
+}

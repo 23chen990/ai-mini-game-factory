@@ -1,0 +1,35 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "failedCommit": "849687fdea96f625e225639472d07f0551b0bc5e",
+  "ciRun": 38736011062,
+  "failedJob": 116425368818,
+  "artifactId": 11973432894,
+  "buildHash": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+  "failedDriverSha256": "337a40be1aa5aff8d7481066db8c103c9471d9f0c2e34855c70a621d4e984c50",
+  "nativeEvents": [
+    {
+      "type": "pointercancel",
+      "isTrusted": true,
+      "target": "CANVAS",
+      "changed": null
+    },
+    {
+      "type": "touchcancel",
+      "isTrusted": true,
+      "target": "CANVAS",
+      "changed": 1
+    }
+  ],
+  "caseBranch": "Pedestrian l1-o0 hit while cancelled drag in progress; actual after.stun>2",
+  "qaOnlyChanges": [
+    "experience-qa.mjs starts an independent visible replay and fractional origin before ordinary cancel",
+    "experience-policy.mjs requires running/un-stunned before and after, strict original target/index and trusted native cancel",
+    "Three Node regression tests reject missing events/wrong target/stun/wrong phase/non-finite targets"
+  ],
+  "runtimeFilesChanged": [],
+  "h5RebuiltLocally": false,
+  "gameplayRulesChanged": false,
+  "newRepairAttempt": false,
+  "remainingGap": "Stun-time drag cancellation semantics/comfort remain existing behavior, not certified by a healthy-branch pass; user phone review still needed."
+}

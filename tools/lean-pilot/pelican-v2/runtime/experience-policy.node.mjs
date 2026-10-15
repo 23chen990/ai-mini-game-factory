@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { earnedJumpRewardVisible, softwareQualityActions, experienceReportDirectory, earnedPrizeRouteSeen, pedestrianWarningSeen, experienceMotionPreference } from '../experience-policy.mjs';
+import * as experiencePolicy from '../experience-policy.mjs';
 
 test('earned jump reward remains readable through persistent gold and mastery counters after a missed toast', () => {
  const before={gold:1,jumps:0};
@@ -43,4 +44,34 @@ test('CI motion preference uses the shipped browser accessibility media query', 
  assert.equal(experienceMotionPreference(undefined),'no-preference');
  assert.equal(experienceMotionPreference('reduce'),'reduce');
  assert.throws(()=>experienceMotionPreference('forced-css'),/Unsupported/u);
+});
+
+test('cancelled drag requires the same live un-stunned branch and trusted native cancellation', () => {
+ assert.equal(typeof experiencePolicy.cancelledDragPassed,'function');
+ const state={phase:'running',stun:0,laneIndex:1,laneTarget:.5735};
+ const gesture={before:{...state},after:{...state}};
+ const events=[{type:'pointercancel',isTrusted:true},{type:'touchcancel',isTrusted:true}];
+ assert.equal(experiencePolicy.cancelledDragPassed(gesture,events),true);
+ assert.equal(experiencePolicy.cancelledDragPassed(gesture,[]),false);
+ assert.equal(experiencePolicy.cancelledDragPassed(gesture,events.map(e=>({...e,isTrusted:false}))),false);
+ assert.equal(experiencePolicy.cancelledDragPassed({...gesture,after:{...state,laneTarget:1.93,laneIndex:2}},events),false);
+});
+
+test('a pedestrian stun cannot be accepted as an ordinary cancelled-drag observation', () => {
+ assert.equal(typeof experiencePolicy.cancelledDragPassed,'function');
+ const before={phase:'running',stun:0,laneIndex:1,laneTarget:.5735};
+ const events=[{type:'touchcancel',isTrusted:true}];
+ // Actual failed CI: trusted cancel received after l1-o0 hit at89.1835m.
+ const after={phase:'running',stun:2.008333333333337,laneIndex:2,laneTarget:1.9301665725708008};
+ assert.equal(experiencePolicy.cancelledDragPassed({before,after},events),false);
+ // Even a matching target cannot hide a different lifecycle/state branch.
+ assert.equal(experiencePolicy.cancelledDragPassed({before,after:{...before,stun:.5}},events),false);
+ assert.equal(experiencePolicy.cancelledDragPassed({before:{...before,stun:.5},after:before},events),false);
+ assert.equal(experiencePolicy.cancelledDragPassed({before,after:{...before,phase:'finished'}},events),false);
+});
+
+test('cancelled-drag evidence rejects absent and non-finite intended targets', () => {
+ assert.equal(typeof experiencePolicy.cancelledDragPassed,'function');
+ const before={phase:'running',stun:0,laneIndex:1,laneTarget:.5735},events=[{type:'touchcancel',isTrusted:true}];
+ for(const target of [undefined,NaN,Infinity])assert.equal(experiencePolicy.cancelledDragPassed({before,after:{...before,laneTarget:target}},events),false);
 });

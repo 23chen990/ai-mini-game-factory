@@ -5,13 +5,13 @@
   "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
   "sourceCommit": "26e1e0c65894babf674710af256268be6009aed1",
   "buildHash": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
-  "fileCount": 98,
-  "totalBytes": 102525978,
+  "fileCount": 124,
+  "totalBytes": 128697711,
   "files": [
     {
       "path": "FINAL_REPORT_ZH.md",
-      "bytes": 11957,
-      "sha256": "8ae77fc326a4b8e6dfb8354046fbe998035d793a82aa139bdc102a291b77ba9b"
+      "bytes": 13556,
+      "sha256": "c9262de7dd14004ae7984bb7a5964b9a31e3aae5d80641da2528dc7c6d157bc7"
     },
     {
       "path": "HUMAN_BLIND_TEST_ZH.md",
@@ -20,13 +20,13 @@
     },
     {
       "path": "PHONE_TEST_ZH.md",
-      "bytes": 2213,
-      "sha256": "4781decab387b3370916e9dbe432f2a2e7478f74e8e7b2591848f37d66cd00d1"
+      "bytes": 2437,
+      "sha256": "8362bceef6d2453a3361e81b316599331544b52bde691a837d58d23773260e70"
     },
     {
       "path": "acceptance-summary.json",
-      "bytes": 8525,
-      "sha256": "d631b0f264b62584a8d1b50695dc8f25238aa92421048fdea4c1a2227597cd9a"
+      "bytes": 9162,
+      "sha256": "a5ec9b9d553039d96c9852f4e36fb8b22b90c6ad5b8d275c1f67a2e2559aa7c6"
     },
     {
       "path": "artifact-import.json",
@@ -42,6 +42,136 @@
       "path": "background-triage.json",
       "bytes": 2697,
       "sha256": "5758c2237f2ac59a8ec1edb86c29b3c6f7e23481f63cc83c56bc4032ab6cf8ed"
+    },
+    {
+      "path": "ci-followup/README_ZH.md",
+      "bytes": 1078,
+      "sha256": "9d357ca780649334a28d919d36e9424542d2045b9e469317c2076f85cc4f4b76"
+    },
+    {
+      "path": "ci-followup/cancel-all-tests.log.txt",
+      "bytes": 11312,
+      "sha256": "bd29727865b51ca4fda06d79fbd98d68fbb3184193c8f547e28759641b151500"
+    },
+    {
+      "path": "ci-followup/cancel-lint.log.txt",
+      "bytes": 11,
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+    },
+    {
+      "path": "ci-followup/cancel-policy-green.log.txt",
+      "bytes": 1035,
+      "sha256": "4831f18aafbe965342d6576135feb77d5c5e2eb37cc8454bccaf31b1a0b0da5e"
+    },
+    {
+      "path": "ci-followup/cancel-policy-red.log.txt",
+      "bytes": 4247,
+      "sha256": "9b897204d90752708e96803ef4296f71543453fca978eda60ece956fa423e669"
+    },
+    {
+      "path": "ci-followup/cancel-typecheck.log.txt",
+      "bytes": 15,
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    {
+      "path": "ci-followup/delivery-849687f-ci-status.json",
+      "bytes": 353,
+      "sha256": "560e40aeb98b11aaf4c7babedf21b705122cd37c175fb38f1a2f66b1ea708c31"
+    },
+    {
+      "path": "ci-followup/diagnosis.json",
+      "bytes": 1486,
+      "sha256": "0606408d55722a085d8309a66f609bd984c8d92500bf533445ac2360d72f122d"
+    },
+    {
+      "path": "ci-followup/exact-failed-cancellation.json",
+      "bytes": 10554,
+      "sha256": "ebe8e0225ace7a3074030dfc75fb060b158c8ef23666aaed1af50755a3c342e1"
+    },
+    {
+      "path": "ci-followup/failed-chromium/driver-source.mjs.txt",
+      "bytes": 20406,
+      "sha256": "337a40be1aa5aff8d7481066db8c103c9471d9f0c2e34855c70a621d4e984c50"
+    },
+    {
+      "path": "ci-followup/failed-chromium/failed-cancel.webm",
+      "bytes": 8447211,
+      "sha256": "b0bb9b2f2842e46880ab99885c6e894d6cc02013595fcbdd5b8914bb9b7d5438"
+    },
+    {
+      "path": "ci-followup/failed-chromium/failure.png",
+      "bytes": 327121,
+      "sha256": "c0b9a2382b209bc9dcd8d9334af035c82bc31e2f5c3e8a6e64fc5f7d4708ea56"
+    },
+    {
+      "path": "ci-followup/failed-chromium/report.json",
+      "bytes": 277612,
+      "sha256": "0fa93efbb60903f7b4e09a5f12d07c2183aaee8334fe78507357229026fba95b"
+    },
+    {
+      "path": "ci-followup/failed-chromium/swipe-short-free-drag.png",
+      "bytes": 317988,
+      "sha256": "ff4f11e2d54be58e3f17d3951232e406c0e580fa2fdabcbb1662cac31ac769cd"
+    },
+    {
+      "path": "ci-followup/failed-chromium-ci.log.txt",
+      "bytes": 122149,
+      "sha256": "7c1731b8922c54438a7289283a7674893023de02ca5c7f7f1a2b7709ae635399"
+    },
+    {
+      "path": "ci-followup/native-retest/driver-source.mjs.txt",
+      "bytes": 20918,
+      "sha256": "f0e6ebb555429000ff30f2bd54d8db7b95e563e1e3545f43adf22f675f2f5f53"
+    },
+    {
+      "path": "ci-followup/native-retest/native-experience-retest.webm",
+      "bytes": 13130962,
+      "sha256": "df7ce2b81961bac81dc31a2b9752af65aceaf6f53efdd9e947c03a9c4f722584"
+    },
+    {
+      "path": "ci-followup/native-retest/report.json",
+      "bytes": 441949,
+      "sha256": "a437b0f2619a5dbeef90dee1c91284c02481e20e4ab23c9e2b12294663291791"
+    },
+    {
+      "path": "ci-followup/native-retest/saved-mastery.png",
+      "bytes": 473829,
+      "sha256": "aa587316835c979751fb748ddd56dc5a40cac39af84241b8ef61822c10174a5a"
+    },
+    {
+      "path": "ci-followup/native-retest/small-phone-running.png",
+      "bytes": 959732,
+      "sha256": "3a2f3919a868fd44f43cd24fc17bae5c7fd936d519ce9aa4f1855fc227ba19e5"
+    },
+    {
+      "path": "ci-followup/native-retest/swipe-cancel-origin-fractional-drag.png",
+      "bytes": 1557026,
+      "sha256": "ea5c4d052b1e49aded478e33e0474e7c31666b6276e3ffaf68cdd616e1130515"
+    },
+    {
+      "path": "ci-followup/previous-delivery-manifest.json",
+      "bytes": 17650,
+      "sha256": "9bdc18fc860d21ada8a1c6129d2e13723ce7517b68de32050bcdb02d3463b5f3"
+    },
+    {
+      "path": "ci-followup/reproduction-matrix-after-local.json",
+      "bytes": 12624,
+      "sha256": "dfa2521b8ebbe66416d2ba6aab2b3e4995e88d4736df95633c7227a43cf6e305"
+    },
+    {
+      "path": "ci-followup/reproduction-matrix-before.json",
+      "bytes": 5693,
+      "sha256": "6a1059c94e7fe7085569a66d8e46ef428451aa69d938c10863fa432dc71125c8"
+    },
+    {
+      "path": "ci-followup/triage-after-local.json",
+      "bytes": 3860,
+      "sha256": "43066903811a98f119054d44d26491ae884e5af4562e2fef25664ef307cf8d6a"
+    },
+    {
+      "path": "ci-followup/triage-before.json",
+      "bytes": 2452,
+      "sha256": "e980a061bd2ca88fa117eb61faeb49a9193ef43162e35f8d0768231cfacdccd9"
     },
     {
       "path": "ci-verification.json",
@@ -499,5 +629,19 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     }
   ],
-  "policy": "All media bound to this exact game/build; no user-supplied or nearby recordings substituted. Archived driver-source.mjs.txt retains executed bytes. Original failed QA evidence retained; no evidence marked as physical phone or human test."
+  "policy": "All media bound to this exact game/build; no user-supplied or nearby recordings substituted. Archived driver-source.mjs.txt retains executed bytes. Original failed QA evidence retained; no evidence marked as physical phone or human test.",
+  "qaOnlySourceHashes": [
+    {
+      "path": "tools/lean-pilot/pelican-v2/experience-policy.mjs",
+      "sha256": "813fefb541b4a91c9ecd51eb5ec097975d35d617ae6ca929a9e046c05c5fe40b"
+    },
+    {
+      "path": "tools/lean-pilot/pelican-v2/experience-qa.mjs",
+      "sha256": "f0e6ebb555429000ff30f2bd54d8db7b95e563e1e3545f43adf22f675f2f5f53"
+    },
+    {
+      "path": "tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs",
+      "sha256": "16151da7125364cb701da46efbe05cff9c407387a153eff0e86bb0391851ce52"
+    }
+  ]
 }

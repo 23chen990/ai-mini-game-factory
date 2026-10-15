@@ -14,7 +14,7 @@
 
 - 开始时已检查远程分支，仍是交接的 `26e1e0c`；原目录是其他工厂分支，因此建立隔离验收工作树。没有回退游戏、覆盖其他小游戏或改动原目录现有文件。
 - 从成功的工厂 CI 下载实际试玩包，核对 CI 原始 hashes.txt、两引擎原始五关报告、HTML 内嵌构建身份。**原样复用 H5；未本地重建、未更换 Three.js、未改规则、存档、平台适配、工厂流程或修复次数。**
-- 新增内容仅位于本目录：验收脚本、Zod 验证的 triage/复现矩阵、报告、证据、手机说明和空白盲测表。没有生成游戏修复补丁，未进入新 formal FIX；不把 QA 脚本修正说成游戏修复。
+- 新增验收资料位于本目录。另有3个鹈鹕QA专用文件的后续修正：`experience-qa.mjs`、`experience-policy.mjs`及其Node回归测试，用可见重开隔离正常取消分支，并拒绝晕眩/缺少可信取消事件的错误取样。没有生成游戏修复补丁，未进入新 formal FIX；不把 QA 脚本修正说成游戏修复。
 - 启动默认 HTTP 路径，从干净存档用正常可信触摸验证：开始、真实捕鱼/连击、连续自由横移、长按、快速反向、31px 非整数位置拖动、取消手势、上滑跳跃配合转向、暂停/继续、真实失败、结算、重玩、下一关、刷新保存、320×568 与横屏布局。
 - 额外用已有 QA 驱动在本机连续自然通完五关，记录各关画面和帧时。工程故障注入单独验证 WebGL context lost/restored，不用它冒充自然后台或手机证据。
 
@@ -24,7 +24,7 @@
 
 | 检查 | 实际结果 |
 |---|---|
-| 鹈鹕 Node 专项 | **122/122 PASS** |
+| 鹈鹕 Node 专项 | 初轮 **122/122 PASS**；QA分支修正后 **125/125 PASS**（原始两轮日志分开保存） |
 | 全仓 lint / typecheck | **PASS / PASS** |
 | 本机 Google Chrome 155.0.8059.80 | **26/26 PASS** |
 | 本机 Playwright WebKit 26.5 | **26/26 PASS**；不是实体 iPhone Safari |
@@ -44,6 +44,16 @@
 
 1. 初始三星脚本在129.495m为 `l1-o1` 准备跳跃，却在130.245m立即按右转，按规则取消了起跳；它得到18鱼、5金鱼、0跳障、二星，随后错误要求三星。复测脚本保持原路线直到真正越过 `l1-o1` 并捕到 `l1-jump-l1-o1` 奖励鱼，两引擎均得到17鱼、5金鱼、1跳障、最长11连、三星。游戏字节未改，取消起跳负例仍保留。证据：[初次失败](evidence/chromium/report.json)、[初次二星截图](evidence/chromium/04-natural-settlement.png)、[复测三星截图](evidence/chromium-retest/04-natural-settlement.png)、[精确分支复现矩阵](qa-driver-reproduction-matrix-after.json)。
 2. 初始网络脚本把已加载页面的 reload 错称为冷启动，并假定它必然离线失败。复测改用独立干净 context、禁用 ServiceWorker、唯一 URL，实际记录首次离线导航失败，联网重试恢复。没有增加缓存或改网络策略。证据：[初次网络失败](evidence/network-initial/report.json)、[复测](evidence/network/report.json)、[网络矩阵](network-reproduction-matrix.json)。
+
+## 交付CI追加：普通取消与行人晕眩分开
+
+`849687f`交付提交的工厂CI成功、WebKit成功，但Chromium体验断言`cancelled-touch-does-not-turn`失败，不能将该次CI说成全部通过。[失败CI](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38736011062)与[精确失败轨迹](ci-followup/exact-failed-cancellation.json)已保留。
+
+原始动作：取消拖动前已到75.8715m；协议触摸推进期间在89.1835m真实撞到`l1-o0`，取消时`stun=2.0083`。可信pointercancel/touchcancel均收到，现有`steerTo`按晕眩规则拒绝转向，因此目标未恢复。这个碰撞状态不能被当作普通无碰撞取消分支。
+
+QA只改用可见暂停/重开，先建立非零的分数横向位置，再执行原有取消手势；原来的目标/区域恢复要求保留，并额外要求前后running、stun=0、真实可信取消事件。新增3项测试先红后绿，拒绝晕眩、错误目标、伪造/缺少事件和非法状态。没有改变碰撞、晕眩、输入规则、速度、H5或修复次数。对应最新版CI结论单独记录在PR顶部。
+
+**原先晕眩期间的取消行为没有被“修复为通过”，其手感仍未获真人/手机验收。** 此状态的既有规则、原始失败和体验缺口继续保留；正常分支复测不能替代它。详见[QA专用变更和边界](ci-followup/diagnosis.json)。
 
 ## 环境与性能
 
