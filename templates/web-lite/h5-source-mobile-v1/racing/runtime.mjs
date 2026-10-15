@@ -96,7 +96,7 @@ export class RacingCareer {
     if (!this.active) return;
     if (source === 'box') this.metrics.pickups++;
     else this.metrics.bonusItems++;
-    this.notice.push((source === 'box' ? '拾取' : '超车奖励') + (ITEM_LABELS[item] ?? '道具') + ' · 自动使用');
+    this.notice.push((source === 'box' ? '拾取' : '超车奖励') + (ITEM_LABELS[item] ?? '道具') + ' · 智能择机使用');
   }
   onEvent(event, game) {
     if (!this.active) return;

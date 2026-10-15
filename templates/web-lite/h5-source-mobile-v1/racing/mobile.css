@@ -134,3 +134,22 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-knockout-fill { display:block;height:100%;background:currentColor; }
 #race-knockout[data-near="true"] { color:#ffda76;border-color:#ffda76; }
 #race-knockout[data-danger="true"] { color:#ff927c;border:2px solid #ff927c;background:#4e2423ee; }
+
+
+/* Stable, compact speed feedback. Pure overlay: no camera flash or controls overlap. */
+#race-kit #race-speed { position:fixed;left:var(--race-left);top:calc(var(--race-top) + 104px);
+  z-index:10;display:flex;align-items:baseline;gap:5px;min-width:106px;
+  padding:5px 9px;border:1px solid #ffffff24;border-radius:10px;
+  background:#09273ddc;color:#f2fbff;pointer-events:none;
+  font-variant-numeric:tabular-nums;box-shadow:0 2px 7px #07111a36; }
+#race-kit #race-speed[hidden] { display:none!important; }
+#race-kit #race-speed strong { font-size:27px;line-height:1;letter-spacing:-1px;font-weight:850; }
+#race-kit #race-speed span { font-size:9px;font-weight:850;letter-spacing:.5px;opacity:.86; }
+#race-kit #race-speed small { font-size:10px;color:#ffdf82;font-weight:750; }
+#race-kit #race-speed small:empty { display:none; }
+#race-kit #race-speed[data-boost="true"] { border-color:#ffd56c88; }
+#race-kit #race-speed[data-slow="true"] { color:#b6d6ea; }
+@media(max-height:375px) {
+  #race-kit #race-speed { top:calc(var(--race-top) + 100px);padding:4px 8px; }
+  #race-kit #race-speed strong { font-size:23px; }
+}

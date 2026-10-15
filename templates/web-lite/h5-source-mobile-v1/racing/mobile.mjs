@@ -1,5 +1,6 @@
 /* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout, fetch */
 import { RaceDriver, TouchSteering } from './driver.mjs';
+import { raceSpeedHUD } from './speed-hud.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { roadHint } from './road-coach.mjs';
@@ -10,7 +11,7 @@ const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海�
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
-root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button>
+root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button><div id="race-speed" hidden aria-label="当前速度"><strong id="race-speed-value">0</strong><span>KM/H</span><small id="race-speed-state"></small></div>
   <div id="race-live-goal" hidden></div><div id="race-road-hint" hidden aria-live="off"></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-held-item" hidden aria-live="off"></div><div id="race-controls" hidden><button id="race-left" data-race-direction="left" aria-label="按住向左转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 11 16 24l13 13"/></svg></button><button id="race-right" data-race-direction="right" aria-label="按住向右转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m19 11 13 13-13 13"/></svg></button></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">3D 赛车 · 双键驾驶</div><h1 id="race-heading">双键飞驰</h1>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>‹</span><span>›</span></div><p>按住左右转弯，松手回正<br><small>自动油门和弯前减速 · 自动漂移/道具 · 逆行回正</small></p></div>
@@ -99,6 +100,7 @@ function display(next) {
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   if (next !== 'race') $('knockout').hidden = true;
+  $('speed').hidden = next !== 'race';
   $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && !!career.objectiveLabel(g));$('road-hint').hidden = next !== 'race';$('held-item').hidden = !racing || career.stage.mode !== 'item';
   for (const button of root.querySelectorAll('[data-race-direction]')) button.disabled = next !== 'race';
   if (next === 'paused') { $('heading').textContent = '休息一下'; $('quality').value = g.settings.quality; $('sound').textContent = soundEnabled ? '声音：开' : '声音：关'; $('sound').setAttribute('aria-pressed', String(soundEnabled)); $('note').textContent = '已松开所有按键，准备好再继续'; }
@@ -329,6 +331,11 @@ async function boot() {
           const message = career.nextNotice();
           if (message) {feedback(message);lastNoticeAt = g.raceTime;}
         }
+        const speedView = raceSpeedHUD(g.player);
+        if ($('speed-value').textContent !== speedView.value) $('speed-value').textContent = speedView.value;
+        if ($('speed-state').textContent !== speedView.label) $('speed-state').textContent = speedView.label;
+        $('speed').dataset.boost = String(speedView.boost);
+        $('speed').dataset.slow = String(speedView.slow);
         const goal = career.objectiveLabel(g);
         if ($('live-goal').textContent !== goal) $('live-goal').textContent = goal;
         const knockout = career.eliminationCue(g);
@@ -349,7 +356,7 @@ async function boot() {
         const held = g.player.items?.[0];
         $('held-item').hidden = !g.itemMode || !held;
         if (held) {
-          const info = (ITEM_ICONS[held] ?? '❔') + ' ' + (ITEM_LABELS[held] ?? '未知道具') + ' · 自动使用';
+          const info = (ITEM_ICONS[held] ?? '❔') + ' ' + (ITEM_LABELS[held] ?? '未知道具') + ' · 智能择机使用';
           if ($('held-item').textContent !== info) $('held-item').textContent = info;
         }
         if (failure) {feedback(failure, 'crash');if (!g.resultShown) g.showResults();finish();}

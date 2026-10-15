@@ -11,11 +11,14 @@ export function upgradeItemBoxes(system, THREE) {
   // without promising the type of RANDOM item inside.
   const question = textTexture('?', {
     w: 256, h: 256, bg: null, fg: '#fffce0',
-    font: '900 205px Arial Black, Arial', stroke: '#113d80',
-  });
+    font: '900 205px Arial Black, Arial', stroke: '#0c2d5c',
+  }).clone();
+  // Source textTexture is cached; never dispose the shared texture on replay.
+  question.needsUpdate = true;
   const spriteMaterial = new THREE.SpriteMaterial({
     map: question, color: 0xffffff, transparent: true, depthWrite: false,
-    depthTest: true, opacity: 1,
+    depthTest: false, opacity: 1, fog: false, toneMapped: false,
+    // Without overlay depth test, the ? is buried INSIDE its own opaque diamond.
   });
   const ringMaterial = new THREE.MeshBasicMaterial({
     color: 0xffe695, transparent: true, opacity: .9, depthWrite: false,
@@ -37,9 +40,9 @@ export function upgradeItemBoxes(system, THREE) {
     halo.position.y = -0.85;
     box.g.add(halo);
     const icon = new THREE.Sprite(spriteMaterial);
-    icon.scale.set(3.8, 3.8, 1);
-    icon.position.y = .34;
-    icon.renderOrder = 2;
+    icon.scale.set(4.5, 4.5, 1);
+    icon.position.y = .42;
+    icon.renderOrder = 12; // Camera-facing glyph remains visible over the rotating diamond.
     box.g.add(icon);
     changed++;
   }

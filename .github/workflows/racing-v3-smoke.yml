@@ -6,6 +6,8 @@ on:
       - 'tools/lean-pilot/racing-mobile-build.mjs'
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
       - 'tools/lean-pilot/racing-geometry-audit.mjs'
+      - 'tools/lean-pilot/racing-ai-pace-audit.mjs'
+      - 'tools/lean-pilot/racing-native-player-qa.mjs'
       - 'tools/lean-pilot/racing-fuel-lifecycle-qa.mjs'
       - 'tools/lean-pilot/racing-career-qa.mjs'
       - 'tools/lean-pilot/racing-visible-policy.mjs'
@@ -15,6 +17,11 @@ on:
       - 'tools/lean-pilot/tests/racing-visible-policy.test.mjs'
       - '.github/workflows/racing-v3-smoke.yml'
   workflow_dispatch:
+    inputs:
+      natural_touch:
+        description: 'Run slow (non-gating) visible-touch diagnostic on software WebGL'
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
@@ -42,7 +49,7 @@ jobs:
           node --test tools/lean-pilot/tests/racing-build.test.mjs
           node --test tools/lean-pilot/tests/racing-visible-policy.test.mjs
           node --test tools/lean-pilot/racing-delivery-verify.test.mjs
-          pnpm exec eslint tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          pnpm exec eslint tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash
@@ -63,6 +70,8 @@ jobs:
         run: node tools/lean-pilot/racing-geometry-audit.mjs
       - name: Compare two native AI laps on original and reshaped tracks
         run: node tools/lean-pilot/racing-ai-pace-audit.mjs
+      - name: Compare real pinned PlayerCar/Track physics under synthetic two-button steering
+        run: node tools/lean-pilot/racing-native-player-qa.mjs
       - name: Install matching Chromium browser
         run: pnpm exec playwright install --with-deps chromium
       - name: Launch actual bundled WebGL racing in Chromium
@@ -70,6 +79,7 @@ jobs:
           node --test tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
           node tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
       - name: One-stage natural visible-touch diagnostic (non-gating)
+        if: github.event_name == 'workflow_dispatch' && inputs.natural_touch == true
         continue-on-error: true
         env:
           RACE_QA_HEADLESS: '1'
