@@ -67,7 +67,7 @@ jobs:
           H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/racing-source
         run: node tools/lean-pilot/racing-mobile-build.mjs
       - name: Verify actual H5 build includes every racing runtime source
-        run: node --test tools/lean-pilot/tests/racing-build-fingerprint.test.mjs
+        run: node --test tools/lean-pilot/racing-build-fingerprint-check.mjs
       - name: Audit all four original/reshaped native centerlines
         run: node tools/lean-pilot/racing-geometry-audit.mjs
       - name: Compare two native AI laps on original and reshaped tracks
