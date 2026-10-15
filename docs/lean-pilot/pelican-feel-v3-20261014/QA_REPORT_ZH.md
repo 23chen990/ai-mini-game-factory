@@ -423,7 +423,7 @@ ZIP SHA-256：`97c52ee04fa3bcb29500f1165ccdcfeee64d3d77d50207604fa2952ebee2510f`
 | 动作对照视频 PR10 / chromium | runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/page@56ba2e8f1db8fe7250280911b793c6b4.webm | fbdb6a5ce9d2cf13be977b26e640c86ad34781173e8f53faf21b7bbb22aff6d3 |
 | 动作对照视频 PR13 / chromium | runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/page@892106f93084b911471f2dc7010ededf.webm | 269a5a4c96b5a5dd6d4e0a05bb07c95a56efc325d395c2ba86e8ea95b7fed755 |
 | 动作对照视频 V3 / chromium | runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/page@553d80c67675c1caa5d98aee169bc6ec.webm | 6e32bb5f132ff92898a76aa92bb7067aed0a26ce70fabe5056cce71ffec1f1c2 |
-| evidence-links-v3.json | docs/lean-pilot/pelican-feel-v3-20261014/evidence-links-v3.json | 41a552ed9a4f93ea8b666472c3858ece98f7c77abc21dbc93b62c95480865d1b |
+| evidence-links-v3.json | docs/lean-pilot/pelican-feel-v3-20261014/evidence-links-v3.json | d1c44f53cabfc508dad8c5f8fa80b591fc71167ae40a11c7d1de70c744950d21 |
 
 ### 外部链接与访问权限
 
@@ -435,7 +435,7 @@ ZIP SHA-256：`97c52ee04fa3bcb29500f1165ccdcfeee64d3d77d50207604fa2952ebee2510f`
 | h5Zip | [打开链接（可能需登录）](https://github.com/23chen990/ai-mini-game-factory/raw/refs/heads/chatgpt/pelican-feel-v3-20261014/docs/lean-pilot/pelican-feel-v3-20261014/release-candidate/pelican-coast-v3-h5-candidate.zip) |
 | chineseReport | [打开链接（可能需登录）](https://github.com/23chen990/ai-mini-game-factory/blob/chatgpt/pelican-feel-v3-20261014/docs/lean-pilot/pelican-feel-v3-20261014/QA_REPORT_ZH.md) |
 | keyMedia | [打开链接（可能需登录）](https://github.com/23chen990/ai-mini-game-factory/tree/chatgpt/pelican-feel-v3-20261014/docs/lean-pilot/pelican-feel-v3-20261014/evidence-media) |
-| draftAssetHub.url | [打开链接（可能需登录）](https://github.com/23chen990/ai-mini-game-factory/releases/tag/untagged-187e414b15df0f09cef3) |
+| draftAssetHub.url | [打开链接（可能需登录）](https://github.com/23chen990/ai-mini-game-factory/releases) |
 | ciTestedSource.url | [打开链接（可能需登录）](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38583073297) |
 
 链接来源：`docs/lean-pilot/pelican-feel-v3-20261014/evidence-links-v3.json`。

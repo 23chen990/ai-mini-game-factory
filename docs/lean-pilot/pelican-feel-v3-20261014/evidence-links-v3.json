@@ -9,8 +9,10 @@
   "chineseReport": "https://github.com/23chen990/ai-mini-game-factory/blob/chatgpt/pelican-feel-v3-20261014/docs/lean-pilot/pelican-feel-v3-20261014/QA_REPORT_ZH.md",
   "keyMedia": "https://github.com/23chen990/ai-mini-game-factory/tree/chatgpt/pelican-feel-v3-20261014/docs/lean-pilot/pelican-feel-v3-20261014/evidence-media",
   "draftAssetHub": {
-    "url": "https://github.com/23chen990/ai-mini-game-factory/releases/tag/untagged-187e414b15df0f09cef3",
-    "visibility": "DRAFT; requires repository owner/collaborator access; not a published release or deployment"
+    "url": "https://github.com/23chen990/ai-mini-game-factory/releases",
+    "visibility": "DRAFT; choose the named Pelican release after signing in as collaborator. The Releases index is stable when GitHub changes an untagged draft URL. Not published or deployed.",
+    "releaseId": 412804280,
+    "tag": "pelican-v3-h5-candidate-20261014-a20"
   },
   "ciTestedSource": {
     "sha": "d9dfb242ace3424afbd7382ea85702c08930d839",
