@@ -71,7 +71,7 @@ async function writeJson(root, name, value) {
 export async function buildHash(gameRoot) {
   const entries=[];
   const candidate=await json(gameRoot,'candidate.json');
-  for (const name of [...GAME_FILES,...(candidateSpec(candidate.templateId).runtimeFiles??[])]) entries.push([name,sha256(await safeRead(gameRoot,name))]);
+  for (const name of [...GAME_FILES,...(candidateSpec(candidate.templateId).runtimeFiles??[]).filter(name=>name!=='fps-mobile-ux.mjs'||candidate.fpsUxVersion===1)]) entries.push([name,sha256(await safeRead(gameRoot,name))]);
   return sha256(JSON.stringify(entries));
 }
 export async function loadRun(base,id) {

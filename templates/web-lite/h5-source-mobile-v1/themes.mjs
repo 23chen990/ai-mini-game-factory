@@ -2,12 +2,20 @@
 /** Small source-facing bridge, not a combat implementation. */
 export function createFpsAdapter(game, doc) {
   return {
-    start: () => { Object.assign(game.opts, { size: 4, goal: 30, diff: 'easy', quality: 'low' }); game.hud.syncControls(); doc.getElementById('btnStart').click(); },
+    start: (challenge) => { const size=challenge?.kind==='hits'?1:challenge?.kind==='kills'?3:4; Object.assign(game.opts, { size, goal: 30, diff: 'easy', quality: 'low' }); game.hud.syncControls(); doc.getElementById('btnStart').click(); },
     pause: () => { if (game.playing && !game.ended && !game.paused) game.pause(); },
     resume: () => game.resume(true),
     phase: () => game.ended ? 'finished' : game.paused ? 'paused' : game.playing ? 'running' : 'ready',
     score: () => game.player?.stats?.k || 0,
-    clearInput: () => { const p = game.player; if (p) { p.keys.clear(); p.mouse.l = false; p.mouse.r = false; p.touch.fire = false; p.touch.mx = 0; p.touch.mz = 0; } }
+    clearInput: () => { const p = game.player; if (p) {
+      p.keys.clear();
+      p.pressed?.clear?.();
+      p.mouse.l = false; p.mouse.r = false; p.mouse.lp = false; p.mouse.rp = false;
+      p.mouse.dx = 0; p.mouse.dy = 0;
+      p.touch.fire = false; p.touch.firePressed = false; p.touch.jump = false;
+      p.touch.mx = 0; p.touch.mz = 0;
+      if (p.touchLook) { p.touchLook.x = 0; p.touchLook.y = 0; }
+    } }
   };
 }
 let adBusy = false;

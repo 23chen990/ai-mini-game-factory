@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase } from '../engine.mjs';
+import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult } from '../engine.mjs';
 import { createFpsAdapter } from '../themes.mjs';
 test('the pinned race uses finish, and countdown remains part of the playable round', () => {
   assert.equal(racePhase('finish'), 'finished'); assert.equal(racePhase('countdown'), 'running');
@@ -16,6 +16,8 @@ test('FPS bridge reads actual actor stats and releases every held movement/fire 
   a.pause(); assert.equal(a.phase(), 'paused'); a.resume(); assert.equal(a.phase(), 'running');
   assert.equal(pauses, 1); assert.equal(resumes, 1); a.clearInput(); assert.equal(g.player.keys.size, 0);
   assert.equal(g.player.mouse.l, false); assert.equal(g.player.touch.fire, false);
+  assert.equal(g.player.touch.jump, false); assert.equal(g.player.touch.firePressed, false);
+  assert.equal(g.player.mouse.lp, false); assert.equal(g.player.mouse.rp, false);
   g.ended = true; assert.equal(a.phase(), 'finished');
 });
 test('clock has a complete start, pause, resume, terminal and replay lifecycle', () => {
@@ -51,4 +53,20 @@ test('no ad on first round, first sixty seconds, mid-action or after reward', ()
   const next = startRound(p, 90000); tickRound(next, 1000, 2); assert.equal(adAllowed(next, p, 90000), false);
   finishRound(next, p); assert.equal(adAllowed(next, p, 59000), false); assert.equal(adAllowed(next, p, 61000), true);
   rewardRound(next, p, true); assert.equal(adAllowed(next, p, 61000), false);
+});
+
+test('CF precision cannot be completed with rifle kills or ally frags', () => {
+ const c = challengesFor('cf-transport-ship').find(c=>c.id==='precision');
+ assert.equal(challengeResult(c,{kills:3,awmKills:0},true).outcome,'lost');
+ assert.equal(challengeResult(c,{kills:1,awmKills:1},false).outcome,'won');
+ assert.equal(challengeResult(c,{kills:1,awmKills:1},false).rewardScore,1);
+});
+test('CF survival requires real travel; AFK victory and 3 deaths are failures', () => {
+ const c = challengesFor('cf-transport-ship').find(c=>c.id==='survive');
+ assert.equal(c.minTravel,20);
+ assert.equal(challengeResult(c,{deaths:0,travel:0},true).outcome,'lost');
+ assert.equal(challengeResult(c,{deaths:0,travel:19.8},true).outcome,'lost');
+ assert.equal(challengeResult(c,{deaths:2,travel:20},true).outcome,'won');
+ assert.equal(challengeResult(c,{deaths:3,travel:30},true).outcome,'lost');
+ assert.match(challengeResult(c,{deaths:1,travel:22},false).label,/移动 22\/20米/);
 });

@@ -1,6 +1,12 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
+import { createFpsMobileUx, mobileChallengeCopy } from './fps-mobile-ux.mjs';
+export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
+  const a = Number(previousSeconds), b = Number(nowSeconds);
+  return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
+}
+
 
 async function boot() {
   const id = document.documentElement.dataset.referenceGame;
@@ -13,23 +19,24 @@ async function boot() {
   let challengeProgress = newChallengeProgress(id);
   try { challengeProgress = loadChallengeProgress(localStorage.getItem(challengeKey), id) ?? challengeProgress; } catch { storageAvailable = false; }
   let selected = levels.find(c => c.id === challengeProgress.selected), activeChallenge;
-  let round = null, startedAt = performance.now(), last = performance.now(), native, fishStart = 0, jumpStart = 0, lastNativePhase = 'ready', assistActive = false;
+  let fpsUx = null;
+  let round = null, startedAt = performance.now(), last = performance.now(), lastFpsNativeSec = 0, native, fishStart = 0, jumpStart = 0, lastNativePhase = 'ready', assistActive = false;
   const root = document.createElement('section'); root.id = 'mobile-kit';
   root.innerHTML = `<header class="mk-header"><b id="mk-title"></b><span>最佳 <b id="mk-best">0</b></span><button id="mk-pause" aria-label="暂停">⏸ 暂停</button></header>
     <div class="mk-meter"><span id="mk-status">准备出发</span><span>积分 <b id="mk-score">0</b></span><span id="mk-time"></span><progress id="mk-goal" max="8" value="0"></progress></div>
-    <div id="mk-panel"><h2 id="mk-heading"></h2><p id="mk-copy"></p><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
+    <div id="mk-panel"><h2 id="mk-heading"></h2><p id="mk-copy"></p><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
-  const names = { 'pelican-bike': '骑行抓鱼 · 挑战', 'qq-speed': '赛车 · 私有触控试玩', 'cf-transport-ship': '运输船 · 私有触控试玩' };
+  const names = { 'pelican-bike': '骑行抓鱼 · 挑战', 'qq-speed': '赛车 · 私有触控试玩', 'cf-transport-ship': '运输船 · 任务挑战' };
   $('title').textContent = names[id]; $('heading').textContent = names[id]; $('best').textContent = progress.best;
-  $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '保留原游戏玩法。点击开始进入原菜单；手机新增暂停，离开页面自动暂停。成绩保存在这台设备。';
+  $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '左手移动、右手瞄准，按住开火。手机横屏游玩；离开页面自动暂停。';
   if (!storageAvailable) $('storage').textContent = '存储不可用，本次仍可游玩';
   const persist = () => { try { localStorage.setItem(key, saveProgress(progress, id)); localStorage.setItem(challengeKey, saveChallengeProgress(challengeProgress)); } catch { storageAvailable = false; $('storage').textContent = '存储不可用，本次仍可游玩'; } };
   const renderSelection = () => {
-    $('heading').textContent = selected.title; $('copy').textContent = selected.instructions;
+    $('heading').textContent = selected.title; $('copy').textContent = id === 'cf-transport-ship' ? mobileChallengeCopy(selected) : selected.instructions;
     $('challenges').innerHTML = levels.map(c => `<button data-challenge-id="${c.id}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${challengeProgress.records[c.id]?.wins ? '✓ 已完成' : Math.ceil(c.limitMs/1000)+'秒'}</small></button>`).join('');
-    $('goal').max = selected.target; $('goal').value = 0; root.dataset.challenge = selected.id;
+    $('goal').max = id === 'cf-transport-ship' && selected.kind === 'survive' ? selected.limitMs / 1000 : selected.target; $('goal').value = 0; root.dataset.challenge = selected.id;
   };
   $('challenges').addEventListener('click', e => { const c = levels.find(c => c.id === e.target.closest('[data-challenge-id]')?.dataset.challengeId); if (!c || round?.phase === 'running' || round?.phase === 'paused') return; selected = c; challengeProgress.selected = c.id; persist(); if (round?.phase === 'finished') location.reload(); else renderSelection(); });
   renderSelection();
@@ -56,7 +63,17 @@ async function boot() {
       native.metrics = () => ({finished:!!g.player?.finished,place:g.standings.indexOf(g.player)+1,drifts:g.player?.stats?.drift||0});
       break;
     }
-    if (id === 'cf-transport-ship' && window.__H5NativeGame?.hud && !document.getElementById('menu')?.classList.contains('hidden')) { const g = window.__H5NativeGame; native = createFpsAdapter(g, document); const originalStart = native.start; native.start = c => { g.opts.primary = c.weapon; originalStart(); }; native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,deaths:g.player?.stats?.d||0}); break; }
+    if (id === 'cf-transport-ship' && window.__H5NativeGame?.hud && !document.getElementById('menu')?.classList.contains('hidden')) { const g = window.__H5NativeGame; native = createFpsAdapter(g, document); const originalStart = native.start; if (!g.__mkAwmKillHooked) {
+        const underlyingKill = g.kill;
+        g.__mkAwmKills = 0;
+        g.kill = function (victim, attacker, weapon, ...rest) {
+          if (attacker === g.player && victim !== attacker && victim?.team !== attacker?.team && weapon === 'awm') g.__mkAwmKills++;
+          return underlyingKill.call(this, victim, attacker, weapon, ...rest);
+        };
+        g.__mkAwmKillHooked = true;
+      }
+      native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
+      native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,travel:fpsUx?.distanceMeters()||0}); native.simulatedSeconds = () => g.time; fpsUx = createFpsMobileUx(g, root, document); break; }
     await wait();
   }
   if (!native) { $('copy').textContent = '加载尚未完成，请刷新或换用支持 WebGL 的浏览器。'; return; }
@@ -67,15 +84,30 @@ async function boot() {
     $('panel').hidden = phase === 'running'; $('start').hidden = phase !== 'ready';
     $('challenges').hidden = !['ready','finished'].includes(phase);
     $('resume').hidden = phase !== 'paused'; $('replay').hidden = phase !== 'finished';
+    const nextIndex = activeChallenge ? levels.findIndex(c => c.id === activeChallenge.id)+1 : -1;
+    const next = id === 'cf-transport-ship' && phase === 'finished' &&
+      root.dataset.outcome === 'won' ? levels[nextIndex] : null;
+    $('next').hidden = !next;
+    if(next)$('next').textContent = '▶ 下一关：' + next.title;
     $('pause').disabled = !round || !['running', 'paused'].includes(round.phase);
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
   const portraitBlocked = () => id !== 'pelican-bike' && window.innerHeight > window.innerWidth;
-  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); last = performance.now(); showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
+  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
   $('replay').addEventListener('click', () => location.reload());
+  $('next').addEventListener('click', () => {
+    if (id !== 'cf-transport-ship' || root.dataset.phase !== 'finished' ||
+        root.dataset.outcome !== 'won') return;
+    const index = levels.findIndex(c => c.id === activeChallenge?.id);
+    const next = levels[index + 1];
+    if(!next)return;
+    challengeProgress.selected=next.id;
+    persist();
+    location.reload();
+  });
   window.addEventListener('blur', pause); document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
   const orientation = () => { const blocked = portraitBlocked(); $('rotate').hidden = !blocked; if (blocked) pause(); };
   window.addEventListener('resize', orientation); orientation();
@@ -95,19 +127,40 @@ async function boot() {
   function frame(now) {
     const dt = Math.min(1000, Math.max(0, now - last)); last = now;
     const phase = native.phase();
+    fpsUx?.update(round?.phase === 'running', now);
     if (round && round.phase === 'running') {
       if (phase === 'paused') pause();
       else {
-        tickRound(round, dt, native.score());
+        const roundTickMs = id === 'cf-transport-ship' && native.simulatedSeconds
+          ? fpsSimulatedDeltaMs(lastFpsNativeSec, native.simulatedSeconds()) : dt;
+        if (id === 'cf-transport-ship' && native.simulatedSeconds) lastFpsNativeSec = native.simulatedSeconds();
+        tickRound(round, roundTickMs, native.score());
         if (assistActive && round.elapsedMs >= 15000) { window.__pelican.settings.autopilot = false; assistActive = false; }
-        const result = challengeResult(activeChallenge, native.metrics(), round.phase === 'finished' || phase === 'finished');
-        round.score = result.rewardScore; $('status').textContent = result.label; $('goal').value = Math.min(result.value, activeChallenge.target);
+        const metrics = native.metrics();
+        const result = challengeResult(activeChallenge, metrics, round.phase === 'finished' || phase === 'finished');
+        round.score = result.rewardScore;
+        $('status').textContent = activeChallenge.kind === 'survive'
+          ? '❤ 余' + Math.max(0, activeChallenge.target - (metrics.deaths || 0)) + '次 · ↗ ' +
+            Math.floor(metrics.travel || 0) + '/' + (activeChallenge.minTravel || 0) + 'm'
+          : result.label;
+        $('goal').value = activeChallenge.kind === 'survive'
+          ? Math.min(activeChallenge.limitMs / 1000, Math.round(round.elapsedMs / 1000))
+          : Math.min(result.value, activeChallenge.target);
         if (result.outcome !== 'running') {
           finishRound(round, progress); native.pause(); clearInput(); persist();
           recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome); persist();
           root.dataset.outcome = result.outcome;
           $('heading').textContent = result.outcome === 'won' ? '✓ ' + activeChallenge.title + '完成！' : '本次挑战未完成';
-          $('copy').textContent = `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
+          $('copy').textContent = id === 'cf-transport-ship'
+            ? (result.outcome === 'won'
+              ? '任务成功！本局 ' + round.score + ' 分 · 累计补给 ' + progress.bank
+              : (activeChallenge.kind === 'hits'
+                ? '已命中 ' + (metrics.hits||0) + '/' + activeChallenge.target + '次；继续练习移动与点射。'
+                : activeChallenge.kind === 'kills'
+                  ? 'AWM击杀 ' + (metrics.awmKills||0) + '/' + activeChallenge.target + '；开镜后瞄准胸部再开火。'
+                  : '移动 ' + Math.floor(metrics.travel||0) + '/' + (activeChallenge.minTravel||0) +
+                    '米 · 阵亡 ' + (metrics.deaths||0) + '/' + activeChallenge.target + '次。再试一次。'))
+            : `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
           $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent = result.outcome === 'won' ? '✓ 已完成' : '可重试';
           $('best').textContent = progress.best; showPhase('finished');
           // The placement is wired but hidden until the actual H5 account's check_ads_status is verified.

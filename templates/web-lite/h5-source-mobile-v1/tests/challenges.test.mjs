@@ -31,9 +31,9 @@ test('weapon missions distinguish actual hits, kills and survival, with explicit
   const levels=core.challengesFor('cf-transport-ship');
   assert.equal(core.challengeResult(levels[0],{hits:3,kills:0,deaths:0},false).outcome,'won');
   assert.equal(core.challengeResult(levels[1],{hits:3,kills:0,deaths:0},true).outcome,'lost');
-  assert.equal(core.challengeResult(levels[1],{kills:1},false).outcome,'won');
+  assert.equal(core.challengeResult(levels[1],{kills:1,awmKills:1},false).outcome,'won');
   assert.equal(core.challengeResult(levels[2],{deaths:2},false).outcome,'running');
-  assert.equal(core.challengeResult(levels[2],{deaths:2},true).outcome,'won');
+  assert.equal(core.challengeResult(levels[2],{deaths:2,travel:20},true).outcome,'won');
   assert.equal(core.challengeResult(levels[2],{deaths:3},false).outcome,'lost');
 });
 test('challenge selection and independent best/results persist; old score/ad progress remains compatible',()=>{
@@ -51,6 +51,15 @@ test('challenge selection and independent best/results persist; old score/ad pro
 test('mission points reward real progress rather than crediting nonexistent shooter kills',()=>{
   const [hits,,survival]=core.challengesFor('cf-transport-ship');
   assert.equal(core.challengeResult(hits,{hits:3,kills:0},false).rewardScore,3);
-  assert.equal(core.challengeResult(survival,{deaths:1},true).rewardScore,3);
+  assert.equal(core.challengeResult(survival,{deaths:1,travel:20},true).rewardScore,3);
   assert.equal(core.challengeResult(survival,{deaths:3},true).rewardScore,0);
+});
+
+test('shooter rule cannot be bypassed by a rifle kill or AFK survival',()=>{
+  const [,sniper,survival]=core.challengesFor('cf-transport-ship');
+  assert.equal(core.challengeResult(sniper,{kills:5,awmKills:0},true).outcome,'lost');
+  assert.equal(core.challengeResult(sniper,{kills:1,awmKills:1},false).outcome,'won');
+  assert.equal(core.challengeResult(survival,{deaths:0,travel:0},true).outcome,'lost');
+  assert.equal(core.challengeResult(survival,{deaths:0,travel:19.9},true).outcome,'lost');
+  assert.equal(core.challengeResult(survival,{deaths:0,travel:20},true).outcome,'won');
 });

@@ -1,1 +1,12 @@
-{"schemaVersion":1,"templateId":"h5-source-mobile-v1","status":"CANDIDATE","profile":"ACTION_FEEL","runtime":"web-lite","language":"zh-CN","sourceRights":"GRANTED_USER_CONFIRMED","commercial":"PLATFORM_QA_PENDING","scope":"Author-authorized source adaptation under the user's confirmation plus owned touch/lifecycle modules. Physical phone, live H5 ads and platform approval remain separate gates; this task does not formally publish a game."}
+{
+  "schemaVersion": 1,
+  "templateId": "h5-source-mobile-v1",
+  "status": "CANDIDATE",
+  "profile": "ACTION_FEEL",
+  "runtime": "web-lite",
+  "language": "zh-CN",
+  "sourceRights": "GRANTED_USER_CONFIRMED",
+  "commercial": "PLATFORM_QA_PENDING",
+  "scope": "Author-authorized source adaptation under the user's confirmation plus owned touch/lifecycle modules. Physical phone, live H5 ads and platform approval remain separate gates; this task does not formally publish a game.",
+  "fpsUxVersion": 1
+}
