@@ -8,7 +8,7 @@ export const STAGES = Object.freeze([
   make('04', 1, '海湾连漂', 'aegean', 2, 0, 'drift', 'speed', 5, '完成 3 次有效漂移', { target: 3 }),
   make('05', 2, '沙漠道具箱', 'egypt', 2, 0, 'item', 'item', 5, '拾取 1 个道具', { target: 1 }),
   make('06', 2, '城市道具战', 'city', 2, 1, 'item', 'item', 4, '拾取 2 个道具并冲线', { target: 2 }),
-  make('07', 2, '海湾限时赛', 'aegean', 2, 1, 'time', 'speed', 5, '在 130 秒内完成', { target: 130 }),
+  make('07', 2, '海湾限时赛', 'aegean', 2, 1, 'time', 'speed', 5, '在 115 秒内完成', { target: 115 }),
   make('08', 2, '雪地夺旗', 'snow', 2, 1, 'race', 'speed', 3, '进入前三名'),
   make('09', 3, '沙漠补时赛', 'egypt', 2, 1, 'relay', 'speed', 5, '通过加速带补时，完成比赛', { baseTime: 90, bonus: 12, maxTime: 210 }),
   make('10', 3, '城市逆转战', 'city', 3, 1, 'item', 'item', 4, '拾取 2 个道具并进入前四', { target: 2 }),
@@ -100,7 +100,8 @@ export function gradeStage(stage, result, stats = {}) {
   const clean = finite(result?.stats?.crash) <= (stage.laps === 1 ? 2 : 4) && finite(stats.rescues) === 0;
   const mastery = stage.kind === 'time' ? time <= stage.target * .87 :
     stage.kind === 'speed' ? metric >= stage.target + 20 :
-    stage.kind === 'drift' || stage.kind === 'overtake' ? metric >= stage.target + 1 :
+    stage.kind === 'drift' ? metric >= Math.max(6,stage.target + 1) :
+    stage.kind === 'overtake' ? metric >= stage.target + 1 :
     stage.kind === 'item' ? metric >= stage.target + 1 :
     stage.kind === 'relay' ? metric >= 2 : true;
   if (place === 1 && clean && mastery) stars++;

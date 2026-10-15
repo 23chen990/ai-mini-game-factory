@@ -364,3 +364,27 @@ test('boss goals disclose rank + opponent gates; beating rival at sixth is not v
   g.standings=[g.player,g.racers[1],g.racers[2]];
   assert.match(c.objectiveLabel(g),/已超越/);
 });
+
+test('V3.4 tightens obvious time padding but does not block clean novice completion',()=>{
+  assert.equal(STAGES[6].target,115);
+  const ok={finished:true,place:3,time:114,stats:{crash:1}};
+  assert.ok(gradeStage(STAGES[6],ok,{}));
+  assert.equal(gradeStage(STAGES[6],{...ok,time:116},{}),0);
+  assert.equal(STAGES[3].target,3,'chapter one teaches drifts without a harder softlock');
+  const drive={finished:true,place:1,time:95,stats:{crash:0}};
+  assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:4}),2);
+  assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:6}),3);
+});
+test('V3.4 final coast boss remains strongest but physically achievable, without touching placement or mission gate',()=>{
+  const career=new RacingCareer(memory()),g=game();
+  career.index=15;
+  g.racers[1].skill=1.38;g.racers[2].skill=1.32;
+  const original=g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d}));
+  career.begin(g);
+  assert.equal(career.boss.skill,1.35);
+  assert.equal(g.racers[2].skill,1.30);
+  assert.deepEqual(g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d})),original);
+  assert.equal(STAGES[15].rank,3);
+  assert.equal(gradeStage(STAGES[15],{finished:true,place:2,time:130,stats:{crash:2}},{beatBoss:false}),0);
+  assert.ok(gradeStage(STAGES[15],{finished:true,place:2,time:130,stats:{crash:2}},{beatBoss:true})>0);
+});

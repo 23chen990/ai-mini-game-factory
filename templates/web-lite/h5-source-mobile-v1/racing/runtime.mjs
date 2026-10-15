@@ -84,7 +84,20 @@ export class RacingCareer {
     }
     if (this.stage.kind === 'boss') {
       this.boss = game.racers.find(r => !r.isPlayer) ?? null;
-      if (this.boss) { this.bossName = this.boss.name;this.boss.skill = Math.max(this.boss.skill, 1.58); }
+      if (this.boss) {
+        this.bossName = this.boss.name;
+        // The reshaped final Aegean route adds 10–12% to native AI lap times,
+        // but native two-key PlayerCar telemetry remains several seconds behind
+        // the 1.58 boss. A genuine finish must remain achievable through cleaner
+        // steering, rather than requiring a perfect zero-contact drive.
+        // A different course can be harder even with a lower numeric AI skill.
+        this.boss.skill = this.stage.id === '16' ? 1.35 :
+          Math.max(this.boss.skill, 1.58);
+        if (this.stage.id === '16') for (const rival of game.racers) {
+          if (!rival.isPlayer && rival !== this.boss)
+            rival.skill = Math.min(rival.skill, 1.30);
+        }
+      }
     }
     if (this.fuelEnabled) {
       const spent = spendRaceFuel(this.fuel);
