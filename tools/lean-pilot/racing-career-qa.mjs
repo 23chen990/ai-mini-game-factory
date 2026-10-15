@@ -36,7 +36,10 @@ const server = createServer(async (req, res) => {
   } catch { res.writeHead(404); res.end('missing'); }
 });
 server.listen(resumeOrigin ? Number(new URL(resumeOrigin).port) : 0, '127.0.0.1'); await once(server, 'listening');
-const browser = await chromium.launch({ headless: process.env.RACE_QA_HEADLESS === '1', args: ['--use-angle=metal'] });
+const ciHeadless = process.env.RACE_QA_HEADLESS === '1';
+const browser = await chromium.launch({ headless: ciHeadless,
+  args: ciHeadless ? ['--enable-webgl', '--enable-unsafe-swiftshader', '--use-gl=angle',
+    '--use-angle=swiftshader', '--disable-gpu-sandbox'] : ['--use-angle=metal'] });
 const context = await browser.newContext({ viewport, isMobile: true, hasTouch: true, deviceScaleFactor: 1,
   ...(resumeStorage ? { storageState: resumeStorage } : {}),
   ...(process.env.RACE_QA_VIDEO === '1' ? { recordVideo: { dir: out, size: viewport } } : {}) });
@@ -140,7 +143,7 @@ try {
     await page.waitForFunction(() => window.game.state === 'race', null, { timeout: 45000 });
     buttons = await page.evaluate(() => Object.fromEntries(['left', 'right'].map(d => { const r = document.querySelector('#race-' + d).getBoundingClientRect(); return [d, { x: r.x + r.width / 2, y: r.y + r.height / 2 }]; })));
     const trace = [], captures = new Set(); let terminal = null, lastLog = 0;
-    const startedAt = Date.now(), deadline = startedAt + 600000;
+    const startedAt = Date.now(), deadline = startedAt + Math.max(30000, Math.min(600000, Number(process.env.RACE_QA_MAX_MS ?? 600000)));
     const visibleStageTag = await page.locator('#race-stage-tag').textContent();
     const isItemRace = visibleStageTag.includes('道具赛');
     const visibleLookahead = Number(process.env.RACE_QA_LOOKAHEAD ?? (isItemRace && entry.includes('雪地') ? 18 : 21));
