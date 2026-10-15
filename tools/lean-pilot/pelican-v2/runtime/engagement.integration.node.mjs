@@ -79,7 +79,7 @@ test('save migration accepts existing V2 records and records best only when comp
  const old={version:2,unlocked:3,stars:[3,1,0,0,0],completed:[true,true,false,false,false]};
  const loaded=loadSave(JSON.stringify(old));assert.ok(loaded);assert.equal(loaded.unlocked,3);assert.equal(loaded.best.length,5);assert.equal(allStars(loaded),4);
  const l=newRun(1);l.phase='finished';l.reason='complete';l.count=11;l.gold=2;l.jumpedBarriers=1;l.score=20;l.elapsed=40;settle(loaded,l);
- assert.equal(loaded.best[0].fish,11);assert.ok(loaded.stars[0]>=3);
+ assert.equal(loaded.best[0].fish,11);assert.equal(loaded.best[0].streak,0);assert.ok(loaded.stars[0]>=3);
  assert.deepEqual(loadSave(JSON.stringify(loaded)),loaded);
 });
 test('every level has enough award inventory for optional 3-star challenge',()=>{
@@ -126,7 +126,7 @@ test('all five levels have a real safe 3-star jump/fishing path',()=>{
  for(const l of LEVELS){
   const r=masteryDrive(l,1/120,jumpDistances[l.id-1]);
   assert.equal(r.reason,'complete','level '+l.id+' ended '+r.reason);
-  assert.equal(r.stars,3,'level '+l.id+' fish='+r.count+' gold='+r.gold+' jumps='+r.jumpedBarriers);
+  assert.equal(r.stars,3,'level '+l.id+' fish='+r.count+' gold='+r.gold+' jumps='+r.jumpedBarriers+' bestStreak='+r.bestStreak+' targetStreak='+starRequirements(l).streak);
   assert.equal(r.hits,0);
   assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.jumped));
  }

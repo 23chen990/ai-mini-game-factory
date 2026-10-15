@@ -65,8 +65,8 @@ export function createCoastAdventure(api) {
   const route=$('route'),earned=allStars(save);
   $('progress').textContent=`🌟 全海岸 ${earned}/15 星 · ${earned===15?'渔王挑战已达成':'重玩关卡可冲三星'}`;
   route.innerHTML=LEVELS.map(l=>{
-   const req=starRequirements(l),best=save.best?.[l.id-1],record=save.completed[l.id-1]&&best?.fish>0?` · 纪录 ${best.fish} 鱼`:'';
-   return `<button data-level="${l.id}" ${l.id>save.unlocked?'disabled':''} class="${l.id===selected?'selected':''} ${l.id>save.unlocked?'locked':''}"><strong>${l.id>save.unlocked?'🔒':l.id}</strong><span><b>${l.name}</b><small>${l.distance} m · ${l.goal.count} 条鱼${l.goal.gold?' · 金鱼 '+l.goal.gold:''}${record}</small><small class="co-master">★★★ 🐟${req.gold} · 🌟${req.goldFish} · ↟${req.jumps} · 🛡 · ◷≤${req.time.toFixed(1)}s</small></span><em>${save.completed[l.id-1]?'★'.repeat(save.stars[l.id-1]):l.id===save.unlocked?'出发 →':''}</em></button>`;
+   const req=starRequirements(l),best=save.best?.[l.id-1],record=save.completed[l.id-1]&&best?.fish>0?` · 纪录 ${best.fish} 鱼 · ⚡${best.streak}连`:'';
+   return `<button data-level="${l.id}" ${l.id>save.unlocked?'disabled':''} class="${l.id===selected?'selected':''} ${l.id>save.unlocked?'locked':''}"><strong>${l.id>save.unlocked?'🔒':l.id}</strong><span><b>${l.name}</b><small>${l.distance} m · ${l.goal.count} 条鱼${l.goal.gold?' · 金鱼 '+l.goal.gold:''}${record}</small><small class="co-master">★★★ 🐟${req.gold} · 🌟${req.goldFish} · ↟${req.jumps} · 🛡 · ⚡${req.streak}连</small></span><em>${save.completed[l.id-1]?'★'.repeat(save.stars[l.id-1]):l.id===save.unlocked?'出发 →':''}</em></button>`;
   }).join('');
   $('start').textContent='▶ 出发 · '+LEVELS[selected-1].name;
   if(!run)$('copy').textContent=LEVELS[selected-1].subtitle;
@@ -97,7 +97,7 @@ export function createCoastAdventure(api) {
    const icons='★'.repeat(run.stars);
    $('copy').textContent=[`${icons} · 🐟${run.count} · 🌟${run.gold} · ↟${run.jumpedBarriers}`,
     `⚡ 本局得分 ${run.rewardScore} · 历史最高 ${best?.score??run.rewardScore}`,
-    `${run.stars===3?'本关满星，继续挑战捕鱼纪录':nextStarTip(run.level,run)} · 最多 ${best?.fish??run.count} 鱼`,
+    `${run.stars===3?'本关满星，继续挑战捕鱼连击纪录':nextStarTip(run.level,run)} · 最长 ${best?.streak??run.bestStreak} 连`,
     `全海岸 ${earned}/15 星 · ${run.level.id<5?'下一站已解锁':'全部五关已解锁'}`].join('\n');
   }else $('copy').textContent=run.reason==='vehicle'?'🚗 汽车不能跳过。看见红色车道预警后，提前换道。':run.reason==='barrier'?'↟ 跳过去有奖励金鱼，绕开也可以安全前进。':run.reason==='timeout'?'行人碰撞会停车 3 秒，但倒计时继续。留意斑马线。':`🐟 已抓 ${run.count}/${run.level.goal.count} 条 · 金鱼 ${run.gold}/${run.level.goal.gold}。下次沿着发光的鱼走，留意红色危险车道。`;
   $('next').textContent=run.level.id<5?'下一关 · '+LEVELS[run.level.id].name+' →':'海岸已完成';
@@ -246,7 +246,7 @@ export function createCoastAdventure(api) {
   jumpButton.classList.toggle('ready',!!barrier&&run.y===0&&!run.bufferedJump);
   jumpButton.classList.toggle('queued',!!run.bufferedJump);
   const m=masteryStatus(run),mark=v=>v?'done':'missed';
-  const mastery=`<b>★★★</b><span data-goal="catch" class="${m.catch.done?'done':''}">🐟 ${m.catch.value}/${m.catch.target}</span><span data-goal="gold" class="${m.gold.done?'done':''}">🌟 ${m.gold.value}/${m.gold.target}</span><span data-goal="jump" class="${m.jump.done?'done':''}">↟ ${m.jump.value}/${m.jump.target}</span><span data-goal="no-hit" title="无碰撞" class="${mark(m.noHit.done)}">🛡${m.noHit.done?'✓':'×'}</span><span data-goal="time" title="三星用时上限" class="${mark(m.time.done)}">◷≤${m.time.target.toFixed(1)}s</span>`;
+  const mastery=`<b>★★★</b><span data-goal="catch" class="${m.catch.done?'done':''}">🐟 ${m.catch.value}/${m.catch.target}</span><span data-goal="gold" class="${m.gold.done?'done':''}">🌟 ${m.gold.value}/${m.gold.target}</span><span data-goal="jump" class="${m.jump.done?'done':''}">↟ ${m.jump.value}/${m.jump.target}</span><span data-goal="no-hit" title="无碰撞" class="${mark(m.noHit.done)}">🛡${m.noHit.done?'✓':'×'}</span><span data-goal="streak" title="本局最高连续捕鱼" class="${mark(m.streak.done)}">⚡${m.streak.value}/${m.streak.target}</span>`;
   if($('mastery').innerHTML!==mastery)$('mastery').innerHTML=mastery;
  }
  let sampleAt=performance.now(),sampleFrames=0;

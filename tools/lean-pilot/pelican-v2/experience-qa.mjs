@@ -44,6 +44,11 @@ try{
   beforeSecond.count>=1&&!!secondSteer&&!!secondCatch&&second.count>beforeSecond.count&&
   second.phase==='running'&&second.lane>.6&&second.lane<1.4,
   {before:beforeSecond,after:second,secondSteer,secondCatch});
+ const streakHud=await page.locator('[data-goal="streak"]').innerText();
+ check('visible-earned-streak-progress',
+  second.bestStreak>=2&&streakHud.includes('⚡')&&
+  Number(streakHud.match(/[0-9]+/u)?.[0])===second.bestStreak,
+  {streakHud,earned:second.bestStreak,events:second.events.filter(e=>e.type==='fish-caught')});
  await shot('actual-offcentre-second-fish-caught');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
@@ -87,7 +92,7 @@ try{
  check('buffered-jump-clears-exact-target',finished.events.some(e=>e.type==='jump'&&e.buffered&&finished.events.some(c=>c.type==='barrier-cleared'&&c.objectId===e.objectId&&c.jumped)),finished);
  check('natural-three-star-settlement',finished.reason==='complete'&&finished.save.stars[0]===3&&(await page.locator('#co-copy').innerText()).includes('★★★')&&(await page.locator('#co-heading').innerText()).includes('三星达成'),finished);
  check('both-crossing-directions-observed',leftWarning&&rightWarning,{leftWarning,rightWarning});
- const best=finished.save.best[0];check('real-personal-best-recorded',best.fish===finished.count&&best.gold===finished.gold&&best.jumps===finished.jumpedBarriers&&best.jumps>=1,best);
+ const best=finished.save.best[0];check('real-personal-best-recorded',best.fish===finished.count&&best.gold===finished.gold&&best.jumps===finished.jumpedBarriers&&best.jumps>=1&&best.streak===finished.bestStreak&&best.streak>=4,best);
  // Negative baseline: an untouched rider genuinely catches the first central
  // teaching fish but must not be awarded the off-centre second fish.
  await tap('#co-replay');
