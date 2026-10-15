@@ -53,10 +53,16 @@ export function nextStarTip(level, run) {
   if (run.reason !== 'complete') return '先完成本关捕鱼与路程目标';
   if (rateStars(level, run) === 3) return '三星达成！尝试刷新最多捕鱼纪录';
   if (run.hits > 0) return '下次不碰撞，再挑战高星';
-  if (run.count < req.gold) return `再抓 ${req.gold - run.count} 条鱼，冲击三星`;
-  if (run.gold < req.goldFish) return `再抓 ${req.goldFish - run.gold} 条金鱼，冲击三星`;
-  if ((run.jumpedBarriers ?? 0) < req.jumps) return `再跳过 ${req.jumps - (run.jumpedBarriers ?? 0)} 个路障，冲击三星`;
-  if (run.elapsed > req.time) return '下一次试着更快抵达终点';
+  // A replay tip must not imply that fixing one easy condition earns three
+  // stars when the player also missed the genuine jumping requirement.
+  // Surface two independent, attainable changes without crowding small H5 UI.
+  const missing = [];
+  if ((run.jumpedBarriers ?? 0) < req.jumps)
+    missing.push(`跳过 ${req.jumps - (run.jumpedBarriers ?? 0)} 个路障`);
+  if (run.count < req.gold) missing.push(`再抓 ${req.gold - run.count} 条鱼`);
+  if (run.gold < req.goldFish) missing.push(`再抓 ${req.goldFish - run.gold} 条金鱼`);
+  if (run.elapsed > req.time) missing.push('更快抵达终点');
+  if (missing.length) return `冲击三星：${missing.slice(0,2).join('，')}${missing.length>2?'等目标':''}`;
   return '继续挑战个人捕鱼纪录';
 }
 

@@ -25,6 +25,17 @@ test('short and concrete replay hints show the closest missing mastery',()=>{
  assert.match(nextStarTip(level,run({count:10})),/再抓/);
  assert.match(nextStarTip(level,run({hits:1})),/不碰撞/);
 });
+test('two-star replay advice names jumping AND missing fish, never implying fish alone earns 3 stars',()=>{
+ const lateLevel={id:5,seconds:95,goal:{count:24,gold:3},mastery:{jumps:2}};
+ const safeFinish={level:lateLevel,reason:'complete',hits:0,count:32,gold:6,jumpedBarriers:0,elapsed:75};
+ const tip=nextStarTip(lateLevel,safeFinish);
+ assert.match(tip,/跳过 2 个路障/);
+ assert.match(tip,/再抓 2 条鱼/);
+ assert.equal(rateStars(lateLevel,safeFinish),2);
+ assert.ok(tip.length<45,'short enough to fit a compact result card');
+ const completeMastery=nextStarTip(lateLevel,{...safeFinish,count:35,jumpedBarriers:2});
+ assert.match(completeMastery,/三星达成/);
+});
 test('older saves remain compatible with normalised best data',()=>{
  const empty=normalizeBest(null);assert.equal(empty.length,5);assert.equal(empty[0].fish,0);
  const corrupt=normalizeBest([{fish:Infinity}, {}, {}, {}, {}]);assert.equal(corrupt[0].fish,0);
