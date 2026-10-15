@@ -1,10 +1,11 @@
 /* global process, console */
-// Original-vs-V3.1 centerline audit. Static geometry is NOT natural driving QA.
+// Original-vs-V3.3 centerline audit. Static geometry is NOT natural driving QA.
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
 import { createRequire } from 'node:module';
 import { applyTrackDesign } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
+import { PAD_LANES } from '../../templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs';
 
 const root=process.cwd(), src=path.join(root,'runs/h5-qq-mobile-20261013/workspace/source/qq-speed');
 const build=JSON.parse(await readFile(path.join(root,'runs/h5-qq-mobile-20261013/artifacts/build-racing.json')));
@@ -18,7 +19,7 @@ const original=(await import('data:text/javascript;base64,'+Buffer.from(original
 const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified);
 const THREE=createRequire(path.join(src,'package.json'))('three');
 const wrap=x=>Math.atan2(Math.sin(x),Math.cos(x));
-function inspect(layout){
+function inspect(layout, key){
   const curve=new THREE.CatmullRomCurve3(layout.points.map(p=>new THREE.Vector3(p[0],p[2]||0,p[1])),true,'centripetal');
   curve.arcLengthDivisions=6000;curve.updateArcLengths();
   const len=curve.getLength(),n=Math.round(len/1.5),ds=len/n;
@@ -40,13 +41,18 @@ function inspect(layout){
     if(Math.min(j-i,n-j+i)*ds<125 || Math.abs(pts[i].y-pts[j].y)>3.5)continue;
     if(Math.hypot(pts[i].x-pts[j].x,pts[i].z-pts[j].z)<layout.width+1)pairs++;
   }
+  const padAnchors=(PAD_LANES[key]??[]).map(p=>Math.min(...pts.map(pt=>Math.hypot(pt.x-p.at[0],pt.z-p.at[1]))));
   return {lengthM:Math.round(len),widthM:layout.width,directionChanges:changes,
+    maxPadAnchorOffsetM:+Math.max(0,...padAnchors).toFixed(1),
     p95Curvature:+abs[Math.floor(n*.95)].toFixed(5),
     sharpPct:Math.round(curvature.filter(x=>Math.abs(x)>=.018).length/n*100),
     sameLevelClosePairs:pairs,
     line:pts.filter((_,i)=>i%8===0).map(p=>[+p.x.toFixed(2),+p.z.toFixed(2)])};
 }
-const maps={};for(const name of Object.keys(original))maps[name]={old:inspect(original[name]),next:inspect(modified[name])};
+const maps={};for(const name of Object.keys(original)){
+  maps[name]={old:inspect(original[name],name),next:inspect(modified[name],name)};
+  if(maps[name].next.maxPadAnchorOffsetM>36) throw Error(name+': new centerline is too far from an existing boost pad anchor');
+}
 const report={schemaVersion:1,buildHash:build.buildHash,upstream:build.sourceRevision,
   limitation:'Static Catmull-Rom centerline only; not natural-driving/phone performance QA',maps};
 const out=path.join(root,'runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke');

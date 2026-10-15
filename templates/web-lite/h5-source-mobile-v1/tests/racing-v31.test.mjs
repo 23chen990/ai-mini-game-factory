@@ -18,7 +18,7 @@ function fixture() {
 test('四图用固定源码控制点重新生成S弯，保留四种场景且不新增分支导航',()=>{
   const original=fixture(),snapshot=JSON.stringify(original);
   const counts=applyTrackDesign(original);
-  assert.deepEqual(counts,{city:34,aegean:28,egypt:26,snow:24});
+  assert.deepEqual(counts,{city:35,aegean:31,egypt:26,snow:25});
   for(const [key,plan] of Object.entries(TRACK_RESHAPES)) {
     assert.equal(original[key].width,plan.width);
     assert.equal(original[key].points.length,counts[key]);
@@ -39,6 +39,21 @@ test('源码坐标变动不能悄悄应用到别人的地图',()=>{
   const short=fixture();short.snow.points.pop();
   assert.throws(()=>applyTrackDesign(short),/count changed/);
 });
+
+test('V3.3 uses nonoverlapping descending native index cuts, preserves all four original anchors',()=>{
+  for(const [key,plan] of Object.entries(TRACK_RESHAPES)){
+    let prior=Infinity;
+    for(const cut of plan.cuts){
+      assert.ok(Number.isInteger(cut.start)&&cut.start>=0&&cut.end<plan.expected);
+      assert.ok(cut.start<=cut.end&&cut.end<prior,key+' overlapping cuts');
+      assert.ok(cut.points.length>=2);
+      assert.ok(cut.points.every(p=>p.length===3&&p.every(Number.isFinite)));
+      assert.ok(cut.first.length===3&&cut.last.length===3);
+      prior=cut.start;
+    }
+  }
+});
+
 const game=()=>({
   state:'race',raceTime:0, resetCount:0,
   player:{s:32,d:18,h:0,wrongWay:0,airborne:false,finished:false},
