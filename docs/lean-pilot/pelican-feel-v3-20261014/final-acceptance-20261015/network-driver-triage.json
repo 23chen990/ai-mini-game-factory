@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "初始网络脚本错误地把已加载页面reload称为cold offline，并假定它一定失败；该实验没有隔离缓存或页面级CDP限速。改为独立新context、禁用ServiceWorker、唯一URL后实测离线首导航失败，联网重试恢复。",
+  "classification": [
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "QA-only branch correction, no game defect established, runtime untouched and no FIX attempt opened.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "其他游戏",
+      "历史QA"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Run preserved initial network driver: previously loaded page reused for offline reload",
+      "Run corrected driver: fresh context, serviceWorkers block, offline=true, unique URL",
+      "Reconnect original online page and confirm startup recovery"
+    ],
+    "observed": [
+      "Initial five positive checks and one unsupported cold-start assertion failure; no runtime page errors",
+      "Fresh independent cold offline navigation actually rejects; reconnect/reload and file standalone both work",
+      "Retest6/6 without changing H5"
+    ],
+    "evidence": [
+      {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network-initial/report.json",
+        "sha256": "565303e44f059e0e002b12c1dee5f9318d9027e3cb897360f621dba9c2a75142",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network/report.json",
+        "sha256": "2aaaee46948dbbe7ccc8082c34d7d6c3083bf5dc2cfca6fdabb79eafca190d84",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Preserve failed network report and driver",
+    "Cold-first-navigation branch must use a fresh uncached context",
+    "Do not claim service-worker offline support or rely on cache from an earlier navigation"
+  ],
+  "status": "CLOSED",
+  "createdAt": "2026-10-15T12:25:47.360Z"
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "entrypoint": "workspace/game/index.html",
+  "defaultMode": "five-level coast adventure",
+  "journey": [
+    "启动",
+    "five-configured-levels",
+    "unlock-save",
+    "settlement",
+    "结算",
+    "replay",
+    "重试"
+  ],
+  "coreLoop": [
+    "five-configured-levels",
+    "unlock-save"
+  ],
+  "terminal": [
+    "settlement"
+  ],
+  "replay": [
+    "replay"
+  ],
+  "runtimeWiredFiles": [
+    "workspace/game/index.html",
+    "workspace/source/pelican-bike/src/main.js",
+    "workspace/source/pelican-bike/src/coast-ui.mjs",
+    "workspace/source/pelican-bike/src/adventure.mjs",
+    "workspace/source/pelican-bike/src/levels.mjs",
+    "workspace/source/pelican-bike/src/feel.mjs",
+    "workspace/source/pelican-bike/src/safety.mjs",
+    "workspace/source/pelican-bike/src/pelican.js",
+    "workspace/source/pelican-bike/src/engagement.mjs"
+  ],
+  "legacyBehavior": {
+    "status": "COMPATIBILITY_ONLY",
+    "evidence": [
+      "Source adaptation installs the coast UI and adventure hooks on the default H5 path; legacy compatibility code remains outside the declared default journey."
+    ]
+  },
+  "browserEvidence": [
+    "attempts/attempt-20/qa-campaign-webkit/report.json",
+    "attempts/attempt-20/qa-collisions-webkit/report.json",
+    "attempts/attempt-20/experience-webkit/report.json",
+    "attempts/attempt-20/qa-campaign-chromium/report.json",
+    "attempts/attempt-20/qa-collisions-chromium/report.json",
+    "attempts/attempt-20/experience-chromium/report.json"
+  ],
+  "passed": true
+}

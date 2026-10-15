@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ci-cancel-audit-findings",
+  "targetGame": "鹈鹕海岸冒险",
+  "pr": 16,
+  "headSha": "cd808c7f09eb60df99152d72300ade9b5576039e",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "ciRuleTests": {
+    "perEngine": 108,
+    "chromiumPassed": 108,
+    "chromiumFailed": 0,
+    "webkitPassed": 108,
+    "webkitFailed": 0
+  },
+  "browsers": [
+    {
+      "engine": "chromium",
+      "apiArtifactId": 11946244641,
+      "apiZipDigest": "b8012433fc6191ce3aad1df997c6ac90ab317d16446874c325273a942f73523f",
+      "actualZipSha256": "b8012433fc6191ce3aad1df997c6ac90ab317d16446874c325273a942f73523f",
+      "apiZipDigestVerified": true,
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "indexSha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "indexMatchesBuildHash": true,
+      "experience": {
+        "checks": 22,
+        "passed": 21,
+        "failed": 1,
+        "failedCheckNames": [
+          "safe-lane-change-cancels-buffer-without-fake-mastery"
+        ]
+      },
+      "campaign": {
+        "checks": 18,
+        "passed": 18,
+        "failed": 0
+      },
+      "cancelScreenshot": {
+        "zipEntry": "attempts/attempt-1/experience-chromium/cancel-jump-safe-detour.png",
+        "sha256": "2ed287ab3c6f94e9f64d36dd11881fab982a6fe352da7e98e08c5cc745e653ad",
+        "captureClassification": "AFTER_LAUNCH"
+      }
+    },
+    {
+      "engine": "webkit",
+      "apiArtifactId": 11946149514,
+      "apiZipDigest": "64501249e51e109abb1f0e2b46610c0d3086b9fce230518c8fbce00cda0675b3",
+      "actualZipSha256": "64501249e51e109abb1f0e2b46610c0d3086b9fce230518c8fbce00cda0675b3",
+      "apiZipDigestVerified": true,
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "indexSha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "indexMatchesBuildHash": true,
+      "experience": {
+        "checks": 22,
+        "passed": 22,
+        "failed": 0,
+        "failedCheckNames": []
+      },
+      "campaign": {
+        "checks": 18,
+        "passed": 18,
+        "failed": 0
+      },
+      "cancelScreenshot": {
+        "zipEntry": "attempts/attempt-1/experience-webkit/cancel-jump-safe-detour.png",
+        "sha256": "88dc3d4ee5ca39372163e6ef60e7fa56f4854103edeb2c60fa69060d50065878",
+        "captureClassification": "AFTER_PRELAUNCH_CANCEL_BRANCH"
+      }
+    }
+  ],
+  "branchFinding": {
+    "object": "l1-o1 level-one barrier",
+    "chromium": {
+      "bufferedAt": 18.0159,
+      "bufferedDistanceM": 135.11925,
+      "jumpAt": 18.2742,
+      "jumpDistanceM": 137.0565,
+      "laneInputAt": 18.3993,
+      "laneInputDistanceM": 137.99475,
+      "laterBarrierClearJumped": false,
+      "jumpedBarriers": 0,
+      "verdict": "FAILED: jump launched before safe lane input"
+    },
+    "webkit": {
+      "bufferedAt": 17.34,
+      "bufferedDistanceM": 130.05,
+      "laneInputAt": 17.34,
+      "laneInputDistanceM": 130.05,
+      "jumpEventObserved": false,
+      "barrierClearAt": 18.803,
+      "barrierClearDistanceM": 141.0225,
+      "laterBarrierClearJumped": false,
+      "jumpedBarriers": 0,
+      "verdict": "PRELAUNCH_CANCEL_OBSERVED"
+    },
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "orientation": "portrait",
+      "deviceClass": "desktop browser touch emulation"
+    },
+    "chromiumScreenshotNote": "The captured PNG is after launch (HUD about 154/300 m) and does not prove a cancel. Preserve the failure."
+  },
+  "ciRerun": "NOT_RUN"
+}

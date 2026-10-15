@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "Natural WebKit all journey attempts visible stage1 selection after earned stage3, but subsequent events are l3-f1/l3-f3 and replay remains level3; then deliberate centre movement meets its vehicle before115. Public touch helper accepts CSS-visible bounds without confirming actual hit target or scroll clipping.",
+  "classification": [
+    "qa-false-positive",
+    "mobile-readability",
+    "failure-attribution"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Cross-engine natural branch provenance/CI input repair; must verify exact earned stage selection and normal player-visible gestures.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "full conversation",
+      "unrelated driver logs"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Read last12 trusted actions and actual l3 events after tap [data-level=1]",
+      "Compare pointer centre against route scroll clipping and actual elementFromPoint target in a focused helper reproduction",
+      "Re-run exact earned five-stage menu → stage1 selection → pedestrian/barrier cases"
+    ],
+    "observed": [
+      "Tap [data-level=1] did not select stage1; report proved actual level3 by l3-f1/l3-f3 events",
+      "CSS isVisible plus viewport-centre bounds alone do not verify that a clipped route row receives touch"
+    ],
+    "evidence": [
+      {
+        "path": "attempts/attempt-16/qa-all-webkit/report.json",
+        "sha256": "6f0ae4ec8a9edf29c684481514c1a5ce9e9c1fe2c81f1163cd0040736851543d",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Every delivered touch lands on actual requested visible control, including scroll-clipped route cards",
+    "Reveal offscreen/clipped targets with trusted touch scroll gestures; no force tap or DOM game writes",
+    "Occluded, disabled or hidden unrelated targets fail closed",
+    "Exact stage1 input and l1 collision/clearance branch observed in both full current-build journeys"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T10:01:18.914Z"
+}

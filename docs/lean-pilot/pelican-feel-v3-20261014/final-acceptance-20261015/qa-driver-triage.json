@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "新增本机验收驱动报告三星断言失败，实际18鱼5金鱼0跳障二星。先保留原始失败，区分驱动取消跳跃与游戏三星缺陷。",
+  "classification": [
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Retain formal QA evidence because validated acceptance assertion failed; QA-only diagnosis first, no generated-runtime FIX attempt or rule changes authorized by this finding.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "其他游戏",
+      "历史修复上下文",
+      "无来源录屏"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Use exact CI HTML hash 84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+      "Run archived local-acceptance driver with Chrome155,390x844,DPR3",
+      "Inspect jump-buffered at129.495m then trusted right at130.245m and exact l1-o1 passage"
+    ],
+    "observed": [
+      "Queued jump for l1-o1 exists at129.495m",
+      "Right action changes bufferedJump from l1-o1 to null at130.245m",
+      "l1-o1 and l1-o3 both cleared jumped=false; game settles two stars, 18 fish, 5 gold",
+      "Positive queued-stay-route branch has not yet been exercised by this new driver",
+      "Retest retains intended lane until real l1-o1 jumped and its l1-jump-l1-o1 prize caught; natural three stars achieved; local26 checks pass in Chrome and WebKit. Only the QA driver changed."
+    ],
+    "evidence": [
+      {
+        "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/report.json",
+        "sha256": "48ffd18d355d848b2a3f34a38f7261586709123e9bdb7774efc7e1e6a7807f81",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/04-natural-settlement.png",
+        "sha256": "a485234fe6b247725a7b06ac5a3fc58a0b754db0ccaed1d4c08dd6ac395bcf22",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/driver-source.mjs",
+        "sha256": "9c23c82a8cb06d27aaaddc1772c1b0895415c90857b66061a661acde0c3db00a",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium-retest/report.json",
+        "sha256": "dcee5c2b77010bdd43c1cf44e5f9b346d16b37928d63331aa5d03db73d125c69",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium-retest/04-natural-settlement.png",
+        "sha256": "a57d1383810d78086c0b0861573b9958da1152849eb24bb1ec8569e2185acbe5",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium-retest/driver-source.mjs",
+        "sha256": "8510e33801654aadff8d7a3125332b66118d12c953d749c58d9f8ffe75fbe1ed",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Preserve original failed driver,report,screenshots and video",
+    "Positive branch must retain intended lane until l1-o1 is jumped and its earned prize caught, with natural inputs only",
+    "Negative cancel branch must continue cancelling the jump without fake mastery",
+    "Retest exact branch without modifying game or weakening three-star assertion"
+  ],
+  "status": "CLOSED",
+  "createdAt": "2026-10-15T12:15:32.509Z"
+}

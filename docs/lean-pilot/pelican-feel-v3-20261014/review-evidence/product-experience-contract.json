@@ -1,0 +1,661 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "product-experience-contract",
+  "targetGame": "鹈鹕海岸冒险",
+  "targetRunId": "pelican-coast-v2-20261014",
+  "targetWorkspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "runtime": "web-lite",
+  "runtimeEntrypoints": [
+    "game/index.html",
+    "source/pelican-bike/src/main.js",
+    "source/pelican-bike/src/coast-ui.mjs",
+    "source/pelican-bike/src/adventure.mjs",
+    "source/pelican-bike/src/levels.mjs",
+    "source/pelican-bike/src/feel.mjs",
+    "source/pelican-bike/src/safety.mjs",
+    "source/pelican-bike/src/pelican.js",
+    "source/pelican-bike/src/engagement.mjs"
+  ],
+  "sourceArtifact": {
+    "kind": "experience-contract",
+    "path": "experience-contract.json",
+    "sha256": "654e7e32d9249a3cd538b10a68b823b95fcac6d80ad339ec84d5cdf82386ace6"
+  },
+  "features": [
+    {
+      "id": "camera-start",
+      "sourceCheckIds": [
+        "camera-start",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "start",
+      "playerAction": "Start, steer or resume/replay with visible controls",
+      "visibleSignal": "Lower-frame rider, clear forward road and stable follow framing",
+      "naturalTrigger": "Normal touch at default speed",
+      "expectedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        },
+        {
+          "width": 360,
+          "height": 740,
+          "label": "small-mobile"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "label": "compact-mobile"
+        }
+      ],
+      "negativeAssertions": [
+        "No automatic orbit",
+        "No foreground road blocked by catch feedback",
+        "No renderer/composer mismatch"
+      ],
+      "sourceEvidence": [
+        "triage.json",
+        "reproduction-matrix.json"
+      ],
+      "blockingIf": [
+        "Branch missing",
+        "Road unreadable",
+        "Default legacy mode still active"
+      ]
+    },
+    {
+      "id": "camera-running",
+      "sourceCheckIds": [
+        "camera-running",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "running",
+      "playerAction": "Start, steer or resume/replay with visible controls",
+      "visibleSignal": "Lower-frame rider, clear forward road and stable follow framing",
+      "naturalTrigger": "Normal touch at default speed",
+      "expectedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        },
+        {
+          "width": 360,
+          "height": 740,
+          "label": "small-mobile"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "label": "compact-mobile"
+        }
+      ],
+      "negativeAssertions": [
+        "No automatic orbit",
+        "No foreground road blocked by catch feedback",
+        "No renderer/composer mismatch"
+      ],
+      "sourceEvidence": [
+        "triage.json",
+        "reproduction-matrix.json"
+      ],
+      "blockingIf": [
+        "Branch missing",
+        "Road unreadable",
+        "Default legacy mode still active"
+      ]
+    },
+    {
+      "id": "camera-resume",
+      "sourceCheckIds": [
+        "camera-resume",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "resume",
+      "playerAction": "Start, steer or resume/replay with visible controls",
+      "visibleSignal": "Lower-frame rider, clear forward road and stable follow framing",
+      "naturalTrigger": "Normal touch at default speed",
+      "expectedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        },
+        {
+          "width": 360,
+          "height": 740,
+          "label": "small-mobile"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "label": "compact-mobile"
+        }
+      ],
+      "negativeAssertions": [
+        "No automatic orbit",
+        "No foreground road blocked by catch feedback",
+        "No renderer/composer mismatch"
+      ],
+      "sourceEvidence": [
+        "triage.json",
+        "reproduction-matrix.json"
+      ],
+      "blockingIf": [
+        "Branch missing",
+        "Road unreadable",
+        "Default legacy mode still active"
+      ]
+    },
+    {
+      "id": "camera-replay",
+      "sourceCheckIds": [
+        "camera-replay",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "replay",
+      "playerAction": "Start, steer or resume/replay with visible controls",
+      "visibleSignal": "Lower-frame rider, clear forward road and stable follow framing",
+      "naturalTrigger": "Normal touch at default speed",
+      "expectedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        },
+        {
+          "width": 360,
+          "height": 740,
+          "label": "small-mobile"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "label": "compact-mobile"
+        }
+      ],
+      "negativeAssertions": [
+        "No automatic orbit",
+        "No foreground road blocked by catch feedback",
+        "No renderer/composer mismatch"
+      ],
+      "sourceEvidence": [
+        "triage.json",
+        "reproduction-matrix.json"
+      ],
+      "blockingIf": [
+        "Branch missing",
+        "Road unreadable",
+        "Default legacy mode still active"
+      ]
+    },
+    {
+      "id": "vehicle-impact",
+      "sourceCheckIds": [
+        "vehicle-impact"
+      ],
+      "objectType": "vehicle-impact",
+      "stateBranch": "natural-runtime",
+      "playerAction": "Use normal mobile controls",
+      "visibleSignal": "Visible branch result and appropriate recovery",
+      "naturalTrigger": "Fresh default-speed campaign, no score/save writes",
+      "expectedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state injection",
+        "No hidden auto-complete",
+        "No false-positive avoidance"
+      ],
+      "sourceEvidence": [
+        "experience-contract.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Fixture-only evidence",
+        "Missing visible recovery"
+      ]
+    },
+    {
+      "id": "pedestrian-stun",
+      "sourceCheckIds": [
+        "pedestrian-stun"
+      ],
+      "objectType": "pedestrian-stun",
+      "stateBranch": "natural-runtime",
+      "playerAction": "Use normal mobile controls",
+      "visibleSignal": "Visible branch result and appropriate recovery",
+      "naturalTrigger": "Fresh default-speed campaign, no score/save writes",
+      "expectedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state injection",
+        "No hidden auto-complete",
+        "No false-positive avoidance"
+      ],
+      "sourceEvidence": [
+        "experience-contract.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Fixture-only evidence",
+        "Missing visible recovery"
+      ]
+    },
+    {
+      "id": "jump-clearance",
+      "sourceCheckIds": [
+        "jump-clearance"
+      ],
+      "objectType": "jump-clearance",
+      "stateBranch": "natural-runtime",
+      "playerAction": "Use normal mobile controls",
+      "visibleSignal": "Visible branch result and appropriate recovery",
+      "naturalTrigger": "Fresh default-speed campaign, no score/save writes",
+      "expectedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state injection",
+        "No hidden auto-complete",
+        "No false-positive avoidance"
+      ],
+      "sourceEvidence": [
+        "experience-contract.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Fixture-only evidence",
+        "Missing visible recovery"
+      ]
+    },
+    {
+      "id": "five-configured-levels",
+      "sourceCheckIds": [
+        "five-configured-levels"
+      ],
+      "objectType": "five-configured-levels",
+      "stateBranch": "natural-runtime",
+      "playerAction": "Use normal mobile controls",
+      "visibleSignal": "Visible branch result and appropriate recovery",
+      "naturalTrigger": "Fresh default-speed campaign, no score/save writes",
+      "expectedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state injection",
+        "No hidden auto-complete",
+        "No false-positive avoidance"
+      ],
+      "sourceEvidence": [
+        "experience-contract.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Fixture-only evidence",
+        "Missing visible recovery"
+      ]
+    },
+    {
+      "id": "unlock-save",
+      "sourceCheckIds": [
+        "unlock-save"
+      ],
+      "objectType": "unlock-save",
+      "stateBranch": "natural-runtime",
+      "playerAction": "Use normal mobile controls",
+      "visibleSignal": "Visible branch result and appropriate recovery",
+      "naturalTrigger": "Fresh default-speed campaign, no score/save writes",
+      "expectedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state injection",
+        "No hidden auto-complete",
+        "No false-positive avoidance"
+      ],
+      "sourceEvidence": [
+        "experience-contract.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Fixture-only evidence",
+        "Missing visible recovery"
+      ]
+    },
+    {
+      "id": "lane-inertia",
+      "sourceCheckIds": [
+        "lane-inertia"
+      ],
+      "objectType": "rider-bicycle-camera",
+      "stateBranch": "rapid-reversal",
+      "playerAction": "Normal touch buttons or trusted browser touch swipe; no game setters",
+      "visibleSignal": "Continuous lane arc, wheel steering/body bank, lagged stable chase",
+      "naturalTrigger": "Fresh browser at default speed",
+      "expectedEventOrder": [
+        "visible-choice",
+        "normal-touch",
+        "visible-consequence",
+        "recovery-or-replay"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state/save injection",
+        "No legacy default path",
+        "No hidden bypass of collisions"
+      ],
+      "sourceEvidence": [
+        "triage-v3.json",
+        "reproduction-matrix-v3.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Perceptual signal unreadable",
+        "Fixture-only trace"
+      ]
+    },
+    {
+      "id": "jump-choice",
+      "sourceCheckIds": [
+        "jump-choice"
+      ],
+      "objectType": "barrier-gold-route",
+      "stateBranch": "jump-and-safe-detour",
+      "playerAction": "Normal touch buttons or trusted browser touch swipe; no game setters",
+      "visibleSignal": "Amber jump-gold lane, pulsing jump affordance, extra gold feedback with safe neighbouring lane",
+      "naturalTrigger": "Fresh browser at default speed",
+      "expectedEventOrder": [
+        "visible-choice",
+        "normal-touch",
+        "visible-consequence",
+        "recovery-or-replay"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state/save injection",
+        "No legacy default path",
+        "No hidden bypass of collisions"
+      ],
+      "sourceEvidence": [
+        "triage-v3.json",
+        "reproduction-matrix-v3.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Perceptual signal unreadable",
+        "Fixture-only trace"
+      ]
+    },
+    {
+      "id": "pedestrian-forecast",
+      "sourceCheckIds": [
+        "pedestrian-forecast"
+      ],
+      "objectType": "left-and-right-pedestrian",
+      "stateBranch": "warning-before-contact",
+      "playerAction": "Normal touch buttons or trusted browser touch swipe; no game setters",
+      "visibleSignal": "Left crossing warns right lane and converse, >=2s before collision branch",
+      "naturalTrigger": "Fresh browser at default speed",
+      "expectedEventOrder": [
+        "visible-choice",
+        "normal-touch",
+        "visible-consequence",
+        "recovery-or-replay"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state/save injection",
+        "No legacy default path",
+        "No hidden bypass of collisions"
+      ],
+      "sourceEvidence": [
+        "triage-v3.json",
+        "reproduction-matrix-v3.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Perceptual signal unreadable",
+        "Fixture-only trace"
+      ]
+    },
+    {
+      "id": "first-minute-mastery",
+      "sourceCheckIds": [
+        "first-minute-mastery"
+      ],
+      "objectType": "fish-star-replay",
+      "stateBranch": "first-catch-settlement-replay",
+      "playerAction": "Normal touch buttons or trusted browser touch swipe; no game setters",
+      "visibleSignal": "Fish caught under3s, jump choice under15s, earned3star visible and saved",
+      "naturalTrigger": "Fresh browser at default speed",
+      "expectedEventOrder": [
+        "visible-choice",
+        "normal-touch",
+        "visible-consequence",
+        "recovery-or-replay"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No state/save injection",
+        "No legacy default path",
+        "No hidden bypass of collisions"
+      ],
+      "sourceEvidence": [
+        "triage-v3.json",
+        "reproduction-matrix-v3.json"
+      ],
+      "blockingIf": [
+        "Exact branch unobserved",
+        "Perceptual signal unreadable",
+        "Fixture-only trace"
+      ]
+    },
+    {
+      "id": "native-head-visible",
+      "sourceCheckIds": [
+        "native-head-visible",
+        "cold-menu-finite-pose"
+      ],
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-catch-reverse-jump-stun-replay",
+      "playerAction": "Start normally, catch fish, alternate lanes, jump, intentionally hit a pedestrian after detouring and replay",
+      "visibleSignal": "Native head, neck and helmet render as a continuous recognizable pelican; forward-facing beak follows original animation",
+      "naturalTrigger": "Normal trusted touch controls on fresh default journey",
+      "expectedEventOrder": [
+        "native-head-visible",
+        "fish-catch",
+        "reverse-jump",
+        "barrier-terminal",
+        "replay",
+        "pedestrian-stun",
+        "recovered"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        },
+        {
+          "width": 360,
+          "height": 740,
+          "label": "small-mobile"
+        },
+        {
+          "width": 844,
+          "height": 390,
+          "label": "mobile-landscape"
+        },
+        {
+          "width": 320,
+          "height": 568,
+          "label": "compact-mobile"
+        }
+      ],
+      "negativeAssertions": [
+        "No NaN model rotations from cold menu",
+        "No forced orbit or enlarged actor to mask the defect",
+        "No injected collision skip or saved unlocks"
+      ],
+      "sourceEvidence": [
+        "head-triage-v3.json",
+        "head-reproduction-matrix-v3.json"
+      ],
+      "blockingIf": [
+        "Head geometry disappears in any required branch",
+        "Missing exact-branch independent perceptual evidence"
+      ]
+    },
+    {
+      "id": "replay-mastery-records",
+      "sourceCheckIds": [
+        "saved-best-after-real-completion",
+        "route-menu-shows-earned-best-and-total-stars",
+        "first-natural-three-star-settlement"
+      ],
+      "objectType": "stage-card-and-settlement",
+      "stateBranch": "earned-completion-to-replay",
+      "playerAction": "Finish with normal touch, open earned stage cards, then replay",
+      "visibleSignal": "Earned best fish record, three-star target and total stars out of 15 visible",
+      "naturalTrigger": "Real completion and normal route/replay buttons",
+      "expectedEventOrder": [
+        "earned-settlement",
+        "visible-best-and-total-stars",
+        "replay"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "mobile-portrait"
+        }
+      ],
+      "negativeAssertions": [
+        "No save injection",
+        "No record from failed attempt",
+        "No rewards simulated as ads"
+      ],
+      "sourceEvidence": [
+        "author-update-continuation-v32.json",
+        "replay-goal-triage-v3.json"
+      ],
+      "blockingIf": [
+        "Best/goal invisible",
+        "Replay not observed",
+        "Record is synthetic"
+      ]
+    }
+  ]
+}

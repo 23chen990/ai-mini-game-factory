@@ -1,0 +1,1169 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "first-fish-feedback",
+      "vehicle-crash-display",
+      "buffered-jump-target",
+      "qa-media-binding"
+    ],
+    "lifecycleStateBranches": [
+      "cold-start",
+      "normal-failure",
+      "early-input",
+      "post-RPC-inspection",
+      "campaign-to-safety"
+    ],
+    "rendererPaths": [
+      "webkit-native-gpu",
+      "chromium-native-gpu",
+      "webkit-linux-ci-DPR1",
+      "chromium-linux-ci-DPR1",
+      "chromium-mesa-DPR1"
+    ],
+    "viewports": [
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "first-fish-feedback:cold-start:webkit-native-gpu",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:cold-start:chromium-native-gpu",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:cold-start:webkit-linux-ci-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:cold-start:chromium-linux-ci-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:normal-failure:webkit-native-gpu",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:normal-failure:chromium-native-gpu",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:normal-failure:webkit-linux-ci-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:normal-failure:chromium-linux-ci-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:early-input:webkit-native-gpu",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:early-input:chromium-native-gpu",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:early-input:webkit-linux-ci-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:early-input:chromium-linux-ci-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:post-RPC-inspection:webkit-native-gpu",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:post-RPC-inspection:chromium-native-gpu",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:post-RPC-inspection:webkit-linux-ci-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "first-fish-feedback:post-RPC-inspection:chromium-linux-ci-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:cold-start:webkit-native-gpu",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:cold-start:chromium-native-gpu",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:cold-start:webkit-linux-ci-DPR1",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:cold-start:chromium-linux-ci-DPR1",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:normal-failure:webkit-native-gpu",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:normal-failure:chromium-native-gpu",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:normal-failure:webkit-linux-ci-DPR1",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:normal-failure:chromium-linux-ci-DPR1",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:early-input:webkit-native-gpu",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:early-input:chromium-native-gpu",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:early-input:webkit-linux-ci-DPR1",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:early-input:chromium-linux-ci-DPR1",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:post-RPC-inspection:webkit-native-gpu",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:post-RPC-inspection:chromium-native-gpu",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:post-RPC-inspection:webkit-linux-ci-DPR1",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "vehicle-crash-display:post-RPC-inspection:chromium-linux-ci-DPR1",
+      "objectType": "vehicle-crash-display",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:cold-start:webkit-native-gpu",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:cold-start:chromium-native-gpu",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:cold-start:webkit-linux-ci-DPR1",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:cold-start:chromium-linux-ci-DPR1",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:normal-failure:webkit-native-gpu",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:normal-failure:chromium-native-gpu",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:normal-failure:webkit-linux-ci-DPR1",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:normal-failure:chromium-linux-ci-DPR1",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "normal-failure",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:early-input:webkit-native-gpu",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:early-input:chromium-native-gpu",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:early-input:webkit-linux-ci-DPR1",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:early-input:chromium-linux-ci-DPR1",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "early-input",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:post-RPC-inspection:webkit-native-gpu",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:post-RPC-inspection:chromium-native-gpu",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:post-RPC-inspection:webkit-linux-ci-DPR1",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-target:post-RPC-inspection:chromium-linux-ci-DPR1",
+      "objectType": "buffered-jump-target",
+      "lifecycleStateBranch": "post-RPC-inspection",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately; Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement; Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes; Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+          "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "ci8cb-queued-gold:chromium-mesa-DPR1",
+      "objectType": "first-fish-feedback",
+      "lifecycleStateBranch": "cold-start",
+      "rendererPath": "chromium-mesa-DPR1",
+      "viewport": {
+        "label": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Queued feedback visible with exact l1-o1; earned prize and control continue without capture-induced blocking.",
+      "observed": "Exact real queue samples opacity0; waiting consumed cue window and subsequent centre-lane hold collided with l1-o3; failure is preserved.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/ci-8cb6e7c-failed.log",
+          "sha256": "ec763cc34bfb638c930bb598173a14a7399c190793d70b2cd74f0047e8f809a8",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "campaign-hazard-image-overwritten:webkit",
+      "objectType": "qa-media-binding",
+      "lifecycleStateBranch": "campaign-to-safety",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact natural branch PNG hash retained across subsequent scenarios",
+      "observed": "Later safety screenshot overwrote campaign level3hazard; immutable initial report retained expectedmissinghash. Retest required; no sibling PNG substitution.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/qa-summary20-initial-media-binding-failed.json",
+          "sha256": "0b1e78a501bb26077ff7f9d3be83cf99957d3dee83788b65d66fd40110cc420c",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "campaign-hazard-image-overwritten:chromium",
+      "objectType": "qa-media-binding",
+      "lifecycleStateBranch": "campaign-to-safety",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact natural branch PNG hash retained across subsequent scenarios",
+      "observed": "Later safety screenshot overwrote campaign level3hazard; immutable initial report retained expectedmissinghash. Retest required; no sibling PNG substitution.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/qa-summary20-initial-media-binding-failed.json",
+          "sha256": "0b1e78a501bb26077ff7f9d3be83cf99957d3dee83788b65d66fd40110cc420c",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Actual17 WebKit late jump arrived at224.0025m and collided at224.1925m correctly. Crash DOM read after its650ms window reported modal visible. CI first-fish snapshot count0 at1.839 game seconds was before actual pickup at~1.86; Chromium queued inspection arrived after immediate jump at137.246m. Separate actual event/render-frame observations from slow RPC replies; use existing early input window."
+  ],
+  "remainingGaps": [
+    "Candidate18 runtime and independent perceptual retest pending",
+    "Physical devices, native menu pan, and human perceived speed remain unavailable",
+    "Latest software Chromium queue feedback not visibly observed; new public-efficient-preset CI retest required. Current native-GPU dual-engine local evidence remains separate.",
+    "Current20 campaign image binding requires full natural retest with isolated section paths; initialinvalidreports preserved."
+  ],
+  "createdAt": "2026-10-14T11:15:52.635Z"
+}

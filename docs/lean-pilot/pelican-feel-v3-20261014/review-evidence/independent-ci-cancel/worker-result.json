@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "qa-agent-completion",
+  "status": "complete",
+  "targetGame": "鹈鹕海岸冒险",
+  "pullRequest": 16,
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "summary": "The initial Chromium failure remains preserved at 21/22 with the cancellation screenshot classified AFTER_LAUNCH. Attempt 20 retests the same l1-o1 branch in Chromium and WebKit: both reports pass 22/22 with zero errors, on the unchanged H5 hash. Each trace records two ordered isTrusted touch pointerdowns (jump, then right), no jump event, buffer cleared, l1-o1 barrier-cleared with jumped=false, zero jumpedBarriers, and no change to the pre-branch save. Both exact PNG hashes and video hashes match their reports; both PNGs were visually inspected.",
+  "evidenceChecks": {
+    "initialRawCiAuditZodValidated": true,
+    "attempt20RetestStrictZodValidated": true,
+    "attempt20ReportAndMediaHashesVerified": true,
+    "attempt1ChromiumFailurePreserved": true,
+    "ciRerun": false,
+    "repositoryFilesModified": false,
+    "onlyScratchWritten": true
+  },
+  "attempt20EngineResults": [
+    {
+      "engine": "chromium",
+      "totalChecks": 22,
+      "passedChecks": 22,
+      "errors": 0,
+      "targetCheck": "safe-lane-change-cancels-buffer-without-fake-mastery",
+      "targetCheckPassed": true,
+      "trustedTouchPointerdowns": [
+        "jump",
+        "right"
+      ],
+      "jumpEvents": 0,
+      "targetBarrier": "l1-o1",
+      "targetBarrierJumped": false,
+      "jumpedBarriers": 0,
+      "preBranchSaveUnchanged": true,
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1"
+    },
+    {
+      "engine": "webkit",
+      "totalChecks": 22,
+      "passedChecks": 22,
+      "errors": 0,
+      "targetCheck": "safe-lane-change-cancels-buffer-without-fake-mastery",
+      "targetCheckPassed": true,
+      "trustedTouchPointerdowns": [
+        "jump",
+        "right"
+      ],
+      "jumpEvents": 0,
+      "targetBarrier": "l1-o1",
+      "targetBarrierJumped": false,
+      "jumpedBarriers": 0,
+      "preBranchSaveUnchanged": true,
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1"
+    }
+  ],
+  "repositoryChanges": [],
+  "scratchArtifacts": [
+    {
+      "kind": "initial-ci-findings",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/audit-findings.json",
+      "sha256": "fdc161ff1f2596feb8eaa31a9351000aac40ed60b359bedf18641bd9bdfb1c21"
+    },
+    {
+      "kind": "zod-validated-qa-issue",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/qa-issue.json",
+      "sha256": "a1b674b77335f9380bad679a6c3fbfacedca84370432df563b0f088e7805768f"
+    },
+    {
+      "kind": "zod-validated-reproduction-matrix",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/reproduction-matrix.json",
+      "sha256": "b9b688cb71b0dc7d7edb34193bfb633c6d35dacb76a663f14227692a021c7400"
+    },
+    {
+      "kind": "initial-ci-evidence-manifest",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence-manifest.json",
+      "sha256": "27c2310d3ab72a3dd999d438eda9472e2665026c88d078974acedb9a34fdc839"
+    },
+    {
+      "kind": "strict-zod-validated-attempt-20-retest",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/attempt-20-qa-retest.json",
+      "sha256": "19d94786dc93715037f3e51d4ca816cc9d4a78349b448cebbfe2e3e9eabf43b0"
+    },
+    {
+      "kind": "attempt-20-evidence-manifest",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence-manifest.json",
+      "sha256": "d456be2a2c7c5eb2b161ac6b84afd7e323ca23b6afc1fdde6298d86d9ed2b273"
+    },
+    {
+      "kind": "attempt-20-chromium-raw-report",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/chromium/report.json",
+      "sha256": "70e5285dc6a8927abf1f9bba679fc281178d1fae4bcf70894b4848231f016e89"
+    },
+    {
+      "kind": "attempt-20-chromium-cancel-screenshot",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/chromium/cancel-jump-safe-detour.png",
+      "sha256": "31a505ee2e394bfc23e3e75fbab5d69e5b3d233c7266fab12e1266e15d14b619"
+    },
+    {
+      "kind": "attempt-20-chromium-driver-source",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/chromium/driver-source.mjs",
+      "sha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7"
+    },
+    {
+      "kind": "attempt-20-webkit-raw-report",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/webkit/report.json",
+      "sha256": "be7569054815309b65a9c0ca3c86bfb9fff1e6f4b29d040f7790801a4c59867c"
+    },
+    {
+      "kind": "attempt-20-webkit-cancel-screenshot",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/webkit/cancel-jump-safe-detour.png",
+      "sha256": "de176b9ed6ed3d57b690deed77f70d21b529f4d066777010da867f4e3247a61a"
+    },
+    {
+      "kind": "attempt-20-webkit-driver-source",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/webkit/driver-source.mjs",
+      "sha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7"
+    },
+    {
+      "kind": "attempt-20-touch-sequence-helper",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/helper/touch-sequence.mjs",
+      "sha256": "49e6e4141171070bee303c69dff6de147cb99263567b0839ede7746292c76bea"
+    },
+    {
+      "kind": "attempt-20-retest-zod-validator",
+      "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/validate-retest.mts",
+      "sha256": "4437a1a0881f194bcb4598dd184850b106e2d7488fd34d03f34ec7a695bcba28"
+    }
+  ],
+  "remainingEvidenceGaps": [
+    "No physical-device run; attempt 20 uses 390x844 portrait desktop browser touch emulation."
+  ],
+  "blockers": [],
+  "createdAt": "2026-10-15T06:26:38Z",
+  "sourceScope": {
+    "baseHead": "cd808c7f09eb60df99152d72300ade9b5576039e",
+    "qaChangesCommittedAtCapture": false,
+    "identity": "exact report-bound driver-source SHA and helper SHA; not a CI pass for cd808",
+    "reportBoundDriverSha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7",
+    "helper": {
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/tools/lean-pilot/pelican-v2/touch-sequence.mjs",
+      "scratchPath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/helper/touch-sequence.mjs",
+      "sha256": "49e6e4141171070bee303c69dff6de147cb99263567b0839ede7746292c76bea"
+    }
+  }
+}

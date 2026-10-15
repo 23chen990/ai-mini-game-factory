@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "sourceCommit": "26e1e0c65894babf674710af256268be6009aed1",
+  "runtimeCodeChanged": false,
+  "htmlSha256": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+  "packageSha256": "6f4f0057515ffada6e8a83f7368e1585361dffe97e3a91d39374abd92ce33a2a",
+  "route": "QA_ONLY_NO_GENERATED_GAME_REPAIR",
+  "formalFixCompleted": false,
+  "newRepairAttempts": 0,
+  "results": {
+    "pelicanNode": "125/125 PASS after QA-only branch correction; original122/122 log retained",
+    "lint": "PASS full repository",
+    "typecheck": "PASS full repository",
+    "vitestAllRepository": "FAIL:170/188 files,974/975 assertions pass; existing17 runner mismatches and1 expired-fixture assertion",
+    "localChrome": {
+      "status": "PASS",
+      "checks": 26,
+      "version": "155.0.8059.80",
+      "performance": {
+        "scope": "Mac native GPU, uninterrupted natural level-one ride, balanced graphics, DPR3 viewport; automation/video overhead; excludes GPU fault tests and other levels",
+        "frameCount": 2401,
+        "p50FrameMs": 16.69999999999709,
+        "p95FrameMs": 16.700000000004366,
+        "meanFps": 60.00234911321026,
+        "over50ms": 0,
+        "maxFrameMs": 16.80000000000291,
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.620000000000003,
+              0.1999999999999998
+            ],
+            "quaternion": [
+              -0.056115303812105874,
+              -0.7007319156662725,
+              -0.05545708255434569,
+              0.7090489172400671
+            ],
+            "fov": 51.757820293007505
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.0011425235911252107,
+              "steer": 6.894066963548295e-41,
+              "yaw": -1.3489721233422947e-46
+            },
+            "riderRotation": [
+              -0.0011425235911252107,
+              -1.3489721233422947e-46,
+              0
+            ],
+            "frontSteeringMatrix": [
+              1,
+              -5.916368377330455e-82,
+              -6.661288376131035e-41,
+              0,
+              -5.916368377330455e-82,
+              1,
+              -1.776343566968275e-41,
+              0,
+              6.661288376131035e-41,
+              1.776343566968275e-41,
+              1,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.029497146077585207,
+              -1.049914180005862,
+              0.2937437743059966
+            ],
+            "bodyRotation": [
+              0.0013943201202222288,
+              0,
+              0.3439933575248158
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "duskRoadAmbient": 0,
+          "calls": 390,
+          "triangles": 288213,
+          "memory": {
+            "geometries": 217,
+            "textures": 19
+          }
+        }
+      }
+    },
+    "localWebKit": {
+      "status": "PASS",
+      "checks": 26,
+      "version": "26.5",
+      "performance": {
+        "scope": "Mac native GPU, uninterrupted natural level-one ride, balanced graphics, DPR3 viewport; automation/video overhead; excludes GPU fault tests and other levels",
+        "frameCount": 2399,
+        "p50FrameMs": 17,
+        "p95FrameMs": 22,
+        "meanFps": 60.00050021259035,
+        "over50ms": 0,
+        "maxFrameMs": 30,
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.620000000000002,
+              0.19999999999999982
+            ],
+            "quaternion": [
+              -0.056115303812105846,
+              -0.7007319156662725,
+              -0.055457082554345664,
+              0.7090489172400671
+            ],
+            "fov": 51.755545269262406
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.0012336358794153325,
+              "steer": 8.717256354471841e-41,
+              "yaw": -1.7939930446582782e-46
+            },
+            "riderRotation": [
+              -0.0012336358794153325,
+              -1.7939930446582782e-46,
+              0
+            ],
+            "frontSteeringMatrix": [
+              1,
+              -9.459405603682116e-82,
+              -8.422917667151681e-41,
+              0,
+              -9.459405603682116e-82,
+              1,
+              -2.2461113779071137e-41,
+              0,
+              8.422917667151681e-41,
+              2.2461113779071137e-41,
+              1,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.029592446111549476,
+              -1.0499114501846132,
+              0.2937580764808892
+            ],
+            "bodyRotation": [
+              -0.00019085682232282305,
+              0,
+              0.3438908617551392
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "duskRoadAmbient": 0,
+          "calls": 390,
+          "triangles": 288213,
+          "memory": {
+            "geometries": 216,
+            "textures": 19
+          }
+        }
+      }
+    },
+    "network": {
+      "status": "PASS",
+      "checks": 6,
+      "weakStartupMs": 6034
+    },
+    "desktopSoak": {
+      "passed": true,
+      "checkCount": 28,
+      "wallSeconds": 303.864,
+      "scope": "Continuous desktop Mac Metal campaign, five natural levels earned in one browser without save injection; not phone thermal/long-session certification",
+      "levels": [
+        {
+          "id": 1,
+          "reason": "complete",
+          "count": 20,
+          "performance": {
+            "frameCount": 4471,
+            "meanFps": 119.09391664757337,
+            "p95Ms": 8.799999999999272,
+            "scope": "Natural default-speed running route between visible start and settlement"
+          }
+        },
+        {
+          "id": 2,
+          "reason": "complete",
+          "count": 26,
+          "performance": {
+            "frameCount": 6041,
+            "meanFps": 119.31048375947512,
+            "p95Ms": 8.89999999999418,
+            "scope": "Natural default-speed running route between visible start and settlement"
+          }
+        },
+        {
+          "id": 3,
+          "reason": "complete",
+          "count": 33,
+          "performance": {
+            "frameCount": 7109,
+            "meanFps": 119.41015515425558,
+            "p95Ms": 9.60000000000582,
+            "scope": "Natural default-speed running route between visible start and settlement"
+          }
+        },
+        {
+          "id": 4,
+          "reason": "complete",
+          "count": 31,
+          "performance": {
+            "frameCount": 7963,
+            "meanFps": 119.48670085859968,
+            "p95Ms": 9.699999999982538,
+            "scope": "Natural default-speed running route between visible start and settlement"
+          }
+        },
+        {
+          "id": 5,
+          "reason": "complete",
+          "count": 36,
+          "performance": {
+            "frameCount": 8749,
+            "meanFps": 119.61663613245467,
+            "p95Ms": 9.800000000017462,
+            "scope": "Natural default-speed running route between visible start and settlement"
+          }
+        }
+      ],
+      "errors": []
+    },
+    "backgroundLifecycle": "BLOCKED: two independent actual-window/app activation probes produced no browser blur/hidden event",
+    "physicalPhone": "NOT_RUN: user owns updatedP1",
+    "humanPlaytest": "NOT_RUN: blank two-player form delivered",
+    "delivery849687fCi": "Factory success;WebKit success;Chromium ordinary-cancel aggregate fails after actual pedestrian stun. Exact failed trace retained in ci-followup. Subsequent CI must be independently checked.",
+    "stunnedCancellation": "EXISTING_RULE_NOT_CHANGED; trusted cancel received during stun, steering ignored; subjective phone behavior NOT_RUN"
+  },
+  "internalPlaytest": "READY_TO_BEGIN_SMALL_CONTROLLED_PLAYTEST",
+  "formalRelease": "BLOCKED",
+  "minimumUserAction": "Open LAN URL on a real phone, play three rounds and report model/browser/first issue; then invite two uncoached first-time players. No account purchase/deployment needed for this local test.",
+  "latestDeliveryCi": "See final-acceptance banner on PR16 and final chat; sourceCommit CI evidence is separately pinned in ci-verification.json.",
+  "qaOnlyChangedPaths": [
+    "tools/lean-pilot/pelican-v2/experience-qa.mjs",
+    "tools/lean-pilot/pelican-v2/experience-policy.mjs",
+    "tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs"
+  ]
+}

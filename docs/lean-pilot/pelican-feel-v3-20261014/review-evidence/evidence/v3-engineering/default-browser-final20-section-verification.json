@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "method": "Every current screenshot binding was read and SHA-256 verified after isolated scenario captures; no overwritten sibling PNG substitutions. All full reports have errors=[]; only named unobservable background-signal checks remain BLOCKED by separate lifecycle evidence.",
+  "reports": [
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/report.json",
+      "sha256": "14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71",
+      "checks": 34,
+      "passed": 32,
+      "environmentBlocked": [
+        "tab-blur-pauses",
+        "background-manual-resume"
+      ],
+      "errors": 0,
+      "naturalInputOnly": true,
+      "stateInjection": false,
+      "screenshots": 36
+    },
+    {
+      "path": "attempts/attempt-20/qa-campaign-webkit/report.json",
+      "sha256": "dbcd783ca35e876a3b9ccc18d643e001869ea359c6df1c2b06acb7f73064b1f7",
+      "checks": 18,
+      "passed": 18,
+      "environmentBlocked": [],
+      "errors": 0,
+      "naturalInputOnly": true,
+      "stateInjection": false,
+      "screenshots": 19
+    },
+    {
+      "path": "attempts/attempt-20/qa-collisions-webkit/report.json",
+      "sha256": "1d1407239bc0dc4a59b1a5140305ad75347003839c1f0d2b523062d19e30f033",
+      "checks": 9,
+      "passed": 9,
+      "environmentBlocked": [],
+      "errors": 0,
+      "naturalInputOnly": true,
+      "stateInjection": false,
+      "screenshots": 10
+    },
+    {
+      "path": "attempts/attempt-20/qa-safety-webkit/report.json",
+      "sha256": "916fc9205b8a8a5b3b47c1be9759d8b564339374b0a6563b6926c56ee51e7b99",
+      "checks": 7,
+      "passed": 5,
+      "environmentBlocked": [
+        "tab-blur-pauses",
+        "background-manual-resume"
+      ],
+      "errors": 0,
+      "naturalInputOnly": true,
+      "stateInjection": false,
+      "screenshots": 7
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/report.json",
+      "sha256": "171ab0209dfd285df1ba7b77cda07ba12774fb1da37e01c5ca9cdbcd2c6ea99b",
+      "checks": 34,
+      "passed": 32,
+      "environmentBlocked": [
+        "tab-blur-pauses",
+        "background-manual-resume"
+      ],
+      "errors": 0,
+      "naturalInputOnly": true,
+      "stateInjection": false,
+      "screenshots": 36
+    },
+    {
+      "path": "attempts/attempt-20/qa-campaign-chromium/report.json",
+      "sha256": "0c6a4ab643f1fd7cefa2c04c872b5cc8a927deb57ee31970765f894b18dda481",
+      "checks": 18,
+      "passed": 18,
+      "environmentBlocked": [],
+      "errors": 0,
+      "naturalInputOnly": true,
+      "stateInjection": false,
+      "screenshots": 19
+    },
+    {
+      "path": "attempts/attempt-20/qa-collisions-chromium/report.json",
+      "sha256": "f40802319d19bdfcf1e68682bc6085832a30d94916c3446aad24bf2929928c17",
+      "checks": 9,
+      "passed": 9,
+      "environmentBlocked": [],
+      "errors": 0,
+      "naturalInputOnly": true,
+      "stateInjection": false,
+      "screenshots": 10
+    },
+    {
+      "path": "attempts/attempt-20/qa-safety-chromium/report.json",
+      "sha256": "0aaa83c14c9828859f323938a685477917c0e49070ad97d587eda66907508c23",
+      "checks": 7,
+      "passed": 5,
+      "environmentBlocked": [
+        "tab-blur-pauses",
+        "background-manual-resume"
+      ],
+      "errors": 0,
+      "naturalInputOnly": true,
+      "stateInjection": false,
+      "screenshots": 7
+    }
+  ]
+}

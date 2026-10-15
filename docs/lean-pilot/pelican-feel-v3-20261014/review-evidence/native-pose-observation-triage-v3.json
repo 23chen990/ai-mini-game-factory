@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "Independent17 motion review saw body response and containment but could not verify the occluded front fork and lacked V3 head/steer channels. Copy actual native mesh joint values into existing read-only renderInfo for natural screenshot/state brackets; do not return mutable scene objects or finite substitutes.",
+  "classification": [
+    "qa-false-positive",
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Cross-engine natural input and native-renderer evidence gap requires formal QA retest; only causally connected QA/readonly pose files modified.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "full conversation",
+      "unrelated factory history"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Read exact object/state renderer report and native pixels",
+      "Compare actual input/event time with the inspection reply",
+      "Retest normal input on the new build with hash-bound copied native joints"
+    ],
+    "observed": [
+      "Independent17 motion review saw body response and containment but could not verify the occluded front fork and lacked V3 head/steer channels. Copy actual native mesh joint values into existing read-only renderInfo for natural screenshot/state brackets; do not return mutable scene objects or finite substitutes."
+    ],
+    "evidence": [
+      {
+        "path": "evidence/v3-engineering/motion-review-final17.json",
+        "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Copied native bank/heading equals requested S values within1e-6 in all12running brackets",
+    "Native16matrix steering angle matches requested steering, with nonzero actual turn and bank",
+    "All actual head/body joint angles finite; invalid native values remain detectable",
+    "Matched normal pixels and independent perceptual review; no injected pose/camera state"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T11:15:52.639Z"
+}

@@ -1,0 +1,2266 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "runId": "pelican-coast-v2-20261014",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "attempt": 20,
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "route": "formal-fixer",
+  "status": "BLOCKED_RELEASE",
+  "scriptedCoreJourneyPassed": true,
+  "desktopBrowserEvidencePassed": true,
+  "lifecycleSupportedChecksPassed": true,
+  "desktopBackgroundEvidence": "BLOCKED_ENVIRONMENT_SIGNAL_UNAVAILABLE",
+  "independentPerceptualPassed": true,
+  "runtimeProductJourneyPassed": true,
+  "releaseReady": false,
+  "productionReady": false,
+  "readiness": {
+    "h5DevicePlaytestCandidate": true,
+    "physicalDevice": false,
+    "liveAds": false,
+    "nativePackages": false,
+    "production": false
+  },
+  "levels": [
+    {
+      "level": 1,
+      "distance": 300,
+      "fish": 20,
+      "gold": 5,
+      "elapsedSeconds": 40.00066666666482,
+      "result": "complete",
+      "unlocked": 2
+    },
+    {
+      "level": 2,
+      "distance": 420,
+      "fish": 26,
+      "gold": 5,
+      "elapsedSeconds": 52.504333333329924,
+      "result": "complete",
+      "unlocked": 3
+    },
+    {
+      "level": 3,
+      "distance": 540,
+      "fish": 34,
+      "gold": 7,
+      "elapsedSeconds": 61.37066666666231,
+      "result": "complete",
+      "unlocked": 4
+    },
+    {
+      "level": 4,
+      "distance": 630,
+      "fish": 31,
+      "gold": 7,
+      "elapsedSeconds": 68.48333333333075,
+      "result": "complete",
+      "unlocked": 5
+    },
+    {
+      "level": 5,
+      "distance": 720,
+      "fish": 36,
+      "gold": 6,
+      "elapsedSeconds": 75.00066666666841,
+      "result": "complete",
+      "unlocked": 5
+    }
+  ],
+  "productContract": {
+    "path": "product-experience-contract.json",
+    "sha256": "25eb3f9bfc25156f0c21c07e03016301c7b37ecaf5812d41d623bd9901b76e02",
+    "featureCount": 15,
+    "requiredCaseCount": 30,
+    "runtimeEntrypoints": [
+      "game/index.html",
+      "source/pelican-bike/src/main.js",
+      "source/pelican-bike/src/coast-ui.mjs",
+      "source/pelican-bike/src/adventure.mjs",
+      "source/pelican-bike/src/levels.mjs",
+      "source/pelican-bike/src/feel.mjs",
+      "source/pelican-bike/src/safety.mjs",
+      "source/pelican-bike/src/pelican.js",
+      "source/pelican-bike/src/engagement.mjs"
+    ]
+  },
+  "reports": [
+    {
+      "kind": "campaign",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/qa-campaign-webkit/report.json",
+      "sha256": "dbcd783ca35e876a3b9ccc18d643e001869ea359c6df1c2b06acb7f73064b1f7",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "collision",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/qa-collisions-webkit/report.json",
+      "sha256": "1d1407239bc0dc4a59b1a5140305ad75347003839c1f0d2b523062d19e30f033",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "experience",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/experience-webkit/report.json",
+      "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "head",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/head-webkit/report.json",
+      "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "risk",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/risk-webkit/report.json",
+      "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854",
+      "status": "PASS",
+      "blockers": [],
+      "classification": {
+        "targetCount": 12,
+        "targetsByLevel": [
+          {
+            "level": 1,
+            "count": 2,
+            "barrierIds": [
+              "l1-o1",
+              "l1-o3"
+            ]
+          },
+          {
+            "level": 2,
+            "count": 2,
+            "barrierIds": [
+              "l2-o3",
+              "l2-o5"
+            ]
+          },
+          {
+            "level": 3,
+            "count": 2,
+            "barrierIds": [
+              "l3-o3",
+              "l3-o5"
+            ]
+          },
+          {
+            "level": 4,
+            "count": 3,
+            "barrierIds": [
+              "l4-o3",
+              "l4-o5",
+              "l4-o10"
+            ]
+          },
+          {
+            "level": 5,
+            "count": 3,
+            "barrierIds": [
+              "l5-o3",
+              "l5-o5",
+              "l5-o10"
+            ]
+          }
+        ],
+        "barrierEvidence": [
+          {
+            "level": 1,
+            "barrierId": "l1-o1",
+            "goldFishId": "l1-jump-l1-o1",
+            "checks": [
+              "level-1-l1-o1-visible-jump-reward-route",
+              "level-1-l1-o1-one-jump-at-decimal-window",
+              "level-1-l1-o1-no-repeat-jump",
+              "level-1-l1-o1-exact-barrier-cleared-jumped",
+              "level-1-l1-o1-exact-golden-bonus-fish-maps-to-barrier",
+              "level-1-l1-o1-gold-feedback-visible-in-hud",
+              "level-1-l1-o1-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-14",
+            "goldFishSnapshotId": "snapshot-15",
+            "barrierEventObjectId": "l1-o1",
+            "goldFishEventObjectId": "l1-jump-l1-o1",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 1,
+            "barrierId": "l1-o3",
+            "goldFishId": "l1-jump-l1-o3",
+            "checks": [
+              "level-1-l1-o3-visible-jump-reward-route",
+              "level-1-l1-o3-one-jump-at-decimal-window",
+              "level-1-l1-o3-no-repeat-jump",
+              "level-1-l1-o3-exact-barrier-cleared-jumped",
+              "level-1-l1-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-1-l1-o3-gold-feedback-visible-in-hud",
+              "level-1-l1-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-23",
+            "goldFishSnapshotId": "snapshot-24",
+            "barrierEventObjectId": "l1-o3",
+            "goldFishEventObjectId": "l1-jump-l1-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 2,
+            "barrierId": "l2-o3",
+            "goldFishId": "l2-jump-l2-o3",
+            "checks": [
+              "level-2-l2-o3-visible-jump-reward-route",
+              "level-2-l2-o3-one-jump-at-decimal-window",
+              "level-2-l2-o3-no-repeat-jump",
+              "level-2-l2-o3-exact-barrier-cleared-jumped",
+              "level-2-l2-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-2-l2-o3-gold-feedback-visible-in-hud",
+              "level-2-l2-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-49",
+            "goldFishSnapshotId": "snapshot-50",
+            "barrierEventObjectId": "l2-o3",
+            "goldFishEventObjectId": "l2-jump-l2-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 2,
+            "barrierId": "l2-o5",
+            "goldFishId": "l2-jump-l2-o5",
+            "checks": [
+              "level-2-l2-o5-visible-jump-reward-route",
+              "level-2-l2-o5-one-jump-at-decimal-window",
+              "level-2-l2-o5-no-repeat-jump",
+              "level-2-l2-o5-exact-barrier-cleared-jumped",
+              "level-2-l2-o5-exact-golden-bonus-fish-maps-to-barrier",
+              "level-2-l2-o5-gold-feedback-visible-in-hud",
+              "level-2-l2-o5-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-60",
+            "goldFishSnapshotId": "snapshot-61",
+            "barrierEventObjectId": "l2-o5",
+            "goldFishEventObjectId": "l2-jump-l2-o5",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 3,
+            "barrierId": "l3-o3",
+            "goldFishId": "l3-jump-l3-o3",
+            "checks": [
+              "level-3-l3-o3-visible-jump-reward-route",
+              "level-3-l3-o3-one-jump-at-decimal-window",
+              "level-3-l3-o3-no-repeat-jump",
+              "level-3-l3-o3-exact-barrier-cleared-jumped",
+              "level-3-l3-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-3-l3-o3-gold-feedback-visible-in-hud",
+              "level-3-l3-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-90",
+            "goldFishSnapshotId": "snapshot-91",
+            "barrierEventObjectId": "l3-o3",
+            "goldFishEventObjectId": "l3-jump-l3-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 3,
+            "barrierId": "l3-o5",
+            "goldFishId": "l3-jump-l3-o5",
+            "checks": [
+              "level-3-l3-o5-visible-jump-reward-route",
+              "level-3-l3-o5-one-jump-at-decimal-window",
+              "level-3-l3-o5-no-repeat-jump",
+              "level-3-l3-o5-exact-barrier-cleared-jumped",
+              "level-3-l3-o5-exact-golden-bonus-fish-maps-to-barrier",
+              "level-3-l3-o5-gold-feedback-visible-in-hud",
+              "level-3-l3-o5-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-105",
+            "goldFishSnapshotId": "snapshot-106",
+            "barrierEventObjectId": "l3-o5",
+            "goldFishEventObjectId": "l3-jump-l3-o5",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 4,
+            "barrierId": "l4-o3",
+            "goldFishId": "l4-jump-l4-o3",
+            "checks": [
+              "level-4-l4-o3-visible-jump-reward-route",
+              "level-4-l4-o3-one-jump-at-decimal-window",
+              "level-4-l4-o3-no-repeat-jump",
+              "level-4-l4-o3-exact-barrier-cleared-jumped",
+              "level-4-l4-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-4-l4-o3-gold-feedback-visible-in-hud",
+              "level-4-l4-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-137",
+            "goldFishSnapshotId": "snapshot-138",
+            "barrierEventObjectId": "l4-o3",
+            "goldFishEventObjectId": "l4-jump-l4-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 4,
+            "barrierId": "l4-o5",
+            "goldFishId": "l4-jump-l4-o5",
+            "checks": [
+              "level-4-l4-o5-visible-jump-reward-route",
+              "level-4-l4-o5-one-jump-at-decimal-window",
+              "level-4-l4-o5-no-repeat-jump",
+              "level-4-l4-o5-exact-barrier-cleared-jumped",
+              "level-4-l4-o5-exact-golden-bonus-fish-maps-to-barrier",
+              "level-4-l4-o5-gold-feedback-visible-in-hud",
+              "level-4-l4-o5-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-146",
+            "goldFishSnapshotId": "snapshot-147",
+            "barrierEventObjectId": "l4-o5",
+            "goldFishEventObjectId": "l4-jump-l4-o5",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 4,
+            "barrierId": "l4-o10",
+            "goldFishId": "l4-jump-l4-o10",
+            "checks": [
+              "level-4-l4-o10-visible-jump-reward-route",
+              "level-4-l4-o10-one-jump-at-decimal-window",
+              "level-4-l4-o10-no-repeat-jump",
+              "level-4-l4-o10-exact-barrier-cleared-jumped",
+              "level-4-l4-o10-exact-golden-bonus-fish-maps-to-barrier",
+              "level-4-l4-o10-gold-feedback-visible-in-hud",
+              "level-4-l4-o10-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-157",
+            "goldFishSnapshotId": "snapshot-158",
+            "barrierEventObjectId": "l4-o10",
+            "goldFishEventObjectId": "l4-jump-l4-o10",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 5,
+            "barrierId": "l5-o3",
+            "goldFishId": "l5-jump-l5-o3",
+            "checks": [
+              "level-5-l5-o3-visible-jump-reward-route",
+              "level-5-l5-o3-one-jump-at-decimal-window",
+              "level-5-l5-o3-no-repeat-jump",
+              "level-5-l5-o3-exact-barrier-cleared-jumped",
+              "level-5-l5-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-5-l5-o3-gold-feedback-visible-in-hud",
+              "level-5-l5-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-183",
+            "goldFishSnapshotId": "snapshot-184",
+            "barrierEventObjectId": "l5-o3",
+            "goldFishEventObjectId": "l5-jump-l5-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 5,
+            "barrierId": "l5-o5",
+            "goldFishId": "l5-jump-l5-o5",
+            "checks": [
+              "level-5-l5-o5-visible-jump-reward-route",
+              "level-5-l5-o5-one-jump-at-decimal-window",
+              "level-5-l5-o5-no-repeat-jump",
+              "level-5-l5-o5-exact-barrier-cleared-jumped",
+              "level-5-l5-o5-exact-golden-bonus-fish-maps-to-barrier",
+              "level-5-l5-o5-gold-feedback-visible-in-hud",
+              "level-5-l5-o5-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-194",
+            "goldFishSnapshotId": "snapshot-195",
+            "barrierEventObjectId": "l5-o5",
+            "goldFishEventObjectId": "l5-jump-l5-o5",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 5,
+            "barrierId": "l5-o10",
+            "goldFishId": "l5-jump-l5-o10",
+            "checks": [
+              "level-5-l5-o10-visible-jump-reward-route",
+              "level-5-l5-o10-one-jump-at-decimal-window",
+              "level-5-l5-o10-no-repeat-jump",
+              "level-5-l5-o10-exact-barrier-cleared-jumped",
+              "level-5-l5-o10-exact-golden-bonus-fish-maps-to-barrier",
+              "level-5-l5-o10-gold-feedback-visible-in-hud",
+              "level-5-l5-o10-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-211",
+            "goldFishSnapshotId": "snapshot-212",
+            "barrierEventObjectId": "l5-o10",
+            "goldFishEventObjectId": "l5-jump-l5-o10",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          }
+        ],
+        "settlements": [
+          {
+            "level": 1,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          },
+          {
+            "level": 2,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          },
+          {
+            "level": 3,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          },
+          {
+            "level": 4,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          },
+          {
+            "level": 5,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          }
+        ],
+        "replayObserved": true
+      }
+    },
+    {
+      "kind": "feel-state",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/report.json",
+      "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "campaign",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/qa-campaign-chromium/report.json",
+      "sha256": "0c6a4ab643f1fd7cefa2c04c872b5cc8a927deb57ee31970765f894b18dda481",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "collision",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/qa-collisions-chromium/report.json",
+      "sha256": "f40802319d19bdfcf1e68682bc6085832a30d94916c3446aad24bf2929928c17",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "experience",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/experience-chromium/report.json",
+      "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "head",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/head-chromium/report.json",
+      "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "risk",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486",
+      "status": "PASS",
+      "blockers": [],
+      "classification": {
+        "targetCount": 12,
+        "targetsByLevel": [
+          {
+            "level": 1,
+            "count": 2,
+            "barrierIds": [
+              "l1-o1",
+              "l1-o3"
+            ]
+          },
+          {
+            "level": 2,
+            "count": 2,
+            "barrierIds": [
+              "l2-o3",
+              "l2-o5"
+            ]
+          },
+          {
+            "level": 3,
+            "count": 2,
+            "barrierIds": [
+              "l3-o3",
+              "l3-o5"
+            ]
+          },
+          {
+            "level": 4,
+            "count": 3,
+            "barrierIds": [
+              "l4-o3",
+              "l4-o5",
+              "l4-o10"
+            ]
+          },
+          {
+            "level": 5,
+            "count": 3,
+            "barrierIds": [
+              "l5-o3",
+              "l5-o5",
+              "l5-o10"
+            ]
+          }
+        ],
+        "barrierEvidence": [
+          {
+            "level": 1,
+            "barrierId": "l1-o1",
+            "goldFishId": "l1-jump-l1-o1",
+            "checks": [
+              "level-1-l1-o1-visible-jump-reward-route",
+              "level-1-l1-o1-one-jump-at-decimal-window",
+              "level-1-l1-o1-no-repeat-jump",
+              "level-1-l1-o1-exact-barrier-cleared-jumped",
+              "level-1-l1-o1-exact-golden-bonus-fish-maps-to-barrier",
+              "level-1-l1-o1-gold-feedback-visible-in-hud",
+              "level-1-l1-o1-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-14",
+            "goldFishSnapshotId": "snapshot-15",
+            "barrierEventObjectId": "l1-o1",
+            "goldFishEventObjectId": "l1-jump-l1-o1",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 1,
+            "barrierId": "l1-o3",
+            "goldFishId": "l1-jump-l1-o3",
+            "checks": [
+              "level-1-l1-o3-visible-jump-reward-route",
+              "level-1-l1-o3-one-jump-at-decimal-window",
+              "level-1-l1-o3-no-repeat-jump",
+              "level-1-l1-o3-exact-barrier-cleared-jumped",
+              "level-1-l1-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-1-l1-o3-gold-feedback-visible-in-hud",
+              "level-1-l1-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-23",
+            "goldFishSnapshotId": "snapshot-24",
+            "barrierEventObjectId": "l1-o3",
+            "goldFishEventObjectId": "l1-jump-l1-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 2,
+            "barrierId": "l2-o3",
+            "goldFishId": "l2-jump-l2-o3",
+            "checks": [
+              "level-2-l2-o3-visible-jump-reward-route",
+              "level-2-l2-o3-one-jump-at-decimal-window",
+              "level-2-l2-o3-no-repeat-jump",
+              "level-2-l2-o3-exact-barrier-cleared-jumped",
+              "level-2-l2-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-2-l2-o3-gold-feedback-visible-in-hud",
+              "level-2-l2-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-49",
+            "goldFishSnapshotId": "snapshot-50",
+            "barrierEventObjectId": "l2-o3",
+            "goldFishEventObjectId": "l2-jump-l2-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 2,
+            "barrierId": "l2-o5",
+            "goldFishId": "l2-jump-l2-o5",
+            "checks": [
+              "level-2-l2-o5-visible-jump-reward-route",
+              "level-2-l2-o5-one-jump-at-decimal-window",
+              "level-2-l2-o5-no-repeat-jump",
+              "level-2-l2-o5-exact-barrier-cleared-jumped",
+              "level-2-l2-o5-exact-golden-bonus-fish-maps-to-barrier",
+              "level-2-l2-o5-gold-feedback-visible-in-hud",
+              "level-2-l2-o5-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-60",
+            "goldFishSnapshotId": "snapshot-61",
+            "barrierEventObjectId": "l2-o5",
+            "goldFishEventObjectId": "l2-jump-l2-o5",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 3,
+            "barrierId": "l3-o3",
+            "goldFishId": "l3-jump-l3-o3",
+            "checks": [
+              "level-3-l3-o3-visible-jump-reward-route",
+              "level-3-l3-o3-one-jump-at-decimal-window",
+              "level-3-l3-o3-no-repeat-jump",
+              "level-3-l3-o3-exact-barrier-cleared-jumped",
+              "level-3-l3-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-3-l3-o3-gold-feedback-visible-in-hud",
+              "level-3-l3-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-90",
+            "goldFishSnapshotId": "snapshot-91",
+            "barrierEventObjectId": "l3-o3",
+            "goldFishEventObjectId": "l3-jump-l3-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 3,
+            "barrierId": "l3-o5",
+            "goldFishId": "l3-jump-l3-o5",
+            "checks": [
+              "level-3-l3-o5-visible-jump-reward-route",
+              "level-3-l3-o5-one-jump-at-decimal-window",
+              "level-3-l3-o5-no-repeat-jump",
+              "level-3-l3-o5-exact-barrier-cleared-jumped",
+              "level-3-l3-o5-exact-golden-bonus-fish-maps-to-barrier",
+              "level-3-l3-o5-gold-feedback-visible-in-hud",
+              "level-3-l3-o5-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-105",
+            "goldFishSnapshotId": "snapshot-106",
+            "barrierEventObjectId": "l3-o5",
+            "goldFishEventObjectId": "l3-jump-l3-o5",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 4,
+            "barrierId": "l4-o3",
+            "goldFishId": "l4-jump-l4-o3",
+            "checks": [
+              "level-4-l4-o3-visible-jump-reward-route",
+              "level-4-l4-o3-one-jump-at-decimal-window",
+              "level-4-l4-o3-no-repeat-jump",
+              "level-4-l4-o3-exact-barrier-cleared-jumped",
+              "level-4-l4-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-4-l4-o3-gold-feedback-visible-in-hud",
+              "level-4-l4-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-133",
+            "goldFishSnapshotId": "snapshot-134",
+            "barrierEventObjectId": "l4-o3",
+            "goldFishEventObjectId": "l4-jump-l4-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 4,
+            "barrierId": "l4-o5",
+            "goldFishId": "l4-jump-l4-o5",
+            "checks": [
+              "level-4-l4-o5-visible-jump-reward-route",
+              "level-4-l4-o5-one-jump-at-decimal-window",
+              "level-4-l4-o5-no-repeat-jump",
+              "level-4-l4-o5-exact-barrier-cleared-jumped",
+              "level-4-l4-o5-exact-golden-bonus-fish-maps-to-barrier",
+              "level-4-l4-o5-gold-feedback-visible-in-hud",
+              "level-4-l4-o5-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-142",
+            "goldFishSnapshotId": "snapshot-143",
+            "barrierEventObjectId": "l4-o5",
+            "goldFishEventObjectId": "l4-jump-l4-o5",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 4,
+            "barrierId": "l4-o10",
+            "goldFishId": "l4-jump-l4-o10",
+            "checks": [
+              "level-4-l4-o10-visible-jump-reward-route",
+              "level-4-l4-o10-one-jump-at-decimal-window",
+              "level-4-l4-o10-no-repeat-jump",
+              "level-4-l4-o10-exact-barrier-cleared-jumped",
+              "level-4-l4-o10-exact-golden-bonus-fish-maps-to-barrier",
+              "level-4-l4-o10-gold-feedback-visible-in-hud",
+              "level-4-l4-o10-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-153",
+            "goldFishSnapshotId": "snapshot-154",
+            "barrierEventObjectId": "l4-o10",
+            "goldFishEventObjectId": "l4-jump-l4-o10",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 5,
+            "barrierId": "l5-o3",
+            "goldFishId": "l5-jump-l5-o3",
+            "checks": [
+              "level-5-l5-o3-visible-jump-reward-route",
+              "level-5-l5-o3-one-jump-at-decimal-window",
+              "level-5-l5-o3-no-repeat-jump",
+              "level-5-l5-o3-exact-barrier-cleared-jumped",
+              "level-5-l5-o3-exact-golden-bonus-fish-maps-to-barrier",
+              "level-5-l5-o3-gold-feedback-visible-in-hud",
+              "level-5-l5-o3-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-181",
+            "goldFishSnapshotId": "snapshot-182",
+            "barrierEventObjectId": "l5-o3",
+            "goldFishEventObjectId": "l5-jump-l5-o3",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 5,
+            "barrierId": "l5-o5",
+            "goldFishId": "l5-jump-l5-o5",
+            "checks": [
+              "level-5-l5-o5-visible-jump-reward-route",
+              "level-5-l5-o5-one-jump-at-decimal-window",
+              "level-5-l5-o5-no-repeat-jump",
+              "level-5-l5-o5-exact-barrier-cleared-jumped",
+              "level-5-l5-o5-exact-golden-bonus-fish-maps-to-barrier",
+              "level-5-l5-o5-gold-feedback-visible-in-hud",
+              "level-5-l5-o5-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-192",
+            "goldFishSnapshotId": "snapshot-193",
+            "barrierEventObjectId": "l5-o5",
+            "goldFishEventObjectId": "l5-jump-l5-o5",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          },
+          {
+            "level": 5,
+            "barrierId": "l5-o10",
+            "goldFishId": "l5-jump-l5-o10",
+            "checks": [
+              "level-5-l5-o10-visible-jump-reward-route",
+              "level-5-l5-o10-one-jump-at-decimal-window",
+              "level-5-l5-o10-no-repeat-jump",
+              "level-5-l5-o10-exact-barrier-cleared-jumped",
+              "level-5-l5-o10-exact-golden-bonus-fish-maps-to-barrier",
+              "level-5-l5-o10-gold-feedback-visible-in-hud",
+              "level-5-l5-o10-held-route-through-bonus-fish"
+            ],
+            "barrierSnapshotId": "snapshot-209",
+            "goldFishSnapshotId": "snapshot-210",
+            "barrierEventObjectId": "l5-o10",
+            "goldFishEventObjectId": "l5-jump-l5-o10",
+            "goldFishGolden": true,
+            "goldFishBonus": true,
+            "naturalJumpPassed": true
+          }
+        ],
+        "settlements": [
+          {
+            "level": 1,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          },
+          {
+            "level": 2,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          },
+          {
+            "level": 3,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          },
+          {
+            "level": 4,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          },
+          {
+            "level": 5,
+            "status": "PASS",
+            "completionEvent": true,
+            "earnedSave": true
+          }
+        ],
+        "replayObserved": true
+      }
+    },
+    {
+      "kind": "feel-state",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/report.json",
+      "sha256": "b0f84adf452f57a64c050bbdd78e29a6c70a848f42985941d1b328dc43bcdbcd",
+      "status": "PASS",
+      "blockers": [],
+      "classification": null
+    },
+    {
+      "kind": "visual",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/visual/report.json",
+      "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+      "status": "PASS",
+      "blockers": [],
+      "classification": {
+        "screenshotEvidence": [
+          {
+            "viewport": {
+              "width": 390,
+              "height": 844
+            },
+            "fixtureComparisonOnly": [
+              {
+                "path": "attempts/attempt-20/visual/390-same-pose.png",
+                "sha256": "079154e5856041e59a657e43e7e45695f9566b2023d509e206768cfb1e511c08"
+              }
+            ],
+            "naturalJourney": [
+              {
+                "path": "attempts/attempt-20/visual/390-menu.png",
+                "sha256": "621918e6b08d5eec383a362921dc3d86b89f525de8d826266453f1b4e3a0eb47"
+              },
+              {
+                "path": "attempts/attempt-20/visual/390-first-fish.png",
+                "sha256": "25b2601d52cf5fb3d040614095999c781eee9bbb897b04f70f76ab4dd062a85a"
+              },
+              {
+                "path": "attempts/attempt-20/visual/390-running.png",
+                "sha256": "0f2880ae298affc0067f46f6c86cbbdcb55f278d2f7ec66561fe457d54c0e1d6"
+              },
+              {
+                "path": "attempts/attempt-20/visual/390-paused.png",
+                "sha256": "6beb93c2d83f9b680bf69f5a3dc192a5fd976d25e79e6fc7750281981bfcbed2"
+              },
+              {
+                "path": "attempts/attempt-20/visual/390-resumed.png",
+                "sha256": "f1068fcc049b1c4ea87ccc2f7d6d3ad42990b543016cc7200cf6a0846b930592"
+              },
+              {
+                "path": "attempts/attempt-20/visual/390-terminal.png",
+                "sha256": "9b7a953c40e1565da55c2a8613b08833bf847c4f92808a7c2da0cc9f0076b3f0"
+              },
+              {
+                "path": "attempts/attempt-20/visual/390-replay.png",
+                "sha256": "70eb6a0506ca6df8256d30e992a13543fe9d33a6ca76ed6ec2a83ceb255dd312"
+              }
+            ],
+            "naturalTerminal": {
+              "reason": "barrier",
+              "screenshot": {
+                "path": "attempts/attempt-20/visual/390-terminal.png",
+                "sha256": "9b7a953c40e1565da55c2a8613b08833bf847c4f92808a7c2da0cc9f0076b3f0"
+              }
+            },
+            "naturalReplay": {
+              "keepsCamera": true,
+              "screenshot": {
+                "path": "attempts/attempt-20/visual/390-replay.png",
+                "sha256": "70eb6a0506ca6df8256d30e992a13543fe9d33a6ca76ed6ec2a83ceb255dd312"
+              }
+            }
+          },
+          {
+            "viewport": {
+              "width": 360,
+              "height": 740
+            },
+            "fixtureComparisonOnly": [
+              {
+                "path": "attempts/attempt-20/visual/360-same-pose.png",
+                "sha256": "89ea731c11dab688accddbb4ba4e782139fad2a247497ef39adc6c29bb6c0237"
+              }
+            ],
+            "naturalJourney": [
+              {
+                "path": "attempts/attempt-20/visual/360-menu.png",
+                "sha256": "98de4311d3c92d9a648db505bff151f91a82cdbaa1998699762af6c718af3bb2"
+              },
+              {
+                "path": "attempts/attempt-20/visual/360-first-fish.png",
+                "sha256": "0247c619c0367d96c19601bc1ddfce1c49c32461b7e490df7e175985f4ef1cf9"
+              },
+              {
+                "path": "attempts/attempt-20/visual/360-running.png",
+                "sha256": "c24fa2d7a6e1dd7fa45425c6c97fb704da524609df325a363a807cf9857dc840"
+              },
+              {
+                "path": "attempts/attempt-20/visual/360-paused.png",
+                "sha256": "d156eeba6ee224b5537f353deb0d76185c765c1e7cf4dc1e7d5bc6d1a4a3908d"
+              },
+              {
+                "path": "attempts/attempt-20/visual/360-resumed.png",
+                "sha256": "76d4770163a866bc6f88e5038549a1bb3f9bce0195808b06a95a1ad40e2bfcb6"
+              },
+              {
+                "path": "attempts/attempt-20/visual/360-terminal.png",
+                "sha256": "571f1e0aef4764f2796c2f5aa435e812d2b6b795986c01a5faef8e4726a4dc1d"
+              },
+              {
+                "path": "attempts/attempt-20/visual/360-replay.png",
+                "sha256": "3d070de6297d3b82d1c7517ddee6af0f8eff1378c0bec63bb4d7a6a73f2db197"
+              }
+            ],
+            "naturalTerminal": {
+              "reason": "barrier",
+              "screenshot": {
+                "path": "attempts/attempt-20/visual/360-terminal.png",
+                "sha256": "571f1e0aef4764f2796c2f5aa435e812d2b6b795986c01a5faef8e4726a4dc1d"
+              }
+            },
+            "naturalReplay": {
+              "keepsCamera": true,
+              "screenshot": {
+                "path": "attempts/attempt-20/visual/360-replay.png",
+                "sha256": "3d070de6297d3b82d1c7517ddee6af0f8eff1378c0bec63bb4d7a6a73f2db197"
+              }
+            }
+          },
+          {
+            "viewport": {
+              "width": 320,
+              "height": 568
+            },
+            "fixtureComparisonOnly": [
+              {
+                "path": "attempts/attempt-20/visual/320-same-pose.png",
+                "sha256": "765eb8c2521283acacff522c2d40a7b2158d2c683691e9b9dd21056c1ce0119a"
+              }
+            ],
+            "naturalJourney": [
+              {
+                "path": "attempts/attempt-20/visual/320-menu.png",
+                "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f"
+              },
+              {
+                "path": "attempts/attempt-20/visual/320-first-fish.png",
+                "sha256": "02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a"
+              },
+              {
+                "path": "attempts/attempt-20/visual/320-running.png",
+                "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4"
+              },
+              {
+                "path": "attempts/attempt-20/visual/320-paused.png",
+                "sha256": "e2c8f01076d97701263f7e83530a7f5df3f551013dfdfc912c7c8eab2e24c911"
+              },
+              {
+                "path": "attempts/attempt-20/visual/320-resumed.png",
+                "sha256": "802dc1f8d9c2e9f13038aad339efb0cf5c34db05ef3e874c34c386a0c32bde37"
+              },
+              {
+                "path": "attempts/attempt-20/visual/320-terminal.png",
+                "sha256": "c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21"
+              },
+              {
+                "path": "attempts/attempt-20/visual/320-replay.png",
+                "sha256": "5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451"
+              }
+            ],
+            "naturalTerminal": {
+              "reason": "barrier",
+              "screenshot": {
+                "path": "attempts/attempt-20/visual/320-terminal.png",
+                "sha256": "c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21"
+              }
+            },
+            "naturalReplay": {
+              "keepsCamera": true,
+              "screenshot": {
+                "path": "attempts/attempt-20/visual/320-replay.png",
+                "sha256": "5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451"
+              }
+            }
+          },
+          {
+            "viewport": {
+              "width": 844,
+              "height": 390
+            },
+            "fixtureComparisonOnly": [
+              {
+                "path": "attempts/attempt-20/visual/844-same-pose.png",
+                "sha256": "a6affc27caba4e94c04321d205d47702916b63000293b633e6769b4d90933a97"
+              }
+            ],
+            "naturalJourney": [
+              {
+                "path": "attempts/attempt-20/visual/844-menu.png",
+                "sha256": "979ea4798baff1a9a199f0768c6ac170abe5928679abeb6a669e8081367cd76a"
+              },
+              {
+                "path": "attempts/attempt-20/visual/844-first-fish.png",
+                "sha256": "d052ea85a882384a62e614ec689b21129d7c725928c52002672ccbafed105f5b"
+              },
+              {
+                "path": "attempts/attempt-20/visual/844-running.png",
+                "sha256": "40aae0362b1a9f0d27b53bdb8d3c2ee2a8312dd7010fb84d2d4fc61fddff902b"
+              },
+              {
+                "path": "attempts/attempt-20/visual/844-paused.png",
+                "sha256": "e87a1ce6b13c3a39affe3e3c85c6ea98525bec4c4b37c072add930fecd690e70"
+              },
+              {
+                "path": "attempts/attempt-20/visual/844-resumed.png",
+                "sha256": "a92a0559b9d6a4b34f84ac8ba11ae61a6c1efb9bb18745184147a86ec0ba3ac4"
+              },
+              {
+                "path": "attempts/attempt-20/visual/844-terminal.png",
+                "sha256": "3a53798ae6d2e0de6ae2142ee8932990fe2750c7c336af20281ea5a2ab9c84fb"
+              },
+              {
+                "path": "attempts/attempt-20/visual/844-replay.png",
+                "sha256": "7e40f5c36bbf26027e9076d6eed7bc76cfcdb6f4aaa08d8560dccf2be2c55e68"
+              }
+            ],
+            "naturalTerminal": {
+              "reason": "barrier",
+              "screenshot": {
+                "path": "attempts/attempt-20/visual/844-terminal.png",
+                "sha256": "3a53798ae6d2e0de6ae2142ee8932990fe2750c7c336af20281ea5a2ab9c84fb"
+              }
+            },
+            "naturalReplay": {
+              "keepsCamera": true,
+              "screenshot": {
+                "path": "attempts/attempt-20/visual/844-replay.png",
+                "sha256": "7e40f5c36bbf26027e9076d6eed7bc76cfcdb6f4aaa08d8560dccf2be2c55e68"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "kind": "lifecycle",
+      "engine": "webkit+chromium",
+      "path": "attempts/attempt-20/lifecycle/report.json",
+      "sha256": "d75f0cfe647026fa50a74188bd89b362d60637351bd57536fe406cec2652d711",
+      "status": "BLOCKED",
+      "blockers": []
+    },
+    {
+      "kind": "safety",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/qa-safety-webkit/report.json",
+      "sha256": "916fc9205b8a8a5b3b47c1be9759d8b564339374b0a6563b6926c56ee51e7b99",
+      "status": "BLOCKED",
+      "blockers": [
+        "environment-background-check-unavailable:tab-blur-pauses",
+        "environment-background-check-unavailable:background-manual-resume"
+      ],
+      "classification": {
+        "supportedChecksPassed": true,
+        "environmentBlockedChecks": [
+          "tab-blur-pauses",
+          "background-manual-resume"
+        ],
+        "environmentalEvidence": {
+          "diagnosticName": "headless-webkit-tab-capability",
+          "path": "attempts/attempt-20/lifecycle/report.json",
+          "passed": true,
+          "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS"
+        },
+        "checkResults": [
+          {
+            "name": "van-target-distance-reached",
+            "status": "PASS"
+          },
+          {
+            "name": "van-ends-round",
+            "status": "PASS"
+          },
+          {
+            "name": "car-not-jumpable",
+            "status": "PASS"
+          },
+          {
+            "name": "distance-and-fish-jointly-required",
+            "status": "PASS"
+          },
+          {
+            "name": "tab-blur-pauses",
+            "status": "BLOCKED"
+          },
+          {
+            "name": "background-manual-resume",
+            "status": "BLOCKED"
+          },
+          {
+            "name": "replay-resources-plateau",
+            "status": "PASS"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "safety",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/qa-safety-chromium/report.json",
+      "sha256": "0aaa83c14c9828859f323938a685477917c0e49070ad97d587eda66907508c23",
+      "status": "BLOCKED",
+      "blockers": [
+        "environment-background-check-unavailable:tab-blur-pauses",
+        "environment-background-check-unavailable:background-manual-resume"
+      ],
+      "classification": {
+        "supportedChecksPassed": true,
+        "environmentBlockedChecks": [
+          "tab-blur-pauses",
+          "background-manual-resume"
+        ],
+        "environmentalEvidence": {
+          "diagnosticName": "headless-chromium-tab-capability",
+          "path": "attempts/attempt-20/lifecycle/report.json",
+          "passed": true,
+          "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS"
+        },
+        "checkResults": [
+          {
+            "name": "van-target-distance-reached",
+            "status": "PASS"
+          },
+          {
+            "name": "van-ends-round",
+            "status": "PASS"
+          },
+          {
+            "name": "car-not-jumpable",
+            "status": "PASS"
+          },
+          {
+            "name": "distance-and-fish-jointly-required",
+            "status": "PASS"
+          },
+          {
+            "name": "tab-blur-pauses",
+            "status": "BLOCKED"
+          },
+          {
+            "name": "background-manual-resume",
+            "status": "BLOCKED"
+          },
+          {
+            "name": "replay-resources-plateau",
+            "status": "PASS"
+          }
+        ]
+      }
+    }
+  ],
+  "safetyEvidence": [
+    {
+      "engine": "webkit",
+      "status": "BLOCKED",
+      "path": "attempts/attempt-20/qa-safety-webkit/report.json",
+      "checks": [
+        {
+          "name": "van-target-distance-reached",
+          "status": "PASS"
+        },
+        {
+          "name": "van-ends-round",
+          "status": "PASS"
+        },
+        {
+          "name": "car-not-jumpable",
+          "status": "PASS"
+        },
+        {
+          "name": "distance-and-fish-jointly-required",
+          "status": "PASS"
+        },
+        {
+          "name": "tab-blur-pauses",
+          "status": "BLOCKED"
+        },
+        {
+          "name": "background-manual-resume",
+          "status": "BLOCKED"
+        },
+        {
+          "name": "replay-resources-plateau",
+          "status": "PASS"
+        }
+      ],
+      "environmentBlockedChecks": [
+        "tab-blur-pauses",
+        "background-manual-resume"
+      ],
+      "environmentalEvidence": {
+        "diagnosticName": "headless-webkit-tab-capability",
+        "path": "attempts/attempt-20/lifecycle/report.json",
+        "passed": true,
+        "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS"
+      }
+    },
+    {
+      "engine": "chromium",
+      "status": "BLOCKED",
+      "path": "attempts/attempt-20/qa-safety-chromium/report.json",
+      "checks": [
+        {
+          "name": "van-target-distance-reached",
+          "status": "PASS"
+        },
+        {
+          "name": "van-ends-round",
+          "status": "PASS"
+        },
+        {
+          "name": "car-not-jumpable",
+          "status": "PASS"
+        },
+        {
+          "name": "distance-and-fish-jointly-required",
+          "status": "PASS"
+        },
+        {
+          "name": "tab-blur-pauses",
+          "status": "BLOCKED"
+        },
+        {
+          "name": "background-manual-resume",
+          "status": "BLOCKED"
+        },
+        {
+          "name": "replay-resources-plateau",
+          "status": "PASS"
+        }
+      ],
+      "environmentBlockedChecks": [
+        "tab-blur-pauses",
+        "background-manual-resume"
+      ],
+      "environmentalEvidence": {
+        "diagnosticName": "headless-chromium-tab-capability",
+        "path": "attempts/attempt-20/lifecycle/report.json",
+        "passed": true,
+        "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS"
+      }
+    }
+  ],
+  "riskEvidence": [
+    {
+      "engine": "webkit",
+      "path": "attempts/attempt-20/risk-webkit/report.json",
+      "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854",
+      "status": "PASS",
+      "targetCount": 12,
+      "targetsByLevel": [
+        {
+          "level": 1,
+          "count": 2,
+          "barrierIds": [
+            "l1-o1",
+            "l1-o3"
+          ]
+        },
+        {
+          "level": 2,
+          "count": 2,
+          "barrierIds": [
+            "l2-o3",
+            "l2-o5"
+          ]
+        },
+        {
+          "level": 3,
+          "count": 2,
+          "barrierIds": [
+            "l3-o3",
+            "l3-o5"
+          ]
+        },
+        {
+          "level": 4,
+          "count": 3,
+          "barrierIds": [
+            "l4-o3",
+            "l4-o5",
+            "l4-o10"
+          ]
+        },
+        {
+          "level": 5,
+          "count": 3,
+          "barrierIds": [
+            "l5-o3",
+            "l5-o5",
+            "l5-o10"
+          ]
+        }
+      ],
+      "barrierEvidence": [
+        {
+          "level": 1,
+          "barrierId": "l1-o1",
+          "goldFishId": "l1-jump-l1-o1",
+          "checks": [
+            "level-1-l1-o1-visible-jump-reward-route",
+            "level-1-l1-o1-one-jump-at-decimal-window",
+            "level-1-l1-o1-no-repeat-jump",
+            "level-1-l1-o1-exact-barrier-cleared-jumped",
+            "level-1-l1-o1-exact-golden-bonus-fish-maps-to-barrier",
+            "level-1-l1-o1-gold-feedback-visible-in-hud",
+            "level-1-l1-o1-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-14",
+          "goldFishSnapshotId": "snapshot-15",
+          "barrierEventObjectId": "l1-o1",
+          "goldFishEventObjectId": "l1-jump-l1-o1",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 1,
+          "barrierId": "l1-o3",
+          "goldFishId": "l1-jump-l1-o3",
+          "checks": [
+            "level-1-l1-o3-visible-jump-reward-route",
+            "level-1-l1-o3-one-jump-at-decimal-window",
+            "level-1-l1-o3-no-repeat-jump",
+            "level-1-l1-o3-exact-barrier-cleared-jumped",
+            "level-1-l1-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-1-l1-o3-gold-feedback-visible-in-hud",
+            "level-1-l1-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-23",
+          "goldFishSnapshotId": "snapshot-24",
+          "barrierEventObjectId": "l1-o3",
+          "goldFishEventObjectId": "l1-jump-l1-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 2,
+          "barrierId": "l2-o3",
+          "goldFishId": "l2-jump-l2-o3",
+          "checks": [
+            "level-2-l2-o3-visible-jump-reward-route",
+            "level-2-l2-o3-one-jump-at-decimal-window",
+            "level-2-l2-o3-no-repeat-jump",
+            "level-2-l2-o3-exact-barrier-cleared-jumped",
+            "level-2-l2-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-2-l2-o3-gold-feedback-visible-in-hud",
+            "level-2-l2-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-49",
+          "goldFishSnapshotId": "snapshot-50",
+          "barrierEventObjectId": "l2-o3",
+          "goldFishEventObjectId": "l2-jump-l2-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 2,
+          "barrierId": "l2-o5",
+          "goldFishId": "l2-jump-l2-o5",
+          "checks": [
+            "level-2-l2-o5-visible-jump-reward-route",
+            "level-2-l2-o5-one-jump-at-decimal-window",
+            "level-2-l2-o5-no-repeat-jump",
+            "level-2-l2-o5-exact-barrier-cleared-jumped",
+            "level-2-l2-o5-exact-golden-bonus-fish-maps-to-barrier",
+            "level-2-l2-o5-gold-feedback-visible-in-hud",
+            "level-2-l2-o5-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-60",
+          "goldFishSnapshotId": "snapshot-61",
+          "barrierEventObjectId": "l2-o5",
+          "goldFishEventObjectId": "l2-jump-l2-o5",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 3,
+          "barrierId": "l3-o3",
+          "goldFishId": "l3-jump-l3-o3",
+          "checks": [
+            "level-3-l3-o3-visible-jump-reward-route",
+            "level-3-l3-o3-one-jump-at-decimal-window",
+            "level-3-l3-o3-no-repeat-jump",
+            "level-3-l3-o3-exact-barrier-cleared-jumped",
+            "level-3-l3-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-3-l3-o3-gold-feedback-visible-in-hud",
+            "level-3-l3-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-90",
+          "goldFishSnapshotId": "snapshot-91",
+          "barrierEventObjectId": "l3-o3",
+          "goldFishEventObjectId": "l3-jump-l3-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 3,
+          "barrierId": "l3-o5",
+          "goldFishId": "l3-jump-l3-o5",
+          "checks": [
+            "level-3-l3-o5-visible-jump-reward-route",
+            "level-3-l3-o5-one-jump-at-decimal-window",
+            "level-3-l3-o5-no-repeat-jump",
+            "level-3-l3-o5-exact-barrier-cleared-jumped",
+            "level-3-l3-o5-exact-golden-bonus-fish-maps-to-barrier",
+            "level-3-l3-o5-gold-feedback-visible-in-hud",
+            "level-3-l3-o5-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-105",
+          "goldFishSnapshotId": "snapshot-106",
+          "barrierEventObjectId": "l3-o5",
+          "goldFishEventObjectId": "l3-jump-l3-o5",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 4,
+          "barrierId": "l4-o3",
+          "goldFishId": "l4-jump-l4-o3",
+          "checks": [
+            "level-4-l4-o3-visible-jump-reward-route",
+            "level-4-l4-o3-one-jump-at-decimal-window",
+            "level-4-l4-o3-no-repeat-jump",
+            "level-4-l4-o3-exact-barrier-cleared-jumped",
+            "level-4-l4-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-4-l4-o3-gold-feedback-visible-in-hud",
+            "level-4-l4-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-137",
+          "goldFishSnapshotId": "snapshot-138",
+          "barrierEventObjectId": "l4-o3",
+          "goldFishEventObjectId": "l4-jump-l4-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 4,
+          "barrierId": "l4-o5",
+          "goldFishId": "l4-jump-l4-o5",
+          "checks": [
+            "level-4-l4-o5-visible-jump-reward-route",
+            "level-4-l4-o5-one-jump-at-decimal-window",
+            "level-4-l4-o5-no-repeat-jump",
+            "level-4-l4-o5-exact-barrier-cleared-jumped",
+            "level-4-l4-o5-exact-golden-bonus-fish-maps-to-barrier",
+            "level-4-l4-o5-gold-feedback-visible-in-hud",
+            "level-4-l4-o5-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-146",
+          "goldFishSnapshotId": "snapshot-147",
+          "barrierEventObjectId": "l4-o5",
+          "goldFishEventObjectId": "l4-jump-l4-o5",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 4,
+          "barrierId": "l4-o10",
+          "goldFishId": "l4-jump-l4-o10",
+          "checks": [
+            "level-4-l4-o10-visible-jump-reward-route",
+            "level-4-l4-o10-one-jump-at-decimal-window",
+            "level-4-l4-o10-no-repeat-jump",
+            "level-4-l4-o10-exact-barrier-cleared-jumped",
+            "level-4-l4-o10-exact-golden-bonus-fish-maps-to-barrier",
+            "level-4-l4-o10-gold-feedback-visible-in-hud",
+            "level-4-l4-o10-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-157",
+          "goldFishSnapshotId": "snapshot-158",
+          "barrierEventObjectId": "l4-o10",
+          "goldFishEventObjectId": "l4-jump-l4-o10",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 5,
+          "barrierId": "l5-o3",
+          "goldFishId": "l5-jump-l5-o3",
+          "checks": [
+            "level-5-l5-o3-visible-jump-reward-route",
+            "level-5-l5-o3-one-jump-at-decimal-window",
+            "level-5-l5-o3-no-repeat-jump",
+            "level-5-l5-o3-exact-barrier-cleared-jumped",
+            "level-5-l5-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-5-l5-o3-gold-feedback-visible-in-hud",
+            "level-5-l5-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-183",
+          "goldFishSnapshotId": "snapshot-184",
+          "barrierEventObjectId": "l5-o3",
+          "goldFishEventObjectId": "l5-jump-l5-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 5,
+          "barrierId": "l5-o5",
+          "goldFishId": "l5-jump-l5-o5",
+          "checks": [
+            "level-5-l5-o5-visible-jump-reward-route",
+            "level-5-l5-o5-one-jump-at-decimal-window",
+            "level-5-l5-o5-no-repeat-jump",
+            "level-5-l5-o5-exact-barrier-cleared-jumped",
+            "level-5-l5-o5-exact-golden-bonus-fish-maps-to-barrier",
+            "level-5-l5-o5-gold-feedback-visible-in-hud",
+            "level-5-l5-o5-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-194",
+          "goldFishSnapshotId": "snapshot-195",
+          "barrierEventObjectId": "l5-o5",
+          "goldFishEventObjectId": "l5-jump-l5-o5",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 5,
+          "barrierId": "l5-o10",
+          "goldFishId": "l5-jump-l5-o10",
+          "checks": [
+            "level-5-l5-o10-visible-jump-reward-route",
+            "level-5-l5-o10-one-jump-at-decimal-window",
+            "level-5-l5-o10-no-repeat-jump",
+            "level-5-l5-o10-exact-barrier-cleared-jumped",
+            "level-5-l5-o10-exact-golden-bonus-fish-maps-to-barrier",
+            "level-5-l5-o10-gold-feedback-visible-in-hud",
+            "level-5-l5-o10-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-211",
+          "goldFishSnapshotId": "snapshot-212",
+          "barrierEventObjectId": "l5-o10",
+          "goldFishEventObjectId": "l5-jump-l5-o10",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        }
+      ],
+      "settlements": [
+        {
+          "level": 1,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        },
+        {
+          "level": 2,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        },
+        {
+          "level": 3,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        },
+        {
+          "level": 4,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        },
+        {
+          "level": 5,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        }
+      ],
+      "replayObserved": true,
+      "blockers": []
+    },
+    {
+      "engine": "chromium",
+      "path": "attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486",
+      "status": "PASS",
+      "targetCount": 12,
+      "targetsByLevel": [
+        {
+          "level": 1,
+          "count": 2,
+          "barrierIds": [
+            "l1-o1",
+            "l1-o3"
+          ]
+        },
+        {
+          "level": 2,
+          "count": 2,
+          "barrierIds": [
+            "l2-o3",
+            "l2-o5"
+          ]
+        },
+        {
+          "level": 3,
+          "count": 2,
+          "barrierIds": [
+            "l3-o3",
+            "l3-o5"
+          ]
+        },
+        {
+          "level": 4,
+          "count": 3,
+          "barrierIds": [
+            "l4-o3",
+            "l4-o5",
+            "l4-o10"
+          ]
+        },
+        {
+          "level": 5,
+          "count": 3,
+          "barrierIds": [
+            "l5-o3",
+            "l5-o5",
+            "l5-o10"
+          ]
+        }
+      ],
+      "barrierEvidence": [
+        {
+          "level": 1,
+          "barrierId": "l1-o1",
+          "goldFishId": "l1-jump-l1-o1",
+          "checks": [
+            "level-1-l1-o1-visible-jump-reward-route",
+            "level-1-l1-o1-one-jump-at-decimal-window",
+            "level-1-l1-o1-no-repeat-jump",
+            "level-1-l1-o1-exact-barrier-cleared-jumped",
+            "level-1-l1-o1-exact-golden-bonus-fish-maps-to-barrier",
+            "level-1-l1-o1-gold-feedback-visible-in-hud",
+            "level-1-l1-o1-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-14",
+          "goldFishSnapshotId": "snapshot-15",
+          "barrierEventObjectId": "l1-o1",
+          "goldFishEventObjectId": "l1-jump-l1-o1",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 1,
+          "barrierId": "l1-o3",
+          "goldFishId": "l1-jump-l1-o3",
+          "checks": [
+            "level-1-l1-o3-visible-jump-reward-route",
+            "level-1-l1-o3-one-jump-at-decimal-window",
+            "level-1-l1-o3-no-repeat-jump",
+            "level-1-l1-o3-exact-barrier-cleared-jumped",
+            "level-1-l1-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-1-l1-o3-gold-feedback-visible-in-hud",
+            "level-1-l1-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-23",
+          "goldFishSnapshotId": "snapshot-24",
+          "barrierEventObjectId": "l1-o3",
+          "goldFishEventObjectId": "l1-jump-l1-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 2,
+          "barrierId": "l2-o3",
+          "goldFishId": "l2-jump-l2-o3",
+          "checks": [
+            "level-2-l2-o3-visible-jump-reward-route",
+            "level-2-l2-o3-one-jump-at-decimal-window",
+            "level-2-l2-o3-no-repeat-jump",
+            "level-2-l2-o3-exact-barrier-cleared-jumped",
+            "level-2-l2-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-2-l2-o3-gold-feedback-visible-in-hud",
+            "level-2-l2-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-49",
+          "goldFishSnapshotId": "snapshot-50",
+          "barrierEventObjectId": "l2-o3",
+          "goldFishEventObjectId": "l2-jump-l2-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 2,
+          "barrierId": "l2-o5",
+          "goldFishId": "l2-jump-l2-o5",
+          "checks": [
+            "level-2-l2-o5-visible-jump-reward-route",
+            "level-2-l2-o5-one-jump-at-decimal-window",
+            "level-2-l2-o5-no-repeat-jump",
+            "level-2-l2-o5-exact-barrier-cleared-jumped",
+            "level-2-l2-o5-exact-golden-bonus-fish-maps-to-barrier",
+            "level-2-l2-o5-gold-feedback-visible-in-hud",
+            "level-2-l2-o5-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-60",
+          "goldFishSnapshotId": "snapshot-61",
+          "barrierEventObjectId": "l2-o5",
+          "goldFishEventObjectId": "l2-jump-l2-o5",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 3,
+          "barrierId": "l3-o3",
+          "goldFishId": "l3-jump-l3-o3",
+          "checks": [
+            "level-3-l3-o3-visible-jump-reward-route",
+            "level-3-l3-o3-one-jump-at-decimal-window",
+            "level-3-l3-o3-no-repeat-jump",
+            "level-3-l3-o3-exact-barrier-cleared-jumped",
+            "level-3-l3-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-3-l3-o3-gold-feedback-visible-in-hud",
+            "level-3-l3-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-90",
+          "goldFishSnapshotId": "snapshot-91",
+          "barrierEventObjectId": "l3-o3",
+          "goldFishEventObjectId": "l3-jump-l3-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 3,
+          "barrierId": "l3-o5",
+          "goldFishId": "l3-jump-l3-o5",
+          "checks": [
+            "level-3-l3-o5-visible-jump-reward-route",
+            "level-3-l3-o5-one-jump-at-decimal-window",
+            "level-3-l3-o5-no-repeat-jump",
+            "level-3-l3-o5-exact-barrier-cleared-jumped",
+            "level-3-l3-o5-exact-golden-bonus-fish-maps-to-barrier",
+            "level-3-l3-o5-gold-feedback-visible-in-hud",
+            "level-3-l3-o5-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-105",
+          "goldFishSnapshotId": "snapshot-106",
+          "barrierEventObjectId": "l3-o5",
+          "goldFishEventObjectId": "l3-jump-l3-o5",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 4,
+          "barrierId": "l4-o3",
+          "goldFishId": "l4-jump-l4-o3",
+          "checks": [
+            "level-4-l4-o3-visible-jump-reward-route",
+            "level-4-l4-o3-one-jump-at-decimal-window",
+            "level-4-l4-o3-no-repeat-jump",
+            "level-4-l4-o3-exact-barrier-cleared-jumped",
+            "level-4-l4-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-4-l4-o3-gold-feedback-visible-in-hud",
+            "level-4-l4-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-133",
+          "goldFishSnapshotId": "snapshot-134",
+          "barrierEventObjectId": "l4-o3",
+          "goldFishEventObjectId": "l4-jump-l4-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 4,
+          "barrierId": "l4-o5",
+          "goldFishId": "l4-jump-l4-o5",
+          "checks": [
+            "level-4-l4-o5-visible-jump-reward-route",
+            "level-4-l4-o5-one-jump-at-decimal-window",
+            "level-4-l4-o5-no-repeat-jump",
+            "level-4-l4-o5-exact-barrier-cleared-jumped",
+            "level-4-l4-o5-exact-golden-bonus-fish-maps-to-barrier",
+            "level-4-l4-o5-gold-feedback-visible-in-hud",
+            "level-4-l4-o5-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-142",
+          "goldFishSnapshotId": "snapshot-143",
+          "barrierEventObjectId": "l4-o5",
+          "goldFishEventObjectId": "l4-jump-l4-o5",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 4,
+          "barrierId": "l4-o10",
+          "goldFishId": "l4-jump-l4-o10",
+          "checks": [
+            "level-4-l4-o10-visible-jump-reward-route",
+            "level-4-l4-o10-one-jump-at-decimal-window",
+            "level-4-l4-o10-no-repeat-jump",
+            "level-4-l4-o10-exact-barrier-cleared-jumped",
+            "level-4-l4-o10-exact-golden-bonus-fish-maps-to-barrier",
+            "level-4-l4-o10-gold-feedback-visible-in-hud",
+            "level-4-l4-o10-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-153",
+          "goldFishSnapshotId": "snapshot-154",
+          "barrierEventObjectId": "l4-o10",
+          "goldFishEventObjectId": "l4-jump-l4-o10",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 5,
+          "barrierId": "l5-o3",
+          "goldFishId": "l5-jump-l5-o3",
+          "checks": [
+            "level-5-l5-o3-visible-jump-reward-route",
+            "level-5-l5-o3-one-jump-at-decimal-window",
+            "level-5-l5-o3-no-repeat-jump",
+            "level-5-l5-o3-exact-barrier-cleared-jumped",
+            "level-5-l5-o3-exact-golden-bonus-fish-maps-to-barrier",
+            "level-5-l5-o3-gold-feedback-visible-in-hud",
+            "level-5-l5-o3-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-181",
+          "goldFishSnapshotId": "snapshot-182",
+          "barrierEventObjectId": "l5-o3",
+          "goldFishEventObjectId": "l5-jump-l5-o3",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 5,
+          "barrierId": "l5-o5",
+          "goldFishId": "l5-jump-l5-o5",
+          "checks": [
+            "level-5-l5-o5-visible-jump-reward-route",
+            "level-5-l5-o5-one-jump-at-decimal-window",
+            "level-5-l5-o5-no-repeat-jump",
+            "level-5-l5-o5-exact-barrier-cleared-jumped",
+            "level-5-l5-o5-exact-golden-bonus-fish-maps-to-barrier",
+            "level-5-l5-o5-gold-feedback-visible-in-hud",
+            "level-5-l5-o5-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-192",
+          "goldFishSnapshotId": "snapshot-193",
+          "barrierEventObjectId": "l5-o5",
+          "goldFishEventObjectId": "l5-jump-l5-o5",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        },
+        {
+          "level": 5,
+          "barrierId": "l5-o10",
+          "goldFishId": "l5-jump-l5-o10",
+          "checks": [
+            "level-5-l5-o10-visible-jump-reward-route",
+            "level-5-l5-o10-one-jump-at-decimal-window",
+            "level-5-l5-o10-no-repeat-jump",
+            "level-5-l5-o10-exact-barrier-cleared-jumped",
+            "level-5-l5-o10-exact-golden-bonus-fish-maps-to-barrier",
+            "level-5-l5-o10-gold-feedback-visible-in-hud",
+            "level-5-l5-o10-held-route-through-bonus-fish"
+          ],
+          "barrierSnapshotId": "snapshot-209",
+          "goldFishSnapshotId": "snapshot-210",
+          "barrierEventObjectId": "l5-o10",
+          "goldFishEventObjectId": "l5-jump-l5-o10",
+          "goldFishGolden": true,
+          "goldFishBonus": true,
+          "naturalJumpPassed": true
+        }
+      ],
+      "settlements": [
+        {
+          "level": 1,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        },
+        {
+          "level": 2,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        },
+        {
+          "level": 3,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        },
+        {
+          "level": 4,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        },
+        {
+          "level": 5,
+          "status": "PASS",
+          "completionEvent": true,
+          "earnedSave": true
+        }
+      ],
+      "replayObserved": true,
+      "blockers": []
+    }
+  ],
+  "naturalFlows": [
+    {
+      "kind": "campaign-natural-flow",
+      "path": "artifacts/natural/campaign.json",
+      "sha256": "c0d3bd21da040a6ec904fab056c2314bb8a320fa593140b6e7c2ff8aa86a673e",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "collision-natural-flow",
+      "path": "artifacts/natural/collisions.json",
+      "sha256": "a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-experience-natural-flow-webkit",
+      "path": "artifacts/natural/v3-experience-webkit.json",
+      "sha256": "19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-experience-natural-flow-chromium",
+      "path": "artifacts/natural/v3-experience-chromium.json",
+      "sha256": "f84436810b375bd15ad187f92cc265b50f5fa02f72e19bf89541a9c9b5a17722",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-risk-natural-flow-webkit",
+      "path": "artifacts/natural/v3-risk-webkit.json",
+      "sha256": "798e3a487ff5a9e8b95d1d7a71b1127f1645472deccb013f31b434f208c29805",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-risk-natural-flow-chromium",
+      "path": "artifacts/natural/v3-risk-chromium.json",
+      "sha256": "5ccdc585968273be687d6a9c3630ef0b2f4f4fc356a35aba6468cd4cbe46bca6",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-feel-state-natural-flow-webkit",
+      "path": "artifacts/natural/v3-feel-state-webkit.json",
+      "sha256": "010432da03053db55f7f9e6779ac1207199ac0fc540f943727a10451d4adb1fe",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-feel-state-natural-flow-chromium",
+      "path": "artifacts/natural/v3-feel-state-chromium.json",
+      "sha256": "3b221e6c0aa77737228e3a7c62e0b74d1b0f4b2922bf95813ad3e17199e4f2ba",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-390",
+      "path": "artifacts/natural/v3-head-webkit-390.json",
+      "sha256": "178c71ed72f7024cfa4d4f9fdbbc4a8f8f82dbe8e3939b87edd421d8fb185bf9",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-360",
+      "path": "artifacts/natural/v3-head-webkit-360.json",
+      "sha256": "8d177478be131cfda668242fb881d30b15e6362b184fd6f80214cad6f370f373",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-320",
+      "path": "artifacts/natural/v3-head-webkit-320.json",
+      "sha256": "cbf6d8d0083a06546b18531a6498c3f8496ab51d08ab3551107b2c2726eb50e5",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-844",
+      "path": "artifacts/natural/v3-head-webkit-844.json",
+      "sha256": "6790dde70275a268e6f104865d1f41a9af36d3063ee84bd1821fb326bc8cfa8c",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-390",
+      "path": "artifacts/natural/v3-head-chromium-390.json",
+      "sha256": "b3ab621848ab8f7182be3573b4db7b3d48c362e4755ae98ec092bd29f72f0d99",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-360",
+      "path": "artifacts/natural/v3-head-chromium-360.json",
+      "sha256": "d69dd6e16eb1ece13c522c6388a383e6d1a1496651b91e7cfa030df125e18e1b",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-320",
+      "path": "artifacts/natural/v3-head-chromium-320.json",
+      "sha256": "791661d14982b4e1d1c387a8d499f557e91bf8e295074526897d866f38269d93",
+      "status": "PASS",
+      "blockers": []
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-844",
+      "path": "artifacts/natural/v3-head-chromium-844.json",
+      "sha256": "c2463cc6c8c06eeb1279011f716ebaadf19a175ae91a0e61447c625a52b75d6c",
+      "status": "PASS",
+      "blockers": []
+    }
+  ],
+  "matricesPreserved": [
+    {
+      "triagePath": "triage.json",
+      "matrixPath": "reproduction-matrix.json",
+      "triageStatus": "BLOCKED",
+      "cells": 48,
+      "statusCounts": {
+        "REPRODUCED": 2,
+        "BLOCKED": 22,
+        "PASS": 24
+      },
+      "remainingGaps": [
+        "Physical iPhone/low-end hardware image quality, performance and thermal behavior NOT_RUN.",
+        "Uncaptured baseline sibling cells are historical diagnostics, not passing v2 evidence."
+      ],
+      "sha256": "66c53723c03a4891fd5f93935424ee72e2815f8abd5b695d945b2b181f7dd8d8"
+    },
+    {
+      "triagePath": "triage-v3.json",
+      "matrixPath": "reproduction-matrix-v3.json",
+      "triageStatus": "READY_FOR_REPAIR",
+      "cells": 202,
+      "statusCounts": {
+        "PASS": 15,
+        "BLOCKED": 186,
+        "REPRODUCED": 1
+      },
+      "remainingGaps": [
+        "Physical device",
+        "Live ads",
+        "Human enjoyment",
+        "Current20 desktop coverage was updated only for individually hash-verified exact reviewed branches; unobserved cross-products stay BLOCKED. Physical phones, actual app background and human enjoyment are unverified."
+      ],
+      "sha256": "2382f4fc7c4d0d3a9509ba6e5e0406a86ab9282a924a9268ca9a7399b850e6b7"
+    },
+    {
+      "triagePath": "head-triage-v3.json",
+      "matrixPath": "head-reproduction-matrix-v3.json",
+      "triageStatus": "READY_FOR_REPAIR",
+      "cells": 48,
+      "statusCounts": {
+        "PASS": 48
+      },
+      "remainingGaps": [
+        "Exact screenshot capture build/state unknown",
+        "Current20 desktop coverage was updated only for individually hash-verified exact reviewed branches; unobserved cross-products stay BLOCKED. Physical phones, actual app background and human enjoyment are unverified."
+      ],
+      "sha256": "1503be4198324d603e7fbe6a6547a6ff255be0000b8089a34edca921180a2fb8"
+    },
+    {
+      "triagePath": "reward-trail-and-ci-triage-v3.json",
+      "matrixPath": "reward-trail-and-ci-reproduction-matrix-v3.json",
+      "triageStatus": "READY_FOR_REPAIR",
+      "cells": 32,
+      "statusCounts": {
+        "REPRODUCED": 4,
+        "BLOCKED": 12,
+        "NOT_APPLICABLE": 16
+      },
+      "remainingGaps": [
+        "Final build retest pending",
+        "Physical mobile remains unavailable"
+      ],
+      "sha256": "31abca53822e3079dd623b16b86130f242b9c2f0f38b5af2b10188225b515fb9"
+    },
+    {
+      "triagePath": "clipped-route-touch-triage-v3.json",
+      "matrixPath": "clipped-route-touch-reproduction-matrix-v3.json",
+      "triageStatus": "READY_FOR_REPAIR",
+      "cells": 24,
+      "statusCounts": {
+        "BLOCKED": 10,
+        "NOT_APPLICABLE": 12,
+        "PASS": 2
+      },
+      "remainingGaps": [
+        "Final actual H5 earned menu5 then1 at320 retest pending",
+        "Physical/native menu pan remains unobserved; public actionability auto-scroll is separately documented"
+      ],
+      "sha256": "42b621fe6f147085f72e544c8d9119163fbc43b8a52db98042c2b1c5295d70ac"
+    },
+    {
+      "triagePath": "native-pose-observation-triage-v3.json",
+      "matrixPath": "native-pose-observation-reproduction-matrix-v3.json",
+      "triageStatus": "READY_FOR_REPAIR",
+      "cells": 48,
+      "statusCounts": {
+        "BLOCKED": 44,
+        "PASS": 4
+      },
+      "remainingGaps": [
+        "Physical devices, native menu pan, and human perceived speed remain unavailable",
+        "Current20 desktop coverage was updated only for individually hash-verified exact reviewed branches; unobserved cross-products stay BLOCKED. Physical phones, actual app background and human enjoyment are unverified."
+      ],
+      "sha256": "479914bdac135373d1cf558b89f4302cdecb2ba0f7fabef3e39375881ddeb425"
+    },
+    {
+      "triagePath": "qa-observation-latency-triage-v3.json",
+      "matrixPath": "qa-observation-latency-reproduction-matrix-v3.json",
+      "triageStatus": "READY_FOR_REPAIR",
+      "cells": 51,
+      "statusCounts": {
+        "BLOCKED": 48,
+        "REPRODUCED": 3
+      },
+      "remainingGaps": [
+        "Candidate18 runtime and independent perceptual retest pending",
+        "Physical devices, native menu pan, and human perceived speed remain unavailable",
+        "Latest software Chromium queue feedback not visibly observed; new public-efficient-preset CI retest required. Current native-GPU dual-engine local evidence remains separate.",
+        "Current20 campaign image binding requires full natural retest with isolated section paths; initialinvalidreports preserved."
+      ],
+      "sha256": "d8466c0da89ba784e71f083e7ca118d89ece0028403ac0c623ed8fff97eab28c"
+    },
+    {
+      "triagePath": "compact-rider-overlay-triage-v3.json",
+      "matrixPath": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "triageStatus": "READY_FOR_REPAIR",
+      "cells": 32,
+      "statusCounts": {
+        "REPRODUCED": 3,
+        "BLOCKED": 29
+      },
+      "remainingGaps": [
+        "Physical devices and humanfun stillunavailable",
+        "Current20 desktop coverage was updated only for individually hash-verified exact reviewed branches; unobserved cross-products stay BLOCKED. Physical phones, actual app background and human enjoyment are unverified."
+      ],
+      "sha256": "2ef3498f5df6d90fe7aa8318904b4d839170e661b241389125e754d2cd4aeca8"
+    }
+  ],
+  "repairHistoryPreserved": {
+    "path": "repair-state.json",
+    "sha256": "b11aacb945be6be8c5dbe6686c05c815abbd9fc4584692021db6fd24e6412573",
+    "entryCount": 20,
+    "latestAttempt": 20,
+    "latestBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+    "preservedByFinalize": true
+  },
+  "blockers": [
+    "Physical iPhone and Android playtest, low-end performance, thermal behavior, and long-session stability are BLOCKED / NOT RUN.",
+    "Real mobile app background, lock-screen, call interruption, and return behavior remain BLOCKED; desktop browser or injected lifecycle events do not close this gap.",
+    "Live TapTap advertising is BLOCKED / NOT INTEGRATED; no ad reward is simulated.",
+    "WeChat and Douyin native mini-game packages are BLOCKED / NOT PACKAGED.",
+    "Independent human enjoyment, usability, and retention playtesting are BLOCKED / NOT RUN.",
+    "Production release is BLOCKED. This artifact is an H5 device-playtest candidate only.",
+    "safety/webkit: environment-background-check-unavailable:tab-blur-pauses",
+    "safety/webkit: environment-background-check-unavailable:background-manual-resume",
+    "safety/chromium: environment-background-check-unavailable:tab-blur-pauses",
+    "safety/chromium: environment-background-check-unavailable:background-manual-resume"
+  ],
+  "reportPaths": [
+    "qa-report-v3.json",
+    "build-report-v3.json",
+    "qa-summary-v3.json",
+    "qa-summary-v3.md",
+    "qa-evidence-manifest-v3.json",
+    "artifacts/perceptual-qa-gate-v3.json",
+    "artifacts/runtime-product-gates-v3.json",
+    "artifacts/runtime-wiring-verification-v3.json"
+  ],
+  "evidenceManifestPath": "qa-evidence-manifest-v3.json",
+  "createdAt": "2026-10-15T03:31:21.949Z"
+}

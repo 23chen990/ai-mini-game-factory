@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "Independent experience audit: live mastery omits gold/time conditions used by settlement; player cannot plan all three-star requirements.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Core reward rule and default HUD presentation must agree; retain natural and independent perceptual retest.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "old recordings",
+      "full conversation"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Compare live mastery rendering with starTargets/settle conditions",
+      "Verify menu and settlement use numeric challenge text",
+      "Capture current replay with complete visible challenge progress"
+    ],
+    "observed": [
+      "Live mastery displays catch/jump/no-hit but omits required gold and time"
+    ],
+    "evidence": [
+      {
+        "path": "tools/lean-pilot/pelican-v2/runtime/coast-ui.mjs",
+        "sha256": "c204598ec74f744969636a5f7c0f25def7e4e8ed04784fb2197b1ce6160041c2",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Display actual fish, gold, jump, no-hit and time targets consistently",
+    "No overflow or head/road occlusion on four mobile sizes",
+    "Natural 2/3-star settlement and replay reflect the conditions"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T07:43:53.632Z"
+}

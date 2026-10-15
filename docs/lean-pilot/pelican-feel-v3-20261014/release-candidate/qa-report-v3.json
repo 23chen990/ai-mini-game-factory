@@ -1,0 +1,2898 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "campaign:webkit",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:locked-new-save",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:first-seconds-objective-and-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:renderer-composer-resolution",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:pause-freezes-world-and-timer",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:natural-level-1",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:no-full-page-reload-level-1",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:natural-level-2",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:no-full-page-reload-level-2",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:natural-level-3",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:no-full-page-reload-level-3",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:natural-level-4",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:no-full-page-reload-level-4",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:natural-level-5",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:no-full-page-reload-level-5",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:unintegrated-ad-honest-no-block",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:in-memory-replay",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:refresh-keeps-five-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "campaign:webkit:restored-selected-level-label",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:accident-visible-before-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:car-ends-round",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:crash-freezes-score",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:failure-replay-without-navigation",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:pedestrian-stops-but-countdown-runs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:pedestrian-recovers-once",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:visible-barrier-jump-clears",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:authored-barrier-prize-caught",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "collision:webkit:one-touch-one-lane",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:first-catch-under-three-seconds",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:mastery-target-visible-before-first-obstacle",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:left-pedestrian-warns-right-at-least-two-seconds",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:first-gold-before-ten-seconds",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:jump-gold-route-signalled-with-safe-detour",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:early-jump-buffer-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:right-pedestrian-warns-left-at-least-two-seconds",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:natural-jump-gold-advances-mastery",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:earned-jump-prize-has-visible-route-cue",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:buffered-jump-clears-exact-target",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:natural-three-star-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:both-crossing-directions-observed",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:real-personal-best-recorded",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:trusted-right-swipe-one-lane",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:trusted-left-swipe-one-lane",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:cancelled-touch-does-not-turn",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:trusted-up-swipe-jumps",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:safe-detour-does-not-require-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:mastery-saved-and-visible-on-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:safe-lane-change-cancels-buffer-without-fake-mastery",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:small-phone-start-visible-and-menu-not-overflow",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "experience:webkit:small-phone-touch-buttons-and-mastery-readable",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "head:webkit",
+      "passed": true,
+      "evidence": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-1-l1-o1-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-1-l1-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-2-l2-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-2-l2-o5-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-3-l3-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-3-l3-o5-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-4-l4-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-4-l4-o5-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-4-l4-o10-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-5-l5-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-5-l5-o5-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:authored-level-5-l5-o10-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:new-browser-starts-with-new-save",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o1-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o1-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o1-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o1-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o1-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o1-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o1-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-l1-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-next-level-visible-after-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-1-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-prior-levels-earned",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o5-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o5-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o5-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o5-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o5-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o5-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-l2-o5-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-next-level-visible-after-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-2-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-prior-levels-earned",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o3-same-point-van-is-bypassed",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o5-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o5-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o5-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o5-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o5-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o5-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-l3-o5-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-next-level-visible-after-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-3-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-prior-levels-earned",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o5-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o5-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o5-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o5-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o5-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o5-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o5-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o10-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o10-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o10-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o10-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o10-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o10-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-l4-o10-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-next-level-visible-after-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-4-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-prior-levels-earned",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o5-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o5-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o5-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o5-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o5-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o5-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o5-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o10-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o10-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o10-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o10-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o10-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o10-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-l5-o10-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:final-settlement-and-reopen",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:earned-compact-route-5-touch-selects-exact-target",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:earned-compact-route-1-touch-selects-exact-target",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:earned-compact-menu-replay-is-actual-level-one",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:level-5-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:five-level-natural-campaign-completed",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "risk:webkit:all-visible-inputs-have-trusted-touch-evidence",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "name": "feel-state:webkit",
+      "passed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "feel-state:webkit:normal-barrier-terminal",
+      "passed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "feel-state:webkit:normal-replay",
+      "passed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "feel-state:webkit:six-state-correlated-running-frames",
+      "passed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "campaign:chromium",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:locked-new-save",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:first-seconds-objective-and-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:renderer-composer-resolution",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:pause-freezes-world-and-timer",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:natural-level-1",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:no-full-page-reload-level-1",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:natural-level-2",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:no-full-page-reload-level-2",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:natural-level-3",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:no-full-page-reload-level-3",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:natural-level-4",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:no-full-page-reload-level-4",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:natural-level-5",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:no-full-page-reload-level-5",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:unintegrated-ad-honest-no-block",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:in-memory-replay",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:refresh-keeps-five-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "campaign:chromium:restored-selected-level-label",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:accident-visible-before-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:car-ends-round",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:crash-freezes-score",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:failure-replay-without-navigation",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:pedestrian-stops-but-countdown-runs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:pedestrian-recovers-once",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:visible-barrier-jump-clears",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:authored-barrier-prize-caught",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "collision:chromium:one-touch-one-lane",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:first-catch-under-three-seconds",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:mastery-target-visible-before-first-obstacle",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:left-pedestrian-warns-right-at-least-two-seconds",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:first-gold-before-ten-seconds",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:jump-gold-route-signalled-with-safe-detour",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:early-jump-buffer-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:right-pedestrian-warns-left-at-least-two-seconds",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:natural-jump-gold-advances-mastery",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:earned-jump-prize-has-visible-route-cue",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:buffered-jump-clears-exact-target",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:natural-three-star-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:both-crossing-directions-observed",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:real-personal-best-recorded",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:trusted-right-swipe-one-lane",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:trusted-left-swipe-one-lane",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:cancelled-touch-does-not-turn",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:trusted-up-swipe-jumps",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:safe-detour-does-not-require-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:mastery-saved-and-visible-on-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:safe-lane-change-cancels-buffer-without-fake-mastery",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:small-phone-start-visible-and-menu-not-overflow",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "experience:chromium:small-phone-touch-buttons-and-mastery-readable",
+      "passed": true,
+      "evidence": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "name": "head:chromium",
+      "passed": true,
+      "evidence": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-1-l1-o1-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-1-l1-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-2-l2-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-2-l2-o5-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-3-l3-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-3-l3-o5-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-4-l4-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-4-l4-o5-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-4-l4-o10-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-5-l5-o3-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-5-l5-o5-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:authored-level-5-l5-o10-exact-golden-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:new-browser-starts-with-new-save",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o1-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o1-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o1-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o1-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o1-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o1-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o1-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-l1-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-next-level-visible-after-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-1-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-prior-levels-earned",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o5-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o5-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o5-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o5-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o5-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o5-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-l2-o5-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-next-level-visible-after-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-2-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-prior-levels-earned",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o3-same-point-van-is-bypassed",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o5-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o5-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o5-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o5-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o5-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o5-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-l3-o5-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-next-level-visible-after-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-3-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-prior-levels-earned",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o5-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o5-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o5-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o5-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o5-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o5-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o5-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o10-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o10-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o10-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o10-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o10-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o10-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-l4-o10-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-next-level-visible-after-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-4-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-fresh-profile-unlocked",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-prior-levels-earned",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-route-button-visible",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-visible-name-weather-gold-time",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-running-started",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-natural-terminal-settlement",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-save-earned-through-play",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-exact-target-jump-count",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o3-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o3-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o3-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o3-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o3-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o3-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o3-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o5-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o5-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o5-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o5-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o5-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o5-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o5-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o10-visible-jump-reward-route",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o10-one-jump-at-decimal-window",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o10-no-repeat-jump",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o10-exact-barrier-cleared-jumped",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o10-exact-golden-bonus-fish-maps-to-barrier",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o10-gold-feedback-visible-in-hud",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-l5-o10-held-route-through-bonus-fish",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-never-turns-into-visible-car-or-van",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-only-adjacent-lane-inputs",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:final-settlement-and-reopen",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:earned-compact-route-5-touch-selects-exact-target",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:earned-compact-route-1-touch-selects-exact-target",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:earned-compact-menu-replay-is-actual-level-one",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:level-5-running-frame-samples",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:five-level-natural-campaign-completed",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "risk:chromium:all-visible-inputs-have-trusted-touch-evidence",
+      "passed": true,
+      "evidence": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "name": "feel-state:chromium",
+      "passed": true,
+      "evidence": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "name": "feel-state:chromium:normal-barrier-terminal",
+      "passed": true,
+      "evidence": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "name": "feel-state:chromium:normal-replay",
+      "passed": true,
+      "evidence": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "name": "feel-state:chromium:six-state-correlated-running-frames",
+      "passed": true,
+      "evidence": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "name": "visual:webkit",
+      "passed": true,
+      "evidence": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium",
+      "passed": false,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium:actual-window-background-pauses",
+      "passed": false,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium:background-countdown-stays-paused",
+      "passed": false,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium:background-requires-manual-resume",
+      "passed": false,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium:portrait-to-landscape-live-resize",
+      "passed": true,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium:all-quality-presets-keep-composer-size",
+      "passed": true,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium:offline-single-html-normal-touch-catch",
+      "passed": true,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium:engineering-context-loss-pauses",
+      "passed": true,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "lifecycle:webkit+chromium:engineering-context-restored-manual-resume",
+      "passed": true,
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "safety:webkit",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "name": "safety:webkit:van-target-distance-reached",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "name": "safety:webkit:van-ends-round",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "name": "safety:webkit:car-not-jumpable",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "name": "safety:webkit:distance-and-fish-jointly-required",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "name": "safety:webkit:tab-blur-pauses",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "name": "safety:webkit:background-manual-resume",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "name": "safety:webkit:replay-resources-plateau",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "name": "safety:webkit:tab-blur-pauses:environment-blocked",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json + attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "safety:webkit:background-manual-resume:environment-blocked",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json + attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "safety:chromium",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "name": "safety:chromium:van-target-distance-reached",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "name": "safety:chromium:van-ends-round",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "name": "safety:chromium:car-not-jumpable",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "name": "safety:chromium:distance-and-fish-jointly-required",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "name": "safety:chromium:tab-blur-pauses",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "name": "safety:chromium:background-manual-resume",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "name": "safety:chromium:replay-resources-plateau",
+      "passed": true,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "name": "safety:chromium:tab-blur-pauses:environment-blocked",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json + attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "safety:chromium:background-manual-resume:environment-blocked",
+      "passed": false,
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json + attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "name": "campaign-natural-flow",
+      "passed": true,
+      "evidence": "artifacts/natural/campaign.json"
+    },
+    {
+      "name": "collision-natural-flow",
+      "passed": true,
+      "evidence": "artifacts/natural/collisions.json"
+    },
+    {
+      "name": "v3-experience-natural-flow-webkit",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-experience-webkit.json"
+    },
+    {
+      "name": "v3-experience-natural-flow-chromium",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-experience-chromium.json"
+    },
+    {
+      "name": "v3-risk-natural-flow-webkit",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-risk-webkit.json"
+    },
+    {
+      "name": "v3-risk-natural-flow-chromium",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-risk-chromium.json"
+    },
+    {
+      "name": "v3-feel-state-natural-flow-webkit",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-feel-state-webkit.json"
+    },
+    {
+      "name": "v3-feel-state-natural-flow-chromium",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-feel-state-chromium.json"
+    },
+    {
+      "name": "v3-head-natural-flow-webkit-390",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-head-webkit-390.json"
+    },
+    {
+      "name": "v3-head-natural-flow-webkit-360",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-head-webkit-360.json"
+    },
+    {
+      "name": "v3-head-natural-flow-webkit-320",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-head-webkit-320.json"
+    },
+    {
+      "name": "v3-head-natural-flow-webkit-844",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-head-webkit-844.json"
+    },
+    {
+      "name": "v3-head-natural-flow-chromium-390",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-head-chromium-390.json"
+    },
+    {
+      "name": "v3-head-natural-flow-chromium-360",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-head-chromium-360.json"
+    },
+    {
+      "name": "v3-head-natural-flow-chromium-320",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-head-chromium-320.json"
+    },
+    {
+      "name": "v3-head-natural-flow-chromium-844",
+      "passed": true,
+      "evidence": "artifacts/natural/v3-head-chromium-844.json"
+    },
+    {
+      "name": "independent-perceptual-qa-gate",
+      "passed": true,
+      "evidence": "artifacts/perceptual-qa-gate-v3.json"
+    },
+    {
+      "name": "default-runtime-product-journey",
+      "passed": true,
+      "evidence": "artifacts/runtime-product-gates-v3.json"
+    },
+    {
+      "name": "runtime-wired-files",
+      "passed": true,
+      "evidence": "artifacts/runtime-wiring-verification-v3.json"
+    },
+    {
+      "name": "physical-device-acceptance",
+      "passed": false,
+      "evidence": "BLOCKED: physical iPhone and Android not run"
+    },
+    {
+      "name": "real-mobile-background-lifecycle",
+      "passed": false,
+      "evidence": "BLOCKED: no physical app lifecycle signal"
+    },
+    {
+      "name": "live-ad-integration",
+      "passed": false,
+      "evidence": "BLOCKED: workspace/game/platform.json reports NOT_INTEGRATED"
+    },
+    {
+      "name": "native-platform-packages",
+      "passed": false,
+      "evidence": "BLOCKED: workspace/game/platform.json reports NOT_PACKAGED"
+    }
+  ],
+  "issues": [
+    {
+      "id": "CURRENT-BUILD-LIFECYCLE-WEBKIT+CHROMIUM",
+      "severity": "error",
+      "message": "Current-build report is missing or blocked.",
+      "evidence": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "id": "CURRENT-BUILD-SAFETY-WEBKIT",
+      "severity": "error",
+      "message": "environment-background-check-unavailable:tab-blur-pauses; environment-background-check-unavailable:background-manual-resume",
+      "evidence": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "id": "CURRENT-BUILD-SAFETY-CHROMIUM",
+      "severity": "error",
+      "message": "environment-background-check-unavailable:tab-blur-pauses; environment-background-check-unavailable:background-manual-resume",
+      "evidence": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "id": "PHYSICAL-DEVICE",
+      "severity": "error",
+      "message": "Physical iPhone and Android playtest, low-end performance, thermal behavior, and long-session stability are BLOCKED / NOT RUN.",
+      "evidence": "qa-summary-v3.json"
+    },
+    {
+      "id": "MOBILE-BACKGROUND",
+      "severity": "error",
+      "message": "Real mobile app background, lock-screen, call interruption, and return behavior remain BLOCKED; desktop browser or injected lifecycle events do not close this gap.",
+      "evidence": "qa-summary-v3.json"
+    },
+    {
+      "id": "LIVE-ADS",
+      "severity": "error",
+      "message": "Live TapTap advertising is BLOCKED / NOT INTEGRATED; no ad reward is simulated.",
+      "evidence": "qa-summary-v3.json"
+    },
+    {
+      "id": "NATIVE-PACKAGES",
+      "severity": "error",
+      "message": "WeChat and Douyin native mini-game packages are BLOCKED / NOT PACKAGED.",
+      "evidence": "qa-summary-v3.json"
+    },
+    {
+      "id": "HUMAN-PLAYTEST",
+      "severity": "error",
+      "message": "Independent human enjoyment, usability, and retention playtesting are BLOCKED / NOT RUN.",
+      "evidence": "qa-summary-v3.json"
+    },
+    {
+      "id": "PRODUCTION",
+      "severity": "error",
+      "message": "Production release is BLOCKED. This artifact is an H5 device-playtest candidate only.",
+      "evidence": "qa-summary-v3.json"
+    }
+  ],
+  "screenshots": [
+    "attempts/attempt-20/qa-all-webkit/setup/menu.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/first-fish.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/pause.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-1-start.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-1-hazard.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-1-terminal.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-2-start.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-2-hazard.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-2-terminal.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-3-start.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-3-hazard.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-3-terminal.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-4-start.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-4-hazard.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-4-terminal.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-5-start.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-5-hazard.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/level-5-terminal.png",
+    "attempts/attempt-20/qa-all-webkit/campaign/all-unlocked.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/vehicle-warning.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/vehicle-accident.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/vehicle-impact.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-fall.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-wait.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-rising.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-recovery.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/barrier-jump.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/barrier-cleared.png",
+    "attempts/attempt-20/qa-all-webkit/collisions/authored-barrier-prize.png",
+    "attempts/attempt-20/experience-webkit/first-catch.png",
+    "attempts/attempt-20/experience-webkit/left-pedestrian-warning.png",
+    "attempts/attempt-20/experience-webkit/first-gold.png",
+    "attempts/attempt-20/experience-webkit/jump-choice.png",
+    "attempts/attempt-20/experience-webkit/jump-queued.png",
+    "attempts/attempt-20/experience-webkit/earned-jump-prize-cue.png",
+    "attempts/attempt-20/experience-webkit/right-pedestrian-warning.png",
+    "attempts/attempt-20/experience-webkit/jump-gold-earned.png",
+    "attempts/attempt-20/experience-webkit/earned-three-stars.png",
+    "attempts/attempt-20/experience-webkit/swipe-right.png",
+    "attempts/attempt-20/experience-webkit/swipe-left.png",
+    "attempts/attempt-20/experience-webkit/swipe-up.png",
+    "attempts/attempt-20/experience-webkit/up-swipe.png",
+    "attempts/attempt-20/experience-webkit/safe-detour.png",
+    "attempts/attempt-20/experience-webkit/saved-mastery.png",
+    "attempts/attempt-20/experience-webkit/cancel-jump-safe-detour.png",
+    "attempts/attempt-20/experience-webkit/small-phone-route-menu.png",
+    "attempts/attempt-20/experience-webkit/small-phone-running.png",
+    "attempts/attempt-20/head-webkit/390-straight.png",
+    "attempts/attempt-20/head-webkit/390-fish-catch.png",
+    "attempts/attempt-20/head-webkit/390-right-turn.png",
+    "attempts/attempt-20/head-webkit/390-jump-reverse.png",
+    "attempts/attempt-20/head-webkit/390-terminal.png",
+    "attempts/attempt-20/head-webkit/390-replay.png",
+    "attempts/attempt-20/head-webkit/390-pedestrian-stun.png",
+    "attempts/attempt-20/head-webkit/390-recovery.png",
+    "attempts/attempt-20/head-webkit/360-straight.png",
+    "attempts/attempt-20/head-webkit/360-fish-catch.png",
+    "attempts/attempt-20/head-webkit/360-right-turn.png",
+    "attempts/attempt-20/head-webkit/360-jump-reverse.png",
+    "attempts/attempt-20/head-webkit/360-terminal.png",
+    "attempts/attempt-20/head-webkit/360-replay.png",
+    "attempts/attempt-20/head-webkit/360-pedestrian-stun.png",
+    "attempts/attempt-20/head-webkit/360-recovery.png",
+    "attempts/attempt-20/head-webkit/320-straight.png",
+    "attempts/attempt-20/head-webkit/320-fish-catch.png",
+    "attempts/attempt-20/head-webkit/320-right-turn.png",
+    "attempts/attempt-20/head-webkit/320-jump-reverse.png",
+    "attempts/attempt-20/head-webkit/320-terminal.png",
+    "attempts/attempt-20/head-webkit/320-replay.png",
+    "attempts/attempt-20/head-webkit/320-pedestrian-stun.png",
+    "attempts/attempt-20/head-webkit/320-recovery.png",
+    "attempts/attempt-20/head-webkit/844-straight.png",
+    "attempts/attempt-20/head-webkit/844-fish-catch.png",
+    "attempts/attempt-20/head-webkit/844-right-turn.png",
+    "attempts/attempt-20/head-webkit/844-jump-reverse.png",
+    "attempts/attempt-20/head-webkit/844-terminal.png",
+    "attempts/attempt-20/head-webkit/844-replay.png",
+    "attempts/attempt-20/head-webkit/844-pedestrian-stun.png",
+    "attempts/attempt-20/head-webkit/844-recovery.png",
+    "attempts/attempt-20/risk-webkit/level-1-route-menu.png",
+    "attempts/attempt-20/risk-webkit/level-1-running-start.png",
+    "attempts/attempt-20/risk-webkit/level-1-l1-o1-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-1-l1-o1-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-1-l1-o1-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-1-l1-o1-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-1-l1-o3-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-1-l1-o3-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-1-l1-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-1-l1-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-1-terminal-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-1-route-after-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-2-route-menu.png",
+    "attempts/attempt-20/risk-webkit/level-2-running-start.png",
+    "attempts/attempt-20/risk-webkit/level-2-l2-o3-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-2-l2-o3-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-2-l2-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-2-l2-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-2-l2-o5-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-2-l2-o5-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-2-l2-o5-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-2-l2-o5-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-2-terminal-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-2-route-after-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-3-route-menu.png",
+    "attempts/attempt-20/risk-webkit/level-3-running-start.png",
+    "attempts/attempt-20/risk-webkit/level-3-l3-o3-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-3-l3-o3-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-3-l3-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-3-l3-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-3-l3-o5-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-3-l3-o5-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-3-l3-o5-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-3-l3-o5-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-3-terminal-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-3-route-after-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-4-route-menu.png",
+    "attempts/attempt-20/risk-webkit/level-4-running-start.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o3-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o3-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o5-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o5-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o5-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o5-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o10-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o10-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o10-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-4-l4-o10-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-4-terminal-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-4-route-after-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-5-route-menu.png",
+    "attempts/attempt-20/risk-webkit/level-5-running-start.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o3-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o3-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o5-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o5-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o5-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o5-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o10-reward-approach.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o10-jump-input.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o10-barrier-cleared.png",
+    "attempts/attempt-20/risk-webkit/level-5-l5-o10-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-webkit/level-5-terminal-settlement.png",
+    "attempts/attempt-20/risk-webkit/level-5-final-replay.png",
+    "attempts/attempt-20/risk-webkit/earned-compact-route-5.png",
+    "attempts/attempt-20/risk-webkit/earned-compact-route-1.png",
+    "attempts/attempt-20/risk-webkit/earned-compact-level-one-replay.png",
+    "attempts/attempt-20/feel-state-webkit/state-900.png",
+    "attempts/attempt-20/feel-state-webkit/state-1300.png",
+    "attempts/attempt-20/feel-state-webkit/state-1500.png",
+    "attempts/attempt-20/feel-state-webkit/state-1750.png",
+    "attempts/attempt-20/feel-state-webkit/state-2480.png",
+    "attempts/attempt-20/feel-state-webkit/state-3200.png",
+    "attempts/attempt-20/feel-state-webkit/terminal.png",
+    "attempts/attempt-20/feel-state-webkit/replay.png",
+    "attempts/attempt-20/qa-all-chromium/setup/menu.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/first-fish.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/pause.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-1-start.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-1-hazard.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-1-terminal.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-2-start.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-2-hazard.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-2-terminal.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-3-start.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-3-hazard.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-3-terminal.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-4-start.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-4-hazard.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-4-terminal.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-5-start.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-5-hazard.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/level-5-terminal.png",
+    "attempts/attempt-20/qa-all-chromium/campaign/all-unlocked.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/vehicle-warning.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/vehicle-accident.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/vehicle-impact.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/pedestrian-fall.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/pedestrian-wait.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/pedestrian-rising.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/pedestrian-recovery.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/barrier-jump.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/barrier-cleared.png",
+    "attempts/attempt-20/qa-all-chromium/collisions/authored-barrier-prize.png",
+    "attempts/attempt-20/experience-chromium/first-catch.png",
+    "attempts/attempt-20/experience-chromium/left-pedestrian-warning.png",
+    "attempts/attempt-20/experience-chromium/first-gold.png",
+    "attempts/attempt-20/experience-chromium/jump-choice.png",
+    "attempts/attempt-20/experience-chromium/jump-queued.png",
+    "attempts/attempt-20/experience-chromium/earned-jump-prize-cue.png",
+    "attempts/attempt-20/experience-chromium/right-pedestrian-warning.png",
+    "attempts/attempt-20/experience-chromium/jump-gold-earned.png",
+    "attempts/attempt-20/experience-chromium/earned-three-stars.png",
+    "attempts/attempt-20/experience-chromium/swipe-right.png",
+    "attempts/attempt-20/experience-chromium/swipe-left.png",
+    "attempts/attempt-20/experience-chromium/swipe-up.png",
+    "attempts/attempt-20/experience-chromium/up-swipe.png",
+    "attempts/attempt-20/experience-chromium/safe-detour.png",
+    "attempts/attempt-20/experience-chromium/saved-mastery.png",
+    "attempts/attempt-20/experience-chromium/cancel-jump-safe-detour.png",
+    "attempts/attempt-20/experience-chromium/small-phone-route-menu.png",
+    "attempts/attempt-20/experience-chromium/small-phone-running.png",
+    "attempts/attempt-20/head-chromium/390-straight.png",
+    "attempts/attempt-20/head-chromium/390-fish-catch.png",
+    "attempts/attempt-20/head-chromium/390-right-turn.png",
+    "attempts/attempt-20/head-chromium/390-jump-reverse.png",
+    "attempts/attempt-20/head-chromium/390-terminal.png",
+    "attempts/attempt-20/head-chromium/390-replay.png",
+    "attempts/attempt-20/head-chromium/390-pedestrian-stun.png",
+    "attempts/attempt-20/head-chromium/390-recovery.png",
+    "attempts/attempt-20/head-chromium/360-straight.png",
+    "attempts/attempt-20/head-chromium/360-fish-catch.png",
+    "attempts/attempt-20/head-chromium/360-right-turn.png",
+    "attempts/attempt-20/head-chromium/360-jump-reverse.png",
+    "attempts/attempt-20/head-chromium/360-terminal.png",
+    "attempts/attempt-20/head-chromium/360-replay.png",
+    "attempts/attempt-20/head-chromium/360-pedestrian-stun.png",
+    "attempts/attempt-20/head-chromium/360-recovery.png",
+    "attempts/attempt-20/head-chromium/320-straight.png",
+    "attempts/attempt-20/head-chromium/320-fish-catch.png",
+    "attempts/attempt-20/head-chromium/320-right-turn.png",
+    "attempts/attempt-20/head-chromium/320-jump-reverse.png",
+    "attempts/attempt-20/head-chromium/320-terminal.png",
+    "attempts/attempt-20/head-chromium/320-replay.png",
+    "attempts/attempt-20/head-chromium/320-pedestrian-stun.png",
+    "attempts/attempt-20/head-chromium/320-recovery.png",
+    "attempts/attempt-20/head-chromium/844-straight.png",
+    "attempts/attempt-20/head-chromium/844-fish-catch.png",
+    "attempts/attempt-20/head-chromium/844-right-turn.png",
+    "attempts/attempt-20/head-chromium/844-jump-reverse.png",
+    "attempts/attempt-20/head-chromium/844-terminal.png",
+    "attempts/attempt-20/head-chromium/844-replay.png",
+    "attempts/attempt-20/head-chromium/844-pedestrian-stun.png",
+    "attempts/attempt-20/head-chromium/844-recovery.png",
+    "attempts/attempt-20/risk-chromium/level-1-route-menu.png",
+    "attempts/attempt-20/risk-chromium/level-1-running-start.png",
+    "attempts/attempt-20/risk-chromium/level-1-l1-o1-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-1-l1-o1-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-1-l1-o1-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-1-l1-o1-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-1-l1-o3-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-1-l1-o3-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-1-l1-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-1-l1-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-1-terminal-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-1-route-after-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-2-route-menu.png",
+    "attempts/attempt-20/risk-chromium/level-2-running-start.png",
+    "attempts/attempt-20/risk-chromium/level-2-l2-o3-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-2-l2-o3-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-2-l2-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-2-l2-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-2-l2-o5-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-2-l2-o5-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-2-l2-o5-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-2-l2-o5-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-2-terminal-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-2-route-after-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-3-route-menu.png",
+    "attempts/attempt-20/risk-chromium/level-3-running-start.png",
+    "attempts/attempt-20/risk-chromium/level-3-l3-o3-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-3-l3-o3-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-3-l3-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-3-l3-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-3-l3-o5-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-3-l3-o5-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-3-l3-o5-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-3-l3-o5-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-3-terminal-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-3-route-after-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-4-route-menu.png",
+    "attempts/attempt-20/risk-chromium/level-4-running-start.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o3-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o3-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o5-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o5-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o5-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o5-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o10-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o10-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o10-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-4-l4-o10-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-4-terminal-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-4-route-after-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-5-route-menu.png",
+    "attempts/attempt-20/risk-chromium/level-5-running-start.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o3-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o3-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o3-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o3-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o5-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o5-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o5-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o5-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o10-reward-approach.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o10-jump-input.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o10-barrier-cleared.png",
+    "attempts/attempt-20/risk-chromium/level-5-l5-o10-golden-bonus-fish-caught.png",
+    "attempts/attempt-20/risk-chromium/level-5-terminal-settlement.png",
+    "attempts/attempt-20/risk-chromium/level-5-final-replay.png",
+    "attempts/attempt-20/risk-chromium/earned-compact-route-5.png",
+    "attempts/attempt-20/risk-chromium/earned-compact-route-1.png",
+    "attempts/attempt-20/risk-chromium/earned-compact-level-one-replay.png",
+    "attempts/attempt-20/feel-state-chromium/state-900.png",
+    "attempts/attempt-20/feel-state-chromium/state-1300.png",
+    "attempts/attempt-20/feel-state-chromium/state-1500.png",
+    "attempts/attempt-20/feel-state-chromium/state-1750.png",
+    "attempts/attempt-20/feel-state-chromium/state-2480.png",
+    "attempts/attempt-20/feel-state-chromium/state-3200.png",
+    "attempts/attempt-20/feel-state-chromium/terminal.png",
+    "attempts/attempt-20/feel-state-chromium/replay.png",
+    "attempts/attempt-20/visual/390-menu.png",
+    "attempts/attempt-20/visual/390-same-pose.png",
+    "attempts/attempt-20/visual/390-first-fish.png",
+    "attempts/attempt-20/visual/390-running.png",
+    "attempts/attempt-20/visual/390-paused.png",
+    "attempts/attempt-20/visual/390-resumed.png",
+    "attempts/attempt-20/visual/390-terminal.png",
+    "attempts/attempt-20/visual/390-replay.png",
+    "attempts/attempt-20/visual/360-menu.png",
+    "attempts/attempt-20/visual/360-same-pose.png",
+    "attempts/attempt-20/visual/360-first-fish.png",
+    "attempts/attempt-20/visual/360-running.png",
+    "attempts/attempt-20/visual/360-paused.png",
+    "attempts/attempt-20/visual/360-resumed.png",
+    "attempts/attempt-20/visual/360-terminal.png",
+    "attempts/attempt-20/visual/360-replay.png",
+    "attempts/attempt-20/visual/320-menu.png",
+    "attempts/attempt-20/visual/320-same-pose.png",
+    "attempts/attempt-20/visual/320-first-fish.png",
+    "attempts/attempt-20/visual/320-running.png",
+    "attempts/attempt-20/visual/320-paused.png",
+    "attempts/attempt-20/visual/320-resumed.png",
+    "attempts/attempt-20/visual/320-terminal.png",
+    "attempts/attempt-20/visual/320-replay.png",
+    "attempts/attempt-20/visual/844-menu.png",
+    "attempts/attempt-20/visual/844-same-pose.png",
+    "attempts/attempt-20/visual/844-first-fish.png",
+    "attempts/attempt-20/visual/844-running.png",
+    "attempts/attempt-20/visual/844-paused.png",
+    "attempts/attempt-20/visual/844-resumed.png",
+    "attempts/attempt-20/visual/844-terminal.png",
+    "attempts/attempt-20/visual/844-replay.png",
+    "attempts/attempt-20/lifecycle/background-paused.png",
+    "attempts/attempt-20/lifecycle/background-resumed.png",
+    "attempts/attempt-20/lifecycle/live-rotation.png",
+    "attempts/attempt-20/lifecycle/standalone-file.png",
+    "attempts/attempt-20/lifecycle/context-restored.png",
+    "attempts/attempt-20/qa-all-webkit/safety/level-3-hazard.png",
+    "attempts/attempt-20/qa-all-webkit/safety/van-approach.png",
+    "attempts/attempt-20/qa-all-webkit/safety/van-impact.png",
+    "attempts/attempt-20/qa-all-webkit/safety/car-not-jumpable.png",
+    "attempts/attempt-20/qa-all-webkit/safety/level-fish-short-hazard.png",
+    "attempts/attempt-20/qa-all-webkit/safety/distance-without-fish-fails.png",
+    "attempts/attempt-20/qa-all-webkit/safety/background-return.png",
+    "attempts/attempt-20/qa-all-chromium/safety/level-3-hazard.png",
+    "attempts/attempt-20/qa-all-chromium/safety/van-approach.png",
+    "attempts/attempt-20/qa-all-chromium/safety/van-impact.png",
+    "attempts/attempt-20/qa-all-chromium/safety/car-not-jumpable.png",
+    "attempts/attempt-20/qa-all-chromium/safety/level-fish-short-hazard.png",
+    "attempts/attempt-20/qa-all-chromium/safety/distance-without-fish-fails.png",
+    "attempts/attempt-20/qa-all-chromium/safety/background-return.png"
+  ],
+  "consoleLog": "Structured browser reports are bound in qa-evidence-manifest-v3.json; the QA drivers did not emit one merged console log.",
+  "testedAt": "2026-10-15T03:31:21.950Z"
+}

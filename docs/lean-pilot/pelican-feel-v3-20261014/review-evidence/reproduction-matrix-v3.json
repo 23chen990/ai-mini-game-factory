@@ -1,0 +1,3530 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "rider-bicycle-camera",
+      "pedestrian-left",
+      "pedestrian-right",
+      "optional-jump-fish",
+      "fish-route-stars",
+      "simulation-clock"
+    ],
+    "lifecycleStateBranches": [
+      "startup-first-minute",
+      "running",
+      "reverse-jump",
+      "collision-recovery",
+      "settlement-replay"
+    ],
+    "rendererPaths": [
+      "webkit-default",
+      "chromium-default"
+    ],
+    "viewports": [
+      {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "rider-bicycle-camera:startup-first-minute:webkit-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit normal-input standard (390px wide) default journey has matching menu/start, first-catch and running full-frame captures; current visual report records natural barrier terminal and passing checks.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-menu.png",
+          "sha256": "621918e6b08d5eec383a362921dc3d86b89f525de8d826266453f1b4e3a0eb47",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-first-fish.png",
+          "sha256": "25b2601d52cf5fb3d040614095999c781eee9bbb897b04f70f76ab4dd062a85a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-running.png",
+          "sha256": "0f2880ae298affc0067f46f6c86cbbdcb55f278d2f7ec66561fe457d54c0e1d6",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:startup-first-minute:webkit-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit normal-input small (360px wide) default journey has matching menu/start, first-catch and running full-frame captures; current visual report records natural barrier terminal and passing checks.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-menu.png",
+          "sha256": "98de4311d3c92d9a648db505bff151f91a82cdbaa1998699762af6c718af3bb2",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-first-fish.png",
+          "sha256": "0247c619c0367d96c19601bc1ddfce1c49c32461b7e490df7e175985f4ef1cf9",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-running.png",
+          "sha256": "c24fa2d7a6e1dd7fa45425c6c97fb704da524609df325a363a807cf9857dc840",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:startup-first-minute:webkit-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit normal-input compact (320px wide) default journey has matching menu/start, first-catch and running full-frame captures; current visual report records natural barrier terminal and passing checks.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-menu.png",
+          "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-first-fish.png",
+          "sha256": "02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-running.png",
+          "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:startup-first-minute:webkit-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit normal-input landscape (844px wide) default journey has matching menu/start, first-catch and running full-frame captures; current visual report records natural barrier terminal and passing checks.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-menu.png",
+          "sha256": "979ea4798baff1a9a199f0768c6ac170abe5928679abeb6a669e8081367cd76a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-first-fish.png",
+          "sha256": "d052ea85a882384a62e614ec689b21129d7c725928c52002672ccbafed105f5b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-running.png",
+          "sha256": "40aae0362b1a9f0d27b53bdb8d3c2ee2a8312dd7010fb84d2d4fc61fddff902b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:startup-first-minute:chromium-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:startup-first-minute:chromium-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:startup-first-minute:chromium-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:startup-first-minute:chromium-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:running:webkit-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit normal-input standard (390px wide) default journey has matching menu/start, first-catch and running full-frame captures; current visual report records natural barrier terminal and passing checks.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-menu.png",
+          "sha256": "621918e6b08d5eec383a362921dc3d86b89f525de8d826266453f1b4e3a0eb47",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-first-fish.png",
+          "sha256": "25b2601d52cf5fb3d040614095999c781eee9bbb897b04f70f76ab4dd062a85a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-running.png",
+          "sha256": "0f2880ae298affc0067f46f6c86cbbdcb55f278d2f7ec66561fe457d54c0e1d6",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:running:webkit-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit normal-input small (360px wide) default journey has matching menu/start, first-catch and running full-frame captures; current visual report records natural barrier terminal and passing checks.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-menu.png",
+          "sha256": "98de4311d3c92d9a648db505bff151f91a82cdbaa1998699762af6c718af3bb2",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-first-fish.png",
+          "sha256": "0247c619c0367d96c19601bc1ddfce1c49c32461b7e490df7e175985f4ef1cf9",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-running.png",
+          "sha256": "c24fa2d7a6e1dd7fa45425c6c97fb704da524609df325a363a807cf9857dc840",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:running:webkit-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit normal-input compact (320px wide) default journey has matching menu/start, first-catch and running full-frame captures; current visual report records natural barrier terminal and passing checks.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-menu.png",
+          "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-first-fish.png",
+          "sha256": "02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-running.png",
+          "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:running:webkit-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit normal-input landscape (844px wide) default journey has matching menu/start, first-catch and running full-frame captures; current visual report records natural barrier terminal and passing checks.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-menu.png",
+          "sha256": "979ea4798baff1a9a199f0768c6ac170abe5928679abeb6a669e8081367cd76a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-first-fish.png",
+          "sha256": "d052ea85a882384a62e614ec689b21129d7c725928c52002672ccbafed105f5b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-running.png",
+          "sha256": "40aae0362b1a9f0d27b53bdb8d3c2ee2a8312dd7010fb84d2d4fc61fddff902b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:running:chromium-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:running:chromium-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:running:chromium-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:running:chromium-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:reverse-jump:webkit-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:reverse-jump:webkit-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:reverse-jump:webkit-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:reverse-jump:webkit-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:reverse-jump:chromium-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:reverse-jump:chromium-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:reverse-jump:chromium-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:reverse-jump:chromium-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:collision-recovery:webkit-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:collision-recovery:webkit-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:collision-recovery:webkit-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:collision-recovery:webkit-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:collision-recovery:chromium-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:collision-recovery:chromium-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:collision-recovery:chromium-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:collision-recovery:chromium-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:settlement-replay:webkit-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit standard full-frame captures show natural barrier settlement and replay; same-pose comparison fixture is excluded.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-terminal.png",
+          "sha256": "9b7a953c40e1565da55c2a8613b08833bf847c4f92808a7c2da0cc9f0076b3f0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-replay.png",
+          "sha256": "70eb6a0506ca6df8256d30e992a13543fe9d33a6ca76ed6ec2a83ceb255dd312",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:settlement-replay:webkit-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit small full-frame captures show natural barrier settlement and replay; same-pose comparison fixture is excluded.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-terminal.png",
+          "sha256": "571f1e0aef4764f2796c2f5aa435e812d2b6b795986c01a5faef8e4726a4dc1d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-replay.png",
+          "sha256": "3d070de6297d3b82d1c7517ddee6af0f8eff1378c0bec63bb4d7a6a73f2db197",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:settlement-replay:webkit-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit compact full-frame captures show natural barrier settlement and replay; same-pose comparison fixture is excluded.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-terminal.png",
+          "sha256": "c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-replay.png",
+          "sha256": "5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:settlement-replay:webkit-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 WebKit landscape full-frame captures show natural barrier settlement and replay; same-pose comparison fixture is excluded.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/visual/report.json",
+          "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-terminal.png",
+          "sha256": "3a53798ae6d2e0de6ae2142ee8932990fe2750c7c336af20281ea5a2ab9c84fb",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-replay.png",
+          "sha256": "7e40f5c36bbf26027e9076d6eed7bc76cfcdb6f4aaa08d8560dccf2be2c55e68",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bicycle-camera:settlement-replay:chromium-default:standard",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:settlement-replay:chromium-default:small",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:settlement-replay:chromium-default:compact",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-bicycle-camera:settlement-replay:chromium-default:landscape",
+      "objectType": "rider-bicycle-camera",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:startup-first-minute:webkit-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:startup-first-minute:webkit-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:startup-first-minute:webkit-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:startup-first-minute:webkit-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:startup-first-minute:chromium-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:startup-first-minute:chromium-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:startup-first-minute:chromium-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:startup-first-minute:chromium-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:running:webkit-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 webkit 390×844 normal touch observes the left-crossing pedestrian warning, lane signal and follow-up action in the same current experience report.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/experience-webkit/report.json",
+          "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/left-pedestrian-warning.png",
+          "sha256": "5ee596c1f351abeced710b1074f848d47e4003c282992fca25a00d398a983988",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-left:running:webkit-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:running:webkit-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:running:webkit-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:running:chromium-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:running:chromium-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:running:chromium-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:running:chromium-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:reverse-jump:webkit-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:reverse-jump:webkit-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:reverse-jump:webkit-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:reverse-jump:webkit-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:reverse-jump:chromium-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:reverse-jump:chromium-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:reverse-jump:chromium-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:reverse-jump:chromium-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:collision-recovery:webkit-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:collision-recovery:webkit-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:collision-recovery:webkit-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:collision-recovery:webkit-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:collision-recovery:chromium-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:collision-recovery:chromium-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:collision-recovery:chromium-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:collision-recovery:chromium-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:settlement-replay:webkit-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:settlement-replay:webkit-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:settlement-replay:webkit-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:settlement-replay:webkit-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:settlement-replay:chromium-default:standard",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:settlement-replay:chromium-default:small",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:settlement-replay:chromium-default:compact",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-left:settlement-replay:chromium-default:landscape",
+      "objectType": "pedestrian-left",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:startup-first-minute:webkit-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:startup-first-minute:webkit-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:startup-first-minute:webkit-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:startup-first-minute:webkit-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:startup-first-minute:chromium-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:startup-first-minute:chromium-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:startup-first-minute:chromium-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:startup-first-minute:chromium-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:running:webkit-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 webkit 390×844 normal touch observes the right-crossing pedestrian warning, lane signal and follow-up action in the same current experience report.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/experience-webkit/report.json",
+          "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/right-pedestrian-warning.png",
+          "sha256": "8279e47dbc035e35d48a3a7051d33553f2825a7a63729fba5921c28b8e50b9f0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-right:running:webkit-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:running:webkit-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:running:webkit-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:running:chromium-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:running:chromium-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:running:chromium-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:running:chromium-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:reverse-jump:webkit-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:reverse-jump:webkit-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:reverse-jump:webkit-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:reverse-jump:webkit-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:reverse-jump:chromium-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:reverse-jump:chromium-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:reverse-jump:chromium-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:reverse-jump:chromium-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:collision-recovery:webkit-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:collision-recovery:webkit-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:collision-recovery:webkit-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:collision-recovery:webkit-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:collision-recovery:chromium-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:collision-recovery:chromium-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:collision-recovery:chromium-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:collision-recovery:chromium-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:settlement-replay:webkit-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:settlement-replay:webkit-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:settlement-replay:webkit-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:settlement-replay:webkit-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:settlement-replay:chromium-default:standard",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:settlement-replay:chromium-default:small",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:settlement-replay:chromium-default:compact",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "pedestrian-right:settlement-replay:chromium-default:landscape",
+      "objectType": "pedestrian-right",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:startup-first-minute:webkit-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:startup-first-minute:webkit-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:startup-first-minute:webkit-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:startup-first-minute:webkit-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:startup-first-minute:chromium-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:startup-first-minute:chromium-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:startup-first-minute:chromium-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:startup-first-minute:chromium-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:running:webkit-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:running:webkit-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:running:webkit-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:running:webkit-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:running:chromium-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:running:chromium-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:running:chromium-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:running:chromium-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:reverse-jump:webkit-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Attempt20 webkit 390×844 normal touch sees the barrier-linked bonus-fish route, jump buffer, exact barrier clear and bonus-fish/mastery feedback; safe detour is separately observed.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/experience-webkit/report.json",
+          "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/jump-choice.png",
+          "sha256": "6234b875a52f2e1a243437acf58bcb1dfb2f1d48cb5433662a37432a630b1bca",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/jump-queued.png",
+          "sha256": "30641f4c193fd2af0ed3b92993abc3784ca4ed4750a3af9cd94dd8de62da0339",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/jump-gold-earned.png",
+          "sha256": "9b784dfd221458293b7d499367501de730e93ac918f597c352d8f8fa08513ed7",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/safe-detour.png",
+          "sha256": "4c995a9c4bc26dae633a9bb2872712331f391a3f9fd7fbd42cedbec4a1e4a762",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "optional-jump-fish:reverse-jump:webkit-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:reverse-jump:webkit-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:reverse-jump:webkit-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:reverse-jump:chromium-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:reverse-jump:chromium-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:reverse-jump:chromium-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:reverse-jump:chromium-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:collision-recovery:webkit-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:collision-recovery:webkit-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:collision-recovery:webkit-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:collision-recovery:webkit-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:collision-recovery:chromium-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:collision-recovery:chromium-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:collision-recovery:chromium-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:collision-recovery:chromium-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:settlement-replay:webkit-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:settlement-replay:webkit-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:settlement-replay:webkit-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:settlement-replay:webkit-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:settlement-replay:chromium-default:standard",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:settlement-replay:chromium-default:small",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:settlement-replay:chromium-default:compact",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "optional-jump-fish:settlement-replay:chromium-default:landscape",
+      "objectType": "optional-jump-fish",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:startup-first-minute:webkit-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:startup-first-minute:webkit-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:startup-first-minute:webkit-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:startup-first-minute:webkit-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:startup-first-minute:chromium-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:startup-first-minute:chromium-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:startup-first-minute:chromium-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:startup-first-minute:chromium-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:running:webkit-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:running:webkit-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:running:webkit-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:running:webkit-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:running:chromium-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:running:chromium-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:running:chromium-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:running:chromium-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:reverse-jump:webkit-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:reverse-jump:webkit-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:reverse-jump:webkit-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:reverse-jump:webkit-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:reverse-jump:chromium-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:reverse-jump:chromium-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:reverse-jump:chromium-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:reverse-jump:chromium-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:collision-recovery:webkit-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:collision-recovery:webkit-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:collision-recovery:webkit-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:collision-recovery:webkit-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:collision-recovery:chromium-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:collision-recovery:chromium-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:collision-recovery:chromium-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:collision-recovery:chromium-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:settlement-replay:webkit-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:settlement-replay:webkit-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:settlement-replay:webkit-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:settlement-replay:webkit-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:settlement-replay:chromium-default:standard",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:settlement-replay:chromium-default:small",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:settlement-replay:chromium-default:compact",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "fish-route-stars:settlement-replay:chromium-default:landscape",
+      "objectType": "fish-route-stars",
+      "lifecycleStateBranch": "settlement-replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch normal touch and player-visible capture; no fixture-only acceptance",
+      "observed": "Await V3 capture",
+      "evidence": []
+    },
+    {
+      "id": "clock:webkit-default",
+      "objectType": "simulation-clock",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "First fish under3s wall time, normal speed at10/30/60/120fps, bounded stall handling",
+      "observed": "Chromium failed under software GPU; native GPU and clock correction need current-build retest",
+      "evidence": [
+        {
+          "path": "attempts/attempt-7/qa-all-chromium/report.json",
+          "sha256": "ee7c236296e12dd4b8612757fc787145c3c5023e7fc1302655c211dd48a22eaa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "clock:chromium-default",
+      "objectType": "simulation-clock",
+      "lifecycleStateBranch": "startup-first-minute",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "First fish under3s wall time, normal speed at10/30/60/120fps, bounded stall handling",
+      "observed": "Chromium failed under software GPU; native GPU and clock correction need current-build retest",
+      "evidence": [
+        {
+          "path": "attempts/attempt-7/qa-all-chromium/report.json",
+          "sha256": "ee7c236296e12dd4b8612757fc787145c3c5023e7fc1302655c211dd48a22eaa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Initial camera regression captured before patch",
+    "50ms dt cap systematically discards elapsed render time below20FPS",
+    "Independent current20 30-case desktop review bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea; source-normal-input screenshots checked before each accepted matrix update. Supplemental Chromium-head and compact-object review will remain separately bound."
+  ],
+  "remainingGaps": [
+    "Physical device",
+    "Live ads",
+    "Human enjoyment",
+    "Current20 desktop coverage was updated only for individually hash-verified exact reviewed branches; unobserved cross-products stay BLOCKED. Physical phones, actual app background and human enjoyment are unverified."
+  ],
+  "createdAt": "2026-10-14T06:23:43.336Z"
+}

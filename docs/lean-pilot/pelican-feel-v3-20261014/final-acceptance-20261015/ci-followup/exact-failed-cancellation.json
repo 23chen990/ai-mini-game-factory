@@ -1,0 +1,371 @@
+{
+  "buildHash": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+  "ciRun": 38736011062,
+  "artifactId": 11973432894,
+  "driverSha256": "337a40be1aa5aff8d7481066db8c103c9471d9f0c2e34855c70a621d4e984c50",
+  "check": {
+    "name": "cancelled-touch-does-not-turn",
+    "passed": false,
+    "evidence": {
+      "gesture": {
+        "before": {
+          "phase": "running",
+          "level": 1,
+          "distance": 75.87150000000008,
+          "elapsed": 10.116200000000083,
+          "lane": 0.5734817395514742,
+          "laneTarget": 0.5735,
+          "laneIndex": 1,
+          "score": 6,
+          "rewardScore": null,
+          "streak": 2,
+          "bestStreak": 2,
+          "nearMisses": 0,
+          "y": 0,
+          "stun": 0,
+          "count": 2,
+          "gold": 1,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "steer-input",
+              "at": 1.3833000000000009,
+              "distance": 10.374750000000022,
+              "target": 0.6783334274291992,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 1.9332999999999991,
+              "distance": 14.499750000000022,
+              "target": 1.3566665725708007,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 2.499899999999996,
+              "distance": 18.749250000000007,
+              "target": 2.0349999999999997,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 4.433100000000016,
+              "distance": 33.24825000000004,
+              "target": 1.3566665725708005,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 5.033100000000045,
+              "distance": 37.74825000000004,
+              "target": 0.678333427429199,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 5.649800000000072,
+              "distance": 42.37350000000002,
+              "target": 0,
+              "source": "finger-drag"
+            },
+            {
+              "type": "fish-caught",
+              "at": 6.124666666666765,
+              "distance": 45.93500000000005,
+              "objectId": "l1-f2",
+              "golden": false,
+              "bonus": false,
+              "first": true,
+              "count": 1,
+              "streak": 1,
+              "comboPoints": 0
+            },
+            {
+              "type": "fish-caught",
+              "at": 8.257900000000179,
+              "distance": 61.93425000000006,
+              "objectId": "l1-f3",
+              "golden": true,
+              "bonus": false,
+              "first": false,
+              "count": 2,
+              "streak": 2,
+              "comboPoints": 0
+            },
+            {
+              "type": "steer-input",
+              "at": 9.14950000000013,
+              "distance": 68.62125000000005,
+              "target": 0.5735,
+              "source": "finger-drag"
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 2,
+            "stars": [
+              3,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              true,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 18,
+                "gold": 5,
+                "jumps": 1,
+                "score": 70,
+                "streak": 11
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "after": {
+          "phase": "running",
+          "level": 1,
+          "distance": 89.18350000000008,
+          "elapsed": 12.88279999999993,
+          "lane": 1.9301575551408854,
+          "laneTarget": 1.9301665725708008,
+          "laneIndex": 2,
+          "score": 9,
+          "rewardScore": null,
+          "streak": 0,
+          "bestStreak": 3,
+          "nearMisses": 0,
+          "y": 0,
+          "stun": 2.008333333333337,
+          "count": 3,
+          "gold": 1,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "steer-input",
+              "at": 1.3833000000000009,
+              "distance": 10.374750000000022,
+              "target": 0.6783334274291992,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 1.9332999999999991,
+              "distance": 14.499750000000022,
+              "target": 1.3566665725708007,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 2.499899999999996,
+              "distance": 18.749250000000007,
+              "target": 2.0349999999999997,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 4.433100000000016,
+              "distance": 33.24825000000004,
+              "target": 1.3566665725708005,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 5.033100000000045,
+              "distance": 37.74825000000004,
+              "target": 0.678333427429199,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 5.649800000000072,
+              "distance": 42.37350000000002,
+              "target": 0,
+              "source": "finger-drag"
+            },
+            {
+              "type": "fish-caught",
+              "at": 6.124666666666765,
+              "distance": 45.93500000000005,
+              "objectId": "l1-f2",
+              "golden": false,
+              "bonus": false,
+              "first": true,
+              "count": 1,
+              "streak": 1,
+              "comboPoints": 0
+            },
+            {
+              "type": "fish-caught",
+              "at": 8.257900000000179,
+              "distance": 61.93425000000006,
+              "objectId": "l1-f3",
+              "golden": true,
+              "bonus": false,
+              "first": false,
+              "count": 2,
+              "streak": 2,
+              "comboPoints": 0
+            },
+            {
+              "type": "steer-input",
+              "at": 9.14950000000013,
+              "distance": 68.62125000000005,
+              "target": 0.5735,
+              "source": "finger-drag"
+            },
+            {
+              "type": "fish-caught",
+              "at": 10.391166666666738,
+              "distance": 77.9337500000001,
+              "objectId": "l1-f4",
+              "golden": false,
+              "bonus": false,
+              "first": false,
+              "count": 3,
+              "streak": 3,
+              "comboPoints": 2
+            },
+            {
+              "type": "steer-input",
+              "at": 11.132900000000033,
+              "distance": 83.49675000000013,
+              "target": 1.2518334274291991,
+              "source": "finger-drag"
+            },
+            {
+              "type": "steer-input",
+              "at": 11.732899999999999,
+              "distance": 87.99675000000012,
+              "target": 1.9301665725708008,
+              "source": "finger-drag"
+            },
+            {
+              "type": "pedestrian-hit",
+              "at": 11.891133333333318,
+              "distance": 89.18350000000008,
+              "objectId": "l1-o0"
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 2,
+            "stars": [
+              3,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              true,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 18,
+                "gold": 5,
+                "jumps": 1,
+                "score": 70,
+                "streak": 11
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        }
+      },
+      "cancellationEvents": [
+        {
+          "type": "pointercancel",
+          "isTrusted": true,
+          "target": "CANVAS",
+          "changed": null
+        },
+        {
+          "type": "touchcancel",
+          "isTrusted": true,
+          "target": "CANVAS",
+          "changed": 1
+        }
+      ]
+    }
+  },
+  "diagnosticFacts": [
+    "before75.8715m,stun0,target0.5735",
+    "gesture causes real l1-o0 pedestrian-hit at89.1835m",
+    "after stun2.0083,target1.9301666",
+    "trusted pointercancel and touchcancel received; source steerTo rejects all commands while stun>0"
+  ],
+  "hypothesis": "QA sequence accidentally combines cancellation with authored stun-input branch; isolate healthy cancellation via visible replay, keep collision/stun rules unchanged."
+}

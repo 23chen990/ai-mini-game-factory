@@ -1,0 +1,2391 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+  "checks": [
+    {
+      "name": "actual-window-background-pauses",
+      "passed": false,
+      "evidence": {
+        "before": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 21.43875,
+            "elapsed": 2.8584999999999945,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "away": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 32.130000000000045,
+            "elapsed": 4.284000000000004,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "returned": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 36.25425000000003,
+            "elapsed": 4.833900000000025,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        }
+      }
+    },
+    {
+      "name": "background-countdown-stays-paused",
+      "passed": false,
+      "evidence": {
+        "paused": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 38.81175000000001,
+            "elapsed": 5.174900000000038,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "still": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 44.12474999999985,
+            "elapsed": 5.883300000000048,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        }
+      }
+    },
+    {
+      "name": "background-requires-manual-resume",
+      "passed": false,
+      "evidence": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 47.117999999999746,
+          "elapsed": 6.282400000000053,
+          "lane": 0,
+          "laneTarget": 0,
+          "laneIndex": 1,
+          "score": 2,
+          "rewardScore": null,
+          "streak": 1,
+          "bestStreak": 1,
+          "nearMisses": 0,
+          "y": 0,
+          "stun": 0,
+          "count": 2,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "fish-caught",
+              "at": 1.858633333333331,
+              "distance": 13.939750000000005,
+              "objectId": "l1-f0",
+              "golden": false,
+              "bonus": false,
+              "first": true,
+              "count": 1,
+              "streak": 1,
+              "comboPoints": 0
+            },
+            {
+              "type": "fish-caught",
+              "at": 6.124933333333384,
+              "distance": 45.93699999999979,
+              "objectId": "l1-f2",
+              "golden": false,
+              "bonus": false,
+              "first": false,
+              "count": 2,
+              "streak": 1,
+              "comboPoints": 0
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "visibility": "visible",
+        "focus": true,
+        "events": []
+      }
+    },
+    {
+      "name": "portrait-to-landscape-live-resize",
+      "passed": true,
+      "evidence": {
+        "pixelRatio": 1.5,
+        "canvas": [
+          1266,
+          585
+        ],
+        "composer": [
+          1266,
+          585
+        ],
+        "camera": {
+          "position": [
+            -6.549798303533713,
+            3.5628083236155623,
+            0.2
+          ],
+          "quaternion": [
+            -0.05621180587381529,
+            -0.7006275304814489,
+            -0.055537187893428236,
+            0.7091381509781863
+          ],
+          "fov": 51.009672073228515
+        },
+        "pose": {
+          "requested": {
+            "lean": 0.00264957123756762,
+            "steer": 0,
+            "yaw": 0
+          },
+          "riderRotation": [
+            0.00264957123756762,
+            0,
+            0
+          ],
+          "frontSteeringMatrix": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            1,
+            0,
+            0.36,
+            0.57,
+            0,
+            1
+          ],
+          "headRotation": [
+            0.007404036296749884,
+            -0.001244639537181948,
+            -0.008904032851216668
+          ],
+          "bodyRotation": [
+            0.0018142272680252577,
+            0,
+            0.35
+          ]
+        },
+        "quality": {
+          "tier": 2,
+          "pr": 1.5
+        },
+        "duskRoadAmbient": 0,
+        "calls": 441,
+        "triangles": 291586,
+        "memory": {
+          "geometries": 215,
+          "textures": 19
+        }
+      }
+    },
+    {
+      "name": "all-quality-presets-keep-composer-size",
+      "passed": true,
+      "evidence": [
+        {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.2
+            ],
+            "quaternion": [
+              -0.056115303812105825,
+              -0.7007319156662725,
+              -0.055457082554345644,
+              0.7090489172400671
+            ],
+            "fov": 52
+          },
+          "pose": {
+            "requested": {
+              "lean": 0,
+              "steer": 0,
+              "yaw": 0
+            },
+            "riderRotation": [
+              0,
+              0,
+              0
+            ],
+            "frontSteeringMatrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0,
+              0,
+              0
+            ],
+            "bodyRotation": [
+              0,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "duskRoadAmbient": 0,
+          "calls": 383,
+          "triangles": 304467,
+          "memory": {
+            "geometries": 175,
+            "textures": 17
+          },
+          "actualGpuViewports": {
+            "1024x1024": 17,
+            "585x1266": 17
+          }
+        },
+        {
+          "pixelRatio": 1.25,
+          "canvas": [
+            487,
+            1055
+          ],
+          "composer": [
+            487.5,
+            1055
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.2
+            ],
+            "quaternion": [
+              -0.056115303812105825,
+              -0.7007319156662725,
+              -0.055457082554345644,
+              0.7090489172400671
+            ],
+            "fov": 52
+          },
+          "pose": {
+            "requested": {
+              "lean": 0,
+              "steer": 0,
+              "yaw": 0
+            },
+            "riderRotation": [
+              0,
+              0,
+              0
+            ],
+            "frontSteeringMatrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0,
+              0,
+              0
+            ],
+            "bodyRotation": [
+              0,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 0,
+            "pr": 1.25
+          },
+          "duskRoadAmbient": 0,
+          "calls": 227,
+          "triangles": 261986,
+          "memory": {
+            "geometries": 175,
+            "textures": 17
+          },
+          "actualGpuViewports": {
+            "1024x1024": 4,
+            "585x1266": 4,
+            "488x1055": 1,
+            "487x1055": 22
+          }
+        },
+        {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.2
+            ],
+            "quaternion": [
+              -0.056115303812105825,
+              -0.7007319156662725,
+              -0.055457082554345644,
+              0.7090489172400671
+            ],
+            "fov": 52
+          },
+          "pose": {
+            "requested": {
+              "lean": 0,
+              "steer": 0,
+              "yaw": 0
+            },
+            "riderRotation": [
+              0,
+              0,
+              0
+            ],
+            "frontSteeringMatrix": [
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0,
+              0,
+              0,
+              1,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0,
+              0,
+              0
+            ],
+            "bodyRotation": [
+              0,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 1,
+            "pr": 1.5
+          },
+          "duskRoadAmbient": 0,
+          "calls": 383,
+          "triangles": 304467,
+          "memory": {
+            "geometries": 175,
+            "textures": 17
+          },
+          "actualGpuViewports": {
+            "487x1055": 8,
+            "585x1266": 13,
+            "1024x1024": 12
+          }
+        }
+      ]
+    },
+    {
+      "name": "offline-single-html-normal-touch-catch",
+      "passed": true,
+      "evidence": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 18.825000000000003,
+          "elapsed": 2.5099999999999936,
+          "lane": 0,
+          "laneTarget": 0,
+          "laneIndex": 1,
+          "score": 1,
+          "rewardScore": null,
+          "streak": 1,
+          "bestStreak": 1,
+          "nearMisses": 0,
+          "y": 0,
+          "stun": 0,
+          "count": 1,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "fish-caught",
+              "at": 1.8596666666666626,
+              "distance": 13.947499999999982,
+              "objectId": "l1-f0",
+              "golden": false,
+              "bonus": false,
+              "first": true,
+              "count": 1,
+              "streak": 1,
+              "comboPoints": 0
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "visibility": "visible",
+        "focus": true,
+        "events": [],
+        "externalRequests": [],
+        "networkPolicy": "Every HTTP(S) startup request denied; file navigation allowed; context offline before normal touch gameplay",
+        "singleFileSha256": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441"
+      }
+    },
+    {
+      "name": "engineering-context-loss-pauses",
+      "passed": true,
+      "evidence": {
+        "classification": "GPU_FAULT_INJECTION_ONLY",
+        "available": true,
+        "lost": {
+          "state": {
+            "phase": "paused",
+            "level": 1,
+            "distance": 19.980000000000004,
+            "elapsed": 2.663999999999993,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8596666666666626,
+                "distance": 13.947499999999982,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              },
+              {
+                "type": "pause",
+                "at": 2.663999999999993,
+                "distance": 19.980000000000004
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": true
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        }
+      }
+    },
+    {
+      "name": "engineering-context-restored-manual-resume",
+      "passed": true,
+      "evidence": {
+        "classification": "GPU_FAULT_INJECTION_ONLY",
+        "restored": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 22.17000000000002,
+            "elapsed": 2.9559999999999915,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8596666666666626,
+                "distance": 13.947499999999982,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              },
+              {
+                "type": "pause",
+                "at": 2.663999999999993,
+                "distance": 19.980000000000004
+              },
+              {
+                "type": "resume",
+                "at": 2.663999999999993,
+                "distance": 19.980000000000004
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        }
+      }
+    }
+  ],
+  "diagnostics": [
+    {
+      "name": "headless-webkit-tab-capability",
+      "observation": {
+        "before": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 3.9375,
+            "elapsed": 0.5250000000000006,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 0,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 0,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "away": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 11.309999999999992,
+            "elapsed": 1.5079999999999978,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 0,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 0,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "returned": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 11.512499999999992,
+            "elapsed": 1.5349999999999977,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 0,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 0,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        }
+      },
+      "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS"
+    },
+    {
+      "name": "headless-chromium-tab-capability",
+      "observation": {
+        "before": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 3.4395000000000002,
+            "elapsed": 0.4586000000000006,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 0,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 0,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "away": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 9.75149999999999,
+            "elapsed": 1.3001999999999987,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 0,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 0,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "returned": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 9.81374999999999,
+            "elapsed": 1.3084999999999989,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 0,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 0,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        }
+      },
+      "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS"
+    },
+    {
+      "name": "headed-chromium-tab",
+      "observation": {
+        "before": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 13.942500000000004,
+            "elapsed": 1.8589999999999973,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "away": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 21.066750000000003,
+            "elapsed": 2.8088999999999946,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "returned": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 21.31725,
+            "elapsed": 2.8422999999999945,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        }
+      }
+    },
+    {
+      "name": "actual-window-minimize",
+      "observation": {
+        "before": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 21.43875,
+            "elapsed": 2.8584999999999945,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "away": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 32.130000000000045,
+            "elapsed": 4.284000000000004,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 1,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        },
+        "returned": {
+          "state": {
+            "phase": "running",
+            "level": 1,
+            "distance": 36.25425000000003,
+            "elapsed": 4.833900000000025,
+            "lane": 0,
+            "laneTarget": 0,
+            "laneIndex": 1,
+            "score": 1,
+            "rewardScore": null,
+            "streak": 0,
+            "bestStreak": 1,
+            "nearMisses": 0,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.858633333333331,
+                "distance": 13.939750000000005,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1,
+                "streak": 1,
+                "comboPoints": 0
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0,
+                  "streak": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          },
+          "visibility": "visible",
+          "focus": true,
+          "events": []
+        }
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "attempts/attempt-1/lifecycle/background-paused.png",
+      "sha256": "8e6a9cc74bcedfd893c95b4bedcd535ace105c8f240e4c49f39da9ad8d72fecb"
+    },
+    {
+      "path": "attempts/attempt-1/lifecycle/background-resumed.png",
+      "sha256": "5e9f381f277d80ff0267a7b229186c7392fb92b8e04e7d240bc30b103d243889"
+    },
+    {
+      "path": "attempts/attempt-1/lifecycle/live-rotation.png",
+      "sha256": "742a82eae3b4f26802badaa51f9f50e449e87c78d9a3d0f1019955522c96881d"
+    },
+    {
+      "path": "attempts/attempt-1/lifecycle/standalone-file.png",
+      "sha256": "78562b51154b727b9c587865c73ad0315ce923e21c562db109958c8e918fea15"
+    },
+    {
+      "path": "attempts/attempt-1/lifecycle/context-restored.png",
+      "sha256": "075823e7e3c71607ff0570d17cdb639f082a2e61bb0fb60c410fec6b1c5990f9"
+    }
+  ],
+  "errors": [],
+  "physicalIPhone": "NOT_RUN",
+  "normalInputOnly": true,
+  "passed": false,
+  "testedAt": "2026-10-15T12:21:45.393Z"
+}

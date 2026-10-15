@@ -1,0 +1,1195 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "rider-bank",
+      "native-front-fork",
+      "native-pelican-head"
+    ],
+    "lifecycleStateBranches": [
+      "idle",
+      "left-right-reversal",
+      "jump",
+      "terminal-replay"
+    ],
+    "rendererPaths": [
+      "webkit-native-gpu",
+      "chromium-native-gpu",
+      "webkit-linux-ci-DPR1",
+      "chromium-linux-ci-DPR1"
+    ],
+    "viewports": [
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "rider-bank:idle:webkit-native-gpu",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:idle:chromium-native-gpu",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:idle:webkit-linux-ci-DPR1",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:idle:chromium-linux-ci-DPR1",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:left-right-reversal:webkit-native-gpu",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Attempt20 webkit normal-input 390×844 runtime records finite native pose/joint matrices and correlated full-frame screenshots for the exact left-right-reversal branch; no pose/camera setter was used. Proposal is gated on independent pixel review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/report.json",
+          "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-900.png",
+          "sha256": "101647d787bb64b71d16c7b112c473537eb452481d42e0d1d5ca9026e45d5b33",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-1300.png",
+          "sha256": "c614c4512f3107a3d34de6b971e43b8f3f8a87d3bc495fc3c8fccd3126f67e0b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-1500.png",
+          "sha256": "e96c2e4e885f27e55dc75c12ccc8a14c61d615588485db383f8b10e89fef6fdb",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-1750.png",
+          "sha256": "27b4b73f10b873a90985298290f9b0833c1f72b744e95a5190fd24708335523a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-2480.png",
+          "sha256": "efcb64eabee3ea530392700aa9a2c6144de9f3cd4d3c082646fde9be92da4509",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-3200.png",
+          "sha256": "1acdc434f521798040edc9fb0337f8290218c9efa805cc3e8cb114cd11cdc2dd",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:left-right-reversal:chromium-native-gpu",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:left-right-reversal:webkit-linux-ci-DPR1",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:left-right-reversal:chromium-linux-ci-DPR1",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:jump:webkit-native-gpu",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:jump:chromium-native-gpu",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:jump:webkit-linux-ci-DPR1",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:jump:chromium-linux-ci-DPR1",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:terminal-replay:webkit-native-gpu",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Attempt20 webkit normal-input 390×844 runtime records finite native pose/joint matrices and correlated full-frame screenshots for the exact terminal-replay branch; no pose/camera setter was used. Proposal is gated on independent pixel review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/report.json",
+          "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/terminal.png",
+          "sha256": "aa2a63126857aadef523c304cc0b5ae4e0965c3d09f3a30db78cd2b1c3d507b9",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/replay.png",
+          "sha256": "ee7bb6b18f507479b99fdc3ff06eea16338628c56e946d849dff4a382e3842b3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:terminal-replay:chromium-native-gpu",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:terminal-replay:webkit-linux-ci-DPR1",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-bank:terminal-replay:chromium-linux-ci-DPR1",
+      "objectType": "rider-bank",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:idle:webkit-native-gpu",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:idle:chromium-native-gpu",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:idle:webkit-linux-ci-DPR1",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:idle:chromium-linux-ci-DPR1",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:left-right-reversal:webkit-native-gpu",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:left-right-reversal:chromium-native-gpu",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:left-right-reversal:webkit-linux-ci-DPR1",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:left-right-reversal:chromium-linux-ci-DPR1",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:jump:webkit-native-gpu",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:jump:chromium-native-gpu",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:jump:webkit-linux-ci-DPR1",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:jump:chromium-linux-ci-DPR1",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:terminal-replay:webkit-native-gpu",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:terminal-replay:chromium-native-gpu",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:terminal-replay:webkit-linux-ci-DPR1",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-front-fork:terminal-replay:chromium-linux-ci-DPR1",
+      "objectType": "native-front-fork",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:idle:webkit-native-gpu",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:idle:chromium-native-gpu",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:idle:webkit-linux-ci-DPR1",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:idle:chromium-linux-ci-DPR1",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "idle",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:left-right-reversal:webkit-native-gpu",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:left-right-reversal:chromium-native-gpu",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:left-right-reversal:webkit-linux-ci-DPR1",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:left-right-reversal:chromium-linux-ci-DPR1",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "left-right-reversal",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:jump:webkit-native-gpu",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Attempt20 webkit normal-input 390×844 runtime records finite native pose/joint matrices and correlated full-frame screenshots for the exact jump branch; no pose/camera setter was used. Proposal is gated on independent pixel review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/report.json",
+          "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-2480.png",
+          "sha256": "efcb64eabee3ea530392700aa9a2c6144de9f3cd4d3c082646fde9be92da4509",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-3200.png",
+          "sha256": "1acdc434f521798040edc9fb0337f8290218c9efa805cc3e8cb114cd11cdc2dd",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:jump:chromium-native-gpu",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:jump:webkit-linux-ci-DPR1",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:jump:chromium-linux-ci-DPR1",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:terminal-replay:webkit-native-gpu",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Attempt20 webkit normal-input 390×844 runtime records finite native pose/joint matrices and correlated full-frame screenshots for the exact terminal-replay branch; no pose/camera setter was used. Proposal is gated on independent pixel review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/report.json",
+          "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/terminal.png",
+          "sha256": "aa2a63126857aadef523c304cc0b5ae4e0965c3d09f3a30db78cd2b1c3d507b9",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/replay.png",
+          "sha256": "ee7bb6b18f507479b99fdc3ff06eea16338628c56e946d849dff4a382e3842b3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:terminal-replay:chromium-native-gpu",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:terminal-replay:webkit-linux-ci-DPR1",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "webkit-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-pelican-head:terminal-replay:chromium-linux-ci-DPR1",
+      "objectType": "native-pelican-head",
+      "lifecycleStateBranch": "terminal-replay",
+      "rendererPath": "chromium-linux-ci-DPR1",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Copied native bank/heading equals requested S values within1e-6 in all12running brackets; Native16matrix steering angle matches requested steering, with nonzero actual turn and bank; All actual head/body joint angles finite; invalid native values remain detectable; Matched normal pixels and independent perceptual review; no injected pose/camera state",
+      "observed": "Exact candidate18 object/state branch runtime retest pending; no sibling or fixture pass substitutes for it.",
+      "evidence": [
+        {
+          "path": "evidence/v3-engineering/motion-review-final17.json",
+          "sha256": "4ada2d09b00e5be2333351c027f3970b9866a4f270b6c6e44c87673115cb4477",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Independent17 motion review saw body response and containment but could not verify the occluded front fork and lacked V3 head/steer channels. Copy actual native mesh joint values into existing read-only renderInfo for natural screenshot/state brackets; do not return mutable scene objects or finite substitutes.",
+    "Independent current20 30-case desktop review bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea; source-normal-input screenshots checked before each accepted matrix update. Supplemental Chromium-head and compact-object review will remain separately bound."
+  ],
+  "remainingGaps": [
+    "Physical devices, native menu pan, and human perceived speed remain unavailable",
+    "Current20 desktop coverage was updated only for individually hash-verified exact reviewed branches; unobserved cross-products stay BLOCKED. Physical phones, actual app background and human enjoyment are unverified."
+  ],
+  "createdAt": "2026-10-14T11:15:52.640Z"
+}

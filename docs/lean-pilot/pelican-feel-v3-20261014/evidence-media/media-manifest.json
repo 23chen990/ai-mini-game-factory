@@ -1,0 +1,1442 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "attempt": 20,
+  "sourceReceipt": {
+    "path": "runs/pelican-coast-v2-20261014/build-receipt.json",
+    "sha256": "771082d72c7c4a0c4a4f96d820bc47839582d3f3f0389d033b97eb7e41c85feb"
+  },
+  "timing": {
+    "reportClock": "actions.actualMs and samples.ms are capture wall-clock elapsed after #start, not game elapsed time",
+    "sourceVideoStart": "newPage, before the report capture clock starts",
+    "sourcePtsMapping": "approximate: encoded duration minus last RAF capture-clock sample, plus the report capture-clock timestamp",
+    "residualUncertainty": "recorder tail after the final RAF sample is unquantified; first-touch triptychs are approximate/descriptive, not perfectly synchronized"
+  },
+  "tooling": {
+    "python": "/Users/kker/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "pillow": "12.3.0",
+    "ffmpeg": "/Users/kker/.codex/pelican-v3-continuation/media-tools/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1",
+    "ffmpegSha256": "6d175a4743ca50256e89a8cdd731100f9cee33bd79aeea46894d209410dc6617"
+  },
+  "rules": {
+    "inputReportsMustMatchCurrentBuild": true,
+    "priorAttemptFallbackAllowed": false,
+    "maxFileBytes": 94371840,
+    "preserveOriginalVideos": true,
+    "copyPublicPngBytesOnly": true,
+    "gameplayFrameTransformations": "none"
+  },
+  "media": [
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-chromium/390-fish-catch.png",
+        "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+        "bytes": 1529371,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/head-chromium.png",
+        "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+        "bytes": 1529371,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/head-chromium.png",
+        "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+        "bytes": 1529371,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "head",
+      "actualTimestamp": null,
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-chromium/320-fish-catch.png",
+        "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+        "bytes": 954433,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/compact-chromium.png",
+        "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+        "bytes": 954433,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/compact-chromium.png",
+        "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+        "bytes": 954433,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "compact",
+      "actualTimestamp": null,
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/report.json",
+        "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/small-phone-route-menu.png",
+        "sha256": "14c5d81a67ad8a7702a39222a8c9dd07c2a045170bc1839a5578d04cf3e708be",
+        "bytes": 368405,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/menu-chromium.png",
+        "sha256": "14c5d81a67ad8a7702a39222a8c9dd07c2a045170bc1839a5578d04cf3e708be",
+        "bytes": 368405,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/menu-chromium.png",
+        "sha256": "14c5d81a67ad8a7702a39222a8c9dd07c2a045170bc1839a5578d04cf3e708be",
+        "bytes": 368405,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "menu",
+      "actualTimestamp": null,
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/report.json",
+        "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/level-5-l5-o10-reward-approach.png",
+        "sha256": "dab2d0cb45fb3e539ba1c6a8c1dacf91d4990202b5e471bc2ea8272ee940d7f5",
+        "bytes": 996520,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/hazard-approach-level-5-chromium.png",
+        "sha256": "dab2d0cb45fb3e539ba1c6a8c1dacf91d4990202b5e471bc2ea8272ee940d7f5",
+        "bytes": 996520,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/hazard-approach-level-5-chromium.png",
+        "sha256": "dab2d0cb45fb3e539ba1c6a8c1dacf91d4990202b5e471bc2ea8272ee940d7f5",
+        "bytes": 996520,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "hazard-approach",
+      "riskLevel": 5,
+      "weather": "dusk",
+      "targetBarrierId": "l5-o10",
+      "actualTimestamp": "2026-10-14T13:20:59.756Z",
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/report.json",
+        "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/level-5-l5-o10-barrier-cleared.png",
+        "sha256": "92b9e6738490af293bfca8bdd11c16df4b4fd0feeefe594ac7b35e8677d0fbfb",
+        "bytes": 1137425,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/hazard-clear-level-5-chromium.png",
+        "sha256": "92b9e6738490af293bfca8bdd11c16df4b4fd0feeefe594ac7b35e8677d0fbfb",
+        "bytes": 1137425,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/hazard-clear-level-5-chromium.png",
+        "sha256": "92b9e6738490af293bfca8bdd11c16df4b4fd0feeefe594ac7b35e8677d0fbfb",
+        "bytes": 1137425,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "hazard-clear",
+      "riskLevel": 5,
+      "weather": "dusk",
+      "targetBarrierId": "l5-o10",
+      "actualTimestamp": "2026-10-14T13:21:04.344Z",
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/report.json",
+        "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/level-5-terminal-settlement.png",
+        "sha256": "dd213934914e2c9067edacba0bfa77bed98fc080d599714eaae68122dea44e0d",
+        "bytes": 421425,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/settlement-level-5-chromium.png",
+        "sha256": "dd213934914e2c9067edacba0bfa77bed98fc080d599714eaae68122dea44e0d",
+        "bytes": 421425,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/settlement-level-5-chromium.png",
+        "sha256": "dd213934914e2c9067edacba0bfa77bed98fc080d599714eaae68122dea44e0d",
+        "bytes": 421425,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "settlement",
+      "riskLevel": 5,
+      "weather": "dusk",
+      "targetBarrierId": null,
+      "actualTimestamp": "2026-10-14T13:21:18.273Z",
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-webkit/report.json",
+        "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-webkit/390-fish-catch.png",
+        "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee",
+        "bytes": 2047550,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/head-webkit.png",
+        "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee",
+        "bytes": 2047550,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/head-webkit.png",
+        "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee",
+        "bytes": 2047550,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "head",
+      "actualTimestamp": null,
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-webkit/report.json",
+        "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-webkit/320-fish-catch.png",
+        "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150",
+        "bytes": 1249966,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/compact-webkit.png",
+        "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150",
+        "bytes": 1249966,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/compact-webkit.png",
+        "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150",
+        "bytes": 1249966,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "compact",
+      "actualTimestamp": null,
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/report.json",
+        "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/small-phone-route-menu.png",
+        "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+        "bytes": 625238,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/menu-webkit.png",
+        "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+        "bytes": 625238,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/menu-webkit.png",
+        "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+        "bytes": 625238,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "menu",
+      "actualTimestamp": null,
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/report.json",
+        "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/level-5-l5-o10-reward-approach.png",
+        "sha256": "f501756cf2fab72375ebdffd0c7b580d0ace7aac1fb2ce25b4dd899e1b90195e",
+        "bytes": 1509479,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/hazard-approach-level-5-webkit.png",
+        "sha256": "f501756cf2fab72375ebdffd0c7b580d0ace7aac1fb2ce25b4dd899e1b90195e",
+        "bytes": 1509479,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/hazard-approach-level-5-webkit.png",
+        "sha256": "f501756cf2fab72375ebdffd0c7b580d0ace7aac1fb2ce25b4dd899e1b90195e",
+        "bytes": 1509479,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "hazard-approach",
+      "riskLevel": 5,
+      "weather": "dusk",
+      "targetBarrierId": "l5-o10",
+      "actualTimestamp": "2026-10-14T13:20:58.799Z",
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/report.json",
+        "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/level-5-l5-o10-barrier-cleared.png",
+        "sha256": "8187926218b129417ed0ea0c154d79ff142b56315a3685c691a35d15a6fe8cf3",
+        "bytes": 1971641,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/hazard-clear-level-5-webkit.png",
+        "sha256": "8187926218b129417ed0ea0c154d79ff142b56315a3685c691a35d15a6fe8cf3",
+        "bytes": 1971641,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/hazard-clear-level-5-webkit.png",
+        "sha256": "8187926218b129417ed0ea0c154d79ff142b56315a3685c691a35d15a6fe8cf3",
+        "bytes": 1971641,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "hazard-clear",
+      "riskLevel": 5,
+      "weather": "dusk",
+      "targetBarrierId": "l5-o10",
+      "actualTimestamp": "2026-10-14T13:21:03.342Z",
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/report.json",
+        "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/level-5-terminal-settlement.png",
+        "sha256": "848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699",
+        "bytes": 967830,
+        "mime": "image/png"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/settlement-level-5-webkit.png",
+        "sha256": "848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699",
+        "bytes": 967830,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/settlement-level-5-webkit.png",
+        "sha256": "848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699",
+        "bytes": 967830,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": false,
+      "assetRole": "settlement",
+      "riskLevel": 5,
+      "weather": "dusk",
+      "targetBarrierId": null,
+      "actualTimestamp": "2026-10-14T13:21:17.374Z",
+      "copyBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/report.json",
+        "sha256": "d9417a7f30cbec0f35e0a95e2d91c5ee7b8b3e45b0b88eb005ba34b0012e6920"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/page@56ba2e8f1db8fe7250280911b793c6b4.webm",
+        "sha256": "fbdb6a5ce9d2cf13be977b26e640c86ad34781173e8f53faf21b7bbb22aff6d3",
+        "bytes": 736424,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-chromium-PR10.mp4",
+        "sha256": "8237bab5475b5046f60de8610759003746d2936c733d233c177c984c48eabaad",
+        "bytes": 347527,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-chromium-PR10.mp4",
+        "sha256": "8237bab5475b5046f60de8610759003746d2936c733d233c177c984c48eabaad",
+        "bytes": 347527,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "matched-touch-clip",
+      "engine": "chromium",
+      "variant": "PR10",
+      "durationSeconds": 4.467099999999627,
+      "requestedMaxDurationSeconds": 5.0,
+      "sourceStartPtsSeconds": 2.5329000000003727,
+      "firstTouchActualMs": 714.0,
+      "firstTouchCaptureClockMs": 714.0,
+      "firstTouchSourcePtsSeconds": 3.2469000000003727,
+      "firstTouchClipTimeSeconds": 0.714,
+      "clockDefinition": "samples.ms/actions.actualMs are capture wall-clock elapsed from after #start, not game elapsed time",
+      "captureOffsetSeconds": 2.5329000000003727,
+      "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+      "captureOffsetUncertainty": {
+        "status": "unquantified",
+        "reason": "the report does not measure the recording tail after its final RAF sample",
+        "lastObservedRafIntervalMs": 441.60000000000036,
+        "inputTimingMaxErrorMs": 111
+      },
+      "alignmentQuality": "approximate; recorder-tail uncertainty is unquantified",
+      "cameraMode": "chase; native parameters retained, no camera setters",
+      "inputSemantics": "side-view/held steering",
+      "comparisonClaim": "descriptive matched-input evidence; approximate capture-start mapping; not a controlled same-camera comparison",
+      "transcode": "H.264, full-frame proportional scale to 720px high, original playback timing, capture-start prefix retained"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/report.json",
+        "sha256": "e32397b1b07e4f4d5f7048f24b7d5ef30c232ceb00b3eb40032ecddf15e41207"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/page@892106f93084b911471f2dc7010ededf.webm",
+        "sha256": "269a5a4c96b5a5dd6d4e0a05bb07c95a56efc325d395c2ba86e8ea95b7fed755",
+        "bytes": 670008,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-chromium-PR13.mp4",
+        "sha256": "c9e9c769c0c7785d7ede369976cf48056dc483f41902b1d1cadf9fbe28150ac7",
+        "bytes": 377542,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-chromium-PR13.mp4",
+        "sha256": "c9e9c769c0c7785d7ede369976cf48056dc483f41902b1d1cadf9fbe28150ac7",
+        "bytes": 377542,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "matched-touch-clip",
+      "engine": "chromium",
+      "variant": "PR13",
+      "durationSeconds": 4.195599999999628,
+      "requestedMaxDurationSeconds": 5.0,
+      "sourceStartPtsSeconds": 1.444400000000372,
+      "firstTouchActualMs": 714.0,
+      "firstTouchCaptureClockMs": 714.0,
+      "firstTouchSourcePtsSeconds": 2.158400000000372,
+      "firstTouchClipTimeSeconds": 0.714,
+      "clockDefinition": "samples.ms/actions.actualMs are capture wall-clock elapsed from after #start, not game elapsed time",
+      "captureOffsetSeconds": 1.444400000000372,
+      "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+      "captureOffsetUncertainty": {
+        "status": "unquantified",
+        "reason": "the report does not measure the recording tail after its final RAF sample",
+        "lastObservedRafIntervalMs": 316.39999999999964,
+        "inputTimingMaxErrorMs": 14
+      },
+      "alignmentQuality": "approximate; recorder-tail uncertainty is unquantified",
+      "cameraMode": "chase; native parameters retained, no camera setters",
+      "inputSemantics": "rear-view/one-lane steering",
+      "comparisonClaim": "descriptive matched-input evidence; approximate capture-start mapping; not a controlled same-camera comparison",
+      "transcode": "H.264, full-frame proportional scale to 720px high, original playback timing, capture-start prefix retained"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/report.json",
+        "sha256": "1011cd23a9bf383012d20c42dc718eb63a92d083830735f1e5ca7e48e668ac54"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/page@553d80c67675c1caa5d98aee169bc6ec.webm",
+        "sha256": "6e32bb5f132ff92898a76aa92bb7067aed0a26ce70fabe5056cce71ffec1f1c2",
+        "bytes": 674687,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-chromium-V3.mp4",
+        "sha256": "1e4d3b71f5f8ad7a5079d7066a7f4fbd7a4f53177c36e478f0e17e141bca70fe",
+        "bytes": 343019,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-chromium-V3.mp4",
+        "sha256": "1e4d3b71f5f8ad7a5079d7066a7f4fbd7a4f53177c36e478f0e17e141bca70fe",
+        "bytes": 343019,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "matched-touch-clip",
+      "engine": "chromium",
+      "variant": "V3",
+      "durationSeconds": 3.893599999999814,
+      "requestedMaxDurationSeconds": 5.0,
+      "sourceStartPtsSeconds": 1.7464000000001856,
+      "firstTouchActualMs": 715.0,
+      "firstTouchCaptureClockMs": 715.0,
+      "firstTouchSourcePtsSeconds": 2.4614000000001854,
+      "firstTouchClipTimeSeconds": 0.7149999999999999,
+      "clockDefinition": "samples.ms/actions.actualMs are capture wall-clock elapsed from after #start, not game elapsed time",
+      "captureOffsetSeconds": 1.7464000000001856,
+      "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+      "captureOffsetUncertainty": {
+        "status": "unquantified",
+        "reason": "the report does not measure the recording tail after its final RAF sample",
+        "lastObservedRafIntervalMs": 7.900000000000546,
+        "inputTimingMaxErrorMs": 43
+      },
+      "alignmentQuality": "approximate; recorder-tail uncertainty is unquantified",
+      "cameraMode": "chase; native parameters retained, no camera setters",
+      "inputSemantics": "rear-view/one-lane steering",
+      "comparisonClaim": "descriptive matched-input evidence; approximate capture-start mapping; not a controlled same-camera comparison",
+      "transcode": "H.264, full-frame proportional scale to 720px high, original playback timing, capture-start prefix retained"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR10/report.json",
+        "sha256": "33c167709462a7d7a0a6bf295f1ee23de500f4387ad2095938a893dc42a49147"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR10/page@5157862cf9f4362e3aa13b2d4d207698.webm",
+        "sha256": "c380d1b92e3f4df71fde7bc5d07c6fdbb8febd6336b9fad0e8f7c15b552d7bdb",
+        "bytes": 723276,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-webkit-PR10.mp4",
+        "sha256": "9283bea6e86f41fc8d1de35cc43fc78858a8bebfa6aa6d89f77088c775878a3e",
+        "bytes": 373884,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-webkit-PR10.mp4",
+        "sha256": "9283bea6e86f41fc8d1de35cc43fc78858a8bebfa6aa6d89f77088c775878a3e",
+        "bytes": 373884,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "matched-touch-clip",
+      "engine": "webkit",
+      "variant": "PR10",
+      "durationSeconds": 3.9719999999999995,
+      "requestedMaxDurationSeconds": 5.0,
+      "sourceStartPtsSeconds": 4.348000000000001,
+      "firstTouchActualMs": 729.0,
+      "firstTouchCaptureClockMs": 729.0,
+      "firstTouchSourcePtsSeconds": 5.077000000000001,
+      "firstTouchClipTimeSeconds": 0.7290000000000001,
+      "clockDefinition": "samples.ms/actions.actualMs are capture wall-clock elapsed from after #start, not game elapsed time",
+      "captureOffsetSeconds": 4.348000000000001,
+      "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+      "captureOffsetUncertainty": {
+        "status": "unquantified",
+        "reason": "the report does not measure the recording tail after its final RAF sample",
+        "lastObservedRafIntervalMs": 19.0,
+        "inputTimingMaxErrorMs": 30
+      },
+      "alignmentQuality": "approximate; recorder-tail uncertainty is unquantified",
+      "cameraMode": "chase; native parameters retained, no camera setters",
+      "inputSemantics": "side-view/held steering",
+      "comparisonClaim": "descriptive matched-input evidence; approximate capture-start mapping; not a controlled same-camera comparison",
+      "transcode": "H.264, full-frame proportional scale to 720px high, original playback timing, capture-start prefix retained"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR13/report.json",
+        "sha256": "5b869fda8b5ffb4a723b7c6e9a28f1f5cd06f230f4e1d02835d4a3b221480e21"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR13/page@8d5892056695a23ad55569be7bbb4a67.webm",
+        "sha256": "8785fe3373f872832ba6d4c39a29eabca83acc5959c33cb2ab155e4123bcfea8",
+        "bytes": 681295,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-webkit-PR13.mp4",
+        "sha256": "c2949c3d3dc341c802814f08e16615f68138d305b6c217041e3d97811c588085",
+        "bytes": 360287,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-webkit-PR13.mp4",
+        "sha256": "c2949c3d3dc341c802814f08e16615f68138d305b6c217041e3d97811c588085",
+        "bytes": 360287,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "matched-touch-clip",
+      "engine": "webkit",
+      "variant": "PR13",
+      "durationSeconds": 3.935,
+      "requestedMaxDurationSeconds": 5.0,
+      "sourceStartPtsSeconds": 1.9049999999999998,
+      "firstTouchActualMs": 719.0,
+      "firstTouchCaptureClockMs": 719.0,
+      "firstTouchSourcePtsSeconds": 2.6239999999999997,
+      "firstTouchClipTimeSeconds": 0.7189999999999999,
+      "clockDefinition": "samples.ms/actions.actualMs are capture wall-clock elapsed from after #start, not game elapsed time",
+      "captureOffsetSeconds": 1.9049999999999998,
+      "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+      "captureOffsetUncertainty": {
+        "status": "unquantified",
+        "reason": "the report does not measure the recording tail after its final RAF sample",
+        "lastObservedRafIntervalMs": 21.0,
+        "inputTimingMaxErrorMs": 20
+      },
+      "alignmentQuality": "approximate; recorder-tail uncertainty is unquantified",
+      "cameraMode": "chase; native parameters retained, no camera setters",
+      "inputSemantics": "rear-view/one-lane steering",
+      "comparisonClaim": "descriptive matched-input evidence; approximate capture-start mapping; not a controlled same-camera comparison",
+      "transcode": "H.264, full-frame proportional scale to 720px high, original playback timing, capture-start prefix retained"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/report.json",
+        "sha256": "e67e8d694e3f60a018a87e6f95dbedd3d936bbd1bdf7b6b1d5fb49525cbe8c42"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/page@93fed77ce393a674a88a8e33abfd1e84.webm",
+        "sha256": "c76825007129e9bdba3cb6fac6b8f9ba04a700faa5338df6ba68a0eb5ac311ca",
+        "bytes": 717226,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-webkit-V3.mp4",
+        "sha256": "5dc0030b2cd04d79add84b7734a035141d7eff5d32589326fed1b4137f7e8c8a",
+        "bytes": 343407,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-webkit-V3.mp4",
+        "sha256": "5dc0030b2cd04d79add84b7734a035141d7eff5d32589326fed1b4137f7e8c8a",
+        "bytes": 343407,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "matched-touch-clip",
+      "engine": "webkit",
+      "variant": "V3",
+      "durationSeconds": 3.943,
+      "requestedMaxDurationSeconds": 5.0,
+      "sourceStartPtsSeconds": 2.097,
+      "firstTouchActualMs": 726.0,
+      "firstTouchCaptureClockMs": 726.0,
+      "firstTouchSourcePtsSeconds": 2.823,
+      "firstTouchClipTimeSeconds": 0.726,
+      "clockDefinition": "samples.ms/actions.actualMs are capture wall-clock elapsed from after #start, not game elapsed time",
+      "captureOffsetSeconds": 2.097,
+      "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+      "captureOffsetUncertainty": {
+        "status": "unquantified",
+        "reason": "the report does not measure the recording tail after its final RAF sample",
+        "lastObservedRafIntervalMs": 22.0,
+        "inputTimingMaxErrorMs": 26
+      },
+      "alignmentQuality": "approximate; recorder-tail uncertainty is unquantified",
+      "cameraMode": "chase; native parameters retained, no camera setters",
+      "inputSemantics": "rear-view/one-lane steering",
+      "comparisonClaim": "descriptive matched-input evidence; approximate capture-start mapping; not a controlled same-camera comparison",
+      "transcode": "H.264, full-frame proportional scale to 720px high, original playback timing, capture-start prefix retained"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/report.json",
+        "sha256": "382bafe92ef1ad17fef3bb19e9a94c508b266e9e16ca00f33ea199ef193d7962"
+      },
+      "sourceInputs": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/page@56ba2e8f1db8fe7250280911b793c6b4.webm",
+          "sha256": "fbdb6a5ce9d2cf13be977b26e640c86ad34781173e8f53faf21b7bbb22aff6d3",
+          "bytes": 736424,
+          "mime": "video/webm",
+          "variant": "PR10",
+          "firstTouchActualMs": 714.0,
+          "firstTouchCaptureClockMs": 714.0,
+          "sourceStartPtsSeconds": 2.6469000000003726,
+          "firstTouchSourcePtsSeconds": 3.2469000000003727,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 2.5329000000003727,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 441.60000000000036,
+            "inputTimingMaxErrorMs": 111
+          }
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/page@892106f93084b911471f2dc7010ededf.webm",
+          "sha256": "269a5a4c96b5a5dd6d4e0a05bb07c95a56efc325d395c2ba86e8ea95b7fed755",
+          "bytes": 670008,
+          "mime": "video/webm",
+          "variant": "PR13",
+          "firstTouchActualMs": 714.0,
+          "firstTouchCaptureClockMs": 714.0,
+          "sourceStartPtsSeconds": 1.558400000000372,
+          "firstTouchSourcePtsSeconds": 2.158400000000372,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 1.444400000000372,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 316.39999999999964,
+            "inputTimingMaxErrorMs": 14
+          }
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/page@553d80c67675c1caa5d98aee169bc6ec.webm",
+          "sha256": "6e32bb5f132ff92898a76aa92bb7067aed0a26ce70fabe5056cce71ffec1f1c2",
+          "bytes": 674687,
+          "mime": "video/webm",
+          "variant": "V3",
+          "firstTouchActualMs": 715.0,
+          "firstTouchCaptureClockMs": 715.0,
+          "sourceStartPtsSeconds": 1.8614000000001854,
+          "firstTouchSourcePtsSeconds": 2.4614000000001854,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 1.7464000000001856,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 7.900000000000546,
+            "inputTimingMaxErrorMs": 43
+          }
+        }
+      ],
+      "output": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/first-touch-triptych-chromium.mp4",
+        "sha256": "294d726d866e99ff162ca91f4c1bf22a4cd0e1113940905154717e3b34a677c1",
+        "bytes": 853609,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "first-touch-triptych",
+      "engine": "chromium",
+      "columnOrder": [
+        "PR10",
+        "PR13",
+        "V3"
+      ],
+      "durationSeconds": 3.7785999999998143,
+      "clockDefinition": "per-engine report capture-clock values start after #start; labels are not game elapsed times",
+      "alignmentQuality": "approximate first-touch reference only; not perfectly synchronized; recorder-tail uncertainty is unquantified",
+      "comparisonClaim": "descriptive only; camera/input semantics differ and timing is approximate",
+      "alignment": {
+        "method": "estimated source PTS = capture offset + post-#start capture-clock timestamp; each clip starts up to 0.6 s before that estimate",
+        "clockDefinition": "actions.actualMs and samples.ms are post-#start capture wall-clock offsets, not game elapsed time",
+        "preTouchLeadRequestedSeconds": 0.6,
+        "firstTouchClipTimesSeconds": [
+          0.6000000000000001,
+          0.6000000000000001,
+          0.6000000000000001
+        ],
+        "captureOffsetUncertainty": "unquantified recorder-tail uncertainty; see per-sourceInputs"
+      },
+      "cameraCaveat": "PR10 side-view/held steering; PR13 and V3 rear-view/one-lane steering; no ranking or same-camera claim",
+      "transcode": "H.264, three full-frame proportional 720px-high columns, original playback speed, no audio"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/report.json",
+        "sha256": "382bafe92ef1ad17fef3bb19e9a94c508b266e9e16ca00f33ea199ef193d7962"
+      },
+      "sourceInputs": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/page@56ba2e8f1db8fe7250280911b793c6b4.webm",
+          "sha256": "fbdb6a5ce9d2cf13be977b26e640c86ad34781173e8f53faf21b7bbb22aff6d3",
+          "bytes": 736424,
+          "mime": "video/webm",
+          "variant": "PR10",
+          "firstTouchActualMs": 714.0,
+          "firstTouchCaptureClockMs": 714.0,
+          "sourceStartPtsSeconds": 2.6469000000003726,
+          "firstTouchSourcePtsSeconds": 3.2469000000003727,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 2.5329000000003727,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 441.60000000000036,
+            "inputTimingMaxErrorMs": 111
+          }
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/page@892106f93084b911471f2dc7010ededf.webm",
+          "sha256": "269a5a4c96b5a5dd6d4e0a05bb07c95a56efc325d395c2ba86e8ea95b7fed755",
+          "bytes": 670008,
+          "mime": "video/webm",
+          "variant": "PR13",
+          "firstTouchActualMs": 714.0,
+          "firstTouchCaptureClockMs": 714.0,
+          "sourceStartPtsSeconds": 1.558400000000372,
+          "firstTouchSourcePtsSeconds": 2.158400000000372,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 1.444400000000372,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 316.39999999999964,
+            "inputTimingMaxErrorMs": 14
+          }
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/page@553d80c67675c1caa5d98aee169bc6ec.webm",
+          "sha256": "6e32bb5f132ff92898a76aa92bb7067aed0a26ce70fabe5056cce71ffec1f1c2",
+          "bytes": 674687,
+          "mime": "video/webm",
+          "variant": "V3",
+          "firstTouchActualMs": 715.0,
+          "firstTouchCaptureClockMs": 715.0,
+          "sourceStartPtsSeconds": 1.8614000000001854,
+          "firstTouchSourcePtsSeconds": 2.4614000000001854,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 1.7464000000001856,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 7.900000000000546,
+            "inputTimingMaxErrorMs": 43
+          }
+        }
+      ],
+      "output": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/first-touch-triptych-chromium.mp4",
+        "sha256": "294d726d866e99ff162ca91f4c1bf22a4cd0e1113940905154717e3b34a677c1",
+        "bytes": 853609,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "first-touch-triptych",
+      "engine": "chromium",
+      "columnOrder": [
+        "PR10",
+        "PR13",
+        "V3"
+      ],
+      "durationSeconds": 3.7785999999998143,
+      "clockDefinition": "per-engine report capture-clock values start after #start; labels are not game elapsed times",
+      "alignmentQuality": "approximate first-touch reference only; not perfectly synchronized; recorder-tail uncertainty is unquantified",
+      "comparisonClaim": "descriptive only; camera/input semantics differ and timing is approximate",
+      "alignment": {
+        "method": "estimated source PTS = capture offset + post-#start capture-clock timestamp; each clip starts up to 0.6 s before that estimate",
+        "clockDefinition": "actions.actualMs and samples.ms are post-#start capture wall-clock offsets, not game elapsed time",
+        "preTouchLeadRequestedSeconds": 0.6,
+        "firstTouchClipTimesSeconds": [
+          0.6000000000000001,
+          0.6000000000000001,
+          0.6000000000000001
+        ],
+        "captureOffsetUncertainty": "unquantified recorder-tail uncertainty; see per-sourceInputs"
+      },
+      "cameraCaveat": "PR10 side-view/held steering; PR13 and V3 rear-view/one-lane steering; no ranking or same-camera claim",
+      "transcode": "H.264, three full-frame proportional 720px-high columns, original playback speed, no audio"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/report.json",
+        "sha256": "b1471af65189e8c34a59134e0961a2f22b753d10710081677224ce7bdfbba39a"
+      },
+      "sourceInputs": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR10/page@5157862cf9f4362e3aa13b2d4d207698.webm",
+          "sha256": "c380d1b92e3f4df71fde7bc5d07c6fdbb8febd6336b9fad0e8f7c15b552d7bdb",
+          "bytes": 723276,
+          "mime": "video/webm",
+          "variant": "PR10",
+          "firstTouchActualMs": 729.0,
+          "firstTouchCaptureClockMs": 729.0,
+          "sourceStartPtsSeconds": 4.477000000000001,
+          "firstTouchSourcePtsSeconds": 5.077000000000001,
+          "firstTouchClipTimeSeconds": 0.5999999999999996,
+          "captureOffsetSeconds": 4.348000000000001,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 19.0,
+            "inputTimingMaxErrorMs": 30
+          }
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR13/page@8d5892056695a23ad55569be7bbb4a67.webm",
+          "sha256": "8785fe3373f872832ba6d4c39a29eabca83acc5959c33cb2ab155e4123bcfea8",
+          "bytes": 681295,
+          "mime": "video/webm",
+          "variant": "PR13",
+          "firstTouchActualMs": 719.0,
+          "firstTouchCaptureClockMs": 719.0,
+          "sourceStartPtsSeconds": 2.0239999999999996,
+          "firstTouchSourcePtsSeconds": 2.6239999999999997,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 1.9049999999999998,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 21.0,
+            "inputTimingMaxErrorMs": 20
+          }
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/page@93fed77ce393a674a88a8e33abfd1e84.webm",
+          "sha256": "c76825007129e9bdba3cb6fac6b8f9ba04a700faa5338df6ba68a0eb5ac311ca",
+          "bytes": 717226,
+          "mime": "video/webm",
+          "variant": "V3",
+          "firstTouchActualMs": 726.0,
+          "firstTouchCaptureClockMs": 726.0,
+          "sourceStartPtsSeconds": 2.223,
+          "firstTouchSourcePtsSeconds": 2.823,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 2.097,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 22.0,
+            "inputTimingMaxErrorMs": 26
+          }
+        }
+      ],
+      "output": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/first-touch-triptych-webkit.mp4",
+        "sha256": "bce879fe89179aa8e598ed65ad6227f55cd8186d1cca6a965a000e61866f9ebf",
+        "bytes": 874504,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "first-touch-triptych",
+      "engine": "webkit",
+      "columnOrder": [
+        "PR10",
+        "PR13",
+        "V3"
+      ],
+      "durationSeconds": 3.8160000000000003,
+      "clockDefinition": "per-engine report capture-clock values start after #start; labels are not game elapsed times",
+      "alignmentQuality": "approximate first-touch reference only; not perfectly synchronized; recorder-tail uncertainty is unquantified",
+      "comparisonClaim": "descriptive only; camera/input semantics differ and timing is approximate",
+      "alignment": {
+        "method": "estimated source PTS = capture offset + post-#start capture-clock timestamp; each clip starts up to 0.6 s before that estimate",
+        "clockDefinition": "actions.actualMs and samples.ms are post-#start capture wall-clock offsets, not game elapsed time",
+        "preTouchLeadRequestedSeconds": 0.6,
+        "firstTouchClipTimesSeconds": [
+          0.5999999999999996,
+          0.6000000000000001,
+          0.6000000000000001
+        ],
+        "captureOffsetUncertainty": "unquantified recorder-tail uncertainty; see per-sourceInputs"
+      },
+      "cameraCaveat": "PR10 side-view/held steering; PR13 and V3 rear-view/one-lane steering; no ranking or same-camera claim",
+      "transcode": "H.264, three full-frame proportional 720px-high columns, original playback speed, no audio"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/report.json",
+        "sha256": "b1471af65189e8c34a59134e0961a2f22b753d10710081677224ce7bdfbba39a"
+      },
+      "sourceInputs": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR10/page@5157862cf9f4362e3aa13b2d4d207698.webm",
+          "sha256": "c380d1b92e3f4df71fde7bc5d07c6fdbb8febd6336b9fad0e8f7c15b552d7bdb",
+          "bytes": 723276,
+          "mime": "video/webm",
+          "variant": "PR10",
+          "firstTouchActualMs": 729.0,
+          "firstTouchCaptureClockMs": 729.0,
+          "sourceStartPtsSeconds": 4.477000000000001,
+          "firstTouchSourcePtsSeconds": 5.077000000000001,
+          "firstTouchClipTimeSeconds": 0.5999999999999996,
+          "captureOffsetSeconds": 4.348000000000001,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 19.0,
+            "inputTimingMaxErrorMs": 30
+          }
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR13/page@8d5892056695a23ad55569be7bbb4a67.webm",
+          "sha256": "8785fe3373f872832ba6d4c39a29eabca83acc5959c33cb2ab155e4123bcfea8",
+          "bytes": 681295,
+          "mime": "video/webm",
+          "variant": "PR13",
+          "firstTouchActualMs": 719.0,
+          "firstTouchCaptureClockMs": 719.0,
+          "sourceStartPtsSeconds": 2.0239999999999996,
+          "firstTouchSourcePtsSeconds": 2.6239999999999997,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 1.9049999999999998,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 21.0,
+            "inputTimingMaxErrorMs": 20
+          }
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/page@93fed77ce393a674a88a8e33abfd1e84.webm",
+          "sha256": "c76825007129e9bdba3cb6fac6b8f9ba04a700faa5338df6ba68a0eb5ac311ca",
+          "bytes": 717226,
+          "mime": "video/webm",
+          "variant": "V3",
+          "firstTouchActualMs": 726.0,
+          "firstTouchCaptureClockMs": 726.0,
+          "sourceStartPtsSeconds": 2.223,
+          "firstTouchSourcePtsSeconds": 2.823,
+          "firstTouchClipTimeSeconds": 0.6000000000000001,
+          "captureOffsetSeconds": 2.097,
+          "captureOffsetMethod": "approximate: encoded video duration minus final post-#start RAF capture-clock sample",
+          "captureOffsetUncertainty": {
+            "status": "unquantified",
+            "reason": "the report does not measure the recording tail after its final RAF sample",
+            "lastObservedRafIntervalMs": 22.0,
+            "inputTimingMaxErrorMs": 26
+          }
+        }
+      ],
+      "output": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/first-touch-triptych-webkit.mp4",
+        "sha256": "bce879fe89179aa8e598ed65ad6227f55cd8186d1cca6a965a000e61866f9ebf",
+        "bytes": 874504,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "first-touch-triptych",
+      "engine": "webkit",
+      "columnOrder": [
+        "PR10",
+        "PR13",
+        "V3"
+      ],
+      "durationSeconds": 3.8160000000000003,
+      "clockDefinition": "per-engine report capture-clock values start after #start; labels are not game elapsed times",
+      "alignmentQuality": "approximate first-touch reference only; not perfectly synchronized; recorder-tail uncertainty is unquantified",
+      "comparisonClaim": "descriptive only; camera/input semantics differ and timing is approximate",
+      "alignment": {
+        "method": "estimated source PTS = capture offset + post-#start capture-clock timestamp; each clip starts up to 0.6 s before that estimate",
+        "clockDefinition": "actions.actualMs and samples.ms are post-#start capture wall-clock offsets, not game elapsed time",
+        "preTouchLeadRequestedSeconds": 0.6,
+        "firstTouchClipTimesSeconds": [
+          0.5999999999999996,
+          0.6000000000000001,
+          0.6000000000000001
+        ],
+        "captureOffsetUncertainty": "unquantified recorder-tail uncertainty; see per-sourceInputs"
+      },
+      "cameraCaveat": "PR10 side-view/held steering; PR13 and V3 rear-view/one-lane steering; no ranking or same-camera claim",
+      "transcode": "H.264, three full-frame proportional 720px-high columns, original playback speed, no audio"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/report.json",
+        "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/page@adcdbf3aaa52e665fac24fbaa6e86d90.webm",
+        "sha256": "8df47bf1850b043ced909fa654001c071289cd996573fc31b0710c9eb0a66d8e",
+        "bytes": 12248231,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/experience-chromium.mp4",
+        "sha256": "676cd39f762aa0e6bbf4ac7d34ce3bb8bf0e8019af2609917beac7687b750195",
+        "bytes": 13708533,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/experience-chromium.mp4",
+        "sha256": "676cd39f762aa0e6bbf4ac7d34ce3bb8bf0e8019af2609917beac7687b750195",
+        "bytes": 13708533,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "experience-full-record",
+      "engine": "chromium",
+      "durationSeconds": 99.6,
+      "sourceDimensions": [
+        390,
+        844
+      ],
+      "transcode": "full recording, full frame, H.264 MP4; no trimming or speed change; audio converted only when present"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-chromium/report.json",
+        "sha256": "b0f84adf452f57a64c050bbdd78e29a6c70a848f42985941d1b328dc43bcdbcd"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-chromium/page@33e5ba73f68842a9d512e40adbf8d983.webm",
+        "sha256": "71460dd2307a70ad86d650e67cf07fa398b80f99a32c7e143938c2ae9d72d97a",
+        "bytes": 2607512,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/feel-state-chromium.mp4",
+        "sha256": "8d29bfd08a94766ee1bfffb81ea964d4c7fd58db0c5e29cc7c5c766e27c59f84",
+        "bytes": 2889692,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/feel-state-chromium.mp4",
+        "sha256": "8d29bfd08a94766ee1bfffb81ea964d4c7fd58db0c5e29cc7c5c766e27c59f84",
+        "bytes": 2889692,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "feel-state-full-record",
+      "engine": "chromium",
+      "durationSeconds": 22.48,
+      "sourceDimensions": [
+        390,
+        844
+      ],
+      "transcode": "full recording, full frame, H.264 MP4; no trimming or speed change; audio converted only when present"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/report.json",
+        "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/level-5.webm",
+        "sha256": "d123d7b2056224e6876441fd5c8d56fef3f5093c1c8c925b85312a300bc8bcd1",
+        "bytes": 9793143,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/risk-level-5-chromium.mp4",
+        "sha256": "95964c631fceb0bf1f401df289e0b5cf979a78dc660edbbc71b950c697b28b17",
+        "bytes": 7625236,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/risk-level-5-chromium.mp4",
+        "sha256": "95964c631fceb0bf1f401df289e0b5cf979a78dc660edbbc71b950c697b28b17",
+        "bytes": 7625236,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "risk-full-record",
+      "engine": "chromium",
+      "riskLevel": 5,
+      "weather": "dusk",
+      "selectionReason": "highest available non-clear level among 4/5, otherwise level 5",
+      "durationSeconds": 79.8,
+      "sourceDimensions": [
+        390,
+        844
+      ],
+      "transcode": "full recording, full frame, H.264 MP4; no trimming or speed change; audio converted only when present"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/report.json",
+        "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/page@49491fac114adf24b1319e42452e9e49.webm",
+        "sha256": "fc2880a2333f0500b8d768794b860f2ef65efaaf069ddd9503f8df228632c203",
+        "bytes": 12331625,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/experience-webkit.mp4",
+        "sha256": "6462f2470624596a9de4af1fb4bfc15374a27b4faca7a3dd18ad986c4cdbc0a6",
+        "bytes": 12678574,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/experience-webkit.mp4",
+        "sha256": "6462f2470624596a9de4af1fb4bfc15374a27b4faca7a3dd18ad986c4cdbc0a6",
+        "bytes": 12678574,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "experience-full-record",
+      "engine": "webkit",
+      "durationSeconds": 99.44,
+      "sourceDimensions": [
+        390,
+        844
+      ],
+      "transcode": "full recording, full frame, H.264 MP4; no trimming or speed change; audio converted only when present"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-webkit/report.json",
+        "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-webkit/page@49aeba8634886d26f73519c393dda083.webm",
+        "sha256": "d435e67847081463fc96a28b12a7c3b264bf3aa00cf257c682ebe96d2f4032ba",
+        "bytes": 2651556,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/feel-state-webkit.mp4",
+        "sha256": "7c284e8e4448200c729998efbc179c4484004ce1c6d4e8284ae3079d40827f82",
+        "bytes": 2700394,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/feel-state-webkit.mp4",
+        "sha256": "7c284e8e4448200c729998efbc179c4484004ce1c6d4e8284ae3079d40827f82",
+        "bytes": 2700394,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "feel-state-full-record",
+      "engine": "webkit",
+      "durationSeconds": 22.48,
+      "sourceDimensions": [
+        390,
+        844
+      ],
+      "transcode": "full recording, full frame, H.264 MP4; no trimming or speed change; audio converted only when present"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/report.json",
+        "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/level-5.webm",
+        "sha256": "842d0696592f9359513eef1641bc82ceb70b50ccdc05893bc2461551e8660c57",
+        "bytes": 9830986,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/risk-level-5-webkit.mp4",
+        "sha256": "080a494dbf19145c6c1dcd2339eb66f8326d1c32d3906e6d6b5355b3cdb84832",
+        "bytes": 8578121,
+        "mime": "video/mp4"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/risk-level-5-webkit.mp4",
+        "sha256": "080a494dbf19145c6c1dcd2339eb66f8326d1c32d3906e6d6b5355b3cdb84832",
+        "bytes": 8578121,
+        "mime": "video/mp4"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "risk-full-record",
+      "engine": "webkit",
+      "riskLevel": 5,
+      "weather": "dusk",
+      "selectionReason": "highest available non-clear level among 4/5, otherwise level 5",
+      "durationSeconds": 80.28,
+      "sourceDimensions": [
+        390,
+        844
+      ],
+      "transcode": "full recording, full frame, H.264 MP4; no trimming or speed change; audio converted only when present"
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/report.json",
+        "sha256": "1011cd23a9bf383012d20c42dc718eb63a92d083830735f1e5ca7e48e668ac54"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/page@553d80c67675c1caa5d98aee169bc6ec.webm",
+        "sha256": "6e32bb5f132ff92898a76aa92bb7067aed0a26ce70fabe5056cce71ffec1f1c2",
+        "bytes": 674687,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/comparison-strip-chromium.png",
+        "sha256": "fe9a1ecf3b7bf323a40d02fe2f1f1bb33043b07e33ecb8d913efddde5d88f35a",
+        "bytes": 6769435,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/comparison-sheets/comparison-strip-chromium.png",
+        "sha256": "fe9a1ecf3b7bf323a40d02fe2f1f1bb33043b07e33ecb8d913efddde5d88f35a",
+        "bytes": 6769435,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "comparison-strip",
+      "engine": "chromium",
+      "layout": "six sampled timestamps by three native variants; labels outside full-frame pixels",
+      "clockDefinition": "labels are post-#start capture wall-clock offsets, not game elapsed seconds",
+      "cameraCaveat": "PR10 side-view/held steering; PR13 and V3 rear-view/one-lane steering; descriptive, not controlled same-camera evidence",
+      "actualTimestamp": null,
+      "copyDocsBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/report.json",
+        "sha256": "1011cd23a9bf383012d20c42dc718eb63a92d083830735f1e5ca7e48e668ac54"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/page@553d80c67675c1caa5d98aee169bc6ec.webm",
+        "sha256": "6e32bb5f132ff92898a76aa92bb7067aed0a26ce70fabe5056cce71ffec1f1c2",
+        "bytes": 674687,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/temporal-grid-chromium-V3.png",
+        "sha256": "5e82502f3458279928215863190d07ed067c23712dabebdaf4a0586e662dd788",
+        "bytes": 6880902,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/comparison-sheets/temporal-grid-chromium-V3.png",
+        "sha256": "5e82502f3458279928215863190d07ed067c23712dabebdaf4a0586e662dd788",
+        "bytes": 6880902,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "temporal-grid",
+      "engine": "chromium",
+      "variant": "V3",
+      "layout": "42 source frames in seven columns; full-frame proportional reductions only",
+      "clockDefinition": "labels are post-#start capture wall-clock offsets, not game elapsed seconds",
+      "actualTimestamp": null,
+      "copyDocsBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/report.json",
+        "sha256": "e67e8d694e3f60a018a87e6f95dbedd3d936bbd1bdf7b6b1d5fb49525cbe8c42"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/page@93fed77ce393a674a88a8e33abfd1e84.webm",
+        "sha256": "c76825007129e9bdba3cb6fac6b8f9ba04a700faa5338df6ba68a0eb5ac311ca",
+        "bytes": 717226,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/comparison-strip-webkit.png",
+        "sha256": "be723874ae02d36d08d99707a199059fa3939a827dd27d10f85e98ef7d204e5b",
+        "bytes": 6007447,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/comparison-sheets/comparison-strip-webkit.png",
+        "sha256": "be723874ae02d36d08d99707a199059fa3939a827dd27d10f85e98ef7d204e5b",
+        "bytes": 6007447,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "comparison-strip",
+      "engine": "webkit",
+      "layout": "six sampled timestamps by three native variants; labels outside full-frame pixels",
+      "clockDefinition": "labels are post-#start capture wall-clock offsets, not game elapsed seconds",
+      "cameraCaveat": "PR10 side-view/held steering; PR13 and V3 rear-view/one-lane steering; descriptive, not controlled same-camera evidence",
+      "actualTimestamp": null,
+      "copyDocsBytesOnly": true
+    },
+    {
+      "sourceReport": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/report.json",
+        "sha256": "e67e8d694e3f60a018a87e6f95dbedd3d936bbd1bdf7b6b1d5fb49525cbe8c42"
+      },
+      "sourceInput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/page@93fed77ce393a674a88a8e33abfd1e84.webm",
+        "sha256": "c76825007129e9bdba3cb6fac6b8f9ba04a700faa5338df6ba68a0eb5ac311ca",
+        "bytes": 717226,
+        "mime": "video/webm"
+      },
+      "runOutput": {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/temporal-grid-webkit-V3.png",
+        "sha256": "2c8aac6c8e3bcb421bdac8b6029be4db6332e04e6ec80d075978ab92337f4b14",
+        "bytes": 6506576,
+        "mime": "image/png"
+      },
+      "docsOutput": {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/comparison-sheets/temporal-grid-webkit-V3.png",
+        "sha256": "2c8aac6c8e3bcb421bdac8b6029be4db6332e04e6ec80d075978ab92337f4b14",
+        "bytes": 6506576,
+        "mime": "image/png"
+      },
+      "sourceBuildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "derivedFromRaw": true,
+      "assetRole": "temporal-grid",
+      "engine": "webkit",
+      "variant": "V3",
+      "layout": "42 source frames in seven columns; full-frame proportional reductions only",
+      "clockDefinition": "labels are post-#start capture wall-clock offsets, not game elapsed seconds",
+      "actualTimestamp": null,
+      "copyDocsBytesOnly": true
+    }
+  ],
+  "comparisonProvenancePath": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/provenance.json"
+}

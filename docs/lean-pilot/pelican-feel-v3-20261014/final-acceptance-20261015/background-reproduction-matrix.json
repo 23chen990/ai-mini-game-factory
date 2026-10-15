@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "running-game-clock-and-distance"
+    ],
+    "lifecycleStateBranches": [
+      "manual-pause-resume",
+      "actual-minimize-return",
+      "actual-os-app-switch-return"
+    ],
+    "rendererPaths": [
+      "CI-standalone-Threejs-Metal"
+    ],
+    "viewports": [
+      {
+        "label": "Mac-headed-mobile-viewport",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "manual-pause-resume",
+      "objectType": "running-game-clock-and-distance",
+      "lifecycleStateBranch": "manual-pause-resume",
+      "rendererPath": "CI-standalone-Threejs-Metal",
+      "viewport": {
+        "label": "Mac-headed-mobile-viewport",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Pause stops distance and timer; background path also needs real browser lifecycle signal",
+      "observed": "Both local26-check reports pass normal pause/resume",
+      "evidence": []
+    },
+    {
+      "id": "actual-minimize-return",
+      "objectType": "running-game-clock-and-distance",
+      "lifecycleStateBranch": "actual-minimize-return",
+      "rendererPath": "CI-standalone-Threejs-Metal",
+      "viewport": {
+        "label": "Mac-headed-mobile-viewport",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Pause stops distance and timer; background path also needs real browser lifecycle signal",
+      "observed": "Host trace did not produce a blur/hidden signal; preserve as BLOCKED",
+      "evidence": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-1/lifecycle/report.json",
+          "sha256": "47431d86839fe449c259566e6eba4e4c57f7545e5abaed7d8a0a09f42a0996e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/focus/report.json",
+          "sha256": "31a21e397c0813d7c4fd6402ab9a06fd961afd6ce919fbd4a7c4c23b9110a547",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "actual-os-app-switch-return",
+      "objectType": "running-game-clock-and-distance",
+      "lifecycleStateBranch": "actual-os-app-switch-return",
+      "rendererPath": "CI-standalone-Threejs-Metal",
+      "viewport": {
+        "label": "Mac-headed-mobile-viewport",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Pause stops distance and timer; background path also needs real browser lifecycle signal",
+      "observed": "Host trace did not produce a blur/hidden signal; preserve as BLOCKED",
+      "evidence": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-1/lifecycle/report.json",
+          "sha256": "47431d86839fe449c259566e6eba4e4c57f7545e5abaed7d8a0a09f42a0996e5",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/focus/report.json",
+          "sha256": "31a21e397c0813d7c4fd6402ab9a06fd961afd6ce919fbd4a7c4c23b9110a547",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Actual background signal missing from this automated host; no established gameplay root cause"
+  ],
+  "remainingGaps": [
+    "User physical-phone app switch and lock-screen return"
+  ],
+  "createdAt": "2026-10-15T12:23:38.682Z"
+}

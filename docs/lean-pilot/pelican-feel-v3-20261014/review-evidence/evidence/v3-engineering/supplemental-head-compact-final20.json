@@ -1,0 +1,1301 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "supplemental-perceptual-pixel-review",
+  "targetGame": "鹈鹕海岸冒险",
+  "targetRunId": "pelican-coast-v2-20261014",
+  "targetWorkspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "attempt": 20,
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "buildArtifact": {
+    "path": "workspace/game/index.html",
+    "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1"
+  },
+  "reviewer": "QAAgent",
+  "authorIndependent": true,
+  "reviewMethod": "actual-pixel-inspection",
+  "pixelEvidencePolicy": "Every finding below was judged from its current attempt-20 source PNG after opening the pixels. Old perceptual reports were consulted only for criteria; they do not substitute for current images.",
+  "sourceReports": [
+    {
+      "path": "attempts/attempt-20/head-chromium/report.json",
+      "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+    },
+    {
+      "path": "attempts/attempt-20/visual/report.json",
+      "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/report.json",
+      "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+    }
+  ],
+  "findings": [
+    {
+      "id": "head-chromium-390-straight",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-ride",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-straight.png",
+        "sha256": "2562a2cc1bc2d378c1f4f3736687b76b4ba7fd99157162b6aeff0b6ad9a7d81e",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native pelican head/neck and coral helmet remain connected and visible above the rider body, with forward roadway and touch controls unobscured.",
+      "observedPixels": "Viewed full-frame PNG: centered rear rider has a visible white head/neck and coral helmet; the forward road and three action buttons are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "straight-ride:chromium-default:standard"
+    },
+    {
+      "id": "head-chromium-390-fish-catch",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "fish-catch",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-fish-catch.png",
+        "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native pelican head/neck and coral helmet remain visible during the first-fish feedback state; the fish notification does not cover the rider or forward road.",
+      "observedPixels": "Viewed full-frame PNG: white pelican head/neck with coral helmet stays visible below the first-catch notification; the centered road remains open.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "fish-catch:chromium-default:standard"
+    },
+    {
+      "id": "head-chromium-390-right-turn",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "reverse-turn",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-right-turn.png",
+        "sha256": "653e023548b5c42124e38c62779f255c1d83db0c976d7a505ba3ba1b186586a0",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native rider remains visible in the right-turn pose and the road remains legible.",
+      "observedPixels": "Viewed full-frame PNG: right-turn posture is visible with the head/helmet attached to the rider; horizon and lane remain readable.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "reverse-turn:chromium-default:standard"
+    },
+    {
+      "id": "head-chromium-390-jump-reverse",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "jump",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-jump-reverse.png",
+        "sha256": "c77cb03cfe845e328bb2a958ef4aa3a16380322728a396e91cc9a56b0f17c0f0",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native rider remains visible during the naturally triggered reverse-turn/jump state, with the player and lane controls in frame.",
+      "observedPixels": "Viewed full-frame PNG: the helmeted white head/neck remains connected to the jumping rider; road and bottom touch buttons remain in view.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "jump:chromium-default:standard"
+    },
+    {
+      "id": "head-chromium-390-terminal",
+      "objectType": "low-barrier-terminal-screen",
+      "stateBranch": "barrier-terminal",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-terminal.png",
+        "sha256": "add69509296bfdca8e2319bc606e4a6bed12fe89392fdd2e0cdaf9d742451e4b",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The terminal screen names the low barrier as the cause and presents visible restart-current-level and route-selection recovery actions.",
+      "observedPixels": "Viewed full-frame PNG: opaque terminal panel is clear at this viewport; it identifies 碰到了低矮路障 and exposes current-level restart and 海岸路线·选择关卡 controls. The underlying rider is obscured by the terminal panel, so this frame is not used as head-visibility evidence.",
+      "remainingGaps": [
+        "Terminal panel intentionally covers the rider; it cannot establish native head visibility in this state."
+      ]
+    },
+    {
+      "id": "head-chromium-390-replay",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "replay",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-replay.png",
+        "sha256": "8191fe5fe26dc91b5f1f926289ba25ca09af27f2991518148f305aa2264ba44d",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The replay returns to active play with the rider, route, HUD and touch controls visible.",
+      "observedPixels": "Viewed full-frame PNG: replay has returned to running play; the head/helmet, current-route HUD, road and controls are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "replay:chromium-default:standard"
+    },
+    {
+      "id": "head-chromium-390-pedestrian-stun",
+      "objectType": "native-pelican-head-neck-beak-and-pedestrian",
+      "stateBranch": "pedestrian-stun",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-pedestrian-stun.png",
+        "sha256": "d12119329e9a7ad2475d30329fd866a2e75526cd5b12d7e57f57f99d79a8640d",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The pedestrian contact/stun is visible with the countdown and disabled input controls while the player and rider remain in the scene.",
+      "observedPixels": "Viewed full-frame PNG: rider and pedestrian are both present, the centered warning shows 3 seconds and 行人摔倒·倒计时继续, and the bottom touch controls are dimmed during the stun.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "pedestrian-stun-recovery:chromium-default:standard"
+    },
+    {
+      "id": "head-chromium-390-recovery",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "pedestrian-recovery",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-recovery.png",
+        "sha256": "a0d558499f58c6c6296a40329a1cc016e9e9fd078f162586af52f9695e19d2fe",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The recovery state returns the rider to active play with a visible continue-riding cue and touch controls.",
+      "observedPixels": "Viewed full-frame PNG: active rider returns with the 继续骑行 cue; forward roadway and lane/jump controls are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "pedestrian-stun-recovery:chromium-default:standard"
+    },
+    {
+      "id": "head-chromium-360-straight",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-ride",
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/360-straight.png",
+        "sha256": "0c4682be5f7a2fd80b6f39230ee876c793586312fb8679b332706c9038d1613f",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native pelican head/neck and coral helmet remain connected and visible above the rider body, with forward roadway and touch controls unobscured.",
+      "observedPixels": "Viewed full-frame PNG: centered rear rider has a visible white head/neck and coral helmet; the forward road and three action buttons are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "straight-ride:chromium-default:small"
+    },
+    {
+      "id": "head-chromium-360-fish-catch",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "fish-catch",
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/360-fish-catch.png",
+        "sha256": "7fd949d6a664a9e3c5f7c05fd13ecbb5938fb0ba01a5afecf3126ea177d3faf6",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native pelican head/neck and coral helmet remain visible during the first-fish feedback state; the fish notification does not cover the rider or forward road.",
+      "observedPixels": "Viewed full-frame PNG: white pelican head/neck with coral helmet stays visible below the first-catch notification; the centered road remains open.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "fish-catch:chromium-default:small"
+    },
+    {
+      "id": "head-chromium-360-right-turn",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "reverse-turn",
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/360-right-turn.png",
+        "sha256": "731bdedff033fba6c6fc46a57dd385094238235b1aa79a232a16cb7c122c477d",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native rider remains visible in the right-turn pose and the road remains legible.",
+      "observedPixels": "Viewed full-frame PNG: right-turn posture is visible with the head/helmet attached to the rider; horizon and lane remain readable.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "reverse-turn:chromium-default:small"
+    },
+    {
+      "id": "head-chromium-360-jump-reverse",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "jump",
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/360-jump-reverse.png",
+        "sha256": "c47977dc9e85eeec08cf9f8e78a99418f7b339d0419765a45ccbbc8ddc682b38",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native rider remains visible during the naturally triggered reverse-turn/jump state, with the player and lane controls in frame.",
+      "observedPixels": "Viewed full-frame PNG: the helmeted white head/neck remains connected to the jumping rider; road and bottom touch buttons remain in view.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "jump:chromium-default:small"
+    },
+    {
+      "id": "head-chromium-360-terminal",
+      "objectType": "low-barrier-terminal-screen",
+      "stateBranch": "barrier-terminal",
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/360-terminal.png",
+        "sha256": "cc1ed75ab9b83865e61dd8babd7f32797c7ef5d5b9ed61bca6d72812c6e23216",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The terminal screen names the low barrier as the cause and presents visible restart-current-level and route-selection recovery actions.",
+      "observedPixels": "Viewed full-frame PNG: opaque terminal panel is clear at this viewport; it identifies 碰到了低矮路障 and exposes current-level restart and 海岸路线·选择关卡 controls. The underlying rider is obscured by the terminal panel, so this frame is not used as head-visibility evidence.",
+      "remainingGaps": [
+        "Terminal panel intentionally covers the rider; it cannot establish native head visibility in this state."
+      ]
+    },
+    {
+      "id": "head-chromium-360-replay",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "replay",
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/360-replay.png",
+        "sha256": "bcd9173dd33dc689514e1b2c1a874e36cc1032091e9b5db31a875cdb467c29a5",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The replay returns to active play with the rider, route, HUD and touch controls visible.",
+      "observedPixels": "Viewed full-frame PNG: replay has returned to running play; the head/helmet, current-route HUD, road and controls are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "replay:chromium-default:small"
+    },
+    {
+      "id": "head-chromium-360-pedestrian-stun",
+      "objectType": "native-pelican-head-neck-beak-and-pedestrian",
+      "stateBranch": "pedestrian-stun",
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/360-pedestrian-stun.png",
+        "sha256": "5b6019291b4acbbf3981a98620da3a521537875f86d641a2a6be0cb2f384c7a1",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The pedestrian contact/stun is visible with the countdown and disabled input controls while the player and rider remain in the scene.",
+      "observedPixels": "Viewed full-frame PNG: rider and pedestrian are both present, the centered warning shows 3 seconds and 行人摔倒·倒计时继续, and the bottom touch controls are dimmed during the stun.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "pedestrian-stun-recovery:chromium-default:small"
+    },
+    {
+      "id": "head-chromium-360-recovery",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "pedestrian-recovery",
+      "engine": "chromium",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/360-recovery.png",
+        "sha256": "f4914beafdd0a19f7a1e14343399899165ba94ee9f86516e9a0eecb87a029ba5",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The recovery state returns the rider to active play with a visible continue-riding cue and touch controls.",
+      "observedPixels": "Viewed full-frame PNG: active rider returns with the 继续骑行 cue; forward roadway and lane/jump controls are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "pedestrian-stun-recovery:chromium-default:small"
+    },
+    {
+      "id": "head-chromium-320-straight",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-ride",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/320-straight.png",
+        "sha256": "f25c23ea714c907e506add4d2158b152396d613b75ed8dc33357f333d27691e0",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native pelican head/neck and coral helmet remain connected and visible above the rider body, with forward roadway and touch controls unobscured.",
+      "observedPixels": "Viewed full-frame PNG: centered rear rider has a visible white head/neck and coral helmet; the forward road and three action buttons are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "straight-ride:chromium-default:compact"
+    },
+    {
+      "id": "head-chromium-320-fish-catch",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "fish-catch",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/320-fish-catch.png",
+        "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native pelican head/neck and coral helmet remain visible during the first-fish feedback state; the fish notification does not cover the rider or forward road.",
+      "observedPixels": "Viewed full-frame PNG: white pelican head/neck with coral helmet stays visible below the first-catch notification; the centered road remains open.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "fish-catch:chromium-default:compact"
+    },
+    {
+      "id": "head-chromium-320-right-turn",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "reverse-turn",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/320-right-turn.png",
+        "sha256": "d50867449878750789e2a85dfd4e855b5cce0f00be7dd86906e281a850f475ff",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native rider remains visible in the right-turn pose and the road remains legible.",
+      "observedPixels": "Viewed full-frame PNG: right-turn posture is visible with the head/helmet attached to the rider; horizon and lane remain readable.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "reverse-turn:chromium-default:compact"
+    },
+    {
+      "id": "head-chromium-320-jump-reverse",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "jump",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/320-jump-reverse.png",
+        "sha256": "aa1fd21556054ee7f6a16f38d11b84615ea636330dbe13e45607d52b82eedca0",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native rider remains visible during the naturally triggered reverse-turn/jump state, with the player and lane controls in frame.",
+      "observedPixels": "Viewed full-frame PNG: the helmeted white head/neck remains connected to the jumping rider; road and bottom touch buttons remain in view.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "jump:chromium-default:compact"
+    },
+    {
+      "id": "head-chromium-320-terminal",
+      "objectType": "low-barrier-terminal-screen",
+      "stateBranch": "barrier-terminal",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/320-terminal.png",
+        "sha256": "2c282f72959b682b3106dc94f91c498afd0d10cc1915008c4f9e70ab585e9807",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The terminal screen names the low barrier as the cause and presents visible restart-current-level and route-selection recovery actions.",
+      "observedPixels": "Viewed full-frame PNG: opaque terminal panel is clear at this viewport; it identifies 碰到了低矮路障 and exposes current-level restart and 海岸路线·选择关卡 controls. The underlying rider is obscured by the terminal panel, so this frame is not used as head-visibility evidence.",
+      "remainingGaps": [
+        "Terminal panel intentionally covers the rider; it cannot establish native head visibility in this state."
+      ]
+    },
+    {
+      "id": "head-chromium-320-replay",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "replay",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/320-replay.png",
+        "sha256": "cdf93d2cb93028848b9c06ab4c0ef992c92a9455093d25d9301ce1227a0395cb",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The replay returns to active play with the rider, route, HUD and touch controls visible.",
+      "observedPixels": "Viewed full-frame PNG: replay has returned to running play; the head/helmet, current-route HUD, road and controls are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "replay:chromium-default:compact"
+    },
+    {
+      "id": "head-chromium-320-pedestrian-stun",
+      "objectType": "native-pelican-head-neck-beak-and-pedestrian",
+      "stateBranch": "pedestrian-stun",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/320-pedestrian-stun.png",
+        "sha256": "922b02d206b2157dad694f85b4804d9301ef88c4d5809e2613f4e69180fbfc28",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The pedestrian contact/stun is visible with the countdown and disabled input controls while the player and rider remain in the scene.",
+      "observedPixels": "Viewed full-frame PNG: rider and pedestrian are both present, the centered warning shows 3 seconds and 行人摔倒·倒计时继续, and the bottom touch controls are dimmed during the stun.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "pedestrian-stun-recovery:chromium-default:compact"
+    },
+    {
+      "id": "head-chromium-320-recovery",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "pedestrian-recovery",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/320-recovery.png",
+        "sha256": "80663a2058e483fdda7dfe733340c1cfb6bef4279578656957a1affbe33cefeb",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The recovery state returns the rider to active play with a visible continue-riding cue and touch controls.",
+      "observedPixels": "Viewed full-frame PNG: active rider returns with the 继续骑行 cue; forward roadway and lane/jump controls are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "pedestrian-stun-recovery:chromium-default:compact"
+    },
+    {
+      "id": "head-chromium-844-straight",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-ride",
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/844-straight.png",
+        "sha256": "35f8c7bf7be2e1b8d40306b87b9e11ea23bd2cfc81596c4e67fe97606fcfce6a",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native pelican head/neck and coral helmet remain connected and visible above the rider body, with forward roadway and touch controls unobscured.",
+      "observedPixels": "Viewed full-frame PNG: centered rear rider has a visible white head/neck and coral helmet; the forward road and three action buttons are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "straight-ride:chromium-default:landscape"
+    },
+    {
+      "id": "head-chromium-844-fish-catch",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "fish-catch",
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/844-fish-catch.png",
+        "sha256": "5d1c87c96451a72d46f2c3bb17937403c7732c959dc19fb87fed147659328d2c",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native pelican head/neck and coral helmet remain visible during the first-fish feedback state; the fish notification does not cover the rider or forward road.",
+      "observedPixels": "Viewed full-frame PNG: white pelican head/neck with coral helmet stays visible below the first-catch notification; the centered road remains open.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "fish-catch:chromium-default:landscape"
+    },
+    {
+      "id": "head-chromium-844-right-turn",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "reverse-turn",
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/844-right-turn.png",
+        "sha256": "03b28cb396abb995d30930ec42363f45d199e393f55e4047b5d5368bf55b2fdd",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native rider remains visible in the right-turn pose and the road remains legible.",
+      "observedPixels": "Viewed full-frame PNG: right-turn posture is visible with the head/helmet attached to the rider; horizon and lane remain readable.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "reverse-turn:chromium-default:landscape"
+    },
+    {
+      "id": "head-chromium-844-jump-reverse",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "jump",
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/844-jump-reverse.png",
+        "sha256": "a7c0b0c5e912972b0fc289e419385debd9588071086b3ac589d3942de220fb84",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The native rider remains visible during the naturally triggered reverse-turn/jump state, with the player and lane controls in frame.",
+      "observedPixels": "Viewed full-frame PNG: the helmeted white head/neck remains connected to the jumping rider; road and bottom touch buttons remain in view.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "jump:chromium-default:landscape"
+    },
+    {
+      "id": "head-chromium-844-terminal",
+      "objectType": "low-barrier-terminal-screen",
+      "stateBranch": "barrier-terminal",
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/844-terminal.png",
+        "sha256": "24182ea4e95e2308beb403875942e394e43759e20e69ba7a2828d17d0aa72a2f",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The terminal screen names the low barrier as the cause and presents visible restart-current-level and route-selection recovery actions.",
+      "observedPixels": "Viewed full-frame PNG: opaque terminal panel is clear at this viewport; it identifies 碰到了低矮路障 and exposes current-level restart and 海岸路线·选择关卡 controls. The underlying rider is obscured by the terminal panel, so this frame is not used as head-visibility evidence.",
+      "remainingGaps": [
+        "Terminal panel intentionally covers the rider; it cannot establish native head visibility in this state."
+      ]
+    },
+    {
+      "id": "head-chromium-844-replay",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "replay",
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/844-replay.png",
+        "sha256": "0397b7f18315318f07ee5131017e66f117b93bdd0e9bfea8cbc4188d724dd974",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The replay returns to active play with the rider, route, HUD and touch controls visible.",
+      "observedPixels": "Viewed full-frame PNG: replay has returned to running play; the head/helmet, current-route HUD, road and controls are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "replay:chromium-default:landscape"
+    },
+    {
+      "id": "head-chromium-844-pedestrian-stun",
+      "objectType": "native-pelican-head-neck-beak-and-pedestrian",
+      "stateBranch": "pedestrian-stun",
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/844-pedestrian-stun.png",
+        "sha256": "56f465786daecf9c43a183d326bc9a0d2eb0f62fb2c0ddb7b59030fb147f9d2f",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The pedestrian contact/stun is visible with the countdown and disabled input controls while the player and rider remain in the scene.",
+      "observedPixels": "Viewed full-frame PNG: rider and pedestrian are both present, the centered warning shows 3 seconds and 行人摔倒·倒计时继续, and the bottom touch controls are dimmed during the stun.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "pedestrian-stun-recovery:chromium-default:landscape"
+    },
+    {
+      "id": "head-chromium-844-recovery",
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "pedestrian-recovery",
+      "engine": "chromium",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/844-recovery.png",
+        "sha256": "21c27ccd6ff9fe409bd76463e688ba9fdb04d9553a6737bfbabe6433c5556cce",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "attempt-20/head-chromium/report.json explicitly binds engine=chromium, normalInputOnly=true, stateInjection=false, current build hash, and this viewport’s natural tap sequence.",
+      "assertion": "The recovery state returns the rider to active play with a visible continue-riding cue and touch controls.",
+      "observedPixels": "Viewed full-frame PNG: active rider returns with the 继续骑行 cue; forward roadway and lane/jump controls are visible.",
+      "remainingGaps": [
+        "Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots."
+      ],
+      "coveredMatrixCellId": "pedestrian-stun-recovery:chromium-default:landscape"
+    },
+    {
+      "id": "pause-webkit-390",
+      "objectType": "pause-resume-overlay-and-actions",
+      "stateBranch": "paused",
+      "engine": "webkit",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/visual/390-paused.png",
+        "sha256": "6beb93c2d83f9b680bf69f5a3dc192a5fd976d25e79e6fc7750281981bfcbed2",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/visual/report.json",
+        "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+      },
+      "engineBasis": "tools/lean-pilot/pelican-v2/visual-qa.mjs imports and launches Playwright WebKit; current visual report is bound to attempt-20 build hash.",
+      "assertion": "The pause overlay clearly signals that the route and timer are stopped and presents large continue, restart and route-selection actions.",
+      "observedPixels": "Viewed full-frame PNG: the pause modal is legible at this viewport, the prominent yellow continue action and the restart/route actions are visible, and a meaningful part of the running scene remains behind the modal.",
+      "remainingGaps": []
+    },
+    {
+      "id": "pause-webkit-360",
+      "objectType": "pause-resume-overlay-and-actions",
+      "stateBranch": "paused",
+      "engine": "webkit",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/visual/360-paused.png",
+        "sha256": "d156eeba6ee224b5537f353deb0d76185c765c1e7cf4dc1e7d5bc6d1a4a3908d",
+        "pixelWidth": 1080,
+        "pixelHeight": 2220
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/visual/report.json",
+        "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+      },
+      "engineBasis": "tools/lean-pilot/pelican-v2/visual-qa.mjs imports and launches Playwright WebKit; current visual report is bound to attempt-20 build hash.",
+      "assertion": "The pause overlay clearly signals that the route and timer are stopped and presents large continue, restart and route-selection actions.",
+      "observedPixels": "Viewed full-frame PNG: the pause modal is legible at this viewport, the prominent yellow continue action and the restart/route actions are visible, and a meaningful part of the running scene remains behind the modal.",
+      "remainingGaps": []
+    },
+    {
+      "id": "pause-webkit-320",
+      "objectType": "pause-resume-overlay-and-actions",
+      "stateBranch": "paused",
+      "engine": "webkit",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/visual/320-paused.png",
+        "sha256": "e2c8f01076d97701263f7e83530a7f5df3f551013dfdfc912c7c8eab2e24c911",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/visual/report.json",
+        "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+      },
+      "engineBasis": "tools/lean-pilot/pelican-v2/visual-qa.mjs imports and launches Playwright WebKit; current visual report is bound to attempt-20 build hash.",
+      "assertion": "The pause overlay clearly signals that the route and timer are stopped and presents large continue, restart and route-selection actions.",
+      "observedPixels": "Viewed full-frame PNG: the pause modal is legible at this viewport, the prominent yellow continue action and the restart/route actions are visible, and a meaningful part of the running scene remains behind the modal.",
+      "remainingGaps": []
+    },
+    {
+      "id": "pause-webkit-844",
+      "objectType": "pause-resume-overlay-and-actions",
+      "stateBranch": "paused",
+      "engine": "webkit",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/visual/844-paused.png",
+        "sha256": "e87a1ce6b13c3a39affe3e3c85c6ea98525bec4c4b37c072add930fecd690e70",
+        "pixelWidth": 2532,
+        "pixelHeight": 1170
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/visual/report.json",
+        "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+      },
+      "engineBasis": "tools/lean-pilot/pelican-v2/visual-qa.mjs imports and launches Playwright WebKit; current visual report is bound to attempt-20 build hash.",
+      "assertion": "The pause overlay clearly signals that the route and timer are stopped and presents large continue, restart and route-selection actions.",
+      "observedPixels": "Viewed full-frame PNG: the pause modal is legible at this viewport, the prominent yellow continue action and the restart/route actions are visible, and a meaningful part of the running scene remains behind the modal.",
+      "remainingGaps": []
+    },
+    {
+      "id": "compact-webkit-menu-selected-route",
+      "objectType": "ready-route-selection",
+      "stateBranch": "fresh-route-menu",
+      "engine": "webkit",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "GAP",
+      "sourcePng": {
+        "path": "attempts/attempt-20/visual/320-menu.png",
+        "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/visual/report.json",
+        "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+      },
+      "engineBasis": "visual-qa.mjs explicitly launches Playwright WebKit.",
+      "assertion": "At compact width the first route and start action should be readable, with route list navigation not obscuring row content.",
+      "observedPixels": "Viewed full-frame PNG: title, 0/15 star progress, selected level 1 and start CTA are legible. The second route row enters the viewport but its lower content is behind the fixed start-action region.",
+      "remainingGaps": [
+        "The selected first route is visible, but this capture does not show the complete lower route list; inspect scroll behavior before claiming all five route rows are readable at once."
+      ]
+    },
+    {
+      "id": "compact-webkit-running-controls-mastery",
+      "objectType": "touch-controls-and-five-mastery-goals",
+      "stateBranch": "first-running",
+      "engine": "webkit",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/visual/320-running.png",
+        "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/visual/report.json",
+        "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+      },
+      "engineBasis": "visual-qa.mjs explicitly launches Playwright WebKit.",
+      "assertion": "Compact running view keeps the rider, primary goals, mastery criteria and touch controls legible and within the viewport.",
+      "observedPixels": "Viewed full-frame PNG: the upper route/fish/time cards and five-part mastery strip are readable; player and forward road remain visible; all three large touch buttons fit above the bottom edge.",
+      "remainingGaps": []
+    },
+    {
+      "id": "compact-chromium-running-controls-mastery",
+      "objectType": "touch-controls-and-five-mastery-goals",
+      "stateBranch": "small-phone-running",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/experience-chromium/small-phone-running.png",
+        "sha256": "ca5b74cdc685c38eea976682f14bd869afa230633986e45990b6bd7fa304d0e8",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/experience-chromium/report.json",
+        "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c"
+      },
+      "engineBasis": "experience-chromium output path and current Chromium natural-input QA report; its natural-input and no-state-injection flags are true/false respectively.",
+      "assertion": "A second natural Chromium compact capture shows the running HUD, five mastery markers and touch controls in the 320x568 layout.",
+      "observedPixels": "Viewed full-frame PNG: route and fish progress cards, mastery goal strip, rider, road and three bottom touch targets are visible without the goals covering the rider.",
+      "remainingGaps": []
+    },
+    {
+      "id": "compact-chromium-experience-route-menu",
+      "objectType": "ready-route-selection",
+      "stateBranch": "all-five-earned-route-menu",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "GAP",
+      "sourcePng": {
+        "path": "attempts/attempt-20/experience-chromium/small-phone-route-menu.png",
+        "sha256": "14c5d81a67ad8a7702a39222a8c9dd07c2a045170bc1839a5578d04cf3e708be",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/experience-chromium/report.json",
+        "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c"
+      },
+      "engineBasis": "experience-chromium output path and current Chromium natural-input QA report; its natural-input and no-state-injection flags are true/false respectively.",
+      "assertion": "An earned-save route menu should present the active route and start control without concealing visible route-row content.",
+      "observedPixels": "Viewed full-frame PNG: 3/15 star progress, selected level 1 row and start action are visible. The following level row is partially cut off by the fixed start area at the captured scroll position.",
+      "remainingGaps": [
+        "This exact screenshot proves selection of the first earned route but not full readability of lower route rows at the initial scroll position."
+      ]
+    },
+    {
+      "id": "compact-chromium-risk-route-one",
+      "objectType": "earned-route-selection",
+      "stateBranch": "all-five-earned-select-level-one",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "GAP",
+      "sourcePng": {
+        "path": "attempts/attempt-20/risk-chromium/earned-compact-route-1.png",
+        "sha256": "dc74d477a41a050883cff36cf06e364b715b4633f4e12a3a4f85b7b86948413e",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/risk-chromium/report.json",
+        "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+      },
+      "engineBasis": "risk-chromium/report.json explicitly binds engine=chromium.",
+      "assertion": "After five earned completions, level 1 can be selected and started in compact mode while saved completion is visible.",
+      "observedPixels": "Viewed full-frame PNG: the 15/15 star total, selected level 1, its saved record and the level-one start action are legible. The second route row is only partly visible beneath the fixed start action.",
+      "remainingGaps": [
+        "Level-one selection is visually confirmed; the full lower route list at the initial scroll position remains unreviewed."
+      ]
+    },
+    {
+      "id": "compact-chromium-risk-route-five",
+      "objectType": "earned-route-selection",
+      "stateBranch": "all-five-earned-select-level-five",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/risk-chromium/earned-compact-route-5.png",
+        "sha256": "d30883c0e1ce56c1110762cadd65467bcc77cc6cf4107fd20e29b7070aa16b9d",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/risk-chromium/report.json",
+        "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+      },
+      "engineBasis": "risk-chromium/report.json explicitly binds engine=chromium.",
+      "assertion": "After five natural completions, level 5 selection and its saved completion/mastery are visibly identifiable in compact mode.",
+      "observedPixels": "Viewed full-frame PNG: 15/15 total stars and 渔王挑战已达成 are visible; selected level 5 is identified as 夜间赶海 with its route distance, fish target, saved record and start action.",
+      "remainingGaps": [
+        "This view establishes the selected fifth route; it does not imply all five route rows fit simultaneously without scrolling."
+      ]
+    },
+    {
+      "id": "compact-chromium-risk-level-one-replay",
+      "objectType": "level-one-replay-and-running-hud",
+      "stateBranch": "select-level-one-then-replay",
+      "engine": "chromium",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "result": "PASS",
+      "sourcePng": {
+        "path": "attempts/attempt-20/risk-chromium/earned-compact-level-one-replay.png",
+        "sha256": "d9eb2a598fe175e42a93b8f28363fb28197c2f30905f027ef0f14b3905fccaef",
+        "pixelWidth": 960,
+        "pixelHeight": 1704
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/risk-chromium/report.json",
+        "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+      },
+      "engineBasis": "risk-chromium/report.json explicitly binds engine=chromium.",
+      "assertion": "Selecting the previously earned first level returns to the actual level-one running branch with visible progress and normal controls.",
+      "observedPixels": "Viewed full-frame PNG: gameplay is active at 14/300 m with 1/8 fish, +1 fish feedback, the native rider and three touch controls; the image visibly reflects level-one replay after the earned-menu selection.",
+      "remainingGaps": []
+    },
+    {
+      "id": "native-front-fork-pivot-390-jump-reverse",
+      "objectType": "native-front-fork-pivot",
+      "stateBranch": "reverse-turn-jump-rear-chase",
+      "engine": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "result": "BLOCKED",
+      "sourcePng": {
+        "path": "attempts/attempt-20/head-chromium/390-jump-reverse.png",
+        "sha256": "c77cb03cfe845e328bb2a958ef4aa3a16380322728a396e91cc9a56b0f17c0f0",
+        "pixelWidth": 1170,
+        "pixelHeight": 2532
+      },
+      "sourceReport": {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+      },
+      "engineBasis": "head-chromium/report.json explicitly binds engine=chromium and natural-input/no-state-injection capture flags.",
+      "assertion": "The isolated native front-fork/tire pivot must be separately player-visible in the natural rear-chase view to close this perceptual branch.",
+      "observedPixels": "Viewed full-frame current-build PNG: rear-chase rider, lane position and broader body-bank cue are visible, but the fork/tire steering assembly is tiny and partly occluded behind the rider silhouette; the pivot cannot be judged independently.",
+      "remainingGaps": [
+        "No isolated player-visible front-fork/tire pivot is established by this frame. Renderer pose telemetry or the visible lane arc/body bank cannot substitute for that visual evidence."
+      ]
+    }
+  ],
+  "coverageSummary": {
+    "headChromiumImagesViewed": 32,
+    "pauseWebkitImagesViewed": 4,
+    "compactExtraImagesViewed": 7,
+    "totalImagesViewed": 43,
+    "resultCounts": {
+      "pass": 40,
+      "gap": 3,
+      "blocked": 1
+    }
+  },
+  "limitations": [
+    "The rear-chase camera shows the white head/neck and coral helmet, but the forward-facing orange beak is not exposed consistently; no beak animation or front-facing recognizability claim is inferred.",
+    "The standalone native-front-fork pivot remains BLOCKED by the supplied task status and is not closed by head, HUD, pause or route-menu pixels.",
+    "Compact route-menu screenshots confirm the selected route and CTA, while lower route rows are partially clipped at the initial scroll position; full scroll interaction was outside this supplemental pixel pass.",
+    "Evidence is automated desktop-browser emulation only; physical phone readability, human enjoyment, live ad integration and native platform packages are not evaluated here."
+  ],
+  "createdAt": "2026-10-15T03:10:21.756Z"
+}

@@ -1,0 +1,41 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "pelican": {
+    "unitTests": {
+      "passed": 111,
+      "total": 111,
+      "status": "PASS",
+      "log": "evidence/v3-engineering/rules-final-cancel.log",
+      "sha256": "eeb9a6adcc7bd795c3d0154db68b80ec6b6d73c1b54f4604057a975396da97b5",
+      "note": "108 prior cases plus3 ordered trusted-touch sequencing regressions. H5 unchanged. Immutable d9 CI105 and cd808 CI108 are distinct source snapshots."
+    },
+    "lint": {
+      "status": "PASS",
+      "log": "evidence/v3-engineering/lint-final-cancel.log",
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+    },
+    "typecheck": {
+      "status": "PASS",
+      "log": "evidence/v3-engineering/typecheck-final-cancel.log",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    }
+  },
+  "fullRepositoryChecks": [
+    {
+      "command": "pnpm test",
+      "status": "FAIL",
+      "summary": "Actual final d9 source run: 973/975 assertions PASS; 169/188 files PASS. 17 node:test files are miscollected by Vitest as no test suite; stale-waiver assertion also reports blocking license risk; unrelated cut-stack natural-runtime QA times out after30000ms. These shared-factory/other-game failures remain FAIL and are not used as Pelican gameplay acceptance.",
+      "path": "evidence/v3-engineering/repository-tests-final-d9.log",
+      "sha256": "ccc86b4226e610373352f51223c269292e0c9a38f10eb9471106f770315d4b7c"
+    },
+    {
+      "command": "node --test (historical correct runner for17 node suites)",
+      "status": "FAIL",
+      "summary": "此前正确Node运行器218/222通过，4个mobile-pacing夹具因中文路径的URL编码产生ENOENT；不是鹈鹕游戏测试证据，原始结果保留。此次源文件未修改，未重复运行。",
+      "path": "evidence/v3-engineering/factory-node-runner-retest.log",
+      "sha256": "2501059b63f1770ff4878db9408166c86becf24d16e7d3943c46f0c4926f7f7b"
+    }
+  ],
+  "createdAt": "2026-10-15T06:23:36.902Z"
+}

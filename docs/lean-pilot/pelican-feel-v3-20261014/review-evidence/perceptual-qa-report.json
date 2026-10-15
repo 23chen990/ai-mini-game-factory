@@ -1,0 +1,1650 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "perceptual-qa-report",
+  "targetGame": "鹈鹕海岸冒险",
+  "targetRunId": "pelican-coast-v2-20261014",
+  "targetWorkspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "runtimeEntrypoints": [
+    "game/index.html",
+    "source/pelican-bike/src/main.js",
+    "source/pelican-bike/src/coast-ui.mjs",
+    "source/pelican-bike/src/adventure.mjs",
+    "source/pelican-bike/src/levels.mjs",
+    "source/pelican-bike/src/feel.mjs",
+    "source/pelican-bike/src/safety.mjs",
+    "source/pelican-bike/src/pelican.js",
+    "source/pelican-bike/src/engagement.mjs"
+  ],
+  "contractHash": "abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "runtime": "web-lite",
+  "reviewer": "QAAgent",
+  "authorIndependent": true,
+  "passed": true,
+  "blockers": [],
+  "cases": [
+    {
+      "featureId": "camera-start",
+      "sourceCheckIds": [
+        "camera-start",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "start",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "After a normal start tap, the active full frame shows the rider in the lower frame with a clear forward road and visible controls; framing remains stable in this viewport.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/390-first-fish.png",
+          "sha256": "25b2601d52cf5fb3d040614095999c781eee9bbb897b04f70f76ab4dd062a85a"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-running.png",
+          "sha256": "0f2880ae298affc0067f46f6c86cbbdcb55f278d2f7ec66561fe457d54c0e1d6"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-390.json",
+        "sha256": "0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-390.json SHA256 0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1; reset-origin, current build/runtime/viewport, normal actions, and changed camera-start transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/390-first-fish.png SHA256 25b2601d52cf5fb3d040614095999c781eee9bbb897b04f70f76ab4dd062a85a; attempts/attempt-20/visual/390-running.png SHA256 0f2880ae298affc0067f46f6c86cbbdcb55f278d2f7ec66561fe457d54c0e1d6",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The route menu itself covers the gameplay scene; judgment uses the active post-start full frame, not the menu-only frame."
+      ]
+    },
+    {
+      "featureId": "camera-start",
+      "sourceCheckIds": [
+        "camera-start",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "start",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "After a normal start tap, the active full frame shows the rider in the lower frame with a clear forward road and visible controls; framing remains stable in this viewport.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/360-first-fish.png",
+          "sha256": "0247c619c0367d96c19601bc1ddfce1c49c32461b7e490df7e175985f4ef1cf9"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-running.png",
+          "sha256": "c24fa2d7a6e1dd7fa45425c6c97fb704da524609df325a363a807cf9857dc840"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-360.json",
+        "sha256": "fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-360.json SHA256 fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4; reset-origin, current build/runtime/viewport, normal actions, and changed camera-start transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/360-first-fish.png SHA256 0247c619c0367d96c19601bc1ddfce1c49c32461b7e490df7e175985f4ef1cf9; attempts/attempt-20/visual/360-running.png SHA256 c24fa2d7a6e1dd7fa45425c6c97fb704da524609df325a363a807cf9857dc840",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The route menu itself covers the gameplay scene; judgment uses the active post-start full frame, not the menu-only frame."
+      ]
+    },
+    {
+      "featureId": "camera-start",
+      "sourceCheckIds": [
+        "camera-start",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "start",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "After a normal start tap, the active full frame shows the rider in the lower frame with a clear forward road and visible controls; framing remains stable in this viewport.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/844-first-fish.png",
+          "sha256": "d052ea85a882384a62e614ec689b21129d7c725928c52002672ccbafed105f5b"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-running.png",
+          "sha256": "40aae0362b1a9f0d27b53bdb8d3c2ee2a8312dd7010fb84d2d4fc61fddff902b"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-844.json",
+        "sha256": "9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-844.json SHA256 9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8; reset-origin, current build/runtime/viewport, normal actions, and changed camera-start transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/844-first-fish.png SHA256 d052ea85a882384a62e614ec689b21129d7c725928c52002672ccbafed105f5b; attempts/attempt-20/visual/844-running.png SHA256 40aae0362b1a9f0d27b53bdb8d3c2ee2a8312dd7010fb84d2d4fc61fddff902b",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The route menu itself covers the gameplay scene; judgment uses the active post-start full frame, not the menu-only frame."
+      ]
+    },
+    {
+      "featureId": "camera-start",
+      "sourceCheckIds": [
+        "camera-start",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "start",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "After a normal start tap, the active full frame shows the rider in the lower frame with a clear forward road and visible controls; framing remains stable in this viewport.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/320-first-fish.png",
+          "sha256": "02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-running.png",
+          "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-320.json",
+        "sha256": "fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-320.json SHA256 fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c; reset-origin, current build/runtime/viewport, normal actions, and changed camera-start transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/320-first-fish.png SHA256 02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a; attempts/attempt-20/visual/320-running.png SHA256 fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The route menu itself covers the gameplay scene; judgment uses the active post-start full frame, not the menu-only frame."
+      ]
+    },
+    {
+      "featureId": "camera-running",
+      "sourceCheckIds": [
+        "camera-running",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "running",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "During normal running, the rider remains low in frame while the road ahead stays legible; no orbit or renderer/composer mismatch is visible.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/390-running.png",
+          "sha256": "0f2880ae298affc0067f46f6c86cbbdcb55f278d2f7ec66561fe457d54c0e1d6"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-first-fish.png",
+          "sha256": "25b2601d52cf5fb3d040614095999c781eee9bbb897b04f70f76ab4dd062a85a"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-390.json",
+        "sha256": "0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-390.json SHA256 0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1; reset-origin, current build/runtime/viewport, normal actions, and changed camera-running transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/390-running.png SHA256 0f2880ae298affc0067f46f6c86cbbdcb55f278d2f7ec66561fe457d54c0e1d6; attempts/attempt-20/visual/390-first-fish.png SHA256 25b2601d52cf5fb3d040614095999c781eee9bbb897b04f70f76ab4dd062a85a",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Reviewed full-frame active gameplay captures at the exact required viewport; no crop-based centering was used."
+      ]
+    },
+    {
+      "featureId": "camera-running",
+      "sourceCheckIds": [
+        "camera-running",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "running",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "During normal running, the rider remains low in frame while the road ahead stays legible; no orbit or renderer/composer mismatch is visible.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/360-running.png",
+          "sha256": "c24fa2d7a6e1dd7fa45425c6c97fb704da524609df325a363a807cf9857dc840"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-first-fish.png",
+          "sha256": "0247c619c0367d96c19601bc1ddfce1c49c32461b7e490df7e175985f4ef1cf9"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-360.json",
+        "sha256": "fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-360.json SHA256 fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4; reset-origin, current build/runtime/viewport, normal actions, and changed camera-running transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/360-running.png SHA256 c24fa2d7a6e1dd7fa45425c6c97fb704da524609df325a363a807cf9857dc840; attempts/attempt-20/visual/360-first-fish.png SHA256 0247c619c0367d96c19601bc1ddfce1c49c32461b7e490df7e175985f4ef1cf9",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Reviewed full-frame active gameplay captures at the exact required viewport; no crop-based centering was used."
+      ]
+    },
+    {
+      "featureId": "camera-running",
+      "sourceCheckIds": [
+        "camera-running",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "running",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "During normal running, the rider remains low in frame while the road ahead stays legible; no orbit or renderer/composer mismatch is visible.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/844-running.png",
+          "sha256": "40aae0362b1a9f0d27b53bdb8d3c2ee2a8312dd7010fb84d2d4fc61fddff902b"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-first-fish.png",
+          "sha256": "d052ea85a882384a62e614ec689b21129d7c725928c52002672ccbafed105f5b"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-844.json",
+        "sha256": "9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-844.json SHA256 9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8; reset-origin, current build/runtime/viewport, normal actions, and changed camera-running transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/844-running.png SHA256 40aae0362b1a9f0d27b53bdb8d3c2ee2a8312dd7010fb84d2d4fc61fddff902b; attempts/attempt-20/visual/844-first-fish.png SHA256 d052ea85a882384a62e614ec689b21129d7c725928c52002672ccbafed105f5b",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Reviewed full-frame active gameplay captures at the exact required viewport; no crop-based centering was used."
+      ]
+    },
+    {
+      "featureId": "camera-running",
+      "sourceCheckIds": [
+        "camera-running",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "running",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "During normal running, the rider remains low in frame while the road ahead stays legible; no orbit or renderer/composer mismatch is visible.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/320-running.png",
+          "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-first-fish.png",
+          "sha256": "02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-320.json",
+        "sha256": "fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-320.json SHA256 fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c; reset-origin, current build/runtime/viewport, normal actions, and changed camera-running transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/320-running.png SHA256 fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4; attempts/attempt-20/visual/320-first-fish.png SHA256 02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Reviewed full-frame active gameplay captures at the exact required viewport; no crop-based centering was used."
+      ]
+    },
+    {
+      "featureId": "camera-resume",
+      "sourceCheckIds": [
+        "camera-resume",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "resume",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The pause panel is readable at this size; after the normal resume tap, play returns to the same forward-facing rider/road composition.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/390-paused.png",
+          "sha256": "6beb93c2d83f9b680bf69f5a3dc192a5fd976d25e79e6fc7750281981bfcbed2"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-resumed.png",
+          "sha256": "f1068fcc049b1c4ea87ccc2f7d6d3ad42990b543016cc7200cf6a0846b930592"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-390.json",
+        "sha256": "0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-390.json SHA256 0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1; reset-origin, current build/runtime/viewport, normal actions, and changed camera-resume transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/390-paused.png SHA256 6beb93c2d83f9b680bf69f5a3dc192a5fd976d25e79e6fc7750281981bfcbed2; attempts/attempt-20/visual/390-resumed.png SHA256 f1068fcc049b1c4ea87ccc2f7d6d3ad42990b543016cc7200cf6a0846b930592",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Pause freeze/resume evidence is supported by the natural journey and visible paired full frames."
+      ]
+    },
+    {
+      "featureId": "camera-resume",
+      "sourceCheckIds": [
+        "camera-resume",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "resume",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The pause panel is readable at this size; after the normal resume tap, play returns to the same forward-facing rider/road composition.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/360-paused.png",
+          "sha256": "d156eeba6ee224b5537f353deb0d76185c765c1e7cf4dc1e7d5bc6d1a4a3908d"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-resumed.png",
+          "sha256": "76d4770163a866bc6f88e5038549a1bb3f9bce0195808b06a95a1ad40e2bfcb6"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-360.json",
+        "sha256": "fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-360.json SHA256 fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4; reset-origin, current build/runtime/viewport, normal actions, and changed camera-resume transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/360-paused.png SHA256 d156eeba6ee224b5537f353deb0d76185c765c1e7cf4dc1e7d5bc6d1a4a3908d; attempts/attempt-20/visual/360-resumed.png SHA256 76d4770163a866bc6f88e5038549a1bb3f9bce0195808b06a95a1ad40e2bfcb6",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Pause freeze/resume evidence is supported by the natural journey and visible paired full frames."
+      ]
+    },
+    {
+      "featureId": "camera-resume",
+      "sourceCheckIds": [
+        "camera-resume",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "resume",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The pause panel is readable at this size; after the normal resume tap, play returns to the same forward-facing rider/road composition.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/844-paused.png",
+          "sha256": "e87a1ce6b13c3a39affe3e3c85c6ea98525bec4c4b37c072add930fecd690e70"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-resumed.png",
+          "sha256": "a92a0559b9d6a4b34f84ac8ba11ae61a6c1efb9bb18745184147a86ec0ba3ac4"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-844.json",
+        "sha256": "9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-844.json SHA256 9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8; reset-origin, current build/runtime/viewport, normal actions, and changed camera-resume transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/844-paused.png SHA256 e87a1ce6b13c3a39affe3e3c85c6ea98525bec4c4b37c072add930fecd690e70; attempts/attempt-20/visual/844-resumed.png SHA256 a92a0559b9d6a4b34f84ac8ba11ae61a6c1efb9bb18745184147a86ec0ba3ac4",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Pause freeze/resume evidence is supported by the natural journey and visible paired full frames."
+      ]
+    },
+    {
+      "featureId": "camera-resume",
+      "sourceCheckIds": [
+        "camera-resume",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "resume",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The pause panel is readable at this size; after the normal resume tap, play returns to the same forward-facing rider/road composition.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/320-paused.png",
+          "sha256": "e2c8f01076d97701263f7e83530a7f5df3f551013dfdfc912c7c8eab2e24c911"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-resumed.png",
+          "sha256": "802dc1f8d9c2e9f13038aad339efb0cf5c34db05ef3e874c34c386a0c32bde37"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-320.json",
+        "sha256": "fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-320.json SHA256 fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c; reset-origin, current build/runtime/viewport, normal actions, and changed camera-resume transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/320-paused.png SHA256 e2c8f01076d97701263f7e83530a7f5df3f551013dfdfc912c7c8eab2e24c911; attempts/attempt-20/visual/320-resumed.png SHA256 802dc1f8d9c2e9f13038aad339efb0cf5c34db05ef3e874c34c386a0c32bde37",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Pause freeze/resume evidence is supported by the natural journey and visible paired full frames."
+      ]
+    },
+    {
+      "featureId": "camera-replay",
+      "sourceCheckIds": [
+        "camera-replay",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "replay",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The terminal action is visible, and normal replay returns to an active rider with a clear forward road in the same stable follow composition.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/390-terminal.png",
+          "sha256": "9b7a953c40e1565da55c2a8613b08833bf847c4f92808a7c2da0cc9f0076b3f0"
+        },
+        {
+          "path": "attempts/attempt-20/visual/390-replay.png",
+          "sha256": "70eb6a0506ca6df8256d30e992a13543fe9d33a6ca76ed6ec2a83ceb255dd312"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-390.json",
+        "sha256": "0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-390.json SHA256 0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1; reset-origin, current build/runtime/viewport, normal actions, and changed camera-replay transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/390-terminal.png SHA256 9b7a953c40e1565da55c2a8613b08833bf847c4f92808a7c2da0cc9f0076b3f0; attempts/attempt-20/visual/390-replay.png SHA256 70eb6a0506ca6df8256d30e992a13543fe9d33a6ca76ed6ec2a83ceb255dd312",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Replay evidence uses a real terminal followed by a new active run."
+      ]
+    },
+    {
+      "featureId": "camera-replay",
+      "sourceCheckIds": [
+        "camera-replay",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "replay",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The terminal action is visible, and normal replay returns to an active rider with a clear forward road in the same stable follow composition.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/360-terminal.png",
+          "sha256": "571f1e0aef4764f2796c2f5aa435e812d2b6b795986c01a5faef8e4726a4dc1d"
+        },
+        {
+          "path": "attempts/attempt-20/visual/360-replay.png",
+          "sha256": "3d070de6297d3b82d1c7517ddee6af0f8eff1378c0bec63bb4d7a6a73f2db197"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-360.json",
+        "sha256": "fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-360.json SHA256 fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4; reset-origin, current build/runtime/viewport, normal actions, and changed camera-replay transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/360-terminal.png SHA256 571f1e0aef4764f2796c2f5aa435e812d2b6b795986c01a5faef8e4726a4dc1d; attempts/attempt-20/visual/360-replay.png SHA256 3d070de6297d3b82d1c7517ddee6af0f8eff1378c0bec63bb4d7a6a73f2db197",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Replay evidence uses a real terminal followed by a new active run."
+      ]
+    },
+    {
+      "featureId": "camera-replay",
+      "sourceCheckIds": [
+        "camera-replay",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "replay",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The terminal action is visible, and normal replay returns to an active rider with a clear forward road in the same stable follow composition.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/844-terminal.png",
+          "sha256": "3a53798ae6d2e0de6ae2142ee8932990fe2750c7c336af20281ea5a2ab9c84fb"
+        },
+        {
+          "path": "attempts/attempt-20/visual/844-replay.png",
+          "sha256": "7e40f5c36bbf26027e9076d6eed7bc76cfcdb6f4aaa08d8560dccf2be2c55e68"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-844.json",
+        "sha256": "9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-844.json SHA256 9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8; reset-origin, current build/runtime/viewport, normal actions, and changed camera-replay transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/844-terminal.png SHA256 3a53798ae6d2e0de6ae2142ee8932990fe2750c7c336af20281ea5a2ab9c84fb; attempts/attempt-20/visual/844-replay.png SHA256 7e40f5c36bbf26027e9076d6eed7bc76cfcdb6f4aaa08d8560dccf2be2c55e68",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Replay evidence uses a real terminal followed by a new active run."
+      ]
+    },
+    {
+      "featureId": "camera-replay",
+      "sourceCheckIds": [
+        "camera-replay",
+        "render-resolution"
+      ],
+      "objectType": "rider-and-forward-road",
+      "stateBranch": "replay",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The terminal action is visible, and normal replay returns to an active rider with a clear forward road in the same stable follow composition.",
+      "observedEventOrder": [
+        "visible-control",
+        "stable-forward-road"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/visual/320-terminal.png",
+          "sha256": "c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21"
+        },
+        {
+          "path": "attempts/attempt-20/visual/320-replay.png",
+          "sha256": "5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/camera-320.json",
+        "sha256": "fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/camera-320.json SHA256 fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c; reset-origin, current build/runtime/viewport, normal actions, and changed camera-replay transition verified.",
+        "Current20 report attempts/attempt-20/visual/report.json SHA256 aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/visual/320-terminal.png SHA256 c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21; attempts/attempt-20/visual/320-replay.png SHA256 5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Replay evidence uses a real terminal followed by a new active run."
+      ]
+    },
+    {
+      "featureId": "vehicle-impact",
+      "sourceCheckIds": [
+        "vehicle-impact"
+      ],
+      "objectType": "vehicle-impact",
+      "stateBranch": "natural-runtime",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The current natural sequence shows a car ahead on the road, then the rider contacting the vehicle with the hazard card showing a red car and 1s, followed by a terminal panel titled 撞到汽车了. The panel states that cars cannot be jumped and offers restart-current-level and route-selection recovery actions.",
+      "observedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/vehicle-warning.png",
+          "sha256": "17c3d9808e0750bf8b322bb73a9a9a56e2082846b55ae24b31fa0aac6eb960cd"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/vehicle-accident.png",
+          "sha256": "3f3783dae7b739d95666dd94acd2af84f851ef7e9935ab6e25a1ea1d64ac00fc"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/vehicle-impact.png",
+          "sha256": "a72124b46864693da6598b5da9bb623a7f2096f5d47a6d91ed760d644b454f99"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/collisions.json",
+        "sha256": "a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/collisions.json SHA256 a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065; fresh-reset start, current build/runtime/390x844 viewport, normal actions and changed vehicle-impact transition verified.",
+        "Current QA report attempts/attempt-20/qa-collisions-webkit/report.json SHA256 1d1407239bc0dc4a59b1a5140305ad75347003839c1f0d2b523062d19e30f033; normalInputOnly=true, stateInjection=false, passed=true; feature-specific checks reviewed.",
+        "Full-frame pixel review bound to current raw capture report attempts/attempt-20/qa-all-webkit/report.json SHA256 14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71; screenshot bindings: attempts/attempt-20/qa-all-webkit/collisions/vehicle-warning.png SHA256 17c3d9808e0750bf8b322bb73a9a9a56e2082846b55ae24b31fa0aac6eb960cd; attempts/attempt-20/qa-all-webkit/collisions/vehicle-accident.png SHA256 3f3783dae7b739d95666dd94acd2af84f851ef7e9935ab6e25a1ea1d64ac00fc; attempts/attempt-20/qa-all-webkit/collisions/vehicle-impact.png SHA256 a72124b46864693da6598b5da9bb623a7f2096f5d47a6d91ed760d644b454f99",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The warning, contact and terminal frames are from the nested collisions branch of the current qa-all-webkit capture and are bound to the passing natural collisions trace."
+      ]
+    },
+    {
+      "featureId": "pedestrian-stun",
+      "sourceCheckIds": [
+        "pedestrian-stun"
+      ],
+      "objectType": "pedestrian-stun",
+      "stateBranch": "natural-runtime",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The current sequence shows pedestrian contact/fall, then a prominent 2秒 and 1秒 行人摔倒·倒计时继续 overlay as remaining time advances from 44 to 42 to 41 seconds, followed by active play with a visible 继续骑行 action.",
+      "observedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-fall.png",
+          "sha256": "e3c666adcc4bf16c6c4a97b1afb905dfe663b8a5de9c159f941f9c12931dff2a"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-wait.png",
+          "sha256": "96910cac51628b9719be0320b4fe58ee94c4a792565ac5327a445dca54a5f6f4"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-rising.png",
+          "sha256": "5952db8aca1d267430dce4a5150c3abf688cf46cb2115b7fd7aa30a61ace3726"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-recovery.png",
+          "sha256": "8cb884ed2860bb79e8ce0a991ca252b65e5624ce65cc9ad4d2174bcb197c8664"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/collisions.json",
+        "sha256": "a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/collisions.json SHA256 a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065; fresh-reset start, current build/runtime/390x844 viewport, normal actions and changed pedestrian-stun transition verified.",
+        "Current QA report attempts/attempt-20/qa-collisions-webkit/report.json SHA256 1d1407239bc0dc4a59b1a5140305ad75347003839c1f0d2b523062d19e30f033; normalInputOnly=true, stateInjection=false, passed=true; feature-specific checks reviewed.",
+        "Full-frame pixel review bound to current raw capture report attempts/attempt-20/qa-all-webkit/report.json SHA256 14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71; screenshot bindings: attempts/attempt-20/qa-all-webkit/collisions/pedestrian-fall.png SHA256 e3c666adcc4bf16c6c4a97b1afb905dfe663b8a5de9c159f941f9c12931dff2a; attempts/attempt-20/qa-all-webkit/collisions/pedestrian-wait.png SHA256 96910cac51628b9719be0320b4fe58ee94c4a792565ac5327a445dca54a5f6f4; attempts/attempt-20/qa-all-webkit/collisions/pedestrian-rising.png SHA256 5952db8aca1d267430dce4a5150c3abf688cf46cb2115b7fd7aa30a61ace3726; attempts/attempt-20/qa-all-webkit/collisions/pedestrian-recovery.png SHA256 8cb884ed2860bb79e8ce0a991ca252b65e5624ce65cc9ad4d2174bcb197c8664",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The viewed fall, wait, rising and recovery frames preserve the exact pedestrian-stun branch and show both the countdown and return-to-play cue."
+      ]
+    },
+    {
+      "featureId": "jump-clearance",
+      "sourceCheckIds": [
+        "jump-clearance"
+      ],
+      "objectType": "jump-clearance",
+      "stateBranch": "natural-runtime",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Before input, the route announces 前方路障·跳过去追奖励金鱼（也可绕开） and displays 已准备起跳 with the jump control emphasized. After clearance, the screen shows 跳过路障 and the jump counter at 1/1; subsequent feedback shows +1条鱼.",
+      "observedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/barrier-jump.png",
+          "sha256": "a83f648ec330fe69126ff2126e6248f24ed001d7b7c963b573c09de95c42d1e4"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/barrier-cleared.png",
+          "sha256": "3301cd5450dd1edff8616deb419a173da35605423e2474078e084bf77a7dc938"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/collisions/authored-barrier-prize.png",
+          "sha256": "cec5a6d8c97ff9029c7064d7db1e19ea4e1ce4f9c920e543fd3a186bb2a7a859"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/collisions.json",
+        "sha256": "a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/collisions.json SHA256 a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065; fresh-reset start, current build/runtime/390x844 viewport, normal actions and changed jump-clearance transition verified.",
+        "Current QA report attempts/attempt-20/qa-collisions-webkit/report.json SHA256 1d1407239bc0dc4a59b1a5140305ad75347003839c1f0d2b523062d19e30f033; normalInputOnly=true, stateInjection=false, passed=true; feature-specific checks reviewed.",
+        "Full-frame pixel review bound to current raw capture report attempts/attempt-20/qa-all-webkit/report.json SHA256 14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71; screenshot bindings: attempts/attempt-20/qa-all-webkit/collisions/barrier-jump.png SHA256 a83f648ec330fe69126ff2126e6248f24ed001d7b7c963b573c09de95c42d1e4; attempts/attempt-20/qa-all-webkit/collisions/barrier-cleared.png SHA256 3301cd5450dd1edff8616deb419a173da35605423e2474078e084bf77a7dc938; attempts/attempt-20/qa-all-webkit/collisions/authored-barrier-prize.png SHA256 cec5a6d8c97ff9029c7064d7db1e19ea4e1ce4f9c920e543fd3a186bb2a7a859",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The viewed barrier-input, cleared and reward-feedback frames are bound to the current natural jump-clearance trace; the car-collision rule is not inferred from this branch."
+      ]
+    },
+    {
+      "featureId": "five-configured-levels",
+      "sourceCheckIds": [
+        "five-configured-levels"
+      ],
+      "objectType": "five-configured-levels",
+      "stateBranch": "natural-runtime",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Across ten current full-frame campaign images, stages 1–5 display distinct names (海岸出发, 行人出没, 危险公路, 雨中骑行, 夜间赶海), their target distances (300, 420, 540, 630, 720 m), active rider/control HUDs at each start, and completed distance/fish totals at each terminal. Stages 1–4 expose a visible next-stage action; stage 5 states 全部五关已解锁.",
+      "observedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-1-start.png",
+          "sha256": "4ceb75eaac636b6310d3daedacbd1bd8d7d9511af2aa2ad9c4cf4db2e2728155"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-2-start.png",
+          "sha256": "258b71cd5ca5ac3d9e028bdcae127e91a54c8db162f5b343569af1ed96e501ac"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-3-start.png",
+          "sha256": "c203491efcdadc2bd1626eff99a764988b24768b11a6da5c190147d31dbfca77"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-4-start.png",
+          "sha256": "0a8d1d73652c209f064b41ad175b898b6fb915ecaf9449fbf20d8415850084b5"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-5-start.png",
+          "sha256": "a79b495eb070e7bcda2cd6658846c06c315349499dc5644be9874e04c7703547"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-1-terminal.png",
+          "sha256": "96d9a57d98ef96525366d10f6a58eb97803f287f56dc3394f459f24f17a277f8"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-2-terminal.png",
+          "sha256": "a48e3e4a34d957ebda57bb419bc35c7a9458ce569bef391e3d52661eccb74522"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-3-terminal.png",
+          "sha256": "758e33d897de78ff1c289b98a7be5568bd665fa8cac74a91104aea367a398eae"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-4-terminal.png",
+          "sha256": "94f1edc7455fb6c623533d5bc57543c672a524f621d6c0f8a3d4f285cffb2f56"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-5-terminal.png",
+          "sha256": "51b337b17df33d08fb0b8d1234b9876fe12a2fb4beb22b6716c7415ce19a2219"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/campaign.json",
+        "sha256": "c0d3bd21da040a6ec904fab056c2314bb8a320fa593140b6e7c2ff8aa86a673e"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/campaign.json SHA256 c0d3bd21da040a6ec904fab056c2314bb8a320fa593140b6e7c2ff8aa86a673e; fresh-reset start, current build/runtime/390x844 viewport, normal actions and changed five-configured-levels transition verified.",
+        "Current QA report attempts/attempt-20/qa-campaign-webkit/report.json SHA256 dbcd783ca35e876a3b9ccc18d643e001869ea359c6df1c2b06acb7f73064b1f7; normalInputOnly=true, stateInjection=false, passed=true; feature-specific checks reviewed.",
+        "Full-frame pixel review bound to current raw capture report attempts/attempt-20/qa-all-webkit/report.json SHA256 14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71; screenshot bindings: attempts/attempt-20/qa-all-webkit/campaign/level-1-start.png SHA256 4ceb75eaac636b6310d3daedacbd1bd8d7d9511af2aa2ad9c4cf4db2e2728155; attempts/attempt-20/qa-all-webkit/campaign/level-2-start.png SHA256 258b71cd5ca5ac3d9e028bdcae127e91a54c8db162f5b343569af1ed96e501ac; attempts/attempt-20/qa-all-webkit/campaign/level-3-start.png SHA256 c203491efcdadc2bd1626eff99a764988b24768b11a6da5c190147d31dbfca77; attempts/attempt-20/qa-all-webkit/campaign/level-4-start.png SHA256 0a8d1d73652c209f064b41ad175b898b6fb915ecaf9449fbf20d8415850084b5; attempts/attempt-20/qa-all-webkit/campaign/level-5-start.png SHA256 a79b495eb070e7bcda2cd6658846c06c315349499dc5644be9874e04c7703547; attempts/attempt-20/qa-all-webkit/campaign/level-1-terminal.png SHA256 96d9a57d98ef96525366d10f6a58eb97803f287f56dc3394f459f24f17a277f8; attempts/attempt-20/qa-all-webkit/campaign/level-2-terminal.png SHA256 a48e3e4a34d957ebda57bb419bc35c7a9458ce569bef391e3d52661eccb74522; attempts/attempt-20/qa-all-webkit/campaign/level-3-terminal.png SHA256 758e33d897de78ff1c289b98a7be5568bd665fa8cac74a91104aea367a398eae; attempts/attempt-20/qa-all-webkit/campaign/level-4-terminal.png SHA256 94f1edc7455fb6c623533d5bc57543c672a524f621d6c0f8a3d4f285cffb2f56; attempts/attempt-20/qa-all-webkit/campaign/level-5-terminal.png SHA256 51b337b17df33d08fb0b8d1234b9876fe12a2fb4beb22b6716c7415ce19a2219",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The natural campaign report passes the separate natural-level-1 through natural-level-5 checks. All five stage-start and terminal PNGs were viewed at 390x844."
+      ]
+    },
+    {
+      "featureId": "unlock-save",
+      "sourceCheckIds": [
+        "unlock-save"
+      ],
+      "objectType": "unlock-save",
+      "stateBranch": "natural-runtime",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The level-1 terminal shows the next route unlock. The later all-unlocked route screen shows 10/15 total stars, saved best records on visible rows 3–5, level 5 selected, and a 出发·夜间赶海 action; the current campaign report passes refresh-keeps-five-unlocked and restored-selected-level-label.",
+      "observedEventOrder": [
+        "normal-input",
+        "visible-result",
+        "recovery"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/level-1-terminal.png",
+          "sha256": "96d9a57d98ef96525366d10f6a58eb97803f287f56dc3394f459f24f17a277f8"
+        },
+        {
+          "path": "attempts/attempt-20/qa-all-webkit/campaign/all-unlocked.png",
+          "sha256": "ca3dfbfb5b1e7a11ce1e2ab8a252575565bd0b7292821d7766ce84f2e9eef08c"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/campaign.json",
+        "sha256": "c0d3bd21da040a6ec904fab056c2314bb8a320fa593140b6e7c2ff8aa86a673e"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/campaign.json SHA256 c0d3bd21da040a6ec904fab056c2314bb8a320fa593140b6e7c2ff8aa86a673e; fresh-reset start, current build/runtime/390x844 viewport, normal actions and changed unlock-save transition verified.",
+        "Current QA report attempts/attempt-20/qa-campaign-webkit/report.json SHA256 dbcd783ca35e876a3b9ccc18d643e001869ea359c6df1c2b06acb7f73064b1f7; normalInputOnly=true, stateInjection=false, passed=true; feature-specific checks reviewed.",
+        "Full-frame pixel review bound to current raw capture report attempts/attempt-20/qa-all-webkit/report.json SHA256 14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71; screenshot bindings: attempts/attempt-20/qa-all-webkit/campaign/level-1-terminal.png SHA256 96d9a57d98ef96525366d10f6a58eb97803f287f56dc3394f459f24f17a277f8; attempts/attempt-20/qa-all-webkit/campaign/all-unlocked.png SHA256 ca3dfbfb5b1e7a11ce1e2ab8a252575565bd0b7292821d7766ce84f2e9eef08c",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The all-unlocked frame exposes rows 3–5 only; rows 1–2 are outside this screenshot, so it does not establish that all five rows fit at once. It directly shows the selected level-5 card and its start action. Current locator-based route selection is separate evidence; native finger-pan is unobserved and is not claimed."
+      ]
+    },
+    {
+      "featureId": "lane-inertia",
+      "sourceCheckIds": [
+        "lane-inertia"
+      ],
+      "objectType": "rider-bicycle-camera",
+      "stateBranch": "rapid-reversal",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Rapid normal left/right reversals produce a perceptible continuous lane arc with rider/bicycle bank and heading change while the chase camera follows smoothly; terminal and replay remain visible.",
+      "observedEventOrder": [
+        "visible-choice",
+        "normal-touch",
+        "visible-consequence",
+        "recovery-or-replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-1300.png",
+          "sha256": "c614c4512f3107a3d34de6b971e43b8f3f8a87d3bc495fc3c8fccd3126f67e0b"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-1500.png",
+          "sha256": "e96c2e4e885f27e55dc75c12ccc8a14c61d615588485db383f8b10e89fef6fdb"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/state-1750.png",
+          "sha256": "27b4b73f10b873a90985298290f9b0833c1f72b744e95a5190fd24708335523a"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/terminal.png",
+          "sha256": "aa2a63126857aadef523c304cc0b5ae4e0965c3d09f3a30db78cd2b1c3d507b9"
+        },
+        {
+          "path": "attempts/attempt-20/feel-state-webkit/replay.png",
+          "sha256": "ee7bb6b18f507479b99fdc3ff06eea16338628c56e946d849dff4a382e3842b3"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-feel-state-webkit.json",
+        "sha256": "010432da03053db55f7f9e6779ac1207199ac0fc540f943727a10451d4adb1fe"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-feel-state-webkit.json SHA256 010432da03053db55f7f9e6779ac1207199ac0fc540f943727a10451d4adb1fe; reset-origin, current build/runtime/viewport, normal actions, and changed lane-inertia transition verified.",
+        "Current20 report attempts/attempt-20/feel-state-webkit/report.json SHA256 2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/feel-state-webkit/state-1300.png SHA256 c614c4512f3107a3d34de6b971e43b8f3f8a87d3bc495fc3c8fccd3126f67e0b; attempts/attempt-20/feel-state-webkit/state-1500.png SHA256 e96c2e4e885f27e55dc75c12ccc8a14c61d615588485db383f8b10e89fef6fdb; attempts/attempt-20/feel-state-webkit/state-1750.png SHA256 27b4b73f10b873a90985298290f9b0833c1f72b744e95a5190fd24708335523a; attempts/attempt-20/feel-state-webkit/terminal.png SHA256 aa2a63126857aadef523c304cc0b5ae4e0965c3d09f3a30db78cd2b1c3d507b9; attempts/attempt-20/feel-state-webkit/replay.png SHA256 ee7bb6b18f507479b99fdc3ff06eea16338628c56e946d849dff4a382e3842b3",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "The isolated front-fork pivot is partly occluded from the rear chase view; this is recorded as a limitation. The contract composite signal (lane arc, wheel steering/body bank, heading and lagged chase) is perceptible."
+      ]
+    },
+    {
+      "featureId": "jump-choice",
+      "sourceCheckIds": [
+        "jump-choice"
+      ],
+      "objectType": "barrier-gold-route",
+      "stateBranch": "jump-and-safe-detour",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The amber barrier/gold route and pulsing jump affordance are readable beside a safe lane; normal jump and detour inputs produce their corresponding visible results.",
+      "observedEventOrder": [
+        "visible-choice",
+        "normal-touch",
+        "visible-consequence",
+        "recovery-or-replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/experience-webkit/jump-choice.png",
+          "sha256": "6234b875a52f2e1a243437acf58bcb1dfb2f1d48cb5433662a37432a630b1bca"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/jump-queued.png",
+          "sha256": "30641f4c193fd2af0ed3b92993abc3784ca4ed4750a3af9cd94dd8de62da0339"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/earned-jump-prize-cue.png",
+          "sha256": "e894ad1651dfdecc3913ee23d1fe99981d774e375aa2b6f0cce94d6339702fa1"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/safe-detour.png",
+          "sha256": "4c995a9c4bc26dae633a9bb2872712331f391a3f9fd7fbd42cedbec4a1e4a762"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-experience-webkit.json",
+        "sha256": "19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-experience-webkit.json SHA256 19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1; reset-origin, current build/runtime/viewport, normal actions, and changed jump-choice transition verified.",
+        "Current20 report attempts/attempt-20/experience-webkit/report.json SHA256 fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/experience-webkit/jump-choice.png SHA256 6234b875a52f2e1a243437acf58bcb1dfb2f1d48cb5433662a37432a630b1bca; attempts/attempt-20/experience-webkit/jump-queued.png SHA256 30641f4c193fd2af0ed3b92993abc3784ca4ed4750a3af9cd94dd8de62da0339; attempts/attempt-20/experience-webkit/earned-jump-prize-cue.png SHA256 e894ad1651dfdecc3913ee23d1fe99981d774e375aa2b6f0cce94d6339702fa1; attempts/attempt-20/experience-webkit/safe-detour.png SHA256 4c995a9c4bc26dae633a9bb2872712331f391a3f9fd7fbd42cedbec4a1e4a762",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": []
+    },
+    {
+      "featureId": "pedestrian-forecast",
+      "sourceCheckIds": [
+        "pedestrian-forecast"
+      ],
+      "objectType": "left-and-right-pedestrian",
+      "stateBranch": "warning-before-contact",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Both left and right pedestrian warnings identify the crossing lane before contact and leave a visible safe neighboring lane; a normal detour avoids the collision branch.",
+      "observedEventOrder": [
+        "visible-choice",
+        "normal-touch",
+        "visible-consequence",
+        "recovery-or-replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/experience-webkit/left-pedestrian-warning.png",
+          "sha256": "5ee596c1f351abeced710b1074f848d47e4003c282992fca25a00d398a983988"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/right-pedestrian-warning.png",
+          "sha256": "8279e47dbc035e35d48a3a7051d33553f2825a7a63729fba5921c28b8e50b9f0"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/safe-detour.png",
+          "sha256": "4c995a9c4bc26dae633a9bb2872712331f391a3f9fd7fbd42cedbec4a1e4a762"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-experience-webkit.json",
+        "sha256": "19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-experience-webkit.json SHA256 19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1; reset-origin, current build/runtime/viewport, normal actions, and changed pedestrian-forecast transition verified.",
+        "Current20 report attempts/attempt-20/experience-webkit/report.json SHA256 fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/experience-webkit/left-pedestrian-warning.png SHA256 5ee596c1f351abeced710b1074f848d47e4003c282992fca25a00d398a983988; attempts/attempt-20/experience-webkit/right-pedestrian-warning.png SHA256 8279e47dbc035e35d48a3a7051d33553f2825a7a63729fba5921c28b8e50b9f0; attempts/attempt-20/experience-webkit/safe-detour.png SHA256 4c995a9c4bc26dae633a9bb2872712331f391a3f9fd7fbd42cedbec4a1e4a762",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": []
+    },
+    {
+      "featureId": "first-minute-mastery",
+      "sourceCheckIds": [
+        "first-minute-mastery"
+      ],
+      "objectType": "fish-star-replay",
+      "stateBranch": "first-catch-settlement-replay",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "The first fish and early jump choice appear during the opening journey; the earned three-star settlement and saved result are visibly surfaced through normal replay/menu actions.",
+      "observedEventOrder": [
+        "visible-choice",
+        "normal-touch",
+        "visible-consequence",
+        "recovery-or-replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/experience-webkit/first-catch.png",
+          "sha256": "e7736f85c0d4a3e68d8eeec3ebea6d8059daeba25153d720fdb9617354e312d5"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/jump-choice.png",
+          "sha256": "6234b875a52f2e1a243437acf58bcb1dfb2f1d48cb5433662a37432a630b1bca"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/earned-three-stars.png",
+          "sha256": "b715f87df8cb77c9181c10f5e516954be3fc6a453f8f9bfafd38cda2e27985e2"
+        },
+        {
+          "path": "attempts/attempt-20/experience-webkit/saved-mastery.png",
+          "sha256": "62a711742ddad7e71a57d32a3f06acb496fcd9d7910650fdbfced6347060f64c"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-experience-webkit.json",
+        "sha256": "19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-experience-webkit.json SHA256 19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1; reset-origin, current build/runtime/viewport, normal actions, and changed first-minute-mastery transition verified.",
+        "Current20 report attempts/attempt-20/experience-webkit/report.json SHA256 fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/experience-webkit/first-catch.png SHA256 e7736f85c0d4a3e68d8eeec3ebea6d8059daeba25153d720fdb9617354e312d5; attempts/attempt-20/experience-webkit/jump-choice.png SHA256 6234b875a52f2e1a243437acf58bcb1dfb2f1d48cb5433662a37432a630b1bca; attempts/attempt-20/experience-webkit/earned-three-stars.png SHA256 b715f87df8cb77c9181c10f5e516954be3fc6a453f8f9bfafd38cda2e27985e2; attempts/attempt-20/experience-webkit/saved-mastery.png SHA256 62a711742ddad7e71a57d32a3f06acb496fcd9d7910650fdbfced6347060f64c",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "A compact route-card footer can crowd a lower record row; earned three-star settlement and campaign unlock/records remain clear in dedicated route and terminal evidence."
+      ]
+    },
+    {
+      "featureId": "native-head-visible",
+      "sourceCheckIds": [
+        "native-head-visible",
+        "cold-menu-finite-pose"
+      ],
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-catch-reverse-jump-stun-replay",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Across straight, catch, turn, reverse-jump, terminal, replay, pedestrian-stun, and recovery full frames, the native white head/neck and helmet remain a continuous recognizable rider feature; the rear-chase beak/fork is naturally partly occluded in some poses but the head does not disappear.",
+      "observedEventOrder": [
+        "native-head-visible",
+        "fish-catch",
+        "reverse-jump",
+        "barrier-terminal",
+        "replay",
+        "pedestrian-stun",
+        "recovered"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/head-webkit/390-straight.png",
+          "sha256": "c7814ce8875d7cc98a9d0146ef476ab07d84356528353f90f2d630354224227e"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-fish-catch.png",
+          "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-right-turn.png",
+          "sha256": "e67ceb5b636787230a4cb07c925756a97ed1bf1644f5352f7125504ff14871e8"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-jump-reverse.png",
+          "sha256": "24179a87a3feb036bacdeb75565a6591fbe7ed4fc4f320e21c2e02024ee3d0ad"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-terminal.png",
+          "sha256": "de0f775f08016844f2fab214bb18593b2ec966ff709d700eac7a79df7ed56c84"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-replay.png",
+          "sha256": "0d9e8d13e70bc3111aa4a81db9ac2cbcabc5ae593ec17824bc44c4b398ae8cfd"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-pedestrian-stun.png",
+          "sha256": "d7e016f3c28c3ffafc7d0191992fae6de10b9f50b5cfb4253b45b630062f4830"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-recovery.png",
+          "sha256": "4529587971c95117d4da7c9df58ac46892e821af595e3c98e58f5e761675d170"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-head-webkit-390.json",
+        "sha256": "178c71ed72f7024cfa4d4f9fdbbc4a8f8f82dbe8e3939b87edd421d8fb185bf9"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-head-webkit-390.json SHA256 178c71ed72f7024cfa4d4f9fdbbc4a8f8f82dbe8e3939b87edd421d8fb185bf9; reset-origin, current build/runtime/viewport, normal actions, and changed native-head-visible transition verified.",
+        "Current20 report attempts/attempt-20/head-webkit/report.json SHA256 b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/head-webkit/390-straight.png SHA256 c7814ce8875d7cc98a9d0146ef476ab07d84356528353f90f2d630354224227e; attempts/attempt-20/head-webkit/390-fish-catch.png SHA256 b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee; attempts/attempt-20/head-webkit/390-right-turn.png SHA256 e67ceb5b636787230a4cb07c925756a97ed1bf1644f5352f7125504ff14871e8; attempts/attempt-20/head-webkit/390-jump-reverse.png SHA256 24179a87a3feb036bacdeb75565a6591fbe7ed4fc4f320e21c2e02024ee3d0ad; attempts/attempt-20/head-webkit/390-terminal.png SHA256 de0f775f08016844f2fab214bb18593b2ec966ff709d700eac7a79df7ed56c84; attempts/attempt-20/head-webkit/390-replay.png SHA256 0d9e8d13e70bc3111aa4a81db9ac2cbcabc5ae593ec17824bc44c4b398ae8cfd; attempts/attempt-20/head-webkit/390-pedestrian-stun.png SHA256 d7e016f3c28c3ffafc7d0191992fae6de10b9f50b5cfb4253b45b630062f4830; attempts/attempt-20/head-webkit/390-recovery.png SHA256 4529587971c95117d4da7c9df58ac46892e821af595e3c98e58f5e761675d170",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Rear chase view can partly occlude the forward beak in some poses; continuous white head/neck and helmet remain visible across the exact branches and viewports."
+      ]
+    },
+    {
+      "featureId": "native-head-visible",
+      "sourceCheckIds": [
+        "native-head-visible",
+        "cold-menu-finite-pose"
+      ],
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-catch-reverse-jump-stun-replay",
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Across straight, catch, turn, reverse-jump, terminal, replay, pedestrian-stun, and recovery full frames, the native white head/neck and helmet remain a continuous recognizable rider feature; the rear-chase beak/fork is naturally partly occluded in some poses but the head does not disappear.",
+      "observedEventOrder": [
+        "native-head-visible",
+        "fish-catch",
+        "reverse-jump",
+        "barrier-terminal",
+        "replay",
+        "pedestrian-stun",
+        "recovered"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/head-webkit/360-straight.png",
+          "sha256": "ab683819d5c61fbdce34f704172e07585fa9a563afaf90fe8b75838bf0a66c09"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-fish-catch.png",
+          "sha256": "922181b39f37db7fcd2d50fadfc12a631cf476f6526aea3b495479db42684e05"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-right-turn.png",
+          "sha256": "5ec952a07dc31a22859d13b66368394c09f068d412d5753b6767299239da6c8a"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-jump-reverse.png",
+          "sha256": "3b7125ef80815f57bc489115b269617c29aca0aebccf94e378a72c9e2881e218"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-terminal.png",
+          "sha256": "853148a262ed3200923773270a2f20b6ca44b7881bb01319c77b841360a3fd6b"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-replay.png",
+          "sha256": "b5f77d681e65bae9305c654bd6cff9067869726855dcb592e1accd3f00aae465"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-pedestrian-stun.png",
+          "sha256": "f95f598f0757f00c72e34355f63471675a69fa837cd2360ce5a2a30a6fbec4eb"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-recovery.png",
+          "sha256": "53063df05763e00dcd859cb6a83782ff4271d4e38a1276de06403f9c572b490c"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-head-webkit-360.json",
+        "sha256": "8d177478be131cfda668242fb881d30b15e6362b184fd6f80214cad6f370f373"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-head-webkit-360.json SHA256 8d177478be131cfda668242fb881d30b15e6362b184fd6f80214cad6f370f373; reset-origin, current build/runtime/viewport, normal actions, and changed native-head-visible transition verified.",
+        "Current20 report attempts/attempt-20/head-webkit/report.json SHA256 b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/head-webkit/360-straight.png SHA256 ab683819d5c61fbdce34f704172e07585fa9a563afaf90fe8b75838bf0a66c09; attempts/attempt-20/head-webkit/360-fish-catch.png SHA256 922181b39f37db7fcd2d50fadfc12a631cf476f6526aea3b495479db42684e05; attempts/attempt-20/head-webkit/360-right-turn.png SHA256 5ec952a07dc31a22859d13b66368394c09f068d412d5753b6767299239da6c8a; attempts/attempt-20/head-webkit/360-jump-reverse.png SHA256 3b7125ef80815f57bc489115b269617c29aca0aebccf94e378a72c9e2881e218; attempts/attempt-20/head-webkit/360-terminal.png SHA256 853148a262ed3200923773270a2f20b6ca44b7881bb01319c77b841360a3fd6b; attempts/attempt-20/head-webkit/360-replay.png SHA256 b5f77d681e65bae9305c654bd6cff9067869726855dcb592e1accd3f00aae465; attempts/attempt-20/head-webkit/360-pedestrian-stun.png SHA256 f95f598f0757f00c72e34355f63471675a69fa837cd2360ce5a2a30a6fbec4eb; attempts/attempt-20/head-webkit/360-recovery.png SHA256 53063df05763e00dcd859cb6a83782ff4271d4e38a1276de06403f9c572b490c",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Rear chase view can partly occlude the forward beak in some poses; continuous white head/neck and helmet remain visible across the exact branches and viewports."
+      ]
+    },
+    {
+      "featureId": "native-head-visible",
+      "sourceCheckIds": [
+        "native-head-visible",
+        "cold-menu-finite-pose"
+      ],
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-catch-reverse-jump-stun-replay",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Across straight, catch, turn, reverse-jump, terminal, replay, pedestrian-stun, and recovery full frames, the native white head/neck and helmet remain a continuous recognizable rider feature; the rear-chase beak/fork is naturally partly occluded in some poses but the head does not disappear.",
+      "observedEventOrder": [
+        "native-head-visible",
+        "fish-catch",
+        "reverse-jump",
+        "barrier-terminal",
+        "replay",
+        "pedestrian-stun",
+        "recovered"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/head-webkit/844-straight.png",
+          "sha256": "3ca8d867fd61af33655be19dfa007b957e7146965e0d0a026472aa45491c913c"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-fish-catch.png",
+          "sha256": "665d735de55d150a20d203049db2f51c6f19b34513642ebffeab586b17628ca6"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-right-turn.png",
+          "sha256": "a753f2e770604d66906a3d11ab59ab06e9b644772379d1b6111d8ef97d039a0b"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-jump-reverse.png",
+          "sha256": "e30b2e9aa2c87e79bd17d4640326b96c38389757aa95b94a839edc7890b5a3b4"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-terminal.png",
+          "sha256": "f5d0f4aed0931e0dd1eeabe0fd8cba006ae274da8b74e9dfca5b19d4d47f8c11"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-replay.png",
+          "sha256": "8ac8a62906b87f6685c044cb7cd68f32ba8abfeb85200de068c40e627aa300d9"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-pedestrian-stun.png",
+          "sha256": "2a78fd5324ddbf0dc75eaafc1be2e9fbd5a2f28436e91da2696fdc5abc1896a5"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-recovery.png",
+          "sha256": "5fd2590c0a267551817ad3faf24058328fa5ebdd31679983cdcc9e80e3712417"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-head-webkit-844.json",
+        "sha256": "6790dde70275a268e6f104865d1f41a9af36d3063ee84bd1821fb326bc8cfa8c"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-head-webkit-844.json SHA256 6790dde70275a268e6f104865d1f41a9af36d3063ee84bd1821fb326bc8cfa8c; reset-origin, current build/runtime/viewport, normal actions, and changed native-head-visible transition verified.",
+        "Current20 report attempts/attempt-20/head-webkit/report.json SHA256 b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/head-webkit/844-straight.png SHA256 3ca8d867fd61af33655be19dfa007b957e7146965e0d0a026472aa45491c913c; attempts/attempt-20/head-webkit/844-fish-catch.png SHA256 665d735de55d150a20d203049db2f51c6f19b34513642ebffeab586b17628ca6; attempts/attempt-20/head-webkit/844-right-turn.png SHA256 a753f2e770604d66906a3d11ab59ab06e9b644772379d1b6111d8ef97d039a0b; attempts/attempt-20/head-webkit/844-jump-reverse.png SHA256 e30b2e9aa2c87e79bd17d4640326b96c38389757aa95b94a839edc7890b5a3b4; attempts/attempt-20/head-webkit/844-terminal.png SHA256 f5d0f4aed0931e0dd1eeabe0fd8cba006ae274da8b74e9dfca5b19d4d47f8c11; attempts/attempt-20/head-webkit/844-replay.png SHA256 8ac8a62906b87f6685c044cb7cd68f32ba8abfeb85200de068c40e627aa300d9; attempts/attempt-20/head-webkit/844-pedestrian-stun.png SHA256 2a78fd5324ddbf0dc75eaafc1be2e9fbd5a2f28436e91da2696fdc5abc1896a5; attempts/attempt-20/head-webkit/844-recovery.png SHA256 5fd2590c0a267551817ad3faf24058328fa5ebdd31679983cdcc9e80e3712417",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Rear chase view can partly occlude the forward beak in some poses; continuous white head/neck and helmet remain visible across the exact branches and viewports."
+      ]
+    },
+    {
+      "featureId": "native-head-visible",
+      "sourceCheckIds": [
+        "native-head-visible",
+        "cold-menu-finite-pose"
+      ],
+      "objectType": "native-pelican-head-neck-beak",
+      "stateBranch": "straight-catch-reverse-jump-stun-replay",
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Across straight, catch, turn, reverse-jump, terminal, replay, pedestrian-stun, and recovery full frames, the native white head/neck and helmet remain a continuous recognizable rider feature; the rear-chase beak/fork is naturally partly occluded in some poses but the head does not disappear.",
+      "observedEventOrder": [
+        "native-head-visible",
+        "fish-catch",
+        "reverse-jump",
+        "barrier-terminal",
+        "replay",
+        "pedestrian-stun",
+        "recovered"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/head-webkit/320-straight.png",
+          "sha256": "7a676a02af79e47bafc744bcc412c71cb8ab0ea8546d23913d3d7ed843fe6090"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-fish-catch.png",
+          "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-right-turn.png",
+          "sha256": "64b5eaa5b9a7929c9af9685937e7daa492189ab73dbd1d2419423aff500ae56f"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-jump-reverse.png",
+          "sha256": "32a28c69defa12b562f946aa40f271b7d19fb3d76f3be9f09988a5bbdc4e2348"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-terminal.png",
+          "sha256": "c45e90d555cd924a0cfa8328107b68aaeae06caf0de178a2f24ae3aef14182f0"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-replay.png",
+          "sha256": "079f01d3a15c9c995f05e2ead6abdd3d25133cb0681de74a0689d913f5f02ad0"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-pedestrian-stun.png",
+          "sha256": "5b9f53100ab71085c6a13586a3e07cecc07da151f4342a85bc276e6f506505a1"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-recovery.png",
+          "sha256": "7a8da4695bccc426e9bf0f6b739e065d0a9027643a10611acae6d50a5d1da527"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-head-webkit-320.json",
+        "sha256": "cbf6d8d0083a06546b18531a6498c3f8496ab51d08ab3551107b2c2726eb50e5"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-head-webkit-320.json SHA256 cbf6d8d0083a06546b18531a6498c3f8496ab51d08ab3551107b2c2726eb50e5; reset-origin, current build/runtime/viewport, normal actions, and changed native-head-visible transition verified.",
+        "Current20 report attempts/attempt-20/head-webkit/report.json SHA256 b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/head-webkit/320-straight.png SHA256 7a676a02af79e47bafc744bcc412c71cb8ab0ea8546d23913d3d7ed843fe6090; attempts/attempt-20/head-webkit/320-fish-catch.png SHA256 bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150; attempts/attempt-20/head-webkit/320-right-turn.png SHA256 64b5eaa5b9a7929c9af9685937e7daa492189ab73dbd1d2419423aff500ae56f; attempts/attempt-20/head-webkit/320-jump-reverse.png SHA256 32a28c69defa12b562f946aa40f271b7d19fb3d76f3be9f09988a5bbdc4e2348; attempts/attempt-20/head-webkit/320-terminal.png SHA256 c45e90d555cd924a0cfa8328107b68aaeae06caf0de178a2f24ae3aef14182f0; attempts/attempt-20/head-webkit/320-replay.png SHA256 079f01d3a15c9c995f05e2ead6abdd3d25133cb0681de74a0689d913f5f02ad0; attempts/attempt-20/head-webkit/320-pedestrian-stun.png SHA256 5b9f53100ab71085c6a13586a3e07cecc07da151f4342a85bc276e6f506505a1; attempts/attempt-20/head-webkit/320-recovery.png SHA256 7a8da4695bccc426e9bf0f6b739e065d0a9027643a10611acae6d50a5d1da527",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": [
+        "Rear chase view can partly occlude the forward beak in some poses; continuous white head/neck and helmet remain visible across the exact branches and viewports."
+      ]
+    },
+    {
+      "featureId": "replay-mastery-records",
+      "sourceCheckIds": [
+        "saved-best-after-real-completion",
+        "route-menu-shows-earned-best-and-total-stars",
+        "first-natural-three-star-settlement"
+      ],
+      "objectType": "stage-card-and-settlement",
+      "stateBranch": "earned-completion-to-replay",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "Real completion visibly presents earned settlement, best record and stars out of 15; normal route/replay buttons return to play, and saved stage records remain visible on route screens.",
+      "observedEventOrder": [
+        "earned-settlement",
+        "visible-best-and-total-stars",
+        "replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/risk-webkit/level-1-terminal-settlement.png",
+          "sha256": "ee69461c3a9dac917417cd753b93fef98f8a0d130e345c4c5d1070599999e098"
+        },
+        {
+          "path": "attempts/attempt-20/risk-webkit/level-1-route-after-settlement.png",
+          "sha256": "5da74cbf0674c87c97ba09edf76f17dc95d4a8ef5c3808f87cda9cf4d3c6f660"
+        },
+        {
+          "path": "attempts/attempt-20/risk-webkit/level-5-terminal-settlement.png",
+          "sha256": "848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699"
+        },
+        {
+          "path": "attempts/attempt-20/risk-webkit/level-5-final-replay.png",
+          "sha256": "a54d2c2092777a5a1c3c0e2e96b3fba91453e759a7b86c8cf7cec579215ffff3"
+        },
+        {
+          "path": "attempts/attempt-20/risk-webkit/earned-compact-route-5.png",
+          "sha256": "1d0d858ec4b002ecbfad8cb6a8ace76853138325be6a7291e783be0d8a51d3d6"
+        },
+        {
+          "path": "attempts/attempt-20/risk-webkit/earned-compact-level-one-replay.png",
+          "sha256": "be8d89bcb6c5151d732c5298c22fd30b517035e6193b937a0222caeb4270481d"
+        }
+      ],
+      "trace": {
+        "path": "artifacts/natural/v3-risk-webkit.json",
+        "sha256": "798e3a487ff5a9e8b95d1d7a71b1127f1645472deccb013f31b434f208c29805"
+      },
+      "evidence": [
+        "Natural-input trace artifacts/natural/v3-risk-webkit.json SHA256 798e3a487ff5a9e8b95d1d7a71b1127f1645472deccb013f31b434f208c29805; reset-origin, current build/runtime/viewport, normal actions, and changed replay-mastery-records transition verified.",
+        "Current20 report attempts/attempt-20/risk-webkit/report.json SHA256 e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854; branch and normal-input evidence reviewed.",
+        "Full-frame pixel review: attempts/attempt-20/risk-webkit/level-1-terminal-settlement.png SHA256 ee69461c3a9dac917417cd753b93fef98f8a0d130e345c4c5d1070599999e098; attempts/attempt-20/risk-webkit/level-1-route-after-settlement.png SHA256 5da74cbf0674c87c97ba09edf76f17dc95d4a8ef5c3808f87cda9cf4d3c6f660; attempts/attempt-20/risk-webkit/level-5-terminal-settlement.png SHA256 848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699; attempts/attempt-20/risk-webkit/level-5-final-replay.png SHA256 a54d2c2092777a5a1c3c0e2e96b3fba91453e759a7b86c8cf7cec579215ffff3; attempts/attempt-20/risk-webkit/earned-compact-route-5.png SHA256 1d0d858ec4b002ecbfad8cb6a8ace76853138325be6a7291e783be0d8a51d3d6; attempts/attempt-20/risk-webkit/earned-compact-level-one-replay.png SHA256 be8d89bcb6c5151d732c5298c22fd30b517035e6193b937a0222caeb4270481d",
+        "Review workorder SHA256 c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244; product-experience contract SHA256 abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25."
+      ],
+      "notes": []
+    }
+  ],
+  "checkedAt": "2026-10-15T03:22:57.992Z"
+}

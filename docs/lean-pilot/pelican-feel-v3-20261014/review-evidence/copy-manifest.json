@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "files": [
+    {
+      "source": "runs/pelican-coast-v2-20261014/build-receipt.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/build-receipt.json",
+      "sha256": "771082d72c7c4a0c4a4f96d820bc47839582d3f3f0389d033b97eb7e41c85feb",
+      "bytes": 2202
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/repair-state.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/repair-state.json",
+      "sha256": "b11aacb945be6be8c5dbe6686c05c815abbd9fc4584692021db6fd24e6412573",
+      "bytes": 44146
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/product-experience-contract.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/product-experience-contract.json",
+      "sha256": "25eb3f9bfc25156f0c21c07e03016301c7b37ecaf5812d41d623bd9901b76e02",
+      "bytes": 18842
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/qa-review-workorder.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/qa-review-workorder.json",
+      "sha256": "c676bf43b247bceb6233393fffc6bfcf7462ebb11f1324f81c9e7faa2a5c9244",
+      "bytes": 16436
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/perceptual-qa-report.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/perceptual-qa-report.json",
+      "sha256": "64085982bf71b52eaa2e62d0bdbb7d3c1c542a0b04fc66b8170408b505b13f06",
+      "bytes": 92465
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/github-ci-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/github-ci-v3.json",
+      "sha256": "44551980d672b2ab08b4b7e1da3323761eaadf136a9288e7aa59cdd5f014c59b",
+      "bytes": 18186
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/github-pr-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/github-pr-v3.json",
+      "sha256": "b3f171823fb9fa5c41a07d6e97211708e14815e09cc9155fc954a06155831512",
+      "bytes": 2106
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/clipped-route-touch-reproduction-matrix-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/clipped-route-touch-reproduction-matrix-v3.json",
+      "sha256": "42b621fe6f147085f72e544c8d9119163fbc43b8a52db98042c2b1c5295d70ac",
+      "bytes": 15871
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/clipped-route-touch-triage-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/clipped-route-touch-triage-v3.json",
+      "sha256": "2eb30a2f4a25052916e58113af156bf732b6834cd85207ca90b1b813c4b71c74",
+      "bytes": 2415
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/compact-rider-overlay-reproduction-matrix-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/compact-rider-overlay-reproduction-matrix-v3.json",
+      "sha256": "2ef3498f5df6d90fe7aa8318904b4d839170e661b241389125e754d2cd4aeca8",
+      "bytes": 38537
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/compact-rider-overlay-triage-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/compact-rider-overlay-triage-v3.json",
+      "sha256": "91a26842aa658d826a6f6d152aae9b44dc561ad330aa23244572d95e0e69adf2",
+      "bytes": 6250
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/compact-ui-triage-v32.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/compact-ui-triage-v32.json",
+      "sha256": "62b0bfee065c5000bbe6f5c6d4537b0c811a0ef8ffbb92f7ded15143edb59696",
+      "bytes": 2014
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/head-reproduction-matrix-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/head-reproduction-matrix-v3.json",
+      "sha256": "1503be4198324d603e7fbe6a6547a6ff255be0000b8089a34edca921180a2fb8",
+      "bytes": 81988
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/head-triage-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/head-triage-v3.json",
+      "sha256": "fe7584efeeb8906b79e0489dc759f00f77d09e3b4dd71e3ab6afca6152c7110d",
+      "bytes": 3976
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/jump-attribution-triage-v32.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/jump-attribution-triage-v32.json",
+      "sha256": "dd9facc07104ce224a8040fc27f29ec27eec4107661ca3a9a6c81afa254008ef",
+      "bytes": 1981
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/native-pose-observation-reproduction-matrix-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/native-pose-observation-reproduction-matrix-v3.json",
+      "sha256": "479914bdac135373d1cf558b89f4302cdecb2ba0f7fabef3e39375881ddeb425",
+      "bytes": 61067
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/native-pose-observation-triage-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/native-pose-observation-triage-v3.json",
+      "sha256": "f2a8365f3a9cb08138178aefe4c13ffa27f7998f8ac9d7a315e8b00be47866f6",
+      "bytes": 2412
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/qa-observation-latency-reproduction-matrix-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/qa-observation-latency-reproduction-matrix-v3.json",
+      "sha256": "d8466c0da89ba784e71f083e7ca118d89ece0028403ac0c623ed8fff97eab28c",
+      "bytes": 63169
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/qa-observation-latency-triage-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/qa-observation-latency-triage-v3.json",
+      "sha256": "00de6a9245828097ef39717d79e351d4a44e3d77db4fa241f4cb4ff81a882744",
+      "bytes": 6912
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/replay-goal-triage-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/replay-goal-triage-v3.json",
+      "sha256": "e08bdaba52ba346a88e83213f3bc2cb126010f3a8588a72b3a73488b3443572a",
+      "bytes": 1790
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/reproduction-matrix-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/reproduction-matrix-v3.json",
+      "sha256": "2382f4fc7c4d0d3a9509ba6e5e0406a86ab9282a924a9268ca9a7399b850e6b7",
+      "bytes": 125137
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/reproduction-matrix.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/reproduction-matrix.json",
+      "sha256": "66c53723c03a4891fd5f93935424ee72e2815f8abd5b695d945b2b181f7dd8d8",
+      "bytes": 40820
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/reward-trail-and-ci-reproduction-matrix-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/reward-trail-and-ci-reproduction-matrix-v3.json",
+      "sha256": "31abca53822e3079dd623b16b86130f242b9c2f0f38b5af2b10188225b515fb9",
+      "bytes": 33722
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/reward-trail-and-ci-triage-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/reward-trail-and-ci-triage-v3.json",
+      "sha256": "6eb871ec528a70984c54364b55e07d1d0edb81f207305d2253eef3a02928706e",
+      "bytes": 3224
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/triage-v3.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/triage-v3.json",
+      "sha256": "deb0505c0c2fa1b672b64568491c9d1fe08116d3fac2d23abfafff47add06766",
+      "bytes": 3233
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/triage.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/triage.json",
+      "sha256": "cea6e34048ef4fb3d446ece0f3b5c1913e7df2726ee5fa69cd6fd55387824a1f",
+      "bytes": 2513
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/factory-checks-final.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/factory-checks-final.json",
+      "sha256": "e41672503299a0050c6be925bed6a04095d4786a60234d9b9aceaf92250bdfcf",
+      "bytes": 2142
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/experience-audit-final20.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/experience-audit-final20.json",
+      "sha256": "219f956e292771d5eebdf7a7f357911e328cb20a2ee143e17aaa83436b73d113",
+      "bytes": 165057
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/experience-audit-final20.validation.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/experience-audit-final20.validation.json",
+      "sha256": "7f710c2d46d069e2cf99e1d52f32513daf0c010d6ec9236cced40a4820a1f04a",
+      "bytes": 94806
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/supplemental-head-compact-final20.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/supplemental-head-compact-final20.json",
+      "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+      "bytes": 67961
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/default-browser-final20-section-verification.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/default-browser-final20-section-verification.json",
+      "sha256": "c89b8e738cc2353545ce6e88d0e8500c964ae2873f719c002daf50b7d96961cd",
+      "bytes": 3573
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/media-final20-verification.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/media-final20-verification.json",
+      "sha256": "407b4e04bdde92892fc0ca9b2dfb8b33530b108241677f8b629e035d32134448",
+      "bytes": 876
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/matrix20-coverage-applied.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/matrix20-coverage-applied.json",
+      "sha256": "7c6b2f34246ff42590bd443e3fcce4acfa2df8301446123074ba4394dc0e5dd0",
+      "bytes": 22248
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/pelican-rules-final-packager.log",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/pelican-rules-final-packager.log.txt",
+      "sha256": "e60b155218785d3a08965e0d1c67c7a1ba69cb53999d6ab11fe4f94f714ed40a",
+      "bytes": 9635
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/lint-final-packager.log",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/lint-final-packager.log.txt",
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
+      "bytes": 11
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/typecheck-final-packager.log",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/typecheck-final-packager.log.txt",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "bytes": 15
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/repository-tests-final-d9.log",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/repository-tests-final-d9.log.txt",
+      "sha256": "ccc86b4226e610373352f51223c269292e0c9a38f10eb9471106f770315d4b7c",
+      "bytes": 14805
+    },
+    {
+      "source": "/Users/kker/.codex/pelican-v3-continuation/delivery/pelican-v3-historical-attempts-01-19-manifest.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/archive-manifests/pelican-v3-historical-attempts-01-19-manifest.json",
+      "sha256": "392b8521a0ea2b415aa574530f6fa98d9f4e6e4ad217c743b14e68c227cdd938",
+      "bytes": 557166
+    },
+    {
+      "source": "/Users/kker/.codex/pelican-v3-continuation/delivery/history-upload-verification.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/archive-manifests/history-upload-verification.json",
+      "sha256": "b363020ec11886c50198fa62503e623bdb619dd9a8504028771040f98ce02581",
+      "bytes": 407
+    },
+    {
+      "source": "/Users/kker/.codex/pelican-v3-continuation/delivery/key-evidence-bundle-manifest.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/archive-manifests/key-evidence-bundle-manifest.json",
+      "sha256": "31a39539be27355e20b0fc049c53d993a2ca8ed2fd2cb597a2b669cd255eb3a7",
+      "bytes": 52382
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/report.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/ci-cancel/webkit/report.json",
+      "sha256": "be7569054815309b65a9c0ca3c86bfb9fff1e6f4b29d040f7790801a4c59867c",
+      "bytes": 296635
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/cancel-jump-safe-detour.png",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/ci-cancel/webkit/cancel-jump-safe-detour.png",
+      "sha256": "de176b9ed6ed3d57b690deed77f70d21b529f4d066777010da867f4e3247a61a",
+      "bytes": 2056323
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/driver-source.mjs",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/ci-cancel/webkit/driver-source.mjs.txt",
+      "sha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7",
+      "bytes": 17037
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/report.json",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/ci-cancel/chromium/report.json",
+      "sha256": "70e5285dc6a8927abf1f9bba679fc281178d1fae4bcf70894b4848231f016e89",
+      "bytes": 300376
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/cancel-jump-safe-detour.png",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/ci-cancel/chromium/cancel-jump-safe-detour.png",
+      "sha256": "31a505ee2e394bfc23e3e75fbab5d69e5b3d233c7266fab12e1266e15d14b619",
+      "bytes": 1513246
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/driver-source.mjs",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/ci-cancel/chromium/driver-source.mjs.txt",
+      "sha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7",
+      "bytes": 17037
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/rules-final-cancel.log",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/rules-final-cancel.log.txt",
+      "sha256": "eeb9a6adcc7bd795c3d0154db68b80ec6b6d73c1b54f4604057a975396da97b5",
+      "bytes": 9900
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/lint-final-cancel.log",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/lint-final-cancel.log.txt",
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
+      "bytes": 11
+    },
+    {
+      "source": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/typecheck-final-cancel.log",
+      "copy": "docs/lean-pilot/pelican-feel-v3-20261014/review-evidence/evidence/v3-engineering/typecheck-final-cancel.log.txt",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "bytes": 15
+    }
+  ]
+}

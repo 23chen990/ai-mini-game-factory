@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "scope": "Exact evidence-generator snapshots; runtime/game/CI sources remain committed under tools/lean-pilot/pelican-v2. Raw capture receipts retain original absolute workspace paths.",
+  "files": [
+    {
+      "path": "report/chinese-report.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/report/chinese-report.mjs",
+      "sha256": "9e14275d39787fbfa5305da0254f35b521aab990d251e4f000d29baed25081c7",
+      "bytes": 98005
+    },
+    {
+      "path": "report/output-target.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/report/output-target.mjs",
+      "sha256": "8918b702d32060ef0cc18bcd75f183c00b8c460c3f56e502058e648ecfff09df",
+      "bytes": 1182
+    },
+    {
+      "path": "report/output-target.test.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/report/output-target.test.mjs",
+      "sha256": "ba6869536d603d8c4efca1657ae3cafae4add5d8a642d50554ff41d3c0f668ec",
+      "bytes": 1267
+    },
+    {
+      "path": "experience/updated-audit/ci-rule-counts.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/experience/updated-audit/ci-rule-counts.mjs",
+      "sha256": "8c886c901d925442ec8255e01d0b556ebca7102272f003dbba32ab02b9d0e781",
+      "bytes": 1999
+    },
+    {
+      "path": "experience/updated-audit/ci-rule-counts.test.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/experience/updated-audit/ci-rule-counts.test.mjs",
+      "sha256": "df70069b12cb0e4ade8631acfa7fac8c148902b925f0b9547cffa7327ead170e",
+      "bytes": 2137
+    },
+    {
+      "path": "experience/updated-audit/generate-audit3.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/experience/updated-audit/generate-audit3.mjs",
+      "sha256": "14199748fde794de7318160cc6f5323a03d927b41c4cfe3ce729a66908baac93",
+      "bytes": 57837
+    },
+    {
+      "path": "media-script/generate_pelican_v3_media.py",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/media-script/generate_pelican_v3_media.py",
+      "sha256": "f4c5500cd4a6b9538bad163d6a850be8d80ef9f61af9350e6ea5b907d0b6f0cc",
+      "bytes": 72693
+    },
+    {
+      "path": "delivery/archive-evidence.py",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/delivery/archive-evidence.py",
+      "sha256": "643bc9a4f66e7bc7de9ef21756e5bd6a95773477f9dda179ebac4d7013626f35",
+      "bytes": 6208
+    },
+    {
+      "path": "delivery/key-evidence-zip.py",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/delivery/key-evidence-zip.py",
+      "sha256": "da8e14033ff9657801f3521d363189cffdfeb6645486037afba44664d570acb4",
+      "bytes": 3160
+    },
+    {
+      "path": "perceptual/refresh/isolatedscratch/validate-final-refresh.mts",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/perceptual/refresh/isolatedscratch/validate-final-refresh.mts",
+      "sha256": "f03e054ea3ea642972fc405f5198c4facab17f8184a5e2bec8f9de9ae7188615",
+      "bytes": 1794
+    }
+  ],
+  "archive": {
+    "name": "pelican-v3-evidence-tools.zip",
+    "sha256": "6dd041eb99cbeb1c97c7f8baf11772a9bb2c9c1bea820fc08e8a9948c7899ec9",
+    "bytes": 69736
+  }
+}

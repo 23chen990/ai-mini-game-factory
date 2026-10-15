@@ -1,0 +1,3342 @@
+{
+  "schemaVersion": 2,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "attempt": 20,
+  "auditStatus": "attempt20_whole_v3_experience_audit_with_fresh_bounded_qa_and_capture_history",
+  "scratchReportPath": "/Users/kker/.codex/pelican-v3-continuation/experience/updated-audit/pelican-attempt20-experience-audit3.json",
+  "sourceArtifacts": [
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/index.html",
+      "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "role": "exact current H5 build"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/fix-evidence.json",
+      "sha256": "771082d72c7c4a0c4a4f96d820bc47839582d3f3f0389d033b97eb7e41c85feb",
+      "role": "attempt change provenance"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/levels.mjs",
+      "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e",
+      "role": "current V3 five-stage routes, fish-lane patterns and obstacle placements"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/adventure.mjs",
+      "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c",
+      "role": "current V3 run loop, collision, control and local campaign settle/save"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/engagement.mjs",
+      "sha256": "f9ed065669b3eca038bd9cc7a238a2900d33f3e4795400beaa18091be2ce4999",
+      "role": "current V3 barrier bonus, stars/mastery, best metrics and jump cue"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/safety.mjs",
+      "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f",
+      "role": "current V3 hazard forecast, safe-lane fish fallback and warning horizon"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/feel.mjs",
+      "sha256": "748dfc0514d66c29e3df6e8d9b7c528354426fe737a29f8d5da0c63102e1d04e",
+      "role": "current V3 lane response and rain-frequency values"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/coast-ui.mjs",
+      "sha256": "02f6d568e4d762a9c8d3402aa711b900026563b4b62368944f187adb6cebaa5a",
+      "role": "current V3 first-minute cues, controls, route cards and terminal/replay feedback"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/coast.css",
+      "sha256": "dd3d1ddf4b5445f77d7c2f2179fce5dbb08ec9108cbb35205042d9ca137be348",
+      "role": "current attempt20 responsive compact layout"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/main.js",
+      "sha256": "c117aa309b7a763ba91e6a62077f6575e3d4323393acf30db6eba8f4e68f58d2",
+      "role": "current V3 renderer and runtime integration"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/pelican.js",
+      "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4",
+      "role": "current rider module; matches baseline snapshot"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/v3-continuation.json",
+      "sha256": "db283fde15acbf9038d421f0e8536f823492cbdaf2efa88f48873749e67e7503",
+      "role": "handoff"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/v3-contract-continuation.json",
+      "sha256": "eb7e14dbd729117f28c3d011cba146f5a6af9c644d68653e4061bf46b658f9ba",
+      "role": "handoff contract"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/experience-contract.json",
+      "sha256": "654e7e32d9249a3cd538b10a68b823b95fcac6d80ad339ec84d5cdf82386ace6",
+      "role": "experience contract"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/product-experience-contract.json",
+      "sha256": "25eb3f9bfc25156f0c21c07e03016301c7b37ecaf5812d41d623bd9901b76e02",
+      "role": "product experience contract"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/failure-pressure.json",
+      "sha256": "ab196c830328b10f0b692539a6c78a91d1c32286b670add6e4117949f8531e81",
+      "role": "failure/risk contract"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/report.json",
+      "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405",
+      "role": "current normal-input experience WebKit"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/report.json",
+      "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c",
+      "role": "current normal-input experience Chromium"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/report.json",
+      "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854",
+      "role": "current five-stage risk QA WebKit"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486",
+      "role": "current five-stage risk QA Chromium"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-webkit/report.json",
+      "sha256": "983f70f9ff3f729b7aa458be75310323dc18d0f34ca99433d2e5972b5a98439d",
+      "role": "archived attempt20 campaign WebKit report; historical diagnostic only; its L3 screenshot binding is invalid"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-chromium/report.json",
+      "sha256": "440e9734e4b329ee3deb8cc22afe6b4cd150b813c5ddc6e6b3f8ae8c8db1777e",
+      "role": "archived attempt20 campaign Chromium report; historical diagnostic only; its L3 screenshot binding is invalid"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/report.json",
+      "sha256": "fb2c4e8ee8be6372f90c2ff89fc9af41b31713f0c4209089a1d82dccccb1802a",
+      "role": "archived initial attempt20 broad QA WebKit report; historical diagnostic only; not the latest exact-path retest"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-chromium/report.json",
+      "sha256": "3d59ecfd26da8f3a2bda4eea75f4191bdf2c0d24943588c560cbe8de88501df9",
+      "role": "archived initial attempt20 broad QA Chromium report; historical diagnostic only; not the latest exact-path retest"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-webkit/report.json",
+      "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+      "role": "current terminal/replay state"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/report.json",
+      "sha256": "b1471af65189e8c34a59134e0961a2f22b753d10710081677224ce7bdfbba39a",
+      "role": "current descriptive comparison WebKit"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/report.json",
+      "sha256": "382bafe92ef1ad17fef3bb19e9a94c508b266e9e16ca00f33ea199ef193d7962",
+      "role": "current descriptive comparison Chromium"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/report.json",
+      "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+      "role": "current20 multi-viewport captures; same-pose fixture excluded, other captures normal trusted touch"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/compact-probe-attempt20/report.json",
+      "sha256": "188e4d767875405b2f06c43ced89e393aa0c569969f512ade6bf922fa7d64081",
+      "role": "current320 compact layout instrumentation and readable-goal metrics"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/compact-probe-attempt20/menu.png",
+      "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+      "role": "current320 compact route menu full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/compact-probe-attempt20/running.png",
+      "sha256": "846530e0cec5743d51404834a268b6feddcd00cc35a104eb85eed4ee938b7832",
+      "role": "current320 compact running full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/first-catch.png",
+      "sha256": "e7736f85c0d4a3e68d8eeec3ebea6d8059daeba25153d720fdb9617354e312d5",
+      "role": "current WebKit normal-input first catch full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/first-gold.png",
+      "sha256": "a489d7aa2979126d522932ba3ea725280cff7e6b6c3c60528ded9c1cfda1a8af",
+      "role": "current full-frame first-gold"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/jump-choice.png",
+      "sha256": "6234b875a52f2e1a243437acf58bcb1dfb2f1d48cb5433662a37432a630b1bca",
+      "role": "current WebKit normal-input barrier choice and safe-detour cue"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/jump-gold-earned.png",
+      "sha256": "9b784dfd221458293b7d499367501de730e93ac918f597c352d8f8fa08513ed7",
+      "role": "current full-frame jump-gold-earned"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/earned-three-stars.png",
+      "sha256": "b715f87df8cb77c9181c10f5e516954be3fc6a453f8f9bfafd38cda2e27985e2",
+      "role": "current WebKit normal-input stage success and star settlement"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/safe-detour.png",
+      "sha256": "4c995a9c4bc26dae633a9bb2872712331f391a3f9fd7fbd42cedbec4a1e4a762",
+      "role": "current WebKit normal-input no-jump bypass route"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/saved-mastery.png",
+      "sha256": "62a711742ddad7e71a57d32a3f06acb496fcd9d7910650fdbfced6347060f64c",
+      "role": "current WebKit saved route record / stars view"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/small-phone-route-menu.png",
+      "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+      "role": "current full-frame small-phone-route-menu"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/small-phone-running.png",
+      "sha256": "92c0d5e84763c5d3246753eb481b254643372d8a05bae4da96b07d0af2bd99a7",
+      "role": "current full-frame small-phone-running"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-hazard.png",
+      "sha256": "a58c1d1d5238b0a6c1aaf6a27f50eed35176e27d8e37ec9b452d053aea48dd84",
+      "role": "archived attempt20 WebKit rain screenshot; descriptive historical diagnostic only, not a current QA pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-terminal.png",
+      "sha256": "685b67a77870b168d2adfc1195d9b5155f517cfa9b33ca8808ddbd1e206dd006",
+      "role": "archived attempt20 WebKit L4 terminal screenshot; descriptive historical diagnostic only, not a current QA pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-hazard.png",
+      "sha256": "02e59bc47fe595244f76fcb771eaf5d767aa952a12ff3f646b8336f20c595d70",
+      "role": "archived attempt20 WebKit dusk screenshot; descriptive historical diagnostic only, not a current QA pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-terminal.png",
+      "sha256": "83f6cb08056bf6b983fe432e2dc9663e798ec5068a8ddec130e455fa03e3cb82",
+      "role": "archived attempt20 WebKit L5 terminal screenshot; descriptive historical diagnostic only, not a current QA pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR10/settled.png",
+      "sha256": "099b7aaa111c934c4cadf73528773776edce5e7ba15f3d50a6a9e1c39a1dbdd3",
+      "role": "current comparison PR10"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/settled.png",
+      "sha256": "49d0920558ead33199bc45df3c8224be6f1824401a09ee5b85b0e458a169a41a",
+      "role": "current comparison PR10"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR13/settled.png",
+      "sha256": "88b04927c86011bfe1e3285fb1786be05c5392cb9cec04afdf993e8c72eb4cac",
+      "role": "current comparison PR13"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/settled.png",
+      "sha256": "ad805037d5f23cc1ca443eaec19cfc017f0d7019446c63e471d0eb16ec3ce250",
+      "role": "current comparison PR13"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/settled.png",
+      "sha256": "34e651a4345e89d1951defcefc7c39201ed7c96e065d4eb48a03a5f7759ed425",
+      "role": "current comparison V3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/settled.png",
+      "sha256": "5917a888d41d8d904127874481d3ec2c3eb58b67196e9549b10e3ed055487aa4",
+      "role": "current comparison V3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/motion-review-final18.json",
+      "sha256": "2d284a4bca5cec2ea99b9822ac95adea7f56d26b3df1814dbf59240386bb6e34",
+      "role": "historical attempt18 narrow pose/motion scope; explicitly not a current20 experience pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/experience-webkit/report.json",
+      "sha256": "4ff5f948672c98e4d4c21cd30b0bd8905d7fd6767c3feab54d4fe47816de650c",
+      "role": "historical attempt18 experience"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/experience-chromium/report.json",
+      "sha256": "f4e4840d0270ef3bb78aa88a941b0cf38e36d372bbaf769f765727f39425b6b7",
+      "role": "historical attempt18 experience"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/qa-all-chromium/report.json",
+      "sha256": "1e0fd86ad891b67b8ba32e819483a2fdaaa0651c857547861ddec8b0baea1ca7",
+      "role": "historical attempt18 QA"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/webkit-full-frame-comparison.png",
+      "sha256": "a2ea99786e8036c7fde05fdf6f3cd36490837941725dd39c7f98153180d09e5b",
+      "role": "historical full-frame comparison viewed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/webkit-V3-temporal-sheet.png",
+      "sha256": "960863158efa74971ccee73469a3d181ae8ad32c75e60770b854c875498ad42c",
+      "role": "historical temporal grid viewed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/chromium-full-frame-comparison.png",
+      "sha256": "4cd3e926834ecdda5f0831c9cb1a4938a29fb7c56e45794afa42368357bbf7d6",
+      "role": "historical full-frame comparison viewed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/chromium-V3-temporal-sheet.png",
+      "sha256": "e630d68ac101ee5263a1398de8e8f13dfc641f174c413b9268a80b4a95444a21",
+      "role": "historical temporal grid viewed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/baseline-receipt.json",
+      "sha256": "4a31e58408bdc56390a3b6538db60279764f7ae5c13053b4de00e819fd86a9c7",
+      "role": "authorized sourceRevision and baseline file hashes"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/original-main.js",
+      "sha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+      "role": "exact baseline main.js snapshot; hash matches baseline receipt"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/original-pelican.js",
+      "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4",
+      "role": "exact baseline pelican.js snapshot"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/original-textures.js",
+      "sha256": "46718cd5a97f50f59eb35878e2d6264a9c17f7333bbabd4ab3ae9251cfa8cd8f",
+      "role": "exact baseline textures.js snapshot"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/textures.js",
+      "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62",
+      "role": "current texture module"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/lifecycle/report.json",
+      "sha256": "d75f0cfe647026fa50a74188bd89b362d60637351bd57536fe406cec2652d711",
+      "role": "current20 background/lifecycle evidence and browser signal diagnostics"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-menu.png",
+      "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+      "role": "current320 normal-input route-menu full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-running.png",
+      "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4",
+      "role": "current320 normal-input running full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-same-pose.png",
+      "sha256": "765eb8c2521283acacff522c2d40a7b2158d2c683691e9b9dd21056c1ce0119a",
+      "role": "hidden-HUD ready-state comparison fixture; excluded from gameplay claims"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-first-fish.png",
+      "sha256": "02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a",
+      "role": "current320 normal-input first catch full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-paused.png",
+      "sha256": "e2c8f01076d97701263f7e83530a7f5df3f551013dfdfc912c7c8eab2e24c911",
+      "role": "current320 normal-input manual pause full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-terminal.png",
+      "sha256": "c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21",
+      "role": "current320 normal-input real barrier terminal full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-replay.png",
+      "sha256": "5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451",
+      "role": "current320 normal-input replay full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/comparison-strip-webkit.png",
+      "sha256": "be723874ae02d36d08d99707a199059fa3939a827dd27d10f85e98ef7d204e5b",
+      "role": "current20 full-frame comparison strip; descriptive, not preference ranking"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/temporal-grid-webkit-V3.png",
+      "sha256": "2c8aac6c8e3bcb421bdac8b6029be4db6332e04e6ec80d075978ab92337f4b14",
+      "role": "current20 full-frame temporal grid; inspected at original full frame"
+    }
+  ],
+  "concerns": [
+    {
+      "id": "jump-benefit-and-safe-detour",
+      "changes": [
+        "相对授权54adc1基线（原main已有一般跳跃与随机金鱼），V3把跳跃连到可跳路障、mastery/三星计数，并新增路障后9米的奖励金鱼；绕行分支仍可拿同一奖励。",
+        "完整V3另加入固定关卡路障/鱼道、雷达提示和重玩目标；attempt20仅移动紧凑HUD/路线卡，不改变跳跃或奖励规则。"
+      ],
+      "observed": [
+        "双引擎正常触控首关：l1-o1于18.80游戏秒/约141m以jumped=true通过，奖励鱼l1-jump-l1-o1于19.73秒/147.94m被抓；其后l1-o3即使jumped=false，31.06秒/232.95m仍抓到对应奖励鱼。",
+        "分开的无跳重玩：0跳，安全通过l1-o1与l1-o3，并分别在19.72及31.06秒收下两条bonus金鱼；截图时仍在跑，未冒称该分支通关。",
+        "V3源码将bonus鱼放在路障后9m；每条golden bonus按fishPoints记7分（普通金鱼5分+bonus2），仍是一条普通可收集金鱼；首关无跳自然通关可得2星，三星要求至少跳1个路障。"
+      ],
+      "inferred": [
+        "跳跃的可辨认收益是留在当前路线直过路障并累积mastery/三星条件；安全绕行需要换道，但不会剥夺这份鱼/金鱼奖励，因此不是独占货币。",
+        "现有数据支持机制公平性和两种可行路线，不能推断玩家觉得跳跃值得风险或更有乐趣。"
+      ],
+      "unknowns": [
+        "真人对跳跃时机、绕行代价、碰撞风险和三星门槛的偏好/失败率未知。"
+      ],
+      "acceptanceStatus": "机制及安全替代路线有当前双引擎证据；主观风险回报价值未验证。"
+    },
+    {
+      "id": "first-minute-catch-avoid-success-reward",
+      "changes": [
+        "相对基线的随机开放骑行，V3把第一关改为有目标/雷达/掌握条/完成结算的有限旅程，并把首批鱼和障碍排成可读首分钟；已有基础跳跃与鱼收集不算新功能。",
+        "完整V3增加首鱼提示、行人预警、可跳障奖励/绕行提示、星级结算与重开入口；attempt20只改紧凑屏幕排版。"
+      ],
+      "observed": [
+        "Chromium/WebKit fresh browser正常触控、stateInjection=false：首鱼1.858秒/13.94m，普通金鱼8.26秒/61.93m，首次避开行人约12.14秒/91.04m，首个跳过路障约18.80秒，后置金鱼约19.73秒/147.94m。",
+        "同一首关轨迹约40秒到300m，以17鱼、5金鱼、1跳障、零碰撞结算3星；两引擎结果约40.00秒。游戏时钟与runner墙钟分开，runner首鱼约1.9秒不是手机性能。"
+      ],
+      "inferred": [
+        "关键循环在首分钟内完整出现：捕获→看预警换道→跳/绕路障取舍→收奖励→通关/星级反馈。截图和事件证明呈现顺序，不证明新手理解或觉得节奏好。"
+      ],
+      "unknowns": [
+        "没有自由真人新手观察或理解度测量；没有实体手机触控/性能验证；没有作者或玩家主观有趣度认可。"
+      ],
+      "acceptanceStatus": "首分钟可观察流程由当前自然输入证据覆盖；理解与主观体验未验证。"
+    },
+    {
+      "id": "five-stage-operation-fishing-rain-night",
+      "changes": [
+        "相对授权基线开放骑行，V3加入5个有限关卡、明确速度/终点/捕鱼目标/障碍行与各自固定鱼道；原始一般跳跃机制被用于路障，不是新增的操作类型。",
+        "完整V3加入行人、动态汽车/面包车、可跳路障组合、雨景与暮色目标；L4雨天车道弹簧频率13.7（普通14.5，约低5.5%），L5仅暮色照明/更长路线/更高金鱼目标，没有夜间专属动作。"
+      ],
+      "observed": [
+        "五关同用三车道左右变道、上滑跳跃、靠近自动捕鱼和雷达预警。L1 300m/7.5m·s⁻¹/4障碍行；L2 420m/8/6行且行人交替；L3 540m/8.8/8行，汽车、面包车、行人与路障混排；L4 630m/9.2/11障碍条目/9个不同距离组，雨景且三星需2跳；L5 720m/9.6/13条目/11个距离组，暮色、目标24鱼/3金鱼/2跳。",
+        "五种预设鱼道分别为[1,1,2,2,1,0,0,1]、[1,2,2,1,0,0,2,1]、[1,0,1,2,2,0,1,2]、[1,2,0,2,0,1,2,1]、[1,2,0,2,0,1,0,2]（0/1/2=左/中/右）；首三鱼从中道开始，障碍安全规则会覆盖不安全路线。",
+        "current20双引擎正常输入五关流程可运行。跨关的操作仍是同一动作集；源码/浏览器结果没有夜间专属动作。"
+      ],
+      "inferred": [
+        "实用差异来自要预判哪条车道可走、在哪类障碍前换道、是否把路障留给跳跃；路线和速度递增提供轻量变化，但更像同一玩法的障碍编排，非五种独特操作。",
+        "雨天约5.5%响应差异可能难以感知；暮色的视觉暗化和多一条金鱼目标不能当成新的玩法机制。",
+        "设计范围推断：暮色不额外引入与照明无关的独立操作，以避免功能扩张并保留连续骑行的同一操作节奏；这是范围取舍，不是玩家需求或可玩性结论。"
+      ],
+      "unknowns": [
+        "玩家能否察觉雨天响应差异/认为公平；真实手机夜景道路可读性；各关新鲜感和难度梯度都无真人评分。"
+      ],
+      "acceptanceStatus": "关卡数据与操作路径差异可复核；动作多样性/雨夜新鲜感仅部分成立。"
+    },
+    {
+      "id": "replay-three-stars-best-fish-routes-feedback",
+      "changes": [
+        "相对授权基线的开放骑行/泛成就，V3新增逐关解锁与完成、3星门槛、跳障mastery、每关best字段、鱼道重试和campaign重玩；attempt20紧凑路线卡把这些目标重新排版。",
+        "best在鱼数、金鱼、跳数、分数四字段分别取历史最大值，stars取历史最高；earned jump后UI继续指向对应奖励鱼。"
+      ],
+      "observed": [
+        "current20正常触控首关结算/保存页面展示3星、路线卡17鱼纪录及全海岸3/15星；可重开/回选路线，重玩不需整页刷新。",
+        "无跳五关campaign两引擎都是每关2星，共10/15；跳障路线Chromium为15/15，WebKit为14/15。WebKit L4为27/28鱼、6/3金鱼与3跳，得到2星；Chromium L4为29鱼、7金鱼、3跳得3星。",
+        "结算/路线卡展示捕鱼、金鱼、跳障、无碰撞及时间目标；失败按碰撞/路程/鱼量等原因反馈。source updateBest逐项max，不会让更差记录覆盖单项best。"
+      ],
+      "inferred": [
+        "三星、鱼路与纪录提供可理解的短期重玩目标；逐项best可跨局保留各指标峰值，但并不必然代表同一局同时达成这些峰值。双引擎L4一鱼差异说明15/15一致性尚未达到。"
+      ],
+      "unknowns": [
+        "无长期留存、真人路线偏好、跨设备保存或重复疲劳数据；无论自动campaign完成几次都不能证明长期重玩动机。"
+      ],
+      "acceptanceStatus": "短期保存/重玩/反馈有证据；WebKit三星差异和长线动机仍未定。"
+    },
+    {
+      "id": "pacing-gaps-and-risk-reward",
+      "changes": [
+        "授权基线main按16+随机0–18m生成鱼距；V3改为每16m一条普通鱼并把障碍位置/鱼道/金鱼目标作者化，形成可复现节拍和关卡风险段。",
+        "V3叠加随关递增的速度/路程/障碍量、路障后奖励与三星风险条件；尝试20没有改这些节奏参数，只重新排版紧凑HUD。"
+      ],
+      "observed": [
+        "普通鱼固定每16m；按各关速度相当于约1.67–2.13游戏秒一条。障碍距离组相邻间隔：L1为22–63m，L2为52–58m，L3为61–76m，L4为56–69m，L5为50–68m（多数中后关约5–9秒一组，依关速换算）。",
+        "目标速度7.5→9.6m/s、距离300→720m、障碍组数4→11；同一关内速度恒定。危险提示最多约4.5秒，奖励鱼固定在可跳路障后9m。雨画面和道路/车辆可见；暮色全帧车灯外路面较暗，HUD、雷达和发光鱼仍清楚。"
+      ],
+      "inferred": [
+        "V3把基线有抖动的鱼距收紧为规则节拍，可能更易学但也更机械；关卡障碍行间距提供短休息和局部密集点，结构上未见渐进加速或动态难度。",
+        "路障后鱼把“保持车道跳过”与“换道绕行”接起来；奖励并非独占（见第1项），因此风险主要关系跳障计数/操作偏好，不应夸成硬币门控。"
+      ],
+      "unknowns": [
+        "真人主观紧张/休息/重复感、公平感和夜景可读性均未测；缺实际玩家失误率及手机亮度环境。"
+      ],
+      "acceptanceStatus": "节拍与间隔参数有代码/轨迹证据；风险回报和张弛感没有体验评分。"
+    }
+  ],
+  "stageComparison": {
+    "commonOperation": "五关使用同一输入语法：左/右变道、上滑/点按跳跃、自动抓鱼、看雷达；差异主要是车道选择与遇到的障碍/鱼路线，不是不同动作。",
+    "fishCadenceMeters": 16,
+    "designNotes": [
+      "普通鱼由x=15m起每16m布置，首3条从中道开始；鱼道遇到不安全车道/穿越路径时会被安全规则覆盖。",
+      "一星只需完成距离与基础鱼数，二星还需零碰撞和加鱼；三星叠加更高捕鱼/金鱼数、规定跳障、零碰撞和时间上限。",
+      "雨天lane spring frequency 13.7 vs 14.5；约5.5%差异。夜间关只有暮色环境、更长路线、更高鱼/金鱼要求；没有独有操作。",
+      "五关通关结果来自桌面浏览器触控仿真的normal-input脚本，不是自由真人操作或主观新鲜度评分。",
+      "暮色不额外引入与照明无关的独立操作，是避免功能扩张、保留连续骑行节奏的设计范围推断；不代表玩家已验证这种取舍。"
+    ],
+    "stages": [
+      {
+        "id": 1,
+        "name": "海岸出发",
+        "sourceRules": {
+          "distanceMeters": 300,
+          "speedMetersPerSecond": 7.5,
+          "timeBudgetSeconds": 55,
+          "fishGoal": 8,
+          "goldenFishGoal": 0,
+          "weather": "clear",
+          "threeStarJumpGoal": 1,
+          "obstacleKinds": [
+            "pedestrian",
+            "barrier"
+          ],
+          "obstacleRows": 4,
+          "ordinaryFishCadenceMeters": {
+            "min": 16,
+            "max": 16
+          }
+        },
+        "operation": "中路前三鱼；先在90m行人处观察横穿方向，再围绕140m中路路障选择跳或侧绕，追固定鱼路。",
+        "normalNoJumpCampaign": {
+          "chromium": {
+            "elapsedGameSeconds": 40.00373333333341,
+            "fish": 20,
+            "gold": 5,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 40.006333333331696,
+            "fish": 20,
+            "gold": 5,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          }
+        },
+        "jumpRewardRun": {
+          "chromium": {
+            "elapsedGameSeconds": 40.0057999999998,
+            "fish": 16,
+            "gold": 5,
+            "jumps": 2,
+            "stars": 3,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 39.99999999999867,
+            "fish": 16,
+            "gold": 5,
+            "jumps": 2,
+            "stars": 3,
+            "completed": true
+          }
+        },
+        "observation": "先行人后路障。",
+        "unknowns": [
+          "真实玩家对阶段难度与新鲜感未评分。"
+        ],
+        "fishLanePattern": [
+          1,
+          1,
+          2,
+          2,
+          1,
+          0,
+          0,
+          1
+        ],
+        "obstacleGroupGapsMeters": [
+          50,
+          22,
+          63
+        ]
+      },
+      {
+        "id": 2,
+        "name": "行人出没",
+        "sourceRules": {
+          "distanceMeters": 420,
+          "speedMetersPerSecond": 8,
+          "timeBudgetSeconds": 70,
+          "fishGoal": 12,
+          "goldenFishGoal": 1,
+          "weather": "clear",
+          "threeStarJumpGoal": 1,
+          "obstacleKinds": [
+            "pedestrian",
+            "barrier"
+          ],
+          "obstacleRows": 6,
+          "ordinaryFishCadenceMeters": {
+            "min": 16,
+            "max": 16
+          }
+        },
+        "operation": "76/134/192m行人左右交替，随后246/356m路障；预留相邻车道并在绕人后回到鱼线。",
+        "normalNoJumpCampaign": {
+          "chromium": {
+            "elapsedGameSeconds": 52.50723333333436,
+            "fish": 26,
+            "gold": 5,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 52.50833333333091,
+            "fish": 26,
+            "gold": 5,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          }
+        },
+        "jumpRewardRun": {
+          "chromium": {
+            "elapsedGameSeconds": 52.50160000000073,
+            "fish": 21,
+            "gold": 6,
+            "jumps": 2,
+            "stars": 3,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 52.50199999999798,
+            "fish": 21,
+            "gold": 6,
+            "jumps": 2,
+            "stars": 3,
+            "completed": true
+          }
+        },
+        "observation": "行人交替横穿。",
+        "unknowns": [
+          "真实玩家对阶段难度与新鲜感未评分。"
+        ],
+        "fishLanePattern": [
+          1,
+          2,
+          2,
+          1,
+          0,
+          0,
+          2,
+          1
+        ],
+        "obstacleGroupGapsMeters": [
+          58,
+          58,
+          54,
+          52,
+          58
+        ]
+      },
+      {
+        "id": 3,
+        "name": "危险公路",
+        "sourceRules": {
+          "distanceMeters": 540,
+          "speedMetersPerSecond": 8.8,
+          "timeBudgetSeconds": 82,
+          "fishGoal": 17,
+          "goldenFishGoal": 2,
+          "weather": "clear",
+          "threeStarJumpGoal": 1,
+          "obstacleKinds": [
+            "car",
+            "van",
+            "pedestrian",
+            "barrier"
+          ],
+          "obstacleRows": 8,
+          "ordinaryFishCadenceMeters": {
+            "min": 16,
+            "max": 16
+          }
+        },
+        "operation": "100m车辆、161m行人、222m面包车+中路路障同组，之后汽车/路障与面包车交错；以雷达预判车辆线和可跳道。",
+        "normalNoJumpCampaign": {
+          "chromium": {
+            "elapsedGameSeconds": 61.36693333333408,
+            "fish": 34,
+            "gold": 7,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 61.36933333333087,
+            "fish": 34,
+            "gold": 7,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          }
+        },
+        "jumpRewardRun": {
+          "chromium": {
+            "elapsedGameSeconds": 61.36850000000169,
+            "fish": 30,
+            "gold": 7,
+            "jumps": 2,
+            "stars": 3,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 61.36599999999755,
+            "fish": 30,
+            "gold": 7,
+            "jumps": 2,
+            "stars": 3,
+            "completed": true
+          }
+        },
+        "observation": "汽车/面包车与行人/路障混排。",
+        "unknowns": [
+          "真实玩家对阶段难度与新鲜感未评分。"
+        ],
+        "fishLanePattern": [
+          1,
+          0,
+          1,
+          2,
+          2,
+          0,
+          1,
+          2
+        ],
+        "obstacleGroupGapsMeters": [
+          61,
+          61,
+          76,
+          62,
+          61,
+          62
+        ]
+      },
+      {
+        "id": 4,
+        "name": "雨中骑行",
+        "sourceRules": {
+          "distanceMeters": 630,
+          "speedMetersPerSecond": 9.2,
+          "timeBudgetSeconds": 88,
+          "fishGoal": 20,
+          "goldenFishGoal": 2,
+          "weather": "rain",
+          "threeStarJumpGoal": 2,
+          "obstacleKinds": [
+            "car",
+            "van",
+            "pedestrian",
+            "barrier"
+          ],
+          "obstacleRows": 11,
+          "ordinaryFishCadenceMeters": {
+            "min": 16,
+            "max": 16
+          }
+        },
+        "operation": "雨景中225m面包车与中路路障同组，410m汽车/面包车并列；三车道变道/跳跃规则不变，但转向回中稍缓且三星要求2跳。",
+        "normalNoJumpCampaign": {
+          "chromium": {
+            "elapsedGameSeconds": 68.48503333333532,
+            "fish": 31,
+            "gold": 7,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 68.48266666666635,
+            "fish": 33,
+            "gold": 7,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          }
+        },
+        "jumpRewardRun": {
+          "chromium": {
+            "elapsedGameSeconds": 68.48500000000317,
+            "fish": 29,
+            "gold": 7,
+            "jumps": 3,
+            "stars": 3,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 68.47833333333318,
+            "fish": 27,
+            "gold": 6,
+            "jumps": 3,
+            "stars": 2,
+            "completed": true
+          }
+        },
+        "observation": "雨景混障，三星需跳两障；WebKit跳障路线少1条鱼得2星。",
+        "unknowns": [
+          "玩家能否察觉5.5%雨天转向差异未知。"
+        ],
+        "fishLanePattern": [
+          1,
+          2,
+          0,
+          2,
+          0,
+          1,
+          2,
+          1
+        ],
+        "obstacleGroupGapsMeters": [
+          62,
+          63,
+          69,
+          56,
+          60,
+          68,
+          58,
+          57
+        ]
+      },
+      {
+        "id": 5,
+        "name": "夜间赶海",
+        "sourceRules": {
+          "distanceMeters": 720,
+          "speedMetersPerSecond": 9.6,
+          "timeBudgetSeconds": 95,
+          "fishGoal": 24,
+          "goldenFishGoal": 3,
+          "weather": "dusk",
+          "threeStarJumpGoal": 2,
+          "obstacleKinds": [
+            "car",
+            "van",
+            "pedestrian",
+            "barrier"
+          ],
+          "obstacleRows": 13,
+          "ordinaryFishCadenceMeters": {
+            "min": 16,
+            "max": 16
+          }
+        },
+        "operation": "暮色下210m面包车与中路路障同组、516m汽车/面包车并列，障碍更密、速度更快、金鱼目标更高；无专属夜间输入。",
+        "normalNoJumpCampaign": {
+          "chromium": {
+            "elapsedGameSeconds": 75.00663333333674,
+            "fish": 36,
+            "gold": 6,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 75.00633333333674,
+            "fish": 36,
+            "gold": 6,
+            "jumps": 0,
+            "stars": 2,
+            "completed": true
+          }
+        },
+        "jumpRewardRun": {
+          "chromium": {
+            "elapsedGameSeconds": 75.00023333333844,
+            "fish": 36,
+            "gold": 8,
+            "jumps": 3,
+            "stars": 3,
+            "completed": true
+          },
+          "webkit": {
+            "elapsedGameSeconds": 75.00066666667033,
+            "fish": 36,
+            "gold": 8,
+            "jumps": 3,
+            "stars": 3,
+            "completed": true
+          }
+        },
+        "observation": "暮色、稀有金鱼目标和更长路线；未见专属夜间动作。",
+        "unknowns": [
+          "实体手机暗部可读性及夜间操作期待未知。"
+        ],
+        "fishLanePattern": [
+          1,
+          2,
+          0,
+          2,
+          0,
+          1,
+          0,
+          2
+        ],
+        "obstacleGroupGapsMeters": [
+          56,
+          59,
+          66,
+          58,
+          62,
+          58,
+          62,
+          68,
+          60,
+          50
+        ]
+      }
+    ],
+    "baselineComparison": "基线原main为开放式骑行、普通鱼随机分道且生成间距16–34m；V3现为有限五关、定点障碍与分关固定鱼道。基线已经有一般跳跃/鱼群/金鱼收集。",
+    "authoredFishLanePatterns": [
+      {
+        "level": 1,
+        "lanes": [
+          1,
+          1,
+          2,
+          2,
+          1,
+          0,
+          0,
+          1
+        ]
+      },
+      {
+        "level": 2,
+        "lanes": [
+          1,
+          2,
+          2,
+          1,
+          0,
+          0,
+          2,
+          1
+        ]
+      },
+      {
+        "level": 3,
+        "lanes": [
+          1,
+          0,
+          1,
+          2,
+          2,
+          0,
+          1,
+          2
+        ]
+      },
+      {
+        "level": 4,
+        "lanes": [
+          1,
+          2,
+          0,
+          2,
+          0,
+          1,
+          2,
+          1
+        ]
+      },
+      {
+        "level": 5,
+        "lanes": [
+          1,
+          2,
+          0,
+          2,
+          0,
+          1,
+          0,
+          2
+        ]
+      }
+    ],
+    "routeOperationNotes": [
+      {
+        "level": 1,
+        "operation": "中路前三鱼；先在90m行人处观察横穿方向，再围绕140m中路路障选择跳或侧绕，追固定鱼路。",
+        "obstacleGroupGapsMeters": [
+          50,
+          22,
+          63
+        ]
+      },
+      {
+        "level": 2,
+        "operation": "76/134/192m行人左右交替，随后246/356m路障；预留相邻车道并在绕人后回到鱼线。",
+        "obstacleGroupGapsMeters": [
+          58,
+          58,
+          54,
+          52,
+          58
+        ]
+      },
+      {
+        "level": 3,
+        "operation": "100m车辆、161m行人、222m面包车+中路路障同组，之后汽车/路障与面包车交错；以雷达预判车辆线和可跳道。",
+        "obstacleGroupGapsMeters": [
+          61,
+          61,
+          76,
+          62,
+          61,
+          62
+        ]
+      },
+      {
+        "level": 4,
+        "operation": "雨景中225m面包车与中路路障同组，410m汽车/面包车并列；三车道变道/跳跃规则不变，但转向回中稍缓且三星要求2跳。",
+        "obstacleGroupGapsMeters": [
+          62,
+          63,
+          69,
+          56,
+          60,
+          68,
+          58,
+          57
+        ]
+      },
+      {
+        "level": 5,
+        "operation": "暮色下210m面包车与中路路障同组、516m汽车/面包车并列，障碍更密、速度更快、金鱼目标更高；无专属夜间输入。",
+        "obstacleGroupGapsMeters": [
+          56,
+          59,
+          66,
+          58,
+          62,
+          58,
+          62,
+          68,
+          60,
+          50
+        ]
+      }
+    ]
+  },
+  "firstMinuteMeasurements": {
+    "normalInputOnly": true,
+    "stateInjection": false,
+    "runtime": "Chromium/WebKit桌面浏览器移动触控仿真，非实体手机；游戏秒与runner墙钟分开。",
+    "engines": [
+      {
+        "engine": "chromium",
+        "firstCatch": {
+          "gameSeconds": 1.8584333333333316,
+          "distanceMeters": 13.938250000000002
+        },
+        "firstOrdinaryGold": {
+          "gameSeconds": 8.259600000000068,
+          "distanceMeters": 61.94699999999976
+        },
+        "firstAvoidance": {
+          "gameSeconds": 12.136133333333378,
+          "distanceMeters": 91.0209999999998,
+          "hazardKind": "pedestrian"
+        },
+        "firstJumpBonus": {
+          "gameSeconds": 19.72709999999987,
+          "distanceMeters": 147.95325000000028,
+          "fishCountAtCatch": 7
+        },
+        "firstSuccessfulFinish": {
+          "gameSeconds": 40.00293333333347,
+          "distanceMeters": 300,
+          "fish": 17,
+          "gold": 5,
+          "jumps": 1,
+          "stars": 3
+        },
+        "firstCatchRunnerWallMs": 1900
+      },
+      {
+        "engine": "webkit",
+        "firstCatch": {
+          "gameSeconds": 1.8583333333333312,
+          "distanceMeters": 13.93749999999999
+        },
+        "firstOrdinaryGold": {
+          "gameSeconds": 8.25700000000013,
+          "distanceMeters": 61.92749999999972
+        },
+        "firstAvoidance": {
+          "gameSeconds": 12.140999999999961,
+          "distanceMeters": 91.05749999999995,
+          "hazardKind": "pedestrian"
+        },
+        "firstJumpBonus": {
+          "gameSeconds": 19.725333333332983,
+          "distanceMeters": 147.9400000000004,
+          "fishCountAtCatch": 7
+        },
+        "firstSuccessfulFinish": {
+          "gameSeconds": 39.99999999999878,
+          "distanceMeters": 300,
+          "fish": 17,
+          "gold": 5,
+          "jumps": 1,
+          "stars": 3
+        },
+        "firstCatchRunnerWallMs": 1923
+      }
+    ],
+    "interpretation": [
+      "同一首玩轨迹约40秒完成：1.86秒首鱼、8.26秒普通金鱼、12.14秒避开行人、18.80秒跳障、19.73秒奖励金鱼、40秒三星终点。",
+      "另一条0跳安全绕行重玩在31.8秒仍在跑，已绕过两个路障并取得两条后置奖励；这证明替代路线，不代表该支已成功通关。",
+      "所有时序来自normal-input浏览器触控仿真；runner wall time和游戏秒分别报告，不外推实体设备性能。"
+    ],
+    "safeDetourReplay": {
+      "phaseAtCapture": "running",
+      "elapsedGameSeconds": 31.794999999999206,
+      "distanceMeters": 238.4625000000013,
+      "jumps": 0,
+      "fish": 17,
+      "gold": 4,
+      "barriersClearedWithoutJump": [
+        {
+          "at": 18.805666666666344,
+          "distance": 141.04250000000044,
+          "objectId": "l1-o1"
+        },
+        {
+          "at": 30.134333333332613,
+          "distance": 226.0075000000012,
+          "objectId": "l1-o3"
+        }
+      ],
+      "bonusFishCaught": [
+        {
+          "at": 19.7226666666663,
+          "distance": 147.92000000000053,
+          "objectId": "l1-jump-l1-o1"
+        },
+        {
+          "at": 31.05799999999923,
+          "distance": 232.93500000000128,
+          "objectId": "l1-jump-l1-o3"
+        }
+      ],
+      "note": "独立重玩分支，截图时仍在跑，未宣称终点成功。"
+    },
+    "timeline": [
+      {
+        "gameSeconds": 1.858,
+        "event": "first ordinary fish caught",
+        "evidence": "experience-chromium and experience-webkit normal-input event reports"
+      },
+      {
+        "gameSeconds": 8.258,
+        "event": "first ordinary golden fish caught",
+        "evidence": "both current20 engines"
+      },
+      {
+        "gameSeconds": 12.139,
+        "event": "first pedestrian avoided",
+        "evidence": "both current20 engines"
+      },
+      {
+        "gameSeconds": 18.802,
+        "event": "first barrier jumped and cleared",
+        "evidence": "both current20 engines; normal trusted touch"
+      },
+      {
+        "gameSeconds": 19.726,
+        "event": "post-barrier bonus golden fish caught",
+        "evidence": "both current20 engines"
+      },
+      {
+        "gameSeconds": 40.001,
+        "event": "first level completed and three-star settlement",
+        "evidence": "both current20 engines; 17 fish, 5 golden, 1 jump"
+      }
+    ]
+  },
+  "replayMeasurements": {
+    "levelOneThreeStarReplay": {
+      "observed": true,
+      "stars": 3,
+      "routeBest": {
+        "fish": 17,
+        "gold": 5,
+        "jumps": 1,
+        "score": 56
+      },
+      "visibleSavedProgress": "全海岸3/15星，路线卡显示17鱼纪录与三星目标。"
+    },
+    "noJumpFiveStageCampaign": {
+      "completedStages": 5,
+      "starsPerStage": [
+        2,
+        2,
+        2,
+        2,
+        2
+      ],
+      "totalStars": 10,
+      "maxStars": 15,
+      "replayWithoutFullPageReload": true
+    },
+    "jumpRewardRuns": {
+      "chromium": {
+        "starsPerStage": [
+          3,
+          3,
+          3,
+          3,
+          3
+        ],
+        "totalStars": 15
+      },
+      "webkit": {
+        "starsPerStage": [
+          3,
+          3,
+          3,
+          2,
+          3
+        ],
+        "totalStars": 14
+      },
+      "webkitStageFourGap": "L4为27/28鱼，金鱼和3跳达标，得2星；Chromium得3星。"
+    },
+    "feedbackEvidence": [
+      "结算/重玩入口、星级、鱼/金鱼/跳障目标和最佳记录有可见反馈。",
+      "失败反馈按碰撞、路程、鱼数、金鱼原因区分。"
+    ],
+    "limits": [
+      "无长期留存、路线偏好或重复疲劳数据；自动重玩不证明长期动机。"
+    ],
+    "baselineDelta": "基线已有一般骑行/成就，但无此V3逐关星级/解锁/路线best；V3把重玩目标改成鱼道、三星门槛与单项best纪录。",
+    "bestRecordSemantics": "best.fish、best.gold、best.jumps、best.score各自保存历史最大值；星级保存历史最大值。这些单项最大值可能来自不同局。",
+    "starParity": "current20实际跳障路线Chromium 15/15星、WebKit 14/15星；WebKit仅L4差1条鱼（27/28），得2星。无跳五关路线两引擎均10/15星。",
+    "fishRouteReplay": "每关有手工鱼道pattern及安全路由覆盖；重玩可以从同关再次尝试同一/另一路车道选择。"
+  },
+  "perceptualObservations": [
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/compact-probe-attempt20/running.png",
+      "sha256": "846530e0cec5743d51404834a268b6feddcd00cc35a104eb85eed4ee938b7832",
+      "viewport": "320x568全帧",
+      "observed": "目标行底124.89px、掌握条顶130px，间隔5.1px；雷达标签约174px；三键约84.7×66px、12px字体，无HUD重叠。",
+      "interpretation": "紧凑HUD修复可见。",
+      "limitation": "桌面仿真非实体手机。"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/compact-probe-attempt20/menu.png",
+      "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+      "viewport": "320x568全帧",
+      "observed": "第一关卡完整；第二锁定卡下部被固定出发键遮住。报告称列表可滚动、文字框未溢出，但没有强滚动提示。",
+      "interpretation": "文本溢出修复，滚动发现性仍偏弱。",
+      "limitation": "文字框通过不代表玩家会发现滚动。"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-hazard.png",
+      "sha256": "a58c1d1d5238b0a6c1aaf6a27f50eed35176e27d8e37ec9b452d053aea48dd84",
+      "viewport": "390x844全帧",
+      "observed": "雨线、道路、车辆和金鱼可见；雷达红色3秒危险车道清楚。",
+      "interpretation": "雨景主风险/奖励有辨识。",
+      "limitation": "非真实设备显示。 该文件来自已归档的初始 QA capture bundle；L3 hazard 原 PNG 丢失并被另一张 safety 图覆盖，所以本图只能作描述性历史诊断，不能证明当前 QA 门禁通过。",
+      "evidenceMode": "archived-historical-diagnostic-not-current-qa-pass"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-hazard.png",
+      "sha256": "02e59bc47fe595244f76fcb771eaf5d767aa952a12ff3f646b8336f20c595d70",
+      "viewport": "390x844全帧",
+      "observed": "车灯外道路很暗；近车、发光金鱼、HUD和雷达仍可见。",
+      "interpretation": "有夜景气氛但暗区辨识存疑。",
+      "limitation": "缺实体手机/环境亮度/人类评估。 该文件来自已归档的初始 QA capture bundle；L3 hazard 原 PNG 丢失并被另一张 safety 图覆盖，所以本图只能作描述性历史诊断，不能证明当前 QA 门禁通过。",
+      "evidenceMode": "archived-historical-diagnostic-not-current-qa-pass"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/earned-three-stars.png",
+      "sha256": "b715f87df8cb77c9181c10f5e516954be3fc6a453f8f9bfafd38cda2e27985e2",
+      "viewport": "390x844全帧",
+      "observed": "三星结算和重玩/继续入口可见。",
+      "interpretation": "单局成功反馈闭环。",
+      "limitation": "脚本达成不证明新手理解。"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/saved-mastery.png",
+      "sha256": "62a711742ddad7e71a57d32a3f06acb496fcd9d7910650fdbfced6347060f64c",
+      "viewport": "390x844全帧",
+      "observed": "路线卡显示17鱼纪录和3/15星。",
+      "interpretation": "短期冲星/刷纪录有目标。",
+      "limitation": "无长期动机证据。"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/settled.png",
+      "sha256": "34e651a4345e89d1951defcefc7c39201ed7c96e065d4eb48a03a5f7759ed425",
+      "viewport": "390x844同输入对比",
+      "observed": "PR10近侧视角/持续转向；PR13/V3后方视角/邻道变道。",
+      "interpretation": "只记录视角与操作表达差异。",
+      "limitation": "原生相机/输入不同，不排序。"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/webkit-V3-temporal-sheet.png",
+      "sha256": "960863158efa74971ccee73469a3d181ae8ad32c75e60770b854c875498ad42c",
+      "viewport": "历史attempt18全帧时间网格",
+      "observed": "旧全帧图和时间网格已看；motion-review-final18只做窄范围桌面姿态/像素运动检查，注明非完整自然玩家感知门。",
+      "interpretation": "历史上下文。",
+      "limitation": "不可当current20通过。"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/report.json",
+      "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+      "viewport": "390x844、360x740、320x568、844x390桌面浏览器触控仿真",
+      "observed": "report级comparisonFixtureOnly标记不等于全部截图都是fixture：同pose.png是唯一隐藏HUD ready-state姿态比较图，被binders排除为玩法证据；其余同组菜单/首鱼/运行/暂停/恢复/真实路障终局/重玩图为normal trusted-touch流程。",
+      "interpretation": "只以有自然输入来源的完整画面支持游戏体验观察；姿态对比图不用于玩法结论。",
+      "limitation": "桌面仿真，不是实体手机。",
+      "evidenceMode": "normal-trusted-touch-except-same-pose-fixture"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-menu.png",
+      "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+      "viewport": "320x568全帧",
+      "observed": "首关卡片和出发按钮可读；第二锁定关卡下半部被固定出发按钮盖住，未看到明显滚动提示。",
+      "interpretation": "紧凑布局改善了首关但锁定路线的发现性仍弱。",
+      "limitation": "桌面小屏仿真。",
+      "evidenceMode": "normal-trusted-touch-start"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-running.png",
+      "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4",
+      "viewport": "320x568全帧",
+      "observed": "路程/捕鱼/剩余时间、三星掌握条、雷达和三枚66px高触控按钮均在画面内；目标行和掌握条之间有空隙，未见骑手压住目标。",
+      "interpretation": "紧凑HUD和动作按钮在该竖屏全帧内可读。",
+      "limitation": "非实体手机。",
+      "evidenceMode": "normal-trusted-touch-running"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-terminal.png",
+      "sha256": "c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21",
+      "viewport": "320x568全帧",
+      "observed": "真实路障碰撞结算显示原因，并直接写明“跳过去有奖励金鱼，绕开也可以安全前进”，提供重开和选关。",
+      "interpretation": "失败归因与恢复路径可见；文案明示安全绕行。",
+      "limitation": "不是玩家理解度测试。",
+      "evidenceMode": "normal-trusted-touch-real-barrier-terminal"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-replay.png",
+      "sha256": "5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451",
+      "viewport": "320x568全帧",
+      "observed": "重开后回到首关运行界面，目标/雷达/动作仍显示；骑手和道路未被弹窗覆盖。",
+      "interpretation": "同局重玩恢复到可操作状态。",
+      "limitation": "不证明长期留存。",
+      "evidenceMode": "normal-trusted-touch-replay"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-4-hazard.png",
+      "sha256": "a58c1d1d5238b0a6c1aaf6a27f50eed35176e27d8e37ec9b452d053aea48dd84",
+      "viewport": "390x844全帧",
+      "observed": "雨线、车辆、奖励金鱼、雷达红色车道和3秒倒计时均可见；雨本身是轻量背景表现。",
+      "interpretation": "危险方向/倒计时与奖励在该桌面仿真画面中可辨。",
+      "limitation": "不证明雨天转向差异可感或实体手机亮度。",
+      "evidenceMode": "normal-trusted-touch-level-hazard"
+    },
+    {
+      "artifactPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-5-hazard.png",
+      "sha256": "02e59bc47fe595244f76fcb771eaf5d767aa952a12ff3f646b8336f20c595d70",
+      "viewport": "390x844全帧",
+      "observed": "暮色道路车灯外很暗；近处骑手/车、发光鱼、HUD和雷达可见，较远路面与路缘对比弱。",
+      "interpretation": "氛围区分明显，远处道路读取风险值得实机关注；没有证据说暗处确实导致碰撞。",
+      "limitation": "桌面仿真，无环境亮度或人类读图测试。",
+      "evidenceMode": "normal-trusted-touch-level-hazard"
+    }
+  ],
+  "blockers": [
+    {
+      "id": "attempt20-background-pause-signal",
+      "severity": "environment_blocked",
+      "classification": "ENV_BLOCKED_NO_DESKTOP_BACKGROUND_SIGNAL",
+      "evidencePaths": [
+        "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/lifecycle/report.json",
+        "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/report.json",
+        "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/report.json",
+        "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/qa-summary-v3.json"
+      ],
+      "finding": "qa-all两个引擎各有tab-blur-pauses和background-manual-resume失败；lifecycle有3个背景检查未通过。但诊断明确将headless标签为NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS，观察仍为visibility=visible、focus=true、events=[]；actual-window-minimize记录游戏继续运行，却没有记录到visibility/focus离开或blur事件。故只能说明该环境未交付可验证的真实后台信号，不能称作“真实blur已触发但游戏没暂停”。",
+      "impact": "后台暂停行为仍需在能证实document.hidden/visibilitychange的真实桌面或设备环境复测；目前是环境证据阻塞，不是已证实的V3运行时缺陷。"
+    },
+    {
+      "id": "physical-and-human-experience-coverage",
+      "severity": "evidence_gap",
+      "classification": "BOUNDED_DESKTOP_SIMULATION_ONLY",
+      "evidencePaths": [
+        "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/report.json",
+        "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/report.json",
+        "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/report.json",
+        "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-hazard.png"
+      ],
+      "finding": "current20有normal-input双引擎自然旅程、全帧截图和160余风险检查，但physicalIPhone=NOT_RUN；未观察真实新手、实机触控、实体屏幕暗部或主观乐趣。",
+      "impact": "机制/可见反馈可由现有轨迹与画面描述；手感、公平、节奏和是否“足够好玩”不作最终结论。"
+    }
+  ],
+  "scopeOfVerdict": {
+    "claim": "独立审计当前attempt20，并将五项关切对照授权54adc1基线评估完整V3迭代；此报告不是发布验收，也不作真人乐趣批准。",
+    "evidenceBoundaries": [
+      "精确H5 SHA256为3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1。baseline-receipt将54adc1fb64155f9dd7c1c90ecae7b8185ac540b8绑定到原始main快照；基线已有一般跳跃/鱼收集，不冒称为新。",
+      "Attempt20只修紧凑HUD/路线卡；attempt18 review是历史窄范围桌面姿态/像素运动检查，绝不作为current20的自然体验通过。",
+      "visual报告的comparisonFixtureOnly是报告级标签；仅same-pose图为隐藏HUD ready fixture并排除玩法证据，其他图为正常trusted-touch开始/捕获/暂停/终局/重玩。",
+      "PR10近侧视角/持续操控与PR13/V3后方视角/三车道变道的截图仅记录视角和输入差异，不作优劣排序。",
+      "Attempt20 experience、risk、head、feel-state、visual与lifecycle报告分别以精确H5 SHA绑定；档案中的首轮qa-all/campaign截图包发生L3原PNG被覆盖的hash不匹配，旧报告字节保留但只作历史诊断。",
+      "当前精确attempt20 qa-all两引擎报告均为normalInputOnly=true、stateInjection=false、errors=[]；各自32/34项通过，只有tab-blur-pauses和background-manual-resume两项因未收到桌面后台信号而失败。两引擎共72张嵌套截图逐项SHA校验；campaign 18/18、collision 9/9和五关无跳结算已覆盖。报告保持passed=false，不将环境阻塞或生产门槛宣称为通过。"
+    ],
+    "notEstablished": [
+      "真人是否认为跳跃奖励值得风险，是否理解雷达/掌握条，是否接受固定节拍和五关复用。",
+      "实体手机触控、帧率、强光/低亮度、系统后台暂停；生命期真实后台事件未被可靠注入。",
+      "夜景长距离障碍的实机可读性和长期重玩/疲劳。",
+      "桌面浏览器无法提供可验证的切后台信号；真实设备后台行为、实体手机验收与真人乐趣/留存仍未建立，故不声称全局QA或生产PASS。"
+    ],
+    "finalApproval": false
+  },
+  "iterationBaseline": {
+    "authorizedSourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+    "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+    "baselineReceiptPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/baseline-receipt.json",
+    "baselineReceiptSha256": "4a31e58408bdc56390a3b6538db60279764f7ae5c13053b4de00e819fd86a9c7",
+    "comparisonMethod": "baseline-receipt.json把授权sourceRevision绑定到初始文件SHA；original-main.js与收据中pelican-bike/src/main.js的SHA一致。逐读原始main快照、V3当前main和levels/adventure/engagement/feel/UI模块；不依赖未能读取的Git对象。",
+    "observedBaseline": "原始main.js已有一般跳跃、随机金鱼与鱼群收集（随机生成鱼道、金鱼概率12%），但鱼间距为16+随机0–18米、没有V3五关campaign星级。不能把“有跳跃/有金鱼”说成V3新增。",
+    "observedWholeIterationDelta": "V3将开放式骑行改成5个有限终点关卡，添加手工障碍行、稳定的三车道鱼路线、行人/汽车/面包车/路障的风险组合、目标/雷达/阶段结算与本机解锁存档；增加星级/mastery及单项单调best纪录/关卡重玩，并在可跳路障后9米放置可见奖励金鱼；首关加入首鱼、避行人、跳障/绕行和结算的可观察节奏。雨天轻调转向响应，暮色只换照明与目标，没有夜间专属操作。",
+    "current20Delta": "attempt20的fix-evidence将该次变更限定为紧凑屏幕HUD与路线卡排版；levels/adventure/engagement/物理/关卡数据未变。此报告逐项描述的是完整V3相对54adc1基线的体验变化，不把18→20 CSS调整当作整个V3。"
+  },
+  "evidenceHistory": {
+    "currentSnapshot": {
+      "targetGame": "鹈鹕海岸冒险",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "attempt": 20,
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "capturedAt": "2026-10-15T03:32:34.588Z",
+      "buildReceipt": {
+        "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/build-receipt.json",
+        "sha256": "771082d72c7c4a0c4a4f96d820bc47839582d3f3f0389d033b97eb7e41c85feb",
+        "qaField": "PENDING"
+      },
+      "qaSummary": {
+        "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/qa-summary-v3.json",
+        "sha256": "8e20d6324334f90e51cfc3ad04e2d250ef0006d632e85d60be0b6c28c16f2cd3",
+        "createdAt": "2026-10-15T03:31:21.949Z",
+        "scriptedCoreJourneyPassed": true,
+        "desktopBrowserEvidencePassed": true,
+        "lifecycleSupportedChecksPassed": true,
+        "desktopBackgroundEvidence": "BLOCKED_ENVIRONMENT_SIGNAL_UNAVAILABLE",
+        "independentPerceptualPassed": true,
+        "runtimeProductJourneyPassed": true,
+        "h5DevicePlaytestCandidate": true,
+        "releaseReady": false,
+        "productionReady": false,
+        "campaignRows": [
+          {
+            "path": "attempts/attempt-20/qa-campaign-webkit/report.json",
+            "status": "PASS",
+            "blockers": []
+          },
+          {
+            "path": "attempts/attempt-20/qa-campaign-chromium/report.json",
+            "status": "PASS",
+            "blockers": []
+          }
+        ],
+        "safetyClassifications": [
+          {
+            "engine": "webkit",
+            "status": "BLOCKED",
+            "supportedChecksPassed": true,
+            "environmentBlockedChecks": [
+              "background-manual-resume",
+              "tab-blur-pauses"
+            ],
+            "environmentalEvidence": {
+              "diagnosticName": "headless-webkit-tab-capability",
+              "path": "attempts/attempt-20/lifecycle/report.json",
+              "passed": true,
+              "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS"
+            }
+          },
+          {
+            "engine": "chromium",
+            "status": "BLOCKED",
+            "supportedChecksPassed": true,
+            "environmentBlockedChecks": [
+              "background-manual-resume",
+              "tab-blur-pauses"
+            ],
+            "environmentalEvidence": {
+              "diagnosticName": "headless-chromium-tab-capability",
+              "path": "attempts/attempt-20/lifecycle/report.json",
+              "passed": true,
+              "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS"
+            }
+          }
+        ]
+      },
+      "comparisonFrameProvenance": {
+        "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/provenance.json",
+        "sha256": "a853f81183bdcfdb909b6e1c98010f26d0d6ce09f1329d92eed9b1cc61fe2476",
+        "frameRecordCount": 120,
+        "uniqueSourceFrameCount": 120,
+        "perEngineVariantCounts": {
+          "webkit": {
+            "PR10": 6,
+            "PR13": 6,
+            "V3": 48
+          },
+          "chromium": {
+            "PR10": 6,
+            "PR13": 6,
+            "V3": 48
+          }
+        },
+        "contactSheetCount": 4,
+        "reportClock": "actions.actualMs and samples.ms are capture wall-clock elapsed after #start; they are not game elapsed seconds",
+        "captureOffsetDefinition": "Approximate source PTS = encoded video duration minus the final samples.ms value, then add the report capture-clock timestamp. Recorder tail after the final sample is not measured; residual timing uncertainty is unquantified.",
+        "alignmentCaveat": "PR10 is side-view with held steering; PR13 and V3 are rear-view with one-lane steering. The report clock begins after #start while video begins at newPage. Every capture offset derived from duration minus final RAF sample is approximate, with unquantified recorder-tail uncertainty; no exact game-time or perfect synchronization claim is made.",
+        "alignmentQuality": "approximate/descriptive only; first-touch-referenced clips are not perfectly synchronized",
+        "method": "Original decoded full frames only. No crop, avatar-centering, generated gameplay frame, interpolation, or speed changes. Contact sheets use proportional full-frame reduction and labels outside each frame."
+      }
+    },
+    "archivedInitialCaptureBundle": {
+      "status": "HISTORICAL_INVALID_CAPTURE_BINDING",
+      "pathMap": {
+        "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/path-map.json",
+        "sha256": "749698c70480938ca35c5e6ecca99d16f7c543384447a6fa713a8d2cce73c9e2",
+        "classification": "HISTORICAL_INVALID_CAMPAIGN_PNG_BINDING; later safety overwritten original l3 hazard; originalreport expectedhash preserved with missing originalPNG"
+      },
+      "sourceMappings": [
+        {
+          "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-campaign-webkit/report.json",
+          "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-webkit/report.json",
+          "sha256": "983f70f9ff3f729b7aa458be75310323dc18d0f34ca99433d2e5972b5a98439d",
+          "role": "archived attempt20 campaign WebKit report; historical diagnostic only; its L3 screenshot binding is invalid"
+        },
+        {
+          "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-campaign-chromium/report.json",
+          "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-chromium/report.json",
+          "sha256": "440e9734e4b329ee3deb8cc22afe6b4cd150b813c5ddc6e6b3f8ae8c8db1777e",
+          "role": "archived attempt20 campaign Chromium report; historical diagnostic only; its L3 screenshot binding is invalid"
+        },
+        {
+          "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/report.json",
+          "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/report.json",
+          "sha256": "fb2c4e8ee8be6372f90c2ff89fc9af41b31713f0c4209089a1d82dccccb1802a",
+          "role": "archived initial attempt20 broad QA WebKit report; historical diagnostic only; not the latest exact-path retest"
+        },
+        {
+          "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/report.json",
+          "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-chromium/report.json",
+          "sha256": "3d59ecfd26da8f3a2bda4eea75f4191bdf2c0d24943588c560cbe8de88501df9",
+          "role": "archived initial attempt20 broad QA Chromium report; historical diagnostic only; not the latest exact-path retest"
+        },
+        {
+          "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-4-hazard.png",
+          "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-hazard.png",
+          "sha256": "a58c1d1d5238b0a6c1aaf6a27f50eed35176e27d8e37ec9b452d053aea48dd84",
+          "role": "archived attempt20 WebKit rain screenshot; descriptive historical diagnostic only, not a current QA pass"
+        },
+        {
+          "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-4-terminal.png",
+          "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-terminal.png",
+          "sha256": "685b67a77870b168d2adfc1195d9b5155f517cfa9b33ca8808ddbd1e206dd006",
+          "role": "archived attempt20 WebKit L4 terminal screenshot; descriptive historical diagnostic only, not a current QA pass"
+        },
+        {
+          "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-5-hazard.png",
+          "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-hazard.png",
+          "sha256": "02e59bc47fe595244f76fcb771eaf5d767aa952a12ff3f646b8336f20c595d70",
+          "role": "archived attempt20 WebKit dusk screenshot; descriptive historical diagnostic only, not a current QA pass"
+        },
+        {
+          "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-5-terminal.png",
+          "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-terminal.png",
+          "sha256": "83f6cb08056bf6b983fe432e2dc9663e798ec5068a8ddec130e455fa03e3cb82",
+          "role": "archived attempt20 WebKit L5 terminal screenshot; descriptive historical diagnostic only, not a current QA pass"
+        }
+      ],
+      "perEngine": [
+        {
+          "engine": "webkit",
+          "archivedCampaignReport": {
+            "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-webkit/report.json",
+            "sha256": "983f70f9ff3f729b7aa458be75310323dc18d0f34ca99433d2e5972b5a98439d",
+            "reportPassed": true
+          },
+          "archivedBroadQaReport": {
+            "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/report.json",
+            "sha256": "fb2c4e8ee8be6372f90c2ff89fc9af41b31713f0c4209089a1d82dccccb1802a",
+            "reportPassed": false
+          },
+          "expectedScreenshot": {
+            "runRelativePath": "attempts/attempt-20/qa-all-webkit/level-3-hazard.png",
+            "expectedSha256": "005b879997f90aab5b677143fc947db508e6d82448f5aa491d1967a40ddae82c",
+            "originalBytesStatus": "UNAVAILABLE_OVERWRITTEN",
+            "usableAsEvidence": false
+          },
+          "archivedReplacementScreenshot": {
+            "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-3-hazard.png",
+            "sha256": "08b82ee3e305f2c6bde88bc249ddaffcaeb14f5a68ace0a25178c3be25bb499b",
+            "usableAsEvidence": false
+          }
+        },
+        {
+          "engine": "chromium",
+          "archivedCampaignReport": {
+            "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-chromium/report.json",
+            "sha256": "440e9734e4b329ee3deb8cc22afe6b4cd150b813c5ddc6e6b3f8ae8c8db1777e",
+            "reportPassed": true
+          },
+          "archivedBroadQaReport": {
+            "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-chromium/report.json",
+            "sha256": "3d59ecfd26da8f3a2bda4eea75f4191bdf2c0d24943588c560cbe8de88501df9",
+            "reportPassed": false
+          },
+          "expectedScreenshot": {
+            "runRelativePath": "attempts/attempt-20/qa-all-chromium/level-3-hazard.png",
+            "expectedSha256": "c6d47d4c86e092154d7e44e87651caa885d5f9ef85e28bdb8bbc699dd204da29",
+            "originalBytesStatus": "UNAVAILABLE_OVERWRITTEN",
+            "usableAsEvidence": false
+          },
+          "archivedReplacementScreenshot": {
+            "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-chromium/level-3-hazard.png",
+            "sha256": "0a9a8d2b1529f0d1ae0f23006e5cb374d0ef3335b6dab96eac890dc1686947b2",
+            "usableAsEvidence": false
+          }
+        }
+      ],
+      "unavailability": "campaign report JSON bytes and SHA-256 values are preserved. The L3 hazard PNG bytes originally expected by those reports are unavailable: a later safety capture overwrote the active path before archive. The archive retains a different safety PNG, whose SHA differs from each preserved expected SHA. Neither the replacement image nor any nearby screenshot is usable as the original L3 evidence."
+    },
+    "currentLocalBroadQaEvidence": {
+      "status": "BOUNDED_ENVIRONMENT_BLOCKED",
+      "targetGame": "鹈鹕海岸冒险",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "attempt": 20,
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "engines": [
+        {
+          "engine": "webkit",
+          "report": {
+            "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/report.json",
+            "sha256": "14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71",
+            "passed": false,
+            "checkCount": 34,
+            "passedCheckCount": 32,
+            "failedCheckCount": 2,
+            "normalInputOnly": true,
+            "stateInjection": false,
+            "campaignChecks": 18,
+            "campaignPassed": 18,
+            "collisionChecks": 9,
+            "collisionPassed": 9,
+            "safetyChecks": 7,
+            "safetyPassed": 5,
+            "errors": [],
+            "screenshotCount": 36,
+            "levelSettlements": [
+              {
+                "level": 1,
+                "reason": "complete",
+                "fish": 20,
+                "gold": 5,
+                "jumps": 0,
+                "elapsedSeconds": 40.00066666666482,
+                "earned": true,
+                "unlockedThrough": 2
+              },
+              {
+                "level": 2,
+                "reason": "complete",
+                "fish": 26,
+                "gold": 5,
+                "jumps": 0,
+                "elapsedSeconds": 52.504333333329924,
+                "earned": true,
+                "unlockedThrough": 3
+              },
+              {
+                "level": 3,
+                "reason": "complete",
+                "fish": 34,
+                "gold": 7,
+                "jumps": 0,
+                "elapsedSeconds": 61.37066666666231,
+                "earned": true,
+                "unlockedThrough": 4
+              },
+              {
+                "level": 4,
+                "reason": "complete",
+                "fish": 31,
+                "gold": 7,
+                "jumps": 0,
+                "elapsedSeconds": 68.48333333333075,
+                "earned": true,
+                "unlockedThrough": 5
+              },
+              {
+                "level": 5,
+                "reason": "complete",
+                "fish": 36,
+                "gold": 6,
+                "jumps": 0,
+                "elapsedSeconds": 75.00066666666841,
+                "earned": true,
+                "unlockedThrough": 5
+              }
+            ]
+          },
+          "failedChecks": [
+            "background-manual-resume",
+            "tab-blur-pauses"
+          ],
+          "screenshots": [
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/setup/menu.png",
+              "sha256": "621918e6b08d5eec383a362921dc3d86b89f525de8d826266453f1b4e3a0eb47",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/first-fish.png",
+              "sha256": "634c012d1ddb0d282d13da17b0e6fa1030a9818b9dd8d21890f2e27bf0192de0",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/pause.png",
+              "sha256": "c7243d7fdaba84182c2fffa8cc38c1c3eb0520632bc8ae317296272fdb0a9b31",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-1-start.png",
+              "sha256": "4ceb75eaac636b6310d3daedacbd1bd8d7d9511af2aa2ad9c4cf4db2e2728155",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-1-hazard.png",
+              "sha256": "a0ff31a7d1c380b55d13df1c118290c9d55d92aec1f2de4723da1337fa23c772",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-1-terminal.png",
+              "sha256": "96d9a57d98ef96525366d10f6a58eb97803f287f56dc3394f459f24f17a277f8",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-2-start.png",
+              "sha256": "258b71cd5ca5ac3d9e028bdcae127e91a54c8db162f5b343569af1ed96e501ac",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-2-hazard.png",
+              "sha256": "1f75660c247109e55985d548d6c7db9c8240885d54dd4aab736ef88ce9b83122",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-2-terminal.png",
+              "sha256": "a48e3e4a34d957ebda57bb419bc35c7a9458ce569bef391e3d52661eccb74522",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-3-start.png",
+              "sha256": "c203491efcdadc2bd1626eff99a764988b24768b11a6da5c190147d31dbfca77",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-3-hazard.png",
+              "sha256": "98cbc569bef0ddab0d1a8a3a62199ddb63b55c9671a28e7a6948287b65b4ef55",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-3-terminal.png",
+              "sha256": "758e33d897de78ff1c289b98a7be5568bd665fa8cac74a91104aea367a398eae",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-4-start.png",
+              "sha256": "0a8d1d73652c209f064b41ad175b898b6fb915ecaf9449fbf20d8415850084b5",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-4-hazard.png",
+              "sha256": "7e68c3575c0cbe0a399a9ac4cb3a71be3153c57bcf237f45e06ae61e6e5960b0",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-4-terminal.png",
+              "sha256": "94f1edc7455fb6c623533d5bc57543c672a524f621d6c0f8a3d4f285cffb2f56",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-5-start.png",
+              "sha256": "a79b495eb070e7bcda2cd6658846c06c315349499dc5644be9874e04c7703547",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-5-hazard.png",
+              "sha256": "569c26461161b87cac46ec8d5175855d2b79ac30acbbae5c6eaa1f643b887320",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-5-terminal.png",
+              "sha256": "51b337b17df33d08fb0b8d1234b9876fe12a2fb4beb22b6716c7415ce19a2219",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/all-unlocked.png",
+              "sha256": "ca3dfbfb5b1e7a11ce1e2ab8a252575565bd0b7292821d7766ce84f2e9eef08c",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/vehicle-warning.png",
+              "sha256": "17c3d9808e0750bf8b322bb73a9a9a56e2082846b55ae24b31fa0aac6eb960cd",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/vehicle-accident.png",
+              "sha256": "3f3783dae7b739d95666dd94acd2af84f851ef7e9935ab6e25a1ea1d64ac00fc",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/vehicle-impact.png",
+              "sha256": "a72124b46864693da6598b5da9bb623a7f2096f5d47a6d91ed760d644b454f99",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/pedestrian-fall.png",
+              "sha256": "e3c666adcc4bf16c6c4a97b1afb905dfe663b8a5de9c159f941f9c12931dff2a",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/pedestrian-wait.png",
+              "sha256": "96910cac51628b9719be0320b4fe58ee94c4a792565ac5327a445dca54a5f6f4",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/pedestrian-rising.png",
+              "sha256": "5952db8aca1d267430dce4a5150c3abf688cf46cb2115b7fd7aa30a61ace3726",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/pedestrian-recovery.png",
+              "sha256": "8cb884ed2860bb79e8ce0a991ca252b65e5624ce65cc9ad4d2174bcb197c8664",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/barrier-jump.png",
+              "sha256": "a83f648ec330fe69126ff2126e6248f24ed001d7b7c963b573c09de95c42d1e4",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/barrier-cleared.png",
+              "sha256": "3301cd5450dd1edff8616deb419a173da35605423e2474078e084bf77a7dc938",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/authored-barrier-prize.png",
+              "sha256": "cec5a6d8c97ff9029c7064d7db1e19ea4e1ce4f9c920e543fd3a186bb2a7a859",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/level-3-hazard.png",
+              "sha256": "540e9e6b4f03f64c8ccbf1708db5ba4a1c790166cb6f3dc6a3c33983ccf526b8",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/van-approach.png",
+              "sha256": "d08bbbe435d054812d569ecc096271666461db2fdf28628bd81069fed12499aa",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/van-impact.png",
+              "sha256": "462ce2c3ed0a8927f1c4dd48dfda6e3ec8e1118c6e8fac8f4e03f6a344266576",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/car-not-jumpable.png",
+              "sha256": "4ef72827f5ff1c3f0ae55c26afd7964df52b4a489e725ad906a090f37cd9c2ef",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/level-fish-short-hazard.png",
+              "sha256": "acfc5f2ec13038e7950e764cad0cff7b17b02e29356fa5d24a81cb35406b8aca",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/distance-without-fish-fails.png",
+              "sha256": "c455913cad0c3f3b545a433cf088cb3c0f9bea59e20ef70d983bdb4a26ad7b9f",
+              "engine": "webkit"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/background-return.png",
+              "sha256": "a8474b6738de7d52449009baf5b80c29048cb07daf8a2b2689a1f86200ce5008",
+              "engine": "webkit"
+            }
+          ],
+          "disposition": "BOUNDED_ENVIRONMENT_BLOCKED: all 18 campaign checks and nine collision checks pass with five earned levels; 32/34 checks pass and the only two false checks are desktop background signals, classified by the paired lifecycle/safety capability evidence. This is not a global QA PASS or a production claim."
+        },
+        {
+          "engine": "chromium",
+          "report": {
+            "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/report.json",
+            "sha256": "171ab0209dfd285df1ba7b77cda07ba12774fb1da37e01c5ca9cdbcd2c6ea99b",
+            "passed": false,
+            "checkCount": 34,
+            "passedCheckCount": 32,
+            "failedCheckCount": 2,
+            "normalInputOnly": true,
+            "stateInjection": false,
+            "campaignChecks": 18,
+            "campaignPassed": 18,
+            "collisionChecks": 9,
+            "collisionPassed": 9,
+            "safetyChecks": 7,
+            "safetyPassed": 5,
+            "errors": [],
+            "screenshotCount": 36,
+            "levelSettlements": [
+              {
+                "level": 1,
+                "reason": "complete",
+                "fish": 20,
+                "gold": 5,
+                "jumps": 0,
+                "elapsedSeconds": 40.004333333333975,
+                "earned": true,
+                "unlockedThrough": 2
+              },
+              {
+                "level": 2,
+                "reason": "complete",
+                "fish": 26,
+                "gold": 5,
+                "jumps": 0,
+                "elapsedSeconds": 52.50003333333552,
+                "earned": true,
+                "unlockedThrough": 3
+              },
+              {
+                "level": 3,
+                "reason": "complete",
+                "fish": 34,
+                "gold": 7,
+                "jumps": 0,
+                "elapsedSeconds": 61.37123333333644,
+                "earned": true,
+                "unlockedThrough": 4
+              },
+              {
+                "level": 4,
+                "reason": "complete",
+                "fish": 32,
+                "gold": 7,
+                "jumps": 0,
+                "elapsedSeconds": 68.47973333333768,
+                "earned": true,
+                "unlockedThrough": 5
+              },
+              {
+                "level": 5,
+                "reason": "complete",
+                "fish": 36,
+                "gold": 6,
+                "jumps": 0,
+                "elapsedSeconds": 75.00013333333936,
+                "earned": true,
+                "unlockedThrough": 5
+              }
+            ]
+          },
+          "failedChecks": [
+            "background-manual-resume",
+            "tab-blur-pauses"
+          ],
+          "screenshots": [
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/setup/menu.png",
+              "sha256": "a300f9e98825fac2ecbabf4683739cb0da58af77677c2d3e29d1b975bbd65597",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/first-fish.png",
+              "sha256": "ad3dc5fb8a300e0471d2d951cee98a87d89d3653bded6bbee828d8770c096e2c",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/pause.png",
+              "sha256": "79b7d86a326cf88e832ae3174f684137d9e7ed76cd63da91aa0e6c9cf2e36ddf",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-1-start.png",
+              "sha256": "06711df6f2636ab87e9893d8718263128064f36c5c8c23c58ce0da92e800b4b7",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-1-hazard.png",
+              "sha256": "2fec5ebb241c66935de9ac9125a6d62d2107216b13899520b71730a872b7f2aa",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-1-terminal.png",
+              "sha256": "39c25e75184718259bb469197d67f2f334447316eb50ba1407f0e5eb32b95f80",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-2-start.png",
+              "sha256": "a4029c795a24bf68795b9ec476a2ffba6490842ed575534281a7402054831872",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-2-hazard.png",
+              "sha256": "26613087b83a38a77b78df89e883a98857f3fd136e6064ea0748763ba0fc1483",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-2-terminal.png",
+              "sha256": "5b9136050459548943efdbddcf909c70a61eefa8381a72d5618a1a4b0b748d1b",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-3-start.png",
+              "sha256": "f0625902f8800eb870c33c36e004e35071cc71fc3ce3f9fd860ab42860bbad45",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-3-hazard.png",
+              "sha256": "fe963daa9f729bf845eb15fb5ea039db4ec2c496d5ab0dfcdaf9009b864dfc85",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-3-terminal.png",
+              "sha256": "6248e185466c9d600a17036b9bd75b8a65b2a2686ce2a2180ab445c038e44152",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-4-start.png",
+              "sha256": "87bb7c2d1c6a4abdfac4244aabad864ff4f9cafe2299dc08a0a50d1fe8ac7873",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-4-hazard.png",
+              "sha256": "78689e4d19f59a6aa3994c02fe588a283d1182159b26706a9693771065d51932",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-4-terminal.png",
+              "sha256": "7a99486276ddc6943315117de0f07523a87bc26e0e7f7024b03c4c49b06887d9",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-5-start.png",
+              "sha256": "5f37b66ce80e0b2411da823563d165ca8668e69a7aa2ecf6c5cf293ba4bc04b5",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-5-hazard.png",
+              "sha256": "d1068cb94b5579acba37dbde6b620529120e3afa3b7b015974cbe285514f594b",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-5-terminal.png",
+              "sha256": "d23407eefabef3e834afabbfa3851566b5caa8db01b0c1bd7d068d1f9162b4cc",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/all-unlocked.png",
+              "sha256": "2485aa3f23c8b8efdb2fd54b678700c36a53aeac51730592581dd2cf2b27bd3a",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/vehicle-warning.png",
+              "sha256": "a201b0a0a9644b428836905817427701cf3c0836bbeba959460d0c7d93e0035e",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/vehicle-accident.png",
+              "sha256": "c32ecfbad73298b57a1014d6eef8876678a343bfd41e6a0bd25bd2a6cb3303fd",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/vehicle-impact.png",
+              "sha256": "de26b7533b07f749e943c514e8dc6709d473d9d0a7d2b3befc8da6c35903edfc",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/pedestrian-fall.png",
+              "sha256": "7b21501295e03e66b4d937b61835f6ff14b27f060ace85c0f955c62302adc947",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/pedestrian-wait.png",
+              "sha256": "f1a670ecb7bcff0aa68093e04a2d43d8a261de1b893648116fbf8003d452b95e",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/pedestrian-rising.png",
+              "sha256": "95e2408cc36ea2cc8776f708196581fbed4729396953d777235f5265b690b1d2",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/pedestrian-recovery.png",
+              "sha256": "a5f84e70e8b68593b92bbe78cbf29b55e903bdfb181e0d34ea7c23f94ef640b4",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/barrier-jump.png",
+              "sha256": "224f35fc1f16add320f303af6e7c59852f42f2a2e66829cf17994fec24e589da",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/barrier-cleared.png",
+              "sha256": "99faa56f45763789e94de1f268ca2a0d0daacde5f11466ae3a685553663eb356",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/authored-barrier-prize.png",
+              "sha256": "573d8ec63d398685eb040c9a1d1d6bbd1e39ef17454607bdf6621b42879d5dd7",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/level-3-hazard.png",
+              "sha256": "51e2bdd0dff01e11aab765dac52cf54c9f123de2c438d48cf6578d93e88a9caf",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/van-approach.png",
+              "sha256": "3ab229e42d76dbf0615a0e19e78b075ca6b3d9b47fb598f3412d716031dc86c2",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/van-impact.png",
+              "sha256": "3e9e08d687f439d161969d28fac617952e8e62c452940d2259abebd0ea74561d",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/car-not-jumpable.png",
+              "sha256": "7dc3e4182a90ca8da7d80e3f784e2881ed0253aa04cfe60a08eb0ac31a66bf7f",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/level-fish-short-hazard.png",
+              "sha256": "d72189095ce13a2be3f30328c454085adff43c1f4f76bfa9bd06fdda1ee7fbde",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/distance-without-fish-fails.png",
+              "sha256": "648e19e0849578e9b7c00133e0fc2ebca238802c839fea37366a20da23e3c385",
+              "engine": "chromium"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/background-return.png",
+              "sha256": "68e7e974241271f8a7438be666beb725955f49efaff2d476f304626cc56037a9",
+              "engine": "chromium"
+            }
+          ],
+          "disposition": "BOUNDED_ENVIRONMENT_BLOCKED: all 18 campaign checks and nine collision checks pass with five earned levels; 32/34 checks pass and the only two false checks are desktop background signals, classified by the paired lifecycle/safety capability evidence. This is not a global QA PASS or a production claim."
+        }
+      ],
+      "uniqueScreenshotCount": 72,
+      "lifecycleReport": {
+        "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/lifecycle/report.json",
+        "sha256": "d75f0cfe647026fa50a74188bd89b362d60637351bd57536fe406cec2652d711",
+        "passed": false,
+        "errors": [],
+        "lifecycleDiagnostics": [
+          {
+            "engine": "webkit",
+            "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS",
+            "events": [],
+            "visibility": "visible",
+            "focus": true
+          },
+          {
+            "engine": "chromium",
+            "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS",
+            "events": [],
+            "visibility": "visible",
+            "focus": true
+          }
+        ],
+        "supportedChecksPassed": true
+      },
+      "safetyReportBindings": [
+        {
+          "engine": "webkit",
+          "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-safety-webkit/report.json",
+          "sha256": "916fc9205b8a8a5b3b47c1be9759d8b564339374b0a6563b6926c56ee51e7b99",
+          "passed": false,
+          "checkCount": 7,
+          "passedCheckCount": 5,
+          "failedCheckCount": 2,
+          "errors": [],
+          "screenshots": [
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/level-3-hazard.png",
+              "sha256": "540e9e6b4f03f64c8ccbf1708db5ba4a1c790166cb6f3dc6a3c33983ccf526b8"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/van-approach.png",
+              "sha256": "d08bbbe435d054812d569ecc096271666461db2fdf28628bd81069fed12499aa"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/van-impact.png",
+              "sha256": "462ce2c3ed0a8927f1c4dd48dfda6e3ec8e1118c6e8fac8f4e03f6a344266576"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/car-not-jumpable.png",
+              "sha256": "4ef72827f5ff1c3f0ae55c26afd7964df52b4a489e725ad906a090f37cd9c2ef"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/level-fish-short-hazard.png",
+              "sha256": "acfc5f2ec13038e7950e764cad0cff7b17b02e29356fa5d24a81cb35406b8aca"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/distance-without-fish-fails.png",
+              "sha256": "c455913cad0c3f3b545a433cf088cb3c0f9bea59e20ef70d983bdb4a26ad7b9f"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/background-return.png",
+              "sha256": "a8474b6738de7d52449009baf5b80c29048cb07daf8a2b2689a1f86200ce5008"
+            }
+          ]
+        },
+        {
+          "engine": "chromium",
+          "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-safety-chromium/report.json",
+          "sha256": "0aaa83c14c9828859f323938a685477917c0e49070ad97d587eda66907508c23",
+          "passed": false,
+          "checkCount": 7,
+          "passedCheckCount": 5,
+          "failedCheckCount": 2,
+          "errors": [],
+          "screenshots": [
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/level-3-hazard.png",
+              "sha256": "51e2bdd0dff01e11aab765dac52cf54c9f123de2c438d48cf6578d93e88a9caf"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/van-approach.png",
+              "sha256": "3ab229e42d76dbf0615a0e19e78b075ca6b3d9b47fb598f3412d716031dc86c2"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/van-impact.png",
+              "sha256": "3e9e08d687f439d161969d28fac617952e8e62c452940d2259abebd0ea74561d"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/car-not-jumpable.png",
+              "sha256": "7dc3e4182a90ca8da7d80e3f784e2881ed0253aa04cfe60a08eb0ac31a66bf7f"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/level-fish-short-hazard.png",
+              "sha256": "d72189095ce13a2be3f30328c454085adff43c1f4f76bfa9bd06fdda1ee7fbde"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/distance-without-fish-fails.png",
+              "sha256": "648e19e0849578e9b7c00133e0fc2ebca238802c839fea37366a20da23e3c385"
+            },
+            {
+              "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/background-return.png",
+              "sha256": "68e7e974241271f8a7438be666beb725955f49efaff2d476f304626cc56037a9"
+            }
+          ]
+        }
+      ],
+      "priorReloadTimeout": {
+        "pathMap": {
+          "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/path-map.json",
+          "sha256": "5e7548c5871b3482ca65d0c8117a92dc875b80baf6446892f398b24084d55a8e",
+          "classification": "HISTORICAL_LOCAL_RELOAD_LOAD_EVENT_TIMEOUT; both five stages completed; no claimed fullQA pass; CI same sourcepassed both campaign and experience"
+        },
+        "engines": [
+          {
+            "engine": "webkit",
+            "report": {
+              "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/qa-all-webkit/report.json",
+              "sha256": "bdc761fcb1e60fbf5a93751a3a8e88d8285778dc2fe2b146669e344d9a2dfc7c",
+              "passed": false,
+              "checkCount": 16,
+              "passedCheckCount": 16,
+              "failedCheckCount": 0,
+              "normalInputOnly": true,
+              "stateInjection": false,
+              "levelChecks": [
+                "natural-level-1",
+                "no-full-page-reload-level-1",
+                "natural-level-2",
+                "no-full-page-reload-level-2",
+                "natural-level-3",
+                "no-full-page-reload-level-3",
+                "natural-level-4",
+                "no-full-page-reload-level-4",
+                "natural-level-5",
+                "no-full-page-reload-level-5"
+              ]
+            },
+            "driverProvenance": {
+              "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/qa-all-webkit/driver-provenance.json",
+              "sha256": "d92f806710e4f03d2c79d0a2276d75e6cb858c24fdf3f9a80d9a6da1024056b1",
+              "driverSourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/qa-all-webkit/driver-source.mjs",
+              "driverSourceSha256": "1afb2bdae6098810486054ee4370b6f6da0ce817b7c2f4039640d6df506faa3a",
+              "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1"
+            },
+            "errors": [
+              "page.reload: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:55997/game/index.html\"\u001b[22m\n\n    at /Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/tools/lean-pilot/pelican-v2/qa.mjs:79:38"
+            ],
+            "disposition": "HISTORICAL PRE-RERUN FAILURE: five level journeys and in-memory replay passed, but page.reload waited for load and timed out after 30000 ms; superseded by the exact-path current QA report recorded separately."
+          },
+          {
+            "engine": "chromium",
+            "report": {
+              "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/qa-all-chromium/report.json",
+              "sha256": "b64ef247c1cc2522a09824e7c5b37a4da688f6886d52f01e633f0cf5f4bb99ea",
+              "passed": false,
+              "checkCount": 16,
+              "passedCheckCount": 16,
+              "failedCheckCount": 0,
+              "normalInputOnly": true,
+              "stateInjection": false,
+              "levelChecks": [
+                "natural-level-1",
+                "no-full-page-reload-level-1",
+                "natural-level-2",
+                "no-full-page-reload-level-2",
+                "natural-level-3",
+                "no-full-page-reload-level-3",
+                "natural-level-4",
+                "no-full-page-reload-level-4",
+                "natural-level-5",
+                "no-full-page-reload-level-5"
+              ]
+            },
+            "driverProvenance": {
+              "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/qa-all-chromium/driver-provenance.json",
+              "sha256": "80959fcb4ca297a4de72bc0532da245217ea87cf359a177f32ad648c77717d1f",
+              "driverSourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/qa-all-chromium/driver-source.mjs",
+              "driverSourceSha256": "1afb2bdae6098810486054ee4370b6f6da0ce817b7c2f4039640d6df506faa3a",
+              "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1"
+            },
+            "errors": [
+              "page.reload: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:55996/game/index.html\"\u001b[22m\n\n    at /Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/tools/lean-pilot/pelican-v2/qa.mjs:79:38"
+            ],
+            "disposition": "HISTORICAL PRE-RERUN FAILURE: five level journeys and in-memory replay passed, but page.reload waited for load and timed out after 30000 ms; superseded by the exact-path current QA report recorded separately."
+          }
+        ]
+      },
+      "disposition": "Both exact-path normal-input current reports bind the same attempt20 H5 and all 72 nested screenshot hashes. Each reports 32/34 checks with errors=[]; the only false checks are tab-blur-pauses and background-manual-resume. The parent finalizer classifies those as unsupported desktop background signals, while campaign, collision and supported safety checks pass. No global QA PASS or production readiness is claimed."
+    },
+    "currentPngFrameBindings": {
+      "provenancePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/provenance.json",
+      "provenanceSha256": "a853f81183bdcfdb909b6e1c98010f26d0d6ce09f1329d92eed9b1cc61fe2476",
+      "frameCount": 120,
+      "uniqueFrameCount": 120,
+      "frames": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-0820.png",
+          "sha256": "dd47e79560951b5f8b412237249fb639a5ca97fe47bb77283b4f7a40781f0957",
+          "bytes": 352661,
+          "engine": "chromium",
+          "variant": "PR10",
+          "captureOffsetMs": 2532.9000000003725
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1000.png",
+          "sha256": "42e4e4d080517f66a4b6e45cab1c2375c98c3213aee0a6ac49ec798cc72401ab",
+          "bytes": 371309,
+          "engine": "chromium",
+          "variant": "PR10",
+          "captureOffsetMs": 2532.9000000003725
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1320.png",
+          "sha256": "1b3838d3cd9dc3459f085a80157704542256e8c9bff29ce6f14c95082053e1d8",
+          "bytes": 391716,
+          "engine": "chromium",
+          "variant": "PR10",
+          "captureOffsetMs": 2532.9000000003725
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1520.png",
+          "sha256": "3a55801dcd409607228197f81836bb16ff24bf5d88c00d50adff2d5dbb709fe9",
+          "bytes": 392178,
+          "engine": "chromium",
+          "variant": "PR10",
+          "captureOffsetMs": 2532.9000000003725
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1750.png",
+          "sha256": "21b775c82f15f0bf2dd3ba76dbd47c964b74b7925ac6a347676a52f26983b0ed",
+          "bytes": 398738,
+          "engine": "chromium",
+          "variant": "PR10",
+          "captureOffsetMs": 2532.9000000003725
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-2480.png",
+          "sha256": "344b133a108289575dad46a9c8e9aaeb040ab0691dee9f31c0baeb29da9b7582",
+          "bytes": 457391,
+          "engine": "chromium",
+          "variant": "PR10",
+          "captureOffsetMs": 2532.9000000003725
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-0820.png",
+          "sha256": "eb17110d252a2d305e537fbbfd47e17602e065add23baf639beafadf832d0efe",
+          "bytes": 456235,
+          "engine": "chromium",
+          "variant": "PR13",
+          "captureOffsetMs": 1444.400000000372
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1000.png",
+          "sha256": "eaeaf4e53f5e66479613bc4fb167323edf0949af47c87a71bd3fd4876b195939",
+          "bytes": 472861,
+          "engine": "chromium",
+          "variant": "PR13",
+          "captureOffsetMs": 1444.400000000372
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1320.png",
+          "sha256": "c3da6497497f1c93168a43908fe179727ad5424b01795d1c5013a9b3dda6e50a",
+          "bytes": 470271,
+          "engine": "chromium",
+          "variant": "PR13",
+          "captureOffsetMs": 1444.400000000372
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1520.png",
+          "sha256": "3577812816a969c5412f20d48cc28faec47c7bc8890d57d1e8193c32b972d847",
+          "bytes": 463659,
+          "engine": "chromium",
+          "variant": "PR13",
+          "captureOffsetMs": 1444.400000000372
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1750.png",
+          "sha256": "e9522fd066705ebbbccce88d43abf3612a109d5a679e285f5c4917ba5c1548d8",
+          "bytes": 472650,
+          "engine": "chromium",
+          "variant": "PR13",
+          "captureOffsetMs": 1444.400000000372
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-2480.png",
+          "sha256": "f2c8ce185d3d8f4df6919074fdb6b79045d910c596622ba64bcb610c4736e350",
+          "bytes": 497190,
+          "engine": "chromium",
+          "variant": "PR13",
+          "captureOffsetMs": 1444.400000000372
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-0820.png",
+          "sha256": "f3c17e2540841de817a3c37293f2279722e067039b151f1d3a314e8927abc8ce",
+          "bytes": 466318,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1000.png",
+          "sha256": "2c630bed1d6f8fb36d0446296e31ff7819a4720ef7e75544b836faaab566096c",
+          "bytes": 466963,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1320.png",
+          "sha256": "58d75db982fee980d9dddc286420b8f1ed5a7cd392f9892ee91928ab80c97f16",
+          "bytes": 461119,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1520.png",
+          "sha256": "697578fb25b73dbfe603d53d068d4100f217156aa7e77fd922291693866dd426",
+          "bytes": 476707,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1750.png",
+          "sha256": "93e46060ec31de18665de51182c7562be8cd46ac5bdeba7cf89a9219b59e9cd2",
+          "bytes": 482290,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-2480.png",
+          "sha256": "c4ba9c45c955b02a61d0be5378ac08b4f159bdeb44367e717663ef6e8bdd70da",
+          "bytes": 502943,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-0820.png",
+          "sha256": "728ee5a6bb0daa4eda9e1d8469c87d02ac08211347453dac4e084788ba9769a2",
+          "bytes": 299829,
+          "engine": "webkit",
+          "variant": "PR10",
+          "captureOffsetMs": 4348.000000000001
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1000.png",
+          "sha256": "9fbebbdfef3ec20cd24384de2547bb07e6a81872d705dfb8f2ae935239dadc6a",
+          "bytes": 335806,
+          "engine": "webkit",
+          "variant": "PR10",
+          "captureOffsetMs": 4348.000000000001
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1320.png",
+          "sha256": "c3e970753b6c3b7e76bf89d0a30d22b061b76bcef3bead55a81c93c39b5b3086",
+          "bytes": 352924,
+          "engine": "webkit",
+          "variant": "PR10",
+          "captureOffsetMs": 4348.000000000001
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1520.png",
+          "sha256": "a461e0051db9bd6bf54518722baa27279db8f66cfbfc040a8fd3ae22be92e61c",
+          "bytes": 341641,
+          "engine": "webkit",
+          "variant": "PR10",
+          "captureOffsetMs": 4348.000000000001
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1750.png",
+          "sha256": "f6070ae120b831793e0e4ab9e0aa4c5c242e39cb5b1f10c5cf913ed6d49100f6",
+          "bytes": 343181,
+          "engine": "webkit",
+          "variant": "PR10",
+          "captureOffsetMs": 4348.000000000001
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-2480.png",
+          "sha256": "1f367aca797deb51da3fb6793d01f0f1d0189df6c072be08aed0f037b3e18314",
+          "bytes": 375867,
+          "engine": "webkit",
+          "variant": "PR10",
+          "captureOffsetMs": 4348.000000000001
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-0820.png",
+          "sha256": "0f8fdffdd5a54ec193a465e95351a1865864b72ab6c5bad86743860ba0bed872",
+          "bytes": 425524,
+          "engine": "webkit",
+          "variant": "PR13",
+          "captureOffsetMs": 1904.9999999999998
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1000.png",
+          "sha256": "5f770864a62211db0d9ea22fd97a24032733ffa42a47404750f1010724d3529e",
+          "bytes": 404078,
+          "engine": "webkit",
+          "variant": "PR13",
+          "captureOffsetMs": 1904.9999999999998
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1320.png",
+          "sha256": "1f0e1497b6852474b0895bf7c2591a76795da7ca6815c78756cc7f840f62b37d",
+          "bytes": 421415,
+          "engine": "webkit",
+          "variant": "PR13",
+          "captureOffsetMs": 1904.9999999999998
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1520.png",
+          "sha256": "999bf0f0fdb9b551c9cd0682ffe305bc066c32a9b1e44ac7b23c06fb71290971",
+          "bytes": 419942,
+          "engine": "webkit",
+          "variant": "PR13",
+          "captureOffsetMs": 1904.9999999999998
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1750.png",
+          "sha256": "1d3bd8ad4b02308e972f0678fcfc65334d0fb5ae840711a1def40d53373d2e7f",
+          "bytes": 419973,
+          "engine": "webkit",
+          "variant": "PR13",
+          "captureOffsetMs": 1904.9999999999998
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-2480.png",
+          "sha256": "1fde5c34a4ef5b637f8b040b35e21e2e47f7eefac63a0d79a5a3f7461f03fe8b",
+          "bytes": 436555,
+          "engine": "webkit",
+          "variant": "PR13",
+          "captureOffsetMs": 1904.9999999999998
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-0820.png",
+          "sha256": "4e9835a6b1ef2faa4f7966c3defec218a1df4b2c4d1775a3761ea5a9060eee3f",
+          "bytes": 393400,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1000.png",
+          "sha256": "ac8a99b8c211a5e5af326894b8700b82fcd35bb829412a6877676e4de08e9922",
+          "bytes": 395479,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1320.png",
+          "sha256": "ce22dda0b307095d316f8b0a12c93361e4a47bff9b3dc067594e242ec4bcae8c",
+          "bytes": 390242,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1520.png",
+          "sha256": "79dfb2477c72b47bccfc9d5d4ffbcc3c3ae1ee2d24e73edb35fe8de90d7e8907",
+          "bytes": 403462,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1750.png",
+          "sha256": "9b21e1a51af5aff2ce0440873e3a23264d2c60ee811479dd2643db1802477ba0",
+          "bytes": 396046,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-2480.png",
+          "sha256": "844caef65c2701589d04d74012a16c1685810909537e246f5daba13e1db57179",
+          "bytes": 420331,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-00.png",
+          "sha256": "f3c17e2540841de817a3c37293f2279722e067039b151f1d3a314e8927abc8ce",
+          "bytes": 466318,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-01.png",
+          "sha256": "eb42360d6b76d45fcd04aee251d4fdaa6889b38a4fac7ab547c48af59e1e6b52",
+          "bytes": 464899,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-02.png",
+          "sha256": "ffadad0042bec36f5fe228e027d7d6e7731ee8f822d45deefe5c222b25617ea6",
+          "bytes": 468640,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-03.png",
+          "sha256": "25d89373c27d37781cee21dd9217825b3d52bfcb93ebf6ef4352dee3a8c8d97e",
+          "bytes": 469298,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-04.png",
+          "sha256": "64d0e652123b7e94db6554c8f2550b7136778a5165753e38bd92399643ded7d4",
+          "bytes": 474173,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-05.png",
+          "sha256": "c953ad516c08bfef52e1f81667d3aca11126861661956c8efb1d08618b88268b",
+          "bytes": 474095,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-06.png",
+          "sha256": "0fe7fb4dad9e618eaeb24b85d89ad7753d1825383e447fc6c3179d4dc0b6031e",
+          "bytes": 463789,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-07.png",
+          "sha256": "58d75db982fee980d9dddc286420b8f1ed5a7cd392f9892ee91928ab80c97f16",
+          "bytes": 461119,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-08.png",
+          "sha256": "0fab0f844dd84445772e024dfd7301cabcfdcfd5a8f7847a703e6864f43b880e",
+          "bytes": 472416,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-09.png",
+          "sha256": "be1fb237f2251a2b3a7c67974fd304d10752f69491f568fbb0569229f83d8652",
+          "bytes": 472769,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-10.png",
+          "sha256": "697578fb25b73dbfe603d53d068d4100f217156aa7e77fd922291693866dd426",
+          "bytes": 476707,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-11.png",
+          "sha256": "6118b6a66c982b2a8739fb4a2df712556684c03cf9ed51d593c602115abf92a6",
+          "bytes": 475174,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-12.png",
+          "sha256": "00aa933b5519c11fe65fd69adc662376d322dc411428198a7814454f587833fc",
+          "bytes": 475646,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-13.png",
+          "sha256": "6ed1d59ced96614574ae15fd6fbc779b4c67bc5dce0fda63025ff13b79a67aef",
+          "bytes": 481678,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-14.png",
+          "sha256": "f09c32dd8fc92233ba83da3968d0dbb78e024236395a8825703b450406ed547e",
+          "bytes": 483474,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-15.png",
+          "sha256": "053c13dd99dd8adc6c48dc32af125e27e67d704a6f792a03ea11a8064cddea08",
+          "bytes": 485109,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-16.png",
+          "sha256": "59ee08877875861f66309d241df7e49277a1064b7b07335bf3d6c42d8d7b67d9",
+          "bytes": 487826,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-17.png",
+          "sha256": "60fdc78d0d52cb95ffbeb15ad6f053db0dcd9ae68253141218d81360286e66bc",
+          "bytes": 489962,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-18.png",
+          "sha256": "bc53237212e94d1293d3dabbc66168429507d90c9ef51728e79471e2258deb37",
+          "bytes": 496305,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-19.png",
+          "sha256": "83b45332706aa6ff32667ee05fe7fb0db035d60d0e2debafbb5948be3c1f2465",
+          "bytes": 496742,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-20.png",
+          "sha256": "da6bd506911ed292e6acbffb2b09891d5a6587fd6ffbc988ce9cea1f2e5b9efc",
+          "bytes": 506747,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-21.png",
+          "sha256": "98e04edea85cde386c4251e476efce36b45eda072d0f6ecb64bb7f5adddc814e",
+          "bytes": 506605,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-22.png",
+          "sha256": "5e6bb249f0e77936dba98c08cf8b154c6b235c382a6a25ebfb79769553f72c96",
+          "bytes": 510867,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-23.png",
+          "sha256": "6f0c88fe50d86e41960b2c353662082ebdc1934e8708bc6660198b4a5cbc9ff3",
+          "bytes": 521068,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-24.png",
+          "sha256": "1bcb565630ea52a512ca3bccded6860ee52bf6bc9f9cdccfc3b1845e5b750443",
+          "bytes": 466350,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-25.png",
+          "sha256": "556b96bdad5cf4087b4c046ebf70a8cee9e620a3031363fcdafd8dfe6c39234c",
+          "bytes": 467376,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-26.png",
+          "sha256": "653f82126de4663f2f86457abdb965837189b546d78511fd1175346783ad4b65",
+          "bytes": 479253,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-27.png",
+          "sha256": "c3796ce4c74f9d8782cb85405e1b95f9480dc28f47a341a3c1aee94cf7a94229",
+          "bytes": 496641,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-28.png",
+          "sha256": "7241b410ded005e1097da4a13f949eaccdd439cc5ffddd3c839e7842b0cd0ec3",
+          "bytes": 501036,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-29.png",
+          "sha256": "09d2d186e9796c6b6634b814a3fad69505c701af49e51349a204246637191537",
+          "bytes": 504342,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-30.png",
+          "sha256": "a4abc0594c2ee468cbc611afdec1b011ccd9f6581c5a4b27039cb02fcef9e694",
+          "bytes": 511254,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-31.png",
+          "sha256": "9121b00234fb8d4672904a2b418e7a600455e9cbff00f557a75498aaf6f74a8a",
+          "bytes": 511109,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-32.png",
+          "sha256": "8a9a81b5b0020db4356dcb0a847f99bf8be09db0589ab3ab5c7a604a10e96b29",
+          "bytes": 511243,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-33.png",
+          "sha256": "760822003ab33b005e6509d3365cca870b0a81ca1d20547a01847f07b96b875e",
+          "bytes": 512313,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-34.png",
+          "sha256": "1df6847888bce891d40bb2b105c14670be2b6ae13cc0524e9471280e0022dc82",
+          "bytes": 513337,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-35.png",
+          "sha256": "0671c38a876e6b7a72cd2c82a1fcd87141a94ac83f654c40cf69b2e95a7efa77",
+          "bytes": 514476,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-36.png",
+          "sha256": "9849e24a7faf6065162a1956268ed59c7497626b2dd299080735dac17daede17",
+          "bytes": 322102,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-37.png",
+          "sha256": "5199213a2107ae7b2532f39acfa0236f860d709834344f95a41daf65f34eb2ff",
+          "bytes": 407197,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-38.png",
+          "sha256": "f67916ef6f87f794784654a2851e448c6b810d017ae0daf1b242e88484fec617",
+          "bytes": 407280,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-39.png",
+          "sha256": "1f7f8c2771e055980ce8a39dc86ef65b4fa5ecf4c5b15d5538105dee2e95c10e",
+          "bytes": 409610,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-40.png",
+          "sha256": "de692b04ca7e5e7b38ce99aed3457c1e9830d94ee86764f2ddd4bfdbf1d3ab96",
+          "bytes": 410431,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-41.png",
+          "sha256": "1f738fbab405345f73d11e6a0ffbb05f1a3eb6e659d2a47f2137f5fccc69a2a6",
+          "bytes": 410829,
+          "engine": "chromium",
+          "variant": "V3",
+          "captureOffsetMs": 1746.4000000001856
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-00.png",
+          "sha256": "5a9d4ad3fb540876db4dd48772f0f066dac9b4643cfbe85b8b575d02edc33b7e",
+          "bytes": 390464,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-01.png",
+          "sha256": "abaac42c3a400d08f2b3751cecd12c27a64599604b58c051148bc5875ca12daf",
+          "bytes": 391548,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-02.png",
+          "sha256": "dd1514d6bde55d982b4b4eef4d068ffb69197068f29bc912f12c19d6e0ff5de5",
+          "bytes": 395259,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-03.png",
+          "sha256": "332dc5507818193b9167a18eb4f7ddf5a6e8a0e02436483642544dc4865fe466",
+          "bytes": 395425,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-04.png",
+          "sha256": "96709a89dd658ea6d307bbd9ce9c16f55b101a5fbfe1b9687930b1009819048f",
+          "bytes": 389791,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-05.png",
+          "sha256": "9a0f5ad1537908ef16a9b4e9db0fea5c263e55fc819b3aec5a788f3aed48beeb",
+          "bytes": 392811,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-06.png",
+          "sha256": "5331fd34f663347c85fb82b6fc928aea5487b03df157a6a5040f6f2844308c00",
+          "bytes": 391873,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-07.png",
+          "sha256": "ce22dda0b307095d316f8b0a12c93361e4a47bff9b3dc067594e242ec4bcae8c",
+          "bytes": 390242,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-08.png",
+          "sha256": "ae0fcc68a7b017561c4c1174253c0add52ea71df93bdcb247ca2249f61a0f8c2",
+          "bytes": 394675,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-09.png",
+          "sha256": "7cea8dda5b242a3c70d0bb65cb40d50755bdd457f5df0e7080b5011555529b18",
+          "bytes": 394799,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-10.png",
+          "sha256": "79dfb2477c72b47bccfc9d5d4ffbcc3c3ae1ee2d24e73edb35fe8de90d7e8907",
+          "bytes": 403462,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-11.png",
+          "sha256": "635d55fa8028eb689ab07ddb437c5524a20780b46a9e254e828b36d174498a2b",
+          "bytes": 403947,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-12.png",
+          "sha256": "ee611523c7cc1656df1f46dfb6f01a0c3acd342a96d077870e5b154ff4aa917f",
+          "bytes": 402837,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-13.png",
+          "sha256": "d3673912511d7a93fd1336e48debf8cdbb00442f0b7910d1fecba7f4195b1b6b",
+          "bytes": 394750,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-14.png",
+          "sha256": "048d6a7379d6be09624b958d8caba381374a560fef8ed1fd723f4cc701f3413a",
+          "bytes": 400045,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-15.png",
+          "sha256": "a099ae725817b1a42962b2a38b37b050c590912a43af5d385aa086acbc6489bb",
+          "bytes": 405175,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-16.png",
+          "sha256": "f3332924c3e4b9b2abca1ba0ad56c2397b3ff977f163a271f0488ace4b43f30a",
+          "bytes": 418541,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-17.png",
+          "sha256": "c784fc98a97595539a27fdf4b6cae1842f5a81ca0d13a5271c35af9548601be9",
+          "bytes": 416624,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-18.png",
+          "sha256": "d2a7ba34eef7658b4fb13dfd8fed4f3abe70c9258e4a533fae4d9c6036d57fed",
+          "bytes": 414647,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-19.png",
+          "sha256": "7573bf17859b70b675b663f515a60f5aea98b70b996a494f582ef8ab2575f647",
+          "bytes": 415959,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-20.png",
+          "sha256": "3fedce9f17813e5118720f9e5ac80822fd8d86e14534aee9cc173a2d07bbbc89",
+          "bytes": 413728,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-21.png",
+          "sha256": "e76cc6a2375230276f9f9148eb934297d2b746248b5a404c03dae0a2558cb3db",
+          "bytes": 415968,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-22.png",
+          "sha256": "e1a1c77585c821a38bac0ed75c506d13dfb48e45d480de4b30218969343e9ed6",
+          "bytes": 418678,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-23.png",
+          "sha256": "6c5956f08236607bebfa62bf87fce4f7c9eaac7a304a8fba45a251b73b3cf0ec",
+          "bytes": 417079,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-24.png",
+          "sha256": "b69473bcde064f36ebd475570b829a0b6940c0fe34e20a5945108918edc22200",
+          "bytes": 420197,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-25.png",
+          "sha256": "9e36e38620de85e070d80e2013992886e878f435014f8f4b059b8f737c135932",
+          "bytes": 425374,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-26.png",
+          "sha256": "fd9352938400d4c109bbf43e6f8d305247eb6bf48faaf4ec387de13fc920223d",
+          "bytes": 432729,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-27.png",
+          "sha256": "25259d3d4adcb547752be4644c98cf8342c90ec60deca0df00d0d8d9f636db71",
+          "bytes": 434775,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-28.png",
+          "sha256": "91ffbcf9c161dc6d948a3c95bd55301f75faab0b266551c38931425dcee2aa49",
+          "bytes": 409814,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-29.png",
+          "sha256": "62b566f215dc778377d46d4fff4c4705c93ab81797650b0017bc016443fe1dbd",
+          "bytes": 409391,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-30.png",
+          "sha256": "26455db6e5f4dc9646c5b96eb32069b43938d005ea2180fbfccc6de90e717a6f",
+          "bytes": 411733,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-31.png",
+          "sha256": "ea0add4ef045948adc245d5b576d2a77de374f934069e94706bd685d5239af75",
+          "bytes": 301570,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-32.png",
+          "sha256": "fd8dbdd3a9232ae727fdc56bca3021b9dbc0cfab6f3eb8121d264cb3ca270847",
+          "bytes": 354745,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-33.png",
+          "sha256": "9656d046c0df149fcab0f9ee75f04aa7191fc4b6c454d1fe94d33f48bf7a65bc",
+          "bytes": 357164,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-34.png",
+          "sha256": "3823d80e23c8dcb40b5815014804e4a25820a9c626c8ad5cd1d33f4a109a1bf4",
+          "bytes": 373162,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-35.png",
+          "sha256": "0ef36be62be959fe80cece333e09c2544b872d665eeea65f513ba9253d9655de",
+          "bytes": 388008,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-36.png",
+          "sha256": "ab1b8bfa165bef10ed042ad2553ee7501e5eb5ec0a7491c13e2dbade45b54db6",
+          "bytes": 395318,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-37.png",
+          "sha256": "39157078a586060ba7a0e3cd958e3f923fcaa5d698dd22db79a0a202e56eec24",
+          "bytes": 396496,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-38.png",
+          "sha256": "82452e9f327585fc0bb77813fac043eae95990edd7fe03c8d6299df7e39e1e76",
+          "bytes": 406522,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-39.png",
+          "sha256": "9cfb71aaae0ca96f151f2d00a001aef85c17b3e1df97b9a0ff9e936c3e209480",
+          "bytes": 417498,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-40.png",
+          "sha256": "3ff45d33c4ef04c4b6d55de004993c2182aefa55ebca0b616d91a872e10e2270",
+          "bytes": 422510,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-41.png",
+          "sha256": "9165291376cfca912185d6403ad7b551552af7df44c6d49ed20926838bfb7809",
+          "bytes": 422509,
+          "engine": "webkit",
+          "variant": "V3",
+          "captureOffsetMs": 2097
+        }
+      ],
+      "contactSheets": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/comparison-strip-chromium.png",
+          "sha256": "fe9a1ecf3b7bf323a40d02fe2f1f1bb33043b07e33ecb8d913efddde5d88f35a",
+          "bytes": 6769435,
+          "mime": "image/png",
+          "role": "comparison-strip",
+          "engine": "chromium"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/temporal-grid-chromium-V3.png",
+          "sha256": "5e82502f3458279928215863190d07ed067c23712dabebdaf4a0586e662dd788",
+          "bytes": 6880902,
+          "mime": "image/png",
+          "role": "temporal-grid",
+          "engine": "chromium"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/comparison-strip-webkit.png",
+          "sha256": "be723874ae02d36d08d99707a199059fa3939a827dd27d10f85e98ef7d204e5b",
+          "bytes": 6007447,
+          "mime": "image/png",
+          "role": "comparison-strip",
+          "engine": "webkit"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/temporal-grid-webkit-V3.png",
+          "sha256": "2c8aac6c8e3bcb421bdac8b6029be4db6332e04e6ec80d075978ab92337f4b14",
+          "bytes": 6506576,
+          "mime": "image/png",
+          "role": "temporal-grid",
+          "engine": "webkit"
+        }
+      ]
+    },
+    "interpretationBoundary": "Exact attempt20 experience/risk/head/feel-state/visual/lifecycle artifacts remain separately bound to the unchanged H5 build. The initial campaign capture bundle is historical and has an unavailable overwritten L3 PNG. Fresh current qa-all reports bind 72 verified nested screenshot files, complete all five levels with campaign and collision checks, and contain only the two background checks blocked by absent desktop signals. Their report.passed=false is preserved; no global QA or production PASS is claimed."
+  }
+}

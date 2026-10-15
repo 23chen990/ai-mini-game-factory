@@ -1,0 +1,49 @@
+{
+  "sourceCommit": "26e1e0c65894babf674710af256268be6009aed1",
+  "status": "FAIL_PREEXISTING_OUTSIDE_PELICAN_H5",
+  "command": "pnpm test",
+  "results": {
+    "testFilesPassed": 170,
+    "testFilesFailed": 18,
+    "assertionsPassed": 974,
+    "assertionsFailed": 1
+  },
+  "causes": [
+    {
+      "kind": "runner-mismatch",
+      "count": 17,
+      "evidence": "Vitest reports No test suite found for existing node:test .mjs files; dedicated Node runners are separate."
+    },
+    {
+      "kind": "time-dependent-fixture",
+      "path": "tests/unit/unknown-waiver-binding.test.ts:29",
+      "evidence": "The stale-hash test also has expiresAt=2026-09-30 and no fixed now; current2026-10-15 adds license-risk to blocking. Isolated run reproduces the same failure."
+    }
+  ],
+  "unchangedFromSourceCommit": [
+    "vitest.config.ts",
+    "tests/unit/unknown-waiver-binding.test.ts",
+    "src/core/unknowns.ts"
+  ],
+  "failedCases": [
+    "FAIL  tools/lean-pilot/tests/clinic-factory.test.mjs",
+    "FAIL  tools/lean-pilot/tests/form-metrics.test.mjs",
+    "FAIL  tools/lean-pilot/tests/h5-mobile.test.mjs",
+    "FAIL  tools/lean-pilot/tests/mobile-pacing.test.mjs",
+    "FAIL  tools/lean-pilot/tests/policy.test.mjs",
+    "FAIL  tools/lean-pilot/tests/quality-cycle.test.mjs",
+    "FAIL  tools/lean-pilot/tests/rea-bridge.test.mjs",
+    "FAIL  tools/lean-pilot/tests/research-to-build.test.mjs",
+    "FAIL  tools/lean-pilot/tests/runner.test.mjs",
+    "FAIL  tools/lean-pilot/tests/scope.test.mjs",
+    "FAIL  tools/lean-pilot/tests/three-h5-research.test.mjs",
+    "FAIL  tools/lean-pilot/tests/workflow.test.mjs",
+    "FAIL  templates/web-lite/clinic-queue-v1/tests/engine.test.mjs",
+    "FAIL  templates/web-lite/grid-merge-v1/tests/engine.test.mjs",
+    "FAIL  templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs",
+    "FAIL  templates/web-lite/h5-source-mobile-v1/tests/engine.test.mjs",
+    "FAIL  templates/web-lite/h5-source-mobile-v1/tests/source-score.test.mjs",
+    "FAIL  tests/unit/unknown-waiver-binding.test.ts > unknown waiver binding > rejects a waiver bound to a stale artifact hash"
+  ],
+  "scopeDecision": "Record only. Shared factory/template code is outside the user-authorized Pelican-only change. Do not change time, disable tests or relax acceptance. H5 development playtest readiness is assessed separately; do not claim all-repository tests pass."
+}

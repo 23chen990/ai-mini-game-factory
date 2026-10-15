@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "runId": "pelican-coast-v2-20261014",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "sourceCommit": "26e1e0c65894babf674710af256268be6009aed1",
+  "importedAt": "2026-10-15T12:10:15.828037+00:00",
+  "artifactId": 11971070142,
+  "artifactName": "pelican-v32-build-and-playtest-26e1e0c65894babf674710af256268be6009aed1",
+  "ciRun": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38729546759",
+  "htmlSha256": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+  "packageSha256": "6f4f0057515ffada6e8a83f7368e1585361dffe97e3a91d39374abd92ce33a2a",
+  "coastBuildCodeHash": "bc2ed9913cc5c46fbf9a08a4e49a5a8b8dd5ed5e8636eb4342b00f38e462c0f4",
+  "runtimeModified": false,
+  "newRepairAttempt": false,
+  "provenance": "Downloaded verified CI package; SHA256 matched original CI hashes.txt and both original campaign reports. Historical developer attempt count untouched."
+}

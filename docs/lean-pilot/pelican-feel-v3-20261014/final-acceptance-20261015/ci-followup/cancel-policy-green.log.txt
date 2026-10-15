@@ -1,0 +1,17 @@
+✔ earned jump reward remains readable through persistent gold and mastery counters after a missed toast (0.424125ms)
+✔ software renderer selects only the existing efficient preset with normal menu touches (0.467417ms)
+✔ a QA presentation retest preserves the bound natural report in a separate safe directory (0.587ms)
+✔ a reward route observation requires actual visible gold cue between the same barrier and its bonus catch (0.122834ms)
+✔ pedestrian warnings require live visible directional hazard and at least two seconds (0.16225ms)
+✔ CI motion preference uses the shipped browser accessibility media query (0.077375ms)
+✔ cancelled drag requires the same live un-stunned branch and trusted native cancellation (0.126042ms)
+✔ a pedestrian stun cannot be accepted as an ordinary cancelled-drag observation (0.084958ms)
+✔ cancelled-drag evidence rejects absent and non-finite intended targets (0.079ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46.6325

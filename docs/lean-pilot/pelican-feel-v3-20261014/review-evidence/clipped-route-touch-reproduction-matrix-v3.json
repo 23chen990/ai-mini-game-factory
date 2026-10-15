@@ -1,0 +1,419 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "route-card",
+      "gameplay-control"
+    ],
+    "lifecycleStateBranches": [
+      "earned-menu-target-5",
+      "earned-menu-target-1",
+      "running-normal-tap"
+    ],
+    "rendererPaths": [
+      "webkit-native-gpu",
+      "chromium-native-gpu"
+    ],
+    "viewports": [
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "route-card:earned-menu-target-5:webkit-native-gpu:390",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "earned-menu-target-5",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "route-card:earned-menu-target-5:webkit-native-gpu:320",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "earned-menu-target-5",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "route-card:earned-menu-target-5:chromium-native-gpu:390",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "earned-menu-target-5",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "route-card:earned-menu-target-5:chromium-native-gpu:320",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "earned-menu-target-5",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "route-card:earned-menu-target-1:webkit-native-gpu:390",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "earned-menu-target-1",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "route-card:earned-menu-target-1:webkit-native-gpu:320",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "earned-menu-target-1",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "route-card:earned-menu-target-1:chromium-native-gpu:390",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "earned-menu-target-1",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "route-card:earned-menu-target-1:chromium-native-gpu:320",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "earned-menu-target-1",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "route-card:running-normal-tap:webkit-native-gpu:390",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "running-normal-tap",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "route-card:running-normal-tap:webkit-native-gpu:320",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "running-normal-tap",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "route-card:running-normal-tap:chromium-native-gpu:390",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "running-normal-tap",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "route-card:running-normal-tap:chromium-native-gpu:320",
+      "objectType": "route-card",
+      "lifecycleStateBranch": "running-normal-tap",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:earned-menu-target-5:webkit-native-gpu:390",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "earned-menu-target-5",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:earned-menu-target-5:webkit-native-gpu:320",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "earned-menu-target-5",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:earned-menu-target-5:chromium-native-gpu:390",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "earned-menu-target-5",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:earned-menu-target-5:chromium-native-gpu:320",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "earned-menu-target-5",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:earned-menu-target-1:webkit-native-gpu:390",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "earned-menu-target-1",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:earned-menu-target-1:webkit-native-gpu:320",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "earned-menu-target-1",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:earned-menu-target-1:chromium-native-gpu:390",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "earned-menu-target-1",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:earned-menu-target-1:chromium-native-gpu:320",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "earned-menu-target-1",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Not applicable",
+      "observed": "This object does not represent this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:running-normal-tap:webkit-native-gpu:390",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "running-normal-tap",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Actual current17 normal touch left/right/jump and trusted swipe checks pass; no game or storage writes.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-17/experience-webkit/report.json",
+          "sha256": "220c5b6a6b2b5ea78ae9d302255323bbf2956e74aed78299610ffb8d13ed8987",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "gameplay-control:running-normal-tap:webkit-native-gpu:320",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "running-normal-tap",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    },
+    {
+      "id": "gameplay-control:running-normal-tap:chromium-native-gpu:390",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "running-normal-tap",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Actual current17 normal touch left/right/jump and trusted swipe checks pass; no game or storage writes.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-17/experience-chromium/report.json",
+          "sha256": "b918679a31faf958286fd8c5be583114eb629b2740a8c30206169ccb84c69efa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "gameplay-control:running-normal-tap:chromium-native-gpu:320",
+      "objectType": "gameplay-control",
+      "lifecycleStateBranch": "running-normal-tap",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Exact requested visible control receives trusted touch; selected route and actual started level agree. Clipped static-menu actionability auto-scroll is explicit, never a game-state write.",
+      "observed": "Exact current-build branch natural retest pending",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "Attempt16 WebKit actual l3 events disproved intended l1 collision branch after menu touch.",
+    "Main generic implementation fixture confirmed CSS-clipped static card5 then1 receives trusted touch via public locator actionability in both engines; this is not natural H5 evidence.",
+    "Native low-level WebKit touch protocol does not move DOM menu scrolling; no native menu-pan pass is claimed."
+  ],
+  "remainingGaps": [
+    "Final actual H5 earned menu5 then1 at320 retest pending",
+    "Physical/native menu pan remains unobserved; public actionability auto-scroll is separately documented"
+  ],
+  "createdAt": "2026-10-14T10:51:44.960Z"
+}

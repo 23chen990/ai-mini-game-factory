@@ -1,0 +1,5707 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "attempt": 20,
+  "runtime": "chromium desktop touch emulation; not physical mobile",
+  "mode": "safety",
+  "normalInputOnly": true,
+  "stateInjection": false,
+  "checks": [
+    {
+      "name": "van-target-distance-reached",
+      "passed": true,
+      "evidence": {
+        "phase": "running",
+        "level": 3,
+        "distance": 185.7979199999976,
+        "elapsed": 21.11339999999983,
+        "lane": -1.6999999999999993,
+        "laneIndex": 0,
+        "y": 0,
+        "stun": 0,
+        "count": 11,
+        "gold": 2,
+        "jumpedBarriers": 0,
+        "bufferedJump": null,
+        "reason": null,
+        "events": [
+          {
+            "type": "fish-caught",
+            "at": 1.583400000000006,
+            "distance": 13.933920000000102,
+            "objectId": "l3-f0",
+            "golden": false,
+            "bonus": false,
+            "first": true,
+            "count": 1
+          },
+          {
+            "type": "fish-caught",
+            "at": 3.399533333333322,
+            "distance": 29.915893333333486,
+            "objectId": "l3-f1",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 2
+          },
+          {
+            "type": "fish-caught",
+            "at": 5.2241333333333495,
+            "distance": 45.972373333333394,
+            "objectId": "l3-f2",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 3
+          },
+          {
+            "type": "lane-input",
+            "at": 5.424800000000019,
+            "distance": 47.73824000000002,
+            "lane": 0
+          },
+          {
+            "type": "fish-caught",
+            "at": 7.041766666666727,
+            "distance": 61.96754666666652,
+            "objectId": "l3-f3",
+            "golden": true,
+            "bonus": false,
+            "first": false,
+            "count": 4
+          },
+          {
+            "type": "fish-caught",
+            "at": 8.858400000000076,
+            "distance": 77.95392000000001,
+            "objectId": "l3-f4",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 5
+          },
+          {
+            "type": "obstacle-avoided",
+            "at": 10.016833333333402,
+            "distance": 88.14813333333359,
+            "objectId": "l3-o0",
+            "kind": "car",
+            "jumped": false,
+            "combo": 0
+          },
+          {
+            "type": "fish-caught",
+            "at": 10.675500000000055,
+            "distance": 93.9444000000004,
+            "objectId": "l3-f5",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 6
+          },
+          {
+            "type": "fish-caught",
+            "at": 12.496700000000036,
+            "distance": 109.9709600000006,
+            "objectId": "l3-f6",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 7
+          },
+          {
+            "type": "lane-input",
+            "at": 12.621600000000027,
+            "distance": 111.07008000000059,
+            "lane": 1
+          },
+          {
+            "type": "lane-input",
+            "at": 12.880000000000036,
+            "distance": 113.34400000000068,
+            "lane": 2
+          },
+          {
+            "type": "fish-caught",
+            "at": 14.313400000000014,
+            "distance": 125.9579200000008,
+            "objectId": "l3-f7",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 8
+          },
+          {
+            "type": "lane-input",
+            "at": 14.420800000000025,
+            "distance": 126.9030400000009,
+            "lane": 1
+          },
+          {
+            "type": "fish-caught",
+            "at": 16.1297,
+            "distance": 141.9413600000003,
+            "objectId": "l3-f8",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 9
+          },
+          {
+            "type": "fish-caught",
+            "at": 17.94673333333326,
+            "distance": 157.93125333333265,
+            "objectId": "l3-f9",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 10
+          },
+          {
+            "type": "lane-input",
+            "at": 18.030099999999923,
+            "distance": 158.66487999999921,
+            "lane": 0
+          },
+          {
+            "type": "obstacle-avoided",
+            "at": 18.413399999999914,
+            "distance": 162.037919999999,
+            "objectId": "l3-o1",
+            "kind": "pedestrian",
+            "jumped": false,
+            "combo": 0
+          },
+          {
+            "type": "fish-caught",
+            "at": 19.762833333333223,
+            "distance": 173.91293333333155,
+            "objectId": "l3-f10",
+            "golden": true,
+            "bonus": false,
+            "first": false,
+            "count": 11
+          }
+        ],
+        "save": {
+          "version": 2,
+          "unlocked": 5,
+          "stars": [
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "completed": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "best": [
+            {
+              "fish": 20,
+              "gold": 5,
+              "jumps": 0,
+              "score": 59
+            },
+            {
+              "fish": 26,
+              "gold": 5,
+              "jumps": 0,
+              "score": 70
+            },
+            {
+              "fish": 34,
+              "gold": 7,
+              "jumps": 0,
+              "score": 96
+            },
+            {
+              "fish": 32,
+              "gold": 7,
+              "jumps": 0,
+              "score": 104
+            },
+            {
+              "fish": 36,
+              "gold": 6,
+              "jumps": 0,
+              "score": 114
+            }
+          ]
+        },
+        "pausedBySystem": false
+      }
+    },
+    {
+      "name": "van-ends-round",
+      "passed": true,
+      "evidence": {
+        "phase": "finished",
+        "level": 3,
+        "distance": 209.40597333332943,
+        "elapsed": 23.796133333333046,
+        "lane": 1.6999999999999948,
+        "laneIndex": 2,
+        "y": 0,
+        "stun": 0,
+        "count": 11,
+        "gold": 2,
+        "jumpedBarriers": 0,
+        "bufferedJump": null,
+        "reason": "vehicle",
+        "events": [
+          {
+            "type": "fish-caught",
+            "at": 1.583400000000006,
+            "distance": 13.933920000000102,
+            "objectId": "l3-f0",
+            "golden": false,
+            "bonus": false,
+            "first": true,
+            "count": 1
+          },
+          {
+            "type": "fish-caught",
+            "at": 3.399533333333322,
+            "distance": 29.915893333333486,
+            "objectId": "l3-f1",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 2
+          },
+          {
+            "type": "fish-caught",
+            "at": 5.2241333333333495,
+            "distance": 45.972373333333394,
+            "objectId": "l3-f2",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 3
+          },
+          {
+            "type": "lane-input",
+            "at": 5.424800000000019,
+            "distance": 47.73824000000002,
+            "lane": 0
+          },
+          {
+            "type": "fish-caught",
+            "at": 7.041766666666727,
+            "distance": 61.96754666666652,
+            "objectId": "l3-f3",
+            "golden": true,
+            "bonus": false,
+            "first": false,
+            "count": 4
+          },
+          {
+            "type": "fish-caught",
+            "at": 8.858400000000076,
+            "distance": 77.95392000000001,
+            "objectId": "l3-f4",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 5
+          },
+          {
+            "type": "obstacle-avoided",
+            "at": 10.016833333333402,
+            "distance": 88.14813333333359,
+            "objectId": "l3-o0",
+            "kind": "car",
+            "jumped": false,
+            "combo": 0
+          },
+          {
+            "type": "fish-caught",
+            "at": 10.675500000000055,
+            "distance": 93.9444000000004,
+            "objectId": "l3-f5",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 6
+          },
+          {
+            "type": "fish-caught",
+            "at": 12.496700000000036,
+            "distance": 109.9709600000006,
+            "objectId": "l3-f6",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 7
+          },
+          {
+            "type": "lane-input",
+            "at": 12.621600000000027,
+            "distance": 111.07008000000059,
+            "lane": 1
+          },
+          {
+            "type": "lane-input",
+            "at": 12.880000000000036,
+            "distance": 113.34400000000068,
+            "lane": 2
+          },
+          {
+            "type": "fish-caught",
+            "at": 14.313400000000014,
+            "distance": 125.9579200000008,
+            "objectId": "l3-f7",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 8
+          },
+          {
+            "type": "lane-input",
+            "at": 14.420800000000025,
+            "distance": 126.9030400000009,
+            "lane": 1
+          },
+          {
+            "type": "fish-caught",
+            "at": 16.1297,
+            "distance": 141.9413600000003,
+            "objectId": "l3-f8",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 9
+          },
+          {
+            "type": "fish-caught",
+            "at": 17.94673333333326,
+            "distance": 157.93125333333265,
+            "objectId": "l3-f9",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 10
+          },
+          {
+            "type": "lane-input",
+            "at": 18.030099999999923,
+            "distance": 158.66487999999921,
+            "lane": 0
+          },
+          {
+            "type": "obstacle-avoided",
+            "at": 18.413399999999914,
+            "distance": 162.037919999999,
+            "objectId": "l3-o1",
+            "kind": "pedestrian",
+            "jumped": false,
+            "combo": 0
+          },
+          {
+            "type": "fish-caught",
+            "at": 19.762833333333223,
+            "distance": 173.91293333333155,
+            "objectId": "l3-f10",
+            "golden": true,
+            "bonus": false,
+            "first": false,
+            "count": 11
+          },
+          {
+            "type": "lane-input",
+            "at": 21.16339999999983,
+            "distance": 186.2379199999976,
+            "lane": 1
+          },
+          {
+            "type": "lane-input",
+            "at": 21.212999999999834,
+            "distance": 186.67439999999763,
+            "lane": 2
+          },
+          {
+            "type": "failed",
+            "at": 23.796133333333046,
+            "distance": 209.40597333332943,
+            "reason": "vehicle",
+            "objectId": "l3-o2",
+            "kind": "van"
+          }
+        ],
+        "save": {
+          "version": 2,
+          "unlocked": 5,
+          "stars": [
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "completed": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "best": [
+            {
+              "fish": 20,
+              "gold": 5,
+              "jumps": 0,
+              "score": 59
+            },
+            {
+              "fish": 26,
+              "gold": 5,
+              "jumps": 0,
+              "score": 70
+            },
+            {
+              "fish": 34,
+              "gold": 7,
+              "jumps": 0,
+              "score": 96
+            },
+            {
+              "fish": 32,
+              "gold": 7,
+              "jumps": 0,
+              "score": 104
+            },
+            {
+              "fish": 36,
+              "gold": 6,
+              "jumps": 0,
+              "score": 114
+            }
+          ]
+        },
+        "pausedBySystem": false
+      }
+    },
+    {
+      "name": "car-not-jumpable",
+      "passed": true,
+      "evidence": {
+        "phase": "finished",
+        "level": 3,
+        "distance": 84.55040000000005,
+        "elapsed": 9.608000000000043,
+        "lane": 0,
+        "laneIndex": 1,
+        "y": 0.6831329022222371,
+        "stun": 0,
+        "count": 3,
+        "gold": 0,
+        "jumpedBarriers": 0,
+        "bufferedJump": null,
+        "reason": "vehicle",
+        "events": [
+          {
+            "type": "fish-caught",
+            "at": 1.5833000000000004,
+            "distance": 13.933040000000037,
+            "objectId": "l3-f0",
+            "golden": false,
+            "bonus": false,
+            "first": true,
+            "count": 1
+          },
+          {
+            "type": "fish-caught",
+            "at": 3.3999333333333306,
+            "distance": 29.91941333333358,
+            "objectId": "l3-f1",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 2
+          },
+          {
+            "type": "fish-caught",
+            "at": 5.216700000000021,
+            "distance": 45.90696000000011,
+            "objectId": "l3-f2",
+            "golden": false,
+            "bonus": false,
+            "first": false,
+            "count": 3
+          },
+          {
+            "type": "jump",
+            "at": 9.191200000000064,
+            "distance": 80.88256000000011
+          },
+          {
+            "type": "failed",
+            "at": 9.608000000000043,
+            "distance": 84.55040000000005,
+            "reason": "vehicle",
+            "objectId": "l3-o0",
+            "kind": "car"
+          }
+        ],
+        "save": {
+          "version": 2,
+          "unlocked": 5,
+          "stars": [
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "completed": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "best": [
+            {
+              "fish": 20,
+              "gold": 5,
+              "jumps": 0,
+              "score": 59
+            },
+            {
+              "fish": 26,
+              "gold": 5,
+              "jumps": 0,
+              "score": 70
+            },
+            {
+              "fish": 34,
+              "gold": 7,
+              "jumps": 0,
+              "score": 96
+            },
+            {
+              "fish": 32,
+              "gold": 7,
+              "jumps": 0,
+              "score": 104
+            },
+            {
+              "fish": 36,
+              "gold": 6,
+              "jumps": 0,
+              "score": 114
+            }
+          ]
+        },
+        "pausedBySystem": false
+      }
+    },
+    {
+      "name": "distance-and-fish-jointly-required",
+      "passed": true,
+      "evidence": {
+        "phase": "finished",
+        "level": 1,
+        "distance": 300,
+        "elapsed": 40.00830000000023,
+        "lane": 1.6999999999999993,
+        "laneIndex": 2,
+        "y": 0,
+        "stun": 0,
+        "count": 0,
+        "gold": 0,
+        "jumpedBarriers": 0,
+        "bufferedJump": null,
+        "reason": "fish-short",
+        "events": [
+          {
+            "type": "lane-input",
+            "at": 0.07460000000000581,
+            "distance": 0.5595000000000436,
+            "lane": 0
+          },
+          {
+            "type": "obstacle-avoided",
+            "at": 12.133400000000018,
+            "distance": 91.00049999999956,
+            "objectId": "l1-o0",
+            "kind": "pedestrian",
+            "jumped": false,
+            "combo": 0
+          },
+          {
+            "type": "barrier-cleared",
+            "at": 18.799999999999855,
+            "distance": 140.99999999999952,
+            "objectId": "l1-o1",
+            "kind": "barrier",
+            "jumped": false,
+            "combo": 0
+          },
+          {
+            "type": "lane-input",
+            "at": 18.87499999999985,
+            "distance": 141.5624999999996,
+            "lane": 1
+          },
+          {
+            "type": "lane-input",
+            "at": 19.11669999999986,
+            "distance": 143.3752499999998,
+            "lane": 2
+          },
+          {
+            "type": "obstacle-avoided",
+            "at": 21.733399999999776,
+            "distance": 163.00050000000093,
+            "objectId": "l1-o2",
+            "kind": "pedestrian",
+            "jumped": false,
+            "combo": 0
+          },
+          {
+            "type": "barrier-cleared",
+            "at": 30.133299999999455,
+            "distance": 225.99975000000546,
+            "objectId": "l1-o3",
+            "kind": "barrier",
+            "jumped": false,
+            "combo": 0
+          },
+          {
+            "type": "failed",
+            "at": 40.00830000000023,
+            "distance": 300,
+            "reason": "fish-short"
+          }
+        ],
+        "save": {
+          "version": 2,
+          "unlocked": 5,
+          "stars": [
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "completed": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "best": [
+            {
+              "fish": 20,
+              "gold": 5,
+              "jumps": 0,
+              "score": 59
+            },
+            {
+              "fish": 26,
+              "gold": 5,
+              "jumps": 0,
+              "score": 70
+            },
+            {
+              "fish": 34,
+              "gold": 7,
+              "jumps": 0,
+              "score": 96
+            },
+            {
+              "fish": 32,
+              "gold": 7,
+              "jumps": 0,
+              "score": 104
+            },
+            {
+              "fish": 36,
+              "gold": 6,
+              "jumps": 0,
+              "score": 114
+            }
+          ]
+        },
+        "pausedBySystem": false
+      }
+    },
+    {
+      "name": "tab-blur-pauses",
+      "passed": false,
+      "evidence": {
+        "phase": "running",
+        "level": 1,
+        "distance": 18.500249999999866,
+        "elapsed": 2.4666999999999812,
+        "lane": 0,
+        "laneIndex": 1,
+        "y": 0,
+        "stun": 0,
+        "count": 1,
+        "gold": 0,
+        "jumpedBarriers": 0,
+        "bufferedJump": null,
+        "reason": null,
+        "events": [
+          {
+            "type": "fish-caught",
+            "at": 1.8583333333333338,
+            "distance": 13.9375,
+            "objectId": "l1-f0",
+            "golden": false,
+            "bonus": false,
+            "first": true,
+            "count": 1
+          }
+        ],
+        "save": {
+          "version": 2,
+          "unlocked": 5,
+          "stars": [
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "completed": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "best": [
+            {
+              "fish": 20,
+              "gold": 5,
+              "jumps": 0,
+              "score": 59
+            },
+            {
+              "fish": 26,
+              "gold": 5,
+              "jumps": 0,
+              "score": 70
+            },
+            {
+              "fish": 34,
+              "gold": 7,
+              "jumps": 0,
+              "score": 96
+            },
+            {
+              "fish": 32,
+              "gold": 7,
+              "jumps": 0,
+              "score": 104
+            },
+            {
+              "fish": 36,
+              "gold": 6,
+              "jumps": 0,
+              "score": 114
+            }
+          ]
+        },
+        "pausedBySystem": false
+      }
+    },
+    {
+      "name": "background-manual-resume",
+      "passed": false,
+      "evidence": {
+        "phase": "running",
+        "level": 1,
+        "distance": 24.004499999999826,
+        "elapsed": 3.200599999999974,
+        "lane": 0,
+        "laneIndex": 1,
+        "y": 0,
+        "stun": 0,
+        "count": 1,
+        "gold": 0,
+        "jumpedBarriers": 0,
+        "bufferedJump": null,
+        "reason": null,
+        "events": [
+          {
+            "type": "fish-caught",
+            "at": 1.8583333333333338,
+            "distance": 13.9375,
+            "objectId": "l1-f0",
+            "golden": false,
+            "bonus": false,
+            "first": true,
+            "count": 1
+          }
+        ],
+        "save": {
+          "version": 2,
+          "unlocked": 5,
+          "stars": [
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "completed": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "best": [
+            {
+              "fish": 20,
+              "gold": 5,
+              "jumps": 0,
+              "score": 59
+            },
+            {
+              "fish": 26,
+              "gold": 5,
+              "jumps": 0,
+              "score": 70
+            },
+            {
+              "fish": 34,
+              "gold": 7,
+              "jumps": 0,
+              "score": 96
+            },
+            {
+              "fish": 32,
+              "gold": 7,
+              "jumps": 0,
+              "score": 104
+            },
+            {
+              "fish": 36,
+              "gold": 6,
+              "jumps": 0,
+              "score": 114
+            }
+          ]
+        },
+        "pausedBySystem": false
+      }
+    },
+    {
+      "name": "replay-resources-plateau",
+      "passed": true,
+      "evidence": [
+        {
+          "geometries": 262,
+          "textures": 19
+        },
+        {
+          "geometries": 262,
+          "textures": 19
+        },
+        {
+          "geometries": 262,
+          "textures": 19
+        },
+        {
+          "geometries": 262,
+          "textures": 19
+        },
+        {
+          "geometries": 262,
+          "textures": 19
+        },
+        {
+          "geometries": 262,
+          "textures": 19
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "at": "2026-10-15T03:01:05.951Z",
+      "type": "tap",
+      "selector": "#co-start",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:01:06.056Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 677,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.43125,
+        "level": 1
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:01:08.230Z",
+      "type": "tap",
+      "selector": "#co-pause",
+      "before": {
+        "phase": "running",
+        "distance": 16.50075000000001,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:01:08.263Z",
+      "touchPoint": {
+        "x": 338.375,
+        "y": 37,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "paused",
+        "distance": 16.68900000000001,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 1.8583999999999967,
+          "distance": 13.938000000000004,
+          "objectId": "l1-f0",
+          "golden": false,
+          "bonus": false,
+          "first": true,
+          "count": 1
+        },
+        {
+          "type": "pause",
+          "at": 2.225199999999996,
+          "distance": 16.68900000000001
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:01:09.592Z",
+      "type": "tap",
+      "selector": "#co-resume",
+      "before": {
+        "phase": "paused",
+        "distance": 16.68900000000001,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:01:09.613Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 432.09375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 16.755000000000013,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "pause",
+          "at": 2.225199999999996,
+          "distance": 16.68900000000001
+        },
+        {
+          "type": "resume",
+          "at": 2.225199999999996,
+          "distance": 16.68900000000001
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:01:20.016Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 93.9419999999996,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:01:20.047Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 94.1924999999996,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 12.52560000000005,
+          "distance": 93.9419999999996,
+          "objectId": "l1-f5",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 6
+        },
+        {
+          "type": "lane-input",
+          "at": 12.55060000000005,
+          "distance": 94.1294999999996,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:01:26.485Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 142.44300000000112,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:01:26.522Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 142.75500000000113,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 18.925399999999925,
+          "distance": 141.9405000000011,
+          "objectId": "l1-f8",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 9
+        },
+        {
+          "type": "lane-input",
+          "at": 19.02569999999992,
+          "distance": 142.69275000000113,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:01:29.285Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 163.44300000000322,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:01:29.322Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 163.75500000000324,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "obstacle-avoided",
+          "at": 21.734033333333155,
+          "distance": 163.00525000000314,
+          "objectId": "l1-o2",
+          "kind": "pedestrian",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 21.82559999999982,
+          "distance": 163.69200000000325,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:01:37.677Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 226.41000000000744,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:01:37.718Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 226.72350000000745,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 30.138199999999603,
+          "distance": 226.03650000000744,
+          "objectId": "l1-o3",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 30.221499999999597,
+          "distance": 226.6612500000074,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:01:47.693Z",
+      "type": "tap",
+      "selector": "#co-next",
+      "before": {
+        "phase": "finished",
+        "distance": 300,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:01:47.728Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 424.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.1336000000000349,
+        "level": 2
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:01:57.618Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 78.2584000000005,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:01:57.642Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 78.46160000000052,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 9.741233333333394,
+          "distance": 77.92986666666715,
+          "objectId": "l2-f4",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 5
+        },
+        {
+          "type": "lane-input",
+          "at": 9.799900000000061,
+          "distance": 78.39920000000049,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:01:59.664Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 94.59760000000054,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:01:59.692Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 94.86640000000051,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 11.7415333333334,
+          "distance": 93.9322666666672,
+          "objectId": "l2-f5",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 6
+        },
+        {
+          "type": "lane-input",
+          "at": 11.850000000000069,
+          "distance": 94.80000000000055,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:05.581Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 141.9335999999999,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:05.610Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 142.19999999999993,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 17.74163333333332,
+          "distance": 141.93306666666655,
+          "objectId": "l2-f8",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 9
+        },
+        {
+          "type": "lane-input",
+          "at": 17.76659999999999,
+          "distance": 142.13279999999992,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:12.052Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 193.72959999999821,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:12.077Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 193.9335999999982,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "obstacle-avoided",
+          "at": 24.13323333333311,
+          "distance": 193.06586666666487,
+          "objectId": "l2-o2",
+          "kind": "pedestrian",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 24.23329999999978,
+          "distance": 193.86639999999824,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:12.263Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 195.39599999999822,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:12.284Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 195.59919999999818,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 24.23329999999978,
+          "distance": 193.86639999999824,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 24.441699999999773,
+          "distance": 195.5335999999982,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:19.643Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 254.46079999999606,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:19.669Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 254.66479999999603,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 31.741599999999508,
+          "distance": 253.93279999999606,
+          "objectId": "l2-f15",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 16
+        },
+        {
+          "type": "lane-input",
+          "at": 31.824999999999513,
+          "distance": 254.5999999999961,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:23.580Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 285.9336000000001,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:23.610Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 286.1928000000001,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 35.741633333333354,
+          "distance": 285.93306666666683,
+          "objectId": "l2-f17",
+          "golden": true,
+          "bonus": false,
+          "first": false,
+          "count": 18
+        },
+        {
+          "type": "lane-input",
+          "at": 35.766700000000014,
+          "distance": 286.1336000000001,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:32.532Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 357.5336000000097,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:32.569Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 357.86720000000975,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 44.62453333333453,
+          "distance": 356.99626666667626,
+          "objectId": "l2-o5",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 44.72510000000121,
+          "distance": 357.8008000000097,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:32.756Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 359.3336000000099,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:32.786Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 359.6000000000099,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 44.72510000000121,
+          "distance": 357.8008000000097,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 44.941800000001244,
+          "distance": 359.53440000000995,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:33.340Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 364.0000000000103,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:33.369Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 364.26720000001023,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 45.491733333334615,
+          "distance": 363.9338666666769,
+          "objectId": "l2-jump-l2-o5",
+          "golden": true,
+          "bonus": true,
+          "first": false,
+          "count": 23
+        },
+        {
+          "type": "lane-input",
+          "at": 45.525000000001285,
+          "distance": 364.2000000000103,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:35.664Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 382.6000000000127,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:35.702Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 382.9336000000127,
+        "level": 2
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 47.741733333334906,
+          "distance": 381.93386666667925,
+          "objectId": "l2-f23",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 25
+        },
+        {
+          "type": "lane-input",
+          "at": 47.85830000000159,
+          "distance": 382.86640000001273,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:40.585Z",
+      "type": "tap",
+      "selector": "#co-next",
+      "before": {
+        "phase": "finished",
+        "distance": 420,
+        "level": 2
+      },
+      "completedAt": "2026-10-15T03:02:40.631Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 424.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.15224000000002563,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:02:45.923Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 46.12872000000029,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:02:45.952Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 46.42880000000033,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 5.217233333333352,
+          "distance": 45.91165333333362,
+          "objectId": "l3-f2",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 3
+        },
+        {
+          "type": "lane-input",
+          "at": 5.26780000000003,
+          "distance": 46.356640000000354,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:53.238Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 109.92872000000047,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:02:53.268Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 110.2217600000005,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 12.491900000000037,
+          "distance": 109.92872000000047,
+          "objectId": "l3-f6",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 7
+        },
+        {
+          "type": "lane-input",
+          "at": 12.517000000000042,
+          "distance": 110.14960000000053,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:53.453Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 111.83480000000053,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:02:53.477Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 112.05568000000059,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 12.517000000000042,
+          "distance": 110.14960000000053,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 12.725200000000038,
+          "distance": 111.9817600000005,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:55.122Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 126.50176000000073,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:02:55.152Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 126.7956800000008,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 14.30860000000003,
+          "distance": 125.9156800000008,
+          "objectId": "l3-f7",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 8
+        },
+        {
+          "type": "lane-input",
+          "at": 14.399600000000031,
+          "distance": 126.7164800000008,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:02:58.736Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 158.32871999999932,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:02:58.760Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 158.54871999999932,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 17.950233333333284,
+          "distance": 157.96205333333265,
+          "objectId": "l3-f9",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 10
+        },
+        {
+          "type": "lane-input",
+          "at": 18.00859999999996,
+          "distance": 158.47567999999941,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:06.124Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 223.30263999999548,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:06.152Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 223.5956799999955,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 25.341899999999715,
+          "distance": 223.0087199999954,
+          "objectId": "l3-o3",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 25.400299999999724,
+          "distance": 223.52263999999548,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:06.893Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 230.1147199999948,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:06.919Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 230.34263999999484,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 26.12513333333303,
+          "distance": 229.90117333332825,
+          "objectId": "l3-jump-l3-o3",
+          "golden": true,
+          "bonus": true,
+          "first": false,
+          "count": 14
+        },
+        {
+          "type": "lane-input",
+          "at": 26.16679999999969,
+          "distance": 230.26783999999486,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:09.678Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 254.61655999999292,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:09.703Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 254.83567999999298,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 28.858133333332926,
+          "distance": 253.9515733333264,
+          "objectId": "l3-f15",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 16
+        },
+        {
+          "type": "lane-input",
+          "at": 28.9502999999996,
+          "distance": 254.76263999999296,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:15.123Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 302.4973599999929,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:15.152Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 302.79567999999296,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 34.30859999999981,
+          "distance": 301.9156799999929,
+          "objectId": "l3-f18",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 19
+        },
+        {
+          "type": "lane-input",
+          "at": 34.40029999999982,
+          "distance": 302.7226399999929,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:16.949Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 318.5626399999916,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:16.986Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 318.92959999999164,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 36.12529999999998,
+          "distance": 317.90263999999166,
+          "objectId": "l3-f19",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 20
+        },
+        {
+          "type": "lane-input",
+          "at": 36.23360000000001,
+          "distance": 318.8556799999917,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:22.355Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 366.1565599999868,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:22.395Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 366.5226399999866,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 41.58353333333399,
+          "distance": 365.9350933333202,
+          "objectId": "l3-f22",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 23
+        },
+        {
+          "type": "lane-input",
+          "at": 41.64200000000065,
+          "distance": 366.44959999998673,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:29.694Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 430.7256799999791,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:29.732Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 431.0917599999791,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 48.85770000000163,
+          "distance": 429.94775999997927,
+          "objectId": "l3-f26",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 28
+        },
+        {
+          "type": "lane-input",
+          "at": 48.979500000001636,
+          "distance": 431.019599999979,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:29.920Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 432.7408799999789,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:29.951Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 433.0171999999788,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 48.979500000001636,
+          "distance": 431.019599999979,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 49.19780000000165,
+          "distance": 432.9406399999787,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:31.429Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 445.97959999997744,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:31.458Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 446.2726399999773,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 50.671100000001815,
+          "distance": 445.9056799999775,
+          "objectId": "l3-f27",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 29
+        },
+        {
+          "type": "lane-input",
+          "at": 50.704500000001815,
+          "distance": 446.1995999999774,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:35.129Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 478.54047999997374,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:35.157Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 478.8247199999736,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 54.312833333335576,
+          "distance": 477.95293333330704,
+          "objectId": "l3-f29",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 31
+        },
+        {
+          "type": "lane-input",
+          "at": 54.404500000002265,
+          "distance": 478.75959999997366,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:38.751Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 510.43959999996997,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:38.791Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 510.8074399999698,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 57.94623333333601,
+          "distance": 509.9268533333033,
+          "objectId": "l3-f31",
+          "golden": true,
+          "bonus": false,
+          "first": false,
+          "count": 33
+        },
+        {
+          "type": "lane-input",
+          "at": 58.037900000002686,
+          "distance": 510.7335199999699,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:42.401Z",
+      "type": "tap",
+      "selector": "#co-next",
+      "before": {
+        "phase": "finished",
+        "distance": 540,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:03:42.460Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 424.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.22999999999999998,
+        "level": 4
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:03:47.500Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 45.97976000000002,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:03:47.532Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 46.27508000000008,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 4.989933333333362,
+          "distance": 45.90738666666685,
+          "objectId": "l4-f2",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 3
+        },
+        {
+          "type": "lane-input",
+          "at": 5.0215000000000245,
+          "distance": 46.197800000000136,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:03:59.798Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 158.51231999999916,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:03:59.840Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 158.89595999999898,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 17.171199999999633,
+          "distance": 157.97503999999924,
+          "objectId": "l4-f9",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 10
+        },
+        {
+          "type": "lane-input",
+          "at": 17.262899999999608,
+          "distance": 158.81867999999903,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:03.061Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 188.48867999999717,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:03.099Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 188.87231999999727,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 18.904599999999547,
+          "distance": 173.9223199999982,
+          "objectId": "l4-f10",
+          "golden": true,
+          "bonus": false,
+          "first": false,
+          "count": 11
+        },
+        {
+          "type": "lane-input",
+          "at": 20.521299999999435,
+          "distance": 188.7959599999971,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:07.178Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 226.362319999994,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:07.207Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 226.66867999999388,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 24.571299999999226,
+          "distance": 226.0559599999939,
+          "objectId": "l4-o3",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 24.629699999999247,
+          "distance": 226.59323999999404,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:15.422Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 302.2245999999879,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:15.461Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 302.608239999988,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 32.81713333333234,
+          "distance": 301.9176266666545,
+          "objectId": "l4-f18",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 19
+        },
+        {
+          "type": "lane-input",
+          "at": 32.88379999999902,
+          "distance": 302.5309599999878,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:20.802Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 351.7518799999834,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:20.837Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 352.0582399999835,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 38.15853333333294,
+          "distance": 351.0585066666503,
+          "objectId": "l4-o5",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 38.2587999999996,
+          "distance": 351.9809599999833,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:21.488Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 358.0382399999832,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:21.528Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 358.42095999998304,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 38.90883333333306,
+          "distance": 357.9612666666498,
+          "objectId": "l4-jump-l4-o5",
+          "golden": true,
+          "bonus": true,
+          "first": false,
+          "count": 21
+        },
+        {
+          "type": "lane-input",
+          "at": 38.950499999999735,
+          "distance": 358.34459999998313,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:22.083Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 363.4809599999829,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:22.120Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 363.86459999998294,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 38.950499999999735,
+          "distance": 358.34459999998313,
+          "lane": 2
+        },
+        {
+          "type": "lane-input",
+          "at": 39.542199999999816,
+          "distance": 363.78823999998303,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:35.768Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 489.4068799999724,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:35.808Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 489.7895999999724,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "obstacle-avoided",
+          "at": 52.07100000000153,
+          "distance": 479.0531999999737,
+          "objectId": "l4-o8",
+          "kind": "pedestrian",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 53.229700000001706,
+          "distance": 489.7132399999725,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:39.959Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 527.9695999999719,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:40.000Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 528.3532399999722,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "obstacle-avoided",
+          "at": 57.4039000000022,
+          "distance": 528.1158799999719,
+          "objectId": "l4-o9",
+          "kind": "van",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 57.4208000000022,
+          "distance": 528.2713599999719,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:40.188Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 530.0405199999724,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:40.224Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 530.4250799999722,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 57.4208000000022,
+          "distance": 528.2713599999719,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 57.64550000000224,
+          "distance": 530.3385999999723,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:43.123Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 557.0268799999759,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:43.159Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 557.410519999976,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 58.90413333333572,
+          "distance": 541.9180266666405,
+          "objectId": "l4-f33",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 28
+        },
+        {
+          "type": "lane-input",
+          "at": 60.57980000000261,
+          "distance": 557.3341599999759,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:47.237Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 594.8213999999817,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:47.276Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 595.2841599999817,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 64.57103333333656,
+          "distance": 594.0535066666482,
+          "objectId": "l4-o10",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 64.69640000000325,
+          "distance": 595.2068799999818,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:47.922Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 601.1868799999827,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:47.959Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 601.5705199999828,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 65.32140000000346,
+          "distance": 600.9568799999827,
+          "objectId": "l4-jump-l4-o10",
+          "golden": true,
+          "bonus": true,
+          "first": false,
+          "count": 31
+        },
+        {
+          "type": "lane-input",
+          "at": 65.3797000000035,
+          "distance": 601.4932399999828,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:48.146Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 603.256879999983,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:48.183Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 603.639599999983,
+        "level": 4
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 65.3797000000035,
+          "distance": 601.4932399999828,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 65.60480000000354,
+          "distance": 603.564159999983,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:04:51.296Z",
+      "type": "tap",
+      "selector": "#co-next",
+      "before": {
+        "phase": "finished",
+        "distance": 630,
+        "level": 4
+      },
+      "completedAt": "2026-10-15T03:04:51.335Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 424.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.24,
+        "level": 5
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:04:55.926Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 44.3203199999997,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:04:55.998Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 45.0403199999997,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 3.116633333333318,
+          "distance": 29.91967999999972,
+          "objectId": "l5-f1",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 2
+        },
+        {
+          "type": "lane-input",
+          "at": 4.666600000000015,
+          "distance": 44.79935999999992,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:00.053Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 83.92031999999945,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:00.091Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 84.32063999999956,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "obstacle-avoided",
+          "at": 8.766700000000055,
+          "distance": 84.16031999999944,
+          "objectId": "l5-o0",
+          "kind": "car",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 8.774900000000066,
+          "distance": 84.23903999999956,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:00.274Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 86.07167999999946,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:00.307Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 86.39999999999957,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 8.774900000000066,
+          "distance": 84.23903999999956,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 8.991700000000042,
+          "distance": 86.3203199999994,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:02.796Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 110.24063999999892,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:02.841Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 110.71679999999895,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 11.449999999999937,
+          "distance": 109.91999999999898,
+          "objectId": "l5-f6",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 4
+        },
+        {
+          "type": "lane-input",
+          "at": 11.524999999999933,
+          "distance": 110.63999999999895,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:04.515Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 126.79967999999847,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:04.549Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 127.12031999999842,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 13.115999999999858,
+          "distance": 125.9135999999986,
+          "objectId": "l5-f7",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 5
+        },
+        {
+          "type": "lane-input",
+          "at": 13.23329999999984,
+          "distance": 127.03967999999847,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:07.779Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 158.0803200000003,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:07.816Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 158.48064000000045,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 16.44999999999969,
+          "distance": 157.92000000000047,
+          "objectId": "l5-f9",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 7
+        },
+        {
+          "type": "lane-input",
+          "at": 16.500099999999694,
+          "distance": 158.40096000000057,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:09.197Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 171.67968000000116,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:09.233Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 172.07904000000124,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 16.500099999999694,
+          "distance": 158.40096000000057,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 17.916699999999583,
+          "distance": 172.00032000000112,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:13.317Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 211.28064000000347,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:13.358Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 211.68000000000353,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 21.98339999999939,
+          "distance": 211.04064000000346,
+          "objectId": "l5-o3",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 22.041699999999373,
+          "distance": 211.60032000000336,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:14.011Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 217.92096000000404,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:14.041Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 218.24064000000396,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 22.6992333333327,
+          "distance": 217.91264000000393,
+          "objectId": "l5-jump-l5-o3",
+          "golden": true,
+          "bonus": true,
+          "first": false,
+          "count": 9
+        },
+        {
+          "type": "lane-input",
+          "at": 22.725099999999376,
+          "distance": 218.16096000000408,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:14.503Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 222.6316800000042,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:14.533Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 222.96192000000417,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 23.115799999999346,
+          "distance": 221.9116800000042,
+          "objectId": "l5-f13",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 10
+        },
+        {
+          "type": "lane-input",
+          "at": 23.215899999999348,
+          "distance": 222.87264000000428,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:14.719Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 224.72064000000444,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:14.750Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 225.04032000000433,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 23.215899999999348,
+          "distance": 222.87264000000428,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 23.433399999999338,
+          "distance": 224.96064000000445,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:17.787Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 254.16000000000648,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:17.816Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 254.47872000000635,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 26.450099999999228,
+          "distance": 253.92096000000654,
+          "objectId": "l5-f15",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 12
+        },
+        {
+          "type": "lane-input",
+          "at": 26.50009999999922,
+          "distance": 254.40096000000656,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:21.131Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 286.2403200000012,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:21.174Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 286.7164800000012,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 29.783433333332383,
+          "distance": 285.92096000000146,
+          "objectId": "l5-f17",
+          "golden": true,
+          "bonus": false,
+          "first": false,
+          "count": 14
+        },
+        {
+          "type": "lane-input",
+          "at": 29.858399999999033,
+          "distance": 286.6406400000012,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:22.107Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 295.6003199999997,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:22.152Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 296.08127999999965,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 29.858399999999033,
+          "distance": 286.6406400000012,
+          "lane": 2
+        },
+        {
+          "type": "lane-input",
+          "at": 30.83339999999898,
+          "distance": 296.00063999999975,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:26.262Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 335.52095999999324,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:26.308Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 336.0009599999932,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 34.900099999999256,
+          "distance": 335.04095999999333,
+          "objectId": "l5-o5",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 34.99179999999926,
+          "distance": 335.92127999999303,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:26.958Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 342.240959999992,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:27.000Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 342.6412799999921,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 35.61669999999934,
+          "distance": 341.9203199999919,
+          "objectId": "l5-jump-l5-o5",
+          "golden": true,
+          "bonus": true,
+          "first": false,
+          "count": 16
+        },
+        {
+          "type": "lane-input",
+          "at": 35.683499999999334,
+          "distance": 342.56159999999164,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:27.190Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 344.40095999999176,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:27.234Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 344.8809599999917,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 35.683499999999334,
+          "distance": 342.56159999999164,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 35.9167999999994,
+          "distance": 344.80127999999183,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:31.762Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 388.32095999998705,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:31.800Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 388.72127999998713,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "obstacle-avoided",
+          "at": 40.46673333333326,
+          "distance": 388.4806399999869,
+          "objectId": "l5-o6",
+          "kind": "van",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 40.48289999999993,
+          "distance": 388.6358399999869,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:31.989Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 390.48095999998685,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:32.017Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 390.8006399999867,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 40.48289999999993,
+          "distance": 388.6358399999869,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 40.700199999999946,
+          "distance": 390.7219199999866,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:32.761Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 397.92095999998617,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:32.808Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 398.4009599999861,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 41.450033333333366,
+          "distance": 397.92031999998596,
+          "objectId": "l5-f24",
+          "golden": true,
+          "bonus": false,
+          "first": false,
+          "count": 18
+        },
+        {
+          "type": "lane-input",
+          "at": 41.49180000000007,
+          "distance": 398.32127999998625,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:32.997Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 400.1615999999855,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:33.033Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 400.56191999998555,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 41.49180000000007,
+          "distance": 398.32127999998625,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 41.71680000000008,
+          "distance": 400.4812799999859,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:34.513Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 414.7219199999841,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:34.550Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 415.11551999998403,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 43.11673333333358,
+          "distance": 413.92063999998425,
+          "objectId": "l5-f25",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 19
+        },
+        {
+          "type": "lane-input",
+          "at": 43.233400000000245,
+          "distance": 415.04063999998414,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:40.113Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 468.48191999997977,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:40.160Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 468.9609599999799,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 48.11673333333417,
+          "distance": 461.92063999998004,
+          "objectId": "l5-f28",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 22
+        },
+        {
+          "type": "lane-input",
+          "at": 48.84180000000095,
+          "distance": 468.88127999998,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:46.108Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 526.073279999981,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:46.152Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 526.4812799999811,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 54.78290000000156,
+          "distance": 525.9158399999807,
+          "objectId": "l5-f32",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 25
+        },
+        {
+          "type": "lane-input",
+          "at": 54.83350000000154,
+          "distance": 526.4015999999807,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:47.839Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 542.641919999984,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:47.884Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 543.1142399999841,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 56.450100000001726,
+          "distance": 541.9209599999841,
+          "objectId": "l5-f33",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 26
+        },
+        {
+          "type": "lane-input",
+          "at": 56.56680000000176,
+          "distance": 543.0412799999843,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:52.797Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 590.1619199999946,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:52.852Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 590.8022399999949,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 61.450200000002305,
+          "distance": 589.9219199999944,
+          "objectId": "l5-f36",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 29
+        },
+        {
+          "type": "lane-input",
+          "at": 61.533500000002306,
+          "distance": 590.7215999999946,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:05:53.039Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 592.5532799999957,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:05:53.090Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 593.0428799999958,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 61.533500000002306,
+          "distance": 590.7215999999946,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 61.76610000000235,
+          "distance": 592.9545599999956,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:01.152Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 670.4812800000165,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:06:01.268Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 671.5142400000166,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 69.78320000000453,
+          "distance": 669.918720000016,
+          "objectId": "l5-f41",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 34
+        },
+        {
+          "type": "lane-input",
+          "at": 69.88350000000456,
+          "distance": 670.8816000000162,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:06.560Z",
+      "type": "tap",
+      "selector": "#co-ad",
+      "before": {
+        "phase": "finished",
+        "distance": 720,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:06:06.602Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 567.09375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "finished",
+        "distance": 720,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 73.11690000000547,
+          "distance": 701.9222400000261,
+          "objectId": "l5-f43",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 36
+        },
+        {
+          "type": "complete",
+          "at": 75.00013333333936,
+          "distance": 720,
+          "reason": "complete"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:06.613Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 720,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:06:06.656Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 444.203125,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.15552000000011176,
+        "level": 5
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:06:07.660Z",
+      "type": "tap",
+      "selector": "#co-pause",
+      "before": {
+        "phase": "running",
+        "distance": 9.83999999999999,
+        "level": 5
+      },
+      "completedAt": "2026-10-15T03:06:07.691Z",
+      "touchPoint": {
+        "x": 338.375,
+        "y": 37,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "paused",
+        "distance": 10.07999999999999,
+        "level": 5
+      },
+      "events": [
+        {
+          "type": "pause",
+          "at": 1.0499999999999992,
+          "distance": 10.07999999999999
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:08.627Z",
+      "type": "tap",
+      "selector": "[data-level=\"3\"]",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:06:08.657Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 448.375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "ready"
+      },
+      "selectedLevel": "3"
+    },
+    {
+      "at": "2026-10-15T03:06:08.661Z",
+      "type": "tap",
+      "selector": "#co-start",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:06:08.709Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 677,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.28951999999999983,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:06:20.460Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 84.5600799999995,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:06:20.495Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.07304000000000961,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:06:21.200Z",
+      "type": "tap",
+      "selector": "#co-pause",
+      "before": {
+        "phase": "running",
+        "distance": 6.306079999999999,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:06:21.230Z",
+      "touchPoint": {
+        "x": 338.375,
+        "y": 37,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "paused",
+        "distance": 6.452160000000002,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "pause",
+          "at": 0.733200000000001,
+          "distance": 6.452160000000002
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:21.232Z",
+      "type": "tap",
+      "selector": "#co-select",
+      "before": {
+        "phase": "paused",
+        "distance": 6.452160000000002,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:06:21.266Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 546.09375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "ready"
+      }
+    },
+    {
+      "at": "2026-10-15T03:06:21.267Z",
+      "type": "tap",
+      "selector": "[data-level=\"1\"]",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:06:21.357Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 456,
+        "pointerType": "touch",
+        "isTrusted": true,
+        "scrollMechanism": "playwright-locator-actionability-auto-scroll",
+        "pointerdown": {
+          "clientX": 195,
+          "clientY": 456,
+          "pointerType": "touch",
+          "isTrusted": true,
+          "hitTarget": true
+        },
+        "scrollEvidence": [
+          {
+            "mechanism": "playwright-locator-actionability-auto-scroll",
+            "scrollTopBefore": 161,
+            "scrollTopAfter": 0,
+            "pointerdown": {
+              "clientX": 195,
+              "clientY": 456,
+              "pointerType": "touch",
+              "isTrusted": true,
+              "hitTarget": true
+            }
+          }
+        ]
+      },
+      "after": {
+        "phase": "ready"
+      },
+      "selectedLevel": "1"
+    },
+    {
+      "at": "2026-10-15T03:06:21.360Z",
+      "type": "tap",
+      "selector": "#co-start",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:06:21.402Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 677,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.062249999999994546,
+        "level": 1
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:06:26.081Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 35.124749999999956,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:26.174Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 35.80649999999996,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 3.9906999999999964,
+          "distance": 29.930250000000033,
+          "objectId": "l1-f1",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 2
+        },
+        {
+          "type": "lane-input",
+          "at": 4.74990000000001,
+          "distance": 35.62424999999994,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:30.261Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 66.37499999999953,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:30.624Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 69.12599999999954,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 4.74990000000001,
+          "distance": 35.62424999999994,
+          "lane": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 9.125000000000037,
+          "distance": 68.43749999999956,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:30.636Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 69.30824999999953,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:31.051Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 72.43424999999948,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 9.125000000000037,
+          "distance": 68.43749999999956,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 9.616600000000037,
+          "distance": 72.12449999999949,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:38.823Z",
+      "type": "tap",
+      "selector": "#co-pause",
+      "before": {
+        "phase": "running",
+        "distance": 106.06049999999932,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:38.913Z",
+      "touchPoint": {
+        "x": 338.375,
+        "y": 37,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "paused",
+        "distance": 106.68449999999932,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "recovered",
+          "at": 14.899499999999875,
+          "distance": 89.18699999999944
+        },
+        {
+          "type": "pause",
+          "at": 17.232499999999792,
+          "distance": 106.68449999999932
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:38.916Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "paused",
+        "distance": 106.68449999999932,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:39.030Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 489.09375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.5009999999999946,
+        "level": 1
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:06:43.655Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 35.18924999999982,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:43.869Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 36.750749999999805,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 3.9909999999999926,
+          "distance": 29.932499999999827,
+          "objectId": "l1-f1",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 2
+        },
+        {
+          "type": "lane-input",
+          "at": 4.8583000000000105,
+          "distance": 36.437249999999835,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:49.634Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 80.09475000000022,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:49.768Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 81.03300000000023,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 4.8583000000000105,
+          "distance": 36.437249999999835,
+          "lane": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 10.762700000000049,
+          "distance": 80.72025000000019,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:54.442Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 115.84500000000058,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:54.560Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 116.90100000000061,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 12.521033333333373,
+          "distance": 93.90775000000033,
+          "objectId": "l1-f5",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 3
+        },
+        {
+          "type": "lane-input",
+          "at": 15.554300000000026,
+          "distance": 116.6572500000006,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:06:58.500Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 146.526750000002,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:06:58.933Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 149.5327500000021,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 19.587699999999895,
+          "distance": 146.907750000002,
+          "lane": 1
+        },
+        {
+          "type": "fish-caught",
+          "at": 19.74563333333323,
+          "distance": 148.09225000000205,
+          "objectId": "l1-jump-l1-o1",
+          "golden": true,
+          "bonus": true,
+          "first": false,
+          "count": 4
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:07.926Z",
+      "type": "tap",
+      "selector": "[data-action=\"jump\"]",
+      "before": {
+        "phase": "running",
+        "distance": 217.1887500000052,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:07:08.078Z",
+      "touchPoint": {
+        "x": 323.515625,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 217.93275000000526,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "obstacle-avoided",
+          "at": 21.737699999999812,
+          "distance": 163.03275000000264,
+          "objectId": "l1-o2",
+          "kind": "pedestrian",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "jump-buffered",
+          "at": 29.040999999999634,
+          "distance": 217.80750000000526,
+          "objectId": "l1-o3"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:11.281Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 240.8152500000064,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:07:11.423Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 241.7482500000064,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 31.724999999999522,
+          "distance": 237.93750000000637,
+          "objectId": "l1-f14",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 7
+        },
+        {
+          "type": "lane-input",
+          "at": 32.192299999999506,
+          "distance": 241.44225000000637,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:12.469Z",
+      "type": "tap",
+      "selector": "#co-pause",
+      "before": {
+        "phase": "running",
+        "distance": 249.6277500000068,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:07:12.540Z",
+      "touchPoint": {
+        "x": 338.375,
+        "y": 37,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "paused",
+        "distance": 250.19175000000683,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 32.192299999999506,
+          "distance": 241.44225000000637,
+          "lane": 0
+        },
+        {
+          "type": "pause",
+          "at": 33.358899999999615,
+          "distance": 250.19175000000683
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:12.547Z",
+      "type": "tap",
+      "selector": "#co-select",
+      "before": {
+        "phase": "paused",
+        "distance": 250.19175000000683,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:07:12.772Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 546.09375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "ready"
+      }
+    },
+    {
+      "at": "2026-10-15T03:07:12.777Z",
+      "type": "tap",
+      "selector": "[data-level=\"3\"]",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:07:12.855Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 614.375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "ready"
+      },
+      "selectedLevel": "3"
+    },
+    {
+      "at": "2026-10-15T03:07:12.878Z",
+      "type": "tap",
+      "selector": "#co-start",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:07:12.964Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 677,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.29392000000001284,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:07:18.221Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 46.49304000000005,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:18.388Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 47.959999999999994,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 5.2241333333333495,
+          "distance": 45.972373333333394,
+          "objectId": "l3-f2",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 3
+        },
+        {
+          "type": "lane-input",
+          "at": 5.424800000000019,
+          "distance": 47.73824000000002,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:25.569Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 110.48488000000057,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:25.651Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 111.2918400000007,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 12.496700000000036,
+          "distance": 109.9709600000006,
+          "objectId": "l3-f6",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 7
+        },
+        {
+          "type": "lane-input",
+          "at": 12.621600000000027,
+          "distance": 111.07008000000059,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:25.841Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 112.9048800000006,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:25.910Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 113.56488000000061,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 12.621600000000027,
+          "distance": 111.07008000000059,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 12.880000000000036,
+          "distance": 113.34400000000068,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:27.356Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 126.24568000000079,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:27.453Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 127.12656000000086,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 14.313400000000014,
+          "distance": 125.9579200000008,
+          "objectId": "l3-f7",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 8
+        },
+        {
+          "type": "lane-input",
+          "at": 14.420800000000025,
+          "distance": 126.9030400000009,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:30.986Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 158.22487999999927,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:31.060Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 158.8848799999992,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 17.94673333333326,
+          "distance": 157.93125333333265,
+          "objectId": "l3-f9",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 10
+        },
+        {
+          "type": "lane-input",
+          "at": 18.030099999999923,
+          "distance": 158.66487999999921,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:34.125Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 185.86919999999765,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:34.175Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 186.3039199999976,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 19.762833333333223,
+          "distance": 173.91293333333155,
+          "objectId": "l3-f10",
+          "golden": true,
+          "bonus": false,
+          "first": false,
+          "count": 11
+        },
+        {
+          "type": "lane-input",
+          "at": 21.16339999999983,
+          "distance": 186.2379199999976,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:34.178Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 186.3039199999976,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:34.226Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 186.74919999999761,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 21.16339999999983,
+          "distance": 186.2379199999976,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 21.212999999999834,
+          "distance": 186.67439999999763,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:37.277Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 209.40597333332943,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:37.596Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.07304000000002563,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:07:46.733Z",
+      "type": "tap",
+      "selector": "[data-action=\"jump\"]",
+      "before": {
+        "phase": "running",
+        "distance": 80.44608000000005,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:46.785Z",
+      "touchPoint": {
+        "x": 323.515625,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 80.96000000000001,
+        "level": 3
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 5.216700000000021,
+          "distance": 45.90696000000011,
+          "objectId": "l3-f2",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 3
+        },
+        {
+          "type": "jump",
+          "at": 9.191200000000064,
+          "distance": 80.88256000000011
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:07:47.937Z",
+      "type": "tap",
+      "selector": "#co-select",
+      "before": {
+        "phase": "finished",
+        "distance": 84.55040000000005,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:07:47.994Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 499.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "ready"
+      }
+    },
+    {
+      "at": "2026-10-15T03:07:47.995Z",
+      "type": "tap",
+      "selector": "[data-level=\"1\"]",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:07:48.050Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 449,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "ready"
+      },
+      "selectedLevel": "1"
+    },
+    {
+      "at": "2026-10-15T03:07:48.053Z",
+      "type": "tap",
+      "selector": "#co-start",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:07:48.104Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 677,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.06300000000006548,
+        "level": 1
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:07:48.126Z",
+      "type": "tap",
+      "selector": "[data-action=\"left\"]",
+      "before": {
+        "phase": "running",
+        "distance": 0.24825000000004366,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:07:48.175Z",
+      "touchPoint": {
+        "x": 66.484375,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.6217500000000654,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 0.07460000000000581,
+          "distance": 0.5595000000000436,
+          "lane": 0
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:08:06.996Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 141.25049999999962,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:08:07.043Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 141.62549999999968,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "barrier-cleared",
+          "at": 18.799999999999855,
+          "distance": 140.99999999999952,
+          "objectId": "l1-o1",
+          "kind": "barrier",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "lane-input",
+          "at": 18.87499999999985,
+          "distance": 141.5624999999996,
+          "lane": 1
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:08:07.246Z",
+      "type": "tap",
+      "selector": "[data-action=\"right\"]",
+      "before": {
+        "phase": "running",
+        "distance": 143.1247499999997,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:08:07.284Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 793,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 143.43749999999972,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 18.87499999999985,
+          "distance": 141.5624999999996,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 19.11669999999986,
+          "distance": 143.3752499999998,
+          "lane": 2
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:08:28.469Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 300,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:08:28.517Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.12524999999986902,
+        "level": 1
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:08:31.773Z",
+      "type": "tap",
+      "selector": "#co-pause",
+      "before": {
+        "phase": "running",
+        "distance": 24.004499999999826,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:08:31.825Z",
+      "touchPoint": {
+        "x": 338.375,
+        "y": 37,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "paused",
+        "distance": 24.377249999999915,
+        "level": 1
+      },
+      "events": [
+        {
+          "type": "fish-caught",
+          "at": 1.8583333333333338,
+          "distance": 13.9375,
+          "objectId": "l1-f0",
+          "golden": false,
+          "bonus": false,
+          "first": true,
+          "count": 1
+        },
+        {
+          "type": "pause",
+          "at": 3.2502999999999855,
+          "distance": 24.377249999999915
+        }
+      ]
+    },
+    {
+      "at": "2026-10-15T03:08:31.826Z",
+      "type": "tap",
+      "selector": "#co-select",
+      "before": {
+        "phase": "paused",
+        "distance": 24.377249999999915,
+        "level": 1
+      },
+      "completedAt": "2026-10-15T03:08:31.866Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 546.09375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "ready"
+      }
+    },
+    {
+      "at": "2026-10-15T03:08:31.867Z",
+      "type": "tap",
+      "selector": "[data-level=\"3\"]",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:08:31.916Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 611.375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "ready"
+      },
+      "selectedLevel": "3"
+    },
+    {
+      "at": "2026-10-15T03:08:31.920Z",
+      "type": "tap",
+      "selector": "#co-start",
+      "before": {
+        "phase": "ready"
+      },
+      "completedAt": "2026-10-15T03:08:31.969Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 677,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.08008000000005122,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:08:41.800Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 84.56095999999965,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:08:42.627Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.07832000000020489,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:08:52.510Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 84.5577333333334,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:08:53.335Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.07919999999999999,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:09:03.292Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 84.5539199999999,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:09:04.129Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.07304000000015368,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:09:13.984Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 84.55333333333323,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:09:14.803Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.07392000000020489,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:09:24.627Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 84.51725333333333,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:09:25.440Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.07392000000020489,
+        "level": 3
+      },
+      "events": []
+    },
+    {
+      "at": "2026-10-15T03:09:35.302Z",
+      "type": "tap",
+      "selector": "#co-replay",
+      "before": {
+        "phase": "finished",
+        "distance": 84.5196000000001,
+        "level": 3
+      },
+      "completedAt": "2026-10-15T03:09:36.140Z",
+      "touchPoint": {
+        "x": 195,
+        "y": 442.59375,
+        "scrollMechanism": "public-touchscreen",
+        "scrollEvidence": []
+      },
+      "after": {
+        "phase": "running",
+        "distance": 0.07128000000005123,
+        "level": 3
+      },
+      "events": []
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/level-3-hazard.png",
+      "sha256": "51e2bdd0dff01e11aab765dac52cf54c9f123de2c438d48cf6578d93e88a9caf"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/van-approach.png",
+      "sha256": "3ab229e42d76dbf0615a0e19e78b075ca6b3d9b47fb598f3412d716031dc86c2"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/van-impact.png",
+      "sha256": "3e9e08d687f439d161969d28fac617952e8e62c452940d2259abebd0ea74561d"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/car-not-jumpable.png",
+      "sha256": "7dc3e4182a90ca8da7d80e3f784e2881ed0253aa04cfe60a08eb0ac31a66bf7f"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/level-fish-short-hazard.png",
+      "sha256": "d72189095ce13a2be3f30328c454085adff43c1f4f76bfa9bd06fdda1ee7fbde"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/distance-without-fish-fails.png",
+      "sha256": "648e19e0849578e9b7c00133e0fc2ebca238802c839fea37366a20da23e3c385"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/background-return.png",
+      "sha256": "68e7e974241271f8a7438be666beb725955f49efaff2d476f304626cc56037a9"
+    }
+  ],
+  "errors": [],
+  "levels": [],
+  "driveBudgets": [
+    {
+      "stage": 1,
+      "status": "settled",
+      "budgetMs": 140000,
+      "wallElapsedMs": 37513,
+      "gameElapsedSeconds": 40.004333333333975,
+      "distance": 300,
+      "phase": "finished",
+      "reason": "complete"
+    },
+    {
+      "stage": 2,
+      "status": "settled",
+      "budgetMs": 183750,
+      "wallElapsedMs": 50747,
+      "gameElapsedSeconds": 52.50003333333552,
+      "distance": 420,
+      "phase": "finished",
+      "reason": "complete"
+    },
+    {
+      "stage": 3,
+      "status": "settled",
+      "budgetMs": 214773,
+      "wallElapsedMs": 59667,
+      "gameElapsedSeconds": 61.37123333333644,
+      "distance": 540,
+      "phase": "finished",
+      "reason": "complete"
+    },
+    {
+      "stage": 4,
+      "status": "settled",
+      "budgetMs": 239674,
+      "wallElapsedMs": 66694,
+      "gameElapsedSeconds": 68.47973333333768,
+      "distance": 630,
+      "phase": "finished",
+      "reason": "complete"
+    },
+    {
+      "stage": 5,
+      "status": "settled",
+      "budgetMs": 262500,
+      "wallElapsedMs": 73237,
+      "gameElapsedSeconds": 75.00013333333936,
+      "distance": 720,
+      "phase": "finished",
+      "reason": "complete"
+    },
+    {
+      "stage": 3,
+      "status": "distance-reached",
+      "budgetMs": 214773,
+      "wallElapsedMs": 21138,
+      "gameElapsedSeconds": 21.11339999999983,
+      "distance": 185.7979199999976,
+      "phase": "running",
+      "reason": null
+    },
+    {
+      "stage": "fish-short",
+      "status": "settled",
+      "budgetMs": 135000,
+      "wallElapsedMs": 40104,
+      "gameElapsedSeconds": 40.00830000000023,
+      "distance": 300,
+      "phase": "finished",
+      "reason": "fish-short"
+    }
+  ],
+  "physicalIPhone": "NOT_RUN",
+  "liveAds": "NOT_RUN",
+  "startedAt": "2026-10-15T03:01:04.491Z",
+  "passed": false,
+  "performance": {
+    "frameCount": 5,
+    "meanFps": 46.12546125461255,
+    "p95Ms": 66.70000000000005,
+    "note": "Ready frames after refresh only; do not infer gameplay FPS. Per-level natural performance is recorded in levels[].performance."
+  },
+  "memoryReplaySamples": [
+    {
+      "geometries": 262,
+      "textures": 19
+    },
+    {
+      "geometries": 262,
+      "textures": 19
+    },
+    {
+      "geometries": 262,
+      "textures": 19
+    },
+    {
+      "geometries": 262,
+      "textures": 19
+    },
+    {
+      "geometries": 262,
+      "textures": 19
+    },
+    {
+      "geometries": 262,
+      "textures": 19
+    }
+  ],
+  "finishedAt": "2026-10-15T03:09:36.140Z",
+  "segments": [
+    {
+      "name": "campaign",
+      "checkStart": 0,
+      "checkEnd": 18,
+      "shotStart": 0,
+      "shotEnd": 19,
+      "actionEnd": 84,
+      "errorStart": 0,
+      "errorEnd": 0
+    },
+    {
+      "name": "collisions",
+      "checkStart": 18,
+      "checkEnd": 27,
+      "shotStart": 19,
+      "shotEnd": 29,
+      "actionEnd": 102,
+      "errorStart": 0,
+      "errorEnd": 0
+    },
+    {
+      "name": "safety",
+      "checkStart": 27,
+      "checkEnd": 34,
+      "shotStart": 29,
+      "shotEnd": 36,
+      "actionEnd": 132,
+      "errorStart": 0,
+      "errorEnd": 0
+    }
+  ],
+  "sourceCapture": "attempts/attempt-20/qa-all-chromium/report.json",
+  "downstreamCaptureErrors": []
+}

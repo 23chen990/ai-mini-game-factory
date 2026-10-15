@@ -1,0 +1,197 @@
+$ vitest run
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市
+
+✔ Node compatibility mirrors REA requirements without upgrading the host (1.005834ms)
+✔ baseline first and direct-readable source avoid unnecessary REA (2.324083ms)
+✔ visible play, image quality, commercial and secret questions never route to static REA (0.496ms)
+✔ native mobile targets need a separate study, not a guessed JavaScript command (0.176709ms)
+✔ permission is scoped: public observation is not permission for static code analysis (0.136958ms)
+✔ only unresolved client structure gets the explicit nonexecuting CLI plan (0.82725ms)
+✔ malformed jobs, unknown resolved IDs and unsafe file allowances are rejected (0.454666ms)
+✔ canonical digest is independent of object insertion order but not array order (0.152917ms)
+✔ semantic ID excludes only display subject name/path as upstream specifies (0.254584ms)
+ ❯ tools/lean-pilot/tests/rea-bridge.test.mjs (0 test)
+ ❯ tools/lean-pilot/tests/workflow.test.mjs (0 test)
+ ❯ tools/lean-pilot/tests/quality-cycle.test.mjs (0 test)
+ ❯ tools/lean-pilot/tests/runner.test.mjs (0 test)
+ ❯ tools/lean-pilot/tests/mobile-pacing.test.mjs (0 test)
+ ❯ tools/lean-pilot/tests/policy.test.mjs (0 test)
+✔ a fresh game has exactly two tiles and deterministic independent state (1.437541ms)
+✔ four equal tiles merge pairwise, not into one chain (1.761292ms)
+✔ a new merged tile cannot merge again in the same move (0.21575ms)
+✔ vertical movement respects direction and score (0.160875ms)
+✔ invalid movement does not consume randomness, create a tile or count a move (0.121125ms)
+✔ full board with a legal adjacent pair is not lost (0.07625ms)
+✔ full checkerboard is lost, even when loaded at the boundary (0.076958ms)
+✔ winning freezes movement until continue; it is not repeatedly granted (0.156125ms)
+✔ move never mutates the caller state (0.136041ms)
+✔ save roundtrip is theme bound, bounded and rejects corrupt data (0.255875ms)
+✔ invalid state is rejected, including forged terminal flags and infinite scores (0.269125ms)
+✔ touch gesture classification rejects taps and ambiguous diagonals (0.098375ms)
+✔ all 625 four-cell rows agree with an independent merge oracle (8.930167ms)
+✔ 20,000 seeded moves preserve mass, deterministic state and valid transitions (524.335875ms)
+ ❯ templates/web-lite/grid-merge-v1/tests/engine.test.mjs (0 test)
+ ❯ tools/lean-pilot/tests/research-to-build.test.mjs (0 test)
+✔ registry describes actual candidates, never invents an implementation from genre (1.523416ms)
+ ❯ tools/lean-pilot/tests/clinic-factory.test.mjs (0 test)
+✔ private source-mobile recipe reuses the factory and keeps three targets explicit (1.364584ms)
+ ❯ tools/lean-pilot/tests/h5-mobile.test.mjs (0 test)
+✔ service workload follows the arriving patient cohort, not the present wall clock (1.217125ms)
+✔ opening presents a real queue before 10 seconds; future warnings are grounded in appointments (6.781833ms)
+✔ room and doctor prerequisites preserve cash and capacity (0.365083ms)
+✔ equipment has a real effect for the same patient and charges exactly once (0.524625ms)
+✔ helper takes three seconds and repeated assignment cannot restart travel (0.329ms)
+✔ pause freezes patient, clock and wages; resume continues normally (2.929167ms)
+✔ same seed recreates identical appointments; other seeds vary without input-dependent spawning (6.336834ms)
+✔ 1x delta contract rejects artificial large ticks (0.209875ms)
+✔ new saves are versioned, round-trip exactly, reject old format and other namespaces (4.441666ms)
+✔ corrupt cohort/cash/schedule and duplicate active stations cannot be accepted (1.065709ms)
+✔ single dispatch can reach count but does not silently award the quality goal (47.54525ms)
+✔ reaching a numerical target is not a finished shift (0.115375ms)
+✔ twenty independent seeds preserve patient counts, cash, terminal time and validated saves (957.843583ms)
+✔ restart uses the same seed and never imports old patient progress (3.420042ms)
+ ❯ templates/web-lite/clinic-queue-v1/tests/engine.test.mjs (0 test)
+✔ pins only the three approved H5 targets and fixed upstream commit (0.75225ms)
+✔ isolates largest inline bundle without accidentally using an external script URL (1.669167ms)
+✔ refuses empty, too small and oversize HTML instead of forging REA input (2.039709ms)
+✔ mechanism anchors require exact on-disk source statements (0.526417ms)
+✔ REA receipt rejects fabricated or failed tool output (0.219ms)
+ ❯ tools/lean-pilot/tests/three-h5-research.test.mjs (0 test)
+✔ the pinned race uses finish, and countdown remains part of the playable round (1.431792ms)
+✔ FPS bridge reads actual actor stats and releases every held movement/fire input (1.6085ms)
+✔ clock has a complete start, pause, resume, terminal and replay lifecycle (0.17725ms)
+✔ earned supplies buy one concrete next-round fish-following assist, not an empty currency counter (0.090667ms)
+✔ source terminal can settle early and cancellation never doubles supplies (0.0935ms)
+✔ progress is versioned, per-game, robust to corrupt storage and preserves reward idempotency (0.536042ms)
+✔ no ad on first round, first sixty seconds, mid-action or after reward (0.113292ms)
+ ❯ templates/web-lite/h5-source-mobile-v1/tests/engine.test.mjs (0 test)
+✔ unverified H5 permission never creates an ad instance (1.060958ms)
+✔ isEnded true completes exactly once and removes handlers (1.476667ms)
+✔ cancel followed by a stale complete callback remains cancelled (0.1245ms)
+✔ load or show failure restores play without a reward (0.40475ms)
+ ❯ templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs (0 test)
+✔ missing close is bounded and late completion is ignored (10.417208ms)
+ ❯ tests/unit/unknown-waiver-binding.test.ts (3 tests | 1 failed) 23ms
+     × rejects a waiver bound to a stale artifact hash 10ms
+✔ failures, bad images and retries stay in denominators and total cost (1.270625ms)
+✔ an unknown supplier charge is never silently priced at zero (1.581542ms)
+✔ zero usable images has no finite cost per usable image (0.121042ms)
+✔ missing quality review cannot be called a usable result (0.081625ms)
+✔ invalid amounts, duplicate attempts and unrun examples are rejected (0.404458ms)
+ ❯ tools/lean-pilot/tests/form-metrics.test.mjs (0 test)
+ ❯ templates/web-lite/h5-source-mobile-v1/tests/source-score.test.mjs (0 test)
+✔ scope registers only the dedicated pelican workflow, not arbitrary workflows (1.052041ms)
+✔ scope permits only the isolated pilot and additive pilot scripts (1.435833ms)
+✔ scope rejects unrelated factory files, publication data and changed dependencies (0.153417ms)
+✔ scope cannot replace legacy scripts or add an unapproved script (0.079708ms)
+ ❯ tools/lean-pilot/tests/scope.test.mjs (0 test)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17.451959
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 17 ⎯⎯⎯⎯⎯⎯
+
+ FAIL  tools/lean-pilot/tests/clinic-factory.test.mjs [ tools/lean-pilot/tests/clinic-factory.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/clinic-factory.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/18]⎯
+
+ FAIL  tools/lean-pilot/tests/form-metrics.test.mjs [ tools/lean-pilot/tests/form-metrics.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/form-metrics.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/18]⎯
+
+ FAIL  tools/lean-pilot/tests/h5-mobile.test.mjs [ tools/lean-pilot/tests/h5-mobile.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/h5-mobile.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/18]⎯
+
+ FAIL  tools/lean-pilot/tests/mobile-pacing.test.mjs [ tools/lean-pilot/tests/mobile-pacing.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/mobile-pacing.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/18]⎯
+
+ FAIL  tools/lean-pilot/tests/policy.test.mjs [ tools/lean-pilot/tests/policy.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/policy.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/18]⎯
+
+ FAIL  tools/lean-pilot/tests/quality-cycle.test.mjs [ tools/lean-pilot/tests/quality-cycle.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/quality-cycle.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/18]⎯
+
+ FAIL  tools/lean-pilot/tests/rea-bridge.test.mjs [ tools/lean-pilot/tests/rea-bridge.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/rea-bridge.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/18]⎯
+
+ FAIL  tools/lean-pilot/tests/research-to-build.test.mjs [ tools/lean-pilot/tests/research-to-build.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/research-to-build.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/18]⎯
+
+ FAIL  tools/lean-pilot/tests/runner.test.mjs [ tools/lean-pilot/tests/runner.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/runner.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/18]⎯
+
+ FAIL  tools/lean-pilot/tests/scope.test.mjs [ tools/lean-pilot/tests/scope.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/scope.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[10/18]⎯
+
+ FAIL  tools/lean-pilot/tests/three-h5-research.test.mjs [ tools/lean-pilot/tests/three-h5-research.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/three-h5-research.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[11/18]⎯
+
+ FAIL  tools/lean-pilot/tests/workflow.test.mjs [ tools/lean-pilot/tests/workflow.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/tools/lean-pilot/tests/workflow.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[12/18]⎯
+
+ FAIL  templates/web-lite/clinic-queue-v1/tests/engine.test.mjs [ templates/web-lite/clinic-queue-v1/tests/engine.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/templates/web-lite/clinic-queue-v1/tests/engine.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[13/18]⎯
+
+ FAIL  templates/web-lite/grid-merge-v1/tests/engine.test.mjs [ templates/web-lite/grid-merge-v1/tests/engine.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/templates/web-lite/grid-merge-v1/tests/engine.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[14/18]⎯
+
+ FAIL  templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs [ templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/templates/web-lite/h5-source-mobile-v1/tests/ads.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[15/18]⎯
+
+ FAIL  templates/web-lite/h5-source-mobile-v1/tests/engine.test.mjs [ templates/web-lite/h5-source-mobile-v1/tests/engine.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/templates/web-lite/h5-source-mobile-v1/tests/engine.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[16/18]⎯
+
+ FAIL  templates/web-lite/h5-source-mobile-v1/tests/source-score.test.mjs [ templates/web-lite/h5-source-mobile-v1/tests/source-score.test.mjs ]
+Error: No test suite found in file /Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/templates/web-lite/h5-source-mobile-v1/tests/source-score.test.mjs
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[17/18]⎯
+
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/unknown-waiver-binding.test.ts > unknown waiver binding > rejects a waiver bound to a stale artifact hash
+AssertionError: expected { passed: false, …(4) } to match object { passed: false, …(1) }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "blocking": [
+      "license-risk:waiver-artifact-hash-mismatch",
++     "license-risk",
+    ],
+    "passed": false,
+  }
+
+ ❯ tests/unit/unknown-waiver-binding.test.ts:29:179
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[18/18]⎯
+
+
+ Test Files  18 failed | 170 passed (188)
+      Tests  1 failed | 974 passed (975)
+   Start at  20:30:00
+   Duration  60.26s (transform 9.19s, setup 0ms, import 55.00s, tests 231.25s, environment 12ms)
+
+[ELIFECYCLE] Test failed. See above for more details.

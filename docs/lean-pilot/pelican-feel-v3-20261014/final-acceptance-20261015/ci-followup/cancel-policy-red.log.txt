@@ -1,0 +1,88 @@
+✔ earned jump reward remains readable through persistent gold and mastery counters after a missed toast (0.423666ms)
+✔ software renderer selects only the existing efficient preset with normal menu touches (0.467625ms)
+✔ a QA presentation retest preserves the bound natural report in a separate safe directory (0.539416ms)
+✔ a reward route observation requires actual visible gold cue between the same barrier and its bonus catch (0.126417ms)
+✔ pedestrian warnings require live visible directional hazard and at least two seconds (0.164875ms)
+✔ CI motion preference uses the shipped browser accessibility media query (0.07875ms)
+✖ cancelled drag requires the same live un-stunned branch and trusted native cancellation (0.493042ms)
+✖ a pedestrian stun cannot be accepted as an ordinary cancelled-drag observation (0.114917ms)
+✖ cancelled-drag evidence rejects absent and non-finite intended targets (0.106417ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 6
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50.350334
+
+✖ failing tests:
+
+test at tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs:49:1
+✖ cancelled drag requires the same live un-stunned branch and trusted native cancellation (0.493042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/pelican-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs:50:9)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs:60:1
+✖ a pedestrian stun cannot be accepted as an ordinary cancelled-drag observation (0.114917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/pelican-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs:61:9)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs:73:1
+✖ cancelled-drag evidence rejects absent and non-finite intended targets (0.106417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (file:///Users/kker/.codex/worktrees/pelican-final-acceptance/%E5%A6%96%E6%80%AA%E5%A4%9C%E5%B8%82/tools/lean-pilot/pelican-v2/runtime/experience-policy.node.mjs:74:9)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:787:18)
+      at Test.postRun (node:internal/test_runner/test:1247:19)
+      at Test.run (node:internal/test_runner/test:1175:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:787:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

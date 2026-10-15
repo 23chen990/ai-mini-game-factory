@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "V3 continuation: natural lane inertia/camera and pedestrian fairness; meaningful optional jumps, first-minute feedback, escalating five-level decisions, high-star replay goals and pacing. Preserve existing authored game and safe detours.",
+  "classification": [
+    "core-experience",
+    "reference-fidelity",
+    "failure-attribution",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Reported movement and default journey plus optional jump/replay goals affect physics, placement and UI. Retain QA and perceptual obligations.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "unrelated REA",
+      "entire previous chat"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Run committed 26 rule tests",
+      "Observe default touch first session",
+      "Compare PR10/13/V3 matched touch input",
+      "Earn all five unlocks without save injection"
+    ],
+    "observed": [
+      "25/26 actual committed tests passed; camera target exceeds existing gentle follow bound and shortens forward look",
+      "jump opportunities occur late and fish routing avoids all barriers, offering no tangible jump reward",
+      "Chromium software ANGLE/SwiftShader measured3.61FPS.50ms render-dt cap loses wall time: first-catch elapsed1.05 after2.4s; L1 stillrunning at29simulation seconds after135s policy budget. Native Metal diagnostic measures~120FPS on same M1 Pro and resolution. Preserve this failed capture; backend constraint distinct from low-frame simulation clock defect."
+    ],
+    "evidence": [
+      {
+        "path": "user-report-v3.txt",
+        "sha256": "7f1e1a371260de0606d636eed642fc13c362390b10e98b13a10f8b38101fc50e",
+        "kind": "user-report",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "evidence/v3-engineering/rules-initial-red.log",
+        "sha256": "e871538013de197acc39d012b18c2b114b6329b42798b899a8f1e4330e7316d1",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "attempts/attempt-7/qa-all-chromium/report.json",
+        "sha256": "ee7c236296e12dd4b8612757fc787145c3c5023e7fc1302655c211dd48a22eaa",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "All actual pelican rules/lint/typecheck pass",
+    "Same-input rider/camera videos in Chromium and WebKit",
+    "Both browsers earn five unlocks with normal touch",
+    "Optional jump bonus and safe detour visible and reachable",
+    "First fish <3s; early warning/decision and feedback in first 30s",
+    "High-star target visible before and after run; tested earned three-star run",
+    "Four viewport sizes, warning >=2s, no danger/fish contradiction",
+    "Physical devices, native packages and real ads remain BLOCKED"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T06:23:43.330Z"
+}

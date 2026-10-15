@@ -1,0 +1,1 @@
+{"conclusion":"failure","headSha":"849687fdea96f625e225639472d07f0551b0bc5e","jobs":[{"conclusion":"success","name":"pelican-browser (webkit)","status":"completed"},{"conclusion":"failure","name":"pelican-browser (chromium)","status":"completed"}],"status":"completed","url":"https://github.com/23chen990/ai-mini-game-factory/actions/runs/38736011062"}

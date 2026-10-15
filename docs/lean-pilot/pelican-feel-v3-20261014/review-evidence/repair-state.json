@@ -1,0 +1,1058 @@
+{
+  "attempt": 20,
+  "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+  "history": [
+    {
+      "attempt": 1,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "3b5ac14ed9d6299b5dc1574ef051258dc1635b2cbec110875fbcb9a3d32570b4",
+      "hypothesis": "P0: synchronize composer and renderer, replace default orbit; integrate authored adventure with native art/animation.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "b84b02d2286f1bcec0df21e9ff7d9ff6f7e28bdf70398fec7482a692e0f18f49"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "99edbb4e1d2d823824e036e592d591d4d354caecddb5b4ed80865380281ac8e7"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "dec834d69ef8429fca2c68593064366699e41ecff04a2873296687e5000e5ecf"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "f74e113ac5c8d5a597b3be95bb8848b4c202061106221c591473110d2dab4223"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "2722df11fa53f528c5455c2c79d71a02c6b8ae4c836bd711329f452970bbf7b1",
+      "qa": "FAILED_VISUAL",
+      "at": "2026-10-14T03:23:43.637Z"
+    },
+    {
+      "attempt": 2,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "d9bec772f49fde2b2404b31ce692a7a9241c898ec11de476c0970dd715f35555",
+      "hypothesis": "QA: keep catch feedback clear of road, measure all composer draw calls, align three lane markings, start pedestrians on sidewalk, retain hazard warning until entire collider passes, expose configured completion rewards via existing safe settlement.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "3d14fddddc5d3ebb1ffb8da61c8d1066c137f0be648dff74dc37f9344f3576b7"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "af35bb1718b71a5fd1c630205d50a2351c2cdce143ef443ef5d91373daca154a"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "c60dfe5dd15e22f664088f8f13610d6df760d136628f276e63c1e5b34ae95695"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "c02fafcd2bcbe190b6b5baaff83810d5f21149bb85018ccc56c100899dc0ff64"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "b778c90d07402bb4c48cf54b8f0a83c427b2feeef041795837092d4cb6da2a31",
+      "qa": "FAILED_INDEPENDENT_PERCEPTUAL",
+      "at": "2026-10-14T03:36:24.143Z"
+    },
+    {
+      "attempt": 3,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "24b875d2bceae0fe606766a4ca4668787490729d127039b4baa96b9b67190029",
+      "hypothesis": "P1-ACCIDENT-OCCLUDED and P1-PED-FALL-EDGE: show the frozen-score crash tilt for 650ms before settlement, and make the exact right-lane pedestrian fall inward and rise before recovery. Preserve physics, camera, levels and existing ad logic.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "3d14fddddc5d3ebb1ffb8da61c8d1066c137f0be648dff74dc37f9344f3576b7"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "af35bb1718b71a5fd1c630205d50a2351c2cdce143ef443ef5d91373daca154a"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "d947cb24f3f3c7717f86a179044a91bb3ba74a9d609f0424c1036103bd365d20"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "9e58210e88b4b6ef49019af9ea7de897b12b797f063abf9c486ebbae9e5ff8d1"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "bb5ace56ae203d431ab956ae94d85947b210a2ce47459d9c3637e6a2435f78e6",
+      "qa": "FAILED_UI_RETEST",
+      "at": "2026-10-14T03:57:53.057Z"
+    },
+    {
+      "attempt": 4,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "a4ec12f554fb8759b79933bd5b78063eb62901fd7b5c6f34b1567c2c0b71c011",
+      "hypothesis": "Independent QA: expose the primary action on small portrait, keep start/replay/recovery guidance clear of forward road, synchronize restored selected level/subtitle/start label. Retain verified crash preview and inward pedestrian fall. Physics, hazards, ad logic and goals unchanged.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "3d14fddddc5d3ebb1ffb8da61c8d1066c137f0be648dff74dc37f9344f3576b7"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "af35bb1718b71a5fd1c630205d50a2351c2cdce143ef443ef5d91373daca154a"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "28be8d7403bbbdc5f3151d01bcd938f14a39280d31be18d70830a192758782b5"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "6df9d0928b29d48861e118cccc681730fe14bf41f6caf4f7dce92bf4c4bbdec3"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "bcb1558ff60bd7ee01463ca3e106e765628020558ef075822b4f0b3fd287fe66",
+      "qa": "FAILED_LANDSCAPE_INITIAL_CTA",
+      "at": "2026-10-14T04:05:44.878Z"
+    },
+    {
+      "attempt": 5,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "e6aa6256af316af4562f9fb61e757e9a827462fcd425aee00cc8c874c5a0134c",
+      "hypothesis": "P1-LANDSCAPE-START-OFFSCREEN: keep the initial landscape CTA/settings visible in a bounded flex menu, compact the heading/rule row, scroll only route choices. No physics, camera, levels, goals or ads changes.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "3d14fddddc5d3ebb1ffb8da61c8d1066c137f0be648dff74dc37f9344f3576b7"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "af35bb1718b71a5fd1c630205d50a2351c2cdce143ef443ef5d91373daca154a"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "28be8d7403bbbdc5f3151d01bcd938f14a39280d31be18d70830a192758782b5"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "c44b1c905126b2f5a028c420fee6f385312c7cfaa870daf0ea75fb6d36e33f6c"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "d2a913aaa65d332254112a83328493cb47deb2c589d76dd2ed3d561b1dfe1437",
+      "qa": "CORE_AND_PERCEPTUAL_PASS_PHYSICAL_BLOCKED",
+      "at": "2026-10-14T04:20:42.671Z"
+    },
+    {
+      "attempt": 6,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "4146d6203ed6f97b69c55300267a567922f23b9c0633d42819d26334fc7d1363",
+      "hypothesis": "V3 camera regression: retain gentle follow bound and forward look; add optional first-minute jump gold paths with safe detours, distinct existing encounter challenges. Unit red and green evidence retained.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "92d804796c5ad3e8816bb5b8d8ebfaad92bb88078004ae3fcac6d69c43db1172"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "987bc3d93c8fdd77d3db906f87a20c82fbc1024ade96df823b61ef88f2da90f6"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "01acae471d1585a728ee4d9806bf0df0c98b58dd9fe5ceba983bde6399249515"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "c44b1c905126b2f5a028c420fee6f385312c7cfaa870daf0ea75fb6d36e33f6c"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "77f221a85bd780053818511cc34d6a1cbaf507c279ed6896cf978fb7a442f1bf"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "7115ba38847d71cb519c5e19ad649b315d30e0a7dc5a5db88a29e4704092846f",
+      "qa": "FIVE_WEBKIT_LEVELS_PASS_EXPERIENCE_FAIL",
+      "at": "2026-10-14T06:26:00.042Z",
+      "qaEvidence": [
+        "attempts/attempt-6/qa-campaign-webkit/report.json",
+        "attempts/attempt-6/experience-webkit/report.json"
+      ],
+      "executingThreadId": "01a1390f-e175-7c20-95cd-efba403691e3"
+    },
+    {
+      "attempt": 7,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "5e1d4d6c9a0c880b672f8e6f7d01ef8b023228bd46f436faf7d35fab17bdb2bf",
+      "hypothesis": "QA attempt6: safe route trivially earns three stars, jump rewards lack visible affordance, real WebKit swipe protocol produces trusted TouchEvents but pointer-only handler misses them. Add tested jump-gold mastery, visible amber bonus route, touch cancellation and clear targets; retain motion and safe completion.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "92d804796c5ad3e8816bb5b8d8ebfaad92bb88078004ae3fcac6d69c43db1172"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b6f9f561c38ae21cb5067027300045a5f5fe974cc98556f3d11188a07fc99e7b"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "c6fd131a802f774b0476d52c503a61ae1af5e72897d1a835e72d17d9eed1003f"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "ce7ebb90ec9d69e56cae979f8bf7bb4480d459f874876a2a67f2c4397059a867"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "77f221a85bd780053818511cc34d6a1cbaf507c279ed6896cf978fb7a442f1bf"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "b2003ccf2b42696edc64d3bc72e766dbb93404e53f1db0b415be978f1dbd41e7",
+      "qa": "WEBKIT_CORE_PASS_CHROMIUM_CLOCK_FAILED",
+      "at": "2026-10-14T06:36:52.796Z",
+      "executingThreadId": "01a1390f-e175-7c20-95cd-efba403691e3",
+      "qaEvidence": [
+        "attempts/attempt-7/qa-all-webkit/report.json",
+        "attempts/attempt-7/qa-all-chromium/report.json",
+        "attempts/attempt-7/experience-webkit/report-final.json"
+      ]
+    },
+    {
+      "attempt": 8,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "890f9c8bf28d8fbfc4ecd42a6d7a2bbf7273f75327fdc21f2efc521c15bed755",
+      "hypothesis": "QA Chromium attempt7 measured 3.61FPS and lost wall time from inherited50ms dt cap. Preserve elapsed frames through250ms with existing120Hz swept substeps; retain native-GPU headed Metal QA for real Chromium experience, and honest software-runner CI at DPR1. No motion/collision/goal weakening.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "92d804796c5ad3e8816bb5b8d8ebfaad92bb88078004ae3fcac6d69c43db1172"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b6f9f561c38ae21cb5067027300045a5f5fe974cc98556f3d11188a07fc99e7b"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "c6fd131a802f774b0476d52c503a61ae1af5e72897d1a835e72d17d9eed1003f"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "ce7ebb90ec9d69e56cae979f8bf7bb4480d459f874876a2a67f2c4397059a867"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "f97cdbccffb1c370032180b1ea955607c1de65d159d43c78238a4e5b35b42eb7"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "2e11d11a70ec47d8cac81cfcaa9005903cc298ad1280e712ff559dcd2323711d",
+      "qa": "HEAD_READABILITY_REPRODUCED_CHROMIUM_HEADED_TRACE_INTERRUPTED",
+      "at": "2026-10-14T07:06:01.748Z",
+      "qaEvidence": [
+        "attempts/attempt-8/head-webkit/report.json",
+        "attempts/attempt-8/qa-all-chromium/report.json",
+        "evidence/v3-engineering/chromium-metal-input-diagnostic.json"
+      ]
+    },
+    {
+      "attempt": 9,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "4522520b9389a735da8f41c56e2200c46b5f1938f7007287775e53fdaf76d6cc",
+      "hypothesis": "User verified V3 head screenshot: exact first-catch avatar warm-beak pixels0 on all portrait sizes. Preserve rig; raise original connected neck/head rest by.165m and restore glances when fish is beyond8m. No camera/body motion, gameplay or collision changes. Use measured headless native Metal Chromium to isolate QA from desktop input; preserve failed traces.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "92d804796c5ad3e8816bb5b8d8ebfaad92bb88078004ae3fcac6d69c43db1172"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b6f9f561c38ae21cb5067027300045a5f5fe974cc98556f3d11188a07fc99e7b"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "c6fd131a802f774b0476d52c503a61ae1af5e72897d1a835e72d17d9eed1003f"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "ce7ebb90ec9d69e56cae979f8bf7bb4480d459f874876a2a67f2c4397059a867"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "d4004613bf79af8858aff19e207cadc4f7f5f8d5a03caafe49db487356448a3f"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "ccffa6aba2eb6e7f195ed791d05ff393506ba0fbfeb0ea181c088552fca63a79"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "58f72458c788a4da91906a189c486d4313694c46b10b4f8baa98da0fc71cd772",
+      "qa": "FAILED_NATIVE_HEAD_NAN_HYPOTHESIS",
+      "at": "2026-10-14T07:26:05.092Z"
+    },
+    {
+      "attempt": 10,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "74de5a8f106eef04742d13eaacb675cd0db5bc45369a34389b8ab58cc9f948bd",
+      "hypothesis": "Cold menu native pose lacked yaw, causing NaN head rotations before first begin. Synchronize full idle/running pose before native head IK; restore original neck/gaze and resolve numeric star replay hints.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "92d804796c5ad3e8816bb5b8d8ebfaad92bb88078004ae3fcac6d69c43db1172"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "17fec2e38fdb11309c555bbc18f6546a26b716b372f0e9bfd402b4bcc52322e1"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "c204598ec74f744969636a5f7c0f25def7e4e8ed04784fb2197b1ce6160041c2"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "ce7ebb90ec9d69e56cae979f8bf7bb4480d459f874876a2a67f2c4397059a867"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "710d5be672bd1a67f48122c572c545299386ed495aea09d7d48d7554e34f3b24"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "bed8268fb945697ef80a54b8d90b9e261fa6cd1a3d168ed43dc843910166423a",
+      "qa": "HEAD_PIXEL_PASS_PARTIAL_QA_SUPERSEDED",
+      "at": "2026-10-14T07:39:55.476Z"
+    },
+    {
+      "attempt": 11,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "98a2895c10f8fbd3d161bcb89b6eb1c086dd3d04bc62c5c5757265b28cdab1fc",
+      "hypothesis": "Independent QA found live star guidance omitted required gold/time; display all authoritative mastery thresholds with numeric replay hints and compact mobile HUD. Cold-menu yaw fix already restores native head geometry.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "92d804796c5ad3e8816bb5b8d8ebfaad92bb88078004ae3fcac6d69c43db1172"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b35b6831b5637bc30293204708131ef5e50fd6b959356cffe1032ea10838c505"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "0b652a6583bef832baba90a67f5185d507850dc9bf3b8c0cd1094246da44c4b9"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "2d94c4709a18eefd861c0e62fea5740d2903d5593526cc17d0752ab4f33acdf1"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "710d5be672bd1a67f48122c572c545299386ed495aea09d7d48d7554e34f3b24"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "391d95b39e586ba32bccb82684207681252fdf4daa5f39f3a252049fc7024aa7",
+      "qa": "MASTERY_GUIDANCE_UPDATED_SUPERSEDED_AUTHOR_ENGAGEMENT",
+      "at": "2026-10-14T07:44:53.570Z"
+    },
+    {
+      "attempt": 12,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "fa3f02fefe3528376a4cc019ee06f4536a414ed9fbc5442d58f7ece1d1578131",
+      "hypothesis": "Integrate preserved author V3.2 commit61ca: engagement/+9 real prize fish/best records/15stars. Fix true barrier jump attribution to swept same-object overlap; retain verified cold-menu yaw, clock, camera and touch fixes, with all mastery thresholds visible.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "a885028f62a16ff8a608f15fdfdf9befcaaa2b3812f104e4dacaa02f46ad8cc1"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "d9ea275560f087990d61523f11a73e847d42ff668a6d31b85cc81646889a42d5"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "d8c17f4c5bd4c1c5ff35c8faee44b41e2d44ad3a53cb21a359093ae8d995f6df"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "bd17d504ce863226bbc6bb2fb3e3675818abaa6ef8e3b1edba684d465a2d11d6"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "710d5be672bd1a67f48122c572c545299386ed495aea09d7d48d7554e34f3b24"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "54168f5aa88612098f3f49378e881554a13542516867abfc7ad68c21e0527d9f"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "cfec48a735954694ae833be6a464d31b680b8f6b8d890c43b65de588b17b0540",
+      "qa": "FAILED_COMPACT_320_FIRST_CATCH",
+      "at": "2026-10-14T08:10:53.257Z"
+    },
+    {
+      "attempt": 13,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "b16cdc176e4a350a126bfab34f8d5d863c4b91bf1a3a3b56294710b27f4dc962",
+      "hypothesis": "Exact320 replay pixel QA found first-fish cue covering restored head and selected-row clipping. Move compact cues into HUD gap, mastery below torso, shorten ready header; preserve latest author CI fixes and all V3.2 mechanics.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "a885028f62a16ff8a608f15fdfdf9befcaaa2b3812f104e4dacaa02f46ad8cc1"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "d9ea275560f087990d61523f11a73e847d42ff668a6d31b85cc81646889a42d5"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "38781e5cebe861f64725db09093a4f3e258f6b1841a0929fc38d6cd64dfcdf2c"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "ff75c3a15e81a8a172a0190ea775c3000a46236d88c7c552759c78ed65e1a0a6"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "710d5be672bd1a67f48122c572c545299386ed495aea09d7d48d7554e34f3b24"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "54168f5aa88612098f3f49378e881554a13542516867abfc7ad68c21e0527d9f"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "4cbc5e9755aacb0806b77ce283b9ab768b4f13ac417bc0c8128070482f1f66cc",
+      "qa": "COMPACT_VISUAL_PASS_SUPERSEDED_AUTHOR_LEVELS",
+      "at": "2026-10-14T08:18:19.082Z"
+    },
+    {
+      "attempt": 14,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "fa668af469d945d6c42e4f6f640b53a5aea69e0ed80d47e17bad2d56d524b5e9",
+      "hypothesis": "Preserve latest author fadc/798a fish-route patterns, middle-lane trap avoidance and first jump at140m. Integrate full numeric star HUD and real-jump attribution with proven compact layout; rerun all current-build natural browser evidence.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "d9ea275560f087990d61523f11a73e847d42ff668a6d31b85cc81646889a42d5"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "c0335baab70a78221713e2af0281541b22ddedb19f9cd255f1e67d71bd4e3de4"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "ff75c3a15e81a8a172a0190ea775c3000a46236d88c7c552759c78ed65e1a0a6"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "710d5be672bd1a67f48122c572c545299386ed495aea09d7d48d7554e34f3b24"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "54168f5aa88612098f3f49378e881554a13542516867abfc7ad68c21e0527d9f"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "b19b44aa92fdd23c2b8f0374274a122b52a9940a3cc033a7cc7e35cf14874a00",
+      "qa": "CORE_EXPERIENCE_RISK_HEAD_PASS_LIFECYCLE_FILE_START_FAILED",
+      "at": "2026-10-14T08:29:13.519Z"
+    },
+    {
+      "attempt": 15,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "9615760ce5e385033c41aeb878710cb480e445c87e817433524482e077c7f44f",
+      "hypothesis": "Integrate author dbd0 V3.2 buffered same-lane jump with cancellation UI; 76 test-first rules; repeat exact natural gameplay and head/UI cases on new hash",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "b49977a3acf740cea057094c58ddfd18f6398ff04ce8ce0ca9e8e6176286a5f4"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "34d6b8d51b1ad37496e1a82591eb78ea913144af1fb2c961a328803686b280ad"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "710d5be672bd1a67f48122c572c545299386ed495aea09d7d48d7554e34f3b24"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "54168f5aa88612098f3f49378e881554a13542516867abfc7ad68c21e0527d9f"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "2f7311fdd7c4860212acacb1533223d59d01a1c28a34b4c58a98ec00d0098e0d",
+      "qa": "CHROMIUM_EXPERIENCE_PASS_COMPACT_FONT_FAILED_SUPERSEDED",
+      "at": "2026-10-14T09:17:06.853Z"
+    },
+    {
+      "attempt": 16,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "23a3fd926fda9fecd4e19298ff41fe1cac5f4da60ddb473d79ea2c9590642f36",
+      "hypothesis": "Integrate author c080 compact-phone 12px mastery and higher contrast after real 320px TDD red; preserve buffered jump, natural riding and full default-speed rules; final same-hash QA",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "b49977a3acf740cea057094c58ddfd18f6398ff04ce8ce0ca9e8e6176286a5f4"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "aeaa2ee816a8de8ef732cd83164caff49aea610f9d7ca7a4734bad38a798a225"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "710d5be672bd1a67f48122c572c545299386ed495aea09d7d48d7554e34f3b24"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "54168f5aa88612098f3f49378e881554a13542516867abfc7ad68c21e0527d9f"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "43b6f2ed4865b6854bbd9dd1c400eed983aa59dd53e7647a85dc4b371650c39d",
+      "qa": "DUAL_EXPERIENCE_PASS_EXACT_STAGE_SELECTION_FAILED",
+      "at": "2026-10-14T09:29:39.883Z"
+    },
+    {
+      "attempt": 17,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "a3a09afe402547bb2f255ed92e25143917f7a2ad9d0565c190681c7da7fdada2",
+      "hypothesis": "Integrate author fdc3 mobile star settlement; real CI showed earned barrier prize trail replaced by side fish, so prioritize exact jumped-barrier gold cue (4 test-first rules); retain physics and improve QA immediate cancellation/exact selection evidence; final full same-hash retest",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "918eca5a9c7ae12301314f0f449708b2978e19d6066a96bb0e607960dfdb086c"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "535fe985032d1317fa1e6a650bf41f4fa6c0ddc717b71abc3d3df9b9b0adc138"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "710d5be672bd1a67f48122c572c545299386ed495aea09d7d48d7554e34f3b24"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "f9ed065669b3eca038bd9cc7a238a2900d33f3e4795400beaa18091be2ce4999"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "8b97b3b5e02276742578dd572d608be4aacbe17bc50412e50b0774a8ffa5b840",
+      "qa": "DUAL_EXPERIENCE_PASS_WEBKIT_LATE_QA_INPUT_AND_CI_OBSERVATION_FAIL_SUPERSEDED",
+      "at": "2026-10-14T10:04:03.173Z"
+    },
+    {
+      "attempt": 18,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "513e5a349edc243cb084057b3c9a978907173b102af2811d2d5bfede2a8026b3",
+      "hypothesis": "Independent17 review lacks actual front-fork and head channels: add tested copied native pose to read-only renderInfo; no ride behavior change. Retest fresh normal input with event/render-frame timing rather than late RPC replies; preserve all17 failures and CI hashes.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "02f6d568e4d762a9c8d3402aa711b900026563b4b62368944f187adb6cebaa5a"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "535fe985032d1317fa1e6a650bf41f4fa6c0ddc717b71abc3d3df9b9b0adc138"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "748dfc0514d66c29e3df6e8d9b7c528354426fe737a29f8d5da0c63102e1d04e"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "f9ed065669b3eca038bd9cc7a238a2900d33f3e4795400beaa18091be2ce4999"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "0e73fbfe855be203aa8bbb208e6c828e1a55a146011bf966da4a64ce15f25f39",
+      "qa": "FULL_DUAL_CAMPAIGN_RISK_HEAD_PASS_BUT_INDEPENDENT_COMPACT_OVERLAY_AND_CI_FADE_OBSERVATION_FAIL_SUPERSEDED",
+      "at": "2026-10-14T11:15:52.757Z"
+    },
+    {
+      "attempt": 19,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "40570fae824fdb8ba59760631b4efe2b765ae38747dd65c527ea97158cc673f8",
+      "hypothesis": "Independent18 compact320 HUD overlays native torso: test-first move five readable mastery criteria into upper instrument area, compact primary-goal spacing and safe catch cue; native model and ride physics unchanged. Preserve18 fullcampaign/risk/head and stopflag, rebuild19 once and retest all exact branches. CI cue observer waits for actual CSS fade-in with measuredopacity, no weakened visibility.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "02f6d568e4d762a9c8d3402aa711b900026563b4b62368944f187adb6cebaa5a"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "1d4d37641b640391b4e721e1c80a3cf9cb5e41f6457aa77416133a76531c9260"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "748dfc0514d66c29e3df6e8d9b7c528354426fe737a29f8d5da0c63102e1d04e"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "f9ed065669b3eca038bd9cc7a238a2900d33f3e4795400beaa18091be2ce4999"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "d9c22a0802677cdd6d5031ed1ab554b8b5ee5d387f6ca94a5faee323d61447d6",
+      "qa": "FAILED_TARGETED_COMPACT_GOAL_OVERLAP_AND_READY_ROW_CONTENT_OVERFLOW",
+      "at": "2026-10-14T12:48:52.017Z",
+      "qaEvidence": [
+        "evidence/v3-engineering/compact-probe-attempt19/report.json"
+      ]
+    },
+    {
+      "attempt": 20,
+      "role": "FixerAgent",
+      "route": "formal-fixer",
+      "codeHash": "c45d85100a4e1bb619c45d0ec28d77e354bf601edcd1ad8262870bdd0cacd91c",
+      "hypothesis": "Measured19 compact instrument starts122 before goals124.89; move to130 with all five readable goals preserved. Exactready-menu rows inherit fixed height and multiline text escapes; use intrinsic rows and auto card height. Preserve19 red probe and18 independent stopflags. Native model/camera/riding physics unchanged. Rebuild20 once then full dual natural QA and independent30cases.",
+      "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+      "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+      "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+      "contextIntentionallyOmitted": [
+        "unrelated games",
+        "full conversation",
+        "legacy REA logs"
+      ],
+      "inputHashes": [
+        {
+          "path": "levels.mjs",
+          "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e"
+        },
+        {
+          "path": "adventure.mjs",
+          "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c"
+        },
+        {
+          "path": "coast-ui.mjs",
+          "sha256": "02f6d568e4d762a9c8d3402aa711b900026563b4b62368944f187adb6cebaa5a"
+        },
+        {
+          "path": "coast.css",
+          "sha256": "dd3d1ddf4b5445f77d7c2f2179fce5dbb08ec9108cbb35205042d9ca137be348"
+        },
+        {
+          "path": "feel.mjs",
+          "sha256": "748dfc0514d66c29e3df6e8d9b7c528354426fe737a29f8d5da0c63102e1d04e"
+        },
+        {
+          "path": "safety.mjs",
+          "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+        },
+        {
+          "path": "engagement.mjs",
+          "sha256": "f9ed065669b3eca038bd9cc7a238a2900d33f3e4795400beaa18091be2ce4999"
+        },
+        {
+          "path": "pelican.js",
+          "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+        },
+        {
+          "path": "textures.js",
+          "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+        }
+      ],
+      "buildExit": 0,
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "qa": "PASS_H5_BROWSER_CANDIDATE_RELEASE_BLOCKED",
+      "at": "2026-10-14T12:55:28.688Z",
+      "qaEvidence": [
+        "qa-summary-v3.json",
+        "artifacts/perceptual-qa-gate-v3.json",
+        "artifacts/runtime-product-gates-v3.json"
+      ],
+      "qaReviewedAt": "2026-10-15T03:31:15.811Z",
+      "remainingGaps": [
+        "Physical devices and real mobile app lifecycle",
+        "Live ads/native packages/human enjoyment",
+        "Native finger-pan unobserved; isolated front-fork pivot partly occluded"
+      ]
+    }
+  ],
+  "executingThreadId": "01a1390f-e175-7c20-95cd-efba403691e3",
+  "continuationReason": "User requested isolated PR16 continuation in current workspace; preserve stored builder thread and all attempt history."
+}

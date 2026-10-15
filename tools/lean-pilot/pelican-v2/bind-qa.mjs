@@ -31,7 +31,8 @@ await bind('collisions',base+'/qa-collisions-webkit/report.json',device,collisio
 let safety;
 try{safety=Raw.parse(await read(base+'/qa-safety-webkit/report.json'));}catch(e){if(e.code!=='ENOENT')throw e;}
 if(safety&&['van-target-distance-reached','van-ends-round','car-not-jumpable','distance-and-fish-jointly-required','replay-resources-plateau'].every(n=>safety.checks.find(c=>c.name===n)?.passed)&&safety.errors.length===0){
- await bind('collisions-and-van',base+'/qa-collisions-webkit/report.json ; '+base+'/qa-safety-webkit/report.json',device,['fresh browser session1: earned five unlocks and collision cases',...collision.actions.map(a=>'tap '+a.selector),'fresh browser session2: earn unlocks again, van and car jump failure, six normal replays',...safety.actions.map(a=>'tap '+a.selector)],['vehicle-impact'],'terminal',true,[...collision.screenshots,...safety.screenshots].map(s=>s.path));
+ const rawPath=campaign.sourceCapture??base+'/qa-safety-webkit/report.json',raw=Raw.parse(await read(rawPath));
+ await bind('collisions-and-van',rawPath,device,raw.actions.map(a=>'tap '+a.selector),['vehicle-impact'],'terminal',true,[...collision.screenshots,...safety.screenshots].map(s=>s.path));
 }
 const Text=z.string().min(1),Binding=z.object({path:Text,sha256:z.string().regex(/^[a-f0-9]{64}$/u)}).strict();
 const Order=z.object({schemaVersion:z.literal(1),role:z.literal('QAAgent'),targetGame:Text,workspace:Text,runRoot:Text,buildHash:Text,contract:Text,contractHash:Text,scope:z.array(Text),traces:z.array(z.object({name:Text,path:Text,sha256:Text,raw:Text,features:z.array(Text),viewport:z.object({width:z.number(),height:z.number(),label:Text}).strict()}).strict()),rawReports:z.array(Text),output:Text,acceptance:z.array(Text),forbidden:z.array(Text),sourceBindings:z.array(Binding)}).strict();

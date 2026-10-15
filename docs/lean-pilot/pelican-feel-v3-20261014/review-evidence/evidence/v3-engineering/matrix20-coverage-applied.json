@@ -1,0 +1,566 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "proposalSha256": "c9d95e0f252d4761322302a5049c7bd0b945ccb5c741974f5cc1493307881144",
+  "accepted": [
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:startup-first-minute:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:running:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:settlement-replay:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:startup-first-minute:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:running:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:settlement-replay:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:startup-first-minute:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:running:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:settlement-replay:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:startup-first-minute:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:running:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:settlement-replay:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "pedestrian-left:running:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "pedestrian-right:running:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "optional-jump-fish:reverse-jump:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "straight-ride:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "fish-catch:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "reverse-turn:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "jump:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "pedestrian-stun-recovery:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "replay:webkit-default:standard",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "straight-ride:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "fish-catch:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "reverse-turn:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "jump:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "pedestrian-stun-recovery:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "replay:webkit-default:small",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "straight-ride:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "fish-catch:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "reverse-turn:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "jump:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "pedestrian-stun-recovery:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "replay:webkit-default:compact",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "straight-ride:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "fish-catch:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "reverse-turn:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "jump:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "pedestrian-stun-recovery:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "replay:webkit-default:landscape",
+      "status": "PASS"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "rider-bank:left-right-reversal:webkit-native-gpu",
+      "status": "PASS"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "rider-bank:terminal-replay:webkit-native-gpu",
+      "status": "PASS"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-pelican-head:jump:webkit-native-gpu",
+      "status": "PASS"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-pelican-head:terminal-replay:webkit-native-gpu",
+      "status": "PASS"
+    }
+  ],
+  "skipped": [
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:startup-first-minute:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:running:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:startup-first-minute:chromium-default:compact",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:running:chromium-default:compact",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "rider-bicycle-camera:settlement-replay:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "fish-route-stars:startup-first-minute:webkit-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "fish-route-stars:running:webkit-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "fish-route-stars:settlement-replay:webkit-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "clock:webkit-default",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "pedestrian-left:running:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "pedestrian-right:running:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "optional-jump-fish:reverse-jump:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "fish-route-stars:startup-first-minute:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "fish-route-stars:running:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "fish-route-stars:settlement-replay:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "reproduction-matrix-v3.json",
+      "cell": "clock:chromium-default",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "straight-ride:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "fish-catch:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "reverse-turn:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "jump:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "pedestrian-stun-recovery:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "replay:chromium-default:standard",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "straight-ride:chromium-default:small",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "fish-catch:chromium-default:small",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "reverse-turn:chromium-default:small",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "jump:chromium-default:small",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "pedestrian-stun-recovery:chromium-default:small",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "replay:chromium-default:small",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "straight-ride:chromium-default:compact",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "fish-catch:chromium-default:compact",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "reverse-turn:chromium-default:compact",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "jump:chromium-default:compact",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "pedestrian-stun-recovery:chromium-default:compact",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "replay:chromium-default:compact",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "straight-ride:chromium-default:landscape",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "fish-catch:chromium-default:landscape",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "reverse-turn:chromium-default:landscape",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "jump:chromium-default:landscape",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "pedestrian-stun-recovery:chromium-default:landscape",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "head-reproduction-matrix-v3.json",
+      "cell": "replay:chromium-default:landscape",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "rider-bank:idle:webkit-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "rider-bank:jump:webkit-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-pelican-head:idle:webkit-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-pelican-head:left-right-reversal:webkit-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-front-fork:idle:webkit-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-front-fork:left-right-reversal:webkit-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-front-fork:jump:webkit-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-front-fork:terminal-replay:webkit-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "rider-bank:idle:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "rider-bank:left-right-reversal:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "rider-bank:jump:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "rider-bank:terminal-replay:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-pelican-head:idle:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-pelican-head:left-right-reversal:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-pelican-head:jump:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-pelican-head:terminal-replay:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-front-fork:idle:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-front-fork:left-right-reversal:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-front-fork:jump:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "native-pose-observation-reproduction-matrix-v3.json",
+      "cell": "native-front-fork:terminal-replay:chromium-native-gpu",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "cell": "native-rider-and-mastery:first-running:webkit-metal-DPR3",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "cell": "primary-goals-and-warning-radar:first-running:webkit-metal-DPR3",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "cell": "touch-buttons:first-running:webkit-metal-DPR3",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "cell": "ready-route-rows:ready-route-selection:webkit-metal-DPR3",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "cell": "native-rider-and-mastery:first-running:chromium-metal-DPR3",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "cell": "primary-goals-and-warning-radar:first-running:chromium-metal-DPR3",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "cell": "touch-buttons:first-running:chromium-metal-DPR3",
+      "reason": "source archived/changed or independent exact-object review still required"
+    },
+    {
+      "matrix": "compact-rider-overlay-reproduction-matrix-v3.json",
+      "cell": "ready-route-rows:ready-route-selection:chromium-metal-DPR3",
+      "reason": "source archived/changed or independent exact-object review still required"
+    }
+  ]
+}

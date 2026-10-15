@@ -1,0 +1,827 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "barrier-prize-guidance",
+      "buffered-jump-input"
+    ],
+    "lifecycleStateBranches": [
+      "genuine-barrier-cleared-before-prize",
+      "first-prize-caught",
+      "second-barrier-approach",
+      "queued-then-immediate-safe-turn"
+    ],
+    "rendererPaths": [
+      "webkit-linux-mesa",
+      "chromium-linux-mesa",
+      "webkit-native-gpu",
+      "chromium-native-gpu"
+    ],
+    "viewports": [
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "barrier-prize-guidance:genuine-barrier-cleared-before-prize:webkit-linux-mesa",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "genuine-barrier-cleared-before-prize",
+      "rendererPath": "webkit-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Current raw CI branch failure; queued cancellation input was late",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "barrier-prize-guidance:genuine-barrier-cleared-before-prize:chromium-linux-mesa",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "genuine-barrier-cleared-before-prize",
+      "rendererPath": "chromium-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Current raw CI branch failure; queued cancellation input was late",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "barrier-prize-guidance:genuine-barrier-cleared-before-prize:webkit-native-gpu",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "genuine-barrier-cleared-before-prize",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": []
+    },
+    {
+      "id": "barrier-prize-guidance:genuine-barrier-cleared-before-prize:chromium-native-gpu",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "genuine-barrier-cleared-before-prize",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": []
+    },
+    {
+      "id": "barrier-prize-guidance:first-prize-caught:webkit-linux-mesa",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "first-prize-caught",
+      "rendererPath": "webkit-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "barrier-prize-guidance:first-prize-caught:chromium-linux-mesa",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "first-prize-caught",
+      "rendererPath": "chromium-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "barrier-prize-guidance:first-prize-caught:webkit-native-gpu",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "first-prize-caught",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": []
+    },
+    {
+      "id": "barrier-prize-guidance:first-prize-caught:chromium-native-gpu",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "first-prize-caught",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": []
+    },
+    {
+      "id": "barrier-prize-guidance:second-barrier-approach:webkit-linux-mesa",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "second-barrier-approach",
+      "rendererPath": "webkit-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Current raw CI branch failure; queued cancellation input was late",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "barrier-prize-guidance:second-barrier-approach:chromium-linux-mesa",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "second-barrier-approach",
+      "rendererPath": "chromium-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Current raw CI branch failure; queued cancellation input was late",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "barrier-prize-guidance:second-barrier-approach:webkit-native-gpu",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "second-barrier-approach",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": []
+    },
+    {
+      "id": "barrier-prize-guidance:second-barrier-approach:chromium-native-gpu",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "second-barrier-approach",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": []
+    },
+    {
+      "id": "barrier-prize-guidance:queued-then-immediate-safe-turn:webkit-linux-mesa",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "queued-then-immediate-safe-turn",
+      "rendererPath": "webkit-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "barrier-prize-guidance:queued-then-immediate-safe-turn:chromium-linux-mesa",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "queued-then-immediate-safe-turn",
+      "rendererPath": "chromium-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "barrier-prize-guidance:queued-then-immediate-safe-turn:webkit-native-gpu",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "queued-then-immediate-safe-turn",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "barrier-prize-guidance:queued-then-immediate-safe-turn:chromium-native-gpu",
+      "objectType": "barrier-prize-guidance",
+      "lifecycleStateBranch": "queued-then-immediate-safe-turn",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "buffered-jump-input:genuine-barrier-cleared-before-prize:webkit-linux-mesa",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "genuine-barrier-cleared-before-prize",
+      "rendererPath": "webkit-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-input:genuine-barrier-cleared-before-prize:chromium-linux-mesa",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "genuine-barrier-cleared-before-prize",
+      "rendererPath": "chromium-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-input:genuine-barrier-cleared-before-prize:webkit-native-gpu",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "genuine-barrier-cleared-before-prize",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "buffered-jump-input:genuine-barrier-cleared-before-prize:chromium-native-gpu",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "genuine-barrier-cleared-before-prize",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "buffered-jump-input:first-prize-caught:webkit-linux-mesa",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "first-prize-caught",
+      "rendererPath": "webkit-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-input:first-prize-caught:chromium-linux-mesa",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "first-prize-caught",
+      "rendererPath": "chromium-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-input:first-prize-caught:webkit-native-gpu",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "first-prize-caught",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "buffered-jump-input:first-prize-caught:chromium-native-gpu",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "first-prize-caught",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "buffered-jump-input:second-barrier-approach:webkit-linux-mesa",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "second-barrier-approach",
+      "rendererPath": "webkit-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-input:second-barrier-approach:chromium-linux-mesa",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "second-barrier-approach",
+      "rendererPath": "chromium-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-input:second-barrier-approach:webkit-native-gpu",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "second-barrier-approach",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "buffered-jump-input:second-barrier-approach:chromium-native-gpu",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "second-barrier-approach",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Object is not represented by this lifecycle branch",
+      "evidence": []
+    },
+    {
+      "id": "buffered-jump-input:queued-then-immediate-safe-turn:webkit-linux-mesa",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "queued-then-immediate-safe-turn",
+      "rendererPath": "webkit-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-input:queued-then-immediate-safe-turn:chromium-linux-mesa",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "queued-then-immediate-safe-turn",
+      "rendererPath": "chromium-linux-mesa",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": [
+        {
+          "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+          "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "buffered-jump-input:queued-then-immediate-safe-turn:webkit-native-gpu",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "queued-then-immediate-safe-turn",
+      "rendererPath": "webkit-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": []
+    },
+    {
+      "id": "buffered-jump-input:queued-then-immediate-safe-turn:chromium-native-gpu",
+      "objectType": "buffered-jump-input",
+      "lifecycleStateBranch": "queued-then-immediate-safe-turn",
+      "rendererPath": "chromium-native-gpu",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact branch visible, attributable reward and genuine cancellation/clearance",
+      "observed": "Exact target branch awaits final-build normal input; old or sibling branch cannot close it",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "Both actual barriers were genuinely jumped at the first target; no prize caught after leaving its lane",
+    "First-route radar prioritized nearer ordinary fish over just-earned barrier prize trail",
+    "Screenshot plus protocol observations delayed the cancellation until airborne"
+  ],
+  "remainingGaps": [
+    "Final build retest pending",
+    "Physical mobile remains unavailable"
+  ],
+  "createdAt": "2026-10-14T09:54:07.827Z"
+}

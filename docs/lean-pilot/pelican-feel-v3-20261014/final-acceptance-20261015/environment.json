@@ -1,0 +1,47 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "macOS": "26.7.1",
+  "architecture": "arm64",
+  "hardware": {
+    "model": "MacBookPro18,1",
+    "chip": "Apple M1 Pro",
+    "memoryGB": 16,
+    "gpuCores": 16
+  },
+  "node": "v24.14.0",
+  "pnpm": "11.19.0",
+  "installedBrowsers": {
+    "Google Chrome": "155.0.8059.80",
+    "Safari": "26.6.2"
+  },
+  "testedBrowsers": {
+    "Chrome": "155.0.8059.80",
+    "Playwright WebKit": "26.5"
+  },
+  "SafariAppInteraction": "NOT_RUN",
+  "deviceDiscovery": {
+    "xcrun devicectl list devices": "No devices found.",
+    "xcrun xctrace list devices": "Only Mac and simulators; no physical iPhone/iPad",
+    "AndroidSdkAdb": "/Users/kker/Library/Android/sdk/platform-tools/adb",
+    "adb devices -l": "List of devices attached; empty list",
+    "system_profiler SPUSBDataType -json": "Empty USB list"
+  },
+  "physicalPhone": {
+    "status": "NOT_RUN",
+    "model": null,
+    "os": null,
+    "browser": null,
+    "reason": "No attached physical device. User explicitly owns all physical-phone interaction and subjective review."
+  },
+  "localPreview": {
+    "port": 4328,
+    "bind": "0.0.0.0",
+    "hostLoopback": "http://127.0.0.1:4328/game/index.html",
+    "lan": "http://172.16.133.209:4328/game/index.html",
+    "bonjour": "http://kkerdeMacBook-Pro.local:4328/game/index.html",
+    "hostLanFetch": "PASS: exact CI HTML hash",
+    "phoneReachability": "NOT_RUN",
+    "conditions": "Same reachable LAN/Wi-Fi, Mac awake and server running; no public deployment or tunnel created."
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "Current 320×568 replay introduction overlaps the native head; live mastery overlaps torso; selected route title clips within undersized scroll area.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Exact compact portrait ready/replay presentation branch needs natural and independent pixel retest.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "unavailable phone media",
+      "entire conversation"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Review attempt12 visual 320-replay and 320-menu captures",
+      "Observe replayHelperDoesNotCoverRoad false on320 only",
+      "Move compact message into HUD gap, mastery below torso, provide enough visible selected-row space",
+      "Repeat four sizes with true start/terminal/replay"
+    ],
+    "observed": [
+      "Long first-fish introduction at bottom182 covers head area",
+      "Compact ready selected row text clips",
+      "Native head is otherwise finite and visible after first catch"
+    ],
+    "evidence": [
+      {
+        "path": "attempts/attempt-12/visual/report.json",
+        "sha256": "10ddf41c31361deee13e7bfcf64ce7897c3220143301d3a0921e42e5b2fd147f",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "320 replay helper leaves native head and forward road clear",
+    "Selected route row is fully visible with default start button",
+    "Mastery does not hide head or torso",
+    "Four-view natural replay and independent review pass"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T08:18:16.263Z"
+}

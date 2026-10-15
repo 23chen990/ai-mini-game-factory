@@ -1,0 +1,2345 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "targetRunId": "pelican-coast-v2-20261014",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "attempt": 20,
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "createdAt": "2026-10-15T03:31:21.942Z",
+  "reports": [
+    {
+      "kind": "campaign",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/qa-campaign-webkit/report.json",
+      "sha256": "dbcd783ca35e876a3b9ccc18d643e001869ea359c6df1c2b06acb7f73064b1f7",
+      "status": "PASS"
+    },
+    {
+      "kind": "collision",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/qa-collisions-webkit/report.json",
+      "sha256": "1d1407239bc0dc4a59b1a5140305ad75347003839c1f0d2b523062d19e30f033",
+      "status": "PASS"
+    },
+    {
+      "kind": "experience",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/experience-webkit/report.json",
+      "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405",
+      "status": "PASS"
+    },
+    {
+      "kind": "head",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/head-webkit/report.json",
+      "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+      "status": "PASS"
+    },
+    {
+      "kind": "risk",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/risk-webkit/report.json",
+      "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854",
+      "status": "PASS"
+    },
+    {
+      "kind": "feel-state",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/report.json",
+      "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+      "status": "PASS"
+    },
+    {
+      "kind": "campaign",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/qa-campaign-chromium/report.json",
+      "sha256": "0c6a4ab643f1fd7cefa2c04c872b5cc8a927deb57ee31970765f894b18dda481",
+      "status": "PASS"
+    },
+    {
+      "kind": "collision",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/qa-collisions-chromium/report.json",
+      "sha256": "f40802319d19bdfcf1e68682bc6085832a30d94916c3446aad24bf2929928c17",
+      "status": "PASS"
+    },
+    {
+      "kind": "experience",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/experience-chromium/report.json",
+      "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c",
+      "status": "PASS"
+    },
+    {
+      "kind": "head",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/head-chromium/report.json",
+      "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+      "status": "PASS"
+    },
+    {
+      "kind": "risk",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486",
+      "status": "PASS"
+    },
+    {
+      "kind": "feel-state",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/report.json",
+      "sha256": "b0f84adf452f57a64c050bbdd78e29a6c70a848f42985941d1b328dc43bcdbcd",
+      "status": "PASS"
+    },
+    {
+      "kind": "visual",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/visual/report.json",
+      "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+      "status": "PASS"
+    },
+    {
+      "kind": "lifecycle",
+      "engine": "webkit+chromium",
+      "path": "attempts/attempt-20/lifecycle/report.json",
+      "sha256": "d75f0cfe647026fa50a74188bd89b362d60637351bd57536fe406cec2652d711",
+      "status": "BLOCKED"
+    },
+    {
+      "kind": "safety",
+      "engine": "webkit",
+      "path": "attempts/attempt-20/qa-safety-webkit/report.json",
+      "sha256": "916fc9205b8a8a5b3b47c1be9759d8b564339374b0a6563b6926c56ee51e7b99",
+      "status": "BLOCKED"
+    },
+    {
+      "kind": "safety",
+      "engine": "chromium",
+      "path": "attempts/attempt-20/qa-safety-chromium/report.json",
+      "sha256": "0aaa83c14c9828859f323938a685477917c0e49070ad97d587eda66907508c23",
+      "status": "BLOCKED"
+    }
+  ],
+  "naturalTraces": [
+    {
+      "kind": "campaign-natural-flow",
+      "path": "artifacts/natural/campaign.json",
+      "sha256": "c0d3bd21da040a6ec904fab056c2314bb8a320fa593140b6e7c2ff8aa86a673e",
+      "status": "PASS"
+    },
+    {
+      "kind": "collision-natural-flow",
+      "path": "artifacts/natural/collisions.json",
+      "sha256": "a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-experience-natural-flow-webkit",
+      "path": "artifacts/natural/v3-experience-webkit.json",
+      "sha256": "19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-experience-natural-flow-chromium",
+      "path": "artifacts/natural/v3-experience-chromium.json",
+      "sha256": "f84436810b375bd15ad187f92cc265b50f5fa02f72e19bf89541a9c9b5a17722",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-risk-natural-flow-webkit",
+      "path": "artifacts/natural/v3-risk-webkit.json",
+      "sha256": "798e3a487ff5a9e8b95d1d7a71b1127f1645472deccb013f31b434f208c29805",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-risk-natural-flow-chromium",
+      "path": "artifacts/natural/v3-risk-chromium.json",
+      "sha256": "5ccdc585968273be687d6a9c3630ef0b2f4f4fc356a35aba6468cd4cbe46bca6",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-feel-state-natural-flow-webkit",
+      "path": "artifacts/natural/v3-feel-state-webkit.json",
+      "sha256": "010432da03053db55f7f9e6779ac1207199ac0fc540f943727a10451d4adb1fe",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-feel-state-natural-flow-chromium",
+      "path": "artifacts/natural/v3-feel-state-chromium.json",
+      "sha256": "3b221e6c0aa77737228e3a7c62e0b74d1b0f4b2922bf95813ad3e17199e4f2ba",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-390",
+      "path": "artifacts/natural/v3-head-webkit-390.json",
+      "sha256": "178c71ed72f7024cfa4d4f9fdbbc4a8f8f82dbe8e3939b87edd421d8fb185bf9",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-360",
+      "path": "artifacts/natural/v3-head-webkit-360.json",
+      "sha256": "8d177478be131cfda668242fb881d30b15e6362b184fd6f80214cad6f370f373",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-320",
+      "path": "artifacts/natural/v3-head-webkit-320.json",
+      "sha256": "cbf6d8d0083a06546b18531a6498c3f8496ab51d08ab3551107b2c2726eb50e5",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-844",
+      "path": "artifacts/natural/v3-head-webkit-844.json",
+      "sha256": "6790dde70275a268e6f104865d1f41a9af36d3063ee84bd1821fb326bc8cfa8c",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-390",
+      "path": "artifacts/natural/v3-head-chromium-390.json",
+      "sha256": "b3ab621848ab8f7182be3573b4db7b3d48c362e4755ae98ec092bd29f72f0d99",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-360",
+      "path": "artifacts/natural/v3-head-chromium-360.json",
+      "sha256": "d69dd6e16eb1ece13c522c6388a383e6d1a1496651b91e7cfa030df125e18e1b",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-320",
+      "path": "artifacts/natural/v3-head-chromium-320.json",
+      "sha256": "791661d14982b4e1d1c387a8d499f557e91bf8e295074526897d866f38269d93",
+      "status": "PASS"
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-844",
+      "path": "artifacts/natural/v3-head-chromium-844.json",
+      "sha256": "c2463cc6c8c06eeb1279011f716ebaadf19a175ae91a0e61447c625a52b75d6c",
+      "status": "PASS"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/setup/menu.png",
+      "sha256": "621918e6b08d5eec383a362921dc3d86b89f525de8d826266453f1b4e3a0eb47",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/first-fish.png",
+      "sha256": "634c012d1ddb0d282d13da17b0e6fa1030a9818b9dd8d21890f2e27bf0192de0",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/pause.png",
+      "sha256": "c7243d7fdaba84182c2fffa8cc38c1c3eb0520632bc8ae317296272fdb0a9b31",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-1-start.png",
+      "sha256": "4ceb75eaac636b6310d3daedacbd1bd8d7d9511af2aa2ad9c4cf4db2e2728155",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-1-hazard.png",
+      "sha256": "a0ff31a7d1c380b55d13df1c118290c9d55d92aec1f2de4723da1337fa23c772",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-1-terminal.png",
+      "sha256": "96d9a57d98ef96525366d10f6a58eb97803f287f56dc3394f459f24f17a277f8",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-2-start.png",
+      "sha256": "258b71cd5ca5ac3d9e028bdcae127e91a54c8db162f5b343569af1ed96e501ac",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-2-hazard.png",
+      "sha256": "1f75660c247109e55985d548d6c7db9c8240885d54dd4aab736ef88ce9b83122",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-2-terminal.png",
+      "sha256": "a48e3e4a34d957ebda57bb419bc35c7a9458ce569bef391e3d52661eccb74522",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-3-start.png",
+      "sha256": "c203491efcdadc2bd1626eff99a764988b24768b11a6da5c190147d31dbfca77",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-3-hazard.png",
+      "sha256": "98cbc569bef0ddab0d1a8a3a62199ddb63b55c9671a28e7a6948287b65b4ef55",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-3-terminal.png",
+      "sha256": "758e33d897de78ff1c289b98a7be5568bd665fa8cac74a91104aea367a398eae",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-4-start.png",
+      "sha256": "0a8d1d73652c209f064b41ad175b898b6fb915ecaf9449fbf20d8415850084b5",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-4-hazard.png",
+      "sha256": "7e68c3575c0cbe0a399a9ac4cb3a71be3153c57bcf237f45e06ae61e6e5960b0",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-4-terminal.png",
+      "sha256": "94f1edc7455fb6c623533d5bc57543c672a524f621d6c0f8a3d4f285cffb2f56",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-5-start.png",
+      "sha256": "a79b495eb070e7bcda2cd6658846c06c315349499dc5644be9874e04c7703547",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-5-hazard.png",
+      "sha256": "569c26461161b87cac46ec8d5175855d2b79ac30acbbae5c6eaa1f643b887320",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/level-5-terminal.png",
+      "sha256": "51b337b17df33d08fb0b8d1234b9876fe12a2fb4beb22b6716c7415ce19a2219",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/campaign/all-unlocked.png",
+      "sha256": "ca3dfbfb5b1e7a11ce1e2ab8a252575565bd0b7292821d7766ce84f2e9eef08c",
+      "sourceReport": "attempts/attempt-20/qa-campaign-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/vehicle-warning.png",
+      "sha256": "17c3d9808e0750bf8b322bb73a9a9a56e2082846b55ae24b31fa0aac6eb960cd",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/vehicle-accident.png",
+      "sha256": "3f3783dae7b739d95666dd94acd2af84f851ef7e9935ab6e25a1ea1d64ac00fc",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/vehicle-impact.png",
+      "sha256": "a72124b46864693da6598b5da9bb623a7f2096f5d47a6d91ed760d644b454f99",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-fall.png",
+      "sha256": "e3c666adcc4bf16c6c4a97b1afb905dfe663b8a5de9c159f941f9c12931dff2a",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-wait.png",
+      "sha256": "96910cac51628b9719be0320b4fe58ee94c4a792565ac5327a445dca54a5f6f4",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-rising.png",
+      "sha256": "5952db8aca1d267430dce4a5150c3abf688cf46cb2115b7fd7aa30a61ace3726",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/pedestrian-recovery.png",
+      "sha256": "8cb884ed2860bb79e8ce0a991ca252b65e5624ce65cc9ad4d2174bcb197c8664",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/barrier-jump.png",
+      "sha256": "a83f648ec330fe69126ff2126e6248f24ed001d7b7c963b573c09de95c42d1e4",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/barrier-cleared.png",
+      "sha256": "3301cd5450dd1edff8616deb419a173da35605423e2474078e084bf77a7dc938",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/collisions/authored-barrier-prize.png",
+      "sha256": "cec5a6d8c97ff9029c7064d7db1e19ea4e1ce4f9c920e543fd3a186bb2a7a859",
+      "sourceReport": "attempts/attempt-20/qa-collisions-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/first-catch.png",
+      "sha256": "e7736f85c0d4a3e68d8eeec3ebea6d8059daeba25153d720fdb9617354e312d5",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/left-pedestrian-warning.png",
+      "sha256": "5ee596c1f351abeced710b1074f848d47e4003c282992fca25a00d398a983988",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/first-gold.png",
+      "sha256": "a489d7aa2979126d522932ba3ea725280cff7e6b6c3c60528ded9c1cfda1a8af",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/jump-choice.png",
+      "sha256": "6234b875a52f2e1a243437acf58bcb1dfb2f1d48cb5433662a37432a630b1bca",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/jump-queued.png",
+      "sha256": "30641f4c193fd2af0ed3b92993abc3784ca4ed4750a3af9cd94dd8de62da0339",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/earned-jump-prize-cue.png",
+      "sha256": "e894ad1651dfdecc3913ee23d1fe99981d774e375aa2b6f0cce94d6339702fa1",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/right-pedestrian-warning.png",
+      "sha256": "8279e47dbc035e35d48a3a7051d33553f2825a7a63729fba5921c28b8e50b9f0",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/jump-gold-earned.png",
+      "sha256": "9b784dfd221458293b7d499367501de730e93ac918f597c352d8f8fa08513ed7",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/earned-three-stars.png",
+      "sha256": "b715f87df8cb77c9181c10f5e516954be3fc6a453f8f9bfafd38cda2e27985e2",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/swipe-right.png",
+      "sha256": "6af7cdb0aeafffbcfa00055926864889273c5f7cbdfbb91e4cfb7ba5ca148dbc",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/swipe-left.png",
+      "sha256": "b79c1aef5b03e083830878c4abf660cbb6b49d7ce01c2fc927490e967808282a",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/swipe-up.png",
+      "sha256": "723e342ecdb522ce2c01ffd3089c8425c1bf3ae7f1c8d56507c0a920ac101c61",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/up-swipe.png",
+      "sha256": "5550c18c5124c5102f92ba142d6a5ed24ccc0b7f588372b53c842695fedfd31f",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/safe-detour.png",
+      "sha256": "4c995a9c4bc26dae633a9bb2872712331f391a3f9fd7fbd42cedbec4a1e4a762",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/saved-mastery.png",
+      "sha256": "62a711742ddad7e71a57d32a3f06acb496fcd9d7910650fdbfced6347060f64c",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/cancel-jump-safe-detour.png",
+      "sha256": "bcc922527e4cbd4d76c848e7b091132740e07eb9edb2e372313c222fc621cf5e",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/small-phone-route-menu.png",
+      "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/small-phone-running.png",
+      "sha256": "92c0d5e84763c5d3246753eb481b254643372d8a05bae4da96b07d0af2bd99a7",
+      "sourceReport": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/390-straight.png",
+      "sha256": "c7814ce8875d7cc98a9d0146ef476ab07d84356528353f90f2d630354224227e",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/390-fish-catch.png",
+      "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/390-right-turn.png",
+      "sha256": "e67ceb5b636787230a4cb07c925756a97ed1bf1644f5352f7125504ff14871e8",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/390-jump-reverse.png",
+      "sha256": "24179a87a3feb036bacdeb75565a6591fbe7ed4fc4f320e21c2e02024ee3d0ad",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/390-terminal.png",
+      "sha256": "de0f775f08016844f2fab214bb18593b2ec966ff709d700eac7a79df7ed56c84",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/390-replay.png",
+      "sha256": "0d9e8d13e70bc3111aa4a81db9ac2cbcabc5ae593ec17824bc44c4b398ae8cfd",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/390-pedestrian-stun.png",
+      "sha256": "d7e016f3c28c3ffafc7d0191992fae6de10b9f50b5cfb4253b45b630062f4830",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/390-recovery.png",
+      "sha256": "4529587971c95117d4da7c9df58ac46892e821af595e3c98e58f5e761675d170",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/360-straight.png",
+      "sha256": "ab683819d5c61fbdce34f704172e07585fa9a563afaf90fe8b75838bf0a66c09",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/360-fish-catch.png",
+      "sha256": "922181b39f37db7fcd2d50fadfc12a631cf476f6526aea3b495479db42684e05",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/360-right-turn.png",
+      "sha256": "5ec952a07dc31a22859d13b66368394c09f068d412d5753b6767299239da6c8a",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/360-jump-reverse.png",
+      "sha256": "3b7125ef80815f57bc489115b269617c29aca0aebccf94e378a72c9e2881e218",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/360-terminal.png",
+      "sha256": "853148a262ed3200923773270a2f20b6ca44b7881bb01319c77b841360a3fd6b",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/360-replay.png",
+      "sha256": "b5f77d681e65bae9305c654bd6cff9067869726855dcb592e1accd3f00aae465",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/360-pedestrian-stun.png",
+      "sha256": "f95f598f0757f00c72e34355f63471675a69fa837cd2360ce5a2a30a6fbec4eb",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/360-recovery.png",
+      "sha256": "53063df05763e00dcd859cb6a83782ff4271d4e38a1276de06403f9c572b490c",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/320-straight.png",
+      "sha256": "7a676a02af79e47bafc744bcc412c71cb8ab0ea8546d23913d3d7ed843fe6090",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/320-fish-catch.png",
+      "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/320-right-turn.png",
+      "sha256": "64b5eaa5b9a7929c9af9685937e7daa492189ab73dbd1d2419423aff500ae56f",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/320-jump-reverse.png",
+      "sha256": "32a28c69defa12b562f946aa40f271b7d19fb3d76f3be9f09988a5bbdc4e2348",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/320-terminal.png",
+      "sha256": "c45e90d555cd924a0cfa8328107b68aaeae06caf0de178a2f24ae3aef14182f0",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/320-replay.png",
+      "sha256": "079f01d3a15c9c995f05e2ead6abdd3d25133cb0681de74a0689d913f5f02ad0",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/320-pedestrian-stun.png",
+      "sha256": "5b9f53100ab71085c6a13586a3e07cecc07da151f4342a85bc276e6f506505a1",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/320-recovery.png",
+      "sha256": "7a8da4695bccc426e9bf0f6b739e065d0a9027643a10611acae6d50a5d1da527",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/844-straight.png",
+      "sha256": "3ca8d867fd61af33655be19dfa007b957e7146965e0d0a026472aa45491c913c",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/844-fish-catch.png",
+      "sha256": "665d735de55d150a20d203049db2f51c6f19b34513642ebffeab586b17628ca6",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/844-right-turn.png",
+      "sha256": "a753f2e770604d66906a3d11ab59ab06e9b644772379d1b6111d8ef97d039a0b",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/844-jump-reverse.png",
+      "sha256": "e30b2e9aa2c87e79bd17d4640326b96c38389757aa95b94a839edc7890b5a3b4",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/844-terminal.png",
+      "sha256": "f5d0f4aed0931e0dd1eeabe0fd8cba006ae274da8b74e9dfca5b19d4d47f8c11",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/844-replay.png",
+      "sha256": "8ac8a62906b87f6685c044cb7cd68f32ba8abfeb85200de068c40e627aa300d9",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/844-pedestrian-stun.png",
+      "sha256": "2a78fd5324ddbf0dc75eaafc1be2e9fbd5a2f28436e91da2696fdc5abc1896a5",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/844-recovery.png",
+      "sha256": "5fd2590c0a267551817ad3faf24058328fa5ebdd31679983cdcc9e80e3712417",
+      "sourceReport": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-route-menu.png",
+      "sha256": "621918e6b08d5eec383a362921dc3d86b89f525de8d826266453f1b4e3a0eb47",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-running-start.png",
+      "sha256": "60f6561d9a379d3e8ec6d51332ff0e4eee29a18856edec092c1f11704c0afc1f",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-l1-o1-reward-approach.png",
+      "sha256": "3baffd0878cda907fe2d62b2c983acec2b2630a6acfd97b25f507dbc7aae43b7",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-l1-o1-jump-input.png",
+      "sha256": "eb81e4ee2d7f31d2803edcbba78ba7da80fb113ba01fcfd1b6ffc933f3f92ad5",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-l1-o1-barrier-cleared.png",
+      "sha256": "ad67b1b9c0781d144ae35adf225e71ada7335ed938533ac09876797661651133",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-l1-o1-golden-bonus-fish-caught.png",
+      "sha256": "64be1da9b520b12817f6a55940cbf8480800692e1996f024bcec40e69fd00dda",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-l1-o3-reward-approach.png",
+      "sha256": "04c5a5c632d05c46377158cbcb5b923759f35a3de14f1db4cd0f33730b6cbef8",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-l1-o3-jump-input.png",
+      "sha256": "c98fa1a1966c26e017c35c283fccc42fbe7eb53f8975f087c60c77e94e4750e9",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-l1-o3-barrier-cleared.png",
+      "sha256": "cd9865a377a88cdcbe3ec8bcf0e87c4a1c81277f084a259ff1980e0eb76e610d",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-l1-o3-golden-bonus-fish-caught.png",
+      "sha256": "dfb646ca880c8c27733ffc7c52904310b746e8e9c3099de1be2f65722b237d79",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-terminal-settlement.png",
+      "sha256": "ee69461c3a9dac917417cd753b93fef98f8a0d130e345c4c5d1070599999e098",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-1-route-after-settlement.png",
+      "sha256": "5da74cbf0674c87c97ba09edf76f17dc95d4a8ef5c3808f87cda9cf4d3c6f660",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-route-menu.png",
+      "sha256": "b275b08f8421c010073feb31723df65e1b642c61766038bb4a4df7bd85eb052c",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-running-start.png",
+      "sha256": "a727194d73834ff0ea65fdeec998bfe10b869f8cbf944e38afeb3ec9ba945287",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-l2-o3-reward-approach.png",
+      "sha256": "a6ac3c7960188e7c25a25ee3e1795f56f9f871ccd8ea7fbeedd7072d76a895eb",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-l2-o3-jump-input.png",
+      "sha256": "791c9806b225d7c881ccb9e5faea3d697b7ce576ff872a54ac0897add32d16fc",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-l2-o3-barrier-cleared.png",
+      "sha256": "4ff822dd3f8e6978a6461f9134a65fbcfa8a68c303c233360e29ab9a0b31db0f",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-l2-o3-golden-bonus-fish-caught.png",
+      "sha256": "7abd391ab3c35e56186970e71b89175f160972d57746b6ea6a314c91e778cd56",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-l2-o5-reward-approach.png",
+      "sha256": "6fdf788b2840a022a0b8a32e28da26827b3ce1a17a725f9862c4e291a6fe3c56",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-l2-o5-jump-input.png",
+      "sha256": "0c8cc024446224527c322e299fc505524d2e540ef73bf1917c097758b900612c",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-l2-o5-barrier-cleared.png",
+      "sha256": "528d470e2afd3a617239e039847d382458b0082ccf11f872f61f963ef6716172",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-l2-o5-golden-bonus-fish-caught.png",
+      "sha256": "f4e15837f06ab797818d498d4b61cc0677c08ea787293a010dee59957f9e4148",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-terminal-settlement.png",
+      "sha256": "54ef986313157bf7ab9a8274f9b9f4899974420c78c33f3064c3fe4272b35efd",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-2-route-after-settlement.png",
+      "sha256": "cc20c40d3175162cd62f6f880774e99e65f841f0c8388171876cf017a2573252",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-route-menu.png",
+      "sha256": "955398022960c1c80977b5024af1d43f1ff2d1e37e505f04a49d1cef6027c601",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-running-start.png",
+      "sha256": "ca35306cbaf61a28ad4f2c5afa0b048fe8ae9ae2cf58cde443ed90ec72c61ad6",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-l3-o3-reward-approach.png",
+      "sha256": "cf67c73d55fa9337be64eac12bdbfda8407e4de5b46655d9c94001b919be8cda",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-l3-o3-jump-input.png",
+      "sha256": "56864fd2f95d577781ec367b193f4ad013ecc518782e5e37dcbdd60457236fdc",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-l3-o3-barrier-cleared.png",
+      "sha256": "52108bc027cbe66dced0a6d227a44e831f5d12ea541ddfd62f3f85b6ee97e933",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-l3-o3-golden-bonus-fish-caught.png",
+      "sha256": "83425c10b560227bd91bd7a3e0331a683f2c475ceebcbcf06434dd0f8f4bf0a2",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-l3-o5-reward-approach.png",
+      "sha256": "acef65b9a9bb0967a2d152e0f45ffa81de24ac81bd3c62886f6301c1b8f5b667",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-l3-o5-jump-input.png",
+      "sha256": "9eb50d41a8266778a0fef30f12ac17edc8dd8a0e05ce6fade4f694076f01edcb",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-l3-o5-barrier-cleared.png",
+      "sha256": "0db11600b2f229903adb956dde118909a9fb7c78a7ba4407ea65080012ec5a32",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-l3-o5-golden-bonus-fish-caught.png",
+      "sha256": "3a99501fe1cd6fd26ea03d1e71b25fe4d14b3427fb9bd5a9613363fc1240bad4",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-terminal-settlement.png",
+      "sha256": "fe4e71f01676b8782fef14bce379fa6a4850ee0bb026fe8aa278709c6e6bf09f",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-3-route-after-settlement.png",
+      "sha256": "2ecb5e7caac765a9c95ce5e5b82b8c90000edd430006de24b9cfb5c1dfe09a31",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-route-menu.png",
+      "sha256": "971afb24844a7727cab98bd1d71f457091319a05341904c77320d165b8f587bc",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-running-start.png",
+      "sha256": "1a274f96138c6e92b2a88491d0794dbdf4290a3391026021e18fdf6ea70834fc",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o3-reward-approach.png",
+      "sha256": "1aa4fbfab346cf5f2d3fbda71f9d304ba2870bac51aab909e685877b40312f34",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o3-jump-input.png",
+      "sha256": "931d11bc656dd03969a98d98ccb8c979bcd0da38ba86d9dc07e9620e8b19ff59",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o3-barrier-cleared.png",
+      "sha256": "96fde20a094cc2e21bfc8a44d7b77f968120a4e6d415e822b50b3ba97bfc46a7",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o3-golden-bonus-fish-caught.png",
+      "sha256": "942b0d3d4beaee5a78f32ed206ff4cf43f3368b442e31fb4f102b0371374df1f",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o5-reward-approach.png",
+      "sha256": "0f5cd1e8c9441f4ecdcdb14b0d68c9bc5adee6a67fdf422f8b9470d4024cdabb",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o5-jump-input.png",
+      "sha256": "9d2f277e05831da996b1603b710ca2482161b011142dd0c3aab71a8d88f417e1",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o5-barrier-cleared.png",
+      "sha256": "e3ad82094add37b7691ac96d7529ddc587d1bfcb76426a1e4f7decbd99e0d6c9",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o5-golden-bonus-fish-caught.png",
+      "sha256": "be70d2faa73223c098b25d8e2532cf0dcdd0b7399de1ce931c418d14a83bd17c",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o10-reward-approach.png",
+      "sha256": "0eafdb3a08a054546a349a7313c64d7487b2668aa18e96f8df4c9fd2dac8e4b5",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o10-jump-input.png",
+      "sha256": "991c4ebdb5c7032a6d44ad80291a4104783dd8b4d00b620032e29569a02bd3b3",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o10-barrier-cleared.png",
+      "sha256": "5c2f498df9bb94bd0d133ed46d62699635d6fc504ef517a31a261b64f1c470ad",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-l4-o10-golden-bonus-fish-caught.png",
+      "sha256": "5b9488c4592d2401ad49dc5a558194f7e07a1bf79dded9dba3ab932cd662a2f6",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-terminal-settlement.png",
+      "sha256": "2eb10297a52015da0fefdbfe89946c5fc45c132c9064a424d75ce5d47e6d3020",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-4-route-after-settlement.png",
+      "sha256": "56d2bcfd2fb2313d48f34f0233cc4e08c64ab612faa1720cbfc7f075ea3405f6",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-route-menu.png",
+      "sha256": "e1c4eb60bb3bd720644b35f6e5e494b563aae80256afad8d0e4b7a0244bd6d3e",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-running-start.png",
+      "sha256": "0e3aa06558b9413db685eeed6793cc7a60547dc0ddf3c5834155eefe5fecbc64",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o3-reward-approach.png",
+      "sha256": "790c5709e97d13dc564ee85b1e4fc2eaefa1b9b490795705173a5991517b3ba9",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o3-jump-input.png",
+      "sha256": "7c39c05a875bd62105c7e2210e8f4ee91d0c7791ba3a7d1df2e9f710fa676920",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o3-barrier-cleared.png",
+      "sha256": "c121ed6b5210fe5e9bd7a73edc348cbdd5a27b5790bf54537577d1262f7a67a6",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o3-golden-bonus-fish-caught.png",
+      "sha256": "18b22525b0724ca0945b80510c8cb0e36315f84ef8b3c8eac3647674f8ee9f2a",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o5-reward-approach.png",
+      "sha256": "66cfb57b97a7a0a2ec760c3a28d5bee0481d3ae40e2825949dca1cd2f6ac0b98",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o5-jump-input.png",
+      "sha256": "c2b330fd9ea85426aada24b985dc1fcc220cee3c3baec3ab80feef4a99ffcef3",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o5-barrier-cleared.png",
+      "sha256": "dc1f5e0b1d1950bd388f5490607a2484a51eba530d5370d1ac8c8ba9edcfdf13",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o5-golden-bonus-fish-caught.png",
+      "sha256": "7621fc0dbcf3738d8e60745be06d358c4087778afcf5b5a13c2fb36bc0b512b3",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o10-reward-approach.png",
+      "sha256": "f501756cf2fab72375ebdffd0c7b580d0ace7aac1fb2ce25b4dd899e1b90195e",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o10-jump-input.png",
+      "sha256": "ef0adc2fe13f8f57b9eecf5b2adc6a03d3c389bfac84dcad00b5d3db192c025d",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o10-barrier-cleared.png",
+      "sha256": "8187926218b129417ed0ea0c154d79ff142b56315a3685c691a35d15a6fe8cf3",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-l5-o10-golden-bonus-fish-caught.png",
+      "sha256": "4a59d5327404c352bd96dcc65776d2d1c200dfe5b11df4ee95f3d85ad651e244",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-terminal-settlement.png",
+      "sha256": "848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/level-5-final-replay.png",
+      "sha256": "a54d2c2092777a5a1c3c0e2e96b3fba91453e759a7b86c8cf7cec579215ffff3",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/earned-compact-route-5.png",
+      "sha256": "1d0d858ec4b002ecbfad8cb6a8ace76853138325be6a7291e783be0d8a51d3d6",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/earned-compact-route-1.png",
+      "sha256": "a2142da6b87677e17db2d74bc46a6c52373469d4824e3f655dc9614be8f2a5f5",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/earned-compact-level-one-replay.png",
+      "sha256": "be8d89bcb6c5151d732c5298c22fd30b517035e6193b937a0222caeb4270481d",
+      "sourceReport": "attempts/attempt-20/risk-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/state-900.png",
+      "sha256": "101647d787bb64b71d16c7b112c473537eb452481d42e0d1d5ca9026e45d5b33",
+      "sourceReport": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/state-1300.png",
+      "sha256": "c614c4512f3107a3d34de6b971e43b8f3f8a87d3bc495fc3c8fccd3126f67e0b",
+      "sourceReport": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/state-1500.png",
+      "sha256": "e96c2e4e885f27e55dc75c12ccc8a14c61d615588485db383f8b10e89fef6fdb",
+      "sourceReport": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/state-1750.png",
+      "sha256": "27b4b73f10b873a90985298290f9b0833c1f72b744e95a5190fd24708335523a",
+      "sourceReport": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/state-2480.png",
+      "sha256": "efcb64eabee3ea530392700aa9a2c6144de9f3cd4d3c082646fde9be92da4509",
+      "sourceReport": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/state-3200.png",
+      "sha256": "1acdc434f521798040edc9fb0337f8290218c9efa805cc3e8cb114cd11cdc2dd",
+      "sourceReport": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/terminal.png",
+      "sha256": "aa2a63126857aadef523c304cc0b5ae4e0965c3d09f3a30db78cd2b1c3d507b9",
+      "sourceReport": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/replay.png",
+      "sha256": "ee7bb6b18f507479b99fdc3ff06eea16338628c56e946d849dff4a382e3842b3",
+      "sourceReport": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/setup/menu.png",
+      "sha256": "a300f9e98825fac2ecbabf4683739cb0da58af77677c2d3e29d1b975bbd65597",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/first-fish.png",
+      "sha256": "ad3dc5fb8a300e0471d2d951cee98a87d89d3653bded6bbee828d8770c096e2c",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/pause.png",
+      "sha256": "79b7d86a326cf88e832ae3174f684137d9e7ed76cd63da91aa0e6c9cf2e36ddf",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-1-start.png",
+      "sha256": "06711df6f2636ab87e9893d8718263128064f36c5c8c23c58ce0da92e800b4b7",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-1-hazard.png",
+      "sha256": "2fec5ebb241c66935de9ac9125a6d62d2107216b13899520b71730a872b7f2aa",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-1-terminal.png",
+      "sha256": "39c25e75184718259bb469197d67f2f334447316eb50ba1407f0e5eb32b95f80",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-2-start.png",
+      "sha256": "a4029c795a24bf68795b9ec476a2ffba6490842ed575534281a7402054831872",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-2-hazard.png",
+      "sha256": "26613087b83a38a77b78df89e883a98857f3fd136e6064ea0748763ba0fc1483",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-2-terminal.png",
+      "sha256": "5b9136050459548943efdbddcf909c70a61eefa8381a72d5618a1a4b0b748d1b",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-3-start.png",
+      "sha256": "f0625902f8800eb870c33c36e004e35071cc71fc3ce3f9fd860ab42860bbad45",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-3-hazard.png",
+      "sha256": "fe963daa9f729bf845eb15fb5ea039db4ec2c496d5ab0dfcdaf9009b864dfc85",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-3-terminal.png",
+      "sha256": "6248e185466c9d600a17036b9bd75b8a65b2a2686ce2a2180ab445c038e44152",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-4-start.png",
+      "sha256": "87bb7c2d1c6a4abdfac4244aabad864ff4f9cafe2299dc08a0a50d1fe8ac7873",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-4-hazard.png",
+      "sha256": "78689e4d19f59a6aa3994c02fe588a283d1182159b26706a9693771065d51932",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-4-terminal.png",
+      "sha256": "7a99486276ddc6943315117de0f07523a87bc26e0e7f7024b03c4c49b06887d9",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-5-start.png",
+      "sha256": "5f37b66ce80e0b2411da823563d165ca8668e69a7aa2ecf6c5cf293ba4bc04b5",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-5-hazard.png",
+      "sha256": "d1068cb94b5579acba37dbde6b620529120e3afa3b7b015974cbe285514f594b",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/level-5-terminal.png",
+      "sha256": "d23407eefabef3e834afabbfa3851566b5caa8db01b0c1bd7d068d1f9162b4cc",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/campaign/all-unlocked.png",
+      "sha256": "2485aa3f23c8b8efdb2fd54b678700c36a53aeac51730592581dd2cf2b27bd3a",
+      "sourceReport": "attempts/attempt-20/qa-campaign-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/vehicle-warning.png",
+      "sha256": "a201b0a0a9644b428836905817427701cf3c0836bbeba959460d0c7d93e0035e",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/vehicle-accident.png",
+      "sha256": "c32ecfbad73298b57a1014d6eef8876678a343bfd41e6a0bd25bd2a6cb3303fd",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/vehicle-impact.png",
+      "sha256": "de26b7533b07f749e943c514e8dc6709d473d9d0a7d2b3befc8da6c35903edfc",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/pedestrian-fall.png",
+      "sha256": "7b21501295e03e66b4d937b61835f6ff14b27f060ace85c0f955c62302adc947",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/pedestrian-wait.png",
+      "sha256": "f1a670ecb7bcff0aa68093e04a2d43d8a261de1b893648116fbf8003d452b95e",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/pedestrian-rising.png",
+      "sha256": "95e2408cc36ea2cc8776f708196581fbed4729396953d777235f5265b690b1d2",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/pedestrian-recovery.png",
+      "sha256": "a5f84e70e8b68593b92bbe78cbf29b55e903bdfb181e0d34ea7c23f94ef640b4",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/barrier-jump.png",
+      "sha256": "224f35fc1f16add320f303af6e7c59852f42f2a2e66829cf17994fec24e589da",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/barrier-cleared.png",
+      "sha256": "99faa56f45763789e94de1f268ca2a0d0daacde5f11466ae3a685553663eb356",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/collisions/authored-barrier-prize.png",
+      "sha256": "573d8ec63d398685eb040c9a1d1d6bbd1e39ef17454607bdf6621b42879d5dd7",
+      "sourceReport": "attempts/attempt-20/qa-collisions-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/first-catch.png",
+      "sha256": "61a5a40545ac86f06d9f5f1e29f528df338bd5766bd5d191ee0d498e6036e6f1",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/left-pedestrian-warning.png",
+      "sha256": "6d4f7be53f4aefa7f8e770b26b9e8e2c0d668fb083c1e05c6d9fa57839ee8f37",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/first-gold.png",
+      "sha256": "c9cd6f0c16316fadf5d6f6f186f72be1d78a41fbf3a6c95f053c0a3f13366d1f",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/jump-choice.png",
+      "sha256": "85b7e2cea95a18e23e38fc2eb8a1b0ba7bc13014081b903c1d562ae0b8c9fe88",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/jump-queued.png",
+      "sha256": "9c173c6050eda01d11b3eeef25b39fc0eaf0c12c84238f332cfead2f49cf3e2b",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/earned-jump-prize-cue.png",
+      "sha256": "4559983dfd17919770f5d0757884497d1d21f05b3eafcf83ab49ba60f3578a54",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/right-pedestrian-warning.png",
+      "sha256": "632e5e072d768faa84d363f1e9ac3a461099fe0a5045dc7e03c1add3fa7cb624",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/jump-gold-earned.png",
+      "sha256": "d7dae790e7fc8ceea22c509eb377c1ee2434bf28f4794ee1a4404bdb04f8bf8b",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/earned-three-stars.png",
+      "sha256": "82ac113950f2fb86bc76705417cc7b05c6bd8d08962913ce5972b8c8ee30b8f1",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/swipe-right.png",
+      "sha256": "d311eb2aaf8a6f2bf23abdaeeecbeb3c6e4930c888a33eae1f92b6f39515ac5d",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/swipe-left.png",
+      "sha256": "186c8c5538466679dc55420838de478007d3a497d0ee7429cad4a028f6819b37",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/swipe-up.png",
+      "sha256": "cec6cae778ef0e1471aba5d626075e5c41f1e1fbb024da5917741c4e762c912e",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/up-swipe.png",
+      "sha256": "4e51f3b787c2aac87ef6aa3eb005ab0c7098495256052928a0f3676227c29570",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/safe-detour.png",
+      "sha256": "b5e3283fa30f39616195ce5330d52c328dca17aebba36c85c0dfa3e371c39fd8",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/saved-mastery.png",
+      "sha256": "b4767e678fbb737ea907344e4259e8577b3459eca64272aa63ca9ac16375751d",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/cancel-jump-safe-detour.png",
+      "sha256": "3252ef5b65fb69fed8a296ca81be907ecbdbc7c618564d2e73e36c279f8733c5",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/small-phone-route-menu.png",
+      "sha256": "14c5d81a67ad8a7702a39222a8c9dd07c2a045170bc1839a5578d04cf3e708be",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/small-phone-running.png",
+      "sha256": "ca5b74cdc685c38eea976682f14bd869afa230633986e45990b6bd7fa304d0e8",
+      "sourceReport": "attempts/attempt-20/experience-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/390-straight.png",
+      "sha256": "2562a2cc1bc2d378c1f4f3736687b76b4ba7fd99157162b6aeff0b6ad9a7d81e",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/390-fish-catch.png",
+      "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/390-right-turn.png",
+      "sha256": "653e023548b5c42124e38c62779f255c1d83db0c976d7a505ba3ba1b186586a0",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/390-jump-reverse.png",
+      "sha256": "c77cb03cfe845e328bb2a958ef4aa3a16380322728a396e91cc9a56b0f17c0f0",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/390-terminal.png",
+      "sha256": "add69509296bfdca8e2319bc606e4a6bed12fe89392fdd2e0cdaf9d742451e4b",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/390-replay.png",
+      "sha256": "8191fe5fe26dc91b5f1f926289ba25ca09af27f2991518148f305aa2264ba44d",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/390-pedestrian-stun.png",
+      "sha256": "d12119329e9a7ad2475d30329fd866a2e75526cd5b12d7e57f57f99d79a8640d",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/390-recovery.png",
+      "sha256": "a0d558499f58c6c6296a40329a1cc016e9e9fd078f162586af52f9695e19d2fe",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/360-straight.png",
+      "sha256": "0c4682be5f7a2fd80b6f39230ee876c793586312fb8679b332706c9038d1613f",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/360-fish-catch.png",
+      "sha256": "7fd949d6a664a9e3c5f7c05fd13ecbb5938fb0ba01a5afecf3126ea177d3faf6",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/360-right-turn.png",
+      "sha256": "731bdedff033fba6c6fc46a57dd385094238235b1aa79a232a16cb7c122c477d",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/360-jump-reverse.png",
+      "sha256": "c47977dc9e85eeec08cf9f8e78a99418f7b339d0419765a45ccbbc8ddc682b38",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/360-terminal.png",
+      "sha256": "cc1ed75ab9b83865e61dd8babd7f32797c7ef5d5b9ed61bca6d72812c6e23216",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/360-replay.png",
+      "sha256": "bcd9173dd33dc689514e1b2c1a874e36cc1032091e9b5db31a875cdb467c29a5",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/360-pedestrian-stun.png",
+      "sha256": "5b6019291b4acbbf3981a98620da3a521537875f86d641a2a6be0cb2f384c7a1",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/360-recovery.png",
+      "sha256": "f4914beafdd0a19f7a1e14343399899165ba94ee9f86516e9a0eecb87a029ba5",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/320-straight.png",
+      "sha256": "f25c23ea714c907e506add4d2158b152396d613b75ed8dc33357f333d27691e0",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/320-fish-catch.png",
+      "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/320-right-turn.png",
+      "sha256": "d50867449878750789e2a85dfd4e855b5cce0f00be7dd86906e281a850f475ff",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/320-jump-reverse.png",
+      "sha256": "aa1fd21556054ee7f6a16f38d11b84615ea636330dbe13e45607d52b82eedca0",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/320-terminal.png",
+      "sha256": "2c282f72959b682b3106dc94f91c498afd0d10cc1915008c4f9e70ab585e9807",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/320-replay.png",
+      "sha256": "cdf93d2cb93028848b9c06ab4c0ef992c92a9455093d25d9301ce1227a0395cb",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/320-pedestrian-stun.png",
+      "sha256": "922b02d206b2157dad694f85b4804d9301ef88c4d5809e2613f4e69180fbfc28",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/320-recovery.png",
+      "sha256": "80663a2058e483fdda7dfe733340c1cfb6bef4279578656957a1affbe33cefeb",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/844-straight.png",
+      "sha256": "35f8c7bf7be2e1b8d40306b87b9e11ea23bd2cfc81596c4e67fe97606fcfce6a",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/844-fish-catch.png",
+      "sha256": "5d1c87c96451a72d46f2c3bb17937403c7732c959dc19fb87fed147659328d2c",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/844-right-turn.png",
+      "sha256": "03b28cb396abb995d30930ec42363f45d199e393f55e4047b5d5368bf55b2fdd",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/844-jump-reverse.png",
+      "sha256": "a7c0b0c5e912972b0fc289e419385debd9588071086b3ac589d3942de220fb84",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/844-terminal.png",
+      "sha256": "24182ea4e95e2308beb403875942e394e43759e20e69ba7a2828d17d0aa72a2f",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/844-replay.png",
+      "sha256": "0397b7f18315318f07ee5131017e66f117b93bdd0e9bfea8cbc4188d724dd974",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/844-pedestrian-stun.png",
+      "sha256": "56f465786daecf9c43a183d326bc9a0d2eb0f62fb2c0ddb7b59030fb147f9d2f",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/844-recovery.png",
+      "sha256": "21c27ccd6ff9fe409bd76463e688ba9fdb04d9553a6737bfbabe6433c5556cce",
+      "sourceReport": "attempts/attempt-20/head-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-route-menu.png",
+      "sha256": "a300f9e98825fac2ecbabf4683739cb0da58af77677c2d3e29d1b975bbd65597",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-running-start.png",
+      "sha256": "fdf4a724cb1674944c5f0026c97a1bbe772b526a67d78fe7bb68433b4ca40df4",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-l1-o1-reward-approach.png",
+      "sha256": "ff57025bfc6b352492fff81b1038520a2f06f5ab8b0becb44d5d70d1def97e0f",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-l1-o1-jump-input.png",
+      "sha256": "7cf97d7a3650d33356c82237d2c8697e324e9b48c8e87c5b6869a8db1eccdd1a",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-l1-o1-barrier-cleared.png",
+      "sha256": "5cf6582030a8bc662c402022c48c39631ac6958c7be07cfebf53ab259a39e413",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-l1-o1-golden-bonus-fish-caught.png",
+      "sha256": "eceb5077634b71c681d574ff43b714ca03a33541bc21bf72695882bd0276416a",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-l1-o3-reward-approach.png",
+      "sha256": "d9d5e6916e4e012edec6ab5434edc04a70adec86e70d8c2b42737d39ff0376de",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-l1-o3-jump-input.png",
+      "sha256": "d0f7485fc4f773fc4670d5ebe38fd195093426a85b37b223824b4524be4f9bb5",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-l1-o3-barrier-cleared.png",
+      "sha256": "58578125e689f4f4363995d012c07e6d5ea1e150eb965cbefccc978058e1d04a",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-l1-o3-golden-bonus-fish-caught.png",
+      "sha256": "7fa9224f0884ce7cb1016596041265570bac88693f402b737d1e820419d27765",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-terminal-settlement.png",
+      "sha256": "f31b467a34f2cd3e55b9cb68750f99b50308507dce935dea85b278382986d2b7",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-1-route-after-settlement.png",
+      "sha256": "b6a59ea955f5df3994c56114d25bd9e1f2666db4c272fdec8c7e7d754ac00e12",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-route-menu.png",
+      "sha256": "53c6e51b763830e34c6ce18a6bbb10177f956dc3ef40de1a3589c24720315f82",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-running-start.png",
+      "sha256": "8dd7bf6da53238006959939bc1df071011752254682710115d684220ac18f65a",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-l2-o3-reward-approach.png",
+      "sha256": "3f90b17b1e2a6f564c5cd84140e47fddd8dd7ba1266e4e1ace57d8994008e573",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-l2-o3-jump-input.png",
+      "sha256": "1ad5ab69f3d9339473b1d6fe7aaa2fe3ffb1035a3ae82b6ba1998da15868c28f",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-l2-o3-barrier-cleared.png",
+      "sha256": "fc806880d4c27819ecec0ecb18953c2ffe9ec2438f3dc68919faf1f078b5944a",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-l2-o3-golden-bonus-fish-caught.png",
+      "sha256": "062b0130aaaef29202a700bd06b7d0d4ba6fb46754699f476bce99651045cbdf",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-l2-o5-reward-approach.png",
+      "sha256": "b2c9755adce836e96829ed83bc640e26eeb2b38f7297e70e83e2a1627fe5766a",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-l2-o5-jump-input.png",
+      "sha256": "2774d38e9e8fcc5babb5c7c2f9a39af29714f9b1007f290c0abf43d64f14ce8e",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-l2-o5-barrier-cleared.png",
+      "sha256": "7e02fd39e6a27314f13befda5298de5c5ddc7dd754e9116243a0d888a3dce20c",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-l2-o5-golden-bonus-fish-caught.png",
+      "sha256": "1a2ba63ce8fc21b9929aa05fcdc8cdd86d9cea6a9a9df4fab47144668a225344",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-terminal-settlement.png",
+      "sha256": "b81f6c8272cd1d0e53b7e302764082ea1dc52a0855f122ae417939aeaf471ae9",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-2-route-after-settlement.png",
+      "sha256": "779ae168bc6ba55d5b058edcdf83bc5c52206135949f33f9f3c632bc77773759",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-route-menu.png",
+      "sha256": "9cdb2a6801383f0f20623c2736c24102de5f3b4b017109e6dc44453212684a34",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-running-start.png",
+      "sha256": "5d3dbd6a7e573a3212b078b4664521585d9ccad373fcafee00bc2bbedfc7ded1",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-l3-o3-reward-approach.png",
+      "sha256": "7dfdfcc21d9ee4967a4c9d45ff37a76c45c7b360771aa2b1e6f6d87ee7f74a7e",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-l3-o3-jump-input.png",
+      "sha256": "56bd57692b00afb06563fc580080882d8348089a7cc3f876f3df5b794becd18a",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-l3-o3-barrier-cleared.png",
+      "sha256": "b5fd1aed84309304f6502a78ed7e1a1a1d123429d86f69e24d27a20425f4591c",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-l3-o3-golden-bonus-fish-caught.png",
+      "sha256": "dbf4efa861aa1da286aba35998721cda7fa1bda1af88e9744f343a72a266b4f3",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-l3-o5-reward-approach.png",
+      "sha256": "2f6f1fca723dd1c72bdbf9692a9d06c84d1ad4315c65822ab151e3c55dfd1fb7",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-l3-o5-jump-input.png",
+      "sha256": "cd13dec3d7055053e2f57f4991dd4bd101c91c8a0a00587e391160a230452157",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-l3-o5-barrier-cleared.png",
+      "sha256": "392f411fe8e72d95c09b6cb223fc82a0cfd07bd58a93577c6027c37f016a91c1",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-l3-o5-golden-bonus-fish-caught.png",
+      "sha256": "98502fda4420619d39879a65e70341a48675f2599bdca733761e19f55b4df537",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-terminal-settlement.png",
+      "sha256": "d0eb4a31b931f2bd997efff0a374abd2554229a7a935b72415ae61e75082fc6d",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-3-route-after-settlement.png",
+      "sha256": "d10a18d0253922a2b5a8dabac9f43a7a4c5c4293c80e1018dede01f398cd71d0",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-route-menu.png",
+      "sha256": "67b67079825bde3fe0e9fdfea85fef3a4fe26bc40b18ed20ccf9d83f447881d7",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-running-start.png",
+      "sha256": "9519d1139fc95480c9bec2ae2768c1dcea9bdc22423e1a106a37b762ea32d608",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o3-reward-approach.png",
+      "sha256": "97d9c713428359f4552df0b941fc16e7ed9093d5a86d8c5965b64b0088a4a2f0",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o3-jump-input.png",
+      "sha256": "8f911efb8d6ae86099dff3361be6845ed14401c6d0d39644edd8f51b38d96d66",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o3-barrier-cleared.png",
+      "sha256": "9c75c573d8ac49255d945cd27ef9c540c5dbe930c9965f58cdc24aa2f77496b8",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o3-golden-bonus-fish-caught.png",
+      "sha256": "ed8f0a541736d2e38b269839d469279cce5db180da8ff8752c1af14ebc3802c8",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o5-reward-approach.png",
+      "sha256": "6bf1e3cad2486fcb14300e5617a800db693f6a441d2198a7a7842e623da2e3bb",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o5-jump-input.png",
+      "sha256": "92dd8cc8e4207d9b59dba52b40f67a788a633d3eaa093b2aa3832fd7147b3db7",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o5-barrier-cleared.png",
+      "sha256": "b2c101fd29edc745a0eeda696c6b63a3b8a24b3c416d17510e10752bdd094304",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o5-golden-bonus-fish-caught.png",
+      "sha256": "1fdc360f3c93e610862b27d40bde819bccd53238144be9cdf39c654ea4d3cf2f",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o10-reward-approach.png",
+      "sha256": "8d2848794252fdd378e1c1f30bd5744a55106761109ef6e9b1fa99e318c00692",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o10-jump-input.png",
+      "sha256": "e850206bbc154f815e6d6d3fa0f30897bf583ca78b815d9916d52b414a7b650d",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o10-barrier-cleared.png",
+      "sha256": "26410115cfd02ec24b1316a60d389c964b230a5f6fed0ef8e8366c3efb452334",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-l4-o10-golden-bonus-fish-caught.png",
+      "sha256": "1f05c68c43f59d0c2214d51d92cdff0e37294d1074f55be2f82ef20b1a4a6f9c",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-terminal-settlement.png",
+      "sha256": "0f334f55f33c4fe0bc0a671de7e6b45a50a184051f8c3e5d3bb0bd76e3a26f00",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-4-route-after-settlement.png",
+      "sha256": "5e5da3edeaa091d21a0873ce3d6c8304cbbd8144aaf8a30d46e5f080e3ad4596",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-route-menu.png",
+      "sha256": "0d8561d9d40a66c6800285e2a3bf3991d0753cd404aa05da6943af1e241f53cb",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-running-start.png",
+      "sha256": "dc567a579b9963a691415614d58e838bab6ea28c0447f200200fa99a1a2855db",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o3-reward-approach.png",
+      "sha256": "39c9b2b818e49aa8cfd6563ac8d487081c06c9d9d2bd0f0988d44528ff149eec",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o3-jump-input.png",
+      "sha256": "855aa8d06259828458397965df6360b74b56b4546b877ff7d322be821dd88d19",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o3-barrier-cleared.png",
+      "sha256": "913568bdaa47fd05f2307d2555e399188bdc876e8f56dce8b1ee4c86eabd1a70",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o3-golden-bonus-fish-caught.png",
+      "sha256": "e0ebc59835b66b357e59cfc1f7ca47c0d44c7fca2a1a7e676bfe866c3dd32811",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o5-reward-approach.png",
+      "sha256": "8b35fdd94d13c8cfd874b90a41857342f56207528554e3dff2f6446804678f0a",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o5-jump-input.png",
+      "sha256": "a8a1fa255af6f3239449a31c1d46bc8f0853bdb92a094ec9f234de84e8cc4264",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o5-barrier-cleared.png",
+      "sha256": "b6e0a419463b15c36980f0cd559a843d94774d9a9616fdb8249fddd7e6ebcbb8",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o5-golden-bonus-fish-caught.png",
+      "sha256": "1b3a3e8e6d540bc9d0010219090dc4c569133a8a49fc0d95dab5353eb86796ba",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o10-reward-approach.png",
+      "sha256": "dab2d0cb45fb3e539ba1c6a8c1dacf91d4990202b5e471bc2ea8272ee940d7f5",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o10-jump-input.png",
+      "sha256": "db55f8312889ea53eaa187aa02859b1ba14441cadea145fb14d93ee7ae6e2b2f",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o10-barrier-cleared.png",
+      "sha256": "92b9e6738490af293bfca8bdd11c16df4b4fd0feeefe594ac7b35e8677d0fbfb",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-l5-o10-golden-bonus-fish-caught.png",
+      "sha256": "da61b8a487474d3cbfa5885d11525617743bcc13f36fb93af9dda58e4793658f",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-terminal-settlement.png",
+      "sha256": "dd213934914e2c9067edacba0bfa77bed98fc080d599714eaae68122dea44e0d",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/level-5-final-replay.png",
+      "sha256": "e6661e281b0d1799aad7e63b736d9c68ca8670f924fe2bc5b53965d54b3c67a8",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/earned-compact-route-5.png",
+      "sha256": "d30883c0e1ce56c1110762cadd65467bcc77cc6cf4107fd20e29b7070aa16b9d",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/earned-compact-route-1.png",
+      "sha256": "dc74d477a41a050883cff36cf06e364b715b4633f4e12a3a4f85b7b86948413e",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/earned-compact-level-one-replay.png",
+      "sha256": "d9eb2a598fe175e42a93b8f28363fb28197c2f30905f027ef0f14b3905fccaef",
+      "sourceReport": "attempts/attempt-20/risk-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-900.png",
+      "sha256": "f412d0e8b4e20140fe152edf8d8e207bd6870acd11ef8189d1bfd88630a3c650",
+      "sourceReport": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-1300.png",
+      "sha256": "3cfa2d52a5b45ecda16606e5a964a9ee37dd38fe59f1e9a8a1d8cf049d47495b",
+      "sourceReport": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-1500.png",
+      "sha256": "f29116a827b20fa92adfdf2b7d62f7767f37a21d98cb959f236d60ba8f38a5dc",
+      "sourceReport": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-1750.png",
+      "sha256": "98732e17f1b574654105f9986d4d643c5a784fd9f9337395d9596f401a114130",
+      "sourceReport": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-2480.png",
+      "sha256": "94ebee3d1cf86a221e5eb23460d3677feba3ce9a33f2238b5850d1dcf9d20b66",
+      "sourceReport": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-3200.png",
+      "sha256": "6585a46cfcca9f68c54bb46e6aa717c43cdda9ea1af0a36b6da4858854150333",
+      "sourceReport": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/terminal.png",
+      "sha256": "fcd73babcb00cbeabedadfa022a6b88bad68a31cf5a35517139399897e5ef564",
+      "sourceReport": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/replay.png",
+      "sha256": "9c7172753261b1bc2cb3cf3f682f5d0d840b128538cda379c1f8068350f85c38",
+      "sourceReport": "attempts/attempt-20/feel-state-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/390-menu.png",
+      "sha256": "621918e6b08d5eec383a362921dc3d86b89f525de8d826266453f1b4e3a0eb47",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/390-same-pose.png",
+      "sha256": "079154e5856041e59a657e43e7e45695f9566b2023d509e206768cfb1e511c08",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/390-first-fish.png",
+      "sha256": "25b2601d52cf5fb3d040614095999c781eee9bbb897b04f70f76ab4dd062a85a",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/390-running.png",
+      "sha256": "0f2880ae298affc0067f46f6c86cbbdcb55f278d2f7ec66561fe457d54c0e1d6",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/390-paused.png",
+      "sha256": "6beb93c2d83f9b680bf69f5a3dc192a5fd976d25e79e6fc7750281981bfcbed2",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/390-resumed.png",
+      "sha256": "f1068fcc049b1c4ea87ccc2f7d6d3ad42990b543016cc7200cf6a0846b930592",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/390-terminal.png",
+      "sha256": "9b7a953c40e1565da55c2a8613b08833bf847c4f92808a7c2da0cc9f0076b3f0",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/390-replay.png",
+      "sha256": "70eb6a0506ca6df8256d30e992a13543fe9d33a6ca76ed6ec2a83ceb255dd312",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/360-menu.png",
+      "sha256": "98de4311d3c92d9a648db505bff151f91a82cdbaa1998699762af6c718af3bb2",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/360-same-pose.png",
+      "sha256": "89ea731c11dab688accddbb4ba4e782139fad2a247497ef39adc6c29bb6c0237",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/360-first-fish.png",
+      "sha256": "0247c619c0367d96c19601bc1ddfce1c49c32461b7e490df7e175985f4ef1cf9",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/360-running.png",
+      "sha256": "c24fa2d7a6e1dd7fa45425c6c97fb704da524609df325a363a807cf9857dc840",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/360-paused.png",
+      "sha256": "d156eeba6ee224b5537f353deb0d76185c765c1e7cf4dc1e7d5bc6d1a4a3908d",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/360-resumed.png",
+      "sha256": "76d4770163a866bc6f88e5038549a1bb3f9bce0195808b06a95a1ad40e2bfcb6",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/360-terminal.png",
+      "sha256": "571f1e0aef4764f2796c2f5aa435e812d2b6b795986c01a5faef8e4726a4dc1d",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/360-replay.png",
+      "sha256": "3d070de6297d3b82d1c7517ddee6af0f8eff1378c0bec63bb4d7a6a73f2db197",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/320-menu.png",
+      "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/320-same-pose.png",
+      "sha256": "765eb8c2521283acacff522c2d40a7b2158d2c683691e9b9dd21056c1ce0119a",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/320-first-fish.png",
+      "sha256": "02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/320-running.png",
+      "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/320-paused.png",
+      "sha256": "e2c8f01076d97701263f7e83530a7f5df3f551013dfdfc912c7c8eab2e24c911",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/320-resumed.png",
+      "sha256": "802dc1f8d9c2e9f13038aad339efb0cf5c34db05ef3e874c34c386a0c32bde37",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/320-terminal.png",
+      "sha256": "c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/320-replay.png",
+      "sha256": "5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/844-menu.png",
+      "sha256": "979ea4798baff1a9a199f0768c6ac170abe5928679abeb6a669e8081367cd76a",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/844-same-pose.png",
+      "sha256": "a6affc27caba4e94c04321d205d47702916b63000293b633e6769b4d90933a97",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/844-first-fish.png",
+      "sha256": "d052ea85a882384a62e614ec689b21129d7c725928c52002672ccbafed105f5b",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/844-running.png",
+      "sha256": "40aae0362b1a9f0d27b53bdb8d3c2ee2a8312dd7010fb84d2d4fc61fddff902b",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/844-paused.png",
+      "sha256": "e87a1ce6b13c3a39affe3e3c85c6ea98525bec4c4b37c072add930fecd690e70",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/844-resumed.png",
+      "sha256": "a92a0559b9d6a4b34f84ac8ba11ae61a6c1efb9bb18745184147a86ec0ba3ac4",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/844-terminal.png",
+      "sha256": "3a53798ae6d2e0de6ae2142ee8932990fe2750c7c336af20281ea5a2ab9c84fb",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/visual/844-replay.png",
+      "sha256": "7e40f5c36bbf26027e9076d6eed7bc76cfcdb6f4aaa08d8560dccf2be2c55e68",
+      "sourceReport": "attempts/attempt-20/visual/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/lifecycle/background-paused.png",
+      "sha256": "8abe168039e208f7dce0347130f052213250ce28d94b1e86a767094f1e498d6d",
+      "sourceReport": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/lifecycle/background-resumed.png",
+      "sha256": "e5ecfd2095f55f78356e05ffe1cc793708fee05aaa7018b90973497c9640d88a",
+      "sourceReport": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/lifecycle/live-rotation.png",
+      "sha256": "c093c0b709b5658f9f34554f335aa269ccb56733157a6ef962702e48f52634b6",
+      "sourceReport": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/lifecycle/standalone-file.png",
+      "sha256": "f49ac6783059dd5fd6ecd3f8384be26fe6ce59a6cba1b8a6c8995868c0987575",
+      "sourceReport": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/lifecycle/context-restored.png",
+      "sha256": "142e0839cdf35ce279a26ea486fc2f29366e72d0d4170eca3d6ad69580a369ad",
+      "sourceReport": "attempts/attempt-20/lifecycle/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/safety/level-3-hazard.png",
+      "sha256": "540e9e6b4f03f64c8ccbf1708db5ba4a1c790166cb6f3dc6a3c33983ccf526b8",
+      "sourceReport": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/safety/van-approach.png",
+      "sha256": "d08bbbe435d054812d569ecc096271666461db2fdf28628bd81069fed12499aa",
+      "sourceReport": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/safety/van-impact.png",
+      "sha256": "462ce2c3ed0a8927f1c4dd48dfda6e3ec8e1118c6e8fac8f4e03f6a344266576",
+      "sourceReport": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/safety/car-not-jumpable.png",
+      "sha256": "4ef72827f5ff1c3f0ae55c26afd7964df52b4a489e725ad906a090f37cd9c2ef",
+      "sourceReport": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/safety/level-fish-short-hazard.png",
+      "sha256": "acfc5f2ec13038e7950e764cad0cff7b17b02e29356fa5d24a81cb35406b8aca",
+      "sourceReport": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/safety/distance-without-fish-fails.png",
+      "sha256": "c455913cad0c3f3b545a433cf088cb3c0f9bea59e20ef70d983bdb4a26ad7b9f",
+      "sourceReport": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/safety/background-return.png",
+      "sha256": "a8474b6738de7d52449009baf5b80c29048cb07daf8a2b2689a1f86200ce5008",
+      "sourceReport": "attempts/attempt-20/qa-safety-webkit/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/level-3-hazard.png",
+      "sha256": "51e2bdd0dff01e11aab765dac52cf54c9f123de2c438d48cf6578d93e88a9caf",
+      "sourceReport": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/van-approach.png",
+      "sha256": "3ab229e42d76dbf0615a0e19e78b075ca6b3d9b47fb598f3412d716031dc86c2",
+      "sourceReport": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/van-impact.png",
+      "sha256": "3e9e08d687f439d161969d28fac617952e8e62c452940d2259abebd0ea74561d",
+      "sourceReport": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/car-not-jumpable.png",
+      "sha256": "7dc3e4182a90ca8da7d80e3f784e2881ed0253aa04cfe60a08eb0ac31a66bf7f",
+      "sourceReport": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/level-fish-short-hazard.png",
+      "sha256": "d72189095ce13a2be3f30328c454085adff43c1f4f76bfa9bd06fdda1ee7fbde",
+      "sourceReport": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/distance-without-fish-fails.png",
+      "sha256": "648e19e0849578e9b7c00133e0fc2ebca238802c839fea37366a20da23e3c385",
+      "sourceReport": "attempts/attempt-20/qa-safety-chromium/report.json"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-chromium/safety/background-return.png",
+      "sha256": "68e7e974241271f8a7438be666beb725955f49efaff2d476f304626cc56037a9",
+      "sourceReport": "attempts/attempt-20/qa-safety-chromium/report.json"
+    }
+  ],
+  "copyFiles": [
+    {
+      "kind": "campaign:webkit",
+      "path": "attempts/attempt-20/qa-campaign-webkit/report.json",
+      "sha256": "dbcd783ca35e876a3b9ccc18d643e001869ea359c6df1c2b06acb7f73064b1f7"
+    },
+    {
+      "kind": "collision:webkit",
+      "path": "attempts/attempt-20/qa-collisions-webkit/report.json",
+      "sha256": "1d1407239bc0dc4a59b1a5140305ad75347003839c1f0d2b523062d19e30f033"
+    },
+    {
+      "kind": "experience:webkit",
+      "path": "attempts/attempt-20/experience-webkit/report.json",
+      "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405"
+    },
+    {
+      "kind": "head:webkit",
+      "path": "attempts/attempt-20/head-webkit/report.json",
+      "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4"
+    },
+    {
+      "kind": "risk:webkit",
+      "path": "attempts/attempt-20/risk-webkit/report.json",
+      "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854"
+    },
+    {
+      "kind": "feel-state:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/report.json",
+      "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481"
+    },
+    {
+      "kind": "campaign:chromium",
+      "path": "attempts/attempt-20/qa-campaign-chromium/report.json",
+      "sha256": "0c6a4ab643f1fd7cefa2c04c872b5cc8a927deb57ee31970765f894b18dda481"
+    },
+    {
+      "kind": "collision:chromium",
+      "path": "attempts/attempt-20/qa-collisions-chromium/report.json",
+      "sha256": "f40802319d19bdfcf1e68682bc6085832a30d94916c3446aad24bf2929928c17"
+    },
+    {
+      "kind": "experience:chromium",
+      "path": "attempts/attempt-20/experience-chromium/report.json",
+      "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c"
+    },
+    {
+      "kind": "head:chromium",
+      "path": "attempts/attempt-20/head-chromium/report.json",
+      "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+    },
+    {
+      "kind": "risk:chromium",
+      "path": "attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+    },
+    {
+      "kind": "feel-state:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/report.json",
+      "sha256": "b0f84adf452f57a64c050bbdd78e29a6c70a848f42985941d1b328dc43bcdbcd"
+    },
+    {
+      "kind": "visual:webkit",
+      "path": "attempts/attempt-20/visual/report.json",
+      "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+    },
+    {
+      "kind": "lifecycle:webkit+chromium",
+      "path": "attempts/attempt-20/lifecycle/report.json",
+      "sha256": "d75f0cfe647026fa50a74188bd89b362d60637351bd57536fe406cec2652d711"
+    },
+    {
+      "kind": "safety:webkit",
+      "path": "attempts/attempt-20/qa-safety-webkit/report.json",
+      "sha256": "916fc9205b8a8a5b3b47c1be9759d8b564339374b0a6563b6926c56ee51e7b99"
+    },
+    {
+      "kind": "safety:chromium",
+      "path": "attempts/attempt-20/qa-safety-chromium/report.json",
+      "sha256": "0aaa83c14c9828859f323938a685477917c0e49070ad97d587eda66907508c23"
+    },
+    {
+      "kind": "campaign-natural-flow",
+      "path": "artifacts/natural/campaign.json",
+      "sha256": "c0d3bd21da040a6ec904fab056c2314bb8a320fa593140b6e7c2ff8aa86a673e"
+    },
+    {
+      "kind": "collision-natural-flow",
+      "path": "artifacts/natural/collisions.json",
+      "sha256": "a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065"
+    },
+    {
+      "kind": "v3-experience-natural-flow-webkit",
+      "path": "artifacts/natural/v3-experience-webkit.json",
+      "sha256": "19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1"
+    },
+    {
+      "kind": "v3-experience-natural-flow-chromium",
+      "path": "artifacts/natural/v3-experience-chromium.json",
+      "sha256": "f84436810b375bd15ad187f92cc265b50f5fa02f72e19bf89541a9c9b5a17722"
+    },
+    {
+      "kind": "v3-risk-natural-flow-webkit",
+      "path": "artifacts/natural/v3-risk-webkit.json",
+      "sha256": "798e3a487ff5a9e8b95d1d7a71b1127f1645472deccb013f31b434f208c29805"
+    },
+    {
+      "kind": "v3-risk-natural-flow-chromium",
+      "path": "artifacts/natural/v3-risk-chromium.json",
+      "sha256": "5ccdc585968273be687d6a9c3630ef0b2f4f4fc356a35aba6468cd4cbe46bca6"
+    },
+    {
+      "kind": "v3-feel-state-natural-flow-webkit",
+      "path": "artifacts/natural/v3-feel-state-webkit.json",
+      "sha256": "010432da03053db55f7f9e6779ac1207199ac0fc540f943727a10451d4adb1fe"
+    },
+    {
+      "kind": "v3-feel-state-natural-flow-chromium",
+      "path": "artifacts/natural/v3-feel-state-chromium.json",
+      "sha256": "3b221e6c0aa77737228e3a7c62e0b74d1b0f4b2922bf95813ad3e17199e4f2ba"
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-390",
+      "path": "artifacts/natural/v3-head-webkit-390.json",
+      "sha256": "178c71ed72f7024cfa4d4f9fdbbc4a8f8f82dbe8e3939b87edd421d8fb185bf9"
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-360",
+      "path": "artifacts/natural/v3-head-webkit-360.json",
+      "sha256": "8d177478be131cfda668242fb881d30b15e6362b184fd6f80214cad6f370f373"
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-320",
+      "path": "artifacts/natural/v3-head-webkit-320.json",
+      "sha256": "cbf6d8d0083a06546b18531a6498c3f8496ab51d08ab3551107b2c2726eb50e5"
+    },
+    {
+      "kind": "v3-head-natural-flow-webkit-844",
+      "path": "artifacts/natural/v3-head-webkit-844.json",
+      "sha256": "6790dde70275a268e6f104865d1f41a9af36d3063ee84bd1821fb326bc8cfa8c"
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-390",
+      "path": "artifacts/natural/v3-head-chromium-390.json",
+      "sha256": "b3ab621848ab8f7182be3573b4db7b3d48c362e4755ae98ec092bd29f72f0d99"
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-360",
+      "path": "artifacts/natural/v3-head-chromium-360.json",
+      "sha256": "d69dd6e16eb1ece13c522c6388a383e6d1a1496651b91e7cfa030df125e18e1b"
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-320",
+      "path": "artifacts/natural/v3-head-chromium-320.json",
+      "sha256": "791661d14982b4e1d1c387a8d499f557e91bf8e295074526897d866f38269d93"
+    },
+    {
+      "kind": "v3-head-natural-flow-chromium-844",
+      "path": "artifacts/natural/v3-head-chromium-844.json",
+      "sha256": "c2463cc6c8c06eeb1279011f716ebaadf19a175ae91a0e61447c625a52b75d6c"
+    },
+    {
+      "kind": "experience-contract",
+      "path": "product-experience-contract.json",
+      "sha256": "25eb3f9bfc25156f0c21c07e03016301c7b37ecaf5812d41d623bd9901b76e02"
+    },
+    {
+      "kind": "perceptual-report",
+      "path": "perceptual-qa-report.json",
+      "sha256": "64085982bf71b52eaa2e62d0bdbb7d3c1c542a0b04fc66b8170408b505b13f06"
+    },
+    {
+      "kind": "perceptual-gate-v3",
+      "path": "artifacts/perceptual-qa-gate-v3.json",
+      "sha256": "c656a06f5abe71fc31525b1dd6cb0070908cf32555e359693cab1d08eb6ae268"
+    },
+    {
+      "kind": "runtime-product-gate-v3",
+      "path": "artifacts/runtime-product-gates-v3.json",
+      "sha256": "3b28f9d40c427240384551e378ccc7fcd2b96b3e7cbb4e6562223b82f75a2907"
+    },
+    {
+      "kind": "runtime-wiring-v3",
+      "path": "artifacts/runtime-wiring-verification-v3.json",
+      "sha256": "f2f8322d90c56ddd99aa6a91bbe3fa62e3e4115c656b37c5ef45dca437fdaeca"
+    },
+    {
+      "kind": "feel-state-driver:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/driver-source.mjs",
+      "sha256": "843d00a8db67135f62be8f0ea81d7a62d0ca05090b02ac25759bcc3a7a1c00e4"
+    },
+    {
+      "kind": "feel-state-screenshot:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/state-900.png",
+      "sha256": "101647d787bb64b71d16c7b112c473537eb452481d42e0d1d5ca9026e45d5b33"
+    },
+    {
+      "kind": "feel-state-screenshot:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/state-1300.png",
+      "sha256": "c614c4512f3107a3d34de6b971e43b8f3f8a87d3bc495fc3c8fccd3126f67e0b"
+    },
+    {
+      "kind": "feel-state-screenshot:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/state-1500.png",
+      "sha256": "e96c2e4e885f27e55dc75c12ccc8a14c61d615588485db383f8b10e89fef6fdb"
+    },
+    {
+      "kind": "feel-state-screenshot:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/state-1750.png",
+      "sha256": "27b4b73f10b873a90985298290f9b0833c1f72b744e95a5190fd24708335523a"
+    },
+    {
+      "kind": "feel-state-screenshot:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/state-2480.png",
+      "sha256": "efcb64eabee3ea530392700aa9a2c6144de9f3cd4d3c082646fde9be92da4509"
+    },
+    {
+      "kind": "feel-state-screenshot:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/state-3200.png",
+      "sha256": "1acdc434f521798040edc9fb0337f8290218c9efa805cc3e8cb114cd11cdc2dd"
+    },
+    {
+      "kind": "feel-state-screenshot:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/terminal.png",
+      "sha256": "aa2a63126857aadef523c304cc0b5ae4e0965c3d09f3a30db78cd2b1c3d507b9"
+    },
+    {
+      "kind": "feel-state-screenshot:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/replay.png",
+      "sha256": "ee7bb6b18f507479b99fdc3ff06eea16338628c56e946d849dff4a382e3842b3"
+    },
+    {
+      "kind": "feel-state-video:webkit",
+      "path": "attempts/attempt-20/feel-state-webkit/page@49aeba8634886d26f73519c393dda083.webm",
+      "sha256": "d435e67847081463fc96a28b12a7c3b264bf3aa00cf257c682ebe96d2f4032ba"
+    },
+    {
+      "kind": "feel-state-driver:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/driver-source.mjs",
+      "sha256": "843d00a8db67135f62be8f0ea81d7a62d0ca05090b02ac25759bcc3a7a1c00e4"
+    },
+    {
+      "kind": "feel-state-screenshot:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/state-900.png",
+      "sha256": "f412d0e8b4e20140fe152edf8d8e207bd6870acd11ef8189d1bfd88630a3c650"
+    },
+    {
+      "kind": "feel-state-screenshot:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/state-1300.png",
+      "sha256": "3cfa2d52a5b45ecda16606e5a964a9ee37dd38fe59f1e9a8a1d8cf049d47495b"
+    },
+    {
+      "kind": "feel-state-screenshot:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/state-1500.png",
+      "sha256": "f29116a827b20fa92adfdf2b7d62f7767f37a21d98cb959f236d60ba8f38a5dc"
+    },
+    {
+      "kind": "feel-state-screenshot:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/state-1750.png",
+      "sha256": "98732e17f1b574654105f9986d4d643c5a784fd9f9337395d9596f401a114130"
+    },
+    {
+      "kind": "feel-state-screenshot:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/state-2480.png",
+      "sha256": "94ebee3d1cf86a221e5eb23460d3677feba3ce9a33f2238b5850d1dcf9d20b66"
+    },
+    {
+      "kind": "feel-state-screenshot:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/state-3200.png",
+      "sha256": "6585a46cfcca9f68c54bb46e6aa717c43cdda9ea1af0a36b6da4858854150333"
+    },
+    {
+      "kind": "feel-state-screenshot:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/terminal.png",
+      "sha256": "fcd73babcb00cbeabedadfa022a6b88bad68a31cf5a35517139399897e5ef564"
+    },
+    {
+      "kind": "feel-state-screenshot:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/replay.png",
+      "sha256": "9c7172753261b1bc2cb3cf3f682f5d0d840b128538cda379c1f8068350f85c38"
+    },
+    {
+      "kind": "feel-state-video:chromium",
+      "path": "attempts/attempt-20/feel-state-chromium/page@33e5ba73f68842a9d512e40adbf8d983.webm",
+      "sha256": "71460dd2307a70ad86d650e67cf07fa398b80f99a32c7e143938c2ae9d72d97a"
+    }
+  ]
+}
