@@ -142,10 +142,19 @@ export function createCoastAdventure(api) {
   if(Math.abs(dx)>9&&Math.abs(dx)>Math.abs(dy)*1.12)dragTarget(t,from);
   else if(dy< -48)input(run,'jump');
  });
- renderer.domElement.addEventListener('touchcancel',()=>{
-  if(swipe&&run?.phase==='running')steerTo(run,swipe.target,'cancelled-drag');
-  swipe=null;
- });
+ // Touch cancellation can target a different element from the canvas. Handle
+ // trusted touchcancel/pointercancel in capture phase and restore prior intent.
+ const cancelDrag=e=>{
+  if(!swipe)return;
+  if(e?.changedTouches?.length &&
+    ![...e.changedTouches].some(t=>t.identifier===swipe.id))return;
+  const origin=swipe;swipe=null;
+  if(run?.phase==='running')steerTo(run,origin.target,'cancelled-drag');
+ };
+ document.addEventListener('touchcancel',cancelDrag,true);
+ document.addEventListener('pointercancel',e=>{
+  if(e.pointerType==='touch')cancelDrag();
+ },true);
  // Key holds behave like the original bicycle; shortcuts stay owned here.
  window.addEventListener('keydown',e=>{
   const action={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',Escape:'pause',KeyP:'pause'}[e.code];

@@ -83,9 +83,19 @@ try{
   fractional.after.laneTarget>fractional.before.laneTarget+.3&&
   fractional.after.laneTarget<fractional.before.laneTarget+.8&&
   Math.abs(fractional.after.lane-fractional.after.laneTarget)<.12,fractional);
+ // Log native events passively; never dispatch fake DOM events or set state.
+ await page.evaluate(()=>{window.__qaCancellationEvents=[];
+  for(const type of ['touchcancel','pointercancel','touchend','pointerup'])
+   document.addEventListener(type,e=>window.__qaCancellationEvents.push({
+    type:e.type,isTrusted:e.isTrusted,target:e.target?.nodeName,
+    changed:e.changedTouches?.length??null
+   }),true);
+ });
  const c=await gesture('cancel',[140,420],[250,420],true);
+ const cancellationEvents=await page.evaluate(()=>window.__qaCancellationEvents);
  check('cancelled-touch-does-not-turn',c.after.laneIndex===c.before.laneIndex&&
-  Math.abs(c.after.laneTarget-c.before.laneTarget)<.01,c);
+  Math.abs(c.after.laneTarget-c.before.laneTarget)<.01,
+  {gesture:c,cancellationEvents});
  // Independent legitimate replay. Extra precise steering gestures now consume
  // enough in-game time to reach the first solid barrier: a late arbitrary
  // up-swipe there is a REAL crash, not a touch-handler failure. Start again
