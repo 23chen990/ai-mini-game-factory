@@ -1,3 +1,6 @@
+import {LANES} from './safety.mjs';
+// Fractional fish positions share one collision and visual coordinate.
+export function fishRoadZ(fish){return Number.isFinite(fish?.z)?fish.z:LANES[fish.lane];}
 // Pure, low-cost replay goals for Pelican Coast. No backend or hidden rewards.
 // Each reward fish is visible, collectible by normal player movement, and
 // placed after (not inside) a jumpable barrier.

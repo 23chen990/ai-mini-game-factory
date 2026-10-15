@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {LEVELS,LANES,BOUNDS,validateLevel,makeLevel} from './levels.mjs';
-import {newRun,advance,input,settle,newSave,loadSave} from './adventure.mjs';
-import {starRequirements,allStars} from './engagement.mjs';
+import {newRun,advance,input,steerTo,settle,newSave,loadSave} from './adventure.mjs';
+import {starRequirements,fishRoadZ,allStars} from './engagement.mjs';
 const tick=(r,seconds)=>{for(let t=0;t<seconds-1e-7;t+=1/120)advance(r,Math.min(1/120,seconds-t));};
 test('all five hand-authored fish placement maps are safe',()=>{
   for(const l of LEVELS){const issues=validateLevel(makeLevel(l.id));assert.deepEqual(issues,[],`level ${l.id}: ${issues.join(';')}`);
@@ -24,6 +24,25 @@ test('safe detour is legitimate without winning optional jump prize',()=>{
  r.obstacles=[{id:'b1',kind:'barrier',x:60,lane:1,speed:0,z:0,hit:false,passed:false,triggerAt:null}];
  r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,caught:false}];
  input(r,'left');tick(r,10);assert.notEqual(r.phase,'finished');assert.equal(r.jumpedBarriers,0);assert.equal(r.count,0);
+});
+test('opening fish teaches fractional steering without faking collection or punishing the first pickup',()=>{
+ const [first,second,third]=LEVELS[0].fish.filter(f=>!f.bonus).slice(0,3);
+ assert.equal(fishRoadZ(first),0,'opening pickup remains on the neutral route');
+ assert.equal(fishRoadZ(second),.98);
+ assert.equal(second.lane,2,'radar displays the nearest right-side zone');
+ assert.equal(fishRoadZ(third),.35);
+ const idle=newRun(1);tick(idle,4.85);
+ assert.equal(idle.fishes.find(f=>f.id===first.id).caught,true);
+ assert.equal(idle.fishes.find(f=>f.id===second.id).caught,false,'no passive reward for the side fish');
+ const controlled=newRun(1);tick(controlled,2.25);
+ assert.equal(steerTo(controlled,.98,'finger-drag'),true);
+ tick(controlled,2.4);
+ assert.equal(controlled.fishes.find(f=>f.id===second.id).caught,true);
+ assert.ok(controlled.lane>.6&&controlled.lane<1.3,'real rider remains between lane centres');
+ steerTo(controlled,.35,'finger-drag');tick(controlled,1.9);
+ assert.equal(controlled.fishes.find(f=>f.id===third.id).caught,true);
+ assert.equal(controlled.count,3);
+ assert.equal(controlled.hits,0);
 });
 test('first minute offers fish, golden decision, nonlethal street crossing and optional jump',()=>{
  const l=LEVELS[0];assert.ok(l.fish[0].x/l.speed<2.5);

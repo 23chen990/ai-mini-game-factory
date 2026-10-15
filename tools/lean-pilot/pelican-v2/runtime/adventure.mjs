@@ -1,6 +1,6 @@
 import {makeLevel,LANES,BOUNDS} from './levels.mjs';
 import {springLane,riderFeel,cameraTarget} from './feel.mjs';
-import {fishPoints,normalizeBest,rateStars,updateBest} from './engagement.mjs';
+import {fishPoints,fishRoadZ,normalizeBest,rateStars,updateBest} from './engagement.mjs';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 // Casual touch assist: early press arms only the next same-lane low barrier.
 // The actual jump is still integrated by the normal collision/physics loop.
@@ -119,7 +119,7 @@ function step(r,dt){
  for(const f of r.fishes){
   if(f.caught||r.stun>0)continue;
   if(!f.missed&&f.x-r.distance< -2.5){f.missed=true;r.streak=0;}
-  if(sweptHit({x:f.x-oldD-.55,z:LANES[f.lane]-oldZ},{x:f.x-r.distance-.55,z:LANES[f.lane]-r.lane},.55,.63)&&r.y<.85){
+  if(sweptHit({x:f.x-oldD-.55,z:fishRoadZ(f)-oldZ},{x:f.x-r.distance-.55,z:fishRoadZ(f)-r.lane},.55,.63)&&r.y<.85){
    f.caught=true;r.count++;if(f.golden)r.gold++;
    r.streak++;r.bestStreak=Math.max(r.streak,r.bestStreak);
    const comboPoints=r.streak>=3&&r.streak%3===0?2:0;

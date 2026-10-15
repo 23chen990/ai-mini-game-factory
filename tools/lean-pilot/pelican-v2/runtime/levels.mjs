@@ -31,6 +31,14 @@ export const LEVELS=definitions.map(d=>{
   if(crossesBlocked(lastLane,lane,bad))lane=[lastLane,1,2,0].find(l=>!crossesBlocked(lastLane,l,bad))??[1,2,0].find(l=>!bad.has(l))??2;
   lastLane=lane;fish.push({id:`l${d.id}-f${i}`,x,lane,golden:i>1&&i%7===3});
  }
+ // A rider who never touches the steering should not take every tutorial fish.
+ // First fish remains central and easy; these next two fish are physically
+ // between the painted lane centres. 'lane' is a HUD zone, not a magnet.
+ if(d.id===1){
+  const turnRight=fish.find(f=>f.x===31),comeBack=fish.find(f=>f.x===47);
+  if(turnRight)Object.assign(turnRight,{lane:2,z:.98});
+  if(comeBack)Object.assign(comeBack,{lane:1,z:.35});
+ }
  // Optional visible golden fish behind barriers; never required for one-star completion.
  fish.push(...makeBarrierPrizes(d.id,obstacles,d.distance));
  fish.sort((a,b)=>a.x-b.x);
