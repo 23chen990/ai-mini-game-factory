@@ -62,8 +62,8 @@ export function cameraTarget(lane, lateralVelocity, jumpHeight, aspect, speed = 
   const velocityBias = clamp(lateralVelocity * 0.032, -0.17, 0.17);
   const height = Math.min(0.16, Math.max(0, jumpHeight) * 0.16);
   return {
-    position: [landscape ? -6.5 : -6.75, (landscape ? 3.55 : 3.62) + height, 0.2 + lane * 0.4 - velocityBias],
-    look: [landscape ? 10 : 10.2, 0.92 + height * .42, lane * 0.48 + velocityBias],
+    position: [landscape ? -6.5 : -6.75, (landscape ? 3.55 : 3.62) + height, 0.2 + lane * 0.65 - velocityBias],
+    look: [landscape ? 10 : 10.2, 0.92 + height * .42, lane * 0.67 + velocityBias],
     fov: clamp((landscape ? 51 : 52) + (speed - 8) * .22, 50, 54),
   };
 }

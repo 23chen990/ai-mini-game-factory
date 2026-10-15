@@ -1,7 +1,7 @@
 /* global window, document, localStorage, performance */
 import css from './coast.css';
 import { LEVELS, LANES } from './levels.mjs';
-import { newRun, input, advance, newSave, loadSave, settle, qualityStep } from './adventure.mjs';
+import { newRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE } from './adventure.mjs';
 import {upcomingHazards} from './safety.mjs';
 import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose} from './feel.mjs';
 import {selectFishCue,allStars,nextStarTip,starRequirements,masteryStatus} from './engagement.mjs';
@@ -16,16 +16,17 @@ export function createCoastAdventure(api) {
  const root=document.createElement('section');root.id='coast';root.dataset.phase='ready';
  root.innerHTML=`<header class="co-top"><div><small>PELICAN COAST</small><b id="co-title">鹈鹕海岸冒险</b></div><button id="co-pause" aria-label="暂停">Ⅱ 暂停</button></header>
  <div class="co-goals"><div class="co-goal" id="co-distance-box"><span>🏁 海岸路程</span><b id="co-distance">0 / 300 m</b><progress id="co-distance-bar" value="0" max="300"></progress></div><div class="co-goal" id="co-fish-box"><span id="co-fish-label">🐟 捕鱼目标</span><b id="co-fish">0 / 6 条</b><progress id="co-fish-bar" value="0" max="6"></progress></div><div class="co-goal" id="co-time-box"><span>◷ 剩余</span><b id="co-time">55 秒</b></div></div>
- <div id="co-radar-label" hidden>前方路况 · 从左到右对应三条车道</div><div id="co-radar" aria-label="前方三车道路况"><div class="co-lane" data-lane="0"></div><div class="co-lane" data-lane="1"></div><div class="co-lane" data-lane="2"></div></div>
+ <div id="co-radar-label" hidden>前方路况 · 左、中、右路面区域；骑车可停在任意位置</div><div id="co-radar" aria-label="前方三车道路况"><div class="co-lane" data-lane="0"></div><div class="co-lane" data-lane="1"></div><div class="co-lane" data-lane="2"></div></div>
  <div id="co-feedback" role="status"><strong></strong><small></small></div><div id="co-crash"></div>
- <div id="co-modal"><div class="co-card"><span class="co-eyebrow">A LITTLE COASTAL ESCAPE</span><h1 id="co-heading">鹈鹕<br>海岸冒险</h1><p id="co-copy">骑着单车追鱼，沿着海岸去下一站。</p><div id="co-rules" class="co-rules"><span><b>◀ ▶</b>轻点或左右滑动</span><span><b>🐟</b>靠近自动抓鱼</span><span><b>↟</b>点跳跃或上滑</span></div><p id="co-progress" class="co-progress"></p><div id="co-route" class="co-route"></div><div class="co-actions"><button id="co-start" class="primary">▶ 出发 · 海岸出发</button><button id="co-resume" class="primary" hidden>▶ 继续骑行</button><button id="co-next" class="primary" hidden>下一关 →</button><button id="co-replay" class="secondary" hidden>↻ 重开当前关卡</button><button id="co-select" class="secondary" hidden>海岸路线 · 选择关卡</button><button id="co-ad" class="secondary" hidden>自愿观看广告 · 额外补给（未接入）</button></div><div class="co-settings"><button id="co-quality">画质 · 均衡</button><button id="co-sound">声音 · 关</button></div><div id="co-notice" role="status"></div><p id="co-storage" class="co-meta">本机保存关卡进度 · 广告未接入 · H5 开发试玩</p></div></div>
- <div class="co-lane-indicator"><i></i><i class="on"></i><i></i></div><nav id="co-controls" aria-label="骑行操作"><button data-action="left" aria-label="向左变道">◀<small>向左变道</small></button><button data-action="right" aria-label="向右变道">▶<small>向右变道</small></button><button data-action="jump" aria-label="跳跃">↟<small>跳跃</small></button></nav>`;
+ <div id="co-modal"><div class="co-card"><span class="co-eyebrow">A LITTLE COASTAL ESCAPE</span><h1 id="co-heading">鹈鹕<br>海岸冒险</h1><p id="co-copy">骑着单车追鱼，沿着海岸去下一站。</p><div id="co-rules" class="co-rules"><span><b>◀ ▶</b>轻点微调，按住或拖动自由转向</span><span><b>🐟</b>靠近自动抓鱼</span><span><b>↟</b>点跳跃或上滑</span></div><p id="co-progress" class="co-progress"></p><div id="co-route" class="co-route"></div><div class="co-actions"><button id="co-start" class="primary">▶ 出发 · 海岸出发</button><button id="co-resume" class="primary" hidden>▶ 继续骑行</button><button id="co-next" class="primary" hidden>下一关 →</button><button id="co-replay" class="secondary" hidden>↻ 重开当前关卡</button><button id="co-select" class="secondary" hidden>海岸路线 · 选择关卡</button><button id="co-ad" class="secondary" hidden>自愿观看广告 · 额外补给（未接入）</button></div><div class="co-settings"><button id="co-quality">画质 · 均衡</button><button id="co-sound">声音 · 关</button></div><div id="co-notice" role="status"></div><p id="co-storage" class="co-meta">本机保存关卡进度 · 广告未接入 · H5 开发试玩</p></div></div>
+ <div class="co-lane-indicator" aria-label="道路自由位置指示"><i></i><i class="on"></i><i></i></div><nav id="co-controls" aria-label="自由骑行操作"><button data-action="left" aria-label="向左转向，长按持续移动">◀<small>按住左转</small></button><button data-action="right" aria-label="向右转向，长按持续移动">▶<small>按住右转</small></button><button data-action="jump" aria-label="跳跃">↟<small>跳跃</small></button></nav>`;
  const mastery=document.createElement('div');mastery.id='co-mastery';mastery.setAttribute('aria-label','三星挑战进度');root.append(mastery);
  document.body.append(root);const $=id=>root.querySelector('#co-'+id);
  const SAVE='pelican-coast:campaign:v2',REWARD='h5-mobile:pelican-coast-v2-20261014:pelican-bike:v1';
  let save=newSave(),progress=newProgress(),storage=true;
  try{save=loadSave(localStorage.getItem(SAVE))??save;progress=loadProgress(localStorage.getItem(REWARD),'pelican-bike')??progress;}catch{storage=false;}
  let run=null,round=null,selected=save.unlocked,lastPhase='ready',eventCursor=0,feedbackUntil=0,settledAt=0,now=performance.now(),sound=false,hudLast='',lastRadar='',pausedBySystem=false;
+ let heldSteer=null,heldKeySteer=null;
  let quality={tier:2,pr:Math.min(window.devicePixelRatio||1,1.5)},manualQuality='balanced',lowSeconds=0;
  const persist=()=>{try{localStorage.setItem(SAVE,JSON.stringify(save));localStorage.setItem(REWARD,saveProgress(progress,'pelican-bike'));}catch{storage=false;}$('storage').textContent=storage?'本机保存关卡进度 · 广告未接入 · H5 开发试玩':'存储不可用，本次可玩，关卡进度无法保存';};
  const hazards=new Map(),fishSlots=new Map(),rainGroup=new THREE.Group();scene.add(rainGroup);
@@ -67,7 +68,7 @@ export function createCoastAdventure(api) {
   for(const b of route.querySelectorAll('[data-level]'))b.addEventListener('click',()=>{selected=Number(b.dataset.level);routes();});
   route.querySelector('.selected')?.scrollIntoView({block:'nearest'});
  }
- function phase(p){root.dataset.phase=p;$('modal').hidden=p==='running';$('resume').hidden=p!=='paused';$('start').hidden=p!=='ready';$('route').hidden=p!=='ready';$('progress').hidden=p!=='ready';$('rules').hidden=p!=='ready';$('replay').hidden=!['finished','paused'].includes(p);$('select').hidden=!['finished','paused'].includes(p);$('next').hidden=p!=='finished'||run?.reason!=='complete'||run.level.id>=5;$('ad').hidden=p!=='finished';$('pause').disabled=!run||!['running','paused'].includes(p);$('pause').textContent=p==='paused'?'▶ 继续':'Ⅱ 暂停';if(p!=='running'){$('radar').classList.remove('active');$('radar-label').hidden=true;}$('notice').textContent='';}
+ function phase(p){if(p!=='running'){heldSteer=null;heldKeySteer=null;}root.dataset.phase=p;$('modal').hidden=p==='running';$('resume').hidden=p!=='paused';$('start').hidden=p!=='ready';$('route').hidden=p!=='ready';$('progress').hidden=p!=='ready';$('rules').hidden=p!=='ready';$('replay').hidden=!['finished','paused'].includes(p);$('select').hidden=!['finished','paused'].includes(p);$('next').hidden=p!=='finished'||run?.reason!=='complete'||run.level.id>=5;$('ad').hidden=p!=='finished';$('pause').disabled=!run||!['running','paused'].includes(p);$('pause').textContent=p==='paused'?'▶ 继续':'Ⅱ 暂停';if(p!=='running'){$('radar').classList.remove('active');$('radar-label').hidden=true;}$('notice').textContent='';}
  function begin(id=selected){
   selected=id;run=newRun(id);round=startRound(progress,run.level.seconds*1000);eventCursor=0;lastPhase='running';hudLast='';lastRadar='';settledAt=0;cameraReady=false;pausedBySystem=false;
   for(const g of hazards.values())g.visible=false;for(const f of fishes){f.mesh.visible=false;f.active=false;}fishSlots.clear();
@@ -75,7 +76,7 @@ export function createCoastAdventure(api) {
   Object.assign(settings,{autopilot:false,cruise:run.level.speed,hour:run.level.hour,timeFlow:false,cloud:run.level.weather==='rain'?.78:.35,fog:run.level.weather==='rain'?1.08:.8,music:sound});
   document.body.classList.add('started');root.classList.remove('crashing');rider.rotation.set(0,0,0);pelican.root.rotation.z=0;audio.mute(!sound);rainGroup.visible=run.level.weather==='rain'&&quality.tier>0;finishRoot.visible=true;$('crash').classList.remove('active');$('title').textContent=id+' · '+run.level.name;
   phase('running');persist();
-   const intro=run.level.weather==='rain'?'🌧 雨天转向稍慢，提前看路况':run.level.weather==='dusk'?'🌙 暮色金鱼更亮，提前留意危险车道':'轻点左右追鱼，跳过路障可拿奖励金鱼';
+   const intro=run.level.weather==='rain'?'🌧 雨天转向稍慢，提前看路况':run.level.weather==='dusk'?'🌙 暮色金鱼更亮，提前留意危险车道':'按住左右可自由骑，连续捕鱼还有连击分！';
    notice(id===1?'🐟 第一条鱼在前方':'🐟 本关挑战开始',intro,'tutorial');
  }
  function pause(system=false){if(run?.phase!=='running')return;input(run,'pause');S.paused=true;pausedBySystem=system;audio.mute(true);$('heading').textContent=system?'回来啦，继续出发':'沿途歇一歇';$('copy').textContent='已暂停，路程与倒计时都停住了。';phase('paused');persist();}
@@ -97,16 +98,66 @@ export function createCoastAdventure(api) {
   $('ad').disabled=false;$('ad').textContent='自愿观看广告 · 额外补给（未接入）';
  }
  $('start').addEventListener('click',()=>begin());$('replay').addEventListener('click',()=>begin(run.level.id));$('next').addEventListener('click',()=>begin(run.level.id+1));$('select').addEventListener('click',choose);$('pause').addEventListener('click',()=>run?.phase==='paused'?resume():pause());$('resume').addEventListener('click',resume);
- for(const b of root.querySelectorAll('[data-action]')){b.addEventListener('pointerdown',e=>{e.preventDefault();if(!run)return;b.setPointerCapture(e.pointerId);input(run,b.dataset.action);b.classList.add('pressed');});const release=()=>b.classList.remove('pressed');for(const e of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(e,release);}
-  // Optional one-finger gestures on the 3D scene; UI buttons remain fully usable.
-  let swipe=null;renderer.domElement.style.touchAction='none';
-  renderer.domElement.addEventListener('touchstart',e=>{const t=e.touches[0];if(e.touches.length===1&&run?.phase==='running')swipe={id:t.identifier,x:t.clientX,y:t.clientY};else swipe=null;},{passive:true});
-  renderer.domElement.addEventListener('touchend',e=>{const t=[...e.changedTouches].find(t=>t.identifier===swipe?.id);if(!swipe||!t)return;const dx=t.clientX-swipe.x,dy=t.clientY-swipe.y;swipe=null;if(run?.phase!=='running')return;
-   if(Math.abs(dx)>36&&Math.abs(dx)>Math.abs(dy)*1.15)input(run,dx<0?'left':'right');
-   else if(dy< -48)input(run,'jump');
-  });renderer.domElement.addEventListener('touchcancel',()=>{swipe=null;});
- // Own the three gameplay actions before the legacy demo's shortcuts/held controls.
- window.addEventListener('keydown',e=>{const action={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',Escape:'pause',KeyP:'pause'}[e.code];if(!action)return;e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;if(action==='pause'){if(run?.phase==='paused')resume();else pause();}else if(run)input(run,action);},true);
+ 
+ // Tap nudges a fractional road distance; continued holding steers at metres/sec.
+ for(const b of root.querySelectorAll('[data-action]')){
+  b.addEventListener('pointerdown',e=>{
+   e.preventDefault();
+   if(run?.phase!=='running')return;
+   b.setPointerCapture(e.pointerId);
+   const action=b.dataset.action;
+   input(run,action);
+   if(action==='left'||action==='right')heldSteer={id:e.pointerId,direction:action==='right'?1:-1,started:performance.now()};
+   b.classList.add('pressed');
+  });
+  const release=e=>{if(heldSteer?.id===e.pointerId)heldSteer=null;b.classList.remove('pressed');};
+  for(const type of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(type,release);
+ }
+ // Finger drags change the true lateral road coordinate while dragging.
+ // Vertical swipe jumps; cancelled gesture returns the intended target.
+ let swipe=null;renderer.domElement.style.touchAction='none';
+ renderer.domElement.addEventListener('touchstart',e=>{
+  const t=e.touches[0];
+  if(e.touches.length===1&&run?.phase==='running')
+   swipe={id:t.identifier,x:t.clientX,y:t.clientY,target:run.laneTarget};
+  else swipe=null;
+ },{passive:true});
+ const dragTarget=(t,origin)=>{
+  if(!run||run.phase!=='running'||!origin)return;
+  const dx=t.clientX-origin.x,dy=t.clientY-origin.y;
+  if(Math.abs(dx)>9&&Math.abs(dx)>Math.abs(dy)*1.12)
+   steerTo(run,origin.target+dx*.0185,'finger-drag');
+ };
+ renderer.domElement.addEventListener('touchmove',e=>{
+  if(!swipe)return;
+  const t=[...e.changedTouches].find(t=>t.identifier===swipe.id);
+  if(t)dragTarget(t,swipe);
+ },{passive:true});
+ renderer.domElement.addEventListener('touchend',e=>{
+  if(!swipe)return;
+  const t=[...e.changedTouches].find(t=>t.identifier===swipe.id);
+  if(!t)return;
+  const from=swipe;swipe=null;if(run?.phase!=='running')return;
+  const dx=t.clientX-from.x,dy=t.clientY-from.y;
+  if(Math.abs(dx)>9&&Math.abs(dx)>Math.abs(dy)*1.12)dragTarget(t,from);
+  else if(dy< -48)input(run,'jump');
+ });
+ renderer.domElement.addEventListener('touchcancel',()=>{
+  if(swipe&&run?.phase==='running')steerTo(run,swipe.target,'cancelled-drag');
+  swipe=null;
+ });
+ // Key holds behave like the original bicycle; shortcuts stay owned here.
+ window.addEventListener('keydown',e=>{
+  const action={ArrowLeft:'left',KeyA:'left',ArrowRight:'right',KeyD:'right',Space:'jump',ArrowUp:'jump',Escape:'pause',KeyP:'pause'}[e.code];
+  if(!action)return;
+  e.preventDefault();e.stopImmediatePropagation();if(e.repeat)return;
+  if(action==='pause'){if(run?.phase==='paused')resume();else pause();}
+  else if(run?.phase==='running'){
+   input(run,action);
+   if(action==='left'||action==='right')heldKeySteer={code:e.code,direction:action==='right'?1:-1,started:performance.now()};
+  }
+ },true);
+ window.addEventListener('keyup',e=>{if(heldKeySteer?.code===e.code)heldKeySteer=null;},true);
  window.addEventListener('blur',()=>pause(true));window.addEventListener('pagehide',()=>pause(true));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause(true);});
  renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();pause(true);$('copy').textContent='图形资源暂时丢失。请稍候恢复后继续，或刷新；已解锁关卡仍会保留。';});renderer.domElement.addEventListener('webglcontextrestored',()=>{$('copy').textContent='画面已恢复，点击继续骑行。';});
  $('sound').addEventListener('click',()=>{sound=!sound;if(sound&&!audio.ctx)api.ensureAudio();audio.mute(!sound||run?.phase!=='running');$('sound').textContent='声音 · '+(sound?'开':'关');});
@@ -116,11 +167,16 @@ export function createCoastAdventure(api) {
  $('ad').addEventListener('click',async()=>{if(!round)return;if(platform.status!==1){$('notice').textContent='TapTap H5 广告尚未接入；当前不播放模拟广告，也不会发放广告奖励。';return;}if(!adAllowed(round,progress,performance.now()-loadedAt)){ $('notice').textContent='暂未满足奖励条件，可以直接重开。';return;}const current=round;$('ad').disabled=true;const result=await requestRewardedVideo({tap:window.tap,config:platform});if(round!==current)return;const rewarded=rewardRound(current,progress,result.status==='completed');persist();$('notice').textContent=rewarded?'额外补给已到账':'广告未完成或加载失败，可直接继续游戏';$('ad').disabled=false;});
  const loadedAt=performance.now();S.paused=true;S.started=false;settings.autopilot=false;settings.timeFlow=false;settings.hour=14;settings.lookMouse=false;settings.showFps=false;settings.bloom=false;
  // An inspection-only surface: no set score, teleport, unlock, or finish helpers.
- window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneIndex:run.laneIndex,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
+ window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneTarget:run.laneTarget,laneIndex:run.laneIndex,streak:run.streak,bestStreak:run.bestStreak,nearMisses:run.nearMisses,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
  phase('ready');routes();persist();applyRender();root.dataset.loaded='true';
- function beforeRide(dt){now=performance.now();if(run)advance(run,dt);syncRidePose(S,run);
+ function beforeRide(dt){
+  now=performance.now();
+  if(run?.phase==='running')for(const hold of [heldSteer,heldKeySteer]){
+   if(hold&&now-hold.started>130)steerBy(run,hold.direction*2.6*Math.min(dt,.05),'held-steer');
+  }
+  if(run)advance(run,dt);syncRidePose(S,run);
   if(run){
-   while(eventCursor<run.events.length){const e=run.events[eventCursor++];if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',`${e.count} / ${run.level.goal.count} 条`, 'catch');}if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
+   while(eventCursor<run.events.length){const e=run.events[eventCursor++];if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',`${e.count} / ${run.level.goal.count} 条`, 'catch');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','catch');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
    if(run.phase==='finished'&&lastPhase!=='finished')terminal();lastPhase=run.phase;
   }
  }
@@ -146,7 +202,9 @@ export function createCoastAdventure(api) {
   camera.lookAt(followLook);camera.updateProjectionMatrix();
   if(now>feedbackUntil&&!(run?.stun>0))$('feedback').classList.remove('visible');
  }
- function updateHud(){const remaining=Math.max(0,Math.ceil(run.level.seconds-run.elapsed));const signature=[Math.floor(run.distance),remaining,run.count,run.gold,run.laneIndex,run.phase].join(':');
+ function updateHud(){const remaining=Math.max(0,Math.ceil(run.level.seconds-run.elapsed));
+   root.style.setProperty('--co-position',((run.lane+FREE_ROAD_EDGE)/(FREE_ROAD_EDGE*2)*100).toFixed(1)+'%');
+   const signature=[Math.floor(run.distance),remaining,run.count,run.gold,run.laneIndex,run.phase].join(':');
   if(signature!==hudLast){hudLast=signature;$('distance').textContent=`${Math.floor(run.distance)} / ${run.level.distance} m`;$('distance-bar').max=run.level.distance;$('distance-bar').value=run.distance;$('fish').textContent=`${run.count} / ${run.level.goal.count} 条`;$('fish-label').textContent=run.level.goal.gold?`🐟 捕鱼 · 🌟 ${run.gold}/${run.level.goal.gold}`:'🐟 捕鱼目标';$('fish-bar').max=run.level.goal.count;$('fish-bar').value=run.count;$('time').textContent=remaining+' 秒';$('fish-box').classList.toggle('done',run.count>=run.level.goal.count&&run.gold>=run.level.goal.gold);$('distance-box').classList.toggle('done',run.distance>=run.level.distance);$('time-box').classList.toggle('urgent',remaining<=12);root.querySelectorAll('.co-lane-indicator i').forEach((n,i)=>n.classList.toggle('on',i===run.laneIndex));}
   if(run.phase!=='running')return;
   const upcoming=upcomingHazards(run), next=upcoming[0];
