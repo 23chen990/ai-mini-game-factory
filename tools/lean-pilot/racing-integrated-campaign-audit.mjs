@@ -1,4 +1,4 @@
-/* global process, console, URL, window, document, localStorage */
+/* global process, console, URL, window, document, localStorage, getComputedStyle */
 import { chromium } from '@playwright/test';
 import { createServer } from 'node:http';
 import { once } from 'node:events';
