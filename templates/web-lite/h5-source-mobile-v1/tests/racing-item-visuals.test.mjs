@@ -2,6 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { URL } from 'node:url';
 
 const source = await readFile(new URL('../racing/item-visuals.mjs', import.meta.url), 'utf8');
 const adapted = source.replace(

@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {raceSpeedHUD} from '../racing/speed-hud.mjs';
 import {readFile} from 'node:fs/promises';
+import {URL} from 'node:url';
 test('real displayed km/h uses native measured speed only',()=>{
   assert.deepEqual(raceSpeedHUD({speedKmh:183.65,s:17,nitroTime:0}),
     {value:'184',label:'',boost:false,slow:false});
