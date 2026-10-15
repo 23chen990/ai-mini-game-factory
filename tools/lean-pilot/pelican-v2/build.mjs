@@ -4,6 +4,7 @@ import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 import {fileURLToPath, URL} from 'node:url';
 import {REPO,RUN,WORKSPACE,SOURCE,BASE,sha,json} from './prepare.mjs';
+import {brandPelicanBoot} from './boot.mjs';
 const HERE=fileURLToPath(new URL('.',import.meta.url));
 function once(text,from,to){if(text.split(from).length!==2)throw Error('Pinned source anchor changed: '+from.slice(0,70));return text.replace(from,to);}
 export function patchMain(original){
@@ -21,7 +22,7 @@ export function patchMain(original){
  const rideStart=s.indexOf('  const up = keys.up;',s.indexOf('function updateRide')),rideEnd=s.indexOf('  // 自动变速',rideStart);
  s=s.slice(0,rideStart)+`  coast.beforeRide(dt);\n  const down = false;\n  const acc = (settings.cruise - S.speed) * .7;\n  S.accel = damp(S.accel, acc, 6, dt);\n  S.pedaling = !S.airborne && S.speed > .25;\n  S.wheel += (S.speed / WHEEL_R) * dt;\n\n`+s.slice(rideEnd);
  const laneStart=s.indexOf('  // 变道 / 自动驾驶',s.indexOf('function updateRide')),laneEnd=s.indexOf('  // 特技：',laneStart);
- s=s.slice(0,laneStart)+'  // Adventure owns discrete lane input, bounded jump integration and swept hazards.\n'+s.slice(laneEnd);
+ s=s.slice(0,laneStart)+'  // Adventure owns continuous lateral input, bounded jump integration and swept hazards.\n'+s.slice(laneEnd);
  s=once(s,'rider.rotation.set(S.lean, -Math.atan2(S.laneV, Math.max(S.speed, 1.5)), 0);','rider.rotation.set(S.lean, S.yaw, 0);');
  const fishStart=s.indexOf('function updateFishes(dt) {'),fishEnd=s.indexOf('\n// 跃出海面的鱼',fishStart);
  s=s.slice(0,fishStart)+'function updateFishes() { coast.updateFishVisuals(); }\n'+s.slice(fishEnd);
@@ -44,6 +45,7 @@ export async function build({hypothesis='P0: synchronize composer and renderer, 
  const runtimeFiles=['levels.mjs','adventure.mjs','coast-ui.mjs','coast.css','feel.mjs','safety.mjs','engagement.mjs'];const inputHashes=[];
  for(const f of runtimeFiles){const bytes=await readFile(path.join(HERE,'runtime',f));await writeFile(path.join(SOURCE,'src',f),bytes);inputHashes.push({path:f,sha256:sha(bytes)});}
  const patched=patchMain(original);await writeFile(path.join(SOURCE,'src/main.js'),patched);
+ inputHashes.push({path:'boot.mjs',sha256:sha(await readFile(path.join(HERE,'boot.mjs')))});
  const pelicanPath=path.join(SOURCE,'src/pelican.js');let pelicanOriginal;
  try{pelicanOriginal=await readFile(path.join(RUN,'original-pelican.js'),'utf8');}catch(e){if(e.code!=='ENOENT')throw e;pelicanOriginal=await readFile(pelicanPath,'utf8');await writeFile(path.join(RUN,'original-pelican.js'),pelicanOriginal);}
  if(sha(pelicanOriginal)!==receipt.files.find(f=>f.path==='pelican-bike/src/pelican.js').sha256)throw Error('Pelican preimage mismatch');
@@ -62,7 +64,7 @@ export async function build({hypothesis='P0: synchronize composer and renderer, 
  state.attempt++;const attemptDir=path.join(RUN,'attempts','attempt-'+state.attempt);await mkdir(attemptDir,{recursive:true});
  const attempt={attempt:state.attempt,role:'FixerAgent',route:'formal-fixer',codeHash,hypothesis,baselineCommit:BASE,workspace:WORKSPACE,threadId:state.threadId,contextIntentionallyOmitted:['unrelated games','full conversation','legacy REA logs'],inputHashes,buildExit:null,buildHash:null,qa:'PENDING',at:new Date().toISOString()};
  try{const log=execFileSync(process.execPath,['build.mjs'],{cwd:SOURCE,encoding:'utf8'});await writeFile(path.join(attemptDir,'build.log'),log);attempt.buildExit=0;
-  let html=await readFile(path.join(SOURCE,'dist/index.html'),'utf8');const license=await readFile(path.join(SOURCE,'node_modules/three/LICENSE'),'utf8');html=html.replace('<!--OG_IMAGE-->','').replace('</head>','<meta name="coast-build" content="'+codeHash+'"></head>');
+  let html=await readFile(path.join(SOURCE,'dist/index.html'),'utf8');const license=await readFile(path.join(SOURCE,'node_modules/three/LICENSE'),'utf8');html=brandPelicanBoot(html.replace('<!--OG_IMAGE-->','')).replace('</head>','<meta name="coast-build" content="'+codeHash+'"></head>');
   // Three.js notice remains bundled in standalone downloads as well as the adjacent license file.
   html=html.replace('</body>','<!-- Three.js MIT notice\n'+license.replaceAll('--','—')+'\n--></body>');
   const game=path.join(WORKSPACE,'game');await mkdir(game,{recursive:true});await writeFile(path.join(game,'index.html'),html);await writeFile(path.join(game,'LICENSE.three.txt'),license);await json(path.join(game,'platform.json'),{wechatMiniGame:{status:'NOT_PACKAGED'},douyinMiniGame:{status:'NOT_PACKAGED'},tapTapH5:{status:'NOT_INTEGRATED',liveAds:false},production:false});

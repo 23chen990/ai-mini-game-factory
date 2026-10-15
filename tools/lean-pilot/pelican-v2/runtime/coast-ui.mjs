@@ -169,6 +169,7 @@ export function createCoastAdventure(api) {
  // An inspection-only surface: no set score, teleport, unlock, or finish helpers.
  window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneTarget:run.laneTarget,laneIndex:run.laneIndex,streak:run.streak,bestStreak:run.bestStreak,nearMisses:run.nearMisses,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
  phase('ready');routes();persist();applyRender();root.dataset.loaded='true';
+ document.getElementById('coast-boot')?.remove();
  function beforeRide(dt){
   now=performance.now();
   if(run?.phase==='running')for(const hold of [heldSteer,heldKeySteer]){

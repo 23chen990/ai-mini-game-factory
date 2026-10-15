@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { LEVELS, LANES, BOUNDS, makeLevel, validateLevel } from './runtime/levels.mjs';
+import {brandPelicanBoot} from './boot.mjs';
 import { newRun, input, advance, sweptHit, newSave, loadSave, settle, cameraPose, qualityStep } from './runtime/adventure.mjs';
 
 const tick=(r,seconds)=>{for(let t=0;t<seconds;t+=1/120)advance(r,1/120);};
@@ -80,4 +81,16 @@ test('star reward is based on fishing mastery, not just elapsed seconds',()=>{
 });
 test('quality sheds expensive effects first and never falls below 1.25 pixels on DPR3',()=>{
  let q={tier:2,pr:1.5};q=qualityStep(q,28,3);assert.equal(q.tier,1);assert.equal(q.pr,1.5);q=qualityStep(q,28,3);assert.equal(q.tier,0);assert.equal(q.pr,1.5);q=qualityStep(q,28,3);assert.equal(q.pr,1.25);for(let i=0;i<10;i++)q=qualityStep(q,20,3);assert.equal(q.pr,1.25);
+});
+
+test('static coast boot appears before the old PC intro and old intro stays hidden',()=>{
+ const source='<html><head><title>鹈鹕骑单车 · Pelican on a Bike</title>'+
+ '<meta property="og:title" content="鹈鹕骑单车 · Pelican on a Bike" /></head>'+
+ '<body class="bars"><section id="intro">old help</section></body></html>';
+ const result=brandPelicanBoot(source);
+ assert.ok(result.includes('<title>鹈鹕海岸冒险 · 自由骑行</title>'));
+ assert.ok(result.includes('#intro,.hud,#guiHost,#help{display:none!important}'));
+ assert.ok(result.indexOf('id="coast-boot"')<result.indexOf('id="intro"'));
+ assert.equal((result.match(/id="coast-boot"/g)||[]).length,1);
+ assert.throws(()=>brandPelicanBoot(result),/anchor changed/);
 });
