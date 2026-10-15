@@ -66,7 +66,13 @@ test('authored courses have a no-hit path meeting distance and fish/type goals a
   }assert.equal(r.reason,'complete',`level ${level.id} at ${dt}: ${r.reason}`);assert.equal(r.hits,0);}
 });
 test('camera tracks forward distance in a floating world, ignores jump height and follows lane gently',()=>{
- const a=cameraPose(0,390/844),b=cameraPose(1.7,390/844);assert.ok(a.position[0]<-6);assert.equal(a.fov,52);assert.ok(Math.abs(a.position[2]-b.position[2])<.7);assert.ok(a.look[0]>=10);
+ const a=cameraPose(0,390/844),b=cameraPose(1.7,390/844);
+ assert.ok(a.position[0]<-6);assert.equal(a.fov,52);assert.ok(a.look[0]>=10);
+ // A free-moving bike needs enough camera following to stay inside frame at
+ // the road edge, but never shifts the full rider displacement abruptly.
+ const follow=Math.abs(a.position[2]-b.position[2]),gaze=Math.abs(a.look[2]-b.look[2]);
+ assert.ok(follow>.9&&follow<1.35,'camera follows ~65% of real lateral position');
+ assert.ok(gaze>.95&&gaze<1.4,'road ahead remains framed during side steering');
 });
 test('star reward is based on fishing mastery, not just elapsed seconds',()=>{
  const s=newSave(),minimal=newRun(1);minimal.phase='finished';minimal.reason='complete';minimal.count=minimal.level.goal.count;minimal.score=minimal.count;minimal.elapsed=35;settle(s,minimal);assert.equal(minimal.stars,1);
