@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "6795fa3e858661409397389327f89b743cb4e1ef1fe2c96231caa923bd14d696",
+  "status": "PASS",
+  "observed": [
+    "Observation: The supplied pre-fix build d022fed7e5f52662a575ae8540f5184124da7f64208d86387985f94ed4f32add has 122/122 samples with the full-screen vignette display:block. At raceTime 0 opacity is 0; by 0.163s it reaches 0.8, remains there through 1.387s, and later returns to 0. Its radial gradient changes from cyan to amber and back.",
+    "Observation: Current build16 has 119/119 samples with the vignette display:none, including while its underlying opacity property changes from 0 to 0.8 and back. Bloom remains 0.3 throughout; hit background is transparent in every sample.",
+    "Observation: Current natural video and boost-on screenshot retain the local start-boost treatment: the 起步加速 badge and vehicle exhaust streaks are visible. The sampled road and lane markings remain normally colored and readable; no full-screen color pulse is visible in the inspected transition frames.",
+    "Inference: Hiding the vignette removes the reproduced start-transition color pulse in this 844x390 browser capture while preserving local start-boost feedback."
+  ],
+  "evidence": [
+    "Hash verified: evidence/flicker-boost-before/report.json b39b8b4c30cc3822454b8744b3b05740fb2d23cd13c2e9b1cad71b71c36b979e",
+    "Hash verified: evidence/flicker-boost-before/comparison.webm 67b6c22ab413bbdf97558d015d08c1a9ce38ba612527cc1216d3988debd308b5",
+    "Inspected extracted pre-fix transition frame: evidence/flicker-independent-build16/before-4p4s.png 178d2b61ebc5f95d65d50b06bd94b0f222e397c641d293e4a18f8bc647008499",
+    "Hash verified: evidence/flicker-boost-after/report.json 4bd82bd5cfa23ac1952bcff200d9ef311b6f3a107425d2e502a8f8417389d702",
+    "Hash verified: evidence/flicker-boost-after/comparison.webm 1e7cf6cc2bed4d3e9f5aa76b451e2c184f60769b2580208616161ba5bbe1a06f",
+    "Hash verified and inspected: evidence/flicker-boost-after/boost-on.png 293c3870c6d9ee16f8f1a99b112c2e33ab449ca96e4269d8b9c85d216c03582b",
+    "Hash verified and inspected: evidence/flicker-boost-after/boost-off.png 9e773cc6439c1683d1e0746c012bd5719be10f008e8f1b69032cb937266ee545",
+    "Inspected extracted current transition frames: evidence/flicker-independent-build16/after-4p8s.png 07d3f5dcc29f5daa102b761956ae5c8c7eb44f31776ece51887ff6732eb4e46b; evidence/flicker-independent-build16/after-5s.png 62aec731f687ea785087ddc21776237dd3a5bd19eed07b6be5b6b48a719432b5; evidence/flicker-independent-build16/after-5p8s.png 0dda7087917c84637669d825feb773a464fd94e7ecbdc21b6b0ecb4b93d0aab2"
+  ],
+  "remaining": [
+    "Unknown: physical phone/display flicker was not measured; phone-specific confirmation remains blocked.",
+    "Unknown: small and nitro flags remain 0 in the supplied samples, so this result covers the observed natural start-boost transition only, not separate small/nitro boost, collision, or damage effect branches."
+  ],
+  "checkedAt": "2026-10-15T03:30:08Z"
+}

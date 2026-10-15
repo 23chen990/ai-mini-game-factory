@@ -3,6 +3,17 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const api = await import('../racing-mobile-build.mjs').catch(() => ({}));
+test('native item question labels sit on four outer cube faces and move with the cube without altering interactions', () => {
+  assert.equal(typeof api.patchRacingItemVisuals, 'function');
+  const source = 'for (const r of [0, Math.PI / 2]) {\n          const q = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 1.5), qMat);\n          q.rotation.y = r;\n          g.add(q);\n        }\nif (dx * dx + dz * dz < 6.5) { b.respawn = 2.5; this.giveRandom(r, rank, racers.length); }';
+  const output = api.patchRacingItemVisuals(source);
+  assert.ok(output.includes('[0, Math.PI / 2, Math.PI, Math.PI * 1.5]'));
+  assert.ok(output.includes('q.position.set(Math.sin(r) * .91, 0, Math.cos(r) * .91)'));
+  assert.ok(output.includes('cube.add(q)'));
+  assert.equal(output.slice(output.indexOf('if (dx')), source.slice(source.indexOf('if (dx')));
+  assert.equal(api.patchRacingItemVisuals(output), output);
+  assert.throws(() => api.patchRacingItemVisuals('unrecognized item source'), /anchor/u);
+});
 const patchFixture = `const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);
 if (P.nitroTime > 0) {
       cam.position.x += jitter;
@@ -28,4 +39,49 @@ test('赛车源补丁保留原输入、物理和AI流程，只约束手机镜头
 test('未知源版本不能静默套用补丁', () => {
   assert.equal(typeof api.patchRacingSource, 'function', '缺少隔离赛车构建');
   assert.throws(() => api.patchRacingSource('class OtherGame {}'), /anchor|锚点/u);
+});
+
+
+test('registered build includes live career, items, runtime and fuel dependencies', async () => {
+  const source = await readFile(new URL('../racing-mobile-build.mjs', import.meta.url), 'utf8');
+  for (const name of ['career.mjs', 'items.mjs', 'runtime.mjs', 'fuel.mjs', 'themes.mjs']) assert.ok(source.includes(name), name);
+  const mobile = await readFile(new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', import.meta.url), 'utf8');
+  assert.ok(mobile.includes("from './runtime.mjs'"));
+  assert.ok(mobile.includes('career.patchNative(g)'));
+  assert.ok(mobile.includes('career.itemInput(g, canStep)'));
+});
+test('race text labels remove known third-party signboards in build output', () => {
+  const data = 'START · 11城 SPEEDQQ.COM QQ飞车 情迷爱琴海 法老金字塔 雪地大冒险';
+  const got = api.neutralizeRaceBranding(data);
+  for (const name of ['11城','SPEEDQQ.COM','QQ飞车','情迷爱琴海','法老金字塔','雪地大冒险']) assert.ok(!got.includes(name), name);
+  assert.equal(api.neutralizeRaceBranding(got), got);
+});
+
+test('instrument clean native drift without changing dynamics, and reject unknown source', () => {
+  const native = "  this.emit('driftEnd', { time: this.driftTime });";
+  const result = api.annotateDriftResult(native);
+  assert.match(result, /time: this.driftTime, clean/);
+  assert.equal(api.annotateDriftResult(result), result);
+  assert.throws(() => api.annotateDriftResult('no drift logic'), /anchor changed/);
+});
+
+
+test('recognizable character balloons are replaced with generic scene assets',()=>{
+  const native = "const b = buildMascotBalloon(bcols[i % bcols.length]);";
+  const modern = api.neutralizeRaceBranding(native);
+  assert.match(modern,/buildHotAirBalloon/);
+  assert.ok(!modern.includes('buildMascotBalloon'));
+});
+
+test('actual esbuild script injection keeps valid $& tokens and exactly one closing body',()=>{
+  // Previous build used html.replace('</body>', '<script>'+minifiedJs+...).
+  // JS identifier '$' followed by '&' gets turned into literal '</body>' there.
+  const native = '<!doctype html><html><body><main>Game</main></body></html>';
+  const minified = 'let $=1,f=2;if($&!f){window.live=true}';
+  const html = api.injectRaceBundle(native,minified);
+  assert.ok(html.includes(minified), 'the JS bytes must be preserved across HTML injection');
+  assert.equal(html.split('</body>').length,2,'exactly one body close outside the script');
+  assert.equal(html.split('<script>').length,2);
+  assert.equal(api.injectRaceBundle(native,'x').includes('<script>x</script></body>'),true);
+  assert.throws(()=>api.injectRaceBundle('<main>missing body</main>','ok'),/one HTML body/);
 });

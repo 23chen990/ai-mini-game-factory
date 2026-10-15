@@ -1,4 +1,16 @@
+export function setRaceSound(audio, enabled) {
+  if (!audio?.master?.gain) return false;
+  const gain = audio.master.gain;
+  const volume = enabled ? .8 : 0;
+  if (typeof gain.setTargetAtTime === 'function' && Number.isFinite(audio.ctx?.currentTime)) {
+    gain.setTargetAtTime(volume, audio.ctx.currentTime, .035);
+  } else gain.value = volume;
+  return true;
+}
+export const normalizeRaceQuality = value => ['low', 'mid', 'high'].includes(value) ? value : 'mid';
 export const raceReady = game => !!(game?.track && game.input && !game.loading);
+/** Never begin or charge fuel for a stage if its physical track failed to load. */
+export const stageTrackReady = (game, stage) => !!(game?.track && !game.loading && game.map?.id === stage?.map);
 export function clearNativeInput(input) {
   input.down.clear(); input.pressed.clear(); input.touchPressed.clear();
   for (const key of Object.keys(input.touch)) input.touch[key] = false;
@@ -20,7 +32,8 @@ export function settleNative(game) {
   return result;
 }
 export const raceCameraFov = (speed, nitro, small) => Math.min(78, 66 + Math.abs(speed) * .055 + (nitro ? 4 : 0) + (small ? 2 : 0));
-export const raceBloomStrength = nitro => nitro ? .4 : .3;
+// Keep scene luminance stable across the frequent automatic boost cycles.
+export const raceBloomStrength = () => .3;
 const tunedFx = new WeakSet();
 export function tuneRaceFx(game) {
   if (!game.fx || tunedFx.has(game.fx)) return;

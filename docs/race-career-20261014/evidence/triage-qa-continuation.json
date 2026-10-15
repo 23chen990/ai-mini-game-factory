@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "QA resume used a new origin and silently drove a fresh campaign. Hidden native wrong-way toast retains its text; the driver must check visibility before recovery. Repeated full event-array reads also reduce control cadence.",
+  "classification": [
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Repair only QA/provenance for the existing formal-fixer retest; keep gameplay build11 unchanged.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "old source replacements",
+      "unrelated factory failures"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Compare the two exact saved origins and report snapshots",
+      "Inspect HUD.warn retaining text after adding hidden class",
+      "Measure 464 policy frames over92seconds from03 trace"
+    ],
+    "observed": [
+      "Original origin49559 has earned01–05 stars; accidental origin51817 only01–02",
+      "Warn text remains when hidden",
+      "Whole event history copied for every observed frame"
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt11/report.json",
+        "sha256": "cb6c52c87ff613b6b13b1424f383eca8088348f31851fa001333661465e53fe1",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt11/report-before-retry-1791977848345.json",
+        "sha256": "234778cc61099528e09cdcc3b170e9eb90bf21847d2334722464a0ab4a9f9f9c",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt11/natural-earned-storage.json",
+        "sha256": "1594a3144544d9c109fa2259e4aa845b7627bf2b61fa6d94a1db58f0fe3be468",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Resume only the exact stored origin whose career value matches the report last saved value",
+    "Reject other builds, ambiguous origins or mismatched storage",
+    "Create a new evidence directory and retain previous failure traces/video",
+    "Use visible minimap/scene/toast only for touch decisions",
+    "No player/state/rank/finish writes; no synthesized stars",
+    "Continue06 from five genuinely earned wins"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T12:15:39.421Z"
+}

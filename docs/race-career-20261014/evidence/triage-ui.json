@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Natural 05/06 results clip action button bottoms; 04 right-side rival is under neutral steering fill.",
+  "classification": [
+    "visual-hierarchy",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Fuel persistence/lifecycle and career economy/core journey require structured QA→repair→natural/perceptual retest.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "PR12/14 full code replacements",
+      "unrelated factory history",
+      "competitor private code"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Read exact attempt10 natural 04 clean drift and05/06 terminal captures",
+      "Verify result action bounds without scrolling at844x390/740x360",
+      "Measure actual neutral control fill"
+    ],
+    "observed": [
+      "Independent pixel review found partial result hit areas",
+      "Matched V3 presentation tests fail action bounds and .22 fill alpha"
+    ],
+    "evidence": [
+      {
+        "path": "docs/race-career-20261014/evidence/perceptual-baseline.json",
+        "sha256": "c5664c27627fa0cf4b421d578db1bd03d7d1f31b8dbad216dbc5a6219b767440",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "All44px result actions visible without panel scrolling at844x390 and740x360",
+    "Neutral steering target retains>=84px width and permits peripheral rival visibility",
+    "Natural 04/05/06 exact branches recaptured and independently reviewed",
+    "No changes to physics/camera/rival coordinates or names for layout tests"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T10:46:14.342Z"
+}

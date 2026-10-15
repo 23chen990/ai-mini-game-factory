@@ -6,8 +6,8 @@ import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 
 export const BASE_COMMIT = 'f38d9955575db5561eba40007640c00094add885';
-const PREFIXES = ['tools/lean-pilot/', 'templates/web-lite/grid-merge-v1/', 'templates/web-lite/clinic-queue-v1/', 'templates/web-lite/h5-source-mobile-v1/', 'examples/lean-pilot/', 'docs/lean-pilot/', '.agents/skills/gameplay-loop-review/'];
-const EXACT = ['PILOT_START.md', 'package.json', 'eslint.config.js', '.github/workflows/lean-pilot.yml', 'src/cli/factory.ts',
+const PREFIXES = ['tools/lean-pilot/', 'templates/web-lite/grid-merge-v1/', 'templates/web-lite/clinic-queue-v1/', 'templates/web-lite/h5-source-mobile-v1/', 'examples/lean-pilot/', 'docs/lean-pilot/', '.agents/skills/gameplay-loop-review/', 'docs/race-two-button-20261014/', 'docs/race-career-20261014/'];
+const EXACT = ['PILOT_START.md', 'package.json', 'eslint.config.js', '.github/workflows/lean-pilot.yml', '.github/workflows/racing-v3-smoke.yml', 'src/cli/factory.ts',
   '.agents/skills/seed-to-game-blueprint/SKILL.md', '.agents/skills/game-playtest/SKILL.md'];
 
 /** A narrow PR scope check. It is not permission to weaken frozen acceptance. */

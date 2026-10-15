@@ -8,6 +8,33 @@ test('原生大厅只有AI演示赛车时即可启动，不等待尚未创建的
   assert.equal(ready({ track: {}, input: {}, loading: true }), false);
   assert.equal(ready({ input: {}, loading: false }), false);
 });
+test('切关加载失败或仍处于旧赛道时，禁止用错误赛道开新关并扣燃油',()=>{
+  const ready=need('stageTrackReady');
+  const game={ track:{ length:2500 }, map:{ id:'city' }, loading:false };
+  const stage={ id:'02', map:'egypt' };
+  assert.equal(ready(game,stage),false,'stale physical map is never good enough');
+  game.map.id='egypt';assert.equal(ready(game,stage),true);
+  game.loading=true;assert.equal(ready(game,stage),false);
+  game.loading=false;game.track=null;assert.equal(ready(game,stage),false);
+  assert.equal(ready(null,stage),false);
+});
+test('画质偏好：首次使用均衡，用户选流畅后刷新仍优先流畅',()=>{
+  const normalize=need('normalizeRaceQuality');
+  for(const value of ['low','mid','high']) assert.equal(normalize(value),value);
+  for(const value of [null,undefined,'','ultra','manual',{},0]) assert.equal(normalize(value),'mid');
+});
+test('暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复',()=>{
+  const mute=need('setRaceSound');
+  assert.equal(mute(null,false),false);
+  assert.equal(mute({master:null},false),false);
+  const output={value:0.8,setTargetAtTime(value,time,fade){this.value=value;this.args=[time,fade];}};
+  const audio={master:{gain:output},ctx:{currentTime:12}};
+  assert.equal(mute(audio,false),true);
+  assert.equal(output.value,0);assert.deepEqual(output.args,[12,.035]);
+  assert.equal(mute(audio,true),true);assert.equal(output.value,.8);
+  const fallback={master:{gain:{value:.8}},ctx:null};
+  assert.equal(mute(fallback,false),true);assert.equal(fallback.master.gain.value,0);
+});
 test('成绩读取真实玩家，不将AI冲线计为玩家完赛', () => {
   const summary = need('resultSummary'), player = { finished: false, progress: 200, stats: { small: 2, drift: 3, nitro: 1, perfect: 1 }, lapTimes: [], name: '我' }, ai = { finished: true, finishTime: 42, name: '对手', lapTimes: [42] };
   const g = { player, standings: [ai, player], track: { length: 400 }, settings: { laps: 1, map: 'city' }, raceTime: 50 };
@@ -48,7 +75,7 @@ test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；�
     assert.deepEqual(call.args.slice(13), args.slice(13));
   }
   g.mobileMode = false;g.fx.glow.emit(...args);assert.deepEqual(calls.at(-1).args, args);
-  const bloom = need('raceBloomStrength');assert.ok(bloom(true) > bloom(false));assert.ok(bloom(true) <= .4);
+  const bloom = need('raceBloomStrength');assert.equal(bloom(true), bloom(false));assert.ok(bloom(true) <= .3);
 });
 test('自适应只在持续低帧率后降一档；手选画质保留', () => {
   const Monitor = need('QualityMonitor'), q = new Monitor();

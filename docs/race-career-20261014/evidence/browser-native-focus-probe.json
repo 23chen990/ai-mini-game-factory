@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "6795fa3e858661409397389327f89b743cb4e1ef1fe2c96231caa923bd14d696",
+  "input": "Disable Playwright default forced-focus override; perform actual browser tab activation. No game or DOM lifecycle state injection.",
+  "before": {
+    "state": "race",
+    "time": 0.04639999999990686,
+    "hidden": false,
+    "focus": true
+  },
+  "after": {
+    "state": "race",
+    "time": 1.2147000000001866,
+    "hidden": false,
+    "focus": true,
+    "events": []
+  }
+}

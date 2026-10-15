@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "full framebuffer",
+      "road/scenery meshes",
+      "HUD and particles"
+    ],
+    "lifecycleStateBranches": [
+      "continuous driving with QA screenshots",
+      "continuous driving without QA screenshots",
+      "between-race reload/menu transitions",
+      "natural boost on/off"
+    ],
+    "rendererPaths": [
+      "native Three.js WebGL → headed Chromium Metal"
+    ],
+    "viewports": [
+      {
+        "label": "current headed Chromium landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "flicker-0",
+      "objectType": "full framebuffer / road / HUD",
+      "lifecycleStateBranch": "continuous driving with QA screenshots",
+      "rendererPath": "native Three.js WebGL → headed Chromium Metal",
+      "viewport": {
+        "label": "current headed Chromium landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Stable scene except causal intended effects and explicit transitions",
+      "observed": "Awaiting temporal comparison of exact current scene",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt15/report.json",
+          "sha256": "e49a3c5747bd761dba9002bd8fe36958e1228800494734fc1fb5541ee5c5b4ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "flicker-1",
+      "objectType": "full framebuffer / road / HUD",
+      "lifecycleStateBranch": "continuous driving without QA screenshots",
+      "rendererPath": "native Three.js WebGL → headed Chromium Metal",
+      "viewport": {
+        "label": "current headed Chromium landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Stable scene except causal intended effects and explicit transitions",
+      "observed": "Awaiting temporal comparison of exact current scene",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt15/report.json",
+          "sha256": "e49a3c5747bd761dba9002bd8fe36958e1228800494734fc1fb5541ee5c5b4ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "flicker-2",
+      "objectType": "full framebuffer / road / HUD",
+      "lifecycleStateBranch": "between-race reload/menu transitions",
+      "rendererPath": "native Three.js WebGL → headed Chromium Metal",
+      "viewport": {
+        "label": "current headed Chromium landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Stable scene except causal intended effects and explicit transitions",
+      "observed": "Awaiting temporal comparison of exact current scene",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt15/report.json",
+          "sha256": "e49a3c5747bd761dba9002bd8fe36958e1228800494734fc1fb5541ee5c5b4ce",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "boost-overlay",
+      "objectType": "full framebuffer",
+      "lifecycleStateBranch": "natural boost on/off",
+      "rendererPath": "native Three.js WebGL → headed Chromium Metal",
+      "viewport": {
+        "label": "current headed Chromium landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Boost feedback should preserve scene brightness",
+      "observed": "Build15 reproduced a native full-screen gradient transitioning opacity0↔0.8. Build16 mobile CSS suppresses that broad layer; the underlying boost state still changes while the layer remains display:none.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/flicker-boost-before/report.json",
+          "sha256": "b39b8b4c30cc3822454b8744b3b05740fb2d23cd13c2e9b1cad71b71c36b979e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/flicker-review-build16.json",
+          "sha256": "ce79dd956389bb0085d548b05b4cee01e47a2945ff5727da3af0958aa8e931ba",
+          "kind": "independent-exact-branch-review",
+          "provenance": "verified-build16"
+        }
+      ],
+      "statusAfterBuild16": "PASS_FOR_START_BOOST_BRANCH"
+    },
+    {
+      "id": "hitflash-edge",
+      "objectType": "HUD edge feedback",
+      "lifecycleStateBranch": "natural collision hit on mobile",
+      "rendererPath": "native Three.js WebGL → headed Chromium Metal",
+      "viewport": {
+        "label": "current headed Chromium landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Collision feedback stays at the edge and does not wash the driving scene",
+      "observed": "Build16 mobile hitflash background is transparent with a 4px inset and a 3px edge shadow; natural crash frames retain local collision feedback without broad red fill.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/flicker-review-build16.json",
+          "sha256": "ce79dd956389bb0085d548b05b4cee01e47a2945ff5727da3af0958aa8e931ba",
+          "kind": "independent-exact-branch-review",
+          "provenance": "verified-build16"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session5/13-crash.png",
+          "kind": "natural-current-build-frame",
+          "provenance": "verified-own-run"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "A repeatable broad brightness/color pulse was caused by the native boost vignette; build16 removes that mobile full-screen paint and keeps local boost feedback.",
+    "The mobile hitflash is now edge-only and transparent in the central driving area."
+  ],
+  "remainingGaps": [
+    "Small-boost, nitro-only and repeated-hit combinations need a dedicated continuous sample before the whole visual branch can be called PASS",
+    "Between-race transition and real browser background branches remain unobserved",
+    "Android/iPhone visual stability remains unobserved"
+  ],
+  "updatedAt": "2026-10-15T07:07:00.000Z",
+  "createdAt": "2026-10-15T03:07:46.228Z"
+}
