@@ -62,6 +62,7 @@ try {
   await page.screenshot({ path: path.join(out, 'pause-844x390.png') });
   await page.locator('#race-sound').tap();
   assert.equal(await page.locator('#race-sound').getAttribute('aria-pressed'), 'false');
+  await page.waitForFunction(() => window.game.audio.master.gain.value === 0, null, { timeout: 2000 });
   const audio = await page.evaluate(() => ({ enabled: window.game.audio.enabled, gain: window.game.audio.master.gain.value, preference: localStorage.getItem('h5-qq-mobile-20261013:audio-enabled:v1') }));
   assert.equal(audio.gain, 0); assert.equal(audio.preference, '0'); check('native-mixer-mute', JSON.stringify(audio));
   await resume();
