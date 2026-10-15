@@ -22,6 +22,8 @@ async function setup(t, { amount = 10, delay = 0, denied = false } = {}) {
   t.after(() => new Promise(resolve => server.close(resolve)));
   const browser = await chromium.launch({ headless: true }); t.after(() => browser.close());
   const page = await browser.newPage({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
+  page.setDefaultTimeout(10000);
+  page.setDefaultNavigationTimeout(15000);
   const errors = []; page.on('pageerror', e => errors.push(e.message)); t.after(() => assert.deepEqual(errors, []));
   await page.addInitScript(({ key, value, denied }) => {
     localStorage.setItem(key, value);
@@ -81,7 +83,7 @@ test('V3 ignores background starts and requires explicit foreground input', asyn
 test('V3 failed native start preserves fuel and retry remains usable', async t => {
   const page = await setup(t); await ready(page);
   await page.evaluate(() => { window.game.loading = true; }); // engineering ignored-start fixture
-  await page.locator('#race-start').tap(); assert.equal(await amount(page), 10);
+  await page.locator('#native-start').click(); assert.equal(await amount(page), 10);
   await page.evaluate(() => { window.game.loading = false; });
   await page.locator('#race-start').tap(); assert.equal(await amount(page), 9);
 });
@@ -123,4 +125,16 @@ test('V3 neutral steering fill preserves visibility of peripheral rivals while k
   const alpha = Number(style.color.match(/rgba\([^,]+,[^,]+,[^,]+,\s*([\d.]+)\)/)?.[1] ?? 1);
   assert.ok(alpha <= .10, style.color);
   assert.ok(style.width >= 84);
+});
+test('V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge', async t => {
+  const page = await setup(t); await ready(page);
+  const style = await page.evaluate(() => {
+    const boost = document.createElement('div'); boost.id = 'vignette'; boost.style.opacity = '1';
+    const hit = document.createElement('div'); hit.id = 'hitflash'; hit.style.opacity = '1';
+    document.body.append(boost, hit);
+    return { boost: getComputedStyle(boost).display, hit: getComputedStyle(hit).backgroundColor, edge: getComputedStyle(hit).boxShadow };
+  });
+  assert.equal(style.boost, 'none');
+  assert.equal(style.hit, 'rgba(0, 0, 0, 0)');
+  assert.match(style.edge, /inset/u);
 });

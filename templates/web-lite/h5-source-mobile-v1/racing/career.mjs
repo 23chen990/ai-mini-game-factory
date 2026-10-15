@@ -14,7 +14,7 @@ export const STAGES = Object.freeze([
   make('10', 3, '城市逆转战', 'city', 3, 1, 'item', 'item', 4, '拾取 2 个道具并进入前四', { target: 2 }),
   make('11', 3, '海岛穿插战', 'aegean', 2, 2, 'overtake', 'speed', 4, '完成 2 次有效弯道超车', { target: 2 }),
   make('12', 3, '雪地淘汰赛', 'snow', 2, 1, 'elimination', 'speed', 3, '避开 2 次末位淘汰并冲线'),
-  make('13', 4, '都市车神', 'city', 3, 2, 'boss', 'speed', 5, '跑赢指定车神对手'),
+  make('13', 4, '都市车神', 'city', 3, 2, 'boss', 'speed', 5, '跑赢指定车神并进入前五名'),
   make('14', 4, '沙丘测速', 'egypt', 2, 2, 'speed', 'speed', 4, '经过测速点时达到 185 km/h', { target: 185 }),
   make('15', 4, '雪地混战', 'snow', 3, 2, 'item', 'item', 3, '拾取 3 个道具并进入前三', { target: 3 }),
   make('16', 4, '终极车神', 'aegean', 3, 2, 'boss', 'speed', 3, '超过指定车神，夺得前三'),

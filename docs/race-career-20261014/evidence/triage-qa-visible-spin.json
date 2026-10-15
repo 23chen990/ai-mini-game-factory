@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Natural stage10 failed at450s after visible minimap arrow spin. The QA recovery held left for5385frames, pinning the car at lat11.9 against the barrier while reverse progress continued. Replace the QA fixed direction with remembered visible forward heading; no game changes yet.",
+  "classification": [
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Repair only QA/provenance for the existing formal-fixer retest; keep gameplay build11 unchanged.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "old source replacements",
+      "unrelated factory failures"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Read exact session3 stage10 controls and visible-policy frames",
+      "Observe transition at102–109s from arrow loss/spin to persistent left",
+      "Retain zero earned stars and450s natural DNF"
+    ],
+    "observed": [
+      "6711frames;5385fixed-left recovery frames beginning104.74s",
+      "Current build remains unchanged; this is not claimed impossible gameplay"
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt11-session3/report.json",
+        "sha256": "88973dd26f9ec66ab00f48592fccb9128c169ab56b9acd398547c43d73be65b4",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt11-session3/10-trace.json",
+        "sha256": "1d5a7e24f05ea855c36d38723b32e855fc3533e3c630453cc1bf7f27c11367ca",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "React to abrupt rendered-arrow rotation and visible wrong-way warning using remembered pixel route only",
+    "A lingering warning does not reverse the chosen recovery target again",
+    "Retain prior failure/video and resume exact earned01–09 storage into a new directory",
+    "No native player/track/item state used to decide steering and no state writes",
+    "Native stage10 must actually finish with2physicalpickups andrank<=4"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T12:31:40.843Z"
+}

@@ -183,6 +183,16 @@ export class RacingCareer {
     }
     return null;
   }
+  eliminationCue(game) {
+    if (!this.active || this.stage.kind !== 'elimination' || this.metrics.checkpoints >= 2 || !game?.player) return null;
+    const round = this.metrics.checkpoints, distance = game.track.length * this.stage.laps;
+    const gate = distance * [.35, .70][round], previous = round ? distance * .35 : 0;
+    const leader = Math.max(...game.racers.map(r => r.progress));
+    const remaining = Math.max(0, Math.ceil(gate - leader));
+    return { fraction: Math.max(0, Math.min(1, (leader - previous) / (gate - previous))), remaining,
+      near: remaining <= 400, atRisk: game.standings.at(-1) === game.player,
+      place: game.standings.indexOf(game.player) + 1, count: game.racers.length, round: round + 1 };
+  }
   objectiveLabel(game) {
     if (!this.active || !game) return '';
     const s = this.stage, m = this.metrics;
@@ -203,7 +213,13 @@ export class RacingCareer {
             '距离淘汰 ' + remaining + 'm';
         return '存活淘汰点 ' + m.survived + '/2';
       }
-      case 'boss':return '超越车神 ' + this.bossName + ' · 当前第 ' + (game.standings.indexOf(game.player)+1) + ' 名';
+      case 'boss': {
+        const place = game.standings.indexOf(game.player) + 1;
+        const bossPlace = game.standings.indexOf(this.boss) + 1;
+        const ahead = !!this.boss && bossPlace > 0 && place > 0 && place < bossPlace;
+        return '车神' + this.bossName + (ahead ? ' 已超越' : ' 未超越') +
+          ' · 当前第' + place + '名，须前' + s.rank + '名';
+      }
       default:return '';
     }
   }

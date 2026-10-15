@@ -3,6 +3,9 @@ html[data-race-mobile] { --race-left:max(16px,env(safe-area-inset-left)); --race
 html[data-race-mobile] body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; overscroll-behavior:none; }
 html[data-race-mobile] #touch,html[data-race-mobile] #menu,html[data-race-mobile] #pause,html[data-race-mobile] #result,html[data-race-mobile] #clinks,html[data-race-mobile] #rank,html[data-race-mobile] #speedo,html[data-race-mobile] #keys,html[data-race-mobile] #best,html[data-race-mobile] #items,html[data-race-mobile] #songtip { display:none!important; }
 html[data-race-mobile] #hud { inset:0!important; z-index:20; pointer-events:none; }
+/* Auto boosts retain exhaust/speed-line/HUD feedback without broad color pulses. */
+html[data-race-mobile] #vignette { display:none; }
+html[data-race-mobile] #hitflash { inset:4px;border-radius:14px;background:transparent;box-shadow:inset 0 0 0 3px #ffad98; }
 html[data-race-mobile] #topc { position:static; display:block; transform:none; }
 html[data-race-mobile] #bigrank { left:var(--race-left);top:var(--race-top);bottom:auto;line-height:1;display:flex;gap:3px;align-items:baseline;background:#07172db3;border:1px solid #ffffff26;border-radius:12px;padding:10px 12px;box-shadow:0 2px 9px #0002;text-shadow:none; }
 html[data-race-mobile] #bigrank .r { font:800 26px/1 system-ui;background:none;color:#ffe18a;-webkit-text-fill-color:#ffe18a; }
@@ -117,3 +120,17 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 @media (max-height:375px) {
   #race-kit #race-road-hint { bottom:calc(var(--race-bottom) + 54px);padding:4px 8px; }
 }
+#race-knockout { position:fixed;left:var(--race-left);top:calc(var(--race-top) + 98px);display:flex;align-items:center;gap:9px;width:180px;padding:7px 9px;border:1px solid #bad7e766;border-radius:10px;background:#09273dee;color:#b9e9ee;pointer-events:none; }
+#race-knockout[hidden] { display:none; }
+.race-knockout-icon { font-size:28px;line-height:1; }
+.race-knockout-detail { flex:1;min-width:0; }
+#race-field { display:flex;gap:4px;margin-bottom:6px; }
+#race-field i { flex:1;text-align:center;font:700 11px/18px system-ui;border:1px solid #9ab0bd88;border-radius:3px;color:#d7e9ed; }
+#race-field i[hidden] { display:none; }
+#race-field i.me { background:#e9faf8;color:#113d47;border-color:#fff;box-shadow:0 0 0 2px #74e4ef; }
+#race-field i.last { border-bottom:3px solid #ff7c66; }
+#race-field i.last::after { content:'×';color:#ff7c66;margin-left:1px; }
+#race-knockout-meter { height:7px;overflow:hidden;border-radius:3px;background:#bdd6e62b; }
+#race-knockout-fill { display:block;height:100%;background:currentColor; }
+#race-knockout[data-near="true"] { color:#ffda76;border-color:#ffda76; }
+#race-knockout[data-danger="true"] { color:#ff927c;border:2px solid #ff927c;background:#4e2423ee; }

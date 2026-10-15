@@ -7,6 +7,11 @@ on:
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
       - 'tools/lean-pilot/racing-fuel-lifecycle-qa.mjs'
       - 'tools/lean-pilot/racing-career-qa.mjs'
+      - 'tools/lean-pilot/racing-visible-policy.mjs'
+      - 'tools/lean-pilot/racing-mobile-experience-qa.mjs'
+      - 'tools/lean-pilot/racing-delivery-verify.mjs'
+      - 'tools/lean-pilot/racing-delivery-verify.test.mjs'
+      - 'tools/lean-pilot/tests/racing-visible-policy.test.mjs'
       - '.github/workflows/racing-v3-smoke.yml'
   workflow_dispatch:
 permissions:
@@ -34,7 +39,9 @@ jobs:
         run: |
           node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
           node --test tools/lean-pilot/tests/racing-build.test.mjs
-          pnpm exec eslint tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          node --test tools/lean-pilot/tests/racing-visible-policy.test.mjs
+          node --test tools/lean-pilot/racing-delivery-verify.test.mjs
+          pnpm exec eslint tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash

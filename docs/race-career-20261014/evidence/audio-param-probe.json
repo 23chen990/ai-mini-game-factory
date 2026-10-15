@@ -1,0 +1,25 @@
+{
+  "gameId": "qq-speed",
+  "buildHash": "6795fa3e858661409397389327f89b743cb4e1ef1fe2c96231caa923bd14d696",
+  "scope": "Headless real exported HTML normal UI, AudioParam evidence only; not physical audibility",
+  "samples": [
+    {
+      "gain": 0.6873379349708557,
+      "t": 3.3973333333333335,
+      "state": "running",
+      "stored": "0"
+    },
+    {
+      "gain": 0.008279476314783096,
+      "t": 3.552,
+      "state": "running",
+      "stored": "0"
+    },
+    {
+      "gain": 0,
+      "t": 3.856,
+      "state": "running",
+      "stored": "0"
+    }
+  ]
+}

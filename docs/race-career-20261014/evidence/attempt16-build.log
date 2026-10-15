@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "runId": "h5-qq-mobile-20261013",
+  "gameId": "qq-speed",
+  "route": "formal-fixer",
+  "attempt": 16,
+  "inputHash": "540a22e3df5260df11837ebc2a29596299ae20e5d8fe009140a6aec5603244b3",
+  "buildHash": "6795fa3e858661409397389327f89b743cb4e1ef1fe2c96231caa923bd14d696",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "originalPhysicsSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+  "driftEventVehicleSha256": "ef9c9163fb61a2c9d7f0e0019852a1551b8165241d97386e47799e65ca6998c9",
+  "originalAiSha256": "0a1212c5877ac119af68b3340591f8e9c94f033eb99922c2a2b0b32867c86cd7",
+  "originalItemInteractionsSha256": "a078b59d034af2a15f208a7ad8a3fb6c301affd6b59a21453d5cd50d02b31e93",
+  "visibleItemSourceSha256": "594a49b3c805cbcb318804b8092ad425dab997bc47bb265eb19bb3814d7deb09",
+  "buildLog": "dist/index.html 699 KB",
+  "runtimeEntrypoints": [
+    "workspace/source/qq-speed/src/main.js (Three.js racing)",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/career.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/items.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs",
+    "templates/web-lite/h5-source-mobile-v1/fuel.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.css"
+  ],
+  "compatibilityOnly": [
+    "workspace/game/main.mjs",
+    "workspace/game/engine.mjs",
+    "workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)"
+  ],
+  "trialName": "racing-two-button-6795fa3e8586.html",
+  "trialSha256": "bedcdc7505d04eaa8b3253b96c1a60d04c235597f8bcb9ee406b3c07a9f6e2a5",
+  "builtAt": "2026-10-15T03:22:35.175Z",
+  "publishable": false
+}

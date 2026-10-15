@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "native itemcube/question label"
+    ],
+    "lifecycleStateBranches": [
+      "available",
+      "respawning/consumed"
+    ],
+    "rendererPaths": [
+      "ThreeMeshStandardcube +MeshBasiclabel depth-tested"
+    ],
+    "viewports": [
+      {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "available-label-depth",
+      "objectType": "native itemcube/question label",
+      "lifecycleStateBranch": "available",
+      "rendererPath": "ThreeMeshStandardcube +MeshBasiclabel depth-tested",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Questionvisibleonouterfaces",
+      "observed": "Labelinsidecube,occludedbycube-depth",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/items.js",
+          "sha256": "a078b59d034af2a15f208a7ad8a3fb6c301affd6b59a21453d5cd50d02b31e93",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/src/materials/Material.js",
+          "sha256": "79b3255524d8c5f1d62b5dc96f2096b9a75db861c436d643ac1fbedaceea7b40",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt14-session2/report.json",
+          "sha256": "ddf048ccbe7eaa29bd54612cc5b9bc2370fd4f6a1580216ac613180b46683e6e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "consumed-label",
+      "objectType": "native itemcube/question label",
+      "lifecycleStateBranch": "respawning/consumed",
+      "rendererPath": "ThreeMeshStandardcube +MeshBasiclabel depth-tested",
+      "viewport": {
+        "label": "Chromium mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "NOT_APPLICABLE",
+      "expected": "Consumedbox/labelhidden",
+      "observed": "Parentvisibilityhidesallchildren;preservethisbranch",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/items.js",
+          "sha256": "a078b59d034af2a15f208a7ad8a3fb6c301affd6b59a21453d5cd50d02b31e93",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/src/materials/Material.js",
+          "sha256": "79b3255524d8c5f1d62b5dc96f2096b9a75db861c436d643ac1fbedaceea7b40",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt14-session2/report.json",
+          "sha256": "ddf048ccbe7eaa29bd54612cc5b9bc2370fd4f6a1580216ac613180b46683e6e",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "PlainCubeincludesactualquestionobjectbutallglyphplanesareinside"
+  ],
+  "remainingGaps": [
+    "Naturalcurrent-buildavailableboxvisibility",
+    "Allitemgoals/auto-use retest"
+  ],
+  "createdAt": "2026-10-14T14:18:39.323Z"
+}

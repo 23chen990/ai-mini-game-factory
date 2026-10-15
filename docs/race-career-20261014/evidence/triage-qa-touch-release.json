@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Browser experience QA released the wrong finger: nonempty CDP touchEnd[right] releases right in current Chromium, while expected left release. Isolated DOM transport probe confirms touchMove[right] correctly retains right and releases left with trusted pointerup.",
+  "classification": [
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Correct scoped QA transport only; no input system rebuild.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "game runtime changes",
+      "physical phone claims"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Run experience harness",
+      "Observe left remains true after attempted left release",
+      "Reproduce on bare DOM with trusted CDP point IDs; test supported touchMove active remaining points"
+    ],
+    "observed": [
+      "Failed assertion is transport error; not accepted as game bug or PASS",
+      "All pointerdown/up events in isolated probe trusted=true"
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/browser-experience-attempt15/report.json",
+        "sha256": "76a453a860a34af6db56f801ad8ffd8cf7cfefbf45b75b869bb8547541279050",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Keep independent release assertion unchanged",
+    "Use touchMove with the remaining active right point, then touchEnd[]",
+    "Rerun actual built browser touch/pause/audio/rotation checks",
+    "Physical phone evidence stays BLOCKED"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-15T03:19:01.471Z"
+}

@@ -1,0 +1,39 @@
+✖ native item question labels sit on four outer cube faces and move with the cube without altering interactions (0.836958ms)
+✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (2.474125ms)
+✔ 未知源版本不能静默套用补丁 (0.243375ms)
+✔ registered build includes live career, items, runtime and fuel dependencies (0.960416ms)
+✔ race text labels remove known third-party signboards in build output (0.103834ms)
+✔ instrument clean native drift without changing dynamics, and reject unknown source (0.131583ms)
+✔ recognizable character balloons are replaced with generic scene assets (0.048708ms)
+✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.081875ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 75.577875
+
+✖ failing tests:
+
+test at tools/lean-pilot/tests/racing-build.test.mjs:6:1
+✖ native item question labels sit on four outer cube faces and move with the cube without altering interactions (0.836958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at TestContext.<anonymous> (file:///Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/tools/lean-pilot/tests/racing-build.test.mjs:7:10)
+      at Test.runInAsyncScope (node:async_hooks:228:14)
+      at Test.run (node:internal/test_runner/test:1118:25)
+      at Test.start (node:internal/test_runner/test:1015:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:358:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

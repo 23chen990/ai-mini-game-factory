@@ -75,7 +75,7 @@ test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；�
     assert.deepEqual(call.args.slice(13), args.slice(13));
   }
   g.mobileMode = false;g.fx.glow.emit(...args);assert.deepEqual(calls.at(-1).args, args);
-  const bloom = need('raceBloomStrength');assert.ok(bloom(true) > bloom(false));assert.ok(bloom(true) <= .4);
+  const bloom = need('raceBloomStrength');assert.equal(bloom(true), bloom(false));assert.ok(bloom(true) <= .3);
 });
 test('自适应只在持续低帧率后降一档；手选画质保留', () => {
   const Monitor = need('QualityMonitor'), q = new Monitor();

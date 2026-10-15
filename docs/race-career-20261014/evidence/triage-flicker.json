@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "User reports that the entire game brightness repeatedly alternates during current headed-browser QA. Reproduction isolated a native full-screen boost vignette and broad hitflash on the mobile HUD; the current build16 mobile path suppresses those broad washes while retaining local feedback.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Unclear runtime rendering complaint requires reproduction and exact-branch perceptual retest before repair acceptance.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "user desktop contents",
+      "old gameplay replacements"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "User observed current browser play and reported repeated flashing",
+      "Analyze exact current-build game-only video frames",
+      "Compare actual rendered continuous scene with and without QA screenshot calls",
+      "User clarifies entire game brightness alternates; static paused A/B with/without350ms screenshots recorded",
+      "Fresh normal race start: record native boost overlay across6.5seconds"
+    ],
+    "observed": [
+      "Current build15 video exists",
+      "Current build16 exact mobile start-boost and hit branches are covered by source/runtime evidence",
+      "Paused mid-quality luminance remains stable within0.03/255 over25frames in each sample, no canvas resize/contextlost; does not reproduce continuous-driving complaint",
+      "Full-screen blue/orange gradient visible:opacity0→0.8 at0.163s→0 at1.437s; computed transition reaches0.8. Native HUD repeats the same broad overlay for every auto small boost. Exposure itself remains0.92; no WebGL reset.",
+      "Mobile build16 hides the broad boost vignette, keeps bloom at a constant0.3, and changes hitflash to a transparent edge-only cue. Boost physics, exhaust, speed lines, local badge and damage attribution remain."
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt15/report.json",
+        "sha256": "e49a3c5747bd761dba9002bd8fe36958e1228800494734fc1fb5541ee5c5b4ce",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/flicker-boost-before/report.json",
+        "sha256": "b39b8b4c30cc3822454b8744b3b05740fb2d23cd13c2e9b1cad71b71c36b979e",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Identify exact object/state/renderer/viewport branch causing flicker",
+    "Do not dismiss complaint with CI/static screenshots",
+    "If source defect reproduced, add failing targeted test, bounded fix, rebuild once and natural/video perceptual retest",
+    "Capture continuous game-only evidence without personal desktop content",
+    "Mobile full-screen boost overlay must not paint; mobile bloom invariant across nitro state",
+    "Hit feedback must affect only screen edge, not broad central driving area",
+    "Natural boost cycles must still occur and show local feedback; sustained exact full-screen recurrence beyond these paths remains open until observed"
+  ],
+  "resolution": {
+    "status": "EXACT_BRANCH_PASS_WITH_DEVICE_GAPS",
+    "buildHash": "6795fa3e858661409397389327f89b743cb4e1ef1fe2c96231caa923bd14d696",
+    "evidence": [
+      {
+        "path": "docs/race-career-20261014/evidence/flicker-review-build16.json",
+        "sha256": "ce79dd956389bb0085d548b05b4cee01e47a2945ff5727da3af0958aa8e931ba",
+        "kind": "independent-exact-branch-review",
+        "provenance": "verified-build16"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session5/13-nitro.png",
+        "kind": "natural-current-build-frame",
+        "provenance": "verified-own-run"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session5/13-crash.png",
+        "kind": "natural-current-build-frame",
+        "provenance": "verified-own-run"
+      }
+    ],
+    "scope": "Start-boost and hit branches pass on the 844x390 headed Chromium viewport; small-boost, nitro-only, repeated-hit, physical Android/iPhone and background interruption branches remain blocked or unobserved."
+  },
+  "status": "EXACT_BRANCH_PASS_WITH_DEVICE_GAPS",
+  "createdAt": "2026-10-15T03:07:46.219Z"
+}

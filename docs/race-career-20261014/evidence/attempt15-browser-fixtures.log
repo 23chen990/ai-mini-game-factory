@@ -1,0 +1,17 @@
+✔ V3 resolves fuel policy before accepting the first race (2009.478625ms)
+✔ V3 native entry cannot bypass zero fuel (349.701625ms)
+✔ V3 zero fuel has a visual gauge and disables the primary action (273.721125ms)
+✔ V3 late native entry while countdown is active cannot charge another race (336.850208ms)
+✔ V3 ignores background starts and requires explicit foreground input (332.592333ms)
+✔ V3 failed native start preserves fuel and retry remains usable (354.210584ms)
+✔ V3 write denial keeps session free and exposes a visible storage warning (300.843708ms)
+✔ V3 settlement actions fit both landscape sizes without requiring a panel scroll (290.35825ms)
+✔ V3 neutral steering fill preserves visibility of peripheral rivals while keeping large touch targets (304.993ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4845.677833

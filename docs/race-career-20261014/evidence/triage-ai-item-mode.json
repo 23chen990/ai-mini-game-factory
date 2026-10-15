@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Middle AI increase was calibrated from speed races, but normal item races with real2pickups repeatedly finish sixth after late weapon hits. Keep speed field unchanged and use a lower competitive middle item band so actual recovery can remain attainable; no objective/rank/pickup/weapon/physics changes.",
+  "classification": [
+    "core-experience",
+    "failure-attribution",
+    "mobile-readability",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Fuel persistence/lifecycle and career economy/core journey require structured QA→repair→natural/perceptual retest.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "PR12/14 full code replacements",
+      "unrelated factory history",
+      "competitor private code"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Actualbuild13stage06firstattempt: naturalfinish92.40s,0boxes,rank6",
+      "Improvevisibleboxcolorperceptiononly; exactearnedprogressretry",
+      "Secondactualstage06:2physicalpickups,rank3at60.5s/rank2at80.5s,latehit→recover→finish92.32s/rank6"
+    ],
+    "observed": [
+      "Actualwrong-wayrecoveryphysicallysucceeds,butfiveAI finishbeforelate-hitplayer",
+      "Thefield1.18–1.34wasraisedfromspeed-raceweakwins;weaponpressurewasnotaccountedfor",
+      "Do notlowergoal2pickups/rank4orchangeanyvehiclecoordinates"
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt13/report.json",
+        "sha256": "35582c1bba814f751fdab8b789005917c0d961084a1e48100aae9e75636a1132",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt13-session2/report.json",
+        "sha256": "ccb395dffbc16f7773870b2743c1fef619ccef80177a269c77d54394de45d1d5",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Middleitemrivalband1.03–1.18; middlespeed1.18–1.34andnativeexpertband remainunchanged",
+    "Tutorial/nativeAIalgorithms,all16goals,playerphysics anditemsystemunchanged",
+    "Testfirstmode-specificbands;onebuild14distincthypothesis",
+    "Freshcurrent-buildfour-map/3lap/expert/specialtycampaign,dailyandactualpost-spinrecoveryretake"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T13:39:32.205Z"
+}

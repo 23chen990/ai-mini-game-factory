@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "6795fa3e858661409397389327f89b743cb4e1ef1fe2c96231caa923bd14d696",
+  "inputHash": "540a22e3df5260df11837ebc2a29596299ae20e5d8fe009140a6aec5603244b3",
+  "sourceCommit": "536990f7d199ccfa7d91cfb1bde8cf59690c4777",
+  "publishable": false,
+  "zip": {
+    "path": "docs/race-career-20261014/playables/dual-key-racing-v3-qa-6795fa3e8586.zip",
+    "sha256": "99876001edf1765322144c9dbb30c84524e90c065600d7fcf1ffe195fa85790d",
+    "bytes": 221300
+  },
+  "standalone": {
+    "path": "docs/race-career-20261014/playables/dual-key-racing-v3-6795fa3e8586.html",
+    "sha256": "bedcdc7505d04eaa8b3253b96c1a60d04c235597f8bcb9ee406b3c07a9f6e2a5",
+    "bytes": 781088
+  },
+  "zipPayload": [
+    {
+      "name": "index.html",
+      "sha256": "57186431100e4ba1a9b2bc4f7b0c602a65cc47bc8c05d80123c9cf991f71d539",
+      "bytes": 766112
+    },
+    {
+      "name": "style.css",
+      "sha256": "271673505b32f95ce065d3350f24c15412123b8f5a83c51e16364911a96cee80",
+      "bytes": 15001
+    },
+    {
+      "name": "platform.json",
+      "sha256": "ebc8f939c756aa1ff0220059c9fe14a5d473f145696681d26a6d8042f0654daf",
+      "bytes": 116
+    },
+    {
+      "name": "LICENSE.three.txt",
+      "sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+      "bytes": 1081
+    },
+    {
+      "name": "build-racing.json",
+      "sha256": "0e4eb31930d2ea286b416ea20246dd31b2af1183d38e5fdcfcb699b1e8736d1a",
+      "bytes": 1863
+    },
+    {
+      "name": "README.txt",
+      "sha256": "0e50bf7fb201507ce439e55132ddd39f8aa4276bd8394ae79d614da7a4d0658d",
+      "bytes": 752
+    },
+    {
+      "name": "NOTICE.source.txt",
+      "sha256": "87d0209d455accb257369c8b65e27c6c94f3c324d0307c47060211de75665710",
+      "bytes": 680
+    }
+  ],
+  "unzipIntegrity": "PASS",
+  "scope": "QA preview; no publication/device/LIVE/commercial approval"
+}
