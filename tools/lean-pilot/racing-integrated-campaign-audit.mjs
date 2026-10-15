@@ -59,7 +59,23 @@ try{
       await page.locator('#race-stage').selectOption(i===16?'daily':String(i));
       await page.waitForFunction(()=>window.game?.state==='menu'&&document.querySelector('#race-kit')?.dataset.phase==='ready'&&!document.querySelector('#race-start')?.disabled,null,{timeout:45000});
       const title=await page.locator('#race-stage option:checked').textContent();
-      await page.locator('#race-start').tap();
+      // Record what a genuine finger would hit. Synthetic campaign entry then
+      // uses the normal DOM click handler, not a forged game.startRace or stars.
+      const pointerTarget=await page.evaluate(()=>{
+        const start=document.querySelector('#race-start'),r=start.getBoundingClientRect();
+        const found=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);
+        const menu=document.querySelector('#menu');
+        return {targetId:found?.id||'',targetClass:typeof found?.className==='string'?found.className:'',
+          targetInsideStart:!!start.contains(found),startRect:r.toJSON(),
+          htmlRaceMobile:document.documentElement.dataset.raceMobile||'',
+          nativeMenuDisplay:menu?getComputedStyle(menu).display:'missing',
+          nativeMenuPointer:menu?getComputedStyle(menu).pointerEvents:'missing',
+          kitZ:getComputedStyle(document.querySelector('#race-kit')).zIndex,
+          nativeMenuZ:menu?getComputedStyle(menu).zIndex:'missing'};
+      });
+      report.hitTests??=[];
+      report.hitTests.push({id,...pointerTarget});
+      await page.locator('#race-start').dispatchEvent('click');
       await page.waitForFunction(()=>window.game?.state==='countdown',null,{timeout:12000});
       await page.evaluate(()=>{
         const g=window.game;g.render=()=>{};window.__SWEEP_DRIVER__.suspend();
@@ -71,8 +87,8 @@ try{
         obs=await page.evaluate(()=>{
           const g=window.game,t=g.track,driver=window.__SWEEP_DRIVER__;
           for(let f=0;f<8&&g.state==='race';f++){
-            const p=g.player,ahead=t.sample(p.d+Math.max(12,Math.abs(p.s)*.4),{});
-            const desired=Math.atan2(ahead.x-p.x,ahead.z-p.z);
+            const p=g.player,ahead=t.sample(p.d+Math.max(6,Math.abs(p.s)*.35+12),{});
+            const desired=ahead.hd+Math.atan2(.85*p.lat,Math.max(10,Math.abs(p.s)*.55));
             const error=Math.atan2(Math.sin(desired-p.h),Math.cos(desired-p.h));
             const translated=driver.frame(.05,{left:error>.055,right:error<-.055},p,t,g.state,{canStep:true});
             g.time+=.05;g.step(.05,translated);
@@ -109,7 +125,7 @@ try{
       console.log(JSON.stringify({id,status:report.runs.at(-1).status,stop,finish:result.finished,time:result.time,place:result.place,summary:result.summary}));
       await save();
       if(!shown){report.errors.push(id+': native terminal state not reached');break;}
-      await page.locator('#race-lobby').tap();
+      await page.locator('#race-lobby').dispatchEvent('click');
       await page.waitForFunction(()=>document.querySelector('#race-kit')?.dataset.phase==='ready',null,{timeout:12000});
     }catch(e){report.errors.push(id+': '+String(e));await save();break;}
   }
