@@ -29,7 +29,22 @@ try{
  for(const selector of softwareQualityActions(process.env.QA_TOUCH_QUALITY))await tap(selector);
  report.graphicsProfile={requested:process.env.QA_TOUCH_QUALITY??'default',menuLabel:await page.locator('#co-quality').innerText(),render:await page.evaluate(()=>window.__coast.renderInfo().quality),motionPreference:reducedMotion,mediaReducedMotion:await page.evaluate(()=>window.matchMedia('(prefers-reduced-motion:reduce)').matches)};
  if(report.graphicsProfile.mediaReducedMotion!==(reducedMotion==='reduce'))throw Error('Actual browser motion preference did not apply');
- const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});const first=await snap();report.firstCatchRunnerWallMs=Date.now()-firstStarted;check('first-catch-under-three-seconds',first.count>=1&&first.events.some(e=>e.type==='fish-caught'&&e.first&&e.at<3),first);await shot('first-catch');
+ const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});const first=await snap();report.firstCatchRunnerWallMs=Date.now()-firstStarted;check('first-catch-under-three-seconds',first.count>=1&&first.events.some(e=>e.type==='fish-caught'&&e.first&&e.at<3),first);
+ // Test the real post-first-fish choice before the runner passes 31 metres.
+ // Capture after the trusted right tap so a slow software screenshot cannot
+ // miss the pickup by consuming the small 15m -> 31m reaction window.
+ const beforeSecond=await snap();
+ await tap('[data-action="right"]');
+ await shot('first-catch');
+ await page.waitForFunction(()=>window.__coast.snapshot().distance>=37,null,{timeout:30000});
+ const second=await snap();
+ const secondSteer=second.events.find(e=>e.type==='steer-input'&&e.source==='tap'&&e.target>.8&&e.target<1.4);
+ const secondCatch=second.events.find(e=>e.type==='fish-caught'&&e.objectId==='l1-f1');
+ check('real-right-tap-earns-offcentre-second-fish',
+  beforeSecond.count>=1&&!!secondSteer&&!!secondCatch&&second.count>beforeSecond.count&&
+  second.phase==='running'&&second.lane>.6&&second.lane<1.4,
+  {before:beforeSecond,after:second,secondSteer,secondCatch});
+ await shot('actual-offcentre-second-fish-caught');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  let jumped=false,prizeFeedbackSeen=false,bonusShot=false,choiceShot=false,goldShot=false,leftWarning=false,rightWarning=false,earnedPrizeCue=false,jumpProgressBefore={gold:Infinity,jumps:Infinity};
@@ -73,9 +88,18 @@ try{
  check('natural-three-star-settlement',finished.reason==='complete'&&finished.save.stars[0]===3&&(await page.locator('#co-copy').innerText()).includes('★★★')&&(await page.locator('#co-heading').innerText()).includes('三星达成'),finished);
  check('both-crossing-directions-observed',leftWarning&&rightWarning,{leftWarning,rightWarning});
  const best=finished.save.best[0];check('real-personal-best-recorded',best.fish===finished.count&&best.gold===finished.gold&&best.jumps===finished.jumpedBarriers&&best.jumps>=1,best);
- // Gesture coverage has its own normal replay. A software renderer's slow
- // screenshot replies cannot consume the first-minute route before it is played.
- await tap('#co-replay');await page.waitForTimeout(250);
+ // Negative baseline: an untouched rider genuinely catches the first central
+ // teaching fish but must not be awarded the off-centre second fish.
+ await tap('#co-replay');
+ await page.waitForFunction(()=>window.__coast.snapshot().distance>=37,null,{timeout:35000});
+ const noInput=await snap();
+ check('no-input-first-fish-but-no-free-offcentre-second-fish',
+  noInput.phase==='running'&&noInput.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-f0')&&
+  !noInput.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-f1')&&noInput.count===1,
+  {noInput,source:'new round: no gameplay input between replay and 37 metres'});
+ await shot('no-steer-negative-control');
+ // Gesture coverage has its own clean replay, after the no-input experiment.
+ await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
  const a=await gesture('right',[140,420],[250,420]);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
  const b=await gesture('left',[250,420],[140,420]);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
  const fractional=await gesture('short-free-drag',[140,420],[171,420]);
