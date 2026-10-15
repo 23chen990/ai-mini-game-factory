@@ -7,6 +7,7 @@ import { promisify } from 'node:util';
 import path from 'node:path';
 import { z } from 'zod';
 import { buildHash } from './runner.mjs';
+import { RACING_OWNED_NAMES } from './racing-mobile-build.mjs';
 import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
 import { qualifiedVisibleFinish } from './racing-visible-policy.mjs';
 
@@ -39,15 +40,20 @@ export const NaturalSchema = z.object({
     ctx.addIssue({ code: 'custom', message: 'Full natural PASS requires16unique stages + daily and visible terminal actions' });
 });
 const decodeJson = bytes => JSON.parse(bytes.toString('utf8'));
+export async function currentRacingInputHash() {
+  const owned = 'templates/web-lite/h5-source-mobile-v1';
+  const inputs = await Promise.all(RACING_OWNED_NAMES.map(name => readFile(path.join(owned, 'racing', name), 'utf8')));
+  inputs.push(...await Promise.all(['fuel.mjs', 'themes.mjs'].map(name => readFile(path.join(owned, name), 'utf8'))));
+  inputs.push(await readFile('tools/lean-pilot/racing-mobile-build.mjs', 'utf8'));
+  return hash(inputs.join('\n'));
+}
 export async function verifyDelivery(manifestPath) {
   const manifest = DeliverySchema.parse(decodeJson(await readFile(manifestPath)));
   const run = path.resolve('runs/h5-qq-mobile-20261013'), game = path.join(run, 'workspace/game');
   const build = decodeJson(await readFile(path.join(run, 'artifacts/build-racing.json')));
   if (manifest.buildHash !== build.buildHash || await buildHash(game) !== build.buildHash) throw Error('Current actual H5 build hash differs');
-  const owned = 'templates/web-lite/h5-source-mobile-v1';
-  const inputs = await Promise.all(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs'].map(f => readFile(path.join(owned, 'racing', f), 'utf8')));
-  inputs.push(...await Promise.all(['fuel.mjs', 'themes.mjs'].map(f => readFile(path.join(owned, f), 'utf8'))), await readFile('tools/lean-pilot/racing-mobile-build.mjs', 'utf8'));
-  if (hash(inputs.join('\n')) !== build.inputHash || build.inputHash !== manifest.inputHash) throw Error('Playable does not match current owned source inputs');
+  if (await currentRacingInputHash() !== build.inputHash || build.inputHash !== manifest.inputHash)
+    throw Error('Playable does not match current owned source inputs');
   for (const artifact of manifest.artifacts) {
     const file = path.resolve(artifact.path);
     if (!file.startsWith(path.resolve('docs/race-career-20261014') + path.sep) && !file.startsWith(run + path.sep)) throw Error('Evidence belongs outside target game scope');
