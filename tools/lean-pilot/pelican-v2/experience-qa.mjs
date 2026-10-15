@@ -86,7 +86,19 @@ try{
  const c=await gesture('cancel',[140,420],[250,420],true);
  check('cancelled-touch-does-not-turn',c.after.laneIndex===c.before.laneIndex&&
   Math.abs(c.after.laneTarget-c.before.laneTarget)<.01,c);
- const d=await gesture('up',[200,480],[200,380]);check('trusted-up-swipe-jumps',d.after.events.filter(e=>e.type==='jump').length>d.before.events.filter(e=>e.type==='jump').length,d);await shot('up-swipe');
+ // Independent legitimate replay. Extra precise steering gestures now consume
+ // enough in-game time to reach the first solid barrier: a late arbitrary
+ // up-swipe there is a REAL crash, not a touch-handler failure. Start again
+ // through visible pause/replay UI, keeping native input, physics and collisions.
+ if((await snap()).phase==='running')await tap('#co-pause');
+ await tap('#co-replay');
+ await page.waitForTimeout(250);
+ const d=await gesture('up',[200,480],[200,380]);
+ check('trusted-up-swipe-jumps',
+  d.before.phase==='running'&&d.before.distance<40&&
+  d.after.events.filter(e=>e.type==='jump').length>d.before.events.filter(e=>e.type==='jump').length,
+  d);
+ await shot('up-swipe');
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
  const safeEnd=Date.now()+50000;
