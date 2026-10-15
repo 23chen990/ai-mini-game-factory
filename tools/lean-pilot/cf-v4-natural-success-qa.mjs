@@ -58,14 +58,23 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
     await wait(holdMs);
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   };
+  // Read *rendered DOM* geometry, never hidden actor world coordinates.
+  // Playwright locator.boundingBox() can exceed short timeouts during software WebGL.
+  const visibleRect = async selector => page.evaluate(query => {
+    const el = document.querySelector(query);
+    if (!el || el.hidden || getComputedStyle(el).display === 'none') return null;
+    const r = el.getBoundingClientRect();
+    return r.width > 0 && r.height > 0
+      ? { x: r.x, y: r.y, width: r.width, height: r.height } : null;
+  }, selector);
   const press = async (selector, holdMs = 550) => {
-    const rect = await page.locator(selector).boundingBox({ timeout: 2500 });
+    const rect = await visibleRect(selector);
     if (!rect) return false;
     await touch({ x: rect.x + rect.width / 2, y: rect.y + rect.height / 2 }, undefined, holdMs);
     return true;
   };
   const move = async (dx, dy, duration = 1150) => {
-    const rect = await page.locator('#touch .pad').first().boundingBox({ timeout: 1800 });
+    const rect = await visibleRect('#touch .pad');
     if (!rect) return false;
     const x = rect.x + rect.width / 2, y = rect.y + rect.height / 2;
     await touch({ x, y }, { x: x + dx, y: y + dy }, duration, 52);
@@ -123,7 +132,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
           sawEnemy = true;
           if (visible && shotCount === 0) await screenshot('visible-target');
           for (let n = 0; n < 4 && await target.isVisible().catch(() => false); n++) {
-            const rect = await target.boundingBox({ timeout: 600 }).catch(() => null);
+            const rect = await visibleRect('.mk-fps-enemy:not([hidden])');
             if (!rect) break;
             // The HUD marker is above the head; its lower edge + 22px approximates
             // a chest, not an unobservable bot world position.
