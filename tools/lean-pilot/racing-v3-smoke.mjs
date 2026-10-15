@@ -180,16 +180,54 @@ try {
   const title=await page.locator('#race-stage').locator('option').count();
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
   await raceStart(page,0,'01-city-tutorial');
-  // Exercise a genuine browser touch pointer and pause/resume instead of JS state writes.
+  // Genuine multi-pointer Chromium touch transport, not simulated game key state.
   const left=await page.locator('#race-left').boundingBox();
-  if (!left) fail('Left thumb control has no hitbox');
+  const right=await page.locator('#race-right').boundingBox();
+  if (!left || !right) fail('Thumb controls have no hitboxes');
   const cdp=await context.newCDPSession(page);
   const touch={x:left.x+left.width/2,y:left.y+left.height/2,id:101};
+  const opposite={x:right.x+right.width/2,y:right.y+right.height/2,id:102};
+  const pressState=()=>page.evaluate(()=>({
+    left:document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',
+    right:document.querySelector('#race-right')?.getAttribute('aria-pressed')==='true',
+  }));
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch]});
   await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',null,{timeout:8000});
-  const held=await page.evaluate(()=>document.querySelector('#race-left')?.classList.contains('held'));
+  const held=(await pressState()).left;
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch,opposite]});
+  await page.waitForFunction(()=>{
+    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
+    return l?.getAttribute('aria-pressed')==='false'&&r?.getAttribute('aria-pressed')==='true';
+  },null,{timeout:8000});
+  const laterThumbWins=await pressState();
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[touch]});
+  await page.waitForFunction(()=>{
+    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
+    return l?.getAttribute('aria-pressed')==='true'&&r?.getAttribute('aria-pressed')==='false';
+  },null,{timeout:8000});
+  const remainingThumbRestored=await pressState();
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-  await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='false',null,{timeout:8000});
+  await page.waitForFunction(()=>{
+    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
+    return l?.getAttribute('aria-pressed')==='false'&&r?.getAttribute('aria-pressed')==='false';
+  },null,{timeout:8000});
+  const releasedAll=await pressState();
+  if(!laterThumbWins.right||laterThumbWins.left||!remainingThumbRestored.left||remainingThumbRestored.right||releasedAll.left||releasedAll.right)
+    fail('Real dual-thumb changeover did not preserve latest-press direction and release: '+JSON.stringify({laterThumbWins,remainingThumbRestored,releasedAll}));
+  const knockoutLayout=await page.evaluate(()=>{
+    const kit=document.querySelector('#race-kit'),speed=document.querySelector('#race-speed');
+    const badge=document.querySelector('#race-knockout');
+    const oldKind=kit.dataset.stageKind,oldSpeed=speed.hidden,oldKnockout=badge.hidden;
+    kit.dataset.stageKind='elimination';speed.hidden=false;badge.hidden=false;
+    const a=badge.getBoundingClientRect(),v=speed.getBoundingClientRect();
+    const overlap=a.left<v.right&&v.left<a.right&&a.top<v.bottom&&v.top<a.bottom;
+    const clearance=v.top-a.bottom;
+    kit.dataset.stageKind=oldKind;speed.hidden=oldSpeed;badge.hidden=oldKnockout;
+    return {qaStaged:true,overlap,clearancePx:clearance,knockout:a.toJSON(),speed:v.toJSON()};
+  });
+  if(knockoutLayout.overlap||knockoutLayout.clearancePx<8)
+    fail('Stage12 staged knockout timer obscures speedometer: '+JSON.stringify(knockoutLayout));
+  report.stage12Layout=knockoutLayout;
   await page.locator('#race-pause').tap();
   await page.waitForFunction(()=>window.game?.state==='paused',null,{timeout:8000});
   const cleared=await page.evaluate(()=> !window.game?.input?.touch?.left && !window.game?.input?.touch?.right);
@@ -203,7 +241,7 @@ try {
     fail('Pause sound toggle did not mute and persist: '+JSON.stringify(audioMuted));
   await page.locator('#race-resume').tap();
   await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:8000});
-  report.touch={actualCDPTouch:true,leftPressObserved:held,released:true,paused:true,cleared,resumed:true,audioMuted:true};
+  report.touch={actualCDPTouch:true,leftPressObserved:held,laterThumbWins,remainingThumbRestored,releasedAll,released:true,paused:true,cleared,resumed:true,audioMuted:true};
   // QA-only injected wrong-way meter: tests native reset integration, NOT natural 180-degree steering.
   await page.evaluate(()=>{window.game.player.wrongWay=2.8;});
   await page.waitForFunction(()=>window.game?.player?.wrongWay===0 && window.game?.player?.s>=12,
