@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -184,4 +184,13 @@ test('native sniper optic cycles through three clearly labelled touch actions',(
  assert.equal(sniperScopeLabel(0),'开镜');
  assert.equal(sniperScopeLabel(1),'放大');
  assert.equal(sniperScopeLabel(2),'关镜');
+});
+
+test('scout stays in real sniper opening only briefly before native AI resumes',()=>{
+ const sniper={__mobileSniperScout:true,__mobileTrainingHoldUntil:20};
+ const rifle={__mobileTrainingScout:true,__mobileTrainingHoldUntil:7};
+ assert.equal(mobileScoutHoldExpired(sniper,19.9),false);
+ assert.equal(mobileScoutHoldExpired(sniper,20),true);
+ assert.equal(mobileScoutHoldExpired(rifle,7),true);
+ assert.equal(mobileScoutHoldExpired({},12),false);
 });

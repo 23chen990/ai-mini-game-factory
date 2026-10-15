@@ -175,7 +175,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
             for(let n=0;n<14 && await target.isVisible().catch(()=>false);n++){
               const rect=await visibleRect('.mk-fps-enemy:not([hidden])');
               if(!rect)break;
-              const x=rect.x+rect.width/2-422, y=rect.y+rect.height+18-195;
+              const x=rect.x+rect.width/2-422, y=rect.y+rect.height+10-195;
               if(Math.abs(x)<24 && Math.abs(y)<28)break;
               await look(Math.max(-96,Math.min(96,x*.64)),
                 Math.max(-54,Math.min(54,y*.64)),200);
@@ -183,7 +183,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
             }
             const aligned=await visibleRect('.mk-fps-enemy:not([hidden])');
             const centered=!!aligned && Math.abs(aligned.x+aligned.width/2-422)<52 &&
-              Math.abs(aligned.y+aligned.height+18-195)<58;
+              Math.abs(aligned.y+aligned.height+10-195)<58;
             if(centered){
               await press('#touch .btn[data-mk-action="scope"]',260);
               await wait(850);
@@ -197,7 +197,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
             for(let n=0;n<14;n++){
               const rect=await visibleRect('.mk-fps-enemy:not([hidden])');
               if(!rect)break;
-              const x=rect.x+rect.width/2-422,y=rect.y+rect.height+18-195;
+              const x=rect.x+rect.width/2-422,y=rect.y+rect.height+10-195;
               if(Math.abs(x)<=9 && Math.abs(y)<=13)break;
               await look(Math.max(-66,Math.min(66,x*.72)),
                 Math.max(-42,Math.min(42,y*.69)),190);
@@ -206,7 +206,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
             const aligned=await visibleRect('.mk-fps-enemy:not([hidden])');
             current=await inspect();
             const centered=!!aligned && Math.abs(aligned.x+aligned.width/2-422)<=13 &&
-              Math.abs(aligned.y+aligned.height+18-195)<=18;
+              Math.abs(aligned.y+aligned.height+10-195)<=18;
             const exactAim=current.targetSide==='enemy';
             if(centered || exactAim){
               // Normal weapon readiness and player input; the native original

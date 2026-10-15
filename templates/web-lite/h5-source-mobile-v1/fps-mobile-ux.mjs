@@ -51,6 +51,12 @@ export function blockMobileTouchMouse({touchMode,fromTouch,msSinceTouch}) {
 export function sniperScopeLabel(stage) {
   return stage===1 ? '放大' : stage>=2 ? '关镜' : '开镜';
 }
+/** Briefly keep a real legal scout visible, then return to native bot AI. */
+export function mobileScoutHoldExpired(actor, seconds) {
+  return (actor?.__mobileTrainingScout === true || actor?.__mobileSniperScout === true) &&
+    Number.isFinite(actor?.__mobileTrainingHoldUntil) && Number.isFinite(seconds) &&
+    seconds >= actor.__mobileTrainingHoldUntil;
+}
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
@@ -391,7 +397,7 @@ export function createFpsMobileUx(game, root, doc) {
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
-        scout.__mobileTrainingHoldUntil=game.time+(sniper?13:7);
+        scout.__mobileTrainingHoldUntil=game.time+(sniper?20:7);
         return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance};
       }
     }
@@ -420,8 +426,9 @@ export function createFpsMobileUx(game, root, doc) {
     // before a novice player gets a first encounter.
     for (const actor of game.actors || []) {
       if (!actor || actor.isPlayer || !actor.diff) continue;
-      if(actor.__mobileTrainingScout && game.time > actor.__mobileTrainingHoldUntil) {
+      if(mobileScoutHoldExpired(actor,game.time)) {
         actor.__mobileTrainingScout=false;
+        actor.__mobileSniperScout=false;
         actor.role='rush';
         actor.pickGoal?.();
       }
@@ -664,7 +671,9 @@ export function createFpsMobileUx(game, root, doc) {
         nudgeAim();
         const hits = p.stats?.hits || 0;
         if (hits > lastHits) {
-          originalToast('✓ 命中！继续对准红色敌人', 1.8);
+          originalToast(activeChallenge?.kind==='kills'
+             ? '✓ 狙击命中！拉栓后继续开镜瞄准胸部'
+             : '✓ 命中！继续对准红色敌人', 1.8);
           lastHits = hits;
         }
         const seen = [...markers.values()].some(el => !el.hidden);
