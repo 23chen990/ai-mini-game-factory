@@ -42,6 +42,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
       deaths: p?.stats?.d ?? 0, awmKills: game?.__mkAwmKills ?? 0,
       travelLabel: document.getElementById('mk-status')?.textContent ?? '',
       visibleEnemies,
+      visibleAllyTags:(game?.tags||[]).filter(t=>t.__mkAllyLabel && t.sprite?.material?.opacity>.01).length,
       targetSide: document.getElementById('mk-fps-target')?.dataset.side ?? null,
       guide: document.getElementById('mk-fps-guide')?.textContent ?? '',
       liveAd: document.getElementById('mk-ad')?.hidden === false,
@@ -107,18 +108,16 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
       { weapon: start.weapon, challenge: start.challenge });
     await screenshot('combat');
     const startWall = Date.now();
-    const MAX_WALL_MS = mode === 'awm' ? 420000 : 310000;
+    const MAX_WALL_MS = mode === 'awm' ? 620000 : 310000;
     let steps = 0, sawEnemy = false, travelSeen = 0, looked = false, validFire = false;
+    let scopedObserved = false;
     if (mode === 'awm') {
-      const scope = page.locator('#touch .btn[data-mk-action="scope"]');
-      if (await scope.isVisible()) await scope.tap();
-      await wait(700);
-      const aimed = await inspect();
-      trace.push({ ...aimed, action: 'scope-control' });
-      check('native-awmscope-responds', aimed.scoped > 0, { scoped: aimed.scoped });
-      await screenshot('scope');
+      // Start unscoped: AWM's narrow scope made the visible enemy badge
+      // appear outside the actual lens in the previous negative test.
+      check('native-awmscope-control-visible',
+        await page.locator('#touch .btn[data-mk-action="scope"]').isVisible());
     }
-    while (Date.now() - startWall < MAX_WALL_MS && steps < (mode === 'awm' ? 110 : 120)) {
+    while (Date.now() - startWall < MAX_WALL_MS && steps < (mode === 'awm' ? 220 : 120)) {
       const state = await inspect();
       if (steps % 3 === 0) trace.push({ ...state, action: 'ordinary-controls' });
       if (state.phase === 'finished') break;
@@ -131,19 +130,32 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
         if (visible || aimVisible) {
           sawEnemy = true;
           if (visible && shotCount === 0) await screenshot('visible-target');
-          for (let n = 0; n < 4 && await target.isVisible().catch(() => false); n++) {
-            const rect = await visibleRect('.mk-fps-enemy:not([hidden])');
-            if (!rect) break;
-            // The HUD marker is above the head; its lower edge + 22px approximates
-            // a chest, not an unobservable bot world position.
-            const dx = Math.max(-76, Math.min(76, (rect.x + rect.width / 2 - 422) * 0.33));
-            const dy = Math.max(-46, Math.min(46, (rect.y + rect.height + 22 - 195) * 0.33));
-            if (Math.abs(dx) + Math.abs(dy) < 7) break;
-            await look(dx, dy, 280);
-            looked = true;
+          // Follow real on-screen red badges. A human scans with the wide view,
+          // then brings a visible target into the scope circle to shoot.
+          for(let n=0;n<12 && await target.isVisible().catch(()=>false);n++){
+            const rect=await visibleRect('.mk-fps-enemy:not([hidden])');
+            if(!rect)break;
+            const x=rect.x+rect.width/2-422, y=rect.y+rect.height+22-195;
+            if(Math.abs(x)<37 && Math.abs(y)<42)break;
+            await look(Math.max(-105,Math.min(105,x*.52)),
+              Math.max(-62,Math.min(62,y*.52)),210);
+            looked=true;
           }
-          if (await press('#touch .btn[data-mk-action="fire"]', 1100)) {
-            validFire = true; shotCount++;
+          const aligned=await visibleRect('.mk-fps-enemy:not([hidden])');
+          const centered=!!aligned && Math.abs(aligned.x+aligned.width/2-422)<75 &&
+            Math.abs(aligned.y+aligned.height+22-195)<85;
+          if(centered && state.scoped===0) {
+            await press('#touch .btn[data-mk-action="scope"]',260);
+            await wait(450);
+          }
+          const current=await inspect();
+          if(current.scoped>0 && !scopedObserved){
+            scopedObserved=true;await screenshot('scope');
+          }
+          if(current.scoped>0 && (current.visibleEnemies>0 || current.targetSide==='enemy')){
+            if(await press('#touch .btn[data-mk-action="fire"]',1000)){
+              validFire=true;shotCount++;
+            }
           }
           if (shotCount > 0 && shotCount % 4 === 0)
             await press('#touch .btn[data-mk-action="reload"]', 400);
@@ -176,6 +188,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
       }
     }
     const end = await inspect();
+    if(mode==='awm')check('native-awmscope-responds',scopedObserved,{scopedObserved});
     trace.push({ ...end, action: 'final-real-game-state', touched: touches.length });
     await screenshot('end');
     check('real-touch-input-observed', touches.length > 0, { touches: touches.length });
@@ -192,6 +205,8 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
         end.deaths <= 2 && travelSeen >= 20,
       { phase: end.phase, outcome: end.outcome, deaths: end.deaths, gameTime: end.gameTime, travelSeen });
     }
+    check('ally-tags-hidden-on-result',end.phase!=='finished' || end.visibleAllyTags===0,
+      {phase:end.phase,visibleAllyTags:end.visibleAllyTags});
     check('no-real-ad-misrepresented', !end.liveAd, { gameAdButtonVisible: end.liveAd });
   } catch (error) {
     errors.push(String(error.stack || error).slice(0,1800));
