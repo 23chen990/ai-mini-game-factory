@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "d022fed7e5f52662a575ae8540f5184124da7f64208d86387985f94ed4f32add",
+  "checks": [
+    {
+      "id": "04-neutral-control-rival-overlap",
+      "status": "BLOCKED",
+      "observation": "All four supplied 844x390 samples show the controls neutral at 00:05.03, 00:10.07, and 00:20.03, and the right control pressed at 00:15.05. Rivals are central at 00:10.07; none of these frames shows a rival intersecting either neutral control. The exact overlap branch is therefore unobserved.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-scene-5.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-scene-10.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-scene-15.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-scene-20.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-trace.json"
+      ],
+      "requiredAction": "Provide a build15-bound continuous natural stage04 capture from 00:00.00 through the 01:28.86 finish, with exact frames and nearby context when a rival intersects the left or right control while that control is neutral. The supplied samples at 00:05.03, 00:10.07, 00:15.05, and 00:20.03 do not cover the overlap."
+    },
+    {
+      "id": "06-pickup-shield-feedback-and-cube-recognition",
+      "status": "PASS",
+      "observation": "The stage06 00:45.23 capture shows the pickup counter at 1/2 and a legible top-right '道具：防护盾·自动使用' label; the car also has a visible use effect. The matching trace near 00:45.45 records goal 1/2 and shield inventory. The stage05 pickup capture shows a prominent blue question-mark cube and the '拾取防护盾·自动使用' toast, so the cube reads as a pickup and the toast identifies the result.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/06-item-use.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/06-trace.json",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/05-pickup.png"
+      ],
+      "requiredAction": "None for the observed 06 1/2 shield-use state and the supplied question-cube pickup example."
+    },
+    {
+      "id": "06-success-actions-fit",
+      "status": "PASS",
+      "observation": "The actual 844x390 success screen displays replay, next, and lobby buttons fully within the viewport. The matching trace records all three at 44px high, y=316..360, and actionsFit=true.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/06-terminal.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/06-trace.json"
+      ],
+      "requiredAction": "None for the captured 844x390 browser success screen."
+    },
+    {
+      "id": "12-elimination-warning-visual-signal",
+      "status": "FAIL",
+      "observation": "The 844x390 elimination frame shows rank 1/6 and a yellow '距离淘汰 386m' pill. The high-contrast pill adds emphasis, but the actionable danger and distance are conveyed by the small text alone: there is no independent countdown/progress shape, spatial hazard marker, or other visible urgency cue. A nearby rival is visible, but the image does not visually connect it to the elimination deadline. This fails the requirement that critical timing or danger be carried primarily by visual state rather than small helper text.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/12-elimination.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/12-trace.json"
+      ],
+      "requiredAction": "Add a persistent, glanceable visual urgency signal for elimination distance or countdown, and retest it at the target mobile viewport."
+    },
+    {
+      "id": "physical-phone-feel-audio-and-cutout-fit",
+      "status": "BLOCKED",
+      "observation": "The supplied material is browser evidence at 844x390. It does not establish subjective phone control feel, audio audibility on-device, or layout fit around physical Android/iPhone cutouts.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/06-item-use.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/06-terminal.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/12-elimination.png"
+      ],
+      "requiredAction": "Collect physical Android and iPhone evidence for touch feel, audio audibility, and cutout/safe-area fit."
+    },
+    {
+      "id": "retry-and-reward-clarity",
+      "status": "PASS",
+      "observation": "Observed: the stage06 result shows a two-star success, finish/best times, 15 total stars, a pearl-white paint unlock, and three fully visible actions labeled replay, next, and return to lobby. The stage12 result shows three stars and 30 total stars with the same actions. Inference: players can distinguish retry, progression, and leaving, and can see the main reward outcome. Unknown: these screenshots do not verify what happens after activating each button or whether rewards persist across a fresh launch.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/06-terminal.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/12-terminal.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/06-trace.json",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/12-trace.json"
+      ],
+      "requiredAction": "None for the visible result, reward, and action choices; use runtime evidence for post-activation behavior or persistence claims."
+    },
+    {
+      "id": "long-race-pacing",
+      "status": "BLOCKED",
+      "observation": "Observed: the supplied stage04 images cover only 00:05.03 through 00:20.03; rank changes from 4/6 to 3/6 to 1/6, and the drift goal reaches 2/3 by 00:15.05. The trace reports an 88.86-second finish. Inference: the opening has visible rank and objective movement. Unknown: the supplied pixels do not show the remaining race, so they cannot establish whether pressure, scenery, or feedback stays varied through the long middle and finish.",
+      "evidence": [
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-scene-5.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-scene-10.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-scene-15.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-scene-20.png",
+        "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/04-trace.json"
+      ],
+      "requiredAction": "Provide natural player-view samples across the full stage04 race, including the middle, late race, and finish, to assess pacing beyond the opening 20 seconds."
+    }
+  ],
+  "checkedAt": "2026-10-15T03:08:12Z"
+}

@@ -9,7 +9,7 @@ const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(sec
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
 root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button>
-  <div id="race-live-goal" hidden></div><div id="race-held-item" hidden aria-live="off"></div><div id="race-controls" hidden><button id="race-left" data-race-direction="left" aria-label="按住向左转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 11 16 24l13 13"/></svg></button><button id="race-right" data-race-direction="right" aria-label="按住向右转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m19 11 13 13-13 13"/></svg></button></div>
+  <div id="race-live-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-held-item" hidden aria-live="off"></div><div id="race-controls" hidden><button id="race-left" data-race-direction="left" aria-label="按住向左转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M29 11 16 24l13 13"/></svg></button><button id="race-right" data-race-direction="right" aria-label="按住向右转" aria-pressed="false"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="m19 11 13 13-13 13"/></svg></button></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">3D 赛车 · 双键驾驶</div><h1 id="race-heading">双键飞驰</h1>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>‹</span><span>›</span></div><p>按住左右转弯，松手回正<br><small>漂移、出弯小喷和氮气自动触发</small></p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10" hidden>${'<span></span>'.repeat(10)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
@@ -97,6 +97,7 @@ function display(next) {
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && !!career.objectiveLabel(g));$('held-item').hidden = !racing || career.stage.mode !== 'item';
+  if (next !== 'race') $('knockout').hidden = true;
   for (const button of root.querySelectorAll('[data-race-direction]')) button.disabled = next !== 'race';
   if (next === 'paused') { $('heading').textContent = '休息一下'; $('quality').value = g.settings.quality; $('sound').textContent = soundEnabled ? '声音：开' : '声音：关'; $('sound').setAttribute('aria-pressed', String(soundEnabled)); $('note').textContent = '已松开所有按键，准备好再继续'; }
 }
@@ -320,6 +321,18 @@ async function boot() {
         }
         const goal = career.objectiveLabel(g);
         if ($('live-goal').textContent !== goal) $('live-goal').textContent = goal;
+        const knockout = career.eliminationCue(g);
+        $('knockout').hidden = !knockout;
+        if (knockout) {
+          $('knockout').dataset.near = String(knockout.near);
+          $('knockout').dataset.danger = String(knockout.atRisk && knockout.near);
+          $('knockout-fill').style.width = knockout.fraction * 100 + '%';
+          $('knockout-meter').setAttribute('aria-valuenow', String(Math.round(knockout.fraction * 100)));
+          $('knockout-meter').setAttribute('aria-valuetext', `第 ${knockout.round} 次淘汰还剩 ${knockout.remaining} 米，第 ${knockout.place}/${knockout.count} 名`);
+          [...$('field').children].forEach((slot, i) => {
+            slot.hidden = i >= knockout.count;slot.classList.toggle('me', i + 1 === knockout.place);slot.classList.toggle('last', i + 1 === knockout.count);
+          });
+        }
         const held = g.player.items?.[0];
         $('held-item').hidden = !g.itemMode || !held;
         if (held) {

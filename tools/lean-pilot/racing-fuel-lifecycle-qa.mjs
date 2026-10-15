@@ -126,3 +126,15 @@ test('V3 neutral steering fill preserves visibility of peripheral rivals while k
   assert.ok(alpha <= .10, style.color);
   assert.ok(style.width >= 84);
 });
+test('V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge', async t => {
+  const page = await setup(t); await ready(page);
+  const style = await page.evaluate(() => {
+    const boost = document.createElement('div'); boost.id = 'vignette'; boost.style.opacity = '1';
+    const hit = document.createElement('div'); hit.id = 'hitflash'; hit.style.opacity = '1';
+    document.body.append(boost, hit);
+    return { boost: getComputedStyle(boost).display, hit: getComputedStyle(hit).backgroundColor, edge: getComputedStyle(hit).boxShadow };
+  });
+  assert.equal(style.boost, 'none');
+  assert.equal(style.hit, 'rgba(0, 0, 0, 0)');
+  assert.match(style.edge, /inset/u);
+});

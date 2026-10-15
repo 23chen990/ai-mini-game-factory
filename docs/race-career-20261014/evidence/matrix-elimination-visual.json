@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "elimination HUD"
+    ],
+    "lifecycleStateBranches": [
+      "approaching gate/safe",
+      "approaching gate/last place",
+      "completed two gates"
+    ],
+    "rendererPaths": [
+      "native truth → V3 DOM HUD"
+    ],
+    "viewports": [
+      {
+        "label": "mobile landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "knockout-0",
+      "objectType": "elimination HUD",
+      "lifecycleStateBranch": "approaching gate/safe",
+      "rendererPath": "native truth → V3 DOM HUD",
+      "viewport": {
+        "label": "mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Glanceable position and urgency independent of small text",
+      "observed": "Current warning only yellow small text",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/perceptual-build15.json",
+          "sha256": "3ed843a4f6cb7c40203c812d70625ab5599063feebc452a4890e0e7838ea4a98",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt15/12-elimination.png",
+          "sha256": "3286e9e0a9ff13f79e518d41852e86cac44849cd967a2d46226eb5c82df80413",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "knockout-1",
+      "objectType": "elimination HUD",
+      "lifecycleStateBranch": "approaching gate/last place",
+      "rendererPath": "native truth → V3 DOM HUD",
+      "viewport": {
+        "label": "mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Glanceable position and urgency independent of small text",
+      "observed": "Needs exact branch natural capture",
+      "evidence": []
+    },
+    {
+      "id": "knockout-2",
+      "objectType": "elimination HUD",
+      "lifecycleStateBranch": "completed two gates",
+      "rendererPath": "native truth → V3 DOM HUD",
+      "viewport": {
+        "label": "mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Glanceable position and urgency independent of small text",
+      "observed": "Needs exact branch natural capture",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "Small-text-only warning fails product perceptual gate"
+  ],
+  "remainingGaps": [
+    "Natural last-place near-deadline branch",
+    "Retest current-build visual shape"
+  ],
+  "createdAt": "2026-10-15T03:16:10.204Z"
+}

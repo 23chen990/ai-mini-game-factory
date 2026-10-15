@@ -1,0 +1,85 @@
+{
+  "expected": {
+    "l": false,
+    "r": true
+  },
+  "result": [
+    {
+      "variant": "end-right",
+      "active": {
+        "l": true,
+        "r": false
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "id": 2,
+          "button": "l",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 3,
+          "button": "r",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 3,
+          "button": "r",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "variant": "end-left",
+      "active": {
+        "l": false,
+        "r": true
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "id": 4,
+          "button": "l",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 5,
+          "button": "r",
+          "trusted": true
+        },
+        {
+          "type": "pointerup",
+          "id": 4,
+          "button": "l",
+          "trusted": true
+        }
+      ]
+    },
+    {
+      "variant": "move-right",
+      "active": {
+        "l": true,
+        "r": true
+      },
+      "events": [
+        {
+          "type": "pointerdown",
+          "id": 6,
+          "button": "l",
+          "trusted": true
+        },
+        {
+          "type": "pointerdown",
+          "id": 7,
+          "button": "r",
+          "trusted": true
+        }
+      ]
+    }
+  ],
+  "scope": "actual trusted CDP input on bare DOM; no game-state mutation",
+  "officialCdpDescription": "https://chromedevtools.github.io/devtools-protocol/tot/Input/#method-dispatchTouchEvent"
+}

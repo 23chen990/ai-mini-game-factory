@@ -51,7 +51,9 @@ try {
   await touch('touchEnd', []); check('long-hold-left-right', 'Trusted touch holds1100ms each, then complete release observed.');
   for (let i = 0; i < 4; i++) { await touch('touchStart', [i % 2 ? right : left]); await page.waitForTimeout(110); await touch('touchEnd', []); }
   await touch('touchStart', [left]); await touch('touchStart', [left, right]); await page.waitForTimeout(180);
-  assert.deepEqual(await pressed(), ['true', 'true']); await touch('touchEnd', [right]); await page.waitForTimeout(120);
+  // This Chromium transport takes the released point for a partial touchEnd;
+  // the bare-DOM trusted-event probe records that left ends and right stays down.
+  assert.deepEqual(await pressed(), ['true', 'true']); await touch('touchEnd', [left]); await page.waitForTimeout(120);
   assert.deepEqual(await pressed(), ['false', 'true']); await touch('touchEnd', []);
   check('rapid-alternation-and-two-finger', 'Four alternating110ms presses; simultaneous left/right and independent finger release observed.');
   await touch('touchStart', [left]); await touch('touchStart', [left, { ...await point('pause'), id: 3 }]); await paused();

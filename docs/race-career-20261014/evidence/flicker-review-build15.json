@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "d022fed7e5f52662a575ae8540f5184124da7f64208d86387985f94ed4f32add",
+  "status": "BLOCKED",
+  "reproduced": false,
+  "observed": [
+    {
+      "finding": "The probe report and all supplied source/evidence hashes match the requested build. The 844x390 WebKit WebGL probe reports quality mid, no resize events, zero context losses, no errors, and an empty flash field across 1,821 animation-frame observations. It used normal start/pause/resume taps in a fresh browser.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-probe-build15/report.json",
+          "sha256": "73f7a7a570e1afdb068f56e26b39a28ff0f40ed93767de78a349c049b9b31eb1"
+        }
+      ]
+    },
+    {
+      "finding": "Paused temporal samples are stable: at probe second 9 the 25-frame luma range is 59.0001–59.0187 (maximum adjacent step 0.0164); at second 14 it is 58.8970–58.9230 (maximum adjacent step 0.0260). The supplied paused captures at9-01 and at14-01 look unchanged.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-probe-build15/temporal-stats.json",
+          "sha256": "b9ba7148dfbc337cdc4749c8dab67bfd38a5e73e8e7d99e4acde107369f48560"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-probe-build15/at9-01.png",
+          "sha256": "dea80bfd5bb018d43b6964844d953f0568fb7db17648cba40e4816c1945d26fc"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-probe-build15/at14-01.png",
+          "sha256": "ca5b5293329bd02d4f2596a07d44ee544f9067dbabe455341ee119dcaf938b20"
+        }
+      ]
+    },
+    {
+      "finding": "The short driving sample at probe second 20 varies from luma 115.90 to 122.12 over 25 frames, but its sequence rises to a broad peak then declines; it does not show frame-to-frame bright/dim alternation. The at20-01 image is a moving race view. The probe's rAF telemetry continued during this period, while screenshot sampling was paused by the probe design.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-probe-build15/temporal-stats.json",
+          "sha256": "b9ba7148dfbc337cdc4749c8dab67bfd38a5e73e8e7d99e4acde107369f48560"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-probe-build15/at20-01.png",
+          "sha256": "756b866ed52134b47713a56c78334d903279d278d7e711ef6c8f936f09d65688"
+        }
+      ]
+    },
+    {
+      "finding": "The bound natural-career video is 844x390 at 25 fps. Its 25:10–25:12 sample contains 50 frames with mean-luma values ranging 128.19–149.11. The inspected frames show the camera moving through a snowy bend onto a straight, changing the visible proportions of dark road, snow, sky, cars, smoke, and boost effects. Luma changes form a broad dip and recovery rather than repeated high/low alternation. A small-boost label is visible near the later recovery, so boost-related treatment is temporally plausible but not isolated from scene motion.",
+      "evidence": [
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-analysis/temporal-sample.json",
+          "sha256": "409ba96347eb8fc14cacbdbb309a2467fdfa35216afe8c5e88c76c5d376df40b"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/natural-career.webm",
+          "sha256": "97647b70cf3996059cda141570dfedd936b4e631fbad28410aa8b9b14298c9fa"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-001.png",
+          "sha256": "b60d2dd1d451708f99f803bcd311ce0a096922181cb672217f08054ea9fa1c15"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-009.png",
+          "sha256": "179eab47221938ffc0476a4ac74bdc9f82a89c461206099a6072e3a85f7e6a7a"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-010.png",
+          "sha256": "b2e280effe46f1dc29988977a11af3ef1bc7c03d3dd9fbfaae1007b141b48e5a"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-028.png",
+          "sha256": "eb46c915799e19a5e29e0aaa7f749f12db9016e76c0390da9d4d82734cf931b6"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-029.png",
+          "sha256": "c208f42ef3c51f36085ad4ccd81cb720f4e5c7571cae1efe7f86f6b6b816247d"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-030.png",
+          "sha256": "e80c9ea05785d12580817baa6cb42035130494c3846dff4e20024087dcbec356"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-034.png",
+          "sha256": "687926489dcf9b55551bea67c65af988ada1672771231385e1c39bac7877d3e4"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-035.png",
+          "sha256": "f3315e93efcdc9a7fdff3eff4fee633b13624cf46b4bd712a7dc2c80b6643915"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-047.png",
+          "sha256": "9f355182b660af9e5b98f24349325afdcf78c6bc787f9b9022bc067fd0650191"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-048.png",
+          "sha256": "34b7c18e9d245865c1ff5ed509e0d3b6e81e5dbc44dd7ccb4dcb088876c4acc6"
+        },
+        {
+          "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/seq-1510-050.png",
+          "sha256": "ed2854dcd1185ea4f94107eb21ffae36789c45e8954a5444084feab34f113f0a"
+        }
+      ]
+    }
+  ],
+  "inferred": [
+    "The bound evidence does not show uncontrolled, periodic global exposure flicker in the inspected intervals. Pause stability and the moving-scene luma trend weigh against that explanation, but do not rule out a different moment or device.",
+    "The closest source-backed candidate for a recurring whole-screen brightness/color pulse is the boost vignette: HUD.update sets opacity to 1 for nitro, 0.8 for small/start/pad boost, and 0 otherwise; the full-screen radial gradients fade over 0.25s. Bloom strength also switches with nitro. These changes can be perceived as brightness pulses when boost states repeatedly begin and end, but this recording does not isolate their effect from camera and scene changes.",
+    "A separate conditional candidate is the red hit flash: HUD.flash raises the overlay to full opacity, then fades it over 0.5s, and main.js calls it when the player is hit by a missile or banana. Repeated hits could create a broad red pulse; the probe observed no active flash, and the sampled career window does not establish a hit-to-pulse correlation.",
+    "Exposure is set once to 0.92. Sky, fog, and lighting are set when a map loads; shadow following is texel-snapped. Shadows can shimmer locally as the camera/player moves, while smoke, skid, item, and boost particles are spatially localized. No evidence points to those paths producing repeated global alternation by themselves."
+  ],
+  "unknown": [
+    "The exact reported alternation was not reproduced. The evidence does not identify the affected device, browser, display settings, or the user-visible moments when brightness changes.",
+    "The 25 fps career recording can miss faster display-level flicker. The live probe recorded animation-frame metadata but did not capture pixels continuously during driving; its driving luma sample is short.",
+    "There is no event-correlated evidence proving whether the perceived pulses align with small boost, nitro, hit flash, or another stage/device condition. No physical Android/iPhone or LIVE-package evidence is included."
+  ],
+  "repairCandidate": {
+    "status": "conditional-not-validated",
+    "candidate": "If a fresh natural-input capture shows the brightness pulse starting/stopping with small boost or nitro, soften or remove the full-screen vignette state change and transition bloom strength instead of switching it abruptly. If it aligns with missile/banana hits, reduce or localize the full-screen red hit flash. Do not choose between these changes until timing is reproduced.",
+    "sourceEvidence": [
+      {
+        "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/hud.js",
+        "sha256": "c827456169543017670391de5f669a913c84008b03339dc115a7a846af04eb3d",
+        "locations": ["lines 213-214", "lines 245-251"]
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/main.js",
+        "sha256": "1004fddbf26c96b97df4a34bc85204716f56d84186a0c269a60dda13427464a6",
+        "locations": ["lines 95-98", "lines 769-772", "lines 1050-1062"]
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/index.html",
+        "sha256": "0bb527cd5fcd38b703f25e8080dd4671213c39c4b8f47b7a13841c97bafa7574",
+        "locations": ["lines 21-24"]
+      },
+      {
+        "path": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-session.mjs",
+        "sha256": "33eb19b01ea3c2f982ca5f389c80ea980baf81db8ebe8476543d48c5658d7200",
+        "locations": ["line 35"]
+      }
+    ]
+  },
+  "extraction": {
+    "sourcePath": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/final-attempt15/natural-career.webm",
+    "sourceSha256": "97647b70cf3996059cda141570dfedd936b4e631fbad28410aa8b9b14298c9fa",
+    "rangeSeconds": [1510, 1512],
+    "fps": 25,
+    "frameCount": 50,
+    "outputDirectory": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/evidence/flicker-independent/",
+    "command": "ffmpeg-mac -ss 00:25:10.000 -i natural-career.webm -frames:v 50 -start_number 1 seq-1510-%03d.png"
+  },
+  "checkedAt": "2026-10-15T03:19:15Z"
+}

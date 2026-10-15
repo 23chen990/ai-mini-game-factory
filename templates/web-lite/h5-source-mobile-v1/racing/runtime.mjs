@@ -172,6 +172,16 @@ export class RacingCareer {
     }
     return null;
   }
+  eliminationCue(game) {
+    if (!this.active || this.stage.kind !== 'elimination' || this.metrics.checkpoints >= 2 || !game?.player) return null;
+    const round = this.metrics.checkpoints, distance = game.track.length * this.stage.laps;
+    const gate = distance * [.35, .70][round], previous = round ? distance * .35 : 0;
+    const leader = Math.max(...game.racers.map(r => r.progress));
+    const remaining = Math.max(0, Math.ceil(gate - leader));
+    return { fraction: Math.max(0, Math.min(1, (leader - previous) / (gate - previous))), remaining,
+      near: remaining <= 400, atRisk: game.standings.at(-1) === game.player,
+      place: game.standings.indexOf(game.player) + 1, count: game.racers.length, round: round + 1 };
+  }
   objectiveLabel(game) {
     if (!this.active || !game) return '';
     const s = this.stage, m = this.metrics;

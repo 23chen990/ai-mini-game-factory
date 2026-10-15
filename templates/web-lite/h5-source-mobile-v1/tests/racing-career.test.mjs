@@ -13,6 +13,21 @@ const game=()=>{
     racers:[p,a,b],standings:[b,a,p],items:null,itemMode:false,scene:{remove(){}},racerAhead(){return a},
     checkRaceEnd(){this.nativeEndCalls=(this.nativeEndCalls||0)+1;},onItemGet(){}};
 };
+test('淘汰可视提示显示真实赛段进度、末位危险；过点和换关清除，不改动比赛',()=>{
+  const c=new RacingCareer(memory()),g=game();c.index=11;c.begin(g);
+  g.racers[2].progress=300;
+  assert.equal(typeof c.eliminationCue,'function');
+  const snapshot=JSON.stringify(g.racers.map(r=>({progress:r.progress,finished:r.finished})));
+  assert.deepEqual(c.eliminationCue(g),{fraction:300/350,remaining:50,near:true,atRisk:true,place:3,count:3,round:1});
+  assert.equal(JSON.stringify(g.racers.map(r=>({progress:r.progress,finished:r.finished}))),snapshot);
+  g.standings=[g.player,g.racers[2],g.racers[1]];
+  assert.equal(c.eliminationCue(g).atRisk,false);
+  c.metrics.checkpoints=1;g.racers[2].progress=400;
+  assert.equal(c.eliminationCue(g).round,2);
+  assert.equal(c.eliminationCue(g).fraction,50/350);
+  c.metrics.checkpoints=2;assert.equal(c.eliminationCue(g),null);
+  c.index=0;assert.equal(c.eliminationCue(g),null);
+});
 test('16 staged challenges use four original layouts and eight distinct objectives',()=>{
   assert.equal(STAGES.length,16);assert.equal(new Set(STAGES.map(s=>s.map)).size,4);
   assert.ok(new Set(STAGES.map(s=>s.kind)).size>=8);assert.ok(STAGES.filter(s=>s.laps>1).length>=12);

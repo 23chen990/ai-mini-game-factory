@@ -1,4 +1,8 @@
 /** Only framebuffer colors/shape, never item coordinates or racer state. */
+export function needsVisibleItemPickup(goal) {
+  const count = goal.match(/已拾取道具 (\d+)\/(\d+)/u);
+  return !!count && Number(count[1]) < Number(count[2]);
+}
 export function earnedResumeOrigin(report, storage, buildHash) {
   if (report.buildHash !== buildHash) throw Error('Cannot resume another build');
   const saved = report.races.at(-1)?.saved;

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Independent current-build12 perceptual FAIL: elimination deadline and risk rely on small text. Add persistent nonflashing visual deadline progress and field/risk affordance using existing true state; preserve all rules.",
+  "classification": [
+    "failure-attribution",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Validated independent perceptual failure on core elimination journey; requires native natural-input retest and independent visual acceptance.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "new elimination mechanics",
+      "racing physics"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Naturally drive current build15 through stage12",
+      "Observe distance386m warning capture",
+      "Independent QA finds no progress shape or danger affordance"
+    ],
+    "observed": [
+      "Rank1/6 and yellow text pill alone carry deadline",
+      "Both safe and last-place branches need visual state"
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/perceptual-build15.json",
+        "sha256": "3ed843a4f6cb7c40203c812d70625ab5599063feebc452a4890e0e7838ea4a98",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt15/12-elimination.png",
+        "sha256": "3286e9e0a9ff13f79e518d41852e86cac44849cd967a2d46226eb5c82df80413",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Persistent shape-based next-elimination progress and field position, red last-place risk when deadline near",
+    "No flashing full-screen cue; no new driving buttons",
+    "No changed thresholds, eliminations, rank or stars",
+    "Exact natural safe and at-risk screenshot evidence on844x390, plus independent perceptual review"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-15T03:16:10.201Z"
+}

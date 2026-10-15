@@ -9,7 +9,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { createRequire } from 'node:module';
-import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish } from './racing-visible-policy.mjs';
+import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup } from './racing-visible-policy.mjs';
 const require = createRequire(import.meta.url), testRequire = createRequire(require.resolve('@playwright/test'));
 const playwrightRequire = createRequire(testRequire.resolve('playwright'));
 const { PNG } = require(path.join(path.dirname(playwrightRequire.resolve('playwright-core/package.json')), 'lib/utilsBundle.js'));
@@ -40,7 +40,9 @@ const browser = await chromium.launch({ headless: process.env.RACE_QA_HEADLESS =
 const context = await browser.newContext({ viewport, isMobile: true, hasTouch: true, deviceScaleFactor: 1,
   ...(resumeStorage ? { storageState: resumeStorage } : {}),
   ...(process.env.RACE_QA_VIDEO === '1' ? { recordVideo: { dir: out, size: viewport } } : {}) });
+const recordingBeforePageMs = Date.now();
 const page = await context.newPage();
+const recordingAfterPageMs = Date.now();
 const cdp = await context.newCDPSession(page);
 const errors = [], races = [], controls = [];
 let startIndex = 0;
@@ -139,12 +141,16 @@ try {
     buttons = await page.evaluate(() => Object.fromEntries(['left', 'right'].map(d => { const r = document.querySelector('#race-' + d).getBoundingClientRect(); return [d, { x: r.x + r.width / 2, y: r.y + r.height / 2 }]; })));
     const trace = [], captures = new Set(); let terminal = null, lastLog = 0;
     const startedAt = Date.now(), deadline = startedAt + 600000;
-    const isItemRace = (await page.locator('#race-stage-tag').textContent()).includes('道具赛');
+    const visibleStageTag = await page.locator('#race-stage-tag').textContent();
+    const isItemRace = visibleStageTag.includes('道具赛');
+    const visibleLookahead = Number(process.env.RACE_QA_LOOKAHEAD ?? (isItemRace && entry.includes('雪地') ? 18 : 21));
     let lastBoxScan = 0, box = null; const visibleMemory = {}; let lastScene = 0, lastPickups = 0;
     console.log(JSON.stringify({ stage: index + 1, entry, status: 'DRIVING' }));
     while (Date.now() < deadline) {
-      const policy = recoverVisibleHeading(await page.evaluate(minimapPolicy, Number(process.env.RACE_QA_LOOKAHEAD ?? 21)), visibleMemory, Date.now());
-      if (isItemRace && Date.now() - lastBoxScan > 350) {
+      const policy = recoverVisibleHeading(await page.evaluate(minimapPolicy, visibleLookahead), visibleMemory, Date.now());
+      const seekBox = isItemRace && needsVisibleItemPickup(await page.locator('#race-live-goal').textContent());
+      if (!seekBox) box = null;
+      if (seekBox && Date.now() - lastBoxScan > 350) {
         lastBoxScan = Date.now();
         box = itemBoxPolicy(PNG.sync.read(await page.screenshot()));
       }
@@ -206,6 +212,7 @@ finally {
   const report = Schema.parse({ schemaVersion: 1, gameId: 'qq-speed', buildHash: build.buildHash, viewport,
     naturalInputsOnly: true, seededCampaign: false, driverPolicy: 'visible minimap, cyan cube pixels and visible wrong-way warning; native state read only for assertions',
     races, errors, passed: races.length === Number(process.env.RACE_QA_STAGES ?? 16) + (Number(process.env.RACE_QA_STAGES ?? 16) === 16 ? 1 : 0) && races.every(r => r.status === 'PASS' && r.actionsFit) && !errors.length, checkedAt: new Date().toISOString() });
+  report.recordingTimebase = { beforePageMs: recordingBeforePageMs, afterPageMs: recordingAfterPageMs, uncertainty: 'Recorder starts during page creation; use visible clock and keep context around trimmed evidence' };
   await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
   const video = page.video(); await context.close(); if (video) await video.saveAs(path.join(out, 'natural-career.webm'));
   await browser.close(); server.close();

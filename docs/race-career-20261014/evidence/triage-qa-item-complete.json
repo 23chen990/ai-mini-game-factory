@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "QA continues steering toward item boxes after visible HUD goal is complete, creating unnecessary collisions in expert snow three-lap race. Actual finish119.62s,4 pickups,25 crashes,rank6; not accepted as success.",
+  "classification": [
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Repair only natural-input test strategy inside existing formal QA retest; no gameplay or acceptance changes.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "native player state as steering input",
+      "old source replacements"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Drive01–14 from fresh browser using normal touches",
+      "Stage15 continues box chasing after HUD3/3",
+      "Inspect post63s box-biased touches and crash increments"
+    ],
+    "observed": [
+      "Actual natural physical finish but failed rank gate",
+      "Visible objective completion is available to a normal player",
+      "No game change or rebuild needed for this QA policy correction"
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt15/report.json",
+        "sha256": "e49a3c5747bd761dba9002bd8fe36958e1228800494734fc1fb5541ee5c5b4ce",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt15/15-trace.json",
+        "sha256": "b48d4751b4f3e94834adc0ae9d5e69f82ff6eb3f92144a36c76c36f8cce4ba0c",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Visible HUD incomplete item count enables box pursuit",
+    "Visible completed count disables box pursuit and follows the visible road",
+    "No native state, pose, rank or completion writes",
+    "Resume only exact current-build earned storage; all rank/objective gates unchanged"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-15T03:05:35.511Z"
+}

@@ -1,12 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { itemBoxPolicy, earnedResumeOrigin, warningVisible, recoverVisibleHeading, qualifiedVisibleFinish } from '../racing-visible-policy.mjs';
+import { itemBoxPolicy, earnedResumeOrigin, warningVisible, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup } from '../racing-visible-policy.mjs';
 function image(rectangles) {
   const width = 400, height = 200, data = new Uint8Array(width * height * 4);
   for (const [x0, y0, w, h, color] of rectangles) for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) data.set(color, (y * width + x) * 4);
   return { width, height, data };
 }
 const question = (x, y) => [[x + 4, y + 2, 4, 4, [245, 245, 245, 255]], [x + 5, y + 9, 2, 2, [245, 245, 245, 255]]];
+test('box pursuit stops at the visible objective count without reading hidden pickup state', () => {
+  assert.equal(needsVisibleItemPickup('已拾取道具 0/3'), true);
+  assert.equal(needsVisibleItemPickup('已拾取道具 2/3'), true);
+  assert.equal(needsVisibleItemPickup('已拾取道具 3/3'), false);
+  assert.equal(needsVisibleItemPickup('已拾取道具 4/3'), false);
+  assert.equal(needsVisibleItemPickup('弯道超车 2/2'), false);
+});
 test('visible cyan cube chooses an ordinary steering direction; sky and HUD are excluded', () => {
   const sample = image([[250, 85, 12, 12, [90, 205, 255, 255]], ...question(250,85), [290, 5, 25, 25, [90, 205, 255, 255]], [80, 70, 50, 30, [211, 233, 252, 255]]]);
   assert.equal(itemBoxPolicy(sample).direction, 'right');
