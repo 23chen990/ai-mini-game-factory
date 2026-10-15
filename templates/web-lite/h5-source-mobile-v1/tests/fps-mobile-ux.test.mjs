@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -155,4 +155,19 @@ test('AWM opening preserves native 3v3 but leaves a fair player shot window',()=
  assert.equal(holdOpeningTeammateFire(players,'BL',7),2);
  assert.deepEqual(players.map(x=>x.readyAt),[0,20,20,0,0]);
  assert.equal(holdOpeningTeammateFire(players,'BL',Infinity),0);
+});
+
+test('sniper intro searches only authored spawns, rejecting teammate overlap and blocked rays',()=>{
+ const me={pos:{x:-34,y:0.02,z:-6.6},yaw:-Math.PI/2,eyeH:1.6,team:'BL',isPlayer:true};
+ const spawns=[{x:-34,z:-6.6,yaw:-Math.PI/2},{x:-31.2,z:-6.6,yaw:-Math.PI/2}];
+ const teammate={alive:true,team:'BL',pos:{x:-34,z:-6.6}};
+ const nav={idx:()=>1,walkable:k=>k===1};
+ const world={blocked:()=>false,raycast:()=>null};
+ const lane=chooseMobileSniperLane({player:me,spawns,world,nav,actors:[me,teammate],distances:[9]});
+ assert.equal(lane.spawn.x,-31.2);
+ assert.equal(lane.spot.distance,9);
+ assert.equal(chooseMobileSniperLane({player:me,spawns,world:{...world,raycast:()=>({t:3})},
+   nav,actors:[me,teammate],distances:[9]}),null);
+ assert.equal(chooseMobileSniperLane({player:me,spawns,world,nav:{idx:()=>-1,walkable:()=>false},
+   actors:[me],distances:[9]}),null);
 });
