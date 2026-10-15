@@ -10,6 +10,7 @@ on:
       - 'tools/lean-pilot/racing-native-player-qa.mjs'
       - 'tools/lean-pilot/racing-fuel-lifecycle-qa.mjs'
       - 'tools/lean-pilot/racing-career-qa.mjs'
+      - 'tools/lean-pilot/racing-integrated-campaign-audit.mjs'
       - 'tools/lean-pilot/racing-visible-policy.mjs'
       - 'tools/lean-pilot/racing-mobile-experience-qa.mjs'
       - 'tools/lean-pilot/racing-delivery-verify.mjs'
@@ -90,6 +91,15 @@ jobs:
           RACE_QA_DIAGNOSTIC_RACE_SECS: '25'
           RACE_QA_LABEL: 'v32-natural-ci'
         run: node tools/lean-pilot/racing-career-qa.mjs
+      - name: Native 16-stage + daily integrated simulation (not natural gameplay, non-gating)
+        continue-on-error: true
+        timeout-minutes: 11
+        env:
+          RACE_SWEEP_STAGES: '17'
+          RACE_SWEEP_MAX_WALL_MS: '540000'
+        run: |
+          node --check tools/lean-pilot/racing-integrated-campaign-audit.mjs
+          node tools/lean-pilot/racing-integrated-campaign-audit.mjs
       - name: Package playable H5 evidence, hashes and demo ZIP
         if: always()
         shell: bash
