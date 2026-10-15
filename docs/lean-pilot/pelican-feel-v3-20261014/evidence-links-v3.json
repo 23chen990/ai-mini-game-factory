@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "runs/pelican-coast-v2-20261014/workspace",
+  "attempt": 20,
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "pullRequest": "https://github.com/23chen990/ai-mini-game-factory/pull/16",
+  "h5Zip": "https://github.com/23chen990/ai-mini-game-factory/raw/refs/heads/chatgpt/pelican-feel-v3-20261014/docs/lean-pilot/pelican-feel-v3-20261014/release-candidate/pelican-coast-v3-h5-candidate.zip",
+  "chineseReport": "https://github.com/23chen990/ai-mini-game-factory/blob/chatgpt/pelican-feel-v3-20261014/docs/lean-pilot/pelican-feel-v3-20261014/QA_REPORT_ZH.md",
+  "keyMedia": "https://github.com/23chen990/ai-mini-game-factory/tree/chatgpt/pelican-feel-v3-20261014/docs/lean-pilot/pelican-feel-v3-20261014/evidence-media",
+  "draftAssetHub": {
+    "url": "https://github.com/23chen990/ai-mini-game-factory/releases/tag/untagged-187e414b15df0f09cef3",
+    "visibility": "DRAFT; requires repository owner/collaborator access; not a published release or deployment"
+  },
+  "ciTestedSource": {
+    "sha": "d9dfb242ace3424afbd7382ea85702c08930d839",
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38583073297",
+    "rules": 105,
+    "H5Hash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1"
+  },
+  "notes": [
+    "Public branch file links become available when this evidence commit is pushed; verify ZIP SHA before use.",
+    "Draft asset hub contains historical failure archives; they are never current PASS evidence.",
+    "Package-only identity tests add3 to the final local rules total108; H5 bytes unchanged."
+  ]
+}

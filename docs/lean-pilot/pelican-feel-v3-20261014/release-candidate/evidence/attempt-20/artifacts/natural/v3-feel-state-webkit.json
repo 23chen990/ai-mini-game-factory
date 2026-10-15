@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "tap #co-start",
+    "trusted-touch-press [data-action=\"right\"]",
+    "trusted-touch-press [data-action=\"left\"]",
+    "trusted-touch-press [data-action=\"right\"]",
+    "trusted-touch-press [data-action=\"left\"]",
+    "trusted-touch-press [data-action=\"jump\"]",
+    "trusted-touch-press [data-action=\"right\"]",
+    "trusted-touch-press [data-action=\"left\"]",
+    "tap #co-replay"
+  ],
+  "transitions": [
+    {
+      "name": "lane-inertia",
+      "changed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "inertial-turn",
+      "changed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "camera-follow",
+      "changed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "normal-barrier-terminal",
+      "changed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "normal-replay",
+      "changed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    },
+    {
+      "name": "six-state-correlated-running-frames",
+      "changed": true,
+      "evidence": "attempts/attempt-20/feel-state-webkit/report.json"
+    }
+  ],
+  "completion": "terminal",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "attempts/attempt-20/feel-state-webkit/state-900.png",
+    "attempts/attempt-20/feel-state-webkit/state-1300.png",
+    "attempts/attempt-20/feel-state-webkit/state-1500.png",
+    "attempts/attempt-20/feel-state-webkit/state-1750.png",
+    "attempts/attempt-20/feel-state-webkit/state-2480.png",
+    "attempts/attempt-20/feel-state-webkit/state-3200.png",
+    "attempts/attempt-20/feel-state-webkit/terminal.png",
+    "attempts/attempt-20/feel-state-webkit/replay.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "Playwright webkit normal visible touch; actual 90ms presses, six screenshot before/after read-only state brackets, real barrier terminal and replay",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "runtime": "web-lite",
+  "device": {
+    "width": 390,
+    "height": 844,
+    "label": "mobile-portrait"
+  },
+  "seed": "authored-v3-feel",
+  "observedAt": "2026-10-15T03:10:23.153Z"
+}

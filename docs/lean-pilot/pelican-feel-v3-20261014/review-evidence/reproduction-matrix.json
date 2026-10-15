@@ -1,0 +1,1093 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "rider-and-bicycle",
+      "forward-road-and-hazards"
+    ],
+    "lifecycleStateBranches": [
+      "default-start",
+      "running",
+      "pause-resume",
+      "replay"
+    ],
+    "rendererPaths": [
+      "PR10-low-composer",
+      "v2-balanced-composer"
+    ],
+    "viewports": [
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "rider-and-bicycle:default-start:PR10-low-composer:mobile-portrait",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "PR10 default composition and undersampled composer reproduced in desktop WebKit; not a physical-iPhone reproduction.",
+      "evidence": [
+        {
+          "path": "evidence/before-default.png",
+          "sha256": "7f0390f309486e3c1d9ba6952d46af9f569ef5f7e68ad2da4a2a07b1b8be98ca",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:default-start:PR10-low-composer:small-mobile",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:default-start:PR10-low-composer:mobile-landscape",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:default-start:v2-balanced-composer:mobile-portrait",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/390-first-fish.png",
+          "sha256": "5d8758dab34406b28af9f181e44b0d70ee768bec708a87caffa6ef28cc5d3b26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:default-start:v2-balanced-composer:small-mobile",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/360-first-fish.png",
+          "sha256": "a8f70e94a0bb9fa013e46bfc30250ad049442f289d5d4672014ed090e99f638a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:default-start:v2-balanced-composer:mobile-landscape",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/844-first-fish.png",
+          "sha256": "1b08aecb554bceabc3af8e3008597cb4ff55522bbebba580459a7ec9aaa7a904",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:running:PR10-low-composer:mobile-portrait",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:running:PR10-low-composer:small-mobile",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:running:PR10-low-composer:mobile-landscape",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:running:v2-balanced-composer:mobile-portrait",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/390-running.png",
+          "sha256": "66a8a6b06ad47cc179674d530967e8efbd39de03ecb735d6dc9b9c204bf6853a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:running:v2-balanced-composer:small-mobile",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/360-running.png",
+          "sha256": "5b53e227df60376aace9ac2c32de4b67e901237d0a3aec51f779942b587c2395",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:running:v2-balanced-composer:mobile-landscape",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/844-running.png",
+          "sha256": "e608f7957006202f47a733aeae91abfa1a981a7380af587585b344b2e89009c3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:pause-resume:PR10-low-composer:mobile-portrait",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:pause-resume:PR10-low-composer:small-mobile",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:pause-resume:PR10-low-composer:mobile-landscape",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:pause-resume:v2-balanced-composer:mobile-portrait",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/390-resumed.png",
+          "sha256": "5e1c82cbf7c56f16fe01fe226f3573e84b4199187b5addd85c128fec5775b696",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:pause-resume:v2-balanced-composer:small-mobile",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/360-resumed.png",
+          "sha256": "061a3c6efdf752b189c65d17c146b694129ba7d5d09547dca2d694b9d94c4009",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:pause-resume:v2-balanced-composer:mobile-landscape",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/844-resumed.png",
+          "sha256": "072b08d53063d7aadb31db13ae135f395be607f98108409b1fce507cf78191f0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:replay:PR10-low-composer:mobile-portrait",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:replay:PR10-low-composer:small-mobile",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:replay:PR10-low-composer:mobile-landscape",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "rider-and-bicycle:replay:v2-balanced-composer:mobile-portrait",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/390-replay.png",
+          "sha256": "b7f2f7a01315c85144ddd075e85d066c8491a5e8b89737bfa9a83688eb69d845",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:replay:v2-balanced-composer:small-mobile",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/360-replay.png",
+          "sha256": "edbd41c01c7f1ea3cc073a8219e6bcc80094ec3a72803b2dbe17cfdafe75733d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "rider-and-bicycle:replay:v2-balanced-composer:mobile-landscape",
+      "objectType": "rider-and-bicycle",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/844-replay.png",
+          "sha256": "c7d9dffb818ea5ce74718582f58ed6493387c4255ea3016eb57118ec3e820253",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:default-start:PR10-low-composer:mobile-portrait",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "PR10 default composition and undersampled composer reproduced in desktop WebKit; not a physical-iPhone reproduction.",
+      "evidence": [
+        {
+          "path": "evidence/before-default.png",
+          "sha256": "7f0390f309486e3c1d9ba6952d46af9f569ef5f7e68ad2da4a2a07b1b8be98ca",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:default-start:PR10-low-composer:small-mobile",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:default-start:PR10-low-composer:mobile-landscape",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:default-start:v2-balanced-composer:mobile-portrait",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/390-first-fish.png",
+          "sha256": "5d8758dab34406b28af9f181e44b0d70ee768bec708a87caffa6ef28cc5d3b26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:default-start:v2-balanced-composer:small-mobile",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/360-first-fish.png",
+          "sha256": "a8f70e94a0bb9fa013e46bfc30250ad049442f289d5d4672014ed090e99f638a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:default-start:v2-balanced-composer:mobile-landscape",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "default-start",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/844-first-fish.png",
+          "sha256": "1b08aecb554bceabc3af8e3008597cb4ff55522bbebba580459a7ec9aaa7a904",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:running:PR10-low-composer:mobile-portrait",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:running:PR10-low-composer:small-mobile",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:running:PR10-low-composer:mobile-landscape",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:running:v2-balanced-composer:mobile-portrait",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/390-running.png",
+          "sha256": "66a8a6b06ad47cc179674d530967e8efbd39de03ecb735d6dc9b9c204bf6853a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:running:v2-balanced-composer:small-mobile",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/360-running.png",
+          "sha256": "5b53e227df60376aace9ac2c32de4b67e901237d0a3aec51f779942b587c2395",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:running:v2-balanced-composer:mobile-landscape",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "running",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/844-running.png",
+          "sha256": "e608f7957006202f47a733aeae91abfa1a981a7380af587585b344b2e89009c3",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:pause-resume:PR10-low-composer:mobile-portrait",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:pause-resume:PR10-low-composer:small-mobile",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:pause-resume:PR10-low-composer:mobile-landscape",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:pause-resume:v2-balanced-composer:mobile-portrait",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/390-resumed.png",
+          "sha256": "5e1c82cbf7c56f16fe01fe226f3573e84b4199187b5addd85c128fec5775b696",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:pause-resume:v2-balanced-composer:small-mobile",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/360-resumed.png",
+          "sha256": "061a3c6efdf752b189c65d17c146b694129ba7d5d09547dca2d694b9d94c4009",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:pause-resume:v2-balanced-composer:mobile-landscape",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/844-resumed.png",
+          "sha256": "072b08d53063d7aadb31db13ae135f395be607f98108409b1fce507cf78191f0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:replay:PR10-low-composer:mobile-portrait",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:replay:PR10-low-composer:small-mobile",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:replay:PR10-low-composer:mobile-landscape",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "PR10-low-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Await exact branch runtime capture",
+      "evidence": []
+    },
+    {
+      "id": "forward-road-and-hazards:replay:v2-balanced-composer:mobile-portrait",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/390-replay.png",
+          "sha256": "b7f2f7a01315c85144ddd075e85d066c8491a5e8b89737bfa9a83688eb69d845",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:replay:v2-balanced-composer:small-mobile",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/360-replay.png",
+          "sha256": "edbd41c01c7f1ea3cc073a8219e6bcc80094ec3a72803b2dbe17cfdafe75733d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "forward-road-and-hazards:replay:v2-balanced-composer:mobile-landscape",
+      "objectType": "forward-road-and-hazards",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "v2-balanced-composer",
+      "viewport": {
+        "label": "mobile-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Clear player and road, stable follow composition, correct render resolution",
+      "observed": "Exact current-build natural branch captured and independently reviewed on this viewport.",
+      "evidence": [
+        {
+          "path": "perceptual-qa-report.json",
+          "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-5/visual/844-replay.png",
+          "sha256": "c7d9dffb818ea5ce74718582f58ed6493387c4255ea3016eb57118ec3e820253",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [],
+  "remainingGaps": [
+    "Physical iPhone/low-end hardware image quality, performance and thermal behavior NOT_RUN.",
+    "Uncaptured baseline sibling cells are historical diagnostics, not passing v2 evidence."
+  ],
+  "createdAt": "2026-10-14T03:14:48.335Z"
+}

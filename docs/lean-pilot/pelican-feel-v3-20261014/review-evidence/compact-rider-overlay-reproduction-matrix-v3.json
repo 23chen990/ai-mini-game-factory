@@ -1,0 +1,953 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "native-rider-and-mastery",
+      "primary-goals-and-warning-radar",
+      "touch-buttons",
+      "ready-route-rows"
+    ],
+    "lifecycleStateBranches": [
+      "first-running",
+      "reverse-jump",
+      "pause-resume",
+      "replay",
+      "pedestrian-stun-recovery",
+      "ready-route-selection"
+    ],
+    "rendererPaths": [
+      "webkit-metal-DPR3",
+      "chromium-metal-DPR3"
+    ],
+    "viewports": [
+      {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "native-rider-and-mastery:first-running:webkit-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "first-running",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "REPRODUCED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Current18 fullframe pixels show HUD torso overlap; readonly DOM probe rejects instrument-area constraints",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:first-running:chromium-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "first-running",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "REPRODUCED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Current18 fullframe pixels show HUD torso overlap; readonly DOM probe rejects instrument-area constraints",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:reverse-jump:webkit-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:reverse-jump:chromium-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:pause-resume:webkit-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:pause-resume:chromium-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:replay:webkit-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:replay:chromium-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:pedestrian-stun-recovery:webkit-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "native-rider-and-mastery:pedestrian-stun-recovery:chromium-metal-DPR3",
+      "objectType": "native-rider-and-mastery",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:first-running:webkit-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "first-running",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:first-running:chromium-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "first-running",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:reverse-jump:webkit-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:reverse-jump:chromium-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:pause-resume:webkit-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:pause-resume:chromium-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:replay:webkit-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:replay:chromium-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:pedestrian-stun-recovery:webkit-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "primary-goals-and-warning-radar:pedestrian-stun-recovery:chromium-metal-DPR3",
+      "objectType": "primary-goals-and-warning-radar",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:first-running:webkit-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "first-running",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:first-running:chromium-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "first-running",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:reverse-jump:webkit-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:reverse-jump:chromium-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "reverse-jump",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:pause-resume:webkit-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:pause-resume:chromium-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:replay:webkit-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:replay:chromium-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:pedestrian-stun-recovery:webkit-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "touch-buttons:pedestrian-stun-recovery:chromium-metal-DPR3",
+      "objectType": "touch-buttons",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Clear native rider, all five readable mastery criteria and primary goals/radar; normal touch only",
+      "observed": "Exact rebuilt branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "ready-route-rows:ready-route-selection:webkit-metal-DPR3",
+      "objectType": "ready-route-rows",
+      "lifecycleStateBranch": "ready-route-selection",
+      "rendererPath": "webkit-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "REPRODUCED",
+      "expected": "Row title/metrics/mastery fit in own variable-height card and adjacent rows do not overlap; CTA stays reachable",
+      "observed": "Exact19 natural ready-menu probe and old18 fullpixels show inherited fixed-height overflow",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/compact-probe-attempt19/report.json",
+          "sha256": "dbd3d9e0ba29dd631f70ea2c71fb633efdd6e4a7a62b569e9a419d426bb4da09",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "ready-route-rows:ready-route-selection:chromium-metal-DPR3",
+      "objectType": "ready-route-rows",
+      "lifecycleStateBranch": "ready-route-selection",
+      "rendererPath": "chromium-metal-DPR3",
+      "viewport": {
+        "label": "compact-mobile",
+        "width": 320,
+        "height": 568
+      },
+      "status": "BLOCKED",
+      "expected": "Row title/metrics/mastery fit in own variable-height card and adjacent rows do not overlap; CTA stays reachable",
+      "observed": "Exact updated Chromium menu branch retest pending",
+      "evidence": [
+        {
+          "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+          "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+          "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/compact-probe-attempt19/report.json",
+          "sha256": "dbd3d9e0ba29dd631f70ea2c71fb633efdd6e4a7a62b569e9a419d426bb4da09",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Independent QA observed actual320×568 RUNNING mastery HUD covering native pelican upper torso. Current18 native head is finite/rendered, but two-row mastery panel sits at body height. Preserve all five criteria and >=12px text; move compact mastery into top instrument area without blocking goals or hazard radar. Source geometry and riding physics stay intact.",
+    "Current19 running probe still rejects primary-goal overlap; new ready-menu branch rejects fixed-height row content overflow. Both kept as failed retest evidence.",
+    "Independent current20 30-case desktop review bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea; source-normal-input screenshots checked before each accepted matrix update. Supplemental Chromium-head and compact-object review will remain separately bound."
+  ],
+  "remainingGaps": [
+    "Physical devices and humanfun stillunavailable",
+    "Current20 desktop coverage was updated only for individually hash-verified exact reviewed branches; unobserved cross-products stay BLOCKED. Physical phones, actual app background and human enjoyment are unverified."
+  ],
+  "createdAt": "2026-10-14T12:48:51.906Z"
+}

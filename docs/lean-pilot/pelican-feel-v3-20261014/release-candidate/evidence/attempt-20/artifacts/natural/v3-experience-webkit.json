@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "tap #co-start",
+    "tap [data-action=\"right\"]",
+    "tap [data-action=\"left\"]",
+    "tap [data-action=\"jump\"]",
+    "tap [data-action=\"left\"]",
+    "tap [data-action=\"right\"]",
+    "tap #co-replay",
+    "trusted touch right [140,420] -> [250,420]",
+    "trusted touch left [250,420] -> [140,420]",
+    "trusted touch cancel [140,420] -> [250,420]",
+    "trusted touch up [200,480] -> [200,380]",
+    "tap #co-pause",
+    "tap #co-replay",
+    "tap [data-action=\"right\"]",
+    "tap [data-action=\"left\"]",
+    "tap [data-action=\"left\"]",
+    "tap [data-action=\"right\"]",
+    "tap #co-pause",
+    "tap #co-select",
+    "tap [data-level=\"1\"]",
+    "tap #co-start",
+    "tap [data-action=\"jump\"]",
+    "tap [data-action=\"right\"]",
+    "tap #co-pause",
+    "tap #co-select",
+    "tap #co-start"
+  ],
+  "transitions": [
+    {
+      "name": "lane-inertia",
+      "changed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "jump-choice",
+      "changed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "pedestrian-forecast",
+      "changed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "first-minute-mastery",
+      "changed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    },
+    {
+      "name": "replay-mastery-records",
+      "changed": true,
+      "evidence": "attempts/attempt-20/experience-webkit/report.json"
+    }
+  ],
+  "completion": "settlement",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "attempts/attempt-20/experience-webkit/first-catch.png",
+    "attempts/attempt-20/experience-webkit/left-pedestrian-warning.png",
+    "attempts/attempt-20/experience-webkit/first-gold.png",
+    "attempts/attempt-20/experience-webkit/jump-choice.png",
+    "attempts/attempt-20/experience-webkit/jump-queued.png",
+    "attempts/attempt-20/experience-webkit/earned-jump-prize-cue.png",
+    "attempts/attempt-20/experience-webkit/right-pedestrian-warning.png",
+    "attempts/attempt-20/experience-webkit/jump-gold-earned.png",
+    "attempts/attempt-20/experience-webkit/earned-three-stars.png",
+    "attempts/attempt-20/experience-webkit/swipe-right.png",
+    "attempts/attempt-20/experience-webkit/swipe-left.png",
+    "attempts/attempt-20/experience-webkit/swipe-up.png",
+    "attempts/attempt-20/experience-webkit/up-swipe.png",
+    "attempts/attempt-20/experience-webkit/safe-detour.png",
+    "attempts/attempt-20/experience-webkit/saved-mastery.png",
+    "attempts/attempt-20/experience-webkit/cancel-jump-safe-detour.png",
+    "attempts/attempt-20/experience-webkit/small-phone-route-menu.png",
+    "attempts/attempt-20/experience-webkit/small-phone-running.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "Playwright webkit trusted touch Input protocol and visible buttons, no DOM dispatch",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "runtime": "web-lite",
+  "device": {
+    "width": 390,
+    "height": 844,
+    "label": "mobile-portrait"
+  },
+  "seed": "authored-v3",
+  "observedAt": "2026-10-15T03:10:23.088Z"
+}

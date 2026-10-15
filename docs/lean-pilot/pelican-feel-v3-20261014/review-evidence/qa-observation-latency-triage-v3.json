@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "Actual17 WebKit late jump arrived at224.0025m and collided at224.1925m correctly. Crash DOM read after its650ms window reported modal visible. CI first-fish snapshot count0 at1.839 game seconds was before actual pickup at~1.86; Chromium queued inspection arrived after immediate jump at137.246m. Separate actual event/render-frame observations from slow RPC replies; use existing early input window.",
+  "classification": [
+    "qa-false-positive",
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Cross-engine natural input and native-renderer evidence gap requires formal QA retest; only causally connected QA/readonly pose files modified.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "full conversation",
+      "unrelated factory history"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Read exact object/state renderer report and native pixels",
+      "Compare actual input/event time with the inspection reply",
+      "Retest normal input on the new build with hash-bound copied native joints"
+    ],
+    "observed": [
+      "Actual17 WebKit late jump arrived at224.0025m and collided at224.1925m correctly. Crash DOM read after its650ms window reported modal visible. CI first-fish snapshot count0 at1.839 game seconds was before actual pickup at~1.86; Chromium queued inspection arrived after immediate jump at137.246m. Separate actual event/render-frame observations from slow RPC replies; use existing early input window.",
+      "Current18 Chromium completed campaign and collision checks; safety jump inspection found phase already finished at84.552m before touch. QA send point82 was too late for protocol latency, so use80 while keeping airborne y>.31 and vehicle failure checks unchanged.",
+      "CI38574697404 exact unchanged20 H5: Chromium buffered l1-o1 at17.7492, launched18.2742, cleared18.7992, caught associated prize19.7242. Three real queued samples have feedback opacity0; readonly1800ms wait returned19.7325 after cue/prize window. Driver waited for ephemeral bonus toast, stayed centre and collided with l1-o3 at224.241m. WebKit samebuild22/22; previousCI samebuild both22/22. Currentlocal DPR3 both22/22. Preserve failure; investigate software renderer and driver visibility timing separately from native motion/collision.",
+      "Final artifact preflight reproduced same filename level-3-hazard.png overwrite between qa-all campaign and later safety van approach; both campaign raw reports retain original hashes whose PNGs were overwritten. Core natural completions remain true; exact archived raw artifact is invalid for current packet. Fix capture section directories and rerun full real browser QA, then refresh affected natural bindings and five independent cases.",
+      "Final deliver-v3 preflight rejected current safety/WebKit because it required an engine field that qa.mjs never emitted; existing raw reports identify engine through the exact runtime string. Preserve immutable reports and verify their original runtime identity; reject any conflicting explicit engine or non-natural provenance. Packaging-only fix; H5 bytes unchanged.",
+      "CI38676747703 sourcecd808: Chromium21/22 experience checks, no errors; cancellation touch arrived AFTER real automatic launch. Exact l1-o1: jump-buffered18.0159/135.119m, automatic jump18.2742/137.056m, right lane-input18.3993/137.995m, jumpedBarriers0. The assertion correctly rejected this as a prelaunch cancellation. Both campaigns18/18 and WebKit22/22 pass. Hypothesis: awaiting acknowledgment of the first complete public tap consumes the available0.2583game-second prelaunch window; queue two real taps in protocol order without waiting between acknowledgments, retaining strict no-jump acceptance. No game-rule/buffer or time changes."
+    ],
+    "evidence": [
+      {
+        "path": "evidence/attempt17-webkit-initial-failed/attempts/attempt-17/qa-all-webkit/report.json",
+        "sha256": "c4e336b828b7385216766357057bc05b06f6f392e9df93f4d26cb7acd736212a",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "evidence/v3-engineering/ci-8cb6e7c-failed.log",
+        "sha256": "ec763cc34bfb638c930bb598173a14a7399c190793d70b2cd74f0047e8f809a8",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "evidence/v3-engineering/qa-summary20-initial-media-binding-failed.json",
+        "sha256": "0b1e78a501bb26077ff7f9d3be83cf99957d3dee83788b65d66fd40110cc420c",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Actual first catch event occurs before3 game seconds; wall milliseconds reported separately",
+    "Actual vehicle crash shown in continuous DOM render frames and native pixels before settlement",
+    "Normal early tap clears exact l1-o3 and catches its actual associated prize; no physics or collision changes",
+    "Both CI jobs pass current H5 hash, real earned5stage campaign and all22experience checks",
+    "Normal airborne car collision occurs with y>.31 in both engines; no car collision bypass or barrier-branch substitution",
+    "CI selects existing public efficient graphics preset by normal menu touches, records profile; no speed, time, collision, source, feedback-opacity or assertion weakening. Persistent player-visible gold/mastery counters end reward-lane hold even if slow screenshot misses toast; exact associated prize event still required. Both currentCI engines all22 checks, five earned stages and all rules pass.",
+    "Identical stage screenshot names from campaign/collisions/safety resolve to separate directories; actual current PNG SHA equals each raw report. All five real earned campaign stages and collision retests rerun without save/state injection; updated independent case hashes match.",
+    "Package exact current safety reports whose existing runtime identifies the expected engine, with tests rejecting cross-engine/missing/contradictory identity and state injection. Retain raw BLOCKED background checks and SHA bindings; never rewrite raw report to add engine.",
+    "Retest exact queued l1-o1 cancellation with trusted touch pointerdowns jump thenright BEFORE any launch; require no jump events, exact barrier-cleared jumpedfalse, zero mastery, running and bufferedJumpnull. Fail if second touch is late; never treat zero mastery alone as cancellation. Retain cd808 failure raw ZIPs and screenshots."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T11:15:52.628Z"
+}

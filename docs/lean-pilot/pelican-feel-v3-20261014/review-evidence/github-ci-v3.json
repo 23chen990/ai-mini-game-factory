@@ -1,0 +1,549 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "ci-dedicated-pelican-run-receipt",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "run": {
+    "databaseId": 38583073297,
+    "headSha": "d9dfb242ace3424afbd7382ea85702c08930d839",
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38583073297"
+  },
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "engines": [
+    {
+      "engine": "webkit",
+      "status": "completed",
+      "job": {
+        "databaseId": 115917771733,
+        "name": "pelican-browser (webkit)",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38583073297/job/115917771733",
+        "stepConclusions": {
+          "rulesLintTypecheck": "success",
+          "campaign": "success",
+          "experience": "success",
+          "artifactUpload": "success"
+        }
+      },
+      "artifact": {
+        "id": 11904736138,
+        "name": "pelican-v3-webkit-d9dfb242ace3424afbd7382ea85702c08930d839",
+        "path": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38583073297/artifacts/11904736138",
+        "sha256": "ad138f7f4fde70a9a58db0840949a44367bb423ac74eb1103f2af9b986a94477",
+        "api": {
+          "url": "https://api.github.com/repos/23chen990/ai-mini-game-factory/actions/artifacts/11904736138",
+          "archiveDownloadUrl": "https://api.github.com/repos/23chen990/ai-mini-game-factory/actions/artifacts/11904736138/zip",
+          "digest": "sha256:ad138f7f4fde70a9a58db0840949a44367bb423ac74eb1103f2af9b986a94477",
+          "sizeInBytes": 60720707,
+          "expired": false
+        },
+        "downloadedRawPath": "evidence/ci-d9dfb24/webkit.raw.zip",
+        "downloadedBytes": 60720707,
+        "zipIntegrity": "passed",
+        "apiDigestMatches": true
+      },
+      "rules": {
+        "passed": 105,
+        "total": 105,
+        "failed": 0,
+        "lintPassed": true,
+        "typecheckPassed": true,
+        "logPath": "evidence/ci-d9dfb24/webkit.log",
+        "logSha256": "f3b639c6c4af573259bd101da2fe30e7e3dd4518a1ffc23d6dc410b802e6bed5",
+        "summary": {
+          "total": 105,
+          "passed": 105,
+          "failed": 0
+        }
+      },
+      "campaign": {
+        "passedChecks": 18,
+        "totalChecks": 18,
+        "errors": 0,
+        "passed": true,
+        "normalInputOnly": true,
+        "stateInjection": false,
+        "defaultQuality": {
+          "tier": 2,
+          "pr": 1
+        },
+        "earnedStages": 5,
+        "lockedNewSavePassed": true,
+        "replayChecks": [
+          {
+            "name": "in-memory-replay",
+            "passed": true
+          },
+          {
+            "name": "refresh-keeps-five-unlocked",
+            "passed": true
+          },
+          {
+            "name": "restored-selected-level-label",
+            "passed": true
+          }
+        ],
+        "earnedStageEvidence": [
+          {
+            "level": 1,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 2,
+            "stars": 2,
+            "naturalCheck": "natural-level-1",
+            "completeEvent": true
+          },
+          {
+            "level": 2,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 3,
+            "stars": 2,
+            "naturalCheck": "natural-level-2",
+            "completeEvent": true
+          },
+          {
+            "level": 3,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 4,
+            "stars": 2,
+            "naturalCheck": "natural-level-3",
+            "completeEvent": true
+          },
+          {
+            "level": 4,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 5,
+            "stars": 2,
+            "naturalCheck": "natural-level-4",
+            "completeEvent": true
+          },
+          {
+            "level": 5,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 5,
+            "stars": 2,
+            "naturalCheck": "natural-level-5",
+            "completeEvent": true
+          }
+        ],
+        "reasons": [
+          "complete",
+          "complete",
+          "complete",
+          "complete",
+          "complete"
+        ]
+      },
+      "experience": {
+        "passedChecks": 22,
+        "totalChecks": 22,
+        "errors": 0,
+        "passed": true,
+        "normalInputOnly": true,
+        "stateInjection": false,
+        "explicitCiProfile": {
+          "requested": "efficient",
+          "menuLabel": "画质 · 省电",
+          "tier": 0,
+          "pr": 1,
+          "qualityTapCount": 2,
+          "motionPreference": "reduce",
+          "mediaReducedMotion": true
+        },
+        "preparedJump": {
+          "targetObjectId": "l1-o1",
+          "passed": true,
+          "minimumOpacity": 0.5,
+          "samples": [
+            {
+              "at": 21077,
+              "source": "actual-control-class-mutation",
+              "queued": true,
+              "bufferedJump": "l1-o1",
+              "buttonVisible": true,
+              "feedbackVisible": true,
+              "feedbackOpacity": 1,
+              "feedback": "↟ 已准备起跳"
+            },
+            {
+              "at": 21078,
+              "source": "actual-render-frame",
+              "queued": true,
+              "bufferedJump": "l1-o1",
+              "buttonVisible": true,
+              "feedbackVisible": true,
+              "feedbackOpacity": 1,
+              "feedback": "↟ 已准备起跳"
+            },
+            {
+              "at": 21085,
+              "source": "immediate-read-only-dom",
+              "queued": true,
+              "bufferedJump": "l1-o1",
+              "buttonVisible": true,
+              "feedbackVisible": true,
+              "feedbackOpacity": 1,
+              "feedback": "↟ 已准备起跳"
+            }
+          ],
+          "screenshot": {
+            "path": "evidence/ci-d9dfb24/webkit/attempts/attempt-1/experience-webkit/jump-queued.png",
+            "sha256": "d5722f67c439911d3996b58cd73fc92369916c0df97123748120863b755a84e8",
+            "width": 390,
+            "height": 844,
+            "visuallyInspected": true,
+            "visibleCue": "↟ 已准备起跳"
+          }
+        },
+        "continuousSignals": {
+          "earnedPrizeBetweenClearAndCatch": {
+            "source": "actual-render-frame",
+            "at": 22457,
+            "phase": "running",
+            "clearedBarriers": [
+              "l1-o1"
+            ],
+            "caughtBonusFish": [],
+            "centerLane": {
+              "index": 1,
+              "kind": "fish",
+              "text": "🌟",
+              "visible": true
+            }
+          },
+          "pedestrianWarnings": [
+            {
+              "laneIndex": 0,
+              "source": "actual-render-frame",
+              "phase": "running",
+              "at": 22457,
+              "kind": "pedestrian",
+              "text": "🚶3s",
+              "visible": true,
+              "displayedSeconds": 3
+            },
+            {
+              "laneIndex": 2,
+              "source": "actual-render-frame",
+              "phase": "running",
+              "at": 11253,
+              "kind": "pedestrian",
+              "text": "🚶5s",
+              "visible": true,
+              "displayedSeconds": 5
+            }
+          ]
+        },
+        "driverSourceSha256": "c286fb7fa0ed6a3b7fd766d82057e60285174f81da9c745c31d5a890880e8cab"
+      },
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "codeHash": "c45d85100a4e1bb619c45d0ec28d77e354bf601edcd1ad8262870bdd0cacd91c",
+      "reportBindings": [
+        {
+          "path": "evidence/ci-d9dfb24/webkit/attempts/attempt-1/qa-campaign-webkit/report.json",
+          "sha256": "42fdd69605a4a2a1f980b91caca213f68a166885448868eca561f9ba1877b8e0"
+        },
+        {
+          "path": "evidence/ci-d9dfb24/webkit/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "1d80423cab7e05476c20539b7928e3cf65a42abb04f398cc75da566277bbbad1"
+        }
+      ],
+      "buildBindings": [
+        {
+          "path": "evidence/ci-d9dfb24/webkit/build-receipt.json",
+          "sha256": "3b66cc1c770dcfe8425dc45f1b4dc9dd916f173c7db73214bb3baa56e119901e"
+        },
+        {
+          "path": "evidence/ci-d9dfb24/webkit/attempts/attempt-1/index.html",
+          "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1"
+        }
+      ],
+      "sourceDrivers": {
+        "campaign": "1afb2bdae6098810486054ee4370b6f6da0ce817b7c2f4039640d6df506faa3a",
+        "experience": "c286fb7fa0ed6a3b7fd766d82057e60285174f81da9c745c31d5a890880e8cab"
+      },
+      "conclusion": "success"
+    },
+    {
+      "engine": "chromium",
+      "status": "completed",
+      "job": {
+        "databaseId": 115917772342,
+        "name": "pelican-browser (chromium)",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38583073297/job/115917772342",
+        "stepConclusions": {
+          "rulesLintTypecheck": "success",
+          "campaign": "success",
+          "experience": "success",
+          "artifactUpload": "success"
+        }
+      },
+      "artifact": {
+        "id": 11903569326,
+        "name": "pelican-v3-chromium-d9dfb242ace3424afbd7382ea85702c08930d839",
+        "path": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38583073297/artifacts/11903569326",
+        "sha256": "fb82f5a9621f25788379263f64f032ca1c735e571552153da3da1bc73e7343af",
+        "api": {
+          "url": "https://api.github.com/repos/23chen990/ai-mini-game-factory/actions/artifacts/11903569326",
+          "archiveDownloadUrl": "https://api.github.com/repos/23chen990/ai-mini-game-factory/actions/artifacts/11903569326/zip",
+          "digest": "sha256:fb82f5a9621f25788379263f64f032ca1c735e571552153da3da1bc73e7343af",
+          "sizeInBytes": 62848531,
+          "expired": false
+        },
+        "downloadedRawPath": "evidence/ci-d9dfb24/chromium.raw.zip",
+        "downloadedBytes": 62848531,
+        "zipIntegrity": "passed",
+        "apiDigestMatches": true
+      },
+      "rules": {
+        "passed": 105,
+        "total": 105,
+        "failed": 0,
+        "lintPassed": true,
+        "typecheckPassed": true,
+        "logPath": "evidence/ci-d9dfb24/chromium.log",
+        "logSha256": "369d01326bff257b6b257e5277e04c5f82e184f04856901caec3af4799eb3caa",
+        "summary": {
+          "total": 105,
+          "passed": 105,
+          "failed": 0
+        }
+      },
+      "campaign": {
+        "passedChecks": 18,
+        "totalChecks": 18,
+        "errors": 0,
+        "passed": true,
+        "normalInputOnly": true,
+        "stateInjection": false,
+        "defaultQuality": {
+          "tier": 2,
+          "pr": 1
+        },
+        "earnedStages": 5,
+        "lockedNewSavePassed": true,
+        "replayChecks": [
+          {
+            "name": "in-memory-replay",
+            "passed": true
+          },
+          {
+            "name": "refresh-keeps-five-unlocked",
+            "passed": true
+          },
+          {
+            "name": "restored-selected-level-label",
+            "passed": true
+          }
+        ],
+        "earnedStageEvidence": [
+          {
+            "level": 1,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 2,
+            "stars": 2,
+            "naturalCheck": "natural-level-1",
+            "completeEvent": true
+          },
+          {
+            "level": 2,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 3,
+            "stars": 2,
+            "naturalCheck": "natural-level-2",
+            "completeEvent": true
+          },
+          {
+            "level": 3,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 4,
+            "stars": 2,
+            "naturalCheck": "natural-level-3",
+            "completeEvent": true
+          },
+          {
+            "level": 4,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 5,
+            "stars": 2,
+            "naturalCheck": "natural-level-4",
+            "completeEvent": true
+          },
+          {
+            "level": 5,
+            "phase": "finished",
+            "reason": "complete",
+            "completed": true,
+            "unlocked": 5,
+            "stars": 2,
+            "naturalCheck": "natural-level-5",
+            "completeEvent": true
+          }
+        ],
+        "reasons": [
+          "complete",
+          "complete",
+          "complete",
+          "complete",
+          "complete"
+        ]
+      },
+      "experience": {
+        "passedChecks": 22,
+        "totalChecks": 22,
+        "errors": 0,
+        "passed": true,
+        "normalInputOnly": true,
+        "stateInjection": false,
+        "explicitCiProfile": {
+          "requested": "efficient",
+          "menuLabel": "画质 · 省电",
+          "tier": 0,
+          "pr": 1,
+          "qualityTapCount": 2,
+          "motionPreference": "reduce",
+          "mediaReducedMotion": true
+        },
+        "preparedJump": {
+          "targetObjectId": "l1-o1",
+          "passed": true,
+          "minimumOpacity": 0.5,
+          "samples": [
+            {
+              "at": 24381.400000000023,
+              "source": "actual-control-class-mutation",
+              "queued": true,
+              "bufferedJump": "l1-o1",
+              "buttonVisible": true,
+              "feedbackVisible": true,
+              "feedbackOpacity": 1,
+              "feedback": "↟ 已准备起跳"
+            },
+            {
+              "at": 24381.900000000023,
+              "source": "actual-render-frame",
+              "queued": true,
+              "bufferedJump": "l1-o1",
+              "buttonVisible": true,
+              "feedbackVisible": true,
+              "feedbackOpacity": 1,
+              "feedback": "↟ 已准备起跳"
+            },
+            {
+              "at": 24390.20000000001,
+              "source": "immediate-read-only-dom",
+              "queued": true,
+              "bufferedJump": "l1-o1",
+              "buttonVisible": true,
+              "feedbackVisible": true,
+              "feedbackOpacity": 1,
+              "feedback": "↟ 已准备起跳"
+            }
+          ],
+          "screenshot": {
+            "path": "evidence/ci-d9dfb24/chromium/attempts/attempt-1/experience-chromium/jump-queued.png",
+            "sha256": "7395d010b2dd5bd2b88941b826ab537e9a61785e3884ad24ae4119257f304231",
+            "width": 390,
+            "height": 844,
+            "visuallyInspected": true,
+            "visibleCue": "↟ 已准备起跳"
+          }
+        },
+        "continuousSignals": {
+          "earnedPrizeBetweenClearAndCatch": {
+            "source": "actual-render-frame",
+            "at": 25719.5,
+            "phase": "running",
+            "clearedBarriers": [
+              "l1-o1"
+            ],
+            "caughtBonusFish": [],
+            "centerLane": {
+              "index": 1,
+              "kind": "fish",
+              "text": "🌟",
+              "visible": true
+            }
+          },
+          "pedestrianWarnings": [
+            {
+              "laneIndex": 0,
+              "source": "actual-render-frame",
+              "phase": "running",
+              "at": 25719.5,
+              "kind": "pedestrian",
+              "text": "🚶3s",
+              "visible": true,
+              "displayedSeconds": 3
+            },
+            {
+              "laneIndex": 2,
+              "source": "actual-render-frame",
+              "phase": "running",
+              "at": 13573.299999999988,
+              "kind": "pedestrian",
+              "text": "🚶5s",
+              "visible": true,
+              "displayedSeconds": 5
+            }
+          ]
+        },
+        "driverSourceSha256": "c286fb7fa0ed6a3b7fd766d82057e60285174f81da9c745c31d5a890880e8cab"
+      },
+      "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "codeHash": "c45d85100a4e1bb619c45d0ec28d77e354bf601edcd1ad8262870bdd0cacd91c",
+      "reportBindings": [
+        {
+          "path": "evidence/ci-d9dfb24/chromium/attempts/attempt-1/qa-campaign-chromium/report.json",
+          "sha256": "eeeb2a4db5ee12880632d083a46fc20c36f510361e7d16a4dc59ef4213ecc835"
+        },
+        {
+          "path": "evidence/ci-d9dfb24/chromium/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "245cec8d86f34c6bbd421f7f5ef4b4943f1ba351656f490605bcaf9dd9b32dd9"
+        }
+      ],
+      "buildBindings": [
+        {
+          "path": "evidence/ci-d9dfb24/chromium/build-receipt.json",
+          "sha256": "83325a8bd43a1fb4a7101b0d4ddc07ee34722a5fcf86d9a96315323db52fc5ff"
+        },
+        {
+          "path": "evidence/ci-d9dfb24/chromium/attempts/attempt-1/index.html",
+          "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1"
+        }
+      ],
+      "sourceDrivers": {
+        "campaign": "1afb2bdae6098810486054ee4370b6f6da0ce817b7c2f4039640d6df506faa3a",
+        "experience": "c286fb7fa0ed6a3b7fd766d82057e60285174f81da9c745c31d5a890880e8cab"
+      },
+      "conclusion": "success"
+    }
+  ],
+  "normalization": {
+    "sourceReceiptPath": "evidence/ci-d9dfb24/receipt.json",
+    "sourceReceiptSha256": "1e67cd681173707175cfdb8ea621996d7350ca43945e4695b9a42ee40572bd25",
+    "operation": "Summarize five actual earned-stage objects as count5 and reasons, retaining full evidence; add actual job conclusion."
+  }
+}

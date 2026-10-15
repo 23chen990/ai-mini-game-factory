@@ -1,4 +1,4 @@
-/* global process,console,window,document,requestAnimationFrame */
+/* global process,console,window,document,requestAnimationFrame,performance */
 import {webkit,chromium} from '@playwright/test';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {URL} from 'node:url';
@@ -6,7 +6,8 @@ import path from 'node:path';
 import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
 import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
-import {swipe,tapVisible} from './touch.mjs';
+import {swipe,tapVisible,touchSession} from './touch.mjs';
+import {queueTapSequence} from './touch-sequence.mjs';
 import {observePreparedJump,preparedJumpSeen} from './queued-cue-observation.mjs';
 import {readCompactPresentation,compactPresentationPassed,readRoutePresentation,routePresentationPassed} from './qa-presentation.mjs';
 import {earnedJumpRewardVisible,softwareQualityActions,experienceReportDirectory,experienceMotionPreference,earnedPrizeRouteSeen,pedestrianWarningSeen} from './experience-policy.mjs';
@@ -89,12 +90,17 @@ const detour=await snap();await shot('safe-detour');
  // Start another normal replay to verify that a safe turn cancels an armed jump.
  await tap('[data-level="1"]');await tap('#co-start');
  const pair=await page.evaluate(()=>Object.fromEntries(['jump','right'].map(action=>{const n=document.querySelector(`[data-action="${action}"]`),r=n.getBoundingClientRect();return [action,{x:r.left+r.width/2,y:r.top+r.height/2}];})));
+ const cancellationSession=await touchSession(page,engine);
+ await page.evaluate(()=>{window.__qaCancellationTouches=[];document.querySelector('#coast').addEventListener('pointerdown',e=>{const action=e.target.closest?.('[data-action]')?.dataset.action;if(action)window.__qaCancellationTouches.push({action,isTrusted:e.isTrusted,pointerType:e.pointerType,at:performance.now()});},{capture:true});});
  await page.locator('[data-action="jump"].ready').waitFor({state:'visible',timeout:25000});
- // Consecutive real touches; screenshots and state reads happen after cancelling.
- for(const action of ['jump','right']){const point=pair[action];report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:point,input:'public touchscreen.tap; points measured before queue',normalInputOnly:true});await page.touchscreen.tap(point.x,point.y);}
+ // Queue two ordered real taps without a browser-ACK roundtrip between them.
+ // Screenshots/state reads follow; their actual event order still gates PASS.
+ for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered Input.dispatchTouchEvent; points measured before queue',normalInputOnly:true});
+ await queueTapSequence(cancellationSession,engine,[pair.jump,pair.right]);
  await page.waitForFunction(()=>Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0)>=152,{},{timeout:10000});
  const cancelled=await snap(),armed=cancelled.events.find(e=>e.type==='jump-buffered');
- check('safe-lane-change-cancels-buffer-without-fake-mastery',!!armed&&cancelled.bufferedJump===null&&cancelled.phase==='running'&&!cancelled.events.some(e=>e.type==='jump')&&cancelled.events.some(e=>e.type==='barrier-cleared'&&e.objectId===armed.objectId&&!e.jumped)&&cancelled.jumpedBarriers===0,{armed,cancelled});await shot('cancel-jump-safe-detour');await tap('#co-pause');await tap('#co-select');
+ const cancellationTouches=await page.evaluate(()=>window.__qaCancellationTouches);
+ check('safe-lane-change-cancels-buffer-without-fake-mastery',!!armed&&cancelled.bufferedJump===null&&cancelled.phase==='running'&&!cancelled.events.some(e=>e.type==='jump')&&cancelled.events.some(e=>e.type==='barrier-cleared'&&e.objectId===armed.objectId&&!e.jumped)&&cancelled.jumpedBarriers===0&&cancellationTouches.length===2&&cancellationTouches.every((e,i)=>e.isTrusted&&e.pointerType==='touch'&&e.action===['jump','right'][i]),{armed,cancelled,cancellationTouches});await shot('cancel-jump-safe-detour');await tap('#co-pause');await tap('#co-select');
  // Small-phone acceptance: only normal viewport resize and true taps, no state edits.
  await page.setViewportSize({width:320,height:568});await page.waitForTimeout(250);
  const menu=await page.evaluate(()=>{

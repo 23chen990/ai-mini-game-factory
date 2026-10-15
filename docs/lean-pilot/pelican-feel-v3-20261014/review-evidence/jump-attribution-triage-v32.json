@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "V3.2 credits jumping over every passed barrier when airborne, including obstacles in an unoccupied adjacent lane; true barrier jump mastery is falsely awarded.",
+  "classification": [
+    "core-experience",
+    "failure-attribution",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Collision provenance affects true jump mastery and star settlement; exact object branch plus natural risk campaign required.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "competitor expression",
+      "entire conversation"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Run jump-attribution.node test: side-lane airborne passing centre barrier",
+      "Run simultaneous centre/side barriers: jump only centre collision envelope",
+      "Retest visible exact barrier jump on current natural campaign"
+    ],
+    "observed": [
+      "Side-lane jump increments jumpedBarriers incorrectly",
+      "One overlapping centre barrier and sibling side barrier both credited"
+    ],
+    "evidence": [
+      {
+        "path": "tools/lean-pilot/pelican-v2/runtime/adventure.mjs",
+        "sha256": "0df45271b453660c70af596466dd81f35b55a859d1bf09344b1a040c263ce173",
+        "kind": "factory-source",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Only actual swept same-object barrier overlap cleared above collision height earns jump credit",
+    "An adjacent airborne pass remains a safe detour with jumped=false",
+    "All eleven authored barrier rewards verified in natural current browser journeys"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T08:05:30.506Z"
+}

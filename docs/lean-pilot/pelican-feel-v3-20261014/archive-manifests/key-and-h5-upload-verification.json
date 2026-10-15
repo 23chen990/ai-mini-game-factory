@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "draft": true,
+  "releaseId": 412804280,
+  "assets": [
+    {
+      "name": "pelican-v3-key-recordings-and-comparisons.zip",
+      "bytes": 304187494,
+      "sha256": "abef2a032690c0b90db641c8a4cc3a4f643a13ebb17b2ce4a1fcfb865006a3f1",
+      "GitHubApiVerified": true
+    },
+    {
+      "name": "key-evidence-bundle-manifest.json",
+      "bytes": 52382,
+      "sha256": "31a39539be27355e20b0fc049c53d993a2ca8ed2fd2cb597a2b669cd255eb3a7",
+      "GitHubApiVerified": true
+    },
+    {
+      "name": "pelican-coast-v3-h5-candidate.zip",
+      "bytes": 33457337,
+      "sha256": "97c52ee04fa3bcb29500f1165ccdcfeee64d3d77d50207604fa2952ebee2510f",
+      "GitHubApiVerified": true
+    }
+  ]
+}

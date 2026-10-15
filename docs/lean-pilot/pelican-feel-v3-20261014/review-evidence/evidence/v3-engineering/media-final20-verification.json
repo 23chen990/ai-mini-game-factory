@@ -1,0 +1,11 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "mediaCount": 32,
+  "verifiedMediaBindings": 116,
+  "fullFramePngCount": 120,
+  "mediaManifestSha256": "88cc9ed8564b03c612d6300ab5fdbb4db374d42a79a77b955b0281feb600e40d",
+  "comparisonProvenanceSha256": "a853f81183bdcfdb909b6e1c98010f26d0d6ce09f1329d92eed9b1cc61fe2476",
+  "alignment": "PR10 is side-view with held steering; PR13 and V3 are rear-view with one-lane steering. The report clock begins after #start while video begins at newPage. Every capture offset derived from duration minus final RAF sample is approximate, with unquantified recorder-tail uncertainty; no exact game-time or perfect synchronization claim is made."
+}

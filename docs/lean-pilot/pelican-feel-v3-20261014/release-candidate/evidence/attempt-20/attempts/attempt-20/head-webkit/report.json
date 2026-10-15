@@ -1,0 +1,2788 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "engine": "webkit",
+  "normalInputOnly": true,
+  "stateInjection": false,
+  "reports": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "checks": [
+        {
+          "name": "native-head-visible-after-catch",
+          "passed": true,
+          "evidence": {
+            "white": 1971,
+            "helmet": 413,
+            "width": 1170,
+            "height": 2532,
+            "region": [
+              0.46,
+              0.6,
+              0.54,
+              0.675
+            ],
+            "note": "Native white head/neck plus coral helmet above body. Attempt9 missing-head images have zero helmet pixels at all four sizes. Rear chase does not expose forward-facing orange beak; independent shape/presentation review remains mandatory."
+          }
+        },
+        {
+          "name": "explicit-pause-freezes-clock",
+          "passed": true,
+          "evidence": {
+            "phase": "paused",
+            "level": 1,
+            "distance": 20.4,
+            "elapsed": 2.7199999999999958,
+            "lane": 0,
+            "laneIndex": 1,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8583333333333312,
+                "distance": 13.937499999999988,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1
+              },
+              {
+                "type": "pause",
+                "at": 2.7199999999999958,
+                "distance": 20.4
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        },
+        {
+          "name": "default-natural-terminal",
+          "passed": true,
+          "evidence": {
+            "phase": "finished",
+            "level": 1,
+            "distance": 139.2350000000003,
+            "elapsed": 18.564666666666373,
+            "lane": 1.0437512942210212e-94,
+            "laneIndex": 1,
+            "y": 0,
+            "stun": 0,
+            "count": 6,
+            "gold": 1,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": "barrier",
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8583333333333312,
+                "distance": 13.937499999999988,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1
+              },
+              {
+                "type": "pause",
+                "at": 2.7199999999999958,
+                "distance": 20.4
+              },
+              {
+                "type": "resume",
+                "at": 2.7199999999999958,
+                "distance": 20.4
+              },
+              {
+                "type": "lane-input",
+                "at": 2.771999999999996,
+                "distance": 20.79,
+                "lane": 2
+              },
+              {
+                "type": "lane-input",
+                "at": 3.230999999999995,
+                "distance": 24.23250000000001,
+                "lane": 1
+              },
+              {
+                "type": "jump",
+                "at": 3.275999999999995,
+                "distance": 24.57000000000001
+              },
+              {
+                "type": "land",
+                "at": 3.94766666666666,
+                "distance": 29.607500000000012
+              },
+              {
+                "type": "fish-caught",
+                "at": 3.9903333333333264,
+                "distance": 29.927500000000013,
+                "objectId": "l1-f1",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 2
+              },
+              {
+                "type": "fish-caught",
+                "at": 6.123333333333418,
+                "distance": 45.92499999999977,
+                "objectId": "l1-f2",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 3
+              },
+              {
+                "type": "fish-caught",
+                "at": 8.261333333333472,
+                "distance": 61.95999999999971,
+                "objectId": "l1-f3",
+                "golden": true,
+                "bonus": false,
+                "first": false,
+                "count": 4
+              },
+              {
+                "type": "fish-caught",
+                "at": 10.388333333333382,
+                "distance": 77.91249999999974,
+                "objectId": "l1-f4",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 5
+              },
+              {
+                "type": "obstacle-avoided",
+                "at": 12.139333333333305,
+                "distance": 91.04499999999983,
+                "objectId": "l1-o0",
+                "kind": "pedestrian",
+                "jumped": false,
+                "combo": 0
+              },
+              {
+                "type": "fish-caught",
+                "at": 12.52333333333329,
+                "distance": 93.92499999999987,
+                "objectId": "l1-f5",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 6
+              },
+              {
+                "type": "failed",
+                "at": 18.564666666666373,
+                "distance": 139.2350000000003,
+                "reason": "barrier",
+                "objectId": "l1-o1",
+                "kind": "barrier"
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        },
+        {
+          "name": "unintegrated-ad-never-grants-fake-reward",
+          "passed": true,
+          "evidence": {
+            "adBefore": {
+              "campaign": "{\"version\":2,\"unlocked\":1,\"stars\":[0,0,0,0,0],\"completed\":[false,false,false,false,false],\"best\":[{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0}]}",
+              "reward": "{\"version\":1,\"gameId\":\"pelican-bike\",\"progress\":{\"version\":1,\"best\":10,\"bank\":10,\"rounds\":1,\"nextRoundId\":2,\"lastRewardedRound\":0,\"assistTokens\":0}}"
+            },
+            "adAfter": {
+              "campaign": "{\"version\":2,\"unlocked\":1,\"stars\":[0,0,0,0,0],\"completed\":[false,false,false,false,false],\"best\":[{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0}]}",
+              "reward": "{\"version\":1,\"gameId\":\"pelican-bike\",\"progress\":{\"version\":1,\"best\":10,\"bank\":10,\"rounds\":1,\"nextRoundId\":2,\"lastRewardedRound\":0,\"assistTokens\":0}}"
+            }
+          }
+        },
+        {
+          "name": "exact-head-object-observed-during-natural-pedestrian-stop",
+          "passed": true,
+          "evidence": {
+            "hit": {
+              "phase": "running",
+              "level": 1,
+              "distance": 89.2124999999999,
+              "elapsed": 12.144999999999976,
+              "lane": 1.6999999999999993,
+              "laneIndex": 2,
+              "y": 0,
+              "stun": 2.750000000000001,
+              "count": 0,
+              "gold": 0,
+              "jumpedBarriers": 0,
+              "bufferedJump": null,
+              "reason": null,
+              "events": [
+                {
+                  "type": "lane-input",
+                  "at": 1.0839999999999987,
+                  "distance": 8.129999999999999,
+                  "lane": 0
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.864000000000107,
+                  "distance": 66.4799999999998,
+                  "lane": 1
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.913000000000105,
+                  "distance": 66.8474999999998,
+                  "lane": 2
+                },
+                {
+                  "type": "pedestrian-hit",
+                  "at": 11.894999999999989,
+                  "distance": 89.2124999999999,
+                  "objectId": "l1-o0"
+                }
+              ],
+              "save": {
+                "version": 2,
+                "unlocked": 1,
+                "stars": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "completed": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "best": [
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  }
+                ]
+              },
+              "pausedBySystem": false
+            },
+            "held": {
+              "phase": "running",
+              "level": 1,
+              "distance": 89.2124999999999,
+              "elapsed": 13.144999999999936,
+              "lane": 1.6999999999999993,
+              "laneIndex": 2,
+              "y": 0,
+              "stun": 1.7500000000000029,
+              "count": 0,
+              "gold": 0,
+              "jumpedBarriers": 0,
+              "bufferedJump": null,
+              "reason": null,
+              "events": [
+                {
+                  "type": "lane-input",
+                  "at": 1.0839999999999987,
+                  "distance": 8.129999999999999,
+                  "lane": 0
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.864000000000107,
+                  "distance": 66.4799999999998,
+                  "lane": 1
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.913000000000105,
+                  "distance": 66.8474999999998,
+                  "lane": 2
+                },
+                {
+                  "type": "pedestrian-hit",
+                  "at": 11.894999999999989,
+                  "distance": 89.2124999999999,
+                  "objectId": "l1-o0"
+                }
+              ],
+              "save": {
+                "version": 2,
+                "unlocked": 1,
+                "stars": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "completed": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "best": [
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  }
+                ]
+              },
+              "pausedBySystem": false
+            }
+          }
+        },
+        {
+          "name": "natural-pedestrian-recovery",
+          "passed": true,
+          "evidence": {
+            "phase": "running",
+            "level": 1,
+            "distance": 94.64749999999995,
+            "elapsed": 15.627999999999831,
+            "lane": 1.6999999999999993,
+            "laneIndex": 2,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "lane-input",
+                "at": 1.0839999999999987,
+                "distance": 8.129999999999999,
+                "lane": 0
+              },
+              {
+                "type": "lane-input",
+                "at": 8.864000000000107,
+                "distance": 66.4799999999998,
+                "lane": 1
+              },
+              {
+                "type": "lane-input",
+                "at": 8.913000000000105,
+                "distance": 66.8474999999998,
+                "lane": 2
+              },
+              {
+                "type": "pedestrian-hit",
+                "at": 11.894999999999989,
+                "distance": 89.2124999999999,
+                "objectId": "l1-o0"
+              },
+              {
+                "type": "recovered",
+                "at": 14.903333333333194,
+                "distance": 89.2124999999999
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        }
+      ],
+      "actions": [
+        {
+          "at": "2026-10-14T13:21:24.605Z",
+          "type": "tap",
+          "selector": "#co-start"
+        },
+        {
+          "at": "2026-10-14T13:21:27.339Z",
+          "type": "tap",
+          "selector": "#co-pause"
+        },
+        {
+          "at": "2026-10-14T13:21:27.644Z",
+          "type": "tap",
+          "selector": "#co-resume"
+        },
+        {
+          "at": "2026-10-14T13:21:27.690Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        },
+        {
+          "at": "2026-10-14T13:21:28.147Z",
+          "type": "tap",
+          "selector": "[data-action=\"left\"]"
+        },
+        {
+          "at": "2026-10-14T13:21:28.200Z",
+          "type": "tap",
+          "selector": "[data-action=\"jump\"]"
+        },
+        {
+          "at": "2026-10-14T13:21:44.706Z",
+          "type": "tap",
+          "selector": "#co-ad"
+        },
+        {
+          "at": "2026-10-14T13:21:44.742Z",
+          "type": "tap",
+          "selector": "#co-replay"
+        },
+        {
+          "at": "2026-10-14T13:21:45.830Z",
+          "type": "tap",
+          "selector": "[data-action=\"left\"]"
+        },
+        {
+          "at": "2026-10-14T13:21:53.598Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        },
+        {
+          "at": "2026-10-14T13:21:53.652Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        }
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/head-webkit/390-straight.png",
+          "sha256": "c7814ce8875d7cc98a9d0146ef476ab07d84356528353f90f2d630354224227e"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-fish-catch.png",
+          "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-right-turn.png",
+          "sha256": "e67ceb5b636787230a4cb07c925756a97ed1bf1644f5352f7125504ff14871e8"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-jump-reverse.png",
+          "sha256": "24179a87a3feb036bacdeb75565a6591fbe7ed4fc4f320e21c2e02024ee3d0ad"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-terminal.png",
+          "sha256": "de0f775f08016844f2fab214bb18593b2ec966ff709d700eac7a79df7ed56c84"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-replay.png",
+          "sha256": "0d9e8d13e70bc3111aa4a81db9ac2cbcabc5ae593ec17824bc44c4b398ae8cfd"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-pedestrian-stun.png",
+          "sha256": "d7e016f3c28c3ffafc7d0191992fae6de10b9f50b5cfb4253b45b630062f4830"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-recovery.png",
+          "sha256": "4529587971c95117d4da7c9df58ac46892e821af595e3c98e58f5e761675d170"
+        }
+      ],
+      "errors": [],
+      "video": {
+        "path": "attempts/attempt-20/head-webkit/page@3d929e14a474a8d7332d6726f87e597f.webm",
+        "sha256": "44381595f2c15505878488628b88be481fd880cc0c5621021ead08296bf17e5b"
+      }
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 740
+      },
+      "checks": [
+        {
+          "name": "native-head-visible-after-catch",
+          "passed": true,
+          "evidence": {
+            "white": 1710,
+            "helmet": 331,
+            "width": 1080,
+            "height": 2220,
+            "region": [
+              0.46,
+              0.6,
+              0.54,
+              0.675
+            ],
+            "note": "Native white head/neck plus coral helmet above body. Attempt9 missing-head images have zero helmet pixels at all four sizes. Rear chase does not expose forward-facing orange beak; independent shape/presentation review remains mandatory."
+          }
+        },
+        {
+          "name": "explicit-pause-freezes-clock",
+          "passed": true,
+          "evidence": {
+            "phase": "paused",
+            "level": 1,
+            "distance": 18.98250000000001,
+            "elapsed": 2.530999999999994,
+            "lane": 0,
+            "laneIndex": 1,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8576666666666635,
+                "distance": 13.932499999999992,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1
+              },
+              {
+                "type": "pause",
+                "at": 2.530999999999994,
+                "distance": 18.98250000000001
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        },
+        {
+          "name": "default-natural-terminal",
+          "passed": true,
+          "evidence": {
+            "phase": "finished",
+            "level": 1,
+            "distance": 139.20000000000013,
+            "elapsed": 18.55999999999972,
+            "lane": 3.591042681618538e-96,
+            "laneIndex": 1,
+            "y": 0,
+            "stun": 0,
+            "count": 6,
+            "gold": 1,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": "barrier",
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8576666666666635,
+                "distance": 13.932499999999992,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1
+              },
+              {
+                "type": "pause",
+                "at": 2.530999999999994,
+                "distance": 18.98250000000001
+              },
+              {
+                "type": "resume",
+                "at": 2.530999999999994,
+                "distance": 18.98250000000001
+              },
+              {
+                "type": "lane-input",
+                "at": 2.579999999999994,
+                "distance": 19.35000000000001,
+                "lane": 2
+              },
+              {
+                "type": "lane-input",
+                "at": 2.9929999999999928,
+                "distance": 22.447500000000005,
+                "lane": 1
+              },
+              {
+                "type": "jump",
+                "at": 3.0329999999999924,
+                "distance": 22.747500000000006
+              },
+              {
+                "type": "land",
+                "at": 3.7069999999999905,
+                "distance": 27.802500000000013
+              },
+              {
+                "type": "fish-caught",
+                "at": 3.99099999999999,
+                "distance": 29.93250000000003,
+                "objectId": "l1-f1",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 2
+              },
+              {
+                "type": "fish-caught",
+                "at": 6.123666666666743,
+                "distance": 45.92749999999983,
+                "objectId": "l1-f2",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 3
+              },
+              {
+                "type": "fish-caught",
+                "at": 8.257000000000142,
+                "distance": 61.92749999999976,
+                "objectId": "l1-f3",
+                "golden": true,
+                "bonus": false,
+                "first": false,
+                "count": 4
+              },
+              {
+                "type": "fish-caught",
+                "at": 10.390000000000047,
+                "distance": 77.92499999999981,
+                "objectId": "l1-f4",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 5
+              },
+              {
+                "type": "obstacle-avoided",
+                "at": 12.140666666666633,
+                "distance": 91.05499999999988,
+                "objectId": "l1-o0",
+                "kind": "pedestrian",
+                "jumped": false,
+                "combo": 0
+              },
+              {
+                "type": "fish-caught",
+                "at": 12.522999999999952,
+                "distance": 93.92249999999987,
+                "objectId": "l1-f5",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 6
+              },
+              {
+                "type": "failed",
+                "at": 18.55999999999972,
+                "distance": 139.20000000000013,
+                "reason": "barrier",
+                "objectId": "l1-o1",
+                "kind": "barrier"
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        },
+        {
+          "name": "unintegrated-ad-never-grants-fake-reward",
+          "passed": true,
+          "evidence": {
+            "adBefore": {
+              "campaign": "{\"version\":2,\"unlocked\":1,\"stars\":[0,0,0,0,0],\"completed\":[false,false,false,false,false],\"best\":[{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0}]}",
+              "reward": "{\"version\":1,\"gameId\":\"pelican-bike\",\"progress\":{\"version\":1,\"best\":10,\"bank\":10,\"rounds\":1,\"nextRoundId\":2,\"lastRewardedRound\":0,\"assistTokens\":0}}"
+            },
+            "adAfter": {
+              "campaign": "{\"version\":2,\"unlocked\":1,\"stars\":[0,0,0,0,0],\"completed\":[false,false,false,false,false],\"best\":[{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0}]}",
+              "reward": "{\"version\":1,\"gameId\":\"pelican-bike\",\"progress\":{\"version\":1,\"best\":10,\"bank\":10,\"rounds\":1,\"nextRoundId\":2,\"lastRewardedRound\":0,\"assistTokens\":0}}"
+            }
+          }
+        },
+        {
+          "name": "exact-head-object-observed-during-natural-pedestrian-stop",
+          "passed": true,
+          "evidence": {
+            "hit": {
+              "phase": "running",
+              "level": 1,
+              "distance": 89.22999999999975,
+              "elapsed": 12.137999999999991,
+              "lane": 1.6999999999999993,
+              "laneIndex": 2,
+              "y": 0,
+              "stun": 2.7593333333333345,
+              "count": 0,
+              "gold": 0,
+              "jumpedBarriers": 0,
+              "bufferedJump": null,
+              "reason": null,
+              "events": [
+                {
+                  "type": "lane-input",
+                  "at": 1.0519999999999994,
+                  "distance": 7.889999999999999,
+                  "lane": 0
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.858000000000116,
+                  "distance": 66.43499999999969,
+                  "lane": 1
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.907000000000114,
+                  "distance": 66.80249999999968,
+                  "lane": 2
+                },
+                {
+                  "type": "pedestrian-hit",
+                  "at": 11.897333333333336,
+                  "distance": 89.22999999999975,
+                  "objectId": "l1-o0"
+                }
+              ],
+              "save": {
+                "version": 2,
+                "unlocked": 1,
+                "stars": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "completed": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "best": [
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  }
+                ]
+              },
+              "pausedBySystem": false
+            },
+            "held": {
+              "phase": "running",
+              "level": 1,
+              "distance": 89.22999999999975,
+              "elapsed": 13.139999999999961,
+              "lane": 1.6999999999999993,
+              "laneIndex": 2,
+              "y": 0,
+              "stun": 1.757333333333337,
+              "count": 0,
+              "gold": 0,
+              "jumpedBarriers": 0,
+              "bufferedJump": null,
+              "reason": null,
+              "events": [
+                {
+                  "type": "lane-input",
+                  "at": 1.0519999999999994,
+                  "distance": 7.889999999999999,
+                  "lane": 0
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.858000000000116,
+                  "distance": 66.43499999999969,
+                  "lane": 1
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.907000000000114,
+                  "distance": 66.80249999999968,
+                  "lane": 2
+                },
+                {
+                  "type": "pedestrian-hit",
+                  "at": 11.897333333333336,
+                  "distance": 89.22999999999975,
+                  "objectId": "l1-o0"
+                }
+              ],
+              "save": {
+                "version": 2,
+                "unlocked": 1,
+                "stars": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "completed": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "best": [
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  }
+                ]
+              },
+              "pausedBySystem": false
+            }
+          }
+        },
+        {
+          "name": "natural-pedestrian-recovery",
+          "passed": true,
+          "evidence": {
+            "phase": "running",
+            "level": 1,
+            "distance": 94.41749999999975,
+            "elapsed": 15.589999999999856,
+            "lane": 1.6999999999999993,
+            "laneIndex": 2,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "lane-input",
+                "at": 1.0519999999999994,
+                "distance": 7.889999999999999,
+                "lane": 0
+              },
+              {
+                "type": "lane-input",
+                "at": 8.858000000000116,
+                "distance": 66.43499999999969,
+                "lane": 1
+              },
+              {
+                "type": "lane-input",
+                "at": 8.907000000000114,
+                "distance": 66.80249999999968,
+                "lane": 2
+              },
+              {
+                "type": "pedestrian-hit",
+                "at": 11.897333333333336,
+                "distance": 89.22999999999975,
+                "objectId": "l1-o0"
+              },
+              {
+                "type": "recovered",
+                "at": 14.89833333333322,
+                "distance": 89.22999999999975
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        }
+      ],
+      "actions": [
+        {
+          "at": "2026-10-14T13:22:01.491Z",
+          "type": "tap",
+          "selector": "#co-start"
+        },
+        {
+          "at": "2026-10-14T13:22:04.057Z",
+          "type": "tap",
+          "selector": "#co-pause"
+        },
+        {
+          "at": "2026-10-14T13:22:04.349Z",
+          "type": "tap",
+          "selector": "#co-resume"
+        },
+        {
+          "at": "2026-10-14T13:22:04.394Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        },
+        {
+          "at": "2026-10-14T13:22:04.793Z",
+          "type": "tap",
+          "selector": "[data-action=\"left\"]"
+        },
+        {
+          "at": "2026-10-14T13:22:04.852Z",
+          "type": "tap",
+          "selector": "[data-action=\"jump\"]"
+        },
+        {
+          "at": "2026-10-14T13:22:21.708Z",
+          "type": "tap",
+          "selector": "#co-ad"
+        },
+        {
+          "at": "2026-10-14T13:22:21.751Z",
+          "type": "tap",
+          "selector": "#co-replay"
+        },
+        {
+          "at": "2026-10-14T13:22:22.794Z",
+          "type": "tap",
+          "selector": "[data-action=\"left\"]"
+        },
+        {
+          "at": "2026-10-14T13:22:30.600Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        },
+        {
+          "at": "2026-10-14T13:22:30.652Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        }
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/head-webkit/360-straight.png",
+          "sha256": "ab683819d5c61fbdce34f704172e07585fa9a563afaf90fe8b75838bf0a66c09"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-fish-catch.png",
+          "sha256": "922181b39f37db7fcd2d50fadfc12a631cf476f6526aea3b495479db42684e05"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-right-turn.png",
+          "sha256": "5ec952a07dc31a22859d13b66368394c09f068d412d5753b6767299239da6c8a"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-jump-reverse.png",
+          "sha256": "3b7125ef80815f57bc489115b269617c29aca0aebccf94e378a72c9e2881e218"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-terminal.png",
+          "sha256": "853148a262ed3200923773270a2f20b6ca44b7881bb01319c77b841360a3fd6b"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-replay.png",
+          "sha256": "b5f77d681e65bae9305c654bd6cff9067869726855dcb592e1accd3f00aae465"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-pedestrian-stun.png",
+          "sha256": "f95f598f0757f00c72e34355f63471675a69fa837cd2360ce5a2a30a6fbec4eb"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-recovery.png",
+          "sha256": "53063df05763e00dcd859cb6a83782ff4271d4e38a1276de06403f9c572b490c"
+        }
+      ],
+      "errors": [],
+      "video": {
+        "path": "attempts/attempt-20/head-webkit/page@e00caea0e7875f69dda6ae639b35b981.webm",
+        "sha256": "f096eef313d3779da085df74ad4c0b0b715531f4cacbedf46fd37876506eb2f2"
+      }
+    },
+    {
+      "viewport": {
+        "width": 320,
+        "height": 568
+      },
+      "checks": [
+        {
+          "name": "native-head-visible-after-catch",
+          "passed": true,
+          "evidence": {
+            "white": 1307,
+            "helmet": 235,
+            "width": 960,
+            "height": 1704,
+            "region": [
+              0.46,
+              0.6,
+              0.54,
+              0.675
+            ],
+            "note": "Native white head/neck plus coral helmet above body. Attempt9 missing-head images have zero helmet pixels at all four sizes. Rear chase does not expose forward-facing orange beak; independent shape/presentation review remains mandatory."
+          }
+        },
+        {
+          "name": "explicit-pause-freezes-clock",
+          "passed": true,
+          "evidence": {
+            "phase": "paused",
+            "level": 1,
+            "distance": 18.622499999999995,
+            "elapsed": 2.4829999999999957,
+            "lane": 0,
+            "laneIndex": 1,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8589999999999967,
+                "distance": 13.942499999999988,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1
+              },
+              {
+                "type": "pause",
+                "at": 2.4829999999999957,
+                "distance": 18.622499999999995
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        },
+        {
+          "name": "default-natural-terminal",
+          "passed": true,
+          "evidence": {
+            "phase": "finished",
+            "level": 1,
+            "distance": 139.19750000000016,
+            "elapsed": 18.559666666666416,
+            "lane": 7.132502859088526e-97,
+            "laneIndex": 1,
+            "y": 0,
+            "stun": 0,
+            "count": 6,
+            "gold": 1,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": "barrier",
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8589999999999967,
+                "distance": 13.942499999999988,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1
+              },
+              {
+                "type": "pause",
+                "at": 2.4829999999999957,
+                "distance": 18.622499999999995
+              },
+              {
+                "type": "resume",
+                "at": 2.4829999999999957,
+                "distance": 18.622499999999995
+              },
+              {
+                "type": "lane-input",
+                "at": 2.5359999999999956,
+                "distance": 19.019999999999996,
+                "lane": 2
+              },
+              {
+                "type": "lane-input",
+                "at": 2.880999999999995,
+                "distance": 21.6075,
+                "lane": 1
+              },
+              {
+                "type": "jump",
+                "at": 2.9179999999999944,
+                "distance": 21.885000000000005
+              },
+              {
+                "type": "land",
+                "at": 3.5926666666666573,
+                "distance": 26.945000000000036
+              },
+              {
+                "type": "fish-caught",
+                "at": 3.9926666666666573,
+                "distance": 29.945000000000046,
+                "objectId": "l1-f1",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 2
+              },
+              {
+                "type": "fish-caught",
+                "at": 6.125666666666744,
+                "distance": 45.942499999999846,
+                "objectId": "l1-f2",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 3
+              },
+              {
+                "type": "fish-caught",
+                "at": 8.25966666666681,
+                "distance": 61.94749999999963,
+                "objectId": "l1-f3",
+                "golden": true,
+                "bonus": false,
+                "first": false,
+                "count": 4
+              },
+              {
+                "type": "fish-caught",
+                "at": 10.392666666666734,
+                "distance": 77.94499999999971,
+                "objectId": "l1-f4",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 5
+              },
+              {
+                "type": "obstacle-avoided",
+                "at": 12.138333333333325,
+                "distance": 91.03749999999974,
+                "objectId": "l1-o0",
+                "kind": "pedestrian",
+                "jumped": false,
+                "combo": 0
+              },
+              {
+                "type": "fish-caught",
+                "at": 12.525666666666645,
+                "distance": 93.94249999999975,
+                "objectId": "l1-f5",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 6
+              },
+              {
+                "type": "failed",
+                "at": 18.559666666666416,
+                "distance": 139.19750000000016,
+                "reason": "barrier",
+                "objectId": "l1-o1",
+                "kind": "barrier"
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        },
+        {
+          "name": "unintegrated-ad-never-grants-fake-reward",
+          "passed": true,
+          "evidence": {
+            "adBefore": {
+              "campaign": "{\"version\":2,\"unlocked\":1,\"stars\":[0,0,0,0,0],\"completed\":[false,false,false,false,false],\"best\":[{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0}]}",
+              "reward": "{\"version\":1,\"gameId\":\"pelican-bike\",\"progress\":{\"version\":1,\"best\":10,\"bank\":10,\"rounds\":1,\"nextRoundId\":2,\"lastRewardedRound\":0,\"assistTokens\":0}}"
+            },
+            "adAfter": {
+              "campaign": "{\"version\":2,\"unlocked\":1,\"stars\":[0,0,0,0,0],\"completed\":[false,false,false,false,false],\"best\":[{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0}]}",
+              "reward": "{\"version\":1,\"gameId\":\"pelican-bike\",\"progress\":{\"version\":1,\"best\":10,\"bank\":10,\"rounds\":1,\"nextRoundId\":2,\"lastRewardedRound\":0,\"assistTokens\":0}}"
+            }
+          }
+        },
+        {
+          "name": "exact-head-object-observed-during-natural-pedestrian-stop",
+          "passed": true,
+          "evidence": {
+            "hit": {
+              "phase": "running",
+              "level": 1,
+              "distance": 89.1724999999997,
+              "elapsed": 12.040000000000006,
+              "lane": 1.6999999999999993,
+              "laneIndex": 2,
+              "y": 0,
+              "stun": 2.8496666666666672,
+              "count": 0,
+              "gold": 0,
+              "jumpedBarriers": 0,
+              "bufferedJump": null,
+              "reason": null,
+              "events": [
+                {
+                  "type": "lane-input",
+                  "at": 0.9959999999999992,
+                  "distance": 7.470000000000002,
+                  "lane": 0
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.851000000000138,
+                  "distance": 66.38249999999964,
+                  "lane": 1
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.906000000000137,
+                  "distance": 66.79499999999962,
+                  "lane": 2
+                },
+                {
+                  "type": "pedestrian-hit",
+                  "at": 11.88966666666668,
+                  "distance": 89.1724999999997,
+                  "objectId": "l1-o0"
+                }
+              ],
+              "save": {
+                "version": 2,
+                "unlocked": 1,
+                "stars": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "completed": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "best": [
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  }
+                ]
+              },
+              "pausedBySystem": false
+            },
+            "held": {
+              "phase": "running",
+              "level": 1,
+              "distance": 89.1724999999997,
+              "elapsed": 13.044999999999968,
+              "lane": 1.6999999999999993,
+              "laneIndex": 2,
+              "y": 0,
+              "stun": 1.8446666666666698,
+              "count": 0,
+              "gold": 0,
+              "jumpedBarriers": 0,
+              "bufferedJump": null,
+              "reason": null,
+              "events": [
+                {
+                  "type": "lane-input",
+                  "at": 0.9959999999999992,
+                  "distance": 7.470000000000002,
+                  "lane": 0
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.851000000000138,
+                  "distance": 66.38249999999964,
+                  "lane": 1
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.906000000000137,
+                  "distance": 66.79499999999962,
+                  "lane": 2
+                },
+                {
+                  "type": "pedestrian-hit",
+                  "at": 11.88966666666668,
+                  "distance": 89.1724999999997,
+                  "objectId": "l1-o0"
+                }
+              ],
+              "save": {
+                "version": 2,
+                "unlocked": 1,
+                "stars": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "completed": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "best": [
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  }
+                ]
+              },
+              "pausedBySystem": false
+            }
+          }
+        },
+        {
+          "name": "natural-pedestrian-recovery",
+          "passed": true,
+          "evidence": {
+            "phase": "running",
+            "level": 1,
+            "distance": 93.2449999999997,
+            "elapsed": 15.438999999999876,
+            "lane": 1.6999999999999993,
+            "laneIndex": 2,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "lane-input",
+                "at": 0.9959999999999992,
+                "distance": 7.470000000000002,
+                "lane": 0
+              },
+              {
+                "type": "lane-input",
+                "at": 8.851000000000138,
+                "distance": 66.38249999999964,
+                "lane": 1
+              },
+              {
+                "type": "lane-input",
+                "at": 8.906000000000137,
+                "distance": 66.79499999999962,
+                "lane": 2
+              },
+              {
+                "type": "pedestrian-hit",
+                "at": 11.88966666666668,
+                "distance": 89.1724999999997,
+                "objectId": "l1-o0"
+              },
+              {
+                "type": "recovered",
+                "at": 14.8959999999999,
+                "distance": 89.1724999999997
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        }
+      ],
+      "actions": [
+        {
+          "at": "2026-10-14T13:22:38.513Z",
+          "type": "tap",
+          "selector": "#co-start"
+        },
+        {
+          "at": "2026-10-14T13:22:41.019Z",
+          "type": "tap",
+          "selector": "#co-pause"
+        },
+        {
+          "at": "2026-10-14T13:22:41.323Z",
+          "type": "tap",
+          "selector": "#co-resume"
+        },
+        {
+          "at": "2026-10-14T13:22:41.361Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        },
+        {
+          "at": "2026-10-14T13:22:41.716Z",
+          "type": "tap",
+          "selector": "[data-action=\"left\"]"
+        },
+        {
+          "at": "2026-10-14T13:22:41.755Z",
+          "type": "tap",
+          "selector": "[data-action=\"jump\"]"
+        },
+        {
+          "at": "2026-10-14T13:22:58.543Z",
+          "type": "tap",
+          "selector": "#co-ad"
+        },
+        {
+          "at": "2026-10-14T13:22:58.601Z",
+          "type": "tap",
+          "selector": "#co-replay"
+        },
+        {
+          "at": "2026-10-14T13:22:59.593Z",
+          "type": "tap",
+          "selector": "[data-action=\"left\"]"
+        },
+        {
+          "at": "2026-10-14T13:23:07.447Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        },
+        {
+          "at": "2026-10-14T13:23:07.495Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        }
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/head-webkit/320-straight.png",
+          "sha256": "7a676a02af79e47bafc744bcc412c71cb8ab0ea8546d23913d3d7ed843fe6090"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-fish-catch.png",
+          "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-right-turn.png",
+          "sha256": "64b5eaa5b9a7929c9af9685937e7daa492189ab73dbd1d2419423aff500ae56f"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-jump-reverse.png",
+          "sha256": "32a28c69defa12b562f946aa40f271b7d19fb3d76f3be9f09988a5bbdc4e2348"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-terminal.png",
+          "sha256": "c45e90d555cd924a0cfa8328107b68aaeae06caf0de178a2f24ae3aef14182f0"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-replay.png",
+          "sha256": "079f01d3a15c9c995f05e2ead6abdd3d25133cb0681de74a0689d913f5f02ad0"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-pedestrian-stun.png",
+          "sha256": "5b9f53100ab71085c6a13586a3e07cecc07da151f4342a85bc276e6f506505a1"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-recovery.png",
+          "sha256": "7a8da4695bccc426e9bf0f6b739e065d0a9027643a10611acae6d50a5d1da527"
+        }
+      ],
+      "errors": [],
+      "video": {
+        "path": "attempts/attempt-20/head-webkit/page@e8eb11084a8e6821d21718f6654e07f4.webm",
+        "sha256": "d54df55efaefa6bf479f575e0369397a896888730d3c2d571fef62f443d5921b"
+      }
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "checks": [
+        {
+          "name": "native-head-visible-after-catch",
+          "passed": true,
+          "evidence": {
+            "white": 998,
+            "helmet": 186,
+            "width": 2532,
+            "height": 1170,
+            "region": [
+              0.46,
+              0.6,
+              0.54,
+              0.675
+            ],
+            "note": "Native white head/neck plus coral helmet above body. Attempt9 missing-head images have zero helmet pixels at all four sizes. Rear chase does not expose forward-facing orange beak; independent shape/presentation review remains mandatory."
+          }
+        },
+        {
+          "name": "explicit-pause-freezes-clock",
+          "passed": true,
+          "evidence": {
+            "phase": "paused",
+            "level": 1,
+            "distance": 19.53000000000001,
+            "elapsed": 2.6039999999999965,
+            "lane": 0,
+            "laneIndex": 1,
+            "y": 0,
+            "stun": 0,
+            "count": 1,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8593333333333304,
+                "distance": 13.945000000000006,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1
+              },
+              {
+                "type": "pause",
+                "at": 2.6039999999999965,
+                "distance": 19.53000000000001
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        },
+        {
+          "name": "default-natural-terminal",
+          "passed": true,
+          "evidence": {
+            "phase": "finished",
+            "level": 1,
+            "distance": 139.19500000000008,
+            "elapsed": 18.559333333333075,
+            "lane": 1.429758468361905e-95,
+            "laneIndex": 1,
+            "y": 0,
+            "stun": 0,
+            "count": 6,
+            "gold": 1,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": "barrier",
+            "events": [
+              {
+                "type": "fish-caught",
+                "at": 1.8593333333333304,
+                "distance": 13.945000000000006,
+                "objectId": "l1-f0",
+                "golden": false,
+                "bonus": false,
+                "first": true,
+                "count": 1
+              },
+              {
+                "type": "pause",
+                "at": 2.6039999999999965,
+                "distance": 19.53000000000001
+              },
+              {
+                "type": "resume",
+                "at": 2.6039999999999965,
+                "distance": 19.53000000000001
+              },
+              {
+                "type": "lane-input",
+                "at": 2.6559999999999966,
+                "distance": 19.92000000000001,
+                "lane": 2
+              },
+              {
+                "type": "lane-input",
+                "at": 3.087999999999996,
+                "distance": 23.16000000000002,
+                "lane": 1
+              },
+              {
+                "type": "jump",
+                "at": 3.139999999999996,
+                "distance": 23.550000000000022
+              },
+              {
+                "type": "land",
+                "at": 3.8136666666666614,
+                "distance": 28.60250000000005
+              },
+              {
+                "type": "fish-caught",
+                "at": 3.9883333333333275,
+                "distance": 29.91250000000006,
+                "objectId": "l1-f1",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 2
+              },
+              {
+                "type": "fish-caught",
+                "at": 6.12233333333342,
+                "distance": 45.91749999999987,
+                "objectId": "l1-f2",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 3
+              },
+              {
+                "type": "fish-caught",
+                "at": 8.255333333333487,
+                "distance": 61.91499999999966,
+                "objectId": "l1-f3",
+                "golden": true,
+                "bonus": false,
+                "first": false,
+                "count": 4
+              },
+              {
+                "type": "fish-caught",
+                "at": 10.391333333333383,
+                "distance": 77.93499999999969,
+                "objectId": "l1-f4",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 5
+              },
+              {
+                "type": "obstacle-avoided",
+                "at": 12.133999999999983,
+                "distance": 91.00499999999977,
+                "objectId": "l1-o0",
+                "kind": "pedestrian",
+                "jumped": false,
+                "combo": 0
+              },
+              {
+                "type": "fish-caught",
+                "at": 12.522333333333304,
+                "distance": 93.91749999999976,
+                "objectId": "l1-f5",
+                "golden": false,
+                "bonus": false,
+                "first": false,
+                "count": 6
+              },
+              {
+                "type": "failed",
+                "at": 18.559333333333075,
+                "distance": 139.19500000000008,
+                "reason": "barrier",
+                "objectId": "l1-o1",
+                "kind": "barrier"
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        },
+        {
+          "name": "unintegrated-ad-never-grants-fake-reward",
+          "passed": true,
+          "evidence": {
+            "adBefore": {
+              "campaign": "{\"version\":2,\"unlocked\":1,\"stars\":[0,0,0,0,0],\"completed\":[false,false,false,false,false],\"best\":[{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0}]}",
+              "reward": "{\"version\":1,\"gameId\":\"pelican-bike\",\"progress\":{\"version\":1,\"best\":10,\"bank\":10,\"rounds\":1,\"nextRoundId\":2,\"lastRewardedRound\":0,\"assistTokens\":0}}"
+            },
+            "adAfter": {
+              "campaign": "{\"version\":2,\"unlocked\":1,\"stars\":[0,0,0,0,0],\"completed\":[false,false,false,false,false],\"best\":[{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0},{\"fish\":0,\"gold\":0,\"jumps\":0,\"score\":0}]}",
+              "reward": "{\"version\":1,\"gameId\":\"pelican-bike\",\"progress\":{\"version\":1,\"best\":10,\"bank\":10,\"rounds\":1,\"nextRoundId\":2,\"lastRewardedRound\":0,\"assistTokens\":0}}"
+            }
+          }
+        },
+        {
+          "name": "exact-head-object-observed-during-natural-pedestrian-stop",
+          "passed": true,
+          "evidence": {
+            "hit": {
+              "phase": "running",
+              "level": 1,
+              "distance": 89.20499999999991,
+              "elapsed": 12.110999999999951,
+              "lane": 1.6999999999999993,
+              "laneIndex": 2,
+              "y": 0,
+              "stun": 2.7830000000000004,
+              "count": 0,
+              "gold": 0,
+              "jumpedBarriers": 0,
+              "bufferedJump": null,
+              "reason": null,
+              "events": [
+                {
+                  "type": "lane-input",
+                  "at": 1.0539999999999985,
+                  "distance": 7.905000000000001,
+                  "lane": 0
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.865000000000082,
+                  "distance": 66.48749999999959,
+                  "lane": 1
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.91600000000008,
+                  "distance": 66.86999999999958,
+                  "lane": 2
+                },
+                {
+                  "type": "pedestrian-hit",
+                  "at": 11.893999999999963,
+                  "distance": 89.20499999999991,
+                  "objectId": "l1-o0"
+                }
+              ],
+              "save": {
+                "version": 2,
+                "unlocked": 1,
+                "stars": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "completed": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "best": [
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  }
+                ]
+              },
+              "pausedBySystem": false
+            },
+            "held": {
+              "phase": "running",
+              "level": 1,
+              "distance": 89.20499999999991,
+              "elapsed": 13.127999999999902,
+              "lane": 1.6999999999999993,
+              "laneIndex": 2,
+              "y": 0,
+              "stun": 1.7660000000000042,
+              "count": 0,
+              "gold": 0,
+              "jumpedBarriers": 0,
+              "bufferedJump": null,
+              "reason": null,
+              "events": [
+                {
+                  "type": "lane-input",
+                  "at": 1.0539999999999985,
+                  "distance": 7.905000000000001,
+                  "lane": 0
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.865000000000082,
+                  "distance": 66.48749999999959,
+                  "lane": 1
+                },
+                {
+                  "type": "lane-input",
+                  "at": 8.91600000000008,
+                  "distance": 66.86999999999958,
+                  "lane": 2
+                },
+                {
+                  "type": "pedestrian-hit",
+                  "at": 11.893999999999963,
+                  "distance": 89.20499999999991,
+                  "objectId": "l1-o0"
+                }
+              ],
+              "save": {
+                "version": 2,
+                "unlocked": 1,
+                "stars": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "completed": [
+                  false,
+                  false,
+                  false,
+                  false,
+                  false
+                ],
+                "best": [
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  },
+                  {
+                    "fish": 0,
+                    "gold": 0,
+                    "jumps": 0,
+                    "score": 0
+                  }
+                ]
+              },
+              "pausedBySystem": false
+            }
+          }
+        },
+        {
+          "name": "natural-pedestrian-recovery",
+          "passed": true,
+          "evidence": {
+            "phase": "running",
+            "level": 1,
+            "distance": 94.59999999999995,
+            "elapsed": 15.613999999999779,
+            "lane": 1.6999999999999993,
+            "laneIndex": 2,
+            "y": 0,
+            "stun": 0,
+            "count": 0,
+            "gold": 0,
+            "jumpedBarriers": 0,
+            "bufferedJump": null,
+            "reason": null,
+            "events": [
+              {
+                "type": "lane-input",
+                "at": 1.0539999999999985,
+                "distance": 7.905000000000001,
+                "lane": 0
+              },
+              {
+                "type": "lane-input",
+                "at": 8.865000000000082,
+                "distance": 66.48749999999959,
+                "lane": 1
+              },
+              {
+                "type": "lane-input",
+                "at": 8.91600000000008,
+                "distance": 66.86999999999958,
+                "lane": 2
+              },
+              {
+                "type": "pedestrian-hit",
+                "at": 11.893999999999963,
+                "distance": 89.20499999999991,
+                "objectId": "l1-o0"
+              },
+              {
+                "type": "recovered",
+                "at": 14.894666666666478,
+                "distance": 89.20499999999991
+              }
+            ],
+            "save": {
+              "version": 2,
+              "unlocked": 1,
+              "stars": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "completed": [
+                false,
+                false,
+                false,
+                false,
+                false
+              ],
+              "best": [
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                },
+                {
+                  "fish": 0,
+                  "gold": 0,
+                  "jumps": 0,
+                  "score": 0
+                }
+              ]
+            },
+            "pausedBySystem": false
+          }
+        }
+      ],
+      "actions": [
+        {
+          "at": "2026-10-14T13:23:15.558Z",
+          "type": "tap",
+          "selector": "#co-start"
+        },
+        {
+          "at": "2026-10-14T13:23:18.192Z",
+          "type": "tap",
+          "selector": "#co-pause"
+        },
+        {
+          "at": "2026-10-14T13:23:18.490Z",
+          "type": "tap",
+          "selector": "#co-resume"
+        },
+        {
+          "at": "2026-10-14T13:23:18.535Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        },
+        {
+          "at": "2026-10-14T13:23:18.973Z",
+          "type": "tap",
+          "selector": "[data-action=\"left\"]"
+        },
+        {
+          "at": "2026-10-14T13:23:19.018Z",
+          "type": "tap",
+          "selector": "[data-action=\"jump\"]"
+        },
+        {
+          "at": "2026-10-14T13:23:35.501Z",
+          "type": "tap",
+          "selector": "#co-ad"
+        },
+        {
+          "at": "2026-10-14T13:23:35.535Z",
+          "type": "tap",
+          "selector": "#co-replay"
+        },
+        {
+          "at": "2026-10-14T13:23:36.592Z",
+          "type": "tap",
+          "selector": "[data-action=\"left\"]"
+        },
+        {
+          "at": "2026-10-14T13:23:44.393Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        },
+        {
+          "at": "2026-10-14T13:23:44.450Z",
+          "type": "tap",
+          "selector": "[data-action=\"right\"]"
+        }
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-20/head-webkit/844-straight.png",
+          "sha256": "3ca8d867fd61af33655be19dfa007b957e7146965e0d0a026472aa45491c913c"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-fish-catch.png",
+          "sha256": "665d735de55d150a20d203049db2f51c6f19b34513642ebffeab586b17628ca6"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-right-turn.png",
+          "sha256": "a753f2e770604d66906a3d11ab59ab06e9b644772379d1b6111d8ef97d039a0b"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-jump-reverse.png",
+          "sha256": "e30b2e9aa2c87e79bd17d4640326b96c38389757aa95b94a839edc7890b5a3b4"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-terminal.png",
+          "sha256": "f5d0f4aed0931e0dd1eeabe0fd8cba006ae274da8b74e9dfca5b19d4d47f8c11"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-replay.png",
+          "sha256": "8ac8a62906b87f6685c044cb7cd68f32ba8abfeb85200de068c40e627aa300d9"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-pedestrian-stun.png",
+          "sha256": "2a78fd5324ddbf0dc75eaafc1be2e9fbd5a2f28436e91da2696fdc5abc1896a5"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-recovery.png",
+          "sha256": "5fd2590c0a267551817ad3faf24058328fa5ebdd31679983cdcc9e80e3712417"
+        }
+      ],
+      "errors": [],
+      "video": {
+        "path": "attempts/attempt-20/head-webkit/page@ae8c6d98acc6826dff31af62c9f88de7.webm",
+        "sha256": "1f0be2fff3513a5eae1b1957086516c378866b5cd874912a653ee007eb9ca8b4"
+      }
+    }
+  ],
+  "passed": true
+}

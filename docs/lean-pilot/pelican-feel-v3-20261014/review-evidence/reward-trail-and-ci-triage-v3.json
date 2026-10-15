@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "After true buffered barrier clear, radar leads to side ordinary fish and the natural QA leaves prize lane at143m, misses149m gold, then globally-used jump flag causes second barrier death. Cancellation QA screenshots before turning and lets the queue trigger; no physics bypass is permitted.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Default reward guidance plus natural-input CI across two engines; retain exact engineering, pixel and full journey retest.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "full conversation",
+      "unrelated CI logs"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Read both fdc3 current-hash raw experience events and trusted action timings",
+      "Observe jumped l1-o1@141 then right turn@143 before bonus@149",
+      "Observe missing bonus, no second jump, terminal barrier at224.24",
+      "Compare queued state@134.7 and right action after trigger@137.0 in cancel test"
+    ],
+    "observed": [
+      "Both actual barriers were genuinely jumped at the first target; no prize caught after leaving its lane",
+      "First-route radar prioritized nearer ordinary fish over just-earned barrier prize trail",
+      "Screenshot plus protocol observations delayed the cancellation until airborne"
+    ],
+    "evidence": [
+      {
+        "path": "evidence/ci-fdc3-webkit/attempts/attempt-1/experience-webkit/report.json",
+        "sha256": "8a379f162a2ca2dd1a18de51b1180460ec4635be281f96dc1efff0ef21d87d08",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "evidence/ci-fdc3-chromium/attempts/attempt-1/experience-chromium/report.json",
+        "sha256": "a6814d4cd3378aea502ca863ef77293634fef06dbc5f096c5fcb22657e4a0580",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "evidence/v3-engineering/ci-fdc3-causal-summary.json",
+        "sha256": "f9140cf83b2c8c46c66e14e2c525da3faf7514871946d4657fd057843082338f",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Existing radar highlights golden prize from the exact genuinely jumped barrier until collected/passed; dangerous lane warnings retain priority",
+    "Wrong-lane airborne jump, uncrossed barrier and caught/missed prize cannot receive priority or fake score",
+    "Default-speed normal-touch first route earns associated gold, true three stars and real saved best in both CI browsers",
+    "Immediate queued jump then safe turn cancels, grants zero jump mastery and still clears by detour",
+    "All12 actual prize targets, five natural levels, head and mobile perceptual cases on final build"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T09:54:07.822Z"
+}

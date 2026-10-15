@@ -1,0 +1,57 @@
+{
+  "attempt": 20,
+  "role": "FixerAgent",
+  "route": "formal-fixer",
+  "codeHash": "c45d85100a4e1bb619c45d0ec28d77e354bf601edcd1ad8262870bdd0cacd91c",
+  "hypothesis": "Measured19 compact instrument starts122 before goals124.89; move to130 with all five readable goals preserved. Exactready-menu rows inherit fixed height and multiline text escapes; use intrinsic rows and auto card height. Preserve19 red probe and18 independent stopflags. Native model/camera/riding physics unchanged. Rebuild20 once then full dual natural QA and independent30cases.",
+  "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "threadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+  "contextIntentionallyOmitted": [
+    "unrelated games",
+    "full conversation",
+    "legacy REA logs"
+  ],
+  "inputHashes": [
+    {
+      "path": "levels.mjs",
+      "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e"
+    },
+    {
+      "path": "adventure.mjs",
+      "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c"
+    },
+    {
+      "path": "coast-ui.mjs",
+      "sha256": "02f6d568e4d762a9c8d3402aa711b900026563b4b62368944f187adb6cebaa5a"
+    },
+    {
+      "path": "coast.css",
+      "sha256": "dd3d1ddf4b5445f77d7c2f2179fce5dbb08ec9108cbb35205042d9ca137be348"
+    },
+    {
+      "path": "feel.mjs",
+      "sha256": "748dfc0514d66c29e3df6e8d9b7c528354426fe737a29f8d5da0c63102e1d04e"
+    },
+    {
+      "path": "safety.mjs",
+      "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f"
+    },
+    {
+      "path": "engagement.mjs",
+      "sha256": "f9ed065669b3eca038bd9cc7a238a2900d33f3e4795400beaa18091be2ce4999"
+    },
+    {
+      "path": "pelican.js",
+      "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+    },
+    {
+      "path": "textures.js",
+      "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+    }
+  ],
+  "buildExit": 0,
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "qa": "PENDING",
+  "at": "2026-10-14T12:55:28.688Z"
+}

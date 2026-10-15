@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "Independent QA observed actual320×568 RUNNING mastery HUD covering native pelican upper torso. Current18 native head is finite/rendered, but two-row mastery panel sits at body height. Preserve all five criteria and >=12px text; move compact mastery into top instrument area without blocking goals or hazard radar. Source geometry and riding physics stay intact.",
+  "classification": [
+    "core-experience",
+    "mobile-readability",
+    "visual-hierarchy"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Exact compact viewport perceptual defect in default gameplay; independent QA stopflag requires new H5 and full natural-input retest, not unit-only closure.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "full conversation",
+      "unrelated factory history"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Fresh normal320×568 browser; tap Start",
+      "Read current DOM instrument boxes and capture full pixels",
+      "Compare mastery bar with actual rider and radar/primary goal bounds"
+    ],
+    "observed": [
+      "Independent QA observed actual320×568 RUNNING mastery HUD covering native pelican upper torso. Current18 native head is finite/rendered, but two-row mastery panel sits at body height. Preserve all five criteria and >=12px text; move compact mastery into top instrument area without blocking goals or hazard radar. Source geometry and riding physics stay intact.",
+      "Read-only compact probe fails current18: {\"running\":true,\"buttons\":[{\"x\":14,\"y\":484,\"width\":84.671875,\"height\":66,\"right\":98.671875,\"bottom\":550},{\"x\":117.65625,\"y\":484,\"width\":84.671875,\"height\":66,\"right\":202.328125,\"bottom\":550},{\"x\":221.3125,\"y\":484,\"width\":84.671875,\"height\":66,\"right\":305.984375,\"bottom\":550}],\"bar\":{\"x\":16,\"y\":412.21875,\"width\":288,\"height\":57.78125,\"right\":304,\"bottom\":470},\"font\":12,\"goalFonts\":[12,12,12,12,12],\"goalBottom\":139.484375,\"radarLabel\":{\"x\":0,\"y\":174,\"width\":320,\"height\":14.5,\"right\":320,\"bottom\":188.5},\"controlTop\":484,\"bodyWidth\":320,\"canvas\":{\"x\":0,\"y\":0,\"width\":320,\"height\":568,\"right\":320,\"bottom\":568}}",
+      "Attempt19 targeted runtime: mastery starts122px but goal bottom is124.89px (2.89px overlap); move to130px. Ready route buttons inherit fixed height while multi-line content protrudes outside each card. Exact measured rows: {\"ready\":true,\"rows\":[{\"box\":{\"x\":31,\"y\":251.703125,\"right\":289,\"bottom\":299.703125},\"titleFont\":15,\"contents\":[{\"x\":89,\"y\":242.359375,\"right\":225.796875,\"bottom\":264.109375},{\"x\":89,\"y\":264.109375,\"right\":225.796875,\"bottom\":280.046875},{\"x\":89,\"y\":280.046875,\"right\":225.796875,\"bottom\":309.046875},{\"x\":237.796875,\"y\":266.28125,\"right\":279,\"bottom\":285.125}]},{\"box\":{\"x\":31,\"y\":304.703125,\"right\":289,\"bottom\":352.703125},\"titleFont\":15,\"contents\":[{\"x\":89,\"y\":295.359375,\"right\":267,\"bottom\":317.109375},{\"x\":89,\"y\":317.109375,\"right\":267,\"bottom\":333.046875},{\"x\":89,\"y\":333.046875,\"right\":267,\"bottom\":362.046875},{\"x\":279,\"y\":328.703125,\"right\":279,\"bottom\":328.703125}]},{\"box\":{\"x\":31,\"y\":357.703125,\"right\":289,\"bottom\":405.703125},\"titleFont\":15,\"contents\":[{\"x\":89,\"y\":348.359375,\"right\":267,\"bottom\":370.109375},{\"x\":89,\"y\":370.109375,\"right\":267,\"bottom\":386.046875},{\"x\":89,\"y\":386.046875,\"right\":267,\"bottom\":415.046875},{\"x\":279,\"y\":381.703125,\"right\":279,\"bottom\":381.703125}]},{\"box\":{\"x\":31,\"y\":410.703125,\"right\":289,\"bottom\":458.703125},\"titleFont\":15,\"contents\":[{\"x\":89,\"y\":401.359375,\"right\":267,\"bottom\":423.109375},{\"x\":89,\"y\":423.109375,\"right\":267,\"bottom\":439.046875},{\"x\":89,\"y\":439.046875,\"right\":267,\"bottom\":468.046875},{\"x\":279,\"y\":434.703125,\"right\":279,\"bottom\":434.703125}]},{\"box\":{\"x\":31,\"y\":463.703125,\"right\":289,\"bottom\":511.703125},\"titleFont\":15,\"contents\":[{\"x\":89,\"y\":454.359375,\"right\":267,\"bottom\":476.109375},{\"x\":89,\"y\":476.109375,\"right\":267,\"bottom\":492.046875},{\"x\":89,\"y\":492.046875,\"right\":267,\"bottom\":521.046875},{\"x\":279,\"y\":487.703125,\"right\":279,\"bottom\":487.703125}]}]}"
+    ],
+    "evidence": [
+      {
+        "path": "attempts/attempt-18/experience-webkit/small-phone-running.png",
+        "sha256": "27baec3ae536a2a14a3ed04a65c80b1c1d86070130018a8420860c123e391928",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "attempts/attempt-18/experience-chromium/small-phone-running.png",
+        "sha256": "756e27b3722aab572e58ea2aab2550f81774bab44cb56fa9edcc3d31beb4ca26",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "evidence/v3-engineering/compact-probe-attempt19/report.json",
+        "sha256": "dbd3d9e0ba29dd631f70ea2c71fb633efdd6e4a7a62b569e9a419d426bb4da09",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "All five live star goals remain visible with>=12px text; touch buttons>=54×44",
+    "Mastery lies below primary goals and above hazard radar label on320×568",
+    "Native head/torso remain visible through straight/catch/reverse/jump/stun/replay compact branches in both engines",
+    "Other three viewports preserve camera/controls readability and default natural journey",
+    "Fresh rebuilt hash passes all current95 rules/lint/typecheck, both fullcampaign/risk/head/experience and independent30-case review",
+    "Ready route titles/metrics/mastery fit inside their own variable-height card with no adjacent row overlap; partial bottom row clipped by scroll container is expected, CTA remains reachable"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T12:48:51.903Z"
+}

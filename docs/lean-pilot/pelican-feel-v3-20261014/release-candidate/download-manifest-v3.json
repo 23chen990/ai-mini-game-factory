@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "runId": "pelican-coast-v2-20261014",
+  "attempt": 20,
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "releaseReady": false,
+  "archive": {
+    "path": "pelican-coast-v3-h5-candidate.zip",
+    "sha256": "97c52ee04fa3bcb29500f1165ccdcfeee64d3d77d50207604fa2952ebee2510f",
+    "bytes": 33457337
+  },
+  "packageManifest": {
+    "path": "package-manifest-v3.json",
+    "sha256": "0e69889b1d693b1be4f744a0d757317dbc750f074aa155b9ce9ffdbe0ecfdeec"
+  },
+  "checksums": {
+    "path": "sha256-v3.txt",
+    "sha256": "184aa5a4d534287683141289c26514a6683dd8cc14238845d4f0ae1ed0a3e3b2",
+    "bytes": 953
+  },
+  "copiedEvidenceCount": 57,
+  "copiedEvidenceRoot": "evidence/attempt-20/",
+  "files": [
+    {
+      "path": "pelican-coast-v3-h5-candidate.zip",
+      "sha256": "97c52ee04fa3bcb29500f1165ccdcfeee64d3d77d50207604fa2952ebee2510f",
+      "bytes": 33457337
+    },
+    {
+      "path": "qa-report-v3.json",
+      "sha256": "d9fdd710f3ecde6448d056cc3961b1b29655b11cdd7c81c5b593d4030120129d",
+      "bytes": 109664
+    },
+    {
+      "path": "build-report-v3.json",
+      "sha256": "efc4f9f712584c0bbb328796e57b37b65f6cae505e4f7e9ab69eb82624b4e088",
+      "bytes": 2412
+    },
+    {
+      "path": "qa-summary-v3.json",
+      "sha256": "8e20d6324334f90e51cfc3ad04e2d250ef0006d632e85d60be0b6c28c16f2cd3",
+      "bytes": 81449
+    },
+    {
+      "path": "qa-evidence-manifest-v3.json",
+      "sha256": "f74890b7e3e532cc6e85beae8bc39785e1575bb732d328747a023b2f64e7c6d7",
+      "bytes": 109199
+    },
+    {
+      "path": "build-receipt-v3.json",
+      "sha256": "771082d72c7c4a0c4a4f96d820bc47839582d3f3f0389d033b97eb7e41c85feb",
+      "bytes": 2202
+    },
+    {
+      "path": "index.html",
+      "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "bytes": 1010638
+    },
+    {
+      "path": "LICENSE.three.txt",
+      "sha256": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+      "bytes": 1081
+    },
+    {
+      "path": "platform.json",
+      "sha256": "953af4190ecba1bd827560f36af818ae14b8fc8dbd122feda8f867b1560db20e",
+      "bytes": 212
+    },
+    {
+      "path": "README.zh-CN.md",
+      "sha256": "3761c661110ab92334ad007fbe16ddc2b897a33ab7f80d39a3a2f464a15ba023",
+      "bytes": 5249
+    },
+    {
+      "path": "package-manifest-v3.json",
+      "sha256": "0e69889b1d693b1be4f744a0d757317dbc750f074aa155b9ce9ffdbe0ecfdeec",
+      "bytes": 13341
+    },
+    {
+      "path": "sha256-v3.txt",
+      "sha256": "184aa5a4d534287683141289c26514a6683dd8cc14238845d4f0ae1ed0a3e3b2",
+      "bytes": 953
+    }
+  ],
+  "createdAt": "2026-10-15T03:32:14.050Z"
+}

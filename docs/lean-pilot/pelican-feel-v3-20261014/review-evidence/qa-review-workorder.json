@@ -1,0 +1,463 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "runRoot": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "contract": "product-experience-contract.json",
+  "contractHash": "abffca2b7e44576c96dd5d4e34256ee9b58909aadba6ee86ffc45fb3ec23aa25",
+  "scope": [
+    "Independent pixel review of exact 30 current-build contract cases",
+    "Read natural driver source and raw reports to check no state injection",
+    "Inspect portrait + small portrait + landscape start/running/resume/replay",
+    "Inspect vehicle crash, pedestrian fall/stop/recovery, airborne barrier clearance, all five settlements and saved selection",
+    "V3 exact natural swipes, reverse input, jump gold and safe detour, two crossing forecasts, first-minute fish and earned three stars. Review matched PR10/13/V3 videos/frame strips as comparison evidence, never as a substitute for the completed natural trace.",
+    "Inspect both-engine risk footage/screenshots: exact 12 cleared barriers and associated prize fish, five earned settlements, rain/night visibility, replay; independently review current-build temporal comparison frames."
+  ],
+  "traces": [
+    {
+      "name": "camera-390",
+      "path": "artifacts/natural/camera-390.json",
+      "sha256": "0056f544a84c22d5d29abf759306a3f34762b67f271101739d48d8a03e40b0b1",
+      "raw": "attempts/attempt-20/visual/report.json",
+      "features": [
+        "camera-start",
+        "camera-running",
+        "camera-resume",
+        "camera-replay"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "camera-360",
+      "path": "artifacts/natural/camera-360.json",
+      "sha256": "fa98055f32355adc5595799b7ce1b16af8d84b921d3b2ce79bfad5b946d3a9c4",
+      "raw": "attempts/attempt-20/visual/report.json",
+      "features": [
+        "camera-start",
+        "camera-running",
+        "camera-resume",
+        "camera-replay"
+      ],
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      }
+    },
+    {
+      "name": "camera-320",
+      "path": "artifacts/natural/camera-320.json",
+      "sha256": "fdd70323f239f062ccccf82b9bc8f54e4d39d123f5e349a5546b002eeef4997c",
+      "raw": "attempts/attempt-20/visual/report.json",
+      "features": [
+        "camera-start",
+        "camera-running",
+        "camera-resume",
+        "camera-replay"
+      ],
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      }
+    },
+    {
+      "name": "camera-844",
+      "path": "artifacts/natural/camera-844.json",
+      "sha256": "9d006aa4add19a45f878befd9e261db3ae852c8229b3e545b0cdda14d4f068a8",
+      "raw": "attempts/attempt-20/visual/report.json",
+      "features": [
+        "camera-start",
+        "camera-running",
+        "camera-resume",
+        "camera-replay"
+      ],
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      }
+    },
+    {
+      "name": "campaign",
+      "path": "artifacts/natural/campaign.json",
+      "sha256": "c0d3bd21da040a6ec904fab056c2314bb8a320fa593140b6e7c2ff8aa86a673e",
+      "raw": "attempts/attempt-20/qa-campaign-webkit/report.json",
+      "features": [
+        "five-configured-levels",
+        "unlock-save"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "collisions",
+      "path": "artifacts/natural/collisions.json",
+      "sha256": "a8dc0ea72c7b7c9503386c1816f1eb816458a4b9a430a17330192650b6881065",
+      "raw": "attempts/attempt-20/qa-collisions-webkit/report.json",
+      "features": [
+        "vehicle-impact",
+        "pedestrian-stun",
+        "jump-clearance"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "collisions-and-van",
+      "path": "artifacts/natural/collisions-and-van.json",
+      "sha256": "92e9dfbbab82d6f53c58a0a773a6c77dbe36b84c47fac72fa03d82ff8908945e",
+      "raw": "attempts/attempt-20/qa-all-webkit/report.json",
+      "features": [
+        "vehicle-impact"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-experience-webkit",
+      "path": "artifacts/natural/v3-experience-webkit.json",
+      "sha256": "19f20e081df421cfbe9b0f911f06ca4fe7630dcd1f31ac425693c55819a4e1d1",
+      "raw": "attempts/attempt-20/experience-webkit/report.json",
+      "features": [
+        "lane-inertia",
+        "jump-choice",
+        "pedestrian-forecast",
+        "first-minute-mastery",
+        "replay-mastery-records"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-experience-chromium",
+      "path": "artifacts/natural/v3-experience-chromium.json",
+      "sha256": "f84436810b375bd15ad187f92cc265b50f5fa02f72e19bf89541a9c9b5a17722",
+      "raw": "attempts/attempt-20/experience-chromium/report.json",
+      "features": [
+        "lane-inertia",
+        "jump-choice",
+        "pedestrian-forecast",
+        "first-minute-mastery",
+        "replay-mastery-records"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-feel-state-webkit",
+      "path": "artifacts/natural/v3-feel-state-webkit.json",
+      "sha256": "010432da03053db55f7f9e6779ac1207199ac0fc540f943727a10451d4adb1fe",
+      "raw": "attempts/attempt-20/feel-state-webkit/report.json",
+      "features": [
+        "lane-inertia"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-feel-state-chromium",
+      "path": "artifacts/natural/v3-feel-state-chromium.json",
+      "sha256": "3b221e6c0aa77737228e3a7c62e0b74d1b0f4b2922bf95813ad3e17199e4f2ba",
+      "raw": "attempts/attempt-20/feel-state-chromium/report.json",
+      "features": [
+        "lane-inertia"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-risk-webkit",
+      "path": "artifacts/natural/v3-risk-webkit.json",
+      "sha256": "798e3a487ff5a9e8b95d1d7a71b1127f1645472deccb013f31b434f208c29805",
+      "raw": "attempts/attempt-20/risk-webkit/report.json",
+      "features": [
+        "jump-clearance",
+        "jump-choice",
+        "five-configured-levels",
+        "replay-mastery-records"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-risk-chromium",
+      "path": "artifacts/natural/v3-risk-chromium.json",
+      "sha256": "5ccdc585968273be687d6a9c3630ef0b2f4f4fc356a35aba6468cd4cbe46bca6",
+      "raw": "attempts/attempt-20/risk-chromium/report.json",
+      "features": [
+        "jump-clearance",
+        "jump-choice",
+        "five-configured-levels",
+        "replay-mastery-records"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-head-webkit-390",
+      "path": "artifacts/natural/v3-head-webkit-390.json",
+      "sha256": "178c71ed72f7024cfa4d4f9fdbbc4a8f8f82dbe8e3939b87edd421d8fb185bf9",
+      "raw": "attempts/attempt-20/head-webkit/report.json",
+      "features": [
+        "native-head-visible"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-head-webkit-360",
+      "path": "artifacts/natural/v3-head-webkit-360.json",
+      "sha256": "8d177478be131cfda668242fb881d30b15e6362b184fd6f80214cad6f370f373",
+      "raw": "attempts/attempt-20/head-webkit/report.json",
+      "features": [
+        "native-head-visible"
+      ],
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      }
+    },
+    {
+      "name": "v3-head-webkit-320",
+      "path": "artifacts/natural/v3-head-webkit-320.json",
+      "sha256": "cbf6d8d0083a06546b18531a6498c3f8496ab51d08ab3551107b2c2726eb50e5",
+      "raw": "attempts/attempt-20/head-webkit/report.json",
+      "features": [
+        "native-head-visible"
+      ],
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      }
+    },
+    {
+      "name": "v3-head-webkit-844",
+      "path": "artifacts/natural/v3-head-webkit-844.json",
+      "sha256": "6790dde70275a268e6f104865d1f41a9af36d3063ee84bd1821fb326bc8cfa8c",
+      "raw": "attempts/attempt-20/head-webkit/report.json",
+      "features": [
+        "native-head-visible"
+      ],
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      }
+    },
+    {
+      "name": "v3-head-chromium-390",
+      "path": "artifacts/natural/v3-head-chromium-390.json",
+      "sha256": "b3ab621848ab8f7182be3573b4db7b3d48c362e4755ae98ec092bd29f72f0d99",
+      "raw": "attempts/attempt-20/head-chromium/report.json",
+      "features": [
+        "native-head-visible"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "mobile-portrait"
+      }
+    },
+    {
+      "name": "v3-head-chromium-360",
+      "path": "artifacts/natural/v3-head-chromium-360.json",
+      "sha256": "d69dd6e16eb1ece13c522c6388a383e6d1a1496651b91e7cfa030df125e18e1b",
+      "raw": "attempts/attempt-20/head-chromium/report.json",
+      "features": [
+        "native-head-visible"
+      ],
+      "viewport": {
+        "width": 360,
+        "height": 740,
+        "label": "small-mobile"
+      }
+    },
+    {
+      "name": "v3-head-chromium-320",
+      "path": "artifacts/natural/v3-head-chromium-320.json",
+      "sha256": "791661d14982b4e1d1c387a8d499f557e91bf8e295074526897d866f38269d93",
+      "raw": "attempts/attempt-20/head-chromium/report.json",
+      "features": [
+        "native-head-visible"
+      ],
+      "viewport": {
+        "width": 320,
+        "height": 568,
+        "label": "compact-mobile"
+      }
+    },
+    {
+      "name": "v3-head-chromium-844",
+      "path": "artifacts/natural/v3-head-chromium-844.json",
+      "sha256": "c2463cc6c8c06eeb1279011f716ebaadf19a175ae91a0e61447c625a52b75d6c",
+      "raw": "attempts/attempt-20/head-chromium/report.json",
+      "features": [
+        "native-head-visible"
+      ],
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "mobile-landscape"
+      }
+    }
+  ],
+  "rawReports": [
+    "attempts/attempt-20/visual/report.json",
+    "attempts/attempt-20/qa-campaign-webkit/report.json",
+    "attempts/attempt-20/qa-collisions-webkit/report.json",
+    "attempts/attempt-20/qa-all-webkit/report.json",
+    "attempts/attempt-20/qa-safety-webkit/report.json",
+    "evidence/serial-capture-diagnostic.json",
+    "artifacts/qa-section-projection-proof.json",
+    "attempts/attempt-20/experience-webkit/report.json",
+    "attempts/attempt-20/experience-chromium/report.json",
+    "attempts/attempt-20/feel-state-webkit/report.json",
+    "attempts/attempt-20/feel-state-chromium/report.json",
+    "attempts/attempt-20/feel-comparison-webkit/report.json",
+    "attempts/attempt-20/feel-comparison-chromium/report.json",
+    "attempts/attempt-20/risk-webkit/report.json",
+    "attempts/attempt-20/risk-chromium/report.json",
+    "attempts/attempt-20/head-webkit/report.json",
+    "attempts/attempt-20/head-chromium/report.json"
+  ],
+  "output": "perceptual-qa-report.json",
+  "acceptance": [
+    "Use PerceptualQaReportSchema from src/schemas/product-experience.ts; reviewer QAAgent; authorIndependent true",
+    "Every required feature×viewport case has exact object/state/sourceCheckIds, hashed natural trace and screenshot bindings",
+    "Actually view screenshot pixels; missing/unreadable/contradictory evidence is a blocker, never infer pass from raw passed=true",
+    "Validate report with Zod and verifyPerceptualQaReview; output only structured result",
+    "Review scope is desktop WebKit mobile viewports; physical iPhone, low-end hardware, live ads and production packaging are NOT_RUN",
+    "All 30 required feature/viewport cases must have actual pixel review and current-build natural trace. Human enjoyment and physical devices remain distinct unknowns."
+  ],
+  "forbidden": [
+    "Do not modify workspace/game or workspace/source or recipe/runtime",
+    "Do not alter acceptance contracts, raw captures, traces, build or other games",
+    "Do not accept same-pose fixture as natural gameplay",
+    "You are not alone in this worktree; preserve all other edits"
+  ],
+  "sourceBindings": [
+    {
+      "path": "attempts/attempt-20/visual/report.json",
+      "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82"
+    },
+    {
+      "path": "attempts/attempt-20/qa-campaign-webkit/report.json",
+      "sha256": "dbcd783ca35e876a3b9ccc18d643e001869ea359c6df1c2b06acb7f73064b1f7"
+    },
+    {
+      "path": "attempts/attempt-20/qa-collisions-webkit/report.json",
+      "sha256": "1d1407239bc0dc4a59b1a5140305ad75347003839c1f0d2b523062d19e30f033"
+    },
+    {
+      "path": "attempts/attempt-20/qa-all-webkit/report.json",
+      "sha256": "14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71"
+    },
+    {
+      "path": "attempts/attempt-20/qa-safety-webkit/report.json",
+      "sha256": "916fc9205b8a8a5b3b47c1be9759d8b564339374b0a6563b6926c56ee51e7b99"
+    },
+    {
+      "path": "evidence/serial-capture-diagnostic.json",
+      "sha256": "cb9614b83935b58c711f8955ea5422e002e0c88254920627db2747c079ab0af8"
+    },
+    {
+      "path": "artifacts/qa-section-projection-proof.json",
+      "sha256": "9e2cef76e5fb64eb4451006bc3343db2c02f972aea229f77a1879c2088a8842e"
+    },
+    {
+      "path": "attempts/attempt-20/experience-webkit/report.json",
+      "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405"
+    },
+    {
+      "path": "attempts/attempt-20/experience-chromium/report.json",
+      "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/report.json",
+      "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-webkit/driver-source.mjs",
+      "sha256": "843d00a8db67135f62be8f0ea81d7a62d0ca05090b02ac25759bcc3a7a1c00e4"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/report.json",
+      "sha256": "b0f84adf452f57a64c050bbdd78e29a6c70a848f42985941d1b328dc43bcdbcd"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/driver-source.mjs",
+      "sha256": "843d00a8db67135f62be8f0ea81d7a62d0ca05090b02ac25759bcc3a7a1c00e4"
+    },
+    {
+      "path": "attempts/attempt-20/feel-comparison-webkit/report.json",
+      "sha256": "b1471af65189e8c34a59134e0961a2f22b753d10710081677224ce7bdfbba39a"
+    },
+    {
+      "path": "attempts/attempt-20/feel-comparison-chromium/report.json",
+      "sha256": "382bafe92ef1ad17fef3bb19e9a94c508b266e9e16ca00f33ea199ef193d7962"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/report.json",
+      "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854"
+    },
+    {
+      "path": "attempts/attempt-20/risk-webkit/driver-source.mjs",
+      "sha256": "679599c7a3cc803e5be10463fcaf4e62daac4306a97d51ec44f3268c158a8a01"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486"
+    },
+    {
+      "path": "attempts/attempt-20/risk-chromium/driver-source.mjs",
+      "sha256": "679599c7a3cc803e5be10463fcaf4e62daac4306a97d51ec44f3268c158a8a01"
+    },
+    {
+      "path": "attempts/attempt-20/head-webkit/report.json",
+      "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4"
+    },
+    {
+      "path": "attempts/attempt-20/head-chromium/report.json",
+      "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386"
+    }
+  ]
+}

@@ -1,0 +1,1967 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "attempt": 20,
+  "artifactPath": "/Users/kker/.codex/pelican-v3-continuation/experience/updated-audit/pelican-attempt20-experience-audit3.json",
+  "artifactSha256": "219f956e292771d5eebdf7a7f357911e328cb20a2ee143e17aaa83436b73d113",
+  "validatorScriptPath": "/Users/kker/.codex/pelican-v3-continuation/experience/updated-audit/generate-audit3.mjs",
+  "validatorScriptSha256": "14199748fde794de7318160cc6f5323a03d927b41c4cfe3ce729a66908baac93",
+  "zodVersion": "4.4.3",
+  "zodValidation": "passed",
+  "checkedConcernIds": [
+    "jump-benefit-and-safe-detour",
+    "first-minute-catch-avoid-success-reward",
+    "five-stage-operation-fishing-rain-night",
+    "replay-three-stars-best-fish-routes-feedback",
+    "pacing-gaps-and-risk-reward"
+  ],
+  "concernCount": 5,
+  "sourceArtifactCount": 73,
+  "sourceSha256Validation": "passed",
+  "validatedSourceBindings": [
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/index.html",
+      "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "role": "exact current H5 build"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/fix-evidence.json",
+      "sha256": "771082d72c7c4a0c4a4f96d820bc47839582d3f3f0389d033b97eb7e41c85feb",
+      "role": "attempt change provenance"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/levels.mjs",
+      "sha256": "249db22c4bdef2b836304346d8de9af62a9bfa62bb45cd8b48e98c586c2bfd5e",
+      "role": "current V3 five-stage routes, fish-lane patterns and obstacle placements"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/adventure.mjs",
+      "sha256": "b31d66d2474def9559147b4cbbc4d108139a09905b400084a2f8d7788e0fe69c",
+      "role": "current V3 run loop, collision, control and local campaign settle/save"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/engagement.mjs",
+      "sha256": "f9ed065669b3eca038bd9cc7a238a2900d33f3e4795400beaa18091be2ce4999",
+      "role": "current V3 barrier bonus, stars/mastery, best metrics and jump cue"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/safety.mjs",
+      "sha256": "f0babe85fe93ae1d50e13267e96782e25da13244468ba20190efffcfb107d22f",
+      "role": "current V3 hazard forecast, safe-lane fish fallback and warning horizon"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/feel.mjs",
+      "sha256": "748dfc0514d66c29e3df6e8d9b7c528354426fe737a29f8d5da0c63102e1d04e",
+      "role": "current V3 lane response and rain-frequency values"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/coast-ui.mjs",
+      "sha256": "02f6d568e4d762a9c8d3402aa711b900026563b4b62368944f187adb6cebaa5a",
+      "role": "current V3 first-minute cues, controls, route cards and terminal/replay feedback"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/coast.css",
+      "sha256": "dd3d1ddf4b5445f77d7c2f2179fce5dbb08ec9108cbb35205042d9ca137be348",
+      "role": "current attempt20 responsive compact layout"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/main.js",
+      "sha256": "c117aa309b7a763ba91e6a62077f6575e3d4323393acf30db6eba8f4e68f58d2",
+      "role": "current V3 renderer and runtime integration"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/pelican.js",
+      "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4",
+      "role": "current rider module; matches baseline snapshot"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/v3-continuation.json",
+      "sha256": "db283fde15acbf9038d421f0e8536f823492cbdaf2efa88f48873749e67e7503",
+      "role": "handoff"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/v3-contract-continuation.json",
+      "sha256": "eb7e14dbd729117f28c3d011cba146f5a6af9c644d68653e4061bf46b658f9ba",
+      "role": "handoff contract"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/experience-contract.json",
+      "sha256": "654e7e32d9249a3cd538b10a68b823b95fcac6d80ad339ec84d5cdf82386ace6",
+      "role": "experience contract"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/product-experience-contract.json",
+      "sha256": "25eb3f9bfc25156f0c21c07e03016301c7b37ecaf5812d41d623bd9901b76e02",
+      "role": "product experience contract"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/failure-pressure.json",
+      "sha256": "ab196c830328b10f0b692539a6c78a91d1c32286b670add6e4117949f8531e81",
+      "role": "failure/risk contract"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/report.json",
+      "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405",
+      "role": "current normal-input experience WebKit"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/report.json",
+      "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c",
+      "role": "current normal-input experience Chromium"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/report.json",
+      "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854",
+      "role": "current five-stage risk QA WebKit"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486",
+      "role": "current five-stage risk QA Chromium"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-webkit/report.json",
+      "sha256": "983f70f9ff3f729b7aa458be75310323dc18d0f34ca99433d2e5972b5a98439d",
+      "role": "archived attempt20 campaign WebKit report; historical diagnostic only; its L3 screenshot binding is invalid"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-chromium/report.json",
+      "sha256": "440e9734e4b329ee3deb8cc22afe6b4cd150b813c5ddc6e6b3f8ae8c8db1777e",
+      "role": "archived attempt20 campaign Chromium report; historical diagnostic only; its L3 screenshot binding is invalid"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/report.json",
+      "sha256": "fb2c4e8ee8be6372f90c2ff89fc9af41b31713f0c4209089a1d82dccccb1802a",
+      "role": "archived initial attempt20 broad QA WebKit report; historical diagnostic only; not the latest exact-path retest"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-chromium/report.json",
+      "sha256": "3d59ecfd26da8f3a2bda4eea75f4191bdf2c0d24943588c560cbe8de88501df9",
+      "role": "archived initial attempt20 broad QA Chromium report; historical diagnostic only; not the latest exact-path retest"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-webkit/report.json",
+      "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+      "role": "current terminal/replay state"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/report.json",
+      "sha256": "b1471af65189e8c34a59134e0961a2f22b753d10710081677224ce7bdfbba39a",
+      "role": "current descriptive comparison WebKit"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/report.json",
+      "sha256": "382bafe92ef1ad17fef3bb19e9a94c508b266e9e16ca00f33ea199ef193d7962",
+      "role": "current descriptive comparison Chromium"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/report.json",
+      "sha256": "aa8909557eb442aa3d4b809e3340589562b37369e2220b67ee44835efa646b82",
+      "role": "current20 multi-viewport captures; same-pose fixture excluded, other captures normal trusted touch"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/compact-probe-attempt20/report.json",
+      "sha256": "188e4d767875405b2f06c43ced89e393aa0c569969f512ade6bf922fa7d64081",
+      "role": "current320 compact layout instrumentation and readable-goal metrics"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/compact-probe-attempt20/menu.png",
+      "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+      "role": "current320 compact route menu full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/compact-probe-attempt20/running.png",
+      "sha256": "846530e0cec5743d51404834a268b6feddcd00cc35a104eb85eed4ee938b7832",
+      "role": "current320 compact running full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/first-catch.png",
+      "sha256": "e7736f85c0d4a3e68d8eeec3ebea6d8059daeba25153d720fdb9617354e312d5",
+      "role": "current WebKit normal-input first catch full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/first-gold.png",
+      "sha256": "a489d7aa2979126d522932ba3ea725280cff7e6b6c3c60528ded9c1cfda1a8af",
+      "role": "current full-frame first-gold"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/jump-choice.png",
+      "sha256": "6234b875a52f2e1a243437acf58bcb1dfb2f1d48cb5433662a37432a630b1bca",
+      "role": "current WebKit normal-input barrier choice and safe-detour cue"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/jump-gold-earned.png",
+      "sha256": "9b784dfd221458293b7d499367501de730e93ac918f597c352d8f8fa08513ed7",
+      "role": "current full-frame jump-gold-earned"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/earned-three-stars.png",
+      "sha256": "b715f87df8cb77c9181c10f5e516954be3fc6a453f8f9bfafd38cda2e27985e2",
+      "role": "current WebKit normal-input stage success and star settlement"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/safe-detour.png",
+      "sha256": "4c995a9c4bc26dae633a9bb2872712331f391a3f9fd7fbd42cedbec4a1e4a762",
+      "role": "current WebKit normal-input no-jump bypass route"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/saved-mastery.png",
+      "sha256": "62a711742ddad7e71a57d32a3f06acb496fcd9d7910650fdbfced6347060f64c",
+      "role": "current WebKit saved route record / stars view"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/small-phone-route-menu.png",
+      "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+      "role": "current full-frame small-phone-route-menu"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/small-phone-running.png",
+      "sha256": "92c0d5e84763c5d3246753eb481b254643372d8a05bae4da96b07d0af2bd99a7",
+      "role": "current full-frame small-phone-running"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-hazard.png",
+      "sha256": "a58c1d1d5238b0a6c1aaf6a27f50eed35176e27d8e37ec9b452d053aea48dd84",
+      "role": "archived attempt20 WebKit rain screenshot; descriptive historical diagnostic only, not a current QA pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-terminal.png",
+      "sha256": "685b67a77870b168d2adfc1195d9b5155f517cfa9b33ca8808ddbd1e206dd006",
+      "role": "archived attempt20 WebKit L4 terminal screenshot; descriptive historical diagnostic only, not a current QA pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-hazard.png",
+      "sha256": "02e59bc47fe595244f76fcb771eaf5d767aa952a12ff3f646b8336f20c595d70",
+      "role": "archived attempt20 WebKit dusk screenshot; descriptive historical diagnostic only, not a current QA pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-terminal.png",
+      "sha256": "83f6cb08056bf6b983fe432e2dc9663e798ec5068a8ddec130e455fa03e3cb82",
+      "role": "archived attempt20 WebKit L5 terminal screenshot; descriptive historical diagnostic only, not a current QA pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR10/settled.png",
+      "sha256": "099b7aaa111c934c4cadf73528773776edce5e7ba15f3d50a6a9e1c39a1dbdd3",
+      "role": "current comparison PR10"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/settled.png",
+      "sha256": "49d0920558ead33199bc45df3c8224be6f1824401a09ee5b85b0e458a169a41a",
+      "role": "current comparison PR10"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR13/settled.png",
+      "sha256": "88b04927c86011bfe1e3285fb1786be05c5392cb9cec04afdf993e8c72eb4cac",
+      "role": "current comparison PR13"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/settled.png",
+      "sha256": "ad805037d5f23cc1ca443eaec19cfc017f0d7019446c63e471d0eb16ec3ce250",
+      "role": "current comparison PR13"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/settled.png",
+      "sha256": "34e651a4345e89d1951defcefc7c39201ed7c96e065d4eb48a03a5f7759ed425",
+      "role": "current comparison V3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/settled.png",
+      "sha256": "5917a888d41d8d904127874481d3ec2c3eb58b67196e9549b10e3ed055487aa4",
+      "role": "current comparison V3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/motion-review-final18.json",
+      "sha256": "2d284a4bca5cec2ea99b9822ac95adea7f56d26b3df1814dbf59240386bb6e34",
+      "role": "historical attempt18 narrow pose/motion scope; explicitly not a current20 experience pass"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/experience-webkit/report.json",
+      "sha256": "4ff5f948672c98e4d4c21cd30b0bd8905d7fd6767c3feab54d4fe47816de650c",
+      "role": "historical attempt18 experience"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/experience-chromium/report.json",
+      "sha256": "f4e4840d0270ef3bb78aa88a941b0cf38e36d372bbaf769f765727f39425b6b7",
+      "role": "historical attempt18 experience"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/qa-all-chromium/report.json",
+      "sha256": "1e0fd86ad891b67b8ba32e819483a2fdaaa0651c857547861ddec8b0baea1ca7",
+      "role": "historical attempt18 QA"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/webkit-full-frame-comparison.png",
+      "sha256": "a2ea99786e8036c7fde05fdf6f3cd36490837941725dd39c7f98153180d09e5b",
+      "role": "historical full-frame comparison viewed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/webkit-V3-temporal-sheet.png",
+      "sha256": "960863158efa74971ccee73469a3d181ae8ad32c75e60770b854c875498ad42c",
+      "role": "historical temporal grid viewed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/chromium-full-frame-comparison.png",
+      "sha256": "4cd3e926834ecdda5f0831c9cb1a4938a29fb7c56e45794afa42368357bbf7d6",
+      "role": "historical full-frame comparison viewed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-18/comparison-frames/chromium-V3-temporal-sheet.png",
+      "sha256": "e630d68ac101ee5263a1398de8e8f13dfc641f174c413b9268a80b4a95444a21",
+      "role": "historical temporal grid viewed"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/baseline-receipt.json",
+      "sha256": "4a31e58408bdc56390a3b6538db60279764f7ae5c13053b4de00e819fd86a9c7",
+      "role": "authorized sourceRevision and baseline file hashes"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/original-main.js",
+      "sha256": "0e392501baf57d7221bb570b9ae370b67228ed76edbf53515a19487e9e54a586",
+      "role": "exact baseline main.js snapshot; hash matches baseline receipt"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/original-pelican.js",
+      "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4",
+      "role": "exact baseline pelican.js snapshot"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/original-textures.js",
+      "sha256": "46718cd5a97f50f59eb35878e2d6264a9c17f7333bbabd4ab3ae9251cfa8cd8f",
+      "role": "exact baseline textures.js snapshot"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/textures.js",
+      "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62",
+      "role": "current texture module"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/lifecycle/report.json",
+      "sha256": "d75f0cfe647026fa50a74188bd89b362d60637351bd57536fe406cec2652d711",
+      "role": "current20 background/lifecycle evidence and browser signal diagnostics"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-menu.png",
+      "sha256": "2d8da395a0ab5f65d89053bc3e7c904a7c240403b4ca67750d3ab341d99a366f",
+      "role": "current320 normal-input route-menu full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-running.png",
+      "sha256": "fd2fb8cb1112a977e8e07e8388bb90f2f5359a5a683673793db5bfe8edb746b4",
+      "role": "current320 normal-input running full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-same-pose.png",
+      "sha256": "765eb8c2521283acacff522c2d40a7b2158d2c683691e9b9dd21056c1ce0119a",
+      "role": "hidden-HUD ready-state comparison fixture; excluded from gameplay claims"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-first-fish.png",
+      "sha256": "02a49d3c6502cb948fbb2e6b8c4257f76588cbe6f2833b85881fddae8d7d180a",
+      "role": "current320 normal-input first catch full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-paused.png",
+      "sha256": "e2c8f01076d97701263f7e83530a7f5df3f551013dfdfc912c7c8eab2e24c911",
+      "role": "current320 normal-input manual pause full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-terminal.png",
+      "sha256": "c481c98db2356d5505cc27051f99d32cf09680eb2f18b478a30acddd88d78b21",
+      "role": "current320 normal-input real barrier terminal full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/visual/320-replay.png",
+      "sha256": "5ee861bc800e259aace0f083d5fa452a2ac8a541ed18b9e00c2258cb28c53451",
+      "role": "current320 normal-input replay full frame"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/comparison-strip-webkit.png",
+      "sha256": "be723874ae02d36d08d99707a199059fa3939a827dd27d10f85e98ef7d204e5b",
+      "role": "current20 full-frame comparison strip; descriptive, not preference ranking"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/temporal-grid-webkit-V3.png",
+      "sha256": "2c8aac6c8e3bcb421bdac8b6029be4db6332e04e6ec80d075978ab92337f4b14",
+      "role": "current20 full-frame temporal grid; inspected at original full frame"
+    }
+  ],
+  "archivePathMappingCount": 8,
+  "archivePathMappings": [
+    {
+      "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-campaign-webkit/report.json",
+      "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-webkit/report.json",
+      "sha256": "983f70f9ff3f729b7aa458be75310323dc18d0f34ca99433d2e5972b5a98439d"
+    },
+    {
+      "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-campaign-chromium/report.json",
+      "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-campaign-chromium/report.json",
+      "sha256": "440e9734e4b329ee3deb8cc22afe6b4cd150b813c5ddc6e6b3f8ae8c8db1777e"
+    },
+    {
+      "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/report.json",
+      "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/report.json",
+      "sha256": "fb2c4e8ee8be6372f90c2ff89fc9af41b31713f0c4209089a1d82dccccb1802a"
+    },
+    {
+      "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/report.json",
+      "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-chromium/report.json",
+      "sha256": "3d59ecfd26da8f3a2bda4eea75f4191bdf2c0d24943588c560cbe8de88501df9"
+    },
+    {
+      "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-4-hazard.png",
+      "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-hazard.png",
+      "sha256": "a58c1d1d5238b0a6c1aaf6a27f50eed35176e27d8e37ec9b452d053aea48dd84"
+    },
+    {
+      "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-4-terminal.png",
+      "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-4-terminal.png",
+      "sha256": "685b67a77870b168d2adfc1195d9b5155f517cfa9b33ca8808ddbd1e206dd006"
+    },
+    {
+      "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-5-hazard.png",
+      "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-hazard.png",
+      "sha256": "02e59bc47fe595244f76fcb771eaf5d767aa952a12ff3f646b8336f20c595d70"
+    },
+    {
+      "originalPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/level-5-terminal.png",
+      "archivedPath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-binding-first-failed/qa-all-webkit/level-5-terminal.png",
+      "sha256": "83f6cb08056bf6b983fe432e2dc9663e798ec5068a8ddec130e455fa03e3cb82"
+    }
+  ],
+  "unavailableOriginalL3HazardPngs": [
+    {
+      "engine": "webkit",
+      "expectedSha256": "005b879997f90aab5b677143fc947db508e6d82448f5aa491d1967a40ddae82c",
+      "status": "UNAVAILABLE_OVERWRITTEN",
+      "usableAsEvidence": false
+    },
+    {
+      "engine": "chromium",
+      "expectedSha256": "c6d47d4c86e092154d7e44e87651caa885d5f9ef85e28bdb8bbc699dd204da29",
+      "status": "UNAVAILABLE_OVERWRITTEN",
+      "usableAsEvidence": false
+    }
+  ],
+  "localQaRetestStatus": "BOUNDED_ENVIRONMENT_BLOCKED",
+  "currentQaAllReportBindings": [
+    {
+      "engine": "webkit",
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/report.json",
+      "sha256": "14522e283732d3fabd89e065b2cbc7a2191892605277953c01503bc297031c71",
+      "passed": false,
+      "checkCount": 34,
+      "passedCheckCount": 32,
+      "failedCheckCount": 2,
+      "failedChecks": [
+        "background-manual-resume",
+        "tab-blur-pauses"
+      ],
+      "errors": []
+    },
+    {
+      "engine": "chromium",
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/report.json",
+      "sha256": "171ab0209dfd285df1ba7b77cda07ba12774fb1da37e01c5ca9cdbcd2c6ea99b",
+      "passed": false,
+      "checkCount": 34,
+      "passedCheckCount": 32,
+      "failedCheckCount": 2,
+      "failedChecks": [
+        "background-manual-resume",
+        "tab-blur-pauses"
+      ],
+      "errors": []
+    }
+  ],
+  "currentQaAllScreenshotCount": 72,
+  "currentQaAllScreenshotBindings": [
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/setup/menu.png",
+      "sha256": "621918e6b08d5eec383a362921dc3d86b89f525de8d826266453f1b4e3a0eb47",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/first-fish.png",
+      "sha256": "634c012d1ddb0d282d13da17b0e6fa1030a9818b9dd8d21890f2e27bf0192de0",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/pause.png",
+      "sha256": "c7243d7fdaba84182c2fffa8cc38c1c3eb0520632bc8ae317296272fdb0a9b31",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-1-start.png",
+      "sha256": "4ceb75eaac636b6310d3daedacbd1bd8d7d9511af2aa2ad9c4cf4db2e2728155",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-1-hazard.png",
+      "sha256": "a0ff31a7d1c380b55d13df1c118290c9d55d92aec1f2de4723da1337fa23c772",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-1-terminal.png",
+      "sha256": "96d9a57d98ef96525366d10f6a58eb97803f287f56dc3394f459f24f17a277f8",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-2-start.png",
+      "sha256": "258b71cd5ca5ac3d9e028bdcae127e91a54c8db162f5b343569af1ed96e501ac",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-2-hazard.png",
+      "sha256": "1f75660c247109e55985d548d6c7db9c8240885d54dd4aab736ef88ce9b83122",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-2-terminal.png",
+      "sha256": "a48e3e4a34d957ebda57bb419bc35c7a9458ce569bef391e3d52661eccb74522",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-3-start.png",
+      "sha256": "c203491efcdadc2bd1626eff99a764988b24768b11a6da5c190147d31dbfca77",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-3-hazard.png",
+      "sha256": "98cbc569bef0ddab0d1a8a3a62199ddb63b55c9671a28e7a6948287b65b4ef55",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-3-terminal.png",
+      "sha256": "758e33d897de78ff1c289b98a7be5568bd665fa8cac74a91104aea367a398eae",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-4-start.png",
+      "sha256": "0a8d1d73652c209f064b41ad175b898b6fb915ecaf9449fbf20d8415850084b5",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-4-hazard.png",
+      "sha256": "7e68c3575c0cbe0a399a9ac4cb3a71be3153c57bcf237f45e06ae61e6e5960b0",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-4-terminal.png",
+      "sha256": "94f1edc7455fb6c623533d5bc57543c672a524f621d6c0f8a3d4f285cffb2f56",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-5-start.png",
+      "sha256": "a79b495eb070e7bcda2cd6658846c06c315349499dc5644be9874e04c7703547",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-5-hazard.png",
+      "sha256": "569c26461161b87cac46ec8d5175855d2b79ac30acbbae5c6eaa1f643b887320",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/level-5-terminal.png",
+      "sha256": "51b337b17df33d08fb0b8d1234b9876fe12a2fb4beb22b6716c7415ce19a2219",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/campaign/all-unlocked.png",
+      "sha256": "ca3dfbfb5b1e7a11ce1e2ab8a252575565bd0b7292821d7766ce84f2e9eef08c",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/vehicle-warning.png",
+      "sha256": "17c3d9808e0750bf8b322bb73a9a9a56e2082846b55ae24b31fa0aac6eb960cd",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/vehicle-accident.png",
+      "sha256": "3f3783dae7b739d95666dd94acd2af84f851ef7e9935ab6e25a1ea1d64ac00fc",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/vehicle-impact.png",
+      "sha256": "a72124b46864693da6598b5da9bb623a7f2096f5d47a6d91ed760d644b454f99",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/pedestrian-fall.png",
+      "sha256": "e3c666adcc4bf16c6c4a97b1afb905dfe663b8a5de9c159f941f9c12931dff2a",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/pedestrian-wait.png",
+      "sha256": "96910cac51628b9719be0320b4fe58ee94c4a792565ac5327a445dca54a5f6f4",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/pedestrian-rising.png",
+      "sha256": "5952db8aca1d267430dce4a5150c3abf688cf46cb2115b7fd7aa30a61ace3726",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/pedestrian-recovery.png",
+      "sha256": "8cb884ed2860bb79e8ce0a991ca252b65e5624ce65cc9ad4d2174bcb197c8664",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/barrier-jump.png",
+      "sha256": "a83f648ec330fe69126ff2126e6248f24ed001d7b7c963b573c09de95c42d1e4",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/barrier-cleared.png",
+      "sha256": "3301cd5450dd1edff8616deb419a173da35605423e2474078e084bf77a7dc938",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/collisions/authored-barrier-prize.png",
+      "sha256": "cec5a6d8c97ff9029c7064d7db1e19ea4e1ce4f9c920e543fd3a186bb2a7a859",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/level-3-hazard.png",
+      "sha256": "540e9e6b4f03f64c8ccbf1708db5ba4a1c790166cb6f3dc6a3c33983ccf526b8",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/van-approach.png",
+      "sha256": "d08bbbe435d054812d569ecc096271666461db2fdf28628bd81069fed12499aa",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/van-impact.png",
+      "sha256": "462ce2c3ed0a8927f1c4dd48dfda6e3ec8e1118c6e8fac8f4e03f6a344266576",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/car-not-jumpable.png",
+      "sha256": "4ef72827f5ff1c3f0ae55c26afd7964df52b4a489e725ad906a090f37cd9c2ef",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/level-fish-short-hazard.png",
+      "sha256": "acfc5f2ec13038e7950e764cad0cff7b17b02e29356fa5d24a81cb35406b8aca",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/distance-without-fish-fails.png",
+      "sha256": "c455913cad0c3f3b545a433cf088cb3c0f9bea59e20ef70d983bdb4a26ad7b9f",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/background-return.png",
+      "sha256": "a8474b6738de7d52449009baf5b80c29048cb07daf8a2b2689a1f86200ce5008",
+      "engine": "webkit"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/setup/menu.png",
+      "sha256": "a300f9e98825fac2ecbabf4683739cb0da58af77677c2d3e29d1b975bbd65597",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/first-fish.png",
+      "sha256": "ad3dc5fb8a300e0471d2d951cee98a87d89d3653bded6bbee828d8770c096e2c",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/pause.png",
+      "sha256": "79b7d86a326cf88e832ae3174f684137d9e7ed76cd63da91aa0e6c9cf2e36ddf",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-1-start.png",
+      "sha256": "06711df6f2636ab87e9893d8718263128064f36c5c8c23c58ce0da92e800b4b7",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-1-hazard.png",
+      "sha256": "2fec5ebb241c66935de9ac9125a6d62d2107216b13899520b71730a872b7f2aa",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-1-terminal.png",
+      "sha256": "39c25e75184718259bb469197d67f2f334447316eb50ba1407f0e5eb32b95f80",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-2-start.png",
+      "sha256": "a4029c795a24bf68795b9ec476a2ffba6490842ed575534281a7402054831872",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-2-hazard.png",
+      "sha256": "26613087b83a38a77b78df89e883a98857f3fd136e6064ea0748763ba0fc1483",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-2-terminal.png",
+      "sha256": "5b9136050459548943efdbddcf909c70a61eefa8381a72d5618a1a4b0b748d1b",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-3-start.png",
+      "sha256": "f0625902f8800eb870c33c36e004e35071cc71fc3ce3f9fd860ab42860bbad45",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-3-hazard.png",
+      "sha256": "fe963daa9f729bf845eb15fb5ea039db4ec2c496d5ab0dfcdaf9009b864dfc85",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-3-terminal.png",
+      "sha256": "6248e185466c9d600a17036b9bd75b8a65b2a2686ce2a2180ab445c038e44152",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-4-start.png",
+      "sha256": "87bb7c2d1c6a4abdfac4244aabad864ff4f9cafe2299dc08a0a50d1fe8ac7873",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-4-hazard.png",
+      "sha256": "78689e4d19f59a6aa3994c02fe588a283d1182159b26706a9693771065d51932",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-4-terminal.png",
+      "sha256": "7a99486276ddc6943315117de0f07523a87bc26e0e7f7024b03c4c49b06887d9",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-5-start.png",
+      "sha256": "5f37b66ce80e0b2411da823563d165ca8668e69a7aa2ecf6c5cf293ba4bc04b5",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-5-hazard.png",
+      "sha256": "d1068cb94b5579acba37dbde6b620529120e3afa3b7b015974cbe285514f594b",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/level-5-terminal.png",
+      "sha256": "d23407eefabef3e834afabbfa3851566b5caa8db01b0c1bd7d068d1f9162b4cc",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/campaign/all-unlocked.png",
+      "sha256": "2485aa3f23c8b8efdb2fd54b678700c36a53aeac51730592581dd2cf2b27bd3a",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/vehicle-warning.png",
+      "sha256": "a201b0a0a9644b428836905817427701cf3c0836bbeba959460d0c7d93e0035e",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/vehicle-accident.png",
+      "sha256": "c32ecfbad73298b57a1014d6eef8876678a343bfd41e6a0bd25bd2a6cb3303fd",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/vehicle-impact.png",
+      "sha256": "de26b7533b07f749e943c514e8dc6709d473d9d0a7d2b3befc8da6c35903edfc",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/pedestrian-fall.png",
+      "sha256": "7b21501295e03e66b4d937b61835f6ff14b27f060ace85c0f955c62302adc947",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/pedestrian-wait.png",
+      "sha256": "f1a670ecb7bcff0aa68093e04a2d43d8a261de1b893648116fbf8003d452b95e",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/pedestrian-rising.png",
+      "sha256": "95e2408cc36ea2cc8776f708196581fbed4729396953d777235f5265b690b1d2",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/pedestrian-recovery.png",
+      "sha256": "a5f84e70e8b68593b92bbe78cbf29b55e903bdfb181e0d34ea7c23f94ef640b4",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/barrier-jump.png",
+      "sha256": "224f35fc1f16add320f303af6e7c59852f42f2a2e66829cf17994fec24e589da",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/barrier-cleared.png",
+      "sha256": "99faa56f45763789e94de1f268ca2a0d0daacde5f11466ae3a685553663eb356",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/collisions/authored-barrier-prize.png",
+      "sha256": "573d8ec63d398685eb040c9a1d1d6bbd1e39ef17454607bdf6621b42879d5dd7",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/level-3-hazard.png",
+      "sha256": "51e2bdd0dff01e11aab765dac52cf54c9f123de2c438d48cf6578d93e88a9caf",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/van-approach.png",
+      "sha256": "3ab229e42d76dbf0615a0e19e78b075ca6b3d9b47fb598f3412d716031dc86c2",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/van-impact.png",
+      "sha256": "3e9e08d687f439d161969d28fac617952e8e62c452940d2259abebd0ea74561d",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/car-not-jumpable.png",
+      "sha256": "7dc3e4182a90ca8da7d80e3f784e2881ed0253aa04cfe60a08eb0ac31a66bf7f",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/level-fish-short-hazard.png",
+      "sha256": "d72189095ce13a2be3f30328c454085adff43c1f4f76bfa9bd06fdda1ee7fbde",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/distance-without-fish-fails.png",
+      "sha256": "648e19e0849578e9b7c00133e0fc2ebca238802c839fea37366a20da23e3c385",
+      "engine": "chromium"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/background-return.png",
+      "sha256": "68e7e974241271f8a7438be666beb725955f49efaff2d476f304626cc56037a9",
+      "engine": "chromium"
+    }
+  ],
+  "priorReloadTimeoutBindings": [
+    {
+      "engine": "webkit",
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/qa-all-webkit/report.json",
+      "sha256": "bdc761fcb1e60fbf5a93751a3a8e88d8285778dc2fe2b146669e344d9a2dfc7c",
+      "passed": false,
+      "checkCount": 16,
+      "passedCheckCount": 16,
+      "failedCheckCount": 0,
+      "errors": [
+        "page.reload: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:55997/game/index.html\"\u001b[22m\n\n    at /Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/tools/lean-pilot/pelican-v2/qa.mjs:79:38"
+      ]
+    },
+    {
+      "engine": "chromium",
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/attempt20-capture-isolation-reload-timeout/qa-all-chromium/report.json",
+      "sha256": "b64ef247c1cc2522a09824e7c5b37a4da688f6886d52f01e633f0cf5f4bb99ea",
+      "passed": false,
+      "checkCount": 16,
+      "passedCheckCount": 16,
+      "failedCheckCount": 0,
+      "errors": [
+        "page.reload: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:55996/game/index.html\"\u001b[22m\n\n    at /Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/tools/lean-pilot/pelican-v2/qa.mjs:79:38"
+      ]
+    }
+  ],
+  "currentSummarySnapshot": {
+    "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/qa-summary-v3.json",
+    "sha256": "8e20d6324334f90e51cfc3ad04e2d250ef0006d632e85d60be0b6c28c16f2cd3",
+    "scriptedCoreJourneyPassed": true,
+    "desktopBrowserEvidencePassed": true,
+    "lifecycleSupportedChecksPassed": true,
+    "desktopBackgroundEvidence": "BLOCKED_ENVIRONMENT_SIGNAL_UNAVAILABLE",
+    "h5DevicePlaytestCandidate": true,
+    "releaseReady": false,
+    "productionReady": false
+  },
+  "currentLifecycleReportBinding": {
+    "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/lifecycle/report.json",
+    "sha256": "d75f0cfe647026fa50a74188bd89b362d60637351bd57536fe406cec2652d711",
+    "passed": false,
+    "errors": [],
+    "lifecycleDiagnostics": [
+      {
+        "engine": "webkit",
+        "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS",
+        "events": [],
+        "visibility": "visible",
+        "focus": true
+      },
+      {
+        "engine": "chromium",
+        "classification": "NO_BACKGROUND_SIGNAL_FROM_HEADLESS_TABS",
+        "events": [],
+        "visibility": "visible",
+        "focus": true
+      }
+    ]
+  },
+  "currentSafetyReportBindings": [
+    {
+      "engine": "webkit",
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-safety-webkit/report.json",
+      "sha256": "916fc9205b8a8a5b3b47c1be9759d8b564339374b0a6563b6926c56ee51e7b99",
+      "passed": false,
+      "checkCount": 7,
+      "passedCheckCount": 5,
+      "failedCheckCount": 2,
+      "errors": [],
+      "screenshots": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/level-3-hazard.png",
+          "sha256": "540e9e6b4f03f64c8ccbf1708db5ba4a1c790166cb6f3dc6a3c33983ccf526b8"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/van-approach.png",
+          "sha256": "d08bbbe435d054812d569ecc096271666461db2fdf28628bd81069fed12499aa"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/van-impact.png",
+          "sha256": "462ce2c3ed0a8927f1c4dd48dfda6e3ec8e1118c6e8fac8f4e03f6a344266576"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/car-not-jumpable.png",
+          "sha256": "4ef72827f5ff1c3f0ae55c26afd7964df52b4a489e725ad906a090f37cd9c2ef"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/level-fish-short-hazard.png",
+          "sha256": "acfc5f2ec13038e7950e764cad0cff7b17b02e29356fa5d24a81cb35406b8aca"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/distance-without-fish-fails.png",
+          "sha256": "c455913cad0c3f3b545a433cf088cb3c0f9bea59e20ef70d983bdb4a26ad7b9f"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-webkit/safety/background-return.png",
+          "sha256": "a8474b6738de7d52449009baf5b80c29048cb07daf8a2b2689a1f86200ce5008"
+        }
+      ]
+    },
+    {
+      "engine": "chromium",
+      "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-safety-chromium/report.json",
+      "sha256": "0aaa83c14c9828859f323938a685477917c0e49070ad97d587eda66907508c23",
+      "passed": false,
+      "checkCount": 7,
+      "passedCheckCount": 5,
+      "failedCheckCount": 2,
+      "errors": [],
+      "screenshots": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/level-3-hazard.png",
+          "sha256": "51e2bdd0dff01e11aab765dac52cf54c9f123de2c438d48cf6578d93e88a9caf"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/van-approach.png",
+          "sha256": "3ab229e42d76dbf0615a0e19e78b075ca6b3d9b47fb598f3412d716031dc86c2"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/van-impact.png",
+          "sha256": "3e9e08d687f439d161969d28fac617952e8e62c452940d2259abebd0ea74561d"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/car-not-jumpable.png",
+          "sha256": "7dc3e4182a90ca8da7d80e3f784e2881ed0253aa04cfe60a08eb0ac31a66bf7f"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/level-fish-short-hazard.png",
+          "sha256": "d72189095ce13a2be3f30328c454085adff43c1f4f76bfa9bd06fdda1ee7fbde"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/distance-without-fish-fails.png",
+          "sha256": "648e19e0849578e9b7c00133e0fc2ebca238802c839fea37366a20da23e3c385"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/qa-all-chromium/safety/background-return.png",
+          "sha256": "68e7e974241271f8a7438be666beb725955f49efaff2d476f304626cc56037a9"
+        }
+      ]
+    }
+  ],
+  "currentComparisonProvenance": {
+    "path": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/provenance.json",
+    "sha256": "a853f81183bdcfdb909b6e1c98010f26d0d6ce09f1329d92eed9b1cc61fe2476",
+    "frameCount": 120,
+    "uniqueFramePathCount": 120,
+    "perEngineVariantCounts": {
+      "webkit": {
+        "PR10": 6,
+        "PR13": 6,
+        "V3": 48
+      },
+      "chromium": {
+        "PR10": 6,
+        "PR13": 6,
+        "V3": 48
+      }
+    },
+    "contactSheetCount": 4,
+    "frameBindings": [
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-0820.png",
+        "sha256": "dd47e79560951b5f8b412237249fb639a5ca97fe47bb77283b4f7a40781f0957",
+        "bytes": 352661,
+        "engine": "chromium",
+        "variant": "PR10",
+        "captureOffsetMs": 2532.9000000003725
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1000.png",
+        "sha256": "42e4e4d080517f66a4b6e45cab1c2375c98c3213aee0a6ac49ec798cc72401ab",
+        "bytes": 371309,
+        "engine": "chromium",
+        "variant": "PR10",
+        "captureOffsetMs": 2532.9000000003725
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1320.png",
+        "sha256": "1b3838d3cd9dc3459f085a80157704542256e8c9bff29ce6f14c95082053e1d8",
+        "bytes": 391716,
+        "engine": "chromium",
+        "variant": "PR10",
+        "captureOffsetMs": 2532.9000000003725
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1520.png",
+        "sha256": "3a55801dcd409607228197f81836bb16ff24bf5d88c00d50adff2d5dbb709fe9",
+        "bytes": 392178,
+        "engine": "chromium",
+        "variant": "PR10",
+        "captureOffsetMs": 2532.9000000003725
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1750.png",
+        "sha256": "21b775c82f15f0bf2dd3ba76dbd47c964b74b7925ac6a347676a52f26983b0ed",
+        "bytes": 398738,
+        "engine": "chromium",
+        "variant": "PR10",
+        "captureOffsetMs": 2532.9000000003725
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-2480.png",
+        "sha256": "344b133a108289575dad46a9c8e9aaeb040ab0691dee9f31c0baeb29da9b7582",
+        "bytes": 457391,
+        "engine": "chromium",
+        "variant": "PR10",
+        "captureOffsetMs": 2532.9000000003725
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-0820.png",
+        "sha256": "eb17110d252a2d305e537fbbfd47e17602e065add23baf639beafadf832d0efe",
+        "bytes": 456235,
+        "engine": "chromium",
+        "variant": "PR13",
+        "captureOffsetMs": 1444.400000000372
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1000.png",
+        "sha256": "eaeaf4e53f5e66479613bc4fb167323edf0949af47c87a71bd3fd4876b195939",
+        "bytes": 472861,
+        "engine": "chromium",
+        "variant": "PR13",
+        "captureOffsetMs": 1444.400000000372
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1320.png",
+        "sha256": "c3da6497497f1c93168a43908fe179727ad5424b01795d1c5013a9b3dda6e50a",
+        "bytes": 470271,
+        "engine": "chromium",
+        "variant": "PR13",
+        "captureOffsetMs": 1444.400000000372
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1520.png",
+        "sha256": "3577812816a969c5412f20d48cc28faec47c7bc8890d57d1e8193c32b972d847",
+        "bytes": 463659,
+        "engine": "chromium",
+        "variant": "PR13",
+        "captureOffsetMs": 1444.400000000372
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1750.png",
+        "sha256": "e9522fd066705ebbbccce88d43abf3612a109d5a679e285f5c4917ba5c1548d8",
+        "bytes": 472650,
+        "engine": "chromium",
+        "variant": "PR13",
+        "captureOffsetMs": 1444.400000000372
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-2480.png",
+        "sha256": "f2c8ce185d3d8f4df6919074fdb6b79045d910c596622ba64bcb610c4736e350",
+        "bytes": 497190,
+        "engine": "chromium",
+        "variant": "PR13",
+        "captureOffsetMs": 1444.400000000372
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-0820.png",
+        "sha256": "f3c17e2540841de817a3c37293f2279722e067039b151f1d3a314e8927abc8ce",
+        "bytes": 466318,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1000.png",
+        "sha256": "2c630bed1d6f8fb36d0446296e31ff7819a4720ef7e75544b836faaab566096c",
+        "bytes": 466963,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1320.png",
+        "sha256": "58d75db982fee980d9dddc286420b8f1ed5a7cd392f9892ee91928ab80c97f16",
+        "bytes": 461119,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1520.png",
+        "sha256": "697578fb25b73dbfe603d53d068d4100f217156aa7e77fd922291693866dd426",
+        "bytes": 476707,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1750.png",
+        "sha256": "93e46060ec31de18665de51182c7562be8cd46ac5bdeba7cf89a9219b59e9cd2",
+        "bytes": 482290,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-2480.png",
+        "sha256": "c4ba9c45c955b02a61d0be5378ac08b4f159bdeb44367e717663ef6e8bdd70da",
+        "bytes": 502943,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-0820.png",
+        "sha256": "728ee5a6bb0daa4eda9e1d8469c87d02ac08211347453dac4e084788ba9769a2",
+        "bytes": 299829,
+        "engine": "webkit",
+        "variant": "PR10",
+        "captureOffsetMs": 4348.000000000001
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1000.png",
+        "sha256": "9fbebbdfef3ec20cd24384de2547bb07e6a81872d705dfb8f2ae935239dadc6a",
+        "bytes": 335806,
+        "engine": "webkit",
+        "variant": "PR10",
+        "captureOffsetMs": 4348.000000000001
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1320.png",
+        "sha256": "c3e970753b6c3b7e76bf89d0a30d22b061b76bcef3bead55a81c93c39b5b3086",
+        "bytes": 352924,
+        "engine": "webkit",
+        "variant": "PR10",
+        "captureOffsetMs": 4348.000000000001
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1520.png",
+        "sha256": "a461e0051db9bd6bf54518722baa27279db8f66cfbfc040a8fd3ae22be92e61c",
+        "bytes": 341641,
+        "engine": "webkit",
+        "variant": "PR10",
+        "captureOffsetMs": 4348.000000000001
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1750.png",
+        "sha256": "f6070ae120b831793e0e4ab9e0aa4c5c242e39cb5b1f10c5cf913ed6d49100f6",
+        "bytes": 343181,
+        "engine": "webkit",
+        "variant": "PR10",
+        "captureOffsetMs": 4348.000000000001
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-2480.png",
+        "sha256": "1f367aca797deb51da3fb6793d01f0f1d0189df6c072be08aed0f037b3e18314",
+        "bytes": 375867,
+        "engine": "webkit",
+        "variant": "PR10",
+        "captureOffsetMs": 4348.000000000001
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-0820.png",
+        "sha256": "0f8fdffdd5a54ec193a465e95351a1865864b72ab6c5bad86743860ba0bed872",
+        "bytes": 425524,
+        "engine": "webkit",
+        "variant": "PR13",
+        "captureOffsetMs": 1904.9999999999998
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1000.png",
+        "sha256": "5f770864a62211db0d9ea22fd97a24032733ffa42a47404750f1010724d3529e",
+        "bytes": 404078,
+        "engine": "webkit",
+        "variant": "PR13",
+        "captureOffsetMs": 1904.9999999999998
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1320.png",
+        "sha256": "1f0e1497b6852474b0895bf7c2591a76795da7ca6815c78756cc7f840f62b37d",
+        "bytes": 421415,
+        "engine": "webkit",
+        "variant": "PR13",
+        "captureOffsetMs": 1904.9999999999998
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1520.png",
+        "sha256": "999bf0f0fdb9b551c9cd0682ffe305bc066c32a9b1e44ac7b23c06fb71290971",
+        "bytes": 419942,
+        "engine": "webkit",
+        "variant": "PR13",
+        "captureOffsetMs": 1904.9999999999998
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1750.png",
+        "sha256": "1d3bd8ad4b02308e972f0678fcfc65334d0fb5ae840711a1def40d53373d2e7f",
+        "bytes": 419973,
+        "engine": "webkit",
+        "variant": "PR13",
+        "captureOffsetMs": 1904.9999999999998
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-2480.png",
+        "sha256": "1fde5c34a4ef5b637f8b040b35e21e2e47f7eefac63a0d79a5a3f7461f03fe8b",
+        "bytes": 436555,
+        "engine": "webkit",
+        "variant": "PR13",
+        "captureOffsetMs": 1904.9999999999998
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-0820.png",
+        "sha256": "4e9835a6b1ef2faa4f7966c3defec218a1df4b2c4d1775a3761ea5a9060eee3f",
+        "bytes": 393400,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1000.png",
+        "sha256": "ac8a99b8c211a5e5af326894b8700b82fcd35bb829412a6877676e4de08e9922",
+        "bytes": 395479,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1320.png",
+        "sha256": "ce22dda0b307095d316f8b0a12c93361e4a47bff9b3dc067594e242ec4bcae8c",
+        "bytes": 390242,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1520.png",
+        "sha256": "79dfb2477c72b47bccfc9d5d4ffbcc3c3ae1ee2d24e73edb35fe8de90d7e8907",
+        "bytes": 403462,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1750.png",
+        "sha256": "9b21e1a51af5aff2ce0440873e3a23264d2c60ee811479dd2643db1802477ba0",
+        "bytes": 396046,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-2480.png",
+        "sha256": "844caef65c2701589d04d74012a16c1685810909537e246f5daba13e1db57179",
+        "bytes": 420331,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-00.png",
+        "sha256": "f3c17e2540841de817a3c37293f2279722e067039b151f1d3a314e8927abc8ce",
+        "bytes": 466318,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-01.png",
+        "sha256": "eb42360d6b76d45fcd04aee251d4fdaa6889b38a4fac7ab547c48af59e1e6b52",
+        "bytes": 464899,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-02.png",
+        "sha256": "ffadad0042bec36f5fe228e027d7d6e7731ee8f822d45deefe5c222b25617ea6",
+        "bytes": 468640,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-03.png",
+        "sha256": "25d89373c27d37781cee21dd9217825b3d52bfcb93ebf6ef4352dee3a8c8d97e",
+        "bytes": 469298,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-04.png",
+        "sha256": "64d0e652123b7e94db6554c8f2550b7136778a5165753e38bd92399643ded7d4",
+        "bytes": 474173,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-05.png",
+        "sha256": "c953ad516c08bfef52e1f81667d3aca11126861661956c8efb1d08618b88268b",
+        "bytes": 474095,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-06.png",
+        "sha256": "0fe7fb4dad9e618eaeb24b85d89ad7753d1825383e447fc6c3179d4dc0b6031e",
+        "bytes": 463789,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-07.png",
+        "sha256": "58d75db982fee980d9dddc286420b8f1ed5a7cd392f9892ee91928ab80c97f16",
+        "bytes": 461119,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-08.png",
+        "sha256": "0fab0f844dd84445772e024dfd7301cabcfdcfd5a8f7847a703e6864f43b880e",
+        "bytes": 472416,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-09.png",
+        "sha256": "be1fb237f2251a2b3a7c67974fd304d10752f69491f568fbb0569229f83d8652",
+        "bytes": 472769,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-10.png",
+        "sha256": "697578fb25b73dbfe603d53d068d4100f217156aa7e77fd922291693866dd426",
+        "bytes": 476707,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-11.png",
+        "sha256": "6118b6a66c982b2a8739fb4a2df712556684c03cf9ed51d593c602115abf92a6",
+        "bytes": 475174,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-12.png",
+        "sha256": "00aa933b5519c11fe65fd69adc662376d322dc411428198a7814454f587833fc",
+        "bytes": 475646,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-13.png",
+        "sha256": "6ed1d59ced96614574ae15fd6fbc779b4c67bc5dce0fda63025ff13b79a67aef",
+        "bytes": 481678,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-14.png",
+        "sha256": "f09c32dd8fc92233ba83da3968d0dbb78e024236395a8825703b450406ed547e",
+        "bytes": 483474,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-15.png",
+        "sha256": "053c13dd99dd8adc6c48dc32af125e27e67d704a6f792a03ea11a8064cddea08",
+        "bytes": 485109,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-16.png",
+        "sha256": "59ee08877875861f66309d241df7e49277a1064b7b07335bf3d6c42d8d7b67d9",
+        "bytes": 487826,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-17.png",
+        "sha256": "60fdc78d0d52cb95ffbeb15ad6f053db0dcd9ae68253141218d81360286e66bc",
+        "bytes": 489962,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-18.png",
+        "sha256": "bc53237212e94d1293d3dabbc66168429507d90c9ef51728e79471e2258deb37",
+        "bytes": 496305,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-19.png",
+        "sha256": "83b45332706aa6ff32667ee05fe7fb0db035d60d0e2debafbb5948be3c1f2465",
+        "bytes": 496742,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-20.png",
+        "sha256": "da6bd506911ed292e6acbffb2b09891d5a6587fd6ffbc988ce9cea1f2e5b9efc",
+        "bytes": 506747,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-21.png",
+        "sha256": "98e04edea85cde386c4251e476efce36b45eda072d0f6ecb64bb7f5adddc814e",
+        "bytes": 506605,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-22.png",
+        "sha256": "5e6bb249f0e77936dba98c08cf8b154c6b235c382a6a25ebfb79769553f72c96",
+        "bytes": 510867,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-23.png",
+        "sha256": "6f0c88fe50d86e41960b2c353662082ebdc1934e8708bc6660198b4a5cbc9ff3",
+        "bytes": 521068,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-24.png",
+        "sha256": "1bcb565630ea52a512ca3bccded6860ee52bf6bc9f9cdccfc3b1845e5b750443",
+        "bytes": 466350,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-25.png",
+        "sha256": "556b96bdad5cf4087b4c046ebf70a8cee9e620a3031363fcdafd8dfe6c39234c",
+        "bytes": 467376,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-26.png",
+        "sha256": "653f82126de4663f2f86457abdb965837189b546d78511fd1175346783ad4b65",
+        "bytes": 479253,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-27.png",
+        "sha256": "c3796ce4c74f9d8782cb85405e1b95f9480dc28f47a341a3c1aee94cf7a94229",
+        "bytes": 496641,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-28.png",
+        "sha256": "7241b410ded005e1097da4a13f949eaccdd439cc5ffddd3c839e7842b0cd0ec3",
+        "bytes": 501036,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-29.png",
+        "sha256": "09d2d186e9796c6b6634b814a3fad69505c701af49e51349a204246637191537",
+        "bytes": 504342,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-30.png",
+        "sha256": "a4abc0594c2ee468cbc611afdec1b011ccd9f6581c5a4b27039cb02fcef9e694",
+        "bytes": 511254,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-31.png",
+        "sha256": "9121b00234fb8d4672904a2b418e7a600455e9cbff00f557a75498aaf6f74a8a",
+        "bytes": 511109,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-32.png",
+        "sha256": "8a9a81b5b0020db4356dcb0a847f99bf8be09db0589ab3ab5c7a604a10e96b29",
+        "bytes": 511243,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-33.png",
+        "sha256": "760822003ab33b005e6509d3365cca870b0a81ca1d20547a01847f07b96b875e",
+        "bytes": 512313,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-34.png",
+        "sha256": "1df6847888bce891d40bb2b105c14670be2b6ae13cc0524e9471280e0022dc82",
+        "bytes": 513337,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-35.png",
+        "sha256": "0671c38a876e6b7a72cd2c82a1fcd87141a94ac83f654c40cf69b2e95a7efa77",
+        "bytes": 514476,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-36.png",
+        "sha256": "9849e24a7faf6065162a1956268ed59c7497626b2dd299080735dac17daede17",
+        "bytes": 322102,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-37.png",
+        "sha256": "5199213a2107ae7b2532f39acfa0236f860d709834344f95a41daf65f34eb2ff",
+        "bytes": 407197,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-38.png",
+        "sha256": "f67916ef6f87f794784654a2851e448c6b810d017ae0daf1b242e88484fec617",
+        "bytes": 407280,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-39.png",
+        "sha256": "1f7f8c2771e055980ce8a39dc86ef65b4fa5ecf4c5b15d5538105dee2e95c10e",
+        "bytes": 409610,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-40.png",
+        "sha256": "de692b04ca7e5e7b38ce99aed3457c1e9830d94ee86764f2ddd4bfdbf1d3ab96",
+        "bytes": 410431,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-41.png",
+        "sha256": "1f738fbab405345f73d11e6a0ffbb05f1a3eb6e659d2a47f2137f5fccc69a2a6",
+        "bytes": 410829,
+        "engine": "chromium",
+        "variant": "V3",
+        "captureOffsetMs": 1746.4000000001856
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-00.png",
+        "sha256": "5a9d4ad3fb540876db4dd48772f0f066dac9b4643cfbe85b8b575d02edc33b7e",
+        "bytes": 390464,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-01.png",
+        "sha256": "abaac42c3a400d08f2b3751cecd12c27a64599604b58c051148bc5875ca12daf",
+        "bytes": 391548,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-02.png",
+        "sha256": "dd1514d6bde55d982b4b4eef4d068ffb69197068f29bc912f12c19d6e0ff5de5",
+        "bytes": 395259,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-03.png",
+        "sha256": "332dc5507818193b9167a18eb4f7ddf5a6e8a0e02436483642544dc4865fe466",
+        "bytes": 395425,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-04.png",
+        "sha256": "96709a89dd658ea6d307bbd9ce9c16f55b101a5fbfe1b9687930b1009819048f",
+        "bytes": 389791,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-05.png",
+        "sha256": "9a0f5ad1537908ef16a9b4e9db0fea5c263e55fc819b3aec5a788f3aed48beeb",
+        "bytes": 392811,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-06.png",
+        "sha256": "5331fd34f663347c85fb82b6fc928aea5487b03df157a6a5040f6f2844308c00",
+        "bytes": 391873,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-07.png",
+        "sha256": "ce22dda0b307095d316f8b0a12c93361e4a47bff9b3dc067594e242ec4bcae8c",
+        "bytes": 390242,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-08.png",
+        "sha256": "ae0fcc68a7b017561c4c1174253c0add52ea71df93bdcb247ca2249f61a0f8c2",
+        "bytes": 394675,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-09.png",
+        "sha256": "7cea8dda5b242a3c70d0bb65cb40d50755bdd457f5df0e7080b5011555529b18",
+        "bytes": 394799,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-10.png",
+        "sha256": "79dfb2477c72b47bccfc9d5d4ffbcc3c3ae1ee2d24e73edb35fe8de90d7e8907",
+        "bytes": 403462,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-11.png",
+        "sha256": "635d55fa8028eb689ab07ddb437c5524a20780b46a9e254e828b36d174498a2b",
+        "bytes": 403947,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-12.png",
+        "sha256": "ee611523c7cc1656df1f46dfb6f01a0c3acd342a96d077870e5b154ff4aa917f",
+        "bytes": 402837,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-13.png",
+        "sha256": "d3673912511d7a93fd1336e48debf8cdbb00442f0b7910d1fecba7f4195b1b6b",
+        "bytes": 394750,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-14.png",
+        "sha256": "048d6a7379d6be09624b958d8caba381374a560fef8ed1fd723f4cc701f3413a",
+        "bytes": 400045,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-15.png",
+        "sha256": "a099ae725817b1a42962b2a38b37b050c590912a43af5d385aa086acbc6489bb",
+        "bytes": 405175,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-16.png",
+        "sha256": "f3332924c3e4b9b2abca1ba0ad56c2397b3ff977f163a271f0488ace4b43f30a",
+        "bytes": 418541,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-17.png",
+        "sha256": "c784fc98a97595539a27fdf4b6cae1842f5a81ca0d13a5271c35af9548601be9",
+        "bytes": 416624,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-18.png",
+        "sha256": "d2a7ba34eef7658b4fb13dfd8fed4f3abe70c9258e4a533fae4d9c6036d57fed",
+        "bytes": 414647,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-19.png",
+        "sha256": "7573bf17859b70b675b663f515a60f5aea98b70b996a494f582ef8ab2575f647",
+        "bytes": 415959,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-20.png",
+        "sha256": "3fedce9f17813e5118720f9e5ac80822fd8d86e14534aee9cc173a2d07bbbc89",
+        "bytes": 413728,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-21.png",
+        "sha256": "e76cc6a2375230276f9f9148eb934297d2b746248b5a404c03dae0a2558cb3db",
+        "bytes": 415968,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-22.png",
+        "sha256": "e1a1c77585c821a38bac0ed75c506d13dfb48e45d480de4b30218969343e9ed6",
+        "bytes": 418678,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-23.png",
+        "sha256": "6c5956f08236607bebfa62bf87fce4f7c9eaac7a304a8fba45a251b73b3cf0ec",
+        "bytes": 417079,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-24.png",
+        "sha256": "b69473bcde064f36ebd475570b829a0b6940c0fe34e20a5945108918edc22200",
+        "bytes": 420197,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-25.png",
+        "sha256": "9e36e38620de85e070d80e2013992886e878f435014f8f4b059b8f737c135932",
+        "bytes": 425374,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-26.png",
+        "sha256": "fd9352938400d4c109bbf43e6f8d305247eb6bf48faaf4ec387de13fc920223d",
+        "bytes": 432729,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-27.png",
+        "sha256": "25259d3d4adcb547752be4644c98cf8342c90ec60deca0df00d0d8d9f636db71",
+        "bytes": 434775,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-28.png",
+        "sha256": "91ffbcf9c161dc6d948a3c95bd55301f75faab0b266551c38931425dcee2aa49",
+        "bytes": 409814,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-29.png",
+        "sha256": "62b566f215dc778377d46d4fff4c4705c93ab81797650b0017bc016443fe1dbd",
+        "bytes": 409391,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-30.png",
+        "sha256": "26455db6e5f4dc9646c5b96eb32069b43938d005ea2180fbfccc6de90e717a6f",
+        "bytes": 411733,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-31.png",
+        "sha256": "ea0add4ef045948adc245d5b576d2a77de374f934069e94706bd685d5239af75",
+        "bytes": 301570,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-32.png",
+        "sha256": "fd8dbdd3a9232ae727fdc56bca3021b9dbc0cfab6f3eb8121d264cb3ca270847",
+        "bytes": 354745,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-33.png",
+        "sha256": "9656d046c0df149fcab0f9ee75f04aa7191fc4b6c454d1fe94d33f48bf7a65bc",
+        "bytes": 357164,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-34.png",
+        "sha256": "3823d80e23c8dcb40b5815014804e4a25820a9c626c8ad5cd1d33f4a109a1bf4",
+        "bytes": 373162,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-35.png",
+        "sha256": "0ef36be62be959fe80cece333e09c2544b872d665eeea65f513ba9253d9655de",
+        "bytes": 388008,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-36.png",
+        "sha256": "ab1b8bfa165bef10ed042ad2553ee7501e5eb5ec0a7491c13e2dbade45b54db6",
+        "bytes": 395318,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-37.png",
+        "sha256": "39157078a586060ba7a0e3cd958e3f923fcaa5d698dd22db79a0a202e56eec24",
+        "bytes": 396496,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-38.png",
+        "sha256": "82452e9f327585fc0bb77813fac043eae95990edd7fe03c8d6299df7e39e1e76",
+        "bytes": 406522,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-39.png",
+        "sha256": "9cfb71aaae0ca96f151f2d00a001aef85c17b3e1df97b9a0ff9e936c3e209480",
+        "bytes": 417498,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-40.png",
+        "sha256": "3ff45d33c4ef04c4b6d55de004993c2182aefa55ebca0b616d91a872e10e2270",
+        "bytes": 422510,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-41.png",
+        "sha256": "9165291376cfca912185d6403ad7b551552af7df44c6d49ed20926838bfb7809",
+        "bytes": 422509,
+        "engine": "webkit",
+        "variant": "V3",
+        "captureOffsetMs": 2097
+      }
+    ]
+  },
+  "baselineSourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "baselineSnapshotValidation": "passed",
+  "originalAudit2Preserved": true,
+  "mismatchedSources": []
+}

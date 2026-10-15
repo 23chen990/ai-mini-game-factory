@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "PR #16 reproduces a real cancellation timing defect in Chromium: the jump buffer for level-one barrier l1-o1 launches before the safe right-lane input, so this must remain a failure. WebKit executes the same branch with the lane input at the buffer timestamp and clears l1-o1 without a jump; that passing browser result does not close Chromium coverage.",
+  "classification": [
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "The defect is in a gameplay input/state-machine branch and the observed event ordering differs across Chromium and WebKit. Keep the issue on the formal QA retest path; the root cause is not established by these artifacts.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games and runs",
+      "full conversation",
+      "unrelated CI jobs and logs"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Start a fresh level-one replay at the default 390x844 portrait viewport.",
+      "Wait until the jump control is visible and ready.",
+      "Use the browser touch API on the visible jump control, followed immediately by the visible right-lane control, with no state injection.",
+      "Read the live event history after the game advances beyond the l1-o1 barrier."
+    ],
+    "observed": [
+      "Chromium: l1-o1 buffers at 18.0159 game seconds / 135.11925 m; jump launches at 18.2742 / 137.0565 m; lane input to lane 2 arrives at 18.3993 / 137.99475 m. The later barrier-clear event is unjumped; the check correctly fails because launch preceded lane input.",
+      "WebKit: l1-o1 buffers and lane-input to lane 2 are both recorded at 17.34 / 130.05 m; the barrier clears unjumped at 18.803 / 141.0225 m, with no jump event.",
+      "Chromium cancel-jump-safe-detour.png was captured after the report snapshot already contains the jump event; its HUD shows about 154 m. It is post-launch evidence, not proof of cancellation.",
+      "The recorded controls use public Playwright touchscreen.tap actions and normalInputOnly=true; the browser event isTrusted flag was not separately recorded."
+    ],
+    "evidence": [
+      {
+        "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/report.json",
+        "sha256": "e955cafeb383e0106c18f8bf17810d0c5d47dcb7f05823bde67d821d222bed09",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/cancel-jump-safe-detour.png",
+        "sha256": "2ed287ab3c6f94e9f64d36dd11881fab982a6fe352da7e98e08c5cc745e653ad",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/driver-source.mjs",
+        "sha256": "c286fb7fa0ed6a3b7fd766d82057e60285174f81da9c745c31d5a890880e8cab",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/report.json",
+        "sha256": "e636987636c21f7fa6967d8af9732238eb3c77ee5fb66197a08168858227e9b6",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "On the exact level-one l1-o1 barrier branch, a trusted touch lane-change input received before jump launch clears the pending buffer before any jump event is emitted.",
+    "In both Chromium and WebKit at the declared 390x844 portrait viewport, the normal-input trace shows jump-buffered followed by the safe lane change, no jump event, bufferedJump=null, and l1-o1 clearing with jumped=false.",
+    "The cancelled action adds no jumped-barrier count, jump mastery/star progress, or jump reward; compare progress against the pre-branch save so prior earned mastery is not erased or mistaken for a new award.",
+    "Capture the branch with real touch input and player-visible evidence; record the event ordering and the exact engine/viewport. A post-launch screenshot or a passing sibling engine cannot satisfy the Chromium criterion."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-15T06:19:47Z"
+}

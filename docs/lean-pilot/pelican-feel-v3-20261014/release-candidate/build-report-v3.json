@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "success": true,
+  "runtime": "web-lite",
+  "template": "PR10 authorized Pelican Three.js source adaptation, V3",
+  "codexThreadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "webBuild": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/game/index.html",
+  "files": [
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/game/index.html",
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/main.js",
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/coast-ui.mjs",
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/adventure.mjs",
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/levels.mjs",
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/feel.mjs",
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/safety.mjs",
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/pelican.js",
+    "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace/source/pelican-bike/src/engagement.mjs"
+  ],
+  "verification": [
+    "Current delivered HTML SHA-256 3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1; build receipt 3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+    "Current-attempt browser reports: 13/16 categories passed; required WebKit and Chromium evidence is listed in qa-evidence-manifest-v3.json.",
+    "Independent perceptual gate passed; runtime product journey passed.",
+    "Physical device, real app background lifecycle, live ads, native packages, and production release remain blocked."
+  ],
+  "builtAt": "2026-10-14T12:55:28.688Z",
+  "completion": {
+    "status": "RELEASE_BLOCKED",
+    "blockers": [
+      "humanPlaytest"
+    ]
+  }
+}

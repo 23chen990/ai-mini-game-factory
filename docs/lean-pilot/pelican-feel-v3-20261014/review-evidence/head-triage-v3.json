@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "User screenshot: pelican head appears missing in V3 rear chase view. Treat as avatar readability complaint and reproduce the exact straight/catch presentation branch.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Camera/head animation presentation is on default core journey; preserve validated user media, exact branch and independent perceptual retest.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "unrelated games",
+      "unverified nearby videos",
+      "unrelated source history"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Verified screenshot identity via ingest/review",
+      "Capture default straight ride and catch in current build",
+      "Check same head object during turn, jump, stun and replay on both engines"
+    ],
+    "observed": [
+      "Crop shows rear body and tiny helmet silhouette; head/beak identity unclear",
+      "Original head and beak geometry definitions remain present; actual occlusion/gaze cause needs branch test",
+      "Final current20 diagnosis: the authorized demo state has no yaw field. Default idle/menu pose synchronization had used that undefined yaw in native head IK before the first run, producing non-finite native head transforms. syncRidePose initializes a complete finite idle pose (yaw/lean/steer=0), and copies real adventure pose before native IK during play. Original head/neck/beak geometry and its .355 neck/28-degree gaze remain unchanged; the initial geometry hypothesis was rejected and reverted.",
+      "Current20 exact head object is finite and connected in both real browser engines at390×844,360×740,320×568,844×390 across natural straight/catch/turn/jump/pedestrian-stop/recovery/replay. Independent48-cell head matrix is hash-bound. Rear chase naturally hides the forward-facing beak in some frames; beak-animation and original screenshot capture revision are not claimed verified."
+    ],
+    "evidence": [
+      {
+        "path": "reference-evidence/manifest.json",
+        "sha256": "c8497f75b131ae00efe56033bdb6a07af0c7e50cbbb562beedfc8ae2818e1428",
+        "kind": "reference",
+        "provenance": "verified-reference"
+      },
+      {
+        "path": "head-reproduction-matrix-v3.json",
+        "sha256": "1503be4198324d603e7fbe6a6547a6ff255be0000b8089a34edca921180a2fb8",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+        "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "attempts/attempt-20/head-webkit/report.json",
+        "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "attempts/attempt-20/head-chromium/report.json",
+        "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Head/neck/beak recognisable in default mobile straight/catch view",
+    "Preserve road, all lanes and forward hazard readability",
+    "No forced camera orbit or body yaw changes",
+    "Capture exact branch with natural touch on both engines and four sizes",
+    "Independent pixel review closes only observed branches"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-14T07:18:52.696Z"
+}

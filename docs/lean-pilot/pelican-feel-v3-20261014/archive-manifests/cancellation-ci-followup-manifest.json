@@ -1,0 +1,560 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "scope": "SUPPLEMENT_AFTER_CURRENT20_RAW_SNAPSHOT: cd808 original failed CI + independent QA and local trusted touch sequence retests; not CI success for an uncommitted patch.",
+  "files": [
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/cancel-jump-safe-detour.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/cancel-jump-safe-detour.png",
+      "sha256": "31a505ee2e394bfc23e3e75fbab5d69e5b3d233c7266fab12e1266e15d14b619",
+      "bytes": 1513246
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/driver-source.mjs",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/driver-source.mjs",
+      "sha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7",
+      "bytes": 17037
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/earned-jump-prize-cue.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/earned-jump-prize-cue.png",
+      "sha256": "84061228806111243e80db3a09001e70209bde18f12aed1badb24697fb464dd2",
+      "bytes": 1555379
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/earned-three-stars.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/earned-three-stars.png",
+      "sha256": "97241cb2d7e3f901e29c80a73dc3b609a830a003d191879c1bd4a404ae565d76",
+      "bytes": 659427
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/first-catch.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/first-catch.png",
+      "sha256": "90a00c671e4e0b446020a36538991de3a72c545c6091d21475a517397cffaee3",
+      "bytes": 1542330
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/first-gold.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/first-gold.png",
+      "sha256": "b656cd034e2532d73a7513ba1797d0ff06c374bb764a2a26c52ce8384152ae2b",
+      "bytes": 1551274
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/jump-choice.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/jump-choice.png",
+      "sha256": "e63e93d5fdad4a081e8a6ae71868160c253fbb5b4d670ee1eceb1c24eba2593f",
+      "bytes": 1527751
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/jump-gold-earned.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/jump-gold-earned.png",
+      "sha256": "c9df87fe45a0def6e3c136e90ceb474fcf20676d8273d42873dd35edccd0c074",
+      "bytes": 1557396
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/jump-queued.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/jump-queued.png",
+      "sha256": "5dbbeed913269a80072e74410ce2035d376e21302604b63a6e9f009d78d90de4",
+      "bytes": 1568965
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/left-pedestrian-warning.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/left-pedestrian-warning.png",
+      "sha256": "fde9411255f61be34dd796ac4d626270f4b2127ee12cf59d946c313dc8eb97c8",
+      "bytes": 1564725
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/page@5f048926041ee687645fdfcc028b7dbd.webm",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/page@5f048926041ee687645fdfcc028b7dbd.webm",
+      "sha256": "c2ed2282dc6e5ad2b1aeaff4f9d771de5f7da7b99ffe625e277d1a394a8116ff",
+      "bytes": 12333067
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/report.json",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/report.json",
+      "sha256": "70e5285dc6a8927abf1f9bba679fc281178d1fae4bcf70894b4848231f016e89",
+      "bytes": 300376
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/right-pedestrian-warning.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/right-pedestrian-warning.png",
+      "sha256": "eb7e670f626a25e980ab0a008214bafcbcad352cbd144f414d97edf827494568",
+      "bytes": 1546985
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/safe-detour.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/safe-detour.png",
+      "sha256": "1b2b00aea4c5592454ac2836a604beec906d7ee0a5be26e16673e8f952eabd40",
+      "bytes": 1536322
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/saved-mastery.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/saved-mastery.png",
+      "sha256": "1ae576b2c3ed393e335bd3a2f1313f7665f0f348f6827a35138dea9b0a7e096f",
+      "bytes": 470959
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/small-phone-route-menu.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/small-phone-route-menu.png",
+      "sha256": "da56288cd192d8942ed2cd6baf206fa606296a70887bc4d461c8f91d2113c59c",
+      "bytes": 367425
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/small-phone-running.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/small-phone-running.png",
+      "sha256": "b7d93567a828417a6569f647edb0dda812770715cfe9dadf1edde8e3e86b1187",
+      "bytes": 960440
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/swipe-left.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/swipe-left.png",
+      "sha256": "05d09f176d7179f9de4462d867b5f95739a8163671d100e39323b96ebd842ee0",
+      "bytes": 1514443
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/swipe-right.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/swipe-right.png",
+      "sha256": "b9687d2e65372b1cadf4f996f900a50626507df3e69bac8bc5f2778fb4d25fa2",
+      "bytes": 1549574
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/swipe-up.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/swipe-up.png",
+      "sha256": "00deb9fb6b120b92ed20249b874e6954f08be77a98307f1a87cbb516cafc22e3",
+      "bytes": 1538334
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/up-swipe.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium-ordered-cancel-retest/up-swipe.png",
+      "sha256": "9276e07a1083e687b43080d59204e5dc79d4053952c96f25e9a3adaa46a56a90",
+      "bytes": 1559838
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/cancel-jump-safe-detour.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/cancel-jump-safe-detour.png",
+      "sha256": "de176b9ed6ed3d57b690deed77f70d21b529f4d066777010da867f4e3247a61a",
+      "bytes": 2056323
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/driver-source.mjs",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/driver-source.mjs",
+      "sha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7",
+      "bytes": 17037
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/earned-jump-prize-cue.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/earned-jump-prize-cue.png",
+      "sha256": "db2ef918a7b67ce721283e70fe6fe1fe79f54dac2cecadc484035c96dd5c3701",
+      "bytes": 2184565
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/earned-three-stars.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/earned-three-stars.png",
+      "sha256": "e867d405d29cae604c2075280553fc70c84f81169eefee982711de7cdb8a53f3",
+      "bytes": 1195181
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/first-catch.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/first-catch.png",
+      "sha256": "f71014109b1950af70b1ad67b35bbd23d90e573fa0e73f895c2a67e2d44393c1",
+      "bytes": 2068470
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/first-gold.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/first-gold.png",
+      "sha256": "743a266ad5f949b8588e2db9fa681f7ec04df7b9d84bfca91e797ccb75afb2d5",
+      "bytes": 2080505
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/jump-choice.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/jump-choice.png",
+      "sha256": "a181fc5b8b8eed9eef5b923bab5bf54286430b8fa940111e71912fa30fe43554",
+      "bytes": 2086129
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/jump-gold-earned.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/jump-gold-earned.png",
+      "sha256": "53157faf9bb436ad97bf1ab63d40a9297762dbb0466f42dd4c709db8c85137e5",
+      "bytes": 2096599
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/jump-queued.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/jump-queued.png",
+      "sha256": "72b910eab1cc09030f08af25a695a35c24bf3a74df9a4d07e7db0ba002b364df",
+      "bytes": 2139575
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/left-pedestrian-warning.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/left-pedestrian-warning.png",
+      "sha256": "b95f93260842f8fd3d3c64e5c0f25ad3c0cce006951b0e4adea1ea8d1819e549",
+      "bytes": 2107404
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/page@db7a5f432c3d51ec8042436ce6a4794a.webm",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/page@db7a5f432c3d51ec8042436ce6a4794a.webm",
+      "sha256": "c2621b008865cf559d4bfd6851312c665c51e692ff4b672da7a025852e9ee7f1",
+      "bytes": 12383949
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/report.json",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/report.json",
+      "sha256": "be7569054815309b65a9c0ca3c86bfb9fff1e6f4b29d040f7790801a4c59867c",
+      "bytes": 296635
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/right-pedestrian-warning.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/right-pedestrian-warning.png",
+      "sha256": "626e5c393846e8cca2f3067a8bbcac35762d346647f699e4e554eec86faa6e16",
+      "bytes": 2198981
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/safe-detour.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/safe-detour.png",
+      "sha256": "766ccd257f958087d929605ecabbc8cb45055d3e5940d4a9d44734fe97dc0cfa",
+      "bytes": 2071859
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/saved-mastery.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/saved-mastery.png",
+      "sha256": "64cf10aade821eee9bbea171169feaab3a0d88104b1396fe85905a550636641e",
+      "bytes": 793732
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/small-phone-route-menu.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/small-phone-route-menu.png",
+      "sha256": "7c8e7cb8559a67ac5e96310beb7191c3b5c7af949fd15c6155932ea4f7f822d7",
+      "bytes": 625137
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/small-phone-running.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/small-phone-running.png",
+      "sha256": "425bda37d066f11789c6366dc2bc2629b1bed14d66164c363bd01ec7574987fe",
+      "bytes": 1265161
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/swipe-left.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/swipe-left.png",
+      "sha256": "87a5a14bcb6cd05f586b5627d47a99068c89f22bdd2fff6a456eed1a47cdc270",
+      "bytes": 2041863
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/swipe-right.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/swipe-right.png",
+      "sha256": "144cdd5859f6f79276a025bb6070e8080fd8d9e8a29b629c17fa092b8e7fdb8f",
+      "bytes": 2092735
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/swipe-up.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/swipe-up.png",
+      "sha256": "bf61ec9960b50bf06bc8b8dc3615384e46e6f985503028278d2daa5797c9077a",
+      "bytes": 2047556
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/up-swipe.png",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit-ordered-cancel-retest/up-swipe.png",
+      "sha256": "c4e89cd9b61262db47cafe53e4dd428734a4b7fd9c588d1715b46d215fbcb8af",
+      "bytes": 2067643
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/factory-checks-final.json",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/factory-checks-final.json",
+      "sha256": "e41672503299a0050c6be925bed6a04095d4786a60234d9b9aceaf92250bdfcf",
+      "bytes": 2142
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/lint-final-cancel.log",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/lint-final-cancel.log",
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
+      "bytes": 11
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/rules-final-cancel.log",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/rules-final-cancel.log",
+      "sha256": "eeb9a6adcc7bd795c3d0154db68b80ec6b6d73c1b54f4604057a975396da97b5",
+      "bytes": 9900
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/evidence/v3-engineering/typecheck-final-cancel.log",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/evidence/v3-engineering/typecheck-final-cancel.log",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "bytes": 15
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/qa-observation-latency-triage-v3.json",
+      "sourcePath": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/qa-observation-latency-triage-v3.json",
+      "sha256": "00de6a9245828097ef39717d79e351d4a44e3d77db4fa241f4cb4ff81a882744",
+      "bytes": 6912
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/artifacts-api-cd808.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/artifacts-api-cd808.json",
+      "sha256": "05f1c84dea416ef019f374caaa2f07f16bdfe4a0be4907b0d19e03deeb29e6ef",
+      "bytes": 1587
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/chromium-cd808.log",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/chromium-cd808.log",
+      "sha256": "2b0c735d84eb299ed6412732c4a54d490915a29022dc14ba00d90e20b42914ce",
+      "bytes": 169523
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/chromium-cd808.raw.zip",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/chromium-cd808.raw.zip",
+      "sha256": "b8012433fc6191ce3aad1df997c6ac90ab317d16446874c325273a942f73523f",
+      "bytes": 62983348
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/chromium-live.log",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/chromium-live.log",
+      "sha256": "9773c3d1c5ffca6dde7c6334e741d2f92a97e89c975c2ab82550f04cb5a5d04d",
+      "bytes": 82
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/pr16-snapshot-cd808.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/pr16-snapshot-cd808.json",
+      "sha256": "e550cd3c8cc7c4022399a678f657c353c744bf613832270cb3e29c2905ba64cb",
+      "bytes": 406
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/run-full-cd808.log",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/run-full-cd808.log",
+      "sha256": "402f9b910295c8fea0464c8ce54ee69016d0f23b3b7d142190c401b822170a14",
+      "bytes": 478921
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/run-view-cd808.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/run-view-cd808.json",
+      "sha256": "8e7cb4fd167ec3c14ebe804a218a6a4b0bb0ec59bee33be12806caf26ca7aaba",
+      "bytes": 5972
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/webkit-cd808.log",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/webkit-cd808.log",
+      "sha256": "2373253bcf865b898f3bf1757b568f932a9d410f88262f76ae6ca119a45eeeb8",
+      "bytes": 309398
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/webkit-cd808.raw.zip",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/webkit-cd808.raw.zip",
+      "sha256": "64501249e51e109abb1f0e2b46610c0d3086b9fce230518c8fbce00cda0675b3",
+      "bytes": 61203572
+    },
+    {
+      "path": "supplemental/ci-cd808-failed/webkit-live.log",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-final-packager/webkit-live.log",
+      "sha256": "d3e34ce5facee68df308bd239fce0ff9f630565d256815a9fa79a66d44aadb90",
+      "bytes": 82
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/api/artifacts-api-cd808.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/api/artifacts-api-cd808.json",
+      "sha256": "05f1c84dea416ef019f374caaa2f07f16bdfe4a0be4907b0d19e03deeb29e6ef",
+      "bytes": 1587
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/audit-findings.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/audit-findings.json",
+      "sha256": "fdc161ff1f2596feb8eaa31a9351000aac40ed60b359bedf18641bd9bdfb1c21",
+      "bytes": 3709
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence-manifest.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence-manifest.json",
+      "sha256": "27c2310d3ab72a3dd999d438eda9472e2665026c88d078974acedb9a34fdc839",
+      "bytes": 11713
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/cancel-jump-safe-detour.png",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/cancel-jump-safe-detour.png",
+      "sha256": "2ed287ab3c6f94e9f64d36dd11881fab982a6fe352da7e98e08c5cc745e653ad",
+      "bytes": 319931
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/driver-source.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/driver-source.mjs",
+      "sha256": "c286fb7fa0ed6a3b7fd766d82057e60285174f81da9c745c31d5a890880e8cab",
+      "bytes": 16233
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/report.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/report.json",
+      "sha256": "e955cafeb383e0106c18f8bf17810d0c5d47dcb7f05823bde67d821d222bed09",
+      "bytes": 308555
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/chromium-cd808/attempts/attempt-1/index.html",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/index.html",
+      "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "bytes": 1010638
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/chromium-cd808/attempts/attempt-1/qa-campaign-chromium/report.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/qa-campaign-chromium/report.json",
+      "sha256": "d84d6752bc153f246fefe7dea72f54fb329bf774d04a2b75604c3889fe470a5d",
+      "bytes": 226469
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/chromium-cd808/baseline-receipt.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/baseline-receipt.json",
+      "sha256": "8bc2df3eaced80811fc4335018dd036c71eaa33c984add9171466e139c8ce9fd",
+      "bytes": 2652
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/chromium-cd808/build-receipt.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/build-receipt.json",
+      "sha256": "800565fd5f8471a7504ee352151f48a4327fa013dcff8e69003eb43d260685b4",
+      "bytes": 1892
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/chromium-cd808/repair-state.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/repair-state.json",
+      "sha256": "eaab1911238e6aa7a5e1211d407b67cdb3901d39b99462973a18669853b90c80",
+      "bytes": 2210
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/cancel-jump-safe-detour.png",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/cancel-jump-safe-detour.png",
+      "sha256": "88dc3d4ee5ca39372163e6ef60e7fa56f4854103edeb2c60fa69060d50065878",
+      "bytes": 342357
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/driver-source.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/driver-source.mjs",
+      "sha256": "c286fb7fa0ed6a3b7fd766d82057e60285174f81da9c745c31d5a890880e8cab",
+      "bytes": 16233
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/report.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/report.json",
+      "sha256": "e636987636c21f7fa6967d8af9732238eb3c77ee5fb66197a08168858227e9b6",
+      "bytes": 291281
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/webkit-cd808/attempts/attempt-1/index.html",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/attempts/attempt-1/index.html",
+      "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "bytes": 1010638
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/webkit-cd808/attempts/attempt-1/qa-campaign-webkit/report.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/attempts/attempt-1/qa-campaign-webkit/report.json",
+      "sha256": "ae5ebc22adcfca8461f790fcead6dfd16afd11554a70a3161f27a99491f455cd",
+      "bytes": 227357
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/webkit-cd808/baseline-receipt.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/baseline-receipt.json",
+      "sha256": "8bc2df3eaced80811fc4335018dd036c71eaa33c984add9171466e139c8ce9fd",
+      "bytes": 2652
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/webkit-cd808/build-receipt.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/build-receipt.json",
+      "sha256": "ce5f856a970e2e66120fdc07ebe30a3bbcacb1efd37be62a4249d4962e6413ad",
+      "bytes": 1892
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/evidence/webkit-cd808/repair-state.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/repair-state.json",
+      "sha256": "113838fdfd89f585f4d84d0b3059bdba4773cec8564ff2f91440e606996d3fb7",
+      "bytes": 2210
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/qa-issue.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/qa-issue.json",
+      "sha256": "a1b674b77335f9380bad679a6c3fbfacedca84370432df563b0f088e7805768f",
+      "bytes": 4705
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/reproduction-matrix.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/reproduction-matrix.json",
+      "sha256": "b9b688cb71b0dc7d7edb34193bfb633c6d35dacb76a663f14227692a021c7400",
+      "bytes": 5048
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/attempt-20-qa-retest.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/attempt-20-qa-retest.json",
+      "sha256": "19d94786dc93715037f3e51d4ca816cc9d4a78349b448cebbfe2e3e9eabf43b0",
+      "bytes": 13937
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/evidence-manifest.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence-manifest.json",
+      "sha256": "d456be2a2c7c5eb2b161ac6b84afd7e323ca23b6afc1fdde6298d86d9ed2b273",
+      "bytes": 5184
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/evidence/chromium/cancel-jump-safe-detour.png",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/chromium/cancel-jump-safe-detour.png",
+      "sha256": "31a505ee2e394bfc23e3e75fbab5d69e5b3d233c7266fab12e1266e15d14b619",
+      "bytes": 1513246
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/evidence/chromium/driver-source.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/chromium/driver-source.mjs",
+      "sha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7",
+      "bytes": 17037
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/evidence/chromium/report.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/chromium/report.json",
+      "sha256": "70e5285dc6a8927abf1f9bba679fc281178d1fae4bcf70894b4848231f016e89",
+      "bytes": 300376
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/evidence/helper/touch-sequence.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/helper/touch-sequence.mjs",
+      "sha256": "49e6e4141171070bee303c69dff6de147cb99263567b0839ede7746292c76bea",
+      "bytes": 864
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/evidence/webkit/cancel-jump-safe-detour.png",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/webkit/cancel-jump-safe-detour.png",
+      "sha256": "de176b9ed6ed3d57b690deed77f70d21b529f4d066777010da867f4e3247a61a",
+      "bytes": 2056323
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/evidence/webkit/driver-source.mjs",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/webkit/driver-source.mjs",
+      "sha256": "15c4e761eb6013ddc2ed7f803b699708846172fd313c2ec528a902b5068dffc7",
+      "bytes": 17037
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/evidence/webkit/report.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/evidence/webkit/report.json",
+      "sha256": "be7569054815309b65a9c0ca3c86bfb9fff1e6f4b29d040f7790801a4c59867c",
+      "bytes": 296635
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/retest-attempt-20/validate-retest.mts",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/retest-attempt-20/validate-retest.mts",
+      "sha256": "4437a1a0881f194bcb4598dd184850b106e2d7488fd34d03f34ec7a695bcba28",
+      "bytes": 8001
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/validate-artifacts.mts",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/validate-artifacts.mts",
+      "sha256": "95e75729efed9606015778ba6ec7cdffaf995b118226b7c178f3d0cac1a530c8",
+      "bytes": 3996
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/validate-worker-result.mts",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/validate-worker-result.mts",
+      "sha256": "513e1954069a3cded0b2816e9b851df13177d1951a1ec1347c237323c030549e",
+      "bytes": 3892
+    },
+    {
+      "path": "supplemental/independent-ci-cancel/worker-result.json",
+      "sourcePath": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/worker-result.json",
+      "sha256": "ee61b827c1414da0967d8d787ab45c112eb909881cef50c30c949470a4591d07",
+      "bytes": 6853
+    }
+  ],
+  "archive": {
+    "name": "pelican-v3-cancellation-ci-followup.zip",
+    "sha256": "b512a707351310d76e43594f304f36491efb66ddad5230a5a9c4156a0acdf771",
+    "bytes": 211456421
+  }
+}

@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "tap #co-start",
+    "tap #co-pause",
+    "tap #co-resume",
+    "tap [data-action=\"right\"]",
+    "tap [data-action=\"left\"]",
+    "tap [data-action=\"jump\"]",
+    "tap #co-ad",
+    "tap #co-replay",
+    "tap [data-action=\"left\"]",
+    "tap [data-action=\"right\"]",
+    "tap [data-action=\"right\"]"
+  ],
+  "transitions": [
+    {
+      "name": "native-head-visible",
+      "changed": true,
+      "evidence": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "name": "fish-catch",
+      "changed": true,
+      "evidence": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "name": "reverse-jump",
+      "changed": true,
+      "evidence": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "name": "barrier-terminal",
+      "changed": true,
+      "evidence": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "name": "replay",
+      "changed": true,
+      "evidence": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "name": "pedestrian-stun",
+      "changed": true,
+      "evidence": "attempts/attempt-20/head-webkit/report.json"
+    },
+    {
+      "name": "recovered",
+      "changed": true,
+      "evidence": "attempts/attempt-20/head-webkit/report.json"
+    }
+  ],
+  "completion": "terminal",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "attempts/attempt-20/head-webkit/844-straight.png",
+    "attempts/attempt-20/head-webkit/844-fish-catch.png",
+    "attempts/attempt-20/head-webkit/844-right-turn.png",
+    "attempts/attempt-20/head-webkit/844-jump-reverse.png",
+    "attempts/attempt-20/head-webkit/844-terminal.png",
+    "attempts/attempt-20/head-webkit/844-replay.png",
+    "attempts/attempt-20/head-webkit/844-pedestrian-stun.png",
+    "attempts/attempt-20/head-webkit/844-recovery.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "Playwright webkit trusted normal touch; cold menu to native catch/reverse/jump, visible barrier terminal, replay and exact pedestrian stop/recovery",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "runtime": "web-lite",
+  "device": {
+    "width": 844,
+    "height": 390,
+    "label": "mobile-landscape"
+  },
+  "seed": "authored-v3-head",
+  "observedAt": "2026-10-15T03:10:23.707Z"
+}

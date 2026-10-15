@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "level-one barrier l1-o1 (the buffered-jump target)"
+    ],
+    "lifecycleStateBranches": [
+      "running; level 1; l1-o1 jump buffer armed; safe right-lane touch arrives before jump launch; barrier clears unjumped"
+    ],
+    "rendererPaths": [
+      "Chromium desktop touch emulation; efficient render tier 0; pixelRatio 1; reduced motion",
+      "WebKit desktop touch emulation; efficient render tier 0; pixelRatio 1; reduced motion"
+    ],
+    "viewports": [
+      {
+        "label": "390x844 portrait; desktop browser touch emulation",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "chromium-l1-o1-safe-lane-during-buffer",
+      "objectType": "level-one barrier l1-o1 (the buffered-jump target)",
+      "lifecycleStateBranch": "running; level 1; l1-o1 jump buffer armed; safe right-lane touch arrives before jump launch; barrier clears unjumped",
+      "rendererPath": "Chromium desktop touch emulation; efficient render tier 0; pixelRatio 1; reduced motion",
+      "viewport": {
+        "label": "390x844 portrait; desktop browser touch emulation",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "The trusted lane-change touch cancels the armed jump before launch; l1-o1 clears without jumping and without new jump mastery.",
+      "observed": "Buffer at 18.0159 / 135.11925 m; jump at 18.2742 / 137.0565 m; lane input at 18.3993 / 137.99475 m. The launch precedes cancellation. Barrier later clears unjumped; jumpedBarriers remains 0. The cancel screenshot is post-launch.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/report.json",
+          "sha256": "e955cafeb383e0106c18f8bf17810d0c5d47dcb7f05823bde67d821d222bed09",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/chromium-cd808/attempts/attempt-1/experience-chromium/cancel-jump-safe-detour.png",
+          "sha256": "2ed287ab3c6f94e9f64d36dd11881fab982a6fe352da7e98e08c5cc745e653ad",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "webkit-l1-o1-safe-lane-during-buffer",
+      "objectType": "level-one barrier l1-o1 (the buffered-jump target)",
+      "lifecycleStateBranch": "running; level 1; l1-o1 jump buffer armed; safe right-lane touch arrives before jump launch; barrier clears unjumped",
+      "rendererPath": "WebKit desktop touch emulation; efficient render tier 0; pixelRatio 1; reduced motion",
+      "viewport": {
+        "label": "390x844 portrait; desktop browser touch emulation",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "The trusted lane-change touch cancels the armed jump before launch; l1-o1 clears without jumping and without new jump mastery.",
+      "observed": "Buffer and lane input both at 17.34 / 130.05 m; there is no jump event; l1-o1 clears unjumped at 18.803 / 141.0225 m. bufferedJump is null and jumpedBarriers remains 0.",
+      "evidence": [
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/report.json",
+          "sha256": "e636987636c21f7fa6967d8af9732238eb3c77ee5fb66197a08168858227e9b6",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/ci-cancel-audit/evidence/webkit-cd808/attempts/attempt-1/experience-webkit/cancel-jump-safe-detour.png",
+          "sha256": "88dc3d4ee5ca39372163e6ef60e7fa56f4854103edeb2c60fa69060d50065878",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "The failing Chromium report identifies the same l1-o1 buffer branch and shows a jump event before lane input.",
+    "WebKit provides a same-object, same-viewport passing comparison with no jump event; it does not close the Chromium failure.",
+    "The cancellation PNGs are exact captures from the reports; Chromium capture is after launch and must not be represented as a successful cancel."
+  ],
+  "remainingGaps": [
+    "No physical-device run is present; evidence is desktop touch emulation at 390x844.",
+    "The browser event isTrusted flag was not separately captured, although the driver calls public Playwright touchscreen.tap and marks the actions normalInputOnly.",
+    "No implementation root cause is proven by this CI evidence."
+  ],
+  "createdAt": "2026-10-15T06:19:47Z"
+}

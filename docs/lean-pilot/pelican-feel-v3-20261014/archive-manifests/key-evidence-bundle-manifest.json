@@ -1,0 +1,1138 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "runs/pelican-coast-v2-20261014/workspace",
+  "attempt": 20,
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "fullFramePngCount": 120,
+  "keyMediaCount": 32,
+  "scope": "Bound recordings, screenshots, full-frame comparison PNGs and immutable source receipts; not physical-device or human enjoyment acceptance.",
+  "comparisonLimits": "capture t+ is post-start capture wallclock; source video PTS offset is approximate and tail is unquantified; PR10 continuous steering and PR13/V3 lane inputs/cameras differ; no strict speed/preference ranking. Native isolated front-fork pivot remains visually occluded in some rear views.",
+  "files": [
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/comparison-sheets/comparison-strip-chromium.png",
+      "sha256": "fe9a1ecf3b7bf323a40d02fe2f1f1bb33043b07e33ecb8d913efddde5d88f35a",
+      "bytes": 6769435
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/comparison-sheets/comparison-strip-webkit.png",
+      "sha256": "be723874ae02d36d08d99707a199059fa3939a827dd27d10f85e98ef7d204e5b",
+      "bytes": 6007447
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/comparison-sheets/temporal-grid-chromium-V3.png",
+      "sha256": "5e82502f3458279928215863190d07ed067c23712dabebdaf4a0586e662dd788",
+      "bytes": 6880902
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/comparison-sheets/temporal-grid-webkit-V3.png",
+      "sha256": "2c8aac6c8e3bcb421bdac8b6029be4db6332e04e6ec80d075978ab92337f4b14",
+      "bytes": 6506576
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/compact-chromium.png",
+      "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+      "bytes": 954433
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/compact-webkit.png",
+      "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150",
+      "bytes": 1249966
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/hazard-approach-level-5-chromium.png",
+      "sha256": "dab2d0cb45fb3e539ba1c6a8c1dacf91d4990202b5e471bc2ea8272ee940d7f5",
+      "bytes": 996520
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/hazard-approach-level-5-webkit.png",
+      "sha256": "f501756cf2fab72375ebdffd0c7b580d0ace7aac1fb2ce25b4dd899e1b90195e",
+      "bytes": 1509479
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/hazard-clear-level-5-chromium.png",
+      "sha256": "92b9e6738490af293bfca8bdd11c16df4b4fd0feeefe594ac7b35e8677d0fbfb",
+      "bytes": 1137425
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/hazard-clear-level-5-webkit.png",
+      "sha256": "8187926218b129417ed0ea0c154d79ff142b56315a3685c691a35d15a6fe8cf3",
+      "bytes": 1971641
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/head-chromium.png",
+      "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+      "bytes": 1529371
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/head-webkit.png",
+      "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee",
+      "bytes": 2047550
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/menu-chromium.png",
+      "sha256": "14c5d81a67ad8a7702a39222a8c9dd07c2a045170bc1839a5578d04cf3e708be",
+      "bytes": 368405
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/menu-webkit.png",
+      "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+      "bytes": 625238
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/settlement-level-5-chromium.png",
+      "sha256": "dd213934914e2c9067edacba0bfa77bed98fc080d599714eaae68122dea44e0d",
+      "bytes": 421425
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/key-png/settlement-level-5-webkit.png",
+      "sha256": "848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699",
+      "bytes": 967830
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/media-manifest.json",
+      "sha256": "88cc9ed8564b03c612d6300ab5fdbb4db374d42a79a77b955b0281feb600e40d",
+      "bytes": 70482
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/experience-chromium.mp4",
+      "sha256": "676cd39f762aa0e6bbf4ac7d34ce3bb8bf0e8019af2609917beac7687b750195",
+      "bytes": 13708533
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/experience-webkit.mp4",
+      "sha256": "6462f2470624596a9de4af1fb4bfc15374a27b4faca7a3dd18ad986c4cdbc0a6",
+      "bytes": 12678574
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/feel-state-chromium.mp4",
+      "sha256": "8d29bfd08a94766ee1bfffb81ea964d4c7fd58db0c5e29cc7c5c766e27c59f84",
+      "bytes": 2889692
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/feel-state-webkit.mp4",
+      "sha256": "7c284e8e4448200c729998efbc179c4484004ce1c6d4e8284ae3079d40827f82",
+      "bytes": 2700394
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/first-touch-triptych-chromium.mp4",
+      "sha256": "294d726d866e99ff162ca91f4c1bf22a4cd0e1113940905154717e3b34a677c1",
+      "bytes": 853609
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/first-touch-triptych-webkit.mp4",
+      "sha256": "bce879fe89179aa8e598ed65ad6227f55cd8186d1cca6a965a000e61866f9ebf",
+      "bytes": 874504
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-chromium-PR10.mp4",
+      "sha256": "8237bab5475b5046f60de8610759003746d2936c733d233c177c984c48eabaad",
+      "bytes": 347527
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-chromium-PR13.mp4",
+      "sha256": "c9e9c769c0c7785d7ede369976cf48056dc483f41902b1d1cadf9fbe28150ac7",
+      "bytes": 377542
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-chromium-V3.mp4",
+      "sha256": "1e4d3b71f5f8ad7a5079d7066a7f4fbd7a4f53177c36e478f0e17e141bca70fe",
+      "bytes": 343019
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-webkit-PR10.mp4",
+      "sha256": "9283bea6e86f41fc8d1de35cc43fc78858a8bebfa6aa6d89f77088c775878a3e",
+      "bytes": 373884
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-webkit-PR13.mp4",
+      "sha256": "c2949c3d3dc341c802814f08e16615f68138d305b6c217041e3d97811c588085",
+      "bytes": 360287
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/matched-touch-webkit-V3.mp4",
+      "sha256": "5dc0030b2cd04d79add84b7734a035141d7eff5d32589326fed1b4137f7e8c8a",
+      "bytes": 343407
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/risk-level-5-chromium.mp4",
+      "sha256": "95964c631fceb0bf1f401df289e0b5cf979a78dc660edbbc71b950c697b28b17",
+      "bytes": 7625236
+    },
+    {
+      "path": "docs/lean-pilot/pelican-feel-v3-20261014/evidence-media/videos/risk-level-5-webkit.mp4",
+      "sha256": "080a494dbf19145c6c1dcd2339eb66f8326d1c32d3906e6d6b5355b3cdb84832",
+      "bytes": 8578121
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-0820.png",
+      "sha256": "dd47e79560951b5f8b412237249fb639a5ca97fe47bb77283b4f7a40781f0957",
+      "bytes": 352661
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1000.png",
+      "sha256": "42e4e4d080517f66a4b6e45cab1c2375c98c3213aee0a6ac49ec798cc72401ab",
+      "bytes": 371309
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1320.png",
+      "sha256": "1b3838d3cd9dc3459f085a80157704542256e8c9bff29ce6f14c95082053e1d8",
+      "bytes": 391716
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1520.png",
+      "sha256": "3a55801dcd409607228197f81836bb16ff24bf5d88c00d50adff2d5dbb709fe9",
+      "bytes": 392178
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-1750.png",
+      "sha256": "21b775c82f15f0bf2dd3ba76dbd47c964b74b7925ac6a347676a52f26983b0ed",
+      "bytes": 398738
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR10-2480.png",
+      "sha256": "344b133a108289575dad46a9c8e9aaeb040ab0691dee9f31c0baeb29da9b7582",
+      "bytes": 457391
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-0820.png",
+      "sha256": "eb17110d252a2d305e537fbbfd47e17602e065add23baf639beafadf832d0efe",
+      "bytes": 456235
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1000.png",
+      "sha256": "eaeaf4e53f5e66479613bc4fb167323edf0949af47c87a71bd3fd4876b195939",
+      "bytes": 472861
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1320.png",
+      "sha256": "c3da6497497f1c93168a43908fe179727ad5424b01795d1c5013a9b3dda6e50a",
+      "bytes": 470271
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1520.png",
+      "sha256": "3577812816a969c5412f20d48cc28faec47c7bc8890d57d1e8193c32b972d847",
+      "bytes": 463659
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-1750.png",
+      "sha256": "e9522fd066705ebbbccce88d43abf3612a109d5a679e285f5c4917ba5c1548d8",
+      "bytes": 472650
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-PR13-2480.png",
+      "sha256": "f2c8ce185d3d8f4df6919074fdb6b79045d910c596622ba64bcb610c4736e350",
+      "bytes": 497190
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-0820.png",
+      "sha256": "f3c17e2540841de817a3c37293f2279722e067039b151f1d3a314e8927abc8ce",
+      "bytes": 466318
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1000.png",
+      "sha256": "2c630bed1d6f8fb36d0446296e31ff7819a4720ef7e75544b836faaab566096c",
+      "bytes": 466963
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1320.png",
+      "sha256": "58d75db982fee980d9dddc286420b8f1ed5a7cd392f9892ee91928ab80c97f16",
+      "bytes": 461119
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1520.png",
+      "sha256": "697578fb25b73dbfe603d53d068d4100f217156aa7e77fd922291693866dd426",
+      "bytes": 476707
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-1750.png",
+      "sha256": "93e46060ec31de18665de51182c7562be8cd46ac5bdeba7cf89a9219b59e9cd2",
+      "bytes": 482290
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-2480.png",
+      "sha256": "c4ba9c45c955b02a61d0be5378ac08b4f159bdeb44367e717663ef6e8bdd70da",
+      "bytes": 502943
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-00.png",
+      "sha256": "f3c17e2540841de817a3c37293f2279722e067039b151f1d3a314e8927abc8ce",
+      "bytes": 466318
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-01.png",
+      "sha256": "eb42360d6b76d45fcd04aee251d4fdaa6889b38a4fac7ab547c48af59e1e6b52",
+      "bytes": 464899
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-02.png",
+      "sha256": "ffadad0042bec36f5fe228e027d7d6e7731ee8f822d45deefe5c222b25617ea6",
+      "bytes": 468640
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-03.png",
+      "sha256": "25d89373c27d37781cee21dd9217825b3d52bfcb93ebf6ef4352dee3a8c8d97e",
+      "bytes": 469298
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-04.png",
+      "sha256": "64d0e652123b7e94db6554c8f2550b7136778a5165753e38bd92399643ded7d4",
+      "bytes": 474173
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-05.png",
+      "sha256": "c953ad516c08bfef52e1f81667d3aca11126861661956c8efb1d08618b88268b",
+      "bytes": 474095
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-06.png",
+      "sha256": "0fe7fb4dad9e618eaeb24b85d89ad7753d1825383e447fc6c3179d4dc0b6031e",
+      "bytes": 463789
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-07.png",
+      "sha256": "58d75db982fee980d9dddc286420b8f1ed5a7cd392f9892ee91928ab80c97f16",
+      "bytes": 461119
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-08.png",
+      "sha256": "0fab0f844dd84445772e024dfd7301cabcfdcfd5a8f7847a703e6864f43b880e",
+      "bytes": 472416
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-09.png",
+      "sha256": "be1fb237f2251a2b3a7c67974fd304d10752f69491f568fbb0569229f83d8652",
+      "bytes": 472769
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-10.png",
+      "sha256": "697578fb25b73dbfe603d53d068d4100f217156aa7e77fd922291693866dd426",
+      "bytes": 476707
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-11.png",
+      "sha256": "6118b6a66c982b2a8739fb4a2df712556684c03cf9ed51d593c602115abf92a6",
+      "bytes": 475174
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-12.png",
+      "sha256": "00aa933b5519c11fe65fd69adc662376d322dc411428198a7814454f587833fc",
+      "bytes": 475646
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-13.png",
+      "sha256": "6ed1d59ced96614574ae15fd6fbc779b4c67bc5dce0fda63025ff13b79a67aef",
+      "bytes": 481678
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-14.png",
+      "sha256": "f09c32dd8fc92233ba83da3968d0dbb78e024236395a8825703b450406ed547e",
+      "bytes": 483474
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-15.png",
+      "sha256": "053c13dd99dd8adc6c48dc32af125e27e67d704a6f792a03ea11a8064cddea08",
+      "bytes": 485109
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-16.png",
+      "sha256": "59ee08877875861f66309d241df7e49277a1064b7b07335bf3d6c42d8d7b67d9",
+      "bytes": 487826
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-17.png",
+      "sha256": "60fdc78d0d52cb95ffbeb15ad6f053db0dcd9ae68253141218d81360286e66bc",
+      "bytes": 489962
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-18.png",
+      "sha256": "bc53237212e94d1293d3dabbc66168429507d90c9ef51728e79471e2258deb37",
+      "bytes": 496305
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-19.png",
+      "sha256": "83b45332706aa6ff32667ee05fe7fb0db035d60d0e2debafbb5948be3c1f2465",
+      "bytes": 496742
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-20.png",
+      "sha256": "da6bd506911ed292e6acbffb2b09891d5a6587fd6ffbc988ce9cea1f2e5b9efc",
+      "bytes": 506747
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-21.png",
+      "sha256": "98e04edea85cde386c4251e476efce36b45eda072d0f6ecb64bb7f5adddc814e",
+      "bytes": 506605
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-22.png",
+      "sha256": "5e6bb249f0e77936dba98c08cf8b154c6b235c382a6a25ebfb79769553f72c96",
+      "bytes": 510867
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-23.png",
+      "sha256": "6f0c88fe50d86e41960b2c353662082ebdc1934e8708bc6660198b4a5cbc9ff3",
+      "bytes": 521068
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-24.png",
+      "sha256": "1bcb565630ea52a512ca3bccded6860ee52bf6bc9f9cdccfc3b1845e5b750443",
+      "bytes": 466350
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-25.png",
+      "sha256": "556b96bdad5cf4087b4c046ebf70a8cee9e620a3031363fcdafd8dfe6c39234c",
+      "bytes": 467376
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-26.png",
+      "sha256": "653f82126de4663f2f86457abdb965837189b546d78511fd1175346783ad4b65",
+      "bytes": 479253
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-27.png",
+      "sha256": "c3796ce4c74f9d8782cb85405e1b95f9480dc28f47a341a3c1aee94cf7a94229",
+      "bytes": 496641
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-28.png",
+      "sha256": "7241b410ded005e1097da4a13f949eaccdd439cc5ffddd3c839e7842b0cd0ec3",
+      "bytes": 501036
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-29.png",
+      "sha256": "09d2d186e9796c6b6634b814a3fad69505c701af49e51349a204246637191537",
+      "bytes": 504342
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-30.png",
+      "sha256": "a4abc0594c2ee468cbc611afdec1b011ccd9f6581c5a4b27039cb02fcef9e694",
+      "bytes": 511254
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-31.png",
+      "sha256": "9121b00234fb8d4672904a2b418e7a600455e9cbff00f557a75498aaf6f74a8a",
+      "bytes": 511109
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-32.png",
+      "sha256": "8a9a81b5b0020db4356dcb0a847f99bf8be09db0589ab3ab5c7a604a10e96b29",
+      "bytes": 511243
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-33.png",
+      "sha256": "760822003ab33b005e6509d3365cca870b0a81ca1d20547a01847f07b96b875e",
+      "bytes": 512313
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-34.png",
+      "sha256": "1df6847888bce891d40bb2b105c14670be2b6ae13cc0524e9471280e0022dc82",
+      "bytes": 513337
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-35.png",
+      "sha256": "0671c38a876e6b7a72cd2c82a1fcd87141a94ac83f654c40cf69b2e95a7efa77",
+      "bytes": 514476
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-36.png",
+      "sha256": "9849e24a7faf6065162a1956268ed59c7497626b2dd299080735dac17daede17",
+      "bytes": 322102
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-37.png",
+      "sha256": "5199213a2107ae7b2532f39acfa0236f860d709834344f95a41daf65f34eb2ff",
+      "bytes": 407197
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-38.png",
+      "sha256": "f67916ef6f87f794784654a2851e448c6b810d017ae0daf1b242e88484fec617",
+      "bytes": 407280
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-39.png",
+      "sha256": "1f7f8c2771e055980ce8a39dc86ef65b4fa5ecf4c5b15d5538105dee2e95c10e",
+      "bytes": 409610
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-40.png",
+      "sha256": "de692b04ca7e5e7b38ce99aed3457c1e9830d94ee86764f2ddd4bfdbf1d3ab96",
+      "bytes": 410431
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/chromium-V3-temporal-41.png",
+      "sha256": "1f738fbab405345f73d11e6a0ffbb05f1a3eb6e659d2a47f2137f5fccc69a2a6",
+      "bytes": 410829
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/comparison-strip-chromium.png",
+      "sha256": "fe9a1ecf3b7bf323a40d02fe2f1f1bb33043b07e33ecb8d913efddde5d88f35a",
+      "bytes": 6769435
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/comparison-strip-webkit.png",
+      "sha256": "be723874ae02d36d08d99707a199059fa3939a827dd27d10f85e98ef7d204e5b",
+      "bytes": 6007447
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/provenance.json",
+      "sha256": "a853f81183bdcfdb909b6e1c98010f26d0d6ce09f1329d92eed9b1cc61fe2476",
+      "bytes": 376857
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/temporal-grid-chromium-V3.png",
+      "sha256": "5e82502f3458279928215863190d07ed067c23712dabebdaf4a0586e662dd788",
+      "bytes": 6880902
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/temporal-grid-webkit-V3.png",
+      "sha256": "2c8aac6c8e3bcb421bdac8b6029be4db6332e04e6ec80d075978ab92337f4b14",
+      "bytes": 6506576
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-0820.png",
+      "sha256": "728ee5a6bb0daa4eda9e1d8469c87d02ac08211347453dac4e084788ba9769a2",
+      "bytes": 299829
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1000.png",
+      "sha256": "9fbebbdfef3ec20cd24384de2547bb07e6a81872d705dfb8f2ae935239dadc6a",
+      "bytes": 335806
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1320.png",
+      "sha256": "c3e970753b6c3b7e76bf89d0a30d22b061b76bcef3bead55a81c93c39b5b3086",
+      "bytes": 352924
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1520.png",
+      "sha256": "a461e0051db9bd6bf54518722baa27279db8f66cfbfc040a8fd3ae22be92e61c",
+      "bytes": 341641
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-1750.png",
+      "sha256": "f6070ae120b831793e0e4ab9e0aa4c5c242e39cb5b1f10c5cf913ed6d49100f6",
+      "bytes": 343181
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR10-2480.png",
+      "sha256": "1f367aca797deb51da3fb6793d01f0f1d0189df6c072be08aed0f037b3e18314",
+      "bytes": 375867
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-0820.png",
+      "sha256": "0f8fdffdd5a54ec193a465e95351a1865864b72ab6c5bad86743860ba0bed872",
+      "bytes": 425524
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1000.png",
+      "sha256": "5f770864a62211db0d9ea22fd97a24032733ffa42a47404750f1010724d3529e",
+      "bytes": 404078
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1320.png",
+      "sha256": "1f0e1497b6852474b0895bf7c2591a76795da7ca6815c78756cc7f840f62b37d",
+      "bytes": 421415
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1520.png",
+      "sha256": "999bf0f0fdb9b551c9cd0682ffe305bc066c32a9b1e44ac7b23c06fb71290971",
+      "bytes": 419942
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-1750.png",
+      "sha256": "1d3bd8ad4b02308e972f0678fcfc65334d0fb5ae840711a1def40d53373d2e7f",
+      "bytes": 419973
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-PR13-2480.png",
+      "sha256": "1fde5c34a4ef5b637f8b040b35e21e2e47f7eefac63a0d79a5a3f7461f03fe8b",
+      "bytes": 436555
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-0820.png",
+      "sha256": "4e9835a6b1ef2faa4f7966c3defec218a1df4b2c4d1775a3761ea5a9060eee3f",
+      "bytes": 393400
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1000.png",
+      "sha256": "ac8a99b8c211a5e5af326894b8700b82fcd35bb829412a6877676e4de08e9922",
+      "bytes": 395479
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1320.png",
+      "sha256": "ce22dda0b307095d316f8b0a12c93361e4a47bff9b3dc067594e242ec4bcae8c",
+      "bytes": 390242
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1520.png",
+      "sha256": "79dfb2477c72b47bccfc9d5d4ffbcc3c3ae1ee2d24e73edb35fe8de90d7e8907",
+      "bytes": 403462
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-1750.png",
+      "sha256": "9b21e1a51af5aff2ce0440873e3a23264d2c60ee811479dd2643db1802477ba0",
+      "bytes": 396046
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-2480.png",
+      "sha256": "844caef65c2701589d04d74012a16c1685810909537e246f5daba13e1db57179",
+      "bytes": 420331
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-00.png",
+      "sha256": "5a9d4ad3fb540876db4dd48772f0f066dac9b4643cfbe85b8b575d02edc33b7e",
+      "bytes": 390464
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-01.png",
+      "sha256": "abaac42c3a400d08f2b3751cecd12c27a64599604b58c051148bc5875ca12daf",
+      "bytes": 391548
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-02.png",
+      "sha256": "dd1514d6bde55d982b4b4eef4d068ffb69197068f29bc912f12c19d6e0ff5de5",
+      "bytes": 395259
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-03.png",
+      "sha256": "332dc5507818193b9167a18eb4f7ddf5a6e8a0e02436483642544dc4865fe466",
+      "bytes": 395425
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-04.png",
+      "sha256": "96709a89dd658ea6d307bbd9ce9c16f55b101a5fbfe1b9687930b1009819048f",
+      "bytes": 389791
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-05.png",
+      "sha256": "9a0f5ad1537908ef16a9b4e9db0fea5c263e55fc819b3aec5a788f3aed48beeb",
+      "bytes": 392811
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-06.png",
+      "sha256": "5331fd34f663347c85fb82b6fc928aea5487b03df157a6a5040f6f2844308c00",
+      "bytes": 391873
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-07.png",
+      "sha256": "ce22dda0b307095d316f8b0a12c93361e4a47bff9b3dc067594e242ec4bcae8c",
+      "bytes": 390242
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-08.png",
+      "sha256": "ae0fcc68a7b017561c4c1174253c0add52ea71df93bdcb247ca2249f61a0f8c2",
+      "bytes": 394675
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-09.png",
+      "sha256": "7cea8dda5b242a3c70d0bb65cb40d50755bdd457f5df0e7080b5011555529b18",
+      "bytes": 394799
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-10.png",
+      "sha256": "79dfb2477c72b47bccfc9d5d4ffbcc3c3ae1ee2d24e73edb35fe8de90d7e8907",
+      "bytes": 403462
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-11.png",
+      "sha256": "635d55fa8028eb689ab07ddb437c5524a20780b46a9e254e828b36d174498a2b",
+      "bytes": 403947
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-12.png",
+      "sha256": "ee611523c7cc1656df1f46dfb6f01a0c3acd342a96d077870e5b154ff4aa917f",
+      "bytes": 402837
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-13.png",
+      "sha256": "d3673912511d7a93fd1336e48debf8cdbb00442f0b7910d1fecba7f4195b1b6b",
+      "bytes": 394750
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-14.png",
+      "sha256": "048d6a7379d6be09624b958d8caba381374a560fef8ed1fd723f4cc701f3413a",
+      "bytes": 400045
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-15.png",
+      "sha256": "a099ae725817b1a42962b2a38b37b050c590912a43af5d385aa086acbc6489bb",
+      "bytes": 405175
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-16.png",
+      "sha256": "f3332924c3e4b9b2abca1ba0ad56c2397b3ff977f163a271f0488ace4b43f30a",
+      "bytes": 418541
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-17.png",
+      "sha256": "c784fc98a97595539a27fdf4b6cae1842f5a81ca0d13a5271c35af9548601be9",
+      "bytes": 416624
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-18.png",
+      "sha256": "d2a7ba34eef7658b4fb13dfd8fed4f3abe70c9258e4a533fae4d9c6036d57fed",
+      "bytes": 414647
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-19.png",
+      "sha256": "7573bf17859b70b675b663f515a60f5aea98b70b996a494f582ef8ab2575f647",
+      "bytes": 415959
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-20.png",
+      "sha256": "3fedce9f17813e5118720f9e5ac80822fd8d86e14534aee9cc173a2d07bbbc89",
+      "bytes": 413728
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-21.png",
+      "sha256": "e76cc6a2375230276f9f9148eb934297d2b746248b5a404c03dae0a2558cb3db",
+      "bytes": 415968
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-22.png",
+      "sha256": "e1a1c77585c821a38bac0ed75c506d13dfb48e45d480de4b30218969343e9ed6",
+      "bytes": 418678
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-23.png",
+      "sha256": "6c5956f08236607bebfa62bf87fce4f7c9eaac7a304a8fba45a251b73b3cf0ec",
+      "bytes": 417079
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-24.png",
+      "sha256": "b69473bcde064f36ebd475570b829a0b6940c0fe34e20a5945108918edc22200",
+      "bytes": 420197
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-25.png",
+      "sha256": "9e36e38620de85e070d80e2013992886e878f435014f8f4b059b8f737c135932",
+      "bytes": 425374
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-26.png",
+      "sha256": "fd9352938400d4c109bbf43e6f8d305247eb6bf48faaf4ec387de13fc920223d",
+      "bytes": 432729
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-27.png",
+      "sha256": "25259d3d4adcb547752be4644c98cf8342c90ec60deca0df00d0d8d9f636db71",
+      "bytes": 434775
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-28.png",
+      "sha256": "91ffbcf9c161dc6d948a3c95bd55301f75faab0b266551c38931425dcee2aa49",
+      "bytes": 409814
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-29.png",
+      "sha256": "62b566f215dc778377d46d4fff4c4705c93ab81797650b0017bc016443fe1dbd",
+      "bytes": 409391
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-30.png",
+      "sha256": "26455db6e5f4dc9646c5b96eb32069b43938d005ea2180fbfccc6de90e717a6f",
+      "bytes": 411733
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-31.png",
+      "sha256": "ea0add4ef045948adc245d5b576d2a77de374f934069e94706bd685d5239af75",
+      "bytes": 301570
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-32.png",
+      "sha256": "fd8dbdd3a9232ae727fdc56bca3021b9dbc0cfab6f3eb8121d264cb3ca270847",
+      "bytes": 354745
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-33.png",
+      "sha256": "9656d046c0df149fcab0f9ee75f04aa7191fc4b6c454d1fe94d33f48bf7a65bc",
+      "bytes": 357164
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-34.png",
+      "sha256": "3823d80e23c8dcb40b5815014804e4a25820a9c626c8ad5cd1d33f4a109a1bf4",
+      "bytes": 373162
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-35.png",
+      "sha256": "0ef36be62be959fe80cece333e09c2544b872d665eeea65f513ba9253d9655de",
+      "bytes": 388008
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-36.png",
+      "sha256": "ab1b8bfa165bef10ed042ad2553ee7501e5eb5ec0a7491c13e2dbade45b54db6",
+      "bytes": 395318
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-37.png",
+      "sha256": "39157078a586060ba7a0e3cd958e3f923fcaa5d698dd22db79a0a202e56eec24",
+      "bytes": 396496
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-38.png",
+      "sha256": "82452e9f327585fc0bb77813fac043eae95990edd7fe03c8d6299df7e39e1e76",
+      "bytes": 406522
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-39.png",
+      "sha256": "9cfb71aaae0ca96f151f2d00a001aef85c17b3e1df97b9a0ff9e936c3e209480",
+      "bytes": 417498
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-40.png",
+      "sha256": "3ff45d33c4ef04c4b6d55de004993c2182aefa55ebca0b616d91a872e10e2270",
+      "bytes": 422510
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/comparison-frames/webkit-V3-temporal-41.png",
+      "sha256": "9165291376cfca912185d6403ad7b551552af7df44c6d49ed20926838bfb7809",
+      "bytes": 422509
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/page@adcdbf3aaa52e665fac24fbaa6e86d90.webm",
+      "sha256": "8df47bf1850b043ced909fa654001c071289cd996573fc31b0710c9eb0a66d8e",
+      "bytes": 12248231
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/report.json",
+      "sha256": "08297ecbd85a7bcace1fa9618fabb595e8b4a50e29204b9896e811790da2602c",
+      "bytes": 262683
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-chromium/small-phone-route-menu.png",
+      "sha256": "14c5d81a67ad8a7702a39222a8c9dd07c2a045170bc1839a5578d04cf3e708be",
+      "bytes": 368405
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/page@49491fac114adf24b1319e42452e9e49.webm",
+      "sha256": "fc2880a2333f0500b8d768794b860f2ef65efaaf069ddd9503f8df228632c203",
+      "bytes": 12331625
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/report.json",
+      "sha256": "fea603f18093a766308b2bd2508001f0ac761e7f1b63746a73cc4211bd4eb405",
+      "bytes": 260032
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/experience-webkit/small-phone-route-menu.png",
+      "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+      "bytes": 625238
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/page@56ba2e8f1db8fe7250280911b793c6b4.webm",
+      "sha256": "fbdb6a5ce9d2cf13be977b26e640c86ad34781173e8f53faf21b7bbb22aff6d3",
+      "bytes": 736424
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR10/report.json",
+      "sha256": "d9417a7f30cbec0f35e0a95e2d91c5ee7b8b3e45b0b88eb005ba34b0012e6920",
+      "bytes": 100500
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/page@892106f93084b911471f2dc7010ededf.webm",
+      "sha256": "269a5a4c96b5a5dd6d4e0a05bb07c95a56efc325d395c2ba86e8ea95b7fed755",
+      "bytes": 670008
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/PR13/report.json",
+      "sha256": "e32397b1b07e4f4d5f7048f24b7d5ef30c232ceb00b3eb40032ecddf15e41207",
+      "bytes": 182745
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/page@553d80c67675c1caa5d98aee169bc6ec.webm",
+      "sha256": "6e32bb5f132ff92898a76aa92bb7067aed0a26ce70fabe5056cce71ffec1f1c2",
+      "bytes": 674687
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/V3/report.json",
+      "sha256": "1011cd23a9bf383012d20c42dc718eb63a92d083830735f1e5ca7e48e668ac54",
+      "bytes": 609546
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-chromium/report.json",
+      "sha256": "382bafe92ef1ad17fef3bb19e9a94c508b266e9e16ca00f33ea199ef193d7962",
+      "bytes": 1056079
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR10/page@5157862cf9f4362e3aa13b2d4d207698.webm",
+      "sha256": "c380d1b92e3f4df71fde7bc5d07c6fdbb8febd6336b9fad0e8f7c15b552d7bdb",
+      "bytes": 723276
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR10/report.json",
+      "sha256": "33c167709462a7d7a0a6bf295f1ee23de500f4387ad2095938a893dc42a49147",
+      "bytes": 50361
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR13/page@8d5892056695a23ad55569be7bbb4a67.webm",
+      "sha256": "8785fe3373f872832ba6d4c39a29eabca83acc5959c33cb2ab155e4123bcfea8",
+      "bytes": 681295
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/PR13/report.json",
+      "sha256": "5b869fda8b5ffb4a723b7c6e9a28f1f5cd06f230f4e1d02835d4a3b221480e21",
+      "bytes": 90363
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/page@93fed77ce393a674a88a8e33abfd1e84.webm",
+      "sha256": "c76825007129e9bdba3cb6fac6b8f9ba04a700faa5338df6ba68a0eb5ac311ca",
+      "bytes": 717226
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/V3/report.json",
+      "sha256": "e67e8d694e3f60a018a87e6f95dbedd3d936bbd1bdf7b6b1d5fb49525cbe8c42",
+      "bytes": 307588
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-comparison-webkit/report.json",
+      "sha256": "b1471af65189e8c34a59134e0961a2f22b753d10710081677224ce7bdfbba39a",
+      "bytes": 532316
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-chromium/page@33e5ba73f68842a9d512e40adbf8d983.webm",
+      "sha256": "71460dd2307a70ad86d650e67cf07fa398b80f99a32c7e143938c2ae9d72d97a",
+      "bytes": 2607512
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-chromium/report.json",
+      "sha256": "b0f84adf452f57a64c050bbdd78e29a6c70a848f42985941d1b328dc43bcdbcd",
+      "bytes": 64828
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-webkit/page@49aeba8634886d26f73519c393dda083.webm",
+      "sha256": "d435e67847081463fc96a28b12a7c3b264bf3aa00cf257c682ebe96d2f4032ba",
+      "bytes": 2651556
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/feel-state-webkit/report.json",
+      "sha256": "2c318007d9e1be4f3a274a7ed11517e7705547bead1d894b4370360e29f2c481",
+      "bytes": 67063
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-chromium/320-fish-catch.png",
+      "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+      "bytes": 954433
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-chromium/390-fish-catch.png",
+      "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+      "bytes": 1529371
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-chromium/report.json",
+      "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+      "bytes": 84432
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-webkit/320-fish-catch.png",
+      "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150",
+      "bytes": 1249966
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-webkit/390-fish-catch.png",
+      "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee",
+      "bytes": 2047550
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/head-webkit/report.json",
+      "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+      "bytes": 84312
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/index.html",
+      "sha256": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+      "bytes": 1010638
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/experience-chromium.mp4",
+      "sha256": "676cd39f762aa0e6bbf4ac7d34ce3bb8bf0e8019af2609917beac7687b750195",
+      "bytes": 13708533
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/experience-webkit.mp4",
+      "sha256": "6462f2470624596a9de4af1fb4bfc15374a27b4faca7a3dd18ad986c4cdbc0a6",
+      "bytes": 12678574
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/feel-state-chromium.mp4",
+      "sha256": "8d29bfd08a94766ee1bfffb81ea964d4c7fd58db0c5e29cc7c5c766e27c59f84",
+      "bytes": 2889692
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/feel-state-webkit.mp4",
+      "sha256": "7c284e8e4448200c729998efbc179c4484004ce1c6d4e8284ae3079d40827f82",
+      "bytes": 2700394
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/first-touch-triptych-chromium.mp4",
+      "sha256": "294d726d866e99ff162ca91f4c1bf22a4cd0e1113940905154717e3b34a677c1",
+      "bytes": 853609
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/first-touch-triptych-webkit.mp4",
+      "sha256": "bce879fe89179aa8e598ed65ad6227f55cd8186d1cca6a965a000e61866f9ebf",
+      "bytes": 874504
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/compact-chromium.png",
+      "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+      "bytes": 954433
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/compact-webkit.png",
+      "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150",
+      "bytes": 1249966
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/hazard-approach-level-5-chromium.png",
+      "sha256": "dab2d0cb45fb3e539ba1c6a8c1dacf91d4990202b5e471bc2ea8272ee940d7f5",
+      "bytes": 996520
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/hazard-approach-level-5-webkit.png",
+      "sha256": "f501756cf2fab72375ebdffd0c7b580d0ace7aac1fb2ce25b4dd899e1b90195e",
+      "bytes": 1509479
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/hazard-clear-level-5-chromium.png",
+      "sha256": "92b9e6738490af293bfca8bdd11c16df4b4fd0feeefe594ac7b35e8677d0fbfb",
+      "bytes": 1137425
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/hazard-clear-level-5-webkit.png",
+      "sha256": "8187926218b129417ed0ea0c154d79ff142b56315a3685c691a35d15a6fe8cf3",
+      "bytes": 1971641
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/head-chromium.png",
+      "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+      "bytes": 1529371
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/head-webkit.png",
+      "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee",
+      "bytes": 2047550
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/menu-chromium.png",
+      "sha256": "14c5d81a67ad8a7702a39222a8c9dd07c2a045170bc1839a5578d04cf3e708be",
+      "bytes": 368405
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/menu-webkit.png",
+      "sha256": "54be188a2fdf2db6aa4ef9d5175338748d86d380db2492bd76598ece6af803db",
+      "bytes": 625238
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/settlement-level-5-chromium.png",
+      "sha256": "dd213934914e2c9067edacba0bfa77bed98fc080d599714eaae68122dea44e0d",
+      "bytes": 421425
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/key-png/settlement-level-5-webkit.png",
+      "sha256": "848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699",
+      "bytes": 967830
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-chromium-PR10.mp4",
+      "sha256": "8237bab5475b5046f60de8610759003746d2936c733d233c177c984c48eabaad",
+      "bytes": 347527
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-chromium-PR13.mp4",
+      "sha256": "c9e9c769c0c7785d7ede369976cf48056dc483f41902b1d1cadf9fbe28150ac7",
+      "bytes": 377542
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-chromium-V3.mp4",
+      "sha256": "1e4d3b71f5f8ad7a5079d7066a7f4fbd7a4f53177c36e478f0e17e141bca70fe",
+      "bytes": 343019
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-webkit-PR10.mp4",
+      "sha256": "9283bea6e86f41fc8d1de35cc43fc78858a8bebfa6aa6d89f77088c775878a3e",
+      "bytes": 373884
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-webkit-PR13.mp4",
+      "sha256": "c2949c3d3dc341c802814f08e16615f68138d305b6c217041e3d97811c588085",
+      "bytes": 360287
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/matched-touch-webkit-V3.mp4",
+      "sha256": "5dc0030b2cd04d79add84b7734a035141d7eff5d32589326fed1b4137f7e8c8a",
+      "bytes": 343407
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/risk-level-5-chromium.mp4",
+      "sha256": "95964c631fceb0bf1f401df289e0b5cf979a78dc660edbbc71b950c697b28b17",
+      "bytes": 7625236
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/key-media/risk-level-5-webkit.mp4",
+      "sha256": "080a494dbf19145c6c1dcd2339eb66f8326d1c32d3906e6d6b5355b3cdb84832",
+      "bytes": 8578121
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/level-5-l5-o10-barrier-cleared.png",
+      "sha256": "92b9e6738490af293bfca8bdd11c16df4b4fd0feeefe594ac7b35e8677d0fbfb",
+      "bytes": 1137425
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/level-5-l5-o10-reward-approach.png",
+      "sha256": "dab2d0cb45fb3e539ba1c6a8c1dacf91d4990202b5e471bc2ea8272ee940d7f5",
+      "bytes": 996520
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/level-5-terminal-settlement.png",
+      "sha256": "dd213934914e2c9067edacba0bfa77bed98fc080d599714eaae68122dea44e0d",
+      "bytes": 421425
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/level-5.webm",
+      "sha256": "d123d7b2056224e6876441fd5c8d56fef3f5093c1c8c925b85312a300bc8bcd1",
+      "bytes": 9793143
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-chromium/report.json",
+      "sha256": "bfe3414074ff68c7214075e31c194c090cc3882d52d42d054c0a06065b24d486",
+      "bytes": 2848170
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/level-5-l5-o10-barrier-cleared.png",
+      "sha256": "8187926218b129417ed0ea0c154d79ff142b56315a3685c691a35d15a6fe8cf3",
+      "bytes": 1971641
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/level-5-l5-o10-reward-approach.png",
+      "sha256": "f501756cf2fab72375ebdffd0c7b580d0ace7aac1fb2ce25b4dd899e1b90195e",
+      "bytes": 1509479
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/level-5-terminal-settlement.png",
+      "sha256": "848cdf7fbd8e00dd32ce45d486f8d50062d17b85af67ebe97b273fefadf86699",
+      "bytes": 967830
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/level-5.webm",
+      "sha256": "842d0696592f9359513eef1641bc82ceb70b50ccdc05893bc2461551e8660c57",
+      "bytes": 9830986
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/attempts/attempt-20/risk-webkit/report.json",
+      "sha256": "e528e4ccad4c9c411aafb8777fd56128564e570a32994dfbecbc2e7066169854",
+      "bytes": 2858633
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/build-receipt.json",
+      "sha256": "771082d72c7c4a0c4a4f96d820bc47839582d3f3f0389d033b97eb7e41c85feb",
+      "bytes": 2202
+    }
+  ],
+  "archive": {
+    "name": "pelican-v3-key-recordings-and-comparisons.zip",
+    "sha256": "abef2a032690c0b90db641c8a4cc3a4f643a13ebb17b2ce4a1fcfb865006a3f1",
+    "bytes": 304187494
+  }
+}

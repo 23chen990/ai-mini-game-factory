@@ -1,0 +1,2623 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "3fd08a0a3a4b4f4a9fa644d6984a896e0114411d21952adbc5dc47999e9408c1",
+  "engine": "chromium",
+  "driverSha256": "843d00a8db67135f62be8f0ea81d7a62d0ca05090b02ac25759bcc3a7a1c00e4",
+  "normalInputOnly": true,
+  "stateInjection": false,
+  "actions": [
+    {
+      "at": "2026-10-14T13:04:25.561Z",
+      "type": "tap",
+      "selector": "#co-start"
+    },
+    {
+      "at": "2026-10-14T13:04:26.353Z",
+      "type": "trusted-touch-press",
+      "selector": "[data-action=\"right\"]",
+      "action": "right",
+      "scheduledMs": 700,
+      "actualMs": 706,
+      "heldMs": 90
+    },
+    {
+      "at": "2026-10-14T13:04:26.922Z",
+      "type": "trusted-touch-press",
+      "selector": "[data-action=\"left\"]",
+      "action": "left",
+      "scheduledMs": 1200,
+      "actualMs": 1275,
+      "heldMs": 90
+    },
+    {
+      "at": "2026-10-14T13:04:27.387Z",
+      "type": "trusted-touch-press",
+      "selector": "[data-action=\"right\"]",
+      "action": "right",
+      "scheduledMs": 1380,
+      "actualMs": 1740,
+      "heldMs": 90
+    },
+    {
+      "at": "2026-10-14T13:04:27.854Z",
+      "type": "trusted-touch-press",
+      "selector": "[data-action=\"left\"]",
+      "action": "left",
+      "scheduledMs": 1570,
+      "actualMs": 2207,
+      "heldMs": 90
+    },
+    {
+      "at": "2026-10-14T13:04:28.330Z",
+      "type": "trusted-touch-press",
+      "selector": "[data-action=\"jump\"]",
+      "action": "jump",
+      "scheduledMs": 2200,
+      "actualMs": 2683,
+      "heldMs": 90
+    },
+    {
+      "at": "2026-10-14T13:04:28.447Z",
+      "type": "trusted-touch-press",
+      "selector": "[data-action=\"right\"]",
+      "action": "right",
+      "scheduledMs": 2340,
+      "actualMs": 2800,
+      "heldMs": 90
+    },
+    {
+      "at": "2026-10-14T13:04:28.910Z",
+      "type": "trusted-touch-press",
+      "selector": "[data-action=\"left\"]",
+      "action": "left",
+      "scheduledMs": 2780,
+      "actualMs": 3263,
+      "heldMs": 90
+    },
+    {
+      "at": "2026-10-14T13:04:45.747Z",
+      "type": "tap",
+      "selector": "#co-replay"
+    }
+  ],
+  "frames": [
+    {
+      "plannedMs": 900,
+      "before": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 7.124999999999998,
+          "elapsed": 0.9500000000000008,
+          "lane": 1.2230444240573333,
+          "laneIndex": 2,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.2561290717283847
+            ],
+            "quaternion": [
+              -0.05563941236228427,
+              -0.7068022115770547,
+              -0.05594053646914121,
+              0.7029975432967805
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": 0.0003337942704391139,
+              "steer": -0.06118526661201236,
+              "yaw": -0.17936028016680675
+            },
+            "riderRotation": [
+              0.0003337942704391139,
+              -0.17936028016680675,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9982529967918896,
+              -0.0004658675221627743,
+              0.05908246240182831,
+              0,
+              -0.0004658675221627743,
+              0.9998757686607566,
+              0.015755323307154206,
+              0,
+              -0.05908246240182831,
+              -0.015755323307154206,
+              0.9981287654526462,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.028324446075556876,
+              0.1399375720822184,
+              -0.037712127523734686
+            ],
+            "bodyRotation": [
+              -0.010676877834164746,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 420,
+          "triangles": 304085,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "after": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 9.56175,
+          "elapsed": 1.2749,
+          "lane": 1.6899889102569012,
+          "laneIndex": 2,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.6714714036160798
+            ],
+            "quaternion": [
+              -0.055661260277599205,
+              -0.7065301908429346,
+              -0.05591922120993835,
+              0.7032708967610062
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.20664159996914483,
+              "steer": 0.08607163783245048,
+              "yaw": -0.053111368586630375
+            },
+            "riderRotation": [
+              -0.20664159996914483,
+              -0.053111368586630375,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9965438905997915,
+              -0.0009216291733889352,
+              -0.0830627757054721,
+              0,
+              -0.0009216291733889352,
+              0.9997542322204296,
+              -0.022150073521459215,
+              0,
+              0.0830627757054721,
+              0.022150073521459215,
+              0.9962981228202211,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.029887645187873953,
+              0.23660553155966402,
+              0.013996230750621626
+            ],
+            "bodyRotation": [
+              0.016510279921253142,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 417,
+          "triangles": 303567,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "image": {
+        "path": "attempts/attempt-20/feel-state-chromium/state-900.png",
+        "sha256": "f412d0e8b4e20140fe152edf8d8e207bd6870acd11ef8189d1bfd88630a3c650"
+      },
+      "completedMs": 1270,
+      "note": "Screenshot is correlated with these actual read-only before/after state brackets, no posed state or camera setters."
+    },
+    {
+      "plannedMs": 1300,
+      "before": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 10.384499999999994,
+          "elapsed": 1.3845999999999992,
+          "lane": 0.9770683542529227,
+          "laneIndex": 1,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.7476310059542464
+            ],
+            "quaternion": [
+              -0.05599346172346816,
+              -0.702316056292939,
+              -0.05558480231978922,
+              0.7074794831430986
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.21429681987991805,
+              "steer": 0.17893172646675468,
+              "yaw": 0.13201180315741348
+            },
+            "riderRotation": [
+              -0.21429681987991805,
+              0.13201180315741348,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9850943418353718,
+              -0.0039748421772341875,
+              -0.1719690039326906,
+              0,
+              -0.0039748421772341875,
+              0.9989400420860709,
+              -0.04585840104871747,
+              0,
+              0.1719690039326906,
+              0.04585840104871747,
+              0.9840343839214427,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.02921556524175957,
+              0.19699966142948114,
+              0.008540522633186947
+            ],
+            "bodyRotation": [
+              0.03496857578146696,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 417,
+          "triangles": 303567,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "after": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 10.884749999999991,
+          "elapsed": 1.4512999999999991,
+          "lane": 0.5186135358224859,
+          "laneIndex": 1,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.7251384660294766
+            ],
+            "quaternion": [
+              -0.05620865252134831,
+              -0.6995034301257916,
+              -0.055357296635883874,
+              0.7102612958152463
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.0708557725580303,
+              "steer": 0.10054122105729497,
+              "yaw": 0.17143351680701335
+            },
+            "riderRotation": [
+              -0.0708557725580303,
+              0.17143351680701335,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9952852581373831,
+              -0.0012572644966978492,
+              -0.09698285529096422,
+              0,
+              -0.0012572644966978492,
+              0.9996647294675473,
+              -0.025862094744257106,
+              0,
+              0.09698285529096422,
+              0.025862094744257106,
+              0.9949499876049303,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.02851557373783434,
+              0.12689958933879592,
+              -0.006715469190332393
+            ],
+            "bodyRotation": [
+              0.026208209051985724,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 417,
+          "triangles": 303567,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "image": {
+        "path": "attempts/attempt-20/feel-state-chromium/state-1300.png",
+        "sha256": "3cfa2d52a5b45ecda16606e5a964a9ee37dd38fe59f1e9a8a1d8cf049d47495b"
+      },
+      "completedMs": 1735,
+      "note": "Screenshot is correlated with these actual read-only before/after state brackets, no posed state or camera setters."
+    },
+    {
+      "plannedMs": 1500,
+      "before": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 13.570499999999994,
+          "elapsed": 1.8093999999999981,
+          "lane": 0.7302891177450775,
+          "laneIndex": 2,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            },
+            {
+              "type": "lane-input",
+              "at": 1.7093999999999987,
+              "distance": 12.820499999999994,
+              "lane": 2
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.34060889532447813
+            ],
+            "quaternion": [
+              -0.055999047751631253,
+              -0.7022438970695416,
+              -0.05557900811733492,
+              0.7075511215001972
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": 0.20630982701408693,
+              "steer": -0.19596563539514722,
+              "yaw": -0.11830230094915767
+            },
+            "riderRotation": [
+              0.20630982701408693,
+              -0.11830230094915767,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9821308028297823,
+              -0.004765119245391393,
+              0.18813925632760578,
+              0,
+              -0.004765119245391393,
+              0.9987293015345623,
+              0.05017046835402818,
+              0,
+              -0.18813925632760578,
+              -0.05017046835402818,
+              0.9808601043643446,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.02129734733489676,
+              0.18330858465980696,
+              -0.0723723615755355
+            ],
+            "bodyRotation": [
+              -0.011191229724569951,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 416,
+          "triangles": 293871,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "after": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 14.070749999999993,
+          "elapsed": 1.8760999999999977,
+          "lane": 1.1850426837600196,
+          "laneIndex": 2,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            },
+            {
+              "type": "lane-input",
+              "at": 1.7093999999999987,
+              "distance": 12.820499999999994,
+              "lane": 2
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.36175567711087425
+            ],
+            "quaternion": [
+              -0.05578751297799095,
+              -0.7049461164545013,
+              -0.05579443621584244,
+              0.7048586434022097
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": 0.07744343372304978,
+              "steer": -0.11429397679773344,
+              "yaw": -0.16567321895232665
+            },
+            "riderRotation": [
+              0.07744343372304978,
+              -0.16567321895232665,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9939087090138751,
+              -0.0016243442629666537,
+              0.11019455364076589,
+              0,
+              -0.0016243442629666537,
+              0.9995668415298755,
+              0.02938521430420422,
+              0,
+              -0.11019455364076589,
+              -0.02938521430420422,
+              0.9934755505437506,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.019387557328962336,
+              0.4135165457215279,
+              -0.11010126801107278
+            ],
+            "bodyRotation": [
+              0.01222124093476896,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 416,
+          "triangles": 293871,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "image": {
+        "path": "attempts/attempt-20/feel-state-chromium/state-1500.png",
+        "sha256": "f29116a827b20fa92adfdf2b7d62f7767f37a21d98cb959f236d60ba8f38a5dc"
+      },
+      "completedMs": 2202,
+      "note": "Screenshot is correlated with these actual read-only before/after state brackets, no posed state or camera setters."
+    },
+    {
+      "plannedMs": 1750,
+      "before": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 16.808250000000008,
+          "elapsed": 2.2410999999999968,
+          "lane": 0.9142618209582541,
+          "laneIndex": 1,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            },
+            {
+              "type": "lane-input",
+              "at": 1.7093999999999987,
+              "distance": 12.820499999999994,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 2.1342999999999974,
+              "distance": 16.007249999999996,
+              "lane": 1
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.7412184398140935
+            ],
+            "quaternion": [
+              -0.05603597504974986,
+              -0.7017657555012803,
+              -0.055540557570467435,
+              0.7080254517817157
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.21739338695105642,
+              "steer": 0.1928777034440845,
+              "yaw": 0.12539742073900967
+            },
+            "riderRotation": [
+              -0.21739338695105642,
+              0.12539742073900967,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9826877810289941,
+              -0.004616591725601553,
+              -0.18521180334187864,
+              0,
+              -0.004616591725601553,
+              0.9987689088731729,
+              -0.04938981422450094,
+              0,
+              0.18521180334187864,
+              0.04938981422450094,
+              0.9814566899021671,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              0.0067856453183461314,
+              0.15151543463898565,
+              -0.005853687942938866
+            ],
+            "bodyRotation": [
+              -0.028429910574257554,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 416,
+          "triangles": 293871,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "after": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 19.20975000000001,
+          "elapsed": 2.5612999999999952,
+          "lane": 0.024924968739122946,
+          "laneIndex": 1,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            },
+            {
+              "type": "lane-input",
+              "at": 1.7093999999999987,
+              "distance": 12.820499999999994,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 2.1342999999999974,
+              "distance": 16.007249999999996,
+              "lane": 1
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.62,
+              0.4074177652631614
+            ],
+            "quaternion": [
+              -0.05629792495451644,
+              -0.6983161725580528,
+              -0.05526025180024436,
+              0.711429104943466
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": 0.18921076366212827,
+              "steer": -0.10879591419153432,
+              "yaw": 0.09748559441991969
+            },
+            "riderRotation": [
+              0.18921076366212827,
+              0.09748559441991969,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9944800870332382,
+              -0.001471976791136478,
+              0.10491515514304559,
+              0,
+              -0.001471976791136478,
+              0.999607472855697,
+              0.02797737470481214,
+              0,
+              -0.10491515514304559,
+              -0.02797737470481214,
+              0.9940875598889352,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              -0.005609704211328258,
+              -0.03891772451411784,
+              0.0019223141062321234
+            ],
+            "bodyRotation": [
+              0.03088889004627203,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 414,
+          "triangles": 292921,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "image": {
+        "path": "attempts/attempt-20/feel-state-chromium/state-1750.png",
+        "sha256": "98732e17f1b574654105f9986d4d643c5a784fd9f9337395d9596f401a114130"
+      },
+      "completedMs": 2679,
+      "note": "Screenshot is correlated with these actual read-only before/after state brackets, no posed state or camera setters."
+    },
+    {
+      "plannedMs": 2480,
+      "before": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 20.893500000000028,
+          "elapsed": 2.7857999999999947,
+          "lane": 0.7227345159090572,
+          "laneIndex": 2,
+          "y": 0.6241892977777774,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            },
+            {
+              "type": "lane-input",
+              "at": 1.7093999999999987,
+              "distance": 12.820499999999994,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 2.1342999999999974,
+              "distance": 16.007249999999996,
+              "lane": 1
+            },
+            {
+              "type": "jump",
+              "at": 2.5771999999999955,
+              "distance": 19.329000000000008
+            },
+            {
+              "type": "lane-input",
+              "at": 2.6859999999999946,
+              "distance": 20.14500000000002,
+              "lane": 2
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.6574071874662994,
+              0.2852518183124378
+            ],
+            "quaternion": [
+              -0.05628910387976667,
+              -0.7027301246163399,
+              -0.05594787706977684,
+              0.7070160845359188
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": 0.20855246422806142,
+              "steer": -0.16947991231343537,
+              "yaw": -0.13649027695361615
+            },
+            "riderRotation": [
+              0.20855246422806142,
+              -0.13649027695361615,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9866238184019857,
+              -0.0035669817594705037,
+              0.1629745918939923,
+              0,
+              -0.0035669817594705037,
+              0.9990488048641412,
+              0.04345989117173125,
+              0,
+              -0.1629745918939923,
+              -0.04345989117173125,
+              0.9856726232661268,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              -0.013851974143037234,
+              0.03120321471041553,
+              -0.07889793335699423
+            ],
+            "bodyRotation": [
+              0.009943787174718706,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 414,
+          "triangles": 292921,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "after": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 23.269500000000036,
+          "elapsed": 3.102599999999994,
+          "lane": 1.6715349752612028,
+          "laneIndex": 2,
+          "y": 0.48952150111110987,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            },
+            {
+              "type": "lane-input",
+              "at": 1.7093999999999987,
+              "distance": 12.820499999999994,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 2.1342999999999974,
+              "distance": 16.007249999999996,
+              "lane": 1
+            },
+            {
+              "type": "jump",
+              "at": 2.5771999999999955,
+              "distance": 19.329000000000008
+            },
+            {
+              "type": "lane-input",
+              "at": 2.6859999999999946,
+              "distance": 20.14500000000002,
+              "lane": 2
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.6893705150943097,
+              0.6488652184623479
+            ],
+            "quaternion": [
+              -0.05643653485987791,
+              -0.7061904140709652,
+              -0.056653042040632935,
+              0.7034916129100836
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.19130492769901322,
+              "steer": 0.11576779556573777,
+              "yaw": -0.10604893741430643
+            },
+            "riderRotation": [
+              -0.19130492769901322,
+              -0.10604893741430643,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9937507785940184,
+              -0.0016664590415950906,
+              -0.11160919746170068,
+              0,
+              -0.0016664590415950906,
+              0.9995556109222413,
+              -0.029762452656453494,
+              0,
+              0.11160919746170068,
+              0.029762452656453494,
+              0.9933063895162597,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              -0.02334586449104761,
+              0.21691848533027552,
+              -0.004933972039453005
+            ],
+            "bodyRotation": [
+              0.009943787174718706,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 415,
+          "triangles": 292719,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "image": {
+        "path": "attempts/attempt-20/feel-state-chromium/state-2480.png",
+        "sha256": "94ebee3d1cf86a221e5eb23460d3677feba3ce9a33f2238b5850d1dcf9d20b66"
+      },
+      "completedMs": 3256,
+      "note": "Screenshot is correlated with these actual read-only before/after state brackets, no posed state or camera setters."
+    },
+    {
+      "plannedMs": 3200,
+      "before": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 24.144000000000048,
+          "elapsed": 3.2191999999999936,
+          "lane": 0.9729926492893936,
+          "laneIndex": 1,
+          "y": 0.11179920444444115,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            },
+            {
+              "type": "lane-input",
+              "at": 1.7093999999999987,
+              "distance": 12.820499999999994,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 2.1342999999999974,
+              "distance": 16.007249999999996,
+              "lane": 1
+            },
+            {
+              "type": "jump",
+              "at": 2.5771999999999955,
+              "distance": 19.329000000000008
+            },
+            {
+              "type": "lane-input",
+              "at": 2.6859999999999946,
+              "distance": 20.14500000000002,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 3.119499999999994,
+              "distance": 23.39625000000004,
+              "lane": 1
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.6806258129593483,
+              0.7349172931483484
+            ],
+            "quaternion": [
+              -0.05672105444143888,
+              -0.7021583028828001,
+              -0.056291033007760456,
+              0.7075222676910715
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.20749958035601304,
+              "steer": 0.19447954990604047,
+              "yaw": 0.1197885460474188
+            },
+            "riderRotation": [
+              -0.20749958035601304,
+              0.1197885460474188,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9823999421577778,
+              -0.004693348757925903,
+              -0.18673062449911962,
+              0,
+              -0.004693348757925903,
+              0.9987484403312198,
+              -0.0497948331997652,
+              0,
+              0.18673062449911962,
+              0.0497948331997652,
+              0.9811483824889976,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              -0.02592311860746867,
+              0.1741724273452395,
+              0.00631195748610858
+            ],
+            "bodyRotation": [
+              0.009943787174718706,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 415,
+          "triangles": 292719,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "after": {
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 24.644250000000053,
+          "elapsed": 3.285899999999993,
+          "lane": 0.5168808859748744,
+          "laneIndex": 1,
+          "y": 0,
+          "stun": 0,
+          "count": 0,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "lane-input",
+              "at": 0.7753000000000009,
+              "distance": 5.81475,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 1.2849,
+              "distance": 9.63675,
+              "lane": 1
+            },
+            {
+              "type": "lane-input",
+              "at": 1.7093999999999987,
+              "distance": 12.820499999999994,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 2.1342999999999974,
+              "distance": 16.007249999999996,
+              "lane": 1
+            },
+            {
+              "type": "jump",
+              "at": 2.5771999999999955,
+              "distance": 19.329000000000008
+            },
+            {
+              "type": "lane-input",
+              "at": 2.6859999999999946,
+              "distance": 20.14500000000002,
+              "lane": 2
+            },
+            {
+              "type": "lane-input",
+              "at": 3.119499999999994,
+              "distance": 23.39625000000004,
+              "lane": 1
+            },
+            {
+              "type": "land",
+              "at": 3.2509333333333266,
+              "distance": 24.382000000000048
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "render": {
+          "pixelRatio": 1.5,
+          "canvas": [
+            585,
+            1266
+          ],
+          "composer": [
+            585,
+            1266
+          ],
+          "camera": {
+            "position": [
+              -6.75,
+              3.6669916743561037,
+              0.7149992480544854
+            ],
+            "quaternion": [
+              -0.056823786602783984,
+              -0.6994160831519467,
+              -0.055956906677621425,
+              0.7102513812021646
+            ],
+            "fov": 51.89
+          },
+          "pose": {
+            "requested": {
+              "lean": -0.07753343885988145,
+              "steer": 0.11362725280368793,
+              "yaw": 0.16629769198723354
+            },
+            "riderRotation": [
+              -0.07753343885988145,
+              0.16629769198723354,
+              0
+            ],
+            "frontSteeringMatrix": [
+              0.9939794915137007,
+              -0.0016054689296798148,
+              -0.10955452030692686,
+              0,
+              -0.0016054689296798148,
+              0.9995718749520854,
+              -0.029214538748513808,
+              0,
+              0.10955452030692686,
+              0.029214538748513808,
+              0.9935513664657861,
+              0,
+              0.36,
+              0.57,
+              0,
+              1
+            ],
+            "headRotation": [
+              -0.027133355618340238,
+              0.10191198190045746,
+              0.013103719617366854
+            ],
+            "bodyRotation": [
+              0.034765212070274075,
+              0,
+              0.35
+            ]
+          },
+          "quality": {
+            "tier": 2,
+            "pr": 1.5
+          },
+          "calls": 415,
+          "triangles": 292719,
+          "memory": {
+            "geometries": 197,
+            "textures": 18
+          }
+        }
+      },
+      "image": {
+        "path": "attempts/attempt-20/feel-state-chromium/state-3200.png",
+        "sha256": "6585a46cfcca9f68c54bb46e6aa717c43cdda9ea1af0a36b6da4858854150333"
+      },
+      "completedMs": 3725,
+      "note": "Screenshot is correlated with these actual read-only before/after state brackets, no posed state or camera setters."
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-900.png",
+      "sha256": "f412d0e8b4e20140fe152edf8d8e207bd6870acd11ef8189d1bfd88630a3c650"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-1300.png",
+      "sha256": "3cfa2d52a5b45ecda16606e5a964a9ee37dd38fe59f1e9a8a1d8cf049d47495b"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-1500.png",
+      "sha256": "f29116a827b20fa92adfdf2b7d62f7767f37a21d98cb959f236d60ba8f38a5dc"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-1750.png",
+      "sha256": "98732e17f1b574654105f9986d4d643c5a784fd9f9337395d9596f401a114130"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-2480.png",
+      "sha256": "94ebee3d1cf86a221e5eb23460d3677feba3ce9a33f2238b5850d1dcf9d20b66"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/state-3200.png",
+      "sha256": "6585a46cfcca9f68c54bb46e6aa717c43cdda9ea1af0a36b6da4858854150333"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/terminal.png",
+      "sha256": "fcd73babcb00cbeabedadfa022a6b88bad68a31cf5a35517139399897e5ef564"
+    },
+    {
+      "path": "attempts/attempt-20/feel-state-chromium/replay.png",
+      "sha256": "9c7172753261b1bc2cb3cf3f682f5d0d840b128538cda379c1f8068350f85c38"
+    }
+  ],
+  "checks": [
+    {
+      "name": "normal-barrier-terminal",
+      "passed": true
+    },
+    {
+      "name": "normal-replay",
+      "passed": true
+    },
+    {
+      "name": "six-state-correlated-running-frames",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "terminal": {
+    "state": {
+      "phase": "finished",
+      "level": 1,
+      "distance": 139.20750000000055,
+      "elapsed": 18.560999999999854,
+      "lane": 2.1994555141892133e-95,
+      "laneIndex": 1,
+      "y": 0,
+      "stun": 0,
+      "count": 5,
+      "gold": 1,
+      "jumpedBarriers": 0,
+      "bufferedJump": null,
+      "reason": "barrier",
+      "events": [
+        {
+          "type": "lane-input",
+          "at": 0.7753000000000009,
+          "distance": 5.81475,
+          "lane": 2
+        },
+        {
+          "type": "lane-input",
+          "at": 1.2849,
+          "distance": 9.63675,
+          "lane": 1
+        },
+        {
+          "type": "lane-input",
+          "at": 1.7093999999999987,
+          "distance": 12.820499999999994,
+          "lane": 2
+        },
+        {
+          "type": "lane-input",
+          "at": 2.1342999999999974,
+          "distance": 16.007249999999996,
+          "lane": 1
+        },
+        {
+          "type": "jump",
+          "at": 2.5771999999999955,
+          "distance": 19.329000000000008
+        },
+        {
+          "type": "lane-input",
+          "at": 2.6859999999999946,
+          "distance": 20.14500000000002,
+          "lane": 2
+        },
+        {
+          "type": "lane-input",
+          "at": 3.119499999999994,
+          "distance": 23.39625000000004,
+          "lane": 1
+        },
+        {
+          "type": "land",
+          "at": 3.2509333333333266,
+          "distance": 24.382000000000048
+        },
+        {
+          "type": "fish-caught",
+          "at": 3.9941333333333247,
+          "distance": 29.956000000000074,
+          "objectId": "l1-f1",
+          "golden": false,
+          "bonus": false,
+          "first": true,
+          "count": 1
+        },
+        {
+          "type": "fish-caught",
+          "at": 6.126033333333358,
+          "distance": 45.94524999999975,
+          "objectId": "l1-f2",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 2
+        },
+        {
+          "type": "fish-caught",
+          "at": 8.26090000000005,
+          "distance": 61.95674999999937,
+          "objectId": "l1-f3",
+          "golden": true,
+          "bonus": false,
+          "first": false,
+          "count": 3
+        },
+        {
+          "type": "fish-caught",
+          "at": 10.393633333333353,
+          "distance": 77.95224999999945,
+          "objectId": "l1-f4",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 4
+        },
+        {
+          "type": "obstacle-avoided",
+          "at": 12.136000000000003,
+          "distance": 91.01999999999951,
+          "objectId": "l1-o0",
+          "kind": "pedestrian",
+          "jumped": false,
+          "combo": 0
+        },
+        {
+          "type": "fish-caught",
+          "at": 12.527600000000001,
+          "distance": 93.9569999999995,
+          "objectId": "l1-f5",
+          "golden": false,
+          "bonus": false,
+          "first": false,
+          "count": 5
+        },
+        {
+          "type": "failed",
+          "at": 18.560999999999854,
+          "distance": 139.20750000000055,
+          "reason": "barrier",
+          "objectId": "l1-o1",
+          "kind": "barrier"
+        }
+      ],
+      "save": {
+        "version": 2,
+        "unlocked": 1,
+        "stars": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "completed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "best": [
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          },
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          },
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          },
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          },
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          }
+        ]
+      },
+      "pausedBySystem": false
+    },
+    "render": {
+      "pixelRatio": 1.5,
+      "canvas": [
+        585,
+        1266
+      ],
+      "composer": [
+        585,
+        1266
+      ],
+      "camera": {
+        "position": [
+          -6.75,
+          3.6200000000000054,
+          0.20000000000000034
+        ],
+        "quaternion": [
+          -0.056115303812105916,
+          -0.7007319156662725,
+          -0.055457082554345734,
+          0.7090489172400671
+        ],
+        "fov": 51.82292640331344
+      },
+      "pose": {
+        "requested": {
+          "lean": 0.0015221296526005765,
+          "steer": -7.128187861217062e-66,
+          "yaw": 1.6516913267115884e-85
+        },
+        "riderRotation": [
+          -0.65,
+          1.6516913267115884e-85,
+          0
+        ],
+        "frontSteeringMatrix": [
+          1,
+          -6.325028487734721e-132,
+          6.887504167549406e-66,
+          0,
+          -6.325028487734721e-132,
+          1,
+          1.8366677780131738e-66,
+          0,
+          -6.887504167549406e-66,
+          -1.8366677780131738e-66,
+          1,
+          0,
+          0.36,
+          0.57,
+          0,
+          1
+        ],
+        "headRotation": [
+          -0.025299759077455845,
+          -0.33806766071166894,
+          -0.03780736404188485
+        ],
+        "bodyRotation": [
+          0.0071170457947491925,
+          0,
+          0.3469394404329229
+        ]
+      },
+      "quality": {
+        "tier": 2,
+        "pr": 1.5
+      },
+      "calls": 429,
+      "triangles": 286239,
+      "memory": {
+        "geometries": 215,
+        "textures": 18
+      }
+    }
+  },
+  "replay": {
+    "state": {
+      "phase": "running",
+      "level": 1,
+      "distance": 4.560749999999986,
+      "elapsed": 0.6080999999999984,
+      "lane": 0,
+      "laneIndex": 1,
+      "y": 0,
+      "stun": 0,
+      "count": 0,
+      "gold": 0,
+      "jumpedBarriers": 0,
+      "bufferedJump": null,
+      "reason": null,
+      "events": [],
+      "save": {
+        "version": 2,
+        "unlocked": 1,
+        "stars": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "completed": [
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "best": [
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          },
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          },
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          },
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          },
+          {
+            "fish": 0,
+            "gold": 0,
+            "jumps": 0,
+            "score": 0
+          }
+        ]
+      },
+      "pausedBySystem": false
+    },
+    "render": {
+      "pixelRatio": 1.5,
+      "canvas": [
+        585,
+        1266
+      ],
+      "composer": [
+        585,
+        1266
+      ],
+      "camera": {
+        "position": [
+          -6.75,
+          3.62,
+          0.2
+        ],
+        "quaternion": [
+          -0.056115303812105825,
+          -0.7007319156662725,
+          -0.055457082554345644,
+          0.7090489172400671
+        ],
+        "fov": 51.89
+      },
+      "pose": {
+        "requested": {
+          "lean": 0.006140571805035367,
+          "steer": 0,
+          "yaw": 0
+        },
+        "riderRotation": [
+          0.006140571805035367,
+          0,
+          0
+        ],
+        "frontSteeringMatrix": [
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0.36,
+          0.57,
+          0,
+          1
+        ],
+        "headRotation": [
+          0.021321786319449684,
+          -0.017496770754793195,
+          -0.018609318721348793
+        ],
+        "bodyRotation": [
+          -0.001665969653741113,
+          0,
+          0.3499203411578072
+        ]
+      },
+      "quality": {
+        "tier": 2,
+        "pr": 1.5
+      },
+      "calls": 418,
+      "triangles": 303135,
+      "memory": {
+        "geometries": 215,
+        "textures": 18
+      }
+    }
+  },
+  "poseValidation": {
+    "nativePoseFinite": true,
+    "nativeBankAndHeadingMatchRequested": true,
+    "nativeFrontSteeringMatchesRequested": true,
+    "peakNativeSteeringRadians": 0.1959656353951472,
+    "peakNativeBankRadians": 0.21739338695105642,
+    "evidenceRole": "Actual native mesh angles and front-fork matrix copied by read-only renderInfo; together with real full-frame pixels, no pose setters.",
+    "passed": true
+  },
+  "video": {
+    "path": "attempts/attempt-20/feel-state-chromium/page@33e5ba73f68842a9d512e40adbf8d983.webm",
+    "sha256": "71460dd2307a70ad86d650e67cf07fa398b80f99a32c7e143938c2ae9d72d97a"
+  },
+  "passed": true
+}

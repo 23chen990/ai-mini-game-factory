@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-coast-v2/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "用户在 iPhone 观察到画质模糊、主角过大和前方道路不可读。核对 PR10 renderer/composer、start/camera、shadow 和自适应路径；未提供录屏，不能声称已复现实体 iPhone。",
+  "classification": [
+    "mobile-readability",
+    "visual-hierarchy",
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Default camera startup and multi-path render-resolution defect; cross-module product journey, not a localized two-file direct repair.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "赛车与射击源码",
+      "PR9非必需设计",
+      "历史REA日志",
+      "无来源录屏"
+    ]
+  },
+  "reproduction": {
+    "status": "PARTIALLY_REPRODUCED",
+    "steps": [
+      "Open PR10 baseline 390×844 DPR3",
+      "Tap start; inspect default composition",
+      "Measure canvas, composer viewports and real RAF deltas",
+      "Capture same pose before/after without using pose injection as gameplay evidence"
+    ],
+    "observed": [
+      "PR10 sets renderer PR=1 without composer update; original low composer PR=.8",
+      "start() sets orbit unless URL has cam; shadow disabled by PR10",
+      "All desktop v2 start/running/resume/replay branches pass natural and independent pixel review. Physical iPhone image quality/performance remains NOT_RUN."
+    ],
+    "evidence": [
+      {
+        "path": "user-report.txt",
+        "sha256": "56774540dbd805c167cf9b2e25370ea1ef3450a1cc289e9403ff0860907bba74",
+        "kind": "user-report",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "perceptual-qa-report.json",
+        "sha256": "ca8cc8c25b382541cb45071722e49d9882f56b83dd122adf1f467260cb98aad4",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Default start/replay keeps a stable follow camera with rider below center",
+    "Renderer and actual postprocess viewport agree at >=1.25 DPR for sharp/balanced modes",
+    "No automatic orbit; >=3 sec visible vehicle warning",
+    "Player-visible natural runtime evidence on portrait/landscape; physical iPhone marked pending"
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-14T03:14:48.330Z"
+}

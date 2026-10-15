@@ -1,0 +1,1736 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-feel-v3/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "pelican-head-neck-beak"
+    ],
+    "lifecycleStateBranches": [
+      "straight-ride",
+      "fish-catch",
+      "reverse-turn",
+      "jump",
+      "pedestrian-stun-recovery",
+      "replay"
+    ],
+    "rendererPaths": [
+      "webkit-default",
+      "chromium-default"
+    ],
+    "viewports": [
+      {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "straight-ride:webkit-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "straight-ride",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 390×844 normal-input branch has matching full-frame straight capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-straight.png",
+          "sha256": "c7814ce8875d7cc98a9d0146ef476ab07d84356528353f90f2d630354224227e",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "straight-ride:webkit-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "straight-ride",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 360×740 normal-input branch has matching full-frame straight capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-straight.png",
+          "sha256": "ab683819d5c61fbdce34f704172e07585fa9a563afaf90fe8b75838bf0a66c09",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "straight-ride:webkit-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "straight-ride",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 320×568 normal-input branch has matching full-frame straight capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-straight.png",
+          "sha256": "7a676a02af79e47bafc744bcc412c71cb8ab0ea8546d23913d3d7ed843fe6090",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "straight-ride:webkit-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "straight-ride",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 844×390 normal-input branch has matching full-frame straight capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-straight.png",
+          "sha256": "3ca8d867fd61af33655be19dfa007b957e7146965e0d0a026472aa45491c913c",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "straight-ride:chromium-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "straight-ride",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "straight-ride: Viewed full-frame PNG: centered rear rider has a visible white head/neck and coral helmet; the forward road and three action buttons are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/390-straight.png",
+          "sha256": "2562a2cc1bc2d378c1f4f3736687b76b4ba7fd99157162b6aeff0b6ad9a7d81e",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "straight-ride:chromium-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "straight-ride",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "straight-ride: Viewed full-frame PNG: centered rear rider has a visible white head/neck and coral helmet; the forward road and three action buttons are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/360-straight.png",
+          "sha256": "0c4682be5f7a2fd80b6f39230ee876c793586312fb8679b332706c9038d1613f",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "straight-ride:chromium-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "straight-ride",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "straight-ride: Viewed full-frame PNG: centered rear rider has a visible white head/neck and coral helmet; the forward road and three action buttons are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/320-straight.png",
+          "sha256": "f25c23ea714c907e506add4d2158b152396d613b75ed8dc33357f333d27691e0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "straight-ride:chromium-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "straight-ride",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "straight-ride: Viewed full-frame PNG: centered rear rider has a visible white head/neck and coral helmet; the forward road and three action buttons are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/844-straight.png",
+          "sha256": "35f8c7bf7be2e1b8d40306b87b9e11ea23bd2cfc81596c4e67fe97606fcfce6a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fish-catch:webkit-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "fish-catch",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 390×844 normal-input branch has matching full-frame fish-catch capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-fish-catch.png",
+          "sha256": "b231ccd6386b06fce01ed8ec9a5fe825d9f2185eff43c188d23e02cd6b019bee",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fish-catch:webkit-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "fish-catch",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 360×740 normal-input branch has matching full-frame fish-catch capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-fish-catch.png",
+          "sha256": "922181b39f37db7fcd2d50fadfc12a631cf476f6526aea3b495479db42684e05",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fish-catch:webkit-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "fish-catch",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 320×568 normal-input branch has matching full-frame fish-catch capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-fish-catch.png",
+          "sha256": "bfc14b7b8899a1bca2a3ab7a077d495706583e0808bb90fccb4dc3de34648150",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fish-catch:webkit-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "fish-catch",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 844×390 normal-input branch has matching full-frame fish-catch capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-fish-catch.png",
+          "sha256": "665d735de55d150a20d203049db2f51c6f19b34513642ebffeab586b17628ca6",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fish-catch:chromium-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "fish-catch",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "fish-catch: Viewed full-frame PNG: white pelican head/neck with coral helmet stays visible below the first-catch notification; the centered road remains open. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/390-fish-catch.png",
+          "sha256": "aec7ff58942ba71d82538dfd3aba3815a2a3533b688458b42c8bc2c4cd75ee78",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fish-catch:chromium-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "fish-catch",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "fish-catch: Viewed full-frame PNG: white pelican head/neck with coral helmet stays visible below the first-catch notification; the centered road remains open. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/360-fish-catch.png",
+          "sha256": "7fd949d6a664a9e3c5f7c05fd13ecbb5938fb0ba01a5afecf3126ea177d3faf6",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fish-catch:chromium-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "fish-catch",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "fish-catch: Viewed full-frame PNG: white pelican head/neck with coral helmet stays visible below the first-catch notification; the centered road remains open. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/320-fish-catch.png",
+          "sha256": "97d614903dab1a2c2584f3933466c379198847b76958ccdb84911c66909da415",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fish-catch:chromium-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "fish-catch",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "fish-catch: Viewed full-frame PNG: white pelican head/neck with coral helmet stays visible below the first-catch notification; the centered road remains open. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/844-fish-catch.png",
+          "sha256": "5d1c87c96451a72d46f2c3bb17937403c7732c959dc19fb87fed147659328d2c",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reverse-turn:webkit-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "reverse-turn",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 390×844 normal-input branch has matching full-frame right-turn capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-right-turn.png",
+          "sha256": "e67ceb5b636787230a4cb07c925756a97ed1bf1644f5352f7125504ff14871e8",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reverse-turn:webkit-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "reverse-turn",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 360×740 normal-input branch has matching full-frame right-turn capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-right-turn.png",
+          "sha256": "5ec952a07dc31a22859d13b66368394c09f068d412d5753b6767299239da6c8a",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reverse-turn:webkit-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "reverse-turn",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 320×568 normal-input branch has matching full-frame right-turn capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-right-turn.png",
+          "sha256": "64b5eaa5b9a7929c9af9685937e7daa492189ab73dbd1d2419423aff500ae56f",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reverse-turn:webkit-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "reverse-turn",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 844×390 normal-input branch has matching full-frame right-turn capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-right-turn.png",
+          "sha256": "a753f2e770604d66906a3d11ab59ab06e9b644772379d1b6111d8ef97d039a0b",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reverse-turn:chromium-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "reverse-turn",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "reverse-turn: Viewed full-frame PNG: right-turn posture is visible with the head/helmet attached to the rider; horizon and lane remain readable. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/390-right-turn.png",
+          "sha256": "653e023548b5c42124e38c62779f255c1d83db0c976d7a505ba3ba1b186586a0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reverse-turn:chromium-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "reverse-turn",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "reverse-turn: Viewed full-frame PNG: right-turn posture is visible with the head/helmet attached to the rider; horizon and lane remain readable. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/360-right-turn.png",
+          "sha256": "731bdedff033fba6c6fc46a57dd385094238235b1aa79a232a16cb7c122c477d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reverse-turn:chromium-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "reverse-turn",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "reverse-turn: Viewed full-frame PNG: right-turn posture is visible with the head/helmet attached to the rider; horizon and lane remain readable. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/320-right-turn.png",
+          "sha256": "d50867449878750789e2a85dfd4e855b5cce0f00be7dd86906e281a850f475ff",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "reverse-turn:chromium-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "reverse-turn",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "reverse-turn: Viewed full-frame PNG: right-turn posture is visible with the head/helmet attached to the rider; horizon and lane remain readable. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/844-right-turn.png",
+          "sha256": "03b28cb396abb995d30930ec42363f45d199e393f55e4047b5d5368bf55b2fdd",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "jump:webkit-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 390×844 normal-input branch has matching full-frame jump-reverse capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-jump-reverse.png",
+          "sha256": "24179a87a3feb036bacdeb75565a6591fbe7ed4fc4f320e21c2e02024ee3d0ad",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "jump:webkit-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 360×740 normal-input branch has matching full-frame jump-reverse capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-jump-reverse.png",
+          "sha256": "3b7125ef80815f57bc489115b269617c29aca0aebccf94e378a72c9e2881e218",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "jump:webkit-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 320×568 normal-input branch has matching full-frame jump-reverse capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-jump-reverse.png",
+          "sha256": "32a28c69defa12b562f946aa40f271b7d19fb3d76f3be9f09988a5bbdc4e2348",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "jump:webkit-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 844×390 normal-input branch has matching full-frame jump-reverse capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-jump-reverse.png",
+          "sha256": "e30b2e9aa2c87e79bd17d4640326b96c38389757aa95b94a839edc7890b5a3b4",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "jump:chromium-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "jump: Viewed full-frame PNG: the helmeted white head/neck remains connected to the jumping rider; road and bottom touch buttons remain in view. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/390-jump-reverse.png",
+          "sha256": "c77cb03cfe845e328bb2a958ef4aa3a16380322728a396e91cc9a56b0f17c0f0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "jump:chromium-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "jump: Viewed full-frame PNG: the helmeted white head/neck remains connected to the jumping rider; road and bottom touch buttons remain in view. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/360-jump-reverse.png",
+          "sha256": "c47977dc9e85eeec08cf9f8e78a99418f7b339d0419765a45ccbbc8ddc682b38",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "jump:chromium-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "jump: Viewed full-frame PNG: the helmeted white head/neck remains connected to the jumping rider; road and bottom touch buttons remain in view. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/320-jump-reverse.png",
+          "sha256": "aa1fd21556054ee7f6a16f38d11b84615ea636330dbe13e45607d52b82eedca0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "jump:chromium-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "jump",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "jump: Viewed full-frame PNG: the helmeted white head/neck remains connected to the jumping rider; road and bottom touch buttons remain in view. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/844-jump-reverse.png",
+          "sha256": "a7c0b0c5e912972b0fc289e419385debd9588071086b3ac589d3942de220fb84",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-stun-recovery:webkit-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 390×844 normal-input branch has matching full-frame pedestrian-stun+recovery capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-pedestrian-stun.png",
+          "sha256": "d7e016f3c28c3ffafc7d0191992fae6de10b9f50b5cfb4253b45b630062f4830",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-recovery.png",
+          "sha256": "4529587971c95117d4da7c9df58ac46892e821af595e3c98e58f5e761675d170",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-stun-recovery:webkit-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 360×740 normal-input branch has matching full-frame pedestrian-stun+recovery capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-pedestrian-stun.png",
+          "sha256": "f95f598f0757f00c72e34355f63471675a69fa837cd2360ce5a2a30a6fbec4eb",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-recovery.png",
+          "sha256": "53063df05763e00dcd859cb6a83782ff4271d4e38a1276de06403f9c572b490c",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-stun-recovery:webkit-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 320×568 normal-input branch has matching full-frame pedestrian-stun+recovery capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-pedestrian-stun.png",
+          "sha256": "5b9f53100ab71085c6a13586a3e07cecc07da151f4342a85bc276e6f506505a1",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-recovery.png",
+          "sha256": "7a8da4695bccc426e9bf0f6b739e065d0a9027643a10611acae6d50a5d1da527",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-stun-recovery:webkit-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 844×390 normal-input branch has matching full-frame pedestrian-stun+recovery capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-pedestrian-stun.png",
+          "sha256": "2a78fd5324ddbf0dc75eaafc1be2e9fbd5a2f28436e91da2696fdc5abc1896a5",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-recovery.png",
+          "sha256": "5fd2590c0a267551817ad3faf24058328fa5ebdd31679983cdcc9e80e3712417",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-stun-recovery:chromium-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "pedestrian-stun: Viewed full-frame PNG: rider and pedestrian are both present, the centered warning shows 3 seconds and 行人摔倒·倒计时继续, and the bottom touch controls are dimmed during the stun. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots. | pedestrian-recovery: Viewed full-frame PNG: active rider returns with the 继续骑行 cue; forward roadway and lane/jump controls are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/390-recovery.png",
+          "sha256": "a0d558499f58c6c6296a40329a1cc016e9e9fd078f162586af52f9695e19d2fe",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/390-pedestrian-stun.png",
+          "sha256": "d12119329e9a7ad2475d30329fd866a2e75526cd5b12d7e57f57f99d79a8640d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-stun-recovery:chromium-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "pedestrian-stun: Viewed full-frame PNG: rider and pedestrian are both present, the centered warning shows 3 seconds and 行人摔倒·倒计时继续, and the bottom touch controls are dimmed during the stun. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots. | pedestrian-recovery: Viewed full-frame PNG: active rider returns with the 继续骑行 cue; forward roadway and lane/jump controls are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/360-recovery.png",
+          "sha256": "f4914beafdd0a19f7a1e14343399899165ba94ee9f86516e9a0eecb87a029ba5",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/360-pedestrian-stun.png",
+          "sha256": "5b6019291b4acbbf3981a98620da3a521537875f86d641a2a6be0cb2f384c7a1",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-stun-recovery:chromium-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "pedestrian-stun: Viewed full-frame PNG: rider and pedestrian are both present, the centered warning shows 3 seconds and 行人摔倒·倒计时继续, and the bottom touch controls are dimmed during the stun. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots. | pedestrian-recovery: Viewed full-frame PNG: active rider returns with the 继续骑行 cue; forward roadway and lane/jump controls are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/320-recovery.png",
+          "sha256": "80663a2058e483fdda7dfe733340c1cfb6bef4279578656957a1affbe33cefeb",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/320-pedestrian-stun.png",
+          "sha256": "922b02d206b2157dad694f85b4804d9301ef88c4d5809e2613f4e69180fbfc28",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "pedestrian-stun-recovery:chromium-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "pedestrian-stun-recovery",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "pedestrian-stun: Viewed full-frame PNG: rider and pedestrian are both present, the centered warning shows 3 seconds and 行人摔倒·倒计时继续, and the bottom touch controls are dimmed during the stun. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots. | pedestrian-recovery: Viewed full-frame PNG: active rider returns with the 继续骑行 cue; forward roadway and lane/jump controls are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/844-recovery.png",
+          "sha256": "21c27ccd6ff9fe409bd76463e688ba9fdb04d9553a6737bfbabe6433c5556cce",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/844-pedestrian-stun.png",
+          "sha256": "56f465786daecf9c43a183d326bc9a0d2eb0f62fb2c0ddb7b59030fb147f9d2f",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "replay:webkit-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 390×844 normal-input branch has matching full-frame replay capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/390-replay.png",
+          "sha256": "0d9e8d13e70bc3111aa4a81db9ac2cbcabc5ae593ec17824bc44c4b398ae8cfd",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "replay:webkit-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 360×740 normal-input branch has matching full-frame replay capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/360-replay.png",
+          "sha256": "b5f77d681e65bae9305c654bd6cff9067869726855dcb592e1accd3f00aae465",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "replay:webkit-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 320×568 normal-input branch has matching full-frame replay capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/320-replay.png",
+          "sha256": "079f01d3a15c9c995f05e2ead6abdd3d25133cb0681de74a0689d913f5f02ad0",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "replay:webkit-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "webkit-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "Attempt20 webkit 844×390 normal-input branch has matching full-frame replay capture; report confirms native head/neck and helmet pixels with natural state sequence. Orange forward-facing beak is not exposed by rear chase, so this proposal remains gated on independent recognizability and road/hazard-clarity review.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-webkit/report.json",
+          "sha256": "b8f91a05f31aedc3155793f7771714e8eb125e9f4889543dfc41bf62e6438fc4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-webkit/844-replay.png",
+          "sha256": "8ac8a62906b87f6685c044cb7cd68f32ba8abfeb85200de068c40e627aa300d9",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "/Users/kker/.codex/pelican-v3-continuation/perceptual/final-qa20.json",
+          "sha256": "bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "replay:chromium-default:standard",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "standard",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "replay: Viewed full-frame PNG: replay has returned to running play; the head/helmet, current-route HUD, road and controls are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/390-replay.png",
+          "sha256": "8191fe5fe26dc91b5f1f926289ba25ca09af27f2991518148f305aa2264ba44d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "replay:chromium-default:small",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "small",
+        "width": 360,
+        "height": 740
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "replay: Viewed full-frame PNG: replay has returned to running play; the head/helmet, current-route HUD, road and controls are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/360-replay.png",
+          "sha256": "bcd9173dd33dc689514e1b2c1a874e36cc1032091e9b5db31a875cdb467c29a5",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "replay:chromium-default:compact",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "compact",
+        "width": 320,
+        "height": 568
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "replay: Viewed full-frame PNG: replay has returned to running play; the head/helmet, current-route HUD, road and controls are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/320-replay.png",
+          "sha256": "cdf93d2cb93028848b9c06ab4c0ef992c92a9455093d25d9301ce1227a0395cb",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "replay:chromium-default:landscape",
+      "objectType": "pelican-head-neck-beak",
+      "lifecycleStateBranch": "replay",
+      "rendererPath": "chromium-default",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Readable connected head/beak with clear road and no default journey regressions",
+      "observed": "replay: Viewed full-frame PNG: replay has returned to running play; the head/helmet, current-route HUD, road and controls are visible. Limits: Rear-chase frames show the white head/neck and coral helmet but do not expose the forward-facing orange beak; no beak-animation claim is made from these screenshots.",
+      "evidence": [
+        {
+          "path": "attempts/attempt-20/head-chromium/844-replay.png",
+          "sha256": "0397b7f18315318f07ee5131017e66f117b93bdd0e9bfea8cbc4188d724dd974",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "attempts/attempt-20/head-chromium/report.json",
+          "sha256": "438685ee3f60932064d4fe76d13b4a0642e779f8d4e1230a9e5b70f28faea386",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v3-engineering/supplemental-head-compact-final20.json",
+          "sha256": "fece7dc9b71feed641d7d387acde66563307cc95bd612418df55c66d3bf4d8d2",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Independent current20 30-case desktop review bf362e860878c74a2679851150bd7a9ef3b797161c499dc4dd906bcb7a2cadea; source-normal-input screenshots checked before each accepted matrix update. Supplemental Chromium-head and compact-object review will remain separately bound.",
+    "Supplemental independent current20 Chromium native-head pixel review checked exact object/state/viewport and recorded rear-view beak-visibility limits; no isolated fork pivot approval."
+  ],
+  "remainingGaps": [
+    "Exact screenshot capture build/state unknown",
+    "Current20 desktop coverage was updated only for individually hash-verified exact reviewed branches; unobserved cross-products stay BLOCKED. Physical phones, actual app background and human enjoyment are unverified."
+  ],
+  "createdAt": "2026-10-14T07:18:52.700Z"
+}
