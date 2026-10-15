@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "双键飞驰 V3 / qq-speed",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Visible-pixel QA mistake: sparse blue windows/scenery with white fragments are classified as boxes (32/220 and186/1230 blue pixels). A real visible cube has236/374 blue pixels. Tight road-only angle gate also cancels a normal lane-change before alignment. Fix classifier fill and visible steering priority only; keep game/acceptance unchanged.",
+  "classification": [
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Repair only natural-input test strategy inside existing formal QA retest; no gameplay or acceptance changes.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "other games",
+      "native player state as steering input",
+      "old source replacements"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Replay06 using exact earned01–05state",
+      "Natural first-place86.22s but only1/2physicalpickups; rejectvictory",
+      "Extract own exact video11.57,19.28,23.11sec and compare detectedbluearea"
+    ],
+    "observed": [
+      "Real cube visible at7.27s",
+      "14.95s and18.79s samples lack a matching dense blue cube; candidatefill14–15%",
+      "Current gate cancels itemsteer at10degrees instead of permitting modest visible lane-change"
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session2/06-trace.json",
+        "sha256": "4f01db196b9705cbbd529b3b8822a64564841ab1002cd3b562e36e3ff6f34a09",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session2/box-11.57.png",
+        "sha256": "51daf0569473313a2ee92e25e8119810c35b2a898e8cb3c7b6eaa7c7565d186b",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session2/box-19.28.png",
+        "sha256": "3319b191986dbb77c1b19f39c08e7dc7275e48f3a4381c7e90d49b7a4f138dc3",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session2/box-23.11.png",
+        "sha256": "31ae0bc2a655ee953f86ff8f3a04d834ee89c29fb0a3e2047ca162e24b54dcf3",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Sparse blue windows/rails withwhitefragments do not override road steering",
+    "Dense question cubes retain detection; normalimageleft/right controls preserved",
+    "Modest visible road-angle under0.35 permits lane choice; sharp corners/recovery still override box",
+    "All goals/rank/physics/item rules and strict actual success criteria unchanged",
+    "Resume exact earned storage into new evidence directory; no rebuild unchanged game"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-15T03:41:57.050Z"
+}

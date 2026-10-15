@@ -1,12 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { itemBoxPolicy, earnedResumeOrigin, warningVisible, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup } from '../racing-visible-policy.mjs';
+import { itemBoxPolicy, earnedResumeOrigin, warningVisible, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup, visibleItemSteer } from '../racing-visible-policy.mjs';
 function image(rectangles) {
   const width = 400, height = 200, data = new Uint8Array(width * height * 4);
   for (const [x0, y0, w, h, color] of rectangles) for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) data.set(color, (y * width + x) * 4);
   return { width, height, data };
 }
 const question = (x, y) => [[x + 4, y + 2, 4, 4, [245, 245, 245, 255]], [x + 5, y + 9, 2, 2, [245, 245, 245, 255]]];
+test('sparse blue window frames with detached white details are not a solid question cube', () => {
+  const blue=[38,148,227,255];
+  const sample=image([[250,85,20,1,blue],[250,96,20,1,blue],[250,85,1,12,blue],[269,85,1,12,blue],...question(255,85)]);
+  assert.equal(itemBoxPolicy(sample),null);
+});
+test('visible cube lane changes tolerate modest road angle while sharp corners and recovery retain priority',()=>{
+  const p={direction:'right',angle:.22},box={direction:'left',source:'visible-blue-question-cube-pixels'};
+  assert.equal(visibleItemSteer(p,box).direction,'left');
+  assert.equal(visibleItemSteer({...p,angle:.5},box).direction,'right');
+  assert.equal(visibleItemSteer({...p,reason:'visible-arrow-spin-recovery'},box).direction,'right');
+  assert.equal(visibleItemSteer(p,null).direction,'right');
+});
 test('box pursuit stops at the visible objective count without reading hidden pickup state', () => {
   assert.equal(needsVisibleItemPickup('已拾取道具 0/3'), true);
   assert.equal(needsVisibleItemPickup('已拾取道具 2/3'), true);

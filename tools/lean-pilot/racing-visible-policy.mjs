@@ -3,6 +3,10 @@ export function needsVisibleItemPickup(goal) {
   const count = goal.match(/已拾取道具 (\d+)\/(\d+)/u);
   return !!count && Number(count[1]) < Number(count[2]);
 }
+export function visibleItemSteer(policy, box) {
+  if (!box?.direction || policy.reason?.includes('recovery') || Math.abs(policy.angle ?? 1) >= .35) return policy;
+  return { ...policy, roadDirection: policy.direction, direction: box.direction, box };
+}
 export function earnedResumeOrigin(report, storage, buildHash) {
   if (report.buildHash !== buildHash) throw Error('Cannot resume another build');
   const saved = report.races.at(-1)?.saved;
@@ -74,7 +78,7 @@ export function itemBoxPolicy({ width: W, height: H, data }) {
       for (const n of [k - W, k + W, x ? k - 1 : -1, x < W - 1 ? k + 1 : -1]) if (n >= 0 && n < mask.length && mask[n] && !seen[n]) { seen[n] = 1; queue.push(n); }
     }
     const width = x1 - x0 + 1, height = yb - ya + 1;
-    if (queue.length < 12 || width < 4 || height < 4 || width > 45 || height > 45 || width / height >= 2.5 || height / width >= 2.5) continue;
+    if (queue.length < 12 || width < 4 || height < 4 || width > 45 || height > 45 || width / height >= 2.5 || height / width >= 2.5 || queue.length / (width * height) < .35) continue;
     // The now-visible question hook and detached dot separate boxes from blue
     // rival roofs, windows and billboard patches; use actual framebuffer only.
     const white = new Set(), groups = [];

@@ -9,7 +9,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { createRequire } from 'node:module';
-import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup } from './racing-visible-policy.mjs';
+import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup, visibleItemSteer } from './racing-visible-policy.mjs';
 const require = createRequire(import.meta.url), testRequire = createRequire(require.resolve('@playwright/test'));
 const playwrightRequire = createRequire(testRequire.resolve('playwright'));
 const { PNG } = require(path.join(path.dirname(playwrightRequire.resolve('playwright-core/package.json')), 'lib/utilsBundle.js'));
@@ -147,16 +147,14 @@ try {
     let lastBoxScan = 0, box = null; const visibleMemory = {}; let lastScene = 0, lastPickups = 0;
     console.log(JSON.stringify({ stage: index + 1, entry, status: 'DRIVING' }));
     while (Date.now() < deadline) {
-      const policy = recoverVisibleHeading(await page.evaluate(minimapPolicy, visibleLookahead), visibleMemory, Date.now());
+      let policy = recoverVisibleHeading(await page.evaluate(minimapPolicy, visibleLookahead), visibleMemory, Date.now());
       const seekBox = isItemRace && needsVisibleItemPickup(await page.locator('#race-live-goal').textContent());
       if (!seekBox) box = null;
       if (seekBox && Date.now() - lastBoxScan > 350) {
         lastBoxScan = Date.now();
         box = itemBoxPolicy(PNG.sync.read(await page.screenshot()));
       }
-      if (box?.direction && !policy.reason?.includes('recovery') && Math.abs(policy.angle ?? 1) < .18) {
-        policy.roadDirection = policy.direction; policy.direction = box.direction; policy.box = box;
-      }
+      policy = visibleItemSteer(policy, box);
       await steer(policy.direction);
       const o = await observed();
       const telemetry = { ...o }; delete telemetry.events; delete telemetry.saved;
