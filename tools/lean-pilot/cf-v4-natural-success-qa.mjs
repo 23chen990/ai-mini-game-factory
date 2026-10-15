@@ -38,11 +38,14 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
       phase: kit?.dataset.phase ?? null, outcome: kit?.dataset.outcome ?? null,
       challenge: kit?.dataset.challenge ?? null, gameTime: +((game?.time ?? 0).toFixed(2)),
       weapon: p?.weapon?.id ?? null, scoped: p?.scoped ?? 0, alive: p?.alive ?? false,
+      scopeReady:p?.scopeReady === true,
+      position:p?{x:+p.pos.x.toFixed(2),z:+p.pos.z.toFixed(2),yaw:+p.yaw.toFixed(3)}:null,
       shots: p?.stats?.shots ?? 0, hits: p?.stats?.hits ?? 0, kills: p?.stats?.k ?? 0,
       deaths: p?.stats?.d ?? 0, awmKills: game?.__mkAwmKills ?? 0,
       travelLabel: document.getElementById('mk-status')?.textContent ?? '',
       visibleEnemies,
       firstTrainingScoutRange:game?.__mobileBalanceReview?.trainingScoutRange??null,
+      sniperScout:game?.__mobileBalanceReview?.sniperScout===true,
       visibleAllyTags:(game?.tags||[]).filter(t=>t.__mkAllyLabel && t.sprite?.material?.opacity>.01).length,
       targetSide: document.getElementById('mk-fps-target')?.dataset.side ?? null,
       guide: document.getElementById('mk-fps-guide')?.textContent ?? '',
@@ -107,6 +110,16 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
     trace.push({ ...start, action: 'entered-real-native-game' });
     check('correct-real-weapon', mode === 'awm' ? start.weapon === 'awm' : start.challenge === 'survive',
       { weapon: start.weapon, challenge: start.challenge });
+    if(mode==='awm'){
+      const valid=start.sniperScout && Number.isFinite(start.firstTrainingScoutRange) &&
+        start.firstTrainingScoutRange>=7 && start.firstTrainingScoutRange<=18;
+      check('awm-actual-clear-opening-spawn',valid,{
+        stagedNativeSniperScout:start.sniperScout,
+        actualVisibleLaneMeters:start.firstTrainingScoutRange,
+        playerPosition:start.position
+      });
+      if(!valid)throw Error('Real AWM opening lane failed nav+occlusion checks; do not waste 90 simulation seconds');
+    }
     // A screenshot here delayed the first visible AWM enemy until it vanished.
     // Preserve it after input rather than spend the only opening sightline.
     if(mode!=='awm')await screenshot('combat');
@@ -135,31 +148,60 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
         if (visible || aimVisible) {
           sawEnemy = true;
           // Do not pause the first target for a costly WebGL screenshot before aiming.
-          // Follow real on-screen red badges. A human scans with the wide view,
-          // then brings a visible target into the scope circle to shoot.
-          for(let n=0;n<12 && await target.isVisible().catch(()=>false);n++){
-            const rect=await visibleRect('.mk-fps-enemy:not([hidden])');
-            if(!rect)break;
-            const x=rect.x+rect.width/2-422, y=rect.y+rect.height+22-195;
-            if(Math.abs(x)<37 && Math.abs(y)<42)break;
-            await look(Math.max(-105,Math.min(105,x*.52)),
-              Math.max(-62,Math.min(62,y*.52)),210);
-            looked=true;
+          // Wide-angle scan first; a red DOM badge is a genuinely visible,
+          // wall-unoccluded marker. Do not read any actor world coordinates.
+          if(state.scoped===0){
+            for(let n=0;n<14 && await target.isVisible().catch(()=>false);n++){
+              const rect=await visibleRect('.mk-fps-enemy:not([hidden])');
+              if(!rect)break;
+              const x=rect.x+rect.width/2-422, y=rect.y+rect.height+18-195;
+              if(Math.abs(x)<24 && Math.abs(y)<28)break;
+              await look(Math.max(-96,Math.min(96,x*.64)),
+                Math.max(-54,Math.min(54,y*.64)),200);
+              looked=true;
+            }
+            const aligned=await visibleRect('.mk-fps-enemy:not([hidden])');
+            const centered=!!aligned && Math.abs(aligned.x+aligned.width/2-422)<52 &&
+              Math.abs(aligned.y+aligned.height+18-195)<58;
+            if(centered){
+              await press('#touch .btn[data-mk-action="scope"]',260);
+              await wait(850);
+            }
           }
-          const aligned=await visibleRect('.mk-fps-enemy:not([hidden])');
-          const centered=!!aligned && Math.abs(aligned.x+aligned.width/2-422)<75 &&
-            Math.abs(aligned.y+aligned.height+22-195)<85;
-          if(centered && state.scoped===0) {
-            await press('#touch .btn[data-mk-action="scope"]',260);
-            await wait(450);
-          }
-          const current=await inspect();
-          if(current.scoped>0 && !scopedObserved){
-            scopedObserved=true;await screenshot('scope');
-          }
-          if(current.scoped>0 && (current.visibleEnemies>0 || current.targetSide==='enemy')){
-            if(await press('#touch .btn[data-mk-action="fire"]',1000)){
-              validFire=true;shotCount++;
+          let current=await inspect();
+          if(current.scoped>0){
+            scopedObserved=true;
+            // Scoped FOV is narrower. Fine-tune using the marker's *rendered*
+            // relative chest position until the target actually meets reticle.
+            for(let n=0;n<14;n++){
+              const rect=await visibleRect('.mk-fps-enemy:not([hidden])');
+              if(!rect)break;
+              const x=rect.x+rect.width/2-422,y=rect.y+rect.height+18-195;
+              if(Math.abs(x)<=9 && Math.abs(y)<=13)break;
+              await look(Math.max(-66,Math.min(66,x*.72)),
+                Math.max(-42,Math.min(42,y*.69)),190);
+              looked=true;
+            }
+            const aligned=await visibleRect('.mk-fps-enemy:not([hidden])');
+            current=await inspect();
+            const centered=!!aligned && Math.abs(aligned.x+aligned.width/2-422)<=13 &&
+              Math.abs(aligned.y+aligned.height+18-195)<=18;
+            const exactAim=current.targetSide==='enemy';
+            if(centered || exactAim){
+              // Normal weapon readiness and player input; the native original
+              // rifle alone decides hit, damage, recoil and whether to award a kill.
+              if(await press('#touch .btn[data-mk-action="fire"]',400)){
+                validFire=true;shotCount++;
+                const afterShot=await inspect();
+                trace.push({...afterShot,action:'normal-scoped-trigger',
+                  onScreenCentered:centered,onScreenAimed:exactAim,
+                  targetRect:aligned});
+                if(shotCount===1)await screenshot('scope');
+              }
+            }else if(!aligned && !exactAim){
+              // Lost target outside narrow scope. Reacquire in wide view.
+              await press('#touch .btn[data-mk-action="scope"]',230);
+              await wait(150);
             }
           }
           if (shotCount > 0 && shotCount % 4 === 0)
