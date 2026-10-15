@@ -20,7 +20,7 @@ const server=createServer(async(req,res)=>{
     const relative=code?request.slice('/qa-source/'.length):request==='/'?'index.html':request.slice(1);
     const file=path.resolve(root,relative);
     if(!file.startsWith(root+path.sep))throw Error('Unsafe path');
-    res.setHeader('Content-Type',/\.m?js$/u.test(file)?'text/javascript':'text/html');
+    res.setHeader('Content-Type',/\.m?js$/u.test(file)?'text/javascript; charset=utf-8':file.endsWith('.css')?'text/css; charset=utf-8':file.endsWith('.json')?'application/json; charset=utf-8':'text/html; charset=utf-8');
     res.end(await readFile(file));
   }catch{res.writeHead(404);res.end('not found');}
 });
@@ -75,7 +75,7 @@ try{
       });
       report.hitTests??=[];
       report.hitTests.push({id,...pointerTarget});
-      await page.locator('#race-start').dispatchEvent('click');
+      await page.locator('#race-start').tap();
       await page.waitForFunction(()=>window.game?.state==='countdown',null,{timeout:12000});
       await page.evaluate(()=>{
         const g=window.game;g.render=()=>{};window.__SWEEP_DRIVER__.suspend();
@@ -125,7 +125,7 @@ try{
       console.log(JSON.stringify({id,status:report.runs.at(-1).status,stop,finish:result.finished,time:result.time,place:result.place,summary:result.summary}));
       await save();
       if(!shown){report.errors.push(id+': native terminal state not reached');break;}
-      await page.locator('#race-lobby').dispatchEvent('click');
+      await page.locator('#race-lobby').tap();
       await page.waitForFunction(()=>document.querySelector('#race-kit')?.dataset.phase==='ready',null,{timeout:12000});
     }catch(e){report.errors.push(id+': '+String(e));await save();break;}
   }
