@@ -1,4 +1,4 @@
-/* global process, console, window, document, getComputedStyle */
+/* global process, console, window, document, getComputedStyle, URL, setTimeout */
 import { chromium } from '@playwright/test';
 import { mkdir, writeFile, readFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -21,7 +21,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
   const checks = [], trace = [], touches = [], screenshots = [], errors = [];
   const out = path.join(root, 'screenshots');
   await mkdir(out, { recursive: true });
-  let browser, page, context, cdp;
+  let browser, page, context, cdp, report;
   let shotCount = 0;
   const screenshot = async label => {
     const file = path.join(out, 'cf-v4-' + mode + '-' + label + '.png');
@@ -187,7 +187,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
   } catch (error) {
     errors.push(String(error.stack || error).slice(0,1800));
   } finally {
-    const report = {
+    report = {
       schemaVersion: 1, runId: RUN_ID, mode, buildHash: hash, authority: 'REAL_PINNED_THREEJS_HTTP_CHROMIUM_TOUCH',
       browser: 'Chromium software WebGL, mobile touch emulation, NOT physical device',
       checks, passed: errors.length === 0 && checks.length >= 6 && checks.every(item => item.passed),
@@ -199,8 +199,8 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
     if (cdp) await cdp.detach().catch(() => {});
     if (browser) await browser.close().catch(() => {});
     await new Promise(resolve => server.close(resolve));
-    return report;
   }
+  return report;
 }
 
 if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === import.meta.url) {
