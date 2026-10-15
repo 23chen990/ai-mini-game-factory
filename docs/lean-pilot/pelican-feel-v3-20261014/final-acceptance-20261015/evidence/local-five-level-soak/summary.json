@@ -1,0 +1,64 @@
+{
+  "passed": true,
+  "checkCount": 28,
+  "wallSeconds": 303.864,
+  "scope": "Continuous desktop Mac Metal campaign, five natural levels earned in one browser without save injection; not phone thermal/long-session certification",
+  "levels": [
+    {
+      "id": 1,
+      "reason": "complete",
+      "count": 20,
+      "performance": {
+        "frameCount": 4471,
+        "meanFps": 119.09391664757337,
+        "p95Ms": 8.799999999999272,
+        "scope": "Natural default-speed running route between visible start and settlement"
+      }
+    },
+    {
+      "id": 2,
+      "reason": "complete",
+      "count": 26,
+      "performance": {
+        "frameCount": 6041,
+        "meanFps": 119.31048375947512,
+        "p95Ms": 8.89999999999418,
+        "scope": "Natural default-speed running route between visible start and settlement"
+      }
+    },
+    {
+      "id": 3,
+      "reason": "complete",
+      "count": 33,
+      "performance": {
+        "frameCount": 7109,
+        "meanFps": 119.41015515425558,
+        "p95Ms": 9.60000000000582,
+        "scope": "Natural default-speed running route between visible start and settlement"
+      }
+    },
+    {
+      "id": 4,
+      "reason": "complete",
+      "count": 31,
+      "performance": {
+        "frameCount": 7963,
+        "meanFps": 119.48670085859968,
+        "p95Ms": 9.699999999982538,
+        "scope": "Natural default-speed running route between visible start and settlement"
+      }
+    },
+    {
+      "id": 5,
+      "reason": "complete",
+      "count": 36,
+      "performance": {
+        "frameCount": 8749,
+        "meanFps": 119.61663613245467,
+        "p95Ms": 9.800000000017462,
+        "scope": "Natural default-speed running route between visible start and settlement"
+      }
+    }
+  ],
+  "errors": []
+}

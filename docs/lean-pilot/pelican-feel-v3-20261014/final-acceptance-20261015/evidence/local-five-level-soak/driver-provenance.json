@@ -1,0 +1,7 @@
+{
+  "path": "tools/lean-pilot/pelican-v2/qa.mjs",
+  "snapshot": "attempts/attempt-1/qa-campaign-chromium/driver-source.mjs",
+  "sha256": "c214aa17e772271d3677f8bdff7e23dbecc85a4b8bf1eddf6dec221389e08142",
+  "buildHash": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+  "normalInputOnly": true
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险（全仓检查边界）",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "全仓pnpm test存在17个既有Node/Vitest运行器不匹配和1个过期日期样本失败；与本轮仅新增鹈鹕验收文档无源代码差异。记录失败，不越界修共享代码。",
+  "classification": [
+    "factory-routing"
+  ],
+  "scope": {
+    "route": "shared-factory",
+    "rationale": "Shared runner/test fixture defect outside Pelican-only authorization; report separately, no shared-factory changes in this task.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "其他小游戏实现",
+      "完整历史"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Run pnpm test on latest source26e1e0c plus acceptance-only documents",
+      "Observe18 failed files,1 failed assertion",
+      "Rerun existing unknown-waiver-binding.test.ts alone and confirm the same stale-hash/expired-date result",
+      "Verify src/core/unknowns.ts,vitest.config.ts and test file unchanged from source commit"
+    ],
+    "observed": [
+      "170 files and974 assertions pass;17 existing node:test files have no Vitest suite",
+      "Stale-hash test uses expiresAt2026-09-30 with current clock, so license-risk is also blocking on2026-10-15",
+      "Pelican122 checks and lint/typecheck pass; do not claim all tests green"
+    ],
+    "evidence": [
+      {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/final-tests.log.txt",
+        "sha256": "270818903137ab1b13ac2b4b3383ef337679579506a757b21026664e93fe22f7",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/shared-baseline-repro.log.txt",
+        "sha256": "025c94d89e63a0072232048c5f8f4ae66f1c557948a5d966771665aa3def06c3",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/shared-test-baseline.json",
+        "sha256": "57d0c484584f12f0350cfb0dd56475b6c089e61533efb1df015285b5ea49e433",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Retain exact full and isolated failure logs",
+    "Do not alter other games/shared factory/time/thresholds under this task",
+    "Keep shared test failure visible independently of H5 playtest readiness"
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-15T12:35:12.732Z"
+}

@@ -1,0 +1,57 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "artifact": "STATIC_H5_DEVELOPMENT_PLAYTEST_ONLY",
+  "staticDeployability": {
+    "status": "PASS",
+    "htmlBytes": 1017458,
+    "remoteScriptImageFontAssetRequests": 0,
+    "license": "Three.js MIT retained in HTML and adjacent LICENSE.three.txt",
+    "network": "Weak200KiBps/200ms startup tested; already loaded game and downloaded standalone file work offline. No service worker, no guaranteed cold offline HTTP startup."
+  },
+  "sourceRights": {
+    "status": "USER_CONFIRMED",
+    "evidence": "docs/lean-pilot/three-h5-20261013/author-authorization.json",
+    "originalGrantDocument": "NOT_ARCHIVED_IN_REPOSITORY",
+    "releaseGap": "Archive the already confirmed original author grant and attribution/scope terms for platform review. This report does not revoke prior task authorization or claim a public OSS license."
+  },
+  "tapTapH5": {
+    "status": "BLOCKED",
+    "appId": null,
+    "platformAccountEligibility": "UNKNOWN",
+    "hostWebViewIntegration": "NOT_RUN",
+    "orientationAndSafeAreaOnPhysicalHost": "NOT_RUN",
+    "platformUploadReview": "NOT_RUN",
+    "note": "No platform login, service creation or upload performed. Generic static HTTP readiness is not TapTap host approval."
+  },
+  "ads": {
+    "status": "NOT_INTEGRATED",
+    "liveAdsTest": "NOT_RUN",
+    "fakeRewards": false,
+    "observed": "Actual terminal ad action says not integrated, permits ordinary replay, no simulated video or income. Existing platform metadata is PENDING/no appId/no spaceId."
+  },
+  "production": {
+    "status": "BLOCKED",
+    "reasons": [
+      "Physical-phone startup/gesture/background/lock-screen/safe-area/performance not yet exercised by user",
+      "Two uncoached first-time human players not yet observed",
+      "TapTap H5 host package/account/configuration and review unverified",
+      "Author grant original not archived for formal publishing review"
+    ],
+    "IAAOnlyAdditionalGap": "Account financial/advertising enablement, real placement configuration and rewarded-completion/failure callback test required only if shipping with ads; no ads are needed for this local internal playtest."
+  },
+  "officialSources": [
+    {
+      "title": "TapTap H5 versus Tap mini-game forms and release/self-test sequence",
+      "url": "https://developer.taptap.cn/agents/",
+      "observedAt": "2026-10-15",
+      "supports": "H5 is a separate platform-hosted form; phone self-test and player test precede release."
+    },
+    {
+      "title": "TapTap H5 advertising integration",
+      "url": "https://developer.taptap.cn/minigameapidoc/quick-start/mcp-guide/ad-integration-guide/",
+      "observedAt": "2026-10-15",
+      "supports": "Advertising enablement requires developer/financial configuration; reward only on completed video and allow recovery after failure."
+    }
+  ]
+}

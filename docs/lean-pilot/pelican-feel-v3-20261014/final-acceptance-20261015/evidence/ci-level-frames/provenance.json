@@ -1,0 +1,33 @@
+{
+  "ciArtifactId": 11971070142,
+  "sourceCommit": "26e1e0c65894babf674710af256268be6009aed1",
+  "buildHash": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+  "sourceVideo": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/imported-ci/qa-campaign-chromium/page@bed70b8cd684acc5a06c065f2b3a2a3f.webm",
+  "frames": [
+    {
+      "level": 2,
+      "timeSecondsFromReportStart": 71.842,
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/ci-level-frames/ci-level-2.png",
+      "exit": 0
+    },
+    {
+      "level": 3,
+      "timeSecondsFromReportStart": 125.452,
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/ci-level-frames/ci-level-3.png",
+      "exit": 0
+    },
+    {
+      "level": 4,
+      "timeSecondsFromReportStart": 188.929,
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/ci-level-frames/ci-level-4.png",
+      "exit": 0
+    },
+    {
+      "level": 5,
+      "timeSecondsFromReportStart": 258.46799999999996,
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/ci-level-frames/ci-level-5.png",
+      "exit": 0
+    }
+  ],
+  "note": "Extracted by exact campaign action timestamps; visually verify frame title before claiming each level. CI software GPU/DPR1 evidence, not phone quality/performance."
+}

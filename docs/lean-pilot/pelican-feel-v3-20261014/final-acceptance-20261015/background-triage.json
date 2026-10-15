@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "report": "桌面真实窗口最小化与Chrome→Finder激活均未产生可信blur/hidden事件，后台自动暂停在本自动化宿主无法验收；不得由手动暂停或GPU丢失分支通过替代。",
+  "classification": [
+    "core-experience"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Unclear/unreproduced platform lifecycle path requires formal evidence if a runtime defect is later demonstrated; currently QA BLOCKED by absent host signal, no gameplay patch and no FIX attempt.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "其他游戏",
+      "完整会话",
+      "历史媒体"
+    ]
+  },
+  "reproduction": {
+    "status": "NOT_REPRODUCED",
+    "steps": [
+      "Run existing lifecycle-qa: headed Playwright Chromium, actual window minimize/restore",
+      "Run focus-acceptance with installed Chrome155: real open -a Chrome / Finder, no synthetic lifecycle events",
+      "Read actual document focus, visibility, native event trace and game phase"
+    ],
+    "observed": [
+      "Existing minimize path did not pause; raw report has three failed background assertions",
+      "Chrome app-switch observer remained focused=true and events=[] before and after Finder activation",
+      "Manual pause and GPU loss/restoration branches separately pass; these cannot close background coverage",
+      "No evidence yet of a browser blur/hidden event reaching the game and failing to pause it"
+    ],
+    "evidence": [
+      {
+        "path": "runs/pelican-coast-v2-20261014/attempts/attempt-1/lifecycle/report.json",
+        "sha256": "47431d86839fe449c259566e6eba4e4c57f7545e5abaed7d8a0a09f42a0996e5",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/focus/report.json",
+        "sha256": "31a21e397c0813d7c4fd6402ab9a06fd961afd6ce919fbd4a7c4c23b9110a547",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "A real browser blur/hidden/pagehide signal must be observed before claiming automatic background pause",
+    "Once backgrounded, distance and timer must freeze until explicit continue",
+    "Physical phone app switch/lock-screen return is performed by user per updated P1; preserve NOT_RUN until feedback"
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-15T12:23:38.678Z"
+}

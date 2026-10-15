@@ -1,0 +1,435 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "scope": "DESKTOP_ENGINEERING_NETWORK_TESTS",
+  "physicalDevice": "NOT_RUN",
+  "checks": [
+    {
+      "name": "fresh-load-at-200KiBps-200ms-rtt",
+      "status": "PASS",
+      "evidence": {
+        "classification": "NETWORK_THROTTLE_ONLY",
+        "loadedMs": 5924,
+        "downloadKiBps": 200,
+        "latencyMs": 200,
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 13.999500000000014,
+          "elapsed": 1.866599999999996,
+          "lane": 0,
+          "laneTarget": 0,
+          "laneIndex": 1,
+          "score": 1,
+          "rewardScore": null,
+          "streak": 1,
+          "bestStreak": 1,
+          "nearMisses": 0,
+          "y": 0,
+          "stun": 0,
+          "count": 1,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "fish-caught",
+              "at": 1.8582333333333287,
+              "distance": 13.936750000000009,
+              "objectId": "l1-f0",
+              "golden": false,
+              "bonus": false,
+              "first": true,
+              "count": 1,
+              "streak": 1,
+              "comboPoints": 0
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "errors": []
+      }
+    },
+    {
+      "name": "disconnect-after-load-continues",
+      "status": "PASS",
+      "evidence": {
+        "before": {
+          "phase": "running",
+          "level": 1,
+          "distance": 14.749500000000015,
+          "elapsed": 1.9665999999999957,
+          "lane": 0,
+          "laneTarget": 0,
+          "laneIndex": 1,
+          "score": 1,
+          "rewardScore": null,
+          "streak": 1,
+          "bestStreak": 1,
+          "nearMisses": 0,
+          "y": 0,
+          "stun": 0,
+          "count": 1,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "fish-caught",
+              "at": 1.8582333333333287,
+              "distance": 13.936750000000009,
+              "objectId": "l1-f0",
+              "golden": false,
+              "bonus": false,
+              "first": true,
+              "count": 1,
+              "streak": 1,
+              "comboPoints": 0
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        },
+        "after": {
+          "phase": "running",
+          "level": 1,
+          "distance": 20.749499999999973,
+          "elapsed": 2.7665999999999933,
+          "lane": 0,
+          "laneTarget": 0,
+          "laneIndex": 1,
+          "score": 1,
+          "rewardScore": null,
+          "streak": 1,
+          "bestStreak": 1,
+          "nearMisses": 0,
+          "y": 0,
+          "stun": 0,
+          "count": 1,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "fish-caught",
+              "at": 1.8582333333333287,
+              "distance": 13.936750000000009,
+              "objectId": "l1-f0",
+              "golden": false,
+              "bonus": false,
+              "first": true,
+              "count": 1,
+              "streak": 1,
+              "comboPoints": 0
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        }
+      }
+    },
+    {
+      "name": "cold-offline-limit-recorded",
+      "status": "FAIL"
+    },
+    {
+      "name": "reconnect-and-reload-recovers",
+      "status": "PASS",
+      "evidence": {
+        "phase": "ready"
+      }
+    },
+    {
+      "name": "downloaded-standalone-html-needs-no-remote-resources",
+      "status": "PASS",
+      "evidence": {
+        "requests": [],
+        "errors": [],
+        "state": {
+          "phase": "running",
+          "level": 1,
+          "distance": 13.994999999999987,
+          "elapsed": 1.8659999999999966,
+          "lane": 0,
+          "laneTarget": 0,
+          "laneIndex": 1,
+          "score": 1,
+          "rewardScore": null,
+          "streak": 1,
+          "bestStreak": 1,
+          "nearMisses": 0,
+          "y": 0,
+          "stun": 0,
+          "count": 1,
+          "gold": 0,
+          "jumpedBarriers": 0,
+          "bufferedJump": null,
+          "reason": null,
+          "events": [
+            {
+              "type": "fish-caught",
+              "at": 1.85733333333333,
+              "distance": 13.929999999999987,
+              "objectId": "l1-f0",
+              "golden": false,
+              "bonus": false,
+              "first": true,
+              "count": 1,
+              "streak": 1,
+              "comboPoints": 0
+            }
+          ],
+          "save": {
+            "version": 2,
+            "unlocked": 1,
+            "stars": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "completed": [
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "best": [
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              },
+              {
+                "fish": 0,
+                "gold": 0,
+                "jumps": 0,
+                "score": 0,
+                "streak": 0
+              }
+            ]
+          },
+          "pausedBySystem": false
+        }
+      }
+    },
+    {
+      "name": "unsupported-webgl-has-visible-fallback",
+      "status": "PASS",
+      "evidence": {
+        "classification": "WEBGL_DISABLED_ENGINEERING_FAULT",
+        "text": "当前浏览器不支持 WebGL，无法显示 3D 场景。请换用新版 Chrome / Edge / Safari。",
+        "expectedErrors": [
+          "THREE.WebGLRenderer: Error creating WebGL context."
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    {
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/network/weak-network-ready.png",
+      "sha256": "64d0a941440d87382f0efb07720263f8af9b5028ba0517bdc1b27ed5b5fa9e23"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/network/offline-file.png",
+      "sha256": "8f8e3bf915e797c37ff64ec7321b4c4a9de66898d0eb841d3f8bb98bb479f853"
+    },
+    {
+      "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/network/webgl-unavailable.png",
+      "sha256": "1b75b270d75214e49f57a6d80fd72b39b7dab8b99905ff64fb2669471dd48538"
+    }
+  ],
+  "passed": false
+}

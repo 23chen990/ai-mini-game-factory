@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "l1-o1-barrier-and-l1-jump-l1-o1-prize"
+    ],
+    "lifecycleStateBranches": [
+      "queued-stay-on-route",
+      "queued-then-right-cancel",
+      "two-star-settlement"
+    ],
+    "rendererPaths": [
+      "CI-standalone-Threejs-balanced-Metal"
+    ],
+    "viewports": [
+      {
+        "label": "Mac-Chrome155-mobile-viewport-DPR3",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "queued-stay-on-route",
+      "objectType": "l1-o1-barrier-and-l1-jump-l1-o1-prize",
+      "lifecycleStateBranch": "queued-stay-on-route",
+      "rendererPath": "CI-standalone-Threejs-balanced-Metal",
+      "viewport": {
+        "label": "Mac-Chrome155-mobile-viewport-DPR3",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Natural jump and earned bonus; three-star criteria unchanged",
+      "observed": "Missing positive branch in original local driver",
+      "evidence": []
+    },
+    {
+      "id": "queued-then-right-cancel",
+      "objectType": "l1-o1-barrier-and-l1-jump-l1-o1-prize",
+      "lifecycleStateBranch": "queued-then-right-cancel",
+      "rendererPath": "CI-standalone-Threejs-balanced-Metal",
+      "viewport": {
+        "label": "Mac-Chrome155-mobile-viewport-DPR3",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Cancellation does not count as a jump; no false three-star award",
+      "observed": "Exact event/action evidence in original failed report",
+      "evidence": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/report.json",
+          "sha256": "48ffd18d355d848b2a3f34a38f7261586709123e9bdb7774efc7e1e6a7807f81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/04-natural-settlement.png",
+          "sha256": "a485234fe6b247725a7b06ac5a3fc58a0b754db0ccaed1d4c08dd6ac395bcf22",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/driver-source.mjs",
+          "sha256": "9c23c82a8cb06d27aaaddc1772c1b0895415c90857b66061a661acde0c3db00a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "two-star-settlement",
+      "objectType": "l1-o1-barrier-and-l1-jump-l1-o1-prize",
+      "lifecycleStateBranch": "two-star-settlement",
+      "rendererPath": "CI-standalone-Threejs-balanced-Metal",
+      "viewport": {
+        "label": "Mac-Chrome155-mobile-viewport-DPR3",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Cancellation does not count as a jump; no false three-star award",
+      "observed": "Exact event/action evidence in original failed report",
+      "evidence": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/report.json",
+          "sha256": "48ffd18d355d848b2a3f34a38f7261586709123e9bdb7774efc7e1e6a7807f81",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/04-natural-settlement.png",
+          "sha256": "a485234fe6b247725a7b06ac5a3fc58a0b754db0ccaed1d4c08dd6ac395bcf22",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/final-acceptance-20261015/chromium/driver-source.mjs",
+          "sha256": "9c23c82a8cb06d27aaaddc1772c1b0895415c90857b66061a661acde0c3db00a",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "The local driver took the cancellation branch after queuing; its positive three-star assertion did not match the actions executed"
+  ],
+  "remainingGaps": [
+    "Run positive branch and preserve original failure"
+  ],
+  "createdAt": "2026-10-15T12:15:32.512Z"
+}

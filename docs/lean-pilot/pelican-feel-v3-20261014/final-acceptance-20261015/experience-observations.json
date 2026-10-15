@@ -1,0 +1,59 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "buildHash": "84c968357921563b57bb63df85f55eca3c8f9b7d4e69ef92c2186676f083a441",
+  "scope": "Pixel review of actual local runtime captures and exact CI campaign video frames; no human preference score",
+  "observations": [
+    {
+      "question": "骑车操控是否只有机械横移",
+      "observed": "Trusted holds/reversal/31px drag change continuous noninteger target; native game frames show banking/handlebar/body motion and camera follow. Both local engines accept jump+steer and cancellation.",
+      "evidence": [
+        "evidence/chromium-retest/report.json",
+        "evidence/chromium-retest/03-jump-and-steer.png",
+        "evidence/chromium-retest/local-acceptance.webm"
+      ],
+      "humanUnknown": "Physical-thumb feel, perceived response delay and comfort"
+    },
+    {
+      "question": "角色大小、障碍预警、UI遮路",
+      "observed": "Inspected390x844,320x568 and844x390 actual screenshots: player remains recognizable, center road ahead visible, controls and star goals bounded; radar uses colored/icon states. No confirmed hard occlusion defect in inspected frames.",
+      "evidence": [
+        "evidence/chromium-retest/02-first-fish.png",
+        "evidence/chromium-retest/07-landscape.png",
+        "evidence/chromium-retest/09-small-running.png"
+      ],
+      "humanUnknown": "Real notch/home-indicator/browser chrome/hand occlusion and perceived clarity"
+    },
+    {
+      "question": "捕鱼、跳跃、连击、三星是否具备运行反馈",
+      "observed": "Both native local routes catch first fish at~1.86s, first gold~8.26s, jump exact l1-o1~18.27s, catch its earned prize~19.72s; finish17 fish5 gold1 jump11 best streak, three stars. Correct cancelled-jump negative route remains two stars.",
+      "evidence": [
+        "evidence/chromium-retest/report.json",
+        "evidence/webkit-final/report.json",
+        "qa-driver-reproduction-matrix-after.json"
+      ],
+      "humanUnknown": "Whether first-time players understand without instruction"
+    },
+    {
+      "question": "第一关30秒与后四关变化",
+      "observed": "First30s contains real catches, off-centre steering, crossing pedestrian and optional jump-prize branch. Exact CI frames confirm level2 pedestrians, level3 vehicles, level4 rain-scene, level5 dusk/lighting; authored rows/speeds/weather/jump goals also vary.",
+      "evidence": [
+        "evidence/ci-level-frames/provenance.json",
+        "evidence/ci-level-frames/ci-level-3.png",
+        "evidence/ci-level-frames/ci-level-4.png",
+        "evidence/ci-level-frames/ci-level-5.png"
+      ],
+      "humanUnknown": "Fun in30s, perceived challenge curve and desire to continue"
+    },
+    {
+      "question": "失败归因和再来一局",
+      "observed": "Normal untouched central route actually hits barrier and shows jump/avoid guidance; visible replay starts normal new round, no state injection.",
+      "evidence": [
+        "evidence/chromium-retest/06-real-failure.png",
+        "evidence/chromium-retest/report.json"
+      ],
+      "humanUnknown": "Whether a first-time player can explain the cause and voluntarily adapt"
+    }
+  ],
+  "humanPlaytest": "NOT_RUN",
+  "globalPerceptualReleaseGate": "NOT_CERTIFIED_BY_THIS_DESKTOP_REVIEW"
+}

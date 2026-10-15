@@ -1,0 +1,474 @@
+{
+  "sourceCommit": "26e1e0c65894babf674710af256268be6009aed1",
+  "runtimeModified": false,
+  "verifiedRuns": [
+    {
+      "id": 38729546759,
+      "name": "Lean pilot verification",
+      "head_sha": "26e1e0c65894babf674710af256268be6009aed1",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38729546759",
+      "created_at": "2026-10-15T11:45:00Z",
+      "updated_at": "2026-10-15T11:57:37Z"
+    },
+    {
+      "id": 38729546772,
+      "name": "Pelican V3 real-game regression",
+      "head_sha": "26e1e0c65894babf674710af256268be6009aed1",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38729546772",
+      "created_at": "2026-10-15T11:45:00Z",
+      "updated_at": "2026-10-15T11:54:16Z"
+    }
+  ],
+  "browserWorkflowChecks": {
+    "webkit": {
+      "checkCount": 54,
+      "allPassed": true,
+      "checks": [
+        {
+          "name": "locked-new-save",
+          "passed": true
+        },
+        {
+          "name": "first-seconds-objective-and-fish",
+          "passed": true
+        },
+        {
+          "name": "renderer-composer-resolution",
+          "passed": true
+        },
+        {
+          "name": "pause-freezes-world-and-timer",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-1",
+          "passed": true
+        },
+        {
+          "name": "natural-level-1",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-1",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-1",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-2",
+          "passed": true
+        },
+        {
+          "name": "natural-level-2",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-2",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-2",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-3",
+          "passed": true
+        },
+        {
+          "name": "natural-level-3",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-3",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-3",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-4",
+          "passed": true
+        },
+        {
+          "name": "natural-level-4",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-4",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-4",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-5",
+          "passed": true
+        },
+        {
+          "name": "natural-level-5",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-5",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-5",
+          "passed": true
+        },
+        {
+          "name": "unintegrated-ad-honest-no-block",
+          "passed": true
+        },
+        {
+          "name": "in-memory-replay",
+          "passed": true
+        },
+        {
+          "name": "refresh-keeps-five-unlocked",
+          "passed": true
+        },
+        {
+          "name": "restored-selected-level-label",
+          "passed": true
+        },
+        {
+          "name": "first-catch-under-three-seconds",
+          "passed": true
+        },
+        {
+          "name": "real-right-tap-earns-offcentre-second-fish",
+          "passed": true
+        },
+        {
+          "name": "visible-earned-streak-progress",
+          "passed": true
+        },
+        {
+          "name": "mastery-target-visible-before-first-obstacle",
+          "passed": true
+        },
+        {
+          "name": "left-pedestrian-warns-right-at-least-two-seconds",
+          "passed": true
+        },
+        {
+          "name": "first-gold-before-ten-seconds",
+          "passed": true
+        },
+        {
+          "name": "jump-gold-route-signalled-with-safe-detour",
+          "passed": true
+        },
+        {
+          "name": "early-jump-buffer-visible",
+          "passed": true
+        },
+        {
+          "name": "right-pedestrian-warns-left-at-least-two-seconds",
+          "passed": true
+        },
+        {
+          "name": "natural-jump-gold-advances-mastery",
+          "passed": true
+        },
+        {
+          "name": "earned-jump-prize-has-visible-route-cue",
+          "passed": true
+        },
+        {
+          "name": "buffered-jump-clears-exact-target",
+          "passed": true
+        },
+        {
+          "name": "natural-three-star-settlement",
+          "passed": true
+        },
+        {
+          "name": "both-crossing-directions-observed",
+          "passed": true
+        },
+        {
+          "name": "real-personal-best-recorded",
+          "passed": true
+        },
+        {
+          "name": "no-input-first-fish-but-no-free-offcentre-second-fish",
+          "passed": true
+        },
+        {
+          "name": "trusted-right-swipe-one-lane",
+          "passed": true
+        },
+        {
+          "name": "trusted-left-swipe-one-lane",
+          "passed": true
+        },
+        {
+          "name": "finger-drags-set-fractional-target-not-fixed-lanes",
+          "passed": true
+        },
+        {
+          "name": "cancelled-touch-does-not-turn",
+          "passed": true
+        },
+        {
+          "name": "trusted-up-swipe-jumps",
+          "passed": true
+        },
+        {
+          "name": "safe-detour-does-not-require-jump",
+          "passed": true
+        },
+        {
+          "name": "mastery-saved-and-visible-on-route",
+          "passed": true
+        },
+        {
+          "name": "safe-lane-change-cancels-buffer-without-fake-mastery",
+          "passed": true
+        },
+        {
+          "name": "small-phone-start-visible-and-menu-not-overflow",
+          "passed": true
+        },
+        {
+          "name": "small-phone-touch-buttons-and-mastery-readable",
+          "passed": true
+        }
+      ]
+    },
+    "chromium": {
+      "checkCount": 54,
+      "allPassed": true,
+      "checks": [
+        {
+          "name": "locked-new-save",
+          "passed": true
+        },
+        {
+          "name": "first-seconds-objective-and-fish",
+          "passed": true
+        },
+        {
+          "name": "renderer-composer-resolution",
+          "passed": true
+        },
+        {
+          "name": "pause-freezes-world-and-timer",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-1",
+          "passed": true
+        },
+        {
+          "name": "natural-level-1",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-1",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-1",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-2",
+          "passed": true
+        },
+        {
+          "name": "natural-level-2",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-2",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-2",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-3",
+          "passed": true
+        },
+        {
+          "name": "natural-level-3",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-3",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-3",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-4",
+          "passed": true
+        },
+        {
+          "name": "natural-level-4",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-4",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-4",
+          "passed": true
+        },
+        {
+          "name": "real-road-fill-level-5",
+          "passed": true
+        },
+        {
+          "name": "natural-level-5",
+          "passed": true
+        },
+        {
+          "name": "earned-score-visible-and-saved-5",
+          "passed": true
+        },
+        {
+          "name": "no-full-page-reload-level-5",
+          "passed": true
+        },
+        {
+          "name": "unintegrated-ad-honest-no-block",
+          "passed": true
+        },
+        {
+          "name": "in-memory-replay",
+          "passed": true
+        },
+        {
+          "name": "refresh-keeps-five-unlocked",
+          "passed": true
+        },
+        {
+          "name": "restored-selected-level-label",
+          "passed": true
+        },
+        {
+          "name": "first-catch-under-three-seconds",
+          "passed": true
+        },
+        {
+          "name": "real-right-tap-earns-offcentre-second-fish",
+          "passed": true
+        },
+        {
+          "name": "visible-earned-streak-progress",
+          "passed": true
+        },
+        {
+          "name": "mastery-target-visible-before-first-obstacle",
+          "passed": true
+        },
+        {
+          "name": "left-pedestrian-warns-right-at-least-two-seconds",
+          "passed": true
+        },
+        {
+          "name": "first-gold-before-ten-seconds",
+          "passed": true
+        },
+        {
+          "name": "jump-gold-route-signalled-with-safe-detour",
+          "passed": true
+        },
+        {
+          "name": "early-jump-buffer-visible",
+          "passed": true
+        },
+        {
+          "name": "right-pedestrian-warns-left-at-least-two-seconds",
+          "passed": true
+        },
+        {
+          "name": "natural-jump-gold-advances-mastery",
+          "passed": true
+        },
+        {
+          "name": "earned-jump-prize-has-visible-route-cue",
+          "passed": true
+        },
+        {
+          "name": "buffered-jump-clears-exact-target",
+          "passed": true
+        },
+        {
+          "name": "natural-three-star-settlement",
+          "passed": true
+        },
+        {
+          "name": "both-crossing-directions-observed",
+          "passed": true
+        },
+        {
+          "name": "real-personal-best-recorded",
+          "passed": true
+        },
+        {
+          "name": "no-input-first-fish-but-no-free-offcentre-second-fish",
+          "passed": true
+        },
+        {
+          "name": "trusted-right-swipe-one-lane",
+          "passed": true
+        },
+        {
+          "name": "trusted-left-swipe-one-lane",
+          "passed": true
+        },
+        {
+          "name": "finger-drags-set-fractional-target-not-fixed-lanes",
+          "passed": true
+        },
+        {
+          "name": "cancelled-touch-does-not-turn",
+          "passed": true
+        },
+        {
+          "name": "trusted-up-swipe-jumps",
+          "passed": true
+        },
+        {
+          "name": "safe-detour-does-not-require-jump",
+          "passed": true
+        },
+        {
+          "name": "mastery-saved-and-visible-on-route",
+          "passed": true
+        },
+        {
+          "name": "safe-lane-change-cancels-buffer-without-fake-mastery",
+          "passed": true
+        },
+        {
+          "name": "small-phone-start-visible-and-menu-not-overflow",
+          "passed": true
+        },
+        {
+          "name": "small-phone-touch-buttons-and-mastery-readable",
+          "passed": true
+        }
+      ]
+    }
+  },
+  "ciLogSha256": "0e92787ef2b42acd16e0433a95254ec92e3046618d484ac7c2ba3f6a8305a04b",
+  "scope": "These green checks apply exactly to sourceCommit and imported H5. New delivery-docs commit checks must be read on PR #16; old green is not relabeled as a later commit."
+}

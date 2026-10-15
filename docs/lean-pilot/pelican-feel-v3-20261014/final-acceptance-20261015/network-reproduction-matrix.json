@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/Users/kker/.codex/worktrees/pelican-final-acceptance/妖怪夜市/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "standalone-H5-document"
+    ],
+    "lifecycleStateBranches": [
+      "fresh-throttled-start",
+      "loaded-then-disconnected",
+      "fresh-cold-offline-navigation",
+      "downloaded-file-offline-start"
+    ],
+    "rendererPaths": [
+      "standalone-Threejs-Metal"
+    ],
+    "viewports": [
+      {
+        "label": "Mac-Chrome155-390x844",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "fresh-throttled-start",
+      "objectType": "standalone-H5-document",
+      "lifecycleStateBranch": "fresh-throttled-start",
+      "rendererPath": "standalone-Threejs-Metal",
+      "viewport": {
+        "label": "Mac-Chrome155-390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Game loads or continues without external asset dependencies",
+      "observed": "Exact corrected network report records branch-specific result; cold offline rejection is an observed product limitation",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network-initial/report.json",
+          "sha256": "565303e44f059e0e002b12c1dee5f9318d9027e3cb897360f621dba9c2a75142",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network/report.json",
+          "sha256": "2aaaee46948dbbe7ccc8082c34d7d6c3083bf5dc2cfca6fdabb79eafca190d84",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "loaded-then-disconnected",
+      "objectType": "standalone-H5-document",
+      "lifecycleStateBranch": "loaded-then-disconnected",
+      "rendererPath": "standalone-Threejs-Metal",
+      "viewport": {
+        "label": "Mac-Chrome155-390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Game loads or continues without external asset dependencies",
+      "observed": "Exact corrected network report records branch-specific result; cold offline rejection is an observed product limitation",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network-initial/report.json",
+          "sha256": "565303e44f059e0e002b12c1dee5f9318d9027e3cb897360f621dba9c2a75142",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network/report.json",
+          "sha256": "2aaaee46948dbbe7ccc8082c34d7d6c3083bf5dc2cfca6fdabb79eafca190d84",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "fresh-cold-offline-navigation",
+      "objectType": "standalone-H5-document",
+      "lifecycleStateBranch": "fresh-cold-offline-navigation",
+      "rendererPath": "standalone-Threejs-Metal",
+      "viewport": {
+        "label": "Mac-Chrome155-390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Transport failure is recorded; no offline-first support is claimed",
+      "observed": "Exact corrected network report records branch-specific result; cold offline rejection is an observed product limitation",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network-initial/report.json",
+          "sha256": "565303e44f059e0e002b12c1dee5f9318d9027e3cb897360f621dba9c2a75142",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network/report.json",
+          "sha256": "2aaaee46948dbbe7ccc8082c34d7d6c3083bf5dc2cfca6fdabb79eafca190d84",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "downloaded-file-offline-start",
+      "objectType": "standalone-H5-document",
+      "lifecycleStateBranch": "downloaded-file-offline-start",
+      "rendererPath": "standalone-Threejs-Metal",
+      "viewport": {
+        "label": "Mac-Chrome155-390x844",
+        "width": 390,
+        "height": 844
+      },
+      "status": "PASS",
+      "expected": "Game loads or continues without external asset dependencies",
+      "observed": "Exact corrected network report records branch-specific result; cold offline rejection is an observed product limitation",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network-initial/report.json",
+          "sha256": "565303e44f059e0e002b12c1dee5f9318d9027e3cb897360f621dba9c2a75142",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/pelican-feel-v3-20261014/final-acceptance-20261015/evidence/network/report.json",
+          "sha256": "2aaaee46948dbbe7ccc8082c34d7d6c3083bf5dc2cfca6fdabb79eafca190d84",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Fresh cold network navigation and downloaded single-file offline use different branches; neither substitutes for the other"
+  ],
+  "remainingGaps": [],
+  "createdAt": "2026-10-15T12:25:47.363Z"
+}
