@@ -1,6 +1,5 @@
 // Frame-rate independent critically damped lane motion and soft chase-camera targets.
 // Input changes the destination lane; this module restores physical follow-through.
-import {LANES} from './safety.mjs';
 export const FEEL = Object.freeze({
   laneFrequency: 14.5,
   leanRate: 9.5,
