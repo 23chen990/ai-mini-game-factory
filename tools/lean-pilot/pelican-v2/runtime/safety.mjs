@@ -48,6 +48,17 @@ export function hazardForecast(obstacle, run) {
   return { obstacle, lanes, seconds, distance: relative };
 }
 
+// Continuous rider positions need collision-width warnings, not lane-index guesses.
+export function pathRiskAtPosition(run,forecast,bounds,horizon=3.5){
+ if(!run||!forecast||!Number.isFinite(run.lane)||!Number.isFinite(forecast.seconds)||
+   forecast.seconds<.15||forecast.seconds>horizon)return false;
+ const o=forecast.obstacle,kind=o?.kind;
+ if(!['car','van','barrier'].includes(kind)||!Number.isFinite(bounds?.[kind]?.z))return false;
+ if(kind==='barrier'&&(run.y??0)>.31)return false;
+ const z=Number.isFinite(o.z)?o.z:LANES[o.lane];
+ return Number.isFinite(z)&&Math.abs(run.lane-z)<=bounds[kind].z+.27+.14;
+}
+
 export function upcomingHazards(run) {
   return run.obstacles.map(o => hazardForecast(o, run)).filter(Boolean)
     .sort((a, b) => a.seconds - b.seconds);

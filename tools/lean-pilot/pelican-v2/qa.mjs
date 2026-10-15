@@ -70,6 +70,11 @@ try{
    await shot('level-'+id+'-start');const navigationBefore=navs;
    const frameStart=await page.evaluate(()=>window.__qaFrames.length);const result=await drive({stage:id});const frames=await page.evaluate(n=>window.__qaFrames.slice(n+10),frameStart);const sorted=frames.filter(n=>n>0).sort((a,b)=>a-b);result.performance={frameCount:sorted.length,meanFps:1000/(sorted.reduce((a,b)=>a+b,0)/sorted.length),p95Ms:sorted[Math.floor(sorted.length*.95)],scope:'Natural default-speed running route between visible start and settlement'};report.levels.push(result);await shot('level-'+id+'-terminal');
    check('natural-level-'+id,result.phase==='finished'&&result.reason==='complete',{count:result.count,gold:result.gold,distance:result.distance,elapsed:result.elapsed,events:result.events,save:result.save});
+   const resultText=await page.locator('#co-copy').innerText(),bestScore=result.save?.best?.[id-1]?.score;
+   check('earned-score-visible-and-saved-'+id,
+    Number.isFinite(result.rewardScore)&&resultText.includes('本局得分 '+result.rewardScore)&&
+    resultText.includes('历史最高 '+bestScore),
+    {score:result.rewardScore,bestScore,resultText});
    check('no-full-page-reload-level-'+id,navs===navigationBefore,{before:navigationBefore,after:navs});
    if(result.reason!=='complete')break;
   }

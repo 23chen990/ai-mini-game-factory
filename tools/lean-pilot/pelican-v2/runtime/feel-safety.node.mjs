@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {springLane,riderFeel,cameraTarget} from './feel.mjs';
 import {newRun,input,advance,steerTo,steerBy,FREE_ROAD_EDGE} from './adventure.mjs';
-import {unsafeFishLanes, hazardForecast, pedestrianZAtArrival} from './safety.mjs';
+import {unsafeFishLanes, hazardForecast, pedestrianZAtArrival,pathRiskAtPosition} from './safety.mjs';
 function travel(dt,events=[{at:0,target:1.7}],duration=1.1){
  const x={position:0,velocity:0,latAcc:0,lean:0,steer:0,yaw:0,elapsed:0,speed:8};
  let t=0,target=0,index=0,samples=[];
@@ -75,4 +75,17 @@ test('actual consecutive caught fish earn a small streak reward; missed fish bre
  assert.ok(r.events.some(e=>e.type==='fish-caught'&&e.streak===3&&e.comboPoints===2));
  for(let i=0;i<450;i++)advance(r,1/120);
  assert.equal(r.streak,0);assert.equal(r.bestStreak,3);
+});
+
+test('true fractional vehicle width warns between two paint lanes, not based on laneIndex',()=>{
+ const bounds={car:{z:.63},van:{z:.66},barrier:{z:.59}};
+ const car={seconds:2,obstacle:{kind:'car',lane:0,z:-1.7}};
+ assert.equal(pathRiskAtPosition({lane:-.82,y:0,laneIndex:1},car,bounds),true);
+ assert.equal(pathRiskAtPosition({lane:0,y:0,laneIndex:1},car,bounds),false);
+ assert.equal(pathRiskAtPosition({lane:-1.2}, {...car,seconds:4.4},bounds),false);
+ assert.equal(pathRiskAtPosition({lane:-1.2}, {...car,seconds:.1},bounds),false);
+ const jump={seconds:2,obstacle:{kind:'barrier',lane:1,z:0}};
+ assert.equal(pathRiskAtPosition({lane:.7,y:0},jump,bounds),true);
+ assert.equal(pathRiskAtPosition({lane:.7,y:.4},jump,bounds),false);
+ assert.equal(pathRiskAtPosition({lane:0},{seconds:2,obstacle:{kind:'pedestrian',lane:1,z:0}},bounds),false);
 });

@@ -44,3 +44,7 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 }
 @media(orientation:portrait){#coast[data-phase="ready"] .co-route{grid-auto-rows:min-content;align-content:start}#coast[data-phase="ready"] .co-route button{height:auto!important;min-height:66px!important}#coast[data-phase="ready"] .co-route button span{min-width:0}}
 @media(orientation:landscape){#coast[data-phase="ready"] .co-card{height:calc(100vh - 24px);max-height:calc(100vh - 24px);height:calc(100dvh - 24px);max-height:calc(100dvh - 24px);display:flex;flex-direction:column;overflow:hidden}#coast[data-phase="ready"] .co-card>*{flex-shrink:0}#coast[data-phase="ready"] .co-eyebrow{display:none}#coast[data-phase="ready"] .co-card h1{margin:0 0 4px!important}#coast[data-phase="ready"] .co-card h1 br{display:none}#coast[data-phase="ready"] .co-rules span{flex-direction:row;align-items:center;gap:4px;font-size:10px}#coast[data-phase="ready"] .co-route{flex:1 1 auto;min-height:0;overflow:auto;padding:3px 2px;overscroll-behavior:contain}#coast[data-phase="ready"] #co-notice:empty{display:none}}
+
+/* Off-center physical danger is not always represented by a painted-lane radar. */
+#coast.co-path-risk .co-lane-indicator::after{background:#ff6950;box-shadow:0 0 0 4px #ffb49b99,0 2px 7px #a51e2599}
+#coast.co-path-risk #co-radar-label{font-size:12px;font-weight:900;color:#fff2bd;text-shadow:0 1px 4px #421c18}
