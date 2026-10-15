@@ -11,7 +11,7 @@ test('five genuinely different configurations, early fish, no lethal traffic bef
  assert.ok(!LEVELS[0].obstacles.some(o=>['car','van'].includes(o.kind)));
  assert.ok(!LEVELS[1].obstacles.some(o=>['car','van'].includes(o.kind)));
  assert.ok(LEVELS[2].obstacles.some(o=>o.kind==='car')&&LEVELS[2].obstacles.some(o=>o.kind==='van'));
- assert.equal(LEVELS[3].weather,'rain');assert.ok(LEVELS[4].hour>=18);
+ assert.equal(LEVELS[3].weather,'rain');assert.ok(LEVELS[4].hour>=18);assert.ok(LEVELS[4].hour<18.5,'dusk road must stay readable');
 });
 test('fairness validator rejects all blocked roads, unsafe fish and insufficient reaction spacing',()=>{
  const l=makeLevel(3);l.obstacles=[0,1,2].map(lane=>({id:'x'+lane,kind:'car',x:90,lane,speed:3}));assert.ok(validateLevel(l).some(x=>x.includes('blocked')));

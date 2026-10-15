@@ -177,7 +177,7 @@ export function createCoastAdventure(api) {
   }
   if(run)advance(run,dt);syncRidePose(S,run);
   if(run){
-   while(eventCursor<run.events.length){const e=run.events[eventCursor++];if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',`${e.count} / ${run.level.goal.count} 条`, 'catch');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','catch');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
+   while(eventCursor<run.events.length){const e=run.events[eventCursor++];if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',`${e.count} / ${run.level.goal.count} 条`, e.comboPoints?'combo':'catch');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','near-miss');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
    if(run.phase==='finished'&&lastPhase!=='finished')terminal();lastPhase=run.phase;
   }
  }
