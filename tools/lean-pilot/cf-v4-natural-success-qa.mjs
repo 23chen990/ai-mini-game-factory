@@ -110,6 +110,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
     trace.push({ ...start, action: 'entered-real-native-game' });
     check('correct-real-weapon', mode === 'awm' ? start.weapon === 'awm' : start.challenge === 'survive',
       { weapon: start.weapon, challenge: start.challenge });
+    let afterInitialLook=start;
     if(mode==='awm'){
       const valid=start.sniperScout && Number.isFinite(start.firstTrainingScoutRange) &&
         start.firstTrainingScoutRange>=7 && start.firstTrainingScoutRange<=18;
@@ -119,11 +120,23 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
         playerPosition:start.position
       });
       if(!valid)throw Error('Real AWM opening lane failed nav+occlusion checks; do not waste 90 simulation seconds');
+      // A small right-thumb look swipe previously synthesized native desktop
+      // canvas mousedown, firing TWO genuine sniper shots without fire taps.
+      // Explicitly reject that unintended combat path BEFORE aiming/shooting.
+      await look(6,3,160);
+      await wait(270);
+      afterInitialLook=await inspect();
+      const clean=afterInitialLook.shots===start.shots;
+      check('awm-aim-swipe-never-fires-without-button',clean,{
+        nativeShotsBefore:start.shots,nativeShotsAfter:afterInitialLook.shots,
+        input:'ONLY_VISIBLE_RIGHT_THUMB_AIM_SWIPE'
+      });
+      if(!clean)throw Error('Aim swipe produced an unintended native shot; touch compatibility bug persists');
     }
     // A screenshot here delayed the first visible AWM enemy until it vanished.
     // Preserve it after input rather than spend the only opening sightline.
     if(mode!=='awm')await screenshot('combat');
-    let firstObservation=mode==='awm'?start:null;
+    let firstObservation=mode==='awm'?afterInitialLook:null;
     const startWall = Date.now();
     const MAX_WALL_MS = mode === 'awm' ? 620000 : 310000;
     let steps = 0, sawEnemy = false, travelSeen = 0, looked = false, validFire = false;
