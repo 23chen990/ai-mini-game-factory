@@ -3,7 +3,7 @@ import css from './coast.css';
 import { LEVELS, LANES, BOUNDS } from './levels.mjs';
 import { newRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE } from './adventure.mjs';
 import {upcomingHazards,pathRiskAtPosition} from './safety.mjs';
-import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient} from './feel.mjs';
+import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient,heldSteerDistance} from './feel.mjs';
 import {selectFishCue,allStars,nextStarTip,starRequirements,masteryStatus} from './engagement.mjs';
 import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound,adAllowed} from './reward-engine.mjs';
 import {requestRewardedVideo} from './reward-adapter.mjs';
@@ -189,7 +189,10 @@ export function createCoastAdventure(api) {
  function beforeRide(dt){
   now=performance.now();
   if(run?.phase==='running')for(const hold of [heldSteer,heldKeySteer]){
-   if(hold&&now-hold.started>130)steerBy(run,hold.direction*2.6*Math.min(dt,.05),'held-steer');
+   if(hold){
+    const meters=heldSteerDistance(dt,now-hold.started);
+    if(meters>0)steerBy(run,hold.direction*meters,'held-steer');
+   }
   }
   if(run)advance(run,dt);syncRidePose(S,run);
   if(run){

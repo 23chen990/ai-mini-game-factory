@@ -18,6 +18,15 @@ export const smooth = (current, target, rate, dt) => current + (target - current
 // Rules already substep at120Hz. Preserve normal low-frame elapsed time while
 // bounding a suspension/stall; background pause still requires manual resume.
 export const frameDelta = seconds => Number.isFinite(seconds)&&seconds>0?Math.min(seconds,.25):0;
+// Continuous held steering must cover the SAME simulated time as the game.
+// Count only the portion of this frame AFTER the 130ms tap/hold threshold.
+// A fixed per-frame 0.05s cap made a one-second hold nearly 4x slower at 5fps.
+export function heldSteerDistance(deltaSeconds, heldElapsedMs, speed=2.6, tapDelayMs=130) {
+ if(![deltaSeconds,heldElapsedMs,speed,tapDelayMs].every(Number.isFinite) ||
+    deltaSeconds<=0 || speed<=0 || tapDelayMs<0 || heldElapsedMs<=tapDelayMs)return 0;
+ const activeSeconds=(heldElapsedMs-tapDelayMs)/1000;
+ return Math.min(frameDelta(deltaSeconds),activeSeconds)*speed;
+}
 // The pinned demo has no yaw field. Copy the complete adventure pose even in
 // the pre-start/menu branch, before worldToLocal() drives the native head IK.
 export function syncRidePose(state,run){

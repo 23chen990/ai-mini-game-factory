@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {springLane,riderFeel,cameraTarget,duskRoadAmbient,DUSK_ROAD_AMBIENT} from './feel.mjs';
+import {springLane,riderFeel,cameraTarget,duskRoadAmbient,DUSK_ROAD_AMBIENT,heldSteerDistance} from './feel.mjs';
 import {newRun,input,advance,steerTo,steerBy,FREE_ROAD_EDGE} from './adventure.mjs';
 import {unsafeFishLanes, hazardForecast, pedestrianZAtArrival,pathRiskAtPosition} from './safety.mjs';
 function travel(dt,events=[{at:0,target:1.7}],duration=1.1){
@@ -13,6 +13,28 @@ function travel(dt,events=[{at:0,target:1.7}],duration=1.1){
  }
  return {x,samples};
 }
+test('one-second held steering has the same real distance at 5, 10, 30, 60 and 120fps',()=>{
+ const duration=1.2,speed=2.6,delay=.13,expected=(duration-delay)*speed;
+ for(const fps of [5,10,30,60,120]){
+  let total=0,time=0;
+  while(time<duration-1e-9){
+   const dt=Math.min(1/fps,duration-time);time+=dt;
+   total+=heldSteerDistance(dt,time*1000,speed,delay*1000);
+  }
+  assert.ok(Math.abs(total-expected)<1e-7,
+   `frame dependent held displacement at ${fps}fps: ${total}m versus ${expected}m`);
+ }
+});
+test('held steering ignores tap-only and invalid input, bounds suspended frames',()=>{
+ assert.equal(heldSteerDistance(.1,100),0,'a tap should only do the immediate nudge');
+ assert.equal(heldSteerDistance(.1,130),0,'the 130ms hold threshold is exact');
+ assert.ok(Math.abs(heldSteerDistance(.2,200)-.07*2.6)<1e-8);
+ assert.ok(Math.abs(heldSteerDistance(.5,1000)-.25*2.6)<1e-8,
+  'game clamps a >250ms suspended frame; input cannot advance further than physics');
+ assert.equal(heldSteerDistance(Number.NaN,500),0);
+ assert.equal(heldSteerDistance(-.2,500),0);
+ assert.equal(heldSteerDistance(.1,Infinity),0);
+});
 test('no artificial first-frame teleport at 60Hz',()=>{const a=travel(1/60);assert.ok(a.samples[0].position<.07,`first frame ${a.samples[0].position}`);assert.ok(a.samples[0].position>0);});
 test('good response and natural settle',()=>{const a=travel(1/120),at=.28;const pos=a.samples.find(s=>s.time>=at);assert.ok(pos.position>1.48);assert.ok(Math.abs(a.x.position-1.7)<.001);});
 test('same continuous trajectory at 30/60/120 Hz',()=>{const a=travel(1/30),b=travel(1/60),c=travel(1/120);for(const [u,v] of [[a,b],[b,c]])assert.ok(Math.abs(u.x.position-v.x.position)<1e-6);});
