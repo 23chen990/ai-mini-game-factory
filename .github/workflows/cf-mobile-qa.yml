@@ -1,4 +1,4 @@
-name: CF V4 pending natural success QA
+name: CF V4 pinned-source final baseline QA
 on:
   pull_request:
     paths:
@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [awm, survive]
+        mode: [baseline]
     # Deliberately limited to this review branch. No platform deploy, release, write token or credentials.
     if: github.event.pull_request.head.ref == 'fix/cf-transport-mobile-identification-hud-20261014'
     runs-on: ubuntu-24.04
@@ -67,7 +67,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          node tools/lean-pilot/cf-v4-natural-success-qa.mjs "${{ matrix.mode }}" 2>&1 | tee "$RUNNER_TEMP/cf-browser.log"
+          node tools/lean-pilot/h5-mobile-browser-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-browser.log"
       - name: Package standalone H5 with source attribution and QA evidence
         if: always()
         shell: bash
@@ -100,7 +100,7 @@ jobs:
             ${{ runner.temp }}/cf-report.json
             runs/h5-cf-challenges-20261013/source-build.json
             runs/h5-cf-challenges-20261013/engineering.json
-            runs/h5-cf-challenges-20261013/cf-v4-*.json
+            runs/h5-cf-challenges-20261013/browser.json
             runs/h5-cf-challenges-20261013/screenshots/*.png
           retention-days: 7
           if-no-files-found: warn
