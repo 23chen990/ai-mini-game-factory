@@ -4,27 +4,44 @@ const wrap = angle => Math.atan2(Math.sin(angle), Math.cos(angle));
 const empty = () => ({ up: false, down: false, left: false, right: false, shift: false, upPressed: false, wPressed: false, nitroPressed: false, swapPressed: false, resetPressed: false });
 
 export class TouchSteering {
-  constructor() { this.pointers = new Map(); this.pulses = new Map(); }
+  constructor() { this.pointers = new Map(); this.pulses = new Map(); this.sequence = 0; }
   press(id, direction, now) {
     if (direction !== 'left' && direction !== 'right') return;
+    // A fresh opposite press immediately overrides any lingering short tap.
     for (const [key, pulse] of this.pulses) if (pulse.direction !== direction) this.pulses.delete(key);
-    this.pointers.set(id, { direction, started: now });
+    this.pointers.set(id, { direction, started: now, order: ++this.sequence });
     this.pulses.delete(id);
   }
   release(id, now) {
     const pointer = this.pointers.get(id);
     if (!pointer) return;
     this.pointers.delete(id);
-    if (now - pointer.started < 80) this.pulses.set(id, { direction: pointer.direction, until: pointer.started + 80 });
+    if (now >= pointer.started && now - pointer.started < 80)
+      this.pulses.set(id, { direction: pointer.direction, until: pointer.started + 80, order: pointer.order });
+  }
+  cancel(id) {
+    // pointercancel / unexpected capture loss is NOT a short steering tap.
+    // A normal pointerup already removed the active pointer: preserve its pulse.
+    if (!this.pointers.has(id)) return;
+    this.pointers.delete(id);
+    this.pulses.delete(id);
+  }
+  activeDirection() {
+    let newest = null;
+    for (const pointer of this.pointers.values())
+      if (!newest || pointer.order > newest.order) newest = pointer;
+    return newest?.direction ?? null;
   }
   snapshot(now) {
-    const result = { left: false, right: false };
-    for (const pointer of this.pointers.values()) result[pointer.direction] = true;
+    let newest = null;
+    for (const pointer of this.pointers.values())
+      if (!newest || pointer.order > newest.order) newest = pointer;
     for (const [id, pulse] of this.pulses) {
       if (now >= pulse.until) this.pulses.delete(id);
-      else result[pulse.direction] = true;
+      // A held finger beats a past tap; otherwise use the latest short tap.
+      else if (!this.pointers.size && (!newest || pulse.order > newest.order)) newest = pulse;
     }
-    return result;
+    return { left: newest?.direction === 'left', right: newest?.direction === 'right' };
   }
   clear() { this.pointers.clear(); this.pulses.clear(); }
 }

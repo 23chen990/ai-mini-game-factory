@@ -31,11 +31,11 @@ const profiles=Object.freeze([
   {id:'expert',skill:1.35},
   {id:'boss',skill:1.58},
 ]);
-function runAi(layout, skill, seed) {
+function runAi(layout, skill, seed, laps = 2) {
   const tr=new Track(layout);
   const ai=new AICar(tr,null,'Pace Probe',skill,mulberry32(seed));
   ai.reset(-25,0);
-  const DT=1/120, laps=2, goal=laps*tr.length;
+  const DT=1/120, goal=laps*tr.length;
   let seconds=0,nitros=0,peak=0,avg=0,frames=0;
   for(let i=0;i<120*350;i++){
     const previous=ai.nitroTime;
@@ -47,7 +47,7 @@ function runAi(layout, skill, seed) {
       topSpeedKmh:+(peak*3.6).toFixed(1),nitros,
       lapLengthM:Math.round(tr.length)};
   }
-  throw Error('Native AI simulation failed to cover two laps at '+skill);
+  throw Error('Native AI simulation failed to cover '+laps+' laps at '+skill);
 }
 const data={};
 for(const key of ['city','aegean','egypt','snow']){
@@ -60,11 +60,18 @@ for(const key of ['city','aegean','egypt','snow']){
   data[key]={old,next,deltaPercent:Object.fromEntries(profiles.map((p,i)=>
     [p.id,+((next[i].timeSec/old[i].timeSec-1)*100).toFixed(1)]))};
 }
+// The career bosses are THREE-lap races. Two-lap averages cannot validate them.
+const bossThreeLaps={};
+for(const [id,map,skill,seed] of [['13','city',1.58,2026101513],['16','aegean',1.35,2026101516]]){
+  bossThreeLaps[id]={map,laps:3,skill,
+    original:runAi(layouts[map],skill,seed,3),
+    reshaped:runAi(revised[map],skill,seed,3)};
+}
 const report={schemaVersion:1,buildHash:build.buildHash,
   sourceRevision:build.sourceRevision,twoLaps:true,seededNativeAi:true,
   noRubberBand:true,noWeapons:true,noPlayer:true,noCollision:true,
   limitation:'Native AICar.update against real pinned Track centerline; NOT real player handling, opponent rank, natural campaign, or winning evidence',
-  maps:data};
+  bossThreeLaps,maps:data};
 const out=path.join(run,'artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'ai-pace-v33.json'),JSON.stringify(report,null,2)+'\n');

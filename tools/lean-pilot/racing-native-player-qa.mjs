@@ -36,7 +36,7 @@ function control(p,tr,policy) {
   const dead=policy==='late'?.105:.055;
   return {left:diff>dead,right:diff<-dead};
 }
-function simulate(layout,policy,assist) {
+function simulate(layout,policy,assist,laps=2) {
   const tr=new Track(layout),p=new PlayerCar(tr,null,'Native physics two-key probe');
   p.reset(-25,0);
   p.stats={crash:0};
@@ -44,7 +44,7 @@ function simulate(layout,policy,assist) {
   let absolute=-25,lastD=p.d,elapsed=0,lastAdvance=0;
   let crashes=0,drifts=0,airSec=0,nearRailSec=0,brakeSec=0;
   let lastCrash=-10,travel=0,peak=0,boosts=0;
-  const goal=tr.length*2;
+  const goal=tr.length*laps;
   let result='TIMED_OUT';
   for(let i=0;i<Math.ceil(MAX_SEC/STEP);i++){
     const steering=control(p,tr,policy);
@@ -96,6 +96,16 @@ for(const name of ['city','aegean','egypt','snow']) {
     cases[kind]=trials;
   }
   report.maps[name]=cases;
+}
+// Stage 13 and 16 have three laps; preserve two-lap map data for comparison,
+ // and measure the full native PlayerCar distance separately.
+report.bossThreeLaps={};
+for(const [id,map] of [['13','city'],['16','aegean']]){
+  const cases={};
+  for(const [kind,layout] of [['original',layouts[map]],['reshaped',revised[map]]])
+    cases[kind]={guided:simulate(layout,'guided',true,3),
+      late:simulate(layout,'late',true,3)};
+  report.bossThreeLaps[id]={map,laps:3,...cases};
 }
 const out=path.join(run,'artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});

@@ -86,13 +86,21 @@ function renderLobby() {
 }
 Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality }) });
 const portrait = () => window.innerHeight > window.innerWidth;
+function syncTouchButtons() {
+  const active = pointers.activeDirection();
+  for (const button of root.querySelectorAll('[data-race-direction]')) {
+    const held = button.dataset.raceDirection === active;
+    button.classList.toggle('held', held);
+    button.setAttribute('aria-pressed', String(held));
+  }
+}
 function releaseInput() {
   pointers.clear(); driver.suspend();
   if (g) clearNativeInput(g.input);
-  for (const button of root.querySelectorAll('[data-race-direction]')) { button.classList.remove('held'); button.setAttribute('aria-pressed', 'false'); }
+  syncTouchButtons();
 }
 function display(next) {
-  phase = next; root.dataset.phase = next;
+  phase = next; root.dataset.phase = next; root.dataset.stageKind = career.stage.kind;
   const racing = next === 'race' || next === 'countdown';
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
   $('start').hidden = next !== 'ready'; $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
@@ -247,10 +255,20 @@ for (const button of root.querySelectorAll('[data-race-direction]')) {
   button.addEventListener('pointerdown', e => {
     e.preventDefault();if (!g || phase !== 'race') return;
     driver.enabled = true;g.mobileMode = true;button.setPointerCapture(e.pointerId);
-    pointers.press(e.pointerId, button.dataset.raceDirection, performance.now());button.classList.add('held');button.setAttribute('aria-pressed', 'true');
+    pointers.press(e.pointerId, button.dataset.raceDirection, performance.now());
+    syncTouchButtons();
   });
-  const off = e => { e.preventDefault();pointers.release(e.pointerId, performance.now());button.classList.remove('held');button.setAttribute('aria-pressed', 'false'); };
-  button.addEventListener('pointerup', off);button.addEventListener('pointercancel', e => { pointers.clear();off(e); });button.addEventListener('lostpointercapture', off);
+  button.addEventListener('pointerup', e => {
+    e.preventDefault();pointers.release(e.pointerId, performance.now());
+    syncTouchButtons();
+  });
+  const cancel = e => {
+    if (e.cancelable) e.preventDefault();
+    // Do not discard the OTHER finger's held steering on one cancelled touch.
+    pointers.cancel(e.pointerId);syncTouchButtons();
+  };
+  button.addEventListener('pointercancel', cancel);
+  button.addEventListener('lostpointercapture', cancel);
 }
 const background = () => { backgrounded = true;pause(); };
 window.addEventListener('blur', background);

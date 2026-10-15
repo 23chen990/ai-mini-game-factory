@@ -153,3 +153,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   #race-kit #race-speed { top:calc(var(--race-top) + 100px);padding:4px 8px; }
   #race-kit #race-speed strong { font-size:23px; }
 }
+
+/* Stage 12: the knockout countdown and live speed must never cover each other. */
+#race-kit[data-stage-kind="elimination"] #race-speed { top:calc(var(--race-top) + 164px); }
+@media(max-height:375px) { #race-kit[data-stage-kind="elimination"] #race-speed { top:calc(var(--race-top) + 160px); } }
