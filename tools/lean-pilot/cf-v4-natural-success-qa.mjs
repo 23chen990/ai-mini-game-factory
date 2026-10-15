@@ -127,6 +127,7 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
     const startWall = Date.now();
     const MAX_WALL_MS = mode === 'awm' ? 620000 : 310000;
     let steps = 0, sawEnemy = false, travelSeen = 0, looked = false, validFire = false;
+    let lastActualAwmShotAt=-Infinity;
     let scopedObserved = false;
     if (mode === 'awm') {
       // Start unscoped: AWM's narrow scope made the visible enemy badge
@@ -142,6 +143,13 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
       if (state.phase !== 'running') { await wait(400); continue; }
       steps++;
       if (mode === 'awm') {
+        // After an AWM shot the REAL game enters a 1.35 simulation second
+        // bolt cycle and automatically re-scopes. Do not accidentally toggle
+        // zoom or run away from an injured target during the bolt animation.
+        if(state.alive && state.gameTime-lastActualAwmShotAt < 1.9){
+          await wait(260);
+          continue;
+        }
         const target = page.locator('.mk-fps-enemy:not([hidden])').first();
         const visible = await target.isVisible().catch(() => false);
         const aimVisible = await page.locator('#mk-fps-target[data-side="enemy"]').isVisible().catch(() => false);
@@ -193,20 +201,38 @@ export async function reviewCfNaturalSuccess(mode, { base = path.join(ROOT, 'run
               if(await press('#touch .btn[data-mk-action="fire"]',400)){
                 validFire=true;shotCount++;
                 const afterShot=await inspect();
+                if(afterShot.shots>current.shots)lastActualAwmShotAt=afterShot.gameTime;
                 trace.push({...afterShot,action:'normal-scoped-trigger',
                   onScreenCentered:centered,onScreenAimed:exactAim,
                   targetRect:aligned});
-                if(shotCount===1)await screenshot('scope');
+                // Screenshot on software WebGL cost almost TEN game seconds in
+                // the previous real run, letting the target disappear and the
+                // player die before a follow-up shot. Capture terminal only.
               }
             }else if(!aligned && !exactAim){
-              // Lost target outside narrow scope. Reacquire in wide view.
-              await press('#touch .btn[data-mk-action="scope"]',230);
-              await wait(150);
+              // Two-stage sniper optics: one tap zooms 1→2, only 2→0 exits.
+              // Keep both steps as ordinary visible touch-button inputs.
+              for(let z=0;z<2;z++){
+                const stage=await inspect();
+                if(stage.scoped===0)break;
+                await press('#touch .btn[data-mk-action="scope"]',230);
+                await wait(230);
+              }
             }
           }
           if (shotCount > 0 && shotCount % 4 === 0)
             await press('#touch .btn[data-mk-action="reload"]', 400);
         } else {
+          if(state.scoped>0){
+            // Reacquire in wide view, rather than wandering with a 30/11° lens.
+            for(let z=0;z<2;z++){
+              const stage=await inspect();
+              if(stage.scoped===0)break;
+              await press('#touch .btn[data-mk-action="scope"]',230);
+              await wait(230);
+            }
+            continue;
+          }
           // Follow visible, authored route arrows. Never peek at a bot's
           // hidden position or change its navigation/state to score a kill.
           if (state.guide.startsWith('←') || state.guide.startsWith('→')) {
