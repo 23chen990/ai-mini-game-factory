@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "6795fa3e858661409397389327f89b743cb4e1ef1fe2c96231caa923bd14d696",
+  "input": "normal native browser window minimize/restore; no DOM blur/visibility or game-state injection",
+  "before": {
+    "state": "race",
+    "time": 0,
+    "hidden": false,
+    "focus": true
+  },
+  "after": {
+    "state": "race",
+    "time": 2.234899999999904,
+    "hidden": false,
+    "focus": true
+  }
+}

@@ -3,7 +3,7 @@
   "artifactType": "experience-complaint-triage",
   "targetGame": "双键飞驰 V3 / qq-speed",
   "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-racing-v3/runs/h5-qq-mobile-20261013/workspace",
-  "report": "User reports visible repeated flicker during current headed-browser QA. Exact flickering object/frame not yet isolated; do not assume screenshots, reload, z-fighting or intentional effect as root cause.",
+  "report": "User reports that the entire game brightness repeatedly alternates during current headed-browser QA. Reproduction isolated a native full-screen boost vignette and broad hitflash on the mobile HUD; the current build16 mobile path suppresses those broad washes while retaining local feedback.",
   "classification": [
     "core-experience",
     "visual-hierarchy"
@@ -29,10 +29,10 @@
     ],
     "observed": [
       "Current build15 video exists",
-      "Cause not confirmed; current natural PASS cannot close visual stability",
+      "Current build16 exact mobile start-boost and hit branches are covered by source/runtime evidence",
       "Paused mid-quality luminance remains stable within0.03/255 over25frames in each sample, no canvas resize/contextlost; does not reproduce continuous-driving complaint",
       "Full-screen blue/orange gradient visible:opacity0→0.8 at0.163s→0 at1.437s; computed transition reaches0.8. Native HUD repeats the same broad overlay for every auto small boost. Exposure itself remains0.92; no WebGL reset.",
-      "Remove only mobile broad tint and make mobile bloom constant. Preserve boost physics, exhaust, speed lines, small localized feedback and damage attribution. Red hit tint must also remain localized so repeated hits cannot wash the full screen."
+      "Mobile build16 hides the broad boost vignette, keeps bloom at a constant0.3, and changes hitflash to a transparent edge-only cue. Boost physics, exhaust, speed lines, local badge and damage attribution remain."
     ],
     "evidence": [
       {
@@ -58,6 +58,29 @@
     "Hit feedback must affect only screen edge, not broad central driving area",
     "Natural boost cycles must still occur and show local feedback; sustained exact full-screen recurrence beyond these paths remains open until observed"
   ],
-  "status": "READY_FOR_REPAIR",
+  "resolution": {
+    "status": "EXACT_BRANCH_PASS_WITH_DEVICE_GAPS",
+    "buildHash": "6795fa3e858661409397389327f89b743cb4e1ef1fe2c96231caa923bd14d696",
+    "evidence": [
+      {
+        "path": "docs/race-career-20261014/evidence/flicker-review-build16.json",
+        "sha256": "ce79dd956389bb0085d548b05b4cee01e47a2945ff5727da3af0958aa8e931ba",
+        "kind": "independent-exact-branch-review",
+        "provenance": "verified-build16"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session5/13-nitro.png",
+        "kind": "natural-current-build-frame",
+        "provenance": "verified-own-run"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session5/13-crash.png",
+        "kind": "natural-current-build-frame",
+        "provenance": "verified-own-run"
+      }
+    ],
+    "scope": "Start-boost and hit branches pass on the 844x390 headed Chromium viewport; small-boost, nitro-only, repeated-hit, physical Android/iPhone and background interruption branches remain blocked or unobserved."
+  },
+  "status": "EXACT_BRANCH_PASS_WITH_DEVICE_GAPS",
   "createdAt": "2026-10-15T03:07:46.219Z"
 }

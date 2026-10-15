@@ -1,0 +1,21 @@
+{
+  "branch": "feat/racing-career-items-iaa-20261014",
+  "headSha": "45478d488c8be9eb0caa5256b72ba44abd7e2eab",
+  "runs": [
+    {
+      "name": "Racing V3 H5 build and Chromium entry smoke",
+      "runId": 38691841132,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38691841132"
+    },
+    {
+      "name": "Lean pilot verification",
+      "runId": 38691841148,
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/38691841148"
+    }
+  ],
+  "checkedAt": "2026-10-15T06:59:47.000Z"
+}

@@ -105,23 +105,60 @@
       },
       "status": "REPRODUCED",
       "expected": "Boost feedback should preserve scene brightness",
-      "observed": "Native full-screen gradient repeatedly transitions opacity0↔0.8 in mobile mode",
+      "observed": "Build15 reproduced a native full-screen gradient transitioning opacity0↔0.8. Build16 mobile CSS suppresses that broad layer; the underlying boost state still changes while the layer remains display:none.",
       "evidence": [
         {
           "path": "runs/h5-qq-mobile-20261013/evidence/flicker-boost-before/report.json",
           "sha256": "b39b8b4c30cc3822454b8744b3b05740fb2d23cd13c2e9b1cad71b71c36b979e",
           "kind": "qa-artifact",
           "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/flicker-review-build16.json",
+          "sha256": "ce79dd956389bb0085d548b05b4cee01e47a2945ff5727da3af0958aa8e931ba",
+          "kind": "independent-exact-branch-review",
+          "provenance": "verified-build16"
+        }
+      ],
+      "statusAfterBuild16": "PASS_FOR_START_BOOST_BRANCH"
+    },
+    {
+      "id": "hitflash-edge",
+      "objectType": "HUD edge feedback",
+      "lifecycleStateBranch": "natural collision hit on mobile",
+      "rendererPath": "native Three.js WebGL → headed Chromium Metal",
+      "viewport": {
+        "label": "current headed Chromium landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Collision feedback stays at the edge and does not wash the driving scene",
+      "observed": "Build16 mobile hitflash background is transparent with a 4px inset and a 3px edge shadow; natural crash frames retain local collision feedback without broad red fill.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/flicker-review-build16.json",
+          "sha256": "ce79dd956389bb0085d548b05b4cee01e47a2945ff5727da3af0958aa8e931ba",
+          "kind": "independent-exact-branch-review",
+          "provenance": "verified-build16"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/evidence/final-attempt16-session5/13-crash.png",
+          "kind": "natural-current-build-frame",
+          "provenance": "verified-own-run"
         }
       ]
     }
   ],
   "confirmedFindings": [
-    "A repeatable broad brightness/color pulse is caused by native boost vignette. No claim this exhausts every device-level flicker."
+    "A repeatable broad brightness/color pulse was caused by the native boost vignette; build16 removes that mobile full-screen paint and keeps local boost feedback.",
+    "The mobile hitflash is now edge-only and transparent in the central driving area."
   ],
   "remainingGaps": [
-    "Exact repeated-flash frames and renderer cause",
+    "Small-boost, nitro-only and repeated-hit combinations need a dedicated continuous sample before the whole visual branch can be called PASS",
+    "Between-race transition and real browser background branches remain unobserved",
     "Android/iPhone visual stability remains unobserved"
   ],
+  "updatedAt": "2026-10-15T07:07:00.000Z",
   "createdAt": "2026-10-15T03:07:46.228Z"
 }
