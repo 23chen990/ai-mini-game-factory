@@ -75,9 +75,10 @@ test('camera tracks forward distance in a floating world, ignores jump height an
  assert.ok(follow>.9&&follow<1.35,'camera follows ~65% of real lateral position');
  assert.ok(gaze>.95&&gaze<1.4,'road ahead remains framed during side steering');
 });
-test('star reward is based on fishing mastery, not just elapsed seconds',()=>{
+test('star reward requires earned consecutive fishing and a real jump, not just elapsed seconds',()=>{
  const s=newSave(),minimal=newRun(1);minimal.phase='finished';minimal.reason='complete';minimal.count=minimal.level.goal.count;minimal.score=minimal.count;minimal.elapsed=35;settle(s,minimal);assert.equal(minimal.stars,1);
- const great=newRun(1);great.phase='finished';great.reason='complete';great.count=17;great.gold=2;great.score=20;great.elapsed=40;great.jumpedBarriers=1;settle(s,great);assert.equal(great.stars,3);
+ const great=newRun(1);great.phase='finished';great.reason='complete';great.count=17;great.gold=2;great.score=20;great.elapsed=40;great.jumpedBarriers=1;great.bestStreak=4;settle(s,great);assert.equal(great.stars,3);
+ const missingChain=newRun(1);missingChain.phase='finished';missingChain.reason='complete';missingChain.count=17;missingChain.gold=2;missingChain.jumpedBarriers=1;missingChain.bestStreak=3;missingChain.elapsed=35;settle(newSave(),missingChain);assert.equal(missingChain.stars,2,'high fish and genuine jump cannot fake a chain');
 });
 test('quality sheds expensive effects first and never falls below 1.25 pixels on DPR3',()=>{
  let q={tier:2,pr:1.5};q=qualityStep(q,28,3);assert.equal(q.tier,1);assert.equal(q.pr,1.5);q=qualityStep(q,28,3);assert.equal(q.tier,0);assert.equal(q.pr,1.5);q=qualityStep(q,28,3);assert.equal(q.pr,1.25);for(let i=0;i<10;i++)q=qualityStep(q,20,3);assert.equal(q.pr,1.25);
