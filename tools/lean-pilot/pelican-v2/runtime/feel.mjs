@@ -1,5 +1,9 @@
 // Frame-rate independent critically damped lane motion and soft chase-camera targets.
 // Input changes the destination lane; this module restores physical follow-through.
+// Supplemental blue-hour illumination changes ONLY mesh visibility, not sky,
+// lamp glow, collisions or difficulty. The source sky has very dim ground fill.
+export const DUSK_ROAD_AMBIENT = 0.55;
+export const duskRoadAmbient = level => level?.weather === 'dusk' ? DUSK_ROAD_AMBIENT : 0;
 export const FEEL = Object.freeze({
   laneFrequency: 14.5,
   leanRate: 9.5,

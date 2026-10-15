@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {springLane,riderFeel,cameraTarget} from './feel.mjs';
+import {springLane,riderFeel,cameraTarget,duskRoadAmbient,DUSK_ROAD_AMBIENT} from './feel.mjs';
 import {newRun,input,advance,steerTo,steerBy,FREE_ROAD_EDGE} from './adventure.mjs';
 import {unsafeFishLanes, hazardForecast, pedestrianZAtArrival,pathRiskAtPosition} from './safety.mjs';
 function travel(dt,events=[{at:0,target:1.7}],duration=1.1){
@@ -88,4 +88,13 @@ test('true fractional vehicle width warns between two paint lanes, not based on 
  assert.equal(pathRiskAtPosition({lane:.7,y:0},jump,bounds),true);
  assert.equal(pathRiskAtPosition({lane:.7,y:.4},jump,bounds),false);
  assert.equal(pathRiskAtPosition({lane:0},{seconds:2,obstacle:{kind:'pedestrian',lane:1,z:0}},bounds),false);
+});
+
+test('blue-hour readability fill exists only for the final dusk stage',()=>{
+ for(const id of [1,2,3,4]){
+  assert.equal(duskRoadAmbient({weather:id===4?'rain':'clear'}),0);
+ }
+ assert.ok(DUSK_ROAD_AMBIENT>.4&&DUSK_ROAD_AMBIENT<.8);
+ assert.equal(duskRoadAmbient({weather:'dusk'}),DUSK_ROAD_AMBIENT);
+ assert.equal(duskRoadAmbient(null),0);
 });

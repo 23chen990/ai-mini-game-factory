@@ -67,7 +67,10 @@ try{
   await tap('#co-pause');const before=await snapshot();await page.waitForTimeout(1100);const after=await snapshot();check('pause-freezes-world-and-timer',before.distance===after.distance&&before.elapsed===after.elapsed,{before,after});await shot('pause');await tap('#co-resume');
   for(let id=1;id<=5;id++){
    if(id>1){await tap('#co-next');await page.waitForTimeout(1500);}
-   await shot('level-'+id+'-start');const navigationBefore=navs;
+   await shot('level-'+id+'-start');
+    const fill=await page.evaluate(()=>window.__coast.renderInfo().duskRoadAmbient);
+    check('real-road-fill-level-'+id,id===5?(fill>=.5&&fill<=.8):(fill===0),{level:id,fill,source:'actual rendered Three.js ambient light'});
+    const navigationBefore=navs;
    const frameStart=await page.evaluate(()=>window.__qaFrames.length);const result=await drive({stage:id});const frames=await page.evaluate(n=>window.__qaFrames.slice(n+10),frameStart);const sorted=frames.filter(n=>n>0).sort((a,b)=>a-b);result.performance={frameCount:sorted.length,meanFps:1000/(sorted.reduce((a,b)=>a+b,0)/sorted.length),p95Ms:sorted[Math.floor(sorted.length*.95)],scope:'Natural default-speed running route between visible start and settlement'};report.levels.push(result);await shot('level-'+id+'-terminal');
    check('natural-level-'+id,result.phase==='finished'&&result.reason==='complete',{count:result.count,gold:result.gold,distance:result.distance,elapsed:result.elapsed,events:result.events,save:result.save});
    const resultText=await page.locator('#co-copy').innerText(),bestScore=result.save?.best?.[id-1]?.score;

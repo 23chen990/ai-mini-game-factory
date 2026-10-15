@@ -3,7 +3,7 @@ import css from './coast.css';
 import { LEVELS, LANES, BOUNDS } from './levels.mjs';
 import { newRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE } from './adventure.mjs';
 import {upcomingHazards,pathRiskAtPosition} from './safety.mjs';
-import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose} from './feel.mjs';
+import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient} from './feel.mjs';
 import {selectFishCue,allStars,nextStarTip,starRequirements,masteryStatus} from './engagement.mjs';
 import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound,adAllowed} from './reward-engine.mjs';
 import {requestRewardedVideo} from './reward-adapter.mjs';
@@ -31,6 +31,11 @@ export function createCoastAdventure(api) {
  const persist=()=>{try{localStorage.setItem(SAVE,JSON.stringify(save));localStorage.setItem(REWARD,saveProgress(progress,'pelican-bike'));}catch{storage=false;}$('storage').textContent=storage?'本机保存关卡进度 · 广告未接入 · H5 开发试玩':'存储不可用，本次可玩，关卡进度无法保存';};
  const hazards=new Map(),fishSlots=new Map(),rainGroup=new THREE.Group();scene.add(rainGroup);
  const obstacleRoot=new THREE.Group();scene.add(obstacleRoot);
+ // Keep the late coast recognizably twilight, but do not force players to
+ // interpret nearly-black road and vehicles under additive lamp glare.
+ // Ambient affects shaded meshes, unlike a global exposure boost: glowing
+ // headlight/bulb sprites stay at their original brightness.
+ const duskSafetyLight=new THREE.AmbientLight('#b9d9f4',0);scene.add(duskSafetyLight);
  const materials=new Map();
  const mat=(color,emissive=false)=>{const k=color+emissive;if(!materials.has(k))materials.set(k,new THREE.MeshStandardMaterial({color,roughness:.62,metalness:.12,...(emissive?{emissive:color,emissiveIntensity:.8}:{})}));return materials.get(k);};
  const box=(parent,w,h,d,color,x=0,y=0,z=0)=>{const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color));m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;};
@@ -74,6 +79,7 @@ export function createCoastAdventure(api) {
   for(const g of hazards.values())g.visible=false;for(const f of fishes){f.mesh.visible=false;f.active=false;}fishSlots.clear();
   Object.assign(S,{started:true,paused:false,distance:0,lane:0,laneTarget:0,laneV:0,prevLaneV:0,latAcc:0,lean:0,steer:0,yaw:0,crank:0,wheel:0,y:0,vy:0,airborne:false,trick:0,trickT:0,wheelie:0,speed:run.level.speed,fish:0,golden:0,time:0,t:0});
   Object.assign(settings,{autopilot:false,cruise:run.level.speed,hour:run.level.hour,timeFlow:false,cloud:run.level.weather==='rain'?.78:.35,fog:run.level.weather==='rain'?1.08:.8,music:sound});
+   duskSafetyLight.intensity=duskRoadAmbient(run.level);
   document.body.classList.add('started');root.classList.remove('crashing');rider.rotation.set(0,0,0);pelican.root.rotation.z=0;audio.mute(!sound);rainGroup.visible=run.level.weather==='rain'&&quality.tier>0;finishRoot.visible=true;$('crash').classList.remove('active');$('title').textContent=id+' · '+run.level.name;
   phase('running');persist();
    const intro=run.level.weather==='rain'?'🌧 雨天转向稍慢，提前看路况':run.level.weather==='dusk'?'🌙 暮色金鱼更亮，提前留意危险车道':'按住左右可自由骑，连续捕鱼还有连击分！';
@@ -177,7 +183,7 @@ export function createCoastAdventure(api) {
  $('ad').addEventListener('click',async()=>{if(!round)return;if(platform.status!==1){$('notice').textContent='TapTap H5 广告尚未接入；当前不播放模拟广告，也不会发放广告奖励。';return;}if(!adAllowed(round,progress,performance.now()-loadedAt)){ $('notice').textContent='暂未满足奖励条件，可以直接重开。';return;}const current=round;$('ad').disabled=true;const result=await requestRewardedVideo({tap:window.tap,config:platform});if(round!==current)return;const rewarded=rewardRound(current,progress,result.status==='completed');persist();$('notice').textContent=rewarded?'额外补给已到账':'广告未完成或加载失败，可直接继续游戏';$('ad').disabled=false;});
  const loadedAt=performance.now();S.paused=true;S.started=false;settings.autopilot=false;settings.timeFlow=false;settings.hour=14;settings.lookMouse=false;settings.showFps=false;settings.bloom=false;
  // An inspection-only surface: no set score, teleport, unlock, or finish helpers.
- window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneTarget:run.laneTarget,laneIndex:run.laneIndex,score:run.score,rewardScore:run.rewardScore??null,streak:run.streak,bestStreak:run.bestStreak,nearMisses:run.nearMisses,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
+ window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneTarget:run.laneTarget,laneIndex:run.laneIndex,score:run.score,rewardScore:run.rewardScore??null,streak:run.streak,bestStreak:run.bestStreak,nearMisses:run.nearMisses,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},duskRoadAmbient:duskSafetyLight.intensity,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
  phase('ready');routes();persist();applyRender();root.dataset.loaded='true';
  document.getElementById('coast-boot')?.remove();
  function beforeRide(dt){
