@@ -43,6 +43,14 @@ export function holdOpeningTeammateFire(actors,ownTeam,now) {
   }
   return held;
 }
+/** Touch-generated mouse compatibility events must never fire the native PC rifle. */
+export function blockMobileTouchMouse({touchMode,fromTouch,msSinceTouch}) {
+  return touchMode===true && (fromTouch===true ||
+    (Number.isFinite(msSinceTouch) && msSinceTouch>=0 && msSinceTouch<=1400));
+}
+export function sniperScopeLabel(stage) {
+  return stage===1 ? '放大' : stage>=2 ? '关镜' : '开镜';
+}
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
@@ -209,7 +217,10 @@ export function createFpsMobileUx(game, root, doc) {
   const touchControls = doc.getElementById('touch');
   let playerEngaged=false;
   const aimTouchStarts=new Map();
+  let lastTouchAt=-Infinity;
+  const markTouch=()=>{lastTouchAt=performance.now();};
   const onTouchStart=e=>{
+    markTouch();
     if(activeChallenge?.kind!=='hits'||!game.playing||game.paused)return;
     if(e.target?.closest?.('.btn,.pad'))return;
     const limit=(doc.defaultView?.innerWidth||844)*0.44;
@@ -217,6 +228,7 @@ export function createFpsMobileUx(game, root, doc) {
       aimTouchStarts.set(t.identifier,{x:t.clientX,y:t.clientY});
   };
   const onTouchMove=e=>{
+    markTouch();
     if(activeChallenge?.kind!=='hits'||!game.playing||game.paused)return;
     for(const t of e.changedTouches||[]){
       const v=aimTouchStarts.get(t.identifier);
@@ -224,8 +236,22 @@ export function createFpsMobileUx(game, root, doc) {
     }
   };
   const onTouchEnd=e=>{
+    markTouch();
     for(const t of e.changedTouches||[])aimTouchStarts.delete(t.identifier);
   };
+  // The pinned desktop Player.bind() fires a bullet on canvas mousedown.
+  // Browsers synthesize mousedown after short touch-aim gestures unless this
+  // compatibility event is stopped at document CAPTURE. Preserve clicks for
+  // menu/replay UI and preserve the original on-screen fire touch handler.
+  const stopCompatibilityMouse=e=>{
+    if(!blockMobileTouchMouse({touchMode:game.touchMode===true,
+      fromTouch:e.sourceCapabilities?.firesTouchEvents===true,
+      msSinceTouch:performance.now()-lastTouchAt}))return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+  };
+  doc.addEventListener('mousedown',stopCompatibilityMouse,true);
+  doc.addEventListener('mouseup',stopCompatibilityMouse,true);
   doc.addEventListener('touchstart',onTouchStart,{capture:true,passive:true});
   doc.addEventListener('touchmove',onTouchMove,{capture:true,passive:true});
   doc.addEventListener('touchend',onTouchEnd,{capture:true,passive:true});
@@ -593,6 +619,8 @@ export function createFpsMobileUx(game, root, doc) {
       html.dataset.fpsActive = String(active);
       const p = game.player;
       fadeNativeAllies(active);
+      const scopeButton=buttons.find(b=>b.dataset.mkAction==='scope');
+      if(scopeButton)scopeButton.textContent=sniperScopeLabel(p?.scoped||0);
       html.dataset.fpsSniper = String(p?.weapon?.def?.type === 'sniper');
       if (/按 R|按 B|Esc|Tab/.test(game.hud?.el?.aHint?.textContent || '')) {
         game.hud.el.aHint.textContent = '点“换弹”';
@@ -659,6 +687,8 @@ export function createFpsMobileUx(game, root, doc) {
       doc.removeEventListener('touchmove',onTouchMove,true);
       doc.removeEventListener('touchend',onTouchEnd,true);
       doc.removeEventListener('touchcancel',onTouchEnd,true);
+      doc.removeEventListener('mousedown',stopCompatibilityMouse,true);
+      doc.removeEventListener('mouseup',stopCompatibilityMouse,true);
       aimTouchStarts.clear();
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');

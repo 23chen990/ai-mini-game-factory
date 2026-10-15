@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -170,4 +170,18 @@ test('sniper intro searches only authored spawns, rejecting teammate overlap and
    nav,actors:[me,teammate],distances:[9]}),null);
  assert.equal(chooseMobileSniperLane({player:me,spawns,world,nav:{idx:()=>-1,walkable:()=>false},
    actors:[me],distances:[9]}),null);
+});
+
+test('touch aim gestures cannot trigger compatibility mousedown shooting on mobile',()=>{
+ assert.equal(blockMobileTouchMouse({touchMode:true,fromTouch:true,msSinceTouch:2000}),true);
+ assert.equal(blockMobileTouchMouse({touchMode:true,fromTouch:false,msSinceTouch:300}),true);
+ assert.equal(blockMobileTouchMouse({touchMode:true,fromTouch:false,msSinceTouch:1400}),true);
+ assert.equal(blockMobileTouchMouse({touchMode:true,fromTouch:false,msSinceTouch:1500}),false);
+ assert.equal(blockMobileTouchMouse({touchMode:true,fromTouch:false,msSinceTouch:Infinity}),false);
+ assert.equal(blockMobileTouchMouse({touchMode:false,fromTouch:true,msSinceTouch:50}),false);
+});
+test('native sniper optic cycles through three clearly labelled touch actions',()=>{
+ assert.equal(sniperScopeLabel(0),'开镜');
+ assert.equal(sniperScopeLabel(1),'放大');
+ assert.equal(sniperScopeLabel(2),'关镜');
 });
