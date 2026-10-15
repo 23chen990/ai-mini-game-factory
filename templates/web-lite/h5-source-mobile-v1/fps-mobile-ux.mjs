@@ -21,6 +21,17 @@ export function enemyBadgeAllowed({ side, alive, distance, x, y, z, coverDistanc
     (coverDistance === null || (Number.isFinite(coverDistance) && coverDistance >= distance - 0.45));
 }
 
+/** Native ally sprites must not cover the screen when very near or after a round. */
+export function teammateTagOpacity({active,alive,distance}) {
+  if (!active || !alive || !Number.isFinite(distance) || distance < 3.5 || distance > 45) return 0;
+  return Math.min(.85, .85 * Math.max(0,(distance-3.5)/3));
+}
+/** Badge labels outside a circular sniper sight picture are misleading. */
+export function withinScopedLens({x,y,width,height,scoped}) {
+  if (!scoped) return true;
+  if (![x,y,width,height].every(Number.isFinite) || width<=0 || height<=0) return false;
+  return Math.hypot(x*width/2,y*height/2) <= Math.min(width,height)*.455;
+}
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
@@ -28,7 +39,7 @@ export function mobileTouchAction(index) {
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
   if (challenge.kind === 'hits') return '1v1入门对决：对准敌人开火，命中3次';
-  if (challenge.kind === 'kills') return '90秒内，使用 AWM 狙击枪击杀1名敌人';
+  if (challenge.kind === 'kills') return '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
   if (challenge.kind === 'survive') return '坚持45秒，移动20米，最多被击倒2次';
   return challenge.instructions || '';
 }
@@ -103,11 +114,11 @@ export function routeArrow(player, goal) {
 // A genuine, hittable intro opponent placed inside an existing clear cargo
 // lane. Candidate positions are derived from the user's forward bearing and
 // checked against real world geometry, nav walkability and line of sight.
-export function chooseFirstEncounterSpot({player, world, nav, actors = []}) {
+export function chooseFirstEncounterSpot({player, world, nav, actors = [], distances = [10.0,8.5,7.0]}) {
   if (!player?.pos || !world?.blocked || !world?.raycast || !nav?.walkable || !nav?.idx) return null;
   const forwardX=-Math.sin(player.yaw), forwardZ=-Math.cos(player.yaw);
   const rightX=Math.cos(player.yaw), rightZ=-Math.sin(player.yaw);
-  for(const range of [10.0,8.5,7.0]) {
+  for(const range of distances) {
     for(const lateral of [0.65,-0.65,0]) {
       const x=player.pos.x+forwardX*range+rightX*lateral;
       const z=player.pos.z+forwardZ*range+rightZ*lateral;
@@ -257,18 +268,32 @@ export function createFpsMobileUx(game, root, doc) {
       ctx.fillStyle = '#8edcff';
       ctx.fillText(label, canvas.width / 2, canvas.height / 2, canvas.width - 8);
       tex.needsUpdate = true;
-      sprite.scale.x = Math.max(1.55, sprite.scale.x);
+      sprite.scale.x = Math.min(1.3, sprite.scale.x);
       tag.__mkAllyLabel = true;
     }
   }
 
+  function fadeNativeAllies(active) {
+    const camera=game.renderer?.camera;
+    for (const tag of game.tags || []) {
+      if(!tag.__mkAllyLabel || !tag.sprite?.material) continue;
+      const distance=tag.actor?.pos?.distanceTo?.(camera?.position);
+      // The native engine sets sprite.visible on every simulation frame.
+      // Material opacity persists through the render and hides post-round ghosts.
+      tag.sprite.material.opacity=teammateTagOpacity({
+        active,alive:tag.actor?.alive===true,distance
+      });
+    }
+  }
   function prepareFirstEncounter() {
     const p=game.player, destination=firstEncounterDestination(p?.team);
     if(!p || !destination || !game.nav?.findPath) return {path:false,trainingScout:false};
     const enemies=(game.actors||[]).filter(a=>
       a && !a.isPlayer && a.team!==p.team && a.alive && a.primary!=='awm');
-    if(activeChallenge?.kind==='hits' && enemies.length) {
-      const spot=chooseFirstEncounterSpot({player:p,world:game.world,nav:game.nav,actors:game.actors});
+    if((activeChallenge?.kind==='hits' || activeChallenge?.kind==='kills') && enemies.length) {
+      const sniper=activeChallenge.kind==='kills';
+      const spot=chooseFirstEncounterSpot({player:p,world:game.world,nav:game.nav,actors:game.actors,
+        distances:sniper?[18,16,14,12,10,8.5]:undefined});
       if(spot) {
         // Scripted level opening: reposition one EXISTING enemy before play,
         // rather than spawning a dummy or giving the player free hits.
@@ -285,10 +310,11 @@ export function createFpsMobileUx(game, root, doc) {
         scout.protectT=0;
         // Allow new players several *simulation seconds* to recognize, aim
         // and shoot. Afterward the standard Bot can shoot normally.
-        scout.readyAt=Math.max(scout.readyAt,game.time+13);
-        scout.__mobileTrainingScout=true;
-        scout.__mobileTrainingHoldUntil=game.time+7;
-        return {path:true,trainingScout:true,range:spot.distance};
+        scout.readyAt=Math.max(scout.readyAt,game.time+(sniper?7:13));
+        scout.__mobileTrainingScout=!sniper;
+        scout.__mobileSniperScout=sniper;
+        scout.__mobileTrainingHoldUntil=game.time+(sniper?5:7);
+        return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance};
       }
     }
     for(const bot of enemies) {
@@ -436,7 +462,9 @@ export function createFpsMobileUx(game, root, doc) {
         if(!enemyBadgeAllowed({
           side:'enemy',alive:true,distance,
           x:pos.x,y:pos.y,z:pos.z,coverDistance:cover?.t??null
-        }) || cover)continue;
+        }) || cover ||
+          !withinScopedLens({x:pos.x,y:pos.y,width:doc.defaultView?.innerWidth||844,
+            height:doc.defaultView?.innerHeight||390,scoped:p.scoped>0}))continue;
         projected=pos;break;
       }
       if(!projected)continue;
@@ -470,11 +498,11 @@ export function createFpsMobileUx(game, root, doc) {
       if(tip)tip.innerHTML=activeChallenge?.kind==='hits'
         ? '<b>③</b> 对准敌人自动开火'
         : activeChallenge?.kind==='kills'
-          ? '<b>③</b> 开镜后点开火'
+          ? '<b>③</b> 先找敌人，再开镜射击'
           : '<b>③</b> 点按或按住开火';
       autoAimActor=null;autoAimSince=0;autoFireActive=false;playerEngaged=false;aimTouchStarts.clear();
       guide.textContent = activeChallenge?.kind === 'kills'
-        ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先点开镜，再滑动瞄准开火'
+        ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先找到目标，再开镜射击'
         : activeChallenge?.kind === 'survive'
           ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手移动躲避，右侧观察敌人'
           : '▼ 首战敌人就在前方 · 滑动瞄准，对准会自动开火';
@@ -510,6 +538,7 @@ export function createFpsMobileUx(game, root, doc) {
       const active = !!(running && game.playing && !game.paused && !game.ended);
       html.dataset.fpsActive = String(active);
       const p = game.player;
+      fadeNativeAllies(active);
       html.dataset.fpsSniper = String(p?.weapon?.def?.type === 'sniper');
       if (/按 R|按 B|Esc|Tab/.test(game.hud?.el?.aHint?.textContent || '')) {
         game.hud.el.aHint.textContent = '点“换弹”';

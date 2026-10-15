@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, teammateTagOpacity, withinScopedLens } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -119,4 +119,27 @@ test('first M4 encounter places a normal rival on the visible clear route for bo
  assert.equal(chooseFirstEncounterSpot({player:p,world:{...world,raycast:()=>({t:2})},nav}),null);
  assert.equal(chooseFirstEncounterSpot({player:p,world:{...world,blocked:()=>true},nav}),null);
  assert.equal(chooseFirstEncounterSpot({player:p,world,nav:{idx:()=>-1,walkable:()=>false}}),null);
+});
+
+test('friendly native sprites fade near the camera and disappear during results',()=>{
+  assert.equal(teammateTagOpacity({active:false,alive:true,distance:12}),0);
+  assert.equal(teammateTagOpacity({active:true,alive:false,distance:12}),0);
+  assert.equal(teammateTagOpacity({active:true,alive:true,distance:2}),0);
+  assert.ok(teammateTagOpacity({active:true,alive:true,distance:5})>0);
+  assert.equal(teammateTagOpacity({active:true,alive:true,distance:13}),.85);
+});
+test('scope cannot display enemy badges beyond its round viewing lens',()=>{
+  const input={x:0,y:0,width:844,height:390,scoped:true};
+  assert.equal(withinScopedLens(input),true);
+  assert.equal(withinScopedLens({...input,x:.92}),false);
+  assert.equal(withinScopedLens({...input,x:.92,scoped:false}),true);
+  assert.equal(withinScopedLens({...input,width:0}),false);
+});
+test('AWM gets a real nav/cover validated longer first sightline',()=>{
+  const p={pos:{x:-31.5,y:0,z:-6.8},yaw:-Math.PI/2,eyeH:1.6};
+  const nav={idx:(x,z)=>Math.abs(x)<35 && Math.abs(z)<11?1:-1,walkable:k=>k>0};
+  const world={blocked:()=>false,raycast:()=>null};
+  const spot=chooseFirstEncounterSpot({player:p,world,nav,distances:[18,16,14,12,10,8.5]});
+  assert.ok(spot && spot.distance>=10 && spot.distance<=18);
+  assert.equal(chooseFirstEncounterSpot({player:p,world:{...world,blocked:()=>true},nav,distances:[18,16]}),null);
 });
