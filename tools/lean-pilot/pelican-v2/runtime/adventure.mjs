@@ -22,7 +22,11 @@ export function steerTo(r, target, source='drag') {
   const barrier=r.obstacles.find(o=>o.id===r.bufferedJump);
   if(!barrier || Math.abs(next-LANES[barrier.lane])>.72)r.bufferedJump=null;
  }
- event(r,'steer-input',{target:next,source});
+ // Held input is frame-rate frequent: keep the gameplay events bounded so
+ // genuine fish and hazard feedback never disappears behind steering noise.
+ if(source==='tap'||source==='finger-drag'&&Math.abs(next-(r.lastLoggedSteerTarget??0))>.48){
+  r.lastLoggedSteerTarget=next;event(r,'steer-input',{target:next,source});
+ }
  return true;
 }
 export function steerBy(r, offset, source='hold') {

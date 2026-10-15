@@ -78,7 +78,14 @@ try{
  await tap('#co-replay');await page.waitForTimeout(250);
  const a=await gesture('right',[140,420],[250,420]);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
  const b=await gesture('left',[250,420],[140,420]);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
- const c=await gesture('cancel',[140,420],[250,420],true);check('cancelled-touch-does-not-turn',c.after.laneIndex===c.before.laneIndex,c);
+ const fractional=await gesture('short-free-drag',[140,420],[171,420]);
+ check('finger-drags-set-fractional-target-not-fixed-lanes',
+  fractional.after.laneTarget>fractional.before.laneTarget+.3&&
+  fractional.after.laneTarget<fractional.before.laneTarget+.8&&
+  Math.abs(fractional.after.lane-fractional.after.laneTarget)<.12,fractional);
+ const c=await gesture('cancel',[140,420],[250,420],true);
+ check('cancelled-touch-does-not-turn',c.after.laneIndex===c.before.laneIndex&&
+  Math.abs(c.after.laneTarget-c.before.laneTarget)<.01,c);
  const d=await gesture('up',[200,480],[200,380]);check('trusted-up-swipe-jumps',d.after.events.filter(e=>e.type==='jump').length>d.before.events.filter(e=>e.type==='jump').length,d);await shot('up-swipe');
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);

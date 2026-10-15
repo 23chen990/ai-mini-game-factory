@@ -20,7 +20,7 @@ const report={schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPAC
 let context,page,navs=0,captureSection='setup';
 const segments=[];let checkStart=0,shotStart=0,errorStart=0;
 function segment(name){segments.push({name,checkStart,checkEnd:report.checks.length,shotStart,shotEnd:report.screenshots.length,actionEnd:report.actions.length,errorStart,errorEnd:report.errors.length});checkStart=report.checks.length;shotStart=report.screenshots.length;errorStart=report.errors.length;}
-const LANES_FOR_QA=[-1.7,0,1.7];
+const ROAD_EDGE_FOR_QA=2.15;
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(JSON.stringify({name,passed,evidence}));};
 const shot=async name=>{const p=path.join(qaDir,capturePath(captureSection,name));await mkdir(path.dirname(p),{recursive:true});await page.screenshot({path:p});report.screenshots.push({path:path.relative(RUN,p),sha256:sha(await readFile(p))});};
 const tap=async selector=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance,level:before.level}};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
@@ -102,8 +102,14 @@ try{
   const n=navs;await tap('#co-replay');await page.waitForTimeout(700);check('failure-replay-without-navigation',navs===n&&(await snapshot()).phase==='running',{navigationCount:navs});await tap('#co-pause');await tap('#co-select');await tap('[data-level="1"]');await tap('#co-start');
   await waitDistance(35);await tap('[data-action="left"]');await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();await shot('pedestrian-fall');await page.waitForTimeout(1300);const waiting=await snapshot();await shot('pedestrian-wait');check('pedestrian-stops-but-countdown-runs',waiting.distance===ped.distance&&waiting.elapsed>ped.elapsed+1.1&&waiting.stun>1,{ped,waiting});await page.waitForTimeout(1000);await shot('pedestrian-rising');await page.waitForTimeout(1200);const recovered=await snapshot();await shot('pedestrian-recovery');check('pedestrian-recovers-once',recovered.distance>waiting.distance&&recovered.events.filter(e=>e.type==='pedestrian-hit').length===1,recovered);
   await tap('#co-pause');await tap('#co-replay');await waitDistance(35);await tap('[data-action="left"]');await waitDistance(80);await tap('[data-action="right"]');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(146);await tap('[data-action="right"]');await waitDistance(217);await tap('[data-action="jump"]');await page.waitForFunction(()=>Number(document.querySelector('#co-distance')?.textContent.match(/^\d+/)?.[0]??0)>=223,null,{timeout:5000});await shot('barrier-jump');await waitDistance(229);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(237);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');
-  // One tap, not a held turn; all platform touch actions use the real public touchscreen API.
-  const lane=await snapshot();await tap('[data-action="left"]');await page.waitForTimeout(1000);const moved=await snapshot();check('one-touch-one-lane',moved.laneIndex===Math.max(0,lane.laneIndex-1)&&Math.abs(moved.lane-LANES_FOR_QA[moved.laneIndex])<.01,{lane,moved});
+  // Public touch nudges to fractional metres instead of forcing a road lane center.
+  const before=await snapshot(),action=before.laneTarget>.7?'left':'right';
+  await tap(`[data-action="${action}"]`);await page.waitForTimeout(1000);
+  const moved=await snapshot(),expected=Math.max(-ROAD_EDGE_FOR_QA,
+   Math.min(ROAD_EDGE_FOR_QA,before.laneTarget+(action==='right'?1.18:-1.18)));
+  check('one-touch-fractional-road-position',
+   Math.abs(moved.laneTarget-expected)<.04&&Math.abs(moved.lane-expected)<.08,
+   {before,action,expected,moved});
   segment('collisions');
  }
  if(mode==='safety'||mode==='all'){

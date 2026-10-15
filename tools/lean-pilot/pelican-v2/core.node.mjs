@@ -16,10 +16,16 @@ test('fairness validator rejects all blocked roads, unsafe fish and insufficient
  const l=makeLevel(3);l.obstacles=[0,1,2].map(lane=>({id:'x'+lane,kind:'car',x:90,lane,speed:3}));assert.ok(validateLevel(l).some(x=>x.includes('blocked')));
  const f=makeLevel(3);f.obstacles=[{id:'bad',kind:'car',x:f.fish[0].x,lane:f.fish[0].lane,speed:0}];assert.ok(validateLevel(f).some(x=>x.includes('fish')));
 });
-test('one press switches one adjacent lane, held repeats do not drift; pause rejects input',()=>{
- const r=newRun(1);input(r,'right');tick(r,.5);assert.equal(r.laneIndex,2);assert.ok(Math.abs(r.lane-LANES[2])<.01);
- input(r,'right');tick(r,.6);assert.equal(r.laneIndex,2);input(r,'pause');const d=r.distance;input(r,'left');tick(r,2);assert.equal(r.distance,d);assert.equal(r.laneIndex,2);input(r,'resume');tick(r,.3);assert.ok(r.distance>d);
+test('one tap nudges a fractional road position and pause rejects steering',()=>{
+ const r=newRun(1);input(r,'right');tick(r,.5);
+ assert.equal(r.laneIndex,2);assert.ok(r.lane>.9&&r.lane<1.5);
+ assert.ok(Math.abs(r.lane-LANES[2])>.2,'tap cannot magnetize to a painted lane');
+ input(r,'right');tick(r,.6);assert.equal(r.laneIndex,2);
+ input(r,'pause');const d=r.distance,target=r.laneTarget;input(r,'left');tick(r,2);
+ assert.equal(r.distance,d);assert.equal(r.laneTarget,target);
+ input(r,'resume');tick(r,.3);assert.ok(r.distance>d);
 });
+
 test('swept collision detects high speed tunnelling and rejects an adjacent lane',()=>{
  assert.equal(sweptHit({x:-12,z:0},{x:12,z:0},1,.7),true);
  assert.equal(sweptHit({x:-12,z:1.4},{x:12,z:1.4},1,.7),false);
