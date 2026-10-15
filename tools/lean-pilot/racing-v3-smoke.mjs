@@ -119,9 +119,25 @@ async function raceStart(page, index, name) {
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
   }));
-  await page.waitForTimeout(6500);
+  // Software WebGL may advance less than a second of native physics in 6.5
+  // wall seconds. Require real player movement, not wall-clock passage.
+  // Keep a bounded deadline and collect native telemetry on failure.
+  let movementError = null;
+  try {
+    await page.waitForFunction(origin => {
+      const g=window.game,p=g?.player;
+      return g?.state === 'race' && p &&
+        Number.isFinite(p.progress) && p.progress > origin + 0.5;
+    },early.progress,{timeout:55000,polling:750});
+  } catch (error) { movementError=error; }
   const after=await page.evaluate(()=>({
     state:window.game?.state,progress:window.game?.player?.progress ?? 0,
+    speed:window.game?.player?.s ?? 0, throttle:window.game?.player?.throttle ?? 0,
+    raceTime:window.game?.raceTime ?? null,
+    wrongWay:window.game?.player?.wrongWay ?? null,
+    spin:window.game?.player?.spin ?? null,
+    impact:window.game?.player?.impact ?? null,
+    lat:window.game?.player?.lat ?? null,
     rank:window.game?.standings?.indexOf(window.game?.player) + 1,
     left:document.querySelector('#race-left')?.getBoundingClientRect().toJSON(),
     right:document.querySelector('#race-right')?.getBoundingClientRect().toJSON(),
@@ -134,7 +150,7 @@ async function raceStart(page, index, name) {
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
-    fail(name+': native vehicle did not progress with real auto throttle');
+    fail(name+': native vehicle did not progress with real auto throttle; '+JSON.stringify({early,after,error:movementError?.message}));
   const expectedPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];
   if(JSON.stringify(early.padLanes)!==JSON.stringify(expectedPadLanes))
     fail(name+': native speed-pad lane choices missing: '+JSON.stringify(early.padLanes));
