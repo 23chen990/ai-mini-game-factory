@@ -118,6 +118,16 @@ try{
   check('one-touch-fractional-road-position',
    Math.abs(moved.laneTarget-expected)<.04&&Math.abs(moved.lane-expected)<.08,
    {before,action,expected,moved});
+  const gauge=await page.locator('.co-lane-indicator').evaluate(el=>({
+   width:el.getBoundingClientRect().width,
+   position:Number.parseFloat(getComputedStyle(el).getPropertyValue('--co-position')),
+   laneMarkOpacity:Number.parseFloat(getComputedStyle(el.querySelector('i')).opacity)
+  }));
+  const expectedGauge=(moved.lane+ROAD_EDGE_FOR_QA)/(2*ROAD_EDGE_FOR_QA)*100;
+  check('continuous-position-gauge-shows-actual-fractional-road-location',
+   gauge.width>=100&&gauge.laneMarkOpacity===0&&Number.isFinite(gauge.position)&&
+   Math.abs(gauge.position-expectedGauge)<=1,
+   {gauge,actualLane:moved.lane,expectedGauge});
   segment('collisions');
  }
  if(mode==='safety'||mode==='all'){
