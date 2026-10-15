@@ -194,13 +194,17 @@ try {
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch]});
   await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',null,{timeout:8000});
   const held=(await pressState()).left;
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch,opposite]});
+  // CDP's default Chromium path dispatches changed contacts only; [touch,opposite]
+  // needlessly re-sends the held contact. Add only the second finger here.
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[opposite]});
   await page.waitForFunction(()=>{
     const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
     return l?.getAttribute('aria-pressed')==='false'&&r?.getAttribute('aria-pressed')==='true';
   },null,{timeout:8000});
   const laterThumbWins=await pressState();
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[touch]});
+  // The touchEnd list names the touch being RELEASED, not the one left held.
+  // Releasing id=101 here accidentally cancelled the left thumb in the old test.
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[opposite]});
   await page.waitForFunction(()=>{
     const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
     return l?.getAttribute('aria-pressed')==='true'&&r?.getAttribute('aria-pressed')==='false';
