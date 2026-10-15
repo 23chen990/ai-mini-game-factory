@@ -3,6 +3,7 @@ import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemClea
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
 import { WrongWayRecovery } from './recovery.mjs';
+import { RivalPressure } from './rival-pressure.mjs';
 
 export class RacingCareer {
   constructor(storage, legacyBest = {}) {
@@ -17,7 +18,7 @@ export class RacingCareer {
     this.index = STAGES.findIndex((_, i) => !stageUnlocked(this.progress, i));
     this.index = this.index < 0 ? STAGES.length - 1 : Math.max(0, this.index - 1);
     this.dailySnapshot = null;
-    this.auto = new AutoItems();this.passes = new OvertakeTracker();this.recovery = new WrongWayRecovery();
+    this.auto = new AutoItems();this.passes = new OvertakeTracker();this.recovery = new WrongWayRecovery();this.pressure = new RivalPressure();
     this.config = null;this.tap = null;this.fuelEnabled = false;this.adBusy = false;this.attempt = 0;
     this.startedAt = Date.now();this.active = false;this.notice = [];this.boss = null;
     this.metrics = this.freshMetrics();
@@ -25,7 +26,7 @@ export class RacingCareer {
   get stage() { return this.dailySnapshot ?? STAGES[this.index]; }
   canDaily() { return (this.progress.stars['04'] ?? 0) > 0; }
   setDaily(date = new Date()) { if (!this.canDaily()) return false;this.dailySnapshot = dailyStage(date);return true; }
-  freshMetrics() { return { pickups: 0, bonusItems: 0, rescues: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, knockoutWarnings: 0, timeAllowance: 0 }; }
+  freshMetrics() { return { pickups: 0, bonusItems: 0, rescues: 0, pursuitWarnings: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, knockoutWarnings: 0, timeAllowance: 0 }; }
   save() {
     try {
       this.storage.setItem(CAREER_KEY, JSON.stringify(this.progress));
@@ -51,7 +52,7 @@ export class RacingCareer {
   begin(game) {
     this.active = true;this.boss = null;this.bossName = '';this.notice = [];this.metrics = this.freshMetrics();
     this.metrics.timeAllowance = this.stage.kind === 'relay' ? this.stage.baseTime : this.stage.kind === 'time' ? this.stage.target : 0;
-    this.auto.reset();this.passes.reset();this.recovery.reset();
+    this.auto.reset();this.passes.reset();this.recovery.reset();this.pressure.reset();
     this.passes.previous = game.standings.indexOf(game.player) + 1;
     this.passes.lastCrashes = game.player?.stats?.crash ?? 0;
     // Skilled fields lost to 6–9 wall impacts; raise only the middle band.
@@ -146,6 +147,11 @@ export class RacingCareer {
       this.passes.reset();this.passes.previous = game.standings.indexOf(game.player)+1;
       this.notice.push(rescue === 'recovered' ? '↻ 已自动回正，继续向前！' : '↻ 已脱离护栏，继续向前！');
       return null; // Native reset must never register a synthetic overtake.
+    }
+    const pursuing = this.pressure.frame(game, this.stage);
+    if (pursuing) {
+      m.pursuitWarnings++;
+      this.notice.push('⚡ '+pursuing.name+' 发起追击 · 后方'+pursuing.gap+'m');
     }
     const distance = track.length * this.stage.laps;
     if (this.passes.frame(game)) {
