@@ -180,7 +180,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        passed:entryMobile.panelFits&&entryMobile.smallFits&&b.cards===3&&b.selected===1&&
          b.autoFireTutorial&&b.allWithinPanel&&b.startHeight>=48&&
          b.facts.some(x=>/M4A1/.test(x))&&b.facts.some(x=>/3枪/.test(x))&&
-         b.facts.some(x=>/12m/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
+         b.facts.some(x=>/8m/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
        detail:b});
    }
    const startBox=await page.locator('#mk-start').boundingBox();
@@ -367,7 +367,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      fpsExtendedChecks.push({name:'cf-v6-result-ui',
        passed:facts.facts.length===3&&
          /^追击\d+ \/ 3/u.test(facts.facts[0])&&
-         /^换位\d+ \/ 12 m/u.test(facts.facts[1])&&
+         /^换位\d+ \/ 8 m/u.test(facts.facts[1])&&
          facts.phase==='finished'&&!facts.activeGuide&&resultLayout,
        detail:facts});
    }
@@ -377,7 +377,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const target=await page.locator('#mk-fps-results').textContent();
      fpsExtendedChecks.push({name:'cf-v7-legitimate-multistage-success',
        passed:phase==='finished'&&resultOutcome==='won'&&
-         /追击3 \/ 3/u.test(target)&&/换位12 \/ 12 m/u.test(target),
+         /追击3 \/ 3/u.test(target)&&/换位8 \/ 8 m/u.test(target),
        detail:{phase,outcome:resultOutcome,missionResults:target,
          reachedMoveStage:fpsRepositionScreenshot,
          reachedManualStage:fpsManualScreenshot,
