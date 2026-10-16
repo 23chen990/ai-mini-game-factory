@@ -138,7 +138,7 @@ test('道具车道提示使用真实仍可拾取的原生盒子坐标，不看�
   left.g.visible=true;left.respawn=0;player.lat=4.5;
   game.track.curvAhead=()=>.03;assert.match(roadHint(game),/左急弯/,'dangerous curve always takes priority');
   game.track.curvAhead=()=>0;game.state='paused';assert.equal(roadHint(game),'');
-  player.items=['nitro','shield'];
+  game.state='race';player.items=['nitro','shield'];
   assert.equal(roadHint(game),'','full item slots should not falsely promise a collectible');
   player.items=[];
   assert.equal(left.respawn,0,'read-only hint cannot change pickup availability');
