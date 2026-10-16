@@ -121,7 +121,7 @@ for(const [id,map] of [['13','city'],['16','aegean']]){
  * and exposes an actual pace gap for difficulty tuning.
  */
 function nativeAceSkill(stage) {
-  if(stage.kind==='boss')return stage.id==='16'?1.45:1.58;
+  if(stage.kind==='boss')return stage.id==='16'?2.10:2.04;
   const range=stage.diff===0?[.55,.75]:stage.diff===1?[.85,1.05]:[1.2,1.38];
   const field=Array.from({length:5},(_,i)=>({
     isPlayer:false,skill:range[0]+(range[1]-range[0])*i/4
@@ -166,7 +166,7 @@ for(const stage of STAGES){
  * narrowing later stages did not strand the catchable/slower rivals.
  */
 report.fieldPace={};
-for(const id of ['02','07','11','15']){
+for(const id of STAGES.map(s=>s.id)){
   const stage=STAGES.find(x=>x.id===id),layout=revised[stage.course];
   const srcRange=stage.diff===0?[.55,.75]:stage.diff===1?[.85,1.05]:[1.2,1.38];
   const cars=Array.from({length:5},(_,i)=>({
@@ -174,6 +174,7 @@ for(const id of ['02','07','11','15']){
   }));
   tuneOpponentField(cars,stage);
   seedCompetitiveField(cars,stage);
+  if(stage.kind==='boss')cars[0].skill=stage.id==='16'?2.10:2.04;
   if(stage.kind==='overtake')for(const car of cars.slice(0,2))
     car.skill=Math.max(car.skill,1.12);
   const entrants=cars.map((car,i)=>({
