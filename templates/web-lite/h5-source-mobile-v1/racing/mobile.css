@@ -17,6 +17,11 @@ html[data-race-mobile] #timebox { position:absolute;left:50%;top:calc(var(--race
 html[data-race-mobile] #timebox .t { font:650 19px/1.2 system-ui;letter-spacing:.4px;font-variant-numeric:tabular-nums;text-shadow:none; }
 html[data-race-mobile] #minimap { right:calc(var(--race-right) + 62px);top:var(--race-top);bottom:auto;width:80px;height:80px;padding:0;background:#07172d70;border:1px solid #ffffff26;border-radius:12px;box-shadow:none;backdrop-filter:none; }
 html[data-race-mobile] #gaugebox { position:absolute;left:50%;right:auto;bottom:calc(var(--race-bottom) + 6px);top:auto;transform:translateX(-50%);width:clamp(170px,26vw,250px);height:27px;display:flex;gap:7px;align-items:center;padding:5px 9px;background:#07172da6;border:1px solid #ffffff24;border-radius:10px;box-shadow:none;backdrop-filter:none; }
+/* Item races cannot charge ordinary nitro in the pinned native rules.
+   An always-empty gauge wrongly suggests an unavailable action. */
+html[data-race-mobile][data-race-item-mode="true"] #gaugebox {display:none!important;}
+html[data-race-mobile][data-race-item-mode="true"] #race-progress {bottom:calc(var(--race-bottom) + 10px);}
+
 html[data-race-mobile] #gaugelbl { font:600 10px/1 system-ui;color:#ecf4ff; }
 html[data-race-mobile] #gauge { flex:1;height:5px;border:0;border-radius:4px;background:#ffffff24;min-width:50px; }
 html[data-race-mobile] #gaugefill { height:100%;border-radius:4px;background:linear-gradient(90deg,#42cddd,#b7fff0);box-shadow:none; }
