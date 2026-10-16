@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TRACK_RESHAPES, CAREER_COURSE_MAPS, applyTrackDesign } from '../racing/track-design.mjs';
+import { TRACK_RESHAPES, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, careerCourseDetails, createRaceTrackTheme, buildRaceLandmarks, applyTrackDesign } from '../racing/track-design.mjs';
 import { WrongWayRecovery } from '../racing/recovery.mjs';
 import { roadHint } from '../racing/road-coach.mjs';
 import { chooseCornerSigns, installCornerSigns, disposeCornerSigns } from '../racing/corner-signs.mjs';
@@ -301,4 +301,49 @@ test('V3.6 gives each of the 16 career stages an independent drivable spline ide
   assert.notDeepEqual(layouts['race-03'].points,layouts['race-01'].points);
   assert.notDeepEqual(layouts['race-16'].points,layouts['race-07'].points);
   assert.deepEqual(applyTrackDesign(layouts),{city:38,aegean:34,egypt:32,snow:31});
+});
+
+
+test('V3.7 keeps sixteen FULL hand-authored outlines, not 4 routes with a few point edits',()=>{
+  const layouts=fixture();
+  applyTrackDesign(layouts);
+  assert.equal(Object.keys(COURSE_BLUEPRINTS).length,16);
+  const titles=new Set(),raw=new Set();
+  for(let n=1;n<=16;n++){
+    const id=String(n).padStart(2,'0'),d=careerCourseDetails(id),p=layouts['race-'+id].points;
+    assert.ok(d?.title && d?.feel && d?.biome && d?.english,'real course identity '+id);
+    assert.equal(titles.has(d.title),false,'same name reused for distinct stage');
+    titles.add(d.title);
+    assert.equal(p.length>=12&&p.length<=28,true,id+' full independent sketch');
+    const key=JSON.stringify(p);assert.equal(raw.has(key),false,'duplicate road geometry '+id);raw.add(key);
+    assert.deepEqual(p[0],layouts[d.biome].points[0],'all route starts stay within source environment');
+    const coords=new Set(p.slice(1).map(x=>x.slice(0,2).join(',')));
+    assert.ok(coords.size>=11,'no cosmetic 2-3 point variant '+id);
+  }
+  assert.equal(titles.size,16);
+  assert.equal(raw.size,16);
+  for(const id of ['03','05','07','09','12','15','16'])
+    assert.notDeepEqual(layouts['race-'+id].points,
+      layouts[careerCourseDetails(id).biome].points,'no old four-map reuse '+id);
+});
+
+test('V3.7 source-themed pickup placement follows REAL route, and native four-scene demo remains usable',()=>{
+  const source=Object.freeze({
+    road:'original',boostPads:[{at:[-120,-151],lat:-4},{at:[205,-8],lat:4}],
+    tunnels:[{from:[-110,-52],to:[-235,-40]}],
+  });
+  const physics={length:2300,N:1500,ds:2300/1500,
+    slope:new Float32Array(1500),curvAhead(d){return .003+Math.sin(d/300)*.002;}};
+  const testTheme=createRaceTrackTheme(source,physics,'race-12');
+  assert.notEqual(testTheme,source);
+  assert.equal(testTheme.boostPads.length,source.boostPads.length);
+  assert.deepEqual(testTheme.boostPads.map(p=>p.lat),[-4,4]);
+  assert.ok(testTheme.boostPads.every(p=>!('at' in p)&&p.f>.07&&p.f<.94));
+  assert.equal(testTheme.tunnels.length,1);
+  assert.ok(testTheme.tunnels[0].f1>testTheme.tunnels[0].f0);
+  assert.deepEqual(source.boostPads.map(p=>p.at),[[-120,-151],[205,-8]]);
+  assert.equal(createRaceTrackTheme(source,null,'city'),source,'pinned four-scene initial game demo');
+  assert.throws(()=>createRaceTrackTheme(source,physics,'race-99'),/unverified stage track/);
+  const demo=buildRaceLandmarks({Group:class { constructor(){this.children=[];} }},null,'city');
+  assert.deepEqual(demo.children,[]);
 });
