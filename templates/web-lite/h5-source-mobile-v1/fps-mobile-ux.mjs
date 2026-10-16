@@ -554,12 +554,23 @@ export function createFpsMobileUx(game, root, doc) {
       }
     }
   };
+  const releaseNativeFire=()=>{
+    if(game.player?.touch){
+      game.player.touch.fire=false;
+      game.player.touch.firePressed=false;
+    }
+  };
   const onTouchEnd=e=>{
     markTouch();
+    const hadFireFinger=fireDragTouches.size>0;
     for(const t of e.changedTouches||[]){
       aimTouchStarts.delete(t.identifier);
       fireDragTouches.delete(t.identifier);
     }
+    // The upstream button listens to touchend, not touchcancel.
+    // Clear the native fire flag on either ending path, even after a dragged
+    // thumb leaves the button or the operating system interrupts the gesture.
+    if(hadFireFinger&&fireDragTouches.size===0)releaseNativeFire();
   };
   // The pinned desktop Player.bind() fires a bullet on canvas mousedown.
   // Browsers synthesize mousedown after short touch-aim gestures unless this
@@ -973,7 +984,9 @@ export function createFpsMobileUx(game, root, doc) {
       drill=cfAdvanceDrill(activeChallenge);
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
-      autoAimActor=null;autoAimSince=0;autoFireActive=false;playerEngaged=false;aimTouchStarts.clear();
+      autoAimActor=null;autoAimSince=0;autoFireActive=false;
+      playerEngaged=false;aimTouchStarts.clear();fireDragTouches.clear();
+      releaseNativeFire();
       guide.textContent = activeChallenge?.elite===true
         ? '⚡ 精英：自己瞄准开火'
         : activeChallenge?.kind === 'kills'
@@ -1053,6 +1066,9 @@ export function createFpsMobileUx(game, root, doc) {
       }
       if (!active) {
         if (activeChallenge?.kind==='hits') p.mouse.l=false;
+        if(fireDragTouches.size>0) {
+          releaseNativeFire();fireDragTouches.clear();
+        }
         autoAimActor=null;autoFireActive=false;
         target.hidden = true; guide.hidden = true; clearMarkers(); return;
       }
@@ -1148,7 +1164,7 @@ export function createFpsMobileUx(game, root, doc) {
       doc.removeEventListener('touchcancel',onTouchEnd,true);
       doc.removeEventListener('mousedown',stopCompatibilityMouse,true);
       doc.removeEventListener('mouseup',stopCompatibilityMouse,true);
-      aimTouchStarts.clear();fireDragTouches.clear();
+      aimTouchStarts.clear();fireDragTouches.clear();releaseNativeFire();
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
