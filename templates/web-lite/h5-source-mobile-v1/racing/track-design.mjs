@@ -273,6 +273,39 @@ export function buildRaceLandmarks(THREE,track,course) {
   return group;
 }
 
+
+/**
+ * Distinct daylight/weather palettes per ORIGINAL course. Preserves the pinned
+ * biome meshes and sunlight/shadow physics, only varies authored sky colours.
+ * Together with varying prop RNG seed and 3D landmark pairs, the same biome
+ * no longer looks identical on five different stage roads.
+ */
+const COURSE_SKIES = Object.freeze([
+  ['#419ad3','#c7eafa','#c5e5ef'], // 01 clear city
+  ['#5184c8','#f7d49f','#e5be87'], // 02 desert morning
+  ['#3f528e','#eeadd5','#b990aa'], // 03 overpass at dusk
+  ['#3494c2','#b5e9e2','#86c5d7'], // 04 coastal midday
+  ['#b65e82','#fac995','#d79c7a'], // 05 orange temple sunset
+  ['#305d79','#b2d7d2','#679cac'], // 06 blue-hour city
+  ['#5e80b5','#f5c69c','#a7b8c5'], // 07 sea cliff golden hour
+  ['#668cc6','#e8f6ff','#a7d7f0'], // 08 snow bright
+  ['#a67558','#f5ddb1','#ceb18c'], // 09 desert haze
+  ['#243b76','#cc9ee4','#5c78b7'], // 10 neon twilight
+  ['#558aa3','#d3e7ea','#92c4ce'], // 11 coastal mist
+  ['#5c759f','#d5efff','#93b7d4'], // 12 glacier cold
+  ['#2c497c','#a4b9d9','#547b9e'], // 13 city late evening
+  ['#866ec2','#f9bd96','#c39891'], // 14 dunes violet sunset
+  ['#525b9b','#ccd6ff','#9cafe1'], // 15 polar dusk
+  ['#37486e','#dfc5df','#9d9fb9'], // 16 cliff final hour
+]);
+export function createRaceSky(sky,course) {
+  if(TRACK_RESHAPES[course])return sky; // native demo
+  const n=Number(course?.slice(5));
+  if(!Number.isInteger(n)||n<1||n>16||!sky)throw Error('Unknown stage sky');
+  const [top,horizon,bottom]=COURSE_SKIES[n-1];
+  return {...sky,top,horizon,bottom};
+}
+
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
 export function applyTrackDesign(layouts) {
   const report = {};
