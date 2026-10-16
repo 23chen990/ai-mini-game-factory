@@ -160,12 +160,40 @@ for(const stage of STAGES){
       ?+((guided.elapsedSec-ace.elapsedSec)/ace.elapsedSec*100).toFixed(1):null
   };
 }
+/** Small fixed-seed SOLO-AI trials for the whole competitive pack.
+ * This is not a six-car actual race and has NO opponent contact, collisions
+ * with other racers, items or real player responses. It validates that
+ * narrowing later stages did not strand the catchable/slower rivals.
+ */
+report.fieldPace={};
+for(const id of ['02','07','11','15']){
+  const stage=STAGES.find(x=>x.id===id),layout=revised[stage.course];
+  const srcRange=stage.diff===0?[.55,.75]:stage.diff===1?[.85,1.05]:[1.2,1.38];
+  const cars=Array.from({length:5},(_,i)=>({
+    isPlayer:false,skill:srcRange[0]+(srcRange[1]-srcRange[0])*i/4,
+  }));
+  tuneOpponentField(cars,stage);
+  seedCompetitiveField(cars,stage);
+  if(stage.kind==='overtake')for(const car of cars.slice(0,2))
+    car.skill=Math.max(car.skill,1.12);
+  const entrants=cars.map((car,i)=>({
+    skill:car.skill,
+    ...nativeAiRun(layout,car.skill,stage.laps,2026101700+Number(id)+i),
+  }));
+  const late=report.courses[id].late;
+  report.fieldPace[id]={
+    raceId:id,entrants,
+    beatPrivilegedLate:late.status==='FINISHED'
+      ?entrants.filter(x=>x.status==='FINISHED'&&x.elapsedSec<late.elapsedSec).length : null,
+    note:'SOLO simulations with distinct seeded AICars and no racer-on-racer traffic; NOT a measured human finish rank',
+  };
+}
 report.courseAudit={independentCourseCount:Object.keys(report.courses).length,
   guidedCompletions:Object.values(report.courses).filter(c=>c.guided.status==='FINISHED').length,
   lateCompletions:Object.values(report.courses).filter(c=>c.late.status==='FINISHED').length,
   aceCompletions:Object.values(report.courses).filter(c=>c.ace.status==='FINISHED').length,
   methodology:'Privileged guided/late controllers vs native unmodified AICar with fixed pre-race seed on actual courses; no collisions, race tactics, or adaptive rubber; never a human win-rate or full campaign',
-  noRankTampering:true};
+  noRankTampering:true,packProbeCount:Object.keys(report.fieldPace).length};
 
 const out=path.join(run,'artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
@@ -175,6 +203,9 @@ console.log(JSON.stringify({buildHash:report.buildHash,physics:'pinned PlayerCar
     name,{original:series.original.guided.manual,
       reshaped:series.reshaped.guided.manual,
       late:series.reshaped.late.manual}])),courseAudit:report.courseAudit,
+  fieldPace:Object.fromEntries(Object.entries(report.fieldPace).map(([id,v])=>
+    [id,{soloSkills:v.entrants.map(x=>x.skill),soloFinishTimes:v.entrants.map(x=>x.elapsedSec),
+      beatPrivilegedLate:v.beatPrivilegedLate}])),
   stagePace:Object.fromEntries(Object.entries(report.courses).map(([id,c])=>[id,{
     guided:c.guided.status==='FINISHED'?c.guided.elapsedSec:c.guided.status,
     late:c.late.status==='FINISHED'?c.late.elapsedSec:c.late.status,

@@ -163,8 +163,14 @@ export function careerCourseDetails(id) {
   };
 }
 const parseLocalRoute = entry => entry.split(' ').map(part => part.split(',').map(Number));
+/** Physical road width is part of the actual native Track collider.
+ * Beginner 01/03/04 retain broad learning roads; later stages demand
+ * repeatable line placement, with a 18m floor for human recoverability.
+ * No invisible barriers, cosmetic width, or per-player adaptation. */
 export const COURSE_ROAD_WIDTHS = Object.freeze({
-  '02':20, '05':18.5, '07':19.5, '11':18,
+  '02':20, '05':18.5, '06':21, '07':19.5, '08':20.5,
+  '09':20, '10':19.5, '11':18, '12':19, '13':19,
+  '14':18.5, '15':18.5, '16':18,
 });
 export function createCareerLayouts(layouts) {
   const fingerprints=new Set(),titles=new Set();

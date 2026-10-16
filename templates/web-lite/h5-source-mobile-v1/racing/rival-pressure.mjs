@@ -51,9 +51,16 @@ export function seedCompetitiveField(racers,stage){
   const field=racers.filter(r=>r&&!r.isPlayer&&Number.isFinite(r.skill));
   if(!field.length)return {adjusted:0,ace:false};
   const sorted=[...field].sort((a,b)=>a.skill-b.skill);
+  // From stage 06 onward, one easy rival and one approachable rival stay
+  // available, while the upper pack clusters closer to the fastest car.
+  // Rank 3 is now contested by multiple actual native AI drivers, not one
+  // super-fast leader above an otherwise passive queue. No rubber banding.
+  const tightPack=Number(id)>=6&&sorted.length>=3;
   for(let index=0;index<sorted.length;index++){
     const fraction=sorted.length===1?1:index/(sorted.length-1);
-    const skill=band[0]+(band[1]-band[0])*fraction;
+    const upperPressure=tightPack ? .24*Math.sin(Math.PI*fraction) : 0;
+    const weight=Math.min(1,fraction+upperPressure);
+    const skill=band[0]+(band[1]-band[0])*weight;
     sorted[index].skill=+skill.toFixed(4);
   }
   return {adjusted:sorted.length,ace:true,minimum:band[0],maximum:band[1]};

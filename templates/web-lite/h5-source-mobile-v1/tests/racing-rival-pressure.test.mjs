@@ -150,3 +150,41 @@ test('actual RacingCareer bridge removes leader slowdown but restores native beh
   assert.equal(game.rubber(opponent),.88,'outside the race the original function is restored');
   assert.equal(nativeCalls.length,3,'native callable is preserved and only bypassed during career AI updates');
 });
+
+test('V4.7 middle and late game contest the podium with three strong native racers',()=>{
+  const stage={id:'11',course:'race-11',diff:2,kind:'overtake'};
+  const player={isPlayer:true,s:41,progress:125,lat:1};
+  const five=Array.from({length:5},(_,i)=>rival({
+    skill:1.2+i*.045,progress:25+i*10,s:32+i,lat:i-2,
+  }));
+  const field=[player,...five];
+  const before=field.map(r=>({s:r.s,progress:r.progress,lat:r.lat}));
+  const seeded=seedCompetitiveField(field,stage);
+  assert.equal(seeded.adjusted,5);
+  assert.equal(seeded.maximum,COMPETITIVE_FIELD_V42['11'][1]);
+  assert.equal(five[0].skill,COMPETITIVE_FIELD_V42['11'][0]);
+  assert.equal(five[4].skill,COMPETITIVE_FIELD_V42['11'][1]);
+  const band=seeded.maximum-seeded.minimum;
+  assert.ok(five[2].skill>seeded.minimum+band*.70,'third AI has upper-pack skill');
+  assert.ok(five[3].skill>seeded.minimum+band*.90,'second-fastest is close to ace');
+  assert.ok(five[1].skill<seeded.minimum+band*.45,'a catchable midpack rival remains');
+  assert.deepEqual(field.map(r=>({s:r.s,progress:r.progress,lat:r.lat})),before,
+    'no fake velocity/position/lane, no change to player');
+  const snapshot=five.map(r=>r.skill);
+  seedCompetitiveField(field,stage);
+  assert.deepEqual(five.map(r=>r.skill),snapshot,'fixed grid strength stays stable');
+});
+
+test('V4.7 preserves progressive opening: early tutorial/speed grids never get compressed',()=>{
+  for(const id of ['02','03','04','05']){
+    const rivals=Array.from({length:5},(_,i)=>rival({skill:.55+i*.045}));
+    const {minimum,maximum}=seedCompetitiveField(rivals,{id,course:'race-'+id});
+    assert.equal(rivals[2].skill,+((minimum+maximum)*.5).toFixed(4),id);
+    assert.equal(rivals[4].skill,maximum);
+  }
+  for(const id of ['01','13','16']){
+    const racers=[rival({skill:1.25,progress:350})];
+    assert.deepEqual(seedCompetitiveField(racers,{id,course:'race-'+id}),{adjusted:0,ace:false});
+    assert.equal(racers[0].skill,1.25,'boss/tutorial special-case remains untouched');
+  }
+});
