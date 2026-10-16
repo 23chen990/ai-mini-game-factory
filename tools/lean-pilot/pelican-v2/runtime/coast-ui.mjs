@@ -6,6 +6,7 @@ import {createReviveController,reviveAvailable,reviveOfferVisible,terminalDispos
 import {upcomingHazards,pathRiskAtPosition} from './safety.mjs';
 import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient,heldSteerDistance} from './feel.mjs';
 import {selectFishCue,fishRoadZ,allStars,nextStarTip,starRequirements,masteryStatus,coastBeat} from './engagement.mjs';
+import {failureSummary,safeGateCue,passedPreviousFailure} from './retry-loop.mjs';
 import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound,adAllowed} from './reward-engine.mjs';
 import {requestRewardedVideo} from './reward-adapter.mjs';
 
@@ -27,6 +28,8 @@ export function createCoastAdventure(api) {
  let save=newSave(),progress=newProgress(),storage=true;
  try{save=loadSave(localStorage.getItem(SAVE))??save;progress=loadProgress(localStorage.getItem(REWARD),'pelican-bike')??progress;}catch{storage=false;}
  let run=null,round=null,selected=save.unlocked,lastPhase='ready',eventCursor=0,feedbackUntil=0,settledAt=0,now=performance.now(),sound=false,hudLast='',lastRadar='',pausedBySystem=false;
+ // Session-only attempt marker: never adds an invisible hazard or adjusts difficulty.
+ const lastFailure=new Map();let replayTarget=null,replayTargetCleared=false;
  let heldSteer=null,heldKeySteer=null;
  let quality={tier:2,pr:Math.min(window.devicePixelRatio||1,1.5)},manualQuality='balanced',lowSeconds=0;
  const persist=()=>{try{localStorage.setItem(SAVE,JSON.stringify(save));localStorage.setItem(REWARD,saveProgress(progress,'pelican-bike'));}catch{storage=false;}$('storage').textContent=storage?'本机保存关卡进度 · 广告未接入 · H5 开发试玩':'存储不可用，本次可玩，关卡进度无法保存';};
@@ -78,7 +81,9 @@ export function createCoastAdventure(api) {
  function bankTerminal(){if(!run||run.phase!=='finished'||!settle(save,run))return false;round.score=run.rewardScore;finishRound(round,progress);persist();return true;}
  function begin(id=selected){
   reviveController.invalidate();bankTerminal();
-  selected=id;run=newRun(id);round=startRound(progress,run.level.seconds*1000);eventCursor=0;lastPhase='running';hudLast='';lastRadar='';settledAt=0;cameraReady=false;pausedBySystem=false;
+  selected=id;run=newRun(id);replayTarget=lastFailure.get(id)??null;replayTargetCleared=false;
+  $('replay').textContent='↻ 重开当前关卡';$('replay').classList.remove('primary');$('replay').classList.add('secondary');
+  round=startRound(progress,run.level.seconds*1000);eventCursor=0;lastPhase='running';hudLast='';lastRadar='';settledAt=0;cameraReady=false;pausedBySystem=false;
   for(const g of hazards.values())g.visible=false;for(const f of fishes){f.mesh.visible=false;f.active=false;}fishSlots.clear();
   Object.assign(S,{started:true,paused:false,distance:0,lane:0,laneTarget:0,laneV:0,prevLaneV:0,latAcc:0,lean:0,steer:0,yaw:0,crank:0,wheel:0,y:0,vy:0,airborne:false,trick:0,trickT:0,wheelie:0,speed:run.level.speed,fish:0,golden:0,time:0,t:0});
   Object.assign(settings,{autopilot:false,cruise:run.level.speed,hour:run.level.hour,timeFlow:false,cloud:run.level.weather==='rain'?.78:.35,fog:run.level.weather==='rain'?1.08:.8,music:sound});
@@ -86,15 +91,16 @@ export function createCoastAdventure(api) {
   document.body.classList.add('started');root.classList.remove('crashing');rider.rotation.set(0,0,0);pelican.root.rotation.z=0;audio.mute(!sound);rainGroup.visible=run.level.weather==='rain'&&quality.tier>0;finishRoot.visible=true;$('crash').classList.remove('active');$('title').textContent=id+' · '+run.level.name;
   phase('running');persist();
    const intro=run.level.weather==='rain'?'🌧 雨天转向稍慢，提前看路况':run.level.weather==='dusk'?'🌙 暮色金鱼更亮，提前留意危险车道':'按住左右可自由骑，连续捕鱼还有连击分！';
-   notice(id===1?'🐟 第一条鱼在前方':'🐟 本关挑战开始',intro,'tutorial');
+   notice(replayTarget==null?(id===1?'🐟 第一条鱼在前方':'🐟 本关挑战开始'):'⚡ 再试一次',replayTarget==null?intro:`上次在 ${Math.floor(replayTarget)} 米失误 · 这次试着超过它`,'tutorial');
  }
  function pause(system=false){if(run?.phase!=='running')return;input(run,'pause');S.paused=true;pausedBySystem=system;audio.mute(true);$('heading').textContent=system?'回来啦，继续出发':'沿途歇一歇';$('copy').textContent='已暂停，路程与倒计时都停住了。';phase('paused');persist();}
  function resume(){if(run?.phase!=='paused')return;input(run,'resume');S.paused=false;pausedBySystem=false;audio.mute(!sound);phase('running');}
  function choose(){if(run?.phase==='running')pause();reviveController.invalidate();bankTerminal();run=null;round=null;S.paused=true;S.started=false;phase('ready');$('heading').innerHTML='鹈鹕<br>海岸冒险';$('title').textContent='鹈鹕海岸冒险';$('copy').textContent='挑战每关三星 · 追逐奖励金鱼，刷新个人纪录。';$('start').textContent='▶ 出发 · '+LEVELS[selected-1].name;routes();}
  function terminal(){
   if(terminalDisposition(run,adsAvailable())==='settle'&&!bankTerminal())return;S.paused=true;settledAt=now;audio.mute(true);phase('finished');
-  const reasons={vehicle:'撞到汽车了',barrier:'碰到了低矮路障','fish-short':'抵达终点，鱼还没抓够','gold-short':'抵达终点，还缺少金鱼',timeout:'时间到了',complete:'海岸这一站，完成！'};
-  $('heading').textContent=run.reason==='complete'?(run.stars===3?'🏆 三星达成！':run.stars===2?'★★ 二星通关！':'★ 成功抵达！'):reasons[run.reason];
+  if(['vehicle','barrier'].includes(run.reason)&&Number.isFinite(run.distance))lastFailure.set(run.level.id,run.distance);
+  const recap=run.reason==='complete'?null:failureSummary(run);
+  $('heading').textContent=run.reason==='complete'?(run.stars===3?'🏆 三星达成！':run.stars===2?'★★ 二星通关！':'★ 成功抵达！'):recap.title;
   const earned=allStars(save),best=save.best?.[run.level.id-1];
   if(run.reason==='complete'){
    const icons='★'.repeat(run.stars);
@@ -102,7 +108,10 @@ export function createCoastAdventure(api) {
     `⚡ 本局得分 ${run.rewardScore} · 历史最高 ${best?.score??run.rewardScore}`,
     `${run.stars===3?'本关满星，继续挑战捕鱼连击纪录':nextStarTip(run.level,run)} · 最长 ${best?.streak??run.bestStreak} 连`,
     `全海岸 ${earned}/15 星 · ${run.level.id<5?'下一站已解锁':'全部五关已解锁'}`].join('\n');
-  }else $('copy').textContent=run.reason==='vehicle'?'🚗 汽车不能跳过。看见红色车道预警后，提前换道。':run.reason==='barrier'?'↟ 跳过去有奖励金鱼，绕开也可以安全前进。':run.reason==='timeout'?'行人碰撞会停车 3 秒，但倒计时继续。留意斑马线。':`🐟 已抓 ${run.count}/${run.level.goal.count} 条 · 金鱼 ${run.gold}/${run.level.goal.gold}。下次沿着发光的鱼走，留意红色危险车道。`;
+  }else $('copy').textContent=recap.body;
+  $('replay').textContent=run.reason==='complete'?'↻ 再冲三星':recap.retryLabel;
+  $('replay').classList.toggle('primary',run.reason!=='complete');
+  $('replay').classList.toggle('secondary',run.reason==='complete');
   $('next').textContent=run.level.id<5?'下一关 · '+LEVELS[run.level.id].name+' →':'海岸已完成';
   if(run.reason==='vehicle'||run.reason==='barrier'){root.classList.add('crashing');$('crash').classList.add('active');rider.rotation.x=0;notice('💥 '+(run.reason==='vehicle'?'撞车了':'没越过路障'),'轻点重开，马上再试','collision');}
   $('revive').disabled=!adsAvailable();$('revive').textContent=adsAvailable()?'▶ 观看完整广告复活一次':'▶ 观看完整广告复活（尚未接入）';$('ad').disabled=false;$('ad').textContent='自愿观看广告 · 额外补给（未接入）';
@@ -217,6 +226,9 @@ export function createCoastAdventure(api) {
   if(run)advance(run,dt);syncRidePose(S,run);
   if(run){
    while(eventCursor<run.events.length){const e=run.events[eventCursor++];if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',e.first&&run.level.id===1?'下一条鱼偏右，轻点 ▶ 或右拖微调':`${e.count} / ${run.level.goal.count} 条`, e.comboPoints?'combo':'catch');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','near-miss');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
+   if(run.phase==='running'&&!replayTargetCleared&&passedPreviousFailure(run.distance,replayTarget)){
+    replayTargetCleared=true;notice('⚡ 超过上次失误点！',`已骑 ${Math.floor(run.distance)} 米 · 继续看前方空路`,'combo');
+   }
    if(run.phase==='finished'&&lastPhase!=='finished')terminal();lastPhase=run.phase;
   }
  }
@@ -262,7 +274,8 @@ export function createCoastAdventure(api) {
   $('radar').classList.toggle('active',!!next||!!fish);$('radar-label').hidden=!next&&!fish;
   const prizeAhead=next?.obstacle.kind==='barrier'&&run.fishes.some(f=>f.bonus&&!f.caught&&f.sourceObstacleId===next.obstacle.id&&f.x-run.distance<50);
   const betweenLanes=fish&&Number.isFinite(fish.z)&&Math.min(...LANES.map(z=>Math.abs(z-fish.z)))>.2;
-   $('radar-label').textContent=currentRisk?'⚠️ 当前路线接近障碍 · 向旁边微调':next?.obstacle.kind==='pedestrian'?'前方有人横穿 · 提前避开红色车道':prizeAhead?'前方路障 · 跳过去追奖励金鱼（也可绕开）':(betweenLanes?'🐟 鱼在道线之间 · 按住或拖动微调':'前方路况 · 红色危险车道');
+   const gateCue=safeGateCue(lanes);
+  $('radar-label').textContent=gateCue??(currentRisk?'⚠️ 当前路线接近障碍 · 向旁边微调':next?.obstacle.kind==='pedestrian'?'前方有人横穿 · 提前避开红色车道':prizeAhead?'前方路障 · 跳过去追奖励金鱼（也可绕开）':(betweenLanes?'🐟 鱼在道线之间 · 按住或拖动微调':'前方路况 · 红色危险车道'));
 
   const barrier=upcoming.find(h=>h.obstacle.kind==='barrier'&&h.obstacle.lane===run.laneIndex&&h.seconds>.15&&h.seconds<=1.45);
   const jumpButton=root.querySelector('[data-action="jump"]');
