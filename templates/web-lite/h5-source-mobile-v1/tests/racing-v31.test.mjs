@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TRACK_RESHAPES, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, careerCourseDetails, createRaceTrackTheme, buildRaceLandmarks, applyTrackDesign } from '../racing/track-design.mjs';
+import { TRACK_RESHAPES, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, careerCourseDetails, createRaceTrackTheme, createRaceSky, buildRaceLandmarks, applyTrackDesign } from '../racing/track-design.mjs';
 import { WrongWayRecovery } from '../racing/recovery.mjs';
 import { roadHint } from '../racing/road-coach.mjs';
 import { chooseCornerSigns, installCornerSigns, disposeCornerSigns } from '../racing/corner-signs.mjs';
@@ -346,4 +346,19 @@ test('V3.7 source-themed pickup placement follows REAL route, and native four-sc
   assert.throws(()=>createRaceTrackTheme(source,physics,'race-99'),/unverified stage track/);
   const demo=buildRaceLandmarks({Group:class { constructor(){this.children=[];} }},null,'city');
   assert.deepEqual(demo.children,[]);
+});
+
+test('V3.7 every career track has a distinct sky palette without changing demo scene config',()=>{
+  const original=Object.freeze({top:'#112233',horizon:'#445566',bottom:'#778899',sunColor:'#ffffff'});
+  const skies=[];
+  for(let n=1;n<=16;n++){
+    const id='race-'+String(n).padStart(2,'0');
+    const sky=createRaceSky(original,id);
+    assert.notEqual(sky,original);
+    assert.equal(sky.sunColor,original.sunColor);
+    skies.push([sky.top,sky.horizon,sky.bottom].join('/'));
+  }
+  assert.equal(new Set(skies).size,16);
+  assert.equal(createRaceSky(original,'snow'),original,'native demo keeps original weather');
+  assert.throws(()=>createRaceSky(original,'race-99'),/Unknown stage sky/);
 });
