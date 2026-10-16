@@ -181,14 +181,14 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit #race-ready {margin-bottom:8px;}
 #race-kit #race-ready label {font-weight:800;color:#c6e8ed;}
 #race-kit #race-stage {position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;padding:0;}
-#race-kit #race-stage-grid {flex:0 0 100%;width:100%;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;margin-top:2px;}
+#race-kit #race-stage-grid {flex:0 0 100%;width:100%;display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:5px;margin-top:0;}
 #race-kit #race-stage-grid button {min-width:0;height:33px;padding:3px 1px;border-radius:9px;border:1px solid #83b9c744;background:#0a2a3dd9;color:#cce8ee;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;box-shadow:inset 0 1px 0 #ffffff10;transition:transform .08s,border-color .12s,background .12s;}
 #race-kit #race-stage-grid button b {font-size:10px;line-height:1;font-variant-numeric:tabular-nums;}
 #race-kit #race-stage-grid button span {font-size:8px;line-height:1;color:#91b5c3;letter-spacing:-.2px;white-space:nowrap;}
 #race-kit #race-stage-grid button[aria-pressed="true"] {border-color:#ffce70;background:linear-gradient(145deg,#25455a,#15374b);color:#fff2c7;box-shadow:0 0 0 1px #ffd46a33,0 5px 12px #0003;}
 #race-kit #race-stage-grid button:active:not(:disabled) {transform:translateY(1px) scale(.98);}
 #race-kit #race-stage-grid button:disabled {opacity:.34;cursor:default;}
-#race-kit #race-stage-grid .race-daily-stage {grid-column:1/-1;height:29px;flex-direction:row;gap:8px;border-style:dashed;color:#a9dbe1;}
+#race-kit #race-stage-grid .race-daily-stage {grid-column:auto;height:33px;flex-direction:column;gap:1px;border-style:dashed;color:#a9dbe1;}
 
 #race-kit .race-actions {flex-wrap:wrap;gap:8px;}
 #race-kit .race-actions button:first-child:not([hidden]),#race-kit #race-next:not([hidden]) {background:linear-gradient(120deg,#ffd27d,#ffae4d);color:#172631;border:1px solid #ffe7ac;box-shadow:0 5px 16px #ff9a3933;letter-spacing:.6px;}
@@ -238,18 +238,18 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
     grid-template-areas:"tag course" "title course" "guide course"
       "ready ready" "goal goal" "fuel fuel" "actions actions" "note note";
     grid-template-rows:auto auto auto auto auto auto auto auto;
-    gap:3px 14px;padding:12px 19px;text-align:left;align-content:center;
+    gap:2px 12px;padding:8px 16px;text-align:left;align-content:center;
   }
   #race-kit[data-phase="ready"] #race-panel>.race-eyebrow {grid-area:tag;}
   #race-kit[data-phase="ready"] #race-heading {grid-area:title;margin:0;font-size:25px;}
   #race-kit[data-phase="ready"] #race-guide {grid-area:guide;justify-content:flex-start;gap:8px;margin:0;}
   #race-kit[data-phase="ready"] #race-guide p {font-size:11px;line-height:1.3;}
   #race-kit[data-phase="ready"] #race-guide small {font-size:10px;}
-  #race-kit[data-phase="ready"] #race-course-card {grid-area:course;margin:0;min-height:85px;align-self:stretch;}
-  #race-kit[data-phase="ready"] #race-ready {grid-area:ready;justify-content:flex-start;gap:5px 8px;margin:4px 0 0;}
-  #race-kit[data-phase="ready"] #race-stage-goal {grid-area:goal;margin:3px 0;}
-  #race-kit[data-phase="ready"] #race-fuel-box {grid-area:fuel;margin:1px 0 3px;justify-content:flex-start;}
+  #race-kit[data-phase="ready"] #race-course-card {grid-area:course;margin:0;min-height:68px;align-self:stretch;}
+  #race-kit[data-phase="ready"] #race-ready {grid-area:ready;justify-content:flex-start;gap:3px 8px;margin:0;}
+  #race-kit[data-phase="ready"] #race-stage-goal {grid-area:goal;margin:0;font-size:11px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {grid-area:fuel;margin:0;justify-content:flex-start;}
   #race-kit[data-phase="ready"] .race-actions {grid-area:actions;justify-content:flex-start;}
-  #race-kit[data-phase="ready"] #race-note {grid-area:note;min-width:0;margin:3px 0 0;}
-  #race-kit[data-phase="ready"] .race-actions button {min-height:41px;}
+  #race-kit[data-phase="ready"] #race-note {grid-area:note;display:none;}
+  #race-kit[data-phase="ready"] .race-actions button {min-height:39px;}
 }
