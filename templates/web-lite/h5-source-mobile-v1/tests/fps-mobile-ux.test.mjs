@@ -410,14 +410,14 @@ test('CF v7 retains genuine partial move across native respawns but never credit
 
 test('CF novice opening opponent returns fire from readable cover before a later real rush',()=>{
  const novice={kind:'hits',drill:'reposition',elite:false};
- assert.equal(cfScoutHoldSeconds(novice),18);
+ assert.equal(cfScoutHoldSeconds(novice),26);
  assert.equal(cfScoutHoldSeconds({kind:'hits',elite:false}),7);
  assert.equal(cfScoutHoldSeconds({kind:'kills'}),20);
  assert.equal(cfScoutHoldSeconds({kind:'survive'}),7);
  assert.equal(cfScoutHoldSeconds({...novice,elite:true}),3);
  assert.equal(cfScoutHoldSeconds({kind:'kills',elite:true}),7);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:18},17.99),false);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:18},18),true);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:26},25.99),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:26},26),true);
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:false,__mobileTrainingHoldUntil:18},22),false);
 });
 
@@ -448,4 +448,21 @@ test('CF flank coach proposes a real reachable side route, never fabricates an o
  assert.equal(cfFlankWaypoint({player,world:openWorld,nav:badNav}),null,
   'path requiring a huge detour is not advertised as safe');
  assert.equal(cfFlankWaypoint({player,nav:openNav}),null);
+});
+
+
+test('CF follow-up fire gets limited aim friction only when the novice actively shoots',()=>{
+ const near={yawError:.17,pitchError:.12,distance:16,
+   visible:true,firing:true,sniperReady:true};
+ assert.deepEqual(mobileAimCorrection({...near,training:false}),{yaw:0,pitch:0});
+ const assisted=mobileAimCorrection({...near,training:true});
+ assert.ok(assisted.yaw>0&&assisted.yaw<=.025);
+ assert.ok(assisted.pitch>0&&assisted.pitch<=.019);
+ for(const value of [{firing:false},{visible:false},{distance:28},
+  {yawError:.21},{pitchError:.15},{sniperReady:false}]){
+  assert.deepEqual(mobileAimCorrection({...near,...value,training:true}),{yaw:0,pitch:0});
+ }
+ // This function changes only view angles; the original gun still requires
+ // actual fire input, line-of-sight and a native bullet-hit callback.
+ assert.ok(!('hit' in assisted) && !('fire' in assisted));
 });
