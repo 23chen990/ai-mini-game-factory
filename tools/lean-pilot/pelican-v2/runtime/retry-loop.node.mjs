@@ -17,7 +17,7 @@ test('authored high-pressure routes retain stable legacy obstacles and a physica
   assert.equal(level.obstacles.length,legacy[level.id]+authored.length);
   const escapes=[];
   for(const rows of gates){
-   const occupied=new Set(rows.map(([distance,kind,lane])=>lane));
+   const occupied=new Set(rows.map(([, , lane])=>lane));
    assert.equal(occupied.size,2,'each gated encounter blocks two different lane centers');
    const free=[0,1,2].filter(l=>!occupied.has(l));
    assert.equal(free.length,1,'every squeeze has one visible safe escape');
