@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -506,4 +506,17 @@ test('CF holding a native bot lane never moves the actor or changes health/weapo
  assert.equal(cfStabilizeNoviceScout({...actor,__mobileTrainingScout:false},novice),false);
  assert.equal(cfStabilizeNoviceScout(actor,{...novice,elite:true}),false);
  assert.equal(cfStabilizeNoviceScout(actor,{kind:'survive'}),false);
+});
+
+
+test('CF visible-aim tutorial indicates only camera-confirmed on-screen swipe, never invisible tracking',()=>{
+ assert.equal(cfVisibleAimCoach(-.65,0),'← 左滑视角，对准红色敌人');
+ assert.equal(cfVisibleAimCoach(.65,0),'→ 右滑视角，对准红色敌人');
+ assert.equal(cfVisibleAimCoach(0,.46),'↑ 上滑视角，对准敌人');
+ assert.equal(cfVisibleAimCoach(0,-.46),'↓ 下滑视角，对准敌人');
+ assert.equal(cfVisibleAimCoach(0,0),'◎ 准星接近敌人 · 按住开火');
+ for(const a of [NaN,Infinity,-Infinity,undefined]){
+  assert.equal(cfVisibleAimCoach(a,0),'');
+  assert.equal(cfVisibleAimCoach(0,a),'');
+ }
 });

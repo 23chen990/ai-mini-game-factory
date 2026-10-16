@@ -344,6 +344,17 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
   return null;
 }
 
+/** Only camera-visible and actually unobstructed marker positions may
+ * generate novice aiming directions. No actor tracking behind walls. */
+export function cfVisibleAimCoach(x,y) {
+  if(!Number.isFinite(x)||!Number.isFinite(y))return '';
+  if(x<=-0.23)return '← 左滑视角，对准红色敌人';
+  if(x>=0.23)return '→ 右滑视角，对准红色敌人';
+  if(y>=0.30)return '↑ 上滑视角，对准敌人';
+  if(y<=-0.30)return '↓ 下滑视角，对准敌人';
+  return '◎ 准星接近敌人 · 按住开火';
+}
+
 export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady, training=false }) {
   const limitYaw=training?0.19:0.14,limitPitch=training?0.13:0.105;
   if (!visible || !firing || sniperReady === false ||
@@ -607,6 +618,7 @@ export function createFpsMobileUx(game, root, doc) {
   let drill = null, drillStageAt = 0, flankGoal = null, flankDeaths = -1;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
   let routePath = null, routeLastAt = 0, lastVisibleEnemy = null;
+  let visibleAimCoach = '';
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
 
@@ -846,6 +858,7 @@ export function createFpsMobileUx(game, root, doc) {
   }
 
   function clearMarkers() {
+    visibleAimCoach='';
     for (const el of markers.values()) el.hidden = true;
   }
 
@@ -853,6 +866,8 @@ export function createFpsMobileUx(game, root, doc) {
     const p = game.player, cam = game.renderer?.camera;
     if (!p?.alive || !cam || !game.world) { clearMarkers(); return; }
     const shown = new Set();
+    visibleAimCoach='';
+    let closestAim=Infinity;
     for (const actor of game.actors || []) {
       if (teamSide(p.team, actor.team) !== 'enemy' || !actor.alive || !actor.soldier) continue;
       // A projected head location is not enough: an obstruction ray is required.
@@ -877,6 +892,13 @@ export function createFpsMobileUx(game, root, doc) {
         projected=pos;break;
       }
       if(!projected)continue;
+      if(activeChallenge?.drill==='reposition'&&drill?.stage===2){
+        const delta=Math.hypot(projected.x,projected.y);
+        if(delta<closestAim){
+          closestAim=delta;
+          visibleAimCoach=cfVisibleAimCoach(projected.x,projected.y);
+        }
+      }
       // The projected marker passed both camera-frustum and LOS raycast tests:
       // remembering this location is equivalent to a real player's sighting.
       if(activeChallenge?.drill==='reposition')
@@ -1058,9 +1080,11 @@ export function createFpsMobileUx(game, root, doc) {
             (turn?' · 沿可走路线':' · 左右横移');
         } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
           const turn=!seen?routeArrow(p,routePath):null;
-          guide.textContent=turn
-            ? turn.symbol+' 返回交火位置 · 手动追击 '+drill.follow+'/'+activeChallenge.target
-            : seen ? '◎ 对准红色目标按开火 · '+drill.follow+'/'+activeChallenge.target
+          guide.textContent=seen
+            ? (visibleAimCoach||'◎ 对准红色目标按开火')+
+              ' · '+drill.follow+'/'+activeChallenge.target
+            : turn
+              ? turn.symbol+' 返回交火位置 · 手动追击 '+drill.follow+'/'+activeChallenge.target
               : '↑ 寻找上次见到的敌人 · '+drill.follow+'/'+activeChallenge.target;
         } else if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
@@ -1076,7 +1100,7 @@ export function createFpsMobileUx(game, root, doc) {
       // player has not yet found a target. It never sits on the reticle.
       guide.hidden = !p.alive ||
         (activeChallenge?.drill==='reposition'&&drill?.stage>0
-          ? drill.stage===2&&elapsed-drillStageAt>7&&
+          ? drill.stage===2&&drill.follow>0&&elapsed-drillStageAt>7&&
             [...markers.values()].some(el=>!el.hidden)
           : (p.stats?.hits ? elapsed>5 : elapsed>16&&elapsed%12>3));
     },
