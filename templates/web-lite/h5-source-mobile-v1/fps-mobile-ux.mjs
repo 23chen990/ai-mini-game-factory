@@ -68,6 +68,29 @@ export function cfScoutHoldSeconds(challenge) {
   return challenge?.kind==='hits'&&challenge.drill==='reposition'
     ? Math.ceil((challenge.limitMs||60000)/1000)+5 : 7;
 }
+/** Original Bot instances use native death/rebirth and gun physics.
+ * Only this beginner drill authors a nearby, walkable team respawn lane.
+ */
+export function cfTrainingRespawnSpots(first,second=null) {
+  if(!first||![first.x,first.z,first.yaw].every(Number.isFinite))return [];
+  const spawns=[{x:first.x,z:first.z,yaw:first.yaw}];
+  if(second&&[second.x,second.z,second.yaw].every(Number.isFinite)){
+    const gap=Math.hypot(first.x-second.x,first.z-second.z);
+    if(gap>=3&&gap<=18)spawns.push({x:second.x,z:second.z,yaw:second.yaw});
+  }
+  return spawns;
+}
+/** Stabilize only the opening AI lane objective: bot still strafes and fires,
+ * and we never move a living actor or touch health/hit counters. */
+export function cfStabilizeNoviceScout(actor,challenge) {
+  if(challenge?.elite===true||challenge?.drill!=='reposition'||
+     actor?.__mobileTrainingScout!==true||actor?.alive!==true||
+     !Number.isFinite(actor.pos?.x)||!Number.isFinite(actor.pos?.z))return false;
+  actor.role='hold';actor.goal=[actor.pos.x,actor.pos.z];
+  actor.path=null;actor.pi=0;actor.holdT=0;
+  return true;
+}
+
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
@@ -584,6 +607,7 @@ export function createFpsMobileUx(game, root, doc) {
   let drill = null, drillStageAt = 0, flankGoal = null, flankDeaths = -1;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
   let routePath = null, routeLastAt = 0, lastVisibleEnemy = null;
+  let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
 
   function recolorNativeAllies() {
@@ -645,6 +669,19 @@ export function createFpsMobileUx(game, root, doc) {
         // Scripted level opening: reposition one EXISTING enemy before play,
         // rather than spawning a dummy or giving the player free hits.
         const scout=enemies[0];
+        if(activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true&&
+           Array.isArray(game.map?.spawns?.[scout.team])) {
+          const secondary=chooseFirstEncounterSpot({
+            player:p,world:game.world,nav:game.nav,actors:game.actors,
+            distances:[14,13,12]
+          });
+          const authored=cfTrainingRespawnSpots(spot,secondary);
+          if(authored.length){
+            originalEnemySpawns=game.map.spawns[scout.team];
+            trainingSpawnTeam=scout.team;
+            game.map.spawns[scout.team]=authored;
+          }
+        }
         scout.spawn({x:spot.x,z:spot.z,yaw:spot.yaw});
         scout.onSpawn?.();
         // Hold the first readable sight line briefly; never grant fake hits.
@@ -704,6 +741,8 @@ export function createFpsMobileUx(game, root, doc) {
         actor.__mobileSniperScout=false;
         actor.role='rush';
         actor.pickGoal?.();
+      } else {
+        cfStabilizeNoviceScout(actor,activeChallenge);
       }
       // Only opponents gain expert reaction and aim: allies cannot carry the mission.
       const profile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
@@ -873,6 +912,9 @@ export function createFpsMobileUx(game, root, doc) {
     onSelect(challenge) { updateTutorial(challenge); },
     onStart(challenge) {
       activeChallenge = challenge || null;
+      if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
+        game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
+      originalEnemySpawns=null;trainingSpawnTeam=null;
       drill=cfAdvanceDrill(activeChallenge);
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
@@ -1039,6 +1081,9 @@ export function createFpsMobileUx(game, root, doc) {
           : (p.stats?.hits ? elapsed>5 : elapsed>16&&elapsed%12>3));
     },
     destroy() {
+      if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
+        game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
+      originalEnemySpawns=null;trainingSpawnTeam=null;
       if(activeChallenge?.kind==='hits'&&game.player)game.player.mouse.l=false;
       doc.removeEventListener('touchstart',onTouchStart,true);
       doc.removeEventListener('touchmove',onTouchMove,true);
