@@ -4,7 +4,10 @@ import {makeBarrierPrizes} from './engagement.mjs';
 export {LANES} from './safety.mjs';
 // Authored encounters, shared coast. Distances/timing/content are original to this project.
 const definitions = [
- {id:1,name:'海岸出发',subtitle:'追鱼入门 · 第一关跳过路障可拿奖励金鱼',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[225,'barrier',1]]},
+ {id:1,name:'海岸出发',subtitle:'海岸挑战 · 连续吞鱼、跳障追金鱼、预判车流',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[225,'barrier',1],
+  // V4 authored pressure beats are appended to keep the original obstacle IDs and QA evidence stable.
+  // 75m optional left jump; then a right-vehicle/center-jump decision, later alternating safe gaps.
+  [75,'barrier',0],[118,'car',2],[181,'car',1],[205,'barrier',0],[248,'van',2],[274,'car',1]]},
  {id:2,name:'行人出没',subtitle:'斑马线 · 看行人方向，躲避后追金鱼',mastery:{jumps:1},distance:420,speed:8,seconds:70,goal:{count:12,gold:1},hour:16,weather:'clear',reward:22,rows:[[76,'pedestrian',0],[134,'pedestrian',2],[192,'pedestrian',0],[246,'barrier',1],[298,'pedestrian',2],[356,'barrier',0]]},
  {id:3,name:'危险公路',subtitle:'危险公路 · 汽车换道，路障可跳',mastery:{jumps:1},distance:540,speed:8.8,seconds:82,goal:{count:17,gold:2},hour:15.5,weather:'clear',reward:30,rows:[[100,'car',1],[161,'pedestrian',0],[222,'van',2],[222,'barrier',1],[298,'car',0],[360,'barrier',2],[421,'van',1],[483,'car',2]]},
  {id:4,name:'雨中骑行',subtitle:'雨天路滑 · 提前变道，挑战连续两次跳障',mastery:{jumps:2},distance:630,speed:9.2,seconds:88,goal:{count:20,gold:2},hour:16.4,weather:'rain',reward:38,rows:[[100,'car',1],[162,'pedestrian',2],[225,'van',0],[225,'barrier',1],[294,'car',2],[350,'barrier',1],[410,'car',0],[410,'van',2],[478,'pedestrian',0],[536,'van',1],[593,'barrier',2]]},
@@ -15,7 +18,7 @@ export const BOUNDS = {car:{x:1.5,z:.63},van:{x:1.8,z:.66},pedestrian:{x:.25,z:.
 export function unsafeLanes(obstacles,x) { return unsafeFishLanes(obstacles,x); }
 // Distinct, deterministic reward routes; dangerous lanes always override fish placement.
 const FISH_PATTERNS = [
- [1,1,2,2,1,0,0,1], // gentle tutorial
+ [1,2,0,1,2,0,2,1], // genuine left/right decisions after the first three tutorial fish
  [1,2,2,1,0,0,2,1], // alternating crossings
  [1,0,1,2,2,0,1,2], // vehicles
  [1,2,0,2,0,1,2,1], // rain
@@ -38,6 +41,13 @@ export const LEVELS=definitions.map(d=>{
   const turnRight=fish.find(f=>f.x===31),comeBack=fish.find(f=>f.x===47);
   if(turnRight)Object.assign(turnRight,{lane:2,z:.98});
   if(comeBack)Object.assign(comeBack,{lane:1,z:.35});
+ }
+ // Five authored, safely separated shoal beats give the first level active side routes,
+ // instead of rewarding an idle middle-lane ride. No special fish is auto-collected.
+ if(d.id===1){
+  for(const [x,lane,golden] of [[81,1,false],[117,0,false],[194,2,false],[211,1,false],[253,0,true],[284,2,false]]){
+   if(!unsafeLanes(obstacles,x).has(lane))fish.push({id:`l1-shoal-${x}`,x,lane,golden,shoal:true});
+  }
  }
  // Optional visible golden fish behind barriers; never required for one-star completion.
  fish.push(...makeBarrierPrizes(d.id,obstacles,d.distance));
