@@ -165,6 +165,26 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      {readyMs,viewport,actualHTTP:true,entryMobile});
    await page.locator('#mk-start').tap();actions.push({atMs:Date.now()-started,input:'tap',target:'#mk-start'});
    await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
+   if(isFps){
+     const hud=await page.evaluate(()=>{
+       const meter=document.querySelector('#mobile-kit .mk-meter'),
+         board=document.getElementById('mk-fps-board'),
+         radar=document.getElementById('radarWrap'),
+         pause=document.getElementById('mk-pause');
+       const r=meter.getBoundingClientRect(),a=radar.getBoundingClientRect(),
+         p=pause.getBoundingClientRect();
+       const overlaps=(x,y)=>x.left<y.right&&y.left<x.right&&x.top<y.bottom&&y.top<x.bottom;
+       return {scoreboardHidden:getComputedStyle(board).display==='none',
+         status:document.getElementById('mk-status')?.textContent||'',
+         timer:document.getElementById('mk-time')?.textContent||'',
+         meterVisible:getComputedStyle(meter).display!=='none',
+         inViewport:r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,
+         clearOfRadar:!overlaps(r,a),clearOfPause:!overlaps(r,p)};
+     });
+     fpsExtendedChecks.push({name:'cf-v6-objective-hud',
+       passed:hud.scoreboardHidden&&hud.meterVisible&&hud.inViewport&&
+         hud.clearOfRadar&&hud.clearOfPause,detail:hud});
+   }
    // Beginner duel may legitimately finish on the first manual burst. Verify
    // pause early, before a fast real win hides the button.
    if(isFps){
