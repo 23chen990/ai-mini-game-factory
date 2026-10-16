@@ -493,7 +493,8 @@ html[data-reference-game="cf-transport-ship"] #touch .btn:active{
   transform:scale(.94);filter:brightness(1.18);
 }
 html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]{
-  right:max(18px,env(safe-area-inset-right))!important;
+  /* Give the firing thumb room to drag RIGHT as well as LEFT. */
+  right:max(clamp(67px,11vw,100px),env(safe-area-inset-right))!important;
   bottom:82px!important;width:76px!important;height:76px!important;
   border:2px solid #ffc4a8!important;
   background:radial-gradient(circle at 35% 28%,#e06e5a,#9e302e 70%)!important;
@@ -501,11 +502,11 @@ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]
   font-size:15px!important;font-weight:900!important;
 }
 html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="jump"]{
-  right:max(116px,calc(106px + env(safe-area-inset-right)))!important;
+  right:max(190px,calc(180px + env(safe-area-inset-right)))!important;
   bottom:51px!important;
 }
 html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="scope"]{
-  right:max(117px,calc(108px + env(safe-area-inset-right)))!important;
+  right:max(200px,calc(190px + env(safe-area-inset-right)))!important;
 }
 html[data-reference-game="cf-transport-ship"] #toast{
   max-width:160px!important;padding:3px 7px!important;
