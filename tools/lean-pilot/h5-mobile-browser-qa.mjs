@@ -371,14 +371,35 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          const moved=dist>0.5&&look>0.01;
          // Keep the original combat, button layout, and offscreen checks.
          const d=controlCheck.detail;
-         const layout=d.layout;
-         const layoutOkay=!layout.overlap&&layout.desktopMenuHidden&&layout.labelsPresent&&
+         // The beginner may actually win before its original control snapshot.
+         // Re-capture, rather than reusing FINISHED-state buttons, and demand
+         // every original full-size/visibility/no-overlap condition in RUNNING.
+         const layout=await page.evaluate(()=>{
+           const actions=['fire','jump','reload','scope','duplicate-fire','crouch','switch'];
+           const nodes=actions.map(action=>{
+             const e=document.querySelector('#touch .btn[data-mk-action="'+action+'"]');
+             if(!e)return {action,visible:false};
+             const r=e.getBoundingClientRect(),cs=getComputedStyle(e);
+             return {action,visible:cs.display!=='none'&&cs.visibility!=='hidden',
+               left:r.left,top:r.top,width:r.width,height:r.height,
+               fits:r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight};
+           });
+           const visible=nodes.filter(n=>n.visible);
+           const overlap=visible.some((a,i)=>visible.slice(i+1).some(b=>
+             a.left<b.left+b.width&&b.left<a.left+a.width&&
+             a.top<b.top+b.height&&b.top<a.top+a.height));
+           return {actions:nodes,overlap,active:document.documentElement.dataset.fpsActive,
+             desktopMenuHidden:getComputedStyle(document.getElementById('menu')).display==='none',
+             labelsPresent:!!document.getElementById('mk-fps-target')&&!!document.getElementById('mk-fps-board')};
+         });
+         const layoutOkay=layout.active==='true'&&!layout.overlap&&layout.desktopMenuHidden&&layout.labelsPresent&&
            layout.actions.every(n=>!n.visible||n.fits)&&
            ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible))&&
            ['duplicate-fire','crouch','switch'].every(a=>layout.actions.some(n=>n.action===a&&!n.visible));
          controlCheck.passed=(d.shotsAfter>d.shotsBefore)&&layoutOkay&&moved;
-         controlCheck.detail={...d,thumbMotion:moved,firstWinEndedBeforeOriginalAudit:true,
+         controlCheck.detail={...d,layout,thumbMotion:moved,firstWinEndedBeforeOriginalAudit:true,
            movementVerifiedIn:'AWM challenge after real first win',
+           layoutVerifiedIn:'AWM challenge during actual running gameplay',
            separateMissionMeters:dist,separateMissionYawRad:look};
          await shot('mobile-sniper-thumb-audit');
        }
