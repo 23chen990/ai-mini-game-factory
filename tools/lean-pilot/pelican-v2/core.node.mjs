@@ -67,7 +67,7 @@ test('authored courses have a no-hit path meeting distance and fish/type goals a
     else if(fish&&!blocked(fish.lane))want=fish.lane;
     if(want!==r.laneIndex)input(r,want<r.laneIndex?'left':'right');
    }advance(r,dt);
-  }assert.equal(r.reason,'complete',`level ${level.id} at ${dt}: ${r.reason}`);assert.equal(r.hits,0);}
+  }assert.equal(r.reason,'complete',`level ${level.id} at ${dt}: ${r.reason}; collision=${r.lastCollisionId} dist=${r.distance.toFixed(1)} lane=${r.lane.toFixed(2)}`);assert.equal(r.hits,0);}
 });
 test('camera tracks forward distance in a floating world, ignores jump height and follows lane gently',()=>{
  const a=cameraPose(0,390/844),b=cameraPose(1.7,390/844);
