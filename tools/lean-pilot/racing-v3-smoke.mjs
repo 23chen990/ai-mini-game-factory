@@ -125,6 +125,14 @@ async function raceStart(page, index, name) {
     padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
     trackSamples:window.game?.track?.N ?? 0,
     cornerSigns:window.game?.__RACE_CORNER_SIGNS__?.sprites?.length ?? 0,
+    eligibleCornerSamples:(()=>{
+      const t=window.game?.track;if(!t?.curv)return 0;
+      let n=0;for(let i=0;i<t.N;i+=8){
+        const d=i*t.ds;
+        if(d>=170&&d<=t.length-140&&Math.abs(t.curv[i])>=.012)n++;
+      }
+      return n;
+    })(),
     shortcut:!!window.game?.track?.__RACE_SHORTCUT__,
     shortcutGain:window.game?.track?.__RACE_SHORTCUT__?.gain ?? 0,
     shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
@@ -180,8 +188,12 @@ async function raceStart(page, index, name) {
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
   if(index===0 && early.shortcut)
     fail(name+': tutorial may not silently contain a shortcut');
-  if(!early.nativeThreeLoaded || early.cornerSigns<2 || early.cornerSigns>7)
-    fail(name+': lightweight native Three.js corner signage did not mount: '+JSON.stringify(early));
+  // A deliberately smooth beginner oval has no sharp-corner signs. Any track
+  // containing native curvature above the sign threshold must still show one.
+  if(!early.nativeThreeLoaded || early.cornerSigns>7 ||
+     (early.eligibleCornerSamples>0 && early.cornerSigns<1) ||
+     (early.eligibleCornerSamples===0 && early.cornerSigns!==0))
+    fail(name+': true native-corner signage count differs from road geometry: '+JSON.stringify(early));
   if(index===4 && (early.itemBoxes!==8 || early.itemShape!=='IcosahedronGeometry' || early.itemBillboards!==1 || !early.questionOverlay))
     fail('native V3.1 item boxes must be diamond + visible question billboard: '+JSON.stringify(early));
   if(index===4){
