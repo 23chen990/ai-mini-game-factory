@@ -168,7 +168,7 @@ export class RacingCareer {
     const pursuing = this.pressure.frame(game, this.stage);
     if (pursuing) {
       m.pursuitWarnings++;
-      this.notice.push('⚡ '+pursuing.name+' 发起追击 · 后方'+pursuing.gap+'m');
+      this.notice.push('⚡ '+pursuing.name+' 干净出弯，准备加速');
     }
     const distance = track.length * this.stage.laps;
     if (this.passes.frame(game)) {
