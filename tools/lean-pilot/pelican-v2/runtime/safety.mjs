@@ -63,3 +63,12 @@ export function upcomingHazards(run) {
   return run.obstacles.map(o => hazardForecast(o, run)).filter(Boolean)
     .sort((a, b) => a.seconds - b.seconds);
 }
+// A successfully caught jump fish should not leave the rider guessing about
+// another quickly approaching vehicle in the same lane. This uses only the
+// public lane forecast, never an invented/adaptive collision.
+export function rewardExitWarning(run){
+ if(!run||!Number.isInteger(run.laneIndex)||!Array.isArray(run.obstacles))return null;
+ const vehicle=upcomingHazards(run).find(h=>['car','van'].includes(h.obstacle.kind)&&
+   h.lanes.includes(run.laneIndex)&&h.seconds<=SAFE_LANE_WARNING_SECONDS);
+ return vehicle?'⚠️ 前方来车 · 及时换到空车道':null;
+}
