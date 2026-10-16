@@ -42,7 +42,7 @@ try { storageRef = localStorage; }
 catch { storageRef = { getItem() { throw Error('本地存储不可用'); }, setItem() { throw Error('本地存储不可用'); } }; }
 const career = new RacingCareer(storageRef, best);
 function fuelView() {
-  $('fuel-info').textContent = (career.fuelEnabled ? career.fuelText() : '自由试玩 · 不限油') + (performance.now() < adNoticeUntil ? ' · ' + adNotice : '');
+  $('fuel-info').textContent = (career.fuelEnabled ? career.fuelText() : career.storageOK ? '自由试玩 · 不限油' : '存储不可用 · 本次不限油') + (performance.now() < adNoticeUntil ? ' · ' + adNotice : '');
   const metered = career.fuelEnabled, empty = metered && !career.canStart();
   $('fuel-gauge').hidden = !metered;
   $('fuel-gauge').setAttribute('aria-valuenow', String(career.fuel.amount));
