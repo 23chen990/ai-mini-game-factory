@@ -56,7 +56,7 @@ export function authoredGoldenFishByBarrier(levels){
 export function createRiskPolicyState(levelId,target){
  if(!Number.isInteger(levelId)||levelId<1||levelId>5)throw Error('Unknown risk level '+levelId);
  if(!target||typeof target.barrierId!=='string'||!Number.isFinite(target.distance))throw Error('Risk target requires barrierId and visible distance');
- return {levelId,target:{barrierId:target.barrierId,distance:target.distance},stage:'approach',jumpIssued:false,jumpAtMs:null,lastJumpCountdown:null};
+ return {levelId,target:{barrierId:target.barrierId,distance:target.distance},stage:'approach',jumpIssued:false,jumpAtMs:null,lastJumpCountdown:null,goldAtJump:null};
 }
 
 function moveOneLane(view,state,wantedLane,reason,allowRewardLane=null){
@@ -96,8 +96,13 @@ export function decideRiskAction(view,state){
   // Keep the rider on the prize lane through the actual +9m fish.
   // Fixed wall-time holds delay the next jump when consecutive barriers are 20m apart;
   // require both a minimum verified hold and real HUD progress beyond the fish.
+  // The HUD gold counter is user-visible, unlike hidden model events.
+  // If it rises after clearing the barrier and reaching the +9m prize,
+  // the rider can prepare the next tight turn immediately.
+  const confirmedPrize=Number.isFinite(state.goldAtJump)&&Number.isFinite(view.goldCounter)&&
+   view.goldCounter>state.goldAtJump&&Number.isFinite(view.distance)&&view.distance>=state.target.distance+7;
   const prizePassed=Number.isFinite(view.distance)&&view.distance>=state.target.distance+10;
-  if(nowMs-state.jumpAtMs<CAPTURE_HOLD_MS||!prizePassed)return decision('wait',nextState,'capture-hold',current);
+  if(!confirmedPrize&&(nowMs-state.jumpAtMs<CAPTURE_HOLD_MS||!prizePassed))return decision('wait',nextState,'capture-hold',current);
   nextState.stage='post-capture';
  }
 
@@ -113,6 +118,7 @@ export function decideRiskAction(view,state){
   if(current!==targetLane)return moveOneLane({...view,lanes},nextState,targetLane,'approach-jump-reward',targetLane);
   if(Number.isFinite(countdown)&&countdown<=JUMP_WINDOW_SECONDS){
    nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;nextState.lastJumpCountdown=countdown;
+   nextState.goldAtJump=Number.isFinite(view.goldCounter)?view.goldCounter:null;
    return decision('jump',nextState,'decimal-jump-window',current,countdown);
   }
   return decision('wait',nextState,'wait-for-decimal-jump-window',current,countdown);
