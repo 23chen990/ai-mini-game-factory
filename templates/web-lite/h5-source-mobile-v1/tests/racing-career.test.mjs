@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { STAGES, newCareer, loadCareer, localDayKey, dailyStage, careerStars, stageUnlocked, skinUnlocked, recordStage, gradeStage, validDrift, fractionPassed } from '../racing/career.mjs';
+import { STAGES, newCareer, loadCareer, localDayKey, dailyStage, careerStars, stageUnlocked, skinUnlocked, recordStage, gradeStage, stageFailureFeedback, validDrift, fractionPassed } from '../racing/career.mjs';
 import { thinItemBoxes, installItemCleanup, itemDecision, AutoItems, OvertakeTracker, awardCornerPass, removeEliminatedAi } from '../racing/items.mjs';
 import { RacingCareer } from '../racing/runtime.mjs';
 const result=(n=1)=>({finished:true,place:n,time:90,stats:{crash:1}});
@@ -27,6 +27,27 @@ test('淘汰可视提示显示真实赛段进度、末位危险；过点和换�
   assert.equal(c.eliminationCue(g).fraction,50/350);
   c.metrics.checkpoints=2;assert.equal(c.eliminationCue(g),null);
   c.index=0;assert.equal(c.eliminationCue(g),null);
+});
+
+test('failure diagnosis distinguishes authentic rank, technique and boss losses without awarding a pass',()=> {
+  const cases=[
+    [STAGES[2],result(1),{cleanPasses:0},/有效弯道超车 0\/1/],
+    [STAGES[6],{...result(6),time:97.3},{},/第6名，要求前5名/],
+    [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前4名/],
+    [STAGES[15],result(2),{beatBoss:false},/未超过指定车神/],
+    [STAGES[14],result(4),{pickups:1},/实际拾取道具 1\/3/],
+  ];
+  for(const [stage,r,stats,expected] of cases){
+    const before=JSON.stringify({r,stats});
+    assert.equal(gradeStage(stage,r,stats),0);
+    const advice=stageFailureFeedback(stage,r,stats);
+    assert.match(advice.reason,expected);
+    assert.ok(advice.tip.length>8);
+    assert.equal(JSON.stringify({r,stats}),before,'diagnosis is read-only');
+  }
+  assert.match(stageFailureFeedback(STAGES[11],result(6),{eliminated:true}).reason,/淘汰点/);
+  assert.match(stageFailureFeedback(STAGES[6],{finished:false,completion:.4},{}).reason,/40%/);
+  assert.match(stageFailureFeedback(STAGES[15],result(4),{beatBoss:false}).reason,/要求前3名.*未超过指定车神/);
 });
 
 test('16 staged challenges use four original layouts and eight distinct objectives',()=>{
