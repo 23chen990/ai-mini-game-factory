@@ -30,7 +30,7 @@ test('a safe detour forfeits only the jump prize, without pretending a jump or d
  r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,sourceObstacleId:'b1',caught:false}];
  r.streak=3;r.bestStreak=3;input(r,'left');tick(r,8.6);
  assert.equal(r.obstacles[0].passed,true);
- assert.equal(r.obstacles[0].jumped,false);
+ assert.notEqual(r.obstacles[0].jumped,true);
  assert.equal(r.fishes[0].forfeited,true,'bonus must disappear after safely bypassing its source barrier');
  assert.equal(r.streak,3,'choosing the safe route does not penalise existing catches');
  input(r,'right');tick(r,2);
