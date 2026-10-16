@@ -166,3 +166,21 @@ test('native fork adapters are exact, idempotent and preserve original accelerat
   assert.equal(api.patchShortcutNativeWorld(patched),patched);
   assert.throws(()=>api.patchShortcutNativeWorld('class Unknown {}'),/world anchor changed/);
 });
+
+test('stage-scenery pipeline changes only sky/props, never native car or track physics',()=>{
+  const before=[
+    "const rnd = mulberry32(id.length * 997 + 13);",
+    'const { sky, sunDir } = buildSky(map.sky);',
+    'this.scene.fog = new THREE.Fog(map.fog[0], map.fog[1], map.fog[2]);',
+    'this.scene.background = new THREE.Color(map.sky.horizon);',
+    'const nativeMotion = P.update(dt,input);',
+  ].join('\n');
+  const result=api.patchCourseSkyAndScenery(before);
+  assert.match(result,/stageSeed \* 9176/);
+  assert.match(result,/createRaceSky\(map\.sky,requestedCourse\)/);
+  assert.match(result,/buildSky\(courseSky\)/);
+  assert.match(result,/new THREE\.Fog\(courseSky\.horizon/);
+  assert.match(result,/P\.update\(dt,input\)/,'native physics preserved');
+  assert.equal(api.patchCourseSkyAndScenery(result),result);
+  assert.throws(()=>api.patchCourseSkyAndScenery('broken stage'),/course-light anchor drifted/);
+});
