@@ -136,7 +136,28 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        return r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight;
      });
      entryMobile.smallFits = smallFits;
+     entryMobile.brief = await page.evaluate(() => {
+       const panel=document.querySelector('#mk-panel');
+       const facts=[...document.querySelectorAll('#mk-fps-brief>span')];
+       const cards=[...document.querySelectorAll('#mk-challenges>button')];
+       const tutorial=document.querySelector('#mk-fps-tutorial')?.textContent||'';
+       const start=document.querySelector('#mk-start')?.getBoundingClientRect();
+       const inside = el => {
+         const a=el.getBoundingClientRect(),b=panel.getBoundingClientRect();
+         return a.left>=b.left && a.right<=b.right && a.top>=b.top && a.bottom<=b.bottom;
+       };
+       return {facts:facts.map(el=>el.textContent.trim()),
+         cards:cards.length,selected:cards.filter(el=>el.getAttribute('aria-pressed')==='true').length,
+         autoFireTutorial:/自动开火/.test(tutorial),startHeight:start?.height??0,
+         allWithinPanel:[...facts,...cards].every(inside)};
+     });
      await page.setViewportSize(viewport);
+     const b=entryMobile.brief;
+     fpsExtendedChecks.push({name:'cf-v6-ready-ui',
+       passed:entryMobile.panelFits&&entryMobile.smallFits&&b.cards===3&&b.selected===1&&
+         b.autoFireTutorial&&b.allWithinPanel&&b.startHeight>=48&&
+         b.facts.some(x=>/M4A1/.test(x))&&b.facts.some(x=>/3 次/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
+       detail:b});
    }
    const startBox=await page.locator('#mk-start').boundingBox();
    check('mobile-entry', readyMs<=30000&&startBox?.width>=44&&startBox?.height>=44&&
@@ -284,6 +305,27 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      }else await page.waitForTimeout(1000);
    }
    const phase=await page.locator('#mobile-kit').getAttribute('data-phase'),score=Number(await page.locator('#mk-score').innerText());
+   if(run.theme==='cf-transport-ship'&&phase==='finished'){
+     const facts=await page.evaluate(()=>{
+       const items=[...document.querySelectorAll('#mk-fps-results>span')].map(e=>e.textContent.trim());
+       const game=window.__H5NativeGame,player=game?.player;
+       const kit=document.getElementById('mobile-kit');
+       const panel=document.getElementById('mk-panel');
+       const r=panel.getBoundingClientRect();
+       return {facts:items,actualHits:player?.stats?.hits??null,
+         phase:kit?.dataset.phase,
+         bounds:[r.left,r.top,r.right,r.bottom],
+         viewport:[innerWidth,innerHeight],
+         activeGuide:getComputedStyle(document.getElementById('mk-fps-guide')).display!=='none'};
+     });
+     const resultLayout=facts.bounds[0]>=0&&facts.bounds[1]>=0&&
+       facts.bounds[2]<=facts.viewport[0]&&facts.bounds[3]<=facts.viewport[1];
+     fpsExtendedChecks.push({name:'cf-v6-result-ui',
+       passed:facts.facts.length===3&&
+         facts.facts[0].includes(String(facts.actualHits)+' / 3')&&
+         facts.phase==='finished'&&!facts.activeGuide&&resultLayout,
+       detail:facts});
+   }
    await shot('mobile-terminal');
    const terminal={phase,visibleHeading:await page.locator('#mk-heading').innerText(),score,wallMs:Date.now()-started};
    if(run.theme==='cf-transport-ship'){
