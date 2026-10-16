@@ -6,7 +6,7 @@ import { Buffer } from 'node:buffer';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
 import { SHORTCUT_PLANS, installPhysicalShortcut } from '../../templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs';
-import { applyTrackDesign, CAREER_COURSE_MAPS } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
+import { applyTrackDesign, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, createRaceTrackTheme } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 import { PAD_LANES } from '../../templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs';
 
 const root=process.cwd(), src=path.join(root,'runs/h5-qq-mobile-20261013/workspace/source/qq-speed');
@@ -59,6 +59,7 @@ const maps={};for(const name of Object.keys(original)){
   maps[name]={old:inspect(original[name],name),next:inspect(modified[name],name)};
   if(maps[name].next.maxPadAnchorOffsetM>36) throw Error(name+': new centerline is too far from an existing boost pad anchor');
 }
+const { Track: NativeTrack }=await import(pathToFileURL(path.join(src,'src/track.js')).href);
 const courses={}, fingerprints=new Set();
 for(let i=1;i<=16;i++){
   const id=String(i).padStart(2,'0'),key='race-'+id,map=CAREER_COURSE_MAPS[i-1];
@@ -68,15 +69,27 @@ for(let i=1;i<=16;i++){
   if(fingerprints.has(fingerprint)) throw Error('Duplicated physical stage course '+id);
   fingerprints.add(fingerprint);
   const geometry=inspect(layout,map);
-  if(geometry.sameLevelClosePairs>0 || geometry.maxPadAnchorOffsetM>36 ||
-      geometry.lengthM<1700 || geometry.lengthM>3800)
+  // Original world-coordinate boost-pad anchors must not be used on an
+  // entirely new route: the stage-specific theme uses actual track fractions.
+  const tr=new NativeTrack(layout);
+  const padLanes=(PAD_LANES[map]??[]).map(p=>({lat:p.lat}));
+  const courseTheme=createRaceTrackTheme({boostPads:padLanes,tunnels:map==='city'?[]:[{}]},tr,key);
+  if(courseTheme.boostPads.length!==padLanes.length ||
+      courseTheme.boostPads.some(p=>!Number.isFinite(p.f)||p.f<=.08||p.f>=.93||
+        Math.abs(p.lat)>=tr.halfW-1.5) ||
+      courseTheme.tunnels.some(t=>!(t.f0>0&&t.f1>t.f0&&t.f1<1)))
+    throw Error('Stage-specific speed-pad/tunnel placement is not on the real road: '+id);
+  if(geometry.sameLevelClosePairs>0 ||
+      geometry.lengthM<1700 || geometry.lengthM>3300 ||
+      geometry.sharpPct>22)
     throw Error('Unsafe stage '+id+' physical geometry '+JSON.stringify({
-      collisions:geometry.sameLevelClosePairs,padOffset:geometry.maxPadAnchorOffsetM,length:geometry.lengthM}));
-  courses[id]={scene:map,...geometry};
+      collisions:geometry.sameLevelClosePairs,sharpPct:geometry.sharpPct,length:geometry.lengthM}));
+  courses[id]={scene:map,courseName:COURSE_BLUEPRINTS[id][0],
+    physicalPads:courseTheme.boostPads.map(p=>({f:+p.f.toFixed(4),lat:p.lat})),
+    ...geometry,maxPadAnchorOffsetM:0};
 }
 if(Object.keys(courses).length!==16)throw Error('All 16 stages must have distinct physical courses');
 // Actual pinned Three.js Track projection test, not a simulated race victory.
-const { Track: NativeTrack }=await import(pathToFileURL(path.join(src,'src/track.js')).href);
 const shortcutAudit={};
 for(const course of Object.keys(SHORTCUT_PLANS)){
   const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course);
