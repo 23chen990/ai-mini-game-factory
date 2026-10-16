@@ -3,7 +3,7 @@ import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemClea
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
 import { WrongWayRecovery } from './recovery.mjs';
-import { RivalPressure, tuneOpponentField } from './rival-pressure.mjs';
+import { RivalPressure, tuneOpponentField, configureRivalTactics } from './rival-pressure.mjs';
 
 export class RacingCareer {
   constructor(storage, legacyBest = {}) {
@@ -59,6 +59,7 @@ export class RacingCareer {
     // every car's corner pace, nitro, items and genuine on-road position.
     // Stage 01, bosses and fragile elimination/item objectives stay protected.
     tuneOpponentField(game.racers,this.stage);
+    configureRivalTactics(game.racers,this.stage);
     if (this.stage.kind === 'overtake') {
       // A visible rival survives beyond the first straight without scripted teleportation.
       const challengers = game.racers.filter(r => !r.isPlayer).slice(0, 2);
