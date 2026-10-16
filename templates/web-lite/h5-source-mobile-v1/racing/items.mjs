@@ -131,7 +131,7 @@ export function awardCornerPass(game) {
       p.smallBoost <= 0 && p.nitroTime <= 0;
     if (burst) {
       p.smallBoost = .48;
-      p.smallBoostPower = Math.max(Number.isFinite(p.smallBoostPower) ? p.smallBoostPower : 0, 9);
+      p.smallBoostPower = 9; // Fixed cap: never inherit stale power from an earlier boost.
     }
     return burst ? (gift ? 'item+boost' : 'boost') : (gift ? 'item' : 'none');
   }
