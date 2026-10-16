@@ -251,3 +251,53 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
  #race-action-pad button[data-race-action="nitro"] {bottom:58px;}
  #race-action-pad button[data-race-action="drift"] {height:79px;width:79px;}
 }
+
+/* V4.4 steering wheel: horizontal analog input, familiar circular thumb visual.
+ * The art is intentionally not an 8-way MOBA stick: throttle is automatic. */
+#race-joystick {
+  display:none;position:absolute;left:var(--race-left);bottom:var(--race-bottom);
+  width:clamp(110px,34vh,142px);aspect-ratio:1;touch-action:none;
+  pointer-events:auto;user-select:none;-webkit-user-select:none;
+}
+#race-kit[data-control-mode="classic"] #race-joystick {display:block;}
+#race-kit[data-control-mode="classic"] #race-left,
+#race-kit[data-control-mode="classic"] #race-right {display:none;}
+#race-joystick .race-stick-track {
+  position:absolute;inset:0;border-radius:50%;
+  border:2px solid #b0f0fb82;
+  background:radial-gradient(circle at 50% 45%,#367e934d 0 24%,#133d58b5 70%,#071d32cb 100%);
+  box-shadow:inset 0 0 0 6px #d1f7ff16,0 5px 22px #0006;
+}
+#race-joystick .race-stick-left,
+#race-joystick .race-stick-right {
+  position:absolute;top:50%;transform:translateY(-50%);
+  font:800 29px/1 system-ui;color:#e6faffb3;pointer-events:none;
+}
+#race-joystick .race-stick-left {left:8px;}
+#race-joystick .race-stick-right {right:8px;}
+#race-stick-knob {
+  position:absolute;left:50%;top:50%;width:46%;aspect-ratio:1;border-radius:50%;
+  transform:translate(-50%,-50%);pointer-events:none;
+  border:2px solid #c1f8ffdf;
+  background:radial-gradient(circle at 32% 23%,#c2f9fc96,#62cbdfa6 35%,#145875e9 100%);
+  box-shadow:inset 0 3px 8px #ffffff2b,0 4px 10px #001928ae;
+  transition:transform .12s ease-out;
+}
+#race-joystick.held #race-stick-track {border-color:#bfffff;}
+#race-joystick.held #race-stick-knob {transition:none;box-shadow:0 0 10px #6bdeefaa,0 3px 11px #001928be;}
+#race-joystick.disabled {opacity:.45;pointer-events:none;}
+#race-kit[data-control-mode="assist"] #race-steering-sens,
+#race-kit[data-control-mode="assist"] label[for="race-steering-sens"] {display:none;}
+#race-kit .race-guide-keys span {display:grid;place-items:center;}
+#race-kit[data-control-mode="classic"] .race-guide-keys span {
+  width:51px;height:51px;border-radius:50%;font-size:39px;line-height:1;
+}
+#race-action-pad button:not(.ready):not([data-race-action="drift"]) {
+  border-color:#c4d8e37a;color:#d0e4ed;background:#1c3a4bc7;
+}
+#race-action-pad button.ready {color:#f2fff8;border-color:#99ffe0;}
+@media(max-height:335px) {
+  #race-joystick {width:105px;}
+  #race-action-pad {transform:scale(.88);transform-origin:right bottom;}
+  #race-kit[data-control-mode="classic"] #gaugebox {bottom:calc(var(--race-bottom) + 1px);}
+}
