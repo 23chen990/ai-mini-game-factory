@@ -211,6 +211,15 @@ export function createRaceTrackTheme(theme,track,course) {
     throw Error('Cannot place race decorations on unverified stage track');
   const original=theme?.boostPads??[];
   const isCity=original.length>2, bases=isCity?[.17,.39,.62,.84]:[.27,.67];
+  const stageNumber=Number(course.slice(5));
+  // The physical pad positions and reward lanes change by authored course.
+  // Keep central desert jumps central. A left/right commitment must actually
+  // intersect the real native boost-pad collider; no scripted rewards.
+  const stagePad=(p,i)=>({
+    f:seekStraight((bases[i]??Math.min(.9,.18+i*.19))+
+      (((stageNumber*3+i*5)%7)-3)*.012),
+    lat:(p.lat??0)*((stageNumber+i)%3===2?-1:1),
+  });
   const seekStraight=(fraction)=>{
     const target=track.length*fraction;
     let best=target,score=Infinity;
@@ -225,10 +234,7 @@ export function createRaceTrackTheme(theme,track,course) {
   };
   return {
     ...theme,
-    boostPads:original.map((p,i)=>({
-      f:seekStraight(bases[i]??Math.min(.9,.18+i*.19)),
-      lat:p.lat??0,
-    })),
+    boostPads:original.map(stagePad),
     tunnels:(theme?.tunnels??[]).map((t,i)=>{
       const d=seekStraight(.46+i*.14);
       return {f0:d,f1:Math.min(.96,d+.032)};
