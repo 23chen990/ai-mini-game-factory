@@ -38,8 +38,8 @@ export const COMPETITIVE_FIELD_V42=Object.freeze({
   '11':[1.13,1.52], '12':[1.08,1.44],
   '14':[1.17,1.51], '15':[1.12,1.49],
 });
-const stageNumber=stage=>typeof stage?.course==='string'&&/^race-\\d{2}$/.test(stage.course)
-  ? stage.course.slice(5) : /^\\d{2}$/.test(stage?.id??'')?stage.id:null;
+const stageNumber=stage=>typeof stage?.course==='string'&&/^race-[0-9]{2}$/.test(stage.course)
+  ? stage.course.slice(5) : /^[0-9]{2}$/.test(stage?.id??'')?stage.id:null;
 
 /** Deterministic per-race field. No adaptation after the start, no direct
  * speed/progress updates, and no free nitro. AICar.update still runs unchanged.
