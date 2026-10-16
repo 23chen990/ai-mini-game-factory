@@ -43,6 +43,18 @@ test('visible gold increase after a true +9m jump prize releases the next challe
  const noGold=decide({...early,nowMs:1000+policy.CAPTURE_HOLD_MS-180,distance:213,goldCounter:2,lanes:[lane(),lane(),lane()]},jump.state);
  assert.equal(noGold.reason,'capture-hold','mere proximity is not evidence of earned gold');
 });
+test('a real visible jump reward establishes a stable target through transient ordinary fish HUD cues',()=>{
+ const target={barrierId:'l1-o4',distance:75};
+ const state=policy.createRiskPolicyState(1,target);
+ const radar=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟3.0s'});
+ const initial=decide(view({level:1,distance:53,laneIndex:2,lanes:[radar,lane(),lane()]}),state);
+ assert.equal(initial.action,'left');assert.equal(initial.toLane,1);assert.equal(initial.state.committedRewardLane,0);
+ const transient=decide(view({level:1,distance:58,laneIndex:1,lanes:[lane(),lane(),lane({fish:true})]}),initial.state);
+ assert.equal(transient.action,'left');assert.equal(transient.toLane,0);
+ assert.equal(transient.reason,'continue-confirmed-jump-approach');
+ const unsafe=decide(view({level:1,distance:59,laneIndex:1,lanes:[lane({danger:true,kind:'vehicle',seconds:1}),lane(),lane({fish:true})]}),initial.state);
+ assert.equal(unsafe.action,'wait','never run into a visible vehicle despite the earlier reward commitment');
+});
 test('the policy acts in the early buffered jump window',()=>{
  const s=newState(),earlyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.3s'});
  const lanes=[lane(),earlyReward,lane()];
