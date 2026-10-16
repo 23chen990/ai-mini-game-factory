@@ -220,6 +220,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   #race-kit[data-phase="ready"] #race-panel {
     width:min(700px,calc(100% - var(--race-left) - var(--race-right) - 26px));
     max-height:calc(100% - var(--race-top) - var(--race-bottom) - 8px);
+    overflow:hidden;
     display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
     grid-template-areas:"tag course" "title course" "guide course"
       "ready ready" "goal goal" "fuel fuel" "actions actions" "note note";
