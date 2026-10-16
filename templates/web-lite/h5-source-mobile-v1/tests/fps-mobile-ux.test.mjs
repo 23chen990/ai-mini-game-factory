@@ -360,6 +360,7 @@ test('CF v7 first hit is an assisted tutorial, then mission requires real manual
  assert.match(cfMissionDebrief(c,{hits:5,drillFirstHit:true,drillStage:1,drillTravel:9},'lost'),/9\/12/);
  assert.match(cfMissionDebrief(c,{hits:9,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:2},'lost'),/2\/3/);
  assert.match(cfMissionDebrief(c,{hits:9,deaths:2,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:3},'lost'),/最多允许 1 次/);
+ assert.match(cfMissionDebrief(c,{hits:9,deaths:0,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:3},'won'),/手动追击 3 次/);
 });
 
 
@@ -380,6 +381,9 @@ test('CF reposition cannot be cheesed by stepping back and forth or respawn tele
  d=cfAdvanceDrill(c,d,{hits:9,travel:43.1,x:-2,z:7});
  assert.equal(d.stage,2);assert.ok(d.distance>=12);
  assert.equal(d.hitBaseline,9);
- d=cfAdvanceDrill(c,d,{hits:11,travel:43,x:-15,z:-7});
+ d=cfAdvanceDrill(c,d,{hits:11,travel:43.1,x:-15,z:-7});
  assert.equal(d.follow,2);
+ // Once the position checkpoint is earned, chasing backward doesn't revoke it.
+ d=cfAdvanceDrill(c,d,{hits:11,travel:57.1,x:12,z:7});
+ assert.equal(d.stage,2);assert.ok(d.distance>=12);
 });
