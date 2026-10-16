@@ -32,6 +32,12 @@ let controlMode = 'classic';
 try { controlMode = localStorage.getItem(MODE_STORE) === 'assist' ? 'assist' : 'classic'; } catch { /* Default to classic. */ }
 root.dataset.controlMode = controlMode;
 $('control-mode').value = controlMode;
+function syncModeGuide() {
+  $('guide').querySelector('p').firstChild.textContent = controlMode === 'classic' ? '左手轮盘滑动转向，松手回正' : '按住左右方向键转弯，松手回正';
+  $('guide').querySelector('small').textContent = controlMode === 'classic' ? '右手按漂移，反打回正后点小喷。' : '只管路线，漂移和喷射自动触发。';
+  $('guide').querySelector('.race-guide-keys').firstElementChild.textContent = controlMode === 'classic' ? '◎' : '‹ ›';
+}
+syncModeGuide();
 try { joystick.setSensitivity(localStorage.getItem(SENS_STORE)); } catch { /* Default safe sensitivity. */ }
 $('steering-sens').value = joystick.sensitivity;
 driver.enabled = mobile;
@@ -280,7 +286,7 @@ $('control-mode').addEventListener('change', () => {
   root.dataset.controlMode = controlMode;
   releaseInput();
   try { localStorage.setItem(MODE_STORE,controlMode); } catch { /* Play without storage. */ }
-  $('guide').querySelector('small').textContent = controlMode === 'classic' ? '左手轮盘，右手漂移、小喷和氮气。' : '只管路线。漂移、加速自动触发。';
+  syncModeGuide();
   $('note').textContent = controlMode === 'classic' ? '轮盘反打救车，右手漂移；出弯小喷，集满氮气手动释放' : '漂移和喷射自动触发';
 });
 $('steering-sens').addEventListener('change', () => {
