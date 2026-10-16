@@ -179,24 +179,38 @@ export class TouchActions {
   clear() { this.pointers.clear(); this.pending.clear(); }
 }
 
-/** Classic touch: auto throttle, manual drift / exit spray / earned nitro / item. */
+/** Manual mode preserves full analog player steering; acceleration is automatic.
+ * If a player spins backwards, apply native brake/crawl until steering is viable.
+ * We never alter coordinates, yaw or give free boosts: only native control inputs. */
 export class ManualRaceDriver {
   constructor(actions = new TouchActions()) { this.actions = actions; this.startedPlayers = new WeakSet(); }
-  frame(raw, player, state, { canStep = true, itemMode = false } = {}) {
+  frame(raw, player, state, { canStep = true, itemMode = false, track = null } = {}) {
     if (state !== 'race' || !player || player.finished) { this.actions.clear(); return empty(); }
+    const axis = Number.isFinite(raw.steerAxis) ? Math.max(-1, Math.min(1, raw.steerAxis)) : null;
     const input = {
       ...empty(), up: true,
-      left: !!raw.left, right: !!raw.right,
+      left: axis === null ? !!raw.left : axis > 0.12,
+      right: axis === null ? !!raw.right : axis < -0.12,
       shift: this.actions.isHeld('drift'),
     };
+    if (axis !== null) input.steerAxis = axis;
+    // Spinning at full throttle is not meaningful difficulty when there is no
+    // brake button. Slow down, let the player countersteer, then creep forward.
+    if (track && !player.airborne && player.spin <= 0 && player.wrongWay > 0.35) {
+      const heading = player.proj?.hd ?? track.hd?.[player.hint];
+      const error = Number.isFinite(heading) ? Math.abs(wrap(player.h - heading)) : 0;
+      if (error > 1.65) {
+        input.up = player.s < 4;
+        input.down = player.s > 6;
+      }
+    }
     if (canStep && !this.startedPlayers.has(player)) {
-      input.upPressed = true;
-      this.startedPlayers.add(player);
+      input.upPressed = true; this.startedPlayers.add(player);
     }
     input.wPressed = this.actions.consume('small', canStep);
     input.nitroPressed = this.actions.consume(itemMode ? 'item' : 'nitro', canStep);
-    // Native item-mode uses nitroPressed for item use, so deliver the independent
-    // earned-nitro request to the adapter instead of swallowing player agency.
+    // In item races the native nitroPressed is the item-use key. Do not steal
+    // drift-earned nitro: a separate, one-shot edge consumes earned stock only.
     input.manualNitroPressed = itemMode && this.actions.consume('nitro', canStep);
     return input;
   }
