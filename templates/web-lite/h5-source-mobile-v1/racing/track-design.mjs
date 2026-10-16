@@ -108,6 +108,54 @@ export const COURSE_BLUEPRINTS = Object.freeze({
   '15': ['极地三叶','三连发卡道具','POLAR TRILOBE',0.89,'0,0,0 175,-10,0 355,20,3 445,120,7 430,255,11 350,330,16 260,300,18 235,425,20 340,485,21 340,600,17 215,680,14 75,645,10 10,550,8 -85,615,6 -235,570,4 -290,415,3 -230,285,2 -110,275,1 -80,170,0 -155,65,0'],
   '16': ['悬崖王冠','王冠山岭决战','CLIFFSIDE CROWN',0.86,'0,0,0 185,-10,0 350,5,2 475,80,6 525,205,10 465,300,15 390,295,18 345,410,20 440,485,22 455,605,24 325,695,24 180,680,21 100,605,18 50,470,14 -60,510,12 -175,485,10 -270,360,8 -250,200,5 -145,105,3 -40,140,2 65,75,1'],
 });
+/** V3.8 technical rhythm: two-key-drivable S sectors inserted into 16
+ * independent route blueprints. Values are [ORIGINAL segment, world-metres
+ * lateral offset, side]. We keep the initial straight and existing whole-route
+ * silhouettes; do not change laps, ranking, goals or vehicle physics.
+ *
+ * Each S contains a left-right (or right-left) commitment. These are actual
+ * native spline vertices, not painted arrows or instantaneous steering.
+ * Do not automatically widen/cut guardrails to make difficult turns free.
+ */
+export const COURSE_TECHNICAL_SECTORS=Object.freeze({
+  '01':[[1,14,1],[7,14,-1]],
+  '02':[[1,18,-1],[12,19,1]],
+  '03':[[2,16,1],[10,16,-1]],
+  '04':[[1,18,1],[11,19,-1]],
+  '05':[[1,18,-1],[12,18,1]],
+  '06':[[1,17,1],[18,19,-1],[21,17,1]],
+  '07':[[1,16,-1],[12,16,1]],
+  '08':[[1,17,-1],[16,17,1],[19,15,-1]],
+  '09':[[3,16,1],[13,16,-1]],
+  '10':[[1,18,1],[12,17,-1],[17,16,1]],
+  '11':[[1,17,-1],[11,17,1],[16,16,-1]],
+  '12':[[2,17,1],[12,18,-1],[15,17,1],[17,16,-1]],
+  '13':[[1,18,1],[9,18,-1],[14,18,1]],
+  '14':[[1,17,-1],[11,18,1],[15,17,-1]],
+  '15':[[1,18,1],[10,17,-1],[14,17,1],[19,16,-1]],
+  '16':[[1,18,-1],[9,17,1],[15,18,-1],[17,16,1]],
+});
+export function injectTechnicalSectors(local,courseId,scale) {
+  const items=COURSE_TECHNICAL_SECTORS[courseId];
+  if(!Array.isArray(items)||!Array.isArray(local)||
+     !Number.isFinite(scale)||scale<=0)throw Error('Missing original technical section');
+  const out=local.map(v=>v.slice()),seen=new Set();
+  for(const [index,amplitude,side] of [...items].sort((a,b)=>b[0]-a[0])){
+    if(!Number.isInteger(index)||index<=0||index>=local.length-1||
+       !(amplitude>=12&&amplitude<=28)||![-1,1].includes(side)||
+       seen.has(index))throw Error('Invalid or repeated technical sector '+courseId);
+    seen.add(index);
+    const a=local[index],b=local[index+1],
+      dx=b[0]-a[0],dz=b[1]-a[1],norm=Math.hypot(dx,dz);
+    if(norm*scale<112)throw Error('Technical sector too short for safe two-key steering '+courseId);
+    const nx=-dz/norm,nz=dx/norm,offs=side*amplitude/scale;
+    const first=[a[0]+dx*.31+nx*offs,a[1]+dz*.31+nz*offs,a[2]+(b[2]-a[2])*.31],
+      second=[a[0]+dx*.69-nx*offs,a[1]+dz*.69-nz*offs,a[2]+(b[2]-a[2])*.69];
+    out.splice(index+1,0,first,second);
+  }
+  return out;
+}
+
 export function careerCourseDetails(id) {
   const value=COURSE_BLUEPRINTS[id];return value && {
     title:value[0],feel:value[1],english:value[2],
@@ -123,7 +171,7 @@ export function createCareerLayouts(layouts) {
     if(!base?.__racingV31||!blueprint||!Array.isArray(base.points))
       throw Error('V3.7 requires verified biome and independent course '+id);
     const [title,feel,english,scale,sketch]=blueprint;
-    const local=parseLocalRoute(sketch);
+    const local=injectTechnicalSectors(parseLocalRoute(sketch),id,scale);
     if(!Number.isFinite(scale)||scale<.6||scale>1.2||local.length<12||
        local.length>28||titles.has(title)||!english||!feel||
        local[0].some(n=>n!==0))
