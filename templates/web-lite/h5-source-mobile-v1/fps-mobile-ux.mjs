@@ -233,12 +233,14 @@ export function cfFlankWaypoint({player,world,nav,minDistance=8}) {
   let best=null;
   for(const radius of [required+1.5,required+3.0,required+4.5]) {
     for(const side of [1,-1]) {
-      for(const along of [0,-2,2]) {
+      for(const along of [0,-2]) {
         const tx=x+rightX*radius*side+forwardX*along;
         const tz=z+rightZ*radius*side+forwardZ*along;
         const k=nav.idx(tx,tz);
         if(k<0||!nav.walkable(k)||world.blocked(tx,.05,tz,.38,1.9))continue;
-        const path=nav.findPath(x,z,tx,tz);
+        const path=nav.lineFree?.(x,z,tx,tz)
+          ? [[x,z],[tx,tz]]
+          : nav.findPath(x,z,tx,tz);
         if(!Array.isArray(path)||path.length<2)continue;
         let length=0,valid=true;
         for(let i=1;i<path.length;i++){
@@ -254,8 +256,10 @@ export function cfFlankWaypoint({player,world,nav,minDistance=8}) {
           best={x:tx,z:tz,score,pathLength:length,side};
       }
     }
+    // Do not evaluate distant candidates after finding a nearby legal lane.
+    if(best)return best;
   }
-  return best;
+  return null;
 }
 
 // A genuine, hittable intro opponent placed inside an existing clear cargo
