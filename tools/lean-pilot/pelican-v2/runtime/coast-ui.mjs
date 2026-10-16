@@ -3,7 +3,7 @@ import css from './coast.css';
 import { LEVELS, LANES, BOUNDS } from './levels.mjs';
 import { newRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE } from './adventure.mjs';
 import {createReviveController,reviveAvailable,reviveOfferVisible,terminalDisposition} from './revive-flow.mjs';
-import {upcomingHazards,pathRiskAtPosition} from './safety.mjs';
+import {upcomingHazards,pathRiskAtPosition,rewardExitWarning} from './safety.mjs';
 import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient,heldSteerDistance} from './feel.mjs';
 import {selectFishCue,fishRoadZ,earnedPrizePrecedesRisk,allStars,nextStarTip,starRequirements,masteryStatus,coastBeat} from './engagement.mjs';
 import {failureSummary,safeGateCue,passedPreviousFailure} from './retry-loop.mjs';
@@ -225,7 +225,7 @@ export function createCoastAdventure(api) {
   }
   if(run)advance(run,dt);syncRidePose(S,run);
   if(run){
-   while(eventCursor<run.events.length){const e=run.events[eventCursor++];if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',e.first&&run.level.id===1?'下一条鱼偏右，轻点 ▶ 或右拖微调':`${e.count} / ${run.level.goal.count} 条`, e.comboPoints?'combo':'catch');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','near-miss');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
+   while(eventCursor<run.events.length){const e=run.events[eventCursor++];if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',e.first&&run.level.id===1?'下一条鱼偏右，轻点 ▶ 或右拖微调':(e.bonus&&rewardExitWarning(run))||`${e.count} / ${run.level.goal.count} 条`, e.comboPoints?'combo':'catch');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','near-miss');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
    if(run.phase==='running'&&!replayTargetCleared&&passedPreviousFailure(run.distance,replayTarget)){
     replayTargetCleared=true;notice('⚡ 超过上次失误点！',`已骑 ${Math.floor(run.distance)} 米 · 继续看前方空路`,'combo');
    }
