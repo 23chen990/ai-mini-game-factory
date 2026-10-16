@@ -232,8 +232,12 @@ export function createRaceTrackTheme(theme,track,course) {
     }
     return best/track.length;
   };
+  const paint='#'+COURSE_ACCENTS[stageNumber-1].toString(16).padStart(6,'0');
   return {
     ...theme,
+    // Course-specific road-edge and boost-pad accents remain visible through
+    // the entire physical lap, unlike a single different lobby illustration.
+    curbA:paint,curbB:'#142034',boostColor:paint,
     boostPads:original.map(stagePad),
     tunnels:(theme?.tunnels??[]).map((t,i)=>{
       const d=seekStraight(.46+i*.14);
