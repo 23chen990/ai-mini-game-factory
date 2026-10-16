@@ -41,6 +41,25 @@ export function patchRacingSource(source) {
   return output;
 }
 
+/** Pin a course identity to the ACTUAL Track created by the native scene.
+ * Do not change physics, lap math or race outcomes. Unknown stage IDs must
+ * fail closed instead of silently replaying one of the old four tracks.
+ */
+export function patchCareerRouteSource(source) {
+  const original = 'const track = new Track(LAYOUTS[map.layout], { isBridge: map.isBridge });';
+  const marker = 'track.__RACE_COURSE_ID = requestedCourse;';
+  if (source.includes(marker)) return source;
+  if (source.split(original).length !== 2) throw Error('Pinned native Track constructor changed');
+  const updated = [
+    'const requestedCourse = this.settings.course || map.layout;',
+    'if (!Object.prototype.hasOwnProperty.call(LAYOUTS, requestedCourse))',
+    "  throw Error('Unknown career course: ' + requestedCourse);",
+    'const track = new Track(LAYOUTS[requestedCourse], { isBridge: map.isBridge });',
+    marker,
+  ].join('\n    ');
+  return source.replace(original, updated);
+}
+
 /** Only the procedural DESERT ground away from the road gets stronger dune relief.
  * The pinned buildGround function independently carves a safe corridor around
  * the track; no road, car, AI or collisions are patched by this transform.
@@ -163,7 +182,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchRacingSource(beforeMain)));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCareerRouteSource(patchRacingSource(beforeMain))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
