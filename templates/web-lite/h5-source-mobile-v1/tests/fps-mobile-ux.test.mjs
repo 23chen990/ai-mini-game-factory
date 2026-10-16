@@ -259,3 +259,14 @@ test('elite enemy pressure is stronger than ordinary while maintaining bounded n
    assert.equal(elite.bunny,0.015);
  }
 });
+
+
+test('CF expert copy matches actual shorter deadlines and lower death budgets',()=>{
+ assert.match(mobileChallengeCopy({kind:'hits',elite:true}),/45秒/);
+ assert.match(mobileChallengeCopy({kind:'kills',elite:true}),/75秒/);
+ assert.match(mobileChallengeCopy({kind:'survive',elite:true}),/30米/);
+ assert.match(mobileChallengeCopy({kind:'survive',elite:true}),/阵亡1次/);
+ assert.match(cfMissionDebrief({kind:'hits',target:3,maxDeaths:1,elite:true},{hits:0,deaths:0},'lost'),/手动点按开火/);
+ assert.match(cfMissionDebrief({kind:'hits',target:3,maxDeaths:1,elite:true},{hits:3,deaths:2},'lost'),/最多允许 1 次/);
+ assert.match(cfMissionDebrief({kind:'kills',target:1,maxDeaths:1,elite:true},{hits:2,awmKills:1,deaths:2},'lost'),/被击倒 2 次/);
+});
