@@ -7,7 +7,7 @@ import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS, COURSE_ROAD_WIDTHS,
 // different scenery, extra laps or decorative sector arches.
 const plans = {
   '02': { width: 20, sectors: 3 },
-  '05': { width: 18.5, sectors: 4 },
+  '05': { width: 18.5, sectors: 3 },
   '07': { width: 19.5, sectors: 4 },
   '11': { width: 18, sectors: 4 },
 };
