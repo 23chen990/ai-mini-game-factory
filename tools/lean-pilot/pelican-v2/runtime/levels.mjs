@@ -22,12 +22,12 @@ export const PRESSURE_GATES=Object.freeze({
  2:Object.freeze([
   [112,'barrier',1],[168,'barrier',2],
   [198,'barrier',1],[198,'barrier',2], // left gap
-  [270,'barrier',0],[270,'barrier',1], // right gap
+  [282,'barrier',0],[282,'barrier',1], // right gap
   [331,'barrier',0],[331,'barrier',2], // centre gap
   [390,'barrier',1],[390,'barrier',2], // left gap, final approach
  ]),
  3:Object.freeze([
-  [139,'barrier',1],[139,'car',2], // left gap
+  [155,'barrier',1],[155,'car',2], // left gap
   [270,'car',0],[270,'van',1], // right gap after 222m legacy choke
   [335,'barrier',1],[335,'car',2], // left gap
   [398,'car',0],[398,'van',1], // right gap
