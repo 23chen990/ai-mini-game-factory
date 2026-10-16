@@ -10,7 +10,7 @@ import { Buffer } from 'node:buffer';
 import { pathToFileURL } from 'node:url';
 import { ManualRaceDriver, TouchActions } from '../../templates/web-lite/h5-source-mobile-v1/racing/driver.mjs';
 import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
-import { tuneOpponentField } from '../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs';
+import { tuneOpponentField, seedCompetitiveField } from '../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs';
 import { applyTrackDesign } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 
 const run=path.join(process.cwd(),'runs/h5-qq-mobile-20261013');
@@ -121,12 +121,13 @@ for(const [id,map] of [['13','city'],['16','aegean']]){
  * and exposes an actual pace gap for difficulty tuning.
  */
 function nativeAceSkill(stage) {
-  if(stage.kind==='boss')return stage.id==='16'?1.35:1.58;
+  if(stage.kind==='boss')return stage.id==='16'?1.45:1.58;
   const range=stage.diff===0?[.55,.75]:stage.diff===1?[.85,1.05]:[1.2,1.38];
   const field=Array.from({length:5},(_,i)=>({
     isPlayer:false,skill:range[0]+(range[1]-range[0])*i/4
   }));
   tuneOpponentField(field,stage);
+  seedCompetitiveField(field,stage);
   if(stage.kind==='overtake')for(const rival of field.slice(0,2))
     rival.skill=Math.max(rival.skill,1.12);
   return Math.max(...field.map(r=>r.skill));
@@ -163,7 +164,7 @@ report.courseAudit={independentCourseCount:Object.keys(report.courses).length,
   guidedCompletions:Object.values(report.courses).filter(c=>c.guided.status==='FINISHED').length,
   lateCompletions:Object.values(report.courses).filter(c=>c.late.status==='FINISHED').length,
   aceCompletions:Object.values(report.courses).filter(c=>c.ace.status==='FINISHED').length,
-  methodology:'Privileged guided/late controllers vs native unmodified AICar on same actual course, no contact or rubber band; never a human win-rate or full campaign',
+  methodology:'Privileged guided/late controllers vs native unmodified AICar with fixed pre-race seed on actual courses; no collisions, race tactics, or adaptive rubber; never a human win-rate or full campaign',
   noRankTampering:true};
 
 const out=path.join(run,'artifacts/racing-v3-smoke');

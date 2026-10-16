@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { STAGES, newCareer, loadCareer, localDayKey, dailyStage, careerStars, stageUnlocked, skinUnlocked, recordStage, gradeStage, stageFailureFeedback, validDrift, fractionPassed } from '../racing/career.mjs';
 import { thinItemBoxes, installItemCleanup, itemDecision, AutoItems, OvertakeTracker, awardCornerPass, removeEliminatedAi } from '../racing/items.mjs';
 import { RacingCareer } from '../racing/runtime.mjs';
+import { COMPETITIVE_FIELD_V42 } from '../racing/rival-pressure.mjs';
 const result=(n=1)=>({finished:true,place:n,time:90,stats:{crash:1}});
 const memory=()=>{const m=new Map();return {getItem:k=>m.get(k)??null,setItem:(k,v)=>m.set(k,v)};};
 const racer=(player,progress)=>({isPlayer:player,progress,stats:{crash:0},s:35,d:20,items:[],spin:0,impact:0,airborne:false,slowTime:0,model:{traverse(){}},finished:false});
@@ -319,21 +320,21 @@ test('thinned native item routes dispose deleted box geometries, leave shared sk
   assert.equal(system.boxes.length,8);
 });
 
-test('V4.1 item rivals contest the actual race without changing grid or progress',()=>{
+test('V4.6 native item rivals hold the fixed pre-race pace band without faking progress',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<5;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(5);g.racers[1].skill=.85;g.racers[2].skill=1.05;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.00)<1e-9,'stage06 item pace rises without fake movement');
-  assert.ok(Math.abs(g.racers[2].skill-1.54)<1e-9,'only top rival gets an expert skill advantage');
+  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),COMPETITIVE_FIELD_V42['06']);
+  assert.ok(g.racers[2].skill-g.racers[1].skill >= .3,'a real strong rival contests a catchable pack');
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });
-test('V4.1 speed rivals form an actual faster field without moving standings',()=>{
+test('V4.6 overtaking rivals form a varied field with a contesting ace',()=>{
   const c=new RacingCareer(memory()),g=game();
   c.progress.stars['02']=1;c.setStage(2);g.racers[1].skill=.85;g.racers[2].skill=1.05;c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.12)<1e-9);
-  assert.ok(Math.abs(g.racers[2].skill-1.58)<1e-9);
+  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.12,COMPETITIVE_FIELD_V42['03'][1]]);
+  assert.ok(g.racers[2].skill>=1.4,'strongest opponent is no longer a passive road marker');
 });
 test('career retains the submitted expert field speeds while boss and middle field still escalate',()=>{
   const c=new RacingCareer(memory()),g=game();g.racers[1].skill=.55;g.racers[2].skill=.75;
@@ -343,12 +344,13 @@ test('career retains the submitted expert field speeds while boss and middle fie
   assert.equal(c.boss.skill,1.58);
   assert.ok(Math.abs(g.racers[2].skill-1.38)<1e-9);
 });
-test('V4.1 expert corner-pass AI gains a real ace but still drives natively',()=>{
+test('V4.6 expert opponent remains a physical ace with no progress edits',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<10;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(10);g.racers[1].skill=1.2;g.racers[2].skill=1.38;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.2,1.62]);
+  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),COMPETITIVE_FIELD_V42['11']);
+  assert.ok(g.racers[2].skill>=1.5,'expert still has a meaningful native pace advantage');
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });
@@ -402,13 +404,13 @@ test('V3.4 tightens obvious time padding but does not block clean novice complet
   assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:4}),2);
   assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:6}),3);
 });
-test('V3.4 final coast boss remains strongest but physically achievable, without touching placement or mission gate',()=>{
+test('V4.6 final boss has a measurable higher native skill but no scripted result',()=>{
   const career=new RacingCareer(memory()),g=game();
   career.index=15;
   g.racers[1].skill=1.38;g.racers[2].skill=1.32;
   const original=g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d}));
   career.begin(g);
-  assert.equal(career.boss.skill,1.35);
+  assert.equal(career.boss.skill,1.45);
   assert.equal(g.racers[2].skill,1.30);
   assert.deepEqual(g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d})),original);
   assert.equal(STAGES[15].rank,3);
