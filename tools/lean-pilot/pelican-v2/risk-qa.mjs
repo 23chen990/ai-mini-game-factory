@@ -25,7 +25,7 @@ const report={
  schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,engine,driverSha256:sha(driverSource),viewport:profile.viewport,firstLevelOnly:profile.firstOnly,
  runtime:`${engine} desktop browser with ${profile.viewport.width}×${profile.viewport.height} mobile touch emulation at DPR ${qaDpr()}; not physical mobile`,
  performanceEvidenceNote:'Read-only RAF and renderer observations from desktop browser emulation; not physical-device proof.',
- inputDecisionSource:'Visible HUD distance, radar text/classes, lane indicator and harness elapsed time for the 2.6-second capture hold.',
+ inputDecisionSource:'Visible HUD distance, radar text/classes and lane indicator; capture waits for the true +9m fish and a minimum measured hold.',
  snapshotRole:'Acceptance and evidence only; snapshots never feed risk-policy input decisions.',
  storagePersistence:'A new temporary persistent browser profile is reused across per-level browser restarts; no storageState or direct save writes are used.',
  normalInputOnly:true,stateInjection:false,checks:[],actions:[],decisions:[],screenshots:[],snapshots:[],levels:[],videos:[],errors:[],passed:false,
@@ -188,10 +188,11 @@ async function runLevel(level){
    for(const capturedEpisode of episodes){
     if(!capturedEpisode.jump||capturedEpisode.holdComplete)continue;
     const holdElapsed=view.nowMs-capturedEpisode.jump.nowMs;
-    if(view.laneIndex===capturedEpisode.jump.laneIndex&&holdElapsed<CAPTURE_HOLD_MS){
+    const rewardPassed=view.distance>=capturedEpisode.distance+10;
+    if(view.laneIndex===capturedEpisode.jump.laneIndex&&(holdElapsed<CAPTURE_HOLD_MS||!rewardPassed)){
      capturedEpisode.holdSamples.push({at:new Date().toISOString(),nowMs:view.nowMs,distance:view.distance,laneIndex:view.laneIndex});
     }
-    if(view.laneIndex===capturedEpisode.jump.laneIndex&&holdElapsed>=CAPTURE_HOLD_MS){
+    if(view.laneIndex===capturedEpisode.jump.laneIndex&&holdElapsed>=CAPTURE_HOLD_MS&&rewardPassed){
      capturedEpisode.holdComplete=true;capturedEpisode.holdDurationMs=Number(holdElapsed.toFixed(1));
     }
    }
@@ -225,13 +226,15 @@ async function runLevel(level){
     const selector=`[data-action="${decision.action}"]`;
     const action=await tap(page,selector,{levelId:level.id,targetBarrierId:episode?.barrierId??null,decisionView:{distance:view.distance,laneIndex:view.laneIndex,lanes:view.lanes.map(lane=>({...lane}))},decision:{action:decision.action,toLane:decision.toLane,reason:decision.reason,countdown:decision.countdown}});
     if(decision.action==='jump'&&episode&&!episode.jump){
+     const proof=await readSnapshot(page);
+     console.log('RISK_JUMP_ACTION '+JSON.stringify({engine,level:level.id,target:episode.barrierId,visibleDistance:view.distance,phase:proof.phase,reason:proof.reason,lane:proof.lane,laneTarget:proof.laneTarget,laneIndex:proof.laneIndex,bufferedJump:proof.bufferedJump,airY:proof.y,events:(proof.events??[]).filter(e=>['jump','jump-buffered','failed'].includes(e.type)).slice(-3),trustedTouch:action.trustedTouch}));
      const holdStartMs=await page.evaluate(()=>performance.now());state={...state,jumpAtMs:holdStartMs};
      episode.jump={at:action.at,completedAt:action.completedAt,nowMs:holdStartMs,distance:view.distance,laneIndex:view.laneIndex,countdown:decision.countdown,actionIndex:report.actions.indexOf(action)};
      await saveEvidenceShot(page,episode,'jump-input');
     }
     if(decision.action==='left'||decision.action==='right'){
      for(const capturedEpisode of episodes){
-      if(capturedEpisode.jump&&!capturedEpisode.holdComplete&&view.nowMs-capturedEpisode.jump.nowMs<CAPTURE_HOLD_MS)capturedEpisode.earlyTurnAfterJump=true;
+      if(capturedEpisode.jump&&!capturedEpisode.holdComplete)capturedEpisode.earlyTurnAfterJump=true;
      }
     }
     if(decision.action==='left'||decision.action==='right'){
