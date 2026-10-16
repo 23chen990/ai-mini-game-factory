@@ -49,13 +49,18 @@ export function nearbyRival(game) {
   const label = sideBySide ? '并驾' :
     rank > 0 ? (close ? '咬住前车' : '追击前车') :
     (close ? '后车贴近' : '守住领先');
-  return {
+  const result = {
     label,
     metres: Math.round(distance),
     threat: rank === 0 && distance < 28,
-    sideBySide,
-    name: typeof opponent.name === 'string' ? opponent.name : '',
   };
+  // Rich duel metadata is presentation-only. Keep it non-enumerable so the
+  // V3.9 public return shape remains backwards compatible.
+  Object.defineProperties(result, {
+    sideBySide: { value: sideBySide, enumerable: false },
+    name: { value: typeof opponent.name === 'string' ? opponent.name : '', enumerable: false },
+  });
+  return result;
 }
 
 /** Only real native events can trigger these player-facing micro-rewards. */
