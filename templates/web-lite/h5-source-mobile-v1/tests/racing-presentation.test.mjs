@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { careerCourseSvg, raceProgressPercent, nearbyRival, raceEventMoment } from '../racing/presentation.mjs';
+import { careerCourseSvg, raceProgressPercent, nearbyRival, raceEventMoment, raceMetricMoment } from '../racing/presentation.mjs';
 import { STAGES } from '../racing/career.mjs';
 
 test('all 16 authored tracks have unique rendered road shapes without remote assets', () => {
@@ -42,5 +42,20 @@ test('micro feedback requires native event; dirty drift and fake result yield no
   assert.equal(raceEventMoment({type:'driftEnd',data:{clean:false,time:1.2}}),null);
   assert.equal(raceEventMoment({type:'driftEnd',data:{clean:true,time:0.1}}),null);
   assert.deepEqual(raceEventMoment({type:'pad'}),{title:'加速带！',kind:'boost'});
+  assert.deepEqual(raceEventMoment({type:'nitro'}),{title:'氮气冲刺！',kind:'boost'});
+  assert.deepEqual(raceEventMoment({type:'smallBoost',data:{perfect:true}}),{title:'完美小喷！',kind:'boost'});
+  assert.deepEqual(raceEventMoment({type:'landBoost'}),{title:'落地喷！',kind:'boost'});
+  assert.deepEqual(raceEventMoment({type:'gaugeFull'}),{title:'氮气已就绪',kind:'ready'});
+  assert.equal(raceEventMoment({type:'itemGet'}),null,'native player events do not include pickups');
   assert.equal(raceEventMoment({type:'fakeWin'}),null);
+});
+
+test('earned pickup and corner pass presentation follows the real career counters', () => {
+  assert.deepEqual(raceMetricMoment({ cleanPasses: 0, pickups: 0 },
+    { cleanPasses: 1, pickups: 0 }), { title:'弯道反超！', kind:'skill' });
+  assert.deepEqual(raceMetricMoment({ cleanPasses: 1, pickups: 0 },
+    { cleanPasses: 1, pickups: 1 }), { title:'道具到手！', kind:'item' });
+  assert.equal(raceMetricMoment({ cleanPasses: 1, pickups: 1 },
+    { cleanPasses: 1, pickups: 1 }),null);
+  assert.equal(raceMetricMoment(null,{ cleanPasses: 1, pickups: 1 }),null);
 });
