@@ -312,7 +312,7 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     {label:'阵亡',value:String(deaths)}
   ];
   return [
-    {label:'生存',value:Math.min(Math.ceil(number(elapsedMs)/1000),Math.ceil(challenge.limitMs/1000)) + ' / ' + Math.ceil(challenge.limitMs/1000) + ' s'},
+    {label:'生存',value:Math.min(Math.floor(number(elapsedMs)/1000),Math.ceil(challenge.limitMs/1000)) + ' / ' + Math.ceil(challenge.limitMs/1000) + ' s'},
     {label:'移动',value:number(metrics.travel) + ' / ' + challenge.minTravel + ' m'},
     {label:'阵亡',value:deaths + ' / ' + challenge.target}
   ];
