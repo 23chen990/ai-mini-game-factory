@@ -33,7 +33,7 @@ test('failure diagnosis distinguishes authentic rank, technique and boss losses 
   const cases=[
     [STAGES[2],result(1),{cleanPasses:0},/有效弯道超车 0\/1/],
     [STAGES[6],{...result(6),time:97.3},{},/第6名，要求前5名/],
-    [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前4名/],
+    [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前3名/],
     [STAGES[15],result(2),{beatBoss:false},/未超过指定车神/],
     [STAGES[14],result(4),{pickups:1},/实际拾取道具 1\/3/],
   ];
@@ -50,7 +50,7 @@ test('failure diagnosis distinguishes authentic rank, technique and boss losses 
   assert.match(stageFailureFeedback(STAGES[15],result(4),{beatBoss:false}).reason,/要求前3名.*未超过指定车神/);
 });
 
-test('16 staged challenges use four original layouts and eight distinct objectives',()=>{
+test('16 staged challenges use four biome worlds and eight distinct objectives',()=>{
   assert.equal(STAGES.length,16);assert.equal(new Set(STAGES.map(s=>s.map)).size,4);
   assert.ok(new Set(STAGES.map(s=>s.kind)).size>=8);assert.ok(STAGES.filter(s=>s.laps>1).length>=12);
   assert.equal(STAGES[0].laps,1);
@@ -319,21 +319,21 @@ test('thinned native item routes dispose deleted box geometries, leave shared sk
   assert.equal(system.boxes.length,8);
 });
 
-test('middle item rivals allow physical pickup and hit recovery without changing grid or progress',()=>{
+test('V4.1 item rivals contest the actual race without changing grid or progress',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<5;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(5);g.racers[1].skill=.85;g.racers[2].skill=1.05;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.05)<1e-9,'stage06 item pace rises slightly');
-  assert.ok(Math.abs(g.racers[2].skill-1.215)<1e-9,'only top rival gets a small item ace advantage');
+  assert.ok(Math.abs(g.racers[1].skill-1.00)<1e-9,'stage06 item pace rises without fake movement');
+  assert.ok(Math.abs(g.racers[2].skill-1.54)<1e-9,'only top rival gets an expert skill advantage');
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });
-test('middle speed rivals get a small real pace lift without moving standings',()=>{
+test('V4.1 speed rivals form an actual faster field without moving standings',()=>{
   const c=new RacingCareer(memory()),g=game();
   c.progress.stars['02']=1;c.setStage(2);g.racers[1].skill=.85;g.racers[2].skill=1.05;c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.20)<1e-9);
-  assert.ok(Math.abs(g.racers[2].skill-1.385)<1e-9);
+  assert.ok(Math.abs(g.racers[1].skill-1.12)<1e-9);
+  assert.ok(Math.abs(g.racers[2].skill-1.58)<1e-9);
 });
 test('career retains the submitted expert field speeds while boss and middle field still escalate',()=>{
   const c=new RacingCareer(memory()),g=game();g.racers[1].skill=.55;g.racers[2].skill=.75;
@@ -343,12 +343,12 @@ test('career retains the submitted expert field speeds while boss and middle fie
   assert.equal(c.boss.skill,1.58);
   assert.ok(Math.abs(g.racers[2].skill-1.38)<1e-9);
 });
-test('expert corner-pass AI gains a modest ace but still drives with native variability',()=>{
+test('V4.1 expert corner-pass AI gains a real ace but still drives natively',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<10;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(10);g.racers[1].skill=1.2;g.racers[2].skill=1.38;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.2,1.405]);
+  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.2,1.62]);
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });

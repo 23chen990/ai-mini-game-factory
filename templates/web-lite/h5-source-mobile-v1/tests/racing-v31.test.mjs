@@ -338,6 +338,19 @@ test('V3.7 source-themed pickup placement follows REAL route, and native four-sc
   assert.notEqual(testTheme,source);
   assert.equal(testTheme.boostPads.length,source.boostPads.length);
   assert.deepEqual(testTheme.boostPads.map(p=>p.lat),[-4,4]);
+  assert.match(testTheme.curbA,/^#[0-9a-f]{6}$/);
+  assert.equal(testTheme.boostColor,testTheme.curbA,'physical speed pads inherit course colors');
+  assert.equal(testTheme.curbB,'#142034');
+  const identity=new Set();
+  const padRoutes=[];
+  for(let number=1;number<=16;number++){
+    const id='race-'+String(number).padStart(2,'0');
+    const plan=createRaceTrackTheme(source,physics,id);
+    identity.add(plan.curbA);
+    padRoutes.push(JSON.stringify(plan.boostPads));
+  }
+  assert.equal(identity.size,16,'sixteen real native tracks need sixteen visible road palettes');
+  assert.ok(new Set(padRoutes).size>=12,'course-specific physical reward lanes may not reuse one pattern');
   assert.ok(testTheme.boostPads.every(p=>!('at' in p)&&p.f>.07&&p.f<.94));
   assert.equal(testTheme.tunnels.length,1);
   assert.ok(testTheme.tunnels[0].f1>testTheme.tunnels[0].f0);
@@ -346,6 +359,37 @@ test('V3.7 source-themed pickup placement follows REAL route, and native four-sc
   assert.throws(()=>createRaceTrackTheme(source,physics,'race-99'),/unverified stage track/);
   const demo=buildRaceLandmarks({Group:class { constructor(){this.children=[];} }},null,'city');
   assert.deepEqual(demo.children,[]);
+});
+
+test('V4.2 numbered physical course gates and biome-specific tall props exist in actual 3D scene',()=>{
+  class Group {
+    constructor(){this.children=[];this.name='';this.position={set:(...xyz)=>{this.xyz=xyz;}};this.rotation={};}
+    add(...children){this.children.push(...children);}
+  }
+  class Mesh extends Group {constructor(geometry,material){super();this.geometry=geometry;this.material=material;}}
+  class Geometry {constructor(...dimensions){this.dimensions=dimensions;}}
+  class Material {constructor(style){this.style=style;}}
+  const THREE={Group,Mesh,MeshStandardMaterial:Material,MeshBasicMaterial:Material,
+    BoxGeometry:Geometry,CylinderGeometry:Geometry,ConeGeometry:Geometry,
+    TorusGeometry:Geometry,DodecahedronGeometry:Geometry,OctahedronGeometry:Geometry};
+  const physics={length:2300,halfW:11,sample(d){
+    return {x:d*.2,y:3,z:Math.sin(d/280)*55,rx:0,rz:1,hd:.2};
+  }};
+  for(const [course,biome] of [['race-01','city'],['race-05','egypt'],
+    ['race-08','snow'],['race-16','aegean']]){
+    const world=buildRaceLandmarks(THREE,physics,course);
+    const stageWorld=world.children.find(c=>c.name==='physical-course-identity-'+course);
+    assert.ok(stageWorld,'real 3D stage identity missing '+course);
+    assert.equal(stageWorld.children.length,6,'two course arches and four roadside rhythms '+course);
+    assert.equal(stageWorld.children.filter(c=>c.name.includes('sector-arch')).length,2);
+    const gantry=stageWorld.children[0];
+    assert.ok(gantry.children.some(m=>m.geometry?.dimensions?.[1]===18),'tall visual gate '+course);
+    assert.ok(gantry.children.length>=13,'visible two-digit 3D number '+course);
+    assert.ok(stageWorld.children.every(x=>x.xyz.every(Number.isFinite)),'real road anchored features');
+    const scenery=stageWorld.children[2];
+    if(biome==='snow')assert.ok(scenery.children.some(m=>m.geometry?.dimensions?.[0]>=7),
+      'ice silhouette is visible');
+  }
 });
 
 test('V3.7 every career track has a distinct sky palette without changing demo scene config',()=>{

@@ -211,6 +211,15 @@ export function createRaceTrackTheme(theme,track,course) {
     throw Error('Cannot place race decorations on unverified stage track');
   const original=theme?.boostPads??[];
   const isCity=original.length>2, bases=isCity?[.17,.39,.62,.84]:[.27,.67];
+  const stageNumber=Number(course.slice(5));
+  // The physical pad positions and reward lanes change by authored course.
+  // Keep central desert jumps central. A left/right commitment must actually
+  // intersect the real native boost-pad collider; no scripted rewards.
+  const stagePad=(p,i)=>({
+    f:seekStraight((bases[i]??Math.min(.9,.18+i*.19))+
+      (((stageNumber*3+i*5)%7)-3)*.012),
+    lat:(p.lat??0)*((stageNumber+i)%3===2?-1:1),
+  });
   const seekStraight=(fraction)=>{
     const target=track.length*fraction;
     let best=target,score=Infinity;
@@ -223,12 +232,13 @@ export function createRaceTrackTheme(theme,track,course) {
     }
     return best/track.length;
   };
+  const paint='#'+COURSE_ACCENTS[stageNumber-1].toString(16).padStart(6,'0');
   return {
     ...theme,
-    boostPads:original.map((p,i)=>({
-      f:seekStraight(bases[i]??Math.min(.9,.18+i*.19)),
-      lat:p.lat??0,
-    })),
+    // Course-specific road-edge and boost-pad accents remain visible through
+    // the entire physical lap, unlike a single different lobby illustration.
+    curbA:paint,curbB:'#142034',boostColor:paint,
+    boostPads:original.map(stagePad),
     tunnels:(theme?.tunnels??[]).map((t,i)=>{
       const d=seekStraight(.46+i*.14);
       return {f0:d,f1:Math.min(.96,d+.032)};
@@ -249,6 +259,95 @@ const COURSE_ACCENTS = Object.freeze([
   0xeed067,0xee4edc,0x58e3c7,0xb4d8ff,
   0xf0bc55,0xff8f42,0x73d8ff,0xe4bcfa,
 ]);
+/** V4.2: large, readable WORLD features at real track stations.
+ * These are non-colliding scenery, never fake road, reward, or rank data.
+ * The start arch displays the actual physical course ID, so an older build
+ * cannot pretend to have loaded a new circuit just by changing a lobby card.
+ * Keep native Track/vehicle physics, legitimate shortcut paths and road mesh.
+ */
+function buildCourseIdentity(THREE, track, course, n) {
+  const group = new THREE.Group();
+  group.name = 'physical-course-identity-' + course;
+  const color = COURSE_ACCENTS[n - 1], biome = CAREER_COURSE_MAPS[n - 1];
+  const metal = new THREE.MeshStandardMaterial({color:0x14233a,roughness:.55,metalness:.5});
+  const bright = new THREE.MeshBasicMaterial({color});
+  const white = new THREE.MeshBasicMaterial({color:0xf2f8ff});
+  const mesh = (parent, geometry, material, x, y, z) => {
+    const object = new THREE.Mesh(geometry, material);
+    object.position.set(x, y, z);
+    parent.add(object);
+    return object;
+  };
+  const sideDistance = track.halfW + 5.5;
+  // Over-road arches are high above the actual vehicle and entirely visual.
+  // The first sign is visible soon after GO; the second gives a mid-lap cue.
+  for (const [index, fraction] of [.065, .52].entries()) {
+    const sample = track.sample(track.length * fraction, {});
+    const portal = new THREE.Group();
+    portal.name = 'course-' + course + '-sector-arch-' + (index + 1);
+    portal.position.set(sample.x, sample.y, sample.z);
+    portal.rotation.y = sample.hd;
+    for (const x of [-sideDistance,sideDistance]) {
+      mesh(portal,new THREE.BoxGeometry(2,18,2),metal,x,9,0);
+      mesh(portal,new THREE.BoxGeometry(2.6,3,2.6),bright,x,17.5,0);
+    }
+    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,2.3,2.1),metal,0,18,0);
+    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,.5,2.4),bright,0,19.3,0);
+    if (index === 0) {
+      mesh(portal,new THREE.BoxGeometry(10,5.3,1.2),metal,0,23,0);
+      const glyphs = ['abcdef','bc','abged','abgcd','fgbc','afgcd','afgecd','abc','abcdefg','abfgcd'];
+      const seven = {
+        a:[0,1.5,2.2,.38], b:[1.13,.78,.38,1.45],
+        c:[1.13,-.78,.38,1.45], d:[0,-1.5,2.2,.38],
+        e:[-1.13,-.78,.38,1.45], f:[-1.13,.78,.38,1.45],
+        g:[0,0,2.2,.38]
+      };
+      for(const [place, digit] of String(n).padStart(2,'0').split('').entries()) {
+        for(const segment of glyphs[Number(digit)]) {
+          const [x,y,w,h] = seven[segment];
+          mesh(portal,new THREE.BoxGeometry(w,h,.24),place===0?bright:white,
+            x+(place===0?-2.15:2.15),y+23,-.73);
+        }
+      }
+    }
+    group.add(portal);
+  }
+  // Each numbered course uses its own roadside rhythm as well as a unique
+  // spline, sky palette, and two signature arches. Reuse only 4 biome families.
+  const stations = [.18,.34,.66,.86];
+  for (const [index,fraction] of stations.entries()) {
+    const sample = track.sample(track.length * fraction, {});
+    const root = new THREE.Group();
+    root.name = 'course-' + course + '-landscape-' + (index + 1);
+    const side = (n + index) % 2 ? 1 : -1;
+    const setback = track.halfW + 15 + (n % 3) * 3;
+    root.position.set(sample.x + sample.rx * side * setback,
+      sample.y - 1, sample.z + sample.rz * side * setback);
+    const height = 19 + (n + index) % 3 * 6;
+    if (biome === 'city') {
+      mesh(root,new THREE.BoxGeometry(7,height,7),metal,0,height/2,0);
+      mesh(root,new THREE.BoxGeometry(8,2,8),bright,0,height+1,0);
+      mesh(root,new THREE.BoxGeometry(6,.65,8.6),bright,0,height*.58,0);
+    } else if (biome === 'egypt') {
+      mesh(root,new THREE.CylinderGeometry(1.1,3.8,height,4),metal,0,height/2,0);
+      mesh(root,new THREE.ConeGeometry(3.5,6,4),bright,0,height+3,0);
+      mesh(root,new THREE.BoxGeometry(9,1,9),bright,0,1,0);
+    } else if (biome === 'aegean') {
+      mesh(root,new THREE.CylinderGeometry(.8,1.7,height,8),metal,0,height/2,0);
+      const sail = mesh(root,new THREE.ConeGeometry(7,height*.62,3),white,4,height*.67,0);
+      sail.rotation.z = .22 + index*.09;
+      mesh(root,new THREE.TorusGeometry(4.4,.55,6,14),bright,0,height+.3,0)
+        .rotation.x = Math.PI/2;
+    } else {
+      mesh(root,new THREE.CylinderGeometry(1.1,2.5,height*.6,7),metal,0,height*.3,0);
+      mesh(root,new THREE.OctahedronGeometry(7+(n%3),0),white,0,height*.75,0);
+      mesh(root,new THREE.ConeGeometry(2.5,10,5),bright,0,height+3,0);
+    }
+    group.add(root);
+  }
+  return group;
+}
+
 export function buildRaceLandmarks(THREE,track,course) {
   const group=new THREE.Group();
   if(TRACK_RESHAPES[course])return group; // Pinned native pre-career demo.
@@ -318,6 +417,7 @@ export function buildRaceLandmarks(THREE,track,course) {
       group.add(root);
     }
   }
+  group.add(buildCourseIdentity(THREE,track,course,n));
   return group;
 }
 

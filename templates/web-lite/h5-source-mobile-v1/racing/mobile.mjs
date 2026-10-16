@@ -72,13 +72,15 @@ function renderLobby() {
   dailyOption.textContent = career.canDaily() ? '📅 每日挑战 ' + '★'.repeat(earnedToday) : '🔒 每日挑战（通过第4关解锁）';
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
+  root.dataset.courseId = stage.course;
+  root.dataset.previewRevision = 'racing-v41-native-rivals';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛');
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V4.1';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = courseInfo?.feel ?? '';
-  $('stage-goal').textContent = '本场目标 · ' + stage.goal + ' · ' + careerStars(career.progress) + ' ★' +
+  $('stage-goal').textContent = '过关必须：'+stage.goal + '，且完成前' + stage.rank + '名 · 累计 ' + careerStars(career.progress) + ' ★' +
     (career.dailySnapshot ? ' · 连续挑战 ' + career.progress.daily.streak + ' 天' : '');
   $('skin').replaceChildren();
   for (let i = 0; i < SKIN_NAMES.length; i++) {
@@ -89,7 +91,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = career.dailySnapshot ? '每天一场新挑战' : stage.mode === 'item' ? '左右选线拿道具，自动使用' : stage.kind === 'overtake' ? '弯道真正反超，才算成功' : '保持速度，过弯走好路线';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, revision: 'V4.1' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncTouchButtons() {
   const active = pointers.activeDirection();

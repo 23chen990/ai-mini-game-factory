@@ -88,7 +88,9 @@ for(const id of ['01','02','04','05','03','06','08','10','11','14','09','12','13
   const was=runAi(revised[stage.course],baseline,seed);
   const now=runAi(revised[stage.course],newSkill,seed);
   const improvementPercent=+((1-now.timeSec/was.timeSec)*100).toFixed(2);
-  if(!Number.isFinite(improvementPercent)||improvementPercent>11||
+  // V4.1 explicitly tests a larger real-race pace uplift. Keep a wide safety ceiling
+  // and record the exact difference; human racing difficulty remains NOT_RUN.
+  if(!Number.isFinite(improvementPercent)||improvementPercent>35||
      improvementPercent< -2.5 ||
      ['01','09','12','13','15','16'].includes(id)&&Math.abs(improvementPercent)>.15)
     throw Error('Native stage AI pace unexpectedly distorted: '+id+' '+improvementPercent+'%');
