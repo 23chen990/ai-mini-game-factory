@@ -1,0 +1,32 @@
+name: Verify racing phone preview
+on:
+  push:
+    branches:
+      - preview/racing-v34-dbf8603-mobile
+    paths:
+      - .github/workflows/racing-preview-http-check.yml
+permissions:
+  contents: read
+jobs:
+  external-url:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Confirm HTTPS live game matches accepted playable
+        run: |
+          set -euo pipefail
+          url='https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v34-dbf8603-mobile/index.html'
+          for attempt in 1 2 3 4 5; do
+            if curl -fLsS --retry 2 --max-time 35 "$url" -o /tmp/racing-mobile.html; then
+              sha="$(sha256sum /tmp/racing-mobile.html | cut -d ' ' -f 1)"
+              if [ "$sha" = "2dbb6bb07bfe1b8379ba0f3d696a5c8a0c5f334b2b462c97368ba764d9732b8e" ]; then
+                echo "LIVE_PHONE_LINK_VERIFIED=$url"
+                wc -c /tmp/racing-mobile.html
+                exit 0
+              fi
+              echo "Preview not refreshed yet: $sha"
+            fi
+            sleep 7
+          done
+          echo "Preview URL not verified" >&2
+          exit 1
