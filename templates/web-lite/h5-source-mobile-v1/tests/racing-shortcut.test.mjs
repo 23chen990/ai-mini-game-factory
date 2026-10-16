@@ -7,7 +7,7 @@ function mockTrack(){
   const track={length:L,N,ds,halfW:11.5};
   track.sample=(d,out={})=>{
     const a=(((d/L)%1)+1)%1*2*Math.PI,
-      x=300*Math.cos(a),z=300*Math.sin(a),
+      x=330*Math.cos(a),z=330*Math.sin(a),
       tx=-Math.sin(a),tz=Math.cos(a);
     return Object.assign(out,{x,z,y:0,tx,tz,rx:-tz,rz:tx,
       hd:Math.atan2(tx,tz),d});
@@ -24,12 +24,25 @@ test('shortcut registry has only permitted physical stage roads; default stages 
   assert.deepEqual(Object.keys(SHORTCUT_PLANS),['race-05','race-10','race-12','race-13','race-16']);
   assert.equal(installPhysicalShortcut(mockTrack(),'race-01'),null);
   assert.equal(installPhysicalShortcut(mockTrack(),'unknown'),null);
-  assert.ok(Object.values(SHORTCUT_PLANS).every(p=>p.width<23&&p.width>=14&&p.end>p.start));
+  assert.ok(Object.values(SHORTCUT_PLANS).every(p=>
+    p.width>=11&&p.width<=14&&p.neckWidth>=8.5&&
+    p.neckWidth<p.width&&p.end>p.start&&p.end-p.start<=420),
+    'all optional routes must be narrow and local, never 500m-plus highways');
 });
 test('physical shortcut generates visible road, real optional projection and shorter distance',()=>{
   const track=mockTrack(),native=track.project;
   const route=installPhysicalShortcut(track,'race-13');
-  assert.ok(route.gain>35);
+  assert.ok(route.gain>=25 && route.gain<=90,'the advantage must not be a huge shortcut');
+  assert.ok(route.length<=345,'branch is a local corner, not a second highway');
+  assert.equal(route.widthAt(0),route.width);
+  assert.ok(Math.abs(route.widthAt(route.length/2)-route.neckWidth)<.01,
+    'the branch has a meaningful narrow commitment in its middle');
+  assert.ok(![-1,1].some(side=>route.opening(route.start+110,side)),
+    'original huge open entrance must be CLOSED');
+  assert.ok([-1,1].some(side=>route.opening(route.start+24,side)),
+    'entry must remain physically reachable');
+  assert.ok(![-1,1].some(side=>route.opening(route.end-95,side)),
+    'do not give an entire wide exit lane for free');
   assert.equal(route.length<route.end-route.start,true);
   assert.notEqual(track.project,native,'real native projection handles alternate road');
   assert.equal(route.samples.length>80,true);
