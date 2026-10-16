@@ -65,3 +65,11 @@
 - **真机 & 商业门槛不可让步**：真实 Three.js 浏览器需要同时证明同指手势使 yaw 改变 + 原生 shots 增加，以及在一局内首枪、8m 真移动、之后三次手动原生命中和自然获胜；缺任何一项都是 `GAMEPLAY_READY=NO`。真机 FPS、真人可用性、TapTap 广告账户以及上游版权仍分别 `NOT_RUN`。当前仅作内部演示，不能宣称可正式上架。
 
 历史段落中提到的 18s/26s 训练敌人守点策略、12m/1 次阵亡为**旧版本原因追溯**，不得当作当前普通关配置；本次普通关仍为 60s、8m、最多阵亡 2 次。
+
+## 10. Reacquisition rule: verified firing lane, not enemy GPS
+
+[2026-10-16 V7 software-WebGL QA #38941832500](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38941832500) documented a native first hit and genuine 8/8m reposition but zero visible targets and zero further shots before game over (2 deaths). This exposed an instructional error: routing a beginner directly to an old **enemy** position can carry them behind opaque containers, even though the enemy remains alive and shooting.
+
+Current *novice only* stage-2 fallback now routes to the player's own real **first-hit firing lane** (a location demonstrably having had a shooting line), then uses the last truly visible opponent's old world position only for a LEFT/RIGHT camera-turn suggestion. Once facing that old sightline, a real left-thumb sidestep may be needed to peek out. There is **no teleport, reveal of occluded live target state, manufactured bullet, synthetic victory or relaxed hit count**. Expert mode still routes directly to remembered opponent positions.
+
+Natural Three.js verification must still independently demonstrate the post-reposition 3 real manual hits; testing a function with a mocked nav-grid is not the same as a complete mobile battle.
