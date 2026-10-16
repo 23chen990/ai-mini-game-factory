@@ -4,7 +4,7 @@ import {SHORTCUT_PLANS,installPhysicalShortcut} from '../racing/shortcut-network
 
 function mockTrack(){
   const L=2600,N=1733,ds=L/N;
-  const track={length:L,N,ds};
+  const track={length:L,N,ds,halfW:11.5};
   track.sample=(d,out={})=>{
     const a=(((d/L)%1)+1)%1*2*Math.PI,
       x=300*Math.cos(a),z=300*Math.sin(a),
@@ -45,7 +45,7 @@ test('physical shortcut generates visible road, real optional projection and sho
     if(out.__RACE_SHORTCUT_ACTIVE){
       if(previous!==null)assert.ok(out.d>=previous-2,'physical forward travel has monotone canonical progress');
       previous=out.d;
-      assert.ok(out.__RACE_SHORTCUT_HALF_WIDTH<track.halfW||true);
+      assert.ok(out.__RACE_SHORTCUT_HALF_WIDTH<track.halfW);
       switched=true;
     }
   }
