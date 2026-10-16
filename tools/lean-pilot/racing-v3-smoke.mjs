@@ -188,9 +188,14 @@ async function raceStart(page, index, name) {
       actualTrackLength:evidence?.actualTrackLength,
       revision:evidence?.revision,uiRevision:document.querySelector('#race-kit')?.dataset.previewRevision};
   });
+  // A gate showing "11" has fewer actual meshes than one showing "08".
+  // Verify exact seven-segment geometry, not a wrong uniform minimum.
+  const digitSegments=[6,2,5,5,4,5,6,3,7,6];
+  const expectedGateMeshes=7+[...expectedCourse.slice(-2)]
+    .reduce((count,digit)=>count+digitSegments[Number(digit)],0);
   if(!worldIdentity.exists||worldIdentity.course!==expectedCourse||
      worldIdentity.arches!==2||worldIdentity.scenery!==4||
-     worldIdentity.numberedMeshCount<13||
+     worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
      !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V4.6'||
