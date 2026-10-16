@@ -317,6 +317,29 @@ for (const button of root.querySelectorAll('[data-race-direction]')) {
   button.addEventListener('pointercancel', cancel);
   button.addEventListener('lostpointercapture', cancel);
 }
+const joystickSurface = $('joystick');
+joystickSurface.addEventListener('pointerdown', e => {
+  e.preventDefault();
+  if (!g || phase !== 'race' || controlMode !== 'classic') return;
+  const r = joystickSurface.getBoundingClientRect();
+  if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width / 2)) return;
+  driver.enabled = true; g.mobileMode = true;
+  joystickSurface.setPointerCapture(e.pointerId); syncJoystickVisual();
+});
+joystickSurface.addEventListener('pointermove', e => {
+  if (joystick.update(e.pointerId, e.clientX)) {
+    if (e.cancelable) e.preventDefault();
+    syncJoystickVisual();
+  }
+});
+joystickSurface.addEventListener('pointerup', e => {
+  if (joystick.release(e.pointerId)) {e.preventDefault(); syncJoystickVisual();}
+});
+const endStick = e => {
+  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault(); syncJoystickVisual();}
+};
+joystickSurface.addEventListener('pointercancel', endStick);
+joystickSurface.addEventListener('lostpointercapture', endStick);
 for (const button of root.querySelectorAll('[data-race-action]')) {
   const action = button.dataset.raceAction;
   button.addEventListener('pointerdown',e=>{
@@ -370,12 +393,19 @@ async function boot() {
   const nativeFrame = g.input.frame.bind(g.input);
   g.input.frame = () => {
     const now = g.last ?? performance.now(), dt = Math.min(.05, Math.max(0, (now - inputTime) / 1000)); inputTime = now;
-    const held = pointers.snapshot(performance.now());g.input.touch.left = held.left;g.input.touch.right = held.right;
+    const held = pointers.snapshot(performance.now());
+    g.input.touch.left = controlMode === 'assist' && held.left;
+    g.input.touch.right = controlMode === 'assist' && held.right;
     const raw = nativeFrame(), canStep = g.acc + dt >= 1 / 120;
-    const translated = controlMode === 'classic' && driver.enabled ? classic.frame(raw,g.player,g.state,{canStep,itemMode:g.itemMode}) : driver.frame(dt, raw, g.player, g.track, g.state, { canStep });
+    if (controlMode === 'classic' && driver.enabled) raw.steerAxis = joystick.snapshot();
+    const translated = controlMode === 'classic' && driver.enabled ? classic.frame(raw,g.player,g.state,{canStep,itemMode:g.itemMode,track:g.track}) : driver.frame(dt, raw, g.player, g.track, g.state, { canStep });
     // The tutorial grants free starting boost; later races must earn position on the track.
     if (career.index > 0 && g.state === 'race' && g.raceTime < .28 && driver.enabled) translated.upPressed = false;
-    if (g.itemMode && driver.enabled && controlMode === 'assist') translated.nitroPressed = career.itemInput(g, canStep);
+    if (g.itemMode && driver.enabled && controlMode === 'assist') {
+      const earnedBoost = translated.nitroPressed;
+      translated.nitroPressed = career.itemInput(g, canStep);
+      translated.manualNitroPressed = earnedBoost;
+    }
     return translated;
   };
   const nativeEvents = g.handleEvents.bind(g);
@@ -396,7 +426,7 @@ async function boot() {
     await loadTrack(career.stage.map, false);
   if (!stageTrackReady(g,career.stage)) throw Error('赛道身份校验失败，禁止开始错误的关卡');
   root.dataset.loaded = 'true';
-  if (!mobile) $('note').textContent = '键盘保留原操作；触控支持经典驾驶与简易驾驶';
+  if (!mobile) $('note').textContent = '键盘保留原操作；触控支持轮盘驾驶与简易驾驶';
   display('ready');
   let lastFuelTick = 0;
   const frame = now => {
@@ -439,8 +469,19 @@ async function boot() {
             slot.hidden = i >= knockout.count;slot.classList.toggle('me', i + 1 === knockout.place);slot.classList.toggle('last', i + 1 === knockout.count);
           });
         }
+        // The native HUD hides its boost gauge in item mode. Both modes now
+        // earn and expend drift nitro, so this truthful gauge must stay visible.
+        if (g.itemMode && driver.enabled) document.getElementById('gaugebox')?.classList.remove('hidden');
         const nitroBtn = root.querySelector('[data-race-action="nitro"]');
-        if (nitroBtn) nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
+        if (nitroBtn) {
+          nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
+          const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : g.player.nitroTime > 0 ? '加速中' : '氮气';
+          if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
+        }
+        const smallBtn = root.querySelector('[data-race-action="small"]');
+        if (smallBtn) smallBtn.classList.toggle('ready',g.player.smallWindow > 0);
+        const itemBtn = root.querySelector('[data-race-action="item"]');
+        if (itemBtn) itemBtn.classList.toggle('ready',!!g.player.items?.[0]);
         const held = g.player.items?.[0];
         $('held-item').hidden = !g.itemMode || !held;
         if (held) {
