@@ -13,7 +13,7 @@ test('all five hand-authored fish placement maps are safe',()=>{
 test('a real jump, not pressing jump anywhere, earns the visible barrier prize',()=>{
  const r=newRun(1);
  r.obstacles=[{id:'b1',kind:'barrier',x:60,lane:1,speed:0,z:0,hit:false,passed:false,triggerAt:null}];
- r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,caught:false}];
+ r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,sourceObstacleId:'b1',caught:false}];
  tick(r,57/r.level.speed);input(r,'jump');tick(r,3);
  assert.notEqual(r.phase,'finished');assert.equal(r.jumpedBarriers,1);
  assert.equal(r.gold,1);assert.equal(r.score,7);assert.equal(r.count,1);
