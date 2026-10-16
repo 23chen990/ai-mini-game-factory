@@ -1,0 +1,111 @@
+name: CF V6 mobile UX: pinned source and visual browser QA
+on:
+  pull_request:
+    paths:
+      - 'templates/web-lite/h5-source-mobile-v1/**'
+      - 'tools/lean-pilot/**'
+      - '.github/workflows/cf-v6-private-qa.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cf-v6-real-mobile-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  private-h5-build-and-browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        mode: [baseline]
+    # Deliberately limited to this review branch. No platform deploy, release, write token or credentials.
+    if: github.event.pull_request.head.ref == 'qa/cf-v6-mobile-ux-20261016'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 32
+    env:
+      RUN_ID: h5-cf-challenges-20261013
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.11.0'
+      - name: Install checked factory dependencies
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm exec playwright install --with-deps chromium
+      - name: Lint and syntax-check owned mobile source
+        run: |
+          pnpm exec eslint tools/lean-pilot/h5-mobile-browser-qa.mjs templates/web-lite/h5-source-mobile-v1/*.mjs
+          npm run pilot:typecheck
+          node --check templates/web-lite/h5-source-mobile-v1/fps-mobile-ux.mjs
+          pnpm exec eslint tools/lean-pilot/cf-v4-natural-success-qa.mjs
+      - name: Fetch exact authorized original source into runner temp
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_root="$RUNNER_TEMP/cf-pinned-source"
+          mkdir -p "$source_root"
+          git -C "$source_root" init -q
+          git -C "$source_root" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$source_root" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$source_root" checkout -q FETCH_HEAD
+          test "$(git -C "$source_root" rev-parse HEAD)" = 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          echo "H5_PINNED_SOURCE_ROOT=$source_root" >> "$GITHUB_ENV"
+      - name: Compile source and own H5 adaptation without baseline reuse
+        run: pnpm pilot build "$RUN_ID" cf-transport-ship
+      - name: Frozen local engineering and source tests
+        run: |
+          pnpm pilot check "$RUN_ID"
+          node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+      - name: Browser QA on actual Three.js scene (not a dummy game)
+        id: natural_qa
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node tools/lean-pilot/h5-mobile-browser-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-browser.log"
+      - name: Package standalone H5 with source attribution and QA evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          game="runs/$RUN_ID/workspace/game"
+          if [ ! -f "$game/index.html" ] || [ ! -f "$game/candidate.json" ]; then
+            echo 'BUILD_NOT_AVAILABLE'; exit 0
+          fi
+          pnpm pilot export "$RUN_ID" > "$RUNNER_TEMP/cf-export.json"
+          mkdir -p "$RUNNER_TEMP/cf-preview"
+          html=$(find "runs/$RUN_ID" -maxdepth 1 -name 'cf-transport-ship-*.html' -print -quit)
+          test -n "$html"
+          cp "$html" "$RUNNER_TEMP/cf-preview/index.html"
+          cp "$game/LICENSE.three.txt" "$RUNNER_TEMP/cf-preview/LICENSE.three.txt"
+          (cd "$RUNNER_TEMP/cf-preview" && zip -q "$RUNNER_TEMP/cf-preview.zip" index.html LICENSE.three.txt)
+          sha256sum "$RUNNER_TEMP/cf-preview.zip" "$RUNNER_TEMP/cf-preview/index.html" > "$RUNNER_TEMP/cf-sha256.txt"
+          cat "$RUNNER_TEMP/cf-sha256.txt"
+          pnpm pilot report "$RUN_ID" > "$RUNNER_TEMP/cf-report.json" || true
+      - name: Upload actual H5 and browser evidence (unpublished private review artifact)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cf-v5-${{ matrix.mode }}-${{ github.event.pull_request.head.sha }}
+          path: |
+            ${{ runner.temp }}/cf-preview.zip
+            ${{ runner.temp }}/cf-sha256.txt
+            ${{ runner.temp }}/cf-browser.log
+            ${{ runner.temp }}/cf-export.json
+            ${{ runner.temp }}/cf-report.json
+            runs/h5-cf-challenges-20261013/source-build.json
+            runs/h5-cf-challenges-20261013/engineering.json
+            runs/h5-cf-challenges-20261013/browser.json
+            runs/h5-cf-challenges-20261013/screenshots/*.png
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Preserve the real natural-browser QA gate result
+        if: steps.natural_qa.outcome == 'failure'
+        run: |
+          echo 'Actual-browser checks failed; do not promote this as a playable QA PASS.'
+          exit 1
