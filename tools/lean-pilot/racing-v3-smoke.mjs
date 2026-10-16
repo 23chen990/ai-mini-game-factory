@@ -247,6 +247,15 @@ try {
   const page=await context.newPage();
   page.on('pageerror',e=>jsErrors.push(e.message));page.on('console',m=>{if(m.type()==='error')jsErrors.push(m.text())});
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});await waitLoaded(page);
+  // New analogue wheel is the fresh-install default; keep the old two-key path
+  // explicitly tested by switching through the same player-facing select.
+  const initialControls=await page.evaluate(()=>({mode:document.querySelector('#race-kit')?.dataset.controlMode,
+    wheel:!!document.querySelector('#race-joystick'),sens:document.querySelector('#race-steering-sens')?.value}));
+  if(initialControls.mode!=='classic'||!initialControls.wheel||initialControls.sens!=='normal')
+    fail('Fresh player must get the steering wheel and a real sensitivity selector: '+JSON.stringify(initialControls));
+  report.initialControls=initialControls;
+  await page.selectOption('#race-control-mode','assist');
+  if(await page.locator('#race-kit').getAttribute('data-control-mode')!=='assist') fail('Two-key fallback is no longer selectable');
   // Genuine browser render of the default lobby at two landscape widths.
   // No seeded save, DOM mutation or mocked UI goes into these screenshots.
   for (const [width,height] of [[844,390],[740,360]]) {
@@ -426,6 +435,39 @@ try {
   const savedAudio=await page.evaluate(()=>localStorage.getItem('h5-qq-mobile-20261013:audio-enabled:v1'));
   if(savedAudio!=='0') fail('Mute preference lost on reload');
   report.persistedAudioEnabled=false;
+  // Separate real Chromium classic-mode session. Only touch input is injected;
+  // no player coordinates, speed, AI, progress, or results are fabricated.
+  await page.close();
+  const wheelPage=await context.newPage();
+  wheelPage.on('pageerror',e=>jsErrors.push(e.message));
+  await wheelPage.goto(url,{waitUntil:'domcontentloaded',timeout:45000});await waitLoaded(wheelPage);
+  await wheelPage.selectOption('#race-control-mode','classic');
+  await wheelPage.click('#race-start');
+  await wheelPage.waitForFunction(()=>window.game?.state==='race',null,{timeout:70000});
+  const wheelBounds=await wheelPage.evaluate(()=>{
+    const get=id=>document.querySelector(id)?.getBoundingClientRect().toJSON();
+    const stick=get('#race-joystick'),drift=get('[data-race-action="drift"]');
+    const nitro=get('[data-race-action="nitro"]'),gauge=get('#gaugebox');
+    return {stick,drift,nitro,gauge,leftButtonsHidden:get('#race-left')?.width===0};
+  });
+  if(!wheelBounds.stick||wheelBounds.stick.width<100||!wheelBounds.drift||
+     wheelBounds.stick.right+24>wheelBounds.nitro.left||!wheelBounds.leftButtonsHidden)
+    fail('Wheel/thumb-pad overlaps or old binary controls remain visible: '+JSON.stringify(wheelBounds));
+  await wheelPage.screenshot({path:path.join(dest,'01-classic-wheel-phone.png')});
+  const stick=wheelBounds.stick,cdpWheel=await context.newCDPSession(wheelPage);
+  const left={id:201,x:stick.x+stick.width*.17,y:stick.y+stick.height*.5};
+  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[left]});
+  await wheelPage.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>0.5,null,{timeout:8000});
+  await wheelPage.waitForFunction(()=>window.game?.player?.steer>0.04,null,{timeout:20000});
+  const right={...left,x:stick.x+stick.width*.83};
+  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[right]});
+  await wheelPage.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis<-.5,null,{timeout:8000});
+  await wheelPage.waitForFunction(()=>window.game?.player?.steer<-.04,null,{timeout:20000});
+  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await wheelPage.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
+  await wheelPage.locator('#race-pause').tap();
+  await wheelPage.waitForFunction(()=>window.game?.state==='paused'&&window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
+  report.classicWheel={actualCDPTouch:true,analogueLeft:true,countersteerRight:true,releaseCentres:true,pausedClears:true,thumbBounds:wheelBounds};
   if(jsErrors.length) fail('Browser errors: '+jsErrors.slice(0,4).join(' | '));
   report.passed=true;report.smallView=small;
 } catch(e) {report.errors.push(String(e?.stack || e));process.exitCode=1;}
