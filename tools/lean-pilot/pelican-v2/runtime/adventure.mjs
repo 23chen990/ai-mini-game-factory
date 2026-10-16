@@ -46,7 +46,7 @@ export function input(r,action) {
   const next=r.obstacles.filter(o=>o.kind==='barrier'&&!o.hit&&!o.passed&&
     Math.abs(LANES[o.lane]-r.laneTarget)<.72&&o.x>r.distance).sort((a,b)=>a.x-b.x)[0];
   const remaining=next?(next.x-r.distance)/Math.max(r.speed,.01):Infinity;
-  if(next&&remaining<=JUMP_BUFFER_SECONDS&&next.x-r.distance>JUMP_TRIGGER_METERS+.15&&Math.abs(r.lane-LANES[r.laneIndex])<.75){
+  if(next&&remaining<=JUMP_BUFFER_SECONDS&&next.x-r.distance>JUMP_TRIGGER_METERS+.15&&Math.abs(r.laneTarget-LANES[next.lane])<.75){
    r.bufferedJump=next.id;event(r,'jump-buffered',{objectId:next.id});
   }else{r.vy=4.4;event(r,'jump');}
  }
