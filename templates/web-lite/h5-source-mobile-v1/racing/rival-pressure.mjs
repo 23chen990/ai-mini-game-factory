@@ -182,41 +182,49 @@ export function applyRivalTactics(game,stage) {
   return changed;
 }
 
-/** Close-race native nitro: no progress/teleport/rubber-band hacks.
- * Only nudges an existing native cooldown; AICar still decides whether boost is legal.
+/** V4.2 native corner-exit planning.
+ * A skilled opponent can recover an ordinary native nitro opportunity only
+ * AFTER crossing a real medium/sharp bend cleanly and reaching a straight.
+ * This never compares with player position to decide AI capability; if the
+ * player leads, trails or drives badly, the same rival makes the same choice.
+ * AICar.update still decides whether to accelerate and how fast to drive.
  */
 export class RivalPressure {
   constructor() { this.reset(); }
-  reset() { this.lastAt=-Infinity; this.lastLap=new WeakMap(); }
+  reset() { this.corners=new WeakMap(); }
   frame(game,stage) {
     applyRivalTactics(game,stage);
-    if(!game||game.state!=='race'||!game.player||!game.track||
-        !stage||stage.mode!=='speed'||['boss','elimination','relay'].includes(stage.kind)||
-        stage.course==='race-01'||stage.id==='01')return null;
-    const {player,track}=game;
-    if(!Array.isArray(game.racers)||!Array.isArray(game.standings)||
-        game.standings.indexOf(player)<0||game.standings.indexOf(player)>2||
-        game.standings.at(-1)===player||!Number.isFinite(game.raceTime)||
-        game.raceTime<17||game.raceTime-this.lastAt<19||player.finished||
-        player.spin>0||player.wrongWay>.4||player.s<27||
-        !Number.isFinite(track.length)||track.length<=0||
-        typeof track.curvAhead!=='function')return null;
-    let chosen=null;
+    if(!game||game.state!=='race'||!game.track||!game.player||
+       !Array.isArray(game.racers)||!Number.isFinite(game.raceTime)||
+       game.raceTime<12||stage?.mode!=='speed'||
+       ['boss','elimination','relay'].includes(stage?.kind)||
+       stageNumber(stage)==='01'||typeof game.track.curvAhead!=='function')
+      return null;
+    let observed=null;
     for(const rival of game.racers) {
-      if(!rival||rival.isPlayer||rival.finished||
-          !Number.isFinite(rival.progress)||!Number.isFinite(rival.dist)||
-          !Number.isFinite(rival.nitroCd)||rival.nitroCd<2.5||rival.nitroCd>10||
-          (rival.nitroTime??0)>0||(rival.spin??0)>0||rival.s<30)continue;
-      const gap=player.progress-rival.progress;
-      if(!Number.isFinite(gap)||gap<9||gap>115)continue;
-      const lap=Math.floor(Math.max(0,rival.progress)/track.length);
-      if(this.lastLap.get(rival)===lap)continue;
-      if(Math.abs(track.curvAhead(rival.dist,120))>.006)continue;
-      if(!chosen||gap<chosen.gap)chosen={rival,gap,lap};
+      if(!rival||rival.isPlayer||rival.finished||!Number.isFinite(rival.dist)||
+         !Number.isFinite(rival.s)||!Number.isFinite(rival.nitroCd))continue;
+      const state=this.corners.get(rival)??{armed:false,last:-1e5};
+      const bend=Math.abs(game.track.curvAhead(rival.dist,55));
+      if(rival.s>=27&&bend>=.011&&!rival.airborne&&(rival.spin??0)<=0)
+        state.armed=true;
+      else if(bend<=.0055 && state.armed) {
+        // Resolve the physical arc, not a clock-based or player-gap trigger.
+        state.armed=false;
+        if(rival.s>=32 && !rival.drifting && !rival.airborne &&
+          (rival.spin??0)<=0 && (rival.slowTime??0)<=0 &&
+          (rival.nitroTime??0)<=0 && rival.nitroCd>2.5 &&
+          game.raceTime-state.last>=22){
+          rival.nitroCd=Math.min(rival.nitroCd,.85);
+          state.last=game.raceTime;
+          if(!observed&&Number.isFinite(rival.progress)&&
+            Number.isFinite(game.player.progress)&&
+            Math.abs(rival.progress-game.player.progress)<=100)
+            observed={name:rival.name||'对手',cornerExit:true};
+        }
+      }
+      this.corners.set(rival,state);
     }
-    if(!chosen)return null;
-    chosen.rival.nitroCd=.65;
-    this.lastLap.set(chosen.rival,chosen.lap);this.lastAt=game.raceTime;
-    return {name:chosen.rival.name||'对手',gap:Math.round(chosen.gap)};
+    return observed;
   }
 }
