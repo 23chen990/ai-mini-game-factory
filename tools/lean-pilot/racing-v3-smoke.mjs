@@ -346,6 +346,16 @@ try {
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
     if (index===4) {
+      const itemHud=await page.evaluate(()=>({
+        itemMode:window.game?.itemMode,
+        modeFlag:document.documentElement.dataset.raceItemMode,
+        nitroGaugeDisplay:window.getComputedStyle(document.querySelector('#gaugebox')).display,
+        progressDisplay:window.getComputedStyle(document.querySelector('#race-progress')).display,
+      }));
+      if(itemHud.itemMode!==true || itemHud.modeFlag!=='true' ||
+         itemHud.nitroGaugeDisplay!=='none' || itemHud.progressDisplay==='none')
+        fail('Item race must hide unusable charged nitro gauge while keeping course progress: '+JSON.stringify(itemHud));
+      report.itemHud=itemHud;
       // QA-only close-up for ART READABILITY; this is camera/vehicle staging,
       // not legitimate progress, rank, a real item pickup, or a stage clear.
       const visual=await page.evaluate(()=>{
