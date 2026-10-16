@@ -84,12 +84,13 @@ export function patchShortcutNativeCar(source) {
 export function patchShortcutNativeWorld(source) {
   const imported="import { installPhysicalShortcut } from './race-shortcut-network.mjs';";
   const marker='installPhysicalShortcut(track, requestedCourse);';
-  const themeImport="import { createRaceTrackTheme } from './race-track-design.mjs';";
+  const themeImport="import { createRaceTrackTheme, buildRaceLandmarks } from './race-track-design.mjs';";
   const themeCall='createRaceTrackTheme(map.track,track,requestedCourse)';
+  const landmarkCall='root.add(buildRaceLandmarks(THREE, track, requestedCourse));';
   if(source.includes(imported) && source.includes(marker) &&
-     source.includes(themeImport) && source.includes(themeCall))return source;
+     source.includes(themeImport) && source.includes(themeCall) && source.includes(landmarkCall))return source;
   if(source.includes(imported) || source.includes(marker) ||
-     source.includes(themeImport) || source.includes(themeCall))
+     source.includes(themeImport) || source.includes(themeCall) || source.includes(landmarkCall))
      throw Error('Partial shortcut/course-theme world adapter');
   const anchors=[
     'track.__RACE_COURSE_ID = requestedCourse;',
@@ -103,7 +104,7 @@ export function patchShortcutNativeWorld(source) {
   return imported+'\n'+themeImport+'\n'+source
     .replace(anchors[0], anchors[0]+'\n    '+marker)
     .replace(anchors[1], 'const ground = buildGround(track.__RACE_SHORTCUT__?.terrainProxy(track) || track, { base:')
-    .replace(anchors[2], 'root.add(track.build('+themeCall+', ground.heightAt));'+'\n    if (track.__RACE_SHORTCUT__) root.add(track.__RACE_SHORTCUT__.buildMesh(THREE, ground.heightAt));')
+    .replace(anchors[2], 'root.add(track.build('+themeCall+', ground.heightAt));'+'\n    '+landmarkCall+'\n    if (track.__RACE_SHORTCUT__) root.add(track.__RACE_SHORTCUT__.buildMesh(THREE, ground.heightAt));')
     .replace(anchors[3], anchors[3]+'\n    track.__RACE_SHORTCUT__?.drawMinimap(this.hud);')
     .replace(anchors[4], "  resetPlayer() {\n    const P = this.player;\n    if (this.track?.__RACE_SHORTCUT__?.recover(P)) return;");
 }
