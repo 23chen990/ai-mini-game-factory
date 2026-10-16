@@ -17,8 +17,17 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
    const opponents=g.actors.filter(a=>a.team!==p.team);
+   const badge=[...document.querySelectorAll('.mk-fps-enemy')]
+     .find(el=>!el.hidden&&getComputedStyle(el).display!=='none');
+   const rect=badge?.getBoundingClientRect();
    return {
      gameTime:+g.time.toFixed(1),
+     yaw:+p.yaw.toFixed(3),pitch:+p.pitch.toFixed(3),
+     handFire:p.touch?.fire===true,
+     onscreenEnemyPixel:rect?{
+       x:Math.round(rect.left+rect.width/2),
+       y:Math.round(rect.bottom+22)
+     }:null,
      challenge:document.getElementById('mobile-kit')?.dataset.challenge,
      shots:p.stats.shots,hits:p.stats.hits,kills:p.stats.k,deaths:p.stats.d,
      hp:Math.max(0,Math.round(p.hp)),alive:p.alive,
