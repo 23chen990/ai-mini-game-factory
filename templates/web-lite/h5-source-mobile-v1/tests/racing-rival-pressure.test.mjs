@@ -81,8 +81,11 @@ test('V4.2 sends five genuine opponents into a fixed, varied contest; never touc
   const field=[player,...Array.from({length:5},(_,i)=>rival({skill:.55+.05*i,progress:5+i*8}))];
   const original=field.map(x=>({progress:x.progress,s:x.s}));
   const configured=seedCompetitiveField(field,stage);
-  assert.deepEqual(configured,{adjusted:5,ace:true,minimum:.78,maximum:1.16});
-  assert.deepEqual(field.slice(1).map(x=>x.skill),[.78,.875,.97,1.065,1.16]);
+  assert.deepEqual(configured,{adjusted:5,ace:true,minimum:1.16,maximum:1.62});
+  const skill=field.slice(1).map(x=>x.skill);
+  assert.equal(skill[0],1.16);assert.equal(skill[4],1.62);
+  assert.ok(skill[2]>1.16+(1.62-1.16)*.70,'third rival is now a threat even in stage02');
+  assert.ok(skill[3]>1.16+(1.62-1.16)*.90,'second-fastest approaches the ace');
   assert.equal(player.skill,999);
   assert.deepEqual(field.map(x=>({progress:x.progress,s:x.s})),original,
     'must not teleport opponents or change physics velocity');
@@ -91,11 +94,11 @@ test('V4.2 sends five genuine opponents into a fixed, varied contest; never touc
   assert.deepEqual(field.slice(1).map(x=>x.skill),again,'fixed setup must be idempotent');
 });
 
-test('all 16 stages have intentional bands or an explicitly protected tutorial/boss',()=>{
-  const expected=['02','03','04','05','06','07','08','09','10','11','12','14','15'];
+test('all 16 stages including 01, 13 and 16 spawn strong fixed rivals',()=>{
+  const expected=Array.from({length:16},(_,i)=>String(i+1).padStart(2,'0'));
   assert.deepEqual(Object.keys(COMPETITIVE_FIELD_V42).sort(),expected);
   for(const [id,band] of Object.entries(COMPETITIVE_FIELD_V42)){
-    assert.ok(band[0]>.7&&band[1]<=1.55&&band[0]<band[1],id);
+    assert.ok(band[0]>=1.16&&band[1]<=2&&band[0]<band[1],id);
     const seed=seedCompetitiveField(Array.from({length:5},()=>rival({skill:.85})),
       {id,course:'race-'+id});
     assert.equal(seed.adjusted,5);
@@ -103,16 +106,17 @@ test('all 16 stages have intentional bands or an explicitly protected tutorial/b
   }
   for(const id of ['01','13','16']){
     const rivals=[rival({skill:1.29})];
-    assert.deepEqual(seedCompetitiveField(rivals,{id,course:'race-'+id}),{adjusted:0,ace:false});
-    assert.equal(rivals[0].skill,1.29);
+    const report=seedCompetitiveField(rivals,{id,course:'race-'+id});
+    assert.equal(report.adjusted,1,'even former protected stages are hard '+id);
+    assert.equal(rivals[0].skill,COMPETITIVE_FIELD_V42[id][1]);
   }
 });
 
 test('daily racing strength follows underlying course; original native menu rubber stays separate',()=>{
   const stage={id:'daily-2026-10-17',course:'race-08',kind:'race',mode:'speed',diff:1};
   const one=[rival({skill:.9})];
-  assert.equal(seedCompetitiveField(one,stage).maximum,1.45);
-  assert.equal(one[0].skill,1.45);
+  assert.equal(seedCompetitiveField(one,stage).maximum,1.76);
+  assert.equal(one[0].skill,1.76);
   assert.equal(seedCompetitiveField([rival()],{id:'daily-2026-10-17',course:'invalid'}).adjusted,0);
   assert.equal(careerPaceMultiplier(true),1);
   assert.equal(careerPaceMultiplier(false),null);
@@ -175,16 +179,14 @@ test('V4.7 middle and late game contest the podium with three strong native race
   assert.deepEqual(five.map(r=>r.skill),snapshot,'fixed grid strength stays stable');
 });
 
-test('V4.7 preserves progressive opening: early tutorial/speed grids never get compressed',()=>{
-  for(const id of ['02','03','04','05']){
-    const rivals=Array.from({length:5},(_,i)=>rival({skill:.55+i*.045}));
+test('V4.8 even the opening rounds must present multiple podium threats',()=>{
+  for(const id of ['01','02','03','04','05','13','16']){
+    const rivals=Array.from({length:5},(_,i)=>rival({skill:.55+i*.045,progress:350+i*7}));
+    const before=rivals.map(r=>r.progress);
     const {minimum,maximum}=seedCompetitiveField(rivals,{id,course:'race-'+id});
-    assert.equal(rivals[2].skill,+((minimum+maximum)*.5).toFixed(4),id);
+    assert.ok(rivals[2].skill>minimum+(maximum-minimum)*.70,id+' needs a real 3rd-place contest');
     assert.equal(rivals[4].skill,maximum);
-  }
-  for(const id of ['01','13','16']){
-    const racers=[rival({skill:1.25,progress:350})];
-    assert.deepEqual(seedCompetitiveField(racers,{id,course:'race-'+id}),{adjusted:0,ace:false});
-    assert.equal(racers[0].skill,1.25,'boss/tutorial special-case remains untouched');
+    assert.ok(rivals[0].skill>=1.16);
+    assert.deepEqual(rivals.map(r=>r.progress),before,'no fake gaps');
   }
 });
