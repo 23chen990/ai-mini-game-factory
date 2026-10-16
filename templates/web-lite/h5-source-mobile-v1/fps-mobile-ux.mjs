@@ -72,13 +72,13 @@ export function cfAutoFireEligible(challenge) {
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
   if (challenge.kind === 'hits') return challenge.elite===true
-    ? '精英步枪：自己瞄准并按开火，命中3次'
+    ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
     : '1v1入门：准星对准敌人自动开火，命中3次';
   if (challenge.kind === 'kills') return challenge.elite===true
-    ? '精英狙击：90秒内用 AWM 击杀1名敌人'
+    ? '精英狙击：75秒内 AWM 击杀1人，最多阵亡1次'
     : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
   if (challenge.kind === 'survive') return challenge.elite===true
-    ? '精英生存：坚持45秒，移动20米，最多被击倒2次'
+    ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
     : '坚持45秒，移动20米，最多被击倒2次';
   return challenge.instructions || '';
 }
@@ -253,9 +253,13 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
       return 'AWM 真实击杀 ' + awmKills + ' 人。接下来试试移动与生存的配合。';
     return '累计移动 ' + travel + ' 米、被击倒 ' + deaths + ' 次。下次试试零死亡通关。';
   }
+  if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths)
+    return '被击倒 ' + deaths + ' 次，精英关最多允许 ' +
+      challenge.maxDeaths + ' 次。下次借掩体换位，先避开敌方火力。';
   if (challenge.kind === 'hits') {
     if (hits === 0)
-      return '0/' + goal + ' 次命中。用右手移动准星寻找红色敌人，瞄准后自动开火。';
+      return '0/' + goal + ' 次命中。用右手移动准星寻找红色敌人，' +
+        (cfAutoFireEligible(challenge) ? '瞄准后自动开火。' : '手动点按开火。');
     return '已经命中 ' + hits + '/' + goal + ' 次，还差 ' +
       Math.max(0,goal-hits) + ' 次。下次继续跟住目标，直到出现命中确认。';
   }
