@@ -1,5 +1,5 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
-import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
+import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked } from './fps-mobile-ux.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
@@ -43,8 +43,10 @@ async function boot() {
       ? '⚡ 精英模式已开启 · 点击返回普通'
       : '⚡ 进阶复战 · 敌人更强，无自动辅助';
     $('heading').textContent = selected.title;
+    const displayChallenge = id==='cf-transport-ship'&&elite
+      ? cfEliteChallenge(selected) : {...selected,elite:false};
     $('copy').textContent = id === 'cf-transport-ship'
-      ? mobileChallengeCopy({...selected,elite}) + (elite ? ' · 敌人反应更快' : '')
+      ? mobileChallengeCopy(displayChallenge)
       : selected.instructions;
     $('challenges').innerHTML = levels.map(c => {
       const record = challengeProgress.records[c.id];
@@ -125,7 +127,7 @@ async function boot() {
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
   const portraitBlocked = () => id !== 'pelican-bike' && window.innerHeight > window.innerWidth;
-  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = id === 'cf-transport-ship' ? {...selected,elite:elite && cfEliteUnlocked(challengeProgress.records[selected.id])} : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
+  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = id === 'cf-transport-ship' ? (elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
@@ -175,7 +177,9 @@ async function boot() {
         $('status').textContent = activeChallenge.kind === 'survive'
           ? '❤ 余' + Math.max(0, activeChallenge.target - (metrics.deaths || 0)) + '次 · ↗ ' +
             Math.floor(metrics.travel || 0) + '/' + (activeChallenge.minTravel || 0) + 'm'
-          : result.label;
+          : activeChallenge.maxDeaths!==undefined
+            ? '☠ ' + (metrics.deaths||0) + '/' + activeChallenge.maxDeaths + ' · ' + result.label
+            : result.label;
         $('goal').value = activeChallenge.kind === 'survive'
           ? Math.min(activeChallenge.limitMs / 1000, Math.round(round.elapsedMs / 1000))
           : Math.min(result.value, activeChallenge.target);
