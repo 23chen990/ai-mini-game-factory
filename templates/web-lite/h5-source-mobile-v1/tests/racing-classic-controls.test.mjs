@@ -1,17 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TouchSteering, TouchActions, ManualRaceDriver } from '../racing/driver.mjs';
+import { TouchActions, ManualRaceDriver } from '../racing/driver.mjs';
+import { RacingJoystick } from '../racing/joystick.mjs';
 import { patchCounterSteer, patchItemModeNitro, patchManualNitroEdge } from '../../../../tools/lean-pilot/racing-mobile-build.mjs';
 
 const car = () => ({finished:false,nitroCount:1,items:['shield']});
-test('opposite thumb overrides, and sliding a captured thumb changes direction',()=>{
-  const p=new TouchSteering();
-  p.press(1,'left',0);p.press(2,'right',8);
-  assert.deepEqual(p.snapshot(9),{left:false,right:true});
-  p.release(2,90);
-  assert.deepEqual(p.snapshot(91),{left:true,right:false});
-  assert.equal(p.move(1,'right'),true);
-  assert.deepEqual(p.snapshot(92),{left:false,right:true});
+test('single joystick thumb controls both signs without two binary direction buttons',()=>{
+  const j=new RacingJoystick();
+  assert.equal(j.press(1,100,100,50),true);
+  j.update(1,60); assert.ok(j.snapshot()>0);
+  assert.equal(j.press(2,140,100,50),false,'second thumb cannot steal active steering');
+  j.update(1,140); assert.ok(j.snapshot()<0,'same finger immediately countersteers');
+  assert.equal(j.release(1),true);
+  assert.equal(j.snapshot(),0,'release recentres precisely');
 });
 test('drift hold and small spray do not share input; short taps survive release',()=>{
   const actions=new TouchActions(),driver=new ManualRaceDriver(actions),p=car();
