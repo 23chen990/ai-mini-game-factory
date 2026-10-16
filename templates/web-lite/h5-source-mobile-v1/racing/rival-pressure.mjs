@@ -12,6 +12,7 @@ export class RivalPressure {
     const {player,track}=game;
     if (!Array.isArray(game.racers) || !Array.isArray(game.standings) ||
         game.standings.indexOf(player)<0 || game.standings.indexOf(player)>2 ||
+        game.standings.at(-1)===player ||
         !Number.isFinite(game.raceTime) ||
         game.raceTime<18 || game.raceTime-this.lastAt<22 ||
         player.finished || player.spin>0 || player.wrongWay>.4 ||
