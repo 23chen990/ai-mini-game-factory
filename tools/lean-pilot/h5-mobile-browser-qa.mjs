@@ -9,7 +9,9 @@ const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const{run,root,game}=await loadRun(base,runId),hash=await buildHash(game),server=await serveRun(base,runId,0);
  const url='http://127.0.0.1:'+server.address().port,checks=[],artifacts=[],errors=[],actions=[];
- const fpsThreatTrace=[],fpsExtendedChecks=[]; let fpsScriptSteps=0,fpsEnemySeenCount=0,fpsRouteTurns=0,fpsContactScreenshot=false;
+ const fpsThreatTrace=[],fpsExtendedChecks=[];
+ let fpsScriptSteps=0,fpsEnemySeenCount=0,fpsRouteTurns=0,fpsContactScreenshot=false;
+ let fpsMoveLast=-1,fpsMoveStall=0,fpsRepositionScreenshot=false,fpsManualScreenshot=false;
  const readFpsThreat = async () => page.evaluate(() => {
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
@@ -32,6 +34,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      configuredTeamSize:g.opts.size,
      autoFireActivations:g.__mobileBalanceReview?.autoFireActivations??0,
      playerEngaged:g.__mobileBalanceReview?.playerEngaged??false,
+     visibleObjective:document.getElementById('mk-status')?.textContent||'',
      hintVisible:(()=>{const e=document.querySelector('#mk-fps-guide');return e&&getComputedStyle(e).display!=='none'?e.textContent:'';})()
    };
  }).catch(()=>null);
@@ -56,6 +59,26 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  };
  const coachedFpsStep=async () => {
    fpsScriptSteps++;
+   // Coach reads only the ACTUAL objective text on screen, never bot
+   // coordinates, unrendered mission state, player world path or stage flags.
+   const objective=(await page.locator('#mk-status').textContent())||'';
+   const shifting=/↗ 换位\s*(\d+)\/(\d+)m/u.exec(objective);
+   if(shifting){
+     const walked=Number(shifting[1]);
+     fpsMoveStall=walked<=fpsMoveLast?fpsMoveStall+1:0;
+     fpsMoveLast=walked;
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     if(!pad)return;
+     const origin={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
+     // Follow visible cover lane, then sidestep if a container blocks motion.
+     const motion=fpsMoveStall>=6?[0,53]:fpsMoveStall>=3?[52,0]:[0,-53];
+     await mobileStroke(origin,{x:origin.x+motion[0],y:origin.y+motion[1]},2000,53);
+     if(!fpsRepositionScreenshot){await shot('mobile-v7-reposition');fpsRepositionScreenshot=true;}
+     return;
+   }
+   if(/手动追击/u.test(objective)&&!fpsManualScreenshot){
+     await shot('mobile-v7-manual-followup');fpsManualScreenshot=true;
+   }
    const aimed=page.locator('#mk-fps-target[data-side="enemy"]');
    if(await aimed.count()&&await aimed.isVisible()){
      fpsEnemySeenCount++;
@@ -156,7 +179,8 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      fpsExtendedChecks.push({name:'cf-v6-ready-ui',
        passed:entryMobile.panelFits&&entryMobile.smallFits&&b.cards===3&&b.selected===1&&
          b.autoFireTutorial&&b.allWithinPanel&&b.startHeight>=48&&
-         b.facts.some(x=>/M4A1/.test(x))&&b.facts.some(x=>/3 次/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
+         b.facts.some(x=>/M4A1/.test(x))&&b.facts.some(x=>/3枪/.test(x))&&
+         b.facts.some(x=>/12m/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
        detail:b});
    }
    const startBox=await page.locator('#mk-start').boundingBox();
@@ -342,11 +366,23 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        facts.bounds[2]<=facts.viewport[0]&&facts.bounds[3]<=facts.viewport[1];
      fpsExtendedChecks.push({name:'cf-v6-result-ui',
        passed:facts.facts.length===3&&
-         facts.facts[0].includes(String(facts.actualHits)+' / 3')&&
+         /^追击\d+ \/ 3/u.test(facts.facts[0])&&
+         /^换位\d+ \/ 12 m/u.test(facts.facts[1])&&
          facts.phase==='finished'&&!facts.activeGuide&&resultLayout,
        detail:facts});
    }
    await shot('mobile-terminal');
+   if(run.theme==='cf-transport-ship'){
+     const resultOutcome=await page.locator('#mobile-kit').getAttribute('data-outcome');
+     const target=await page.locator('#mk-fps-results').textContent();
+     fpsExtendedChecks.push({name:'cf-v7-legitimate-multistage-success',
+       passed:phase==='finished'&&resultOutcome==='won'&&
+         /追击3 \/ 3/u.test(target)&&/换位12 \/ 12 m/u.test(target),
+       detail:{phase,outcome:resultOutcome,missionResults:target,
+         reachedMoveStage:fpsRepositionScreenshot,
+         reachedManualStage:fpsManualScreenshot,
+         visualInputSteps:fpsScriptSteps}});
+   }
    const terminal={phase,visibleHeading:await page.locator('#mk-heading').innerText(),score,wallMs:Date.now()-started};
    if(run.theme==='cf-transport-ship'){
      terminal.fpsThreatSummary={
