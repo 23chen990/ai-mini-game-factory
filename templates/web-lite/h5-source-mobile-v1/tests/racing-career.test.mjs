@@ -425,6 +425,8 @@ test('V4.8 final boss and podium become significantly harder without touching ra
 
 test('V4.8 stage01 is NOT a tutorial pass: demands two full laps, rank and a true strong AI',()=>{
   const s=STAGES[0],c=new RacingCareer(memory()),g=game();
+  // Real native AICars always have a .skill; the basic mock racer does not.
+  g.racers[1].skill=.55;g.racers[2].skill=.75;
   assert.equal(s.laps,2);assert.equal(s.rank,3);assert.equal(s.diff,1);
   assert.equal(gradeStage(s,{...result(4),time:86},{}),0);
   assert.ok(gradeStage(s,{...result(3),time:86},{}));
