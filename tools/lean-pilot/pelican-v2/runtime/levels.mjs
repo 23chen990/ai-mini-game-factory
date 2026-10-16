@@ -35,16 +35,15 @@ export const PRESSURE_GATES=Object.freeze({
  4:Object.freeze([
   [275,'van',0],[275,'car',2], // centre gap
   [320,'car',0],[320,'van',2], // centre gap before centre barrier at 350m
-  [444,'barrier',0],[444,'car',1], // right gap
+  [444,'car',0],[444,'van',1], // right gap
   [499,'van',1],[499,'car',2], // left gap
  ]),
  5:Object.freeze([
-  [133,'car',0],[133,'van',2], // centre gap
-  [182,'van',0],[182,'car',2], // centre gap before legacy left gap
-  [303,'car',0],[303,'barrier',1], // right gap
+  [145,'car',0],[145,'van',2], // centre gap
+  [303,'car',0],[303,'van',1], // right gap
   [366,'van',0],[366,'car',2], // centre gap
-  [433,'barrier',0],[433,'van',1], // right gap
-  [558,'barrier',1],[558,'car',2], // left gap after 516m
+  [433,'car',0],[433,'van',1], // right gap
+  [558,'van',1],[558,'car',2], // left gap after 516m
   [615,'car',0],[615,'van',2], // centre gap
  ]),
 });
