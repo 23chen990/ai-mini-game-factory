@@ -98,7 +98,6 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit[data-phase="paused"] #race-course-card,
 #race-kit[data-phase="paused"] #race-stage-goal,
 #race-kit[data-phase="paused"] #race-fuel-box,
-#race-kit[data-phase="paused"] #race-settings,
 #race-kit[data-phase="paused"] #race-note { display:none!important; }
 #race-kit[data-phase="finished"] #race-panel { height:calc(100% - var(--race-top) - var(--race-bottom) - 12px);display:flex;flex-direction:column;padding:12px 20px; }
 #race-kit[data-phase="finished"] #race-heading { font-size:26px;margin:4px 0 8px; }
