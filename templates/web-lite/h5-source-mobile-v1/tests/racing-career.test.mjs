@@ -324,16 +324,16 @@ test('middle item rivals allow physical pickup and hit recovery without changing
   for(let i=0;i<5;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(5);g.racers[1].skill=.85;g.racers[2].skill=1.05;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.03)<1e-9);
-  assert.ok(Math.abs(g.racers[2].skill-1.18)<1e-9);
+  assert.ok(Math.abs(g.racers[1].skill-1.05)<1e-9,'stage06 item pace rises slightly');
+  assert.ok(Math.abs(g.racers[2].skill-1.215)<1e-9,'only top rival gets a small item ace advantage');
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });
-test('middle speed rivals retain the competitive calibrated band',()=>{
+test('middle speed rivals get a small real pace lift without moving standings',()=>{
   const c=new RacingCareer(memory()),g=game();
   c.progress.stars['02']=1;c.setStage(2);g.racers[1].skill=.85;g.racers[2].skill=1.05;c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.18)<1e-9);
-  assert.ok(Math.abs(g.racers[2].skill-1.34)<1e-9);
+  assert.ok(Math.abs(g.racers[1].skill-1.20)<1e-9);
+  assert.ok(Math.abs(g.racers[2].skill-1.385)<1e-9);
 });
 test('career retains the submitted expert field speeds while boss and middle field still escalate',()=>{
   const c=new RacingCareer(memory()),g=game();g.racers[1].skill=.55;g.racers[2].skill=.75;
@@ -343,12 +343,12 @@ test('career retains the submitted expert field speeds while boss and middle fie
   assert.equal(c.boss.skill,1.58);
   assert.ok(Math.abs(g.racers[2].skill-1.38)<1e-9);
 });
-test('expert corner-pass stage keeps native speed variability and never changes player progress',()=>{
+test('expert corner-pass AI gains a modest ace but still drives with native variability',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<10;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(10);g.racers[1].skill=1.2;g.racers[2].skill=1.38;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.2,1.38]);
+  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.2,1.405]);
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });
