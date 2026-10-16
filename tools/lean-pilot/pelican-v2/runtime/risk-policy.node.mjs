@@ -43,6 +43,17 @@ test('visible gold increase after a true +9m jump prize releases the next challe
  const noGold=decide({...early,nowMs:1000+policy.CAPTURE_HOLD_MS-180,distance:213,goldCounter:2,lanes:[lane(),lane(),lane()]},jump.state);
  assert.equal(noGold.reason,'capture-hold','mere proximity is not evidence of earned gold');
 });
+test('a visible READY jump control is a valid fallback when the radar prize cue has changed',()=>{
+ const target={barrierId:'l1-o3',distance:225};
+ const s=policy.createRiskPolicyState(1,target);
+ const confirmed={...s,committedRewardLane:1};
+ const viewReady=view({level:1,distance:217,laneIndex:1,jumpReady:true,goldCounter:4,lanes:[lane({fish:true}),lane(),lane()]});
+ const a=decide(viewReady,confirmed);
+ assert.equal(a.action,'jump');assert.equal(a.reason,'visible-jump-button-ready');
+ assert.equal(a.state.goldAtJump,4);assert.equal(a.state.stage,'capture');
+ const tooLate=decide({...viewReady,distance:225},confirmed);
+ assert.notEqual(tooLate.action,'jump');
+});
 test('a real visible jump reward establishes a stable target through transient ordinary fish HUD cues',()=>{
  const target={barrierId:'l1-o4',distance:75};
  const state=policy.createRiskPolicyState(1,target);
