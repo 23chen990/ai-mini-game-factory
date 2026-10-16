@@ -10,7 +10,7 @@ export function setRaceSound(audio, enabled) {
 export const normalizeRaceQuality = value => ['low', 'mid', 'high'].includes(value) ? value : 'mid';
 export const raceReady = game => !!(game?.track && game.input && !game.loading);
 /** Never begin or charge fuel for a stage if its physical track failed to load. */
-export const stageTrackReady = (game, stage) => !!(game?.track && !game.loading && game.map?.id === stage?.map);
+export const stageTrackReady = (game, stage) => !!(game?.track && !game.loading && game.map?.id === stage?.map && stage?.course && game.track.__RACE_COURSE_ID === stage.course && game.settings?.course === stage.course);
 export function clearNativeInput(input) {
   input.down.clear(); input.pressed.clear(); input.touchPressed.clear();
   for (const key of Object.keys(input.touch)) input.touch[key] = false;
