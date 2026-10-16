@@ -94,10 +94,13 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
   const walked=Math.max(0,travel-startTravel);
   const net=anchorX!==null&&anchorZ!==null&&x!==null&&z!==null
     ? Math.hypot(x-anchorX,z-anchorZ):walked;
-  const distance=Math.min(walked,net);
+  let distance=Math.min(walked,net);
   if(stage===1&&distance>=challenge.minTravel) {
     stage=2;hitBaseline=hits;
   }
+  // Completing a true reposition is a checkpoint, not a leash: following an
+  // enemy back toward old cover must not revoke already earned movement.
+  if(stage===2)distance=Math.max(challenge.minTravel,distance);
   return {stage,startTravel,hitBaseline,anchorX,anchorZ,
     lastX:x,lastZ:z,lastTravel:travel,distance,
     follow:stage===2?Math.max(0,hits-hitBaseline):0,firstHit:stage>0};
