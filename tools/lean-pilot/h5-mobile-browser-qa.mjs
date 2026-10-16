@@ -324,7 +324,10 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        const overlap=visible.some((a,i)=>visible.slice(i+1).some(b=>
          a.left<b.left+b.width && b.left<a.left+a.width &&
          a.top<b.top+b.height && b.top<a.top+a.height));
-       return {actions:nodes,overlap,active:document.documentElement.dataset.fpsActive,
+       const fire=visible.find(n=>n.action==='fire');
+       const fireRightAimRoom=fire?innerWidth-fire.left-fire.width/2:0;
+       return {actions:nodes,overlap,fireRightAimRoom,
+         active:document.documentElement.dataset.fpsActive,
          desktopMenuHidden:getComputedStyle(document.getElementById('menu')).display==='none',
          labelsPresent:!!document.getElementById('mk-fps-target')&&!!document.getElementById('mk-fps-board')};
      });
@@ -368,7 +371,8 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const earlyCombat = await readFpsThreat();
      if(earlyCombat)fpsThreatTrace.push(earlyCombat);
      const working = shotsAfter > shotsBefore && thumbMotion && !layout.overlap && layout.desktopMenuHidden &&
-       layout.labelsPresent && layout.active === 'true' && layout.actions.every(n=>!n.visible||n.fits) &&
+       layout.labelsPresent && layout.active === 'true' && layout.fireRightAimRoom>=95 &&
+       layout.actions.every(n=>!n.visible||n.fits) &&
        ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible)) &&
        ['duplicate-fire','crouch','switch'].every(a=>layout.actions.some(n=>n.action===a&&!n.visible));
      actions.push({atMs:Date.now()-started,input:'visual-layout-audit',detail:{shotsBefore,shotsAfter,layout,thumbMotion,distance,lookAngle}});
