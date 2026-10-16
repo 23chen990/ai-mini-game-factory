@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -410,13 +410,59 @@ test('CF v7 retains genuine partial move across native respawns but never credit
 
 test('CF novice opening opponent returns fire from readable cover before a later real rush',()=>{
  const novice={kind:'hits',drill:'reposition',elite:false};
- assert.equal(cfScoutHoldSeconds(novice),18);
+ assert.equal(cfScoutHoldSeconds(novice),26);
  assert.equal(cfScoutHoldSeconds({kind:'hits',elite:false}),7);
  assert.equal(cfScoutHoldSeconds({kind:'kills'}),20);
  assert.equal(cfScoutHoldSeconds({kind:'survive'}),7);
  assert.equal(cfScoutHoldSeconds({...novice,elite:true}),3);
  assert.equal(cfScoutHoldSeconds({kind:'kills',elite:true}),7);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:18},17.99),false);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:18},18),true);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:26},25.99),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:26},26),true);
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:false,__mobileTrainingHoldUntil:18},22),false);
+});
+
+
+test('CF flank coach proposes a real reachable side route, never fabricates an obstacle-free lane',()=>{
+ const player={pos:{x:0,z:0},yaw:0};
+ const openWorld={blocked:()=>false};
+ let pathCalls=0;
+ const openNav={
+  idx:(x,z)=>Math.abs(x)<=25&&Math.abs(z)<=25?0:-1,
+  walkable:k=>k>=0,
+  lineFree:()=>true,
+  findPath:()=>{pathCalls++;throw Error('direct walkable lane needs no A-star');}
+ };
+ const selected=cfFlankWaypoint({player,world:openWorld,nav:openNav,minDistance:8});
+ assert.ok(selected&&selected.x>=9.5);
+ assert.equal(selected.side,1);
+ assert.ok(Math.abs(selected.z)<=2);
+ assert.equal(pathCalls,0,'straight accessible flank uses cheap direct walk path');
+ assert.deepEqual(player,{pos:{x:0,z:0},yaw:0},'coach never teleports player');
+ const leftNav={...openNav,idx:(x,z)=>x>0?-1:0};
+ const left=cfFlankWaypoint({player,world:openWorld,nav:leftNav,minDistance:8});
+ assert.ok(left&&left.x<-8);
+ assert.equal(left.side,-1);
+ assert.equal(cfFlankWaypoint({player,world:{blocked:()=>true},nav:openNav}),null);
+ const badNav={...openNav,lineFree:()=>false,
+  findPath:(x,z,tx,tz)=>[[x,z],[100,100],[tx,tz]]};
+ assert.equal(cfFlankWaypoint({player,world:openWorld,nav:badNav}),null,
+  'path requiring a huge detour is not advertised as safe');
+ assert.equal(cfFlankWaypoint({player,nav:openNav}),null);
+});
+
+
+test('CF follow-up fire gets limited aim friction only when the novice actively shoots',()=>{
+ const near={yawError:.17,pitchError:.12,distance:16,
+   visible:true,firing:true,sniperReady:true};
+ assert.deepEqual(mobileAimCorrection({...near,training:false}),{yaw:0,pitch:0});
+ const assisted=mobileAimCorrection({...near,training:true});
+ assert.ok(assisted.yaw>0&&assisted.yaw<=.025);
+ assert.ok(assisted.pitch>0&&assisted.pitch<=.019);
+ for(const value of [{firing:false},{visible:false},{distance:28},
+  {yawError:.21},{pitchError:.15},{sniperReady:false}]){
+  assert.deepEqual(mobileAimCorrection({...near,...value,training:true}),{yaw:0,pitch:0});
+ }
+ // This function changes only view angles; the original gun still requires
+ // actual fire input, line-of-sight and a native bullet-hit callback.
+ assert.ok(!('hit' in assisted) && !('fire' in assisted));
 });

@@ -62,7 +62,7 @@ export function mobileScoutHoldExpired(actor, seconds) {
 export function cfScoutHoldSeconds(challenge) {
   if(challenge?.elite===true)return challenge.kind==='kills'?7:3;
   if(challenge?.kind==='kills')return 20;
-  return challenge?.kind==='hits'&&challenge.drill==='reposition'?18:7;
+  return challenge?.kind==='hits'&&challenge.drill==='reposition'?26:7;
 }
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
@@ -216,6 +216,52 @@ export function routeArrow(player, goal) {
     distance:Math.round(distance)
   };
 }
+
+/**
+ * Suggest a genuinely navigable lateral lane after the first confirmed hit.
+ * Pure map geometry only: no enemy tracking, no fabricated movement, no
+ * player's statistics or native physics modified. Returning null is safe.
+ */
+export function cfFlankWaypoint({player,world,nav,minDistance=8}) {
+  if(!player?.pos || !Number.isFinite(player.yaw) ||
+     !world?.blocked || !nav?.idx || !nav?.walkable || !nav?.findPath) return null;
+  const x=player.pos.x,z=player.pos.z,yaw=player.yaw;
+  if(!Number.isFinite(x)||!Number.isFinite(z))return null;
+  const required=Math.max(2,Math.min(22,Number(minDistance)||8));
+  const rightX=Math.cos(yaw),rightZ=-Math.sin(yaw);
+  const forwardX=-Math.sin(yaw),forwardZ=-Math.cos(yaw);
+  let best=null;
+  for(const radius of [required+1.5,required+3.0,required+4.5]) {
+    for(const side of [1,-1]) {
+      for(const along of [0,-2]) {
+        const tx=x+rightX*radius*side+forwardX*along;
+        const tz=z+rightZ*radius*side+forwardZ*along;
+        const k=nav.idx(tx,tz);
+        if(k<0||!nav.walkable(k)||world.blocked(tx,.05,tz,.38,1.9))continue;
+        const path=nav.lineFree?.(x,z,tx,tz)
+          ? [[x,z],[tx,tz]]
+          : nav.findPath(x,z,tx,tz);
+        if(!Array.isArray(path)||path.length<2)continue;
+        let length=0,valid=true;
+        for(let i=1;i<path.length;i++){
+          const a=path[i-1],b=path[i];
+          if(!Array.isArray(a)||!Array.isArray(b)||
+            ![...a,...b].every(Number.isFinite)){valid=false;break;}
+          length+=Math.hypot(b[0]-a[0],b[1]-a[1]);
+        }
+        // A waypoint behind a very long detour isn't useful to a beginner.
+        if(!valid||length>radius*1.8+3)continue;
+        const score=length+Math.abs(along)*.7+(along>0?1.8:0);
+        if(!best||score<best.score)
+          best={x:tx,z:tz,score,pathLength:length,side};
+      }
+    }
+    // Do not evaluate distant candidates after finding a nearby legal lane.
+    if(best)return best;
+  }
+  return null;
+}
+
 // A genuine, hittable intro opponent placed inside an existing clear cargo
 // lane. Candidate positions are derived from the user's forward bearing and
 // checked against real world geometry, nav walkability and line of sight.
@@ -271,14 +317,17 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
   return null;
 }
 
-export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady }) {
+export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady, training=false }) {
+  const limitYaw=training?0.19:0.14,limitPitch=training?0.13:0.105;
   if (!visible || !firing || sniperReady === false ||
     !Number.isFinite(distance) || distance < 1 || distance > 27 ||
     !Number.isFinite(yawError) || !Number.isFinite(pitchError) ||
-    Math.abs(yawError) > 0.14 || Math.abs(pitchError) > 0.105) return {yaw:0,pitch:0};
+    Math.abs(yawError) > limitYaw || Math.abs(pitchError) > limitPitch)
+    return {yaw:0,pitch:0};
+  const maxYaw=training?0.025:0.019,maxPitch=training?0.019:0.014;
   return {
-    yaw: Math.max(-0.019, Math.min(0.019, yawError * 0.30)),
-    pitch: Math.max(-0.014, Math.min(0.014, pitchError * 0.30))
+    yaw: Math.max(-maxYaw, Math.min(maxYaw, yawError * (training?0.36:0.30))),
+    pitch: Math.max(-maxPitch, Math.min(maxPitch, pitchError * (training?0.36:0.30)))
   };
 }
 
@@ -528,7 +577,7 @@ export function createFpsMobileUx(game, root, doc) {
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
-  let drill = null, drillStageAt = 0;
+  let drill = null, drillStageAt = 0, flankGoal = null, flankDeaths = -1;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
   let routePath = null, routeLastAt = 0;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
@@ -676,8 +725,11 @@ export function createFpsMobileUx(game, root, doc) {
       const errYaw = Math.atan2(Math.sin(trueYaw-p.yaw), Math.cos(trueYaw-p.yaw));
       const errPitch = Math.atan2(dir.y, Math.hypot(dir.x, dir.z)) - p.pitch;
       const aim = mobileAimCorrection({
-        yawError: errYaw, pitchError: errPitch, distance, visible: true,
-        firing: true, sniperReady: ready
+        yawError: errYaw,pitchError: errPitch,distance,visible:true,
+        firing:!!(forceFiring||p.touch?.fire||(simple&&playerEngaged)),
+        sniperReady:ready,
+        training:activeChallenge?.drill==='reposition'&&drill?.stage===2&&
+          activeChallenge.elite!==true
       });
       if (!aim.yaw && !aim.pitch) continue;
       const hit = game.world.raycast(eye.x, eye.y, eye.z,
@@ -807,7 +859,7 @@ export function createFpsMobileUx(game, root, doc) {
     onStart(challenge) {
       activeChallenge = challenge || null;
       drill=cfAdvanceDrill(activeChallenge);
-      drillStageAt=0;
+      drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;playerEngaged=false;aimTouchStarts.clear();
       guide.textContent = activeChallenge?.elite===true
@@ -904,8 +956,23 @@ export function createFpsMobileUx(game, root, doc) {
         applyBalance(Math.max(0,(Number(game.time) || 0)-startedGameSeconds));
       }
       if(now >= routeLastAt) {
-        routeLastAt=now+1500;
-        routePath=findRoute();
+        routeLastAt=now+900;
+        if(activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
+          const deaths=p.stats?.d||0;
+          if(!flankGoal||deaths!==flankDeaths){
+            flankDeaths=deaths;
+            flankGoal=cfFlankWaypoint({player:p,world:game.world,nav:game.nav,
+              minDistance:Math.max(2,activeChallenge.minTravel-(drill.distance||0))});
+          }
+          const path=flankGoal&&game.nav?.findPath?.(
+            p.pos.x,p.pos.z,flankGoal.x,flankGoal.z);
+          routePath=Array.isArray(path)&&path.length>1
+            ? (path.find((pt,i)=>i>0&&Math.hypot(pt[0]-p.pos.x,pt[1]-p.pos.z)>2)
+              || [flankGoal.x,flankGoal.z])
+            : null;
+        } else {
+          flankGoal=null;routePath=findRoute();
+        }
       }
       if (now >= nextUpdate) {
         nextUpdate = now + 160;
@@ -925,9 +992,16 @@ export function createFpsMobileUx(game, root, doc) {
         lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
         if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
-          guide.textContent='↔ 左右横移 '+Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m';
+          const turn=routeArrow(p,routePath);
+          guide.textContent=(turn?.symbol||'↔')+' 换位 '+
+            Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m'+
+            (turn?' · 沿可走路线':' · 左右横移');
         } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
-          guide.textContent='◎ 手动追击 '+drill.follow+'/'+activeChallenge.target+'次';
+          const turn=!seen?routeArrow(p,routePath):null;
+          guide.textContent=turn
+            ? turn.symbol+' 寻找敌人 · 手动追击 '+drill.follow+'/'+activeChallenge.target
+            : seen ? '◎ 对准红色目标按开火 · '+drill.follow+'/'+activeChallenge.target
+              : '↑ 沿通道寻找敌人 · '+drill.follow+'/'+activeChallenge.target;
         } else if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
@@ -942,7 +1016,8 @@ export function createFpsMobileUx(game, root, doc) {
       // player has not yet found a target. It never sits on the reticle.
       guide.hidden = !p.alive ||
         (activeChallenge?.drill==='reposition'&&drill?.stage>0
-          ? drill.stage===2&&elapsed-drillStageAt>7
+          ? drill.stage===2&&elapsed-drillStageAt>7&&
+            [...markers.values()].some(el=>!el.hidden)
           : (p.stats?.hits ? elapsed>5 : elapsed>16&&elapsed%12>3));
     },
     destroy() {

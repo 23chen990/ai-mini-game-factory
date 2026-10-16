@@ -70,9 +70,16 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const pad=await page.locator('#touch .pad').first().boundingBox();
      if(!pad)return;
      const origin={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
-     // Side-step rather than charging straight toward a visible enemy.
-     // If cover blocks the strafe, change lateral direction, then retreat.
-     const motion=fpsMoveStall>=6?[0,53]:fpsMoveStall>=3?[-53,0]:[53,0];
+     // Follow ONLY the displayed flank arrow; this is accessible to an
+     // actual player and comes from nav/collision-checked original geometry.
+     const shown=await page.locator('#mk-fps-guide').textContent()||'';
+     const arrow=shown.trim()[0];
+     const recommended=arrow==='←'?[-53,0]:
+       arrow==='→'?[53,0]:arrow==='↑'?[0,-53]:[53,0];
+     // If progress stalled for multiple actual 2s holds, explore another
+     // lateral direction without privileged native coordinates.
+     const motion=fpsMoveStall>=6?[0,53]:
+       fpsMoveStall>=3?[-recommended[0],-recommended[1]]:recommended;
      await mobileStroke(origin,{x:origin.x+motion[0],y:origin.y+motion[1]},2000,53);
      if(!fpsRepositionScreenshot){await shot('mobile-v7-reposition');fpsRepositionScreenshot=true;}
      return;
