@@ -146,6 +146,45 @@ export function createCareerLayouts(layouts) {
   return fingerprints.size;
 }
 
+
+/**
+ * Shift native speed pads and scenic tunnels to the ACTUAL career route.
+ * The V3.5 world-coordinate pads were tied to one of the four old road shapes;
+ * merely reusing them would make newer stages miss a pickup by hundreds of m.
+ * Their number and lateral risk remain unchanged. No pad/goal is awarded here.
+ */
+export function createRaceTrackTheme(theme,track,course) {
+  if(!COURSE_BLUEPRINTS[course?.slice(5)] ||
+     !Number.isFinite(track?.length)||track.length<1200||
+     typeof track.curvAhead!=='function')
+    throw Error('Cannot place race decorations on unverified stage track');
+  const original=theme?.boostPads??[];
+  const isCity=original.length>2, bases=isCity?[.17,.39,.62,.84]:[.27,.67];
+  const seekStraight=(fraction)=>{
+    const target=track.length*fraction;
+    let best=target,score=Infinity;
+    for(let i=-13;i<=13;i++){
+      const d=Math.max(110,Math.min(track.length-150,target+i*8));
+      const c=Math.abs(track.curvAhead(d,58));
+      const slope=Math.abs(track.slope[Math.floor(d/track.ds)%track.N]??0);
+      const value=c*180+slope*.65+Math.abs(d-target)/1600;
+      if(value<score){score=value;best=d;}
+    }
+    return best/track.length;
+  };
+  return {
+    ...theme,
+    boostPads:original.map((p,i)=>({
+      f:seekStraight(bases[i]??Math.min(.9,.18+i*.19)),
+      lat:p.lat??0,
+    })),
+    tunnels:(theme?.tunnels??[]).map((t,i)=>{
+      const d=seekStraight(.46+i*.14);
+      return {f0:d,f1:Math.min(.96,d+.032)};
+    }),
+  };
+}
+
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
 export function applyTrackDesign(layouts) {
   const report = {};
