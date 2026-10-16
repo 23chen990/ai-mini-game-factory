@@ -1,14 +1,14 @@
 /* global console, process */
 /**
- * Engine-accurate, scene-free two-button physics comparison.
+ * Engine-accurate, scene-free manual analogue steering physics comparison.
  * Privileged centerline controller is synthetic; NEVER label as human/natural QA.
- * Native pinned Track/PlayerCar and owned RaceDriver are updated for every physics tick.
+ * Native pinned Track/PlayerCar and the one shipped ManualRaceDriver are updated every tick.
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
 import { pathToFileURL } from 'node:url';
-import { RaceDriver } from '../../templates/web-lite/h5-source-mobile-v1/racing/driver.mjs';
+import { ManualRaceDriver, TouchActions } from '../../templates/web-lite/h5-source-mobile-v1/racing/driver.mjs';
 import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
 import { tuneOpponentField } from '../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs';
 import { applyTrackDesign } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
@@ -32,19 +32,19 @@ const { mulberry32 }=await import(pathToFileURL(path.join(src,'util.js')).href);
 const STEP=1/120, MAX_SEC=235;
 const wrap=x=>Math.atan2(Math.sin(x),Math.cos(x));
 function control(p,tr,policy) {
-  if(policy==='straight')return {left:false,right:false};
+  if(policy==='straight')return {steerAxis:0};
   const look=p.s*(policy==='late'?.16:.35)+(policy==='late'?4:12);
   const next=tr.sample(p.d+Math.max(6,look),{});
   const center=Math.atan2(.85*p.lat,Math.max(10,p.s*.55));
   const diff=wrap(next.hd+center-p.h);
   const dead=policy==='late'?.105:.055;
-  return {left:diff>dead,right:diff<-dead};
+  return {steerAxis:Math.abs(diff)<=dead ? 0 : Math.max(-1,Math.min(1,diff*2.2))};
 }
-function simulate(layout,policy,assist,laps=2) {
-  const tr=new Track(layout),p=new PlayerCar(tr,null,'Native physics two-key probe');
+function simulate(layout,policy,laps=2) {
+  const tr=new Track(layout),p=new PlayerCar(tr,null,'Native physics analogue-wheel probe');
   p.reset(-25,0);
   p.stats={crash:0};
-  const adapter=new RaceDriver();
+  const actions=new TouchActions(),adapter=new ManualRaceDriver(actions);
   let absolute=-25,lastD=p.d,elapsed=0,lastAdvance=0;
   let crashes=0,drifts=0,airSec=0,nearRailSec=0,brakeSec=0;
   let lastCrash=-10,travel=0,peak=0,boosts=0;
@@ -52,12 +52,15 @@ function simulate(layout,policy,assist,laps=2) {
   let result='TIMED_OUT';
   for(let i=0;i<Math.ceil(MAX_SEC/STEP);i++){
     const steering=control(p,tr,policy);
-    const input=adapter.frame(STEP,steering,p,tr,'race');
-    if(!assist && (p.wrongWay??0)<.4 && p.spin<=0 && !p.drifting) {
-      // Disable ONLY our new curve-braking branch for the baseline; leave
-      // native U-turn rescue and other auto-boost intent unchanged.
-      input.down=false;input.up=true;
-    }
+    const future=tr.sample(p.d+Math.max(10,p.s*.4),{});
+    const bend=Math.abs(tr.curv?.[future.i] ?? 0);
+    // An instrumented synthetic driver explicitly PRESSES drift on meaningful
+    // turns. No automatic drifting is available in the actual game input.
+    const askDrift=bend>.005 && Math.abs(steering.steerAxis)>.35 &&
+      p.s>19 && p.spin<=0 && !p.airborne && p.wrongWay<.4;
+    if(askDrift && !actions.isHeld('drift'))actions.press(1,'drift',elapsed);
+    if(!askDrift && actions.isHeld('drift'))actions.release(1);
+    const input=adapter.frame(steering,p,'race',{track:tr,now:elapsed});
     if(input.down)brakeSec+=STEP;
     p.update(STEP,input,true,false);
     elapsed+=STEP;
@@ -87,15 +90,14 @@ function simulate(layout,policy,assist,laps=2) {
 const report={schemaVersion:1,buildHash:build.buildHash,
   pinnedRevision:build.sourceRevision,speedUnit:'m/s',timestepsPerSecond:120,
   simulatedController:true,naturalInputsOnly:false,seededCampaign:false,
-  limitations:'Privileged centerline synthetic steering, NOT touch-visible steering, not player realism. Native physics and two-button driver only; no renderer, opponent contact, item pickups, game rank, pads or human decision making.',
+  limitations:'Synthetic privileged-centerline analogue steering with scripted manual drift presses; NOT human gameplay or win-rate. No renderer, opponent contact, item pickups, game rank, pads or real player decisions.',
   maps:{}};
 for(const name of ['city','aegean','egypt','snow']) {
   const cases={};
   for(const [kind,layout] of [['original',layouts[name]],['reshaped',revised[name]]]){
     const trials={};
     for(const driver of ['guided','late','straight']){
-      trials[driver]=driver==='straight' ? {auto:simulate(layout,driver,true)} :
-        {auto:simulate(layout,driver,true),noCurveBrake:simulate(layout,driver,false)};
+      trials[driver]={manual:simulate(layout,driver)};
     }
     cases[kind]=trials;
   }
@@ -107,8 +109,8 @@ report.bossThreeLaps={};
 for(const [id,map] of [['13','city'],['16','aegean']]){
   const cases={};
   for(const [kind,layout] of [['original',layouts[map]],['reshaped',revised[map]]])
-    cases[kind]={guided:simulate(layout,'guided',true,3),
-      late:simulate(layout,'late',true,3)};
+    cases[kind]={guided:simulate(layout,'guided',3),
+      late:simulate(layout,'late',3)};
   report.bossThreeLaps[id]={map,laps:3,...cases};
 }
 /** V4.2 race-design audit: physically drive ALL sixteen real stage splines.
@@ -146,8 +148,8 @@ report.courses={};
 for(const stage of STAGES){
   const layout=revised[stage.course];
   if(!Array.isArray(layout?.points))throw Error('Stage must use its actual authored physical spline '+stage.course);
-  const guided=simulate(layout,'guided',true,stage.laps);
-  const late=simulate(layout,'late',true,stage.laps);
+  const guided=simulate(layout,'guided',stage.laps);
+  const late=simulate(layout,'late',stage.laps);
   const aceSkill=nativeAceSkill(stage);
   const ace=nativeAiRun(layout,aceSkill,stage.laps,2026101700+Number(stage.id));
   report.courses[stage.id]={
@@ -169,10 +171,9 @@ await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'native-player-pace-v34.json'),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({buildHash:report.buildHash,physics:'pinned PlayerCar.update',
   maps:Object.fromEntries(Object.entries(report.maps).map(([name,series])=>[
-    name,{original:series.original.guided.auto,
-      reshaped:series.reshaped.guided.auto,
-      reshapedWithoutCurveBrake:series.reshaped.guided.noCurveBrake,
-      late:series.reshaped.late.auto}])),courseAudit:report.courseAudit,
+    name,{original:series.original.guided.manual,
+      reshaped:series.reshaped.guided.manual,
+      late:series.reshaped.late.manual}])),courseAudit:report.courseAudit,
   stagePace:Object.fromEntries(Object.entries(report.courses).map(([id,c])=>[id,{
     guided:c.guided.status==='FINISHED'?c.guided.elapsedSec:c.guided.status,
     late:c.late.status==='FINISHED'?c.late.elapsedSec:c.late.status,
