@@ -52,14 +52,21 @@ export function raceEventMoment(event) {
     case 'driftEnd':
       return event.data?.clean === true && Number(event.data?.time ?? event.time) > .22
         ? { title: '漂亮过弯', kind: 'skill' } : null;
-    case 'pad':
-      return { title: '加速带！', kind: 'boost' };
-    case 'small':
+    case 'pad': return { title: '加速带！', kind: 'boost' };
+    case 'nitro': return { title: '氮气冲刺！', kind: 'boost' };
     case 'smallBoost':
-      return { title: '小喷！', kind: 'boost' };
-    case 'itemGet':
-      return { title: '道具到手', kind: 'item' };
-    default:
-      return null;
+      return { title: event.data?.perfect ? '完美小喷！' : '小喷！', kind: 'boost' };
+    case 'landBoost': return { title: '落地喷！', kind: 'boost' };
+    case 'gaugeFull': return { title: '氮气已就绪', kind: 'ready' };
+    default: return null;
   }
+}
+/** Native stage metrics, never UI-simulated rewards. */
+export function raceMetricMoment(previous, current) {
+  if (!current || !previous) return null;
+  if ((current.cleanPasses ?? 0) > (previous.cleanPasses ?? 0))
+    return { title: '弯道反超！', kind: 'skill' };
+  if ((current.pickups ?? 0) > (previous.pickups ?? 0))
+    return { title: '道具到手！', kind: 'item' };
+  return null;
 }
