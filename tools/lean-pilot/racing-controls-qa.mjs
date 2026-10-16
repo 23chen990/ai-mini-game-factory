@@ -37,7 +37,7 @@ for(const [width,height] of [[844,390],[852,393],[740,360]]){
     const wheel=await page.locator('#race-joystick').boundingBox();
     const drift=await page.locator('[data-race-action="drift"]').boundingBox();
     check('visible-large-separated-hitboxes',!!wheel&&wheel.width>=100&&!!drift&&drift.width>=75
-      &&wheel.right+24<drift.left&&wheel.left>=0&&drift.right<=width);
+      &&wheel.x+wheel.width+24<drift.x&&wheel.x>=0&&drift.x+drift.width<=width);
     if(!wheel||!drift)throw Error('Touch controls not visible');
     const cdp=await context.newCDPSession(page);
     const left={id:1,x:wheel.x+wheel.width*.18,y:wheel.y+wheel.height*.5};
