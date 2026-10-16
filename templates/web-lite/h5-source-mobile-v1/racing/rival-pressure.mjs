@@ -152,19 +152,27 @@ export function applyRivalTactics(game,stage) {
     if(!t||rival.isPlayer||rival.finished||!Number.isFinite(rival.progress)||
        !Number.isFinite(rival.dist)||!Number.isFinite(rival.s))continue;
     const gap=rival.progress-player.progress; // + = rival ahead
-    if(!Number.isFinite(gap)||Math.abs(gap)>90||Math.abs((rival.s??0)-(player.s??0))>28) {
-      const base=clamp(t.basePersonal+t.laneBias,-.42,.42);
-      if(Math.abs(rival.personal-base)>.015){rival.personal=base;changed++;}
-      continue;
-    }
+    const base=clamp(t.basePersonal+t.laneBias,-.42,.42);
     const curvature=Math.abs(track.curvAhead(rival.dist,90));
-    let target=clamp(t.basePersonal+t.laneBias,-.42,.42);
-    // Attack: only when the road is readable and the rival is genuinely behind.
-    if(gap<=-8&&gap>=-90&&curvature<=.012&&rival.s>25&&player.s>25) {
-      const side=player.lat>1.5?-1:player.lat< -1.5?1:
-        (Math.floor(Math.max(0,player.progress)/track.length)+t.passSide)%2?1:-1;
+    let target=base;
+    // Unlike the first draft (which noticed only the player), scan the real
+    // physical traffic. An AI car in front can block another AI as well.
+    // Side changes stay cosmetic-to-collision: native lateral acceleration
+    // gradually moves the car and real Game.collide still handles contact.
+    let blocker=null,blockerGap=Infinity;
+    for(const car of game.racers) {
+      if(car===rival||car.finished||!Number.isFinite(car.progress)||
+         !Number.isFinite(car.lat)||!Number.isFinite(car.s))continue;
+      const ahead=car.progress-rival.progress;
+      if(ahead>7&&ahead<80&&ahead<blockerGap&&car.s>=20&&
+         Math.abs(car.lat-rival.lat)<5.2&&rival.s>=car.s-3){
+        blocker=car;blockerGap=ahead;
+      }
+    }
+    if(blocker&&curvature<=.010&&rival.s>27) {
+      const side=blocker.lat>rival.lat+.3?-1:blocker.lat<rival.lat-.3?1:t.passSide;
       target=clamp(t.basePersonal+side*t.passBias,-.42,.42);
-    // Defend: only a light inside-line preference as a corner approaches.
+    // A gentle, real inside-line defense when the player is genuinely behind.
     } else if(gap>=7&&gap<=55&&curvature>.005&&curvature<.018) {
       const curve=track.curvAhead(rival.dist,65);
       target=clamp(t.basePersonal-Math.sign(curve)*t.defendBias,-.42,.42);
