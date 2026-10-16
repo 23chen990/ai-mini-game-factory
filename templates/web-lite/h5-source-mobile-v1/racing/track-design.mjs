@@ -154,6 +154,9 @@ export function createCareerLayouts(layouts) {
  * Their number and lateral risk remain unchanged. No pad/goal is awarded here.
  */
 export function createRaceTrackTheme(theme,track,course) {
+  // The pinned game constructs one four-biome DEMO track before the mobile
+  // career adaptor boots. Do not require a numbered course until race start.
+  if(TRACK_RESHAPES[course])return theme;
   if(!COURSE_BLUEPRINTS[course?.slice(5)] ||
      !Number.isFinite(track?.length)||track.length<1200||
      typeof track.curvAhead!=='function')
@@ -199,10 +202,11 @@ const COURSE_ACCENTS = Object.freeze([
   0xf0bc55,0xff8f42,0x73d8ff,0xe4bcfa,
 ]);
 export function buildRaceLandmarks(THREE,track,course) {
+  const group=new THREE.Group();
+  if(TRACK_RESHAPES[course])return group; // Pinned native pre-career demo.
   const n=Number(course?.slice(5));
   if(!Number.isInteger(n)||n<1||n>16||!track?.sample)
     throw Error('Course-specific world landmarks require a native track');
-  const group=new THREE.Group();
   group.name='unique-course-landmarks-'+course;
   const material=new THREE.MeshStandardMaterial({
     color:COURSE_ACCENTS[n-1],roughness:.46,metalness:.26,
