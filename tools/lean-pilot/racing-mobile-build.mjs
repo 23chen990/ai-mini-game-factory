@@ -109,6 +109,33 @@ export function patchShortcutNativeWorld(source) {
     .replace(anchors[4], "  resetPlayer() {\n    const P = this.player;\n    if (this.track?.__RACE_SHORTCUT__?.recover(P)) return;");
 }
 
+
+/** Only light, fog and roadside prop placement change with the course ID.
+ * PlayerCar physics, map collision, track progression and AI are untouched.
+ */
+export function patchCourseSkyAndScenery(source) {
+  const imported="import { createRaceSky } from './race-track-design.mjs';";
+  const marker='const courseSky = createRaceSky(map.sky,requestedCourse);';
+  if(source.includes(imported)&&source.includes(marker))return source;
+  if(source.includes(imported)||source.includes(marker))
+    throw Error('Partial stage scenery transformation');
+  const mutations=[
+    ['const rnd = mulberry32(id.length * 997 + 13);',
+      "const stageSeed = Number(this.settings.course?.slice(5)) || 0;\n    const rnd = mulberry32(id.length * 997 + 13 + stageSeed * 9176);"],
+    ['const { sky, sunDir } = buildSky(map.sky);',
+      marker+'\n    const { sky, sunDir } = buildSky(courseSky);'],
+    ['this.scene.fog = new THREE.Fog(map.fog[0], map.fog[1], map.fog[2]);',
+      'this.scene.fog = new THREE.Fog(courseSky.horizon, map.fog[1], map.fog[2]);'],
+    ['this.scene.background = new THREE.Color(map.sky.horizon);',
+      'this.scene.background = new THREE.Color(courseSky.horizon);'],
+  ];
+  for(const [from] of mutations)
+    if(source.split(from).length!==2)throw Error('Pinned course-light anchor drifted: '+from);
+  let result=imported+'\n'+source;
+  for(const [from,to] of mutations)result=result.replace(from,to);
+  return result;
+}
+
 /** Only the procedural DESERT ground away from the road gets stronger dune relief.
  * The pinned buildGround function independently carves a safe corridor around
  * the track; no road, car, AI or collisions are patched by this transform.
@@ -237,7 +264,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchShortcutNativeWorld(patchCareerRouteSource(patchRacingSource(beforeMain)))));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchRacingSource(beforeMain))))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
