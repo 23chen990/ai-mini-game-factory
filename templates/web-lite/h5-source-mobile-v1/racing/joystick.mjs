@@ -33,7 +33,7 @@ export class RacingJoystick {
     const distance = Math.abs(horizontal);
     const travel = distance <= this.deadzone ? 0 :
       clamp((distance - this.deadzone) / (this.fullThrow - this.deadzone), 0, 1);
-    this.axis = -Math.sign(horizontal) * clamp(travel * SENSITIVITIES[this.sensitivity], 0, 1);
+    this.axis = travel === 0 ? 0 : -Math.sign(horizontal) * clamp(travel * SENSITIVITIES[this.sensitivity], 0, 1);
     this.knobX = horizontal * 0.58 * this.radius;
     return true;
   }
