@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -313,4 +313,50 @@ test('CF V6 start-screen touch instructions match the selected actual fire behav
  assert.match(cfTouchTutorial({kind:'survive'}),/边移动/);
  assert.match(cfTouchTutorial({kind:'survive'}),/开火/);
  assert.match(cfTouchTutorial({}),/开火/);
+});
+
+
+test('CF v7 drill counts only native hits AFTER a real 12m reposition',()=>{
+ const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:12,target:3,elite:false};
+ let s=cfAdvanceDrill(c);
+ assert.deepEqual(s,{stage:0,startTravel:0,hitBaseline:null,distance:0,follow:0,firstHit:false});
+ assert.equal(cfAutoFireEligible(c,0),true);
+ s=cfAdvanceDrill(c,s,{hits:0,travel:25});
+ assert.equal(s.stage,0,'moving without first hit does not bypass first stage');
+ s=cfAdvanceDrill(c,s,{hits:1,travel:25});
+ assert.equal(s.stage,1);assert.equal(s.startTravel,25);
+ assert.equal(cfAutoFireEligible(c,1),false,'first hit disables auto-fire');
+ s=cfAdvanceDrill(c,s,{hits:13,travel:36.99});
+ assert.equal(s.stage,1,'all premovement hits must be discarded');
+ assert.equal(s.follow,0);assert.ok(s.distance<12);
+ s=cfAdvanceDrill(c,s,{hits:14,travel:37});
+ assert.equal(s.stage,2);assert.equal(s.hitBaseline,14);assert.equal(s.follow,0);
+ s=cfAdvanceDrill(c,s,{hits:16,travel:38});
+ assert.equal(s.follow,2);assert.equal(s.firstHit,true);
+ s=cfAdvanceDrill(c,s,{hits:17,travel:42});
+ assert.equal(s.follow,3);assert.equal(s.distance,17);
+ assert.equal(cfAdvanceDrill({kind:'kills'}),null);
+});
+
+test('CF v7 first hit is an assisted tutorial, then mission requires real manual aiming',()=>{
+ const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:12,target:3,maxDeaths:1};
+ assert.equal(cfAutoFireEligible(c,0),true);
+ assert.equal(cfAutoFireEligible(c,1),false);
+ assert.equal(cfAutoFireEligible({...c,elite:true},0),false);
+ assert.equal(cfAutoFireEligible({...c,elite:true},8),false);
+ assert.match(cfTouchTutorial(c),/自动开火/);
+ assert.match(cfTouchTutorial({...c,elite:true}),/手动/);
+ assert.match(mobileChallengeCopy(c),/换位12米/);
+ assert.match(mobileChallengeCopy({...c,elite:true,minTravel:18,target:4,maxDeaths:0}),/零阵亡/);
+ assert.equal(cfHitCue(c,1,1,{stage:1,follow:0}),'✓ 首枪命中 · 向掩体换位');
+ assert.equal(cfHitCue(c,4,1,{stage:2,follow:2}),'✓ 追击命中 2/3');
+ assert.deepEqual(cfMissionFacts({...c,limitMs:60000}),[
+  {label:'装备',value:'M4A1'},{label:'目标',value:'1枪→12m→3枪'},{label:'限时',value:'60 s'}]);
+ assert.deepEqual(cfResultFacts(c,{hits:99,drillFollowUpHits:2,drillTravel:12.6,deaths:1}),[
+  {label:'追击',value:'2 / 3'},{label:'换位',value:'12 / 12 m'},
+  {label:'阵亡',value:'1 / 1'}]);
+ assert.match(cfMissionDebrief(c,{hits:0,drillFirstHit:false},'lost'),/第一次真实命中/);
+ assert.match(cfMissionDebrief(c,{hits:5,drillFirstHit:true,drillStage:1,drillTravel:9},'lost'),/9\/12/);
+ assert.match(cfMissionDebrief(c,{hits:9,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:2},'lost'),/2\/3/);
+ assert.match(cfMissionDebrief(c,{hits:9,deaths:2,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:3},'lost'),/最多允许 1 次/);
 });
