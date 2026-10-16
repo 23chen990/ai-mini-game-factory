@@ -54,3 +54,15 @@ test('race mobile HUD isolates three-lap elimination warning from the live speed
   assert.match(ui,/button\.addEventListener\('pointercancel', cancel\)/);
   assert.match(ui,/button\.addEventListener\('lostpointercapture', cancel\)/);
 });
+
+test('mid-race overlays stay removed while HUD goals, safe controls and hit feedback remain',async()=>{
+  const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  const css=await readFile(new URL('../racing/mobile.css',import.meta.url),'utf8');
+  assert.doesNotMatch(ui,/race-road-hint|roadHint\(|feedback\(|碰撞减速/);
+  assert.doesNotMatch(css,/race-road-hint|race-feedback/);
+  assert.match(css,/#msgs \{ display:none!important; \}/);
+  assert.match(ui,/career\.drainNotices\(\)/);
+  assert.match(ui,/race-live-goal/);
+  assert.match(ui,/race-controls/);
+  assert.match(css,/#hitflash/);
+});
