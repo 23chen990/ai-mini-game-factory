@@ -24,6 +24,49 @@ export const OPPONENT_PACE_V40=Object.freeze({
 
 export const OPPONENT_PACE_V39=OPPONENT_PACE_V40;
 
+/** V4.2 fixed entry strengths after observing a real user still wins too easily.
+ * The native "rubber" formula used to slow a leader the farther they got ahead.
+ * These ranges are chosen *before* the green light, not from the player's
+ * performance or lap gap. Mix a fast rival, a solid pack and beatable cars,
+ * so late passes remain earned and overtaking objectives remain possible.
+ * Stage 01 remains a teaching race; boss stages use their own named rival.
+ */
+export const COMPETITIVE_FIELD_V42=Object.freeze({
+  '02':[.78,1.16], '03':[1.02,1.46], '04':[.76,1.13],
+  '05':[.77,1.12], '06':[.99,1.38], '07':[1.06,1.40],
+  '08':[1.09,1.45], '09':[1.03,1.38], '10':[1.08,1.48],
+  '11':[1.13,1.52], '12':[1.08,1.44],
+  '14':[1.17,1.51], '15':[1.12,1.49],
+});
+const stageNumber=stage=>typeof stage?.course==='string'&&/^race-\\d{2}$/.test(stage.course)
+  ? stage.course.slice(5) : /^\\d{2}$/.test(stage?.id??'')?stage.id:null;
+
+/** Deterministic per-race field. No adaptation after the start, no direct
+ * speed/progress updates, and no free nitro. AICar.update still runs unchanged.
+ */
+export function seedCompetitiveField(racers,stage){
+  const id=stageNumber(stage);
+  const band=COMPETITIVE_FIELD_V42[id];
+  if(!band||!Array.isArray(racers))return {adjusted:0,ace:false};
+  const field=racers.filter(r=>r&&!r.isPlayer&&Number.isFinite(r.skill));
+  if(!field.length)return {adjusted:0,ace:false};
+  const sorted=[...field].sort((a,b)=>a.skill-b.skill);
+  for(let index=0;index<sorted.length;index++){
+    const fraction=sorted.length===1?1:index/(sorted.length-1);
+    const skill=band[0]+(band[1]-band[0])*fraction;
+    sorted[index].skill=+skill.toFixed(4);
+  }
+  return {adjusted:sorted.length,ace:true,minimum:band[0],maximum:band[1]};
+}
+
+/** No gap-dependent pace changes in career races. The unchanged native AI
+ * motor receives rubber=1; its skill is the fixed pre-race value instead.
+ * In menus or unrelated game modes the original native behavior is retained.
+ */
+export function careerPaceMultiplier(isCareerRace) {
+  return isCareerRace ? 1 : null;
+}
+
 const RIVAL_TACTICS_V40=Object.freeze([
   {role:'冲刺手',laneBias:-.08,passBias:.27,defendBias:.11,passSide:1},
   {role:'卡位手',laneBias:.09,passBias:.23,defendBias:.15,passSide:-1},
