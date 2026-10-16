@@ -1,5 +1,5 @@
 export const CAREER_KEY = 'h5-mobile:qq-speed:career:v1';
-const make = (id, chapter, name, map, laps, diff, kind, mode, rank, goal, extra = {}) => Object.freeze({ id, chapter, name, map, laps, diff, kind, mode, rank, goal, ...extra });
+const make = (id, chapter, name, map, laps, diff, kind, mode, rank, goal, extra = {}) => Object.freeze({ id, chapter, name, map, course: 'race-' + id, laps, diff, kind, mode, rank, goal, ...extra });
 /** Four original locations, one driving model. Content is configuration, not 16 new tracks. */
 export const STAGES = Object.freeze([
   make('01', 1, '城市起航', 'city', 1, 0, 'race', 'speed', 6, '完成首次比赛'),
