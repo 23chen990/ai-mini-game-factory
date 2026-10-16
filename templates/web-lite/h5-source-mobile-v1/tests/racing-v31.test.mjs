@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TRACK_RESHAPES, applyTrackDesign } from '../racing/track-design.mjs';
+import { TRACK_RESHAPES, CAREER_COURSE_MAPS, applyTrackDesign } from '../racing/track-design.mjs';
 import { WrongWayRecovery } from '../racing/recovery.mjs';
 import { roadHint } from '../racing/road-coach.mjs';
 import { chooseCornerSigns, installCornerSigns, disposeCornerSigns } from '../racing/corner-signs.mjs';
@@ -281,4 +281,24 @@ test('弯道牌只建轻量 Sprite，换图时会释放图标材质/贴图而不
   disposeCornerSigns(game);
   assert.equal(tracker.texture,4);assert.equal(tracker.material,4);
   assert.equal(level.objects.length,0);
+});
+
+test('V3.6 gives each of the 16 career stages an independent drivable spline identity',()=>{
+  const layouts=fixture();
+  applyTrackDesign(layouts);
+  const ids=Array.from({length:16},(_,i)=>'race-'+String(i+1).padStart(2,'0'));
+  assert.equal(ids.every(id=>Array.isArray(layouts[id]?.points)),true);
+  const unique=new Set(ids.map(id=>JSON.stringify(layouts[id].points)));
+  assert.equal(unique.size,16,'no stage should silently reuse a previous physical spline');
+  const mapOf=id=>CAREER_COURSE_MAPS[Number(id.slice(-2))-1];
+  for(const id of ids){
+    const base=layouts[mapOf(id)];
+    const variant=layouts[id];
+    assert.equal(variant.width,base.width);
+    assert.deepEqual(variant.points[0],base.points[0],'retain exact race start');
+    assert.ok(variant.points.every(p=>p.length===3&&p.every(Number.isFinite)));
+  }
+  assert.notDeepEqual(layouts['race-03'].points,layouts['race-01'].points);
+  assert.notDeepEqual(layouts['race-16'].points,layouts['race-07'].points);
+  assert.deepEqual(applyTrackDesign(layouts),{city:38,aegean:34,egypt:32,snow:31});
 });
