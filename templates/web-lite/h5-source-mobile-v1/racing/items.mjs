@@ -113,14 +113,29 @@ export class OvertakeTracker {
 export function awardCornerPass(game) {
   if (!game?.player || game.state !== 'race') return 'none';
   const p = game.player;
-  if (game.itemMode && game.items && p.items.length < 2) {
-    // Keep a genuine item-box pickup distinct from an earned corner-pass gift.
-    game.__RACE_BONUS_DROP__ = true;
-    try { game.items.giveRandom(p, game.standings.indexOf(p) + 1, game.racers.length); }
-    finally { game.__RACE_BONUS_DROP__ = false; }
-    return 'item';
+  if (game.itemMode) {
+    // The pinned native engine disables charged nitro in item mode. A truly
+    // verified, clean corner overtake should still feel quick and rewarding:
+    // add one short *native* small-boost, never teleport/progress/rank edits.
+    // Existing random item contents and real box pickup objectives are intact.
+    let gift = false;
+    if (game.items && Array.isArray(p.items) && p.items.length < 2) {
+      game.__RACE_BONUS_DROP__ = true;
+      try {
+        game.items.giveRandom(p, game.standings.indexOf(p) + 1, game.racers.length);
+        gift = true;
+      } finally { game.__RACE_BONUS_DROP__ = false; }
+    }
+    const burst = Number.isFinite(p.s) && p.s >= 20 &&
+      p.slowTime <= 0 && p.spin <= 0 &&
+      p.smallBoost <= 0 && p.nitroTime <= 0;
+    if (burst) {
+      p.smallBoost = .48;
+      p.smallBoostPower = 9; // Fixed cap: never inherit stale power from an earlier boost.
+    }
+    return burst ? (gift ? 'item+boost' : 'boost') : (gift ? 'item' : 'none');
   }
-  if (!game.itemMode && p.slowTime <= 0 && p.spin <= 0 && p.smallBoost <= 0) {
+  if (p.slowTime <= 0 && p.spin <= 0 && p.smallBoost <= 0) {
     p.smallBoost = .45;
     p.smallBoostPower = Math.max(p.smallBoostPower, 11);
     return 'boost';

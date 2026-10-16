@@ -3,7 +3,7 @@ import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemClea
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
 import { WrongWayRecovery } from './recovery.mjs';
-import { RivalPressure, tuneOpponentField } from './rival-pressure.mjs';
+import { RivalPressure, tuneOpponentField, seedCompetitiveField, configureRivalTactics, careerPaceMultiplier } from './rival-pressure.mjs';
 
 export class RacingCareer {
   constructor(storage, legacyBest = {}) {
@@ -59,11 +59,13 @@ export class RacingCareer {
     // every car's corner pace, nitro, items and genuine on-road position.
     // Stage 01, bosses and fragile elimination/item objectives stay protected.
     tuneOpponentField(game.racers,this.stage);
-    if (this.stage.kind === 'overtake') {
-      // A visible rival survives beyond the first straight without scripted teleportation.
-      const challengers = game.racers.filter(r => !r.isPlayer).slice(0, 2);
-      for (const rival of challengers) rival.skill = Math.max(rival.skill, 1.12);
-    }
+    // The stronger field is seeded BEFORE racing starts; nobody gets more power
+    // because the player happens to lead. Stage 01 & named bosses stay separate.
+    seedCompetitiveField(game.racers,this.stage);
+    configureRivalTactics(game.racers,this.stage);
+    // No separate overtake-stage speed floor: V4.2 already seeds a mixed
+    // field with two catchable cars and one ace. Forcing every nearby car to
+    // 1.12 made the overtaking objective less fair.
     if (game.itemMode && game.items) {
       thinItemBoxes(game.items);
       game.items.applyMobileVisuals?.();
@@ -79,12 +81,10 @@ export class RacingCareer {
       this.boss = game.racers.find(r => !r.isPlayer) ?? null;
       if (this.boss) {
         this.bossName = this.boss.name;
-        // The reshaped final Aegean route adds 10–12% to native AI lap times,
-        // but native two-key PlayerCar telemetry remains several seconds behind
-        // the 1.58 boss. A genuine finish must remain achievable through cleaner
-        // steering, rather than requiring a perfect zero-contact drive.
-        // A different course can be harder even with a lower numeric AI skill.
-        this.boss.skill = this.stage.id === '16' ? 1.35 :
+        // Last-stage boss gains a fixed pre-race corner skill (1.45 vs 1.35)
+        // after actual playtests reported easy first-place finishes. This is not
+        // a gap-dependent boost, and remains below the harder stage-13 boss.
+        this.boss.skill = this.stage.id === '16' ? 1.45 :
           Math.max(this.boss.skill, 1.58);
         if (this.stage.id === '16') for (const rival of game.racers) {
           if (!rival.isPlayer && rival !== this.boss)
@@ -124,6 +124,18 @@ export class RacingCareer {
   /** Native AI-first 10-second DNF was unfair when races exceed one lap. */
   patchNative(game) {
     if (game.__RACE_CAREER_PATCHED__) return;
+    // Some isolated test doubles do not implement the optional native pace
+    // hook. Production Game does; preserve the original function if present.
+    if (typeof game.rubber === 'function') {
+      const nativeRubber = game.rubber.bind(game);
+      game.rubber = rival => {
+        // No player-gap adjustment: the fixed skill chosen at start persists
+        // whether this AI is leading or trailing.
+        const fixed = careerPaceMultiplier(this.active && game.state === 'race' &&
+          rival && !rival.isPlayer);
+        return fixed ?? nativeRubber(rival);
+      };
+    }
     const nativeEnd = game.checkRaceEnd.bind(game);
     game.checkRaceEnd = dt => {
       if (game.firstFinish < 0) game.__RACE_FIRST_FINISH_NOTIFIED__ = false;
@@ -157,7 +169,7 @@ export class RacingCareer {
     const pursuing = this.pressure.frame(game, this.stage);
     if (pursuing) {
       m.pursuitWarnings++;
-      this.notice.push('⚡ '+pursuing.name+' 发起追击 · 后方'+pursuing.gap+'m');
+      this.notice.push('⚡ '+pursuing.name+' 干净出弯，准备加速');
     }
     const distance = track.length * this.stage.laps;
     if (this.passes.frame(game)) {
@@ -165,7 +177,7 @@ export class RacingCareer {
       if (this.stage.kind === 'overtake')
         this.notice.push('有效弯道超车 ' + Math.min(m.cleanPasses, this.stage.target) + '/' + this.stage.target);
       const bonus = awardCornerPass(game);
-      this.notice.push(bonus === 'item' ? '弯道超车！奖励道具' : bonus === 'boost' ? '弯道超车！额外加速' : '漂亮超车！');
+      this.notice.push(bonus === 'item+boost' ? '弯道反超！小喷 + 道具' : bonus === 'item' ? '弯道超车！奖励道具' : bonus === 'boost' ? '弯道超车！额外加速' : '漂亮超车！');
     }
     if (this.stage.kind === 'speed' && m.checkedSpeed < 3 &&
         fractionPassed(m.previousProgress, p.progress, distance, [.22,.55,.83][m.checkedSpeed])) {

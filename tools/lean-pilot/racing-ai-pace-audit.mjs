@@ -7,7 +7,7 @@ import { Buffer } from 'node:buffer';
 import { pathToFileURL } from 'node:url';
 import { applyTrackDesign } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
-import { tuneOpponentField } from '../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs';
+import { tuneOpponentField, seedCompetitiveField, COMPETITIVE_FIELD_V42 } from '../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs';
 
 const root=process.cwd();
 const run=path.join(root,'runs/h5-qq-mobile-20261013');
@@ -96,13 +96,42 @@ for(const id of ['01','02','04','05','03','06','08','10','11','14','09','12','13
     nextSkill:newSkill,oldTime:was.timeSec,newTime:now.timeSec,
     improvementPercent,adjusted:configured.adjusted};
 }
+// V4.2 player-independent FIXED career field benchmark. The old V3.9 tables
+// above are retained for before/after auditing, not passed off as the new AI.
+// Native AICar.update is unchanged. This is lap-time telemetry, not human wins.
+const competitiveStages={};
+for(const stage of STAGES){
+  const id=stage.id,baseline=oldFastest[id]??(stage.diff===0?.75:stage.diff===1?1.05:1.38);
+  const nativeLo=stage.diff===0?.55:stage.diff===1?.85:1.20;
+  const nativeHi=stage.diff===0?.75:stage.diff===1?1.05:1.38;
+  const field=Array.from({length:5},(_,i)=>({isPlayer:false,
+    skill:nativeLo+(nativeHi-nativeLo)*(i/4)}));
+  tuneOpponentField(field,stage);
+  const tuning=seedCompetitiveField(field,stage);
+  const top=id==='13'?1.58:id==='16'?1.45:Math.max(...field.map(r=>r.skill));
+  const seed=2026101800+Number(id);
+  const before=runAi(revised[stage.course],baseline,seed,stage.laps);
+  const after=runAi(revised[stage.course],top,seed,stage.laps);
+  const gain=+((1-after.timeSec/before.timeSec)*100).toFixed(2);
+  if(!Number.isFinite(gain)||gain>21||gain<-.4)
+    throw Error('Unexpected competitive native AI pace: '+id+' gain='+gain);
+  if(['01','13'].includes(id)&&Math.abs(gain)>.12)
+    throw Error('Tutorial or legacy boss unexpectedly rebalanced: '+id+' '+gain);
+  if(Object.hasOwn(COMPETITIVE_FIELD_V42,id) &&
+     !(gain>.15 && tuning.adjusted===5))
+    throw Error('Competitive field failed to improve native race pace: '+id+' '+gain);
+  competitiveStages[id]={course:stage.course,laps:stage.laps,kind:stage.kind,
+    oldTopSkill:baseline,newTopSkill:top,oldTopTimeSec:before.timeSec,
+    newTopTimeSec:after.timeSec,improvementPercent:gain,
+    fixedBeforeGreen:tuning.adjusted>0||['01','13','16'].includes(id)};
+}
 const report={schemaVersion:1,buildHash:build.buildHash,
   sourceRevision:build.sourceRevision,twoLaps:true,seededNativeAi:true,
   noRubberBand:true,noWeapons:true,noPlayer:true,noCollision:true,
   limitation:'Native AICar.update against real pinned Track centerline; NOT real player handling, opponent rank, natural campaign, or winning evidence',
-  stageAI,bossThreeLaps,maps:data};
+  stageAI,competitiveStages,bossThreeLaps,maps:data};
 const out=path.join(run,'artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'ai-pace-v33.json'),JSON.stringify(report,null,2)+'\n');
-console.log(JSON.stringify({stageAI,buildHash:report.buildHash,lapCount:2,deltaPercent:Object.fromEntries(
+console.log(JSON.stringify({stageAI,competitiveStages,buildHash:report.buildHash,lapCount:2,deltaPercent:Object.fromEntries(
   Object.entries(data).map(([key,entry])=>[key,entry.deltaPercent]))}));

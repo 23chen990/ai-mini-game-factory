@@ -5,47 +5,60 @@ import {STAGES,dailyStage} from '../racing/career.mjs';
 import {roadHint} from '../racing/road-coach.mjs';
 const race=()=>{
   const player={isPlayer:true,progress:140,s:45,spin:0,wrongWay:0,finished:false};
-  const rival={name:'追风者',isPlayer:false,progress:90,dist:90,s:37,nitroCd:5,nitroTime:0,spin:0,finished:false};
+  const rival={name:'追风者',isPlayer:false,progress:90,dist:90,lat:0,s:37,nitroCd:5,
+    nitroTime:0,spin:0,slowTime:0,drifting:false,finished:false};
   return {state:'race',raceTime:25,player,racers:[player,rival],standings:[player,rival],
-    track:{length:500,curvAhead:()=>.003}};
+    track:{length:500,curvAhead:()=>.018}};
 };
-const stage={diff:1,mode:'speed',map:'city'};
-test('AI native-nitro chase respects true leader, cooldown and one per lap without fake progress',()=>{
+const stage={diff:1,mode:'speed',map:'city',course:'race-02',kind:'speed'};
+test('native AI earns an opportunity only after a physically clean corner exit',()=>{
   const d=new RivalPressure(),g=race(),r=g.racers[1],p=g.player;
   const positions=[r.progress,p.progress,r.dist,r.s,g.standings[0]];
-  assert.deepEqual(d.frame(g,stage),{name:'追风者',gap:50});
-  assert.equal(r.nitroCd,.65);
-  assert.deepEqual([r.progress,p.progress,r.dist,r.s,g.standings[0]],positions);
-  r.nitroCd=5;g.raceTime=50;assert.equal(d.frame(g,stage),null);
-  r.progress=550;r.dist=50;p.progress=600;g.raceTime=51;
-  assert.deepEqual(d.frame(g,stage),{name:'追风者',gap:50});
-});
-test('AI nitro duels never punish last-place players, item races or any boss; no corners/spins',()=>{
-  const d=new RivalPressure(),g=race(),r=g.racers[1];
-  g.standings=[r,g.player];assert.equal(d.frame(g,stage),null);g.standings=[g.player,r];
-  for(const cfg of [{...stage,kind:'boss',id:'16'},{...stage,kind:'boss',id:'13'},
-    {...stage,id:'01'},{...stage,mode:'item'}])
-    assert.equal(d.frame(g,cfg),null);
-  g.track.curvAhead=()=>.02;assert.equal(d.frame(g,stage),null);
-  g.track.curvAhead=()=>0;g.player.spin=1;assert.equal(d.frame(g,stage),null);
+  assert.equal(d.frame(g,stage),null,'no free nitro on corner entry');
   assert.equal(r.nitroCd,5);
+  g.raceTime=26;g.track.curvAhead=()=>.003;
+  assert.deepEqual(d.frame(g,stage),{name:'追风者',cornerExit:true});
+  assert.equal(r.nitroCd,.85);
+  assert.deepEqual([r.progress,p.progress,r.dist,r.s,g.standings[0]],positions);
+  r.nitroCd=5;g.raceTime=27;
+  assert.equal(d.frame(g,stage),null,'one physical exit cannot generate two boosts');
+  g.raceTime=29;g.track.curvAhead=()=>.018;d.frame(g,stage);
+  g.raceTime=30;g.track.curvAhead=()=>.003;
+  assert.equal(d.frame(g,stage),null,'must wait >22s before another earned opportunity');
+  assert.equal(r.nitroCd,5);
+  g.raceTime=54;g.track.curvAhead=()=>.018;d.frame(g,stage);
+  g.raceTime=55;g.track.curvAhead=()=>.003;
+  assert.deepEqual(d.frame(g,stage),{name:'追风者',cornerExit:true});
+  assert.equal(r.nitroCd,.85);
 });
-test('all four course themes can produce a close battle, but only with native AI cooldown',()=>{
-  for(const map of ['city','egypt','aegean','snow']){
-    const d=new RivalPressure(),g=race(),r=g.racers[1];
-    g.raceTime=25;
-    const result=d.frame(g,{...stage,map,diff:0,id:'02'});
-    assert.deepEqual(result,{name:'追风者',gap:50});
-    assert.equal(r.nitroCd,.65);
-    r.nitroCd=5;g.raceTime=28;
-    assert.equal(d.frame(g,{...stage,map,id:'02'}),null,'per-race chase cooldown');
+test('the same real corner produces the SAME AI capability whether player leads or trails',()=>{
+  for(const playerProgress of [-300,0,140,300,1000]){
+    const g=race(),d=new RivalPressure(),r=g.racers[1];
+    g.player.progress=playerProgress;g.standings=playerProgress>r.progress?[g.player,r]:[r,g.player];
+    d.frame(g,stage);g.raceTime=26;g.track.curvAhead=()=>.003;
+    d.frame(g,stage);
+    assert.equal(r.nitroCd,.85,'no catch-up/leader penalty: '+playerProgress);
   }
-  const d=new RivalPressure(),g=race(),r=g.racers[1];
-  const other={isPlayer:false,progress:170,dist:170,s:37,nitroCd:5,nitroTime:0,spin:0,finished:false};
-  g.racers.push(other);g.standings=[other,g.player,r];
-  assert.ok(d.frame(g,{...stage,id:'02'}),'second-place player may face a fair chase');
-  const g2=race();g2.standings=[{},{},{},g2.player,g2.racers[1]];
-  assert.equal(new RivalPressure().frame(g2,{...stage,id:'02'}),null,'rear field gets no added challenge');
+});
+test('corner reward respects tutorial, boss, elimination, relay and item restrictions',()=>{
+  for(const cfg of [{...stage,id:'01',course:'race-01'},
+    {...stage,kind:'boss',id:'13',course:'race-13'},
+    {...stage,kind:'elimination',id:'12',course:'race-12'},
+    {...stage,kind:'relay',id:'09',course:'race-09'},
+    {...stage,mode:'item',id:'06',course:'race-06'}]){
+    const g=race(),d=new RivalPressure(),r=g.racers[1];
+    d.frame(g,cfg);g.track.curvAhead=()=>.003;g.raceTime=26;
+    assert.equal(d.frame(g,cfg),null);
+    assert.equal(r.nitroCd,5,JSON.stringify(cfg));
+  }
+});
+test('all four biomes support clean corner-line decisions, but spins prevent rewards',()=>{
+  for(const map of ['city','egypt','aegean','snow']){
+    const g=race(),d=new RivalPressure(),r=g.racers[1];
+    d.frame(g,{...stage,map});g.raceTime=26;g.track.curvAhead=()=>.003;
+    r.spin=.6;assert.equal(d.frame(g,{...stage,map}),null);
+    assert.equal(r.nitroCd,5);
+  }
 });
 const hint=()=>({state:'race',map:{id:'city'},player:{d:100,s:40,wrongWay:0,airborne:false,finished:false},
   track:{length:2000,curvAhead:()=>0},itemMode:false});
@@ -137,21 +150,12 @@ test('Daily challenge uses the original course difficulty, never an arbitrary ha
   const wrong=grid(.55,.75);
   assert.equal(tuneOpponentField(wrong,{id:'daily-odd',course:'invalid',diff:0}).adjusted,0);
 });
-test('V3.9 nearby native chase uses actual nitro only once per lap with vulnerable stages protected',()=>{
-  const stage={...STAGES[1]},g=race(),r=g.racers[1],p=g.player;
-  r.nitroCd=9;
-  const before=[r.progress,r.dist,r.s,p.progress,g.standings[0]];
-  assert.deepEqual(new RivalPressure().frame(g,stage),{name:'追风者',gap:50});
-  assert.equal(r.nitroCd,.65);
-  assert.deepEqual([r.progress,r.dist,r.s,p.progress,g.standings[0]],before);
-  for(const id of ['09','12','13','16']){
-    const protectedStage=STAGES.find(s=>s.id===id);
-    r.nitroCd=9;
-    assert.equal(new RivalPressure().frame(g,protectedStage),null);
-    assert.equal(r.nitroCd,9);
-  }
-  const p1=new RivalPressure();g.player.spin=2;assert.equal(p1.frame(g,stage),null);
-  g.player.spin=0;g.player.wrongWay=.9;assert.equal(p1.frame(g,stage),null);
-  g.player.wrongWay=0;g.standings=[r,g.player];
-  assert.equal(p1.frame(g,stage),null,'falling last must never trigger a new chase');
+test('skill-based exit decision cannot be triggered by a stationary enemy or by a straight-only map',()=>{
+  const g=race(),r=g.racers[1],d=new RivalPressure();
+  g.track.curvAhead=()=>0;
+  d.frame(g,stage);
+  assert.equal(r.nitroCd,5);
+  g.track.curvAhead=()=>.019;g.raceTime=30;r.s=12;d.frame(g,stage);
+  g.track.curvAhead=()=>0;g.raceTime=31;r.s=37;d.frame(g,stage);
+  assert.equal(r.nitroCd,5,'must enter the curve at real driving speed');
 });

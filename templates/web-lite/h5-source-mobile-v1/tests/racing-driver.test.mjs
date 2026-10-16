@@ -150,3 +150,38 @@ test('automatic drifting cannot repeatedly farm the same soft corner', () => {
   assert.ok(run(d,p,road,left,.5).every(f=>!f.shift), 'release cooldown blocks instant re-drift');
   assert.ok(run(d,p,road,left,.5).some(f=>f.shift), 'later meaningful corner remains possible');
 });
+
+test('severe oversteer: new opposite thumb has priority and briefly invokes native brake, not an auto-turn', () => {
+  const d=make(), p=car({ drifting:true, driftDir:1, driftTime:.7,
+    driftAngle:.72, s:46, h:.6, m:.1 });
+  const before=structuredClone(p);
+  const input=d.frame(.016,{right:true},p,track(.01),'race');
+  assert.equal(input.right,true,'opposite player direction must remain authoritative');
+  assert.equal(input.left,false);
+  assert.equal(input.shift,false,'never hold drift while trying to countersteer');
+  assert.equal(input.up,false);
+  assert.equal(input.down,true,'brief native brake assists severe but deliberate opposite steering');
+  assert.equal(input.nitroPressed,false);
+  assert.deepEqual(p,before,'input translation cannot fake car heading, velocity or progress');
+  p.driftAngle=.25;
+  const settled=d.frame(.016,{right:true},p,track(.01),'race');
+  assert.equal(settled.right,true);
+  assert.equal(settled.down,false,'brake must stop once the angular slide is contained');
+  assert.equal(settled.up,true);
+});
+
+test('countersteer brake is excluded for normal drift, neutral hands and airborne spin', () => {
+  const input={right:true};
+  for(const patch of [
+    {drifting:true,driftDir:1,driftAngle:.3,s:46},
+    {drifting:true,driftDir:1,driftAngle:.7,s:23},
+    {drifting:true,driftDir:1,driftAngle:.7,s:46,airborne:true},
+    {drifting:true,driftDir:1,driftAngle:.7,s:46,spin:.2},
+    {drifting:true,driftDir:1,driftAngle:.7,s:46,slowTime:.2},
+  ]) {
+    const p=car(patch),out=make().frame(.016,input,p,track(.01),'race');
+    assert.equal(out.down,false,JSON.stringify(patch));
+  }
+  assert.equal(make().frame(.016,idle,car({drifting:true,driftAngle:.8}),track(.01),'race').down,false);
+  assert.equal(make().frame(.016,left,car({drifting:true,driftAngle:.8}),track(.01),'race').down,false);
+});
