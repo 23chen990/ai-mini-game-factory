@@ -69,6 +69,14 @@ export function cfEliteUnlocked(record) {
 export function cfAutoFireEligible(challenge) {
   return challenge?.kind === 'hits' && challenge.elite !== true;
 }
+/** Preview copy mirrors each mission's actual input mechanics. */
+export function cfTouchTutorial(challenge) {
+  if (challenge?.kind === 'hits')
+    return cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
+  if (challenge?.kind === 'kills') return '先开镜，再点按开火';
+  if (challenge?.kind === 'survive') return '边移动边观察、开火';
+  return '点按或按住开火';
+}
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
   if (challenge.kind === 'hits') return challenge.elite===true
@@ -400,6 +408,10 @@ export function createFpsMobileUx(game, root, doc) {
   tutorial.setAttribute('aria-label', '手机操作指南');
   tutorial.innerHTML = '<span><b>①</b> 左手摇杆移动</span><span><b>②</b> 右侧滑动瞄准</span><span><b>③</b> 点按或按住开火</span>';
   root.querySelector('#mk-panel')?.insertBefore(tutorial, root.querySelector('#mk-challenges'));
+  function updateTutorial(challenge) {
+    const tip=tutorial.querySelector('span:last-child');
+    if(tip)tip.innerHTML='<b>③</b> ' + cfTouchTutorial(challenge);
+  }
   const originalToast = game.hud.toast.bind(game.hud);
   game.hud.toast = (value, duration) => {
     let message = String(value);
@@ -702,14 +714,10 @@ export function createFpsMobileUx(game, root, doc) {
 
   return {
     distanceMeters() { return +walkedMeters.toFixed(2); },
+    onSelect(challenge) { updateTutorial(challenge); },
     onStart(challenge) {
       activeChallenge = challenge || null;
-      const tip=tutorial.querySelector('span:last-child');
-      if(tip)tip.innerHTML=activeChallenge?.kind==='hits'
-        ? (cfAutoFireEligible(activeChallenge) ? '<b>③</b> 对准敌人自动开火' : '<b>③</b> 瞄准后手动开火')
-        : activeChallenge?.kind==='kills'
-          ? '<b>③</b> 先找敌人，再开镜射击'
-          : '<b>③</b> 点按或按住开火';
+      updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;playerEngaged=false;aimTouchStarts.clear();
       guide.textContent = activeChallenge?.elite===true
         ? '⚡ 精英：自己瞄准开火'
