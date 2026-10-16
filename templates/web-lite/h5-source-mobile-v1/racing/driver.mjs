@@ -12,6 +12,13 @@ export class TouchSteering {
     this.pointers.set(id, { direction, started: now, order: ++this.sequence });
     this.pulses.delete(id);
   }
+  move(id, direction) {
+    const pointer = this.pointers.get(id);
+    if (!pointer || !['left', 'right'].includes(direction) || pointer.direction === direction) return false;
+    for (const [key, pulse] of this.pulses) if (pulse.direction !== direction) this.pulses.delete(key);
+    this.pointers.set(id, { ...pointer, direction, order: ++this.sequence });
+    return true;
+  }
   release(id, now) {
     const pointer = this.pointers.get(id);
     if (!pointer) return;
@@ -140,6 +147,57 @@ export class RaceDriver {
     }
     this.lastNitroCount = p.nitroCount;
     this.wasDrifting = p.drifting; this.direction = dir;
+    return input;
+  }
+}
+
+/**
+ * Classic control intents are separate from native keyboard edges. Pointer
+ * release keeps a short tap queued until a real physics step consumes it;
+ * pointercancel discards the pending action instead of synthesizing a tap.
+ */
+export class TouchActions {
+  constructor() { this.pointers = new Map(); this.pending = new Set(); }
+  press(id, action) {
+    if (!['drift', 'small', 'nitro', 'item'].includes(action)) return;
+    if (!this.isHeld(action)) this.pending.add(action);
+    this.pointers.set(id, action);
+  }
+  release(id) { this.pointers.delete(id); }
+  cancel(id) {
+    const action = this.pointers.get(id);
+    if (!action) return;
+    this.pointers.delete(id);
+    if (!this.isHeld(action)) this.pending.delete(action);
+  }
+  isHeld(action) { for (const held of this.pointers.values()) if (held === action) return true; return false; }
+  consume(action, canStep = true) {
+    if (!canStep || !this.pending.has(action)) return false;
+    this.pending.delete(action);
+    return true;
+  }
+  clear() { this.pointers.clear(); this.pending.clear(); }
+}
+
+/** Classic touch: auto throttle, manual drift / exit spray / earned nitro / item. */
+export class ManualRaceDriver {
+  constructor(actions = new TouchActions()) { this.actions = actions; this.startedPlayers = new WeakSet(); }
+  frame(raw, player, state, { canStep = true, itemMode = false } = {}) {
+    if (state !== 'race' || !player || player.finished) { this.actions.clear(); return empty(); }
+    const input = {
+      ...empty(), up: true,
+      left: !!raw.left, right: !!raw.right,
+      shift: this.actions.isHeld('drift'),
+    };
+    if (canStep && !this.startedPlayers.has(player)) {
+      input.upPressed = true;
+      this.startedPlayers.add(player);
+    }
+    input.wPressed = this.actions.consume('small', canStep);
+    input.nitroPressed = this.actions.consume(itemMode ? 'item' : 'nitro', canStep);
+    // Native item-mode uses nitroPressed for item use, so deliver the independent
+    // earned-nitro request to the adapter instead of swallowing player agency.
+    input.manualNitroPressed = itemMode && this.actions.consume('nitro', canStep);
     return input;
   }
 }
