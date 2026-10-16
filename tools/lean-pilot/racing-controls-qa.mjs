@@ -84,7 +84,7 @@ for(const [width,height] of [[844,390],[852,393],[740,360]]){
 await browser.close();
 const report={buildHash:build.buildHash,inputTransport:'Real Chromium joystick pointer and manual drift fingers',
   syntheticWins:false,physicalPhone:false,forbiddenOperations:[],cases,errors,
-  passed:cases.length===3&&cases.every(c=>c.checks.length===9&&c.checks.every(x=>x.passed))&&!errors.length,
+  passed:cases.length===3&&cases.every(c=>c.checks.length===10&&c.checks.every(x=>x.passed))&&!errors.length,
   checkedAt:new Date().toISOString()};
 await writeFile(path.join(out,'report.json'),JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify({passed:report.passed,checks:cases.map(c=>({viewport:c.viewport,checks:c.checks})),errors},null,2));
