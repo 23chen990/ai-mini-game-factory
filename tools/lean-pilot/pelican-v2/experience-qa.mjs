@@ -60,7 +60,10 @@ try{
   if(!choiceShot&&v.lanes.some(l=>l.bonus)){choiceShot=true;check('jump-gold-route-signalled-with-safe-detour',true,v);await shot('jump-choice');}
   if(!goldShot){const firstGold=(await snap()).events.find(e=>e.type==='fish-caught'&&e.golden&&!e.bonus);if(firstGold){goldShot=true;check('first-gold-before-ten-seconds',firstGold.at<10,firstGold);await shot('first-gold');}}
   const seconds=i=>Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99);
-  const risky=i=>v.lanes[i].danger&&seconds(i)<=3;
+  // Moving vehicles close the gap faster than stationary barriers. Treat a
+  // visible car/van as a forbidden route slightly earlier after the jump
+  // bonus is earned; do not make a replay-driving script choose a fatal fish.
+  const risky=i=>v.lanes[i]?.danger&&(seconds(i)<=3||(['car','van'].includes(v.lanes[i].kind)&&seconds(i)<=4));
   let want=v.lane;
   prizeFeedbackSeen ||= earnedJumpRewardVisible(v,jumpProgressBefore);
   if(jumped&&!prizeFeedbackSeen&&!earnedPrizeCue&&v.lanes[1].kind==='fish'&&v.lanes[1].text.includes('🌟')){
@@ -81,7 +84,7 @@ try{
   await page.waitForTimeout(65);
  }
  await page.locator('#co-modal').waitFor({state:'visible'});const finished=await snap();await shot('earned-three-stars');
- console.log('EXPERIENCE_FIRST_RUN '+JSON.stringify({engine,reason:finished.reason,distance:finished.distance,count:finished.count,gold:finished.gold,jumpedBarriers:finished.jumpedBarriers,hits:finished.hits,stars:finished.save?.stars?.[0],bestStreak:finished.bestStreak,lastCollisionId:finished.lastCollisionId,interestingEvents:finished.events.filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)&&(!e.objectId||e.objectId==='l1-o1'||e.objectId==='l1-jump-l1-o1'||e.type==='failed')).slice(-16)}));
+ console.log('EXPERIENCE_FIRST_RUN '+JSON.stringify({engine,reason:finished.reason,distance:finished.distance,count:finished.count,gold:finished.gold,jumpedBarriers:finished.jumpedBarriers,hits:finished.hits,stars:finished.save?.stars?.[0],bestStreak:finished.bestStreak,lastCollisionId:finished.lastCollisionId,recentTouches:report.actions.filter(a=>a.type==='tap'&&a.selector?.startsWith('[data-action')).slice(-14).map(a=>({selector:a.selector,beforeDistance:a.before?.distance,beforeLane:a.before?.lane,afterLane:a.after?.lane,afterPhase:a.after?.phase})),interestingEvents:finished.events.filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)&&(!e.objectId||e.objectId==='l1-o1'||e.objectId==='l1-jump-l1-o1'||e.type==='failed')).slice(-16)}));
  report.presentationSignals=await page.evaluate(()=>window.__qaExperienceSignals);
  earnedPrizeCue ||= earnedPrizeRouteSeen(report.presentationSignals,'l1-o1','l1-jump-l1-o1');
  leftWarning ||= pedestrianWarningSeen(report.presentationSignals,2);
