@@ -161,8 +161,8 @@ async function raceStart(page, index, name) {
     impact:window.game?.player?.impact ?? null,
     lat:window.game?.player?.lat ?? null,
     rank:window.game?.standings?.indexOf(window.game?.player) + 1,
-    left:document.querySelector('#race-left')?.getBoundingClientRect().toJSON(),
-    right:document.querySelector('#race-right')?.getBoundingClientRect().toJSON(),
+    wheel:document.querySelector('#race-joystick')?.getBoundingClientRect().toJSON(),
+    drift:document.querySelector('[data-race-action="drift"]')?.getBoundingClientRect().toJSON(),
     goal:document.querySelector('#race-live-goal')?.textContent,
     fuel:document.querySelector('#race-fuel-info')?.textContent,
   }));
@@ -234,7 +234,7 @@ async function raceStart(page, index, name) {
     if(branchCheck.activeFrames<5 || branchCheck.offAtExit!==true)
       fail(name+': actual physical branch projection/join failed: '+JSON.stringify(branchCheck));
   }
-  for(const [key,rect] of [['left',after.left],['right',after.right]]) {
+  for(const [key,rect] of [['wheel',after.wheel],['drift',after.drift]]) {
     if(!rect || rect.x < 0 || rect.y < 0 || rect.right > 852 || rect.bottom > 393 || rect.width < 70)
       fail(name+': thumb control out of horizontal safe bounds: '+key);
   }
@@ -247,15 +247,22 @@ try {
   const page=await context.newPage();
   page.on('pageerror',e=>jsErrors.push(e.message));page.on('console',m=>{if(m.type()==='error')jsErrors.push(m.text())});
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});await waitLoaded(page);
-  // New analogue wheel is the fresh-install default; keep the old two-key path
-  // explicitly tested by switching through the same player-facing select.
-  const initialControls=await page.evaluate(()=>({mode:document.querySelector('#race-kit')?.dataset.controlMode,
-    wheel:!!document.querySelector('#race-joystick'),sens:document.querySelector('#race-steering-sens')?.value}));
-  if(initialControls.mode!=='classic'||!initialControls.wheel||initialControls.sens!=='normal')
-    fail('Fresh player must get the steering wheel and a real sensitivity selector: '+JSON.stringify(initialControls));
+  // A saved legacy assist choice must have no effect on this joystick-only build.
+  await page.evaluate(()=>localStorage.setItem('h5-qq-mobile-20261013:control-mode:v2','assist'));
+  await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
+  const initialControls=await page.evaluate(()=>({
+    mode:window.__RACE_EVIDENCE__?.mode,
+    wheel:!!document.querySelector('#race-joystick'),
+    sensitivity:document.querySelector('#race-steering-sens')?.value,
+    noSwitch:!document.querySelector('#race-control-mode'),
+    noArrows:!document.querySelector('#race-left')&&!document.querySelector('#race-right'),
+    noAutoGuide:!document.querySelector('#race-guide')?.textContent.includes('自动漂移')
+  }));
+  if(initialControls.mode!=='joystick'||!initialControls.wheel||
+     initialControls.sensitivity!=='normal'||!initialControls.noSwitch||
+     !initialControls.noArrows||!initialControls.noAutoGuide)
+    fail('Only joystick input is allowed, even after a stored old assist preference: '+JSON.stringify(initialControls));
   report.initialControls=initialControls;
-  await page.selectOption('#race-control-mode','assist');
-  if(await page.locator('#race-kit').getAttribute('data-control-mode')!=='assist') fail('Two-key fallback is no longer selectable');
   // Genuine browser render of the default lobby at two landscape widths.
   // No seeded save, DOM mutation or mocked UI goes into these screenshots.
   for (const [width,height] of [[844,390],[740,360]]) {
@@ -291,44 +298,36 @@ try {
   if(nativeHudLayout.distanceCollidesWithNitro||nativeHudLayout.goalCollidesWithSpeed)
     fail('Active racing HUD overlay intersection: '+JSON.stringify(nativeHudLayout));
   report.nativeHudLayout=nativeHudLayout;
-  // Genuine multi-pointer Chromium touch transport, not simulated game key state.
-  const left=await page.locator('#race-left').boundingBox();
-  const right=await page.locator('#race-right').boundingBox();
-  if (!left || !right) fail('Thumb controls have no hitboxes');
+  // Real multi-pointer Chromium touch (not mutated game state). Steering follows
+  // a continuous axis, and a second thumb independently holds the drift key.
+  const wheel=await page.locator('#race-joystick').boundingBox();
+  const drift=await page.locator('[data-race-action="drift"]').boundingBox();
+  if(!wheel||wheel.width<100||!drift||drift.width<75||wheel.right+24>drift.left)
+    fail('Single joystick / drift hitboxes overlap or are too small: '+JSON.stringify({wheel,drift}));
   const cdp=await context.newCDPSession(page);
-  const touch={x:left.x+left.width/2,y:left.y+left.height/2,id:101};
-  const opposite={x:right.x+right.width/2,y:right.y+right.height/2,id:102};
-  const pressState=()=>page.evaluate(()=>({
-    left:document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',
-    right:document.querySelector('#race-right')?.getAttribute('aria-pressed')==='true',
+  const leftThumb={x:wheel.x+wheel.width*.18,y:wheel.y+wheel.height*.5,id:101};
+  const rightThumb={...leftThumb,x:wheel.x+wheel.width*.82};
+  const driftThumb={x:drift.x+drift.width/2,y:drift.y+drift.height/2,id:102};
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftThumb]});
+  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>.5,null,{timeout:8000});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[driftThumb]});
+  await page.waitForFunction(()=>document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),null,{timeout:8000});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[rightThumb]});
+  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis<-.5,null,{timeout:8000});
+  const simultaneous=await page.evaluate(()=>({
+    axis:window.__RACE_EVIDENCE__?.steerAxis,
+    driftHeld:document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),
   }));
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch]});
-  await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',null,{timeout:8000});
-  const held=(await pressState()).left;
-  // CDP's default Chromium path dispatches changed contacts only; [touch,opposite]
-  // needlessly re-sends the held contact. Add only the second finger here.
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[opposite]});
-  await page.waitForFunction(()=>{
-    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
-    return l?.getAttribute('aria-pressed')==='false'&&r?.getAttribute('aria-pressed')==='true';
-  },null,{timeout:8000});
-  const laterThumbWins=await pressState();
-  // The touchEnd list names the touch being RELEASED, not the one left held.
-  // Releasing id=101 here accidentally cancelled the left thumb in the old test.
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[opposite]});
-  await page.waitForFunction(()=>{
-    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
-    return l?.getAttribute('aria-pressed')==='true'&&r?.getAttribute('aria-pressed')==='false';
-  },null,{timeout:8000});
-  const remainingThumbRestored=await pressState();
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[driftThumb]});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-  await page.waitForFunction(()=>{
-    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
-    return l?.getAttribute('aria-pressed')==='false'&&r?.getAttribute('aria-pressed')==='false';
-  },null,{timeout:8000});
-  const releasedAll=await pressState();
-  if(!laterThumbWins.right||laterThumbWins.left||!remainingThumbRestored.left||remainingThumbRestored.right||releasedAll.left||releasedAll.right)
-    fail('Real dual-thumb changeover did not preserve latest-press direction and release: '+JSON.stringify({laterThumbWins,remainingThumbRestored,releasedAll}));
+  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
+  if(!(simultaneous.axis<-.5&&simultaneous.driftHeld))
+    fail('Stick countersteer must remain responsive during independent drift thumb: '+JSON.stringify(simultaneous));
+  const wheelRelease=await page.evaluate(()=>({
+    axis:window.__RACE_EVIDENCE__.steerAxis,
+    driftHeld:document.querySelector('[data-race-action="drift"]').classList.contains('held')
+  }));
+  if(wheelRelease.axis!==0||wheelRelease.driftHeld)fail('Touches must release without sticky turning/drift: '+JSON.stringify(wheelRelease));
   const knockoutLayout=await page.evaluate(()=>{
     const kit=document.querySelector('#race-kit'),speed=document.querySelector('#race-speed');
     const badge=document.querySelector('#race-knockout');
@@ -356,7 +355,7 @@ try {
     fail('Pause sound toggle did not mute and persist: '+JSON.stringify(audioMuted));
   await page.locator('#race-resume').tap();
   await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:8000});
-  report.touch={actualCDPTouch:true,leftPressObserved:held,laterThumbWins,remainingThumbRestored,releasedAll,released:true,paused:true,cleared,resumed:true,audioMuted:true};
+  report.touch={actualCDPTouch:true,joystickCountersteer:true,simultaneousDrift:true,releaseClears:true,paused:true,cleared,resumed:true,audioMuted:true};
   // QA-only injected wrong-way meter: tests native reset integration, NOT natural 180-degree steering.
   await page.evaluate(()=>{window.game.player.wrongWay=2.8;});
   await page.waitForFunction(()=>window.game?.player?.wrongWay===0 && window.game?.player?.s>=12,
@@ -393,12 +392,12 @@ try {
   }
   await page.setViewportSize({width:740,height:360});
   const small=await page.evaluate(()=>{
-    const left=document.querySelector('#race-left').getBoundingClientRect();
-    const right=document.querySelector('#race-right').getBoundingClientRect();
-    return {left:left.toJSON(),right:right.toJSON(),width:innerWidth,height:innerHeight};
+    const stick=document.querySelector('#race-joystick').getBoundingClientRect();
+    const drift=document.querySelector('[data-race-action="drift"]').getBoundingClientRect();
+    return {wheel:stick.toJSON(),drift:drift.toJSON(),width:innerWidth,height:innerHeight};
   });
-  if(small.left.left<0||small.right.right>740||small.left.bottom>360||small.right.bottom>360)
-    fail('740x360 horizontal thumb controls are clipped');
+  if(small.wheel.left<0||small.wheel.bottom>360||small.drift.right>740||small.drift.bottom>360)
+    fail('740x360 joystick or drift thumb controls are clipped');
   await page.screenshot({path:path.join(dest,'08-snow-740x360.png')});
   // Explicit QA-only synthetic DNF. This tests lobby recovery, NEVER counts as a completed race.
   await page.evaluate(() => window.game.showResults());
@@ -435,39 +434,6 @@ try {
   const savedAudio=await page.evaluate(()=>localStorage.getItem('h5-qq-mobile-20261013:audio-enabled:v1'));
   if(savedAudio!=='0') fail('Mute preference lost on reload');
   report.persistedAudioEnabled=false;
-  // Separate real Chromium classic-mode session. Only touch input is injected;
-  // no player coordinates, speed, AI, progress, or results are fabricated.
-  await page.close();
-  const wheelPage=await context.newPage();
-  wheelPage.on('pageerror',e=>jsErrors.push(e.message));
-  await wheelPage.goto(url,{waitUntil:'domcontentloaded',timeout:45000});await waitLoaded(wheelPage);
-  await wheelPage.selectOption('#race-control-mode','classic');
-  await wheelPage.click('#race-start');
-  await wheelPage.waitForFunction(()=>window.game?.state==='race',null,{timeout:70000});
-  const wheelBounds=await wheelPage.evaluate(()=>{
-    const get=id=>document.querySelector(id)?.getBoundingClientRect().toJSON();
-    const stick=get('#race-joystick'),drift=get('[data-race-action="drift"]');
-    const nitro=get('[data-race-action="nitro"]'),gauge=get('#gaugebox');
-    return {stick,drift,nitro,gauge,leftButtonsHidden:get('#race-left')?.width===0};
-  });
-  if(!wheelBounds.stick||wheelBounds.stick.width<100||!wheelBounds.drift||
-     wheelBounds.stick.right+24>wheelBounds.nitro.left||!wheelBounds.leftButtonsHidden)
-    fail('Wheel/thumb-pad overlaps or old binary controls remain visible: '+JSON.stringify(wheelBounds));
-  await wheelPage.screenshot({path:path.join(dest,'01-classic-wheel-phone.png')});
-  const stick=wheelBounds.stick,cdpWheel=await context.newCDPSession(wheelPage);
-  const wheelLeftContact={id:201,x:stick.x+stick.width*.17,y:stick.y+stick.height*.5};
-  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[wheelLeftContact]});
-  await wheelPage.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>0.5,null,{timeout:8000});
-  await wheelPage.waitForFunction(()=>window.game?.player?.steer>0.04,null,{timeout:20000});
-  const wheelRightContact={...wheelLeftContact,x:stick.x+stick.width*.83};
-  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[wheelRightContact]});
-  await wheelPage.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis<-.5,null,{timeout:8000});
-  await wheelPage.waitForFunction(()=>window.game?.player?.steer<-.04,null,{timeout:20000});
-  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-  await wheelPage.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
-  await wheelPage.locator('#race-pause').tap();
-  await wheelPage.waitForFunction(()=>window.game?.state==='paused'&&window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
-  report.classicWheel={actualCDPTouch:true,analogueLeft:true,countersteerRight:true,releaseCentres:true,pausedClears:true,thumbBounds:wheelBounds};
   if(jsErrors.length) fail('Browser errors: '+jsErrors.slice(0,4).join(' | '));
   report.passed=true;report.smallView=small;
 } catch(e) {report.errors.push(String(e?.stack || e));process.exitCode=1;}
