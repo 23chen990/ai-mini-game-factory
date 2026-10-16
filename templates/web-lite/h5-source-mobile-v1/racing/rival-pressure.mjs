@@ -29,14 +29,25 @@ export const OPPONENT_PACE_V39=OPPONENT_PACE_V40;
  * These ranges are chosen *before* the green light, not from the player's
  * performance or lap gap. Mix a fast rival, a solid pack and beatable cars,
  * so late passes remain earned and overtaking objectives remain possible.
- * Stage 01 remains a teaching race; boss stages use their own named rival.
+ * No protected tutorial: 01 and the bosses also face a genuinely strong field.
  */
 export const COMPETITIVE_FIELD_V42=Object.freeze({
-  '02':[.78,1.16], '03':[1.02,1.46], '04':[.76,1.13],
-  '05':[.77,1.12], '06':[.99,1.38], '07':[1.06,1.40],
-  '08':[1.09,1.45], '09':[1.03,1.38], '10':[1.08,1.48],
-  '11':[1.13,1.52], '12':[1.08,1.44],
-  '14':[1.17,1.51], '15':[1.12,1.49],
+  '10':[1.37,1.82],
+  '11':[1.41,1.86],
+  '12':[1.42,1.88],
+  '13':[1.44,1.92],
+  '14':[1.47,1.92],
+  '15':[1.48,1.96],
+  '16':[1.52,2.00],
+  '01':[1.16,1.60],
+  '02':[1.16,1.62],
+  '03':[1.20,1.64],
+  '04':[1.18,1.60],
+  '05':[1.20,1.62],
+  '06':[1.26,1.70],
+  '07':[1.29,1.74],
+  '08':[1.31,1.76],
+  '09':[1.33,1.78],
 });
 const stageNumber=stage=>typeof stage?.course==='string'&&/^race-[0-9]{2}$/.test(stage.course)
   ? stage.course.slice(5) : /^[0-9]{2}$/.test(stage?.id??'')?stage.id:null;
@@ -51,11 +62,10 @@ export function seedCompetitiveField(racers,stage){
   const field=racers.filter(r=>r&&!r.isPlayer&&Number.isFinite(r.skill));
   if(!field.length)return {adjusted:0,ace:false};
   const sorted=[...field].sort((a,b)=>a.skill-b.skill);
-  // From stage 06 onward, one easy rival and one approachable rival stay
-  // available, while the upper pack clusters closer to the fastest car.
+  // Every race now has multiple strong front-runners, including the opening.
   // Rank 3 is now contested by multiple actual native AI drivers, not one
   // super-fast leader above an otherwise passive queue. No rubber banding.
-  const tightPack=Number(id)>=6&&sorted.length>=3;
+  const tightPack=sorted.length>=3;
   for(let index=0;index<sorted.length;index++){
     const fraction=sorted.length===1?1:index/(sorted.length-1);
     const upperPressure=tightPack ? .24*Math.sin(Math.PI*fraction) : 0;
@@ -204,8 +214,7 @@ export class RivalPressure {
     if(!game||game.state!=='race'||!game.track||!game.player||
        !Array.isArray(game.racers)||!Number.isFinite(game.raceTime)||
        game.raceTime<12||stage?.mode!=='speed'||
-       ['boss','elimination','relay'].includes(stage?.kind)||
-       stageNumber(stage)==='01'||typeof game.track.curvAhead!=='function')
+       typeof game.track.curvAhead!=='function')
       return null;
     let observed=null;
     for(const rival of game.racers) {
