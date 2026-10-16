@@ -166,6 +166,14 @@ export function patchCounterSteer(source) {
   if (source.split(original).length !== 2 || !source.includes('this.driftDir * yaw')) throw Error('Countersteer vehicle anchor changed');
   return source.replace(original, revised);
 }
+/** New one-shot touch edge must never repeat inside the 120Hz native step loop. */
+export function patchManualNitroEdge(source) {
+  const original = "const noEdge = { ...pin, upPressed: false, wPressed: false, nitroPressed: false };";
+  const revised = "const noEdge = { ...pin, upPressed: false, wPressed: false, nitroPressed: false, manualNitroPressed: false };";
+  if (source.includes(revised)) return source;
+  if (source.split(original).length !== 2) throw Error('Native manual nitro edge anchor changed');
+  return source.replace(original,revised);
+}
 /** Separate earned drift nitro from native item-box use; both require real stock. */
 export function patchItemModeNitro(source) {
   const original = "if (inp.nitroPressed && !itemMode) this.triggerNitro();";
@@ -302,7 +310,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchRacingSource(beforeMain))))));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchRacingSource(beforeMain)))))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
