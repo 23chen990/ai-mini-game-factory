@@ -190,3 +190,18 @@ html[data-reference-game="cf-transport-ship"] #mk-fps-hit-feedback[hidden],
 html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-hit-feedback{
   display:none!important;
 }
+
+
+/* CF replay difficulty is opt-in and shown only after a genuine recorded clear.
+   Keep it a single compact accessible touch target on short landscape screens. */
+html[data-reference-game="cf-transport-ship"] #mk-elite{
+  width:100%;margin:4px 0 2px;min-height:48px;padding:5px 9px;
+  border:1px solid #9ecbd5;color:#c2eaff;
+  background:#153047e3;box-shadow:none;font-size:12px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-elite[aria-pressed="true"]{
+  border:2px solid #ffd271;color:#1b2b38;background:#ffd271;
+}
+html[data-reference-game="cf-transport-ship"] #mk-elite[hidden]{
+  display:none!important;
+}
