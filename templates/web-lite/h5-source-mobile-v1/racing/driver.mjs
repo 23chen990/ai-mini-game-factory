@@ -87,6 +87,21 @@ export class RaceDriver {
       this.stableTime = 0;
       if (input.down) this.boost = null;
     }
+    // Strong opposite steering during an established slide must feel like a
+    // deliberate recovery action, not a second helpless turn. With only two
+    // buttons, use the pinned native brake briefly while the player holds the
+    // OPPOSITE direction; the native car still owns steering, grip and drift
+    // exit. Ordinary countersteer and all straight turns remain untouched.
+    const recoveringSlide = p.drifting && dir !== 0 && dir === -p.driftDir &&
+      Math.abs(p.driftAngle ?? 0) >= .48 && p.s >= 32 &&
+      !p.airborne && p.spin <= 0 && p.slowTime <= 0 && p.wrongWay < .5;
+    if (recoveringSlide) {
+      input.shift = false;
+      input.up = false;
+      input.down = true;
+      this.boost = null;
+      this.stableTime = 0;
+    }
     this.recovery = Math.max(0, this.recovery - dt);
     this.cooldown = Math.max(0, this.cooldown - dt);
     const crashes = p.stats?.crash ?? 0;
