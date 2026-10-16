@@ -127,3 +127,82 @@ jobs:
             runs/h5-qq-mobile-20261013/evidence/v32-natural-ci/*
           retention-days: 7
           if-no-files-found: warn
+
+  publish-qa-preview:
+    name: Verified H5 phone preview (QA only)
+    needs: racing-v3
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 9
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: true
+      - name: Fetch exact same-run racing QA artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: racing-v3-h5-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/racing-payload
+      - name: Assemble and verify one-file H5 from immutable CI package
+        env:
+          RACE_SOURCE_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, io, json, os, pathlib, zipfile
+          root = pathlib.Path(os.environ['RUNNER_TEMP'])
+          packages = list((root/'racing-payload').rglob('qq-speed-v3-h5.zip'))
+          if len(packages) != 1:
+              raise SystemExit('Require exactly one racing game ZIP from THIS successful workflow run')
+          folder = packages[0].parent
+          meta = json.loads((folder/'build-racing.json').read_text())
+          if meta.get('publishable') is not False or meta.get('gameId') != 'qq-speed':
+              raise SystemExit('Not an internal-only qq-speed game build')
+          if meta.get('sourceRevision') != '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8':
+              raise SystemExit('Unpinned racing upstream; refuse deployment')
+          with zipfile.ZipFile(packages[0]) as z:
+              html = z.read('index.html').decode('utf8')
+              css = z.read('style.css').decode('utf8')
+          anchor = '<link rel="stylesheet" href="style.css">'
+          if html.count(anchor) != 1 or 'data-race-mobile="true"' not in html:
+              raise SystemExit('Wrong runtime entrypoint or unexpected HTML')
+          standalone = html.replace(anchor, '<style>' + css + '</style>')
+          digest = hashlib.sha256(standalone.encode('utf8')).hexdigest()
+          if digest != meta['trialSha256'] or len(standalone) < 100000:
+              raise SystemExit('Standalone differs from QA build hash')
+          target = root/'racing-verified'
+          target.mkdir(exist_ok=True)
+          (target/'index.html').write_text(standalone, encoding='utf8')
+          (target/'PREVIEW_PROVENANCE.txt').write_text(
+              'INTERNAL HUMAN PLAYTEST ONLY - NOT LICENSED COMMERCIAL RELEASE\n'
+              + 'SOURCE_COMMIT=' + os.environ['RACE_SOURCE_SHA'] + '\n'
+              + 'UPSTREAM_COMMIT=' + meta['sourceRevision'] + '\n'
+              + 'BUILD_SHA256=' + meta['buildHash'] + '\n'
+              + 'HTML_SHA256=' + digest + '\n', encoding='utf8')
+          print('QA_ARTIFACT_VERIFIED_HTML_SHA256=' + digest)
+          PY
+      - name: Update only the isolated existing preview branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin refs/heads/preview/racing-v34-dbf8603-mobile
+          preview="$RUNNER_TEMP/racing-preview-wt"
+          git worktree add --detach "$preview" FETCH_HEAD
+          cp "$RUNNER_TEMP/racing-verified/index.html" "$preview/index.html"
+          cp "$RUNNER_TEMP/racing-verified/PREVIEW_PROVENANCE.txt" "$preview/PREVIEW_PROVENANCE.txt"
+          git -C "$preview" config user.name "github-actions[bot]"
+          git -C "$preview" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C "$preview" add index.html PREVIEW_PROVENANCE.txt
+          if git -C "$preview" diff --cached --quiet; then
+            echo 'PREVIEW_UNCHANGED=1' >> "$GITHUB_STEP_SUMMARY"
+          else
+            git -C "$preview" commit -m "test(racing-preview): SHA-verified H5 from ${{ github.event.pull_request.head.sha }}"
+            git -C "$preview" push origin HEAD:refs/heads/preview/racing-v34-dbf8603-mobile
+          fi
+          echo 'Preview branch updated; external HTTP hash gate runs separately.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v34-dbf8603-mobile/index.html' >> "$GITHUB_STEP_SUMMARY"
