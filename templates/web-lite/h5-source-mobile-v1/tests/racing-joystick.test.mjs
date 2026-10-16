@@ -122,11 +122,12 @@ test('build fingerprints joystick and UI binds captured pointer without retainin
   assert.match(ui,/joystickSurface\.setPointerCapture\(e\.pointerId\)/);
   assert.match(ui,/joystick\.snapshot\(\)/);
   assert.match(ui,/joystick\.clear\(\)/);
-  assert.match(ui,/career\.itemInput\(g, canStep\)/);
-  assert.match(ui,/translated\.manualNitroPressed = earnedBoost/);
+  assert.match(ui,/driver\.frame\(raw,g\.player,g\.state/);
+  assert.doesNotMatch(ui,/race-control-mode|data-race-direction|\bid="race-left"|\bid="race-right"|controlMode|career\.itemInput\(g/);
   assert.match(ui,/document\.getElementById\('gaugebox'\)\?\.classList\.remove\('hidden'\)/);
   assert.match(css,/#race-joystick\.held #race-stick-knob \{transition:none/);
-  assert.match(css,/#race-kit\[data-control-mode="classic"\] #race-left,/);
+  assert.match(css,/#race-joystick \{\s*display:block;/);
+  assert.doesNotMatch(css,/data-control-mode|#race-left|#race-right/);
 });
 
 // Real game time controls a deliberately small pre-exit tap buffer; player must
