@@ -75,6 +75,53 @@ export const TRACK_RESHAPES = Object.freeze({
     ],
   },
 });
+
+/** V3.6: sixteen unique physical centreline configurations using four scene biomes.
+ * The 12 non-base courses have distinctive edited vertices; this is not yet a
+ * fork/junction graph or sixteen independent art environments.
+ * Edits are [V3.5 point index, x, z, y]; all start lines and protected anchors
+ * remain unchanged. The native Track generates real road meshes from these.
+ */
+export const CAREER_COURSE_MAPS = Object.freeze(
+  'city egypt city aegean egypt city aegean snow egypt city aegean snow city egypt snow aegean'.split(' '));
+export const CAREER_ROUTE_EDITS = Object.freeze({
+  '03': [[17,423,254,0],[18,371,340,0],[19,293,360,0],[20,220,290,0],[21,148,279,0]],
+  '05': [[9,-133,185,0],[10,-252,274,0],[11,-213,407,0],[12,-81,412,0]],
+  '06': [[7,127,-154,0],[8,173,-80,2],[9,229,-39,6],[10,193,9,8],[11,212,43,5]],
+  '07': [[20,251,118,17],[21,313,175,18],[22,345,243,22],[23,275,325,23],[24,199,318,18]],
+  '09': [[22,353,-64,0],[23,370,-142,0],[24,313,-187,2],[25,327,-238,4],[26,235,-260,2],[27,155,-317,0]],
+  '10': [[12,220,117,3],[13,246,136,1],[14,265,189,0],[15,300,145,0],[16,374,185,0],[17,433,257,0]],
+  '11': [[14,20,17,10],[15,-45,-14,12],[16,-98,30,14],[17,-81,108,14],[18,0,147,15]],
+  '12': [[7,235,-70,4],[8,183,16,10],[9,103,41,16],[10,35,96,19],[11,-29,125,13]],
+  '13': [[18,391,352,0],[19,299,383,0],[20,223,333,0],[21,142,269,0],[22,67,348,0],[23,18,308,0],[24,-21,361,0]],
+  '14': [[12,-73,406,0],[13,-10,397,2],[14,70,407,4],[15,149,355,1],[16,194,327,0],[17,296,260,0]],
+  '15': [[12,-66,207,8],[13,-107,274,9],[14,-54,347,12],[15,38,337,14],[16,101,325,10],[17,155,284,5],[18,175,232,0]],
+  '16': [[25,82,314,17],[26,19,279,22],[27,-32,355,24],[28,-100,266,17],[29,-181,259,12],[30,-283,179,9]],
+});
+
+export function createCareerLayouts(layouts) {
+  const fingerprints = new Set();
+  for (let number = 1; number <= 16; number++) {
+    const id = String(number).padStart(2, '0');
+    const map = CAREER_COURSE_MAPS[number - 1];
+    const baseline = layouts[map];
+    if (!baseline?.__racingV31 || !Array.isArray(baseline.points))
+      throw Error('V3.6 requires pinned V3.5 track for stage ' + id);
+    const points = baseline.points.map(point => [...point]);
+    for (const [index, x, z, height] of CAREER_ROUTE_EDITS[id] ?? []) {
+      if (!Number.isInteger(index) || index <= 0 || index >= points.length ||
+          ![x,z,height].every(Number.isFinite) || height < 0 || height > 25)
+        throw Error('Invalid original career track vertex ' + id + ':' + index);
+      points[index] = [x, z, height];
+    }
+    const signature = JSON.stringify(points);
+    if (fingerprints.has(signature)) throw Error('Duplicate career track ' + id);
+    fingerprints.add(signature);
+    layouts['race-' + id] = { width: baseline.width, points };
+  }
+  return fingerprints.size;
+}
+
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
 export function applyTrackDesign(layouts) {
   const report = {};
@@ -95,5 +142,6 @@ export function applyTrackDesign(layouts) {
     Object.defineProperty(layout,'__racingV31',{value:true,enumerable:false});
     report[key] = points.length;
   }
+  createCareerLayouts(layouts);
   return report;
 }
