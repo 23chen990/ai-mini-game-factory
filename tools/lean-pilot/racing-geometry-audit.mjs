@@ -4,6 +4,8 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
 import { createRequire } from 'node:module';
+import { pathToFileURL } from 'node:url';
+import { SHORTCUT_PLANS, installPhysicalShortcut } from '../../templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs';
 import { applyTrackDesign, CAREER_COURSE_MAPS } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 import { PAD_LANES } from '../../templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs';
 
@@ -73,13 +75,40 @@ for(let i=1;i<=16;i++){
   courses[id]={scene:map,...geometry};
 }
 if(Object.keys(courses).length!==16)throw Error('All 16 stages must have distinct physical courses');
+// Actual pinned Three.js Track projection test, not a simulated race victory.
+const { Track: NativeTrack }=await import(pathToFileURL(path.join(src,'src/track.js')).href);
+const shortcutAudit={};
+for(const course of Object.keys(SHORTCUT_PLANS)){
+  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course);
+  if(!fork || !(fork.gain>=35) || !Number.isFinite(fork.length))
+    throw Error('Shortcut is not an honest shorter physical road: '+course);
+  const p={},details=[];
+  for(let i=0;i<fork.samples.length;i+=2){
+    const x=fork.samples[i];
+    const probe=track.project(x.x,x.y,x.z,-1,p);
+    details.push({active:probe.__RACE_SHORTCUT_ACTIVE===true,d:probe.d});
+  }
+  const active=details.filter(x=>x.active);
+  if(active.length<8 || details.at(-1).active)
+    throw Error('Shortcut must have a physically reachable gated entry and normal exit: '+course);
+  const mesh=fork.buildMesh(THREE,()=>0);
+  if(!mesh.getObjectByName('physical-shortcut-road') ||
+     !mesh.getObjectByName('physical-shortcut-rails'))
+    throw Error('Shortcut missing genuine road geometry or collision guardrails: '+course);
+  shortcutAudit[course]={scene:CAREER_COURSE_MAPS[+course.slice(-2)-1],
+    branchLengthM:+fork.length.toFixed(1),mainSegmentM:fork.end-fork.start,
+    physicalSavingM:+fork.gain.toFixed(1),widthM:fork.width,
+    playerProjectionPoints:active.length};
+  mesh.traverse(o=>{o.geometry?.dispose();if(o.material&&!Array.isArray(o.material))o.material.dispose();});
+}
+if(Object.keys(shortcutAudit).length!==5)throw Error('Missing one of five real shortcut tracks');
 const report={schemaVersion:2,buildHash:build.buildHash,upstream:build.sourceRevision,
   limitation:'Static Catmull-Rom centerline only; not natural-driving/phone performance QA',
-  maps,courses};
+  maps,courses,shortcuts:shortcutAudit};
 const out=path.join(root,'runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'geometry-v32.json'),JSON.stringify(report,null,2)+'\n');
-await writeFile(path.join(out,'geometry-career16.json'),JSON.stringify({buildHash:report.buildHash,courses},null,2)+'\n');
+await writeFile(path.join(out,'geometry-career16.json'),JSON.stringify({buildHash:report.buildHash,courses,shortcuts:shortcutAudit},null,2)+'\n');
 let art='';
 for(const [i,name] of Object.keys(maps).entries()){
   const a=maps[name],all=[...a.old.line,...a.next.line],xs=all.map(x=>x[0]),zs=all.map(x=>x[1]);
@@ -97,6 +126,6 @@ for(const [i,name] of Object.keys(maps).entries()){
 await writeFile(path.join(out,'geometry-v32.svg'),
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1100" width="1000" height="1100">'+
   '<rect width="1000" height="1100" fill="#eef4f7"/>'+art+'</svg>');
-console.log(JSON.stringify({careerCourseCount:Object.keys(courses).length,courseWidths:Object.fromEntries(Object.entries(courses).map(([id,c])=>[id,{scene:c.scene,lengthM:c.lengthM,turns:c.directionChanges,sharpPct:c.sharpPct}])),buildHash:report.buildHash,maps:Object.fromEntries(
+console.log(JSON.stringify({shortcutAudit,careerCourseCount:Object.keys(courses).length,courseWidths:Object.fromEntries(Object.entries(courses).map(([id,c])=>[id,{scene:c.scene,lengthM:c.lengthM,turns:c.directionChanges,sharpPct:c.sharpPct}])),buildHash:report.buildHash,maps:Object.fromEntries(
   Object.entries(maps).map(([name,item])=>[name,{old:{length:item.old.lengthM,turns:item.old.directionChanges,sharp:item.old.sharpPct},
     next:{length:item.next.lengthM,turns:item.next.directionChanges,sharp:item.next.sharpPct,closePairs:item.next.sameLevelClosePairs}}]))}));
