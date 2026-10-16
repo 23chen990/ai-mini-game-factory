@@ -68,7 +68,8 @@ async function readVisibleView(page){
    return {className:node.className,text:node.textContent.trim()};
   });
   const goldCounter=Number(document.querySelector('#co-mastery [data-goal="gold"]')?.textContent?.match(/\d+/u)?.[0]??NaN);
-  return {phase:root?.dataset.phase??'missing',levelTitle:document.querySelector('#co-title')?.textContent?.trim()??'',distance,goldCounter,laneIndex:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(node=>node.classList.contains('on')),lanes,nowMs:performance.now()};
+  const jumpReady=document.querySelector('[data-action="jump"]')?.classList.contains('ready')===true;
+  return {phase:root?.dataset.phase??'missing',levelTitle:document.querySelector('#co-title')?.textContent?.trim()??'',distance,goldCounter,jumpReady,laneIndex:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(node=>node.classList.contains('on')),lanes,nowMs:performance.now()};
  });
  return {...raw,lanes:raw.lanes.map(visibleLaneFromHud)};
 }
