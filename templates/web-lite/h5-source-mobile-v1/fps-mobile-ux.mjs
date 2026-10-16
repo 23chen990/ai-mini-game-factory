@@ -628,9 +628,11 @@ export function createFpsMobileUx(game, root, doc) {
   function nudgeAim(forceFiring = false) {
     if(activeChallenge?.elite===true)return;
     const p = game.player, cam = game.renderer?.camera;
-    if(activeChallenge?.drill==='reposition' &&
-       (p?.stats?.hits||0)>=activeChallenge.openingHits)return;
-    const simple = activeChallenge?.kind==='hits' && p?.weapon?.id==='m4a1';
+    // After the tutorial hit we stop automatic shooting and idle aim snaps.
+    // A small native sight correction remains ONLY while the user holds fire,
+    // avoiding the abrupt aim-feel cliff common on mobile FPS.
+    const simple=cfAutoFireEligible(activeChallenge,p?.stats?.hits||0) &&
+      p?.weapon?.id==='m4a1';
     if (!p?.alive || !game.playing || game.paused || !cam ||
         !(forceFiring || p.touch?.fire || (simple&&playerEngaged))) return;
     const sniper = p.weapon?.def?.type === 'sniper';
