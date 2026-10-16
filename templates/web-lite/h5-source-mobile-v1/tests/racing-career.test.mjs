@@ -319,21 +319,21 @@ test('thinned native item routes dispose deleted box geometries, leave shared sk
   assert.equal(system.boxes.length,8);
 });
 
-test('middle item rivals allow physical pickup and hit recovery without changing grid or progress',()=>{
+test('middle item rivals stay physically fair while presenting a stronger pre-set field',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<5;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(5);g.racers[1].skill=.85;g.racers[2].skill=1.05;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.05)<1e-9,'stage06 item pace rises slightly');
-  assert.ok(Math.abs(g.racers[2].skill-1.215)<1e-9,'only top rival gets a small item ace advantage');
+  assert.equal(g.racers[1].skill,.99,'catchable item rival remains below the ace');
+  assert.equal(g.racers[2].skill,1.38,'stage06 ace is a genuine contest from the start');
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });
-test('middle speed rivals get a small real pace lift without moving standings',()=>{
+test('middle speed rivals start with a catchable car and a fixed competitive ace',()=>{
   const c=new RacingCareer(memory()),g=game();
   c.progress.stars['02']=1;c.setStage(2);g.racers[1].skill=.85;g.racers[2].skill=1.05;c.begin(g);
-  assert.ok(Math.abs(g.racers[1].skill-1.20)<1e-9);
-  assert.ok(Math.abs(g.racers[2].skill-1.385)<1e-9);
+  assert.equal(g.racers[1].skill,1.02);
+  assert.equal(g.racers[2].skill,1.46);
 });
 test('career retains the submitted expert field speeds while boss and middle field still escalate',()=>{
   const c=new RacingCareer(memory()),g=game();g.racers[1].skill=.55;g.racers[2].skill=.75;
@@ -343,12 +343,12 @@ test('career retains the submitted expert field speeds while boss and middle fie
   assert.equal(c.boss.skill,1.58);
   assert.ok(Math.abs(g.racers[2].skill-1.38)<1e-9);
 });
-test('expert corner-pass AI gains a modest ace but still drives with native variability',()=>{
+test('expert corner-pass AI has a strong ace plus a catchable overtaking target',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<10;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(10);g.racers[1].skill=1.2;g.racers[2].skill=1.38;
   const before=g.racers.map(r=>r.progress);c.begin(g);
-  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.2,1.405]);
+  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.13,1.52]);
   assert.deepEqual(g.racers.map(r=>r.progress),before);
   assert.equal(g.player.skill,undefined);
 });
@@ -402,13 +402,13 @@ test('V3.4 tightens obvious time padding but does not block clean novice complet
   assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:4}),2);
   assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:6}),3);
 });
-test('V3.4 final coast boss remains strongest but physically achievable, without touching placement or mission gate',()=>{
+test('V4.2 final coast boss challenges clean driving without altering physical placement or stage gate',()=>{
   const career=new RacingCareer(memory()),g=game();
   career.index=15;
   g.racers[1].skill=1.38;g.racers[2].skill=1.32;
   const original=g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d}));
   career.begin(g);
-  assert.equal(career.boss.skill,1.35);
+  assert.equal(career.boss.skill,1.45);
   assert.equal(g.racers[2].skill,1.30);
   assert.deepEqual(g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d})),original);
   assert.equal(STAGES[15].rank,3);
