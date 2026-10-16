@@ -185,6 +185,21 @@ export function patchRaceItems(source) {
   return imported+'\n'+source.replace(anchor, "    "+hook+"\n"+anchor);
 }
 
+
+/** The pinned desert scenery includes six fixed gigantic pyramids, which
+ * were clear of the ORIGINAL route but overlap newly authored stages 05/14.
+ * Prevent those visual sculptures from intersecting a real drivable road.
+ * No physical vehicle collision or race progress rules are changed.
+ */
+export function patchFixedDesertLandmarks(source) {
+  const original='for (const [x, z, h] of pyramids) {';
+  const guard='if (!isFree(track, x, z, h * .58 + 10)) continue;';
+  if(source.includes(guard))return source;
+  if(source.split(original).length!==2 || !source.includes('function egyptProps(ctx)'))
+    throw Error('Pinned Egyptian landmark placement changed');
+  return source.replace(original,original+'\n    '+guard);
+}
+
 /** Insert the generated IIFE without replacement-string token expansion. */
 export function injectRaceBundle(html, bundleText) {
   if (typeof bundleText !== 'string' || typeof html !== 'string' || html.split('</body>').length !== 2)
@@ -238,6 +253,10 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     const neutral = neutralizeRaceBranding(original);
     if (neutral !== original) await writeFile(path.join(project, 'src', name), neutral);
   }
+  // Distinct new desert roads may intersect giant fixed pyramid sculptures.
+  const nativePropsPath = path.join(project, 'src/props.js');
+  await writeFile(nativePropsPath,
+    patchFixedDesertLandmarks(await readFile(nativePropsPath,'utf8')));
   // Keep the original four bridges/tunnels and all the native physics/checkpoints/AI.
   for (const [nativeName, adapterName, ownedName, transform] of [
     ['layouts.js', 'race-track-design.mjs', 'track-design.mjs', patchRaceLayouts],
