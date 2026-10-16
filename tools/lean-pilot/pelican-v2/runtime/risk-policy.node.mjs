@@ -25,7 +25,7 @@ test('the policy acts in the early buffered jump window',()=>{
  const s=newState(),earlyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.3s'});
  const lanes=[lane(),earlyReward,lane()];
  const early=decide(view({distance:221,lanes}),s);
- assert.notEqual(early.action,'jump');
+ assert.equal(early.action,'jump','1.3 seconds is an earned buffered input, not a last-frame reaction');
  const readyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.1s'});
  assert.equal(readyReward.seconds,1.1);
  const ready=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),early.state);
@@ -33,7 +33,7 @@ test('the policy acts in the early buffered jump window',()=>{
 });
 
 test('buffered jump holds the reward lane until the bonus fish can be caught',()=>{
- assert.ok(policy.CAPTURE_HOLD_MS>=2500);
+ assert.ok(policy.CAPTURE_HOLD_MS>=1800&&policy.CAPTURE_HOLD_MS<2300,'hold the actual reward pickup without blocking the next genuine challenge');
  const s=newState(),jumped=decide(view({distance:221,lanes:[lane(),lane({danger:true,jumpReward:true,kind:'barrier',seconds:.4}),lane()]}),s);
  assert.equal(jumped.action,'jump');
  const holding=decide(view({distance:224,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS-1,lanes:[lane({fish:true}),lane(),lane()]}),jumped.state);
