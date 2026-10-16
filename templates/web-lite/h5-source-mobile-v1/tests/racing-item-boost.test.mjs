@@ -43,6 +43,13 @@ test('item race with full inventory can earn a clean-pass boost without forging 
   assert.equal(player.smallBoostPower,9);
 });
 
+test('an expired stronger boost cannot inflate a later item-race corner reward',()=>{
+  const {game,player}=race(true,{items:['shield','banana'],smallBoost:0,smallBoostPower:18});
+  assert.equal(awardCornerPass(game),'boost');
+  assert.equal(player.smallBoost,.48);
+  assert.equal(player.smallBoostPower,9,'earned reward must stay within its documented strength cap');
+});
+
 test('original speed-mode clean-pass reward is preserved',()=>{
   const {game,player,events}=race(false);
   assert.equal(awardCornerPass(game),'boost');
