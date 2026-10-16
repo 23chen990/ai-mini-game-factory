@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { URL } from 'node:url';
 import { RacingJoystick } from '../racing/joystick.mjs';
 import { ManualRaceDriver, TouchActions } from '../racing/driver.mjs';
-import { patchAnalogSteer, patchCounterSteer, patchItemModeNitro, patchManualNitroEdge, RACING_OWNED_NAMES } from '../../../../tools/lean-pilot/racing-mobile-build.mjs';
+import { patchAnalogSteer, patchDriftRearm, patchCounterSteer, patchItemModeNitro, patchManualNitroEdge, RACING_OWNED_NAMES } from '../../../../tools/lean-pilot/racing-mobile-build.mjs';
 
 const sample = () => ({finished:false,s:35,spin:0,wrongWay:0,airborne:false,h:0,hint:0,proj:{hd:0}});
 test('fixed wheel: real analogue angle, small corrections, direction reversal and centre release', () => {
@@ -150,4 +150,21 @@ test('very early small-spray tap expires and does not create a bonus after drift
   assert.equal(driver.frame({},p,'race',{now:2.31}).wPressed,false);
   p.drifting=false;p.smallWindow=.5;
   assert.equal(driver.frame({},p,'race',{now:2.32}).wPressed,false);
+});
+
+test('a held drift cannot automatically re-enter after countersteer exit or wall contact',()=>{
+  const pinned='endDrift(clean = true) {\n    if (!this.drifting) return;\n    this.drifting = false;';
+  const updated=patchDriftRearm(pinned);
+  assert.match(updated,/this\.__RACE_DRIFT_REARMED__ = false/);
+  assert.equal(patchDriftRearm(updated),updated);
+  assert.throws(()=>patchDriftRearm('broken end drift method'),/anchor changed/);
+  const start=[
+    'const steerT = (inp.left ? 1 : 0) - (inp.right ? 1 : 0);',
+    'if (!this.drifting && inp.shift && steerT !== 0 && this.s > T.driftMinSpeed && onGround && !spinning) {',
+    'this.driftDir = steerT;',
+  ].join('\n');
+  const adapted=patchAnalogSteer(start);
+  assert.match(adapted,/if \(!inp\.shift\) this\.__RACE_DRIFT_REARMED__ = true/);
+  assert.match(adapted,/this\.__RACE_DRIFT_REARMED__ !== false/);
+  assert.equal(patchAnalogSteer(adapted),adapted);
 });
