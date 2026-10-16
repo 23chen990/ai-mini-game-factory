@@ -1,29 +1,28 @@
-/** V3.9: one measured increase to the pace of ACTUAL native AI cars.
- * Unlike teleporting/rubber-band hacks, this only configures the existing
- * AICar.skill once per race. Native AICar.update still drives each vehicle:
- * it respects corner curvature, acceleration, items, nitro and real finish.
+/** V4.1: deliberately visible native-on-track competitors.
+ * A novice race still teaches two-key controls. From race 02 onward, the
+ * middle of the field stays catchable while the fastest opponent can contest
+ * the lead. AICar.update remains the only source of physical movement,
+ * cornering, nitro use and actual results: no position/progress edits.
  *
- * Stage policy is intentionally asymmetric:
- * - Stage 01 teaches controls; novices 02/04 and item 05 were too passive.
- * - Mid regular races get a slight front-rival improvement.
- * - 07 time / 09 relay / 12 elimination retain their previous pace.
- * - The difficult 13/16 bosses and 15 item race never receive a buff.
- * - Daily inherits the difficulty of its ORIGINAL career course.
+ * Don't confuse this model change with proof of human difficulty. Compare
+ * native lap times and real mobile races before changing bosses/timed goals.
  */
-export const OPPONENT_PACE_V39=Object.freeze({
-  '02':{from:[.55,.75],to:[.67,.86],ace:.03},
-  '04':{from:[.55,.75],to:[.67,.86],ace:.03},
-  '05':{from:[.55,.75],to:[.62,.81],ace:.02},
-  '03':{from:[.85,1.05],to:[1.20,1.36],ace:.025},
-  '06':{from:[.85,1.05],to:[1.05,1.20],ace:.015},
+export const OPPONENT_PACE_V41 = Object.freeze({
+  '02':{from:[.55,.75],to:[.86,1.22],ace:.17},
+  '04':{from:[.55,.75],to:[.84,1.23],ace:.17},
+  '05':{from:[.55,.75],to:[.83,1.20],ace:.15},
+  '03':{from:[.85,1.05],to:[1.04,1.44],ace:.14},
+  '06':{from:[.85,1.05],to:[1.00,1.42],ace:.12},
   '07':{from:[.85,1.05],to:[1.18,1.34],ace:0},
-  '08':{from:[.85,1.05],to:[1.20,1.36],ace:.025},
+  '08':{from:[.85,1.05],to:[1.07,1.45],ace:.16},
   '09':{from:[.85,1.05],to:[1.18,1.34],ace:0},
-  '10':{from:[.85,1.05],to:[1.05,1.20],ace:.02},
+  '10':{from:[.85,1.05],to:[1.06,1.45],ace:.13},
   '12':{from:[.85,1.05],to:[1.18,1.34],ace:0},
-  '11':{from:[1.20,1.38],to:[1.20,1.38],ace:.025},
-  '14':{from:[1.20,1.38],to:[1.20,1.38],ace:.03},
+  '11':{from:[1.20,1.38],to:[1.20,1.50],ace:.12},
+  '14':{from:[1.20,1.38],to:[1.21,1.53],ace:.13},
 });
+// Older test fixtures and downstream imports continue to resolve.
+export const OPPONENT_PACE_V39 = OPPONENT_PACE_V41;
 const nativeSkillByCar=new WeakMap();
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 
@@ -33,7 +32,7 @@ export function tuneOpponentField(racers,stage) {
     : typeof stage?.id==='string'&&/^\d{2}$/.test(stage.id) ? stage.id : null;
   if(!id||id==='01'||stage.kind==='boss'||(stage.kind==='item'&&stage.diff===2)||
      !Array.isArray(racers))return {adjusted:0,ace:false};
-  const config=OPPONENT_PACE_V39[id];
+  const config=OPPONENT_PACE_V41[id];
   if(!config||!Number.isInteger(stage.diff)||
     (stage.diff===0&&config.from[0]!==.55)||
     (stage.diff===1&&config.from[0]!==.85)||
@@ -51,9 +50,9 @@ export function tuneOpponentField(racers,stage) {
     if(base>leaderBase){leader=rival;leaderBase=base;}
   }
   if(leader&&config.ace>0){
-    // One visible ace, NOT five identically overpowered racers.
-    // Allow no more than ~3% skill lift beyond the stage's highest normal AI.
-    leader.skill=+Math.min(dstHigh+.032,leader.skill+config.ace).toFixed(4);
+    // One track-bound ace per race, never five identically overpowered cars.
+    // Native AICar still applies actual corners, starting delay and braking.
+    leader.skill=+Math.min(dstHigh+.17,leader.skill+config.ace).toFixed(4);
   }
   return {adjusted:field.length,ace:!!leader&&config.ace>0,
     maximum:Math.max(...field.map(r=>r.skill))};
