@@ -397,6 +397,14 @@ export function mobileAimCorrection({ yawError, pitchError, distance, visible, f
   };
 }
 
+/** A first-shot tutorial may assist only an ACTUALLY ON-SCREEN enemy with an
+ * unobstructed real ray to its chest. It never chooses hidden targets. */
+export function cfIntroAssistCandidate({side,alive,visible,blocked,distance,yawError,pitchError}) {
+  return side==='enemy'&&alive===true&&visible===true&&blocked===false &&
+    Number.isFinite(distance)&&distance>1&&distance<=27 &&
+    Number.isFinite(yawError)&&Math.abs(yawError)<=0.19 &&
+    Number.isFinite(pitchError)&&Math.abs(pitchError)<=0.13;
+}
 export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked,heldSeconds,yawError,pitchError,engaged}) {
   return engaged===true && kind==='hits' && weapon==='m4a1' && side==='enemy' &&
     alive===true && blocked===false && Number.isFinite(distance) &&
@@ -860,8 +868,7 @@ export function createFpsMobileUx(game, root, doc) {
         yawError: errYaw,pitchError: errPitch,distance,visible:true,
         firing:!!(forceFiring||p.touch?.fire||(simple&&playerEngaged)),
         sniperReady:ready,
-        training:activeChallenge?.drill==='reposition'&&drill?.stage===2&&
-          activeChallenge.elite!==true
+        training:activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true
       });
       if (!aim.yaw && !aim.pitch) continue;
       const hit = game.world.raycast(eye.x, eye.y, eye.z,
@@ -877,8 +884,38 @@ export function createFpsMobileUx(game, root, doc) {
   }
 
   function updateAutoFire() {
-    const p=game.player, actor=game.aimTarget;
+    const p=game.player;
     const simple=cfAutoFireEligible(activeChallenge,p?.stats?.hits||0);
+    let actor=game.aimTarget;
+    // The pinned renderer's exact hitbox ray may be null even when the enemy
+    // has a genuinely visible, LOS-checked HUD marker directly ahead.
+    // First-hit assistance can select that already seen actor in a narrow cone.
+    // Native M4 bullets, impact physics and hit counters remain untouched.
+    if(simple&&p?.alive&&playerEngaged&&
+       (!actor?.alive||actor.team===p.team)){
+      const cam=game.renderer?.camera,world=game.world;
+      if(cam&&world){
+        const eye=p.eye(cam.position.clone());
+        let closest=Infinity;
+        for(const [candidate,marker] of markers){
+          if(marker.hidden||!candidate?.alive||candidate.team===p.team||
+             !candidate.soldier)continue;
+          const dir=candidate.soldier.chestWorld(eye.clone()).sub(eye);
+          const distance=dir.length();
+          if(!(distance>1&&distance<=27))continue;
+          const blocked=!!world.raycast(eye.x,eye.y,eye.z,
+            dir.x/distance,dir.y/distance,dir.z/distance,
+            Math.max(0,distance-0.18),'sight');
+          const yaw=Math.atan2(-dir.x,-dir.z),pitch=Math.atan2(dir.y,Math.hypot(dir.x,dir.z));
+          const yawError=Math.atan2(Math.sin(yaw-p.yaw),Math.cos(yaw-p.yaw));
+          const pitchError=pitch-p.pitch;
+          if(!cfIntroAssistCandidate({side:teamSide(p.team,candidate.team),
+             alive:true,visible:true,blocked,distance,yawError,pitchError}))continue;
+          const score=Math.abs(yawError)+Math.abs(pitchError);
+          if(score<closest){closest=score;actor=candidate;}
+        }
+      }
+    }
     if (!simple || !p?.alive || !game.playing || game.paused || !playerEngaged) {
       if (p && (simple || autoFireActive)) p.mouse.l=false;
       autoAimActor=null;autoFireActive=false;

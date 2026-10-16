@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -565,4 +565,21 @@ test('CF post-cover reacquisition turns toward a previously seen location, never
  assert.equal(cfLastSeenLookCue({...p,yaw:NaN},{x:10,z:10}),null);
  // No mutating the player's position, no output containing bot stats/coords.
  assert.deepEqual(p,{pos:{x:0,z:0},yaw:0});
+});
+
+
+test('CF first-shot camera assistance selects only a previously sighted, real line-of-sight enemy',()=>{
+ const valid={side:'enemy',alive:true,visible:true,blocked:false,distance:10,
+  yawError:.10,pitchError:.07};
+ assert.equal(cfIntroAssistCandidate(valid),true);
+ for(const bad of [
+  {side:'ally'}, {side:'unknown'},{alive:false},{visible:false},
+  {blocked:true},{distance:0},{distance:29},
+  {yawError:.20},{pitchError:.14},{pitchError:NaN},{yawError:NaN}
+ ]){
+  assert.equal(cfIntroAssistCandidate({...valid,...bad}),false,
+   'must reject every hidden, covered, invalid, dead or non-opponent candidate');
+ }
+ assert.equal(cfAutoFireEligible({kind:'hits',drill:'reposition',openingHits:1},1),false,
+  'this slight first-shot assistance permanently ends after the first genuine hit');
 });
