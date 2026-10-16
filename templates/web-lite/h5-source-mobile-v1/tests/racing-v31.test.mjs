@@ -338,6 +338,19 @@ test('V3.7 source-themed pickup placement follows REAL route, and native four-sc
   assert.notEqual(testTheme,source);
   assert.equal(testTheme.boostPads.length,source.boostPads.length);
   assert.deepEqual(testTheme.boostPads.map(p=>p.lat),[-4,4]);
+  assert.match(testTheme.curbA,/^#[0-9a-f]{6}$/);
+  assert.equal(testTheme.boostColor,testTheme.curbA,'physical speed pads inherit course colors');
+  assert.equal(testTheme.curbB,'#142034');
+  const identity=new Set();
+  const padRoutes=[];
+  for(let number=1;number<=16;number++){
+    const id='race-'+String(number).padStart(2,'0');
+    const plan=createRaceTrackTheme(source,physics,id);
+    identity.add(plan.curbA);
+    padRoutes.push(JSON.stringify(plan.boostPads));
+  }
+  assert.equal(identity.size,16,'sixteen real native tracks need sixteen visible road palettes');
+  assert.ok(new Set(padRoutes).size>=12,'course-specific physical reward lanes may not reuse one pattern');
   assert.ok(testTheme.boostPads.every(p=>!('at' in p)&&p.f>.07&&p.f<.94));
   assert.equal(testTheme.tunnels.length,1);
   assert.ok(testTheme.tunnels[0].f1>testTheme.tunnels[0].f0);
