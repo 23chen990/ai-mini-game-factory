@@ -57,7 +57,7 @@ export class RacingCareer {
     this.passes.lastCrashes = game.player?.stats?.crash ?? 0;
     // Tune only actual native AI.skill values. AICar.update still handles
     // every car's corner pace, nitro, items and genuine on-road position.
-    // Stage 01, bosses and fragile elimination/item objectives stay protected.
+    // All sixteen stages, including 01 and both bosses, receive fixed strong fields.
     tuneOpponentField(game.racers,this.stage);
     seedCompetitiveField(game.racers,this.stage);
     configureRivalTactics(game.racers,this.stage);
@@ -81,17 +81,9 @@ export class RacingCareer {
       this.boss = game.racers.find(r => !r.isPlayer) ?? null;
       if (this.boss) {
         this.bossName = this.boss.name;
-        // The reshaped final Aegean route adds 10–12% to native AI lap times,
-        // but native two-key PlayerCar telemetry remains several seconds behind
-        // the 1.58 boss. A genuine finish must remain achievable through cleaner
-        // steering, rather than requiring a perfect zero-contact drive.
-        // A different course can be harder even with a lower numeric AI skill.
-        this.boss.skill = this.stage.id === '16' ? 1.45 :
-          Math.max(this.boss.skill, 1.58);
-        if (this.stage.id === '16') for (const rival of game.racers) {
-          if (!rival.isPlayer && rival !== this.boss)
-            rival.skill = Math.min(rival.skill, 1.30);
-        }
+        // Full-strength named boss alongside a real competitive pack.
+        // Native cornering and nitro remain physical; no forced race results.
+        this.boss.skill=this.stage.id==='16'?2.10:Math.max(this.boss.skill,2.04);
       }
     }
     if (this.fuelEnabled) {
