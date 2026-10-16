@@ -9,6 +9,8 @@ import path from 'node:path';
 import { Buffer } from 'node:buffer';
 import { pathToFileURL } from 'node:url';
 import { RaceDriver } from '../../templates/web-lite/h5-source-mobile-v1/racing/driver.mjs';
+import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
+import { tuneOpponentField } from '../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs';
 import { applyTrackDesign } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 
 const run=path.join(process.cwd(),'runs/h5-qq-mobile-20261013');
@@ -24,6 +26,8 @@ const layouts=(await import('data:text/javascript;base64,'+Buffer.from(
 const revised=JSON.parse(JSON.stringify(layouts));applyTrackDesign(revised);
 const { Track }=await import(pathToFileURL(path.join(src,'track.js')).href);
 const { PlayerCar }=await import(pathToFileURL(path.join(src,'vehicle.js')).href);
+const { AICar }=await import(pathToFileURL(path.join(src,'ai.js')).href);
+const { mulberry32 }=await import(pathToFileURL(path.join(src,'util.js')).href);
 
 const STEP=1/120, MAX_SEC=235;
 const wrap=x=>Math.atan2(Math.sin(x),Math.cos(x));
@@ -107,6 +111,59 @@ for(const [id,map] of [['13','city'],['16','aegean']]){
       late:simulate(layout,'late',true,3)};
   report.bossThreeLaps[id]={map,laps:3,...cases};
 }
+/** V4.2 race-design audit: physically drive ALL sixteen real stage splines.
+ * The guided and late controllers cheat by reading the native Track centerline.
+ * The native AI drives the same Track by unmodified AICar.update; zero rubber
+ * bias, collisions, pickups, server actions or synthesized rank changes.
+ * This is NOT a human success-rate forecast. It catches undrivable geometry
+ * and exposes an actual pace gap for difficulty tuning.
+ */
+function nativeAceSkill(stage) {
+  if(stage.kind==='boss')return stage.id==='16'?1.35:1.58;
+  const range=stage.diff===0?[.55,.75]:stage.diff===1?[.85,1.05]:[1.2,1.38];
+  const field=Array.from({length:5},(_,i)=>({
+    isPlayer:false,skill:range[0]+(range[1]-range[0])*i/4
+  }));
+  tuneOpponentField(field,stage);
+  if(stage.kind==='overtake')for(const rival of field.slice(0,2))
+    rival.skill=Math.max(rival.skill,1.12);
+  return Math.max(...field.map(r=>r.skill));
+}
+function nativeAiRun(layout,skill,laps,seed) {
+  const tr=new Track(layout);
+  const bot=new AICar(tr,null,'Native field pace',skill,mulberry32(seed));
+  bot.reset(-25,0);
+  let time=0,peak=0;
+  for(let i=0;i<Math.ceil(MAX_SEC/STEP);i++){
+    bot.update(STEP,true,time,1);
+    time+=STEP;peak=Math.max(peak,bot.s);
+    if(bot.dist>=tr.length*laps)
+      return {status:'FINISHED',elapsedSec:+time.toFixed(1),topSpeedKmh:Math.round(peak*3.6)};
+  }
+  return {status:'TIMED_OUT',elapsedSec:+time.toFixed(1),topSpeedKmh:Math.round(peak*3.6)};
+}
+report.courses={};
+for(const stage of STAGES){
+  const layout=revised[stage.course];
+  if(!Array.isArray(layout?.points))throw Error('Stage must use its actual authored physical spline '+stage.course);
+  const guided=simulate(layout,'guided',true,stage.laps);
+  const late=simulate(layout,'late',true,stage.laps);
+  const aceSkill=nativeAceSkill(stage);
+  const ace=nativeAiRun(layout,aceSkill,stage.laps,2026101700+Number(stage.id));
+  report.courses[stage.id]={
+    course:stage.course,biome:stage.map,laps:stage.laps,rankRequired:stage.rank,
+    aceSkill,guided,late,ace,
+    relativeGapPercent:guided.status==='FINISHED'&&ace.status==='FINISHED'
+      ?+((guided.elapsedSec-ace.elapsedSec)/ace.elapsedSec*100).toFixed(1):null
+  };
+}
+report.courseAudit={independentCourseCount:Object.keys(report.courses).length,
+  guidedCompletions:Object.values(report.courses).filter(c=>c.guided.status==='FINISHED').length,
+  lateCompletions:Object.values(report.courses).filter(c=>c.late.status==='FINISHED').length,
+  aceCompletions:Object.values(report.courses).filter(c=>c.ace.status==='FINISHED').length,
+  methodology:'Privileged guided/late controllers vs native unmodified AICar on same actual course, no contact or rubber band; never a human win-rate or full campaign',
+  noRankTampering:true};
+
 const out=path.join(run,'artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'native-player-pace-v34.json'),JSON.stringify(report,null,2)+'\n');
@@ -115,4 +172,9 @@ console.log(JSON.stringify({buildHash:report.buildHash,physics:'pinned PlayerCar
     name,{original:series.original.guided.auto,
       reshaped:series.reshaped.guided.auto,
       reshapedWithoutCurveBrake:series.reshaped.guided.noCurveBrake,
-      late:series.reshaped.late.auto}]))}));
+      late:series.reshaped.late.auto}])),courseAudit:report.courseAudit,
+  stagePace:Object.fromEntries(Object.entries(report.courses).map(([id,c])=>[id,{
+    guided:c.guided.status==='FINISHED'?c.guided.elapsedSec:c.guided.status,
+    late:c.late.status==='FINISHED'?c.late.elapsedSec:c.late.status,
+    nativeAce:c.ace.status==='FINISHED'?c.ace.elapsedSec:c.ace.status,
+    skill:c.aceSkill,relativeGapPercent:c.relativeGapPercent}]))}));
