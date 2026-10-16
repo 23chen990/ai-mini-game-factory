@@ -77,32 +77,34 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
   const hits=Number.isFinite(native.hits)?Math.max(0,Math.floor(native.hits)):0;
   const travel=Number.isFinite(native.travel)?Math.max(0,native.travel):0;
   let {stage=0,startTravel=0,hitBaseline=null,anchorX=null,anchorZ=null,
-    lastX=null,lastZ=null,lastTravel=travel} = previous||{};
+    lastX=null,lastZ=null,lastTravel=travel,earnedDistance=0,peakDistance=0} = previous||{};
   const x=Number.isFinite(native.x)?native.x:null;
   const z=Number.isFinite(native.z)?native.z:null;
   if(stage===0&&hits>=challenge.openingHits) {
     stage=1;startTravel=travel;anchorX=x;anchorZ=z;
+    earnedDistance=0;peakDistance=0;
   }
-  // A native death-respawn teleports the player without an equivalent
-  // walking delta. Re-anchor the move stage, never credit that teleport.
+  // Native respawn jumps without native walking. Keep genuine earlier
+  // movement while never crediting a teleport as progress.
   if(stage===1&&lastX!==null&&lastZ!==null&&x!==null&&z!==null &&
      Math.hypot(x-lastX,z-lastZ)>Math.max(0,travel-lastTravel)+2.4) {
+    earnedDistance+=peakDistance;
+    peakDistance=0;
     startTravel=travel;anchorX=x;anchorZ=z;
   }
-  // Both real walking distance and displacement from the actual first-hit
-  // or respawn position are required; joystick wobble cannot complete.
+  // Only peak net displacement per life earns progress; joystick oscillation
+  // around the same point can't grind the remaining distance.
   const walked=Math.max(0,travel-startTravel);
   const net=anchorX!==null&&anchorZ!==null&&x!==null&&z!==null
     ? Math.hypot(x-anchorX,z-anchorZ):walked;
-  let distance=Math.min(walked,net);
+  if(stage===1)peakDistance=Math.max(peakDistance,Math.min(walked,net));
+  let distance=earnedDistance+peakDistance;
   if(stage===1&&distance>=challenge.minTravel) {
     stage=2;hitBaseline=hits;
   }
-  // Completing a true reposition is a checkpoint, not a leash: following an
-  // enemy back toward old cover must not revoke already earned movement.
   if(stage===2)distance=Math.max(challenge.minTravel,distance);
   return {stage,startTravel,hitBaseline,anchorX,anchorZ,
-    lastX:x,lastZ:z,lastTravel:travel,distance,
+    lastX:x,lastZ:z,lastTravel:travel,earnedDistance,peakDistance,distance,
     follow:stage===2?Math.max(0,hits-hitBaseline):0,firstHit:stage>0};
 }
 /** Preview copy mirrors each mission's actual input mechanics. */
@@ -870,7 +872,7 @@ export function createFpsMobileUx(game, root, doc) {
         if(updated?.stage!==drill?.stage) {
           drillStageAt=Math.max(0,(Number(game.time)||0)-startedGameSeconds);
           guide.textContent=updated?.stage===1
-            ? '↗ 首枪命中 · 换位 '+Math.floor(updated.distance)+'/'+activeChallenge.minTravel+'m'
+            ? '↔ 首枪命中 · 横向换位 '+Math.floor(updated.distance)+'/'+activeChallenge.minTravel+'m'
             : '◎ 换位完成 · 现在手动开火';
         }
         drill=updated;
@@ -916,7 +918,7 @@ export function createFpsMobileUx(game, root, doc) {
         lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
         if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
-          guide.textContent='↗ 沿掩体换位 '+Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m';
+          guide.textContent='↔ 左右横移 '+Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m';
         } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
           guide.textContent='◎ 手动追击 '+drill.follow+'/'+activeChallenge.target+'次';
         } else if (hits === 0 && elapsed >= 5) {
