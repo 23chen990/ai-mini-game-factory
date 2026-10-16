@@ -28,7 +28,9 @@ test('the policy acts in the early buffered jump window',()=>{
  assert.equal(early.action,'jump','1.3 seconds is an earned buffered input, not a last-frame reaction');
  const readyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.1s'});
  assert.equal(readyReward.seconds,1.1);
- const ready=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),early.state);
+ const holding=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),early.state);
+ assert.equal(holding.action,'wait','one target cannot trigger a second input while the first buffered jump is armed');
+ const ready=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),newState());
  assert.equal(ready.action,'jump');
 });
 
