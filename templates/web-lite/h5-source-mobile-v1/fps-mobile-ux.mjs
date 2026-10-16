@@ -66,22 +66,46 @@ export function cfEliteUnlocked(record) {
   return Number.isSafeInteger(record?.wins) && record.wins > 0;
 }
 /** First rifle mission trains with auto-fire, while expert needs genuine touch input. */
-export function cfAutoFireEligible(challenge) {
-  return challenge?.kind === 'hits' && challenge.elite !== true;
+export function cfAutoFireEligible(challenge, realHits = 0) {
+  return challenge?.kind === 'hits' && challenge.elite !== true &&
+    (challenge.drill !== 'reposition' || (Number.isFinite(realHits) &&
+      realHits < challenge.openingHits));
+}
+/** Progress only when genuine native hit and movement counters increase. */
+export function cfAdvanceDrill(challenge, previous = null, native = {}) {
+  if (challenge?.drill !== 'reposition') return null;
+  const hits=Number.isFinite(native.hits)?Math.max(0,Math.floor(native.hits)):0;
+  const travel=Number.isFinite(native.travel)?Math.max(0,native.travel):0;
+  let {stage=0,startTravel=0,hitBaseline=null} = previous||{};
+  if(stage===0&&hits>=challenge.openingHits) {
+    stage=1;startTravel=travel;
+  }
+  if(stage===1&&travel-startTravel>=challenge.minTravel) {
+    stage=2;hitBaseline=hits;
+  }
+  const distance=Math.max(0,travel-startTravel);
+  return {stage,startTravel,hitBaseline,distance,
+    follow:stage===2?Math.max(0,hits-hitBaseline):0,firstHit:stage>0};
 }
 /** Preview copy mirrors each mission's actual input mechanics. */
 export function cfTouchTutorial(challenge) {
   if (challenge?.kind === 'hits')
-    return cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
+    return challenge.drill==='reposition'
+      ? (challenge.elite ? '先手动命中，再换位追击' : '首枪自动开火，之后换位追击')
+      : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
   return '点按或按住开火';
 }
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
-  if (challenge.kind === 'hits') return challenge.elite===true
-    ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
-    : '1v1入门：准星对准敌人自动开火，命中3次';
+  if (challenge.kind === 'hits') return challenge.drill==='reposition'
+    ? challenge.elite===true
+      ? '45秒精英突围：手动首枪，换位18米，再命中4次；零阵亡'
+      : '60秒步枪突围：自动命中首枪，换位12米，手动再命中3次；最多阵亡1次'
+    : challenge.elite===true
+      ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
+      : '1v1入门：准星对准敌人自动开火，命中3次';
   if (challenge.kind === 'kills') return challenge.elite===true
     ? '精英狙击：75秒内 AWM 击杀1人，最多阵亡1次'
     : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
@@ -238,12 +262,16 @@ export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked
 
 
 /** Only actual native hit-counter increments create a brief onscreen confirmation. */
-export function cfHitCue(challenge, nativeHits, increase) {
+export function cfHitCue(challenge, nativeHits, increase, drill = null) {
   if (!challenge || !Number.isFinite(nativeHits) || !Number.isFinite(increase) ||
       nativeHits < 1 || increase < 1) return '';
   const hits = Math.floor(nativeHits), delta = Math.floor(increase);
-  if (challenge.kind === 'hits')
+  if (challenge.kind === 'hits') {
+    if (challenge.drill==='reposition') return drill?.stage===2
+      ? '✓ 追击命中 ' + Math.min(drill.follow,challenge.target) + '/' + challenge.target
+      : '✓ 首枪命中 · 向掩体换位';
     return '✓ 命中 ' + Math.min(hits, challenge.target) + '/' + challenge.target;
+  }
   return '✓ 有效命中 +' + delta;
 }
 
@@ -264,6 +292,18 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths)
     return '被击倒 ' + deaths + ' 次，精英关最多允许 ' +
       challenge.maxDeaths + ' 次。下次借掩体换位，先避开敌方火力。';
+  if (challenge.kind === 'hits'&&challenge.drill==='reposition') {
+    const follow=actual(metrics.drillFollowUpHits);
+    const moved=actual(metrics.drillTravel);
+    if(metrics.drillFirstHit!==true)
+      return '还没有第一次真实命中。跟住红色目标，准星对准后' +
+        (challenge.elite?'手动按开火。':'自动开火。');
+    if(metrics.drillStage===1)
+      return '首枪已命中，但只换位 '+moved+'/'+challenge.minTravel+
+        '米。下次沿集装箱移动，让敌人失去原来的射击角度。';
+    return '换位已完成，追击命中 '+follow+'/'+challenge.target+
+      '次。下次重新找角度，按开火按钮补足剩余命中。';
+  }
   if (challenge.kind === 'hits') {
     if (hits === 0)
       return '0/' + goal + ' 次命中。用右手移动准星寻找红色敌人，' +
@@ -294,7 +334,8 @@ export function cfMissionFacts(challenge) {
   if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return [];
   const weapon = challenge.weapon === 'awm' ? 'AWM' :
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
-  const target = challenge.kind === 'hits' ? '命中 ' + challenge.target + ' 次' :
+  const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
+    ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
     challenge.kind === 'kills' ? '击杀 ' + challenge.target + ' 人' :
       '移动 ' + (challenge.minTravel || 0) + ' m';
   return [
@@ -309,11 +350,16 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
   if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return [];
   const number = value => Number.isFinite(value) ? Math.max(0,Math.floor(value)) : 0;
   const deaths = number(metrics.deaths);
-  if (challenge.kind === 'hits') return [
-    {label:'命中',value:number(metrics.hits) + ' / ' + challenge.target},
-    {label:'阵亡',value:String(deaths)},
-    {label:'耗时',value:Math.ceil(number(elapsedMs)/1000) + ' s'}
-  ];
+  if (challenge.kind === 'hits') return challenge.drill==='reposition'
+    ? [
+      {label:'追击',value:number(metrics.drillFollowUpHits)+' / '+challenge.target},
+      {label:'换位',value:number(metrics.drillTravel)+' / '+challenge.minTravel+' m'},
+      {label:'阵亡',value:deaths+' / '+challenge.maxDeaths}
+    ] : [
+      {label:'命中',value:number(metrics.hits) + ' / ' + challenge.target},
+      {label:'阵亡',value:String(deaths)},
+      {label:'耗时',value:Math.ceil(number(elapsedMs)/1000) + ' s'}
+    ];
   if (challenge.kind === 'kills') return [
     {label:'狙杀',value:number(metrics.awmKills) + ' / ' + challenge.target},
     {label:'命中',value:String(number(metrics.hits))},
