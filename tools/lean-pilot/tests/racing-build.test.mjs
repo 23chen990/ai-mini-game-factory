@@ -106,3 +106,14 @@ test('V3.1 model and spline modules are hashed into H5 build and kept scoped to 
   assert.match(runtime,/game.items.applyMobileVisuals\?\.\(\)/);
   assert.match(runtime,/new WrongWayRecovery\(\)/);
 });
+
+test('desert dune relief edits only the original generated sand base, never native physics',()=>{
+  const line='let h = 2 + noise.fbm(x * 0.0045, z * 0.0045, 4) * 18 + Math.max(0, Math.hypot(x - cx, z - cz) - 900) * 0.1;';
+  const source="if (id === 'egypt') {"+line+"}\nconst nativePhysics='PlayerCar.update';";
+  const revised=api.patchRaceDesertRelief(source);
+  assert.notEqual(revised,source);
+  assert.match(revised,/z \* 0\.0045, 4\) \* 26/);
+  assert.match(revised,/PlayerCar\.update/);
+  assert.equal(api.patchRaceDesertRelief(revised),revised,'terrain adapter is idempotent');
+  assert.throws(()=>api.patchRaceDesertRelief("unrecognized source"),/anchor changed/);
+});
