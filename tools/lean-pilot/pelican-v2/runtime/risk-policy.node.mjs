@@ -32,6 +32,17 @@ test('two-lane reward approach starts before the late double-tap trap',()=>{
  const stillFar=decide({...viewTwo,lanes:[{...reward,seconds:4.3},lane(),lane()]},policy.createRiskPolicyState(1,target));
  assert.equal(stillFar.action,'wait');
 });
+test('visible gold increase after a true +9m jump prize releases the next challenge on time',()=>{
+ const target={barrierId:'l1-o7',distance:205};
+ const early=view({level:1,distance:200,laneIndex:0,nowMs:1000,goldCounter:2,lanes:[lane({danger:true,jumpReward:true,kind:'barrier',seconds:1.0}),lane(),lane()]});
+ const jump=decide(early,policy.createRiskPolicyState(1,target));
+ assert.equal(jump.action,'jump');assert.equal(jump.state.goldAtJump,2);
+ const withGold=decide({...early,nowMs:1000+policy.CAPTURE_HOLD_MS-180,distance:213,goldCounter:3,lanes:[lane(),lane(),lane()]},jump.state);
+ assert.notEqual(withGold.reason,'capture-hold');
+ assert.equal(withGold.state.stage,'post-capture');
+ const noGold=decide({...early,nowMs:1000+policy.CAPTURE_HOLD_MS-180,distance:213,goldCounter:2,lanes:[lane(),lane(),lane()]},jump.state);
+ assert.equal(noGold.reason,'capture-hold','mere proximity is not evidence of earned gold');
+});
 test('the policy acts in the early buffered jump window',()=>{
  const s=newState(),earlyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.3s'});
  const lanes=[lane(),earlyReward,lane()];
