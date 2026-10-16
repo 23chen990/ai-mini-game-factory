@@ -73,9 +73,15 @@ async function waitLoaded(page) {
 async function raceStart(page, index, name) {
   if (index !== null) {
     await page.selectOption('#race-stage',String(index));
-    await page.waitForFunction(expected=> window.game?.state === 'menu' && window.game?.map?.id === expected,
-      (index === 1 || index === 4) ? 'egypt' : index === 3 ? 'aegean' : index === 7 ? 'snow' : 'city',
-      {timeout:45000});
+    const scene=(index === 1 || index === 4) ? 'egypt' : index === 3 ? 'aegean' : index === 7 ? 'snow' : 'city';
+    const course='race-'+String(index+1).padStart(2,'0');
+    // Native map scene is set before the new geometry finishes loading.
+    // Wait for actual stage geometry + the enabled start button, not only biome ID.
+    await page.waitForFunction(({scene,course}) =>
+      window.game?.state === 'menu' && window.game?.map?.id === scene &&
+      window.game?.track?.__RACE_COURSE_ID === course &&
+      document.querySelector('#race-start')?.disabled === false,
+      {scene,course},{timeout:45000});
   }
   const before=await page.evaluate(() => ({
     stage:document.querySelector('#race-stage')?.value,
