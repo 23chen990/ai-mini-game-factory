@@ -131,18 +131,18 @@ test('CF elite player can lose from actual deaths even with genuine hits, never 
 test('CF rifle drill rejects idle, stationary auto spray, early hits and fake team kills',()=>{
  const c=core.challengesFor('cf-transport-ship')[0];
  assert.equal(c.drill,'reposition');assert.equal(c.target,3);
- assert.equal(c.openingHits,1);assert.equal(c.minTravel,12);
- assert.equal(c.maxDeaths,1);
+ assert.equal(c.openingHits,1);assert.equal(c.minTravel,8);
+ assert.equal(c.maxDeaths,2);
  const full={hits:12,drillFirstHit:true,drillStage:2,drillTravel:12,
   drillFollowUpHits:3,deaths:0};
  assert.equal(core.challengeResult(c,{},true).outcome,'lost');
  assert.equal(core.challengeResult(c,{hits:20,drillFirstHit:false,drillStage:0},true).outcome,'lost');
  assert.equal(core.challengeResult(c,{hits:20,drillFirstHit:true,drillStage:1,drillTravel:0},true).outcome,'lost');
- assert.equal(core.challengeResult(c,{...full,drillTravel:11.99},true).outcome,'lost');
+ assert.equal(core.challengeResult(c,{...full,drillTravel:7.99},true).outcome,'lost');
  assert.equal(core.challengeResult(c,{...full,drillFollowUpHits:2},true).outcome,'lost');
  assert.equal(core.challengeResult(c,{...full,drillStage:1},true).outcome,'lost');
  assert.equal(core.challengeResult(c,{...full,kills:99,drillFollowUpHits:0},true).outcome,'lost');
- assert.equal(core.challengeResult(c,{...full,deaths:2},false).outcome,'lost');
+ assert.equal(core.challengeResult(c,{...full,deaths:3},false).outcome,'lost');
  assert.equal(core.challengeResult(c,{...full,deaths:1},false).outcome,'won');
  assert.equal(core.challengeResult(c,{...full},true).outcome,'won');
  assert.equal(core.challengeResult(c,{...full,drillFollowUpHits:0},false).outcome,'running');
@@ -156,6 +156,6 @@ test('CF elite needs a complete fresh three-stage no-death mission',()=>{
  assert.equal(core.challengeResult(elite,{...complete,deaths:1},false).outcome,'lost');
  assert.equal(core.challengeResult(elite,{...complete,drillTravel:17.9},false).outcome,'running');
  assert.equal(core.challengeResult(elite,{...complete,drillFollowUpHits:3},true).outcome,'lost');
- assert.equal(base.target,3);assert.equal(base.minTravel,12);
- assert.equal(base.maxDeaths,1);assert.equal(base.limitMs,60000);
+ assert.equal(base.target,3);assert.equal(base.minTravel,8);
+ assert.equal(base.maxDeaths,2);assert.equal(base.limitMs,60000);
 });
