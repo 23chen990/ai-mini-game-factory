@@ -42,7 +42,7 @@ jobs:
           pnpm exec eslint tools/lean-pilot/h5-mobile-browser-qa.mjs templates/web-lite/h5-source-mobile-v1/*.mjs
           npm run pilot:typecheck
           node --check templates/web-lite/h5-source-mobile-v1/fps-mobile-ux.mjs
-          pnpm exec eslint tools/lean-pilot/cf-v5-natural-success-qa.mjs
+          pnpm exec eslint tools/lean-pilot/cf-v4-natural-success-qa.mjs
       - name: Fetch exact authorized original source into runner temp
         shell: bash
         run: |
