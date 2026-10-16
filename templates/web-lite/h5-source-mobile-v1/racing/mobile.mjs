@@ -81,7 +81,7 @@ function renderLobby() {
     opt.textContent = SKIN_NAMES[i] + (opt.disabled ? ' · 需 ' + SKIN_STARS[i] + ' 星' : '');$('skin').append(opt);
   }
   $('skin').value = String(career.progress.skin);
-  if (phase === 'ready') $('note').textContent = career.dailySnapshot ? '每天轮换一个现有赛事，无需联网。' : stage.mode === 'item' ? '选择车道拾取道具，合适时机自动使用' : '贴近弯道内线超车，成功可获得短暂加速';
+  if (phase === 'ready') $('note').textContent = career.dailySnapshot ? '每天轮换一个现有赛事，无需联网。' : stage.mode === 'item' ? '提前选线碰到真正的道具箱，才能计入拾取目标；道具自动使用' : stage.kind === 'overtake' ? '在弯道或刚出弯时真正超过对手才计数，直道跑到第一名也不算' : '贴近弯道内线超车，成功可获得短暂加速';
   fuelView();
 }
 Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality }) });

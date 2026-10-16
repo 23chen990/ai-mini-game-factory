@@ -19,7 +19,7 @@ export function roadHint(game) {
     if(game.map?.id==='aegean')return '↶↷ 海湾连续弯 · 提前回正';
     return '↶↷ 连续弯 · 左右提前换向';
   }
-  if(game.itemMode && game.items?.boxes?.length) {
+  if(game.itemMode && game.items?.boxes?.length && (p.items?.length??0)<2) {
     // Pinned native boxes occupy four per-lap rows. Their item contents remain
     // RANDOM; the lane callout describes only a real, visible, available box.
     const row=[.1,.35,.6,.85].map(fraction=>({

@@ -34,6 +34,12 @@ test('16 staged challenges use four original layouts and eight distinct objectiv
   assert.ok(new Set(STAGES.map(s=>s.kind)).size>=8);assert.ok(STAGES.filter(s=>s.laps>1).length>=12);
   assert.equal(STAGES[0].laps,1);
 });
+test('overtake briefing explains how a genuine corner pass works, but still rejects rank-only wins',()=>{
+  assert.match(STAGES[2].goal,/弯道或出弯.*超过对手 1 次/);
+  assert.match(STAGES[10].goal,/弯道或出弯.*超过对手 2 次/);
+  assert.equal(gradeStage(STAGES[2],result(1),{cleanPasses:0}),0);
+  assert.equal(gradeStage(STAGES[10],result(1),{cleanPasses:1}),0);
+});
 test('unlock is linear, rank alone cannot pass an objective',()=>{
   let c=newCareer();assert.equal(stageUnlocked(c,1),false);
   c=recordStage(c,STAGES[0],result(),{}).career;
