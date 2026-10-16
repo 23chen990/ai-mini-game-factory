@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -302,4 +302,15 @@ test('CF V6 results display strictly native player measurements, not simulated t
  assert.equal(bad[1].value,'0');
  assert.equal(bad[2].value,'0 s');
  assert.deepEqual(cfResultFacts(null,{}),[]);
+});
+
+
+test('CF V6 start-screen touch instructions match the selected actual fire behavior',()=>{
+ assert.match(cfTouchTutorial({kind:'hits'}),/自动开火/);
+ assert.doesNotMatch(cfTouchTutorial({kind:'hits',elite:true}),/自动开火/);
+ assert.match(cfTouchTutorial({kind:'hits',elite:true}),/手动按开火/);
+ assert.match(cfTouchTutorial({kind:'kills'}),/先开镜/);
+ assert.match(cfTouchTutorial({kind:'survive'}),/边移动/);
+ assert.match(cfTouchTutorial({kind:'survive'}),/开火/);
+ assert.match(cfTouchTutorial({}),/开火/);
 });
