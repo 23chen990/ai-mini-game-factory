@@ -602,3 +602,41 @@ html[data-reference-game="cf-transport-ship"] .mk-meter progress{
     width:36px;
   }
 }
+
+
+/* CF V7 compact native respawn notification: retain the real killed-by text
+   and respawn countdown without covering most of the 375/390px playing field. */
+html[data-reference-game="cf-transport-ship"] #hud #center:not(.hidden) {
+  top:27%!important;
+  width:min(66vw,320px)!important;
+  max-height:29vh;
+  box-sizing:border-box;
+  padding:7px 10px!important;
+  border:1px solid rgba(176,211,227,.37);
+  border-radius:11px;
+  background:linear-gradient(180deg,rgba(10,29,43,.91),rgba(10,22,34,.85));
+  box-shadow:0 5px 15px rgba(1,9,22,.38);
+  pointer-events:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.8);
+}
+html[data-reference-game="cf-transport-ship"] #hud #center .big {
+  font-size:clamp(12px,2.2vw,15px)!important;
+  line-height:1.25!important;
+  font-weight:760!important;
+  letter-spacing:0!important;
+  overflow-wrap:anywhere;
+  text-wrap:balance;
+}
+html[data-reference-game="cf-transport-ship"] #hud #center .small {
+  font-size:11px!important;
+  line-height:1.2!important;
+  margin-top:3px!important;
+  color:#c7d8e5!important;
+}
+@media(max-width:700px) {
+  html[data-reference-game="cf-transport-ship"] #hud #center:not(.hidden) {
+    top:24%!important;
+    width:min(71vw,294px)!important;
+    padding:5px 8px!important;
+  }
+}
