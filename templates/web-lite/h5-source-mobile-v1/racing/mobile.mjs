@@ -132,6 +132,9 @@ function showMoment(moment, priority = false) {
 }
 function display(next) {
   phase = next; root.dataset.phase = next; root.dataset.stageKind = career.stage.kind;
+  // Native item races intentionally have no charged-nitro gauge. Never display
+  // an inert meter as though the steering-only player could fill it.
+  document.documentElement.dataset.raceItemMode = String(!!g?.itemMode);
   const racing = next === 'race' || next === 'countdown';
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
   $('start').hidden = next !== 'ready'; $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
