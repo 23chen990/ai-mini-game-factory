@@ -9,11 +9,11 @@ export class RacingJoystick {
   constructor({ deadzone = 0.095, fullThrow = 0.76, sensitivity = 'normal' } = {}) {
     this.deadzone = clamp(deadzone, 0, 0.3);
     this.fullThrow = clamp(fullThrow, this.deadzone + 0.15, 1);
-    this.sensitivity = sensitivity in SENSITIVITIES ? sensitivity : 'normal';
+    this.sensitivity = Object.hasOwn(SENSITIVITIES, sensitivity) ? sensitivity : 'normal';
     this.clear();
   }
   setSensitivity(value) {
-    this.sensitivity = value in SENSITIVITIES ? value : 'normal';
+    this.sensitivity = Object.hasOwn(SENSITIVITIES, value) ? value : 'normal';
     if (this.pointerId !== null) this.update(this.pointerId, this.lastX);
   }
   press(id, clientX, centreX, radius) {
