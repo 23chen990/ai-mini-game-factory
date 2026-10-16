@@ -57,6 +57,13 @@ export function mobileScoutHoldExpired(actor, seconds) {
     Number.isFinite(actor?.__mobileTrainingHoldUntil) && Number.isFinite(seconds) &&
     seconds >= actor.__mobileTrainingHoldUntil;
 }
+/** Keep a novice opponent in an honest mid-range firefight before it rushes;
+    its gun remains enabled at the real readyAt, not an invulnerable dummy. */
+export function cfScoutHoldSeconds(challenge) {
+  if(challenge?.elite===true)return challenge.kind==='kills'?7:3;
+  if(challenge?.kind==='kills')return 20;
+  return challenge?.kind==='hits'&&challenge.drill==='reposition'?18:7;
+}
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
@@ -601,7 +608,7 @@ export function createFpsMobileUx(game, root, doc) {
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
-        scout.__mobileTrainingHoldUntil=game.time+(activeChallenge?.elite===true?(sniper?7:3):sniper?20:4);
+        scout.__mobileTrainingHoldUntil=game.time+cfScoutHoldSeconds(activeChallenge);
         return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance};
       }
     }
