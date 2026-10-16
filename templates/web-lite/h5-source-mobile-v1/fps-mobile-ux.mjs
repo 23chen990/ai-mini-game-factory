@@ -599,7 +599,10 @@ export function createFpsMobileUx(game, root, doc) {
   for (const [index, button] of buttons.entries()) {
     const action = mobileTouchAction(index);
     button.dataset.mkAction = action;
-    if (action === 'fire') button.textContent = '开火';
+    if (action === 'fire') {
+      button.textContent = '开火';
+      button.setAttribute('aria-label','按住开火并拖动瞄准');
+    }
     if (action === 'reload') button.textContent = '换弹';
     if (action === 'jump') button.textContent = '跳';
     if (action === 'scope') button.textContent = '开镜';
@@ -1176,6 +1179,7 @@ export function createFpsMobileUx(game, root, doc) {
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
+        button.removeAttribute('aria-label');
       }
       for (const el of markers.values()) el.remove();
       markers.clear();
