@@ -1,10 +1,8 @@
 name: Publish Racing H5 Preview
+# Pages remains opt-in until the repository administrator enables
+# Settings > Pages > Source: GitHub Actions. The separate HTTPS QA preview
+# can work without Pages and is independently verified.
 on:
-  push:
-    branches: [preview/racing-v34-dbf8603-mobile]
-    paths:
-      - index.html
-      - .github/workflows/publish-racing-preview.yml
   workflow_dispatch:
 permissions:
   contents: read
