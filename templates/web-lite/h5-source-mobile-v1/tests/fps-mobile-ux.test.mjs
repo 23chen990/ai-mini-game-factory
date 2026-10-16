@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -475,4 +475,35 @@ test('CF observed-cover training bot remains available but not invulnerable for 
  assert.equal(cfScoutHoldSeconds({...c,elite:true}),3);
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},60),false);
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},66),true);
+});
+
+
+test('CF native tutorial respawn locations are authored original world spots, not fake actor hits',()=>{
+ const first={x:-25,z:-4,yaw:Math.PI/2},second={x:-20,z:-4,yaw:Math.PI/2};
+ const a=cfTrainingRespawnSpots(first,second);
+ assert.deepEqual(a,[first,second]);
+ assert.notEqual(a[0],first,'owned spawn records must not mutate frozen original');
+ assert.equal(cfTrainingRespawnSpots(first,{x:-24,z:-4,yaw:0}).length,1,
+  'overlapping enemy respawns must not spawn-camp');
+ assert.equal(cfTrainingRespawnSpots(first,{x:5,z:-4,yaw:0}).length,1,
+  'opposite-map spawn cannot be advertised as local training arena');
+ assert.deepEqual(cfTrainingRespawnSpots({x:NaN,z:0,yaw:0}),[]);
+ assert.deepEqual(cfTrainingRespawnSpots(null),[]);
+});
+
+test('CF holding a native bot lane never moves the actor or changes health/weapon',()=>{
+ const novice={kind:'hits',drill:'reposition',elite:false};
+ const actor={__mobileTrainingScout:true,alive:true,
+  pos:{x:-23,z:1},role:'rush',goal:[30,10],path:[[0,0],[30,10]],
+  pi:1,holdT:32,hp:64,stats:{d:1,hits:6},weapon:{id:'m4a1'}};
+ const oldPosition={...actor.pos},weapon=actor.weapon,stats=actor.stats;
+ assert.equal(cfStabilizeNoviceScout(actor,novice),true);
+ assert.equal(actor.role,'hold');assert.deepEqual(actor.goal,[-23,1]);
+ assert.equal(actor.path,null);assert.equal(actor.pi,0);assert.equal(actor.holdT,0);
+ assert.deepEqual(actor.pos,oldPosition);assert.equal(actor.hp,64);
+ assert.equal(actor.weapon,weapon);assert.equal(actor.stats,stats);
+ assert.equal(cfStabilizeNoviceScout({...actor,alive:false},novice),false);
+ assert.equal(cfStabilizeNoviceScout({...actor,__mobileTrainingScout:false},novice),false);
+ assert.equal(cfStabilizeNoviceScout(actor,{...novice,elite:true}),false);
+ assert.equal(cfStabilizeNoviceScout(actor,{kind:'survive'}),false);
 });
