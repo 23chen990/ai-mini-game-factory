@@ -163,7 +163,7 @@ export function patchAnalogSteer(source) {
     ["const steerT = (inp.left ? 1 : 0) - (inp.right ? 1 : 0);",
      "const steerT = Number.isFinite(inp.steerAxis) ? Math.max(-1, Math.min(1, inp.steerAxis)) : (inp.left ? 1 : 0) - (inp.right ? 1 : 0);"],
     ["if (!this.drifting && inp.shift && steerT !== 0 && this.s > T.driftMinSpeed && onGround && !spinning) {",
-     "if (!this.drifting && inp.shift && Math.abs(steerT) >= 0.28 && this.s > T.driftMinSpeed && onGround && !spinning) {"],
+     "if (!inp.shift) this.__RACE_DRIFT_REARMED__ = true;\n    if (!this.drifting && inp.shift && this.__RACE_DRIFT_REARMED__ !== false && Math.abs(steerT) >= 0.28 && this.s > T.driftMinSpeed && onGround && !spinning) {"],
     ["this.driftDir = steerT;", "this.driftDir = Math.sign(steerT);"],
   ];
   const already = changes.map(([, target]) => source.includes(target));
@@ -173,6 +173,17 @@ export function patchAnalogSteer(source) {
   let result = source;
   for (const [original, revised] of changes) result = result.replace(original, revised);
   return result;
+}
+
+/** A drift cannot immediately re-trigger on the same still-held drift key.
+ * Both graceful exit and wall impact pass through the native endDrift method.
+ * Re-arm only when the player has actually released the drift key. */
+export function patchDriftRearm(source) {
+  const original = "endDrift(clean = true) {\n    if (!this.drifting) return;\n    this.drifting = false;";
+  const updated = original + "\n    this.__RACE_DRIFT_REARMED__ = false;";
+  if (source.includes(updated)) return source;
+  if (source.split(original).length !== 2) throw Error('Native drift rearm anchor changed');
+  return source.replace(original, updated);
 }
 
 /** Countersteer follows actual opposite stick input; centring ends active yaw.
@@ -323,7 +334,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   }
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchShortcutNativeCar(annotateDriftResult(originalVehicle)))));
+  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');
