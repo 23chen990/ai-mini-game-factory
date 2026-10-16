@@ -55,7 +55,7 @@ const CHALLENGES = {
     {id:'drift',title:'漂移练习赛',instructions:'城市一圈完赛，并触发2次有效漂移。',limitMs:150000,kind:'race',target:1,map:'city',drifts:2},
   ],
   'cf-transport-ship': [
-    {id:'tags',title:'步枪熟悉',instructions:'M4起手，60秒内累计命中3次。移动、瞄准，再开火。',limitMs:60000,kind:'hits',target:3,weapon:'m4a1'},
+    {id:'tags',title:'步枪突围',instructions:'60秒内先命中1次，再换位12米，手动追击命中3次；最多阵亡1次。',limitMs:60000,kind:'hits',target:3,weapon:'m4a1',drill:'reposition',openingHits:1,minTravel:12,maxDeaths:1},
     {id:'precision',title:'狙击尝试',instructions:'90秒内用 AWM 击杀1名敌人。轻点开镜、瞄准后开火。',limitMs:90000,kind:'kills',target:1,weapon:'awm'},
     {id:'survive',title:'小队生存',instructions:'MP5起手，坚持45秒，累计移动20米，死亡不超过2次。',limitMs:45000,kind:'survive',target:2,minTravel:20,weapon:'mp5'},
   ],
@@ -63,7 +63,7 @@ const CHALLENGES = {
 /** Optional, earned CF replay contract. Native damage/kill rules stay untouched. */
 export function cfEliteChallenge(base) {
   if(base?.id==='tags'&&base.kind==='hits')
-    return {...base,elite:true,limitMs:45000,maxDeaths:1};
+    return {...base,elite:true,limitMs:45000,maxDeaths:0,minTravel:18,target:4};
   if(base?.id==='precision'&&base.kind==='kills')
     return {...base,elite:true,limitMs:75000,maxDeaths:1};
   if(base?.id==='survive'&&base.kind==='survive')
@@ -79,12 +79,25 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
   if(c.kind==='fish') {value=m.points||0;complete=value>=c.target&&(!c.jumps||(m.jumps||0)>=c.jumps);label=`🐟 ${value}/${c.target}`+(c.jumps?` · ⤒ ${m.jumps||0}/${c.jumps}`:'');}
   if(c.kind==='race') {value=m.finished?1:0;complete=!!m.finished&&(!c.place||m.place>0&&m.place<=c.place)&&(!c.drifts||(m.drifts||0)>=c.drifts);label=`🏁 ${m.place>0?'第'+m.place+'名':'等待发车'}`+(c.drifts?` · 漂移 ${m.drifts||0}/${c.drifts}`:'');}
   if(c.kind==='hits'||c.kind==='kills') {
-    value=c.kind==='kills'&&c.weapon==='awm'?(m.awmKills||0):(m[c.kind]||0);
-    const budgetExceeded=Number.isInteger(c.maxDeaths) && c.maxDeaths>=0 &&
+    const budgetExceeded=Number.isInteger(c.maxDeaths)&&c.maxDeaths>=0 &&
       Math.max(0,Number(m.deaths)||0)>c.maxDeaths;
     failed=budgetExceeded;
-    complete=!budgetExceeded&&value>=c.target;
-    label=`🎯 ${value}/${c.target}${c.kind==='hits'?'命中':c.weapon==='awm'?'AWM击杀':'击杀'}`;
+    if(c.kind==='hits'&&c.drill==='reposition') {
+      // Not just total shots: the final three hits must occur AFTER a genuine
+      // first hit AND 12m of actual movement; zero-AFK and no hidden stat credit.
+      const follow=Math.max(0,Math.floor(Number(m.drillFollowUpHits)||0));
+      const travel=Math.max(0,Number(m.drillTravel)||0);
+      value=follow;
+      complete=!failed&&m.drillFirstHit===true&&m.drillStage===2&&
+        travel>=c.minTravel&&follow>=c.target;
+      label=m.drillStage===0?'◎ 先瞄准 · 自动命中1次':
+        m.drillStage===1?'↗ 换位 '+Math.floor(travel)+'/'+c.minTravel+'m':
+          '🎯 手动追击 '+follow+'/'+c.target;
+    } else {
+      value=c.kind==='kills'&&c.weapon==='awm'?(m.awmKills||0):(m[c.kind]||0);
+      complete=!failed&&value>=c.target;
+      label=`🎯 ${value}/${c.target}${c.kind==='hits'?'命中':c.weapon==='awm'?'AWM击杀':'击杀'}`;
+    }
   }
   if(c.kind==='survive') {
     value=Math.min(c.target+1,m.deaths||0);
