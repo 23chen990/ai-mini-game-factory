@@ -230,6 +230,19 @@ export function firstEncounterDestination(team) {
   if (team === 'GR') return [17.5, 7.0];
   return null;
 }
+/** Face only a LAST SEEN enemy position from a historically verified clear
+ * firing lane; no present-day hidden enemy GPS or automatic aim movements. */
+export function cfLastSeenLookCue(player,known) {
+  if(!player?.pos || !Number.isFinite(player.yaw) ||
+    !Number.isFinite(known?.x)||!Number.isFinite(known?.z))return null;
+  const dx=known.x-player.pos.x,dz=known.z-player.pos.z;
+  if(Math.hypot(dx,dz)<1.2)return null;
+  const bearing=Math.atan2(-dx,-dz);
+  const error=Math.atan2(Math.sin(bearing-player.yaw),Math.cos(bearing-player.yaw));
+  if(error>0.18)return '← 向左转视角 · 寻找红色敌人';
+  if(error< -0.18)return '→ 向右转视角 · 寻找红色敌人';
+  return '↔ 左右探身 · 找回刚才的射击视线';
+}
 export function routeArrow(player, goal) {
   if (!player || !goal) return null;
   const dx = goal[0] - player.pos.x, dz = goal[1] - player.pos.z;
@@ -348,6 +361,14 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
  * generate novice aiming directions. No actor tracking behind walls. */
 /** Fire button finger doubles as a view joystick, without creating a shot or
  * editing any hit/health stat. Cap one outlier touchmove for a steady thumb. */
+/** End/cancel a real mobile fire gesture without swallowing a short tap.
+ * Ordinary touchend leaves native firePressed pending until Player.update().
+ * OS cancellation, pause, restart and destroy discard that pending tap. */
+export function cfReleaseTouchFire(touch,cancelPending=false) {
+  if(!touch)return;
+  touch.fire=false;
+  if(cancelPending)touch.firePressed=false;
+}
 export function cfFireDragLookDelta(dx,dy) {
   if(!Number.isFinite(dx)||!Number.isFinite(dy))return {x:0,y:0};
   const clamp=v=>Math.max(-96,Math.min(96,v*1.6));
@@ -554,11 +575,8 @@ export function createFpsMobileUx(game, root, doc) {
       }
     }
   };
-  const releaseNativeFire=()=>{
-    if(game.player?.touch){
-      game.player.touch.fire=false;
-      game.player.touch.firePressed=false;
-    }
+  const releaseNativeFire=(cancelPending=false)=>{
+    cfReleaseTouchFire(game.player?.touch,cancelPending);
   };
   const onTouchEnd=e=>{
     markTouch();
@@ -570,7 +588,8 @@ export function createFpsMobileUx(game, root, doc) {
     // The upstream button listens to touchend, not touchcancel.
     // Clear the native fire flag on either ending path, even after a dragged
     // thumb leaves the button or the operating system interrupts the gesture.
-    if(hadFireFinger&&fireDragTouches.size===0)releaseNativeFire();
+    if(hadFireFinger&&fireDragTouches.size===0)
+      releaseNativeFire(e.type==='touchcancel');
   };
   // The pinned desktop Player.bind() fires a bullet on canvas mousedown.
   // Browsers synthesize mousedown after short touch-aim gestures unless this
@@ -593,7 +612,10 @@ export function createFpsMobileUx(game, root, doc) {
   for (const [index, button] of buttons.entries()) {
     const action = mobileTouchAction(index);
     button.dataset.mkAction = action;
-    if (action === 'fire') button.textContent = '开火';
+    if (action === 'fire') {
+      button.textContent = '开火';
+      button.setAttribute('aria-label','按住开火并拖动瞄准');
+    }
     if (action === 'reload') button.textContent = '换弹';
     if (action === 'jump') button.textContent = '跳';
     if (action === 'scope') button.textContent = '开镜';
@@ -661,7 +683,7 @@ export function createFpsMobileUx(game, root, doc) {
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
   let drill = null, drillStageAt = 0, flankGoal = null, flankDeaths = -1;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
-  let routePath = null, routeLastAt = 0, lastVisibleEnemy = null;
+  let routePath = null, routeLastAt = 0, lastVisibleEnemy = null, firstHitSpot = null;
   let visibleAimCoach = '';
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
@@ -770,12 +792,16 @@ export function createFpsMobileUx(game, root, doc) {
   }
   function findRoute() {
     const p=game.player;
-    // Hunt only a location the PLAYER genuinely saw: the confirmed initial
-    // sightline or a later onscreen unobstructed enemy badge. Never use live
-    // concealed NPC coordinates to steer the player through walls.
-    const known=activeChallenge?.drill==='reposition'&&drill?.stage===2
-      ? lastVisibleEnemy : null;
-    const dest=known ? [known.x,known.z] : firstEncounterDestination(p?.team);
+    // New players should RECOVER the proven first-shot sightline instead of
+    // blindly charging a remembered enemy's position through container walls.
+    // Both coordinates are genuinely observed player history, never hidden
+    // enemy world positions. Expert players still pursue sightings directly.
+    const follow=activeChallenge?.drill==='reposition'&&drill?.stage===2;
+    const observedShotLane=follow&&activeChallenge?.elite!==true&&firstHitSpot
+      ? [firstHitSpot.x,firstHitSpot.z] : null;
+    const known=follow?lastVisibleEnemy:null;
+    const dest=observedShotLane||
+      (known?[known.x,known.z]:firstEncounterDestination(p?.team));
     if(!p || !dest || !game.nav?.findPath) return null;
     const path=game.nav.findPath(p.pos.x,p.pos.z,dest[0],dest[1]);
     if(!Array.isArray(path) || path.length<2)return null;
@@ -986,7 +1012,7 @@ export function createFpsMobileUx(game, root, doc) {
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
       playerEngaged=false;aimTouchStarts.clear();fireDragTouches.clear();
-      releaseNativeFire();
+      releaseNativeFire(true);
       guide.textContent = activeChallenge?.elite===true
         ? '⚡ 精英：自己瞄准开火'
         : activeChallenge?.kind === 'kills'
@@ -996,7 +1022,7 @@ export function createFpsMobileUx(game, root, doc) {
           : '前方有目标 · 右手瞄准';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
-      routePath=null;routeLastAt=0;lastVisibleEnemy=null;
+      routePath=null;routeLastAt=0;lastVisibleEnemy=null;firstHitSpot=null;
       nextUpdate = 0;
       nextBalanceAt = 0;
       lastHits = game.player?.stats?.hits || 0;
@@ -1057,6 +1083,8 @@ export function createFpsMobileUx(game, root, doc) {
         const updated=cfAdvanceDrill(activeChallenge,drill,
           {hits:p.stats?.hits||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z});
         if(updated?.stage!==drill?.stage) {
+          if(drill?.stage===0&&updated?.stage===1)
+            firstHitSpot={x:p.pos.x,z:p.pos.z};
           drillStageAt=Math.max(0,(Number(game.time)||0)-startedGameSeconds);
           guide.textContent=updated?.stage===1
             ? '↔ 首枪命中 · 横向换位 '+Math.floor(updated.distance)+'/'+activeChallenge.minTravel+'m'
@@ -1067,7 +1095,7 @@ export function createFpsMobileUx(game, root, doc) {
       if (!active) {
         if (activeChallenge?.kind==='hits') p.mouse.l=false;
         if(fireDragTouches.size>0) {
-          releaseNativeFire();fireDragTouches.clear();
+          releaseNativeFire(true);fireDragTouches.clear();
         }
         autoAimActor=null;autoFireActive=false;
         target.hidden = true; guide.hidden = true; clearMarkers(); return;
@@ -1129,12 +1157,16 @@ export function createFpsMobileUx(game, root, doc) {
             (turn?' · 沿可走路线':' · 左右横移');
         } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
           const turn=!seen?routeArrow(p,routePath):null;
+          const reAim=!turn&&lastVisibleEnemy
+            ? cfLastSeenLookCue(p,lastVisibleEnemy) : null;
           guide.textContent=seen
             ? (visibleAimCoach||'◎ 对准红色目标按开火')+
               ' · '+drill.follow+'/'+activeChallenge.target
             : turn
-              ? turn.symbol+' 返回交火位置 · 手动追击 '+drill.follow+'/'+activeChallenge.target
-              : '↑ 寻找上次见到的敌人 · '+drill.follow+'/'+activeChallenge.target;
+              ? turn.symbol+' 回到首枪射击位 · '+drill.follow+'/'+activeChallenge.target
+              : reAim
+                ? reAim+' · '+drill.follow+'/'+activeChallenge.target
+                : '↔ 探身寻找敌人 · '+drill.follow+'/'+activeChallenge.target;
         } else if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
@@ -1164,12 +1196,13 @@ export function createFpsMobileUx(game, root, doc) {
       doc.removeEventListener('touchcancel',onTouchEnd,true);
       doc.removeEventListener('mousedown',stopCompatibilityMouse,true);
       doc.removeEventListener('mouseup',stopCompatibilityMouse,true);
-      aimTouchStarts.clear();fireDragTouches.clear();releaseNativeFire();
+      aimTouchStarts.clear();fireDragTouches.clear();releaseNativeFire(true);
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
+        button.removeAttribute('aria-label');
       }
       for (const el of markers.values()) el.remove();
       markers.clear();

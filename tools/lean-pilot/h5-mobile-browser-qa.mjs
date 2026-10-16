@@ -17,8 +17,17 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
    const opponents=g.actors.filter(a=>a.team!==p.team);
+   const badge=[...document.querySelectorAll('.mk-fps-enemy')]
+     .find(el=>!el.hidden&&getComputedStyle(el).display!=='none');
+   const rect=badge?.getBoundingClientRect();
    return {
      gameTime:+g.time.toFixed(1),
+     yaw:+p.yaw.toFixed(3),pitch:+p.pitch.toFixed(3),
+     handFire:p.touch?.fire===true,
+     onscreenEnemyPixel:rect?{
+       x:Math.round(rect.left+rect.width/2),
+       y:Math.round(rect.bottom+22)
+     }:null,
      challenge:document.getElementById('mobile-kit')?.dataset.challenge,
      shots:p.stats.shots,hits:p.stats.hits,kills:p.stats.k,deaths:p.stats.d,
      hp:Math.max(0,Math.round(p.hp)),alive:p.alive,
@@ -167,6 +176,16 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    // follow that hint before it tries random blind strafing.
    const guide=page.locator('#mk-fps-guide');
    const guidance=await guide.isVisible()?await guide.textContent():'';
+   if(guidance?.startsWith('↔')){
+     // Sidestep with the actual left joystick when UI says "peek".
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     if(pad){
+       const start={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
+       const side=fpsScriptSteps%4<2?-48:48;
+       await mobileStroke(start,{x:start.x+side,y:start.y},950,71);
+     }
+     return;
+   }
    if(guidance?.startsWith('←')||guidance?.startsWith('→')){
      const right=guidance.startsWith('→');
      fpsRouteTurns++;
@@ -324,7 +343,10 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        const overlap=visible.some((a,i)=>visible.slice(i+1).some(b=>
          a.left<b.left+b.width && b.left<a.left+a.width &&
          a.top<b.top+b.height && b.top<a.top+a.height));
-       return {actions:nodes,overlap,active:document.documentElement.dataset.fpsActive,
+       const fire=visible.find(n=>n.action==='fire');
+       const fireRightAimRoom=fire?innerWidth-fire.left-fire.width/2:0;
+       return {actions:nodes,overlap,fireRightAimRoom,
+         active:document.documentElement.dataset.fpsActive,
          desktopMenuHidden:getComputedStyle(document.getElementById('menu')).display==='none',
          labelsPresent:!!document.getElementById('mk-fps-target')&&!!document.getElementById('mk-fps-board')};
      });
@@ -368,7 +390,8 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const earlyCombat = await readFpsThreat();
      if(earlyCombat)fpsThreatTrace.push(earlyCombat);
      const working = shotsAfter > shotsBefore && thumbMotion && !layout.overlap && layout.desktopMenuHidden &&
-       layout.labelsPresent && layout.active === 'true' && layout.actions.every(n=>!n.visible||n.fits) &&
+       layout.labelsPresent && layout.active === 'true' && layout.fireRightAimRoom>=95 &&
+       layout.actions.every(n=>!n.visible||n.fits) &&
        ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible)) &&
        ['duplicate-fire','crouch','switch'].every(a=>layout.actions.some(n=>n.action===a&&!n.visible));
      actions.push({atMs:Date.now()-started,input:'visual-layout-audit',detail:{shotsBefore,shotsAfter,layout,thumbMotion,distance,lookAngle}});

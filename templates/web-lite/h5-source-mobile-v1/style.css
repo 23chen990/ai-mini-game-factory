@@ -501,6 +501,13 @@ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]
   box-shadow:0 2px 0 #622727,0 0 0 5px #c4504d23,0 6px 16px #1a0d14b3!important;
   font-size:15px!important;font-weight:900!important;
 }
+html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]::after{
+  content:"↔ 拖动瞄准";
+  position:absolute;left:3px;right:3px;bottom:5px;
+  font:700 9px/1.15 system-ui,sans-serif;
+  color:#ffddd4;letter-spacing:0;
+  text-align:center;pointer-events:none;
+}
 html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="jump"]{
   right:max(190px,calc(180px + env(safe-area-inset-right)))!important;
   bottom:51px!important;
