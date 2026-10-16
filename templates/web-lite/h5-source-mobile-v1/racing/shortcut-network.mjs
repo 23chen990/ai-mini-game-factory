@@ -5,11 +5,11 @@
  * distinct career courses. Rival AI stays on the legal long road.
  */
 export const SHORTCUT_PLANS=Object.freeze({
-  'race-05':{start:390,end:689,width:17,label:'Desert temple ridge'},
-  'race-10':{start:780,end:930,width:16,label:'Neon service lane'},
-  'race-12':{start:900,end:1170,width:17,label:'Snow raised shortcut'},
-  'race-13':{start:1410,end:1799,width:17,label:'North city service cut'},
-  'race-16':{start:1831,end:2099,width:17,label:'Coastal cliff viaduct'},
+  'race-05':{start:392,end:1060,width:17,label:'Temple canyon cut'},
+  'race-10':{start:440,end:1156,width:16,label:'Lightning center lane'},
+  'race-12':{start:1472,end:2164,width:17,label:'Ice spiral viaduct'},
+  'race-13':{start:1784,end:2332,width:17,label:'Interchange insider'},
+  'race-16':{start:1640,end:2188,width:17,label:'Crown cliff ledge'},
 });
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const mod=(v,n)=>((v%n)+n)%n;
