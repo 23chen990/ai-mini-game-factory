@@ -63,3 +63,63 @@ test('shooter rule cannot be bypassed by a rifle kill or AFK survival',()=>{
   assert.equal(core.challengeResult(survival,{deaths:0,travel:19.9},true).outcome,'lost');
   assert.equal(core.challengeResult(survival,{deaths:0,travel:20},true).outcome,'won');
 });
+
+
+test('CF survival requires the full clock even when native team match ends early',()=>{
+  const c=core.challengesFor('cf-transport-ship').find(c=>c.kind==='survive');
+  assert.equal(core.challengeResult(c,{deaths:0,travel:55},true,44000).outcome,'lost');
+  assert.equal(core.challengeResult(c,{deaths:0,travel:55},false,45000).outcome,'running');
+  assert.equal(core.challengeResult(c,{deaths:0,travel:55},true,45000).outcome,'won');
+  assert.equal(core.challengeResult(c,{deaths:0,travel:55},true,NaN).outcome,'lost');
+  assert.equal(core.challengeResult(c,{deaths:3,travel:55},true,45000).outcome,'lost');
+  assert.equal(core.challengeResult(c,{deaths:0,travel:0},true,45000).outcome,'lost');
+});
+
+test('CF expert replay is optional, gated by regular win and preserves historical records',()=>{
+  const p=core.newChallengeProgress('cf-transport-ship'),c=core.challengesFor('cf-transport-ship')[0];
+  assert.equal(p.elite,false);
+  core.recordChallenge(p,c,1,'lost');
+  assert.equal(p.records[c.id].eliteWins,undefined);
+  core.recordChallenge(p,c,3,'won');
+  p.elite=true;
+  core.recordChallenge(p,{...c,elite:true},3,'lost');
+  assert.equal(p.records[c.id].eliteWins,0);
+  core.recordChallenge(p,{...c,elite:true},3,'won');
+  assert.deepEqual(p.records[c.id],{best:3,attempts:4,wins:2,eliteWins:1});
+  assert.deepEqual(core.loadChallengeProgress(core.saveChallengeProgress(p),'cf-transport-ship'),p);
+  const prior=JSON.parse(core.saveChallengeProgress(p));
+  delete prior.elite;delete prior.records[c.id].eliteWins;
+  assert.ok(core.loadChallengeProgress(JSON.stringify(prior),'cf-transport-ship'));
+  const bad=JSON.parse(core.saveChallengeProgress(p));
+  bad.records[c.id].eliteWins=3;
+  assert.equal(core.loadChallengeProgress(JSON.stringify(bad),'cf-transport-ship'),null);
+  bad.records[c.id].eliteWins=1;bad.elite='yes';
+  assert.equal(core.loadChallengeProgress(JSON.stringify(bad),'cf-transport-ship'),null);
+});
+
+
+test('CF elite rules tighten real deadlines and life budgets without changing beginner goals',()=>{
+ const [rifle,sniper,survival]=core.challengesFor('cf-transport-ship');
+ const er=core.cfEliteChallenge(rifle),es=core.cfEliteChallenge(sniper),ev=core.cfEliteChallenge(survival);
+ assert.deepEqual({limit:er.limitMs,death:er.maxDeaths,goal:er.target,elite:er.elite},{limit:45000,death:1,goal:3,elite:true});
+ assert.deepEqual({limit:es.limitMs,death:es.maxDeaths,goal:es.target,elite:es.elite},{limit:75000,death:1,goal:1,elite:true});
+ assert.deepEqual({limit:ev.limitMs,death:ev.target,travel:ev.minTravel,elite:ev.elite},{limit:45000,death:1,travel:30,elite:true});
+ assert.equal(rifle.limitMs,60000);
+ assert.equal(sniper.limitMs,90000);
+ assert.equal(survival.target,2);
+ assert.equal(survival.minTravel,20);
+ assert.throws(()=>core.cfEliteChallenge({id:'coast',kind:'fish'}));
+});
+test('CF elite player can lose from actual deaths even with genuine hits, never from friendly kills',()=>{
+ const [rifle,sniper,survival]=core.challengesFor('cf-transport-ship').map(core.cfEliteChallenge);
+ assert.equal(core.challengeResult(rifle,{hits:3,deaths:1},false).outcome,'won');
+ assert.equal(core.challengeResult(rifle,{hits:3,deaths:2},false).outcome,'lost');
+ assert.equal(core.challengeResult(rifle,{hits:2,deaths:1},true).outcome,'lost');
+ assert.equal(core.challengeResult(sniper,{awmKills:1,deaths:1},false).outcome,'won');
+ assert.equal(core.challengeResult(sniper,{awmKills:1,deaths:2},false).outcome,'lost');
+ assert.equal(core.challengeResult(sniper,{kills:5,awmKills:0,deaths:0},true).outcome,'lost');
+ assert.equal(core.challengeResult(survival,{deaths:0,travel:29},true,45000).outcome,'lost');
+ assert.equal(core.challengeResult(survival,{deaths:1,travel:30},true,45000).outcome,'won');
+ assert.equal(core.challengeResult(survival,{deaths:2,travel:45},true,45000).outcome,'lost');
+ assert.equal(core.challengeResult(survival,{deaths:0,travel:45},true,44999).outcome,'lost');
+});

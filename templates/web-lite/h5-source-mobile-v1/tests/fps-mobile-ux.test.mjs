@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -193,4 +193,80 @@ test('scout stays in real sniper opening only briefly before native AI resumes',
  assert.equal(mobileScoutHoldExpired(sniper,20),true);
  assert.equal(mobileScoutHoldExpired(rifle,7),true);
  assert.equal(mobileScoutHoldExpired({},12),false);
+});
+
+
+test('CF hit confirmation is native-counter driven and never fabricates a hit',()=>{
+ const rifle={kind:'hits',target:3},sniper={kind:'kills',target:1};
+ assert.equal(cfHitCue(rifle,1,1),'✓ 命中 1/3');
+ assert.equal(cfHitCue(rifle,3,2),'✓ 命中 3/3');
+ assert.equal(cfHitCue(sniper,1,1),'✓ 有效命中 +1');
+ for(const n of [0,-1,Infinity,NaN])assert.equal(cfHitCue(rifle,n,1),'');
+ for(const n of [0,-1,Infinity,NaN])assert.equal(cfHitCue(rifle,1,n),'');
+ assert.equal(cfHitCue(null,1,1),'');
+});
+
+test('CF debrief explains the actual failure branch, without crediting AI frags',()=>{
+ const rifle={kind:'hits',target:3},sniper={kind:'kills',target:1};
+ const survive={kind:'survive',target:2,minTravel:20};
+ assert.match(cfMissionDebrief(rifle,{hits:0},'lost'),/自动开火/);
+ assert.match(cfMissionDebrief(rifle,{hits:2},'lost'),/还差 1 次/);
+ assert.doesNotMatch(cfMissionDebrief(rifle,{hits:2},'lost'),/点射/);
+ assert.match(cfMissionDebrief(sniper,{hits:2,kills:5,awmKills:0},'lost'),/命中 2 次，但 AWM 击杀仍为 0\/1/);
+ assert.match(cfMissionDebrief(sniper,{hits:0,awmKills:0},'lost'),/开镜瞄准胸部/);
+ assert.match(cfMissionDebrief(survive,{deaths:3,travel:55},'lost'),/超过最多 2 次/);
+ assert.match(cfMissionDebrief(survive,{deaths:0,travel:9.9},'lost'),/还差 11 米/);
+ assert.match(cfMissionDebrief(survive,{deaths:1,travel:24},'lost'),/倒计时结束/);
+ assert.match(cfMissionDebrief(survive,{deaths:0,travel:24},'won'),/零死亡/);
+ assert.match(cfMissionDebrief(sniper,{awmKills:1},'won'),/AWM 真实击杀 1 人/);
+ assert.equal(cfMissionDebrief(null,{},'lost'),'');
+});
+
+
+test('elite replay requires a genuine completed mission and never silently enables beginner auto-fire',()=>{
+ assert.equal(cfEliteUnlocked({wins:1,attempts:2}),true);
+ assert.equal(cfEliteUnlocked({wins:0,attempts:2}),false);
+ assert.equal(cfEliteUnlocked({wins:1.5}),false);
+ assert.equal(cfEliteUnlocked({wins:-1}),false);
+ assert.equal(cfEliteUnlocked(undefined),false);
+ assert.equal(cfAutoFireEligible({kind:'hits',elite:false}),true);
+ assert.equal(cfAutoFireEligible({kind:'hits'}),true);
+ assert.equal(cfAutoFireEligible({kind:'hits',elite:true}),false);
+ assert.equal(cfAutoFireEligible({kind:'kills'}),false);
+ assert.equal(cfAutoFireEligible({kind:'survive',elite:false}),false);
+ assert.equal(cfAutoFireEligible(null),false);
+ assert.match(mobileChallengeCopy({kind:'hits',elite:true}),/自己瞄准并按开火/);
+ assert.doesNotMatch(mobileChallengeCopy({kind:'hits',elite:true}),/自动开火/);
+ assert.match(mobileChallengeCopy({kind:'kills',elite:true}),/精英狙击/);
+ assert.match(mobileChallengeCopy({kind:'survive',elite:true}),/精英生存/);
+});
+
+test('elite enemy pressure is stronger than ordinary while maintaining bounded native behavior',()=>{
+ for(const kind of ['hits','kills','survive']){
+   const regular=mobileEnemyDifficulty(kind,0,{hits:0,k:0,d:0});
+   const explicitRegular=mobileEnemyDifficulty(kind,0,{hits:0,k:0,d:0},false);
+   assert.deepEqual(regular,explicitRegular);
+   const elite=mobileEnemyDifficulty(kind,0,{hits:0,k:0,d:0},true);
+   const late=mobileEnemyDifficulty(kind,60,{hits:3,k:1,d:0},true);
+   assert.ok(elite.react[0]<regular.react[0],kind);
+   assert.ok(elite.react[1]<regular.react[1],kind);
+   assert.ok(elite.aimErr<regular.aimErr,kind);
+   assert.ok(elite.strafe>regular.strafe,kind);
+   assert.ok(late.track>elite.track,kind);
+   assert.ok(late.react[0]>=0.40 && late.react[1]>=0.7,kind);
+   assert.ok(late.headP>0 && late.headP<=0.15,kind);
+   assert.ok(late.aimErr>=0.045,kind);
+   assert.equal(elite.bunny,0.015);
+ }
+});
+
+
+test('CF expert copy matches actual shorter deadlines and lower death budgets',()=>{
+ assert.match(mobileChallengeCopy({kind:'hits',elite:true}),/45秒/);
+ assert.match(mobileChallengeCopy({kind:'kills',elite:true}),/75秒/);
+ assert.match(mobileChallengeCopy({kind:'survive',elite:true}),/30米/);
+ assert.match(mobileChallengeCopy({kind:'survive',elite:true}),/阵亡1次/);
+ assert.match(cfMissionDebrief({kind:'hits',target:3,maxDeaths:1,elite:true},{hits:0,deaths:0},'lost'),/手动点按开火/);
+ assert.match(cfMissionDebrief({kind:'hits',target:3,maxDeaths:1,elite:true},{hits:3,deaths:2},'lost'),/最多允许 1 次/);
+ assert.match(cfMissionDebrief({kind:'kills',target:1,maxDeaths:1,elite:true},{hits:2,awmKills:1,deaths:2},'lost'),/被击倒 2 次/);
 });

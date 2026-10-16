@@ -61,11 +61,25 @@ export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
 
+/** Expert mode is earned by an actual recorded win. */
+export function cfEliteUnlocked(record) {
+  return Number.isSafeInteger(record?.wins) && record.wins > 0;
+}
+/** First rifle mission trains with auto-fire, while expert needs genuine touch input. */
+export function cfAutoFireEligible(challenge) {
+  return challenge?.kind === 'hits' && challenge.elite !== true;
+}
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
-  if (challenge.kind === 'hits') return '1v1入门对决：对准敌人开火，命中3次';
-  if (challenge.kind === 'kills') return '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
-  if (challenge.kind === 'survive') return '坚持45秒，移动20米，最多被击倒2次';
+  if (challenge.kind === 'hits') return challenge.elite===true
+    ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
+    : '1v1入门：准星对准敌人自动开火，命中3次';
+  if (challenge.kind === 'kills') return challenge.elite===true
+    ? '精英狙击：75秒内 AWM 击杀1人，最多阵亡1次'
+    : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
+  if (challenge.kind === 'survive') return challenge.elite===true
+    ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
+    : '坚持45秒，移动20米，最多被击倒2次';
   return challenge.instructions || '';
 }
 
@@ -73,27 +87,31 @@ export function mobileChallengeCopy(challenge) {
 // Mobile-first tuning: soften the first encounter; increase pressure with time
 // and demonstrated player success. These are bot perception/behavior knobs,
 // not health, weapon damage, hitboxes, spawn cheats or automatic player kills.
-export function mobileEnemyDifficulty(kind, seconds = 0, stats = {}) {
+export function mobileEnemyDifficulty(kind, seconds = 0, stats = {}, elite = false) {
   const clamp = v => Math.max(0, Math.min(1, v));
+  const expert = elite === true;
   const elapsed = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
   const hits = Math.max(0, Number(stats.hits) || 0);
   const kills = Math.max(0, Number(stats.k) || 0);
   const deaths = Math.max(0, Number(stats.d) || 0);
-  const ramp = clamp((elapsed - 22) / 40 + (hits >= 2 ? 0.24 : 0) +
+  const ramp = clamp((elapsed - (expert ? 6 : 22)) / (expert ? 30 : 40) + (hits >= 2 ? 0.24 : 0) +
     (kills >= 1 ? 0.18 : 0) - (deaths >= 2 ? 0.16 : 0));
   const lerp = (a, b) => +(a + (b - a) * ramp).toFixed(3);
   const sniper = kind === 'kills';
   const survivor = kind === 'survive';
   return {
-    react: [lerp(survivor ? 0.9 : 1.1, 0.55), lerp(survivor ? 1.4 : 1.65, 0.94)],
-    aimErr: lerp(survivor ? 0.105 : 0.13, 0.074),
-    turn: lerp(2.6, 3.7),
-    track: lerp(1.65, 2.45),
-    headP: lerp(0.005, sniper ? 0.035 : 0.075),
-    ctrl: lerp(1.0, 0.94),
-    comp: lerp(0.4, 0.58),
-    strafe: lerp(sniper ? 0.10 : 0.14, sniper ? 0.28 : 0.42),
-    see: lerp(38, 52), fov: lerp(1.48, 1.75), bunny: 0
+    react: [lerp(expert ? 0.7 : survivor ? 0.9 : 1.1, expert ? 0.40 : 0.55),
+      lerp(expert ? 1.1 : survivor ? 1.4 : 1.65, expert ? 0.74 : 0.94)],
+    aimErr: lerp(expert ? 0.095 : survivor ? 0.105 : 0.13, expert ? 0.054 : 0.074),
+    turn: lerp(expert ? 3.2 : 2.6, expert ? 4.7 : 3.7),
+    track: lerp(expert ? 2.0 : 1.65, expert ? 3.45 : 2.45),
+    headP: lerp(expert ? 0.025 : 0.005, expert ? sniper ? 0.07 : 0.13 : sniper ? 0.035 : 0.075),
+    ctrl: lerp(expert ? 0.96 : 1.0, expert ? 0.86 : 0.94),
+    comp: lerp(expert ? 0.55 : 0.4, expert ? 0.74 : 0.58),
+    strafe: lerp(expert ? 0.24 : sniper ? 0.10 : 0.14, expert ? 0.62 : sniper ? 0.28 : 0.42),
+    see: lerp(expert ? 42 : 38, expert ? 57 : 52),
+    fov: lerp(expert ? 1.6 : 1.48, expert ? 1.9 : 1.75),
+    bunny: expert ? 0.015 : 0
   };
 }
 
@@ -210,6 +228,58 @@ export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked
     Math.abs(yawError)<=0.047 && Math.abs(pitchError)<=0.050;
 }
 
+
+/** Only actual native hit-counter increments create a brief onscreen confirmation. */
+export function cfHitCue(challenge, nativeHits, increase) {
+  if (!challenge || !Number.isFinite(nativeHits) || !Number.isFinite(increase) ||
+      nativeHits < 1 || increase < 1) return '';
+  const hits = Math.floor(nativeHits), delta = Math.floor(increase);
+  if (challenge.kind === 'hits')
+    return '✓ 命中 ' + Math.min(hits, challenge.target) + '/' + challenge.target;
+  return '✓ 有效命中 +' + delta;
+}
+
+/** End-of-round teaching based on observed player stats, never simulated rewards. */
+export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
+  if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return '';
+  const actual = v => Number.isFinite(v) ? Math.max(0,Math.floor(v)) : 0;
+  const hits = actual(metrics.hits), awmKills = actual(metrics.awmKills);
+  const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
+  const goal = actual(challenge.target);
+  if (outcome === 'won') {
+    if (challenge.kind === 'hits')
+      return '亲自命中 ' + hits + ' 次。下一关要使用 AWM 取得真正的击杀。';
+    if (challenge.kind === 'kills')
+      return 'AWM 真实击杀 ' + awmKills + ' 人。接下来试试移动与生存的配合。';
+    return '累计移动 ' + travel + ' 米、被击倒 ' + deaths + ' 次。下次试试零死亡通关。';
+  }
+  if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths)
+    return '被击倒 ' + deaths + ' 次，精英关最多允许 ' +
+      challenge.maxDeaths + ' 次。下次借掩体换位，先避开敌方火力。';
+  if (challenge.kind === 'hits') {
+    if (hits === 0)
+      return '0/' + goal + ' 次命中。用右手移动准星寻找红色敌人，' +
+        (cfAutoFireEligible(challenge) ? '瞄准后自动开火。' : '手动点按开火。');
+    return '已经命中 ' + hits + '/' + goal + ' 次，还差 ' +
+      Math.max(0,goal-hits) + ' 次。下次继续跟住目标，直到出现命中确认。';
+  }
+  if (challenge.kind === 'kills') {
+    if (awmKills === 0 && hits > 0)
+      return '命中 ' + hits + ' 次，但 AWM 击杀仍为 0/' + goal +
+        '。命中不等于击杀，下次开镜锁定目标再补枪。';
+    return 'AWM 击杀 ' + awmKills + '/' + goal +
+      '。先找红色目标，开镜瞄准胸部，再按开火。';
+  }
+  if (deaths > goal)
+    return '被击倒 ' + deaths + ' 次，超过最多 ' + goal +
+      ' 次的限制。下次沿集装箱掩体换位，减少正面暴露。';
+  const min = actual(challenge.minTravel);
+  if (travel < min)
+    return '只移动 ' + travel + '/' + min + ' 米，还差 ' +
+      (min-travel) + ' 米。下次用左手摇杆沿掩体移动，不要原地停留。';
+  return '移动和阵亡条件已达成，但未坚持到时限。借助掩体保持移动直到倒计时结束。';
+}
+
 export function createFpsMobileUx(game, root, doc) {
   const html = doc.documentElement;
   const header = root.querySelector('.mk-header');
@@ -227,7 +297,7 @@ export function createFpsMobileUx(game, root, doc) {
   const markTouch=()=>{lastTouchAt=performance.now();};
   const onTouchStart=e=>{
     markTouch();
-    if(activeChallenge?.kind!=='hits'||!game.playing||game.paused)return;
+    if(!cfAutoFireEligible(activeChallenge)||!game.playing||game.paused)return;
     if(e.target?.closest?.('.btn,.pad'))return;
     const limit=(doc.defaultView?.innerWidth||844)*0.44;
     for(const t of e.changedTouches||[])if(t.clientX>limit)
@@ -235,7 +305,7 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const onTouchMove=e=>{
     markTouch();
-    if(activeChallenge?.kind!=='hits'||!game.playing||game.paused)return;
+    if(!cfAutoFireEligible(activeChallenge)||!game.playing||game.paused)return;
     for(const t of e.changedTouches||[]){
       const v=aimTouchStarts.get(t.identifier);
       if(v&&Math.hypot(t.clientX-v.x,t.clientY-v.y)>12)playerEngaged=true;
@@ -277,8 +347,8 @@ export function createFpsMobileUx(game, root, doc) {
     }
     // The original source only handles touchend, not cancellation.
     if (action === 'fire') button.addEventListener('touchstart', () => {
-      if(activeChallenge?.kind==='hits')playerEngaged=true;
-      nudgeAim(true);
+      if(cfAutoFireEligible(activeChallenge))playerEngaged=true;
+      if(activeChallenge?.elite!==true)nudgeAim(true);
     }, {capture:true,passive:true});
     button.addEventListener('touchcancel', () => {
       if (action === 'fire' && game.player?.touch) {
@@ -310,6 +380,11 @@ export function createFpsMobileUx(game, root, doc) {
   target.hidden = true;
   target.setAttribute('aria-live', 'off');
   root.append(target);
+  const hitCue = doc.createElement('div');
+  hitCue.id = 'mk-fps-hit-feedback';
+  hitCue.hidden = true;
+  hitCue.setAttribute('aria-live', 'off');
+  root.append(hitCue);
   const guide = doc.createElement('div');
   guide.id = 'mk-fps-guide';
   guide.textContent = '◆ 蓝色队友 ｜ ▼ 红色敌人　·　左手移动，右手滑动瞄准';
@@ -317,7 +392,7 @@ export function createFpsMobileUx(game, root, doc) {
   root.append(guide);
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
-  let activeChallenge = null, nextBalanceAt = 0, lastHits = 0;
+  let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
   let routePath = null, routeLastAt = 0;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
@@ -393,11 +468,11 @@ export function createFpsMobileUx(game, root, doc) {
         scout.protectT=0;
         // Allow new players several *simulation seconds* to recognize, aim
         // and shoot. Afterward the standard Bot can shoot normally.
-        scout.readyAt=Math.max(scout.readyAt,game.time+13);
+        scout.readyAt=Math.max(scout.readyAt,game.time+(activeChallenge?.elite===true?5:13));
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
-        scout.__mobileTrainingHoldUntil=game.time+(sniper?20:7);
+        scout.__mobileTrainingHoldUntil=game.time+(activeChallenge?.elite===true?(sniper?7:3):sniper?20:7);
         return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance};
       }
     }
@@ -421,7 +496,9 @@ export function createFpsMobileUx(game, root, doc) {
   function applyBalance(elapsed) {
     const p = game.player;
     if (!p) return;
-    const profile = mobileEnemyDifficulty(activeChallenge?.kind, elapsed, p.stats);
+    const normalProfile = mobileEnemyDifficulty(activeChallenge?.kind, elapsed, p.stats);
+    const expertProfile = activeChallenge?.elite===true
+      ? mobileEnemyDifficulty(activeChallenge.kind, elapsed, p.stats, true) : null;
     // Both teams stay comparable: do not let allied bots farm all enemies
     // before a novice player gets a first encounter.
     for (const actor of game.actors || []) {
@@ -432,12 +509,15 @@ export function createFpsMobileUx(game, root, doc) {
         actor.role='rush';
         actor.pickGoal?.();
       }
+      // Only opponents gain expert reaction and aim: allies cannot carry the mission.
+      const profile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
       actor.diff = {...profile, react: [...profile.react]};
       actor.recoilControl = profile.ctrl;
     }
   }
 
   function nudgeAim(forceFiring = false) {
+    if(activeChallenge?.elite===true)return;
     const p = game.player, cam = game.renderer?.camera;
     const simple = activeChallenge?.kind==='hits' && p?.weapon?.id==='m4a1';
     if (!p?.alive || !game.playing || game.paused || !cam ||
@@ -474,7 +554,7 @@ export function createFpsMobileUx(game, root, doc) {
 
   function updateAutoFire() {
     const p=game.player, actor=game.aimTarget;
-    const simple=activeChallenge?.kind==='hits';
+    const simple=cfAutoFireEligible(activeChallenge);
     if (!simple || !p?.alive || !game.playing || game.paused || !playerEngaged) {
       if (simple && p) p.mouse.l=false;
       autoAimActor=null;autoFireActive=false;
@@ -510,7 +590,9 @@ export function createFpsMobileUx(game, root, doc) {
     const p = game.player, actor = game.aimTarget;
     const side = p?.alive && actor?.alive ? teamSide(p.team, actor.team) : 'unknown';
     const label = side === 'ally' ? '◆ 队友 · 不要射击' : side === 'enemy'
-      ? activeChallenge?.kind==='hits' ? '▼ 敌人 · 对准自动开火' : '▼ 敌人 · 可以射击'
+      ? activeChallenge?.kind==='hits'
+        ? (cfAutoFireEligible(activeChallenge) ? '▼ 敌人 · 对准自动开火' : '▼ 敌人 · 点按开火')
+        : '▼ 敌人 · 可以射击'
       : '';
     html.dataset.fpsAimSide = side;
     target.hidden = !label;
@@ -582,12 +664,14 @@ export function createFpsMobileUx(game, root, doc) {
       activeChallenge = challenge || null;
       const tip=tutorial.querySelector('span:last-child');
       if(tip)tip.innerHTML=activeChallenge?.kind==='hits'
-        ? '<b>③</b> 对准敌人自动开火'
+        ? (cfAutoFireEligible(activeChallenge) ? '<b>③</b> 对准敌人自动开火' : '<b>③</b> 瞄准后手动开火')
         : activeChallenge?.kind==='kills'
           ? '<b>③</b> 先找敌人，再开镜射击'
           : '<b>③</b> 点按或按住开火';
       autoAimActor=null;autoAimSince=0;autoFireActive=false;playerEngaged=false;aimTouchStarts.clear();
-      guide.textContent = activeChallenge?.kind === 'kills'
+      guide.textContent = activeChallenge?.elite===true
+        ? '⚡ 精英复战 · 敌人更快，必须自己瞄准并按开火'
+        : activeChallenge?.kind === 'kills'
         ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先找到目标，再开镜射击'
         : activeChallenge?.kind === 'survive'
           ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手移动躲避，右侧观察敌人'
@@ -597,7 +681,9 @@ export function createFpsMobileUx(game, root, doc) {
       routePath=null;routeLastAt=0;
       nextUpdate = 0;
       nextBalanceAt = 0;
-      lastHits = 0;
+      lastHits = game.player?.stats?.hits || 0;
+      cueExpiresAt = 0;
+      hitCue.hidden = true;
       walkedMeters = 0;
       previousPosition = null;
       lastBoard = '';
@@ -624,6 +710,7 @@ export function createFpsMobileUx(game, root, doc) {
     update(running, now = performance.now()) {
       const active = !!(running && game.playing && !game.paused && !game.ended);
       html.dataset.fpsActive = String(active);
+      if (!active || now >= cueExpiresAt) hitCue.hidden = true;
       const p = game.player;
       fadeNativeAllies(active);
       const scopeButton=buttons.find(b=>b.dataset.mkAction==='scope');
@@ -671,17 +758,23 @@ export function createFpsMobileUx(game, root, doc) {
         nudgeAim();
         const hits = p.stats?.hits || 0;
         if (hits > lastHits) {
-          originalToast(activeChallenge?.kind==='kills'
-             ? '✓ 狙击命中！拉栓后继续开镜瞄准胸部'
-             : '✓ 命中！继续对准红色敌人', 1.8);
-          lastHits = hits;
+          // This is driven solely by native player.stats.hits, not aiming or shooting.
+          const text = cfHitCue(activeChallenge, hits, hits-lastHits);
+          if (text) {
+            hitCue.textContent = text;
+            hitCue.hidden = false;
+            cueExpiresAt = now + 680;
+          }
         }
+        lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
         if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
             ? activeChallenge?.kind==='hits'
-              ? '▼ 首战目标已出现！准星对准敌人就会开火'
+              ? (cfAutoFireEligible(activeChallenge)
+                  ? '▼ 首战目标已出现！准星对准敌人就会开火'
+                  : '⚡ 精英目标出现！跟准敌人，再点按开火')
               : '▼ 前方有敌人！点按开火'
             : turn ? turn.symbol+' '+turn.label+' · '+turn.distance+'米后进入交火区'
               : '沿集装箱外侧通道推进，寻找红色敌人';
@@ -701,7 +794,7 @@ export function createFpsMobileUx(game, root, doc) {
       aimTouchStarts.clear();
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
-      board.remove(); target.remove(); guide.remove(); tutorial.remove();
+      board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
       }
