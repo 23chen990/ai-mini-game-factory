@@ -22,8 +22,20 @@ test('a real jump, not pressing jump anywhere, earns the visible barrier prize',
 test('safe detour is legitimate without winning optional jump prize',()=>{
  const r=newRun(1);
  r.obstacles=[{id:'b1',kind:'barrier',x:60,lane:1,speed:0,z:0,hit:false,passed:false,triggerAt:null}];
- r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,caught:false}];
+ r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,sourceObstacleId:'b1',caught:false}];
  input(r,'left');tick(r,10);assert.notEqual(r.phase,'finished');assert.equal(r.jumpedBarriers,0);assert.equal(r.count,0);
+});
+test('a safe detour forfeits only the jump prize, without pretending a jump or destroying a fish streak',()=>{
+ const r=newRun(1);r.obstacles=[{id:'b1',kind:'barrier',x:60,lane:1,speed:0,z:0,hit:false,passed:false,triggerAt:null}];
+ r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,sourceObstacleId:'b1',caught:false}];
+ r.streak=3;r.bestStreak=3;input(r,'left');tick(r,8.6);
+ assert.equal(r.obstacles[0].passed,true);
+ assert.equal(r.obstacles[0].jumped,false);
+ assert.equal(r.fishes[0].forfeited,true,'bonus must disappear after safely bypassing its source barrier');
+ assert.equal(r.streak,3,'choosing the safe route does not penalise existing catches');
+ input(r,'right');tick(r,2);
+ assert.equal(r.count,0);assert.equal(r.gold,0);assert.equal(r.jumpedBarriers,0);
+ assert.ok(!r.events.some(e=>e.type==='fish-caught'&&e.objectId==='prize'));
 });
 test('opening fish teaches fractional steering without faking collection or punishing the first pickup',()=>{
  const [first,second,third]=LEVELS[0].fish.filter(f=>!f.bonus).slice(0,3);
