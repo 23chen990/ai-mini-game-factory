@@ -348,6 +348,14 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
  * generate novice aiming directions. No actor tracking behind walls. */
 /** Fire button finger doubles as a view joystick, without creating a shot or
  * editing any hit/health stat. Cap one outlier touchmove for a steady thumb. */
+/** End/cancel a real mobile fire gesture without swallowing a short tap.
+ * Ordinary touchend leaves native firePressed pending until Player.update().
+ * OS cancellation, pause, restart and destroy discard that pending tap. */
+export function cfReleaseTouchFire(touch,cancelPending=false) {
+  if(!touch)return;
+  touch.fire=false;
+  if(cancelPending)touch.firePressed=false;
+}
 export function cfFireDragLookDelta(dx,dy) {
   if(!Number.isFinite(dx)||!Number.isFinite(dy))return {x:0,y:0};
   const clamp=v=>Math.max(-96,Math.min(96,v*1.6));
@@ -555,13 +563,7 @@ export function createFpsMobileUx(game, root, doc) {
     }
   };
   const releaseNativeFire=(cancelPending=false)=>{
-    if(game.player?.touch){
-      game.player.touch.fire=false;
-      // A normal quick tap must leave native firePressed for the very next
-      // game update even when touchend happens before its first render frame.
-      // Cancel/pause/restart/teardown deliberately discard pending shots.
-      if(cancelPending)game.player.touch.firePressed=false;
-    }
+    cfReleaseTouchFire(game.player?.touch,cancelPending);
   };
   const onTouchEnd=e=>{
     markTouch();
