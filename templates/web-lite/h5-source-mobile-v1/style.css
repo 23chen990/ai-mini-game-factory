@@ -174,3 +174,19 @@ html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="runni
 html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) .mk-fps-enemy {
   display:none!important;
 }
+
+
+/* CF only: confirm a genuine native hit briefly, outside the sight picture.
+   Never reveal an enemy, create a bullet, or obscure the fire controls. */
+html[data-reference-game="cf-transport-ship"] #mk-fps-hit-feedback{
+  pointer-events:none;position:absolute;z-index:2;
+  left:50%;top:calc(50% - 57px);transform:translateX(-50%);
+  padding:3px 9px;border:1px solid #71e5be;border-radius:7px;
+  background:#082f2de8;color:#d7fff1;white-space:nowrap;
+  font-size:clamp(12px,2.3vw,15px);font-weight:800;
+  text-shadow:0 1px 2px #000;box-shadow:0 0 12px #22c5a03d;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-hit-feedback[hidden],
+html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-hit-feedback{
+  display:none!important;
+}
