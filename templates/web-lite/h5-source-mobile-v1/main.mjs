@@ -62,7 +62,9 @@ async function boot() {
         : record?.wins ? '✓ 已完成' : Math.ceil(c.limitMs / 1000) + '秒';
       return `<button data-challenge-id="${c.id}" data-kind="${c.kind}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${state}</small></button>`;
     }).join('');
-    $('goal').max = id === 'cf-transport-ship' && selected.kind === 'survive' ? selected.limitMs / 1000 : selected.target;
+    $('goal').max = id === 'cf-transport-ship' && displayChallenge.drill==='reposition'
+      ? displayChallenge.openingHits + displayChallenge.minTravel + displayChallenge.target
+      : id === 'cf-transport-ship' && selected.kind === 'survive' ? selected.limitMs / 1000 : selected.target;
     $('goal').value = 0; root.dataset.challenge = selected.id;
     if (id === 'cf-transport-ship') {
       renderFacts($('fps-brief'),cfMissionFacts(displayChallenge));
@@ -121,7 +123,7 @@ async function boot() {
         g.__mkAwmKillHooked = true;
       }
       native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
-      native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,travel:fpsUx?.distanceMeters()||0}); native.simulatedSeconds = () => g.time; fpsUx = createFpsMobileUx(g, root, document); break; }
+      native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,travel:fpsUx?.distanceMeters()||0,...fpsUx?.drillMetrics()}); native.simulatedSeconds = () => g.time; fpsUx = createFpsMobileUx(g, root, document); break; }
     await wait();
   }
   if (!native) { $('copy').textContent = '加载尚未完成，请刷新或换用支持 WebGL 的浏览器。'; return; }
@@ -154,7 +156,10 @@ async function boot() {
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
   const portraitBlocked = () => id !== 'pelican-bike' && window.innerHeight > window.innerWidth;
-  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = id === 'cf-transport-ship' ? (elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try { await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
+  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = id === 'cf-transport-ship' ? (elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
+    if(activeChallenge?.drill==='reposition')
+      $('goal').max=activeChallenge.openingHits+activeChallenge.minTravel+activeChallenge.target;
+    await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
@@ -201,15 +206,21 @@ async function boot() {
         const metrics = native.metrics();
         const result = challengeResult(activeChallenge, metrics, round.phase === 'finished' || phase === 'finished', round.elapsedMs);
         round.score = result.rewardScore;
-        $('status').textContent = activeChallenge.kind === 'survive'
+        $('status').textContent = activeChallenge.drill==='reposition'
+          ? result.label
+          : activeChallenge.kind === 'survive'
           ? '❤ 余' + Math.max(0, activeChallenge.target - (metrics.deaths || 0)) + '次 · ↗ ' +
             Math.floor(metrics.travel || 0) + '/' + (activeChallenge.minTravel || 0) + 'm'
           : activeChallenge.maxDeaths!==undefined
             ? '☠ ' + (metrics.deaths||0) + '/' + activeChallenge.maxDeaths + ' · ' + result.label
             : result.label;
-        $('goal').value = activeChallenge.kind === 'survive'
-          ? Math.min(activeChallenge.limitMs / 1000, Math.round(round.elapsedMs / 1000))
-          : Math.min(result.value, activeChallenge.target);
+        $('goal').value = activeChallenge.drill==='reposition'
+          ? (metrics.drillFirstHit?activeChallenge.openingHits:0) +
+            Math.min(activeChallenge.minTravel,metrics.drillTravel||0) +
+            Math.min(activeChallenge.target,metrics.drillFollowUpHits||0)
+          : activeChallenge.kind === 'survive'
+            ? Math.min(activeChallenge.limitMs / 1000, Math.round(round.elapsedMs / 1000))
+            : Math.min(result.value, activeChallenge.target);
         if (result.outcome !== 'running') {
           finishRound(round, progress); native.pause(); clearInput(); persist();
           recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome); persist();
