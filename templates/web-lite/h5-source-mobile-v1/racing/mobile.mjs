@@ -369,8 +369,10 @@ async function boot() {
         $('progress-label').textContent = '赛程 ' + progress + '%';
         $('progress-fill').style.width = progress + '%';
         const rival = nearbyRival(g);
-        $('chase').textContent = rival ? rival.label + ' · ' + rival.metres + 'm' : '';
+        const rivalName = rival?.name && (rival.threat || rival.sideBySide) ? ' · ' + rival.name : '';
+        $('chase').textContent = rival ? rival.label + rivalName + ' · ' + rival.metres + 'm' : '';
         $('chase').dataset.threat = String(!!rival?.threat);
+        $('chase').dataset.duel = String(!!rival?.sideBySide);
         $('chase').hidden = !rival;
         if (momentUntil && now >= momentUntil) $('moment').hidden = true;
         const speedView = raceSpeedHUD(g.player);
