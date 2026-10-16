@@ -39,7 +39,7 @@ export class RacingCareer {
   nextStage() { return !this.dailySnapshot && this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
   configure(game) {
     const s = this.stage;
-    Object.assign(game.settings, { map: s.map, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin });
+    Object.assign(game.settings, { map: s.map, course: s.course, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin });
     game.save();
   }
   setupAd(config, tap) { this.config = config;this.tap = tap;this.fuelEnabled = this.storageOK && fuelPlatformReady(config, tap);return this.fuelEnabled; }
