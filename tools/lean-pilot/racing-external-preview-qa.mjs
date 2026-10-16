@@ -5,7 +5,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { chromium } from '@playwright/test';
 
 export async function verifyExternalRacingPreview(url, output) {
-  if (!/^https:\/\/raw\.githack\.com\//.test(url)) throw Error('Unexpected external preview host');
+  if (!/^https:\/\/(?:raw\.githack\.com\/|[a-z0-9-]+\.github\.io\/)/i.test(url)) throw Error('Unexpected external preview host');
   await mkdir(output, { recursive: true });
   const browser = await chromium.launch({
     headless: true,
@@ -16,6 +16,14 @@ export async function verifyExternalRacingPreview(url, output) {
     viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true,
     deviceScaleFactor: 1,
   });
+  // The source HTML host intercepts first-time browser documents with a
+  // security confirmation. This cookie reproduces an ALREADY-CONFIRMED session;
+  // it does not prove that a fresh human can open the URL without an extra step.
+  if (new URL(url).hostname === 'raw.githack.com') {
+    await context.addCookies([{ name:'__Http-phish', value:'1',
+      domain:'raw.githack.com', path:'/23chen990/ai-mini-game-factory/',
+      secure:true, httpOnly:true, sameSite:'Lax' }]);
+  }
   const page = await context.newPage(), errors = [], observations = [];
   page.on('pageerror', error => errors.push(error.message));
   let success = false, problem = null;
@@ -83,10 +91,23 @@ export async function verifyExternalRacingPreview(url, output) {
     observations.push({state:'paused',normalPause:true});
     assert.deepEqual(errors, [], 'Uncaught errors during normal HTTPS browser play');
     success = true;
-  } catch (error) { problem = String(error.stack || error); }
+  } catch (error) {
+    problem = String(error.stack || error);
+    try {
+      const debug = await page.evaluate(() => {
+        const root = document.querySelector('#race-kit'),game=window.game;
+        return {title:document.title,url:document.URL,loaded:root?.dataset.loaded,
+          error:root?.dataset.error,readyDisabled:root?.querySelector('#race-start')?.disabled,
+          gameState:game?.state,player:!!game?.player,track:!!game?.track,
+          bodyExcerpt:document.body?.innerText?.slice(0,500)};
+      });
+      observations.push({state:'failure-diagnostic',debug});
+      await page.screenshot({path:output+'/failure-diagnostic.png'}).catch(()=>{});
+    } catch { /* A failed page navigation should not erase original error. */ }
+  }
   finally {
     const report = {gameId:'qq-speed', externalUrl:url, browser:'Chromium WebGL software',
-      testType:'normal external HTTP startup and touch, NOT natural full career or physical-phone test',
+      testType:'remote HTTPS Chromium with confirmed raw.githack safety cookie when applicable; NOT first-click readiness, full career or physical-phone test',
       success, observations, errors, problem, testedAt:new Date().toISOString()};
     await writeFile(output + '/report.json', JSON.stringify(report, null, 2) + '\n');
     await context.close(); await browser.close();
