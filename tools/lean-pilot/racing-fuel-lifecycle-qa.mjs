@@ -124,7 +124,7 @@ test('V4.4 analogue steering keeps large thumb targets at the edges with an unob
   const geometry = await page.evaluate(() => {
     const wheel=document.querySelector('#race-joystick').getBoundingClientRect();
     const drift=document.querySelector('[data-race-action="drift"]').getBoundingClientRect();
-    return {wheel:wheel.toJSON(),drift:drift.toJSON(),width:innerWidth};
+    return {wheel:wheel.toJSON(),drift:drift.toJSON(),width:window.innerWidth};
   });
   assert.ok(geometry.wheel.width >= 100,JSON.stringify(geometry));
   assert.ok(geometry.drift.width >= 80,JSON.stringify(geometry));
