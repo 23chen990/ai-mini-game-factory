@@ -60,6 +60,16 @@ const CHALLENGES = {
     {id:'survive',title:'小队生存',instructions:'MP5起手，坚持45秒，累计移动20米，死亡不超过2次。',limitMs:45000,kind:'survive',target:2,minTravel:20,weapon:'mp5'},
   ],
 };
+/** Optional, earned CF replay contract. Native damage/kill rules stay untouched. */
+export function cfEliteChallenge(base) {
+  if(base?.id==='tags'&&base.kind==='hits')
+    return {...base,elite:true,limitMs:45000,maxDeaths:1};
+  if(base?.id==='precision'&&base.kind==='kills')
+    return {...base,elite:true,limitMs:75000,maxDeaths:1};
+  if(base?.id==='survive'&&base.kind==='survive')
+    return {...base,elite:true,target:1,minTravel:30};
+  throw Error('Unsupported CF elite challenge');
+}
 export function challengesFor(gameId) {
   if (!Object.hasOwn(CHALLENGES,gameId)) throw Error('Unknown challenge game');
   return CHALLENGES[gameId].map(c=>({...c}));
@@ -68,7 +78,14 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
   let complete=false,failed=false,value=0,label='';
   if(c.kind==='fish') {value=m.points||0;complete=value>=c.target&&(!c.jumps||(m.jumps||0)>=c.jumps);label=`🐟 ${value}/${c.target}`+(c.jumps?` · ⤒ ${m.jumps||0}/${c.jumps}`:'');}
   if(c.kind==='race') {value=m.finished?1:0;complete=!!m.finished&&(!c.place||m.place>0&&m.place<=c.place)&&(!c.drifts||(m.drifts||0)>=c.drifts);label=`🏁 ${m.place>0?'第'+m.place+'名':'等待发车'}`+(c.drifts?` · 漂移 ${m.drifts||0}/${c.drifts}`:'');}
-  if(c.kind==='hits'||c.kind==='kills') {value=c.kind==='kills'&&c.weapon==='awm'?(m.awmKills||0):(m[c.kind]||0);complete=value>=c.target;label=`🎯 ${value}/${c.target}${c.kind==='hits'?'命中':c.weapon==='awm'?'AWM击杀':'击杀'}`;}
+  if(c.kind==='hits'||c.kind==='kills') {
+    value=c.kind==='kills'&&c.weapon==='awm'?(m.awmKills||0):(m[c.kind]||0);
+    const budgetExceeded=Number.isInteger(c.maxDeaths) && c.maxDeaths>=0 &&
+      Math.max(0,Number(m.deaths)||0)>c.maxDeaths;
+    failed=budgetExceeded;
+    complete=!budgetExceeded&&value>=c.target;
+    label=`🎯 ${value}/${c.target}${c.kind==='hits'?'命中':c.weapon==='awm'?'AWM击杀':'击杀'}`;
+  }
   if(c.kind==='survive') {
     value=Math.min(c.target+1,m.deaths||0);
     failed=value>c.target;
