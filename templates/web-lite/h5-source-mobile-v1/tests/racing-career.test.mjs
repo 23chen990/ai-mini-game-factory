@@ -32,11 +32,11 @@ test('淘汰可视提示显示真实赛段进度、末位危险；过点和换�
 
 test('failure diagnosis distinguishes authentic rank, technique and boss losses without awarding a pass',()=> {
   const cases=[
-    [STAGES[2],result(1),{cleanPasses:0},/有效弯道超车 0\/1/],
-    [STAGES[6],{...result(6),time:97.3},{},/第6名，要求前5名/],
-    [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前3名/],
+    [STAGES[2],result(1),{cleanPasses:0},/有效弯道超车 0\/2/],
+    [STAGES[6],{...result(6),time:97.3},{},/第6名，要求前3名/],
+    [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前2名/],
     [STAGES[15],result(2),{beatBoss:false},/未超过指定车神/],
-    [STAGES[14],result(4),{pickups:1},/实际拾取道具 1\/3/],
+    [STAGES[14],result(4),{pickups:1},/实际拾取道具 1\/4/],
   ];
   for(const [stage,r,stats,expected] of cases){
     const before=JSON.stringify({r,stats});
@@ -48,17 +48,17 @@ test('failure diagnosis distinguishes authentic rank, technique and boss losses 
   }
   assert.match(stageFailureFeedback(STAGES[11],result(6),{eliminated:true}).reason,/淘汰点/);
   assert.match(stageFailureFeedback(STAGES[6],{finished:false,completion:.4},{}).reason,/40%/);
-  assert.match(stageFailureFeedback(STAGES[15],result(4),{beatBoss:false}).reason,/要求前3名.*未超过指定车神/);
+  assert.match(stageFailureFeedback(STAGES[15],result(4),{beatBoss:false}).reason,/要求前1名.*未超过指定车神/);
 });
 
 test('16 staged challenges use four biome worlds and eight distinct objectives',()=>{
   assert.equal(STAGES.length,16);assert.equal(new Set(STAGES.map(s=>s.map)).size,4);
   assert.ok(new Set(STAGES.map(s=>s.kind)).size>=8);assert.ok(STAGES.filter(s=>s.laps>1).length>=12);
-  assert.equal(STAGES[0].laps,1);
+  assert.equal(STAGES[0].laps,2);
 });
 test('overtake briefing explains how a genuine corner pass works, but still rejects rank-only wins',()=>{
-  assert.match(STAGES[2].goal,/弯道或出弯.*超过对手 1 次/);
-  assert.match(STAGES[10].goal,/弯道或出弯.*超过对手 2 次/);
+  assert.match(STAGES[2].goal,/弯道或出弯.*超过对手 2 次/);
+  assert.match(STAGES[10].goal,/弯道或出弯.*超过对手 3 次/);
   assert.equal(gradeStage(STAGES[2],result(1),{cleanPasses:0}),0);
   assert.equal(gradeStage(STAGES[10],result(1),{cleanPasses:1}),0);
 });
@@ -67,7 +67,7 @@ test('unlock is linear, rank alone cannot pass an objective',()=>{
   c=recordStage(c,STAGES[0],result(),{}).career;
   assert.equal(stageUnlocked(c,1),true);assert.equal(stageUnlocked(c,2),false);
   assert.equal(gradeStage(STAGES[2],result(),{cleanPasses:0}),0);
-  assert.ok(gradeStage(STAGES[2],result(),{cleanPasses:1}));
+  assert.ok(gradeStage(STAGES[2],result(),{cleanPasses:2}));
 });
 test('valid drift counts real driftEnd above .22 seconds',()=>{
   assert.equal(validDrift({type:'driftStart',data:{time:5}}),false);
@@ -384,36 +384,58 @@ test('双键道具：背包只剩一件没有目标的护盾，超过18秒自动
 });
 
 test('boss goals disclose rank + opponent gates; beating rival at sixth is not victory',()=>{
-  assert.match(STAGES[12].goal,/前五名/);
-  assert.match(STAGES[15].goal,/前三/);
+  assert.match(STAGES[12].goal,/前二名/);
+  assert.match(STAGES[15].goal,/第一名/);
   assert.equal(gradeStage(STAGES[15],{finished:true,place:6,time:130,stats:{crash:1}},{beatBoss:true}),0);
   const c=new RacingCareer(memory()),g=game();c.index=15;c.begin(g);
-  assert.match(c.objectiveLabel(g),/须前3名/);
+  assert.match(c.objectiveLabel(g),/须前1名/);
   assert.match(c.objectiveLabel(g),/未超越/);
   g.standings=[g.player,g.racers[1],g.racers[2]];
   assert.match(c.objectiveLabel(g),/已超越/);
 });
 
-test('V3.4 tightens obvious time padding but does not block clean novice completion',()=>{
-  assert.equal(STAGES[6].target,115);
-  const ok={finished:true,place:3,time:114,stats:{crash:1}};
+test('V4.8 hard time/drift gates reject previous relaxed objectives',()=>{
+  assert.equal(STAGES[6].target,105);
+  const ok={finished:true,place:3,time:104,stats:{crash:1}};
   assert.ok(gradeStage(STAGES[6],ok,{}));
-  assert.equal(gradeStage(STAGES[6],{...ok,time:116},{}),0);
-  assert.equal(STAGES[3].target,3,'chapter one teaches drifts without a harder softlock');
+  assert.equal(gradeStage(STAGES[6],{...ok,time:106},{}),0);
+  assert.equal(STAGES[3].target,5,'opening chapter demands proper technical drifting');
   const drive={finished:true,place:1,time:95,stats:{crash:0}};
-  assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:4}),2);
+  assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:5}),2);
   assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:6}),3);
 });
-test('V4.6 final boss has a measurable higher native skill but no scripted result',()=>{
+test('V4.8 final boss and podium become significantly harder without touching race results',()=>{
   const career=new RacingCareer(memory()),g=game();
   career.index=15;
   g.racers[1].skill=1.38;g.racers[2].skill=1.32;
   const original=g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d}));
   career.begin(g);
-  assert.equal(career.boss.skill,1.45);
-  assert.equal(g.racers[2].skill,1.30);
+  assert.equal(career.boss.skill,2.10);
+  assert.equal(g.racers[2].skill,1.52);
   assert.deepEqual(g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d})),original);
-  assert.equal(STAGES[15].rank,3);
+  assert.equal(STAGES[15].rank,1);
   assert.equal(gradeStage(STAGES[15],{finished:true,place:2,time:130,stats:{crash:2}},{beatBoss:false}),0);
-  assert.ok(gradeStage(STAGES[15],{finished:true,place:2,time:130,stats:{crash:2}},{beatBoss:true})>0);
+  assert.ok(gradeStage(STAGES[15],{finished:true,place:1,time:130,stats:{crash:2}},{beatBoss:true})>0);
+});
+
+test('V4.8 stage01 is NOT a tutorial pass: demands two full laps, rank and a true strong AI',()=>{
+  const s=STAGES[0],c=new RacingCareer(memory()),g=game();
+  assert.equal(s.laps,2);assert.equal(s.rank,3);assert.equal(s.diff,1);
+  assert.equal(gradeStage(s,{...result(4),time:86},{}),0);
+  assert.ok(gradeStage(s,{...result(3),time:86},{}));
+  const snapshot=g.racers.map(x=>({s:x.s,progress:x.progress,d:x.d}));
+  c.begin(g);
+  assert.ok(g.racers[1].skill>=1.16);
+  assert.ok(g.racers[2].skill>=1.60);
+  assert.deepEqual(g.racers.map(x=>({s:x.s,progress:x.progress,d:x.d})),snapshot);
+});
+test('V4.8 no easy rank gates remain across the sixteen stages',()=>{
+  assert.equal(STAGES.length,16);
+  for(const stage of STAGES){
+    assert.ok(stage.rank<=3,'hard rank on stage '+stage.id);
+    assert.ok(stage.laps>=2,'no one-lap novice tutorial '+stage.id);
+    assert.equal(gradeStage(stage,{finished:true,place:4,time:1,stats:{crash:0}},
+      {gateSpeed:300,cleanDrifts:100,cleanPasses:100,pickups:100,survived:2,beatBoss:true,padCount:10}),0,
+      'fourth place is never a pass: '+stage.id);
+  }
 });
