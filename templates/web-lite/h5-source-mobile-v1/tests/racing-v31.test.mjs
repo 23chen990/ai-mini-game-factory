@@ -18,7 +18,7 @@ function fixture() {
 test('四图用固定源码控制点重新生成S弯，保留四种场景且不新增分支导航',()=>{
   const original=fixture(),snapshot=JSON.stringify(original);
   const counts=applyTrackDesign(original);
-  assert.deepEqual(counts,{city:35,aegean:31,egypt:26,snow:25});
+  assert.deepEqual(counts,{city:35,aegean:31,egypt:30,snow:25});
   for(const [key,plan] of Object.entries(TRACK_RESHAPES)) {
     assert.equal(original[key].width,plan.width);
     assert.equal(original[key].points.length,counts[key]);
@@ -29,6 +29,20 @@ test('四图用固定源码控制点重新生成S弯，保留四种场景且不�
   assert.equal(JSON.stringify(original).includes('__racingV31'),false,'no unnecessary JSON payload');
   assert.deepEqual(applyTrackDesign(original),counts,'build must be idempotent on generated source');
   assert.notEqual(JSON.stringify(original),snapshot);
+});
+test('desert technical pass adds two independently anchored chicanes without touching original jump heights',()=>{
+  const desert=TRACK_RESHAPES.egypt;
+  assert.equal(desert.width,22);
+  assert.equal(desert.cuts.length,4);
+  assert.deepEqual(desert.cuts.map(c=>[c.start,c.end]),[[18,21],[15,17],[11,13],[7,10]]);
+  const jump=desert.cuts.find(c=>c.start===7);
+  assert.deepEqual(jump.first,[-30,215,0]);
+  const input=fixture();
+  assert.equal(input.egypt.points[2][2],0,'unpatched fixture stays independent');
+  applyTrackDesign(input);
+  assert.equal(input.egypt.points.length,30);
+  assert.ok(input.egypt.points.some(p=>p[0]===65 && p[1]===388));
+  assert.ok(input.egypt.points.some(p=>p[0]===275 && p[1]===-167));
 });
 test('源码坐标变动不能悄悄应用到别人的地图',()=>{
   const bad=fixture();
