@@ -319,7 +319,7 @@ test('CF V6 start-screen touch instructions match the selected actual fire behav
 test('CF v7 drill counts only native hits AFTER a real 12m reposition',()=>{
  const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:12,target:3,elite:false};
  let s=cfAdvanceDrill(c);
- assert.deepEqual(s,{stage:0,startTravel:0,hitBaseline:null,distance:0,follow:0,firstHit:false});
+ assert.deepEqual(s,{stage:0,startTravel:0,hitBaseline:null,anchorX:null,anchorZ:null,distance:0,follow:0,firstHit:false});
  assert.equal(cfAutoFireEligible(c,0),true);
  s=cfAdvanceDrill(c,s,{hits:0,travel:25});
  assert.equal(s.stage,0,'moving without first hit does not bypass first stage');
@@ -359,4 +359,24 @@ test('CF v7 first hit is an assisted tutorial, then mission requires real manual
  assert.match(cfMissionDebrief(c,{hits:5,drillFirstHit:true,drillStage:1,drillTravel:9},'lost'),/9\/12/);
  assert.match(cfMissionDebrief(c,{hits:9,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:2},'lost'),/2\/3/);
  assert.match(cfMissionDebrief(c,{hits:9,deaths:2,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:3},'lost'),/最多允许 1 次/);
+});
+
+
+test('CF reposition cannot be cheesed by stepping back and forth or respawn teleport',()=>{
+ const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:12,target:3};
+ let d=cfAdvanceDrill(c,null,{hits:0,travel:0,x:-30,z:-7});
+ d=cfAdvanceDrill(c,d,{hits:1,travel:1,x:-29,z:-7});
+ assert.equal(d.stage,1);assert.equal(d.anchorX,-29);
+ assert.equal(d.anchorZ,-7);
+ // 28m accumulated on a tiny loop still is not a real displacement.
+ d=cfAdvanceDrill(c,d,{hits:9,travel:29,x:-28,z:-7});
+ assert.equal(d.stage,1);assert.equal(d.distance,1);assert.equal(d.follow,0);
+ // A native respawn teleport is not itself recorded in walk distance.
+ d=cfAdvanceDrill(c,d,{hits:9,travel:29.1,x:12,z:7});
+ assert.equal(d.stage,1);assert.ok(d.distance<1);
+ d=cfAdvanceDrill(c,d,{hits:9,travel:43,x:-15,z:-7});
+ assert.equal(d.stage,2);assert.ok(d.distance>=12);
+ assert.equal(d.hitBaseline,9);
+ d=cfAdvanceDrill(c,d,{hits:11,travel:43,x:-15,z:-7});
+ assert.equal(d.follow,2);
 });
