@@ -530,7 +530,7 @@ html[data-reference-game="cf-transport-ship"] #toast{
   }
   html[data-reference-game="cf-transport-ship"] #mk-fps-tutorial{padding:2px 0}
   html[data-reference-game="cf-transport-ship"] #mk-fps-tutorial span{font-size:10px}
-  html[data-reference-game="cf-transport-ship"] #mk-fps-actions button{min-height:43px}
+  html[data-reference-game="cf-transport-ship"] #mk-fps-actions button{min-height:48px}
   html[data-reference-game="cf-transport-ship"] #mk-elite{min-height:40px;padding:6px 9px}
   html[data-reference-game="cf-transport-ship"] #mobile-kit[data-phase="finished"] #mk-fps-results>span{min-height:44px}
   html[data-reference-game="cf-transport-ship"] #mk-fps-results b{font-size:18px}
