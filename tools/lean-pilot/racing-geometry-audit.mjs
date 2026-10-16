@@ -107,6 +107,26 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
   const active=details.filter(x=>x.active);
   if(active.length<8 || details.at(-1).active)
     throw Error('Shortcut must have a physically reachable gated entry and normal exit: '+course);
+  // A shortened road is invalid if it overlaps the normal road throughout
+  // the supposedly independent middle sector. Ignore only >5m vertical
+  // overpasses. Guardrail collision widths must have actual clearance.
+  let minMidCorridorClearance=Infinity;
+  const first=Math.floor(fork.samples.length*.20),
+    last=Math.ceil(fork.samples.length*.80);
+  for(let i=first;i<last;i+=2){
+    const p=fork.samples[i],branchHalf=fork.widthAt(p.arc)*.5;
+    let nearest=Infinity;
+    for(let j=0;j<track.N;j+=2){
+      if(Math.abs(p.y-track.py[j])>5.5)continue;
+      nearest=Math.min(nearest,Math.hypot(p.x-track.px[j],p.z-track.pz[j]));
+    }
+    minMidCorridorClearance=Math.min(minMidCorridorClearance,
+      nearest-(track.halfW+branchHalf));
+  }
+  if(!Number.isFinite(minMidCorridorClearance)||
+     minMidCorridorClearance<.4)
+    throw Error('Fork overlaps original main-road driving corridor: '+
+      course+' '+minMidCorridorClearance.toFixed(1)+'m');
   const mesh=fork.buildMesh(THREE,()=>0);
   if(!mesh.getObjectByName('physical-shortcut-road') ||
      !mesh.getObjectByName('physical-shortcut-rails'))
@@ -114,7 +134,8 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
   shortcutAudit[course]={scene:CAREER_COURSE_MAPS[+course.slice(-2)-1],
     branchLengthM:+fork.length.toFixed(1),mainSegmentM:fork.end-fork.start,
     physicalSavingM:+fork.gain.toFixed(1),widthM:fork.width,neckWidthM:fork.neckWidth,
-    playerProjectionPoints:active.length};
+    playerProjectionPoints:active.length,
+    minMidCorridorClearanceM:+minMidCorridorClearance.toFixed(1)};
   mesh.traverse(o=>{o.geometry?.dispose();if(o.material&&!Array.isArray(o.material))o.material.dispose();});
 }
 if(Object.keys(shortcutAudit).length!==5)throw Error('Missing one of five real shortcut tracks');
