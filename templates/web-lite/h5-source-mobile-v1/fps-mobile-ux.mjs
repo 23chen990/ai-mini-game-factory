@@ -90,6 +90,12 @@ export function cfStabilizeNoviceScout(actor,challenge) {
   actor.path=null;actor.pi=0;actor.holdT=0;
   return true;
 }
+/** An ordinary training bot still moves and shoots but is not allowed to
+ * wander out of its original cargo shooting lane during the lesson. */
+export function cfNoviceScoutStrafe(profile,stabilized) {
+  const raw=Number(profile?.strafe);
+  return !Number.isFinite(raw)?0:stabilized?Math.min(raw,0.07):raw;
+}
 
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
@@ -243,11 +249,11 @@ export function cfLastSeenLookCue(player,known) {
   if(error< -0.18)return '→ 向右转视角 · 寻找红色敌人';
   return '↔ 左右探身 · 找回刚才的射击视线';
 }
-export function routeArrow(player, goal) {
+export function routeArrow(player, goal, stopDistance=2.2) {
   if (!player || !goal) return null;
   const dx = goal[0] - player.pos.x, dz = goal[1] - player.pos.z;
   const distance = Math.hypot(dx,dz);
-  if (!Number.isFinite(distance) || distance < 2.2) return null;
+  if (!Number.isFinite(distance) || distance < stopDistance) return null;
   const angle = Math.atan2(-dx,-dz);
   const offset = Math.atan2(Math.sin(angle-player.yaw),Math.cos(angle-player.yaw));
   return {
@@ -812,9 +818,11 @@ export function createFpsMobileUx(game, root, doc) {
       (known?[known.x,known.z]:firstEncounterDestination(p?.team));
     if(!p || !dest || !game.nav?.findPath) return null;
     const path=game.nav.findPath(p.pos.x,p.pos.z,dest[0],dest[1]);
-    if(!Array.isArray(path) || path.length<2)return null;
+    if(!Array.isArray(path)||path.length<2)
+      return observedShotLane||null;
+    const minStep=observedShotLane?0.6:2.2;
     return path.find((pt,i)=>i>0 && Array.isArray(pt) &&
-      Math.hypot(pt[0]-p.pos.x,pt[1]-p.pos.z)>2.2) || dest;
+      Math.hypot(pt[0]-p.pos.x,pt[1]-p.pos.z)>minStep) || dest;
   }
   function applyBalance(elapsed) {
     const p = game.player;
@@ -826,17 +834,19 @@ export function createFpsMobileUx(game, root, doc) {
     // before a novice player gets a first encounter.
     for (const actor of game.actors || []) {
       if (!actor || actor.isPlayer || !actor.diff) continue;
+      let stabilized=false;
       if(mobileScoutHoldExpired(actor,game.time)) {
         actor.__mobileTrainingScout=false;
         actor.__mobileSniperScout=false;
         actor.role='rush';
         actor.pickGoal?.();
       } else {
-        cfStabilizeNoviceScout(actor,activeChallenge);
+        stabilized=cfStabilizeNoviceScout(actor,activeChallenge);
       }
       // Only opponents gain expert reaction and aim: allies cannot carry the mission.
       const profile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
-      actor.diff = {...profile, react: [...profile.react]};
+      actor.diff = {...profile,strafe:cfNoviceScoutStrafe(profile,stabilized),
+        react:[...profile.react]};
       actor.recoilControl = profile.ctrl;
     }
   }
@@ -1193,14 +1203,15 @@ export function createFpsMobileUx(game, root, doc) {
             Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m'+
             (turn?' · 沿可走路线':' · 左右横移');
         } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
-          const turn=!seen?routeArrow(p,routePath):null;
+          const turn=!seen?routeArrow(p,routePath,
+            firstHitSpot&&activeChallenge.elite!==true?0.6:2.2):null;
           const reAim=!turn&&lastVisibleEnemy
             ? cfLastSeenLookCue(p,lastVisibleEnemy) : null;
           guide.textContent=seen
             ? (visibleAimCoach||'◎ 对准红色目标按开火')+
               ' · '+drill.follow+'/'+activeChallenge.target
             : turn
-              ? turn.symbol+' 回到首枪射击位 · '+drill.follow+'/'+activeChallenge.target
+              ? '🚶'+turn.symbol+' 左摇杆移动回首枪射击位 · '+drill.follow+'/'+activeChallenge.target
               : reAim
                 ? reAim+' · '+drill.follow+'/'+activeChallenge.target
                 : '↔ 探身寻找敌人 · '+drill.follow+'/'+activeChallenge.target;

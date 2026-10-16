@@ -176,6 +176,18 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    // follow that hint before it tries random blind strafing.
    const guide=page.locator('#mk-fps-guide');
    const guidance=await guide.isVisible()?await guide.textContent():'';
+   if(guidance?.startsWith('🚶')){
+     // The route arrow now explicitly means MOVE on the left joystick.
+     // Do not rotate the right camera thumb for a walking instruction.
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     if(pad){
+       const x=pad.x+pad.width/2,y=pad.y+pad.height/2;
+       const motion=guidance.includes('←')?[-52,0]:
+         guidance.includes('→')?[52,0]:[0,-52];
+       await mobileStroke({x,y},{x:x+motion[0],y:y+motion[1]},1250,76);
+     }
+     return;
+   }
    if(guidance?.startsWith('↔')){
      // Sidestep with the actual left joystick when UI says "peek".
      const pad=await page.locator('#touch .pad').first().boundingBox();

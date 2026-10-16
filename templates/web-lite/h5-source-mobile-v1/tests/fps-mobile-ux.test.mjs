@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfNoviceScoutStrafe, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -582,4 +582,26 @@ test('CF first-shot camera assistance selects only a previously sighted, real li
  }
  assert.equal(cfAutoFireEligible({kind:'hits',drill:'reposition',openingHits:1},1),false,
   'this slight first-shot assistance permanently ends after the first genuine hit');
+});
+
+
+test('CF novice returns precisely to player-proven shooting lane with a joystick navigation cue',()=>{
+ const player={pos:{x:-33,z:-3.2},yaw:-Math.PI/2};
+ // 1 meter is relevant in a narrow cargo doorway, though old generic
+ // navigation stopped providing hints at 2.2 meters.
+ const lane=[-34,-3.6];
+ assert.equal(routeArrow(player,lane),null);
+ const exact=routeArrow(player,lane,.6);
+ assert.ok(exact&&['←','→','↑'].includes(exact.symbol));
+ assert.ok(exact.distance>0);
+ assert.equal(routeArrow({pos:{x:-34,z:-3.6},yaw:-Math.PI/2},lane,.6),null);
+});
+test('CF only genuine novice real scout reduces lateral drift without changing enemy guns or elite',()=>{
+ const original={strafe:.34,turn:3.6,aimErr:.09};
+ assert.equal(cfNoviceScoutStrafe(original,true),.07);
+ assert.equal(cfNoviceScoutStrafe(original,false),.34);
+ assert.equal(cfNoviceScoutStrafe({strafe:.04},true),.04);
+ assert.deepEqual(original,{strafe:.34,turn:3.6,aimErr:.09},
+  'never mutate input profile, health, damage or firing characteristics');
+ assert.equal(cfNoviceScoutStrafe({},true),0);
 });
