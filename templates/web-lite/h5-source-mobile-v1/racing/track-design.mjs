@@ -119,16 +119,16 @@ export const COURSE_BLUEPRINTS = Object.freeze({
  */
 export const COURSE_TECHNICAL_SECTORS=Object.freeze({
   '01':[[1,14,1],[7,14,-1]],
-  '02':[[1,18,-1],[12,19,1]],
+  '02':[[1,20,-1],[3,17,1],[12,21,1]],
   '03':[[2,16,1],[10,16,-1]],
   '04':[[1,18,1],[11,19,-1]],
-  '05':[[1,18,-1],[12,18,1]],
+  '05':[[1,21,-1],[3,20,1],[12,21,1],[14,18,-1]],
   '06':[[1,17,1],[18,19,-1],[21,17,1]],
-  '07':[[1,16,-1],[12,16,1]],
+  '07':[[1,17,-1],[8,17,-1],[12,19,1],[17,17,-1]],
   '08':[[1,17,-1],[16,17,1],[19,15,-1]],
   '09':[[3,16,1],[13,16,-1]],
   '10':[[1,18,1],[12,17,-1],[17,16,1]],
-  '11':[[1,17,-1],[11,17,1],[16,16,-1]],
+  '11':[[1,19,-1],[7,18,1],[11,20,1],[16,18,-1]],
   '12':[[2,17,1],[12,18,-1],[15,17,1],[17,16,-1]],
   '13':[[1,18,1],[9,18,-1],[14,18,1]],
   '14':[[1,17,-1],[11,18,1],[15,17,-1]],
@@ -163,6 +163,9 @@ export function careerCourseDetails(id) {
   };
 }
 const parseLocalRoute = entry => entry.split(' ').map(part => part.split(',').map(Number));
+export const COURSE_ROAD_WIDTHS = Object.freeze({
+  '02':20, '05':18.5, '07':19.5, '11':18,
+});
 export function createCareerLayouts(layouts) {
   const fingerprints=new Set(),titles=new Set();
   for(let i=1;i<=16;i++){
@@ -188,7 +191,7 @@ export function createCareerLayouts(layouts) {
     const signature=JSON.stringify(points);
     if(fingerprints.has(signature))throw Error('Duplicate authored course shape '+id);
     fingerprints.add(signature);
-    layouts['race-'+id]={width:base.width,points};
+    layouts['race-'+id]={width:COURSE_ROAD_WIDTHS[id]??base.width,points};
   }
   if(fingerprints.size!==16||titles.size!==16)throw Error('Expected 16 distinct hand-authored courses');
   return fingerprints.size;
