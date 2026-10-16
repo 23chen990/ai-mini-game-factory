@@ -20,10 +20,36 @@ export function roadHint(game) {
     return '↶↷ 连续弯 · 左右提前换向';
   }
   if(game.itemMode && game.items?.boxes?.length) {
-    // Native box rows are at these per-lap fractions; contents are RANDOM.
-    for(const fraction of [.1,.35,.6,.85]) {
-      const ahead=(fraction*tr.length-current+tr.length)%tr.length;
-      if(ahead>=28 && ahead<=115)return '🎁 前方随机道具 · 左右选择车道';
+    // Pinned native boxes occupy four per-lap rows. Their item contents remain
+    // RANDOM; the lane callout describes only a real, visible, available box.
+    const row=[.1,.35,.6,.85].map(fraction=>({
+      d:fraction*tr.length,
+      ahead:(fraction*tr.length-current+tr.length)%tr.length,
+    })).filter(candidate=>candidate.ahead>=28&&candidate.ahead<=115)
+      .sort((a,b)=>a.ahead-b.ahead)[0];
+    if(row) {
+      const fallback='🎁 前方随机道具 · 左右选择车道';
+      if(typeof tr.sample!=='function')return fallback;
+      const sample=tr.sample(row.d,{});
+      if(!Number.isFinite(sample.x)||!Number.isFinite(sample.z)||
+         !Number.isFinite(sample.rx)||!Number.isFinite(sample.rz)||
+         !Number.isFinite(sample.tx)||!Number.isFinite(sample.tz))return fallback;
+      const physical=game.items.boxes.filter(box=>Number.isFinite(box.x)&&Number.isFinite(box.z));
+      if(!physical.length)return fallback; // Minimal legacy fixtures only.
+      const available=[];
+      for(const box of physical) {
+        if(box.respawn>0 || box.g?.visible===false)continue;
+        const dx=box.x-sample.x,dz=box.z-sample.z;
+        const along=dx*sample.tx+dz*sample.tz;
+        const lat=dx*sample.rx+dz*sample.rz;
+        if(Math.abs(along)<=8 && Number.isFinite(lat)&&Math.abs(lat)<=(tr.halfW??15)+1)
+          available.push(lat);
+      }
+      if(!available.length)return ''; // All native boxes in this row are gone.
+      const selected=available.sort((a,b)=>Math.abs(a-(p.lat??0))-Math.abs(b-(p.lat??0)))[0];
+      if(selected>2.4)return '🎁 左侧可拾取随机道具 · 提前选线';
+      if(selected< -2.4)return '🎁 右侧可拾取随机道具 · 提前选线';
+      return '🎁 中线可拾取随机道具';
     }
   }
   if(tr.boostPads?.length) {

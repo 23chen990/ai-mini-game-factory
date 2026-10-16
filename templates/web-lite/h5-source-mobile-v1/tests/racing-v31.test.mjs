@@ -123,6 +123,25 @@ test('道具路线提醒只说左右车道，不伪称随机道具已确定',()=
 });
 
 
+
+test('道具车道提示使用真实仍可拾取的原生盒子坐标，不看随机道具内容',()=>{
+  const player={d:190,s:37,lat:4.5,wrongWay:0,airborne:false,finished:false};
+  const left={x:-6,z:0,respawn:0,g:{visible:true}};
+  const right={x:6,z:0,respawn:0,g:{visible:true}};
+  const game={state:'race',player,itemMode:true,items:{boxes:[left,right]},
+    track:{length:2500,halfW:12,curvAhead:()=>0,
+      sample:()=>({x:0,z:0,tx:0,tz:1,rx:-1,rz:0})}};
+  assert.match(roadHint(game),/左侧可拾取随机道具/);
+  player.lat=-4.5;assert.match(roadHint(game),/右侧可拾取随机道具/);
+  right.respawn=3;assert.match(roadHint(game),/左侧可拾取随机道具/);
+  left.g.visible=false;assert.equal(roadHint(game),'','respawning or hidden boxes cannot be promised');
+  left.g.visible=true;left.respawn=0;player.lat=4.5;
+  game.track.curvAhead=()=>.03;assert.match(roadHint(game),/左急弯/,'dangerous curve always takes priority');
+  game.track.curvAhead=()=>0;game.state='paused';assert.equal(roadHint(game),'');
+  assert.equal(left.respawn,0,'read-only hint cannot change pickup availability');
+  assert.equal(game.items.boxes.length,2,'hint must never spawn or grant items');
+});
+
 test('四图原生加速带不增加数量，偏移到合法左右车道形成真实路线抉择',()=>{
   const original=Object.entries(PAD_LANES).map(([id,pads])=>({
     id,track:{boostPads:pads.map(p=>({at:[...p.at]}))}
