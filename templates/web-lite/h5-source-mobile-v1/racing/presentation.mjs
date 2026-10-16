@@ -1,5 +1,5 @@
 /** Pure arcade presentation. Never mutates native driving, result or save state. */
-import { COURSE_BLUEPRINTS } from './track-design.mjs';
+import { COURSE_BLUEPRINTS, injectTechnicalSectors } from './track-design.mjs';
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const finite = value => typeof value === 'number' && Number.isFinite(value);
@@ -9,7 +9,8 @@ export function careerCourseSvg(course) {
   const id = typeof course === 'string' ? course.replace(/^race-/, '') : '';
   const blueprint = COURSE_BLUEPRINTS[id];
   if (!blueprint) return '';
-  const points = blueprint[4].split(' ').map(point => point.split(',').map(Number));
+  const basePoints = blueprint[4].split(' ').map(point => point.split(',').map(Number));
+  const points = Number.isFinite(blueprint[3]) ? injectTechnicalSectors(basePoints,id,blueprint[3]) : basePoints;
   if (points.length < 6 || !points.every(point => point.length === 3 && point.every(finite))) return '';
   const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
   const x0 = Math.min(...xs), y0 = Math.min(...ys), dx = Math.max(1, Math.max(...xs) - x0), dy = Math.max(1, Math.max(...ys) - y0);
