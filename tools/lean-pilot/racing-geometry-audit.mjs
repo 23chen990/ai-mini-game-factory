@@ -4,7 +4,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
 import { createRequire } from 'node:module';
-import { applyTrackDesign } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
+import { applyTrackDesign, CAREER_COURSE_MAPS } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 import { PAD_LANES } from '../../templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs';
 
 const root=process.cwd(), src=path.join(root,'runs/h5-qq-mobile-20261013/workspace/source/qq-speed');
@@ -57,11 +57,29 @@ const maps={};for(const name of Object.keys(original)){
   maps[name]={old:inspect(original[name],name),next:inspect(modified[name],name)};
   if(maps[name].next.maxPadAnchorOffsetM>36) throw Error(name+': new centerline is too far from an existing boost pad anchor');
 }
-const report={schemaVersion:1,buildHash:build.buildHash,upstream:build.sourceRevision,
-  limitation:'Static Catmull-Rom centerline only; not natural-driving/phone performance QA',maps};
+const courses={}, fingerprints=new Set();
+for(let i=1;i<=16;i++){
+  const id=String(i).padStart(2,'0'),key='race-'+id,map=CAREER_COURSE_MAPS[i-1];
+  const layout=modified[key];
+  if(!layout || !Array.isArray(layout.points)) throw Error('Missing physical stage course '+id);
+  const fingerprint=JSON.stringify(layout.points);
+  if(fingerprints.has(fingerprint)) throw Error('Duplicated physical stage course '+id);
+  fingerprints.add(fingerprint);
+  const geometry=inspect(layout,map);
+  if(geometry.sameLevelClosePairs>0 || geometry.maxPadAnchorOffsetM>36 ||
+      geometry.lengthM<1700 || geometry.lengthM>3800)
+    throw Error('Unsafe stage '+id+' physical geometry '+JSON.stringify({
+      collisions:geometry.sameLevelClosePairs,padOffset:geometry.maxPadAnchorOffsetM,length:geometry.lengthM}));
+  courses[id]={scene:map,...geometry};
+}
+if(Object.keys(courses).length!==16)throw Error('All 16 stages must have distinct physical courses');
+const report={schemaVersion:2,buildHash:build.buildHash,upstream:build.sourceRevision,
+  limitation:'Static Catmull-Rom centerline only; not natural-driving/phone performance QA',
+  maps,courses};
 const out=path.join(root,'runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'geometry-v32.json'),JSON.stringify(report,null,2)+'\n');
+await writeFile(path.join(out,'geometry-career16.json'),JSON.stringify({buildHash:report.buildHash,courses},null,2)+'\n');
 let art='';
 for(const [i,name] of Object.keys(maps).entries()){
   const a=maps[name],all=[...a.old.line,...a.next.line],xs=all.map(x=>x[0]),zs=all.map(x=>x[1]);
@@ -79,6 +97,6 @@ for(const [i,name] of Object.keys(maps).entries()){
 await writeFile(path.join(out,'geometry-v32.svg'),
   '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1100" width="1000" height="1100">'+
   '<rect width="1000" height="1100" fill="#eef4f7"/>'+art+'</svg>');
-console.log(JSON.stringify({buildHash:report.buildHash,maps:Object.fromEntries(
+console.log(JSON.stringify({careerCourseCount:Object.keys(courses).length,courseWidths:Object.fromEntries(Object.entries(courses).map(([id,c])=>[id,{scene:c.scene,lengthM:c.lengthM,turns:c.directionChanges,sharpPct:c.sharpPct}])),buildHash:report.buildHash,maps:Object.fromEntries(
   Object.entries(maps).map(([name,item])=>[name,{old:{length:item.old.lengthM,turns:item.old.directionChanges,sharp:item.old.sharpPct},
     next:{length:item.next.lengthM,turns:item.next.directionChanges,sharp:item.next.sharpPct,closePairs:item.next.sameLevelClosePairs}}]))}));
