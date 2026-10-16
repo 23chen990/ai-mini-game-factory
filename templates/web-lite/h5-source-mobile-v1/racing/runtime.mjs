@@ -63,11 +63,9 @@ export class RacingCareer {
     // because the player happens to lead. Stage 01 & named bosses stay separate.
     seedCompetitiveField(game.racers,this.stage);
     configureRivalTactics(game.racers,this.stage);
-    if (this.stage.kind === 'overtake') {
-      // A visible rival survives beyond the first straight without scripted teleportation.
-      const challengers = game.racers.filter(r => !r.isPlayer).slice(0, 2);
-      for (const rival of challengers) rival.skill = Math.max(rival.skill, 1.12);
-    }
+    // No separate overtake-stage speed floor: V4.2 already seeds a mixed
+    // field with two catchable cars and one ace. Forcing every nearby car to
+    // 1.12 made the overtaking objective less fair.
     if (game.itemMode && game.items) {
       thinItemBoxes(game.items);
       game.items.applyMobileVisuals?.();
