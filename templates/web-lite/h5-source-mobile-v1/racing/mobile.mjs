@@ -167,7 +167,9 @@ function start() {
   previousMetrics = { cleanPasses: 0, pickups: 0 };started = true;
   try {
     career.configure(g);
-    g.camMode = 1;g.mobileMode = driver.enabled;nativeStartRace();
+    // Mobile camera / anti-jitter settings follow the actual touch mode.
+    // ManualRaceDriver has no .enabled flag after the single-wheel migration.
+    g.camMode = 1;g.mobileMode = touchDriving;nativeStartRace();
     if (g.state !== 'countdown') throw Error('原生比赛未进入倒计时');
     career.begin(g);
     inputTime = performance.now();$('heading').textContent = career.stage.name;display('countdown');fuelView();

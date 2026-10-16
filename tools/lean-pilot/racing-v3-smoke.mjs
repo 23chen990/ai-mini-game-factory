@@ -142,6 +142,7 @@ async function raceStart(page, index, name) {
     nativeThreeLoaded:!!window.__RACE_THREE__?.Sprite,
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
+    mobileCamera:window.game?.mobileMode===true,
   }));
   // Software WebGL may advance less than a second of native physics in 6.5
   // wall seconds. Require real player movement, not wall-clock passage.
@@ -197,6 +198,7 @@ async function raceStart(page, index, name) {
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
+  if(!early.mobileCamera)fail(name+': actual touch driving must enable mobile camera and anti-jitter rendering');
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
     fail(name+': native vehicle did not progress with real auto throttle; '+JSON.stringify({early,after,error:movementError?.message}));
   const originalPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];
