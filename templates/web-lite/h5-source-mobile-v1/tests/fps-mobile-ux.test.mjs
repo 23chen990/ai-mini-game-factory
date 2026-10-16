@@ -410,14 +410,14 @@ test('CF v7 retains genuine partial move across native respawns but never credit
 
 test('CF novice opening opponent returns fire from readable cover before a later real rush',()=>{
  const novice={kind:'hits',drill:'reposition',elite:false};
- assert.equal(cfScoutHoldSeconds(novice),26);
+ assert.equal(cfScoutHoldSeconds(novice),65);
  assert.equal(cfScoutHoldSeconds({kind:'hits',elite:false}),7);
  assert.equal(cfScoutHoldSeconds({kind:'kills'}),20);
  assert.equal(cfScoutHoldSeconds({kind:'survive'}),7);
  assert.equal(cfScoutHoldSeconds({...novice,elite:true}),3);
  assert.equal(cfScoutHoldSeconds({kind:'kills',elite:true}),7);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:26},25.99),false);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:26},26),true);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},64.99),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},65),true);
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:false,__mobileTrainingHoldUntil:18},22),false);
 });
 
@@ -438,7 +438,7 @@ test('CF flank coach proposes a real reachable side route, never fabricates an o
  assert.ok(Math.abs(selected.z)<=2);
  assert.equal(pathCalls,0,'straight accessible flank uses cheap direct walk path');
  assert.deepEqual(player,{pos:{x:0,z:0},yaw:0},'coach never teleports player');
- const leftNav={...openNav,idx:(x,z)=>x>0?-1:0};
+ const leftNav={...openNav,idx:x=>x>0?-1:0};
  const left=cfFlankWaypoint({player,world:openWorld,nav:leftNav,minDistance:8});
  assert.ok(left&&left.x<-8);
  assert.equal(left.side,-1);
@@ -465,4 +465,14 @@ test('CF follow-up fire gets limited aim friction only when the novice actively 
  // This function changes only view angles; the original gun still requires
  // actual fire input, line-of-sight and a native bullet-hit callback.
  assert.ok(!('hit' in assisted) && !('fire' in assisted));
+});
+
+
+test('CF observed-cover training bot remains available but not invulnerable for the whole beginner clock',()=>{
+ const c={kind:'hits',drill:'reposition',limitMs:60000,elite:false};
+ assert.equal(cfScoutHoldSeconds(c),65);
+ assert.equal(cfScoutHoldSeconds({...c,limitMs:45000}),50);
+ assert.equal(cfScoutHoldSeconds({...c,elite:true}),3);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},60),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},66),true);
 });
