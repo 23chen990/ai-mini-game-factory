@@ -94,8 +94,8 @@ test('V3.9 AI is one measured notch stronger in early real races, without an ove
     const report=tuneOpponentField(racers,stage);
     assert.equal(report.adjusted,5);
     assert.equal(report.ace,true);
-    assert.ok(racers[1].skill>=.62&&racers[1].skill<.7,'all early rivals become meaningfully competent');
-    assert.ok(racers[5].skill<=.9,'rookie ace cannot become a boss');
+    assert.ok(racers[1].skill>=.83&&racers[1].skill<=.87,'early field must no longer be passive');
+    assert.ok(racers[5].skill>=1.30&&racers[5].skill<=1.40,'one credible early ace, still catchable');
     assert.deepEqual(racers.map(r=>({progress:r.progress,dist:r.dist,stats:r.stats})),
       original.map(({progress,dist,stats})=>({progress,dist,stats})),'no synthetic rank/progress/crash edits');
     assert.equal(racers[0].skill,p.skill,'never adjust player skill');
@@ -106,8 +106,8 @@ test('V3.9 AI is one measured notch stronger in early real races, without an ove
 });
 test('V3.9 boosts selected regular rivals but protects fragile goals, experts and bosses',()=>{
   const cases=[
-    ['03',1.385,true],['06',1.215,true],['08',1.385,true],
-    ['10',1.22,true],['11',1.405,true],['14',1.41,true],
+    ['03',1.61,true],['06',1.54,true],['08',1.62,true],
+    ['10',1.58,true],['11',1.62,true],['14',1.66,true],
     ['07',1.34,false],['09',1.34,false],['12',1.34,false],
   ];
   for(const [id,max,ace] of cases){
@@ -117,6 +117,7 @@ test('V3.9 boosts selected regular rivals but protects fragile goals, experts an
     assert.equal(p.ace,ace,id);
     assert.ok(p.maximum<=max+.001,'no disproportionate difficulty spike stage '+id);
     assert.ok(p.maximum>=hi-.001,id+' original AI must not get weaker');
+    assert.ok(p.maximum<=1.7,'AI hard safety bound '+id);
   }
   for(const id of ['13','15','16']){
     const stage=STAGES.find(s=>s.id===id);
