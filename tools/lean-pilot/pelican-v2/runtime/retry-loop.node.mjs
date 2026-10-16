@@ -5,7 +5,7 @@ import {failureSummary,safeGateCue,passedPreviousFailure} from './retry-loop.mjs
 
 test('authored high-pressure routes retain stable legacy obstacles and a physical escape at each double gate',()=>{
  const legacy={1:10,2:6,3:8,4:11,5:13};
- const gateCounts={2:4,3:4,4:4,5:7};
+ const gateCounts={2:4,3:4,4:4,5:6};
  for(const level of LEVELS){
   assert.deepEqual(validateLevel(makeLevel(level.id)),[],`level ${level.id} requires an achievable lane route and safe fish`);
   for(let i=0;i<legacy[level.id];i++)assert.ok(level.obstacles.some(o=>o.id===`l${level.id}-o${i}`));
