@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -419,4 +419,33 @@ test('CF novice opening opponent returns fire from readable cover before a later
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:18},17.99),false);
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:18},18),true);
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:false,__mobileTrainingHoldUntil:18},22),false);
+});
+
+
+test('CF flank coach proposes a real reachable side route, never fabricates an obstacle-free lane',()=>{
+ const player={pos:{x:0,z:0},yaw:0};
+ const openWorld={blocked:()=>false};
+ let pathCalls=0;
+ const openNav={
+  idx:(x,z)=>Math.abs(x)<=25&&Math.abs(z)<=25?0:-1,
+  walkable:k=>k>=0,
+  lineFree:()=>true,
+  findPath:()=>{pathCalls++;throw Error('direct walkable lane needs no A-star');}
+ };
+ const selected=cfFlankWaypoint({player,world:openWorld,nav:openNav,minDistance:8});
+ assert.ok(selected&&selected.x>=9.5);
+ assert.equal(selected.side,1);
+ assert.ok(Math.abs(selected.z)<=2);
+ assert.equal(pathCalls,0,'straight accessible flank uses cheap direct walk path');
+ assert.deepEqual(player,{pos:{x:0,z:0},yaw:0},'coach never teleports player');
+ const leftNav={...openNav,idx:(x,z)=>x>0?-1:0};
+ const left=cfFlankWaypoint({player,world:openWorld,nav:leftNav,minDistance:8});
+ assert.ok(left&&left.x<-8);
+ assert.equal(left.side,-1);
+ assert.equal(cfFlankWaypoint({player,world:{blocked:()=>true},nav:openNav}),null);
+ const badNav={...openNav,lineFree:()=>false,
+  findPath:(x,z,tx,tz)=>[[x,z],[100,100],[tx,tz]]};
+ assert.equal(cfFlankWaypoint({player,world:openWorld,nav:badNav}),null,
+  'path requiring a huge detour is not advertised as safe');
+ assert.equal(cfFlankWaypoint({player,nav:openNav}),null);
 });
