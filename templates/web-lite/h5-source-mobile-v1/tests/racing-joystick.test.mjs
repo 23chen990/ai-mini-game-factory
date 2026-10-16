@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { URL } from 'node:url';
 import { RacingJoystick } from '../racing/joystick.mjs';
 import { ManualRaceDriver, TouchActions } from '../racing/driver.mjs';
 import { patchAnalogSteer, patchCounterSteer, patchItemModeNitro, patchManualNitroEdge, RACING_OWNED_NAMES } from '../../../../tools/lean-pilot/racing-mobile-build.mjs';
