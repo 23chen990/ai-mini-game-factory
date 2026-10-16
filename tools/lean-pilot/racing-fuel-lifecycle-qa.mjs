@@ -118,13 +118,18 @@ test('V3 settlement actions fit both landscape sizes without requiring a panel s
     for (const b of fit) assert.ok(b.top >= 0 && b.bottom <= viewport.height && b.bottom <= b.panelBottom && b.height >= 44, JSON.stringify({ viewport, button: b }));
   }
 });
-test('V3 neutral steering fill preserves visibility of peripheral rivals while keeping large touch targets', async t => {
+test('V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre', async t => {
   const page = await setup(t); await ready(page);
   await page.locator('#race-start').tap();
-  const style = await page.locator('#race-right').evaluate(el => ({ color: getComputedStyle(el).backgroundColor, width: el.getBoundingClientRect().width }));
-  const alpha = Number(style.color.match(/rgba\([^,]+,[^,]+,[^,]+,\s*([\d.]+)\)/)?.[1] ?? 1);
-  assert.ok(alpha <= .10, style.color);
-  assert.ok(style.width >= 84);
+  const geometry = await page.evaluate(() => {
+    const wheel=document.querySelector('#race-joystick').getBoundingClientRect();
+    const drift=document.querySelector('[data-race-action="drift"]').getBoundingClientRect();
+    return {wheel:wheel.toJSON(),drift:drift.toJSON(),width:innerWidth};
+  });
+  assert.ok(geometry.wheel.width >= 100,JSON.stringify(geometry));
+  assert.ok(geometry.drift.width >= 80,JSON.stringify(geometry));
+  assert.ok(geometry.wheel.right < geometry.width *.35,JSON.stringify(geometry));
+  assert.ok(geometry.drift.left > geometry.width *.65,JSON.stringify(geometry));
 });
 test('V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge', async t => {
   const page = await setup(t); await ready(page);

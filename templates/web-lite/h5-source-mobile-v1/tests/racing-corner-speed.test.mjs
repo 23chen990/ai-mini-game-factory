@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { speedForCurvature, cornerSpeedIntent } from '../racing/corner-speed.mjs';
-import { RaceDriver } from '../racing/driver.mjs';
+import { ManualRaceDriver, TouchActions } from '../racing/driver.mjs';
 const car = patch => ({s:52,d:130,hint:2,h:0,proj:{hd:0},steer:0,lat:0,
   drifting:false,airborne:false,spin:0,wrongWay:0,impact:0,slowTime:0,
   nitroCount:0,nitroTime:0,smallWindow:0,windowKind:'',
@@ -36,18 +36,16 @@ test('missing or invalid native geometry cannot invent a brake command',()=>{
   assert.equal(cornerSpeedIntent(car({s:NaN}),road(.1)),null);
   assert.equal(cornerSpeedIntent(car(),road(NaN)),null);
 });
-test('actual two-key driver translates only throttle/brake; never edits player physics or steering',()=>{
-  const d=new RaceDriver(),p=car({s:52,progress:380}),tr=road(.04);
-  const snapshot=structuredClone(p);
-  const first=d.frame(.016,{left:true,right:false},p,tr,'race');
-  assert.equal(first.left,true);assert.equal(first.right,false);
-  assert.equal(first.up,false);assert.equal(first.down,true);
-  assert.equal(first.shift,false);
-  assert.deepEqual(p,snapshot);
-  p.s=35;const second=d.frame(.016,{left:false,right:false},p,tr,'race');
-  assert.equal(second.up,false);assert.equal(second.down,false);
-  p.s=28;const third=d.frame(.016,{left:false,right:false},p,tr,'race');
-  assert.equal(third.up,true);assert.equal(third.down,false);
-  d.frame(.016,{},p,tr,'paused');
-  assert.equal(d.cornerSpeed,null);
+test('joystick-only driving never invokes deprecated automatic curvature braking',()=>{
+  const actions=new TouchActions(),driver=new ManualRaceDriver(actions);
+  const p=car({s:52,progress:380}),tr=road(.04),before=structuredClone(p);
+  const input=driver.frame({steerAxis:.7},p,'race',{track:tr});
+  assert.equal(cornerSpeedIntent(p,tr),'brake','diagnostic helper still detects dangerous corners');
+  assert.equal(input.steerAxis,.7);
+  assert.equal(input.left,true);
+  assert.equal(input.right,false);
+  assert.equal(input.up,true,'player drives, no hidden auto-coasting or auto-braking');
+  assert.equal(input.down,false);
+  assert.equal(input.shift,false,'no automatic drift even on tight road bends');
+  assert.deepEqual(p,before);
 });

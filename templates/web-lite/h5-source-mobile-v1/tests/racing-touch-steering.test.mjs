@@ -2,57 +2,59 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { URL } from 'node:url';
-import { TouchSteering } from '../racing/driver.mjs';
+import { RacingJoystick } from '../racing/joystick.mjs';
 
-test('a new steering thumb wins immediately instead of both keys cancelling to straight',()=>{
-  const touch=new TouchSteering();
-  touch.press(1,'left',100);
-  assert.deepEqual(touch.snapshot(110),{left:true,right:false});
-  touch.press(2,'right',120);
-  assert.deepEqual(touch.snapshot(125),{left:false,right:true});
-  assert.equal(touch.activeDirection(),'right');
-  touch.release(2,225);
-  assert.deepEqual(touch.snapshot(226),{left:true,right:false});
-  touch.release(1,240);
-  assert.deepEqual(touch.snapshot(241),{left:false,right:false});
+test('one analogue steering thumb can immediately countersteer without second key',()=>{
+  const wheel=new RacingJoystick();
+  wheel.press(1,70,100,50);
+  assert.ok(wheel.snapshot()>.5);
+  wheel.update(1,130);
+  assert.ok(wheel.snapshot()<-.5);
+  wheel.release(1);
+  assert.equal(wheel.snapshot(),0);
 });
-test('two fingers on the same key keep steering until the last one lifts',()=>{
-  const touch=new TouchSteering();
-  touch.press(1,'left',10);touch.press(2,'left',30);
-  touch.release(1,120);
-  assert.equal(touch.activeDirection(),'left');
-  assert.deepEqual(touch.snapshot(121),{left:true,right:false});
-  touch.release(2,140);
-  assert.deepEqual(touch.snapshot(141),{left:false,right:false});
+test('unrelated second finger never overrides current steering',()=>{
+  const wheel=new RacingJoystick();
+  wheel.press(1,70,100,50);
+  const holding=wheel.snapshot();
+  assert.equal(wheel.press(2,130,100,50),false);
+  assert.equal(wheel.update(2,110),false);
+  assert.equal(wheel.snapshot(),holding);
+  wheel.release(2);
+  assert.equal(wheel.snapshot(),holding);
+  wheel.release(1);
+  assert.equal(wheel.snapshot(),0);
 });
-test('short tap is preserved after normal capture loss, but cancelled touch has no ghost pulse',()=>{
-  const touch=new TouchSteering();
-  touch.press(4,'left',0);touch.release(4,20);
-  touch.cancel(4); // lostpointercapture follows pointerup
-  assert.deepEqual(touch.snapshot(60),{left:true,right:false});
-  assert.deepEqual(touch.snapshot(80),{left:false,right:false});
-  touch.press(5,'right',100);touch.cancel(5); // pointercancel
-  assert.deepEqual(touch.snapshot(110),{left:false,right:false});
+test('pointercancel or lost capture clears stick instead of producing stale turn',()=>{
+  const wheel=new RacingJoystick();
+  wheel.press(4,80,100,50);
+  assert.ok(wheel.snapshot()>0);
+  wheel.release(4); // pointercancel handler
+  assert.equal(wheel.snapshot(),0);
+  wheel.press(5,120,100,50);
+  wheel.clear(); // pause, blur, orientation or reset
+  assert.equal(wheel.snapshot(),0);
 });
-test('cancelling one thumb does not discard the other, and new direction kills old tap pulse',()=>{
-  const touch=new TouchSteering();
-  touch.press(1,'left',100);touch.press(2,'right',110);
-  touch.cancel(2);
-  assert.deepEqual(touch.snapshot(115),{left:true,right:false});
-  touch.release(1,120);
-  assert.deepEqual(touch.snapshot(150),{left:true,right:false});
-  touch.press(3,'right',151);
-  assert.deepEqual(touch.snapshot(152),{left:false,right:true});
-  touch.clear();
-  assert.deepEqual(touch.snapshot(153),{left:false,right:false});
+test('repeated alternating turns and sensitivity changes keep a single control',()=>{
+  const wheel=new RacingJoystick();
+  wheel.press(1,100,100,50);
+  for(let i=0;i<30;i++) {
+    wheel.update(1,i%2?65:135);
+    assert.equal(Math.sign(wheel.snapshot()),i%2?1:-1);
+  }
+  wheel.setSensitivity('calm');
+  wheel.update(1,100);
+  assert.equal(wheel.snapshot(),0);
+  wheel.release(1);
+  assert.equal(wheel.snapshot(),0);
 });
 test('race mobile HUD isolates three-lap elimination warning from the live speed badge',async()=>{
   const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
   const css=await readFile(new URL('../racing/mobile.css',import.meta.url),'utf8');
   assert.match(ui,/root\.dataset\.stageKind = career\.stage\.kind/);
   assert.match(css,/#race-kit\[data-stage-kind="elimination"\] #race-speed/);
-  assert.match(ui,/button\.addEventListener\('pointercancel', cancel\)/);
-  assert.match(ui,/button\.addEventListener\('lostpointercapture', cancel\)/);
+  assert.match(ui,/joystickSurface\.addEventListener\('pointercancel', endStick\)/);
+  assert.match(ui,/joystickSurface\.addEventListener\('lostpointercapture', endStick\)/);
 });
 
 test('mid-race overlays stay removed while HUD goals, safe controls and hit feedback remain',async()=>{

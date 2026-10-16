@@ -18,12 +18,22 @@ const page = await context.newPage(), errors = [], trace = [], captured = new Se
 page.on('pageerror', error => errors.push(error.message));
 const cdp = await context.newCDPSession(page);
 let touching = null;
-let buttons;
+let wheel;
 async function steer(direction) {
+  // The thumb remains captured on ONE wheel. Changing its x coordinate is a
+  // real analogue touchMove, not a second independent left/right key press.
   if (direction === touching) return;
-  if (touching) await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  if (direction) await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: buttons[direction].x, y: buttons[direction].y, id: 1, radiusX: 7, radiusY: 7, force: 1 }] });
-  touching = direction;
+  if (!direction) {
+    if (touching) await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    touching = null;
+    return;
+  }
+  const x=wheel.x+wheel.width*(direction==='left'?.18:.82);
+  const contact={x,y:wheel.y+wheel.height*.5,id:1,radiusX:7,radiusY:7,force:1};
+  await cdp.send('Input.dispatchTouchEvent',{
+    type:touching?'touchMove':'touchStart',touchPoints:[contact]
+  });
+  touching=direction;
 }
 function minimapPolicy() {
   const c = document.querySelector('#mm');
@@ -68,7 +78,9 @@ try {
   await page.screenshot({ path: out + '/entry.png' });
   await page.locator('#race-start').tap();
   await page.waitForFunction(() => document.querySelector('#race-kit').dataset.phase === 'race', null, { timeout: 45000 });
-  buttons = await page.evaluate(() => Object.fromEntries(['left', 'right'].map(dir => { const r = document.querySelector('#race-' + dir).getBoundingClientRect();return [dir, { x: r.x + r.width / 2, y: r.y + r.height / 2 }]; })));
+  wheel=await page.locator('#race-joystick').boundingBox();
+  if(!wheel||wheel.width<100||await page.locator('#race-control-mode').count())
+    throw Error('Only analogue wheel control is allowed for touch gameplay QA');
   gpu = await page.evaluate(() => { const gl = document.querySelector('canvas').getContext('webgl2'), ext = gl.getExtension('WEBGL_debug_renderer_info');return { vendor: ext ? gl.getParameter(ext.UNMASKED_VENDOR_WEBGL) : gl.getParameter(gl.VENDOR), renderer: ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER) }; });
   const deadline = Date.now() + Number(process.env.RACE_QA_SECONDS ?? 240) * 1000;
   const metricPromise = page.evaluate(() => new Promise(resolve => { const samples = [];let previous;const sample = now => { if (previous !== undefined) samples.push(now - previous);previous = now;if (samples.length < 240) window.requestAnimationFrame(sample);else { const sorted = [...samples].sort((a, b) => a - b);resolve({ frames: samples.length, medianFrameMs: sorted[Math.floor(sorted.length / 2)], p95FrameMs: sorted[Math.floor(sorted.length * .95)], meanFps: 1000 / (samples.reduce((a, b) => a + b, 0) / samples.length) }); } };window.requestAnimationFrame(sample); }));
@@ -76,7 +88,7 @@ try {
   while (Date.now() < deadline) {
     const policy = await page.evaluate(minimapPolicy);
     await steer(policy.direction);
-    const observed = await page.evaluate(() => { const g = window.game, p = g.player;return { phase: document.querySelector('#race-kit').dataset.phase, raceTime: g.raceTime, finished: p.finished ?? false, finishTime: p.finishTime ?? null, place: g.standings.indexOf(p) + 1, progress: p.progress, lapsDone: p.lapsDone, owed: p.owed, speed: p.s, h: p.h, lat: p.lat, drifting: p.drifting, stats: { ...p.stats }, gauge: p.gauge, nitroCount: p.nitroCount, nitroTime: p.nitroTime, events: window.__RACE_EVIDENCE__.events, quality: g.settings.quality, visibleFeedback: document.querySelector('#msgs').textContent, pressed: { ...g.input.touch } }; });
+    const observed = await page.evaluate(() => { const g = window.game, p = g.player;return { phase: document.querySelector('#race-kit').dataset.phase, raceTime: g.raceTime, finished: p.finished ?? false, finishTime: p.finishTime ?? null, place: g.standings.indexOf(p) + 1, progress: p.progress, lapsDone: p.lapsDone, owed: p.owed, speed: p.s, h: p.h, lat: p.lat, drifting: p.drifting, stats: { ...p.stats }, gauge: p.gauge, nitroCount: p.nitroCount, nitroTime: p.nitroTime, events: window.__RACE_EVIDENCE__.events, quality: g.settings.quality, visibleFeedback: document.querySelector('#msgs').textContent, steeringAxis: window.__RACE_EVIDENCE__.steerAxis }; });
     trace.push({ wallTime: new Date().toISOString(), policy, touch: touching, observed });
     for (const event of observed.events) if (['driftStart', 'smallBoost', 'nitro', 'gaugeFull', 'crash'].includes(event.type)) {
       const key = event.type === 'smallBoost' ? 'smallBoost-' + (event.perfect ? 'perfect' : 'normal') : event.type;

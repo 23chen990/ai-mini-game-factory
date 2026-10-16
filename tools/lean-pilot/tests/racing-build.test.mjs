@@ -40,7 +40,9 @@ test('registered build includes live career, items, runtime and fuel dependencie
   const mobile = await readFile(new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', import.meta.url), 'utf8');
   assert.ok(mobile.includes("from './runtime.mjs'"));
   assert.ok(mobile.includes('career.patchNative(g)'));
-  assert.ok(mobile.includes('career.itemInput(g, canStep)'));
+  assert.match(mobile,/driver\.frame\(raw,g\.player,g\.state/);
+  assert.ok(!mobile.includes('career.itemInput(g, canStep)'), 'automatic item-use assist was removed');
+  assert.ok(!mobile.includes('race-control-mode'), 'no player-facing alternate control mode');
 });
 test('race text labels remove known third-party signboards in build output', () => {
   const data = 'START · 11城 SPEEDQQ.COM QQ飞车 情迷爱琴海 法老金字塔 雪地大冒险';

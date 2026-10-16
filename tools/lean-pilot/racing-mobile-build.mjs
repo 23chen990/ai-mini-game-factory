@@ -10,7 +10,7 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
-export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs']);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs']);
 
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
@@ -157,6 +157,70 @@ export function annotateDriftResult(source) {
   if (source.split(original).length !== 2) throw Error('Native driftEnd event anchor changed');
   return source.replace(original, annotated);
 }
+/** Add continuous steering and normalized drift starts to generated native car. */
+export function patchAnalogSteer(source) {
+  const changes = [
+    ["const steerT = (inp.left ? 1 : 0) - (inp.right ? 1 : 0);",
+     "const steerT = Number.isFinite(inp.steerAxis) ? Math.max(-1, Math.min(1, inp.steerAxis)) : (inp.left ? 1 : 0) - (inp.right ? 1 : 0);"],
+    ["if (!this.drifting && inp.shift && steerT !== 0 && this.s > T.driftMinSpeed && onGround && !spinning) {",
+     "if (!inp.shift && !spinning) this.__RACE_DRIFT_REARMED__ = true;\n    if (!this.drifting && inp.shift && this.__RACE_DRIFT_REARMED__ !== false && Math.abs(steerT) >= 0.28 && this.s > T.driftMinSpeed && onGround && !spinning) {"],
+    ["this.driftDir = steerT;", "this.driftDir = Math.sign(steerT);"],
+  ];
+  const already = changes.map(([, target]) => source.includes(target));
+  if (already.every(Boolean)) return source;
+  if (already.some(Boolean)) throw Error('Partially applied analog steering patch');
+  for (const [original] of changes) if (source.split(original).length !== 2) throw Error('Native analog steering anchor changed');
+  let result = source;
+  for (const [original, revised] of changes) result = result.replace(original, revised);
+  return result;
+}
+
+/** A drift cannot immediately re-trigger on the same still-held drift key.
+ * Both graceful exit and wall impact pass through the native endDrift method.
+ * Re-arm only when the player has actually released the drift key. */
+export function patchDriftRearm(source) {
+  const original = "endDrift(clean = true) {\n    if (!this.drifting) return;\n    this.drifting = false;";
+  const updated = original + "\n    this.__RACE_DRIFT_REARMED__ = false;";
+  if (source.includes(updated)) return source;
+  if (source.split(original).length !== 2) throw Error('Native drift rearm anchor changed');
+  return source.replace(original, updated);
+}
+
+/** Countersteer follows actual opposite stick input; centring ends active yaw.
+ * Generated native source only. Fail on unrecognized physical vehicle code. */
+export function patchCounterSteer(source) {
+  const originalYaw = "const yaw = held ? T.driftYaw + T.driftYawAlign * align : (0.45 + 0.9 * align) * Math.exp(-2.2 * this.releaseTime);";
+  const previousYaw = "const yaw = held ? (align < 0 ? -T.driftYawAlign * 1.35 : T.driftYaw + T.driftYawAlign * align) : (align < 0 ? -1.35 : 0.45 + 0.9 * align) * Math.exp(-2.2 * this.releaseTime);";
+  const modernYaw = "const yaw = held ? (align < -0.08 ? -T.driftYawAlign * 1.45 * Math.min(1, -align) : T.driftYaw * Math.max(0, align) + T.driftYawAlign * align) : (align < -0.08 ? -1.25 * Math.min(1, -align) : 0.45 + 0.9 * align) * Math.exp(-2.2 * this.releaseTime);";
+  const originalHeld = 'const held = inp.shift;';
+  const modernHeld = 'const held = inp.shift && Math.abs(steerT) > 0.12;';
+  const originalEnd = 'if ((!held && (Math.abs(a) < 0.1 || (align < 0 && Math.abs(a) < 0.26))) || this.s < 7) this.endDrift(this.s >= 7);';
+  const modernEnd = 'if ((!held && (Math.abs(a) < 0.1 || (align < 0 && Math.abs(a) < 0.26))) || (align < -0.35 && Math.abs(a) < 0.16 && this.driftTime >= 0.22) || this.s < 7) this.endDrift(this.s >= 7);';
+  if (source.includes(modernYaw) && source.includes(modernHeld) && source.includes(modernEnd)) return source;
+  if (![originalHeld, originalEnd].every(a => source.split(a).length === 2) ||
+      !(source.split(originalYaw).length === 2 || source.split(previousYaw).length === 2) ||
+      !source.includes('this.driftDir * yaw')) throw Error('Countersteer vehicle anchor changed');
+  return source.replace(source.includes(originalYaw) ? originalYaw : previousYaw, modernYaw)
+    .replace(originalHeld, modernHeld).replace(originalEnd, modernEnd);
+}
+/** New one-shot touch edge must never repeat inside the 120Hz native step loop. */
+export function patchManualNitroEdge(source) {
+  const original = "const noEdge = { ...pin, upPressed: false, wPressed: false, nitroPressed: false };";
+  const revised = "const noEdge = { ...pin, upPressed: false, wPressed: false, nitroPressed: false, manualNitroPressed: false };";
+  if (source.includes(revised)) return source;
+  if (source.split(original).length !== 2) throw Error('Native manual nitro edge anchor changed');
+  return source.replace(original,revised);
+}
+/** Separate earned drift nitro from native item-box use; both require real stock. */
+export function patchItemModeNitro(source) {
+  const original = "if (inp.nitroPressed && !itemMode) this.triggerNitro();";
+  const revised = "if (inp.nitroPressed && !itemMode || inp.manualNitroPressed && itemMode) this.triggerNitro();";
+  const gaugeOriginal = "if (!itemMode && onGround) {";
+  const gaugeRevised = "if (onGround) {";
+  if (source.includes(revised) && !source.includes(gaugeOriginal)) return source;
+  if (source.split(original).length !== 2 || source.split(gaugeOriginal).length !== 2) throw Error('Native nitro/item mode anchor changed');
+  return source.replace(original,revised).replace(gaugeOriginal,gaugeRevised);
+}
 /** Strict, idempotent extensions to the GENERATED copy only, never the pinned source. */
 export function patchRaceLayouts(source) {
   const imported = "import { applyTrackDesign } from './race-track-design.mjs';";
@@ -212,7 +276,7 @@ export function injectRaceBundle(html, bundleText) {
 export function neutralizeRaceBranding(text) {
   return text
     .replaceAll('SPEEDQQ.COM', 'RACEWAY.GAME')
-    .replaceAll('QQ飞车', '双键赛车')
+    .replaceAll('QQ飞车', '极速赛车')
     .replaceAll('11城', '滨海都市')
     .replaceAll('情迷爱琴海', '海湾山路')
     .replaceAll('法老金字塔', '沙丘古城')
@@ -224,7 +288,7 @@ export function neutralizeRaceBranding(text) {
                 "buildHotAirBalloon(i % 2 ? '#61c9ff' : '#ffc96c', '#ffffff')");
 }
 /** A qq-speed-only extension of PR10. No other game's source or adapter is written. */
-export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), sourceRoot = process.env.H5_PINNED_SOURCE_ROOT, hypothesis = process.env.RACE_REPAIR_HYPOTHESIS ?? 'Reuse native vehicle physics and edge inputs; gate two-button assists by track/state, and replace the stacked HUD with one mobile presentation.' } = {}) {
+export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), sourceRoot = process.env.H5_PINNED_SOURCE_ROOT, hypothesis = process.env.RACE_REPAIR_HYPOTHESIS ?? 'One manual analogue steering control with explicit drift, spray, nitro, and item actions; preserve native vehicle physics and race semantics.' } = {}) {
   const root = path.resolve(base, RUN);
   try { await access(path.join(root, 'source-build.json')); }
   catch { await buildSourceMobile(base, RUN, 'qq-speed', { sourceRoot }); }
@@ -270,7 +334,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   }
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchShortcutNativeCar(annotateDriftResult(originalVehicle));
+  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');
@@ -283,7 +347,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchRacingSource(beforeMain))))));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchRacingSource(beforeMain)))))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
@@ -291,8 +355,8 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   let html = await readFile(path.join(project, 'dist/index.html'), 'utf8');
   html = html.replace('<html lang="zh-CN">', '<html lang="zh-CN" data-reference-game="qq-speed" data-race-mobile="true">')
     .replace('user-scalable=no', 'user-scalable=no,viewport-fit=cover')
-    .replace(/<title>[^<]*<\/title>/u, '<title>双键飞驰 · 3D 赛车</title><link rel="icon" href="data:,">')
-    .replace(/<meta name="description"[^>]*>/u, '<meta name="description" content="左右双键驾驶，原生赛车物理，漂移与加速自动触发。" />');
+    .replace(/<title>[^<]*<\/title>/u, '<title>极速飞驰 · 3D 赛车</title><link rel="icon" href="data:,">')
+    .replace(/<meta name="description"[^>]*>/u, '<meta name="description" content="左手连续方向轮盘，右手手动漂移、小喷、氮气和道具。" />');
   const license = await readFile(path.join(game, 'LICENSE.three.txt'), 'utf8');
   if (license.length < 100) throw Error('Missing pinned Three.js license');
   html = html.replace('</head>', () => '<!-- Three.js MIT license\n' + license.replaceAll('--', '—') + '\n--><link rel="stylesheet" href="style.css"></head>');
@@ -303,7 +367,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const standalone = html.replace('<link rel="stylesheet" href="style.css">', '<style>' + inputFiles[3] + '</style>');
   const trialName = 'racing-two-button-' + hash.slice(0, 12) + '.html';
   await writeFile(path.join(root, trialName), standalone);
-  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), generatedVehicleSha256: sha256(annotatedVehicle), generatedTrackSha256: sha256(adaptedTrack), genuinePhysicalShortcutStages: ['05','10','12','13','16'], trackGeometrySha256: sha256(await readFile(path.join(project, 'src/layouts.js'))), itemVisualSourceSha256: sha256(await readFile(path.join(project, 'src/items.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
+  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), generatedVehicleSha256: sha256(annotatedVehicle), generatedTrackSha256: sha256(adaptedTrack), genuinePhysicalShortcutStages: ['05','10','12','13','16'], trackGeometrySha256: sha256(await readFile(path.join(project, 'src/layouts.js'))), itemVisualSourceSha256: sha256(await readFile(path.join(project, 'src/items.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/joystick.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
   history.attempts.at(-1).status = 'AWAITING_PLAYWRIGHT_QA';
   history.attempts.at(-1).buildHash = hash;
   await writeFile(path.join(root, 'artifacts/repair-history.json'), JSON.stringify(history, null, 2) + '\n');
