@@ -81,6 +81,7 @@ try{
   await page.waitForTimeout(65);
  }
  await page.locator('#co-modal').waitFor({state:'visible'});const finished=await snap();await shot('earned-three-stars');
+ console.log('EXPERIENCE_FIRST_RUN '+JSON.stringify({engine,reason:finished.reason,distance:finished.distance,count:finished.count,gold:finished.gold,jumpedBarriers:finished.jumpedBarriers,hits:finished.hits,stars:finished.save?.stars?.[0],bestStreak:finished.bestStreak,lastCollisionId:finished.lastCollisionId,interestingEvents:finished.events.filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)&&(!e.objectId||e.objectId==='l1-o1'||e.objectId==='l1-jump-l1-o1'||e.type==='failed')).slice(-16)}));
  report.presentationSignals=await page.evaluate(()=>window.__qaExperienceSignals);
  earnedPrizeCue ||= earnedPrizeRouteSeen(report.presentationSignals,'l1-o1','l1-jump-l1-o1');
  leftWarning ||= pedestrianWarningSeen(report.presentationSignals,2);
