@@ -107,7 +107,7 @@ async function raceStart(page, index, name) {
     throw error;
   }
   const early=await page.evaluate(() => ({
-    map:window.game?.map?.id,mode:window.game?.settings?.mode,
+    map:window.game?.map?.id,course:window.game?.track?.__RACE_COURSE_ID,mode:window.game?.settings?.mode,
     laps:window.game?.settings?.laps, state:window.game?.state,
     itemBoxes:window.game?.items?.boxes?.length ?? 0,
     itemShape:window.game?.items?.boxes?.[0]?.cube?.geometry?.type ?? null,
@@ -151,6 +151,9 @@ async function raceStart(page, index, name) {
   const expectedMap={0:'city',1:'egypt',3:'aegean',4:'egypt',7:'snow'}[index ?? 0];
   const expectedLaps={0:1,1:2,3:2,4:2,7:2}[index ?? 0];
   const expectedMode=index===4?'item':'speed';
+  const expectedCourse='race-'+String((index ?? 0)+1).padStart(2,'0');
+  if(early.course!==expectedCourse)
+    fail(name+': stage reused a different native road spline: '+JSON.stringify({actual:early.course,expected:expectedCourse}));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
