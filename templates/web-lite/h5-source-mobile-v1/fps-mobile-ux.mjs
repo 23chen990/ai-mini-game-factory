@@ -287,7 +287,7 @@ export function createFpsMobileUx(game, root, doc) {
   const markTouch=()=>{lastTouchAt=performance.now();};
   const onTouchStart=e=>{
     markTouch();
-    if(activeChallenge?.kind!=='hits'||!game.playing||game.paused)return;
+    if(!cfAutoFireEligible(activeChallenge)||!game.playing||game.paused)return;
     if(e.target?.closest?.('.btn,.pad'))return;
     const limit=(doc.defaultView?.innerWidth||844)*0.44;
     for(const t of e.changedTouches||[])if(t.clientX>limit)
@@ -295,7 +295,7 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const onTouchMove=e=>{
     markTouch();
-    if(activeChallenge?.kind!=='hits'||!game.playing||game.paused)return;
+    if(!cfAutoFireEligible(activeChallenge)||!game.playing||game.paused)return;
     for(const t of e.changedTouches||[]){
       const v=aimTouchStarts.get(t.identifier);
       if(v&&Math.hypot(t.clientX-v.x,t.clientY-v.y)>12)playerEngaged=true;
@@ -337,8 +337,8 @@ export function createFpsMobileUx(game, root, doc) {
     }
     // The original source only handles touchend, not cancellation.
     if (action === 'fire') button.addEventListener('touchstart', () => {
-      if(activeChallenge?.kind==='hits')playerEngaged=true;
-      nudgeAim(true);
+      if(cfAutoFireEligible(activeChallenge))playerEngaged=true;
+      if(activeChallenge?.elite!==true)nudgeAim(true);
     }, {capture:true,passive:true});
     button.addEventListener('touchcancel', () => {
       if (action === 'fire' && game.player?.touch) {
@@ -458,11 +458,11 @@ export function createFpsMobileUx(game, root, doc) {
         scout.protectT=0;
         // Allow new players several *simulation seconds* to recognize, aim
         // and shoot. Afterward the standard Bot can shoot normally.
-        scout.readyAt=Math.max(scout.readyAt,game.time+13);
+        scout.readyAt=Math.max(scout.readyAt,game.time+(activeChallenge?.elite===true?5:13));
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
-        scout.__mobileTrainingHoldUntil=game.time+(sniper?20:7);
+        scout.__mobileTrainingHoldUntil=game.time+(activeChallenge?.elite===true?(sniper?7:3):sniper?20:7);
         return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance};
       }
     }
@@ -486,7 +486,9 @@ export function createFpsMobileUx(game, root, doc) {
   function applyBalance(elapsed) {
     const p = game.player;
     if (!p) return;
-    const profile = mobileEnemyDifficulty(activeChallenge?.kind, elapsed, p.stats);
+    const normalProfile = mobileEnemyDifficulty(activeChallenge?.kind, elapsed, p.stats);
+    const expertProfile = activeChallenge?.elite===true
+      ? mobileEnemyDifficulty(activeChallenge.kind, elapsed, p.stats, true) : null;
     // Both teams stay comparable: do not let allied bots farm all enemies
     // before a novice player gets a first encounter.
     for (const actor of game.actors || []) {
@@ -497,12 +499,15 @@ export function createFpsMobileUx(game, root, doc) {
         actor.role='rush';
         actor.pickGoal?.();
       }
+      // Only opponents gain expert reaction and aim: allies cannot carry the mission.
+      const profile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
       actor.diff = {...profile, react: [...profile.react]};
       actor.recoilControl = profile.ctrl;
     }
   }
 
   function nudgeAim(forceFiring = false) {
+    if(activeChallenge?.elite===true)return;
     const p = game.player, cam = game.renderer?.camera;
     const simple = activeChallenge?.kind==='hits' && p?.weapon?.id==='m4a1';
     if (!p?.alive || !game.playing || game.paused || !cam ||
@@ -539,7 +544,7 @@ export function createFpsMobileUx(game, root, doc) {
 
   function updateAutoFire() {
     const p=game.player, actor=game.aimTarget;
-    const simple=activeChallenge?.kind==='hits';
+    const simple=cfAutoFireEligible(activeChallenge);
     if (!simple || !p?.alive || !game.playing || game.paused || !playerEngaged) {
       if (simple && p) p.mouse.l=false;
       autoAimActor=null;autoFireActive=false;
@@ -575,7 +580,9 @@ export function createFpsMobileUx(game, root, doc) {
     const p = game.player, actor = game.aimTarget;
     const side = p?.alive && actor?.alive ? teamSide(p.team, actor.team) : 'unknown';
     const label = side === 'ally' ? '◆ 队友 · 不要射击' : side === 'enemy'
-      ? activeChallenge?.kind==='hits' ? '▼ 敌人 · 对准自动开火' : '▼ 敌人 · 可以射击'
+      ? activeChallenge?.kind==='hits'
+        ? (cfAutoFireEligible(activeChallenge) ? '▼ 敌人 · 对准自动开火' : '▼ 敌人 · 点按开火')
+        : '▼ 敌人 · 可以射击'
       : '';
     html.dataset.fpsAimSide = side;
     target.hidden = !label;
@@ -647,12 +654,14 @@ export function createFpsMobileUx(game, root, doc) {
       activeChallenge = challenge || null;
       const tip=tutorial.querySelector('span:last-child');
       if(tip)tip.innerHTML=activeChallenge?.kind==='hits'
-        ? '<b>③</b> 对准敌人自动开火'
+        ? (cfAutoFireEligible(activeChallenge) ? '<b>③</b> 对准敌人自动开火' : '<b>③</b> 瞄准后手动开火')
         : activeChallenge?.kind==='kills'
           ? '<b>③</b> 先找敌人，再开镜射击'
           : '<b>③</b> 点按或按住开火';
       autoAimActor=null;autoAimSince=0;autoFireActive=false;playerEngaged=false;aimTouchStarts.clear();
-      guide.textContent = activeChallenge?.kind === 'kills'
+      guide.textContent = activeChallenge?.elite===true
+        ? '⚡ 精英复战 · 敌人更快，必须自己瞄准并按开火'
+        : activeChallenge?.kind === 'kills'
         ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 先找到目标，再开镜射击'
         : activeChallenge?.kind === 'survive'
           ? '◆ 蓝色队友 ｜ ▼ 红色敌人 · 左手移动躲避，右侧观察敌人'
@@ -753,7 +762,9 @@ export function createFpsMobileUx(game, root, doc) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
             ? activeChallenge?.kind==='hits'
-              ? '▼ 首战目标已出现！准星对准敌人就会开火'
+              ? (cfAutoFireEligible(activeChallenge)
+                  ? '▼ 首战目标已出现！准星对准敌人就会开火'
+                  : '⚡ 精英目标出现！跟准敌人，再点按开火')
               : '▼ 前方有敌人！点按开火'
             : turn ? turn.symbol+' '+turn.label+' · '+turn.distance+'米后进入交火区'
               : '沿集装箱外侧通道推进，寻找红色敌人';
