@@ -482,7 +482,7 @@ async function boot() {
         const nitroBtn = root.querySelector('[data-race-action="nitro"]');
         if (nitroBtn) {
           nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
-          const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : g.player.nitroTime > 0 ? '加速中' : '氮气';
+          const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : g.player.nitroTime > 0 ? '加速中' : '集气中';
           if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
         }
         const smallBtn = root.querySelector('[data-race-action="small"]');
