@@ -172,13 +172,16 @@ test('career UI objectives reflect real progress, not dummy counters',()=>{
   c.metrics.cleanPasses=2;
   assert.ok(gradeStage(c.stage,result(),c.metrics));
 });
-test('advertising cannot be offered before tutorial is actually completed',()=>{
+test('high-pressure stage01 failures do not block voluntary low-fuel ad recovery',()=>{
   const c=new RacingCareer(memory());
-  c.fuelEnabled=true;c.progress.rounds=12;c.startedAt=Date.now()-900000;
+  c.fuelEnabled=true;c.progress.rounds=0;c.startedAt=Date.now()-900000;
   c.fuel.amount=2;
-  assert.equal(c.canOfferAd(),false);
-  c.progress.stars['01']=1;
-  assert.equal(c.canOfferAd(),true);
+  assert.equal(c.canOfferAd(),false,'never offer ads before the first real attempt');
+  c.progress.rounds=1;
+  assert.equal(c.progress.stars['01']??0,0,'first loss must not count as a win');
+  assert.equal(c.canOfferAd(),true,'valid failed attempt may voluntarily refuel');
+  c.fuel.amount=10;
+  assert.equal(c.canOfferAd(),false,'do not nag when the player has fuel');
 });
 
 
