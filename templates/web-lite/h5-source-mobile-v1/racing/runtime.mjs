@@ -126,15 +126,18 @@ export class RacingCareer {
   /** Native AI-first 10-second DNF was unfair when races exceed one lap. */
   patchNative(game) {
     if (game.__RACE_CAREER_PATCHED__) return;
-    const nativeRubber = game.rubber.bind(game);
-    game.rubber = rival => {
-      // Native base game penalized a leading AI by up to ~12% using the current
-      // player gap. In career, the opponent keeps its legitimate pre-race pace
-      // regardless of the player's position; no catch-up or leader slowdown.
-      const fixed = careerPaceMultiplier(this.active && game.state === 'race' &&
-        rival && !rival.isPlayer);
-      return fixed ?? nativeRubber(rival);
-    };
+    // Some isolated test doubles do not implement the optional native pace
+    // hook. Production Game does; preserve the original function if present.
+    if (typeof game.rubber === 'function') {
+      const nativeRubber = game.rubber.bind(game);
+      game.rubber = rival => {
+        // No player-gap adjustment: the fixed skill chosen at start persists
+        // whether this AI is leading or trailing.
+        const fixed = careerPaceMultiplier(this.active && game.state === 'race' &&
+          rival && !rival.isPlayer);
+        return fixed ?? nativeRubber(rival);
+      };
+    }
     const nativeEnd = game.checkRaceEnd.bind(game);
     game.checkRaceEnd = dt => {
       if (game.firstFinish < 0) game.__RACE_FIRST_FINISH_NOTIFIED__ = false;
