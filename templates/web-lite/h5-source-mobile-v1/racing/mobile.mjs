@@ -5,7 +5,7 @@ import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { roadHint } from './road-coach.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
-import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey } from './career.mjs';
+import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
 import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
@@ -168,17 +168,14 @@ function finish() {
     best[result.map] = result.time;try { localStorage.setItem(STORE, JSON.stringify(best)); } catch { /* Play remains available. */ }
   }
   const newSkin = SKIN_STARS.findIndex((required,i) => i > 0 && beforeStars < required && graded?.total >= required);
-  const bossFailure = career.stage.kind === 'boss'
-    ? ((graded?.metric.beatBoss ? '已超越' : '尚未超越') + '指定车神 · 当前第' + result.place +
-       '名，要求前' + career.stage.rank + '名')
-    : '';
+  const failure = stars ? null : stageFailureFeedback(career.stage, result, graded?.metric ?? {});
   $('result-copy').textContent = stars
     ? (career.dailySnapshot
       ? '每日挑战成功 · 第 ' + result.place + ' 名 · ' + time(result.time) + ' · 当日最佳 ' + time(graded.best) +
         ' · 连续挑战 ' + career.progress.daily.streak + ' 天'
       : '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星' +
         (newSkin > 0 ? ' · 解锁车漆：' + SKIN_NAMES[newSkin] : ''))
-    : '目标未完成：' + (bossFailure || career.stage.goal) + ' · ' + (result.finished ? '名次 ' + result.place : '已完成 ' + Math.floor(result.completion * 100) + '%');
+    : '目标未完成：' + failure.reason + '。下次建议：' + failure.tip;
   $('result-stats').innerHTML = [['有效漂移', graded?.metric.cleanDrifts ?? 0], ['弯道超车', graded?.metric.cleanPasses ?? 0], ['拾取道具', graded?.metric.pickups ?? 0], ['小喷', result.stats.small]].map(([label, value]) => `<span><b>${value ?? 0}</b>${label}</span>`).join('');
   $('results').replaceChildren();
   for (const row of result.rows) {
