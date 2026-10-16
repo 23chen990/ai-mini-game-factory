@@ -21,6 +21,17 @@ test('a reward route never enters the adjacent simultaneous fatal van lane',()=>
  assert.equal(result.action,'wait');
 });
 
+test('two-lane reward approach starts before the late double-tap trap',()=>{
+ const target={barrierId:'l1-o4',distance:75};
+ const reward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟3.6s'});
+ const viewTwo=view({level:1,distance:48,laneIndex:2,lanes:[reward,lane(),lane()]});
+ const step=decide(viewTwo,policy.createRiskPolicyState(1,target));
+ assert.equal(step.action,'left');assert.equal(step.toLane,1);
+ const oneAway=decide({...viewTwo,laneIndex:1,lanes:[{...reward,seconds:2.65},lane(),lane()]},step.state);
+ assert.equal(oneAway.action,'left');assert.equal(oneAway.toLane,0);
+ const stillFar=decide({...viewTwo,lanes:[{...reward,seconds:4.3},lane(),lane()]},policy.createRiskPolicyState(1,target));
+ assert.equal(stillFar.action,'wait');
+});
 test('the policy acts in the early buffered jump window',()=>{
  const s=newState(),earlyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.3s'});
  const lanes=[lane(),earlyReward,lane()];
@@ -35,7 +46,7 @@ test('the policy acts in the early buffered jump window',()=>{
 });
 
 test('buffered jump holds the reward lane until the bonus fish can be caught',()=>{
- assert.ok(policy.CAPTURE_HOLD_MS>=1800&&policy.CAPTURE_HOLD_MS<2300,'hold the actual reward pickup without blocking the next genuine challenge');
+ assert.ok(policy.CAPTURE_HOLD_MS>=1000&&policy.CAPTURE_HOLD_MS<=1800,'hold through physical pickup but leave time for the next jump');
  const s=newState(),jumped=decide(view({distance:221,lanes:[lane(),lane({danger:true,jumpReward:true,kind:'barrier',seconds:.4}),lane()]}),s);
  assert.equal(jumped.action,'jump');
  const holding=decide(view({distance:224,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS-1,lanes:[lane({fish:true}),lane(),lane()]}),jumped.state);
