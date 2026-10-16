@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -405,4 +405,18 @@ test('CF v7 retains genuine partial move across native respawns but never credit
  d=cfAdvanceDrill(c,d,{hits:3,travel:9,x:34,z:5});
  assert.equal(d.follow,2);assert.ok(d.distance>=8);
  assert.equal(cfAdvanceDrill(c,d,{hits:4,travel:15,x:30,z:5}).follow,3);
+});
+
+
+test('CF novice opening opponent returns fire from readable cover before a later real rush',()=>{
+ const novice={kind:'hits',drill:'reposition',elite:false};
+ assert.equal(cfScoutHoldSeconds(novice),18);
+ assert.equal(cfScoutHoldSeconds({kind:'hits',elite:false}),7);
+ assert.equal(cfScoutHoldSeconds({kind:'kills'}),20);
+ assert.equal(cfScoutHoldSeconds({kind:'survive'}),7);
+ assert.equal(cfScoutHoldSeconds({...novice,elite:true}),3);
+ assert.equal(cfScoutHoldSeconds({kind:'kills',elite:true}),7);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:18},17.99),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:18},18),true);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:false,__mobileTrainingHoldUntil:18},22),false);
 });
