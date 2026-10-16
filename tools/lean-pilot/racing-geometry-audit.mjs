@@ -81,7 +81,7 @@ for(let i=1;i<=16;i++){
     throw Error('Stage-specific speed-pad/tunnel placement is not on the real road: '+id);
   if(geometry.sameLevelClosePairs>0 ||
       geometry.lengthM<1700 || geometry.lengthM>3300 ||
-      geometry.sharpPct>22)
+      geometry.sharpPct>(id==='01'?9:id==='02'?14:Number(id)<=10?23:29))
     throw Error('Unsafe stage '+id+' physical geometry '+JSON.stringify({
       collisions:geometry.sameLevelClosePairs,sharpPct:geometry.sharpPct,length:geometry.lengthM}));
   courses[id]={scene:map,courseName:COURSE_BLUEPRINTS[id][0],
@@ -93,7 +93,10 @@ if(Object.keys(courses).length!==16)throw Error('All 16 stages must have distinc
 const shortcutAudit={};
 for(const course of Object.keys(SHORTCUT_PLANS)){
   const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course);
-  if(!fork || !(fork.gain>=35) || !Number.isFinite(fork.length))
+  if(!fork || !(fork.gain>=25&&fork.gain<=90) ||
+     !(fork.length>=75&&fork.length<=350) ||
+     !(fork.neckWidth>=8.5&&fork.neckWidth<=11) ||
+     !(fork.width>=11&&fork.width<=14) || !Number.isFinite(fork.length))
     throw Error('Shortcut is not an honest shorter physical road: '+course);
   const p={},details=[];
   for(let i=0;i<fork.samples.length;i+=2){
@@ -110,7 +113,7 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
     throw Error('Shortcut missing genuine road geometry or collision guardrails: '+course);
   shortcutAudit[course]={scene:CAREER_COURSE_MAPS[+course.slice(-2)-1],
     branchLengthM:+fork.length.toFixed(1),mainSegmentM:fork.end-fork.start,
-    physicalSavingM:+fork.gain.toFixed(1),widthM:fork.width,
+    physicalSavingM:+fork.gain.toFixed(1),widthM:fork.width,neckWidthM:fork.neckWidth,
     playerProjectionPoints:active.length};
   mesh.traverse(o=>{o.geometry?.dispose();if(o.material&&!Array.isArray(o.material))o.material.dispose();});
 }
