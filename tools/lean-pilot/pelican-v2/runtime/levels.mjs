@@ -41,7 +41,6 @@ export const PRESSURE_GATES=Object.freeze({
  5:Object.freeze([
   [145,'car',0],[145,'van',2], // centre gap
   [303,'car',0],[303,'van',1], // right gap
-  [366,'van',0],[366,'car',2], // centre gap
   [433,'car',0],[433,'van',1], // right gap
   [558,'van',1],[558,'car',2], // left gap after 516m
   [615,'car',0],[615,'van',2], // centre gap
