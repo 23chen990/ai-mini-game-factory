@@ -129,3 +129,40 @@ test('native stage-specific course selection is strict, idempotent and does not 
   assert.equal(api.patchCareerRouteSource(adapted),adapted);
   assert.throws(()=>api.patchCareerRouteSource("new Track(other, {})"),/constructor changed/);
 });
+
+test('native fork adapters are exact, idempotent and preserve original acceleration/AI',()=>{
+  const track=[
+    'export class Track {',
+    'for (let r = 0; r < N; r++) {',
+    '  const a = startW + r * 3, b = a + 3;',
+    '  if (side < 0) {}',
+    '}',
+    '}',
+  ].join('\n');
+  const road=api.patchShortcutNativeTrack(track);
+  assert.match(road,/__RACE_SHORTCUT__\?\.opening\(/);
+  assert.equal(api.patchShortcutNativeTrack(road),road);
+  assert.throws(()=>api.patchShortcutNativeTrack('class Unknown {}'),/guardrail construction changed/);
+  const vehicle='export class PlayerCar {const lim = tr.halfW - 1.1;}';
+  const collision=api.patchShortcutNativeCar(vehicle);
+  assert.match(collision,/p\.__RACE_SHORTCUT_HALF_WIDTH/);
+  assert.equal(api.patchShortcutNativeCar(collision),collision);
+  assert.throws(()=>api.patchShortcutNativeCar('class Unknown {}'),/collision-width anchor changed/);
+  const world=[
+    "import * as THREE from 'three';",
+    'track.__RACE_COURSE_ID = requestedCourse;',
+    'const ground = buildGround(track, { base: 123 });',
+    'root.add(track.build(map.track, ground.heightAt));',
+    'this.hud.setupMinimap(track);',
+    '  resetPlayer() {\n    const P = this.player;',
+    'P.update(DT, first ? pin : noEdge, active, this.itemMode);',
+  ].join('\n');
+  const patched=api.patchShortcutNativeWorld(world);
+  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse\)/);
+  assert.match(patched,/terrainProxy\(track\)/);
+  assert.match(patched,/physical|buildMesh\(THREE, ground.heightAt\)/);
+  assert.match(patched,/__RACE_SHORTCUT__\?\.recover\(P\)/);
+  assert.match(patched,/P\.update\(DT, first \? pin : noEdge/);
+  assert.equal(api.patchShortcutNativeWorld(patched),patched);
+  assert.throws(()=>api.patchShortcutNativeWorld('class Unknown {}'),/world anchor changed/);
+});
