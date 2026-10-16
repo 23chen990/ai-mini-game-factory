@@ -37,10 +37,6 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-pause span { font:800 22px/1 system-ui;letter-spacing:2px; }
 #race-controls { position:absolute;inset:0;pointer-events:none; }
 #race-controls button { position:absolute;bottom:var(--race-bottom);width:clamp(86px,12vw,108px);height:clamp(78px,22vh,96px);border-radius:26px;border:1.5px solid #ffffff80;background:#16375214;box-shadow:inset 0 1px 0 #ffffff12;transition:background .08s,border-color .08s,transform .08s; }
-#race-left { left:var(--race-left); }#race-right { right:var(--race-right); }
-#race-controls svg { width:43px;height:43px;fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 2px 3px #0004); }
-#race-controls button.held { background:#36879a75;border-color:#bffbff;transform:translateY(2px); }
-#race-kit.drifting #race-controls button.held { background:#8c652775;border-color:#ffdf85; }
 #race-controls button:disabled { opacity:.48; }
 #race-panel { pointer-events:auto;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(470px,calc(100% - var(--race-left) - var(--race-right) - 28px));max-height:calc(100% - var(--race-top) - var(--race-bottom) - 12px);overflow:auto;padding:22px 26px;background:linear-gradient(145deg,#102c43f5,#0a1d32f5);border:1px solid #accdde55;border-radius:24px;box-shadow:0 16px 70px #05132250;text-align:center; }
 .race-eyebrow { color:#afd3e2;font-size:10px;letter-spacing:3px; }
@@ -182,8 +178,6 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit #race-live-goal {top:calc(var(--race-top) + 67px);max-width:min(205px,29vw);white-space:normal;line-height:1.25;font-size:11px;}
 #race-kit #race-held-item {top:calc(var(--race-top) + 67px);right:calc(var(--race-right) + 52px);max-width:min(180px,26vw);font-size:10px;}
 #race-kit #race-controls button {background:linear-gradient(150deg,#0e354077,#082a4277);border:2px solid #b6faf4a6;box-shadow:inset 0 1px 0 #ddfffd35,0 4px 18px #0005;}
-#race-kit #race-controls button.held {background:#16c9cb75;border-color:#e0fff4;box-shadow:0 0 20px #48effb70;}
-#race-kit #race-controls svg {filter:drop-shadow(0 0 8px #47eeed55);}
 @keyframes race-moment-in {from{opacity:0;transform:translate(-50%,10px) scale(.9)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
 @media(max-height:390px) {
  #race-kit #race-panel {padding:10px 16px;}
@@ -228,13 +222,8 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   #race-kit[data-phase="ready"] .race-actions button {min-height:41px;}
 }
 
-/* V4.3: classic thumb layout, keeping the visible racing lane clear. */
-#race-kit[data-control-mode="classic"] #race-left,
-#race-kit[data-control-mode="classic"] #race-right {left:auto;right:auto;bottom:calc(var(--race-bottom) + 2px);width:clamp(70px,10vw,92px);height:clamp(68px,18vh,86px);border-radius:22px;}
-#race-kit[data-control-mode="classic"] #race-left {left:var(--race-left);}
-#race-kit[data-control-mode="classic"] #race-right {left:calc(var(--race-left) + clamp(78px,12vw,110px));}
-#race-action-pad {display:none;position:absolute;right:var(--race-right);bottom:var(--race-bottom);width:clamp(205px,32vw,280px);height:clamp(98px,30vh,142px);pointer-events:none;}
-#race-kit[data-control-mode="classic"] #race-action-pad {display:block;}
+/* One control layout: left wheel, right manual drift/spray/nitro/item. */
+#race-action-pad {display:block;position:absolute;right:var(--race-right);bottom:var(--race-bottom);width:clamp(205px,32vw,280px);height:clamp(98px,30vh,142px);pointer-events:none;}
 #race-action-pad button {position:absolute;display:grid;place-items:center;width:clamp(62px,9vw,82px);height:clamp(55px,17vh,75px);bottom:auto;border-radius:999px;border:2px solid #d2f4ff91;background:#11394ebe;box-shadow:0 4px 18px #0007;touch-action:none;font:800 13px/1.1 system-ui;}
 #race-action-pad button[data-race-action="drift"] {right:0;bottom:0;width:clamp(82px,12vw,100px);height:clamp(82px,23vh,100px);border-color:#ffd580;background:#775021b8;font-size:17px;}
 #race-action-pad button[data-race-action="small"] {right:clamp(88px,13vw,110px);bottom:0;}
@@ -243,8 +232,8 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit[data-item-mode="false"] #race-action-pad button[data-race-action="item"] {display:none;}
 #race-action-pad button.held {background:#a26a32;border-color:#fff0aa;transform:scale(.96);}
 #race-action-pad button.ready {border-color:#8af7dd;box-shadow:0 0 13px #35d7ae80;}
-#race-kit[data-control-mode="classic"] #race-controls {touch-action:none;}
-#race-kit[data-control-mode="classic"] #race-controls button:disabled {opacity:.5;}
+#race-kit #race-controls {touch-action:none;}
+#race-kit #race-controls button:disabled {opacity:.5;}
 @media(max-height:375px) {
  #race-action-pad {height:115px;}
  #race-action-pad button[data-race-action="item"] {bottom:79px;}
@@ -255,13 +244,10 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 /* V4.4 steering wheel: horizontal analog input, familiar circular thumb visual.
  * The art is intentionally not an 8-way MOBA stick: throttle is automatic. */
 #race-joystick {
-  display:none;position:absolute;left:var(--race-left);bottom:var(--race-bottom);
+  display:block;position:absolute;left:var(--race-left);bottom:var(--race-bottom);
   width:clamp(110px,34vh,142px);aspect-ratio:1;touch-action:none;
   pointer-events:auto;user-select:none;-webkit-user-select:none;
 }
-#race-kit[data-control-mode="classic"] #race-joystick {display:block;}
-#race-kit[data-control-mode="classic"] #race-left,
-#race-kit[data-control-mode="classic"] #race-right {display:none;}
 #race-joystick .race-stick-track {
   position:absolute;inset:0;border-radius:50%;
   border:2px solid #b0f0fb82;
@@ -286,10 +272,8 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-joystick.held #race-stick-track {border-color:#bfffff;}
 #race-joystick.held #race-stick-knob {transition:none;box-shadow:0 0 10px #6bdeefaa,0 3px 11px #001928be;}
 #race-joystick.disabled {opacity:.45;pointer-events:none;}
-#race-kit[data-control-mode="assist"] #race-steering-sens,
-#race-kit[data-control-mode="assist"] label[for="race-steering-sens"] {display:none;}
 #race-kit .race-guide-keys span {display:grid;place-items:center;}
-#race-kit[data-control-mode="classic"] .race-guide-keys span {
+#race-kit .race-guide-keys span {
   width:51px;height:51px;border-radius:50%;font-size:39px;line-height:1;
 }
 #race-action-pad button:not(.ready):not([data-race-action="drift"]) {
@@ -299,20 +283,20 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 @media(max-height:335px) {
   #race-joystick {width:105px;}
   #race-action-pad {transform:scale(.88);transform-origin:right bottom;}
-  #race-kit[data-control-mode="classic"] #gaugebox {bottom:calc(var(--race-bottom) + 1px);}
+  #race-kit #gaugebox {bottom:calc(var(--race-bottom) + 1px);}
 }
 
 /* The earlier V4 speed badge occupied the new joystick's touch zone.
  * Relocate it above the thumb, below native race facts. */
-#race-kit[data-control-mode="classic"] #race-speed {
+#race-kit #race-speed {
   top:calc(var(--race-top) + 134px);bottom:auto;
   left:calc(var(--race-left) + 2px);
   min-width:74px;max-width:145px;padding:4px 8px;
 }
-#race-kit[data-control-mode="classic"][data-stage-kind="elimination"] #race-speed {
+#race-kit[data-stage-kind="elimination"] #race-speed {
   top:calc(var(--race-top) + 164px);bottom:auto;
 }
-#race-kit[data-control-mode="classic"] #race-speed small {max-width:135px;font-size:10px;line-height:1.2;}
+#race-kit #race-speed small {max-width:135px;font-size:10px;line-height:1.2;}
 
 /* Specificity matters: the shared race-controls rule otherwise overrides
  * button.ready and hides the very feedback players need to trust. */
