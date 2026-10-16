@@ -71,7 +71,7 @@ function driver(dt,level){
 }
 test('all five levels stay finishable at 30, 60, 120 fps with one-star rules',()=>{
  for(const dt of [1/30,1/60,1/120])for(const l of LEVELS){const r=driver(dt,l);
-  assert.equal(r.reason,'complete',`L${l.id}, ${Math.round(1/dt)}Hz: ${r.reason} fish=${r.count} gold=${r.gold}, jump=${r.jumpedBarriers}`);
+  assert.equal(r.reason,'complete',`L${l.id}, ${Math.round(1/dt)}Hz: ${r.reason} fish=${r.count} gold=${r.gold}, jump=${r.jumpedBarriers}, hit=${r.lastCollisionId}, dist=${r.distance.toFixed(1)} lane=${r.lane.toFixed(2)}`);
   assert.equal(r.hits,0);
  }
 });
@@ -125,7 +125,7 @@ test('all five levels have a real safe 3-star jump/fishing path',()=>{
  const jumpDistances=[3.4,3.4,4.2,3.8,4.2];
  for(const l of LEVELS){
   const r=masteryDrive(l,1/120,jumpDistances[l.id-1]);
-  assert.equal(r.reason,'complete','level '+l.id+' ended '+r.reason);
+  assert.equal(r.reason,'complete','level '+l.id+' ended '+r.reason+' hit='+r.lastCollisionId+' dist='+r.distance.toFixed(1)+' lane='+r.lane.toFixed(2));
   assert.equal(r.stars,3,'level '+l.id+' fish='+r.count+' gold='+r.gold+' jumps='+r.jumpedBarriers+' bestStreak='+r.bestStreak+' targetStreak='+starRequirements(l).streak);
   assert.equal(r.hits,0);
   assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.jumped));
