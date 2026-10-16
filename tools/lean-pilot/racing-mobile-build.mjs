@@ -41,6 +41,19 @@ export function patchRacingSource(source) {
   return output;
 }
 
+/** Only the procedural DESERT ground away from the road gets stronger dune relief.
+ * The pinned buildGround function independently carves a safe corridor around
+ * the track; no road, car, AI or collisions are patched by this transform.
+ */
+export function patchRaceDesertRelief(source) {
+  const original = 'let h = 2 + noise.fbm(x * 0.0045, z * 0.0045, 4) * 18 + Math.max(0, Math.hypot(x - cx, z - cz) - 900) * 0.1;';
+  const revised = 'let h = 2 + noise.fbm(x * 0.0045, z * 0.0045, 4) * 26 + Math.max(0, Math.hypot(x - cx, z - cz) - 900) * 0.1;';
+  if (source.includes(revised)) return source;
+  if (typeof source !== 'string' || source.split(original).length !== 2)
+    throw Error('Pinned desert relief anchor changed; refusing unsafe terrain patch');
+  return source.replace(original, revised);
+}
+
 /** Event-only instrumentation; do not alter car dynamics from licensed original. */
 export function annotateDriftResult(source) {
   const original = "this.emit('driftEnd', { time: this.driftTime });";
@@ -150,7 +163,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRacingSource(beforeMain));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchRacingSource(beforeMain)));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
