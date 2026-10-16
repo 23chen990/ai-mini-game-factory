@@ -72,7 +72,11 @@ async function waitLoaded(page) {
 }
 async function raceStart(page, index, name) {
   if (index !== null) {
-    await page.selectOption('#race-stage',String(index));
+    // Exercise the real touch-first level tiles, not the hidden fallback select.
+    const tile=page.locator('#race-stage-grid button[data-stage-value="'+index+'"]');
+    await tile.tap();
+    if((await tile.getAttribute('aria-pressed'))!=='true')
+      fail('Career tile does not become active on real touch: '+index);
     const scene=(index === 1 || index === 4) ? 'egypt' : index === 3 ? 'aegean' : index === 7 ? 'snow' : 'city';
     const course='race-'+String(index+1).padStart(2,'0');
     // Native map scene is set before the new geometry finishes loading.
