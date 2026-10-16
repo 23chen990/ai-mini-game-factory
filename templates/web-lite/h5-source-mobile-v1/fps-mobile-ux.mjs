@@ -118,7 +118,7 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
 export function cfTouchTutorial(challenge) {
   if (challenge?.kind === 'hits')
     return challenge.drill==='reposition'
-      ? (challenge.elite ? '先手动命中，再换位追击' : '首枪自动开火，之后换位追击')
+      ? (challenge.elite ? '先手动命中，横移后再追击' : '首枪自动开火，横移后手动追击')
       : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
