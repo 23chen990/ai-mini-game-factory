@@ -33,7 +33,7 @@ async function setup(t, { amount = 10, delay = 0, denied = false } = {}) {
       hud: { message() {}, countdown() {}, drawSpeedo() {} },
       audio: { init() {}, enabled: true, master: { gain }, ctx: { currentTime: 0 } },
       save() {}, setupQuality() {}, checkRaceEnd() {}, handleEvents() {}, onItemGet() {},
-      async loadMap(id) { this.map = { id }; }, startDemo() { this.state = 'menu'; this.player = null; },
+      async loadMap(id) { this.map = { id }; this.track = { length:2500, __RACE_COURSE_ID:this.settings.course }; }, startDemo() { this.state = 'menu'; this.player = null; },
       togglePause() { if (this.state === 'paused') this.state = this.pausedFrom; else { this.pausedFrom = this.state; this.state = 'paused'; } },
       startRace() { if (this.loading) return; this.starts++; this.state = 'countdown'; this.player = { isPlayer: true, stats: {}, events: [], finished: false }; this.racers = [this.player]; this.standings = [this.player]; },
     };
