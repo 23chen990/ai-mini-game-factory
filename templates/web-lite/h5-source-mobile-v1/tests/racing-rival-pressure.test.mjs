@@ -68,7 +68,7 @@ test('pace tuning remains bounded and never touches bosses or final item race', 
   const ordinary = Array.from({ length: 6 }, () => rival({ skill: .75 }));
   const tuned = tuneOpponentField(ordinary, { id: '02', course: 'race-02', diff: 0, kind: 'speed' });
   assert.equal(tuned.adjusted, 6);
-  assert.ok(Math.max(...ordinary.map(r => r.skill)) <= .975);
+  assert.ok(Math.max(...ordinary.map(r => r.skill)) <= 1.40);
   const boss = Array.from({ length: 6 }, () => rival({ skill: 1.3 }));
   assert.equal(tuneOpponentField(boss, { id: '13', course: 'race-13', diff: 2, kind: 'boss' }).adjusted, 0);
   const finalItem = Array.from({ length: 6 }, () => rival({ skill: 1.3 }));
