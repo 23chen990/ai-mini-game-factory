@@ -315,7 +315,7 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
     return '累计移动 ' + travel + ' 米、被击倒 ' + deaths + ' 次。下次试试零死亡通关。';
   }
   if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths)
-    return '被击倒 ' + deaths + ' 次，精英关最多允许 ' +
+    return '被击倒 ' + deaths + ' 次，本关最多允许 ' +
       challenge.maxDeaths + ' 次。下次借掩体换位，先避开敌方火力。';
   if (challenge.kind === 'hits'&&challenge.drill==='reposition') {
     const follow=actual(metrics.drillFollowUpHits);
@@ -595,7 +595,7 @@ export function createFpsMobileUx(game, root, doc) {
         scout.protectT=0;
         // Allow new players several *simulation seconds* to recognize, aim
         // and shoot. Afterward the standard Bot can shoot normally.
-        scout.readyAt=Math.max(scout.readyAt,game.time+(activeChallenge?.elite===true?4:10));
+        scout.readyAt=Math.max(scout.readyAt,game.time+(activeChallenge?.elite===true?4:13));
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
