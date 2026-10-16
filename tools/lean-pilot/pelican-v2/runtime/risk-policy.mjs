@@ -1,6 +1,6 @@
 // Enough time to physically reach the real +9m fish at the slowest level,
 // without forcing a rider to wait into the next close barrier.
-export const CAPTURE_HOLD_MS = 1950;
+export const CAPTURE_HOLD_MS = 1200;
 // Match the existing in-game 1.45s jump buffer and ready button, rather
 // than waiting until a software-rendered HUD is only 0.5s from collision.
 export const JUMP_WINDOW_SECONDS = 1.45;
@@ -93,9 +93,9 @@ export function decideRiskAction(view,state){
    const escape=chooseOrdinaryLane({...view,lanes});
    return moveOneLane({...view,lanes},nextState,escape,'capture-vehicle-escape');
   }
-  // A buffered jump may be armed 1.45s before contact. Measured wall time
-  // alone can release the rider *before* the real +9m fish. Hold until the
-  // player-visible distance is beyond that reward, then plan the next turn.
+  // Keep the rider on the prize lane through the actual +9m fish.
+  // Fixed wall-time holds delay the next jump when consecutive barriers are 20m apart;
+  // require both a minimum verified hold and real HUD progress beyond the fish.
   const prizePassed=Number.isFinite(view.distance)&&view.distance>=state.target.distance+10;
   if(nowMs-state.jumpAtMs<CAPTURE_HOLD_MS||!prizePassed)return decision('wait',nextState,'capture-hold',current);
   nextState.stage='post-capture';
@@ -107,7 +107,8 @@ export function decideRiskAction(view,state){
   &&view.distance<=target.distance+TARGET_WINDOW_TRAIL_METERS;
  const rewardLane=lanes.findIndex(lane=>lane?.jumpReward===true&&lane.kind==='barrier');
  if(inTargetWindow&&!state.jumpIssued&&rewardLane>=0&&!laneIsVehicle(lanes[rewardLane])&&
-  (current===rewardLane||Number.isFinite(lanes[rewardLane].seconds)&&lanes[rewardLane].seconds<=2)){
+  (current===rewardLane||Number.isFinite(lanes[rewardLane].seconds)&&
+   lanes[rewardLane].seconds<=(Math.abs(current-rewardLane)===2?3.65:2.7))){
   const targetLane=laneIndex(rewardLane),countdown=lanes[targetLane].seconds;
   if(current!==targetLane)return moveOneLane({...view,lanes},nextState,targetLane,'approach-jump-reward',targetLane);
   if(Number.isFinite(countdown)&&countdown<=JUMP_WINDOW_SECONDS){
