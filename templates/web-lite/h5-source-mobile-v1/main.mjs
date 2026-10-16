@@ -1,7 +1,7 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
-import { createFpsMobileUx, mobileChallengeCopy } from './fps-mobile-ux.mjs';
+import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief } from './fps-mobile-ux.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -153,13 +153,8 @@ async function boot() {
           $('heading').textContent = result.outcome === 'won' ? '✓ ' + activeChallenge.title + '完成！' : '本次挑战未完成';
           $('copy').textContent = id === 'cf-transport-ship'
             ? (result.outcome === 'won'
-              ? '任务成功！本局 ' + round.score + ' 分 · 累计补给 ' + progress.bank
-              : (activeChallenge.kind === 'hits'
-                ? '已命中 ' + (metrics.hits||0) + '/' + activeChallenge.target + '次；继续练习移动与点射。'
-                : activeChallenge.kind === 'kills'
-                  ? 'AWM击杀 ' + (metrics.awmKills||0) + '/' + activeChallenge.target + '；开镜后瞄准胸部再开火。'
-                  : '移动 ' + Math.floor(metrics.travel||0) + '/' + (activeChallenge.minTravel||0) +
-                    '米 · 阵亡 ' + (metrics.deaths||0) + '/' + activeChallenge.target + '次。再试一次。'))
+                ? '任务成功！本局 ' + round.score + ' 分 · 累计补给 ' + progress.bank + '。'
+                : '') + cfMissionDebrief(activeChallenge, metrics, result.outcome)
             : `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
           $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent = result.outcome === 'won' ? '✓ 已完成' : '可重试';
           $('best').textContent = progress.best; showPhase('finished');
