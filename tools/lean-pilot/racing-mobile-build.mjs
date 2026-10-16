@@ -10,7 +10,7 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
-export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs']);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs']);
 
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
@@ -58,6 +58,49 @@ export function patchCareerRouteSource(source) {
     marker,
   ].join('\n    ');
   return source.replace(original, updated);
+}
+
+
+/** Strict adapter for native Road/Player world; only the generated copy changes.
+ * The native PlayerCar retains its steering, acceleration, AI and checkpoint
+ * algorithms. Collision uses the actual width of the chosen physical branch.
+ */
+export function patchShortcutNativeTrack(source) {
+  const marker='this.__RACE_SHORTCUT__?.opening((r + .5) * this.ds, side)';
+  if(source.includes(marker))return source;
+  const anchor='const a = startW + r * 3, b = a + 3;';
+  if(source.split(anchor).length!==2 || !source.includes('export class Track'))
+    throw Error('Pinned native guardrail construction changed');
+  return source.replace(anchor, anchor+'\n          if ('+marker+') continue;');
+}
+export function patchShortcutNativeCar(source) {
+  const expected='const lim = tr.halfW - 1.1;';
+  const changed='const lim = (p.__RACE_SHORTCUT_ACTIVE ? p.__RACE_SHORTCUT_HALF_WIDTH : tr.halfW) - 1.1;';
+  if(source.includes(changed))return source;
+  if(source.split(expected).length!==2 || !source.includes('export class PlayerCar'))
+    throw Error('Pinned native collision-width anchor changed');
+  return source.replace(expected,changed);
+}
+export function patchShortcutNativeWorld(source) {
+  const imported="import { installPhysicalShortcut } from './race-shortcut-network.mjs';";
+  const marker='installPhysicalShortcut(track, requestedCourse);';
+  if(source.includes(imported) && source.includes(marker))return source;
+  if(source.includes(imported) || source.includes(marker))throw Error('Partial shortcut world adapter');
+  const anchors=[
+    'track.__RACE_COURSE_ID = requestedCourse;',
+    'const ground = buildGround(track, { base:',
+    'root.add(track.build(map.track, ground.heightAt));',
+    'this.hud.setupMinimap(track);',
+    "  resetPlayer() {\n    const P = this.player;",
+  ];
+  for(const a of anchors)if(source.split(a).length!==2)
+    throw Error('Pinned native shortcut world anchor changed: '+a.slice(0,35));
+  return imported+'\n'+source
+    .replace(anchors[0], anchors[0]+'\n    '+marker)
+    .replace(anchors[1], 'const ground = buildGround(track.__RACE_SHORTCUT__?.terrainProxy(track) || track, { base:')
+    .replace(anchors[2], anchors[2]+'\n    if (track.__RACE_SHORTCUT__) root.add(track.__RACE_SHORTCUT__.buildMesh(THREE, ground.heightAt));')
+    .replace(anchors[3], anchors[3]+'\n    track.__RACE_SHORTCUT__?.drawMinimap(this.hud);')
+    .replace(anchors[4], "  resetPlayer() {\n    const P = this.player;\n    if (this.track?.__RACE_SHORTCUT__?.recover(P)) return;");
 }
 
 /** Only the procedural DESERT ground away from the road gets stronger dune relief.
@@ -175,14 +218,20 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   }
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = annotateDriftResult(originalVehicle);
+  const annotatedVehicle = patchShortcutNativeCar(annotateDriftResult(originalVehicle));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
+  const nativeTrackPath = path.join(project, 'src/track.js');
+  const originalTrack = await readFile(nativeTrackPath, 'utf8');
+  const adaptedTrack = patchShortcutNativeTrack(originalTrack);
+  if (adaptedTrack !== originalTrack) await writeFile(nativeTrackPath, adaptedTrack);
+  await writeFile(path.join(project, 'src/race-shortcut-network.mjs'),
+    await readFile(path.join(owned, 'shortcut-network.mjs'), 'utf8'));
   const canonicalVehicle = originalVehicle.replace(
     "this.emit('driftEnd', { time: this.driftTime, clean });",
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCareerRouteSource(patchRacingSource(beforeMain))));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchShortcutNativeWorld(patchCareerRouteSource(patchRacingSource(beforeMain)))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
@@ -202,7 +251,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const standalone = html.replace('<link rel="stylesheet" href="style.css">', '<style>' + inputFiles[3] + '</style>');
   const trialName = 'racing-two-button-' + hash.slice(0, 12) + '.html';
   await writeFile(path.join(root, trialName), standalone);
-  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), trackGeometrySha256: sha256(await readFile(path.join(project, 'src/layouts.js'))), itemVisualSourceSha256: sha256(await readFile(path.join(project, 'src/items.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
+  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), generatedVehicleSha256: sha256(annotatedVehicle), generatedTrackSha256: sha256(adaptedTrack), genuinePhysicalShortcutStages: ['05','10','12','13','16'], trackGeometrySha256: sha256(await readFile(path.join(project, 'src/layouts.js'))), itemVisualSourceSha256: sha256(await readFile(path.join(project, 'src/items.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
   history.attempts.at(-1).status = 'AWAITING_PLAYWRIGHT_QA';
   history.attempts.at(-1).buildHash = hash;
   await writeFile(path.join(root, 'artifacts/repair-history.json'), JSON.stringify(history, null, 2) + '\n');
