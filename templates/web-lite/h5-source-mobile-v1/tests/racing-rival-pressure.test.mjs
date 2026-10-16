@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { RacingCareer } from '../racing/runtime.mjs';
 import { configureRivalTactics, applyRivalTactics, tuneOpponentField, seedCompetitiveField, COMPETITIVE_FIELD_V42, careerPaceMultiplier } from '../racing/rival-pressure.mjs';
 
 function rival(overrides = {}) {
@@ -130,4 +131,22 @@ test('rivals look for a safe pass around an ACTUAL other-AI blocker, not just th
     'AI chaser should plan the open left side of the other AI, even if player is far away');
   assert.equal(chaser.progress,120);
   assert.equal(blocker.progress,150);
+});
+
+test('actual RacingCareer bridge removes leader slowdown but restores native behavior outside races',()=>{
+  const storage={getItem:()=>null,setItem:()=>{}};
+  const career=new RacingCareer(storage);
+  const nativeCalls=[];
+  const game={state:'menu',rubber:r=>{nativeCalls.push(r);return .88;},
+    checkRaceEnd:()=>{},onItemGet:()=>{}};
+  career.patchNative(game);
+  const opponent={isPlayer:false},player={isPlayer:true};
+  assert.equal(game.rubber(opponent),.88,'pre-race demo keeps native behavior');
+  career.active=true;game.state='race';
+  assert.equal(game.rubber(opponent),1,'career leader must never be artificially slowed');
+  assert.equal(game.rubber(player),.88,'player is not an AICar');
+  assert.equal(game.rubber(opponent),1,'a trailing rival also gets no artificial catch-up');
+  career.active=false;
+  assert.equal(game.rubber(opponent),.88,'outside the race the original function is restored');
+  assert.equal(nativeCalls.length,3,'native callable is preserved and only bypassed during career AI updates');
 });
