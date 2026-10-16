@@ -76,14 +76,21 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
   if (challenge?.drill !== 'reposition') return null;
   const hits=Number.isFinite(native.hits)?Math.max(0,Math.floor(native.hits)):0;
   const travel=Number.isFinite(native.travel)?Math.max(0,native.travel):0;
-  let {stage=0,startTravel=0,hitBaseline=null,anchorX=null,anchorZ=null} = previous||{};
+  let {stage=0,startTravel=0,hitBaseline=null,anchorX=null,anchorZ=null,
+    lastX=null,lastZ=null,lastTravel=travel} = previous||{};
   const x=Number.isFinite(native.x)?native.x:null;
   const z=Number.isFinite(native.z)?native.z:null;
   if(stage===0&&hits>=challenge.openingHits) {
     stage=1;startTravel=travel;anchorX=x;anchorZ=z;
   }
-  // Both real walking distance and actual displacement from the first-hit
-  // position are required. Spawn teleport or joystick wobble cannot complete.
+  // A native death-respawn teleports the player without an equivalent
+  // walking delta. Re-anchor the move stage, never credit that teleport.
+  if(stage===1&&lastX!==null&&lastZ!==null&&x!==null&&z!==null &&
+     Math.hypot(x-lastX,z-lastZ)>Math.max(0,travel-lastTravel)+2.4) {
+    startTravel=travel;anchorX=x;anchorZ=z;
+  }
+  // Both real walking distance and displacement from the actual first-hit
+  // or respawn position are required; joystick wobble cannot complete.
   const walked=Math.max(0,travel-startTravel);
   const net=anchorX!==null&&anchorZ!==null&&x!==null&&z!==null
     ? Math.hypot(x-anchorX,z-anchorZ):walked;
@@ -91,7 +98,8 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
   if(stage===1&&distance>=challenge.minTravel) {
     stage=2;hitBaseline=hits;
   }
-  return {stage,startTravel,hitBaseline,anchorX,anchorZ,distance,
+  return {stage,startTravel,hitBaseline,anchorX,anchorZ,
+    lastX:x,lastZ:z,lastTravel:travel,distance,
     follow:stage===2?Math.max(0,hits-hitBaseline):0,firstHit:stage>0};
 }
 /** Preview copy mirrors each mission's actual input mechanics. */
