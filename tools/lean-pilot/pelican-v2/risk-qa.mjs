@@ -244,6 +244,7 @@ async function runLevel(level){
    await page.waitForTimeout(80);
   }
   terminal=await readSnapshot(page);result.terminal=terminal;result.hudFinish=await visibleHud(page);
+  console.log('RISK_TERMINAL '+JSON.stringify({engine,level:level.id,phase:terminal.phase,reason:terminal.reason,distance:terminal.distance,count:terminal.count,gold:terminal.gold,jumpedBarriers:terminal.jumpedBarriers,hits:terminal.hits,events:(terminal.events??[]).filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)).slice(-20),episodes:episodes.map(e=>({id:e.barrierId,jump:e.jump&&{distance:e.jump.distance,countdown:e.jump.countdown,laneIndex:e.jump.laneIndex},holdComplete:e.holdComplete,hudSeen:e.hudSeen,barrierClearSnapshotId:e.barrierClearSnapshotId,bonusFishCatchSnapshotId:e.bonusFishCatchSnapshotId})),decisions:report.decisions.filter(d=>d.levelId===level.id).slice(-18).map(d=>({distance:d.visibleView.distance,laneIndex:d.visibleView.laneIndex,action:d.action,toLane:d.toLane,countdown:d.countdown,reason:d.reason}))}));
   result.rafEndAt=await page.evaluate(()=>performance.now());
   result.renderInfo=await page.evaluate(()=>window.__coast.renderInfo());
   await recordSnapshot(page,'level-terminal-settlement',{levelId:level.id,value:terminal});
