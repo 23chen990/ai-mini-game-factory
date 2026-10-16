@@ -107,8 +107,7 @@ test('earned boost and item remain independent in item races; first physics step
   assert.match(result,/if \(onGround\)/);
   const loop=patchManualNitroEdge('const noEdge = { ...pin, upPressed: false, wPressed: false, nitroPressed: false };');
   assert.match(loop,/manualNitroPressed: false/);
-  const input=await import('../racing/driver.mjs');
-  const a=new input.TouchActions(),d=new input.ManualRaceDriver(a),p=sample();
+  const a=new TouchActions(),d=new ManualRaceDriver(a),p=sample();
   a.press(1,'item');a.release(1);a.press(2,'nitro');a.release(2);
   const edges=d.frame({},p,'race',{itemMode:true});
   assert.equal(edges.nitroPressed,true);
