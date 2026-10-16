@@ -1,4 +1,4 @@
-/* global process, console, window, document */
+/* global process, console, window, document, URL */
 /** Browser check against THE PUBLIC HTTPS URL, not a local server or CI ZIP. */
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
