@@ -66,6 +66,7 @@ async function boot() {
     $('goal').value = 0; root.dataset.challenge = selected.id;
     if (id === 'cf-transport-ship') {
       renderFacts($('fps-brief'),cfMissionFacts(displayChallenge));
+      fpsUx?.onSelect(displayChallenge);
       $('fps-brief').hidden=false;
       $('fps-results').hidden=true;
       if(root.dataset.loaded==='true')$('start').textContent=elite?'⚡ 开始精英挑战 →':'进入战场 →';
