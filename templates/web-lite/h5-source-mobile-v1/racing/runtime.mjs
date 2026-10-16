@@ -3,7 +3,7 @@ import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemClea
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
 import { WrongWayRecovery } from './recovery.mjs';
-import { RivalPressure, tuneOpponentField } from './rival-pressure.mjs';
+import { RivalPressure, tuneOpponentField, seedCompetitiveField, configureRivalTactics, careerPaceMultiplier } from './rival-pressure.mjs';
 
 export class RacingCareer {
   constructor(storage, legacyBest = {}) {
@@ -59,6 +59,8 @@ export class RacingCareer {
     // every car's corner pace, nitro, items and genuine on-road position.
     // Stage 01, bosses and fragile elimination/item objectives stay protected.
     tuneOpponentField(game.racers,this.stage);
+    seedCompetitiveField(game.racers,this.stage);
+    configureRivalTactics(game.racers,this.stage);
     if (this.stage.kind === 'overtake') {
       // A visible rival survives beyond the first straight without scripted teleportation.
       const challengers = game.racers.filter(r => !r.isPlayer).slice(0, 2);
@@ -84,7 +86,7 @@ export class RacingCareer {
         // the 1.58 boss. A genuine finish must remain achievable through cleaner
         // steering, rather than requiring a perfect zero-contact drive.
         // A different course can be harder even with a lower numeric AI skill.
-        this.boss.skill = this.stage.id === '16' ? 1.35 :
+        this.boss.skill = this.stage.id === '16' ? 1.45 :
           Math.max(this.boss.skill, 1.58);
         if (this.stage.id === '16') for (const rival of game.racers) {
           if (!rival.isPlayer && rival !== this.boss)
@@ -124,6 +126,14 @@ export class RacingCareer {
   /** Native AI-first 10-second DNF was unfair when races exceed one lap. */
   patchNative(game) {
     if (game.__RACE_CAREER_PATCHED__) return;
+    if (typeof game.rubber === 'function') {
+      const nativeRubber = game.rubber.bind(game);
+      game.rubber = rival => {
+        const fixed = careerPaceMultiplier(this.active && game.state === 'race' &&
+          rival && !rival.isPlayer);
+        return fixed ?? nativeRubber(rival);
+      };
+    }
     const nativeEnd = game.checkRaceEnd.bind(game);
     game.checkRaceEnd = dt => {
       if (game.firstFinish < 0) game.__RACE_FIRST_FINISH_NOTIFIED__ = false;
@@ -157,7 +167,7 @@ export class RacingCareer {
     const pursuing = this.pressure.frame(game, this.stage);
     if (pursuing) {
       m.pursuitWarnings++;
-      this.notice.push('⚡ '+pursuing.name+' 发起追击 · 后方'+pursuing.gap+'m');
+      this.notice.push('⚡ '+pursuing.name+' 干净出弯，准备加速');
     }
     const distance = track.length * this.stage.laps;
     if (this.passes.frame(game)) {
