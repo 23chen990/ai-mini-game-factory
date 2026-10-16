@@ -303,8 +303,10 @@ export function buildRaceLandmarks(THREE,track,course) {
       share(root,new THREE.OctahedronGeometry(7,0),material,0,15.5,0);
     },
   ];
-  // A different signature pair in every numbered course.
-  const types=[(n+7)%8,(n*5+2)%8],fractions=n%2?[.27,.72]:[.32,.77];
+  // The first distinctive landmark must appear within the opening sector:
+  // four shared biomes formerly looked interchangeable for the first 30s.
+  // Keep the second landmark further into the route for long-term recognition.
+  const types=[(n+7)%8,(n*5+2)%8],fractions=n%2?[.11,.72]:[.14,.77];
   for(let sector=0;sector<2;sector++){
     const sample=track.sample(track.length*fractions[sector],{});
     for(const side of [-1,1]){
