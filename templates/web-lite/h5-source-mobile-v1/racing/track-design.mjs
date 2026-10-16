@@ -173,7 +173,7 @@ export function createCareerLayouts(layouts) {
     const [title,feel,english,scale,sketch]=blueprint;
     const local=injectTechnicalSectors(parseLocalRoute(sketch),id,scale);
     if(!Number.isFinite(scale)||scale<.6||scale>1.2||local.length<12||
-       local.length>28||titles.has(title)||!english||!feel||
+       local.length>40||titles.has(title)||!english||!feel||
        local[0].some(n=>n!==0))
       throw Error('Invalid authored course blueprint '+id);
     titles.add(title);
