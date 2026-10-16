@@ -62,7 +62,11 @@ export function mobileScoutHoldExpired(actor, seconds) {
 export function cfScoutHoldSeconds(challenge) {
   if(challenge?.elite===true)return challenge.kind==='kills'?7:3;
   if(challenge?.kind==='kills')return 20;
-  return challenge?.kind==='hits'&&challenge.drill==='reposition'?26:7;
+  // Beginner learn-to-flank scenario: one normal, shooting bot remains at
+  // original visible cover until the actual 60s challenge expires. It is
+  // NOT invulnerable, no input/hit is forged, and elite still rushes.
+  return challenge?.kind==='hits'&&challenge.drill==='reposition'
+    ? Math.ceil((challenge.limitMs||60000)/1000)+5 : 7;
 }
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
@@ -579,7 +583,7 @@ export function createFpsMobileUx(game, root, doc) {
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
   let drill = null, drillStageAt = 0, flankGoal = null, flankDeaths = -1;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
-  let routePath = null, routeLastAt = 0;
+  let routePath = null, routeLastAt = 0, lastVisibleEnemy = null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
 
   function recolorNativeAllies() {
@@ -658,7 +662,8 @@ export function createFpsMobileUx(game, root, doc) {
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
         scout.__mobileTrainingHoldUntil=game.time+cfScoutHoldSeconds(activeChallenge);
-        return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance};
+        return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance,
+          initialVisibleSpot:[spot.x,spot.z]};
       }
     }
     for(const bot of enemies) {
@@ -671,7 +676,13 @@ export function createFpsMobileUx(game, root, doc) {
     return {path:false,trainingScout:false};
   }
   function findRoute() {
-    const p=game.player, dest=firstEncounterDestination(p?.team);
+    const p=game.player;
+    // Hunt only a location the PLAYER genuinely saw: the confirmed initial
+    // sightline or a later onscreen unobstructed enemy badge. Never use live
+    // concealed NPC coordinates to steer the player through walls.
+    const known=activeChallenge?.drill==='reposition'&&drill?.stage===2
+      ? lastVisibleEnemy : null;
+    const dest=known ? [known.x,known.z] : firstEncounterDestination(p?.team);
     if(!p || !dest || !game.nav?.findPath) return null;
     const path=game.nav.findPath(p.pos.x,p.pos.z,dest[0],dest[1]);
     if(!Array.isArray(path) || path.length<2)return null;
@@ -827,6 +838,10 @@ export function createFpsMobileUx(game, root, doc) {
         projected=pos;break;
       }
       if(!projected)continue;
+      // The projected marker passed both camera-frustum and LOS raycast tests:
+      // remembering this location is equivalent to a real player's sighting.
+      if(activeChallenge?.drill==='reposition')
+        lastVisibleEnemy={x:actor.pos.x,z:actor.pos.z,at:game.time};
       let el = markers.get(actor);
       if (!el) {
         el = doc.createElement('div');
@@ -871,7 +886,7 @@ export function createFpsMobileUx(game, root, doc) {
           : '前方有目标 · 右手瞄准';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
-      routePath=null;routeLastAt=0;
+      routePath=null;routeLastAt=0;lastVisibleEnemy=null;
       nextUpdate = 0;
       nextBalanceAt = 0;
       lastHits = game.player?.stats?.hits || 0;
@@ -892,6 +907,9 @@ export function createFpsMobileUx(game, root, doc) {
       game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null,
         challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
       const rendezvous=prepareFirstEncounter();
+      if(rendezvous.trainingScout&&Array.isArray(rendezvous.initialVisibleSpot))
+        lastVisibleEnemy={x:rendezvous.initialVisibleSpot[0],
+          z:rendezvous.initialVisibleSpot[1],at:game.time};
       game.__mobileBalanceReview.firstRendezvousPath=rendezvous.path;
       game.__mobileBalanceReview.trainingScout=rendezvous.trainingScout;
        game.__mobileBalanceReview.sniperScout=rendezvous.sniperScout===true;
@@ -999,9 +1017,9 @@ export function createFpsMobileUx(game, root, doc) {
         } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
           const turn=!seen?routeArrow(p,routePath):null;
           guide.textContent=turn
-            ? turn.symbol+' 寻找敌人 · 手动追击 '+drill.follow+'/'+activeChallenge.target
+            ? turn.symbol+' 返回交火位置 · 手动追击 '+drill.follow+'/'+activeChallenge.target
             : seen ? '◎ 对准红色目标按开火 · '+drill.follow+'/'+activeChallenge.target
-              : '↑ 沿通道寻找敌人 · '+drill.follow+'/'+activeChallenge.target;
+              : '↑ 寻找上次见到的敌人 · '+drill.follow+'/'+activeChallenge.target;
         } else if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
