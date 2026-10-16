@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {RivalPressure,tuneOpponentField,OPPONENT_PACE_V39} from '../racing/rival-pressure.mjs';
+import {RivalPressure,tuneOpponentField,seedCompetitiveField,OPPONENT_PACE_V39} from '../racing/rival-pressure.mjs';
 import {STAGES,dailyStage} from '../racing/career.mjs';
 import {roadHint} from '../racing/road-coach.mjs';
 const race=()=>{
@@ -40,7 +40,7 @@ test('the same real corner produces the SAME AI capability whether player leads 
     assert.equal(r.nitroCd,.85,'no catch-up/leader penalty: '+playerProgress);
   }
 });
-test('corner reward respects tutorial, boss, elimination, relay and item restrictions',()=>{
+test('clean native corner boost works in every speed race, including former tutorial and bosses',()=>{
   for(const cfg of [{...stage,id:'01',course:'race-01'},
     {...stage,kind:'boss',id:'13',course:'race-13'},
     {...stage,kind:'elimination',id:'12',course:'race-12'},
@@ -48,8 +48,9 @@ test('corner reward respects tutorial, boss, elimination, relay and item restric
     {...stage,mode:'item',id:'06',course:'race-06'}]){
     const g=race(),d=new RivalPressure(),r=g.racers[1];
     d.frame(g,cfg);g.track.curvAhead=()=>.003;g.raceTime=26;
-    assert.equal(d.frame(g,cfg),null);
-    assert.equal(r.nitroCd,5,JSON.stringify(cfg));
+    const expected=cfg.mode==='item'?null:{name:'追风者',cornerExit:true};
+    assert.deepEqual(d.frame(g,cfg),expected,JSON.stringify(cfg));
+    assert.equal(r.nitroCd,cfg.mode==='item'?5:.85,JSON.stringify(cfg));
   }
 });
 test('all four biomes support clean corner-line decisions, but spins prevent rewards',()=>{
@@ -99,7 +100,9 @@ test('V3.9 AI is one measured notch stronger in early real races, without an ove
   const p={isPlayer:true,skill:1,progress:20,stats:{crash:3}};
   const tutorial=[p,...grid(.55,.75)],initial=tutorial.map(r=>r.skill);
   assert.deepEqual(tuneOpponentField(tutorial,STAGES[0]),{adjusted:0,ace:false});
-  assert.deepEqual(tutorial.map(r=>r.skill),initial,'first race keeps generous tutorial AI');
+  assert.deepEqual(tutorial.map(r=>r.skill),initial,'legacy tune step alone must not mutate the player or grid');
+  assert.equal(seedCompetitiveField(tutorial,STAGES[0]).adjusted,5,'stage01 gets a real hard grid');
+  assert.ok(tutorial[5].skill>=1.60,'stage01 fastest opponent cannot remain at rookie pace');
   for(const id of ['02','04','05']) {
     const stage=STAGES.find(s=>s.id===id);
     const racers=[p,...grid(.55,.75)];
