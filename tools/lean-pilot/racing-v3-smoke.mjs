@@ -172,11 +172,33 @@ async function raceStart(page, index, name) {
   const expectedCourse='race-'+String((index ?? 0)+1).padStart(2,'0');
   if(early.course!==expectedCourse)
     fail(name+': stage reused a different native road spline: '+JSON.stringify({actual:early.course,expected:expectedCourse}));
+  // Read THREE WORLD GRAPH, not the lobby SVG. Distinct roadside objects
+  // must exist on the very same native Track that is being driven.
+  const worldIdentity=await page.evaluate(()=>{
+    const game=window.game,course=game?.track?.__RACE_COURSE_ID;
+    const node=game?.level?.getObjectByName('physical-course-identity-'+course);
+    const arches=node?.children?.filter(x=>x.name?.includes('sector-arch')) ?? [];
+    const scenery=node?.children?.filter(x=>x.name?.includes('landscape')) ?? [];
+    const evidence=window.__RACE_EVIDENCE__;
+    return {course,exists:!!node,arches:arches.length,scenery:scenery.length,
+      numberedMeshCount:arches[0]?.children?.length??0,
+      actualCourse:evidence?.actualCourse,requestedCourse:evidence?.requestedCourse,
+      actualTrackLength:evidence?.actualTrackLength};
+  });
+  if(!worldIdentity.exists||worldIdentity.course!==expectedCourse||
+     worldIdentity.arches!==2||worldIdentity.scenery!==4||
+     worldIdentity.numberedMeshCount<13||
+     worldIdentity.actualCourse!==expectedCourse||
+     worldIdentity.requestedCourse!==expectedCourse||
+     !(worldIdentity.actualTrackLength>1200))
+    fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
     fail(name+': native vehicle did not progress with real auto throttle; '+JSON.stringify({early,after,error:movementError?.message}));
-  const expectedPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];
+  const originalPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];
+  const stageNo=Number(expectedCourse.slice(5));
+  const expectedPadLanes=originalPadLanes.map((lat,i)=>lat*((stageNo+i)%3===2?-1:1));
   if(JSON.stringify(early.padLanes)!==JSON.stringify(expectedPadLanes))
     fail(name+': native speed-pad lane choices missing: '+JSON.stringify(early.padLanes));
   // Compare the actual rendered native geometry with the source-of-truth
@@ -217,7 +239,7 @@ async function raceStart(page, index, name) {
       fail(name+': thumb control out of horizontal safe bounds: '+key);
   }
   await page.screenshot({path:path.join(dest,name+'.png')});
-  report.views.push({name,...early,after:{state:after.state,progress:after.progress,rank:after.rank,goal:after.goal,fuel:after.fuel}});
+  report.views.push({name,...early,worldIdentity,after:{state:after.state,progress:after.progress,rank:after.rank,goal:after.goal,fuel:after.fuel}});
 }
 try {
   browser=await chromium.launch({headless:true,args:['--enable-webgl','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader','--disable-gpu-sandbox']});
