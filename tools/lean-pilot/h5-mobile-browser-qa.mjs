@@ -176,6 +176,16 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    // follow that hint before it tries random blind strafing.
    const guide=page.locator('#mk-fps-guide');
    const guidance=await guide.isVisible()?await guide.textContent():'';
+   if(guidance?.startsWith('↔')){
+     // Sidestep with the actual left joystick when UI says "peek".
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     if(pad){
+       const start={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
+       const side=fpsScriptSteps%4<2?-48:48;
+       await mobileStroke(start,{x:start.x+side,y:start.y},950,71);
+     }
+     return;
+   }
    if(guidance?.startsWith('←')||guidance?.startsWith('→')){
      const right=guidance.startsWith('→');
      fpsRouteTurns++;
