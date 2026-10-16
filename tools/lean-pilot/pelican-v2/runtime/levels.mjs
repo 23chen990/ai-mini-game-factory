@@ -82,6 +82,18 @@ export const LEVELS=definitions.map(d=>{
    if(!unsafeLanes(obstacles,x).has(lane))fish.push({id:`l1-shoal-${x}`,x,lane,golden,shoal:true});
   }
  }
+ // V5 high-risk coast: short fish trains reward riders who commit to an
+ // actual safe collecting route. The repeated catches are physical objects,
+ // not free score or changes to the three-star requirement.
+ if(d.id===5){
+  for(const x of [79,159,239,319,463,639,671,687]){
+   const leader=fish.find(f=>f.x===x);
+   if(!leader)continue;
+   const followed=x+3;
+   if(unsafeLanes(obstacles,followed).has(leader.lane))continue;
+   fish.push({id:`l5-trail-${x}`,x:followed,lane:leader.lane,z:leader.z,golden:false,shoal:true});
+  }
+ }
  // Optional visible golden fish behind barriers; never required for one-star completion.
  fish.push(...makeBarrierPrizes(d.id,obstacles,d.distance));
  fish.sort((a,b)=>a.x-b.x);
