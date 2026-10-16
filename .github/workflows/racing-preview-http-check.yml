@@ -1,32 +1,110 @@
 name: Verify racing phone preview
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - preview/racing-v34-dbf8603-mobile
+    branches: [preview/racing-v34-dbf8603-mobile]
     paths:
-      - .github/workflows/racing-preview-http-check.yml
+      - index.html
+      - PREVIEW_PROVENANCE.txt
 permissions:
   contents: read
 jobs:
   external-url:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
     steps:
-      - name: Confirm HTTPS live game matches accepted playable
+      - uses: actions/checkout@v4
+      - name: Confirm current branch and immutable build provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(sha256sum index.html | cut -d ' ' -f 1)"
+          grep -Fx "HTML_SHA256=$expected" PREVIEW_PROVENANCE.txt
+          grep -Fx "UPSTREAM_COMMIT=54adc1fb64155f9dd7c1c90ecae7b8185ac540b8" PREVIEW_PROVENANCE.txt
+          grep -q 'INTERNAL HUMAN PLAYTEST ONLY' PREVIEW_PROVENANCE.txt
+          grep -q 'data-race-mobile="true"' index.html
+          echo "EXPECTED_SHA256=$expected" >> "$GITHUB_ENV"
+      - name: Confirm correct H5 actually responds at external HTTPS URL
+        shell: bash
         run: |
           set -euo pipefail
           url='https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v34-dbf8603-mobile/index.html'
-          for attempt in 1 2 3 4 5; do
-            if curl -fLsS --retry 2 --max-time 35 "$url" -o /tmp/racing-mobile.html; then
-              sha="$(sha256sum /tmp/racing-mobile.html | cut -d ' ' -f 1)"
-              if [ "$sha" = "2dbb6bb07bfe1b8379ba0f3d696a5c8a0c5f334b2b462c97368ba764d9732b8e" ]; then
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            if curl --fail --location --silent --show-error --retry 1 --max-time 35 "$url" -o /tmp/racing-phone.html; then
+              sha="$(sha256sum /tmp/racing-phone.html | cut -d ' ' -f 1)"
+              if [ "$sha" = "$EXPECTED_SHA256" ]; then
                 echo "LIVE_PHONE_LINK_VERIFIED=$url"
-                wc -c /tmp/racing-mobile.html
+                echo "HTML_SHA256=$sha"
+                echo "LIVE_PHONE_LINK_VERIFIED=$url" >> "$GITHUB_STEP_SUMMARY"
                 exit 0
               fi
-              echo "Preview not refreshed yet: $sha"
+              echo "Cache not refreshed: $sha vs $EXPECTED_SHA256"
             fi
-            sleep 7
+            sleep 10
           done
-          echo "Preview URL not verified" >&2
+          echo "No verified remote HTML; never call this deployed" >&2
           exit 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+      - name: Install locked browser test runtime
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm exec playwright install --with-deps chromium
+      - name: Real remote Chromium render, touch, and start test
+        shell: bash
+        run: |
+          mkdir -p /tmp/racing-phone-evidence
+          node --input-type=module <<'JS'
+          import assert from 'node:assert/strict';
+          import { writeFile } from 'node:fs/promises';
+          import { chromium } from '@playwright/test';
+          const url='https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v34-dbf8603-mobile/index.html';
+          const browser=await chromium.launch({headless:true,args:['--enable-webgl','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader','--disable-gpu-sandbox']});
+          const ctx=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+          const page=await ctx.newPage(), errors=[],screens=[];
+          page.on('pageerror',e=>errors.push(e.message));
+          try {
+            const response=await page.goto(url,{waitUntil:'domcontentloaded',timeout:55000});
+            assert.equal(response?.status(),200);
+            await page.waitForFunction(()=>document.querySelector('#race-kit')?.dataset.loaded==='true'&&!document.querySelector('#race-start').disabled,null,{timeout:95000});
+            for(const [width,height] of [[844,390],[740,360]]){
+              await page.setViewportSize({width,height});
+              const layout=await page.evaluate(()=>{
+                const panel=document.querySelector('#race-panel'),map=document.querySelector('.race-track-diagram');
+                return {clientHeight:panel.clientHeight,scrollHeight:panel.scrollHeight,map:!!map&&map.getBoundingClientRect().width>75};
+              });
+              assert.ok(layout.map&&layout.scrollHeight<=layout.clientHeight+12,'No scroll or missing circuit on '+width);
+              await page.screenshot({path:'/tmp/racing-phone-evidence/lobby-'+width+'.png'});
+              screens.push({width,height,...layout});
+            }
+            await page.setViewportSize({width:844,height:390});
+            await page.locator('#race-start').click();
+            await page.waitForFunction(()=>window.game?.state==='race'&&!document.querySelector('#race-left').disabled,null,{timeout:95000});
+            const box=await page.locator('#race-left').boundingBox();
+            assert.ok(box);
+            const cdp=await ctx.newCDPSession(page);
+            await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:box.x+box.width/2,y:box.y+box.height/2,id:1}]});
+            await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',null,{timeout:10000});
+            await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+            const overlay=await page.evaluate(()=>{
+              const a=document.querySelector('#gaugebox')?.getBoundingClientRect();
+              const b=document.querySelector('#race-progress')?.getBoundingClientRect();
+              return {controlsVisible:!document.querySelector('#race-controls').hidden,
+                gaugeOverlap:!!a&&!!b&&a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom};
+            });
+            assert.ok(overlay.controlsVisible&&!overlay.gaugeOverlap,'Genuine game HUD must not overlap');
+            await page.screenshot({path:'/tmp/racing-phone-evidence/racing-844.png'});
+            assert.deepEqual(errors,[],'No uncaught browser runtime errors');
+            await writeFile('/tmp/racing-phone-evidence/report.json',JSON.stringify({url,htmlSha256:process.env.EXPECTED_SHA256,realExternalBrowser:true,physicalPhone:false,normalTapStart:true,screens,overlay,errors},null,2));
+            console.log('LIVE_EXTERNAL_CHROMIUM_PASS',JSON.stringify({screens,overlay}));
+          } finally {await ctx.close();await browser.close();}
+          JS
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: racing-external-phone-evidence-${{ github.sha }}
+          path: /tmp/racing-phone-evidence/
+          retention-days: 7
+          if-no-files-found: warn
