@@ -301,3 +301,15 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   #race-action-pad {transform:scale(.88);transform-origin:right bottom;}
   #race-kit[data-control-mode="classic"] #gaugebox {bottom:calc(var(--race-bottom) + 1px);}
 }
+
+/* The earlier V4 speed badge occupied the new joystick's touch zone.
+ * Relocate it above the thumb, below native race facts. */
+#race-kit[data-control-mode="classic"] #race-speed {
+  top:calc(var(--race-top) + 134px);bottom:auto;
+  left:calc(var(--race-left) + 2px);
+  min-width:74px;max-width:145px;padding:4px 8px;
+}
+#race-kit[data-control-mode="classic"][data-stage-kind="elimination"] #race-speed {
+  top:calc(var(--race-top) + 164px);bottom:auto;
+}
+#race-kit[data-control-mode="classic"] #race-speed small {max-width:135px;font-size:10px;line-height:1.2;}
