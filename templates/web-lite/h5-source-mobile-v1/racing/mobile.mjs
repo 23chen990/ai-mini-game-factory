@@ -2,7 +2,7 @@
 import { RaceDriver, TouchSteering } from './driver.mjs';
 import { careerCourseDetails } from './track-design.mjs';
 import { raceSpeedHUD } from './speed-hud.mjs';
-import { careerCourseSvg, raceProgressPercent, nearbyRival, raceEventMoment } from './presentation.mjs';
+import { careerCourseSvg, raceProgressPercent, nearbyRival, raceEventMoment, raceMetricMoment } from './presentation.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
@@ -28,7 +28,8 @@ const pointers = new TouchSteering(), driver = new RaceDriver(), quality = new Q
 driver.enabled = mobile;
 let g, phase = 'ready', started = false, result = null, loading = true, lastFrame = performance.now(), inputTime = performance.now();
 let nativeStartRace, policyReady = false, backgrounded = document.hidden;
-let events = [], best = {}, momentUntil = 0, lastMomentAt = -Infinity;
+let events = [], best = {}, momentUntil = 0, lastMomentAt = -Infinity, lastRacePassed = false;
+let previousMetrics = { cleanPasses: 0, pickups: 0 };
 let adNotice = '', adNoticeUntil = 0;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1';
 const QUALITY_STORE = 'h5-qq-mobile-20261013:graphics-quality:v1';
@@ -41,7 +42,7 @@ try { storageRef = localStorage; }
 catch { storageRef = { getItem() { throw Error('本地存储不可用'); }, setItem() { throw Error('本地存储不可用'); } }; }
 const career = new RacingCareer(storageRef, best);
 function fuelView() {
-  $('fuel-info').textContent = career.fuelText() + (performance.now() < adNoticeUntil ? ' · ' + adNotice : '');
+  $('fuel-info').textContent = (career.fuelEnabled ? career.fuelText() : '自由试玩 · 不限油') + (performance.now() < adNoticeUntil ? ' · ' + adNotice : '');
   const metered = career.fuelEnabled, empty = metered && !career.canStart();
   $('fuel-gauge').hidden = !metered;
   $('fuel-gauge').setAttribute('aria-valuenow', String(career.fuel.amount));
@@ -73,8 +74,7 @@ function renderLobby() {
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · 6 车起步' +
-    (courseInfo ? ' · 地图：'+courseInfo.title : '');
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛');
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = courseInfo?.feel ?? '';
@@ -86,7 +86,7 @@ function renderLobby() {
     opt.textContent = SKIN_NAMES[i] + (opt.disabled ? ' · 需 ' + SKIN_STARS[i] + ' 星' : '');$('skin').append(opt);
   }
   $('skin').value = String(career.progress.skin);
-  if (phase === 'ready') $('note').textContent = career.dailySnapshot ? '每天轮换一个现有赛事，无需联网。' : stage.mode === 'item' ? '提前选线碰到真正的道具箱，才能计入拾取目标；道具自动使用' : stage.kind === 'overtake' ? '在弯道或刚出弯时真正超过对手才计数，直道跑到第一名也不算' : '贴近弯道内线超车，成功可获得短暂加速';
+  if (phase === 'ready') $('note').textContent = career.dailySnapshot ? '每天一场新挑战' : stage.mode === 'item' ? '左右选线拿道具，自动使用' : stage.kind === 'overtake' ? '弯道真正反超，才算成功' : '保持速度，过弯走好路线';
   fuelView();
 }
 Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality }) });
@@ -104,12 +104,25 @@ function releaseInput() {
   if (g) clearNativeInput(g.input);
   syncTouchButtons();
 }
+/** One brief earned reaction at a time; high-value passes may replace a lower-value flash. */
+function showMoment(moment, priority = false) {
+  if (!moment || !g || g.state !== 'race' || phase !== 'race') return;
+  if (!priority && g.raceTime - lastMomentAt < 2.4) return;
+  $('moment').textContent = moment.title;
+  $('moment').dataset.kind = moment.kind;
+  $('moment').hidden = false;
+  momentUntil = performance.now() + (priority ? 1250 : 900);
+  lastMomentAt = g.raceTime;
+}
 function display(next) {
   phase = next; root.dataset.phase = next; root.dataset.stageKind = career.stage.kind;
   const racing = next === 'race' || next === 'countdown';
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
   $('start').hidden = next !== 'ready'; $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
-  $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || career.nextStage() === career.index; $('lobby').hidden = next !== 'finished';
+  const canAdvance = lastRacePassed && career.nextStage() !== career.index;
+  $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || !canAdvance; $('lobby').hidden = next !== 'finished';
+  $('replay').classList.toggle('race-secondary', next === 'finished' && canAdvance);
+  $('next').classList.remove('race-secondary');
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   if (next !== 'race') $('knockout').hidden = true;
@@ -141,7 +154,8 @@ function start() {
     $('note').textContent = '油量不足，等待自然恢复或主动看广告加油';
     display('ready');fuelView();return;
   }
-  releaseInput();result = null;events = [];momentUntil = 0;lastMomentAt = -Infinity;started = true;
+  releaseInput();result = null;events = [];momentUntil = 0;lastMomentAt = -Infinity;lastRacePassed = false;
+  previousMetrics = { cleanPasses: 0, pickups: 0 };started = true;
   try {
     career.configure(g);
     g.camMode = 1;g.mobileMode = driver.enabled;nativeStartRace();
@@ -160,6 +174,7 @@ function finish() {
   const beforeStars = careerStars(career.progress);
   const graded = career.finalize(g, result);
   const stars = graded?.stars ?? 0;
+  lastRacePassed = stars > 0;
   $('heading').textContent = stars ? '冲线成功  ' + '★'.repeat(stars) : '差一点，再来！';
   if (result.finished && (!best[result.map] || result.time < best[result.map])) {
     best[result.map] = result.time;try { localStorage.setItem(STORE, JSON.stringify(best)); } catch { /* Play remains available. */ }
@@ -321,14 +336,7 @@ async function boot() {
     const pending = player.events.map(event => ({ ...event, data: { ...event.data } }));nativeEvents(player);
     for (const event of pending) {
       career.onEvent(event, g);events.push({ atRaceSec: g.raceTime, type: event.type, ...event.data }); if (events.length > 800) events.shift();
-      const moment = raceEventMoment(event);
-      if (moment && g.state === 'race' && g.raceTime - lastMomentAt > 2.4) {
-        $('moment').textContent = moment.title;
-        $('moment').dataset.kind = moment.kind;
-        $('moment').hidden = false;
-        momentUntil = performance.now() + 900;
-        lastMomentAt = g.raceTime;
-      }
+      showMoment(raceEventMoment(event));
     }
   };
   // No transient text banners over live driving. Native car motion, audio, impact
@@ -353,6 +361,10 @@ async function boot() {
       if (g.state === 'race') {
         const failure = career.frame(g);
         career.drainNotices(); // Event stream is still recorded for QA; no overlay queue grows.
+        const metrics = {cleanPasses: career.metrics.cleanPasses, pickups: career.metrics.pickups};
+        const metricMoment = raceMetricMoment(previousMetrics, metrics);
+        previousMetrics = metrics;
+        if (metricMoment) showMoment(metricMoment, true);
         const progress = raceProgressPercent(g.player, g.track, career.stage);
         $('progress-label').textContent = '赛程 ' + progress + '%';
         $('progress-fill').style.width = progress + '%';
