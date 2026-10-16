@@ -351,7 +351,7 @@ for (const button of root.querySelectorAll('[data-race-action]')) {
   button.addEventListener('pointerdown',e=>{
     e.preventDefault(); if (phase !== 'race' || controlMode !== 'classic') return;
     driver.enabled = true; if (g) g.mobileMode = true;
-    button.setPointerCapture(e.pointerId); actions.press(e.pointerId,action);button.classList.add('held');
+    button.setPointerCapture(e.pointerId); actions.press(e.pointerId,action,g?.raceTime ?? 0);button.classList.add('held');
   });
   button.addEventListener('pointerup',e=>{ e.preventDefault();actions.release(e.pointerId);button.classList.toggle('held',actions.isHeld(action)); });
   const cancel=e=>{ if(e.cancelable)e.preventDefault(); actions.cancel(e.pointerId);button.classList.toggle('held',actions.isHeld(action)); };
@@ -404,7 +404,7 @@ async function boot() {
     g.input.touch.right = controlMode === 'assist' && held.right;
     const raw = nativeFrame(), canStep = g.acc + dt >= 1 / 120;
     if (controlMode === 'classic' && driver.enabled) raw.steerAxis = joystick.snapshot();
-    const translated = controlMode === 'classic' && driver.enabled ? classic.frame(raw,g.player,g.state,{canStep,itemMode:g.itemMode,track:g.track}) : driver.frame(dt, raw, g.player, g.track, g.state, { canStep });
+    const translated = controlMode === 'classic' && driver.enabled ? classic.frame(raw,g.player,g.state,{canStep,itemMode:g.itemMode,track:g.track,now:g.raceTime ?? 0}) : driver.frame(dt, raw, g.player, g.track, g.state, { canStep });
     // The tutorial grants free starting boost; later races must earn position on the track.
     if (career.index > 0 && g.state === 'race' && g.raceTime < .28 && driver.enabled) translated.upPressed = false;
     if (g.itemMode && driver.enabled && controlMode === 'assist') {
