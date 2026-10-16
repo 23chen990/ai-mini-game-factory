@@ -55,7 +55,7 @@ const CHALLENGES = {
     {id:'drift',title:'漂移练习赛',instructions:'城市一圈完赛，并触发2次有效漂移。',limitMs:150000,kind:'race',target:1,map:'city',drifts:2},
   ],
   'cf-transport-ship': [
-    {id:'tags',title:'步枪突围',instructions:'60秒内先命中1次，再换位12米，手动追击命中3次；最多阵亡1次。',limitMs:60000,kind:'hits',target:3,weapon:'m4a1',drill:'reposition',openingHits:1,minTravel:12,maxDeaths:1},
+    {id:'tags',title:'步枪突围',instructions:'60秒内先命中1次，再换位8米，手动追击命中3次；最多阵亡2次。',limitMs:60000,kind:'hits',target:3,weapon:'m4a1',drill:'reposition',openingHits:1,minTravel:8,maxDeaths:2},
     {id:'precision',title:'狙击尝试',instructions:'90秒内用 AWM 击杀1名敌人。轻点开镜、瞄准后开火。',limitMs:90000,kind:'kills',target:1,weapon:'awm'},
     {id:'survive',title:'小队生存',instructions:'MP5起手，坚持45秒，累计移动20米，死亡不超过2次。',limitMs:45000,kind:'survive',target:2,minTravel:20,weapon:'mp5'},
   ],
