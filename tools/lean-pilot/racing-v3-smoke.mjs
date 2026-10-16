@@ -225,9 +225,41 @@ try {
   const page=await context.newPage();
   page.on('pageerror',e=>jsErrors.push(e.message));page.on('console',m=>{if(m.type()==='error')jsErrors.push(m.text())});
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});await waitLoaded(page);
+  // Genuine browser render of the default lobby at two landscape widths.
+  // No seeded save, DOM mutation or mocked UI goes into these screenshots.
+  for (const [width,height] of [[844,390],[740,360]]) {
+    await page.setViewportSize({width,height});
+    const geometry=await page.evaluate(()=>{
+      const panel=document.querySelector('#race-panel');
+      const svg=document.querySelector('#race-course-map .race-track-diagram');
+      const rect=panel.getBoundingClientRect();
+      return {panel:rect.toJSON(),clientHeight:panel.clientHeight,scrollHeight:panel.scrollHeight,
+        mapVisible:!!svg&&svg.getBoundingClientRect().width>75,
+        phase:document.querySelector('#race-kit').dataset.phase};
+    });
+    if(!geometry.mapVisible||geometry.phase!=='ready'||geometry.panel.left<0||
+       geometry.panel.right>width||geometry.panel.top<0||geometry.panel.bottom>height||
+       geometry.scrollHeight>geometry.clientHeight+12)
+      fail('Race lobby must fit without internal scrolling on '+width+'x'+height+': '+JSON.stringify(geometry));
+    report.views.push({name:'lobby-'+width+'x'+height,geometry});
+    await page.screenshot({path:path.join(dest,'00-lobby-'+width+'x'+height+'.png')});
+  }
+  await page.setViewportSize({width:844,height:390});
   const title=await page.locator('#race-stage').locator('option').count();
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
   await raceStart(page,0,'01-city-tutorial');
+  const nativeHudLayout=await page.evaluate(()=>{
+    const bounds=id=>document.querySelector(id)?.getBoundingClientRect();
+    const overlap=(a,b)=>!!a&&!!b&&a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
+    const gauge=bounds('#gaugebox'),distance=bounds('#race-progress');
+    const count=bounds('#race-live-goal'),speed=bounds('#race-speed');
+    return {gauge:gauge?.toJSON(),distance:distance?.toJSON(),
+      distanceCollidesWithNitro:overlap(gauge,distance),
+      goalCollidesWithSpeed:overlap(count,speed)};
+  });
+  if(nativeHudLayout.distanceCollidesWithNitro||nativeHudLayout.goalCollidesWithSpeed)
+    fail('Active racing HUD overlay intersection: '+JSON.stringify(nativeHudLayout));
+  report.nativeHudLayout=nativeHudLayout;
   // Genuine multi-pointer Chromium touch transport, not simulated game key state.
   const left=await page.locator('#race-left').boundingBox();
   const right=await page.locator('#race-right').boundingBox();
@@ -339,6 +371,8 @@ try {
   await page.screenshot({path:path.join(dest,'08-snow-740x360.png')});
   // Explicit QA-only synthetic DNF. This tests lobby recovery, NEVER counts as a completed race.
   await page.evaluate(() => window.game.showResults());
+  await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
+  await page.screenshot({path:path.join(dest,'08-result-740x360-qa-staged.png')});
   await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
   // Only the "返回选关" button is visible after results; the stage menu is intentionally hidden.
   await page.locator('#race-lobby').tap();
