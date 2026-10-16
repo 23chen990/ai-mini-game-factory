@@ -157,6 +157,25 @@ export function annotateDriftResult(source) {
   if (source.split(original).length !== 2) throw Error('Native driftEnd event anchor changed');
   return source.replace(original, annotated);
 }
+/** Countersteer fix: native drift yaw must respond to actual opposite steering.
+ * The pinned source is untouched; fail closed on unexpected upstream changes. */
+export function patchCounterSteer(source) {
+  const original = "const yaw = held ? T.driftYaw + T.driftYawAlign * align : (0.45 + 0.9 * align) * Math.exp(-2.2 * this.releaseTime);";
+  const revised = "const yaw = held ? (align < 0 ? -T.driftYawAlign * 1.35 : T.driftYaw + T.driftYawAlign * align) : (align < 0 ? -1.35 : 0.45 + 0.9 * align) * Math.exp(-2.2 * this.releaseTime);";
+  if (source.includes(revised)) return source;
+  if (source.split(original).length !== 2 || !source.includes('this.driftDir * yaw')) throw Error('Countersteer vehicle anchor changed');
+  return source.replace(original, revised);
+}
+/** Separate earned drift nitro from native item-box use; both require real stock. */
+export function patchItemModeNitro(source) {
+  const original = "if (inp.nitroPressed && !itemMode) this.triggerNitro();";
+  const revised = "if (inp.nitroPressed && !itemMode || inp.manualNitroPressed && itemMode) this.triggerNitro();";
+  const gaugeOriginal = "if (!itemMode && onGround) {";
+  const gaugeRevised = "if (onGround) {";
+  if (source.includes(revised) && !source.includes(gaugeOriginal)) return source;
+  if (source.split(original).length !== 2 || source.split(gaugeOriginal).length !== 2) throw Error('Native nitro/item mode anchor changed');
+  return source.replace(original,revised).replace(gaugeOriginal,gaugeRevised);
+}
 /** Strict, idempotent extensions to the GENERATED copy only, never the pinned source. */
 export function patchRaceLayouts(source) {
   const imported = "import { applyTrackDesign } from './race-track-design.mjs';";
@@ -270,7 +289,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   }
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchShortcutNativeCar(annotateDriftResult(originalVehicle));
+  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchShortcutNativeCar(annotateDriftResult(originalVehicle))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');
