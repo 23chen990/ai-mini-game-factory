@@ -561,3 +561,44 @@ html[data-reference-game="cf-transport-ship"] #toast{
     animation:none!important;
   }
 }
+
+
+/* CF V6.1: the win condition is PERSONAL mission progress, not native team score.
+   Avoid displaying a dominant 0:0 above an already advancing 2/3 hit objective.
+   Preserve the original game score internally; only remove its visual distraction. */
+html[data-reference-game="cf-transport-ship"] #mk-fps-board{
+  display:none!important;
+}
+html[data-reference-game="cf-transport-ship"] .mk-meter{
+  top:max(4px,env(safe-area-inset-top));
+  display:flex;align-items:center;justify-content:center;
+  min-height:34px;box-sizing:border-box;
+  padding:5px 12px;gap:9px;
+  width:max-content;max-width:min(58vw,290px);
+  background:linear-gradient(180deg,rgba(9,32,49,.94),rgba(8,25,39,.88));
+  border:1px solid rgba(164,203,218,.32);
+  border-radius:0 0 11px 11px;
+  box-shadow:0 4px 10px #0313228c;
+}
+html[data-reference-game="cf-transport-ship"] .mk-meter #mk-status{
+  color:#f2f8fb;font-size:13px;font-weight:800;white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+html[data-reference-game="cf-transport-ship"] .mk-meter #mk-time{
+  font-size:13px;white-space:nowrap;
+}
+html[data-reference-game="cf-transport-ship"] .mk-meter progress{
+  width:clamp(36px,7vw,60px);height:6px;
+}
+@media(max-width:700px){
+  html[data-reference-game="cf-transport-ship"] .mk-meter{
+    max-width:57vw;gap:5px;padding:4px 7px;min-height:32px;
+  }
+  html[data-reference-game="cf-transport-ship"] .mk-meter #mk-status,
+  html[data-reference-game="cf-transport-ship"] .mk-meter #mk-time{
+    font-size:12px;
+  }
+  html[data-reference-game="cf-transport-ship"] .mk-meter progress{
+    width:36px;
+  }
+}
