@@ -3,18 +3,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const api = await import('../racing-mobile-build.mjs').catch(() => ({}));
-test('native item question labels sit on four outer cube faces and move with the cube without altering interactions', () => {
-  assert.equal(typeof api.patchRacingItemVisuals, 'function');
-  const source = 'for (const r of [0, Math.PI / 2]) {\n          const q = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 1.5), qMat);\n          q.rotation.y = r;\n          g.add(q);\n        }\nif (dx * dx + dz * dz < 6.5) { b.respawn = 2.5; this.giveRandom(r, rank, racers.length); }';
-  const output = api.patchRacingItemVisuals(source);
-  assert.ok(output.includes('[0, Math.PI / 2, Math.PI, Math.PI * 1.5]'));
-  assert.ok(output.includes('q.position.set(Math.sin(r) * .91, 0, Math.cos(r) * .91)'));
-  assert.ok(output.includes('cube.add(q)'));
-  assert.equal(output.slice(output.indexOf('if (dx')), source.slice(source.indexOf('if (dx')));
-  assert.equal(api.patchRacingItemVisuals(output), output);
-  assert.throws(() => api.patchRacingItemVisuals('unrecognized item source'), /anchor/u);
-});
-const patchFixture = `const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);
+const patchFixture = `import * as THREE from 'three';
+const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);
 if (P.nitroTime > 0) {
       cam.position.x += jitter;
 const k = this.shake * this.shake;
@@ -31,6 +21,8 @@ test('赛车源补丁保留原输入、物理和AI流程，只约束手机镜头
   const output = api.patchRacingSource(source);
   assert.ok(output.includes('raceCameraFov(P.s'));
   assert.ok(output.includes('this.mobileMode ? raceBloomStrength('));
+  assert.ok(output.includes('window.__RACE_THREE__ = THREE;'),'do not bundle duplicate Three.js in mobile');
+  assert.equal(output.split('window.__RACE_THREE__ = THREE;').length,2,'inject native namespace only once');
   for (const exact of ['const inp = this.input.frame();', 'P.update(DT, first ? pin : noEdge, active, this.itemMode);', 'r.update(DT, aiActive, this.raceTime, this.rubber(r));', 'if (r.half)']) {
     if (source.includes(exact)) assert.ok(output.includes(exact), exact);
   }
@@ -84,4 +76,120 @@ test('actual esbuild script injection keeps valid $& tokens and exactly one clos
   assert.equal(html.split('<script>').length,2);
   assert.equal(api.injectRaceBundle(native,'x').includes('<script>x</script></body>'),true);
   assert.throws(()=>api.injectRaceBundle('<main>missing body</main>','ok'),/one HTML body/);
+});
+
+test('V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes',()=>{
+  const layouts = "export const LAYOUTS = { city: {}, egypt: {}, snow: {}, aegean: {} };";
+  const patchedLayouts = api.patchRaceLayouts(layouts);
+  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS\)/);
+  assert.equal(api.patchRaceLayouts(patchedLayouts),patchedLayouts);
+  assert.throws(()=>api.patchRaceLayouts('const X = {};'), /Pinned track/);
+  const src = "import * as THREE from 'three';\nexport class ItemSystem {\n  constructor() {\n    this.foo=1;\n  }\n\n  reset() {}\n}";
+  const maps="export const MAPS = [{ id: 'city' }];";
+  const lanePatched=api.patchRaceMaps(maps);
+  assert.match(lanePatched,/applyLaneDesign\(MAPS\)/);
+  assert.equal(api.patchRaceMaps(lanePatched),lanePatched);
+  assert.throws(()=>api.patchRaceMaps('const MAPS = []'),/MAPS export changed/);
+  const patched = api.patchRaceItems(src);
+  assert.match(patched, /upgradeItemBoxes\(this, THREE\)/);
+  assert.match(patched, /from '.\/race-item-visuals.mjs'/);
+  assert.equal(api.patchRaceItems(patched),patched);
+  assert.throws(()=>api.patchRaceItems('class OtherItems {}'),/Pinned item constructor/);
+});
+test('V3.1 model and spline modules are hashed into H5 build and kept scoped to racing',async()=>{
+  const source=await readFile(new URL('../racing-mobile-build.mjs', import.meta.url),'utf8');
+  for(const name of ['track-design.mjs','lane-design.mjs','item-visuals.mjs','recovery.mjs'])
+    assert.ok(source.includes(name),name);
+  assert.ok(source.includes('patchRaceLayouts'));
+  assert.ok(source.includes('patchRaceItems'));
+  const runtime=await readFile(new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs',import.meta.url),'utf8');
+  assert.match(runtime,/game.items.applyMobileVisuals\?\.\(\)/);
+  assert.match(runtime,/new WrongWayRecovery\(\)/);
+});
+
+test('desert dune relief edits only the original generated sand base, never native physics',()=>{
+  const line='let h = 2 + noise.fbm(x * 0.0045, z * 0.0045, 4) * 18 + Math.max(0, Math.hypot(x - cx, z - cz) - 900) * 0.1;';
+  const source="if (id === 'egypt') {"+line+"}\nconst nativePhysics='PlayerCar.update';";
+  const revised=api.patchRaceDesertRelief(source);
+  assert.notEqual(revised,source);
+  assert.match(revised,/z \* 0\.0045, 4\) \* 26/);
+  assert.match(revised,/PlayerCar\.update/);
+  assert.equal(api.patchRaceDesertRelief(revised),revised,'terrain adapter is idempotent');
+  assert.throws(()=>api.patchRaceDesertRelief("unrecognized source"),/anchor changed/);
+});
+
+test('native stage-specific course selection is strict, idempotent and does not rewrite driving physics',()=>{
+  const original="const track = new Track(LAYOUTS[map.layout], { isBridge: map.isBridge });";
+  const src=original+"\nP.update(DT, first ? pin : noEdge, active, this.itemMode);";
+  const adapted=api.patchCareerRouteSource(src);
+  assert.match(adapted,/this\.settings\.course \|\| map\.layout/);
+  assert.match(adapted,/track\.__RACE_COURSE_ID = requestedCourse/);
+  assert.match(adapted,/Unknown career course/);
+  assert.match(adapted,/P\.update\(DT, first \? pin : noEdge/);
+  assert.equal(api.patchCareerRouteSource(adapted),adapted);
+  assert.throws(()=>api.patchCareerRouteSource("new Track(other, {})"),/constructor changed/);
+});
+
+test('native fork adapters are exact, idempotent and preserve original acceleration/AI',()=>{
+  const track=[
+    'export class Track {',
+    'for (let r = 0; r < N; r++) {',
+    '  const a = startW + r * 3, b = a + 3;',
+    '  if (side < 0) {}',
+    '}',
+    '}',
+  ].join('\n');
+  const road=api.patchShortcutNativeTrack(track);
+  assert.match(road,/__RACE_SHORTCUT__\?\.opening\(/);
+  assert.equal(api.patchShortcutNativeTrack(road),road);
+  assert.throws(()=>api.patchShortcutNativeTrack('class Unknown {}'),/guardrail construction changed/);
+  const vehicle='export class PlayerCar {const lim = tr.halfW - 1.1;}';
+  const collision=api.patchShortcutNativeCar(vehicle);
+  assert.match(collision,/p\.__RACE_SHORTCUT_HALF_WIDTH/);
+  assert.equal(api.patchShortcutNativeCar(collision),collision);
+  assert.throws(()=>api.patchShortcutNativeCar('class Unknown {}'),/collision-width anchor changed/);
+  const world=[
+    "import * as THREE from 'three';",
+    'track.__RACE_COURSE_ID = requestedCourse;',
+    'const ground = buildGround(track, { base: 123 });',
+    'root.add(track.build(map.track, ground.heightAt));',
+    'this.hud.setupMinimap(track);',
+    '  resetPlayer() {\n    const P = this.player;',
+    'P.update(DT, first ? pin : noEdge, active, this.itemMode);',
+  ].join('\n');
+  const patched=api.patchShortcutNativeWorld(world);
+  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse\)/);
+  assert.match(patched,/terrainProxy\(track\)/);
+  assert.match(patched,/physical|buildMesh\(THREE, ground.heightAt\)/);
+  assert.match(patched,/__RACE_SHORTCUT__\?\.recover\(P\)/);
+  assert.match(patched,/P\.update\(DT, first \? pin : noEdge/);
+  assert.equal(api.patchShortcutNativeWorld(patched),patched);
+  assert.throws(()=>api.patchShortcutNativeWorld('class Unknown {}'),/world anchor changed/);
+});
+
+test('stage-scenery pipeline changes only sky/props, never native car or track physics',()=>{
+  const before=[
+    "const rnd = mulberry32(id.length * 997 + 13);",
+    'const { sky, sunDir } = buildSky(map.sky);',
+    'this.scene.fog = new THREE.Fog(map.fog[0], map.fog[1], map.fog[2]);',
+    'this.scene.background = new THREE.Color(map.sky.horizon);',
+    'const nativeMotion = P.update(dt,input);',
+  ].join('\n');
+  const result=api.patchCourseSkyAndScenery(before);
+  assert.match(result,/stageSeed \* 9176/);
+  assert.match(result,/createRaceSky\(map\.sky,requestedCourse\)/);
+  assert.match(result,/buildSky\(courseSky\)/);
+  assert.match(result,/new THREE\.Fog\(courseSky\.horizon/);
+  assert.match(result,/P\.update\(dt,input\)/,'native physics preserved');
+  assert.equal(api.patchCourseSkyAndScenery(result),result);
+  assert.throws(()=>api.patchCourseSkyAndScenery('broken stage'),/course-light anchor drifted/);
+});
+
+test('fixed desert monument safety keeps pyramid models away from new racing surfaces',()=>{
+  const input='function egyptProps(ctx) {const track=ctx.track;\nfor (const [x, z, h] of pyramids) { buildPyramid(); }}';
+  const out=api.patchFixedDesertLandmarks(input);
+  assert.match(out,/if \(!isFree\(track, x, z, h \* \.58 \+ 10\)\) continue;/);
+  assert.match(out,/buildPyramid\(\)/,'original sculpture remains when safe');
+  assert.equal(api.patchFixedDesertLandmarks(out),out);
+  assert.throws(()=>api.patchFixedDesertLandmarks('unexpected native geometry'),/landmark placement changed/);
 });

@@ -4,6 +4,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
 import { once } from 'node:events';
+import { TRACK_RESHAPES } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 
 /**
  * Automated real Chromium/WebGL *entry smoke*, not manual/physical gameplay QA.
@@ -72,9 +73,15 @@ async function waitLoaded(page) {
 async function raceStart(page, index, name) {
   if (index !== null) {
     await page.selectOption('#race-stage',String(index));
-    await page.waitForFunction(expected=> window.game?.state === 'menu' && window.game?.map?.id === expected,
-      (index === 1 || index === 4) ? 'egypt' : index === 3 ? 'aegean' : index === 7 ? 'snow' : 'city',
-      {timeout:45000});
+    const scene=(index === 1 || index === 4) ? 'egypt' : index === 3 ? 'aegean' : index === 7 ? 'snow' : 'city';
+    const course='race-'+String(index+1).padStart(2,'0');
+    // Native map scene is set before the new geometry finishes loading.
+    // Wait for actual stage geometry + the enabled start button, not only biome ID.
+    await page.waitForFunction(({scene,course}) =>
+      window.game?.state === 'menu' && window.game?.map?.id === scene &&
+      window.game?.track?.__RACE_COURSE_ID === course &&
+      document.querySelector('#race-start')?.disabled === false,
+      {scene,course},{timeout:45000});
   }
   const before=await page.evaluate(() => ({
     stage:document.querySelector('#race-stage')?.value,
@@ -106,15 +113,53 @@ async function raceStart(page, index, name) {
     throw error;
   }
   const early=await page.evaluate(() => ({
-    map:window.game?.map?.id,mode:window.game?.settings?.mode,
+    map:window.game?.map?.id,course:window.game?.track?.__RACE_COURSE_ID,mode:window.game?.settings?.mode,
     laps:window.game?.settings?.laps, state:window.game?.state,
     itemBoxes:window.game?.items?.boxes?.length ?? 0,
+    itemShape:window.game?.items?.boxes?.[0]?.cube?.geometry?.type ?? null,
+    itemBillboards:window.game?.items?.boxes?.[0]?.g?.children?.filter(x=>x.isSprite)?.length ?? 0,
+    questionOverlay:window.game?.items?.boxes?.[0]?.g?.children?.filter(x=>x.isSprite)
+      .some(x=>x.material?.depthTest===false && x.material?.map?.image &&
+        x.renderOrder>=10 && x.scale.x>=4) ?? false,
+    roadWidth:(window.game?.track?.halfW ?? 0)*2,
+    padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
+    trackSamples:window.game?.track?.N ?? 0,
+    cornerSigns:window.game?.__RACE_CORNER_SIGNS__?.sprites?.length ?? 0,
+    eligibleCornerSamples:(()=>{
+      const t=window.game?.track;if(!t?.curv)return 0;
+      let n=0;for(let i=0;i<t.N;i+=8){
+        const d=i*t.ds;
+        if(d>=170&&d<=t.length-140&&Math.abs(t.curv[i])>=.012)n++;
+      }
+      return n;
+    })(),
+    shortcut:!!window.game?.track?.__RACE_SHORTCUT__,
+    shortcutGain:window.game?.track?.__RACE_SHORTCUT__?.gain ?? 0,
+    shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
+    shortcutRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
+    nativeThreeLoaded:!!window.__RACE_THREE__?.Sprite,
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
   }));
-  await page.waitForTimeout(6500);
+  // Software WebGL may advance less than a second of native physics in 6.5
+  // wall seconds. Require real player movement, not wall-clock passage.
+  // Keep a bounded deadline and collect native telemetry on failure.
+  let movementError = null;
+  try {
+    await page.waitForFunction(origin => {
+      const g=window.game,p=g?.player;
+      return g?.state === 'race' && p &&
+        Number.isFinite(p.progress) && p.progress > origin + 0.5;
+    },early.progress,{timeout:55000,polling:750});
+  } catch (error) { movementError=error; }
   const after=await page.evaluate(()=>({
     state:window.game?.state,progress:window.game?.player?.progress ?? 0,
+    speed:window.game?.player?.s ?? 0, throttle:window.game?.player?.throttle ?? 0,
+    raceTime:window.game?.raceTime ?? null,
+    wrongWay:window.game?.player?.wrongWay ?? null,
+    spin:window.game?.player?.spin ?? null,
+    impact:window.game?.player?.impact ?? null,
+    lat:window.game?.player?.lat ?? null,
     rank:window.game?.standings?.indexOf(window.game?.player) + 1,
     left:document.querySelector('#race-left')?.getBoundingClientRect().toJSON(),
     right:document.querySelector('#race-right')?.getBoundingClientRect().toJSON(),
@@ -124,11 +169,49 @@ async function raceStart(page, index, name) {
   const expectedMap={0:'city',1:'egypt',3:'aegean',4:'egypt',7:'snow'}[index ?? 0];
   const expectedLaps={0:1,1:2,3:2,4:2,7:2}[index ?? 0];
   const expectedMode=index===4?'item':'speed';
+  const expectedCourse='race-'+String((index ?? 0)+1).padStart(2,'0');
+  if(early.course!==expectedCourse)
+    fail(name+': stage reused a different native road spline: '+JSON.stringify({actual:early.course,expected:expectedCourse}));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
-    fail(name+': native vehicle did not progress with real auto throttle');
-  if(index===4 && early.itemBoxes!==8)fail('native item mode must have 8 spaced boxes, got '+early.itemBoxes);
+    fail(name+': native vehicle did not progress with real auto throttle; '+JSON.stringify({early,after,error:movementError?.message}));
+  const expectedPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];
+  if(JSON.stringify(early.padLanes)!==JSON.stringify(expectedPadLanes))
+    fail(name+': native speed-pad lane choices missing: '+JSON.stringify(early.padLanes));
+  // Compare the actual rendered native geometry with the source-of-truth
+  // designed width, not a stale number copied from an earlier track version.
+  const expectedWidth=TRACK_RESHAPES[expectedMap]?.width;
+  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
+    fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
+  if(index===4 && (!early.shortcut || early.shortcutGain<35 || !early.shortcutRoad || !early.shortcutRails))
+    fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
+  if(index===0 && early.shortcut)
+    fail(name+': tutorial may not silently contain a shortcut');
+  // A deliberately smooth beginner oval has no sharp-corner signs. Any track
+  // containing native curvature above the sign threshold must still show one.
+  if(!early.nativeThreeLoaded || early.cornerSigns>7 ||
+     (early.eligibleCornerSamples>0 && early.cornerSigns<1) ||
+     (early.eligibleCornerSamples===0 && early.cornerSigns!==0))
+    fail(name+': true native-corner signage count differs from road geometry: '+JSON.stringify(early));
+  if(index===4 && (early.itemBoxes!==8 || early.itemShape!=='IcosahedronGeometry' || early.itemBillboards!==1 || !early.questionOverlay))
+    fail('native V3.1 item boxes must be diamond + visible question billboard: '+JSON.stringify(early));
+  if(index===4){
+    // This probe calls the ORIGINAL Track projection with synthetic WORLD
+    // points; it does not touch the player's position, stats or finish.
+    const branchCheck=await page.evaluate(()=>{
+      const t=window.game.track,s=t.__RACE_SHORTCUT__,out={},seq=[];
+      for(let i=0;i<s.samples.length;i+=3){
+        const p=s.samples[i],v=t.project(p.x,p.y,p.z,-1,out);
+        seq.push({active:v.__RACE_SHORTCUT_ACTIVE===true,d:v.d});
+      }
+      const on=seq.filter(p=>p.active),last=seq.at(-1);
+      return {activeFrames:on.length,gain:s.gain,minD:Math.min(...on.map(p=>p.d)),
+        maxD:Math.max(...on.map(p=>p.d)),offAtExit:last?.active===false};
+    });
+    if(branchCheck.activeFrames<5 || branchCheck.offAtExit!==true)
+      fail(name+': actual physical branch projection/join failed: '+JSON.stringify(branchCheck));
+  }
   for(const [key,rect] of [['left',after.left],['right',after.right]]) {
     if(!rect || rect.x < 0 || rect.y < 0 || rect.right > 852 || rect.bottom > 393 || rect.width < 70)
       fail(name+': thumb control out of horizontal safe bounds: '+key);
@@ -145,16 +228,58 @@ try {
   const title=await page.locator('#race-stage').locator('option').count();
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
   await raceStart(page,0,'01-city-tutorial');
-  // Exercise a genuine browser touch pointer and pause/resume instead of JS state writes.
+  // Genuine multi-pointer Chromium touch transport, not simulated game key state.
   const left=await page.locator('#race-left').boundingBox();
-  if (!left) fail('Left thumb control has no hitbox');
+  const right=await page.locator('#race-right').boundingBox();
+  if (!left || !right) fail('Thumb controls have no hitboxes');
   const cdp=await context.newCDPSession(page);
   const touch={x:left.x+left.width/2,y:left.y+left.height/2,id:101};
+  const opposite={x:right.x+right.width/2,y:right.y+right.height/2,id:102};
+  const pressState=()=>page.evaluate(()=>({
+    left:document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',
+    right:document.querySelector('#race-right')?.getAttribute('aria-pressed')==='true',
+  }));
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[touch]});
   await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='true',null,{timeout:8000});
-  const held=await page.evaluate(()=>document.querySelector('#race-left')?.classList.contains('held'));
+  const held=(await pressState()).left;
+  // CDP's default Chromium path dispatches changed contacts only; [touch,opposite]
+  // needlessly re-sends the held contact. Add only the second finger here.
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[opposite]});
+  await page.waitForFunction(()=>{
+    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
+    return l?.getAttribute('aria-pressed')==='false'&&r?.getAttribute('aria-pressed')==='true';
+  },null,{timeout:8000});
+  const laterThumbWins=await pressState();
+  // The touchEnd list names the touch being RELEASED, not the one left held.
+  // Releasing id=101 here accidentally cancelled the left thumb in the old test.
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[opposite]});
+  await page.waitForFunction(()=>{
+    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
+    return l?.getAttribute('aria-pressed')==='true'&&r?.getAttribute('aria-pressed')==='false';
+  },null,{timeout:8000});
+  const remainingThumbRestored=await pressState();
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
-  await page.waitForFunction(()=>document.querySelector('#race-left')?.getAttribute('aria-pressed')==='false',null,{timeout:8000});
+  await page.waitForFunction(()=>{
+    const l=document.querySelector('#race-left'),r=document.querySelector('#race-right');
+    return l?.getAttribute('aria-pressed')==='false'&&r?.getAttribute('aria-pressed')==='false';
+  },null,{timeout:8000});
+  const releasedAll=await pressState();
+  if(!laterThumbWins.right||laterThumbWins.left||!remainingThumbRestored.left||remainingThumbRestored.right||releasedAll.left||releasedAll.right)
+    fail('Real dual-thumb changeover did not preserve latest-press direction and release: '+JSON.stringify({laterThumbWins,remainingThumbRestored,releasedAll}));
+  const knockoutLayout=await page.evaluate(()=>{
+    const kit=document.querySelector('#race-kit'),speed=document.querySelector('#race-speed');
+    const badge=document.querySelector('#race-knockout');
+    const oldKind=kit.dataset.stageKind,oldSpeed=speed.hidden,oldKnockout=badge.hidden;
+    kit.dataset.stageKind='elimination';speed.hidden=false;badge.hidden=false;
+    const a=badge.getBoundingClientRect(),v=speed.getBoundingClientRect();
+    const overlap=a.left<v.right&&v.left<a.right&&a.top<v.bottom&&v.top<a.bottom;
+    const clearance=v.top-a.bottom;
+    kit.dataset.stageKind=oldKind;speed.hidden=oldSpeed;badge.hidden=oldKnockout;
+    return {qaStaged:true,overlap,clearancePx:clearance,knockout:a.toJSON(),speed:v.toJSON()};
+  });
+  if(knockoutLayout.overlap||knockoutLayout.clearancePx<8)
+    fail('Stage12 staged knockout timer obscures speedometer: '+JSON.stringify(knockoutLayout));
+  report.stage12Layout=knockoutLayout;
   await page.locator('#race-pause').tap();
   await page.waitForFunction(()=>window.game?.state==='paused',null,{timeout:8000});
   const cleared=await page.evaluate(()=> !window.game?.input?.touch?.left && !window.game?.input?.touch?.right);
@@ -168,7 +293,12 @@ try {
     fail('Pause sound toggle did not mute and persist: '+JSON.stringify(audioMuted));
   await page.locator('#race-resume').tap();
   await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:8000});
-  report.touch={actualCDPTouch:true,leftPressObserved:held,released:true,paused:true,cleared,resumed:true,audioMuted:true};
+  report.touch={actualCDPTouch:true,leftPressObserved:held,laterThumbWins,remainingThumbRestored,releasedAll,released:true,paused:true,cleared,resumed:true,audioMuted:true};
+  // QA-only injected wrong-way meter: tests native reset integration, NOT natural 180-degree steering.
+  await page.evaluate(()=>{window.game.player.wrongWay=2.8;});
+  await page.waitForFunction(()=>window.game?.player?.wrongWay===0 && window.game?.player?.s>=12,
+    null,{timeout:14000});
+  report.recovery={qaInjectedWrongWay:true,nativeResetObserved:true,noNewButton:true};
   // Explicit synthetic progress: tests the stage ENTRY chain only, never claims playthrough.
   report.seededCampaign=true;
   await page.evaluate(() => {
@@ -179,6 +309,24 @@ try {
   for(const [index,name] of cases) {
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
+    if (index===4) {
+      // QA-only close-up for ART READABILITY; this is camera/vehicle staging,
+      // not legitimate progress, rank, a real item pickup, or a stage clear.
+      const visual=await page.evaluate(()=>{
+        const g=window.game,p=g.player,track=g.track;
+        const distance=track.length*.1-24;
+        p.reset(distance,0);p.lastD=distance;p.progress=distance;
+        p.lapsDone=0;p.half=false;p.owed=false;
+        const candidate=g.items?.boxes?.find(b=>b.respawn<=0);
+        return {staged:true,boxDistance:24,shape:candidate?.cube?.geometry?.type??null,
+          spriteCount:candidate?.g?.children?.filter(x=>x.isSprite)?.length??0};
+      });
+      await page.waitForTimeout(1100);
+      await page.screenshot({path:path.join(dest,'05-item-question-closeup-qa-staged.png')});
+      if (visual.shape!=='IcosahedronGeometry'||visual.spriteCount!==1)
+        fail('Item art close-up source does not have question sprites: '+JSON.stringify(visual));
+      report.itemCloseup=visual;
+    }
   }
   await page.setViewportSize({width:740,height:360});
   const small=await page.evaluate(()=>{

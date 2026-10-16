@@ -1,5 +1,6 @@
 /** The original ItemSystem remains authoritative: only decide when to press use. */
 export const ITEM_LABELS = Object.freeze({ nitro: '氮气加速', shield: '防护盾', missile: '追踪导弹', magnet: '追击磁铁', banana: '香蕉皮' });
+export const ITEM_ICONS = Object.freeze({ nitro:'⚡', shield:'🛡', missile:'🚀', magnet:'🧲', banana:'🍌' });
 export function thinItemBoxes(system) {
   if (!system?.boxes || system.boxes.length < 15) return 0;
   const rows = [[0, 3], [1, 4], [0, 2], [1, 3]];
@@ -44,7 +45,7 @@ export function itemDecision(game) {
   const p = game.player, it = p.items?.[0], track = game.track;
   if (!it || p.spin > 0 || !track || p.s < 12) return false;
   const bend = Math.abs(track.curvAhead(p.d, 95));
-  const ahead = game.racerAhead(p), gap = ahead?.progress - p.progress;
+  const ahead = game.racerAhead?.(p) ?? null, gap = ahead?.progress - p.progress;
   switch (it) {
     case 'nitro': return p.s > 30 && bend < .006 && !p.drifting;
     case 'missile': return ahead && gap > 3 && gap < 180;
@@ -68,8 +69,11 @@ export class AutoItems {
       useful = itemDecision(game);
       if (!useful) game.items.swap(p);
     }
-    // Avoid permanent full-inventory deadlocks on later item challenges.
-    if (!useful && p.items.length >= 2 && game.raceTime - this.heldSince >= 12) useful = true;
+    // Steering-only players have no 'use item' button. Even one defensive
+    // pickup must eventually show an effect and make room for the next box.
+    // Favor a useful moment first; only fall back after a long quiet interval.
+    const age = game.raceTime - this.heldSince;
+    if (!useful && p.s >= 12 && age >= (p.items.length >= 2 ? 12 : 18)) useful = true;
     if (!useful) return false;
     this.nextAt = game.raceTime + 1.25;this.held = null;
     return true;

@@ -2,6 +2,8 @@ import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, sta
 import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemCleanup, awardCornerPass, removeEliminatedAi } from './items.mjs';
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
+import { WrongWayRecovery } from './recovery.mjs';
+import { RivalPressure, tuneOpponentField } from './rival-pressure.mjs';
 
 export class RacingCareer {
   constructor(storage, legacyBest = {}) {
@@ -16,7 +18,7 @@ export class RacingCareer {
     this.index = STAGES.findIndex((_, i) => !stageUnlocked(this.progress, i));
     this.index = this.index < 0 ? STAGES.length - 1 : Math.max(0, this.index - 1);
     this.dailySnapshot = null;
-    this.auto = new AutoItems();this.passes = new OvertakeTracker();
+    this.auto = new AutoItems();this.passes = new OvertakeTracker();this.recovery = new WrongWayRecovery();this.pressure = new RivalPressure();
     this.config = null;this.tap = null;this.fuelEnabled = false;this.adBusy = false;this.attempt = 0;
     this.startedAt = Date.now();this.active = false;this.notice = [];this.boss = null;
     this.metrics = this.freshMetrics();
@@ -24,7 +26,7 @@ export class RacingCareer {
   get stage() { return this.dailySnapshot ?? STAGES[this.index]; }
   canDaily() { return (this.progress.stars['04'] ?? 0) > 0; }
   setDaily(date = new Date()) { if (!this.canDaily()) return false;this.dailySnapshot = dailyStage(date);return true; }
-  freshMetrics() { return { pickups: 0, bonusItems: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, knockoutWarnings: 0, timeAllowance: 0 }; }
+  freshMetrics() { return { pickups: 0, bonusItems: 0, rescues: 0, pursuitWarnings: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, knockoutWarnings: 0, timeAllowance: 0 }; }
   save() {
     try {
       this.storage.setItem(CAREER_KEY, JSON.stringify(this.progress));
@@ -37,7 +39,7 @@ export class RacingCareer {
   nextStage() { return !this.dailySnapshot && this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
   configure(game) {
     const s = this.stage;
-    Object.assign(game.settings, { map: s.map, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin });
+    Object.assign(game.settings, { map: s.map, course: s.course, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin });
     game.save();
   }
   setupAd(config, tap) { this.config = config;this.tap = tap;this.fuelEnabled = this.storageOK && fuelPlatformReady(config, tap);return this.fuelEnabled; }
@@ -50,20 +52,13 @@ export class RacingCareer {
   begin(game) {
     this.active = true;this.boss = null;this.bossName = '';this.notice = [];this.metrics = this.freshMetrics();
     this.metrics.timeAllowance = this.stage.kind === 'relay' ? this.stage.baseTime : this.stage.kind === 'time' ? this.stage.target : 0;
-    this.auto.reset();this.passes.reset();
+    this.auto.reset();this.passes.reset();this.recovery.reset();this.pressure.reset();
     this.passes.previous = game.standings.indexOf(game.player) + 1;
     this.passes.lastCrashes = game.player?.stats?.crash ?? 0;
-    // Skilled fields lost to 6–9 wall impacts; raise only the middle band.
-    // Two natural expert retests with2–3crashes finished sixth after the earlier
-    // expert increase. Retain the submitted expert speeds and all objective gates.
-    // Native physics, grid, progress, variability and rubber-banding stay intact.
-    // Item fields add weapon slowdowns and recovery time. Two real stage06
-    // attempts finished sixth after late hits even with2physical pickups.
-    const band = this.stage.diff === 1 ? (this.stage.mode === 'item' ? [.85, 1.05, 1.03, 1.18] : [.85, 1.05, 1.18, 1.34]) : null;
-    if (band) for (const rival of game.racers.filter(r => !r.isPlayer)) {
-      const fraction = Math.max(0, Math.min(1, ((rival.skill ?? band[0]) - band[0]) / (band[1] - band[0])));
-      rival.skill = band[2] + fraction * (band[3] - band[2]);
-    }
+    // Tune only actual native AI.skill values. AICar.update still handles
+    // every car's corner pace, nitro, items and genuine on-road position.
+    // Stage 01, bosses and fragile elimination/item objectives stay protected.
+    tuneOpponentField(game.racers,this.stage);
     if (this.stage.kind === 'overtake') {
       // A visible rival survives beyond the first straight without scripted teleportation.
       const challengers = game.racers.filter(r => !r.isPlayer).slice(0, 2);
@@ -71,6 +66,7 @@ export class RacingCareer {
     }
     if (game.itemMode && game.items) {
       thinItemBoxes(game.items);
+      game.items.applyMobileVisuals?.();
       installItemCleanup(game.items);
       const use = game.items.use.bind(game.items);
       game.items.use = racer => {
@@ -81,7 +77,20 @@ export class RacingCareer {
     }
     if (this.stage.kind === 'boss') {
       this.boss = game.racers.find(r => !r.isPlayer) ?? null;
-      if (this.boss) { this.bossName = this.boss.name;this.boss.skill = Math.max(this.boss.skill, 1.58); }
+      if (this.boss) {
+        this.bossName = this.boss.name;
+        // The reshaped final Aegean route adds 10–12% to native AI lap times,
+        // but native two-key PlayerCar telemetry remains several seconds behind
+        // the 1.58 boss. A genuine finish must remain achievable through cleaner
+        // steering, rather than requiring a perfect zero-contact drive.
+        // A different course can be harder even with a lower numeric AI skill.
+        this.boss.skill = this.stage.id === '16' ? 1.35 :
+          Math.max(this.boss.skill, 1.58);
+        if (this.stage.id === '16') for (const rival of game.racers) {
+          if (!rival.isPlayer && rival !== this.boss)
+            rival.skill = Math.min(rival.skill, 1.30);
+        }
+      }
     }
     if (this.fuelEnabled) {
       const spent = spendRaceFuel(this.fuel);
@@ -93,7 +102,7 @@ export class RacingCareer {
     if (!this.active) return;
     if (source === 'box') this.metrics.pickups++;
     else this.metrics.bonusItems++;
-    this.notice.push((source === 'box' ? '拾取' : '超车奖励') + (ITEM_LABELS[item] ?? '道具') + ' · 自动使用');
+    this.notice.push((source === 'box' ? '拾取' : '超车奖励') + (ITEM_LABELS[item] ?? '道具') + ' · 智能择机使用');
   }
   onEvent(event, game) {
     if (!this.active) return;
@@ -136,6 +145,20 @@ export class RacingCareer {
   frame(game) {
     if (!this.active || game.state !== 'race' || !game.player) return null;
     const p = game.player, m = this.metrics, track = game.track;
+    const rescue = this.recovery.frame(game);
+    if (rescue === 'warning') this.notice.push('⚠ 方向反了，即将自动回正');
+    if (rescue === 'stuck-warning') this.notice.push('⚠ 赛车卡住了，即将自动脱困');
+    if (rescue === 'recovered' || rescue === 'stuck-recovered') {
+      m.rescues++;
+      this.passes.reset();this.passes.previous = game.standings.indexOf(game.player)+1;
+      this.notice.push(rescue === 'recovered' ? '↻ 已自动回正，继续向前！' : '↻ 已脱离护栏，继续向前！');
+      return null; // Native reset must never register a synthetic overtake.
+    }
+    const pursuing = this.pressure.frame(game, this.stage);
+    if (pursuing) {
+      m.pursuitWarnings++;
+      this.notice.push('⚡ '+pursuing.name+' 发起追击 · 后方'+pursuing.gap+'m');
+    }
     const distance = track.length * this.stage.laps;
     if (this.passes.frame(game)) {
       m.cleanPasses++;
@@ -202,7 +225,13 @@ export class RacingCareer {
             '距离淘汰 ' + remaining + 'm';
         return '存活淘汰点 ' + m.survived + '/2';
       }
-      case 'boss':return '超越车神 ' + this.bossName + ' · 当前第 ' + (game.standings.indexOf(game.player)+1) + ' 名';
+      case 'boss': {
+        const place = game.standings.indexOf(game.player) + 1;
+        const bossPlace = game.standings.indexOf(this.boss) + 1;
+        const ahead = !!this.boss && bossPlace > 0 && place > 0 && place < bossPlace;
+        return '车神' + this.bossName + (ahead ? ' 已超越' : ' 未超越') +
+          ' · 当前第' + place + '名，须前' + s.rank + '名';
+      }
       default:return '';
     }
   }

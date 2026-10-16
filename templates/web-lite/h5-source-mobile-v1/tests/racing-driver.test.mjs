@@ -131,7 +131,7 @@ test('触控支持双指、同方向多指、短按缓冲和彻底清空', () =>
   assert.equal(typeof module.TouchSteering, 'function', '触控生命周期尚未实现');
   const t = new module.TouchSteering();
   t.press(1, 'left', 0);t.press(2, 'right', 10);
-  assert.deepEqual(t.snapshot(20), { left: true, right: true });
+  assert.deepEqual(t.snapshot(20), { left: false, right: true }, 'the last pressed thumb wins; overlapping keys must not cancel steering');
   t.release(1, 120); assert.deepEqual(t.snapshot(130), { left: false, right: true });
   t.press(3, 'right', 140);t.release(2, 160); assert.equal(t.snapshot(170).right, true);
   t.clear();assert.deepEqual(t.snapshot(180), idle);

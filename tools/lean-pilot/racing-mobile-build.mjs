@@ -10,6 +10,7 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs']);
 
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
@@ -29,7 +30,123 @@ export function patchRacingSource(source) {
     output = output.replace("import { raceCameraFov } from './race-session.mjs';", "import { raceCameraFov, raceBloomStrength } from './race-session.mjs';")
       .replace(bloom, "if (this.bloom) this.bloom.strength = this.mobileMode ? raceBloomStrength(P && P.nitroTime > 0) : (this.settings.quality === 'high' ? 0.75 : 0.6) + (P && P.nitroTime > 0 ? 0.3 : 0);");
   }
+  // The native engine owns Three.js. Share its already loaded namespace with
+  // the tiny mobile sign adapter rather than bundling a SECOND Three.js copy.
+  const threeAnchor = "import * as THREE from 'three';";
+  const sharedThree = 'window.__RACE_THREE__ = THREE;';
+  if (!output.includes(sharedThree)) {
+    if (output.split(threeAnchor).length !== 2) throw Error('Native Three.js entry anchor changed');
+    output = output.replace(threeAnchor, () => threeAnchor + '\n' + sharedThree);
+  }
   return output;
+}
+
+/** Pin a course identity to the ACTUAL Track created by the native scene.
+ * Do not change physics, lap math or race outcomes. Unknown stage IDs must
+ * fail closed instead of silently replaying one of the old four tracks.
+ */
+export function patchCareerRouteSource(source) {
+  const original = 'const track = new Track(LAYOUTS[map.layout], { isBridge: map.isBridge });';
+  const marker = 'track.__RACE_COURSE_ID = requestedCourse;';
+  if (source.includes(marker)) return source;
+  if (source.split(original).length !== 2) throw Error('Pinned native Track constructor changed');
+  const updated = [
+    'const requestedCourse = this.settings.course || map.layout;',
+    'if (!Object.prototype.hasOwnProperty.call(LAYOUTS, requestedCourse))',
+    "  throw Error('Unknown career course: ' + requestedCourse);",
+    'const track = new Track(LAYOUTS[requestedCourse], { isBridge: map.isBridge });',
+    marker,
+  ].join('\n    ');
+  return source.replace(original, updated);
+}
+
+
+/** Strict adapter for native Road/Player world; only the generated copy changes.
+ * The native PlayerCar retains its steering, acceleration, AI and checkpoint
+ * algorithms. Collision uses the actual width of the chosen physical branch.
+ */
+export function patchShortcutNativeTrack(source) {
+  const marker='this.__RACE_SHORTCUT__?.opening((r + .5) * this.ds, side)';
+  if(source.includes(marker))return source;
+  const anchor='const a = startW + r * 3, b = a + 3;';
+  if(source.split(anchor).length!==2 || !source.includes('export class Track'))
+    throw Error('Pinned native guardrail construction changed');
+  return source.replace(anchor, anchor+'\n          if ('+marker+') continue;');
+}
+export function patchShortcutNativeCar(source) {
+  const expected='const lim = tr.halfW - 1.1;';
+  const changed='const lim = (p.__RACE_SHORTCUT_ACTIVE ? p.__RACE_SHORTCUT_HALF_WIDTH : tr.halfW) - 1.1;';
+  if(source.includes(changed))return source;
+  if(source.split(expected).length!==2 || !source.includes('export class PlayerCar'))
+    throw Error('Pinned native collision-width anchor changed');
+  return source.replace(expected,changed);
+}
+export function patchShortcutNativeWorld(source) {
+  const imported="import { installPhysicalShortcut } from './race-shortcut-network.mjs';";
+  const marker='installPhysicalShortcut(track, requestedCourse);';
+  const themeImport="import { createRaceTrackTheme, buildRaceLandmarks } from './race-track-design.mjs';";
+  const themeCall='createRaceTrackTheme(map.track,track,requestedCourse)';
+  const landmarkCall='root.add(buildRaceLandmarks(THREE, track, requestedCourse));';
+  if(source.includes(imported) && source.includes(marker) &&
+     source.includes(themeImport) && source.includes(themeCall) && source.includes(landmarkCall))return source;
+  if(source.includes(imported) || source.includes(marker) ||
+     source.includes(themeImport) || source.includes(themeCall) || source.includes(landmarkCall))
+     throw Error('Partial shortcut/course-theme world adapter');
+  const anchors=[
+    'track.__RACE_COURSE_ID = requestedCourse;',
+    'const ground = buildGround(track, { base:',
+    'root.add(track.build(map.track, ground.heightAt));',
+    'this.hud.setupMinimap(track);',
+    "  resetPlayer() {\n    const P = this.player;",
+  ];
+  for(const a of anchors)if(source.split(a).length!==2)
+    throw Error('Pinned native shortcut world anchor changed: '+a.slice(0,35));
+  return imported+'\n'+themeImport+'\n'+source
+    .replace(anchors[0], anchors[0]+'\n    '+marker)
+    .replace(anchors[1], 'const ground = buildGround(track.__RACE_SHORTCUT__?.terrainProxy(track) || track, { base:')
+    .replace(anchors[2], 'root.add(track.build('+themeCall+', ground.heightAt));'+'\n    '+landmarkCall+'\n    if (track.__RACE_SHORTCUT__) root.add(track.__RACE_SHORTCUT__.buildMesh(THREE, ground.heightAt));')
+    .replace(anchors[3], anchors[3]+'\n    track.__RACE_SHORTCUT__?.drawMinimap(this.hud);')
+    .replace(anchors[4], "  resetPlayer() {\n    const P = this.player;\n    if (this.track?.__RACE_SHORTCUT__?.recover(P)) return;");
+}
+
+
+/** Only light, fog and roadside prop placement change with the course ID.
+ * PlayerCar physics, map collision, track progression and AI are untouched.
+ */
+export function patchCourseSkyAndScenery(source) {
+  const imported="import { createRaceSky } from './race-track-design.mjs';";
+  const marker='const courseSky = createRaceSky(map.sky,requestedCourse);';
+  if(source.includes(imported)&&source.includes(marker))return source;
+  if(source.includes(imported)||source.includes(marker))
+    throw Error('Partial stage scenery transformation');
+  const mutations=[
+    ['const rnd = mulberry32(id.length * 997 + 13);',
+      "const stageSeed = Number(this.settings.course?.slice(5)) || 0;\n    const rnd = mulberry32(id.length * 997 + 13 + stageSeed * 9176);"],
+    ['const { sky, sunDir } = buildSky(map.sky);',
+      marker+'\n    const { sky, sunDir } = buildSky(courseSky);'],
+    ['this.scene.fog = new THREE.Fog(map.fog[0], map.fog[1], map.fog[2]);',
+      'this.scene.fog = new THREE.Fog(courseSky.horizon, map.fog[1], map.fog[2]);'],
+    ['this.scene.background = new THREE.Color(map.sky.horizon);',
+      'this.scene.background = new THREE.Color(courseSky.horizon);'],
+  ];
+  for(const [from] of mutations)
+    if(source.split(from).length!==2)throw Error('Pinned course-light anchor drifted: '+from);
+  let result=imported+'\n'+source;
+  for(const [from,to] of mutations)result=result.replace(from,to);
+  return result;
+}
+
+/** Only the procedural DESERT ground away from the road gets stronger dune relief.
+ * The pinned buildGround function independently carves a safe corridor around
+ * the track; no road, car, AI or collisions are patched by this transform.
+ */
+export function patchRaceDesertRelief(source) {
+  const original = 'let h = 2 + noise.fbm(x * 0.0045, z * 0.0045, 4) * 18 + Math.max(0, Math.hypot(x - cx, z - cz) - 900) * 0.1;';
+  const revised = 'let h = 2 + noise.fbm(x * 0.0045, z * 0.0045, 4) * 26 + Math.max(0, Math.hypot(x - cx, z - cz) - 900) * 0.1;';
+  if (source.includes(revised)) return source;
+  if (typeof source !== 'string' || source.split(original).length !== 2)
+    throw Error('Pinned desert relief anchor changed; refusing unsafe terrain patch');
+  return source.replace(original, revised);
 }
 
 /** Event-only instrumentation; do not alter car dynamics from licensed original. */
@@ -40,22 +157,50 @@ export function annotateDriftResult(source) {
   if (source.split(original).length !== 2) throw Error('Native driftEnd event anchor changed');
   return source.replace(original, annotated);
 }
-/** Only label geometry; native item centers, collision, cooldown and drops stay intact. */
-export function patchRacingItemVisuals(source) {
-  const position = 'q.position.set(Math.sin(r) * .91, 0, Math.cos(r) * .91);';
-  if (source.includes(position) && source.includes('cube.add(q);')) return source;
-  const angles = 'for (const r of [0, Math.PI / 2]) {';
-  for (const anchor of [angles, 'q.rotation.y = r;', 'g.add(q);']) if (source.split(anchor).length !== 2) throw Error('Native item label anchor changed');
-  return source.replace(angles, 'for (const r of [0, Math.PI / 2, Math.PI, Math.PI * 1.5]) {')
-    .replace('q.rotation.y = r;', 'q.rotation.y = r;\n          ' + position)
-    .replace('g.add(q);', 'cube.add(q);');
+/** Strict, idempotent extensions to the GENERATED copy only, never the pinned source. */
+export function patchRaceLayouts(source) {
+  const imported = "import { applyTrackDesign } from './race-track-design.mjs';";
+  const invoke = "applyTrackDesign(LAYOUTS);";
+  if (source.includes(imported) && source.includes(invoke)) return source;
+  if (!source.includes('export const LAYOUTS = {')) throw Error('Pinned track layout export changed');
+  if (source.includes(imported) || source.includes(invoke)) throw Error('Partial track patch');
+  return imported+'\n'+source+'\n'+invoke+'\n';
 }
-export function canonicalItemInteractions(source) {
-  return source.replace('for (const r of [0, Math.PI / 2, Math.PI, Math.PI * 1.5]) {', 'for (const r of [0, Math.PI / 2]) {')
-    .replace('\n          q.position.set(Math.sin(r) * .91, 0, Math.cos(r) * .91);', '')
-    .replace('cube.add(q);', 'g.add(q);');
+export function patchRaceMaps(source) {
+  const imported = "import { applyLaneDesign } from './race-lane-design.mjs';";
+  const invoke = 'applyLaneDesign(MAPS);';
+  if (source.includes(imported) && source.includes(invoke)) return source;
+  if (!source.includes('export const MAPS = [')) throw Error('Pinned native MAPS export changed');
+  if (source.includes(imported) || source.includes(invoke)) throw Error('Partial lane patch');
+  return imported+'\n'+source+'\n'+invoke+'\n';
 }
-/** Insert the generated IIFE without applying String.replace's $& substitutions. */
+export function patchRaceItems(source) {
+  const imported = "import { upgradeItemBoxes } from './race-item-visuals.mjs';";
+  const hook = "this.applyMobileVisuals = () => upgradeItemBoxes(this, THREE);";
+  if (source.includes(imported) && source.includes(hook)) return source;
+  if (source.includes(imported) || source.includes(hook)) throw Error('Partial item visual patch');
+  const anchor = "  }\n\n  reset() {";
+  if (source.split(anchor).length !== 2 || !source.includes('export class ItemSystem'))
+    throw Error('Pinned item constructor changed; cannot attach safe visual patch');
+  return imported+'\n'+source.replace(anchor, "    "+hook+"\n"+anchor);
+}
+
+
+/** The pinned desert scenery includes six fixed gigantic pyramids, which
+ * were clear of the ORIGINAL route but overlap newly authored stages 05/14.
+ * Prevent those visual sculptures from intersecting a real drivable road.
+ * No physical vehicle collision or race progress rules are changed.
+ */
+export function patchFixedDesertLandmarks(source) {
+  const original='for (const [x, z, h] of pyramids) {';
+  const guard='if (!isFree(track, x, z, h * .58 + 10)) continue;';
+  if(source.includes(guard))return source;
+  if(source.split(original).length!==2 || !source.includes('function egyptProps(ctx)'))
+    throw Error('Pinned Egyptian landmark placement changed');
+  return source.replace(original,original+'\n    '+guard);
+}
+
+/** Insert the generated IIFE without replacement-string token expansion. */
 export function injectRaceBundle(html, bundleText) {
   if (typeof bundleText !== 'string' || typeof html !== 'string' || html.split('</body>').length !== 2)
     throw Error('Expected exactly one HTML body closing tag and a JavaScript bundle');
@@ -87,7 +232,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   if (run.theme !== 'qq-speed' || run.templateId !== 'h5-source-mobile-v1') throw Error('Wrong target racing run');
   const project = path.join(root, 'workspace/source/qq-speed');
   const owned = path.join(ROOT, 'templates/web-lite/h5-source-mobile-v1/racing');
-  const ownedNames = ['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs'];
+  const ownedNames = RACING_OWNED_NAMES;
   const inputFiles = await Promise.all(ownedNames.map(name => readFile(path.join(owned, name), 'utf8')));
   const sharedDeps = await Promise.all(['fuel.mjs', 'themes.mjs'].map(name => readFile(path.join(ROOT, 'templates/web-lite/h5-source-mobile-v1', name), 'utf8')));
   const inputHash = sha256([...inputFiles, ...sharedDeps, await readFile(fileURLToPath(import.meta.url), 'utf8')].join('\n'));
@@ -108,20 +253,37 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     const neutral = neutralizeRaceBranding(original);
     if (neutral !== original) await writeFile(path.join(project, 'src', name), neutral);
   }
+  // Distinct new desert roads may intersect giant fixed pyramid sculptures.
+  const nativePropsPath = path.join(project, 'src/props.js');
+  await writeFile(nativePropsPath,
+    patchFixedDesertLandmarks(await readFile(nativePropsPath,'utf8')));
+  // Keep the original four bridges/tunnels and all the native physics/checkpoints/AI.
+  for (const [nativeName, adapterName, ownedName, transform] of [
+    ['layouts.js', 'race-track-design.mjs', 'track-design.mjs', patchRaceLayouts],
+    ['maps.js', 'race-lane-design.mjs', 'lane-design.mjs', patchRaceMaps],
+    ['items.js', 'race-item-visuals.mjs', 'item-visuals.mjs', patchRaceItems],
+  ]) {
+    const nativePath = path.join(project, 'src', nativeName);
+    await writeFile(nativePath, transform(await readFile(nativePath, 'utf8')));
+    await writeFile(path.join(project, 'src', adapterName),
+      await readFile(path.join(owned, ownedName), 'utf8'));
+  }
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = annotateDriftResult(originalVehicle);
+  const annotatedVehicle = patchShortcutNativeCar(annotateDriftResult(originalVehicle));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
+  const nativeTrackPath = path.join(project, 'src/track.js');
+  const originalTrack = await readFile(nativeTrackPath, 'utf8');
+  const adaptedTrack = patchShortcutNativeTrack(originalTrack);
+  if (adaptedTrack !== originalTrack) await writeFile(nativeTrackPath, adaptedTrack);
+  await writeFile(path.join(project, 'src/race-shortcut-network.mjs'),
+    await readFile(path.join(owned, 'shortcut-network.mjs'), 'utf8'));
   const canonicalVehicle = originalVehicle.replace(
     "this.emit('driftEnd', { time: this.driftTime, clean });",
     "this.emit('driftEnd', { time: this.driftTime });",
   );
-  const nativeItemsPath = path.join(project, 'src/items.js');
-  const nativeItems = await readFile(nativeItemsPath, 'utf8');
-  const visibleItems = patchRacingItemVisuals(nativeItems);
-  if (visibleItems !== nativeItems) await writeFile(nativeItemsPath, visibleItems);
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRacingSource(beforeMain));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchRacingSource(beforeMain))))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
@@ -141,7 +303,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const standalone = html.replace('<link rel="stylesheet" href="style.css">', '<style>' + inputFiles[3] + '</style>');
   const trialName = 'racing-two-button-' + hash.slice(0, 12) + '.html';
   await writeFile(path.join(root, trialName), standalone);
-  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), originalItemInteractionsSha256: sha256(canonicalItemInteractions(visibleItems)), visibleItemSourceSha256: sha256(visibleItems), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
+  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(await readFile(path.join(project, 'src/ai.js'))), generatedVehicleSha256: sha256(annotatedVehicle), generatedTrackSha256: sha256(adaptedTrack), genuinePhysicalShortcutStages: ['05','10','12','13','16'], trackGeometrySha256: sha256(await readFile(path.join(project, 'src/layouts.js'))), itemVisualSourceSha256: sha256(await readFile(path.join(project, 'src/items.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
   history.attempts.at(-1).status = 'AWAITING_PLAYWRIGHT_QA';
   history.attempts.at(-1).buildHash = hash;
   await writeFile(path.join(root, 'artifacts/repair-history.json'), JSON.stringify(history, null, 2) + '\n');

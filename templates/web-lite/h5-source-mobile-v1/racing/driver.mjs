@@ -1,29 +1,47 @@
 // Only translates two-button intent into the existing vehicle's input contract.
+import { cornerSpeedIntent } from './corner-speed.mjs';
 const wrap = angle => Math.atan2(Math.sin(angle), Math.cos(angle));
 const empty = () => ({ up: false, down: false, left: false, right: false, shift: false, upPressed: false, wPressed: false, nitroPressed: false, swapPressed: false, resetPressed: false });
 
 export class TouchSteering {
-  constructor() { this.pointers = new Map(); this.pulses = new Map(); }
+  constructor() { this.pointers = new Map(); this.pulses = new Map(); this.sequence = 0; }
   press(id, direction, now) {
     if (direction !== 'left' && direction !== 'right') return;
+    // A fresh opposite press immediately overrides any lingering short tap.
     for (const [key, pulse] of this.pulses) if (pulse.direction !== direction) this.pulses.delete(key);
-    this.pointers.set(id, { direction, started: now });
+    this.pointers.set(id, { direction, started: now, order: ++this.sequence });
     this.pulses.delete(id);
   }
   release(id, now) {
     const pointer = this.pointers.get(id);
     if (!pointer) return;
     this.pointers.delete(id);
-    if (now - pointer.started < 80) this.pulses.set(id, { direction: pointer.direction, until: pointer.started + 80 });
+    if (now >= pointer.started && now - pointer.started < 80)
+      this.pulses.set(id, { direction: pointer.direction, until: pointer.started + 80, order: pointer.order });
+  }
+  cancel(id) {
+    // pointercancel / unexpected capture loss is NOT a short steering tap.
+    // A normal pointerup already removed the active pointer: preserve its pulse.
+    if (!this.pointers.has(id)) return;
+    this.pointers.delete(id);
+    this.pulses.delete(id);
+  }
+  activeDirection() {
+    let newest = null;
+    for (const pointer of this.pointers.values())
+      if (!newest || pointer.order > newest.order) newest = pointer;
+    return newest?.direction ?? null;
   }
   snapshot(now) {
-    const result = { left: false, right: false };
-    for (const pointer of this.pointers.values()) result[pointer.direction] = true;
+    let newest = null;
+    for (const pointer of this.pointers.values())
+      if (!newest || pointer.order > newest.order) newest = pointer;
     for (const [id, pulse] of this.pulses) {
       if (now >= pulse.until) this.pulses.delete(id);
-      else result[pulse.direction] = true;
+      // A held finger beats a past tap; otherwise use the latest short tap.
+      else if (!this.pointers.size && (!newest || pulse.order > newest.order)) newest = pulse;
     }
-    return result;
+    return { left: newest?.direction === 'left', right: newest?.direction === 'right' };
   }
   clear() { this.pointers.clear(); this.pulses.clear(); }
 }
@@ -35,7 +53,7 @@ export class RaceDriver {
     this.session = null; this.boost = null; this.cooldown = .28;
     this.recovery = 0; this.stableTime = 0; this.crashes = null;
     this.nitroLocked = false; this.lastNitroCount = null;
-    this.wrongWayRecovery = false;
+    this.wrongWayRecovery = false;this.cornerSpeed = null;
   }
   frame(dt, raw, p, track, state, { canStep = true } = {}) {
     if (!this.enabled) return raw;
@@ -60,6 +78,15 @@ export class RaceDriver {
     const middle = track.sample(p.d + Math.max(3, p.s * .15), {});
     const bend = ((track.curv[p.hint] ?? 0) + (track.curv[middle.i] ?? 0) + (track.curv[ahead.i] ?? 0)) / 3;
     const upcoming = Math.max(Math.abs(track.curv[p.hint] ?? 0), Math.abs(track.curv[middle.i] ?? 0), Math.abs(track.curv[ahead.i] ?? 0));
+    this.cornerSpeed = this.wrongWayRecovery ? null : cornerSpeedIntent(p, track);
+    if (this.cornerSpeed) {
+      // Two-button players have no separate brake: use native inputs, never
+      // clamp speed, teleport, or choose a steering direction.
+      input.up = false;
+      input.down = this.cornerSpeed === 'brake';
+      this.stableTime = 0;
+      if (input.down) this.boost = null;
+    }
     this.recovery = Math.max(0, this.recovery - dt);
     this.cooldown = Math.max(0, this.cooldown - dt);
     const crashes = p.stats?.crash ?? 0;
@@ -105,7 +132,7 @@ export class RaceDriver {
       else if (canStep && .5 - p.smallWindow >= this.boost.delay) { input.wPressed = true; this.boost.issued = true; }
     }
     if (this.boost?.issued && p.smallWindow <= 0) this.boost = null;
-    const straight = safe && !p.drifting && !dir && p.s > 20 && error < .22 && Math.abs(p.lat) < track.halfW * .65 && upcoming < .0045;
+    const straight = !this.cornerSpeed && safe && !p.drifting && !dir && p.s > 20 && error < .22 && Math.abs(p.lat) < track.halfW * .65 && upcoming < .0045;
     this.stableTime = straight ? this.stableTime + dt : 0;
     if (this.lastNitroCount !== null && p.nitroCount < this.lastNitroCount) this.nitroLocked = false;
     if (canStep && this.stableTime >= .3 && p.nitroCount > 0 && p.nitroTime <= 0 && !this.nitroLocked && (!this.boost || this.boost.issued)) {
