@@ -4,6 +4,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
 import { once } from 'node:events';
+import { TRACK_RESHAPES } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 
 /**
  * Automated real Chromium/WebGL *entry smoke*, not manual/physical gameplay QA.
@@ -157,8 +158,10 @@ async function raceStart(page, index, name) {
   const expectedPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];
   if(JSON.stringify(early.padLanes)!==JSON.stringify(expectedPadLanes))
     fail(name+': native speed-pad lane choices missing: '+JSON.stringify(early.padLanes));
-  const expectedWidth={city:23,egypt:23,aegean:21,snow:22}[expectedMap];
-  if (Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
+  // Compare the actual rendered native geometry with the source-of-truth
+  // designed width, not a stale number copied from an earlier track version.
+  const expectedWidth=TRACK_RESHAPES[expectedMap]?.width;
+  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
   if(!early.nativeThreeLoaded || early.cornerSigns<2 || early.cornerSigns>7)
     fail(name+': lightweight native Three.js corner signage did not mount: '+JSON.stringify(early));
