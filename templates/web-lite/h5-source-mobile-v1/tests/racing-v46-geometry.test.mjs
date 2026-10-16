@@ -6,19 +6,22 @@ import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS, COURSE_ROAD_WIDTHS,
 // The maps should require actual road steering and line choice, not just
 // different scenery, extra laps or decorative sector arches.
 const plans = {
-  '10': { width: 19.5, sectors: 3 },
+  '10': { width: 18.5, sectors: 3 },
   '11': { width: 18, sectors: 4 },
-  '12': { width: 19, sectors: 4 },
-  '13': { width: 19, sectors: 3 },
-  '14': { width: 18.5, sectors: 3 },
-  '15': { width: 18.5, sectors: 4 },
+  '12': { width: 18.5, sectors: 4 },
+  '13': { width: 18.5, sectors: 3 },
+  '14': { width: 18, sectors: 3 },
+  '15': { width: 18, sectors: 4 },
   '16': { width: 18, sectors: 4 },
-  '02': { width: 20, sectors: 3 },
-  '05': { width: 18.5, sectors: 3 },
-  '06': { width: 21, sectors: 3 },
-  '07': { width: 19.5, sectors: 4 },
-  '08': { width: 20.5, sectors: 3 },
-  '09': { width: 20, sectors: 2 },
+  '01': { width: 19, sectors: 4 },
+  '02': { width: 18.5, sectors: 3 },
+  '03': { width: 19, sectors: 3 },
+  '04': { width: 19, sectors: 3 },
+  '05': { width: 18, sectors: 3 },
+  '06': { width: 19.5, sectors: 3 },
+  '07': { width: 18, sectors: 4 },
+  '08': { width: 19, sectors: 3 },
+  '09': { width: 19, sectors: 2 },
 };
 const mockLayouts = () => Object.fromEntries(
   [['city',23],['aegean',21],['egypt',22],['snow',22]].map(([biome,width]) => [
@@ -38,15 +41,15 @@ test('career technical roads use true physical collider widths on the original s
     assert.ok(layout.points.every(p=>p.length===3&&p.every(Number.isFinite)));
   }
 });
-test('no excessive sudden difficulty jump in tutorial road, and physical courses stay distinct', () => {
+test('even the former tutorial now has a technical physical course and all 16 remain unique', () => {
   const layouts = mockLayouts();createCareerLayouts(layouts);
-  assert.equal(layouts['race-01'].width,23,'first race remains a forgiving learning loop');
-  assert.equal(layouts['race-03'].width,23,'early overtaking race stays teachable');
-  assert.equal(layouts['race-04'].width,21,'early drift race stays teachable');
+  assert.equal(layouts['race-01'].width,19,'first race has hard real-road collision width');
+  assert.equal(layouts['race-03'].width,19,'first-chapter overtaking road is narrow');
+  assert.equal(layouts['race-04'].width,19,'first-chapter drift road is narrow');
   const signatures=new Set();
   for(let i=1;i<=16;i++) {
     const id=String(i).padStart(2,'0'),course=layouts['race-'+id];
-    assert.ok(course.width>=18,'keep every challenge road at least 18m wide');
+    assert.ok(course.width>=18&&course.width<=19.5,'all sixteen roads physically hard but drivable');
     signatures.add(JSON.stringify(course.points));
   }
   assert.equal(signatures.size,16);
