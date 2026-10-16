@@ -318,6 +318,38 @@ export function buildRaceLandmarks(THREE,track,course) {
       group.add(root);
     }
   }
+
+  // One overhead signature per authored course. It is deliberately visual-only:
+  // a player should remember "the ring / gate / chevrons" without learning a new
+  // mechanic. Keeping it to one small landmark avoids a wall of scenery.
+  const signature=Number(course.slice(5))%4;
+  const gate=track.sample(track.length*(.40+((n-1)%4)*.055),{});
+  const signatureGroup=new THREE.Group();
+  signatureGroup.name='course-signature-'+course;
+  signatureGroup.position.set(gate.x,gate.y,gate.z);
+  signatureGroup.rotation.y=gate.hd+Math.PI;
+  const span=track.halfW*2+4;
+  if(signature===0){
+    share(signatureGroup,new THREE.BoxGeometry(span,.55,.7),material,0,11.5,0);
+    for(const side of [-1,1])share(signatureGroup,new THREE.BoxGeometry(.75,11.5,.9),material,side*(span*.5-.6),5.75,0);
+  }else if(signature===1){
+    const ring=share(signatureGroup,new THREE.TorusGeometry(Math.min(7.2,track.halfW*.72),.55,7,24),material,0,10.2,0);
+    ring.rotation.x=Math.PI/2;
+  }else if(signature===2){
+    for(const side of [-1,1]){
+      const beam=share(signatureGroup,new THREE.BoxGeometry(.75,8.5,.8),material,side*(span*.5-.6),4.25,0);
+      beam.rotation.z=side*.10;
+    }
+    share(signatureGroup,new THREE.BoxGeometry(span,.5,.75),pale,0,9.0,0);
+    share(signatureGroup,new THREE.BoxGeometry(span*.72,.35,.6),material,0,10.0,0);
+  }else{
+    share(signatureGroup,new THREE.BoxGeometry(span,.5,.65),material,0,10.8,0);
+    share(signatureGroup,new THREE.BoxGeometry(span*.72,.38,.55),pale,0,9.6,0);
+    for(const side of [-1,1])share(signatureGroup,new THREE.BoxGeometry(.7,10.8,.8),material,side*(span*.5-.55),5.4,0);
+  }
+  // These meshes sit above/at the road and carry no collision geometry.
+  signatureGroup.traverse(mesh=>{if(mesh.isMesh){mesh.castShadow=true;mesh.receiveShadow=true;}});
+  group.add(signatureGroup);
   return group;
 }
 
