@@ -125,6 +125,10 @@ async function raceStart(page, index, name) {
     padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
     trackSamples:window.game?.track?.N ?? 0,
     cornerSigns:window.game?.__RACE_CORNER_SIGNS__?.sprites?.length ?? 0,
+    shortcut:!!window.game?.track?.__RACE_SHORTCUT__,
+    shortcutGain:window.game?.track?.__RACE_SHORTCUT__?.gain ?? 0,
+    shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
+    shortcutRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
     nativeThreeLoaded:!!window.__RACE_THREE__?.Sprite,
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
@@ -172,10 +176,30 @@ async function raceStart(page, index, name) {
   const expectedWidth=TRACK_RESHAPES[expectedMap]?.width;
   if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
+  if(index===4 && (!early.shortcut || early.shortcutGain<35 || !early.shortcutRoad || !early.shortcutRails))
+    fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
+  if(index===0 && early.shortcut)
+    fail(name+': tutorial may not silently contain a shortcut');
   if(!early.nativeThreeLoaded || early.cornerSigns<2 || early.cornerSigns>7)
     fail(name+': lightweight native Three.js corner signage did not mount: '+JSON.stringify(early));
   if(index===4 && (early.itemBoxes!==8 || early.itemShape!=='IcosahedronGeometry' || early.itemBillboards!==1 || !early.questionOverlay))
     fail('native V3.1 item boxes must be diamond + visible question billboard: '+JSON.stringify(early));
+  if(index===4){
+    // This probe calls the ORIGINAL Track projection with synthetic WORLD
+    // points; it does not touch the player's position, stats or finish.
+    const branchCheck=await page.evaluate(()=>{
+      const t=window.game.track,s=t.__RACE_SHORTCUT__,out={},seq=[];
+      for(let i=0;i<s.samples.length;i+=3){
+        const p=s.samples[i],v=t.project(p.x,p.y,p.z,-1,out);
+        seq.push({active:v.__RACE_SHORTCUT_ACTIVE===true,d:v.d});
+      }
+      const on=seq.filter(p=>p.active),last=seq.at(-1);
+      return {activeFrames:on.length,gain:s.gain,minD:Math.min(...on.map(p=>p.d)),
+        maxD:Math.max(...on.map(p=>p.d)),offAtExit:last?.active===false};
+    });
+    if(branchCheck.activeFrames<5 || branchCheck.offAtExit!==true)
+      fail(name+': actual physical branch projection/join failed: '+JSON.stringify(branchCheck));
+  }
   for(const [key,rect] of [['left',after.left],['right',after.right]]) {
     if(!rect || rect.x < 0 || rect.y < 0 || rect.right > 852 || rect.bottom > 393 || rect.width < 70)
       fail(name+': thumb control out of horizontal safe bounds: '+key);
