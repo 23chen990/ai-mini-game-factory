@@ -41,7 +41,9 @@ test('buffered jump holds the reward lane until the bonus fish can be caught',()
  const holding=decide(view({distance:224,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS-1,lanes:[lane({fish:true}),lane(),lane()]}),jumped.state);
  assert.equal(holding.action,'wait');
  assert.equal(holding.state.stage,'capture');
- const released=decide(view({distance:225,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS,lanes:[lane({fish:true}),lane(),lane()]}),holding.state);
+ const tooEarly=decide(view({distance:225,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS+100,lanes:[lane({fish:true}),lane(),lane()]}),holding.state);
+ assert.equal(tooEarly.action,'wait','never abandon a buffered jump before physically passing its +9m gold');
+ const released=decide(view({distance:233,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS+300,lanes:[lane({fish:true}),lane(),lane()]}),tooEarly.state);
  assert.equal(released.state.stage,'post-capture');
 });
 
