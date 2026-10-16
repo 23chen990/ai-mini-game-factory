@@ -93,7 +93,11 @@ export function decideRiskAction(view,state){
    const escape=chooseOrdinaryLane({...view,lanes});
    return moveOneLane({...view,lanes},nextState,escape,'capture-vehicle-escape');
   }
-  if(nowMs-state.jumpAtMs<CAPTURE_HOLD_MS)return decision('wait',nextState,'capture-hold',current);
+  // A buffered jump may be armed 1.45s before contact. Measured wall time
+  // alone can release the rider *before* the real +9m fish. Hold until the
+  // player-visible distance is beyond that reward, then plan the next turn.
+  const prizePassed=Number.isFinite(view.distance)&&view.distance>=state.target.distance+10;
+  if(nowMs-state.jumpAtMs<CAPTURE_HOLD_MS||!prizePassed)return decision('wait',nextState,'capture-hold',current);
   nextState.stage='post-capture';
  }
 
