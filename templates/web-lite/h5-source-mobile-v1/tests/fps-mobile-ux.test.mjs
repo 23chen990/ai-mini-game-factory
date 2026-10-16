@@ -360,6 +360,7 @@ test('CF v7 first hit is an assisted tutorial, then mission requires real manual
  assert.match(cfMissionDebrief(c,{hits:5,drillFirstHit:true,drillStage:1,drillTravel:9},'lost'),/9\/12/);
  assert.match(cfMissionDebrief(c,{hits:9,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:2},'lost'),/2\/3/);
  assert.match(cfMissionDebrief(c,{hits:9,deaths:2,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:3},'lost'),/最多允许 1 次/);
+ assert.match(cfMissionDebrief(c,{hits:9,deaths:0,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:3},'won'),/手动追击 3 次/);
 });
 
 
