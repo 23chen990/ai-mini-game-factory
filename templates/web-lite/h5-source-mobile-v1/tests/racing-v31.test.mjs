@@ -18,7 +18,7 @@ function fixture() {
 test('四图用固定源码控制点重新生成S弯，保留四种场景且不新增分支导航',()=>{
   const original=fixture(),snapshot=JSON.stringify(original);
   const counts=applyTrackDesign(original);
-  assert.deepEqual(counts,{city:35,aegean:31,egypt:30,snow:25});
+  assert.deepEqual(counts,{city:38,aegean:34,egypt:32,snow:31});
   for(const [key,plan] of Object.entries(TRACK_RESHAPES)) {
     assert.equal(original[key].width,plan.width);
     assert.equal(original[key].points.length,counts[key]);
@@ -33,16 +33,36 @@ test('四图用固定源码控制点重新生成S弯，保留四种场景且不�
 test('desert technical pass adds two independently anchored chicanes without touching original jump heights',()=>{
   const desert=TRACK_RESHAPES.egypt;
   assert.equal(desert.width,22);
-  assert.equal(desert.cuts.length,4);
-  assert.deepEqual(desert.cuts.map(c=>[c.start,c.end]),[[18,21],[15,17],[11,13],[7,10]]);
+  assert.equal(desert.cuts.length,6);
+  assert.deepEqual(desert.cuts.map(c=>[c.start,c.end]),[[22,24],[18,21],[15,17],[11,13],[7,10],[5,6]]);
   const jump=desert.cuts.find(c=>c.start===7);
   assert.deepEqual(jump.first,[-30,215,0]);
   const input=fixture();
   assert.equal(input.egypt.points[2][2],0,'unpatched fixture stays independent');
   applyTrackDesign(input);
-  assert.equal(input.egypt.points.length,30);
+  assert.equal(input.egypt.points.length,32);
   assert.ok(input.egypt.points.some(p=>p[0]===65 && p[1]===380 && p[2]===3));
   assert.ok(input.egypt.points.some(p=>p[0]===290 && p[1]===-172 && p[2]===1.5));
+});
+test('V3.5 four distinctive track families preserve pinned tunnel and bridge anchors',()=>{
+  const layouts=fixture();
+  const before=JSON.parse(JSON.stringify(layouts));
+  const counts=applyTrackDesign(layouts);
+  assert.deepEqual(counts,{city:38,aegean:34,egypt:32,snow:31});
+  const city=layouts.city.points, sea=layouts.aegean.points, desert=layouts.egypt.points, snow=layouts.snow.points;
+  assert.ok(city.some(p=>p[0]===315 && p[1]===160),'city east-side counterturn');
+  assert.ok(sea.some(p=>p[0]===-32 && p[1]===331 && p[2]===21),'21m sea-ridge crest');
+  assert.ok(desert.some(p=>p[0]===72 && p[1]===-458),'southern dune finishing arc');
+  assert.ok(snow.some(p=>p[0]===38 && p[1]===80 && p[2]===16),'16m snow overpass crest');
+  assert.deepEqual(before.city.points[22],[-262,70,5],'keep original elevated city bridge');
+  assert.deepEqual(before.aegean.points[21],[-330,70,6],'retain coast tunnel line');
+  assert.deepEqual(before.egypt.points[4],[0,22,6.2],'retain desert jump crest');
+  assert.deepEqual(before.snow.points[0],[-200,-200,0],'retain snow race start');
+  for(const [key,plan] of Object.entries(TRACK_RESHAPES)) {
+    assert.ok(plan.width>=21 && plan.width<=23);
+    assert.equal(plan.cuts.every(c=>Array.isArray(c.first)&&Array.isArray(c.last)),true,key);
+    assert.ok(layouts[key].points.every(p=>p[2]>=0&&p[2]<=21),key+' safe altitude data');
+  }
 });
 test('源码坐标变动不能悄悄应用到别人的地图',()=>{
   const bad=fixture();
