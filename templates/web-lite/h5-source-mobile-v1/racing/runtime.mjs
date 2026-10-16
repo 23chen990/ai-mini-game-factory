@@ -166,7 +166,7 @@ export class RacingCareer {
       if (this.stage.kind === 'overtake')
         this.notice.push('有效弯道超车 ' + Math.min(m.cleanPasses, this.stage.target) + '/' + this.stage.target);
       const bonus = awardCornerPass(game);
-      this.notice.push(bonus === 'item' ? '弯道超车！奖励道具' : bonus === 'boost' ? '弯道超车！额外加速' : '漂亮超车！');
+      this.notice.push(bonus === 'item+boost' ? '弯道反超！小喷 + 道具' : bonus === 'item' ? '弯道超车！奖励道具' : bonus === 'boost' ? '弯道超车！额外加速' : '漂亮超车！');
     }
     if (this.stage.kind === 'speed' && m.checkedSpeed < 3 &&
         fractionPassed(m.previousProgress, p.progress, distance, [.22,.55,.83][m.checkedSpeed])) {
