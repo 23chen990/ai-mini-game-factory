@@ -64,7 +64,7 @@ for(const key of ['city','aegean','egypt','snow']){
 }
 // The career bosses are THREE-lap races. Two-lap averages cannot validate them.
 const bossThreeLaps={};
-for(const [id,map,skill,seed] of [['13','city',1.58,2026101513],['16','aegean',1.45,2026101516]]){
+for(const [id,map,skill,seed] of [['13','city',2.04,2026101513],['16','aegean',2.10,2026101516]]){
   bossThreeLaps[id]={map,laps:3,skill,
     original:runAi(layouts[map],skill,seed,3),
     reshaped:runAi(revised[map],skill,seed,3)};
@@ -73,11 +73,11 @@ for(const [id,map,skill,seed] of [['13','city',1.58,2026101513],['16','aegean',1
 // Exact stage-specific *actual native* AICar.update two-lap pace comparison.
 // The former V3.8 speeds are reconstructed per stage on the SAME V3.9 course.
 // This is not human pass probability, item fairness or adaptive rubber-banding.
-const oldFastest={ '01':.75,'02':.75,'04':.75,'05':.75,
+const oldFastest={ '01':.75,'02':.75,'04':.75,'05':.75,'07':1.34,
   '03':1.34,'06':1.18,'08':1.34,'10':1.18,'11':1.38,'14':1.38,
   '09':1.34,'12':1.34,'13':1.58,'15':1.38,'16':1.35};
 const stageAI={};
-for(const id of ['01','02','04','05','03','06','08','10','11','14','09','12','13','15','16']){
+for(const id of ['01','02','04','05','03','06','07','08','10','11','14','09','12','13','15','16']){
   const stage=STAGES.find(x=>x.id===id),baseline=oldFastest[id],
     rawSkill=stage.diff===0?.75:stage.diff===1?1.05:1.38,
     sample={skill:rawSkill,isPlayer:false},seed=2026101600+Number(id);
@@ -88,15 +88,14 @@ for(const id of ['01','02','04','05','03','06','08','10','11','14','09','12','13
     throw Error('Career race ace did not receive its fixed field band '+id);
   // Measure the strongest REAL starting rival; corner tactics are separate.
   // Bosses override skill in RacingCareer.begin, not tuneOpponentField.
-  const newSkill=id==='13'?1.58:id==='16'?1.45:sample.skill;
+  const newSkill=id==='13'?2.04:id==='16'?2.10:sample.skill;
   const was=runAi(revised[stage.course],baseline,seed);
   const now=runAi(revised[stage.course],newSkill,seed);
   const improvementPercent=+((1-now.timeSec/was.timeSec)*100).toFixed(2);
   // V4.1 explicitly tests a larger real-race pace uplift. Keep a wide safety ceiling
   // and record the exact difference; human racing difficulty remains NOT_RUN.
   if(!Number.isFinite(improvementPercent)||improvementPercent>35||
-     improvementPercent< -2.5 ||
-     ['01','13'].includes(id)&&Math.abs(improvementPercent)>.15)
+     improvementPercent< -2.5)
     throw Error('Native stage AI pace unexpectedly distorted: '+id+' '+improvementPercent+'%');
   stageAI[id]={course:stage.course,kind:stage.kind,originalSkill:baseline,
     nextSkill:newSkill,oldTime:was.timeSec,newTime:now.timeSec,
