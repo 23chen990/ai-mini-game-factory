@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TRACK_RESHAPES, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, careerCourseDetails, createRaceTrackTheme, createRaceSky, buildRaceLandmarks, applyTrackDesign } from '../racing/track-design.mjs';
+import { TRACK_RESHAPES, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS, injectTechnicalSectors, careerCourseDetails, createRaceTrackTheme, createRaceSky, buildRaceLandmarks, applyTrackDesign } from '../racing/track-design.mjs';
 import { WrongWayRecovery } from '../racing/recovery.mjs';
 import { roadHint } from '../racing/road-coach.mjs';
 import { chooseCornerSigns, installCornerSigns, disposeCornerSigns } from '../racing/corner-signs.mjs';
@@ -314,7 +314,7 @@ test('V3.7 keeps sixteen FULL hand-authored outlines, not 4 routes with a few po
     assert.ok(d?.title && d?.feel && d?.biome && d?.english,'real course identity '+id);
     assert.equal(titles.has(d.title),false,'same name reused for distinct stage');
     titles.add(d.title);
-    assert.equal(p.length>=12&&p.length<=28,true,id+' full independent sketch');
+    assert.equal(p.length>=16&&p.length<=40,true,id+' independent circuit includes real compound turn vertices');
     const key=JSON.stringify(p);assert.equal(raw.has(key),false,'duplicate road geometry '+id);raw.add(key);
     assert.deepEqual(p[0],layouts[d.biome].points[0],'all route starts stay within source environment');
     const coords=new Set(p.slice(1).map(x=>x.slice(0,2).join(',')));
@@ -361,4 +361,24 @@ test('V3.7 every career track has a distinct sky palette without changing demo s
   assert.equal(new Set(skies).size,16);
   assert.equal(createRaceSky(original,'snow'),original,'native demo keeps original weather');
   assert.throws(()=>createRaceSky(original,'race-99'),/Unknown stage sky/);
+});
+
+
+test('V3.8 each independent career course contains authored two-key S-bend sectors',()=>{
+  const layouts=fixture();applyTrackDesign(layouts);
+  const entries=Object.entries(COURSE_TECHNICAL_SECTORS);
+  assert.equal(entries.length,16);
+  for(const [id,sectors] of entries){
+    const blueprint=COURSE_BLUEPRINTS[id],base=blueprint[4].split(' ');
+    assert.ok(sectors.length>=2 && sectors.length<=4,id+' diverse difficulty progression');
+    const course=layouts['race-'+id];
+    assert.equal(course.points.length,base.length+sectors.length*2,id+' spline truly built with extra corners');
+    assert.ok(sectors.every(([i,amp,side])=>i>=1&&i<base.length-1&&amp>=12&&amp<=28&&[-1,1].includes(side)));
+    assert.ok(sectors.every(([i],n)=>sectors.findIndex(x=>x[0]===i)===n),'not double-sculpting same segment');
+    const parsed=base.map(t=>t.split(',').map(Number));
+    const expected=injectTechnicalSectors(parsed,id,blueprint[3]);
+    assert.equal(expected.length,course.points.length);
+    assert.ok(expected.every(p=>p.length===3&&p.every(Number.isFinite)));
+    assert.deepEqual(expected[0],parsed[0],'initial straight remains recognisable');
+  }
 });
