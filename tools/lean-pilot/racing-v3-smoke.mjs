@@ -302,7 +302,7 @@ try {
   // a continuous axis, and a second thumb independently holds the drift key.
   const wheel=await page.locator('#race-joystick').boundingBox();
   const drift=await page.locator('[data-race-action="drift"]').boundingBox();
-  if(!wheel||wheel.width<100||!drift||drift.width<75||wheel.right+24>drift.left)
+  if(!wheel||wheel.width<100||!drift||drift.width<75||wheel.x+wheel.width+24>drift.x)
     fail('Single joystick / drift hitboxes overlap or are too small: '+JSON.stringify({wheel,drift}));
   const cdp=await context.newCDPSession(page);
   const leftThumb={x:wheel.x+wheel.width*.18,y:wheel.y+wheel.height*.5,id:101};
