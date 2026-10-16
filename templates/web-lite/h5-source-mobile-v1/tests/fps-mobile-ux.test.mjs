@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -510,13 +510,30 @@ test('CF holding a native bot lane never moves the actor or changes health/weapo
 
 
 test('CF visible-aim tutorial indicates only camera-confirmed on-screen swipe, never invisible tracking',()=>{
- assert.equal(cfVisibleAimCoach(-.65,0),'← 左滑视角，对准红色敌人');
- assert.equal(cfVisibleAimCoach(.65,0),'→ 右滑视角，对准红色敌人');
- assert.equal(cfVisibleAimCoach(0,.46),'↑ 上滑视角，对准敌人');
- assert.equal(cfVisibleAimCoach(0,-.46),'↓ 下滑视角，对准敌人');
+ assert.equal(cfVisibleAimCoach(-.65,0),'← 按住开火向左滑动');
+ assert.equal(cfVisibleAimCoach(.65,0),'→ 按住开火向右滑动');
+ assert.equal(cfVisibleAimCoach(0,.46),'↑ 按住开火向上滑动');
+ assert.equal(cfVisibleAimCoach(0,-.46),'↓ 按住开火向下滑动');
  assert.equal(cfVisibleAimCoach(0,0),'◎ 准星接近敌人 · 按住开火');
  for(const a of [NaN,Infinity,-Infinity,undefined]){
   assert.equal(cfVisibleAimCoach(a,0),'');
   assert.equal(cfVisibleAimCoach(0,a),'');
  }
+});
+
+
+test('CF native fire-button gesture gives one right thumb both hold-fire and camera drag',()=>{
+ assert.deepEqual(cfFireDragLookDelta(0,0),{x:0,y:0});
+ const gesture=cfFireDragLookDelta(-30,20);
+ assert.ok(gesture.x < -47.9 && gesture.x > -48.1);
+ assert.ok(gesture.y > 31.9 && gesture.y < 32.1);
+ assert.deepEqual(cfFireDragLookDelta(1000,-1000),{x:96,y:-96},
+  'one outlier touchmove must not rotate the camera through multiple turns');
+ for(const invalid of [NaN,Infinity,undefined]){
+  assert.deepEqual(cfFireDragLookDelta(invalid,8),{x:0,y:0});
+  assert.deepEqual(cfFireDragLookDelta(8,invalid),{x:0,y:0});
+ }
+ const a=cfFireDragLookDelta(20,0),b=cfFireDragLookDelta(-20,0);
+ assert.ok(a.x>0&&b.x<0,'camera follows the same two swipe directions as native touch look');
+ assert.equal('fire' in a,false,'input conversion cannot spawn bullets or award hits');
 });
