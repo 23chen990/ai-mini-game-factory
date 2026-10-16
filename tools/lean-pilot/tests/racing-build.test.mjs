@@ -117,3 +117,15 @@ test('desert dune relief edits only the original generated sand base, never nati
   assert.equal(api.patchRaceDesertRelief(revised),revised,'terrain adapter is idempotent');
   assert.throws(()=>api.patchRaceDesertRelief("unrecognized source"),/anchor changed/);
 });
+
+test('native stage-specific course selection is strict, idempotent and does not rewrite driving physics',()=>{
+  const original="const track = new Track(LAYOUTS[map.layout], { isBridge: map.isBridge });";
+  const src=original+"\nP.update(DT, first ? pin : noEdge, active, this.itemMode);";
+  const adapted=api.patchCareerRouteSource(src);
+  assert.match(adapted,/this\.settings\.course \|\| map\.layout/);
+  assert.match(adapted,/track\.__RACE_COURSE_ID = requestedCourse/);
+  assert.match(adapted,/Unknown career course/);
+  assert.match(adapted,/P\.update\(DT, first \? pin : noEdge/);
+  assert.equal(api.patchCareerRouteSource(adapted),adapted);
+  assert.throws(()=>api.patchCareerRouteSource("new Track(other, {})"),/constructor changed/);
+});
