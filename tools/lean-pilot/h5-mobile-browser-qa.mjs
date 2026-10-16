@@ -62,7 +62,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    // Coach reads only the ACTUAL objective text on screen, never bot
    // coordinates, unrendered mission state, player world path or stage flags.
    const objective=(await page.locator('#mk-status').textContent())||'';
-   const shifting=/↗ 换位\s*(\d+)\/(\d+)m/u.exec(objective);
+   const shifting=/↔ 换位\s*(\d+)\/(\d+)m/u.exec(objective);
    if(shifting){
      const walked=Number(shifting[1]);
      fpsMoveStall=walked<=fpsMoveLast?fpsMoveStall+1:0;
@@ -70,8 +70,9 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const pad=await page.locator('#touch .pad').first().boundingBox();
      if(!pad)return;
      const origin={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
-     // Follow visible cover lane, then sidestep if a container blocks motion.
-     const motion=fpsMoveStall>=6?[0,53]:fpsMoveStall>=3?[52,0]:[0,-53];
+     // Side-step rather than charging straight toward a visible enemy.
+     // If cover blocks the strafe, change lateral direction, then retreat.
+     const motion=fpsMoveStall>=6?[0,53]:fpsMoveStall>=3?[-53,0]:[53,0];
      await mobileStroke(origin,{x:origin.x+motion[0],y:origin.y+motion[1]},2000,53);
      if(!fpsRepositionScreenshot){await shot('mobile-v7-reposition');fpsRepositionScreenshot=true;}
      return;
