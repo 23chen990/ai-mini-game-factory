@@ -227,3 +227,27 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   #race-kit[data-phase="ready"] #race-note {grid-area:note;min-width:0;margin:3px 0 0;}
   #race-kit[data-phase="ready"] .race-actions button {min-height:41px;}
 }
+
+/* V4.3: classic thumb layout, keeping the visible racing lane clear. */
+#race-kit[data-control-mode="classic"] #race-left,
+#race-kit[data-control-mode="classic"] #race-right {left:auto;right:auto;bottom:calc(var(--race-bottom) + 2px);width:clamp(70px,10vw,92px);height:clamp(68px,18vh,86px);border-radius:22px;}
+#race-kit[data-control-mode="classic"] #race-left {left:var(--race-left);}
+#race-kit[data-control-mode="classic"] #race-right {left:calc(var(--race-left) + clamp(78px,12vw,110px));}
+#race-action-pad {display:none;position:absolute;right:var(--race-right);bottom:var(--race-bottom);width:clamp(205px,32vw,280px);height:clamp(98px,30vh,142px);pointer-events:none;}
+#race-kit[data-control-mode="classic"] #race-action-pad {display:block;}
+#race-action-pad button {position:absolute;display:grid;place-items:center;width:clamp(62px,9vw,82px);height:clamp(55px,17vh,75px);bottom:auto;border-radius:999px;border:2px solid #d2f4ff91;background:#11394ebe;box-shadow:0 4px 18px #0007;touch-action:none;font:800 13px/1.1 system-ui;}
+#race-action-pad button[data-race-action="drift"] {right:0;bottom:0;width:clamp(82px,12vw,100px);height:clamp(82px,23vh,100px);border-color:#ffd580;background:#775021b8;font-size:17px;}
+#race-action-pad button[data-race-action="small"] {right:clamp(88px,13vw,110px);bottom:0;}
+#race-action-pad button[data-race-action="nitro"] {right:clamp(88px,13vw,110px);bottom:clamp(62px,18vh,77px);background:#173b55de;}
+#race-action-pad button[data-race-action="item"] {right:0;bottom:clamp(88px,25vh,110px);}
+#race-kit[data-item-mode="false"] #race-action-pad button[data-race-action="item"] {display:none;}
+#race-action-pad button.held {background:#a26a32;border-color:#fff0aa;transform:scale(.96);}
+#race-action-pad button.ready {border-color:#8af7dd;box-shadow:0 0 13px #35d7ae80;}
+#race-kit[data-control-mode="classic"] #race-controls {touch-action:none;}
+#race-kit[data-control-mode="classic"] #race-controls button:disabled {opacity:.5;}
+@media(max-height:375px) {
+ #race-action-pad {height:115px;}
+ #race-action-pad button[data-race-action="item"] {bottom:79px;}
+ #race-action-pad button[data-race-action="nitro"] {bottom:58px;}
+ #race-action-pad button[data-race-action="drift"] {height:79px;width:79px;}
+}
