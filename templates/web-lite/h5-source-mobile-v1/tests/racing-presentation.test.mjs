@@ -15,6 +15,8 @@ test('all 16 authored tracks have unique rendered road shapes without remote ass
     paths.add(path);
   }
   assert.equal(paths.size, 16);
+  const first = careerCourseSvg('race-01').match(/class="race-track-road" d="([^"]+)"/)?.[1] ?? '';
+  assert.equal((first.match(/L/g) ?? []).length, 15, 'lobby preview must include the two injected S sectors');
   assert.equal(careerCourseSvg('race-99'), '');
 });
 test('progress display clamps to real native distance, not rank or synthetic timeline', () => {
