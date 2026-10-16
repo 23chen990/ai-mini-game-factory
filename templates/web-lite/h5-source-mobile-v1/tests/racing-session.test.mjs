@@ -10,10 +10,13 @@ test('原生大厅只有AI演示赛车时即可启动，不等待尚未创建的
 });
 test('切关加载失败或仍处于旧赛道时，禁止用错误赛道开新关并扣燃油',()=>{
   const ready=need('stageTrackReady');
-  const game={ track:{ length:2500 }, map:{ id:'city' }, loading:false };
-  const stage={ id:'02', map:'egypt' };
-  assert.equal(ready(game,stage),false,'stale physical map is never good enough');
-  game.map.id='egypt';assert.equal(ready(game,stage),true);
+  const game={ track:{ length:2500, __RACE_COURSE_ID:'race-01' },
+    settings:{course:'race-01'}, map:{id:'city'},loading:false };
+  const stage={ id:'02', map:'egypt',course:'race-02' };
+  assert.equal(ready(game,stage),false,'stale physical environment is never good enough');
+  game.map.id='egypt';assert.equal(ready(game,stage),false,'same environment but stale course is rejected');
+  game.settings.course='race-02';assert.equal(ready(game,stage),false,'settings cannot spoof native geometry');
+  game.track.__RACE_COURSE_ID='race-02';assert.equal(ready(game,stage),true);
   game.loading=true;assert.equal(ready(game,stage),false);
   game.loading=false;game.track=null;assert.equal(ready(game,stage),false);
   assert.equal(ready(null,stage),false);
