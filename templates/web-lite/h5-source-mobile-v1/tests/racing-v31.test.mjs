@@ -54,10 +54,16 @@ test('V3.5 four distinctive track families preserve pinned tunnel and bridge anc
   assert.ok(sea.some(p=>p[0]===-32 && p[1]===331 && p[2]===21),'21m sea-ridge crest');
   assert.ok(desert.some(p=>p[0]===72 && p[1]===-458),'southern dune finishing arc');
   assert.ok(snow.some(p=>p[0]===38 && p[1]===80 && p[2]===16),'16m snow overpass crest');
-  assert.deepEqual(before.city.points[22],[-262,70,5],'keep original elevated city bridge');
-  assert.deepEqual(before.aegean.points[21],[-330,70,6],'retain coast tunnel line');
-  assert.deepEqual(before.egypt.points[4],[0,22,6.2],'retain desert jump crest');
-  assert.deepEqual(before.snow.points[0],[-200,-200,0],'retain snow race start');
+  // Fixture fills intentionally unspecified native points with sentinel
+  // coordinates. Verify real landmark INDICES are never inside replaced cuts,
+  // and survive the regenerated control-point array unchanged.
+  for(const [key,index] of [['city',22],['aegean',21],['egypt',4],['snow',0]]) {
+    assert.ok(TRACK_RESHAPES[key].cuts.every(c=>index<c.start||index>c.end),
+      key+' protected landmark is outside all edits');
+    const untouched=before[key].points[index];
+    assert.ok(layouts[key].points.some(p=>p.every((v,i)=>v===untouched[i])),
+      key+' unchanged landmark survives the splice');
+  }
   for(const [key,plan] of Object.entries(TRACK_RESHAPES)) {
     assert.ok(plan.width>=21 && plan.width<=23);
     assert.equal(plan.cuts.every(c=>Array.isArray(c.first)&&Array.isArray(c.last)),true,key);
