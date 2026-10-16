@@ -6,6 +6,7 @@ on:
     paths:
       - index.html
       - PREVIEW_PROVENANCE.txt
+      - .github/workflows/racing-preview-http-check.yml
 permissions:
   contents: read
 jobs:
@@ -63,6 +64,11 @@ jobs:
           const url='https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v34-dbf8603-mobile/index.html';
           const browser=await chromium.launch({headless:true,args:['--enable-webgl','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader','--disable-gpu-sandbox']});
           const ctx=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,deviceScaleFactor:1});
+          // raw.githack explicitly requires a one-time browser safety confirmation.
+          // The cookie verifies gameplay AFTER that confirmation, not one-click readiness.
+          await ctx.addCookies([{name:'__Http-phish',value:'1',
+            domain:'raw.githack.com',path:'/23chen990/ai-mini-game-factory/',
+            secure:true,httpOnly:true,sameSite:'Lax'}]);
           const page=await ctx.newPage(), errors=[],screens=[];
           page.on('pageerror',e=>errors.push(e.message));
           try {
@@ -97,7 +103,7 @@ jobs:
             assert.ok(overlay.controlsVisible&&!overlay.gaugeOverlap,'Genuine game HUD must not overlap');
             await page.screenshot({path:'/tmp/racing-phone-evidence/racing-844.png'});
             assert.deepEqual(errors,[],'No uncaught browser runtime errors');
-            await writeFile('/tmp/racing-phone-evidence/report.json',JSON.stringify({url,htmlSha256:process.env.EXPECTED_SHA256,realExternalBrowser:true,physicalPhone:false,normalTapStart:true,screens,overlay,errors},null,2));
+            await writeFile('/tmp/racing-phone-evidence/report.json',JSON.stringify({url,htmlSha256:process.env.EXPECTED_SHA256,realExternalBrowser:true,consentAlreadyConfirmed:true,firstVisitShowsSafetyInterstitial:true,physicalPhone:false,normalTapStart:true,screens,overlay,errors},null,2));
             console.log('LIVE_EXTERNAL_CHROMIUM_PASS',JSON.stringify({screens,overlay}));
           } finally {await ctx.close();await browser.close();}
           JS
