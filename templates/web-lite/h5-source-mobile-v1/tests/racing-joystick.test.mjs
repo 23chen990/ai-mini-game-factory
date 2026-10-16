@@ -128,3 +128,26 @@ test('build fingerprints joystick and UI binds captured pointer without retainin
   assert.match(css,/#race-joystick\.held #race-stick-knob \{transition:none/);
   assert.match(css,/#race-kit\[data-control-mode="classic"\] #race-left,/);
 });
+
+// Real game time controls a deliberately small pre-exit tap buffer; player must
+// still perform a true valid drift to create the native spray window.
+test('manual small-spray tap survives a brief pre-exit drift frame and never repeats',()=>{
+  const actions=new TouchActions(),driver=new ManualRaceDriver(actions);
+  const p={...sample(),drifting:true,smallWindow:0};
+  actions.press(10,'small',1);
+  actions.release(10);
+  const early=driver.frame({steerAxis:.5},p,'race',{now:1.08});
+  assert.equal(early.wPressed,false);
+  p.drifting=false;p.smallWindow=.46;
+  const exit=driver.frame({steerAxis:0},p,'race',{now:1.15});
+  assert.equal(exit.wPressed,true);
+  assert.equal(driver.frame({},p,'race',{now:1.17}).wPressed,false);
+});
+test('very early small-spray tap expires and does not create a bonus after drift',()=>{
+  const actions=new TouchActions(),driver=new ManualRaceDriver(actions);
+  const p={...sample(),drifting:true,smallWindow:0};
+  actions.press(11,'small',2);actions.release(11);
+  assert.equal(driver.frame({},p,'race',{now:2.31}).wPressed,false);
+  p.drifting=false;p.smallWindow=.5;
+  assert.equal(driver.frame({},p,'race',{now:2.32}).wPressed,false);
+});
