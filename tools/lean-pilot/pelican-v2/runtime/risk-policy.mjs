@@ -4,7 +4,7 @@ export const TARGET_WINDOW_LEAD_METERS = 48;
 export const TARGET_WINDOW_TRAIL_METERS = 10;
 
 export const RISK_LEVELS = Object.freeze([
- {id:1,name:'海岸出发',weather:'clear',targets:[['l1-o1',140],['l1-o3',225]]},
+ {id:1,name:'海岸出发',weather:'clear',targets:[['l1-o4',75],['l1-o1',140],['l1-o7',205],['l1-o3',225]]},
  {id:2,name:'行人出没',weather:'clear',targets:[['l2-o3',246],['l2-o5',356]]},
  {id:3,name:'危险公路',weather:'clear',targets:[['l3-o3',222],['l3-o5',360]]},
  {id:4,name:'雨中骑行',weather:'rain',targets:[['l4-o3',225],['l4-o5',350],['l4-o10',593]]},
@@ -84,7 +84,7 @@ export function decideRiskAction(view,state){
  const nowMs=Number.isFinite(view.nowMs)?view.nowMs:0;
 
  if(state.stage==='capture'&&state.jumpIssued){
-  if(laneIsVehicle(lanes[current])){
+  if(laneIsVehicle(lanes[current])&&lanes[current].seconds<=1.5){
    nextState.stage='post-capture';
    const escape=chooseOrdinaryLane({...view,lanes});
    return moveOneLane({...view,lanes},nextState,escape,'capture-vehicle-escape');
@@ -98,7 +98,8 @@ export function decideRiskAction(view,state){
   &&view.distance>=target.distance-TARGET_WINDOW_LEAD_METERS
   &&view.distance<=target.distance+TARGET_WINDOW_TRAIL_METERS;
  const rewardLane=lanes.findIndex(lane=>lane?.jumpReward===true&&lane.kind==='barrier');
- if(inTargetWindow&&!state.jumpIssued&&rewardLane>=0&&!laneIsVehicle(lanes[rewardLane])){
+ if(inTargetWindow&&!state.jumpIssued&&rewardLane>=0&&!laneIsVehicle(lanes[rewardLane])&&
+  (current===rewardLane||Number.isFinite(lanes[rewardLane].seconds)&&lanes[rewardLane].seconds<=2)){
   const targetLane=laneIndex(rewardLane),countdown=lanes[targetLane].seconds;
   if(current!==targetLane)return moveOneLane({...view,lanes},nextState,targetLane,'approach-jump-reward',targetLane);
   if(Number.isFinite(countdown)&&countdown<=JUMP_WINDOW_SECONDS){

@@ -7,7 +7,7 @@ const definitions = [
  {id:1,name:'海岸出发',subtitle:'海岸挑战 · 连续吞鱼、跳障追金鱼、预判车流',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[225,'barrier',1],
   // V4 authored pressure beats are appended to keep the original obstacle IDs and QA evidence stable.
   // 75m optional left jump; then a right-vehicle/center-jump decision, later alternating safe gaps.
-  [75,'barrier',0],[118,'car',2],[181,'car',1],[205,'barrier',0],[248,'van',2],[274,'car',1]]},
+  [75,'barrier',0],[130,'car',2],[181,'car',1],[205,'barrier',0],[248,'van',2],[274,'car',1]]},
  {id:2,name:'行人出没',subtitle:'斑马线 · 看行人方向，躲避后追金鱼',mastery:{jumps:1},distance:420,speed:8,seconds:70,goal:{count:12,gold:1},hour:16,weather:'clear',reward:22,rows:[[76,'pedestrian',0],[134,'pedestrian',2],[192,'pedestrian',0],[246,'barrier',1],[298,'pedestrian',2],[356,'barrier',0]]},
  {id:3,name:'危险公路',subtitle:'危险公路 · 汽车换道，路障可跳',mastery:{jumps:1},distance:540,speed:8.8,seconds:82,goal:{count:17,gold:2},hour:15.5,weather:'clear',reward:30,rows:[[100,'car',1],[161,'pedestrian',0],[222,'van',2],[222,'barrier',1],[298,'car',0],[360,'barrier',2],[421,'van',1],[483,'car',2]]},
  {id:4,name:'雨中骑行',subtitle:'雨天路滑 · 提前变道，挑战连续两次跳障',mastery:{jumps:2},distance:630,speed:9.2,seconds:88,goal:{count:20,gold:2},hour:16.4,weather:'rain',reward:38,rows:[[100,'car',1],[162,'pedestrian',2],[225,'van',0],[225,'barrier',1],[294,'car',2],[350,'barrier',1],[410,'car',0],[410,'van',2],[478,'pedestrian',0],[536,'van',1],[593,'barrier',2]]},

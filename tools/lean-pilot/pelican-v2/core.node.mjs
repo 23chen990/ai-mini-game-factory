@@ -5,10 +5,13 @@ import {brandPelicanBoot} from './boot.mjs';
 import { newRun, input, advance, sweptHit, newSave, loadSave, settle, cameraPose, qualityStep } from './runtime/adventure.mjs';
 
 const tick=(r,seconds)=>{for(let t=0;t<seconds;t+=1/120)advance(r,1/120);};
-test('five genuinely different configurations, early fish, no lethal traffic before level three',()=>{
+test('five distinct safe courses: first-level traffic follows teaching; second level focuses on pedestrians',()=>{
  assert.equal(LEVELS.length,5);assert.equal(new Set(LEVELS.map(l=>l.distance)).size,5);
  for(const l of LEVELS){assert.deepEqual(validateLevel(makeLevel(l.id)),[]);assert.ok(l.fish[0].x/l.speed<=2.5);assert.ok(l.fish.length>=l.goal.count+4);}
- assert.ok(!LEVELS[0].obstacles.some(o=>['car','van'].includes(o.kind)));
+ const openingTraffic=LEVELS[0].obstacles.filter(o=>['car','van'].includes(o.kind));
+ assert.ok(openingTraffic.length>=3,'V4 retains alternating vehicle decisions');
+ assert.ok(openingTraffic.every(o=>o.x>=100),'early steering/fishing teaching precedes lethal traffic');
+ assert.ok(LEVELS[0].obstacles.some(o=>o.kind==='barrier'&&o.x<openingTraffic[0].x),'jump-or-detour teaching precedes cars');
  assert.ok(!LEVELS[1].obstacles.some(o=>['car','van'].includes(o.kind)));
  assert.ok(LEVELS[2].obstacles.some(o=>o.kind==='car')&&LEVELS[2].obstacles.some(o=>o.kind==='van'));
  assert.equal(LEVELS[3].weather,'rain');assert.ok(LEVELS[4].hour>=18);assert.ok(LEVELS[4].hour<18.5,'dusk road must stay readable');

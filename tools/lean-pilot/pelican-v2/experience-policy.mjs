@@ -1,5 +1,12 @@
 // Player decisions use visible feedback and persistent mastery counters. A
 // slow screenshot may miss a toast; it must not lock the rider onto a hazard.
+export function riskCaptureProfile(environment){
+ const key=environment.QA_RISK_VIEWPORT??'390x844';
+ if(!['390x844','360x740','844x390'].includes(key))throw Error('Unsupported exact risk viewport');
+ if(environment.QA_RISK_FIRST_ONLY!==undefined&&environment.QA_RISK_FIRST_ONLY!=='1')throw Error('Unsupported risk campaign scope');
+ const [width,height]=key.split('x').map(Number),firstOnly=environment.QA_RISK_FIRST_ONLY==='1';
+ return {viewport:{width,height},firstOnly,suffix:(environment.QA_RISK_VIEWPORT?'-'+key:'')+(firstOnly?'-first':'')};
+}
 export const earnedJumpRewardVisible = (current, before) =>
  current.feedback.includes('奖励金鱼') ||
  Number.isFinite(current.gold) && Number.isFinite(current.jumps) &&

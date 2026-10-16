@@ -67,6 +67,7 @@ export function revive(r){
  if(object){object.hit=true;object.passed=true;}
  r.revives=1;r.reviveGrace=2.5;r.phase='running';r.reason=null;r.speed=r.level.speed;
  r.stun=0;r.y=0;r.vy=0;r.bufferedJump=null;r.streak=0;
+ r.laneTarget=r.lane;r.laneV=0;r.latAcc=0;
  event(r,'revived',{grace:r.reviveGrace});return true;
 }
 export function advance(r,seconds) {
@@ -116,7 +117,7 @@ function step(r,dt){
   }
   // Record only genuinely close, collision-free lateral passes in the original
   // collision corridor. A distant harmless object earns nothing.
-  if(['car','van','barrier'].includes(o.kind) && !o.jumped &&
+  if(r.reviveGrace<=0&&['car','van','barrier'].includes(o.kind) && !o.jumped &&
       Math.abs(o.x-r.distance)<bounds.x+.7){
     const clearance=Math.abs(o.z-r.lane)-(bounds.z+.27);
     if(clearance>=.035 && clearance<=.42)o.nearMiss=true;

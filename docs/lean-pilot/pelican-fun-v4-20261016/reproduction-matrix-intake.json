@@ -1,0 +1,1852 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/private/tmp/pelican-pr19-20261016/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "new-first-level-vehicles",
+      "original-and-new-barriers-and-prizes",
+      "shoal-and-regular-fish",
+      "revive-and-settlement"
+    ],
+    "lifecycleStateBranches": [
+      "first-teaching",
+      "running-safe-and-reward-route",
+      "death-replay",
+      "pause-background",
+      "revive-callback"
+    ],
+    "rendererPaths": [
+      "chromium-default-h5",
+      "webkit-default-h5"
+    ],
+    "viewports": [
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "new-first-level-vehicles:first-teaching:chromium-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:first-teaching:chromium-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:first-teaching:chromium-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:first-teaching:webkit-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:first-teaching:webkit-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:first-teaching:webkit-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:running-safe-and-reward-route:chromium-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:running-safe-and-reward-route:chromium-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:running-safe-and-reward-route:chromium-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:running-safe-and-reward-route:webkit-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:running-safe-and-reward-route:webkit-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:running-safe-and-reward-route:webkit-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:death-replay:chromium-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:death-replay:chromium-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:death-replay:chromium-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:death-replay:webkit-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:death-replay:webkit-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:death-replay:webkit-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:pause-background:chromium-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:pause-background:chromium-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:pause-background:chromium-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:pause-background:webkit-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:pause-background:webkit-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:pause-background:webkit-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:revive-callback:chromium-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:revive-callback:chromium-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:revive-callback:chromium-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:revive-callback:webkit-default-h5:mobile-portrait",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:revive-callback:webkit-default-h5:small-mobile",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "new-first-level-vehicles:revive-callback:webkit-default-h5:landscape",
+      "objectType": "new-first-level-vehicles",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:first-teaching:chromium-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:first-teaching:chromium-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:first-teaching:chromium-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:first-teaching:webkit-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:first-teaching:webkit-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:first-teaching:webkit-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:running-safe-and-reward-route:chromium-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:running-safe-and-reward-route:chromium-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:running-safe-and-reward-route:chromium-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:running-safe-and-reward-route:webkit-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:running-safe-and-reward-route:webkit-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:running-safe-and-reward-route:webkit-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:death-replay:chromium-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:death-replay:chromium-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:death-replay:chromium-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:death-replay:webkit-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:death-replay:webkit-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:death-replay:webkit-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:pause-background:chromium-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:pause-background:chromium-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:pause-background:chromium-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:pause-background:webkit-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:pause-background:webkit-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:pause-background:webkit-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:revive-callback:chromium-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:revive-callback:chromium-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:revive-callback:chromium-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:revive-callback:webkit-default-h5:mobile-portrait",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:revive-callback:webkit-default-h5:small-mobile",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "original-and-new-barriers-and-prizes:revive-callback:webkit-default-h5:landscape",
+      "objectType": "original-and-new-barriers-and-prizes",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:first-teaching:chromium-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:first-teaching:chromium-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:first-teaching:chromium-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:first-teaching:webkit-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:first-teaching:webkit-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:first-teaching:webkit-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:running-safe-and-reward-route:chromium-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:running-safe-and-reward-route:chromium-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:running-safe-and-reward-route:chromium-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:running-safe-and-reward-route:webkit-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:running-safe-and-reward-route:webkit-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:running-safe-and-reward-route:webkit-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:death-replay:chromium-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:death-replay:chromium-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:death-replay:chromium-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:death-replay:webkit-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:death-replay:webkit-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:death-replay:webkit-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:pause-background:chromium-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:pause-background:chromium-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:pause-background:chromium-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:pause-background:webkit-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:pause-background:webkit-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:pause-background:webkit-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:revive-callback:chromium-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:revive-callback:chromium-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:revive-callback:chromium-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:revive-callback:webkit-default-h5:mobile-portrait",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:revive-callback:webkit-default-h5:small-mobile",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "shoal-and-regular-fish:revive-callback:webkit-default-h5:landscape",
+      "objectType": "shoal-and-regular-fish",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:first-teaching:chromium-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:first-teaching:chromium-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:first-teaching:chromium-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:first-teaching:webkit-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:first-teaching:webkit-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:first-teaching:webkit-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "first-teaching",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:running-safe-and-reward-route:chromium-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:running-safe-and-reward-route:chromium-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:running-safe-and-reward-route:chromium-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:running-safe-and-reward-route:webkit-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:running-safe-and-reward-route:webkit-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:running-safe-and-reward-route:webkit-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "running-safe-and-reward-route",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:death-replay:chromium-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:death-replay:chromium-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:death-replay:chromium-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:death-replay:webkit-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:death-replay:webkit-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:death-replay:webkit-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "death-replay",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:pause-background:chromium-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:pause-background:chromium-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:pause-background:chromium-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:pause-background:webkit-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:pause-background:webkit-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:pause-background:webkit-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "pause-background",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:revive-callback:chromium-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:revive-callback:chromium-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:revive-callback:chromium-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "chromium-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:revive-callback:webkit-default-h5:mobile-portrait",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:revive-callback:webkit-default-h5:small-mobile",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "small-mobile",
+        "width": 360,
+        "height": 740
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    },
+    {
+      "id": "revive-and-settlement:revive-callback:webkit-default-h5:landscape",
+      "objectType": "revive-and-settlement",
+      "lifecycleStateBranch": "revive-callback",
+      "rendererPath": "webkit-default-h5",
+      "viewport": {
+        "label": "landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact authored branch is safe, legible and causally attributable; natural journey except unavailable live ad branch",
+      "observed": "Await exact-branch new-build evidence. Unit fixture success alone cannot close this cell.",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "Initial Node failure reproduced before edits"
+  ],
+  "remainingGaps": [
+    "Physical devices and human fun not observed",
+    "Official rewarded ads NOT_INTEGRATED"
+  ],
+  "createdAt": "2026-10-16T03:03:22.438Z"
+}

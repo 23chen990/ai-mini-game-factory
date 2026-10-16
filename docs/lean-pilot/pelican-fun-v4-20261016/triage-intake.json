@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/private/tmp/pelican-pr19-20261016/runs/pelican-coast-v2-20261014/workspace",
+  "report": "用户真实反馈：第一关非常简单、无聊、不好玩。接手 Draft PR19 5a5b4fa；保留已加障碍/鱼群/复活状态机，修复新版红灯并验证风险回报、连续主动操作、真实五关三星、死亡重开、广告不可用与异步边界。真人好玩程度尚未验证。",
+  "classification": [
+    "core-experience",
+    "failure-attribution",
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Core loop, new authored encounter routes, revival state machine and validated PR19 CI failures cross multiple modules.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "PR16 modifications",
+      "other games",
+      "unrelated logs",
+      "unavailable recordings"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Checkout exact PR19 head 5a5b4fa",
+      "Run branch Node specialty tests, lint and typecheck",
+      "Fresh immutable-source H5 build; trusted-input five levels, stars, exact reward/obstacle branches",
+      "Audit revive, settlement and async boundaries; keep official ads unavailable"
+    ],
+    "observed": [
+      "Node 128/129 passing: stale no-first-level-traffic assertion fails",
+      "lint and typecheck pass on exact head",
+      "new build runtime pending",
+      "Fresh attempt21 naturally completed five safe-detour levels; exact pedestrian collision script failed at new l1-o5 vehicle.",
+      "Node recovery red: old first car leaves 0.97s after pedestrian recovery; moving only new vehicle 118->130 makes >=1.5s check pass.",
+      "Fresh attempt22 exact reward QA failed: 75m new barrier had no mapped reward and capture policy left 140m prize early; 205->225 target handover was late.",
+      "149 Node tests now pass; attempt23 first-level four exact jumped barriers and all four matching golden catches plus three stars PASS; other levels still running.",
+      "Attempt23 completed all five natural levels and all exact prize obstacles; levels1/2/3/5 earned3 stars, level4 only2 (27 fish vs28). Independent reviewer blocked lower HUD occlusion. Both preserved; no thresholds reduced.",
+      "154 Node specialty tests, lint and typecheck PASS. Full root pnpm test: 18 failed files (17 native node:test files miscollected by Vitest; one unknown-waiver-binding assertion), 974/975 assertions pass. Same representative failures reproduced on original 5a5b4fa in isolated baseline checkout; unrelated factory files remain unchanged."
+    ],
+    "evidence": [
+      {
+        "path": "docs/lean-pilot/pelican-fun-v4-20261016/user-report.txt",
+        "sha256": "ae9f11629e2b7415ea3fcdf86afce3ce67b1a11fdf6e3ad39b50d8971f740ec4",
+        "kind": "user-report",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Node, lint, typecheck and new-head CI green",
+    "Fresh Chromium/WebKit normal-input five levels and 3-star paths; no injected completion",
+    "Safe obtainable fish, first teaching, continuous operations and late climax",
+    "No duplicate settlement/reward, stale async callback or second revive; preserve pause/background safety",
+    "No credentials: revive unavailable and free replay works",
+    "Report actual test outcomes separately from human fun and physical-device/platform unknowns"
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-16T03:03:22.435Z"
+}

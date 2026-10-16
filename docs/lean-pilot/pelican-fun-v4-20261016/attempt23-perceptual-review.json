@@ -1,0 +1,59 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/private/tmp/pelican-pr19-20261016/runs/pelican-coast-v2-20261014/workspace",
+  "buildHash": "1efa2ec479237d1bb055bb60bf4db75ebb528bfd518f17cb8fd0544d5e273881",
+  "reviewer": "independent-perceptual-review /root/perceptual_review",
+  "summaryOfIndependentArtifact": true,
+  "status": "BLOCKED",
+  "checks": [
+    {
+      "id": "new-and-original-reward-cues",
+      "status": "PASS",
+      "observation": "Independent reviewer inspected actual 75/140/205/225m approach and exact bonus catch pixels; optional reward and hazard cues are legible.",
+      "evidence": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-23/risk-chromium/level-1-l1-o4-reward-approach.png",
+          "sha256": "f5bd6212c90623fe7d1ac77e2a0db15f177c098f4e996b83c53b848f22bb81c6"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-23/risk-chromium/level-1-l1-o7-golden-bonus-fish-caught.png",
+          "sha256": "222f06a7cd482021b2ae65632a84bfd5595980bebc5bf96c011b0f00596050b2"
+        }
+      ]
+    },
+    {
+      "id": "late-pacing-and-replay",
+      "status": "PASS",
+      "observation": "Amber 最后冲刺 card, actual jump preparation/clearance and terminal three-star replay actions are readable.",
+      "evidence": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-23/risk-chromium/level-1-l1-o3-jump-input.png",
+          "sha256": "804a6404e71cae6470098c274bae4ce86fdb0cff6c44cdc5aa6c31f2ed807375"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-23/risk-chromium/level-1-terminal-settlement.png",
+          "sha256": "1705e336f06a990ade2db38a7b84e36b8ed1fb45b27b56eee3155e044dde9cfc"
+        }
+      ]
+    },
+    {
+      "id": "hud_player_and_road_visibility",
+      "status": "BLOCKED",
+      "observation": "Lower mastery strip crosses the bicycle area; controls cover near road. Keep gate blocked pending new build and independent pixel retest.",
+      "evidence": [
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-23/risk-chromium/level-1-l1-o4-reward-approach.png",
+          "sha256": "f5bd6212c90623fe7d1ac77e2a0db15f177c098f4e996b83c53b848f22bb81c6"
+        },
+        {
+          "path": "runs/pelican-coast-v2-20261014/attempts/attempt-23/risk-chromium/level-1-l1-o7-jump-input.png",
+          "sha256": "9e8a5b60fd538febb279bf655997a305de7755dbe7c30237b0ca14d91408cb41"
+        }
+      ]
+    }
+  ],
+  "remainingGaps": [
+    "Human fun, real devices and live ads NOT_RUN",
+    "Static pixels alone do not prove physics"
+  ]
+}

@@ -1,10 +1,11 @@
 /* global window, document, localStorage, performance */
 import css from './coast.css';
 import { LEVELS, LANES, BOUNDS } from './levels.mjs';
-import { newRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, canRevive, revive, qualityStep, FREE_ROAD_EDGE } from './adventure.mjs';
+import { newRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE } from './adventure.mjs';
+import {createReviveController,reviveAvailable,reviveOfferVisible,terminalDisposition} from './revive-flow.mjs';
 import {upcomingHazards,pathRiskAtPosition} from './safety.mjs';
 import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient,heldSteerDistance} from './feel.mjs';
-import {selectFishCue,fishRoadZ,allStars,nextStarTip,starRequirements,masteryStatus} from './engagement.mjs';
+import {selectFishCue,fishRoadZ,allStars,nextStarTip,starRequirements,masteryStatus,coastBeat} from './engagement.mjs';
 import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound,adAllowed} from './reward-engine.mjs';
 import {requestRewardedVideo} from './reward-adapter.mjs';
 
@@ -73,8 +74,10 @@ export function createCoastAdventure(api) {
   for(const b of route.querySelectorAll('[data-level]'))b.addEventListener('click',()=>{selected=Number(b.dataset.level);routes();});
   route.querySelector('.selected')?.scrollIntoView({block:'nearest'});
  }
- function phase(p){if(p!=='running'){heldSteer=null;heldKeySteer=null;root.classList.remove('co-path-risk');}root.dataset.phase=p;$('modal').hidden=p==='running';$('resume').hidden=p!=='paused';$('start').hidden=p!=='ready';$('route').hidden=p!=='ready';$('progress').hidden=p!=='ready';$('rules').hidden=p!=='ready';$('replay').hidden=!['finished','paused'].includes(p);$('select').hidden=!['finished','paused'].includes(p);$('next').hidden=p!=='finished'||run?.reason!=='complete'||run.level.id>=5;$('ad').hidden=p!=='finished'||canRevive(run);$('revive').hidden=p!=='finished'||!canRevive(run);$('pause').disabled=!run||!['running','paused'].includes(p);$('pause').textContent=p==='paused'?'▶ 继续':'Ⅱ 暂停';if(p!=='running'){$('radar').classList.remove('active');$('radar-label').hidden=true;}$('notice').textContent='';}
+ function phase(p){if(p!=='running'){heldSteer=null;heldKeySteer=null;root.classList.remove('co-path-risk');}root.dataset.phase=p;$('modal').hidden=p==='running';$('resume').hidden=p!=='paused';$('start').hidden=p!=='ready';$('route').hidden=p!=='ready';$('progress').hidden=p!=='ready';$('rules').hidden=p!=='ready';$('replay').hidden=!['finished','paused'].includes(p);$('select').hidden=!['finished','paused'].includes(p);$('next').hidden=p!=='finished'||run?.reason!=='complete'||run.level.id>=5;$('ad').hidden=p!=='finished'||reviveOfferVisible(run);$('revive').hidden=p!=='finished'||!reviveOfferVisible(run);$('pause').disabled=!run||!['running','paused'].includes(p);$('pause').textContent=p==='paused'?'▶ 继续':'Ⅱ 暂停';if(p!=='running'){$('radar').classList.remove('active');$('radar-label').hidden=true;}$('notice').textContent='';}
+ function bankTerminal(){if(!run||run.phase!=='finished'||!settle(save,run))return false;round.score=run.rewardScore;finishRound(round,progress);persist();return true;}
  function begin(id=selected){
+  reviveController.invalidate();bankTerminal();
   selected=id;run=newRun(id);round=startRound(progress,run.level.seconds*1000);eventCursor=0;lastPhase='running';hudLast='';lastRadar='';settledAt=0;cameraReady=false;pausedBySystem=false;
   for(const g of hazards.values())g.visible=false;for(const f of fishes){f.mesh.visible=false;f.active=false;}fishSlots.clear();
   Object.assign(S,{started:true,paused:false,distance:0,lane:0,laneTarget:0,laneV:0,prevLaneV:0,latAcc:0,lean:0,steer:0,yaw:0,crank:0,wheel:0,y:0,vy:0,airborne:false,trick:0,trickT:0,wheelie:0,speed:run.level.speed,fish:0,golden:0,time:0,t:0});
@@ -87,9 +90,9 @@ export function createCoastAdventure(api) {
  }
  function pause(system=false){if(run?.phase!=='running')return;input(run,'pause');S.paused=true;pausedBySystem=system;audio.mute(true);$('heading').textContent=system?'回来啦，继续出发':'沿途歇一歇';$('copy').textContent='已暂停，路程与倒计时都停住了。';phase('paused');persist();}
  function resume(){if(run?.phase!=='paused')return;input(run,'resume');S.paused=false;pausedBySystem=false;audio.mute(!sound);phase('running');}
- function choose(){if(run?.phase==='running')pause();run=null;round=null;S.paused=true;S.started=false;phase('ready');$('heading').innerHTML='鹈鹕<br>海岸冒险';$('title').textContent='鹈鹕海岸冒险';$('copy').textContent='挑战每关三星 · 追逐奖励金鱼，刷新个人纪录。';$('start').textContent='▶ 出发 · '+LEVELS[selected-1].name;routes();}
+ function choose(){if(run?.phase==='running')pause();reviveController.invalidate();bankTerminal();run=null;round=null;S.paused=true;S.started=false;phase('ready');$('heading').innerHTML='鹈鹕<br>海岸冒险';$('title').textContent='鹈鹕海岸冒险';$('copy').textContent='挑战每关三星 · 追逐奖励金鱼，刷新个人纪录。';$('start').textContent='▶ 出发 · '+LEVELS[selected-1].name;routes();}
  function terminal(){
-  const revivable=canRevive(run);if(!revivable){if(!settle(save,run))return;round.score=run.rewardScore;finishRound(round,progress);persist();}S.paused=true;settledAt=now;audio.mute(true);phase('finished');
+  if(terminalDisposition(run,adsAvailable())==='settle'&&!bankTerminal())return;S.paused=true;settledAt=now;audio.mute(true);phase('finished');
   const reasons={vehicle:'撞到汽车了',barrier:'碰到了低矮路障','fish-short':'抵达终点，鱼还没抓够','gold-short':'抵达终点，还缺少金鱼',timeout:'时间到了',complete:'海岸这一站，完成！'};
   $('heading').textContent=run.reason==='complete'?(run.stars===3?'🏆 三星达成！':run.stars===2?'★★ 二星通关！':'★ 成功抵达！'):reasons[run.reason];
   const earned=allStars(save),best=save.best?.[run.level.id-1];
@@ -102,7 +105,7 @@ export function createCoastAdventure(api) {
   }else $('copy').textContent=run.reason==='vehicle'?'🚗 汽车不能跳过。看见红色车道预警后，提前换道。':run.reason==='barrier'?'↟ 跳过去有奖励金鱼，绕开也可以安全前进。':run.reason==='timeout'?'行人碰撞会停车 3 秒，但倒计时继续。留意斑马线。':`🐟 已抓 ${run.count}/${run.level.goal.count} 条 · 金鱼 ${run.gold}/${run.level.goal.gold}。下次沿着发光的鱼走，留意红色危险车道。`;
   $('next').textContent=run.level.id<5?'下一关 · '+LEVELS[run.level.id].name+' →':'海岸已完成';
   if(run.reason==='vehicle'||run.reason==='barrier'){root.classList.add('crashing');$('crash').classList.add('active');rider.rotation.x=0;notice('💥 '+(run.reason==='vehicle'?'撞车了':'没越过路障'),'轻点重开，马上再试','collision');}
-  $('revive').disabled=platform.status!==1;$('revive').textContent=platform.status===1?'▶ 观看完整广告复活一次':'▶ 观看完整广告复活（尚未接入）';$('ad').disabled=false;$('ad').textContent='自愿观看广告 · 额外补给（未接入）';
+  $('revive').disabled=!adsAvailable();$('revive').textContent=adsAvailable()?'▶ 观看完整广告复活一次':'▶ 观看完整广告复活（尚未接入）';$('ad').disabled=false;$('ad').textContent='自愿观看广告 · 额外补给（未接入）';
  }
  $('start').addEventListener('click',()=>begin());$('replay').addEventListener('click',()=>begin(run.level.id));$('next').addEventListener('click',()=>begin(run.level.id+1));$('select').addEventListener('click',choose);$('pause').addEventListener('click',()=>run?.phase==='paused'?resume():pause());$('resume').addEventListener('click',resume);
  
@@ -180,26 +183,27 @@ export function createCoastAdventure(api) {
  function applyRender(){api.configureRender(quality);rainGroup.visible=run?.level.weather==='rain'&&quality.tier>0;}
  $('quality').addEventListener('click',()=>{manualQuality=manualQuality==='balanced'?'sharp':manualQuality==='sharp'?'efficient':'balanced';quality={tier:manualQuality==='sharp'?2:manualQuality==='balanced'?1:0,pr:Math.min(window.devicePixelRatio||1,manualQuality==='efficient'?1.25:1.5)};applyRender();$('quality').textContent='画质 · '+({balanced:'均衡',sharp:'清晰',efficient:'省电'}[manualQuality]);});
  // Platform credentials are never assumed: a missing verified ad slot cannot resurrect a run.
- const platform={status:'PENDING',source:'NOT_RUN',screenOrientation:1};
- let reviveBusy=false;
+ const platform=Object.freeze({status:'PENDING',source:'NOT_RUN',screenOrientation:1});
+ const adsAvailable=()=>reviveAvailable(platform,window.tap);
+ const reviveController=createReviveController({currentRun:()=>run,available:adsAvailable,
+  request:()=>requestRewardedVideo({tap:window.tap,config:platform}),
+  onGranted:()=>{
+   root.classList.remove('crashing');$('crash').classList.remove('active');rider.rotation.x=0;
+   S.paused=true;audio.mute(true);pausedBySystem=true;lastPhase='paused';
+   $('heading').textContent='🛟 准备好了再继续';$('copy').textContent='复活已保留。点击继续后开始 2.5 秒保护，每局限一次。';phase('paused');
+   notice('🛟 已复活 · 点击继续','保护时间将在继续后开始','tutorial');
+  }});
  $('revive').addEventListener('click',async()=>{
-  if(reviveBusy||!canRevive(run))return;
   const attempt=run;
-  if(platform.status!==1){$('notice').textContent='奖励广告尚未接入；可免费重开，当前不会模拟复活。';return;}
-  reviveBusy=true;$('revive').disabled=true;
-  const result=await requestRewardedVideo({tap:window.tap,config:platform});
-  reviveBusy=false;
-  if(run!==attempt||!canRevive(attempt))return;
-  if(result.status!=='completed'){$('revive').disabled=false;$('notice').textContent='广告未完整观看，未消耗复活机会；可重试或直接重开。';return;}
-  if(!revive(attempt))return;
-  root.classList.remove('crashing');$('crash').classList.remove('active');rider.rotation.x=0;
-  S.paused=false;audio.mute(!sound);phase('running');lastPhase='running';
-  notice('🛟 复活成功','2.5 秒保护时间 · 每局限一次','tutorial');
+  if(!adsAvailable())return;
+  $('revive').disabled=true;const result=await reviveController.request();
+  if(run!==attempt||['revived','stale','busy'].includes(result.status))return;
+  $('revive').disabled=!adsAvailable();$('notice').textContent='广告未完整观看，未消耗复活机会；可重试或免费重开。';
  });
  $('ad').addEventListener('click',async()=>{if(!round)return;if(platform.status!==1){$('notice').textContent='TapTap H5 广告尚未接入；当前不播放模拟广告，也不会发放广告奖励。';return;}if(!adAllowed(round,progress,performance.now()-loadedAt)){ $('notice').textContent='暂未满足奖励条件，可以直接重开。';return;}const current=round;$('ad').disabled=true;const result=await requestRewardedVideo({tap:window.tap,config:platform});if(round!==current)return;const rewarded=rewardRound(current,progress,result.status==='completed');persist();$('notice').textContent=rewarded?'额外补给已到账':'广告未完成或加载失败，可直接继续游戏';$('ad').disabled=false;});
  const loadedAt=performance.now();S.paused=true;S.started=false;settings.autopilot=false;settings.timeFlow=false;settings.hour=14;settings.lookMouse=false;settings.showFps=false;settings.bloom=false;
  // An inspection-only surface: no set score, teleport, unlock, or finish helpers.
- window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneTarget:run.laneTarget,laneIndex:run.laneIndex,score:run.score,rewardScore:run.rewardScore??null,streak:run.streak,bestStreak:run.bestStreak,nearMisses:run.nearMisses,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem,revives:run.revives,reviveGrace:run.reviveGrace})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},duskRoadAmbient:duskSafetyLight.intensity,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
+ window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneTarget:run.laneTarget,laneIndex:run.laneIndex,score:run.score,rewardScore:run.rewardScore??null,streak:run.streak,bestStreak:run.bestStreak,nearMisses:run.nearMisses,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem,revives:run.revives,reviveGrace:run.reviveGrace,hits:run.hits,settled:run.settled,reward:{roundId:round?.id,settled:round?.settled,claimed:round?.rewardClaimed,bank:progress.bank,rounds:progress.rounds}})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},duskRoadAmbient:duskSafetyLight.intensity,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
  phase('ready');routes();persist();applyRender();root.dataset.loaded='true';
  document.getElementById('coast-boot')?.remove();
  function beforeRide(dt){
@@ -239,6 +243,9 @@ export function createCoastAdventure(api) {
   if(now>feedbackUntil&&!(run?.stun>0))$('feedback').classList.remove('visible');
  }
  function updateHud(){const remaining=Math.max(0,Math.ceil(run.level.seconds-run.elapsed));
+   const beat=coastBeat(run);root.dataset.beat=beat.id;
+   const beatLabel=beat.icon+' '+beat.label,label=$('distance-box').querySelector('span');
+   if(label.textContent!==beatLabel)label.textContent=beatLabel;
    root.style.setProperty('--co-position',((run.lane+FREE_ROAD_EDGE)/(FREE_ROAD_EDGE*2)*100).toFixed(1)+'%');
    const signature=[Math.floor(run.distance),remaining,run.count,run.gold,run.laneIndex,run.phase].join(':');
   if(signature!==hudLast){hudLast=signature;$('distance').textContent=`${Math.floor(run.distance)} / ${run.level.distance} m`;$('distance-bar').max=run.level.distance;$('distance-bar').value=run.distance;$('fish').textContent=`${run.count} / ${run.level.goal.count} 条`;$('fish-label').textContent=run.level.goal.gold?`🐟 捕鱼 · 🌟 ${run.gold}/${run.level.goal.gold}`:'🐟 捕鱼目标';$('fish-bar').max=run.level.goal.count;$('fish-bar').value=run.count;$('time').textContent=remaining+' 秒';$('fish-box').classList.toggle('done',run.count>=run.level.goal.count&&run.gold>=run.level.goal.gold);$('distance-box').classList.toggle('done',run.distance>=run.level.distance);$('time-box').classList.toggle('urgent',remaining<=12);root.querySelectorAll('.co-lane-indicator i').forEach((n,i)=>n.classList.toggle('on',i===run.laneIndex));}

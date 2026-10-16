@@ -5,12 +5,17 @@ export function readCompactPresentation() {
  return {running:document.querySelector('#coast')?.dataset.phase==='running',buttons,bar:toBox(mastery),font:parseFloat(window.getComputedStyle(mastery).fontSize),
   goalFonts:[...mastery.querySelectorAll('[data-goal]')].map(n=>parseFloat(window.getComputedStyle(n).fontSize)),
   goalBottom:Math.max(...[...document.querySelectorAll('.co-goal')].map(n=>toBox(n).bottom)),radarLabel:toBox(document.querySelector('#co-radar-label')),
-  controlTop:Math.min(...buttons.map(b=>b.y)),bodyWidth:document.documentElement.scrollWidth,canvas:toBox(document.querySelector('canvas'))};
+  gauge:toBox(document.querySelector('.co-lane-indicator')),controlTop:Math.min(...buttons.map(b=>b.y)),bodyWidth:document.documentElement.scrollWidth,canvas:toBox(document.querySelector('canvas'))};
 }
 
 export function compactPresentationPassed(s) {
  return s.running&&s.buttons.length===3&&s.buttons.every(b=>b.width>=54&&b.height>=44&&b.x>=0&&b.right<=320&&b.bottom<=568)&&
   s.font>=12&&s.goalFonts.length===5&&s.goalFonts.every(f=>f>=12)&&s.bar.x>=0&&s.bar.right<=320&&s.bar.y>=s.goalBottom&&s.bar.bottom<=s.radarLabel.y&&s.bodyWidth<=320;
+}
+
+export function portraitMasteryClear(s){
+ return s.bar.y>=s.goalBottom&&s.bar.bottom<=s.radarLabel.y&&(!s.gauge||s.gauge.y>=s.bar.bottom&&s.gauge.bottom<=s.radarLabel.y)&&s.font>=12&&
+  s.goalFonts.length===5&&s.goalFonts.every(font=>font>=12);
 }
 
 export function readRoutePresentation() {

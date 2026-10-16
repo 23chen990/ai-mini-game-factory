@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {URL} from 'node:url';
 import {parse} from 'yaml';
 import {preparedJumpSeen} from './queued-cue-observation.mjs';
-import {compactPresentationPassed,routePresentationPassed} from './qa-presentation.mjs';
+import {compactPresentationPassed,routePresentationPassed,portraitMasteryClear} from './qa-presentation.mjs';
 import {RiskSnapshotValueSchema} from './qa-risk-schema.mjs';
 test('ready-menu snapshots have no running events, while live risk snapshots must retain their actual events',()=>{
  assert.equal(RiskSnapshotValueSchema.safeParse({phase:'ready',save:{unlocked:5,completed:[true,true,true,true,true]}}).success,true);
@@ -22,6 +22,13 @@ test('compact mastery stays in the instrument area with all five readable goals'
  assert.equal(compactPresentationPassed({...good,bar:{...good.bar,y:412,bottom:470}}),false,'Old compact panel hides the rider');
  assert.equal(compactPresentationPassed({...good,bar:{...good.bar,y:110}}),false,'Do not fix rider clipping by hiding primary goals');
  assert.equal(compactPresentationPassed({...good,goalFonts:[12,12,12,12]}),false,'No omitted time or no-hit criterion');
+});
+test('normal portrait mastery belongs between instruments and radar, clear of the bicycle',()=>{
+ const upper={bar:{y:150,bottom:182},goalBottom:142,radarLabel:{y:190},font:12,goalFonts:[12,12,12,12,12]};
+ assert.equal(portraitMasteryClear(upper),true);
+ assert.equal(portraitMasteryClear({...upper,bar:{y:680,bottom:712}}),false,'lower bar masks the native bicycle');
+ assert.equal(portraitMasteryClear({...upper,bar:{y:130,bottom:162}}),false,'must not overlap primary instruments');
+ assert.equal(portraitMasteryClear({...upper,gauge:{y:700,bottom:708}}),false,'position gauge must also stay above the bicycle');
 });
 test('prepared jump evidence requires the exact buffered obstacle and visible cue',()=>{
  const visible={queued:true,buttonVisible:true,feedbackVisible:true,feedback:'↟ 已准备起跳',bufferedJump:'l1-o1'};
@@ -43,7 +50,7 @@ test('dedicated CI builds the pinned pelican and earns five unlocks in both brow
  const workflow=parse(bytes);assert.ok(workflow,'Dedicated pelican CI is missing');
  const job=workflow.jobs['pelican-browser'];assert.deepEqual(job.strategy.matrix.engine,['webkit','chromium']);
  const commands=job.steps.map(s=>s.run??'').join('\n');
- for(const required of ['54adc1fb64155f9dd7c1c90ecae7b8185ac540b8','pelican:test','pelican-v2/prepare.mjs','pelican-v2/build.mjs','pelican-v2/qa.mjs campaign','pelican-v2/experience-qa.mjs'])assert.ok(commands.includes(required),required);
+ for(const required of ['54adc1fb64155f9dd7c1c90ecae7b8185ac540b8','pelican:test','pelican-v2/prepare.mjs','pelican-v2/build.mjs','pelican-v2/qa.mjs campaign','pelican-v2/experience-qa.mjs','pelican-v2/risk-qa.mjs','pelican-v2/v4-qa.mjs','pelican-v2/qa.mjs collisions'])assert.ok(commands.includes(required),required);
  assert.ok(!commands.includes('continue-on-error'));assert.ok(!job['continue-on-error']);
  for(const step of job.steps)assert.ok(!step['continue-on-error'],'Every required Pelican step must propagate failures');
  for(const receipt of ['baseline-receipt.json','repair-state.json'])assert.ok(commands.includes('test ! -e runs/pelican-coast-v2-20261014/'+receipt),'A stale run must fail closed');

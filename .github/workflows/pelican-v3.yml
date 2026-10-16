@@ -1,9 +1,10 @@
-name: Pelican V3 real-game regression
+name: Pelican real-game regression
 on:
   pull_request:
     paths:
       - 'tools/lean-pilot/pelican-v2/**'
       - 'docs/lean-pilot/pelican-feel-v3-20261014/**'
+      - 'docs/lean-pilot/pelican-fun-v4-20261016/**'
       - '.github/workflows/pelican-v3.yml'
       - 'package.json'
 permissions:
@@ -14,7 +15,7 @@ concurrency:
 jobs:
   pelican-browser:
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
@@ -64,6 +65,12 @@ jobs:
         run: xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs campaign
       - name: Real touch swipes, cancel, jump choice and first-minute feedback
         run: xvfb-run -a node tools/lean-pilot/pelican-v2/experience-qa.mjs
+      - name: Five earned three-star routes and every exact jump reward including new V4 barriers
+        run: xvfb-run -a node tools/lean-pilot/pelican-v2/risk-qa.mjs
+      - name: Real V4 deaths, unavailable revive, free replay, pause and save accounting
+        run: xvfb-run -a node tools/lean-pilot/pelican-v2/v4-qa.mjs
+      - name: Legacy collision and jump regressions with legitimate V4 detours
+        run: xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs collisions
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
