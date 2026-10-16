@@ -27,7 +27,6 @@ export const PRESSURE_GATES=Object.freeze({
   [390,'barrier',1],[390,'barrier',2], // left gap, final approach
  ]),
  3:Object.freeze([
-  [155,'van',1],[155,'car',2], // left gap
   [270,'car',0],[270,'van',1], // right gap after 222m legacy choke
   [335,'barrier',1],[335,'car',2], // left gap
   [398,'car',0],[398,'van',1], // right gap
