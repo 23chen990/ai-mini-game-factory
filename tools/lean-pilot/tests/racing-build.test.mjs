@@ -184,3 +184,12 @@ test('stage-scenery pipeline changes only sky/props, never native car or track p
   assert.equal(api.patchCourseSkyAndScenery(result),result);
   assert.throws(()=>api.patchCourseSkyAndScenery('broken stage'),/course-light anchor drifted/);
 });
+
+test('fixed desert monument safety keeps pyramid models away from new racing surfaces',()=>{
+  const input='function egyptProps(ctx) {const track=ctx.track;\nfor (const [x, z, h] of pyramids) { buildPyramid(); }}';
+  const out=api.patchFixedDesertLandmarks(input);
+  assert.match(out,/if \(!isFree\(track, x, z, h \* \.58 \+ 10\)\) continue;/);
+  assert.match(out,/buildPyramid\(\)/,'original sculpture remains when safe');
+  assert.equal(api.patchFixedDesertLandmarks(out),out);
+  assert.throws(()=>api.patchFixedDesertLandmarks('unexpected native geometry'),/landmark placement changed/);
+});
