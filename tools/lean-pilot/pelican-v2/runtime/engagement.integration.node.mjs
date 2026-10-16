@@ -13,7 +13,7 @@ test('all five hand-authored fish placement maps are safe',()=>{
 test('a real jump, not pressing jump anywhere, earns the visible barrier prize',()=>{
  const r=newRun(1);
  r.obstacles=[{id:'b1',kind:'barrier',x:60,lane:1,speed:0,z:0,hit:false,passed:false,triggerAt:null}];
- r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,caught:false}];
+ r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,sourceObstacleId:'b1',caught:false}];
  tick(r,57/r.level.speed);input(r,'jump');tick(r,3);
  assert.notEqual(r.phase,'finished');assert.equal(r.jumpedBarriers,1);
  assert.equal(r.gold,1);assert.equal(r.score,7);assert.equal(r.count,1);
@@ -22,8 +22,20 @@ test('a real jump, not pressing jump anywhere, earns the visible barrier prize',
 test('safe detour is legitimate without winning optional jump prize',()=>{
  const r=newRun(1);
  r.obstacles=[{id:'b1',kind:'barrier',x:60,lane:1,speed:0,z:0,hit:false,passed:false,triggerAt:null}];
- r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,caught:false}];
+ r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,sourceObstacleId:'b1',caught:false}];
  input(r,'left');tick(r,10);assert.notEqual(r.phase,'finished');assert.equal(r.jumpedBarriers,0);assert.equal(r.count,0);
+});
+test('a safe detour forfeits only the jump prize, without pretending a jump or destroying a fish streak',()=>{
+ const r=newRun(1);r.obstacles=[{id:'b1',kind:'barrier',x:60,lane:1,speed:0,z:0,hit:false,passed:false,triggerAt:null}];
+ r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,sourceObstacleId:'b1',caught:false}];
+ r.streak=3;r.bestStreak=3;input(r,'left');tick(r,8.6);
+ assert.equal(r.obstacles[0].passed,true);
+ assert.notEqual(r.obstacles[0].jumped,true);
+ assert.equal(r.fishes[0].forfeited,true,'bonus must disappear after safely bypassing its source barrier');
+ assert.equal(r.streak,3,'choosing the safe route does not penalise existing catches');
+ input(r,'right');tick(r,2);
+ assert.equal(r.count,0);assert.equal(r.gold,0);assert.equal(r.jumpedBarriers,0);
+ assert.ok(!r.events.some(e=>e.type==='fish-caught'&&e.objectId==='prize'));
 });
 test('opening fish teaches fractional steering without faking collection or punishing the first pickup',()=>{
  const [first,second,third]=LEVELS[0].fish.filter(f=>!f.bonus).slice(0,3);
@@ -71,7 +83,7 @@ function driver(dt,level){
 }
 test('all five levels stay finishable at 30, 60, 120 fps with one-star rules',()=>{
  for(const dt of [1/30,1/60,1/120])for(const l of LEVELS){const r=driver(dt,l);
-  assert.equal(r.reason,'complete',`L${l.id}, ${Math.round(1/dt)}Hz: ${r.reason} fish=${r.count} gold=${r.gold}, jump=${r.jumpedBarriers}`);
+  assert.equal(r.reason,'complete',`L${l.id}, ${Math.round(1/dt)}Hz: ${r.reason} fish=${r.count} gold=${r.gold}, jump=${r.jumpedBarriers}, hit=${r.lastCollisionId}, dist=${r.distance.toFixed(1)} lane=${r.lane.toFixed(2)}`);
   assert.equal(r.hits,0);
  }
 });
@@ -125,7 +137,7 @@ test('all five levels have a real safe 3-star jump/fishing path',()=>{
  const jumpDistances=[3.4,3.4,4.2,3.8,4.2];
  for(const l of LEVELS){
   const r=masteryDrive(l,1/120,jumpDistances[l.id-1]);
-  assert.equal(r.reason,'complete','level '+l.id+' ended '+r.reason);
+  assert.equal(r.reason,'complete','level '+l.id+' ended '+r.reason+' hit='+r.lastCollisionId+' dist='+r.distance.toFixed(1)+' lane='+r.lane.toFixed(2));
   assert.equal(r.stars,3,'level '+l.id+' fish='+r.count+' gold='+r.gold+' jumps='+r.jumpedBarriers+' bestStreak='+r.bestStreak+' targetStreak='+starRequirements(l).streak);
   assert.equal(r.hits,0);
   assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.jumped));

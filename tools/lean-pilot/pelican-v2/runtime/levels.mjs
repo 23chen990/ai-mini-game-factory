@@ -13,6 +13,38 @@ const definitions = [
  {id:4,name:'雨中骑行',subtitle:'雨天路滑 · 提前变道，挑战连续两次跳障',mastery:{jumps:2},distance:630,speed:9.2,seconds:88,goal:{count:20,gold:2},hour:16.4,weather:'rain',reward:38,rows:[[100,'car',1],[162,'pedestrian',2],[225,'van',0],[225,'barrier',1],[294,'car',2],[350,'barrier',1],[410,'car',0],[410,'van',2],[478,'pedestrian',0],[536,'van',1],[593,'barrier',2]]},
  {id:5,name:'夜间赶海',subtitle:'夜间赶海 · 提前预判，追逐稀有金鱼',mastery:{jumps:2},distance:720,speed:9.6,seconds:95,goal:{count:24,gold:3},hour:18.38,weather:'dusk',reward:50,rows:[[95,'car',1],[151,'pedestrian',0],[210,'van',2],[210,'barrier',1],[276,'car',0],[334,'barrier',2],[396,'van',1],[454,'pedestrian',2],[516,'car',0],[516,'van',1],[584,'barrier',0],[644,'car',2],[694,'pedestrian',0]]},
 ];
+// V5 authored pressure gates: a visibly open escape lane at every two-lane
+// squeeze. Existing obstacle IDs stay stable because these rows are appended,
+// not inserted into the legacy encounter arrays. There is no adaptive difficulty,
+// hidden targeting or unavoidable three-lane wall; successful anticipation wins.
+// Placement is checked by validateLevel, deterministic core routes and browser QA.
+export const PRESSURE_GATES=Object.freeze({
+ 2:Object.freeze([
+  [112,'barrier',1],[168,'barrier',2],
+  [198,'barrier',1],[198,'barrier',2], // left gap
+  [282,'barrier',0],[282,'barrier',1], // right gap
+  [331,'barrier',0],[331,'barrier',2], // centre gap
+  [390,'barrier',1],[390,'barrier',2], // left gap, final approach
+ ]),
+ 3:Object.freeze([
+  [270,'car',0],[270,'van',1], // right gap after 222m legacy choke
+  [335,'van',1],[335,'car',2], // left gap
+  [398,'car',0],[398,'van',1], // right gap
+  [510,'van',1],[510,'car',2], // left gap, final approach
+ ]),
+ 4:Object.freeze([
+  [275,'van',0],[275,'car',2], // centre gap
+  [320,'car',0],[320,'van',2], // centre gap before centre barrier at 350m
+  [444,'car',0],[444,'van',1], // right gap
+  [499,'van',1],[499,'car',2], // left gap
+ ]),
+ 5:Object.freeze([
+  [145,'car',0],[145,'van',2], // centre gap
+  [303,'car',0],[303,'van',1], // right gap
+  [433,'car',0],[433,'van',1], // right gap
+  [558,'van',1],[558,'car',2], // left gap after 516m
+ ]),
+});
 export const BOUNDS = {car:{x:1.5,z:.63},van:{x:1.8,z:.66},pedestrian:{x:.25,z:.25},barrier:{x:.24,z:.59}};
 // Conservative envelopes include approach motion, player body and pedestrian crossing.
 export function unsafeLanes(obstacles,x) { return unsafeFishLanes(obstacles,x); }
@@ -25,7 +57,7 @@ const FISH_PATTERNS = [
  [1,2,0,2,0,1,0,2], // dusk
 ];
 export const LEVELS=definitions.map(d=>{
- const obstacles=d.rows.map(([x,kind,lane],i)=>({id:`l${d.id}-o${i}`,x,kind,lane,speed:kind==='car'?1.7:kind==='van'?1.25:0}));
+ const obstacles=[...d.rows,...(PRESSURE_GATES[d.id]??[])].map(([x,kind,lane],i)=>({id:`l${d.id}-o${i}`,x,kind,lane,speed:kind==='car'?1.7:kind==='van'?1.25:0}));
  const fish=[];let lastLane=1;const pattern=FISH_PATTERNS[d.id-1];
  const crossesBlocked=(from,to,bad)=>Array.from({length:Math.abs(from-to)+1},(_,j)=>Math.min(from,to)+j).some(l=>bad.has(l));
  for(let x=15,i=0;x<d.distance-10;x+=16,i++){
@@ -47,6 +79,18 @@ export const LEVELS=definitions.map(d=>{
  if(d.id===1){
   for(const [x,lane,golden] of [[81,1,false],[117,0,false],[194,2,false],[211,1,false],[253,0,true],[284,2,false]]){
    if(!unsafeLanes(obstacles,x).has(lane))fish.push({id:`l1-shoal-${x}`,x,lane,golden,shoal:true});
+  }
+ }
+ // V5 high-risk coast: short fish trains reward riders who commit to an
+ // actual safe collecting route. The repeated catches are physical objects,
+ // not free score or changes to the three-star requirement.
+ if(d.id===5){
+  for(const x of [79,159,239,319,463,639,671,687]){
+   const leader=fish.find(f=>f.x===x);
+   if(!leader)continue;
+   const followed=x+3;
+   if(unsafeLanes(obstacles,followed).has(leader.lane))continue;
+   fish.push({id:`l5-trail-${x}`,x:followed,lane:leader.lane,z:leader.z,golden:false,shoal:true});
   }
  }
  // Optional visible golden fish behind barriers; never required for one-star completion.

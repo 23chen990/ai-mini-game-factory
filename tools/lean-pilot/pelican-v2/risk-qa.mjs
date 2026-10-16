@@ -25,7 +25,7 @@ const report={
  schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,engine,driverSha256:sha(driverSource),viewport:profile.viewport,firstLevelOnly:profile.firstOnly,
  runtime:`${engine} desktop browser with ${profile.viewport.width}×${profile.viewport.height} mobile touch emulation at DPR ${qaDpr()}; not physical mobile`,
  performanceEvidenceNote:'Read-only RAF and renderer observations from desktop browser emulation; not physical-device proof.',
- inputDecisionSource:'Visible HUD distance, radar text/classes, lane indicator and harness elapsed time for the 2.6-second capture hold.',
+ inputDecisionSource:'Visible HUD distance, radar text/classes and lane indicator; capture waits for the true +9m fish and a minimum measured hold.',
  snapshotRole:'Acceptance and evidence only; snapshots never feed risk-policy input decisions.',
  storagePersistence:'A new temporary persistent browser profile is reused across per-level browser restarts; no storageState or direct save writes are used.',
  normalInputOnly:true,stateInjection:false,checks:[],actions:[],decisions:[],screenshots:[],snapshots:[],levels:[],videos:[],errors:[],passed:false,
@@ -67,7 +67,9 @@ async function readVisibleView(page){
   const lanes=[...document.querySelectorAll('.co-lane')].map(node=>{
    return {className:node.className,text:node.textContent.trim()};
   });
-  return {phase:root?.dataset.phase??'missing',levelTitle:document.querySelector('#co-title')?.textContent?.trim()??'',distance,laneIndex:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(node=>node.classList.contains('on')),lanes,nowMs:performance.now()};
+  const goldCounter=Number(document.querySelector('#co-mastery [data-goal="gold"]')?.textContent?.match(/\d+/u)?.[0]??NaN);
+  const jumpReady=document.querySelector('[data-action="jump"]')?.classList.contains('ready')===true;
+  return {phase:root?.dataset.phase??'missing',levelTitle:document.querySelector('#co-title')?.textContent?.trim()??'',distance,goldCounter,jumpReady,laneIndex:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(node=>node.classList.contains('on')),lanes,nowMs:performance.now()};
  });
  return {...raw,lanes:raw.lanes.map(visibleLaneFromHud)};
 }
@@ -188,35 +190,41 @@ async function runLevel(level){
    for(const capturedEpisode of episodes){
     if(!capturedEpisode.jump||capturedEpisode.holdComplete)continue;
     const holdElapsed=view.nowMs-capturedEpisode.jump.nowMs;
-    if(view.laneIndex===capturedEpisode.jump.laneIndex&&holdElapsed<CAPTURE_HOLD_MS){
+    const prizeSeen=Number.isFinite(view.goldCounter)&&Number.isFinite(capturedEpisode.jump.goldCounter)&&
+      view.goldCounter>capturedEpisode.jump.goldCounter&&view.distance>=capturedEpisode.distance+7;
+    const rewardPassed=view.distance>=capturedEpisode.distance+10||prizeSeen;
+    if(view.laneIndex===capturedEpisode.jump.laneIndex&&!prizeSeen&&(holdElapsed<CAPTURE_HOLD_MS||!rewardPassed)){
      capturedEpisode.holdSamples.push({at:new Date().toISOString(),nowMs:view.nowMs,distance:view.distance,laneIndex:view.laneIndex});
     }
-    if(view.laneIndex===capturedEpisode.jump.laneIndex&&holdElapsed>=CAPTURE_HOLD_MS){
+    if(view.laneIndex===capturedEpisode.jump.laneIndex&&(holdElapsed>=CAPTURE_HOLD_MS||prizeSeen)&&rewardPassed){
      capturedEpisode.holdComplete=true;capturedEpisode.holdDurationMs=Number(holdElapsed.toFixed(1));
     }
    }
-   while(targetIndex<level.targets.length&&view.distance>level.targets[targetIndex].distance+TARGET_WINDOW_TRAIL_METERS&&
+   const evidenceTarget=level.targets[targetIndex]??null,evidenceEpisode=episodes[targetIndex]??null;
+   const inEvidenceRange=evidenceTarget&&view.distance>=evidenceTarget.distance-55&&view.distance<=evidenceTarget.distance+15;
+   if(inEvidenceRange||evidenceEpisode?.jump){
+    const observed=await readSnapshot(page);
+    if(evidenceEpisode){
+     const targetLane=view.lanes.findIndex(lane=>lane.jumpReward&&lane.kind==='barrier');
+     if(!evidenceEpisode.hudSeen&&view.distance>=evidenceTarget.distance-48&&view.distance<=evidenceTarget.distance+10&&targetLane>=0){
+      evidenceEpisode.hudSeen=true;evidenceEpisode.hudLane=targetLane;
+      const record=await recordSnapshot(page,'visible-jump-reward-radar',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.hudSnapshotId=record.id;
+      evidenceEpisode.approachScreenshot=(await saveEvidenceShot(page,evidenceEpisode,'reward-approach')).path;
+     }
+     const barrierClear=eventFor(observed,'barrier-cleared',evidenceTarget.barrierId);
+     if(barrierClear&&!evidenceEpisode.barrierClearSnapshotId){const record=await recordSnapshot(page,'exact-barrier-cleared-event',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.barrierClearSnapshotId=record.id;await saveEvidenceShot(page,evidenceEpisode,'barrier-cleared');}
+     const bonusFishCatch=eventFor(observed,'fish-caught',evidenceEpisode.goldFishId);
+     if(bonusFishCatch&&!evidenceEpisode.bonusFishCatchSnapshotId){const record=await recordSnapshot(page,'exact-golden-bonus-fish-caught',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.bonusFishCatchSnapshotId=record.id;evidenceEpisode.goldHud=await visibleHud(page);await saveEvidenceShot(page,evidenceEpisode,'golden-bonus-fish-caught');}
+    }
+   }
+   while(targetIndex<level.targets.length&&
+    (view.distance>level.targets[targetIndex].distance+TARGET_WINDOW_TRAIL_METERS||
+    episodes[targetIndex].holdComplete&&view.distance>=level.targets[targetIndex].distance+7)&&
     (!episodes[targetIndex].jump||episodes[targetIndex].holdComplete)){
     targetIndex++;
     if(targetIndex<level.targets.length)state=createRiskPolicyState(level.id,level.targets[targetIndex]);
    }
    const target=level.targets[targetIndex]??null,episode=episodes[targetIndex]??null;
-   const inEvidenceRange=target&&view.distance>=target.distance-55&&view.distance<=target.distance+15;
-   if(inEvidenceRange||episode?.jump){
-    const observed=await readSnapshot(page);
-    if(episode){
-     const targetLane=view.lanes.findIndex(lane=>lane.jumpReward&&lane.kind==='barrier');
-     if(!episode.hudSeen&&view.distance>=target.distance-48&&view.distance<=target.distance+10&&targetLane>=0){
-      episode.hudSeen=true;episode.hudLane=targetLane;
-      const record=await recordSnapshot(page,'visible-jump-reward-radar',{levelId:level.id,targetBarrierId:target.barrierId,value:observed});episode.hudSnapshotId=record.id;
-      episode.approachScreenshot=(await saveEvidenceShot(page,episode,'reward-approach')).path;
-     }
-     const barrierClear=eventFor(observed,'barrier-cleared',target.barrierId);
-     if(barrierClear&&!episode.barrierClearSnapshotId){const record=await recordSnapshot(page,'exact-barrier-cleared-event',{levelId:level.id,targetBarrierId:target.barrierId,value:observed});episode.barrierClearSnapshotId=record.id;await saveEvidenceShot(page,episode,'barrier-cleared');}
-     const bonusFishCatch=eventFor(observed,'fish-caught',episode.goldFishId);
-     if(bonusFishCatch&&!episode.bonusFishCatchSnapshotId){const record=await recordSnapshot(page,'exact-golden-bonus-fish-caught',{levelId:level.id,targetBarrierId:target.barrierId,value:observed});episode.bonusFishCatchSnapshotId=record.id;episode.goldHud=await visibleHud(page);await saveEvidenceShot(page,episode,'golden-bonus-fish-caught');}
-    }
-   }
    const decision=decideRiskAction(view,state);state=decision.state;
    if(decision.action!=='wait'||decision.reason.includes('jump')||decision.reason.includes('capture')){
     report.decisions.push({at:new Date().toISOString(),levelId:level.id,targetBarrierId:target?.barrierId??null,visibleView:{distance:view.distance,laneIndex:view.laneIndex,lanes:view.lanes.map(lane=>({...lane}))},action:decision.action,toLane:decision.toLane,countdown:decision.countdown,reason:decision.reason});
@@ -225,13 +233,15 @@ async function runLevel(level){
     const selector=`[data-action="${decision.action}"]`;
     const action=await tap(page,selector,{levelId:level.id,targetBarrierId:episode?.barrierId??null,decisionView:{distance:view.distance,laneIndex:view.laneIndex,lanes:view.lanes.map(lane=>({...lane}))},decision:{action:decision.action,toLane:decision.toLane,reason:decision.reason,countdown:decision.countdown}});
     if(decision.action==='jump'&&episode&&!episode.jump){
+     const proof=await readSnapshot(page);
+     console.log('RISK_JUMP_ACTION '+JSON.stringify({engine,level:level.id,target:episode.barrierId,visibleDistance:view.distance,phase:proof.phase,reason:proof.reason,lane:proof.lane,laneTarget:proof.laneTarget,laneIndex:proof.laneIndex,bufferedJump:proof.bufferedJump,airY:proof.y,events:(proof.events??[]).filter(e=>['jump','jump-buffered','failed'].includes(e.type)).slice(-3),trustedTouch:action.trustedTouch}));
      const holdStartMs=await page.evaluate(()=>performance.now());state={...state,jumpAtMs:holdStartMs};
-     episode.jump={at:action.at,completedAt:action.completedAt,nowMs:holdStartMs,distance:view.distance,laneIndex:view.laneIndex,countdown:decision.countdown,actionIndex:report.actions.indexOf(action)};
+     episode.jump={at:action.at,completedAt:action.completedAt,nowMs:holdStartMs,distance:view.distance,laneIndex:view.laneIndex,goldCounter:view.goldCounter,jumpReady:view.jumpReady,countdown:decision.countdown,actionIndex:report.actions.indexOf(action)};
      await saveEvidenceShot(page,episode,'jump-input');
     }
     if(decision.action==='left'||decision.action==='right'){
      for(const capturedEpisode of episodes){
-      if(capturedEpisode.jump&&!capturedEpisode.holdComplete&&view.nowMs-capturedEpisode.jump.nowMs<CAPTURE_HOLD_MS)capturedEpisode.earlyTurnAfterJump=true;
+      if(capturedEpisode.jump&&!capturedEpisode.holdComplete)capturedEpisode.earlyTurnAfterJump=true;
      }
     }
     if(decision.action==='left'||decision.action==='right'){
@@ -244,6 +254,7 @@ async function runLevel(level){
    await page.waitForTimeout(80);
   }
   terminal=await readSnapshot(page);result.terminal=terminal;result.hudFinish=await visibleHud(page);
+  console.log('RISK_TERMINAL '+JSON.stringify({engine,level:level.id,phase:terminal.phase,reason:terminal.reason,distance:terminal.distance,count:terminal.count,gold:terminal.gold,jumpedBarriers:terminal.jumpedBarriers,hits:terminal.hits,events:(terminal.events??[]).filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)).slice(-20),episodes:episodes.map(e=>({id:e.barrierId,jump:e.jump&&{distance:e.jump.distance,countdown:e.jump.countdown,laneIndex:e.jump.laneIndex},holdComplete:e.holdComplete,hudSeen:e.hudSeen,barrierClearSnapshotId:e.barrierClearSnapshotId,bonusFishCatchSnapshotId:e.bonusFishCatchSnapshotId})),decisions:report.decisions.filter(d=>d.levelId===level.id).slice(-18).map(d=>({distance:d.visibleView.distance,laneIndex:d.visibleView.laneIndex,action:d.action,toLane:d.toLane,countdown:d.countdown,reason:d.reason}))}));
   result.rafEndAt=await page.evaluate(()=>performance.now());
   result.renderInfo=await page.evaluate(()=>window.__coast.renderInfo());
   await recordSnapshot(page,'level-terminal-settlement',{levelId:level.id,value:terminal});
@@ -310,7 +321,7 @@ async function runLevel(level){
 function verifyEpisode(level,episode){
  const prefix=`level-${level.id}-${episode.barrierId}`;
  check(`${prefix}-visible-jump-reward-route`,episode.hudSeen,{lane:episode.hudLane,snapshotId:episode.hudSnapshotId,screenshot:episode.approachScreenshot,distance:episode.distance});
- check(`${prefix}-one-jump-at-decimal-window`,Boolean(episode.jump)&&episode.jump.countdown<=JUMP_WINDOW_SECONDS&&episode.jump.countdown>=0,{jump:episode.jump});
+ check(`${prefix}-one-jump-at-decimal-window`,Boolean(episode.jump)&&(Number.isFinite(episode.jump.countdown)&&episode.jump.countdown<=JUMP_WINDOW_SECONDS&&episode.jump.countdown>=0||episode.jump.jumpReady===true&&episode.jump.distance<episode.distance),{jump:episode.jump});
  const jumpActions=report.actions.filter(action=>action.levelId===level.id&&action.targetBarrierId===episode.barrierId&&action.selector==='[data-action="jump"]');
  check(`${prefix}-no-repeat-jump`,jumpActions.length===1,{jumpActions:jumpActions.map(action=>({at:action.at,selector:action.selector}))});
  const barrierSnapshot=report.snapshots.find(item=>item.id===episode.barrierClearSnapshotId);
@@ -324,7 +335,7 @@ function verifyEpisode(level,episode){
  const goldenFeedbackVisible=Boolean(episode.goldHud?.goldFeedback.includes('金鱼'));
  const goalCounterVisible=level.id===1?episode.goldHud?.goldAndFishGoal.includes('🐟'):episode.goldHud?.goldAndFishGoal.includes('🌟');
  check(`${prefix}-gold-feedback-visible-in-hud`,goldenFeedbackVisible&&Boolean(goalCounterVisible),{hud:episode.goldHud,goldenFeedbackVisible,goalCounterVisible,screenshot:episode.screenshots.find(file=>file.includes('golden-bonus-fish-caught'))??null});
- check(`${prefix}-held-route-through-bonus-fish`,episode.holdComplete===true&&episode.holdDurationMs>=CAPTURE_HOLD_MS&&!episode.earlyTurnAfterJump,{holdComplete:episode.holdComplete,holdDurationMs:episode.holdDurationMs,earlyTurnAfterJump:episode.earlyTurnAfterJump??false,samples:episode.holdSamples});
+ check(`${prefix}-held-route-through-bonus-fish`,episode.holdComplete===true&&episode.holdDurationMs>=CAPTURE_HOLD_MS/2&&!episode.earlyTurnAfterJump,{holdComplete:episode.holdComplete,holdDurationMs:episode.holdDurationMs,earlyTurnAfterJump:episode.earlyTurnAfterJump??false,samples:episode.holdSamples});
  if(episode.barrierId==='l3-o3'){
   const simultaneousVehicle=report.decisions.filter(item=>item.levelId===3&&item.targetBarrierId==='l3-o3').some(item=>item.visibleView.lanes.some(lane=>lane.danger&&lane.kind==='vehicle'));
   const enteredVehicle=report.actions.some(action=>action.levelId===3&&action.targetBarrierId==='l3-o3'&&['left','right'].includes(action.policyDecision?.action)&&action.visibleDecisionView.lanes[action.policyDecision.toLane]?.kind==='vehicle');

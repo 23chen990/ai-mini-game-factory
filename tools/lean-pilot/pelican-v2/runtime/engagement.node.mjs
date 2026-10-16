@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { makeBarrierPrizes, fishPoints, starRequirements, rateStars, nextStarTip, normalizeBest, updateBest, allStars } from './engagement.mjs';
+import { makeBarrierPrizes, fishPoints, earnedPrizePrecedesRisk, starRequirements, rateStars, nextStarTip, normalizeBest, updateBest, allStars } from './engagement.mjs';
 const level = { id: 1, distance: 300, seconds: 55, goal: {count: 8, gold: 0}, mastery: {jumps: 1}};
 const run = overrides => ({level,reason:'complete',hits:0,count:12,gold:2,jumpedBarriers:1,bestStreak:8,elapsed:40,score:20,rewardScore:35,...overrides});
 test('prize is real, visible and behind a jumpable obstacle, never at obstacle center',()=>{
@@ -8,6 +8,16 @@ test('prize is real, visible and behind a jumpable obstacle, never at obstacle c
  const prizes=makeBarrierPrizes(1,obstacles,300);
  assert.equal(prizes.length,1);assert.equal(prizes[0].x,234);assert.equal(prizes[0].lane,1);
  assert.equal(prizes[0].golden,true);assert.equal(prizes[0].bonus,true);assert.equal(fishPoints(prizes[0]),7);
+});
+test('a genuinely earned gold prize outranks distant traffic but never hides an imminent collision',()=>{
+ const barrier={id:'b',kind:'barrier',lane:1,jumped:true,passed:true};
+ const run={speed:7.5,distance:142,obstacles:[barrier]};
+ const prize={id:'reward',x:149,lane:1,bonus:true,sourceObstacleId:'b'};
+ assert.equal(earnedPrizePrecedesRisk(run,prize,{seconds:4.1}),true);
+ assert.equal(earnedPrizePrecedesRisk(run,prize,{seconds:1.2}),false);
+ assert.equal(earnedPrizePrecedesRisk(run,{...prize,bonus:false},{seconds:4.1}),false);
+ assert.equal(earnedPrizePrecedesRisk({...run,obstacles:[{...barrier,jumped:false}]},prize,{seconds:4.1}),false);
+ assert.equal(earnedPrizePrecedesRisk({...run,distance:150},prize,{seconds:4.1}),false);
 });
 test('no prize attached to a blocked path or beyond finish',()=>{
  const obstacles=[{id:'b1',kind:'barrier',x:225,lane:1},{id:'v',kind:'van',x:233,lane:1},{id:'b2',kind:'barrier',x:296,lane:2}];

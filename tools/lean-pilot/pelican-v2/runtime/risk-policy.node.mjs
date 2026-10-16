@@ -21,25 +21,74 @@ test('a reward route never enters the adjacent simultaneous fatal van lane',()=>
  assert.equal(result.action,'wait');
 });
 
+test('two-lane reward approach starts before the late double-tap trap',()=>{
+ const target={barrierId:'l1-o4',distance:75};
+ const reward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟3.6s'});
+ const viewTwo=view({level:1,distance:48,laneIndex:2,lanes:[reward,lane(),lane()]});
+ const step=decide(viewTwo,policy.createRiskPolicyState(1,target));
+ assert.equal(step.action,'left');assert.equal(step.toLane,1);
+ const oneAway=decide({...viewTwo,laneIndex:1,lanes:[{...reward,seconds:2.65},lane(),lane()]},step.state);
+ assert.equal(oneAway.action,'left');assert.equal(oneAway.toLane,0);
+ const stillFar=decide({...viewTwo,lanes:[{...reward,seconds:4.3},lane(),lane()]},policy.createRiskPolicyState(1,target));
+ assert.equal(stillFar.action,'wait');
+});
+test('visible gold increase after a true +9m jump prize releases the next challenge on time',()=>{
+ const target={barrierId:'l1-o7',distance:205};
+ const early=view({level:1,distance:200,laneIndex:0,nowMs:1000,goldCounter:2,lanes:[lane({danger:true,jumpReward:true,kind:'barrier',seconds:1.0}),lane(),lane()]});
+ const jump=decide(early,policy.createRiskPolicyState(1,target));
+ assert.equal(jump.action,'jump');assert.equal(jump.state.goldAtJump,2);
+ const withGold=decide({...early,nowMs:1000+policy.CAPTURE_HOLD_MS-180,distance:213,goldCounter:3,lanes:[lane(),lane(),lane()]},jump.state);
+ assert.notEqual(withGold.reason,'capture-hold');
+ assert.equal(withGold.state.stage,'post-capture');
+ const noGold=decide({...early,nowMs:1000+policy.CAPTURE_HOLD_MS-180,distance:213,goldCounter:2,lanes:[lane(),lane(),lane()]},jump.state);
+ assert.equal(noGold.reason,'capture-hold','mere proximity is not evidence of earned gold');
+});
+test('a visible READY jump control is a valid fallback when the radar prize cue has changed',()=>{
+ const target={barrierId:'l1-o3',distance:225};
+ const s=policy.createRiskPolicyState(1,target);
+ const confirmed={...s,committedRewardLane:1};
+ const viewReady=view({level:1,distance:217,laneIndex:1,jumpReady:true,goldCounter:4,lanes:[lane({fish:true}),lane(),lane()]});
+ const a=decide(viewReady,confirmed);
+ assert.equal(a.action,'jump');assert.equal(a.reason,'visible-jump-button-ready');
+ assert.equal(a.state.goldAtJump,4);assert.equal(a.state.stage,'capture');
+ const tooLate=decide({...viewReady,distance:225},confirmed);
+ assert.notEqual(tooLate.action,'jump');
+});
+test('a real visible jump reward establishes a stable target through transient ordinary fish HUD cues',()=>{
+ const target={barrierId:'l1-o4',distance:75};
+ const state=policy.createRiskPolicyState(1,target);
+ const radar=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟3.0s'});
+ const initial=decide(view({level:1,distance:53,laneIndex:2,lanes:[radar,lane(),lane()]}),state);
+ assert.equal(initial.action,'left');assert.equal(initial.toLane,1);assert.equal(initial.state.committedRewardLane,0);
+ const transient=decide(view({level:1,distance:58,laneIndex:1,lanes:[lane(),lane(),lane({fish:true})]}),initial.state);
+ assert.equal(transient.action,'left');assert.equal(transient.toLane,0);
+ assert.equal(transient.reason,'continue-confirmed-jump-approach');
+ const unsafe=decide(view({level:1,distance:59,laneIndex:1,lanes:[lane({danger:true,kind:'vehicle',seconds:1}),lane(),lane({fish:true})]}),initial.state);
+ assert.equal(unsafe.action,'wait','never run into a visible vehicle despite the earlier reward commitment');
+});
 test('the policy acts in the early buffered jump window',()=>{
  const s=newState(),earlyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.3s'});
  const lanes=[lane(),earlyReward,lane()];
  const early=decide(view({distance:221,lanes}),s);
- assert.notEqual(early.action,'jump');
+ assert.equal(early.action,'jump','1.3 seconds is an earned buffered input, not a last-frame reaction');
  const readyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.1s'});
  assert.equal(readyReward.seconds,1.1);
- const ready=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),early.state);
+ const holding=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),early.state);
+ assert.equal(holding.action,'wait','one target cannot trigger a second input while the first buffered jump is armed');
+ const ready=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),newState());
  assert.equal(ready.action,'jump');
 });
 
 test('buffered jump holds the reward lane until the bonus fish can be caught',()=>{
- assert.ok(policy.CAPTURE_HOLD_MS>=2500);
+ assert.ok(policy.CAPTURE_HOLD_MS>=1000&&policy.CAPTURE_HOLD_MS<=1800,'hold through physical pickup but leave time for the next jump');
  const s=newState(),jumped=decide(view({distance:221,lanes:[lane(),lane({danger:true,jumpReward:true,kind:'barrier',seconds:.4}),lane()]}),s);
  assert.equal(jumped.action,'jump');
  const holding=decide(view({distance:224,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS-1,lanes:[lane({fish:true}),lane(),lane()]}),jumped.state);
  assert.equal(holding.action,'wait');
  assert.equal(holding.state.stage,'capture');
- const released=decide(view({distance:225,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS,lanes:[lane({fish:true}),lane(),lane()]}),holding.state);
+ const tooEarly=decide(view({distance:225,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS+100,lanes:[lane({fish:true}),lane(),lane()]}),holding.state);
+ assert.equal(tooEarly.action,'wait','never abandon a buffered jump before physically passing its +9m gold');
+ const released=decide(view({distance:233,laneIndex:1,nowMs:1000+policy.CAPTURE_HOLD_MS+300,lanes:[lane({fish:true}),lane(),lane()]}),tooEarly.state);
  assert.equal(released.state.stage,'post-capture');
 });
 

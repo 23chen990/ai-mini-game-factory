@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { LEVELS, LANES, BOUNDS, makeLevel, validateLevel } from './runtime/levels.mjs';
 import {brandPelicanBoot} from './boot.mjs';
-import { newRun, input, advance, sweptHit, newSave, loadSave, settle, cameraPose, qualityStep } from './runtime/adventure.mjs';
+import { newRun, input, steerTo, advance, sweptHit, newSave, loadSave, settle, cameraPose, qualityStep } from './runtime/adventure.mjs';
 
 const tick=(r,seconds)=>{for(let t=0;t<seconds;t+=1/120)advance(r,1/120);};
 test('five distinct safe courses: first-level traffic follows teaching; second level focuses on pedestrians',()=>{
@@ -30,6 +30,18 @@ test('one tap nudges a fractional road position and pause rejects steering',()=>
  input(r,'resume');tick(r,.3);assert.ok(r.distance>d);
 });
 
+test('a buffered jump respects the target lane while physical steering is still settling',()=>{
+ const r=newRun(1);
+ r.distance=132;r.lane=-1.12;r.laneTarget=0;r.laneIndex=1;
+ input(r,'jump');
+ assert.equal(r.bufferedJump,'l1-o1','early jump must queue for the selected barrier rather than fire while the rider is drifting');
+ assert.equal(r.vy,0);
+ advance(r,.8);
+ assert.ok(r.events.some(e=>e.type==='jump'&&e.objectId==='l1-o1'&&e.buffered===true));
+ const cancelled=newRun(1);cancelled.distance=132;cancelled.lane=-1.12;cancelled.laneTarget=0;cancelled.laneIndex=1;
+ input(cancelled,'jump');steerTo(cancelled,1.7);
+ assert.equal(cancelled.bufferedJump,null,'leaving the reward lane must cancel the queued jump');
+});
 test('swept collision detects high speed tunnelling and rejects an adjacent lane',()=>{
  assert.equal(sweptHit({x:-12,z:0},{x:12,z:0},1,.7),true);
  assert.equal(sweptHit({x:-12,z:1.4},{x:12,z:1.4},1,.7),false);
@@ -67,7 +79,7 @@ test('authored courses have a no-hit path meeting distance and fish/type goals a
     else if(fish&&!blocked(fish.lane))want=fish.lane;
     if(want!==r.laneIndex)input(r,want<r.laneIndex?'left':'right');
    }advance(r,dt);
-  }assert.equal(r.reason,'complete',`level ${level.id} at ${dt}: ${r.reason}`);assert.equal(r.hits,0);}
+  }assert.equal(r.reason,'complete',`level ${level.id} at ${dt}: ${r.reason}; collision=${r.lastCollisionId} dist=${r.distance.toFixed(1)} lane=${r.lane.toFixed(2)}`);assert.equal(r.hits,0);}
 });
 test('camera tracks forward distance in a floating world, ignores jump height and follows lane gently',()=>{
  const a=cameraPose(0,390/844),b=cameraPose(1.7,390/844);

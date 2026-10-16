@@ -46,7 +46,7 @@ export function input(r,action) {
   const next=r.obstacles.filter(o=>o.kind==='barrier'&&!o.hit&&!o.passed&&
     Math.abs(LANES[o.lane]-r.laneTarget)<.72&&o.x>r.distance).sort((a,b)=>a.x-b.x)[0];
   const remaining=next?(next.x-r.distance)/Math.max(r.speed,.01):Infinity;
-  if(next&&remaining<=JUMP_BUFFER_SECONDS&&next.x-r.distance>JUMP_TRIGGER_METERS+.15&&Math.abs(r.lane-LANES[r.laneIndex])<.75){
+  if(next&&remaining<=JUMP_BUFFER_SECONDS&&next.x-r.distance>JUMP_TRIGGER_METERS+.15&&Math.abs(r.laneTarget-LANES[next.lane])<.75){
    r.bufferedJump=next.id;event(r,'jump-buffered',{objectId:next.id});
   }else{r.vy=4.4;event(r,'jump');}
  }
@@ -130,7 +130,13 @@ function step(r,dt){
  }
  // Fish use swept relative coordinates as well. No score is awarded after a terminal collision.
  for(const f of r.fishes){
-  if(f.caught||r.stun>0)continue;
+  if(f.caught||f.forfeited||r.stun>0)continue;
+  if(f.bonus){
+   const source=r.obstacles.find(o=>o.id===f.sourceObstacleId);
+   // A safe detour is valid progress, but it cannot award a jump-only prize.
+   // Forfeit without resetting an ordinary fish streak or giving hidden points.
+   if(!source?.jumped){if(source?.passed)f.forfeited=true;continue;}
+  }
   if(!f.missed&&f.x-r.distance< -2.5){f.missed=true;r.streak=0;}
   if(sweptHit({x:f.x-oldD-.55,z:fishRoadZ(f)-oldZ},{x:f.x-r.distance-.55,z:fishRoadZ(f)-r.lane},.55,.63)&&r.y<.85){
    f.caught=true;r.count++;if(f.golden)r.gold++;

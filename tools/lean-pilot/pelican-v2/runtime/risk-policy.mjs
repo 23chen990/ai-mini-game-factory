@@ -1,5 +1,9 @@
-export const CAPTURE_HOLD_MS = 2600;
-export const JUMP_WINDOW_SECONDS = 1.15;
+// Enough time to physically reach the real +9m fish at the slowest level,
+// without forcing a rider to wait into the next close barrier.
+export const CAPTURE_HOLD_MS = 1200;
+// Match the existing in-game 1.45s jump buffer and ready button, rather
+// than waiting until a software-rendered HUD is only 0.5s from collision.
+export const JUMP_WINDOW_SECONDS = 1.45;
 export const TARGET_WINDOW_LEAD_METERS = 48;
 export const TARGET_WINDOW_TRAIL_METERS = 10;
 
@@ -52,7 +56,7 @@ export function authoredGoldenFishByBarrier(levels){
 export function createRiskPolicyState(levelId,target){
  if(!Number.isInteger(levelId)||levelId<1||levelId>5)throw Error('Unknown risk level '+levelId);
  if(!target||typeof target.barrierId!=='string'||!Number.isFinite(target.distance))throw Error('Risk target requires barrierId and visible distance');
- return {levelId,target:{barrierId:target.barrierId,distance:target.distance},stage:'approach',jumpIssued:false,jumpAtMs:null,lastJumpCountdown:null};
+ return {levelId,target:{barrierId:target.barrierId,distance:target.distance},stage:'approach',jumpIssued:false,jumpAtMs:null,lastJumpCountdown:null,goldAtJump:null,committedRewardLane:null};
 }
 
 function moveOneLane(view,state,wantedLane,reason,allowRewardLane=null){
@@ -89,7 +93,16 @@ export function decideRiskAction(view,state){
    const escape=chooseOrdinaryLane({...view,lanes});
    return moveOneLane({...view,lanes},nextState,escape,'capture-vehicle-escape');
   }
-  if(nowMs-state.jumpAtMs<CAPTURE_HOLD_MS)return decision('wait',nextState,'capture-hold',current);
+  // Keep the rider on the prize lane through the actual +9m fish.
+  // Fixed wall-time holds delay the next jump when consecutive barriers are 20m apart;
+  // require both a minimum verified hold and real HUD progress beyond the fish.
+  // The HUD gold counter is user-visible, unlike hidden model events.
+  // If it rises after clearing the barrier and reaching the +9m prize,
+  // the rider can prepare the next tight turn immediately.
+  const confirmedPrize=Number.isFinite(state.goldAtJump)&&Number.isFinite(view.goldCounter)&&
+   view.goldCounter>state.goldAtJump&&Number.isFinite(view.distance)&&view.distance>=state.target.distance+7;
+  const prizePassed=Number.isFinite(view.distance)&&view.distance>=state.target.distance+10;
+  if(!confirmedPrize&&(nowMs-state.jumpAtMs<CAPTURE_HOLD_MS||!prizePassed))return decision('wait',nextState,'capture-hold',current);
   nextState.stage='post-capture';
  }
 
@@ -99,16 +112,35 @@ export function decideRiskAction(view,state){
   &&view.distance<=target.distance+TARGET_WINDOW_TRAIL_METERS;
  const rewardLane=lanes.findIndex(lane=>lane?.jumpReward===true&&lane.kind==='barrier');
  if(inTargetWindow&&!state.jumpIssued&&rewardLane>=0&&!laneIsVehicle(lanes[rewardLane])&&
-  (current===rewardLane||Number.isFinite(lanes[rewardLane].seconds)&&lanes[rewardLane].seconds<=2)){
+  (current===rewardLane||Number.isFinite(lanes[rewardLane].seconds)&&
+   lanes[rewardLane].seconds<=(Math.abs(current-rewardLane)===2?3.65:2.7))){
   const targetLane=laneIndex(rewardLane),countdown=lanes[targetLane].seconds;
+  // The visible jump reward may disappear behind another short-lived cue.
+  // Keep the already-seen route rather than oscillating back toward safe fish.
+  nextState.committedRewardLane=targetLane;
   if(current!==targetLane)return moveOneLane({...view,lanes},nextState,targetLane,'approach-jump-reward',targetLane);
   if(Number.isFinite(countdown)&&countdown<=JUMP_WINDOW_SECONDS){
    nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;nextState.lastJumpCountdown=countdown;
+   nextState.goldAtJump=Number.isFinite(view.goldCounter)?view.goldCounter:null;
    return decision('jump',nextState,'decimal-jump-window',current,countdown);
   }
   return decision('wait',nextState,'wait-for-decimal-jump-window',current,countdown);
  }
 
+ if(inTargetWindow&&!state.jumpIssued&&Number.isInteger(state.committedRewardLane)){
+  const committed=state.committedRewardLane;
+  if(current!==committed)return moveOneLane({...view,lanes},nextState,committed,'continue-confirmed-jump-approach',committed);
+  // The native button glows READY based on the real nearest low barrier.
+  // Accept this player-visible signal even if the radar icon is momentarily
+  // replaced by an ordinary fish. Never jump after the barrier is passed.
+  if(view.jumpReady===true&&Number.isFinite(view.distance)&&view.distance<target.distance-1){
+   nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;
+   nextState.lastJumpCountdown=null;
+   nextState.goldAtJump=Number.isFinite(view.goldCounter)?view.goldCounter:null;
+   return decision('jump',nextState,'visible-jump-button-ready',current,null);
+  }
+  return decision('wait',nextState,'hold-confirmed-reward-lane',current);
+ }
  const wanted=chooseOrdinaryLane({...view,lanes});
  if(wanted!==current)return moveOneLane({...view,lanes},nextState,wanted,'visible-danger-or-fish');
  return decision('wait',nextState,'hold-safe-lane',current);

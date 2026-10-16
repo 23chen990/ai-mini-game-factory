@@ -53,23 +53,40 @@ try{
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  let jumped=false,prizeFeedbackSeen=false,bonusShot=false,choiceShot=false,goldShot=false,leftWarning=false,rightWarning=false,earnedPrizeCue=false,jumpProgressBefore={gold:Infinity,jumps:Infinity};
+ let escapedBonus=false,escapeLane=null,escapeUntil=-1;
  const end=Date.now()+65000;
  while(Date.now()<end){
-  const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),bonus:n.classList.contains('jump-reward'),kind:n.dataset.kind})),feedback:document.querySelector('#co-feedback strong')?.textContent??'',gold:Number(document.querySelector('[data-goal="gold"]')?.textContent.match(/\d+/u)?.[0]??NaN),jumps:Number(document.querySelector('[data-goal="jump"]')?.textContent.match(/\d+/u)?.[0]??NaN)}));
+  const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),bonus:n.classList.contains('jump-reward'),kind:n.dataset.kind})),feedback:document.querySelector('#co-feedback strong')?.textContent??'',feedbackDetail:document.querySelector('#co-feedback small')?.textContent??'',gold:Number(document.querySelector('[data-goal="gold"]')?.textContent.match(/\d+/u)?.[0]??NaN),jumps:Number(document.querySelector('[data-goal="jump"]')?.textContent.match(/\d+/u)?.[0]??NaN)}));
   if(v.phase==='finished')break;
   if(!choiceShot&&v.lanes.some(l=>l.bonus)){choiceShot=true;check('jump-gold-route-signalled-with-safe-detour',true,v);await shot('jump-choice');}
   if(!goldShot){const firstGold=(await snap()).events.find(e=>e.type==='fish-caught'&&e.golden&&!e.bonus);if(firstGold){goldShot=true;check('first-gold-before-ten-seconds',firstGold.at<10,firstGold);await shot('first-gold');}}
   const seconds=i=>Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99);
-  const risky=i=>v.lanes[i].danger&&seconds(i)<=3;
+  // Moving vehicles close the gap faster than stationary barriers. Treat a
+  // visible car/van as a forbidden route slightly earlier after the jump
+  // bonus is earned; do not make a replay-driving script choose a fatal fish.
+  const risky=i=>v.lanes[i]?.danger&&(seconds(i)<=3||(['car','van'].includes(v.lanes[i].kind)&&seconds(i)<=4));
   let want=v.lane;
   prizeFeedbackSeen ||= earnedJumpRewardVisible(v,jumpProgressBefore);
+  // A successful bonus can be followed by a rapidly approaching car.
+  // The game now gives a *visible* escape warning. Respond through a normal
+  // left/right button rather than staying in the reward lane until collision.
+  const warnedVehicle=v.feedbackDetail.includes('前方来车')||
+   v.lanes[1]?.danger&&['car','van'].includes(v.lanes[1].kind);
+  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&warnedVehicle){
+   const safeSide=[0,2].filter(i=>!risky(i)&&!v.lanes[i].danger);
+   if(safeSide.length){escapedBonus=true;escapeLane=safeSide[0];escapeUntil=v.distance+24;}
+  }
   if(jumped&&!prizeFeedbackSeen&&!earnedPrizeCue&&v.lanes[1].kind==='fish'&&v.lanes[1].text.includes('🌟')){
    const observed=await snap();
    if(observed.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o1'&&e.jumped)&&!observed.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o1')){
     earnedPrizeCue=true;await shot('earned-jump-prize-cue');
    }
   }
-  if(jumped&&!prizeFeedbackSeen){want=1;}
+  if(escapedBonus&&v.distance<escapeUntil){
+   const safe=[escapeLane,0,2,1].filter((i,index,arr)=>Number.isInteger(i)&&arr.indexOf(i)===index&&!risky(i)&&!v.lanes[i].danger);
+   want=safe[0]??v.lane;escapeLane=want;
+  }
+  else if(jumped&&!prizeFeedbackSeen){want=1;}
   else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o1. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
@@ -81,6 +98,7 @@ try{
   await page.waitForTimeout(65);
  }
  await page.locator('#co-modal').waitFor({state:'visible'});const finished=await snap();await shot('earned-three-stars');
+ console.log('EXPERIENCE_FIRST_RUN '+JSON.stringify({engine,reason:finished.reason,distance:finished.distance,count:finished.count,gold:finished.gold,jumpedBarriers:finished.jumpedBarriers,hits:finished.hits,stars:finished.save?.stars?.[0],bestStreak:finished.bestStreak,lastCollisionId:finished.lastCollisionId,recentTouches:report.actions.filter(a=>a.type==='tap'&&a.selector?.startsWith('[data-action')).slice(-14).map(a=>({selector:a.selector,beforeDistance:a.before?.distance,beforeLane:a.before?.lane,afterLane:a.after?.lane,afterPhase:a.after?.phase})),interestingEvents:finished.events.filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)&&(!e.objectId||e.objectId==='l1-o1'||e.objectId==='l1-jump-l1-o1'||e.type==='failed')).slice(-16)}));
  report.presentationSignals=await page.evaluate(()=>window.__qaExperienceSignals);
  earnedPrizeCue ||= earnedPrizeRouteSeen(report.presentationSignals,'l1-o1','l1-jump-l1-o1');
  leftWarning ||= pedestrianWarningSeen(report.presentationSignals,2);
@@ -147,8 +165,8 @@ try{
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
  const safeEnd=Date.now()+50000;
- while(Date.now()<safeEnd){const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish')}))}));if(v.distance>=238||v.phase==='finished')break;const blocked=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=3;let want=v.lane;if(blocked(want)){const safe=[0,1,2].filter(i=>!blocked(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??want;}else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!blocked(i));if(fish>=0)want=fish;}if(want!==v.lane&&!blocked(v.lane)&&blocked(v.lane+Math.sign(want-v.lane)))want=v.lane;if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);await page.waitForTimeout(90);}
-const detour=await snap();await shot('safe-detour');
+ while(Date.now()<safeEnd){const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),kind:n.dataset.kind}))}));if(v.distance>=238||v.phase==='finished')break;const blocked=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=(['car','van'].includes(v.lanes[i].kind)?4.5:3);let want=v.lane;if(blocked(want)){const safe=[0,1,2].filter(i=>!blocked(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??want;}else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!blocked(i));if(fish>=0)want=fish;}if(want!==v.lane&&!blocked(v.lane)&&blocked(v.lane+Math.sign(want-v.lane)))want=v.lane;if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);await page.waitForTimeout(55);}
+const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({phase:detour.phase,reason:detour.reason,distance:detour.distance,events:detour.events?.slice(-12)}));await shot('safe-detour');
  check('safe-detour-does-not-require-jump',detour.phase==='running'&&!detour.events.some(e=>e.type==='jump')&&detour.events.some(e=>e.type==='barrier-cleared'&&!e.jumped),detour);
  await tap('#co-pause');await tap('#co-select');const selected=await page.locator('[data-level="1"]').innerText();const progress=await page.locator('#co-progress').innerText();check('mastery-saved-and-visible-on-route',selected.includes('★★★')&&selected.includes('纪录 '+best.fish+' 鱼')&&progress.includes('3/15'),{selected,progress,best});await shot('saved-mastery');
  // Start another normal replay to verify that a safe turn cancels an armed jump.
