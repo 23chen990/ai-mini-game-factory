@@ -235,6 +235,10 @@ test('elite replay requires a genuine completed mission and never silently enabl
  assert.equal(cfAutoFireEligible({kind:'kills'}),false);
  assert.equal(cfAutoFireEligible({kind:'survive',elite:false}),false);
  assert.equal(cfAutoFireEligible(null),false);
+ assert.match(mobileChallengeCopy({kind:'hits',elite:true}),/自己瞄准并按开火/);
+ assert.doesNotMatch(mobileChallengeCopy({kind:'hits',elite:true}),/自动开火/);
+ assert.match(mobileChallengeCopy({kind:'kills',elite:true}),/精英狙击/);
+ assert.match(mobileChallengeCopy({kind:'survive',elite:true}),/精英生存/);
 });
 
 test('elite enemy pressure is stronger than ordinary while maintaining bounded native behavior',()=>{
