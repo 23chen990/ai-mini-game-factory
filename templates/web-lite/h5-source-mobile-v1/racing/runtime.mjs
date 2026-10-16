@@ -3,7 +3,7 @@ import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemClea
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
 import { WrongWayRecovery } from './recovery.mjs';
-import { RivalPressure, tuneOpponentField, configureRivalTactics } from './rival-pressure.mjs';
+import { RivalPressure, tuneOpponentField, seedCompetitiveField, configureRivalTactics, careerPaceMultiplier } from './rival-pressure.mjs';
 
 export class RacingCareer {
   constructor(storage, legacyBest = {}) {
@@ -59,6 +59,9 @@ export class RacingCareer {
     // every car's corner pace, nitro, items and genuine on-road position.
     // Stage 01, bosses and fragile elimination/item objectives stay protected.
     tuneOpponentField(game.racers,this.stage);
+    // The stronger field is seeded BEFORE racing starts; nobody gets more power
+    // because the player happens to lead. Stage 01 & named bosses stay separate.
+    seedCompetitiveField(game.racers,this.stage);
     configureRivalTactics(game.racers,this.stage);
     if (this.stage.kind === 'overtake') {
       // A visible rival survives beyond the first straight without scripted teleportation.
@@ -80,12 +83,10 @@ export class RacingCareer {
       this.boss = game.racers.find(r => !r.isPlayer) ?? null;
       if (this.boss) {
         this.bossName = this.boss.name;
-        // The reshaped final Aegean route adds 10–12% to native AI lap times,
-        // but native two-key PlayerCar telemetry remains several seconds behind
-        // the 1.58 boss. A genuine finish must remain achievable through cleaner
-        // steering, rather than requiring a perfect zero-contact drive.
-        // A different course can be harder even with a lower numeric AI skill.
-        this.boss.skill = this.stage.id === '16' ? 1.35 :
+        // Last-stage boss gains a fixed pre-race corner skill (1.45 vs 1.35)
+        // after actual playtests reported easy first-place finishes. This is not
+        // a gap-dependent boost, and remains below the harder stage-13 boss.
+        this.boss.skill = this.stage.id === '16' ? 1.45 :
           Math.max(this.boss.skill, 1.58);
         if (this.stage.id === '16') for (const rival of game.racers) {
           if (!rival.isPlayer && rival !== this.boss)
@@ -125,6 +126,15 @@ export class RacingCareer {
   /** Native AI-first 10-second DNF was unfair when races exceed one lap. */
   patchNative(game) {
     if (game.__RACE_CAREER_PATCHED__) return;
+    const nativeRubber = game.rubber.bind(game);
+    game.rubber = rival => {
+      // Native base game penalized a leading AI by up to ~12% using the current
+      // player gap. In career, the opponent keeps its legitimate pre-race pace
+      // regardless of the player's position; no catch-up or leader slowdown.
+      const fixed = careerPaceMultiplier(this.active && game.state === 'race' &&
+        rival && !rival.isPlayer);
+      return fixed ?? nativeRubber(rival);
+    };
     const nativeEnd = game.checkRaceEnd.bind(game);
     game.checkRaceEnd = dt => {
       if (game.firstFinish < 0) game.__RACE_FIRST_FINISH_NOTIFIED__ = false;
