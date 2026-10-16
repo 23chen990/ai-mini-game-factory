@@ -76,49 +76,73 @@ export const TRACK_RESHAPES = Object.freeze({
   },
 });
 
-/** V3.6: sixteen unique physical centreline configurations using four scene biomes.
- * The 12 non-base courses have distinctive edited vertices; this is not yet a
- * fork/junction graph or sixteen independent art environments.
- * Edits are [V3.5 point index, x, z, y]; all start lines and protected anchors
- * remain unchanged. The native Track generates real road meshes from these.
+/**
+ * V3.7: SIXTEEN independently hand-authored course silhouettes.
+ *
+ * The previous V3.6 variants only moved 4-7 points on four shared routes.
+ * These 16 original closed-loop sketches each have their own full geometry,
+ * sector personality and recognisable top-down footprint. Coordinates in
+ * sketches are local x,z,height metres (positive x = initial travel).
+ *
+ * Four biome art systems are still shared; unique road geometry does NOT mean
+ * sixteen licensed or independently modelled environment packs.
+ * No competitor coordinates, branded artwork or renamed copies.
  */
 export const CAREER_COURSE_MAPS = Object.freeze(
   'city egypt city aegean egypt city aegean snow egypt city aegean snow city egypt snow aegean'.split(' '));
-export const CAREER_ROUTE_EDITS = Object.freeze({
-  '03': [[17,423,254,0],[18,371,340,0],[19,293,360,0],[20,220,290,0],[21,148,279,0]],
-  '05': [[9,-133,185,0],[10,-252,274,0],[11,-213,407,0],[12,-81,412,0]],
-  '06': [[7,127,-154,0],[8,173,-80,2],[9,229,-39,6],[10,193,9,8],[11,212,43,5]],
-  '07': [[20,251,118,17],[21,313,175,18],[22,345,243,22],[23,275,325,23],[24,199,318,18]],
-  '09': [[22,353,-64,0],[23,370,-142,0],[24,313,-187,2],[25,327,-238,4],[26,235,-260,2],[27,155,-317,0]],
-  '10': [[12,220,117,3],[13,246,136,1],[14,265,189,0],[15,300,145,0],[16,374,185,0],[17,433,257,0]],
-  '11': [[14,20,17,10],[15,-45,-14,12],[16,-98,30,14],[17,-81,108,14],[18,0,147,15]],
-  '12': [[7,235,-70,4],[8,183,16,10],[9,103,41,16],[10,35,96,19],[11,-29,125,13]],
-  '13': [[18,391,352,0],[19,299,383,0],[20,223,333,0],[21,142,269,0],[22,67,348,0],[23,18,308,0],[24,-21,361,0]],
-  '14': [[12,-73,406,0],[13,-10,397,2],[14,70,407,4],[15,149,355,1],[16,194,327,0],[17,296,260,0]],
-  '15': [[12,-66,207,8],[13,-107,274,9],[14,-54,347,12],[15,38,337,14],[16,101,325,10],[17,155,284,5],[18,175,232,0]],
-  '16': [[25,82,314,17],[26,19,279,22],[27,-32,355,24],[28,-100,266,17],[29,-181,259,12],[30,-283,179,9]],
+export const COURSE_BLUEPRINTS = Object.freeze({
+  '01': ['新城练习环','宽弧入门','NEON START',1,'0,0,0 140,0,0 330,5,0 475,70,0 550,190,0 545,330,0 460,435,0 320,480,0 150,455,0 0,395,0 -85,280,0 -95,140,0'],
+  '02': ['风蚀箭谷','高速跳台','DUNE SPRINT',1,'0,0,0 185,0,0 400,-10,0 565,15,7 650,120,13 660,270,4 610,360,1 490,370,0 420,300,0 370,205,0 290,200,0 230,300,0 120,420,0 -65,430,0 -195,345,0 -210,190,0 -145,70,0'],
+  '03': ['风车立交','双层切线','OVERPASS PINWHEEL',1,'0,0,0 170,-10,0 330,5,0 475,105,2 490,220,7 405,315,11 325,300,7 235,260,2 195,350,0 245,470,0 120,550,0 -45,510,0 -145,380,0 -110,265,0 -5,235,0 55,175,0 -55,125,0 -120,35,0'],
+  '04': ['海鸥湾','海崖连漂','GULLWING COAST',1,'0,0,0 170,-15,2 340,0,5 455,65,8 490,200,13 610,220,18 670,340,21 620,445,19 480,465,15 390,415,13 300,430,17 170,525,18 -5,500,14 -140,405,10 -165,275,7 -80,190,6 50,200,7 115,125,4 -15,85,2'],
+  '05': ['失落神殿','马蹄峡谷近道','TEMPLE HORSESHOE',1,'0,0,0 175,-10,0 340,35,0 490,115,0 595,260,0 590,400,0 500,500,4 360,495,8 300,410,11 305,315,7 210,280,1 120,350,0 55,485,0 -100,470,0 -195,350,0 -200,175,0 -130,45,0'],
+  '06': ['双城回廊','环区穿梭','TWIN DISTRICT',0.76,'0,0,0 185,-5,0 375,0,0 500,80,2 490,215,5 375,310,8 245,320,8 175,245,7 155,155,4 50,140,2 -30,215,0 -80,360,0 -15,480,0 130,530,0 255,505,0 345,435,0 410,480,0 420,615,0 270,695,0 60,670,0 -130,580,0 -235,415,0 -225,230,0 -130,80,0'],
+  '07': ['海崖阶梯','断崖连续下坡','CLIFF STEPS',1,'0,0,0 170,0,1 350,0,3 485,50,5 530,140,8 470,225,13 370,245,17 260,230,20 220,315,22 315,400,23 415,420,22 460,510,20 325,580,17 160,570,14 80,475,13 0,390,11 -125,410,10 -230,340,8 -230,185,5 -140,65,2'],
+  '08': ['雪岭Ω环','雪地双弧','SNOW OMEGA',0.7,'0,0,0 165,-5,0 335,10,2 470,100,7 525,230,11 475,350,15 335,410,17 205,355,14 155,255,11 65,220,8 -60,305,7 -60,460,9 65,570,11 230,595,9 380,585,7 500,520,5 600,405,3 625,240,1 545,65,0 410,-75,0 225,-100,0 35,-75,0 -100,-20,0'],
+  '09': ['仙人掌岭','错峰补时','CACTUS RIDGE',0.86,'0,0,0 170,0,0 340,20,0 440,120,0 450,285,4 525,335,9 630,305,7 740,365,2 745,490,0 660,570,0 540,530,0 440,425,0 335,400,0 290,530,0 135,580,0 -10,510,0 -55,395,0 25,300,0 150,240,0 85,150,0 -45,85,0'],
+  '10': ['霓虹闪电','折返捷径','NEON LIGHTNING',0.86,'0,0,0 190,0,0 370,30,0 495,120,0 440,210,0 320,240,0 265,340,0 330,445,0 490,510,0 535,630,0 420,715,0 250,700,0 105,640,0 -35,540,0 -55,420,0 65,355,0 140,275,0 45,175,0 -105,115,0 -100,10,0'],
+  '11': ['海蛇湾','山腰长S弯','SERPENT BAY',0.91,'0,0,0 180,-10,0 365,20,2 490,95,4 530,200,8 460,275,11 305,270,15 230,370,19 290,490,22 440,535,21 455,645,19 310,695,16 140,670,14 60,590,13 -5,485,11 -120,470,8 -225,360,6 -185,215,3 -65,125,1'],
+  '12': ['冰旋高架','错层冰桥近道','FROST SPIRAL',0.72,'0,0,0 160,-5,0 330,15,0 495,85,4 580,215,9 560,385,14 430,515,18 270,550,21 145,465,18 145,325,14 245,245,10 340,305,8 360,430,6 265,670,5 75,700,4 -95,600,3 -220,430,2 -225,240,1 -130,75,0'],
+  '13': ['皇冠立交','技术近道车神','CROWN INTERCHANGE',0.92,'0,0,0 190,5,0 355,15,0 485,95,0 480,245,0 390,340,5 280,320,10 240,435,13 340,540,9 280,665,3 115,690,0 -20,625,0 -55,515,0 -150,465,0 -265,375,0 -230,225,0 -150,135,0 -40,150,0 45,105,0 -50,40,0'],
+  '14': ['双丘三叉','双波峰测速','TRIDENT DUNES',0.84,'0,0,0 180,-10,0 365,10,0 500,90,0 505,230,0 430,280,0 360,365,0 420,460,5 550,485,11 625,585,7 550,690,2 405,680,0 300,565,0 245,460,0 145,495,0 30,620,0 -120,620,0 -230,500,0 -200,340,0 -100,260,0 -5,160,0 -100,65,0'],
+  '15': ['极地三叶','三连发卡道具','POLAR TRILOBE',0.89,'0,0,0 175,-10,0 355,20,3 445,120,7 430,255,11 350,330,16 260,300,18 235,425,20 340,485,21 340,600,17 215,680,14 75,645,10 10,550,8 -85,615,6 -235,570,4 -290,415,3 -230,285,2 -110,275,1 -80,170,0 -155,65,0'],
+  '16': ['悬崖王冠','王冠山岭决战','CLIFFSIDE CROWN',0.86,'0,0,0 185,-10,0 350,5,2 475,80,6 525,205,10 465,300,15 390,295,18 345,410,20 440,485,22 455,605,24 325,695,24 180,680,21 100,605,18 50,470,14 -60,510,12 -175,485,10 -270,360,8 -250,200,5 -145,105,3 -40,140,2 65,75,1'],
 });
-
+export function careerCourseDetails(id) {
+  const value=COURSE_BLUEPRINTS[id];return value && {
+    title:value[0],feel:value[1],english:value[2],
+    biome:CAREER_COURSE_MAPS[Number(id)-1],
+  };
+}
+const parseLocalRoute = entry => entry.split(' ').map(part => part.split(',').map(Number));
 export function createCareerLayouts(layouts) {
-  const fingerprints = new Set();
-  for (let number = 1; number <= 16; number++) {
-    const id = String(number).padStart(2, '0');
-    const map = CAREER_COURSE_MAPS[number - 1];
-    const baseline = layouts[map];
-    if (!baseline?.__racingV31 || !Array.isArray(baseline.points))
-      throw Error('V3.6 requires pinned V3.5 track for stage ' + id);
-    const points = baseline.points.map(point => [...point]);
-    for (const [index, x, z, height] of CAREER_ROUTE_EDITS[id] ?? []) {
-      if (!Number.isInteger(index) || index <= 0 || index >= points.length ||
-          ![x,z,height].every(Number.isFinite) || height < 0 || height > 25)
-        throw Error('Invalid original career track vertex ' + id + ':' + index);
-      points[index] = [x, z, height];
-    }
-    const signature = JSON.stringify(points);
-    if (fingerprints.has(signature)) throw Error('Duplicate career track ' + id);
+  const fingerprints=new Set(),titles=new Set();
+  for(let i=1;i<=16;i++){
+    const id=String(i).padStart(2,'0'),base=layouts[CAREER_COURSE_MAPS[i-1]],
+      blueprint=COURSE_BLUEPRINTS[id];
+    if(!base?.__racingV31||!blueprint||!Array.isArray(base.points))
+      throw Error('V3.7 requires verified biome and independent course '+id);
+    const [title,feel,english,scale,sketch]=blueprint;
+    const local=parseLocalRoute(sketch);
+    if(!Number.isFinite(scale)||scale<.6||scale>1.2||local.length<12||
+       local.length>28||titles.has(title)||!english||!feel||
+       local[0].some(n=>n!==0))
+      throw Error('Invalid authored course blueprint '+id);
+    titles.add(title);
+    const [ox,oz]=base.points[0],desert=CAREER_COURSE_MAPS[i-1]==='egypt';
+    const points=local.map(p=>{
+      if(p.length!==3||!p.every(Number.isFinite)||p[2]<0||p[2]>25)
+        throw Error('Non-finite or unsafe V3.7 course point '+id);
+      return desert ?
+        [ox-p[1]*scale,oz+p[0]*scale,p[2]] :
+        [ox+p[0]*scale,oz+p[1]*scale,p[2]];
+    });
+    const signature=JSON.stringify(points);
+    if(fingerprints.has(signature))throw Error('Duplicate authored course shape '+id);
     fingerprints.add(signature);
-    layouts['race-' + id] = { width: baseline.width, points };
+    layouts['race-'+id]={width:base.width,points};
   }
+  if(fingerprints.size!==16||titles.size!==16)throw Error('Expected 16 distinct hand-authored courses');
   return fingerprints.size;
 }
 
