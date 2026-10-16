@@ -233,7 +233,7 @@ export function createCoastAdventure(api) {
   }
  }
  function updateFishVisuals(){if(!run)return;
-  const visible=run.fishes.filter(f=>!f.caught&&f.x-run.distance>-3&&f.x-run.distance<105);
+  const visible=run.fishes.filter(f=>!f.caught&&!f.forfeited&&f.x-run.distance>-3&&f.x-run.distance<105);
   const keep=new Set(visible.map(f=>f.id));for(const [id,slot]of fishSlots)if(!keep.has(id)){slot.active=false;slot.mesh.visible=false;fishSlots.delete(id);}
   for(const f of visible){let slot=fishSlots.get(f.id);if(!slot){slot=fishes.find(s=>!s.active);if(!slot)continue;slot.active=true;fishSlots.set(f.id,slot);}Object.assign(slot,{x:f.x,y:1.34,z:fishRoadZ(f),golden:f.golden,caught:-1});slot.mesh.visible=true;slot.mesh.material=f.golden?goldMat:fishMat;slot.mesh.geometry=fishGeo;slot.mesh.scale.setScalar(f.bonus?2.1:1.8);slot.mesh.position.set(f.x-run.distance,1.34+Math.sin(S.t*3+f.x)*.06,fishRoadZ(f));slot.mesh.rotation.set(0,Math.PI+Math.sin(S.t+f.x)*.25,0);slot.halo.material.color.set(f.golden?'#ffd257':'#7fe3ff');slot.halo.scale.setScalar(f.bonus?1.45:run.level.weather==='dusk'?1.2:1.05);}
  }
