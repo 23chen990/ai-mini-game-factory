@@ -1,6 +1,16 @@
 import {LANES,unsafeFishLanes} from './safety.mjs';
 // Fractional fish positions share one collision and visual coordinate.
 export function fishRoadZ(fish){return Number.isFinite(fish?.z)?fish.z:LANES[fish.lane];}
+// Preserve an earned barrier prize on the radar when a later vehicle also
+// occupies the lane: the prize is reached first, while imminent danger remains
+// authoritative. This never changes collision or collection mechanics.
+export function earnedPrizePrecedesRisk(run,fish,forecast){
+ if(!run||!fish?.bonus||!forecast||!(run.speed>0)||!Number.isFinite(fish.x)||!Number.isFinite(forecast.seconds))return false;
+ const barrier=run.obstacles?.find(o=>o.id===fish.sourceObstacleId);
+ if(!barrier?.jumped||!barrier?.passed)return false;
+ const fishSeconds=(fish.x-run.distance)/run.speed;
+ return fishSeconds>=0&&fishSeconds<=3&&fishSeconds+.55<forecast.seconds;
+}
 // HUD pacing follows authored beats, without changing simulation speed or
 // hiding hazards. Protection is a distinct visual state and active-time timer.
 export function coastBeat(run){
