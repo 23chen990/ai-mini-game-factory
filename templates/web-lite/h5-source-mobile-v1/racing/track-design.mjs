@@ -32,11 +32,21 @@ export const TRACK_RESHAPES = Object.freeze({
     ],
   },
   egypt: {
-    expected: 25, width: 23,
-    theme: '沙丘跳台保留 / 北侧大回头弯 / 东侧技术弯',
+    expected: 25, width: 22,
+    theme: '沙丘飞跃 / 北侧蛇形变线 / 东侧压弯回切 / 沙丘高差',
     cuts: [
+      // Original far-eastern long straight now needs a right-left rhythm.
+      // Retain both endpoints and keep generous separation from other roads.
+      { start: 18, end: 21, first: [345,-70,0], last: [160,-320,0],
+        points: [[345,-70,0],[330,-130,0],[275,-167,0],
+          [293,-216,0],[225,-252,0],[160,-320,0]] },
       { start: 15, end: 17, first: [300,150,0], last: [300,5,0],
         points: [[300,150,0],[266,124,0],[262,81,0],[300,5,0]] },
+      // A meaningful top-of-loop S bend instead of one long shallow arc.
+      // Do not touch the temple tunnel or the original takeoff heights.
+      { start: 11, end: 13, first: [-70,400,0], last: [190,330,0],
+        points: [[-70,400,0],[-8,359,0],[65,388,0],
+          [125,333,0],[190,330,0]] },
       { start: 7, end: 10, first: [-30,215,0], last: [-190,375,0],
         points: [[-39,216,0],[-128,217,0],[-223,286,0],[-191,375,0]] },
     ],
