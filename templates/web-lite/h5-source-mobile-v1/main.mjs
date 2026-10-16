@@ -41,10 +41,10 @@ async function boot() {
     $('elite').setAttribute('aria-pressed', String(elite));
     $('elite').textContent = elite
       ? '⚡ 精英模式已开启 · 点击返回普通'
-      : '⚡ 进阶复战 · 敌人更强，手动开火';
+      : '⚡ 进阶复战 · 敌人更强，无自动辅助';
     $('heading').textContent = selected.title;
     $('copy').textContent = id === 'cf-transport-ship'
-      ? mobileChallengeCopy(selected) + (elite ? ' · 精英版不提供自动射击与瞄准辅助' : '')
+      ? mobileChallengeCopy({...selected,elite}) + (elite ? ' · 敌人反应更快' : '')
       : selected.instructions;
     $('challenges').innerHTML = levels.map(c => {
       const record = challengeProgress.records[c.id];
@@ -58,7 +58,8 @@ async function boot() {
   $('challenges').addEventListener('click', e => {
     const c = levels.find(c => c.id === e.target.closest('[data-challenge-id]')?.dataset.challengeId);
     if (!c || round?.phase === 'running' || round?.phase === 'paused') return;
-    selected = c; elite = false; challengeProgress.elite = false;
+    selected = c; elite = false;
+    if (id === 'cf-transport-ship') challengeProgress.elite = false;
     challengeProgress.selected = c.id; persist();
     if (round?.phase === 'finished') location.reload(); else renderSelection();
   });
