@@ -313,3 +313,17 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   top:calc(var(--race-top) + 164px);bottom:auto;
 }
 #race-kit[data-control-mode="classic"] #race-speed small {max-width:135px;font-size:10px;line-height:1.2;}
+
+/* Specificity matters: the shared race-controls rule otherwise overrides
+ * button.ready and hides the very feedback players need to trust. */
+#race-kit #race-controls #race-action-pad button.ready {
+  border-color:#9bffe2;
+  background:linear-gradient(145deg,#166c70c9,#0d4459e8);
+  box-shadow:0 0 0 2px #6cffe936,0 0 17px #42ffd36e;
+  color:#fafff4;
+}
+#race-kit #race-controls #race-action-pad button.held {
+  background:#9b6828d9;
+  border-color:#fff4aa;
+  box-shadow:inset 0 0 0 2px #ffffff20,0 0 14px #ffc7777c;
+}
