@@ -43,7 +43,19 @@ export function nearbyRival(game) {
   if (!opponent || !finite(opponent.progress) || opponent.finished) return null;
   const distance = Math.abs(opponent.progress - player.progress);
   if (distance > 105 || distance < 1) return null;
-  return { label: rank > 0 ? '追击前车' : '守住领先', metres: Math.round(distance), threat: rank === 0 && distance < 28 };
+  const sideBySide = distance < 11 &&
+    finite(opponent.lat) && finite(player.lat) && Math.abs(opponent.lat - player.lat) < 4.2;
+  const close = distance < 25;
+  const label = sideBySide ? '并驾' :
+    rank > 0 ? (close ? '咬住前车' : '追击前车') :
+    (close ? '后车贴近' : '守住领先');
+  return {
+    label,
+    metres: Math.round(distance),
+    threat: rank === 0 && distance < 28,
+    sideBySide,
+    name: typeof opponent.name === 'string' ? opponent.name : '',
+  };
 }
 
 /** Only real native events can trigger these player-facing micro-rewards. */
