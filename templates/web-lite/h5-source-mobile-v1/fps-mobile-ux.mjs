@@ -62,7 +62,7 @@ export function mobileScoutHoldExpired(actor, seconds) {
 export function cfScoutHoldSeconds(challenge) {
   if(challenge?.elite===true)return challenge.kind==='kills'?7:3;
   if(challenge?.kind==='kills')return 20;
-  return challenge?.kind==='hits'&&challenge.drill==='reposition'?18:7;
+  return challenge?.kind==='hits'&&challenge.drill==='reposition'?26:7;
 }
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
@@ -317,14 +317,17 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
   return null;
 }
 
-export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady }) {
+export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady, training=false }) {
+  const limitYaw=training?0.19:0.14,limitPitch=training?0.13:0.105;
   if (!visible || !firing || sniperReady === false ||
     !Number.isFinite(distance) || distance < 1 || distance > 27 ||
     !Number.isFinite(yawError) || !Number.isFinite(pitchError) ||
-    Math.abs(yawError) > 0.14 || Math.abs(pitchError) > 0.105) return {yaw:0,pitch:0};
+    Math.abs(yawError) > limitYaw || Math.abs(pitchError) > limitPitch)
+    return {yaw:0,pitch:0};
+  const maxYaw=training?0.025:0.019,maxPitch=training?0.019:0.014;
   return {
-    yaw: Math.max(-0.019, Math.min(0.019, yawError * 0.30)),
-    pitch: Math.max(-0.014, Math.min(0.014, pitchError * 0.30))
+    yaw: Math.max(-maxYaw, Math.min(maxYaw, yawError * (training?0.36:0.30))),
+    pitch: Math.max(-maxPitch, Math.min(maxPitch, pitchError * (training?0.36:0.30)))
   };
 }
 
@@ -722,8 +725,11 @@ export function createFpsMobileUx(game, root, doc) {
       const errYaw = Math.atan2(Math.sin(trueYaw-p.yaw), Math.cos(trueYaw-p.yaw));
       const errPitch = Math.atan2(dir.y, Math.hypot(dir.x, dir.z)) - p.pitch;
       const aim = mobileAimCorrection({
-        yawError: errYaw, pitchError: errPitch, distance, visible: true,
-        firing: true, sniperReady: ready
+        yawError: errYaw,pitchError: errPitch,distance,visible:true,
+        firing:!!(forceFiring||p.touch?.fire||(simple&&playerEngaged)),
+        sniperReady:ready,
+        training:activeChallenge?.drill==='reposition'&&drill?.stage===2&&
+          activeChallenge.elite!==true
       });
       if (!aim.yaw && !aim.pitch) continue;
       const hit = game.world.raycast(eye.x, eye.y, eye.z,
@@ -991,7 +997,11 @@ export function createFpsMobileUx(game, root, doc) {
             Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m'+
             (turn?' · 沿可走路线':' · 左右横移');
         } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
-          guide.textContent='◎ 手动追击 '+drill.follow+'/'+activeChallenge.target+'次';
+          const turn=!seen?routeArrow(p,routePath):null;
+          guide.textContent=turn
+            ? turn.symbol+' 寻找敌人 · 手动追击 '+drill.follow+'/'+activeChallenge.target
+            : seen ? '◎ 对准红色目标按开火 · '+drill.follow+'/'+activeChallenge.target
+              : '↑ 沿通道寻找敌人 · '+drill.follow+'/'+activeChallenge.target;
         } else if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
@@ -1006,7 +1016,8 @@ export function createFpsMobileUx(game, root, doc) {
       // player has not yet found a target. It never sits on the reticle.
       guide.hidden = !p.alive ||
         (activeChallenge?.drill==='reposition'&&drill?.stage>0
-          ? drill.stage===2&&elapsed-drillStageAt>7
+          ? drill.stage===2&&elapsed-drillStageAt>7&&
+            [...markers.values()].some(el=>!el.hidden)
           : (p.stats?.hits ? elapsed>5 : elapsed>16&&elapsed%12>3));
     },
     destroy() {
