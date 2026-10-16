@@ -164,7 +164,7 @@ test('a held drift cannot automatically re-enter after countersteer exit or wall
     'this.driftDir = steerT;',
   ].join('\n');
   const adapted=patchAnalogSteer(start);
-  assert.match(adapted,/if \(!inp\.shift\) this\.__RACE_DRIFT_REARMED__ = true/);
+  assert.match(adapted,/if \(!inp\.shift && !spinning\) this\.__RACE_DRIFT_REARMED__ = true/);
   assert.match(adapted,/this\.__RACE_DRIFT_REARMED__ !== false/);
   assert.equal(patchAnalogSteer(adapted),adapted);
 });
