@@ -1,4 +1,4 @@
-name: CF V6 mobile UX: pinned source and visual browser QA
+name: CF V6 private visual browser QA
 on:
   pull_request:
     paths:
@@ -91,7 +91,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: cf-v5-${{ matrix.mode }}-${{ github.event.pull_request.head.sha }}
+          name: cf-v6-${{ matrix.mode }}-${{ github.event.pull_request.head.sha }}
           path: |
             ${{ runner.temp }}/cf-preview.zip
             ${{ runner.temp }}/cf-sha256.txt
