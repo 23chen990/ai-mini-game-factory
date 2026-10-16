@@ -180,9 +180,11 @@ async function loadTrack(id, autoStart) {
   releaseInput();started = false;result = null;loading = true; $('start').disabled = true; $('next').disabled = true; $('map').disabled = true;
   $('heading').textContent = '准备下一场…';
   try {
-    const sameMap = g.map?.id === id && !!g.track;
-    if (!sameMap) {
-      disposeCornerSigns(g);g.settings.map = id;g.save();await g.loadMap(id);
+    // Different stages in the same biome must still load DIFFERENT geometry.
+    career.configure(g);
+    const sameCourse = g.map?.id === id && g.track?.__RACE_COURSE_ID === career.stage.course;
+    if (!sameCourse) {
+      disposeCornerSigns(g);await g.loadMap(id);
       installCornerSigns(g,window.__RACE_THREE__,document);
     }
     g.startDemo();loading = false;$('map').value = id;
@@ -320,7 +322,8 @@ async function boot() {
   const nativeCountdown = g.hud.countdown.bind(g.hud);g.hud.countdown = text => nativeCountdown(text === 'GO!' ? '出发' : text);
   g.hud.drawSpeedo = () => {}; // Desktop speedo is compatibility-only and absent from this HUD.
   loading = false;root.dataset.loaded = 'true';$('start').disabled = false;$('start').textContent = '开始比赛';$('map').value = g.settings.map;renderLobby();
-  if (loadedMap !== career.stage.map) await loadTrack(career.stage.map, false);
+  if (loadedMap !== career.stage.map || g.track?.__RACE_COURSE_ID !== career.stage.course)
+    await loadTrack(career.stage.map, false);
   if (!mobile) $('note').textContent = '键盘保留原操作；点按左右按钮可切入双键驾驶';
   display('ready');
   let lastFuelTick = 0;
