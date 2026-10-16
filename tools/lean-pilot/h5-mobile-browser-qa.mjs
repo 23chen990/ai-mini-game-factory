@@ -136,8 +136,11 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    if(await target.count() && await target.isVisible().catch(()=>false)){
      fpsEnemySeenCount++;
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
-     if(/手动追击/u.test(objective)&&!fpsOneThumbAudit){
-       const r=await target.boundingBox();
+     if(/手动追击/u.test(objective)&&
+       (!fpsOneThumbAudit?.rotated||!fpsOneThumbAudit?.fired)){
+       // The visible marker can disappear BETWEEN isVisible and boundingBox.
+       // Do not hang the entire real-game QA waiting for an invisible enemy.
+       const r=await target.boundingBox({timeout:650}).catch(()=>null);
        if(r){
          const dx=Math.max(-108,Math.min(75,(r.x+r.width/2-viewport.width/2)*.32));
          const dy=Math.max(-55,Math.min(55,(r.y+r.height+22-viewport.height/2)*.38));
