@@ -210,6 +210,54 @@ export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked
     Math.abs(yawError)<=0.047 && Math.abs(pitchError)<=0.050;
 }
 
+
+/** Only actual native hit-counter increments create a brief onscreen confirmation. */
+export function cfHitCue(challenge, nativeHits, increase) {
+  if (!challenge || !Number.isFinite(nativeHits) || !Number.isFinite(increase) ||
+      nativeHits < 1 || increase < 1) return '';
+  const hits = Math.floor(nativeHits), delta = Math.floor(increase);
+  if (challenge.kind === 'hits')
+    return '✓ 命中 ' + Math.min(hits, challenge.target) + '/' + challenge.target;
+  return '✓ 有效命中 +' + delta;
+}
+
+/** End-of-round teaching based on observed player stats, never simulated rewards. */
+export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
+  if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return '';
+  const actual = v => Number.isFinite(v) ? Math.max(0,Math.floor(v)) : 0;
+  const hits = actual(metrics.hits), awmKills = actual(metrics.awmKills);
+  const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
+  const goal = actual(challenge.target);
+  if (outcome === 'won') {
+    if (challenge.kind === 'hits')
+      return '亲自命中 ' + hits + ' 次。下一关要使用 AWM 取得真正的击杀。';
+    if (challenge.kind === 'kills')
+      return 'AWM 真实击杀 ' + awmKills + ' 人。接下来试试移动与生存的配合。';
+    return '累计移动 ' + travel + ' 米、被击倒 ' + deaths + ' 次。下次试试零死亡通关。';
+  }
+  if (challenge.kind === 'hits') {
+    if (hits === 0)
+      return '0/' + goal + ' 次命中。用右手移动准星寻找红色敌人，瞄准后自动开火。';
+    return '已经命中 ' + hits + '/' + goal + ' 次，还差 ' +
+      Math.max(0,goal-hits) + ' 次。下次继续跟住目标，直到出现命中确认。';
+  }
+  if (challenge.kind === 'kills') {
+    if (awmKills === 0 && hits > 0)
+      return '命中 ' + hits + ' 次，但 AWM 击杀仍为 0/' + goal +
+        '。命中不等于击杀，下次开镜锁定目标再补枪。';
+    return 'AWM 击杀 ' + awmKills + '/' + goal +
+      '。先找红色目标，开镜瞄准胸部，再按开火。';
+  }
+  if (deaths > goal)
+    return '被击倒 ' + deaths + ' 次，超过最多 ' + goal +
+      ' 次的限制。下次沿集装箱掩体换位，减少正面暴露。';
+  const min = actual(challenge.minTravel);
+  if (travel < min)
+    return '只移动 ' + travel + '/' + min + ' 米，还差 ' +
+      (min-travel) + ' 米。下次用左手摇杆沿掩体移动，不要原地停留。';
+  return '移动和阵亡条件已达成，但未坚持到时限。借助掩体保持移动直到倒计时结束。';
+}
+
 export function createFpsMobileUx(game, root, doc) {
   const html = doc.documentElement;
   const header = root.querySelector('.mk-header');
@@ -310,6 +358,11 @@ export function createFpsMobileUx(game, root, doc) {
   target.hidden = true;
   target.setAttribute('aria-live', 'off');
   root.append(target);
+  const hitCue = doc.createElement('div');
+  hitCue.id = 'mk-fps-hit-feedback';
+  hitCue.hidden = true;
+  hitCue.setAttribute('aria-live', 'off');
+  root.append(hitCue);
   const guide = doc.createElement('div');
   guide.id = 'mk-fps-guide';
   guide.textContent = '◆ 蓝色队友 ｜ ▼ 红色敌人　·　左手移动，右手滑动瞄准';
@@ -317,7 +370,7 @@ export function createFpsMobileUx(game, root, doc) {
   root.append(guide);
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
-  let activeChallenge = null, nextBalanceAt = 0, lastHits = 0;
+  let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
   let routePath = null, routeLastAt = 0;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
@@ -597,7 +650,9 @@ export function createFpsMobileUx(game, root, doc) {
       routePath=null;routeLastAt=0;
       nextUpdate = 0;
       nextBalanceAt = 0;
-      lastHits = 0;
+      lastHits = game.player?.stats?.hits || 0;
+      cueExpiresAt = 0;
+      hitCue.hidden = true;
       walkedMeters = 0;
       previousPosition = null;
       lastBoard = '';
@@ -624,6 +679,7 @@ export function createFpsMobileUx(game, root, doc) {
     update(running, now = performance.now()) {
       const active = !!(running && game.playing && !game.paused && !game.ended);
       html.dataset.fpsActive = String(active);
+      if (!active || now >= cueExpiresAt) hitCue.hidden = true;
       const p = game.player;
       fadeNativeAllies(active);
       const scopeButton=buttons.find(b=>b.dataset.mkAction==='scope');
@@ -671,11 +727,15 @@ export function createFpsMobileUx(game, root, doc) {
         nudgeAim();
         const hits = p.stats?.hits || 0;
         if (hits > lastHits) {
-          originalToast(activeChallenge?.kind==='kills'
-             ? '✓ 狙击命中！拉栓后继续开镜瞄准胸部'
-             : '✓ 命中！继续对准红色敌人', 1.8);
-          lastHits = hits;
+          // This is driven solely by native player.stats.hits, not aiming or shooting.
+          const text = cfHitCue(activeChallenge, hits, hits-lastHits);
+          if (text) {
+            hitCue.textContent = text;
+            hitCue.hidden = false;
+            cueExpiresAt = now + 680;
+          }
         }
+        lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
         if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
@@ -701,7 +761,7 @@ export function createFpsMobileUx(game, root, doc) {
       aimTouchStarts.clear();
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
-      board.remove(); target.remove(); guide.remove(); tutorial.remove();
+      board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
       }
