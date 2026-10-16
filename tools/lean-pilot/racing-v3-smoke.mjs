@@ -455,12 +455,12 @@ try {
     fail('Wheel/thumb-pad overlaps or old binary controls remain visible: '+JSON.stringify(wheelBounds));
   await wheelPage.screenshot({path:path.join(dest,'01-classic-wheel-phone.png')});
   const stick=wheelBounds.stick,cdpWheel=await context.newCDPSession(wheelPage);
-  const left={id:201,x:stick.x+stick.width*.17,y:stick.y+stick.height*.5};
-  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[left]});
+  const wheelLeftContact={id:201,x:stick.x+stick.width*.17,y:stick.y+stick.height*.5};
+  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[wheelLeftContact]});
   await wheelPage.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>0.5,null,{timeout:8000});
   await wheelPage.waitForFunction(()=>window.game?.player?.steer>0.04,null,{timeout:20000});
-  const right={...left,x:stick.x+stick.width*.83};
-  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[right]});
+  const wheelRightContact={...wheelLeftContact,x:stick.x+stick.width*.83};
+  await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[wheelRightContact]});
   await wheelPage.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis<-.5,null,{timeout:8000});
   await wheelPage.waitForFunction(()=>window.game?.player?.steer<-.04,null,{timeout:20000});
   await cdpWheel.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
