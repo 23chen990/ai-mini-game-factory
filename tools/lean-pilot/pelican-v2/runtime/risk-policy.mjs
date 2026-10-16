@@ -130,6 +130,15 @@ export function decideRiskAction(view,state){
  if(inTargetWindow&&!state.jumpIssued&&Number.isInteger(state.committedRewardLane)){
   const committed=state.committedRewardLane;
   if(current!==committed)return moveOneLane({...view,lanes},nextState,committed,'continue-confirmed-jump-approach',committed);
+  // The native button glows READY based on the real nearest low barrier.
+  // Accept this player-visible signal even if the radar icon is momentarily
+  // replaced by an ordinary fish. Never jump after the barrier is passed.
+  if(view.jumpReady===true&&Number.isFinite(view.distance)&&view.distance<target.distance-1){
+   nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;
+   nextState.lastJumpCountdown=null;
+   nextState.goldAtJump=Number.isFinite(view.goldCounter)?view.goldCounter:null;
+   return decision('jump',nextState,'visible-jump-button-ready',current,null);
+  }
   return decision('wait',nextState,'hold-confirmed-reward-lane',current);
  }
  const wanted=chooseOrdinaryLane({...view,lanes});
