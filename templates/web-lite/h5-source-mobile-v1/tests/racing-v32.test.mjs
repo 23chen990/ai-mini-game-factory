@@ -19,14 +19,32 @@ test('AI native-nitro chase respects true leader, cooldown and one per lap witho
   r.progress=550;r.dist=50;p.progress=600;g.raceTime=51;
   assert.deepEqual(d.frame(g,stage),{name:'追风者',gap:50});
 });
-test('AI pressure never punishes losing player or sea boss; skips items, spin, and sharp corners',()=>{
+test('AI nitro duels never punish last-place players, item races or any boss; no corners/spins',()=>{
   const d=new RivalPressure(),g=race(),r=g.racers[1];
   g.standings=[r,g.player];assert.equal(d.frame(g,stage),null);g.standings=[g.player,r];
-  for(const cfg of [{...stage,diff:0},{...stage,map:'aegean'},{...stage,map:'snow'},
-    {...stage,mode:'item'}])assert.equal(d.frame(g,cfg),null);
+  for(const cfg of [{...stage,kind:'boss',id:'16'},{...stage,kind:'boss',id:'13'},
+    {...stage,id:'01'},{...stage,mode:'item'}])
+    assert.equal(d.frame(g,cfg),null);
   g.track.curvAhead=()=>.02;assert.equal(d.frame(g,stage),null);
   g.track.curvAhead=()=>0;g.player.spin=1;assert.equal(d.frame(g,stage),null);
   assert.equal(r.nitroCd,5);
+});
+test('all four course themes can produce a close battle, but only with native AI cooldown',()=>{
+  for(const map of ['city','egypt','aegean','snow']){
+    const d=new RivalPressure(),g=race(),r=g.racers[1];
+    g.raceTime=25;
+    const result=d.frame(g,{...stage,map,diff:0,id:'02'});
+    assert.deepEqual(result,{name:'追风者',gap:50});
+    assert.equal(r.nitroCd,1);
+    r.nitroCd=5;g.raceTime=28;
+    assert.equal(d.frame(g,{...stage,map,id:'02'}),null,'per-race chase cooldown');
+  }
+  const d=new RivalPressure(),g=race(),r=g.racers[1];
+  const other={isPlayer:false,progress:170,dist:170,s:37,nitroCd:5,nitroTime:0,spin:0,finished:false};
+  g.racers.push(other);g.standings=[other,g.player,r];
+  assert.ok(d.frame(g,{...stage,id:'02'}),'second-place player may face a fair chase');
+  const g2=race();g2.standings=[{},{},{},g2.player,g2.racers[1]];
+  assert.equal(new RivalPressure().frame(g2,{...stage,id:'02'}),null,'rear field gets no added challenge');
 });
 const hint=()=>({state:'race',map:{id:'city'},player:{d:100,s:40,wrongWay:0,airborne:false,finished:false},
   track:{length:2000,curvAhead:()=>0},itemMode:false});
