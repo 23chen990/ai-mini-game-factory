@@ -43,7 +43,6 @@ export const PRESSURE_GATES=Object.freeze({
   [303,'car',0],[303,'van',1], // right gap
   [433,'car',0],[433,'van',1], // right gap
   [558,'van',1],[558,'car',2], // left gap after 516m
-  [615,'car',0],[615,'van',2], // centre gap
  ]),
 });
 export const BOUNDS = {car:{x:1.5,z:.63},van:{x:1.8,z:.66},pedestrian:{x:.25,z:.25},barrier:{x:.24,z:.59}};
