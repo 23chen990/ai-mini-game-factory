@@ -104,6 +104,8 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit[data-phase="finished"] #race-result-copy { margin:0 0 6px; }
 #race-kit[data-phase="finished"] #race-result-stats { margin:5px 0 8px;gap:20px; }
 #race-kit[data-phase="finished"] #race-results { flex:0 0 auto;min-height:0;max-height:126px;margin-bottom:8px; }
+/* Every classified rival must remain visible: six 19-20px rows fit within 126px. */
+#race-kit[data-phase="finished"] #race-results li {padding:2px 10px;line-height:15px;}
 #race-kit[data-phase="finished"] .race-actions { flex-shrink:0;margin-top:auto; }
 #race-kit[data-phase="finished"] .race-actions button { padding:10px 18px; }
 #race-kit #race-live-goal { position:fixed;left:var(--race-left);top:calc(var(--race-top) + 66px);max-width:min(230px,36vw);transform:none;text-align:left;border-radius:11px;background:#09273dda;padding:5px 12px;font-weight:750;font-size:12px;color:#ffe19c;white-space:nowrap;z-index:10;pointer-events:none; }
