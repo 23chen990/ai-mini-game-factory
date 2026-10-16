@@ -278,7 +278,10 @@ export class RacingCareer {
     return '⛽ ' + this.fuel.amount + '/' + FUEL_RULES.max + ' · 每场 -1' + mm;
   }
   canOfferAd() {
-    return this.fuelEnabled && !this.adBusy && (this.progress.stars['01'] ?? 0) > 0 && fuelAdEligible(this.fuel, {
+    // With a hard first stage, do not softlock failed players out of voluntary
+    // fuel recovery. fuelAdEligible itself requires a real recorded round,
+    // session time, low balance and cooldown; ad never changes race outcomes.
+    return this.fuelEnabled && !this.adBusy && fuelAdEligible(this.fuel, {
       rounds: this.progress.rounds, sessionMs: Date.now() - this.startedAt, adReady: true,
     });
   }
