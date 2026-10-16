@@ -320,7 +320,8 @@ test('CF v7 drill counts only native hits AFTER a real 12m reposition',()=>{
  const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:12,target:3,elite:false};
  let s=cfAdvanceDrill(c);
  assert.deepEqual(s,{stage:0,startTravel:0,hitBaseline:null,anchorX:null,anchorZ:null,
-   lastX:null,lastZ:null,lastTravel:0,distance:0,follow:0,firstHit:false});
+   lastX:null,lastZ:null,lastTravel:0,earnedDistance:0,peakDistance:0,
+   distance:0,follow:0,firstHit:false});
  assert.equal(cfAutoFireEligible(c,0),true);
  s=cfAdvanceDrill(c,s,{hits:0,travel:25});
  assert.equal(s.stage,0,'moving without first hit does not bypass first stage');
@@ -335,7 +336,7 @@ test('CF v7 drill counts only native hits AFTER a real 12m reposition',()=>{
  s=cfAdvanceDrill(c,s,{hits:16,travel:38});
  assert.equal(s.follow,2);assert.equal(s.firstHit,true);
  s=cfAdvanceDrill(c,s,{hits:17,travel:42});
- assert.equal(s.follow,3);assert.equal(s.distance,17);
+ assert.equal(s.follow,3);assert.ok(s.distance>=12);
  assert.equal(cfAdvanceDrill({kind:'kills'}),null);
 });
 
@@ -375,7 +376,7 @@ test('CF reposition cannot be cheesed by stepping back and forth or respawn tele
  assert.equal(d.stage,1);assert.equal(d.distance,1);assert.equal(d.follow,0);
  // A native respawn teleport is not itself recorded in walk distance.
  d=cfAdvanceDrill(c,d,{hits:9,travel:29.1,x:12,z:7});
- assert.equal(d.stage,1);assert.equal(d.distance,0);
+ assert.equal(d.stage,1);assert.equal(d.distance,1);
  assert.equal(d.anchorX,12);assert.equal(d.anchorZ,7);
  // A true 14m walk away from the post-respawn anchor is now valid.
  d=cfAdvanceDrill(c,d,{hits:9,travel:43.1,x:-2,z:7});
@@ -386,4 +387,22 @@ test('CF reposition cannot be cheesed by stepping back and forth or respawn tele
  // Once the position checkpoint is earned, chasing backward doesn't revoke it.
  d=cfAdvanceDrill(c,d,{hits:11,travel:57.1,x:12,z:7});
  assert.equal(d.stage,2);assert.ok(d.distance>=12);
+});
+
+
+test('CF v7 retains genuine partial move across native respawns but never credits teleport',()=>{
+ const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:8,target:3};
+ let d=cfAdvanceDrill(c,null,{hits:1,travel:0,x:0,z:0});
+ d=cfAdvanceDrill(c,d,{hits:1,travel:5,x:5,z:0});
+ assert.equal(d.stage,1);assert.equal(d.distance,5);assert.equal(d.peakDistance,5);
+ d=cfAdvanceDrill(c,d,{hits:1,travel:5,x:30,z:5});
+ assert.equal(d.stage,1);assert.equal(d.distance,5);
+ assert.equal(d.earnedDistance,5);assert.equal(d.peakDistance,0);
+ assert.equal(d.startTravel,5);
+ d=cfAdvanceDrill(c,d,{hits:1,travel:8,x:33,z:5});
+ assert.equal(d.stage,2);assert.equal(d.distance,8);
+ assert.equal(d.hitBaseline,1);
+ d=cfAdvanceDrill(c,d,{hits:3,travel:9,x:34,z:5});
+ assert.equal(d.follow,2);assert.ok(d.distance>=8);
+ assert.equal(cfAdvanceDrill(c,d,{hits:4,travel:15,x:30,z:5}).follow,3);
 });
