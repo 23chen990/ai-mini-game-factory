@@ -276,7 +276,7 @@ export function injectRaceBundle(html, bundleText) {
 export function neutralizeRaceBranding(text) {
   return text
     .replaceAll('SPEEDQQ.COM', 'RACEWAY.GAME')
-    .replaceAll('QQ飞车', '双键赛车')
+    .replaceAll('QQ飞车', '极速赛车')
     .replaceAll('11城', '滨海都市')
     .replaceAll('情迷爱琴海', '海湾山路')
     .replaceAll('法老金字塔', '沙丘古城')
@@ -288,7 +288,7 @@ export function neutralizeRaceBranding(text) {
                 "buildHotAirBalloon(i % 2 ? '#61c9ff' : '#ffc96c', '#ffffff')");
 }
 /** A qq-speed-only extension of PR10. No other game's source or adapter is written. */
-export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), sourceRoot = process.env.H5_PINNED_SOURCE_ROOT, hypothesis = process.env.RACE_REPAIR_HYPOTHESIS ?? 'Reuse native vehicle physics and edge inputs; gate two-button assists by track/state, and replace the stacked HUD with one mobile presentation.' } = {}) {
+export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), sourceRoot = process.env.H5_PINNED_SOURCE_ROOT, hypothesis = process.env.RACE_REPAIR_HYPOTHESIS ?? 'One manual analogue steering control with explicit drift, spray, nitro, and item actions; preserve native vehicle physics and race semantics.' } = {}) {
   const root = path.resolve(base, RUN);
   try { await access(path.join(root, 'source-build.json')); }
   catch { await buildSourceMobile(base, RUN, 'qq-speed', { sourceRoot }); }
@@ -355,8 +355,8 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   let html = await readFile(path.join(project, 'dist/index.html'), 'utf8');
   html = html.replace('<html lang="zh-CN">', '<html lang="zh-CN" data-reference-game="qq-speed" data-race-mobile="true">')
     .replace('user-scalable=no', 'user-scalable=no,viewport-fit=cover')
-    .replace(/<title>[^<]*<\/title>/u, '<title>双键飞驰 · 3D 赛车</title><link rel="icon" href="data:,">')
-    .replace(/<meta name="description"[^>]*>/u, '<meta name="description" content="固定方向轮盘，经典手动漂移与智能双键辅助可切换。" />');
+    .replace(/<title>[^<]*<\/title>/u, '<title>极速飞驰 · 3D 赛车</title><link rel="icon" href="data:,">')
+    .replace(/<meta name="description"[^>]*>/u, '<meta name="description" content="左手连续方向轮盘，右手手动漂移、小喷、氮气和道具。" />');
   const license = await readFile(path.join(game, 'LICENSE.three.txt'), 'utf8');
   if (license.length < 100) throw Error('Missing pinned Three.js license');
   html = html.replace('</head>', () => '<!-- Three.js MIT license\n' + license.replaceAll('--', '—') + '\n--><link rel="stylesheet" href="style.css"></head>');
