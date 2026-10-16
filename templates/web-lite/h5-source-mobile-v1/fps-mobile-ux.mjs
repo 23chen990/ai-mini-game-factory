@@ -94,10 +94,13 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
   const walked=Math.max(0,travel-startTravel);
   const net=anchorX!==null&&anchorZ!==null&&x!==null&&z!==null
     ? Math.hypot(x-anchorX,z-anchorZ):walked;
-  const distance=Math.min(walked,net);
+  let distance=Math.min(walked,net);
   if(stage===1&&distance>=challenge.minTravel) {
     stage=2;hitBaseline=hits;
   }
+  // Completing a true reposition is a checkpoint, not a leash: following an
+  // enemy back toward old cover must not revoke already earned movement.
+  if(stage===2)distance=Math.max(challenge.minTravel,distance);
   return {stage,startTravel,hitBaseline,anchorX,anchorZ,
     lastX:x,lastZ:z,lastTravel:travel,distance,
     follow:stage===2?Math.max(0,hits-hitBaseline):0,firstHit:stage>0};
@@ -116,8 +119,11 @@ export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
     ? challenge.elite===true
-      ? '45秒精英突围：手动首枪，换位18米，再命中4次；零阵亡'
-      : '60秒步枪突围：自动命中首枪，换位12米，手动再命中3次；最多阵亡1次'
+      ? Math.ceil(challenge.limitMs/1000)+'秒精英突围：手动首枪，换位'+
+        challenge.minTravel+'米，再命中'+challenge.target+'次；零阵亡'
+      : Math.ceil(challenge.limitMs/1000)+'秒步枪突围：首枪辅助，换位'+
+        challenge.minTravel+'米，手动再命中'+challenge.target+
+        '次；最多阵亡'+challenge.maxDeaths+'次'
     : challenge.elite===true
       ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
       : '1v1入门：准星对准敌人自动开火，命中3次';
@@ -298,6 +304,10 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
   const goal = actual(challenge.target);
   if (outcome === 'won') {
+    if (challenge.kind === 'hits'&&challenge.drill==='reposition')
+      return '战术突围完成：首枪命中、离开原位 '+actual(metrics.drillTravel)+
+        '米、手动追击 '+actual(metrics.drillFollowUpHits)+
+        '次。下一关挑战 AWM 精准击杀。';
     if (challenge.kind === 'hits')
       return '亲自命中 ' + hits + ' 次。下一关要使用 AWM 取得真正的击杀。';
     if (challenge.kind === 'kills')
