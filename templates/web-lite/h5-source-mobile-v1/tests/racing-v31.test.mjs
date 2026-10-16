@@ -41,8 +41,8 @@ test('desert technical pass adds two independently anchored chicanes without tou
   assert.equal(input.egypt.points[2][2],0,'unpatched fixture stays independent');
   applyTrackDesign(input);
   assert.equal(input.egypt.points.length,30);
-  assert.ok(input.egypt.points.some(p=>p[0]===65 && p[1]===388));
-  assert.ok(input.egypt.points.some(p=>p[0]===275 && p[1]===-167));
+  assert.ok(input.egypt.points.some(p=>p[0]===65 && p[1]===380 && p[2]===3));
+  assert.ok(input.egypt.points.some(p=>p[0]===290 && p[1]===-172 && p[2]===1.5));
 });
 test('源码坐标变动不能悄悄应用到别人的地图',()=>{
   const bad=fixture();
