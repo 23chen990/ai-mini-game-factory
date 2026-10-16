@@ -372,8 +372,16 @@ try {
   // Explicit QA-only synthetic DNF. This tests lobby recovery, NEVER counts as a completed race.
   await page.evaluate(() => window.game.showResults());
   await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
+  const resultRows=await page.evaluate(()=>{
+    const list=document.querySelector('#race-results'),rows=[...list.querySelectorAll('li')];
+    const last=rows.at(-1)?.getBoundingClientRect(),container=list.getBoundingClientRect();
+    return {count:rows.length,lastBottom:last?.bottom??null,containerBottom:container.bottom,
+      visible:!!last && last.bottom<=container.bottom+.5};
+  });
+  if(resultRows.count!==6 || !resultRows.visible)
+    fail('Real six-car result panel clips a position on 740x360: '+JSON.stringify(resultRows));
+  report.resultRows=resultRows;
   await page.screenshot({path:path.join(dest,'08-result-740x360-qa-staged.png')});
-  await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
   // Only the "返回选关" button is visible after results; the stage menu is intentionally hidden.
   await page.locator('#race-lobby').tap();
   await page.waitForFunction(() => {
