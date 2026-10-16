@@ -91,7 +91,7 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
       complete=!failed&&m.drillFirstHit===true&&m.drillStage===2&&
         travel>=c.minTravel&&follow>=c.target;
       label=m.drillStage===0?'◎ 先瞄准 · 自动命中1次':
-        m.drillStage===1?'↗ 换位 '+Math.floor(travel)+'/'+c.minTravel+'m':
+        m.drillStage===1?'↔ 换位 '+Math.floor(travel)+'/'+c.minTravel+'m':
           '🎯 手动追击 '+follow+'/'+c.target;
     } else {
       value=c.kind==='kills'&&c.weapon==='awm'?(m.awmKills||0):(m[c.kind]||0);
