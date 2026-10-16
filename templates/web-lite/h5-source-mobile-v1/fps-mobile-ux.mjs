@@ -119,8 +119,11 @@ export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
     ? challenge.elite===true
-      ? '45秒精英突围：手动首枪，换位18米，再命中4次；零阵亡'
-      : '60秒步枪突围：首枪辅助，换位8米，手动再命中3次；最多阵亡2次'
+      ? Math.ceil(challenge.limitMs/1000)+'秒精英突围：手动首枪，换位'+
+        challenge.minTravel+'米，再命中'+challenge.target+'次；零阵亡'
+      : Math.ceil(challenge.limitMs/1000)+'秒步枪突围：首枪辅助，换位'+
+        challenge.minTravel+'米，手动再命中'+challenge.target+
+        '次；最多阵亡'+challenge.maxDeaths+'次'
     : challenge.elite===true
       ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
       : '1v1入门：准星对准敌人自动开火，命中3次';
