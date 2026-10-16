@@ -130,7 +130,13 @@ function step(r,dt){
  }
  // Fish use swept relative coordinates as well. No score is awarded after a terminal collision.
  for(const f of r.fishes){
-  if(f.caught||r.stun>0)continue;
+  if(f.caught||f.forfeited||r.stun>0)continue;
+  if(f.bonus){
+   const source=r.obstacles.find(o=>o.id===f.sourceObstacleId);
+   // A safe detour is valid progress, but it cannot award a jump-only prize.
+   // Forfeit without resetting an ordinary fish streak or giving hidden points.
+   if(!source?.jumped){if(source?.passed)f.forfeited=true;continue;}
+  }
   if(!f.missed&&f.x-r.distance< -2.5){f.missed=true;r.streak=0;}
   if(sweptHit({x:f.x-oldD-.55,z:fishRoadZ(f)-oldZ},{x:f.x-r.distance-.55,z:fishRoadZ(f)-r.lane},.55,.63)&&r.y<.85){
    f.caught=true;r.count++;if(f.golden)r.gold++;
