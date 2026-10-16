@@ -107,6 +107,65 @@ export function gradeStage(stage, result, stats = {}) {
   if (place === 1 && clean && mastery) stars++;
   return stars;
 }
+/** Player-facing diagnosis after an actual graded defeat.
+ * Pure presentation: never affects rank, stage metrics, fuel, stars or unlocks.
+ */
+export function stageFailureFeedback(stage, result, stats = {}) {
+  const n = value => Number.isFinite(value) ? value : 0;
+  const count = (value, target, label) => `${label} ${n(value)}/${target}`;
+  const tips = {
+    race: '先把赛车开稳、少碰墙，争取进入目标名次',
+    speed: '测速点前尽量保持直线，减少转向和撞墙失速',
+    drift: '在连续弯稳定漂移，干净出弯才计有效漂移',
+    overtake: '先跟住车群，选择弯道或刚出弯时真正超过对手',
+    item: '提前按左右选择道具车道，必须实际碰到道具箱才计数',
+    time: '减少撞墙和逆行耗时，同时保持目标排名',
+    relay: '选择加速带车道取得补时，减少撞墙浪费时间',
+    elimination: '接近淘汰点前离开最后一名，先求稳再超车',
+    boss: '留意指定车神的位置，减少碰撞并在终点前真正超过他',
+  };
+  const tip = tips[stage.kind] ?? '保持车速，留意赛前目标并完成比赛';
+  if (stats.eliminated) return { reason: '在淘汰点处于最后一名', tip };
+  if (stats.timedOut) return { reason: '比赛计时耗尽', tip };
+  if (!result?.finished) {
+    const percent = Math.round(Math.max(0, Math.min(1, n(result?.completion))) * 100);
+    return { reason: `尚未完成比赛（进度 ${percent}%）`, tip };
+  }
+  const reasons = [];
+  const place = n(result.place);
+  if (place < 1 || place > stage.rank)
+    reasons.push(`第${place || '?'}名，要求前${stage.rank}名`);
+  switch (stage.kind) {
+    case 'speed':
+      if (n(stats.gateSpeed) < stage.target) reasons.push(count(stats.gateSpeed, stage.target, '最佳测速 km/h'));
+      break;
+    case 'drift':
+      if (n(stats.cleanDrifts) < stage.target) reasons.push(count(stats.cleanDrifts, stage.target, '有效漂移'));
+      break;
+    case 'overtake':
+      if (n(stats.cleanPasses) < stage.target) reasons.push(count(stats.cleanPasses, stage.target, '有效弯道超车'));
+      break;
+    case 'item':
+      if (n(stats.pickups) < stage.target) reasons.push(count(stats.pickups, stage.target, '实际拾取道具'));
+      break;
+    case 'time':
+      if (!(n(result.time) > 0 && result.time <= stage.target))
+        reasons.push(`用时 ${n(result.time).toFixed(1)} 秒，限时 ${stage.target} 秒`);
+      break;
+    case 'relay':
+      if (n(stats.padCount) < 1) reasons.push('未经过加速带取得补时');
+      break;
+    case 'elimination':
+      if (n(stats.survived) < 2) reasons.push(count(stats.survived, 2, '成功避开淘汰'));
+      break;
+    case 'boss':
+      if (stats.beatBoss !== true) reasons.push('未超过指定车神');
+      break;
+    default: break;
+  }
+  return { reason: reasons.join('；') || '该场未达到目标', tip };
+}
+
 export function recordStage(career, stage, result, stats) {
   const stars = gradeStage(stage, result, stats);
   const next = { ...career, stars: { ...career.stars }, times: { ...career.times }, rounds: career.rounds + 1 };
