@@ -159,15 +159,17 @@ test('invalid drift endings, including wall collisions, cannot unlock the drift 
   assert.equal(c.metrics.cleanDrifts,0);
   c.onEvent({type:'driftEnd',data:{time:.4,clean:true}},g);
   assert.equal(c.metrics.cleanDrifts,1);
-  assert.match(c.objectiveLabel(g),/1\/3/);
+  assert.match(c.objectiveLabel(g),/1\/5/);
   assert.equal(gradeStage(c.stage,result(),c.metrics),0);
 });
 test('career UI objectives reflect real progress, not dummy counters',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<2;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(2);c.begin(g);
-  assert.match(c.objectiveLabel(g),/0\/1/);
-  c.metrics.cleanPasses=1;assert.match(c.objectiveLabel(g),/1\/1/);
+  assert.match(c.objectiveLabel(g),/0\/2/);
+  c.metrics.cleanPasses=1;assert.match(c.objectiveLabel(g),/1\/2/);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),0);
+  c.metrics.cleanPasses=2;
   assert.ok(gradeStage(c.stage,result(),c.metrics));
 });
 test('advertising cannot be offered before tutorial is actually completed',()=>{
@@ -212,6 +214,9 @@ test('corner-pass gift cannot counterfeit a required physical item-box pickup',(
   assert.equal(gradeStage(c.stage,result(),c.metrics),0);
   c.onItemGet('shield','box');
   assert.equal(c.metrics.pickups,1);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),0);
+  c.onItemGet('nitro','box');
+  assert.equal(c.metrics.pickups,2);
   assert.ok(gradeStage(c.stage,result(),c.metrics)>0);
 });
 
@@ -333,16 +338,16 @@ test('V4.6 native item rivals hold the fixed pre-race pace band without faking p
 test('V4.6 overtaking rivals form a varied field with a contesting ace',()=>{
   const c=new RacingCareer(memory()),g=game();
   c.progress.stars['02']=1;c.setStage(2);g.racers[1].skill=.85;g.racers[2].skill=1.05;c.begin(g);
-  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),[1.12,COMPETITIVE_FIELD_V42['03'][1]]);
+  assert.deepEqual(g.racers.slice(1).map(r=>r.skill),COMPETITIVE_FIELD_V42['03']);
   assert.ok(g.racers[2].skill>=1.4,'strongest opponent is no longer a passive road marker');
 });
 test('career retains the submitted expert field speeds while boss and middle field still escalate',()=>{
   const c=new RacingCareer(memory()),g=game();g.racers[1].skill=.55;g.racers[2].skill=.75;
-  c.begin(g);assert.equal(g.racers[1].skill,.55);assert.equal(g.racers[2].skill,.75);
+  c.begin(g);assert.equal(g.racers[1].skill,1.16);assert.equal(g.racers[2].skill,1.60);
   for(let i=0;i<12;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   c.setStage(12);g.racers[1].skill=1.2;g.racers[2].skill=1.38;c.begin(g);
-  assert.equal(c.boss.skill,1.58);
-  assert.ok(Math.abs(g.racers[2].skill-1.38)<1e-9);
+  assert.equal(c.boss.skill,2.04);
+  assert.ok(Math.abs(g.racers[2].skill-1.92)<1e-9);
 });
 test('V4.6 expert opponent remains a physical ace with no progress edits',()=>{
   const c=new RacingCareer(memory()),g=game();
