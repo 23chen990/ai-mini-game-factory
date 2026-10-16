@@ -76,15 +76,22 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
   if (challenge?.drill !== 'reposition') return null;
   const hits=Number.isFinite(native.hits)?Math.max(0,Math.floor(native.hits)):0;
   const travel=Number.isFinite(native.travel)?Math.max(0,native.travel):0;
-  let {stage=0,startTravel=0,hitBaseline=null} = previous||{};
+  let {stage=0,startTravel=0,hitBaseline=null,anchorX=null,anchorZ=null} = previous||{};
+  const x=Number.isFinite(native.x)?native.x:null;
+  const z=Number.isFinite(native.z)?native.z:null;
   if(stage===0&&hits>=challenge.openingHits) {
-    stage=1;startTravel=travel;
+    stage=1;startTravel=travel;anchorX=x;anchorZ=z;
   }
-  if(stage===1&&travel-startTravel>=challenge.minTravel) {
+  // Both real walking distance and actual displacement from the first-hit
+  // position are required. Spawn teleport or joystick wobble cannot complete.
+  const walked=Math.max(0,travel-startTravel);
+  const net=anchorX!==null&&anchorZ!==null&&x!==null&&z!==null
+    ? Math.hypot(x-anchorX,z-anchorZ):walked;
+  const distance=Math.min(walked,net);
+  if(stage===1&&distance>=challenge.minTravel) {
     stage=2;hitBaseline=hits;
   }
-  const distance=Math.max(0,travel-startTravel);
-  return {stage,startTravel,hitBaseline,distance,
+  return {stage,startTravel,hitBaseline,anchorX,anchorZ,distance,
     follow:stage===2?Math.max(0,hits-hitBaseline):0,firstHit:stage>0};
 }
 /** Preview copy mirrors each mission's actual input mechanics. */
@@ -839,7 +846,7 @@ export function createFpsMobileUx(game, root, doc) {
       } else previousPosition = null;
       if(active&&activeChallenge?.drill==='reposition'&&p) {
         const updated=cfAdvanceDrill(activeChallenge,drill,
-          {hits:p.stats?.hits||0,travel:walkedMeters});
+          {hits:p.stats?.hits||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z});
         if(updated?.stage!==drill?.stage) {
           drillStageAt=Math.max(0,(Number(game.time)||0)-startedGameSeconds);
           guide.textContent=updated?.stage===1
