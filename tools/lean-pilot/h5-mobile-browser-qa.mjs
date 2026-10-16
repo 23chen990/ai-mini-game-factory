@@ -136,7 +136,28 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        return r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight;
      });
      entryMobile.smallFits = smallFits;
+     entryMobile.brief = await page.evaluate(() => {
+       const panel=document.querySelector('#mk-panel');
+       const facts=[...document.querySelectorAll('#mk-fps-brief>span')];
+       const cards=[...document.querySelectorAll('#mk-challenges>button')];
+       const tutorial=document.querySelector('#mk-fps-tutorial')?.textContent||'';
+       const start=document.querySelector('#mk-start')?.getBoundingClientRect();
+       const inside = el => {
+         const a=el.getBoundingClientRect(),b=panel.getBoundingClientRect();
+         return a.left>=b.left && a.right<=b.right && a.top>=b.top && a.bottom<=b.bottom;
+       };
+       return {facts:facts.map(el=>el.textContent.trim()),
+         cards:cards.length,selected:cards.filter(el=>el.getAttribute('aria-pressed')==='true').length,
+         autoFireTutorial:/自动开火/.test(tutorial),startHeight:start?.height??0,
+         allWithinPanel:[...facts,...cards].every(inside)};
+     });
      await page.setViewportSize(viewport);
+     const b=entryMobile.brief;
+     fpsExtendedChecks.push({name:'cf-v6-ready-ui',
+       passed:entryMobile.panelFits&&entryMobile.smallFits&&b.cards===3&&b.selected===1&&
+         b.autoFireTutorial&&b.allWithinPanel&&b.startHeight>=48&&
+         b.facts.some(x=>/M4A1/.test(x))&&b.facts.some(x=>/3 次/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
+       detail:b});
    }
    const startBox=await page.locator('#mk-start').boundingBox();
    check('mobile-entry', readyMs<=30000&&startBox?.width>=44&&startBox?.height>=44&&
@@ -144,6 +165,26 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      {readyMs,viewport,actualHTTP:true,entryMobile});
    await page.locator('#mk-start').tap();actions.push({atMs:Date.now()-started,input:'tap',target:'#mk-start'});
    await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
+   if(isFps){
+     const hud=await page.evaluate(()=>{
+       const meter=document.querySelector('#mobile-kit .mk-meter'),
+         board=document.getElementById('mk-fps-board'),
+         radar=document.getElementById('radarWrap'),
+         pause=document.getElementById('mk-pause');
+       const r=meter.getBoundingClientRect(),a=radar.getBoundingClientRect(),
+         p=pause.getBoundingClientRect();
+       const overlaps=(x,y)=>x.left<y.right&&y.left<x.right&&x.top<y.bottom&&y.top<x.bottom;
+       return {scoreboardHidden:getComputedStyle(board).display==='none',
+         status:document.getElementById('mk-status')?.textContent||'',
+         timer:document.getElementById('mk-time')?.textContent||'',
+         meterVisible:getComputedStyle(meter).display!=='none',
+         inViewport:r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight,
+         clearOfRadar:!overlaps(r,a),clearOfPause:!overlaps(r,p)};
+     });
+     fpsExtendedChecks.push({name:'cf-v6-objective-hud',
+       passed:hud.scoreboardHidden&&hud.meterVisible&&hud.inViewport&&
+         hud.clearOfRadar&&hud.clearOfPause,detail:hud});
+   }
    // Beginner duel may legitimately finish on the first manual burst. Verify
    // pause early, before a fast real win hides the button.
    if(isFps){
@@ -284,6 +325,27 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      }else await page.waitForTimeout(1000);
    }
    const phase=await page.locator('#mobile-kit').getAttribute('data-phase'),score=Number(await page.locator('#mk-score').innerText());
+   if(run.theme==='cf-transport-ship'&&phase==='finished'){
+     const facts=await page.evaluate(()=>{
+       const items=[...document.querySelectorAll('#mk-fps-results>span')].map(e=>e.textContent.trim());
+       const game=window.__H5NativeGame,player=game?.player;
+       const kit=document.getElementById('mobile-kit');
+       const panel=document.getElementById('mk-panel');
+       const r=panel.getBoundingClientRect();
+       return {facts:items,actualHits:player?.stats?.hits??null,
+         phase:kit?.dataset.phase,
+         bounds:[r.left,r.top,r.right,r.bottom],
+         viewport:[innerWidth,innerHeight],
+         activeGuide:getComputedStyle(document.getElementById('mk-fps-guide')).display!=='none'};
+     });
+     const resultLayout=facts.bounds[0]>=0&&facts.bounds[1]>=0&&
+       facts.bounds[2]<=facts.viewport[0]&&facts.bounds[3]<=facts.viewport[1];
+     fpsExtendedChecks.push({name:'cf-v6-result-ui',
+       passed:facts.facts.length===3&&
+         facts.facts[0].includes(String(facts.actualHits)+' / 3')&&
+         facts.phase==='finished'&&!facts.activeGuide&&resultLayout,
+       detail:facts});
+   }
    await shot('mobile-terminal');
    const terminal={phase,visibleHeading:await page.locator('#mk-heading').innerText(),score,wallMs:Date.now()-started};
    if(run.theme==='cf-transport-ship'){
@@ -371,14 +433,35 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          const moved=dist>0.5&&look>0.01;
          // Keep the original combat, button layout, and offscreen checks.
          const d=controlCheck.detail;
-         const layout=d.layout;
-         const layoutOkay=!layout.overlap&&layout.desktopMenuHidden&&layout.labelsPresent&&
+         // The beginner may actually win before its original control snapshot.
+         // Re-capture, rather than reusing FINISHED-state buttons, and demand
+         // every original full-size/visibility/no-overlap condition in RUNNING.
+         const layout=await page.evaluate(()=>{
+           const actions=['fire','jump','reload','scope','duplicate-fire','crouch','switch'];
+           const nodes=actions.map(action=>{
+             const e=document.querySelector('#touch .btn[data-mk-action="'+action+'"]');
+             if(!e)return {action,visible:false};
+             const r=e.getBoundingClientRect(),cs=getComputedStyle(e);
+             return {action,visible:cs.display!=='none'&&cs.visibility!=='hidden',
+               left:r.left,top:r.top,width:r.width,height:r.height,
+               fits:r.left>=0&&r.top>=0&&r.right<=innerWidth&&r.bottom<=innerHeight};
+           });
+           const visible=nodes.filter(n=>n.visible);
+           const overlap=visible.some((a,i)=>visible.slice(i+1).some(b=>
+             a.left<b.left+b.width&&b.left<a.left+a.width&&
+             a.top<b.top+b.height&&b.top<a.top+a.height));
+           return {actions:nodes,overlap,active:document.documentElement.dataset.fpsActive,
+             desktopMenuHidden:getComputedStyle(document.getElementById('menu')).display==='none',
+             labelsPresent:!!document.getElementById('mk-fps-target')&&!!document.getElementById('mk-fps-board')};
+         });
+         const layoutOkay=layout.active==='true'&&!layout.overlap&&layout.desktopMenuHidden&&layout.labelsPresent&&
            layout.actions.every(n=>!n.visible||n.fits)&&
            ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible))&&
            ['duplicate-fire','crouch','switch'].every(a=>layout.actions.some(n=>n.action===a&&!n.visible));
          controlCheck.passed=(d.shotsAfter>d.shotsBefore)&&layoutOkay&&moved;
-         controlCheck.detail={...d,thumbMotion:moved,firstWinEndedBeforeOriginalAudit:true,
+         controlCheck.detail={...d,layout,thumbMotion:moved,firstWinEndedBeforeOriginalAudit:true,
            movementVerifiedIn:'AWM challenge after real first win',
+           layoutVerifiedIn:'AWM challenge during actual running gameplay',
            separateMissionMeters:dist,separateMissionYawRad:look};
          await shot('mobile-sniper-thumb-audit');
        }

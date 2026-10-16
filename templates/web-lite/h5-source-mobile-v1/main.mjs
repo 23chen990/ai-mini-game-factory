@@ -1,7 +1,7 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
-import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked } from './fps-mobile-ux.mjs';
+import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts } from './fps-mobile-ux.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -25,7 +25,7 @@ async function boot() {
   const root = document.createElement('section'); root.id = 'mobile-kit';
   root.innerHTML = `<header class="mk-header"><b id="mk-title"></b><span>最佳 <b id="mk-best">0</b></span><button id="mk-pause" aria-label="暂停">⏸ 暂停</button></header>
     <div class="mk-meter"><span id="mk-status">准备出发</span><span>积分 <b id="mk-score">0</b></span><span id="mk-time"></span><progress id="mk-goal" max="8" value="0"></progress></div>
-    <div id="mk-panel"><h2 id="mk-heading"></h2><p id="mk-copy"></p><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-elite" hidden aria-pressed="false">⚡ 精英复战</button><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
+    <div id="mk-panel"><div id="mk-fps-kicker" hidden>FIELD OPS / 任务选择</div><h2 id="mk-heading"></h2><p id="mk-copy"></p><div id="mk-fps-brief" hidden aria-label="当前任务参数"></div><div id="mk-fps-results" hidden role="group" aria-label="本局真实战绩"></div><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-elite" hidden aria-pressed="false">⚡ 精英复战</button><div id="mk-fps-actions"><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button></div><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
@@ -34,6 +34,14 @@ async function boot() {
   $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '左手移动、右手瞄准，按住开火。手机横屏游玩；离开页面自动暂停。';
   if (!storageAvailable) $('storage').textContent = '存储不可用，本次仍可游玩';
   const persist = () => { try { localStorage.setItem(key, saveProgress(progress, id)); localStorage.setItem(challengeKey, saveChallengeProgress(challengeProgress)); } catch { storageAvailable = false; $('storage').textContent = '存储不可用，本次仍可游玩'; } };
+  // Real DOM text instead of hidden stats, templates, or fabricated battle scores.
+  const renderFacts = (element, facts) => {
+    element.replaceChildren(...facts.map(({label,value}) => {
+      const item=document.createElement('span'),name=document.createElement('small'),number=document.createElement('b');
+      name.textContent=label; number.textContent=value;
+      item.append(name,number); return item;
+    }));
+  };
   const renderSelection = () => {
     const available = id === 'cf-transport-ship' && cfEliteUnlocked(challengeProgress.records[selected.id]);
     if (!available) { elite = false; if (id === 'cf-transport-ship') challengeProgress.elite = false; }
@@ -52,10 +60,17 @@ async function boot() {
       const record = challengeProgress.records[c.id];
       const state = record?.eliteWins > 0 ? '⚡ 精英通关'
         : record?.wins ? '✓ 已完成' : Math.ceil(c.limitMs / 1000) + '秒';
-      return `<button data-challenge-id="${c.id}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${state}</small></button>`;
+      return `<button data-challenge-id="${c.id}" data-kind="${c.kind}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${state}</small></button>`;
     }).join('');
     $('goal').max = id === 'cf-transport-ship' && selected.kind === 'survive' ? selected.limitMs / 1000 : selected.target;
     $('goal').value = 0; root.dataset.challenge = selected.id;
+    if (id === 'cf-transport-ship') {
+      renderFacts($('fps-brief'),cfMissionFacts(displayChallenge));
+      fpsUx?.onSelect(displayChallenge);
+      $('fps-brief').hidden=false;
+      $('fps-results').hidden=true;
+      if(root.dataset.loaded==='true')$('start').textContent=elite?'⚡ 开始精英挑战 →':'进入战场 →';
+    }
   };
   $('challenges').addEventListener('click', e => {
     const c = levels.find(c => c.id === e.target.closest('[data-challenge-id]')?.dataset.challengeId);
@@ -111,6 +126,10 @@ async function boot() {
   }
   if (!native) { $('copy').textContent = '加载尚未完成，请刷新或换用支持 WebGL 的浏览器。'; return; }
   root.dataset.loaded = 'true'; $('start').disabled = false; $('start').textContent = '▶ 开始';
+  if (id === 'cf-transport-ship') {
+    $('replay').textContent='↻ 重试本关';
+    renderSelection();
+  }
   if (id !== 'pelican-bike') root.querySelector('#mk-controls').hidden = true;
   const showPhase = phase => {
     root.dataset.phase = phase;
@@ -118,11 +137,19 @@ async function boot() {
     $('challenges').hidden = !['ready','finished'].includes(phase);
     $('resume').hidden = phase !== 'paused'; $('replay').hidden = phase !== 'finished';
     $('elite').hidden = phase !== 'ready' || id !== 'cf-transport-ship' || !cfEliteUnlocked(challengeProgress.records[selected.id]);
+    if (id === 'cf-transport-ship') {
+      $('fps-kicker').hidden=false;
+      $('fps-kicker').textContent=phase==='finished'
+        ? (root.dataset.outcome==='won' ? 'MISSION COMPLETE / 战绩结算' : 'MISSION FAILED / 复盘')
+        : phase==='paused' ? 'PAUSED / 已暂停' : 'FIELD OPS / 选择挑战';
+      $('fps-brief').hidden=phase!=='ready';
+      $('fps-results').hidden=phase!=='finished';
+    }
     const nextIndex = activeChallenge ? levels.findIndex(c => c.id === activeChallenge.id)+1 : -1;
     const next = id === 'cf-transport-ship' && phase === 'finished' &&
       root.dataset.outcome === 'won' ? levels[nextIndex] : null;
     $('next').hidden = !next;
-    if(next)$('next').textContent = '▶ 下一关：' + next.title;
+    if(next)$('next').textContent = '下一关 · ' + next.title + ' →';
     $('pause').disabled = !round || !['running', 'paused'].includes(round.phase);
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
@@ -189,10 +216,10 @@ async function boot() {
           root.dataset.outcome = result.outcome;
           $('heading').textContent = result.outcome === 'won' ? (activeChallenge.elite ? '⚡ 精英复战成功！' : '✓ ' + activeChallenge.title + '完成！') : (activeChallenge.elite ? '精英复战失败' : '本次挑战未完成');
           $('copy').textContent = id === 'cf-transport-ship'
-            ? (result.outcome === 'won'
-                ? '任务成功！本局 ' + round.score + ' 分 · 累计补给 ' + progress.bank + '。'
-                : '') + cfMissionDebrief(activeChallenge, metrics, result.outcome)
+            ? cfMissionDebrief(activeChallenge, metrics, result.outcome)
             : `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
+          if (id === 'cf-transport-ship')
+            renderFacts($('fps-results'), cfResultFacts(activeChallenge,metrics,round.elapsedMs));
           $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent = result.outcome === 'won' ? (activeChallenge.elite ? '⚡ 精英通关' : '✓ 已完成') : '可重试';
           $('best').textContent = progress.best; showPhase('finished');
           // The placement is wired but hidden until the actual H5 account's check_ads_status is verified.

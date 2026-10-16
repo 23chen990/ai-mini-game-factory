@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -269,4 +269,48 @@ test('CF expert copy matches actual shorter deadlines and lower death budgets',(
  assert.match(cfMissionDebrief({kind:'hits',target:3,maxDeaths:1,elite:true},{hits:0,deaths:0},'lost'),/手动点按开火/);
  assert.match(cfMissionDebrief({kind:'hits',target:3,maxDeaths:1,elite:true},{hits:3,deaths:2},'lost'),/最多允许 1 次/);
  assert.match(cfMissionDebrief({kind:'kills',target:1,maxDeaths:1,elite:true},{hits:2,awmKills:1,deaths:2},'lost'),/被击倒 2 次/);
+});
+
+
+test('CF V6 mission brief reflects current actual selectable objective and weapon',()=>{
+ const rifle={kind:'hits',weapon:'m4a1',target:3,limitMs:60000};
+ const sniper={kind:'kills',weapon:'awm',target:1,limitMs:75000,elite:true};
+ const survive={kind:'survive',weapon:'mp5',minTravel:30,target:1,limitMs:45000};
+ assert.deepEqual(cfMissionFacts(rifle),[
+  {label:'装备',value:'M4A1'},{label:'目标',value:'命中 3 次'},{label:'限时',value:'60 s'}]);
+ assert.deepEqual(cfMissionFacts(sniper),[
+  {label:'装备',value:'AWM'},{label:'目标',value:'击杀 1 人'},{label:'限时',value:'75 s'}]);
+ assert.deepEqual(cfMissionFacts(survive),[
+  {label:'装备',value:'MP5'},{label:'目标',value:'移动 30 m'},{label:'限时',value:'45 s'}]);
+ assert.deepEqual(cfMissionFacts(null),[]);
+});
+
+test('CF V6 results display strictly native player measurements, not simulated team scores',()=>{
+ const rifle={kind:'hits',weapon:'m4a1',target:3,limitMs:60000};
+ const sniper={kind:'kills',weapon:'awm',target:1,limitMs:75000};
+ const survive={kind:'survive',weapon:'mp5',target:1,minTravel:30,limitMs:45000};
+ assert.deepEqual(cfResultFacts(rifle,{hits:2,deaths:1,kills:99},10900),[
+  {label:'命中',value:'2 / 3'},{label:'阵亡',value:'1'},{label:'耗时',value:'11 s'}]);
+ assert.deepEqual(cfResultFacts(sniper,{hits:3,awmKills:0,kills:99,deaths:1},34000),[
+  {label:'狙杀',value:'0 / 1'},{label:'命中',value:'3'},{label:'阵亡',value:'1'}]);
+ assert.deepEqual(cfResultFacts(survive,{travel:29.9,deaths:0},44999),[
+  {label:'生存',value:'44 / 45 s'},{label:'移动',value:'29 / 30 m'},{label:'阵亡',value:'0 / 1'}]);
+ assert.deepEqual(cfResultFacts(survive,{travel:39.1,deaths:1},45000),[
+  {label:'生存',value:'45 / 45 s'},{label:'移动',value:'39 / 30 m'},{label:'阵亡',value:'1 / 1'}]);
+ const bad=cfResultFacts(rifle,{hits:NaN,deaths:-5},NaN);
+ assert.equal(bad[0].value,'0 / 3');
+ assert.equal(bad[1].value,'0');
+ assert.equal(bad[2].value,'0 s');
+ assert.deepEqual(cfResultFacts(null,{}),[]);
+});
+
+
+test('CF V6 start-screen touch instructions match the selected actual fire behavior',()=>{
+ assert.match(cfTouchTutorial({kind:'hits'}),/自动开火/);
+ assert.doesNotMatch(cfTouchTutorial({kind:'hits',elite:true}),/自动开火/);
+ assert.match(cfTouchTutorial({kind:'hits',elite:true}),/手动按开火/);
+ assert.match(cfTouchTutorial({kind:'kills'}),/先开镜/);
+ assert.match(cfTouchTutorial({kind:'survive'}),/边移动/);
+ assert.match(cfTouchTutorial({kind:'survive'}),/开火/);
+ assert.match(cfTouchTutorial({}),/开火/);
 });
