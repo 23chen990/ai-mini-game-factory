@@ -333,8 +333,7 @@ export function buildRaceLandmarks(THREE,track,course) {
     share(signatureGroup,new THREE.BoxGeometry(span,.55,.7),material,0,11.5,0);
     for(const side of [-1,1])share(signatureGroup,new THREE.BoxGeometry(.75,11.5,.9),material,side*(span*.5-.6),5.75,0);
   }else if(signature===1){
-    const ring=share(signatureGroup,new THREE.TorusGeometry(Math.min(7.2,track.halfW*.72),.55,7,24),material,0,10.2,0);
-    ring.rotation.x=Math.PI/2;
+    share(signatureGroup,new THREE.TorusGeometry(Math.min(7.2,track.halfW*.72),.55,7,24),material,0,10.2,0);
   }else if(signature===2){
     for(const side of [-1,1]){
       const beam=share(signatureGroup,new THREE.BoxGeometry(.75,8.5,.8),material,side*(span*.5-.6),4.25,0);
