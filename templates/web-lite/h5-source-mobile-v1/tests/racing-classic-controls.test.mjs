@@ -40,7 +40,7 @@ test('race and item boosts are separate edges, cancel and pause clear touch',()=
 });
 test('native patch rejects unknown pinned vehicle, preserves physical yaw and does not duplicate transforms',()=>{
   const yaw='const yaw = held ? T.driftYaw + T.driftYawAlign * align : (0.45 + 0.9 * align) * Math.exp(-2.2 * this.releaseTime);';
-  const vehicle='this.driftDir * yaw;\n'+yaw+'\nif (inp.nitroPressed && !itemMode) this.triggerNitro();\nif (!itemMode && onGround) {';
+  const vehicle='this.driftDir * yaw;\n'+yaw+'\nconst held = inp.shift;\nif ((!held && (Math.abs(a) < 0.1 || (align < 0 && Math.abs(a) < 0.26))) || this.s < 7) this.endDrift(this.s >= 7);\nif (inp.nitroPressed && !itemMode) this.triggerNitro();\nif (!itemMode && onGround) {';
   const counter=patchCounterSteer(vehicle);
   assert.match(counter,/align < -0\.08 \? -T\.driftYawAlign/);
   assert.equal(patchCounterSteer(counter),counter);
