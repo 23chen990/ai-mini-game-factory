@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { configureRivalTactics, applyRivalTactics, tuneOpponentField } from '../racing/rival-pressure.mjs';
+import { configureRivalTactics, applyRivalTactics, tuneOpponentField, seedCompetitiveField, COMPETITIVE_FIELD_V42, careerPaceMultiplier } from '../racing/rival-pressure.mjs';
 
 function rival(overrides = {}) {
   return {
@@ -72,4 +72,62 @@ test('pace tuning remains bounded and never touches bosses or final item race', 
   assert.equal(tuneOpponentField(boss, { id: '13', course: 'race-13', diff: 2, kind: 'boss' }).adjusted, 0);
   const finalItem = Array.from({ length: 6 }, () => rival({ skill: 1.3 }));
   assert.equal(tuneOpponentField(finalItem, { id: '15', course: 'race-15', diff: 2, kind: 'item' }).adjusted, 0);
+});
+
+test('V4.2 sends five genuine opponents into a fixed, varied contest; never touches player state',()=>{
+  const stage={id:'02',course:'race-02',diff:0,kind:'speed'};
+  const player={isPlayer:true,skill:999,progress:55,s:55};
+  const field=[player,...Array.from({length:5},(_,i)=>rival({skill:.55+.05*i,progress:5+i*8}))];
+  const original=field.map(x=>({progress:x.progress,s:x.s}));
+  const configured=seedCompetitiveField(field,stage);
+  assert.deepEqual(configured,{adjusted:5,ace:true,minimum:.78,maximum:1.16});
+  assert.deepEqual(field.slice(1).map(x=>x.skill),[.78,.875,.97,1.065,1.16]);
+  assert.equal(player.skill,999);
+  assert.deepEqual(field.map(x=>({progress:x.progress,s:x.s})),original,
+    'must not teleport opponents or change physics velocity');
+  const again=field.slice(1).map(x=>x.skill);
+  seedCompetitiveField(field,stage);
+  assert.deepEqual(field.slice(1).map(x=>x.skill),again,'fixed setup must be idempotent');
+});
+
+test('all 16 stages have intentional bands or an explicitly protected tutorial/boss',()=>{
+  const expected=['02','03','04','05','06','07','08','09','10','11','12','14','15'];
+  assert.deepEqual(Object.keys(COMPETITIVE_FIELD_V42).sort(),expected);
+  for(const [id,band] of Object.entries(COMPETITIVE_FIELD_V42)){
+    assert.ok(band[0]>.7&&band[1]<=1.55&&band[0]<band[1],id);
+    const seed=seedCompetitiveField(Array.from({length:5},()=>rival({skill:.85})),
+      {id,course:'race-'+id});
+    assert.equal(seed.adjusted,5);
+    assert.equal(seed.maximum,band[1]);
+  }
+  for(const id of ['01','13','16']){
+    const rivals=[rival({skill:1.29})];
+    assert.deepEqual(seedCompetitiveField(rivals,{id,course:'race-'+id}),{adjusted:0,ace:false});
+    assert.equal(rivals[0].skill,1.29);
+  }
+});
+
+test('daily racing strength follows underlying course; original native menu rubber stays separate',()=>{
+  const stage={id:'daily-2026-10-17',course:'race-08',kind:'race',mode:'speed',diff:1};
+  const one=[rival({skill:.9})];
+  assert.equal(seedCompetitiveField(one,stage).maximum,1.45);
+  assert.equal(one[0].skill,1.45);
+  assert.equal(seedCompetitiveField([rival()],{id:'daily-2026-10-17',course:'invalid'}).adjusted,0);
+  assert.equal(careerPaceMultiplier(true),1);
+  assert.equal(careerPaceMultiplier(false),null);
+});
+
+test('rivals look for a safe pass around an ACTUAL other-AI blocker, not just the player',()=>{
+  const player={isPlayer:true,progress:300,lat:0,s:39};
+  const chaser=rival({progress:120,dist:200,lat:1,s:41});
+  const blocker=rival({progress:150,dist:230,lat:4,s:39});
+  const g={state:'race',player,racers:[player,chaser,blocker],track:{length:900,curvAhead:()=>0}};
+  configureRivalTactics([chaser,blocker],{id:'08'});
+  const base=chaser.personal;
+  const changed=applyRivalTactics(g,{id:'08'});
+  assert.ok(changed>=1);
+  assert.ok(chaser.personal<base,
+    'AI chaser should plan the open left side of the other AI, even if player is far away');
+  assert.equal(chaser.progress,120);
+  assert.equal(blocker.progress,150);
 });
