@@ -91,7 +91,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = career.dailySnapshot ? '每天一场新挑战' : stage.mode === 'item' ? '左右选线拿道具，自动使用' : stage.kind === 'overtake' ? '弯道真正反超，才算成功' : '保持速度，过弯走好路线';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: driver.enabled ? 'two-button' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, revision: 'V4.1' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncTouchButtons() {
   const active = pointers.activeDirection();
