@@ -10,7 +10,7 @@ export const FREE_ROAD_EDGE=2.15;
 export const TAP_STEER_DISTANCE=1.18;
 const nearestLane=z=>clamp(Math.round((z-LANES[0])/(LANES[1]-LANES[0])),0,2);
 const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500)r.events.shift();};
-export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false}; }
+export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false,revives:0,reviveGrace:0}; }
 // Original authorized bike allowed any road position, not three locked stops.
  // Lane indices now describe *where hazards are authored*, not legal rider positions.
 export function steerTo(r, target, source='drag') {
@@ -57,7 +57,18 @@ export function sweptHit(a,b,hx,hz) {
   let lo=(-half-a[key])/v,hi=(half-a[key])/v;if(lo>hi)[lo,hi]=[hi,lo];min=Math.max(min,lo);max=Math.min(max,hi);if(min>max)return false;
  }return true;
 }
-function finish(r,reason,object){r.phase='finished';r.reason=reason;r.speed=0;event(r,reason==='complete'?'complete':'failed',{reason,objectId:object?.id,kind:object?.kind});}
+function finish(r,reason,object){r.phase='finished';r.reason=reason;r.speed=0;r.lastCollisionId=object?.id??null;event(r,reason==='complete'?'complete':'failed',{reason,objectId:object?.id,kind:object?.kind});}
+// A revival is only granted by a verified rewarded-ad completion in the UI.
+// Never revive an already settled run, a fish shortage, or a time-out.
+export function canRevive(r){return !!r&&r.phase==='finished'&&!r.settled&&r.revives===0&&['vehicle','barrier'].includes(r.reason);}
+export function revive(r){
+ if(!canRevive(r))return false;
+ const object=r.obstacles.find(o=>o.id===r.lastCollisionId);
+ if(object){object.hit=true;object.passed=true;}
+ r.revives=1;r.reviveGrace=2.5;r.phase='running';r.reason=null;r.speed=r.level.speed;
+ r.stun=0;r.y=0;r.vy=0;r.bufferedJump=null;r.streak=0;
+ event(r,'revived',{grace:r.reviveGrace});return true;
+}
 export function advance(r,seconds) {
  if(r.phase!=='running'||!Number.isFinite(seconds)||seconds<=0)return;
  let left=Math.min(seconds,2);
@@ -66,6 +77,7 @@ export function advance(r,seconds) {
 function step(r,dt){
  const oldD=r.distance,oldZ=r.lane,oldY=r.y;
  r.elapsed+=dt;
+ if(r.reviveGrace>0)r.reviveGrace=Math.max(0,r.reviveGrace-dt);
  if(r.stun>0){r.stun=Math.max(0,r.stun-dt);r.speed=0;if(r.stun===0)event(r,'recovered');}
  else{r.speed=r.level.speed;r.distance=Math.min(r.level.distance,r.distance+r.speed*dt);}
  // Same continuous damped dynamics as the source, but with an actual analog
@@ -96,7 +108,7 @@ function step(r,dt){
   }
   if(o.hit||o.passed||r.stun>0)continue;
   const bounds=BOUNDS[o.kind];
-  if(sweptHit({x:oldX-oldD,z:oldOZ-oldZ},{x:o.x-r.distance,z:o.z-r.lane},bounds.x+.58,bounds.z+.27)){
+  if(r.reviveGrace<=0&&sweptHit({x:oldX-oldD,z:oldOZ-oldZ},{x:o.x-r.distance,z:o.z-r.lane},bounds.x+.58,bounds.z+.27)){
    if(o.kind==='barrier'&&Math.min(oldY,r.y)>.31){o.jumped=true;continue;}
    o.hit=true;o.fallAt=r.elapsed;r.hits++;r.streak=0;
    if(o.kind==='pedestrian'){r.stun=3;r.speed=0;event(r,'pedestrian-hit',{objectId:o.id});}
