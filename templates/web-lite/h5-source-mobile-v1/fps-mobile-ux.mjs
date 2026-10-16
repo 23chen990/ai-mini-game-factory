@@ -61,9 +61,17 @@ export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
 
+/** Expert mode is earned by an actual recorded win. */
+export function cfEliteUnlocked(record) {
+  return Number.isSafeInteger(record?.wins) && record.wins > 0;
+}
+/** First rifle mission trains with auto-fire, while expert needs genuine touch input. */
+export function cfAutoFireEligible(challenge) {
+  return challenge?.kind === 'hits' && challenge.elite !== true;
+}
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
-  if (challenge.kind === 'hits') return '1v1入门对决：对准敌人开火，命中3次';
+  if (challenge.kind === 'hits') return '1v1入门：准星对准敌人自动开火，命中3次';
   if (challenge.kind === 'kills') return '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
   if (challenge.kind === 'survive') return '坚持45秒，移动20米，最多被击倒2次';
   return challenge.instructions || '';
@@ -73,27 +81,31 @@ export function mobileChallengeCopy(challenge) {
 // Mobile-first tuning: soften the first encounter; increase pressure with time
 // and demonstrated player success. These are bot perception/behavior knobs,
 // not health, weapon damage, hitboxes, spawn cheats or automatic player kills.
-export function mobileEnemyDifficulty(kind, seconds = 0, stats = {}) {
+export function mobileEnemyDifficulty(kind, seconds = 0, stats = {}, elite = false) {
   const clamp = v => Math.max(0, Math.min(1, v));
+  const expert = elite === true;
   const elapsed = Number.isFinite(seconds) ? Math.max(0, seconds) : 0;
   const hits = Math.max(0, Number(stats.hits) || 0);
   const kills = Math.max(0, Number(stats.k) || 0);
   const deaths = Math.max(0, Number(stats.d) || 0);
-  const ramp = clamp((elapsed - 22) / 40 + (hits >= 2 ? 0.24 : 0) +
+  const ramp = clamp((elapsed - (expert ? 6 : 22)) / (expert ? 30 : 40) + (hits >= 2 ? 0.24 : 0) +
     (kills >= 1 ? 0.18 : 0) - (deaths >= 2 ? 0.16 : 0));
   const lerp = (a, b) => +(a + (b - a) * ramp).toFixed(3);
   const sniper = kind === 'kills';
   const survivor = kind === 'survive';
   return {
-    react: [lerp(survivor ? 0.9 : 1.1, 0.55), lerp(survivor ? 1.4 : 1.65, 0.94)],
-    aimErr: lerp(survivor ? 0.105 : 0.13, 0.074),
-    turn: lerp(2.6, 3.7),
-    track: lerp(1.65, 2.45),
-    headP: lerp(0.005, sniper ? 0.035 : 0.075),
-    ctrl: lerp(1.0, 0.94),
-    comp: lerp(0.4, 0.58),
-    strafe: lerp(sniper ? 0.10 : 0.14, sniper ? 0.28 : 0.42),
-    see: lerp(38, 52), fov: lerp(1.48, 1.75), bunny: 0
+    react: [lerp(expert ? 0.7 : survivor ? 0.9 : 1.1, expert ? 0.40 : 0.55),
+      lerp(expert ? 1.1 : survivor ? 1.4 : 1.65, expert ? 0.74 : 0.94)],
+    aimErr: lerp(expert ? 0.095 : survivor ? 0.105 : 0.13, expert ? 0.054 : 0.074),
+    turn: lerp(expert ? 3.2 : 2.6, expert ? 4.7 : 3.7),
+    track: lerp(expert ? 2.0 : 1.65, expert ? 3.45 : 2.45),
+    headP: lerp(expert ? 0.025 : 0.005, expert ? sniper ? 0.07 : 0.13 : sniper ? 0.035 : 0.075),
+    ctrl: lerp(expert ? 0.96 : 1.0, expert ? 0.86 : 0.94),
+    comp: lerp(expert ? 0.55 : 0.4, expert ? 0.74 : 0.58),
+    strafe: lerp(expert ? 0.24 : sniper ? 0.10 : 0.14, expert ? 0.62 : sniper ? 0.28 : 0.42),
+    see: lerp(expert ? 42 : 38, expert ? 57 : 52),
+    fov: lerp(expert ? 1.6 : 1.48, expert ? 1.9 : 1.75),
+    bunny: expert ? 0.015 : 0
   };
 }
 
