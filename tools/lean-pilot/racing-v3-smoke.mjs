@@ -198,8 +198,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V4.6'||
-     worldIdentity.uiRevision!=='racing-v46-wheel-challenge')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V4.8'||
+     worldIdentity.uiRevision!=='racing-v48-all-hard')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -295,7 +295,7 @@ try {
   await page.setViewportSize({width:844,height:390});
   const title=await page.locator('#race-stage').locator('option').count();
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
-  await raceStart(page,0,'01-city-tutorial');
+  await raceStart(page,0,'01-city-hard-ranked');
   const nativeHudLayout=await page.evaluate(()=>{
     const bounds=id=>document.querySelector(id)?.getBoundingClientRect();
     const overlap=(a,b)=>!!a&&!!b&&a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
