@@ -6,21 +6,23 @@
  */
 export const OPPONENT_PACE_V40=Object.freeze({
   // Beginner stages get a real contest without turning the first race into a wall.
-  '02':{from:[.55,.75],to:[.72,.94],ace:.035},
-  '04':{from:[.55,.75],to:[.72,.94],ace:.035},
-  '05':{from:[.55,.75],to:[.67,.87],ace:.025},
+  '02':{from:[.55,.75],to:[.67,.86],ace:.03},
+  '04':{from:[.55,.75],to:[.67,.86],ace:.03},
+  '05':{from:[.55,.75],to:[.62,.81],ace:.02},
   // Mid-game opponents now live much closer to the native "熟练/车神" band.
-  '03':{from:[.85,1.05],to:[1.20,1.36],ace:.035},
-  '06':{from:[.85,1.05],to:[1.08,1.24],ace:.025},
-  '07':{from:[.85,1.05],to:[1.20,1.36],ace:.02},
-  '08':{from:[.85,1.05],to:[1.20,1.36],ace:.035},
-  '09':{from:[.85,1.05],to:[1.20,1.36],ace:.02},
-  '10':{from:[.85,1.05],to:[1.08,1.24],ace:.025},
-  '12':{from:[.85,1.05],to:[1.20,1.36],ace:.02},
+  '03':{from:[.85,1.05],to:[1.20,1.36],ace:.025},
+  '06':{from:[.85,1.05],to:[1.05,1.20],ace:.015},
+  '07':{from:[.85,1.05],to:[1.18,1.34],ace:0},
+  '08':{from:[.85,1.05],to:[1.20,1.36],ace:.025},
+  '09':{from:[.85,1.05],to:[1.18,1.34],ace:0},
+  '10':{from:[.85,1.05],to:[1.05,1.20],ace:.02},
+  '12':{from:[.85,1.05],to:[1.18,1.34],ace:0},
   // Hard stages already have the native top skill range; only personality changes.
   '11':{from:[1.20,1.38],to:[1.20,1.38],ace:.025},
   '14':{from:[1.20,1.38],to:[1.20,1.38],ace:.03},
 });
+
+export const OPPONENT_PACE_V39=OPPONENT_PACE_V40;
 
 const RIVAL_TACTICS_V40=Object.freeze([
   {role:'冲刺手',laneBias:-.08,passBias:.27,defendBias:.11,passSide:1},
