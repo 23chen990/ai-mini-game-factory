@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { careerCourseSvg, raceProgressPercent, nearbyRival, raceEventMoment, raceMetricMoment } from '../racing/presentation.mjs';
 import { STAGES } from '../racing/career.mjs';
+import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
 
 test('all 16 authored tracks have unique rendered road shapes without remote assets', () => {
   const paths = new Set();
@@ -12,6 +13,12 @@ test('all 16 authored tracks have unique rendered road shapes without remote ass
     assert.equal(svg.includes('http'), false);
     const path = svg.match(/class="race-track-road" d="([^"]+)"/)?.[1];
     assert.ok(path && path.endsWith(' Z'));
+    // Every visible turn on the lobby course uses the SAME inserted physics
+    // vertices as the native track builder (not an old simplified preview).
+    const basePoints=COURSE_BLUEPRINTS[stage.id][4].trim().split(/\s+/).length;
+    assert.equal((path.match(/L/g)??[]).length+1,
+      basePoints+COURSE_TECHNICAL_SECTORS[stage.id].length*2,
+      'visible course must include genuine S-sector control points '+stage.id);
     paths.add(path);
   }
   assert.equal(paths.size, 16);

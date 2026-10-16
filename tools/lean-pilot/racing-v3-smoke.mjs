@@ -4,7 +4,8 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
 import { once } from 'node:events';
-import { TRACK_RESHAPES } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
+import { TRACK_RESHAPES, COURSE_ROAD_WIDTHS } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
+import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
 
 /**
  * Automated real Chromium/WebGL *entry smoke*, not manual/physical gameplay QA.
@@ -73,7 +74,8 @@ async function waitLoaded(page) {
 async function raceStart(page, index, name) {
   if (index !== null) {
     await page.selectOption('#race-stage',String(index));
-    const scene=(index === 1 || index === 4) ? 'egypt' : index === 3 ? 'aegean' : index === 7 ? 'snow' : 'city';
+    const scene=STAGES[index]?.map;
+    if(!scene)fail('Cannot stage an unknown career map: '+index);
     const course='race-'+String(index+1).padStart(2,'0');
     // Native map scene is set before the new geometry finishes loading.
     // Wait for actual stage geometry + the enabled start button, not only biome ID.
@@ -166,10 +168,9 @@ async function raceStart(page, index, name) {
     goal:document.querySelector('#race-live-goal')?.textContent,
     fuel:document.querySelector('#race-fuel-info')?.textContent,
   }));
-  const expectedMap={0:'city',1:'egypt',3:'aegean',4:'egypt',7:'snow'}[index ?? 0];
-  const expectedLaps={0:1,1:2,3:2,4:2,7:2}[index ?? 0];
-  const expectedMode=index===4?'item':'speed';
-  const expectedCourse='race-'+String((index ?? 0)+1).padStart(2,'0');
+  const current=STAGES[index??0];
+  const expectedMap=current?.map,expectedLaps=current?.laps;
+  const expectedMode=current?.mode,expectedCourse=current?.course;
   if(early.course!==expectedCourse)
     fail(name+': stage reused a different native road spline: '+JSON.stringify({actual:early.course,expected:expectedCourse}));
   // Read THREE WORLD GRAPH, not the lobby SVG. Distinct roadside objects
@@ -183,14 +184,16 @@ async function raceStart(page, index, name) {
     return {course,exists:!!node,arches:arches.length,scenery:scenery.length,
       numberedMeshCount:arches[0]?.children?.length??0,
       actualCourse:evidence?.actualCourse,requestedCourse:evidence?.requestedCourse,
-      actualTrackLength:evidence?.actualTrackLength};
+      actualTrackLength:evidence?.actualTrackLength,
+      revision:evidence?.revision,uiRevision:document.querySelector('#race-kit')?.dataset.previewRevision};
   });
   if(!worldIdentity.exists||worldIdentity.course!==expectedCourse||
      worldIdentity.arches!==2||worldIdentity.scenery!==4||
      worldIdentity.numberedMeshCount<13||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200))
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V4.6'||
+     worldIdentity.uiRevision!=='racing-v46-wheel-challenge')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -203,7 +206,7 @@ async function raceStart(page, index, name) {
     fail(name+': native speed-pad lane choices missing: '+JSON.stringify(early.padLanes));
   // Compare the actual rendered native geometry with the source-of-truth
   // designed width, not a stale number copied from an earlier track version.
-  const expectedWidth=TRACK_RESHAPES[expectedMap]?.width;
+  const expectedWidth=COURSE_ROAD_WIDTHS[expectedCourse.slice(5)]??TRACK_RESHAPES[expectedMap]?.width;
   if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
   if(index===4 && (!early.shortcut || early.shortcutGain<35 || !early.shortcutRoad || !early.shortcutRails))
@@ -367,7 +370,8 @@ try {
     const stars={};for(let i=1;i<=16;i++)stars[String(i).padStart(2,'0')]=1;
     localStorage.setItem('h5-mobile:qq-speed:career:v1',JSON.stringify({version:1,stars,times:{},skin:0,rounds:16}));
   });
-  const cases=[[1,'02-egypt-speed'],[3,'04-aegean-drift'],[4,'05-egypt-items'],[7,'08-snow-rank']];
+  const cases=[[1,'02-egypt-speed'],[3,'04-aegean-drift'],[4,'05-egypt-items'],
+    [6,'07-cliff-technical'],[10,'11-serpent-technical'],[7,'08-snow-rank']];
   for(const [index,name] of cases) {
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
