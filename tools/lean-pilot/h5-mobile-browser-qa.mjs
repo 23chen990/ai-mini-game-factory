@@ -12,6 +12,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const fpsThreatTrace=[],fpsExtendedChecks=[];
  let fpsScriptSteps=0,fpsEnemySeenCount=0,fpsRouteTurns=0,fpsContactScreenshot=false;
  let fpsMoveLast=-1,fpsMoveStall=0,fpsRepositionScreenshot=false,fpsManualScreenshot=false;
+ let fpsOneThumbAudit=null;
  const readFpsThreat = async () => page.evaluate(() => {
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
@@ -56,6 +57,39 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await page.waitForTimeout(duration);
      await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
    } finally { await cdp.detach(); }
+ };
+ // The only inputs are touch coordinates derived from the visible badge.
+ const fireDragToward=async(dx,dy)=>{
+   const box=await page.locator('#touch .btn[data-mk-action="fire"]').boundingBox();
+   if(!box)return null;
+   const x=box.x+box.width/2,y=box.y+box.height/2;
+   const mx=Math.max(12-x,Math.min(viewport.width-12-x,dx));
+   const my=Math.max(12-y,Math.min(viewport.height-12-y,dy));
+   const read=()=>page.evaluate(()=>{
+     const p=window.__H5NativeGame?.player;
+     return {yaw:p?.yaw??null,pitch:p?.pitch??null,shots:p?.stats?.shots??0};
+   });
+   const before=await read(),cdp=await context.newCDPSession(page);
+   try{
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',
+       touchPoints:[{x,y,id:88}]});
+     for(let n=1;n<=4;n++){
+       await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',
+         touchPoints:[{x:x+mx*n/4,y:y+my*n/4,id:88}]});
+       await page.waitForTimeout(95);
+     }
+     await page.waitForTimeout(850);
+   }finally{
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]}).catch(()=>{});
+     await cdp.detach();
+   }
+   const after=await read();
+   const audit={before,after,delta:{x:mx,y:my},
+     rotated:Number.isFinite(before.yaw)&&Number.isFinite(after.yaw)&&
+       Math.abs(after.yaw-before.yaw)>.015,
+     fired:after.shots>before.shots};
+   actions.push({atMs:Date.now()-started,input:'native-one-thumb-fire-drag',detail:audit});
+   return audit;
  };
  const coachedFpsStep=async () => {
    fpsScriptSteps++;
@@ -102,6 +136,14 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    if(await target.count() && await target.isVisible().catch(()=>false)){
      fpsEnemySeenCount++;
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
+     if(/手动追击/u.test(objective)&&!fpsOneThumbAudit){
+       const r=await target.boundingBox();
+       if(r){
+         const dx=Math.max(-108,Math.min(75,(r.x+r.width/2-viewport.width/2)*.32));
+         const dy=Math.max(-55,Math.min(55,(r.y+r.height+22-viewport.height/2)*.38));
+         fpsOneThumbAudit=await fireDragToward(dx,dy);
+       }
+     }
      for(let n=0;n<7;n++){
        // Enemies may die, enter cover or move out of frame between the
        // locator check and measurement. A real touch player keeps going;
@@ -383,6 +425,9 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    if(run.theme==='cf-transport-ship'){
      const resultOutcome=await page.locator('#mobile-kit').getAttribute('data-outcome');
      const target=await page.locator('#mk-fps-results').textContent();
+     fpsExtendedChecks.push({name:'cf-v7-native-one-thumb-fire-drag',
+       passed:fpsOneThumbAudit?.rotated===true&&fpsOneThumbAudit?.fired===true,
+       detail:fpsOneThumbAudit??{reason:'No genuinely visible manual-stage target to drag toward'}});
      fpsExtendedChecks.push({name:'cf-v7-legitimate-multistage-success',
        passed:phase==='finished'&&resultOutcome==='won'&&
          /追击3 \/ 3/u.test(target)&&/换位8 \/ 8 m/u.test(target),
