@@ -80,7 +80,7 @@ function renderLobby() {
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = courseInfo?.feel ?? '';
-  $('stage-goal').textContent = '本场目标 · ' + stage.goal + ' · ' + careerStars(career.progress) + ' ★' +
+  $('stage-goal').textContent = '过关必须：'+stage.goal + '，且完成前' + stage.rank + '名 · 累计 ' + careerStars(career.progress) + ' ★' +
     (career.dailySnapshot ? ' · 连续挑战 ' + career.progress.daily.streak + ' 天' : '');
   $('skin').replaceChildren();
   for (let i = 0; i < SKIN_NAMES.length; i++) {
