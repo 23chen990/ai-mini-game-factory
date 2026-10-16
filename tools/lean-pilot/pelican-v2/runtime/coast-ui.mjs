@@ -267,7 +267,10 @@ export function createCoastAdventure(api) {
   root.classList.toggle('co-path-risk',!!currentRisk);
   const fish=selectFishCue(run);
   const lanes=[0,1,2].map(lane=>{
-   const hazard=upcoming.find(h=>h.lanes.includes(lane)&&(!next||Math.abs(h.seconds-next.seconds)<1.8));
+   // Keep the first actual danger of EACH lane visible, even when a nearer
+   // hazard on another lane is drawing the player's eye. Early oncoming-vehicle
+   // warnings make the correct countersteer possible without changing physics.
+   const hazard=upcoming.find(h=>h.lanes.includes(lane));
    if(hazard&&!earnedPrizePrecedesRisk(run,fish?.lane===lane?fish:null,hazard)){const kind=hazard.obstacle.kind,bonus=kind==='barrier'&&run.fishes.some(f=>f.bonus&&f.sourceObstacleId===hazard.obstacle.id&&!f.caught);return {kind:bonus?'danger jump-reward':'danger',icon:bonus?'↟🌟':kind==='barrier'?'↟':kind==='pedestrian'?'🚶':'🚗',seconds:kind==='barrier'&&hazard.seconds<1.5?Math.max(.1,hazard.seconds).toFixed(1):Math.max(1,Math.ceil(hazard.seconds)),label:kind};}
    return fish?.lane===lane?{kind:'fish',icon:fish.golden?'🌟':'🐟',seconds:'',label:'fish'}:{kind:'',icon:'·',seconds:'',label:'clear'};
   });const rkey=JSON.stringify(lanes);if(rkey!==lastRadar){lastRadar=rkey;for(let i=0;i<3;i++){const n=root.querySelector(`[data-lane="${i}"]`),r=lanes[i];n.className='co-lane '+r.kind;n.innerHTML=r.icon+(r.seconds?`<small>${r.seconds}s</small>`:'');n.dataset.kind=r.label;}}
