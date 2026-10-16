@@ -71,9 +71,15 @@ export function cfAutoFireEligible(challenge) {
 }
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
-  if (challenge.kind === 'hits') return '1v1入门：准星对准敌人自动开火，命中3次';
-  if (challenge.kind === 'kills') return '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
-  if (challenge.kind === 'survive') return '坚持45秒，移动20米，最多被击倒2次';
+  if (challenge.kind === 'hits') return challenge.elite===true
+    ? '精英步枪：自己瞄准并按开火，命中3次'
+    : '1v1入门：准星对准敌人自动开火，命中3次';
+  if (challenge.kind === 'kills') return challenge.elite===true
+    ? '精英狙击：90秒内用 AWM 击杀1名敌人'
+    : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
+  if (challenge.kind === 'survive') return challenge.elite===true
+    ? '精英生存：坚持45秒，移动20米，最多被击倒2次'
+    : '坚持45秒，移动20米，最多被击倒2次';
   return challenge.instructions || '';
 }
 
