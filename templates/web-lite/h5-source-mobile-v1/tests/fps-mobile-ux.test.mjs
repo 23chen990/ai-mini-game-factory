@@ -438,7 +438,7 @@ test('CF flank coach proposes a real reachable side route, never fabricates an o
  assert.ok(Math.abs(selected.z)<=2);
  assert.equal(pathCalls,0,'straight accessible flank uses cheap direct walk path');
  assert.deepEqual(player,{pos:{x:0,z:0},yaw:0},'coach never teleports player');
- const leftNav={...openNav,idx:(x,z)=>x>0?-1:0};
+ const leftNav={...openNav,idx:x=>x>0?-1:0};
  const left=cfFlankWaypoint({player,world:openWorld,nav:leftNav,minDistance:8});
  assert.ok(left&&left.x<-8);
  assert.equal(left.side,-1);
