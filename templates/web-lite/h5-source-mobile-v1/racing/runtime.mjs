@@ -3,7 +3,7 @@ import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemClea
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
 import { WrongWayRecovery } from './recovery.mjs';
-import { RivalPressure } from './rival-pressure.mjs';
+import { RivalPressure, tuneOpponentField } from './rival-pressure.mjs';
 
 export class RacingCareer {
   constructor(storage, legacyBest = {}) {
@@ -55,17 +55,10 @@ export class RacingCareer {
     this.auto.reset();this.passes.reset();this.recovery.reset();this.pressure.reset();
     this.passes.previous = game.standings.indexOf(game.player) + 1;
     this.passes.lastCrashes = game.player?.stats?.crash ?? 0;
-    // Skilled fields lost to 6–9 wall impacts; raise only the middle band.
-    // Two natural expert retests with2–3crashes finished sixth after the earlier
-    // expert increase. Retain the submitted expert speeds and all objective gates.
-    // Native physics, grid, progress, variability and rubber-banding stay intact.
-    // Item fields add weapon slowdowns and recovery time. Two real stage06
-    // attempts finished sixth after late hits even with2physical pickups.
-    const band = this.stage.diff === 1 ? (this.stage.mode === 'item' ? [.85, 1.05, 1.03, 1.18] : [.85, 1.05, 1.18, 1.34]) : null;
-    if (band) for (const rival of game.racers.filter(r => !r.isPlayer)) {
-      const fraction = Math.max(0, Math.min(1, ((rival.skill ?? band[0]) - band[0]) / (band[1] - band[0])));
-      rival.skill = band[2] + fraction * (band[3] - band[2]);
-    }
+    // Tune only actual native AI.skill values. AICar.update still handles
+    // every car's corner pace, nitro, items and genuine on-road position.
+    // Stage 01, bosses and fragile elimination/item objectives stay protected.
+    tuneOpponentField(game.racers,this.stage);
     if (this.stage.kind === 'overtake') {
       // A visible rival survives beyond the first straight without scripted teleportation.
       const challengers = game.racers.filter(r => !r.isPlayer).slice(0, 2);
