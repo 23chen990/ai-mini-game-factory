@@ -133,7 +133,7 @@ jobs:
     needs: racing-v3
     if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
-    timeout-minutes: 9
+    timeout-minutes: 16
     permissions:
       contents: write
       actions: read
@@ -204,5 +204,46 @@ jobs:
             git -C "$preview" commit -m "test(racing-preview): SHA-verified H5 from ${{ github.event.pull_request.head.sha }}"
             git -C "$preview" push origin HEAD:refs/heads/preview/racing-v34-dbf8603-mobile
           fi
-          echo 'Preview branch updated; external HTTP hash gate runs separately.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Built H5 uploaded to preview branch. HTTPS and browser still require verification.' >> "$GITHUB_STEP_SUMMARY"
+      - name: Verify live HTTPS bytes match the just-tested H5
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(sha256sum "$RUNNER_TEMP/racing-verified/index.html" | cut -d ' ' -f 1)"
+          url='https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v34-dbf8603-mobile/index.html'
+          for attempt in 1 2 3 4 5 6 7 8 9 10 11 12; do
+            if curl --fail --silent --show-error --location --retry 1 --max-time 35 "$url" -o "$RUNNER_TEMP/remote-racing.html"; then
+              actual="$(sha256sum "$RUNNER_TEMP/remote-racing.html" | cut -d ' ' -f 1)"
+              if [ "$expected" = "$actual" ]; then
+                echo "VERIFIED_EXTERNAL_PREVIEW_SHA256=$actual"
+                exit 0
+              fi
+              echo "Remote CDN still serves $actual; waiting for $expected"
+            fi
+            sleep 10
+          done
+          echo 'External preview link did not serve the QA-verified new game' >&2
+          exit 1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.x'
+      - name: Install locked browser runtime
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm exec playwright install --with-deps chromium
+      - name: Render and drive REAL external HTTPS H5 in Chromium
+        shell: bash
+        run: |
+          node tools/lean-pilot/racing-external-preview-qa.mjs \
+            'https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v34-dbf8603-mobile/index.html' \
+            "$RUNNER_TEMP/racing-external-evidence"
+          echo 'EXTERNAL PHONE PREVIEW VERIFIED:' >> "$GITHUB_STEP_SUMMARY"
           echo 'https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v34-dbf8603-mobile/index.html' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: racing-external-chromium-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/racing-external-evidence/
+          retention-days: 7
+          if-no-files-found: warn
