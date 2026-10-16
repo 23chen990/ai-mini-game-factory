@@ -9,7 +9,7 @@
 export const SHORTCUT_PLANS=Object.freeze({
   'race-05':{start:915,end:1310,width:13,neckWidth:10,bend:25,label:'Temple inner U'},
   'race-10':{start:615,end:970,width:12,neckWidth:9,bend:30,label:'Neon inside hairpin'},
-  'race-12':{start:1915,end:2270,width:13,neckWidth:10,bend:18,label:'Ice ridge choice'},
+  'race-12':{start:1890,end:2270,width:13,neckWidth:10,bend:18,label:'Ice ridge choice'},
   'race-13':{start:1965,end:2280,width:12,neckWidth:9,bend:16,label:'Crown apex lane'},
   'race-16':{start:1565,end:1885,width:11.5,neckWidth:8.5,bend:25,label:'Cliffside technical cut'},
 });
