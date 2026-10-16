@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -552,4 +552,17 @@ test('CF quick fire tap survives touchend but cancellation pause and teardown al
  cfReleaseTouchFire(paused,true);
  assert.deepEqual(paused,{fire:false,firePressed:false});
  assert.equal(cfReleaseTouchFire(null,true),undefined);
+});
+
+
+test('CF post-cover reacquisition turns toward a previously seen location, never a hidden live target',()=>{
+ const p={pos:{x:0,z:0},yaw:0};
+ assert.match(cfLastSeenLookCue(p,{x:-10,z:-10}),/^← 向左转视角/u);
+ assert.match(cfLastSeenLookCue(p,{x:10,z:-10}),/^→ 向右转视角/u);
+ assert.match(cfLastSeenLookCue(p,{x:0,z:-10}),/^↔ 左右探身/u);
+ assert.equal(cfLastSeenLookCue(p,{x:0,z:-.2}),null);
+ assert.equal(cfLastSeenLookCue(p,null),null);
+ assert.equal(cfLastSeenLookCue({...p,yaw:NaN},{x:10,z:10}),null);
+ // No mutating the player's position, no output containing bot stats/coords.
+ assert.deepEqual(p,{pos:{x:0,z:0},yaw:0});
 });
