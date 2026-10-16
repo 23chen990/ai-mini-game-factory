@@ -13,6 +13,14 @@ test('no prize attached to a blocked path or beyond finish',()=>{
  const obstacles=[{id:'b1',kind:'barrier',x:225,lane:1},{id:'v',kind:'van',x:233,lane:1},{id:'b2',kind:'barrier',x:296,lane:2}];
  assert.equal(makeBarrierPrizes(1,obstacles,300).length,0);
 });
+test('a crossing pedestrian origin cannot suppress a genuinely safe new left jump prize',()=>{
+ const obstacles=[{id:'v4-left',kind:'barrier',x:75,lane:0},{id:'crossing',kind:'pedestrian',x:90,lane:0}];
+ const prizes=makeBarrierPrizes(1,obstacles,300);
+ assert.equal(prizes.length,1);assert.equal(prizes[0].sourceObstacleId,'v4-left');
+ assert.equal(prizes[0].x,84);assert.equal(prizes[0].lane,0);
+ // Opposite crossing ends in this reward lane, so it MUST suppress the lure.
+ assert.equal(makeBarrierPrizes(1,[obstacles[0],{...obstacles[1],lane:2}],300).length,0);
+});
 test('gold stars require genuine jumping, fish, gold and an earned chain instead of a fixed-speed clock',()=>{
  const req=starRequirements(level);assert.equal(req.gold,12);assert.equal(req.goldFish,1);assert.equal(req.jumps,1);assert.equal(req.streak,4);assert.equal(req.time,undefined);
  assert.equal(rateStars(level,run({jumpedBarriers:0})),2);

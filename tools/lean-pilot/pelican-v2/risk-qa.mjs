@@ -8,18 +8,22 @@ import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
 import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
 import {tapVisible} from './touch.mjs';
+import {softwareQualityActions,riskCaptureProfile} from './experience-policy.mjs';
+import {campaignWallBudgetMs} from './runtime/qa-budget.mjs';
+import {readCompactPresentation,portraitMasteryClear} from './qa-presentation.mjs';
 import {LEVELS} from './runtime/levels.mjs';
-import {CAPTURE_HOLD_MS,JUMP_WINDOW_SECONDS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
+import {CAPTURE_HOLD_MS,JUMP_WINDOW_SECONDS,TARGET_WINDOW_TRAIL_METERS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
 
 const engine=process.env.QA_ENGINE??'webkit';
+const profile=riskCaptureProfile(process.env),selectedLevels=profile.firstOnly?RISK_LEVELS.slice(0,1):RISK_LEVELS;
 if(!['webkit','chromium'].includes(engine))throw Error('QA_ENGINE must be webkit or chromium');
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
-const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,`risk-${engine}`);
+const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,`risk-${engine}${profile.suffix}`);
 await mkdir(qaDir,{recursive:true});
 const driverSource=await readFile(new URL(import.meta.url));await writeFile(path.join(qaDir,'driver-source.mjs'),driverSource);
 const report={
- schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,engine,driverSha256:sha(driverSource),
- runtime:`${engine} desktop browser with 390×844 mobile touch emulation at DPR ${qaDpr()}; not physical mobile`,
+ schemaVersion:1,targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,buildHash:build.buildHash,attempt:build.attempt,engine,driverSha256:sha(driverSource),viewport:profile.viewport,firstLevelOnly:profile.firstOnly,
+ runtime:`${engine} desktop browser with ${profile.viewport.width}×${profile.viewport.height} mobile touch emulation at DPR ${qaDpr()}; not physical mobile`,
  performanceEvidenceNote:'Read-only RAF and renderer observations from desktop browser emulation; not physical-device proof.',
  inputDecisionSource:'Visible HUD distance, radar text/classes, lane indicator and harness elapsed time for the 2.6-second capture hold.',
  snapshotRole:'Acceptance and evidence only; snapshots never feed risk-policy input decisions.',
@@ -36,7 +40,7 @@ const profileDir=await mkdtemp(path.join(tmpdir(),'pelican-risk-profile-'));
 let activeContext=null,activePage=null,activeLevelId=null,nextSnapshotId=1;
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(JSON.stringify({name,passed:passed===true}));};
 const slug=text=>String(text).toLowerCase().replace(/[^a-z0-9-]+/g,'-').replace(/^-|-$/g,'');
-for(const level of RISK_LEVELS){
+for(const level of selectedLevels){
  for(const target of level.targets){
   const authoredFishId=authoredBonusFishByBarrier[`${level.id}:${target.barrierId}`]??null;
   check(`authored-level-${level.id}-${target.barrierId}-exact-golden-fish`,authoredFishId===target.goldFishId,{barrierId:target.barrierId,expectedFishId:target.goldFishId,authoredFishId,source:'read-only authored LEVELS fish.sourceObstacleId -> fish.id'});
@@ -119,8 +123,8 @@ async function captureVideo(page,context,levelId,videoHandle){
 async function runLevel(level){
  activeLevelId=level.id;
  activeContext=await browserType.launchPersistentContext(profileDir,{
-  ...browserOptions(engine),viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),
-  recordVideo:{dir:qaDir,size:{width:390,height:844}},
+  ...browserOptions(engine),viewport:profile.viewport,hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),
+  recordVideo:{dir:qaDir,size:profile.viewport},
  });
  activePage=await activeContext.newPage();
  const page=activePage,videoHandle=page.video();
@@ -158,6 +162,7 @@ async function runLevel(level){
   check(`level-${level.id}-route-button-visible`,await levelButton.isVisible()&&!(await levelButton.isDisabled()),{text:await levelButton.innerText()});
   await shot(page,`level-${level.id}-route-menu`,{levelId:level.id,kind:'visible-route-menu'});
   await tap(page,`[data-level="${level.id}"]`,{levelId:level.id});
+  for(const selector of softwareQualityActions(process.env.QA_TOUCH_QUALITY))await tap(page,selector,{levelId:level.id});
   await tap(page,'#co-start',{levelId:level.id});
   await page.waitForTimeout(200);
   result.hudStart=await visibleHud(page);
@@ -166,13 +171,14 @@ async function runLevel(level){
   check(`level-${level.id}-visible-name-weather-gold-time`,titleHasName&&Boolean(result.hudStart.time)&&Boolean(result.hudStart.fish)&&visibleGoldGoal,{hud:result.hudStart,weather:level.weather,weatherEvidence:'full level HUD screenshot',goldGoalVisible:visibleGoldGoal,goldPresentation:level.id===1?'golden reward feedback after catch':'visible star count in goal HUD',goldRewardFeedbackCapturedPerTarget:true});
   result.startScreenshot=(await shot(page,`level-${level.id}-running-start`,{levelId:level.id,kind:'level-hud-and-weather'})).path;
   const intro=await recordSnapshot(page,'running-start-acceptance',{levelId:level.id});
+  if(profile.viewport.width<profile.viewport.height){const layout=await page.evaluate(readCompactPresentation);check(`level-${level.id}-portrait-mastery-does-not-cover-rider`,portraitMasteryClear(layout),layout);}
   check(`level-${level.id}-running-started`,intro.value.phase==='running'&&intro.value.level===level.id,intro.value);
   result.rafStartAt=await page.evaluate(()=>performance.now());
 
   const episodes=result.targetEpisodes;
   let targetIndex=0,state=createRiskPolicyState(level.id,level.targets[0]);
   let terminal=null;
-  const deadline=Date.now()+(Number(result.hudStart.time.match(/\d+/)?.[0]??100)+35)*1000;
+  const deadline=Date.now()+campaignWallBudgetMs(level.id);
   while(Date.now()<deadline){
    const view=await readVisibleView(page);
    if(view.phase==='finished')break;
@@ -189,7 +195,8 @@ async function runLevel(level){
      capturedEpisode.holdComplete=true;capturedEpisode.holdDurationMs=Number(holdElapsed.toFixed(1));
     }
    }
-   while(targetIndex<level.targets.length&&view.distance>level.targets[targetIndex].distance+14){
+   while(targetIndex<level.targets.length&&view.distance>level.targets[targetIndex].distance+TARGET_WINDOW_TRAIL_METERS&&
+    (!episodes[targetIndex].jump||episodes[targetIndex].holdComplete)){
     targetIndex++;
     if(targetIndex<level.targets.length)state=createRiskPolicyState(level.id,level.targets[targetIndex]);
    }
@@ -244,6 +251,7 @@ async function runLevel(level){
   const terminalOkay=terminal.phase==='finished'&&terminal.reason==='complete'&&terminal.level===level.id;
   check(`level-${level.id}-natural-terminal-settlement`,terminalOkay,{phase:terminal.phase,reason:terminal.reason,level:terminal.level,count:terminal.count,gold:terminal.gold,elapsed:terminal.elapsed,save:terminal.save,hud:result.hudFinish});
   check(`level-${level.id}-save-earned-through-play`,terminalOkay&&terminal.save.completed[level.id-1]===true&&terminal.save.unlocked>=Math.min(5,level.id+1),terminal.save);
+  check(`level-${level.id}-earned-three-stars`,terminalOkay&&terminal.save.stars[level.id-1]===3,{stars:terminal.save.stars[level.id-1],count:terminal.count,gold:terminal.gold,jumps:terminal.jumpedBarriers,bestStreak:terminal.bestStreak});
   check(`level-${level.id}-exact-target-jump-count`,terminal.jumpedBarriers===level.targets.length,{expected:level.targets.length,jumpedBarriers:terminal.jumpedBarriers,targetBarrierIds:level.targets.map(target=>target.barrierId)});
   for(const episode of episodes)verifyEpisode(level,episode);
   const vehicleEntries=report.actions.filter(action=>action.levelId===level.id&&action.visibleDecisionView&&['left','right'].includes(action.policyDecision?.action)).filter(action=>{
@@ -253,11 +261,16 @@ async function runLevel(level){
   const nonAdjacentLaneChanges=report.actions.filter(action=>action.levelId===level.id&&['left','right'].includes(action.policyDecision?.action)).filter(action=>Math.abs(action.policyDecision.toLane-action.visibleDecisionView.laneIndex)!==1);
   check(`level-${level.id}-only-adjacent-lane-inputs`,nonAdjacentLaneChanges.length===0,{invalid:nonAdjacentLaneChanges.map(action=>({selector:action.selector,from:action.visibleDecisionView.laneIndex,to:action.policyDecision.toLane,at:action.at}))});
   if(terminalOkay){
-   if(level.id<5){
+   if(level.id<5&&!profile.firstOnly){
     await tap(page,'#co-select',{levelId:level.id});
     await shot(page,`level-${level.id}-route-after-settlement`,{levelId:level.id,kind:'visible-unlocked-route'});
     const nextButton=page.locator(`[data-level="${level.id+1}"]`);
     check(`level-${level.id}-next-level-visible-after-settlement`,await nextButton.isVisible()&&!(await nextButton.isDisabled()),{text:await nextButton.innerText()});
+   }else if(profile.firstOnly){
+    await tap(page,'#co-replay',{levelId:1});await page.waitForTimeout(180);
+    const replay=await recordSnapshot(page,'exact-viewport-level-one-replay',{levelId:1});
+    check('first-level-settlement-and-replay',replay.value.phase==='running'&&replay.value.level===1&&replay.value.save.stars[0]===3,replay.value);
+    await shot(page,'level-1-viewport-replay',{levelId:1,kind:'visible-replay'});
    }else{
     await tap(page,'#co-replay',{levelId:level.id});await page.waitForTimeout(180);
     const replay=await recordSnapshot(page,'visible-final-replay',{levelId:level.id});
@@ -320,12 +333,12 @@ function verifyEpisode(level,episode){
 }
 
 try{
- for(const level of RISK_LEVELS){
+ for(const level of selectedLevels){
   await runLevel(level);
   const last=report.levels.at(-1);
   if(last.terminal?.reason!=='complete')break;
  }
- check('five-level-natural-campaign-completed',report.levels.length===5&&report.levels.every(level=>level.terminal?.reason==='complete'),report.levels.map(level=>({id:level.id,name:level.name,reason:level.terminal?.reason,video:level.video?.path})));
+ check(profile.firstOnly?'first-level-natural-viewport-completed':'five-level-natural-campaign-completed',report.levels.length===selectedLevels.length&&report.levels.every(level=>level.terminal?.reason==='complete'),report.levels.map(level=>({id:level.id,name:level.name,reason:level.terminal?.reason,video:level.video?.path})));
  const touchActions=report.actions.filter(action=>action.type==='touch-tap');
  check('all-visible-inputs-have-trusted-touch-evidence',touchActions.length>0&&touchActions.every(action=>action.trustedTouch),{actions:touchActions.length,missing:touchActions.filter(action=>!action.trustedTouch).map(action=>({selector:action.selector,at:action.at,evidence:action.nativeTouchEvidence}))});
 }catch(error){
@@ -334,7 +347,7 @@ try{
  if(activeContext){try{await activeContext.close();}catch(error){report.errors.push({levelId:activeLevelId,message:'Active browser context close failed',detail:String(error)});}activeContext=null;}
  try{await new Promise((resolve,reject)=>server.close(error=>error?reject(error):resolve()));}catch(error){report.errors.push({message:'QA server close failed',detail:String(error)});}
  await rm(profileDir,{recursive:true,force:true}).catch(error=>report.errors.push({message:'Could not remove temporary fresh-browser profile',detail:String(error)}));
- report.passed=report.checks.length>0&&report.checks.every(item=>item.passed)&&report.errors.length===0&&report.levels.length===5&&report.videos.length===5;
+ report.passed=report.checks.length>0&&report.checks.every(item=>item.passed)&&report.errors.length===0&&report.levels.length===selectedLevels.length&&report.videos.length===selectedLevels.length;
  report.finishedAt=new Date().toISOString();
  await json(path.join(qaDir,'report.json'),report);
  console.log('RISK_QA_REPORT '+path.join(qaDir,'report.json')+' passed='+report.passed);

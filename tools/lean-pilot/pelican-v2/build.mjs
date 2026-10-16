@@ -42,7 +42,7 @@ export async function build({hypothesis='P0: synchronize composer and renderer, 
  let original;
  try{original=await readFile(path.join(RUN,'original-main.js'),'utf8');}catch(e){if(e.code!=='ENOENT')throw e;original=before;await writeFile(path.join(RUN,'original-main.js'),original);}
  const originalHash=receipt.files.find(f=>f.path==='pelican-bike/src/main.js').sha256;if(sha(original)!==originalHash)throw Error('Native preimage mismatch');
- const runtimeFiles=['levels.mjs','adventure.mjs','coast-ui.mjs','coast.css','feel.mjs','safety.mjs','engagement.mjs'];const inputHashes=[];
+ const runtimeFiles=['levels.mjs','adventure.mjs','coast-ui.mjs','coast.css','feel.mjs','safety.mjs','engagement.mjs','revive-flow.mjs'];const inputHashes=[];
  for(const f of runtimeFiles){const bytes=await readFile(path.join(HERE,'runtime',f));await writeFile(path.join(SOURCE,'src',f),bytes);inputHashes.push({path:f,sha256:sha(bytes)});}
  const patched=patchMain(original);await writeFile(path.join(SOURCE,'src/main.js'),patched);
  inputHashes.push({path:'boot.mjs',sha256:sha(await readFile(path.join(HERE,'boot.mjs')))});

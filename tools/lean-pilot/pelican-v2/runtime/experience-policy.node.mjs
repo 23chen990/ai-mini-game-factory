@@ -2,6 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { earnedJumpRewardVisible, softwareQualityActions, experienceReportDirectory, earnedPrizeRouteSeen, pedestrianWarningSeen, experienceMotionPreference } from '../experience-policy.mjs';
 import * as experiencePolicy from '../experience-policy.mjs';
+test('risk retests isolate exact mobile viewports and never masquerade as a five-level campaign',()=>{
+ const defaults=experiencePolicy.riskCaptureProfile({});
+ assert.deepEqual(defaults,{viewport:{width:390,height:844},firstOnly:false,suffix:''});
+ assert.deepEqual(experiencePolicy.riskCaptureProfile({QA_RISK_VIEWPORT:'360x740',QA_RISK_FIRST_ONLY:'1'}),{viewport:{width:360,height:740},firstOnly:true,suffix:'-360x740-first'});
+ assert.equal(experiencePolicy.riskCaptureProfile({QA_RISK_VIEWPORT:'844x390'}).viewport.width,844);
+ assert.throws(()=>experiencePolicy.riskCaptureProfile({QA_RISK_VIEWPORT:'../other-game'}));
+ assert.throws(()=>experiencePolicy.riskCaptureProfile({QA_RISK_FIRST_ONLY:'yes'}));
+});
 
 test('earned jump reward remains readable through persistent gold and mastery counters after a missed toast', () => {
  const before={gold:1,jumps:0};

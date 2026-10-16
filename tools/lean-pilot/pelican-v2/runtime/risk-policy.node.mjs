@@ -49,6 +49,14 @@ test('one target cannot trigger a repeated jump after its capture hold',()=>{
  assert.notEqual(afterHold.action,'jump');
  assert.equal(afterHold.state.jumpIssued,true);
 });
+test('capture keeps a safe reward window before distant traffic but escapes an imminent vehicle',()=>{
+ const s=newState(),jumped=decide(view({distance:215,lanes:[lane(),lane({danger:true,jumpReward:true,kind:'barrier',seconds:.9}),lane()]}),s);
+ assert.equal(jumped.action,'jump');
+ const distant=decide(view({distance:225,nowMs:1800,lanes:[lane(),lane({danger:true,kind:'vehicle',seconds:3}),lane()]}),jumped.state);
+ assert.equal(distant.action,'wait');assert.equal(distant.reason,'capture-hold');
+ const urgent=decide(view({distance:234,nowMs:2200,lanes:[lane(),lane({danger:true,kind:'vehicle',seconds:1}),lane()]}),distant.state);
+ assert.notEqual(urgent.toLane,1);assert.notEqual(urgent.action,'wait');
+});
 
 test('turning toward a reward route moves exactly one adjacent lane at a time',()=>{
  const lanes=[lane({fish:true}),lane(),lane({danger:true,jumpReward:true,kind:'barrier',seconds:2})];
@@ -59,10 +67,16 @@ test('turning toward a reward route moves exactly one adjacent lane at a time',(
  assert.equal(second.action,'right');
  assert.equal(second.toLane,2);
 });
+test('a distant reward does not discard safe side fish before the two-second approach window',()=>{
+ const v=view({distance:195,laneIndex:2,lanes:[lane(),lane({danger:true,jumpReward:true,kind:'barrier',seconds:3}),lane({fish:true})]});
+ const early=decide(v);assert.equal(early.action,'wait');
+ const approach=decide({...v,distance:205,lanes:[lane(),lane({danger:true,jumpReward:true,kind:'barrier',seconds:2}),lane({fish:true})]},early.state);
+ assert.equal(approach.action,'left');assert.equal(approach.toLane,1);
+});
 
-test('the target manifest matches authored V3.2 barriers and exact bonus-fish ids',()=>{
+test('the target manifest includes both NEW V4 barriers and every legacy exact bonus-fish id',()=>{
  assert.deepEqual(policy.RISK_LEVELS.map(level=>level.targets.map(({barrierId,distance,goldFishId})=>[barrierId,distance,goldFishId])),[
-  [['l1-o1',140,'l1-jump-l1-o1'],['l1-o3',225,'l1-jump-l1-o3']],
+  [['l1-o4',75,'l1-jump-l1-o4'],['l1-o1',140,'l1-jump-l1-o1'],['l1-o7',205,'l1-jump-l1-o7'],['l1-o3',225,'l1-jump-l1-o3']],
   [['l2-o3',246,'l2-jump-l2-o3'],['l2-o5',356,'l2-jump-l2-o5']],
   [['l3-o3',222,'l3-jump-l3-o3'],['l3-o5',360,'l3-jump-l3-o5']],
   [['l4-o3',225,'l4-jump-l4-o3'],['l4-o5',350,'l4-jump-l4-o5'],['l4-o10',593,'l4-jump-l4-o10']],

@@ -1,0 +1,21 @@
+{
+  "targetGame": "鹈鹕海岸冒险",
+  "workspace": "/private/tmp/pelican-pr19-20261016/runs/pelican-coast-v2-20261014/workspace",
+  "route": "formal-fixer",
+  "baseCommit": "5e7590558149a198ae67c82397db97600285a970",
+  "intakeCommit": "5a5b4fa1484345991e33003610e6af1443ed5415",
+  "storedBuilderThreadId": "01a13864-04f9-7b81-a7ce-634ccab315ce",
+  "executorThreadId": "01a142a4-eb4c-70f2-9a44-28a58d523e81",
+  "threadContinuity": "Historical Builder thread/20 prior attempts preserved as provenance; repairs executed in this user-authorized PR19 handoff chat. No messages sent to other chats.",
+  "preservedPriorAttempts": 20,
+  "currentAttempt": 24,
+  "contextIntentionallyOmitted": [
+    "other games",
+    "PR16 modifications",
+    "unavailable recordings",
+    "unrelated prior logs"
+  ],
+  "submitted": false,
+  "candidateBuildHash": "33840e2abdc027468ff4060626be66010e57494c356d0bc8d52f6260839b98d2",
+  "recordKind": "handoff provenance before candidate submission; final validation lives in run/CI/PR"
+}

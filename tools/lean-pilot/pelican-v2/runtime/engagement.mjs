@@ -1,6 +1,17 @@
-import {LANES} from './safety.mjs';
+import {LANES,unsafeFishLanes} from './safety.mjs';
 // Fractional fish positions share one collision and visual coordinate.
 export function fishRoadZ(fish){return Number.isFinite(fish?.z)?fish.z:LANES[fish.lane];}
+// HUD pacing follows authored beats, without changing simulation speed or
+// hiding hazards. Protection is a distinct visual state and active-time timer.
+export function coastBeat(run){
+ if(run.reviveGrace>0)return {id:'protected',icon:'🛟',label:`保护 ${Math.ceil(run.reviveGrace)} 秒`};
+ if(run.level.id!==1)return {id:'coast',icon:'🏁',label:'海岸路程'};
+ if(run.distance<60)return {id:'teaching',icon:'🐟',label:'捕鱼热身'};
+ if(run.distance<100)return {id:'jump-choice',icon:'↟',label:'跳障追金'};
+ if(run.distance<205)return {id:'traffic',icon:'🚗',label:'预判车流'};
+ if(run.distance<285)return {id:'climax',icon:'⚡',label:'最后冲刺'};
+ return {id:'finish',icon:'🏁',label:'终点在前'};
+}
 // Pure, low-cost replay goals for Pelican Coast. No backend or hidden rewards.
 // Each reward fish is visible, collectible by normal player movement, and
 // placed after (not inside) a jumpable barrier.
@@ -12,8 +23,9 @@ export function makeBarrierPrizes(levelId, obstacles, endDistance) {
     if (obstacle.kind !== 'barrier') continue;
     const x = obstacle.x + BARREL_PRIZE_OFFSET;
     if (x >= endDistance - 8) continue;
-    const rivals = obstacles.filter(o => o !== obstacle && Math.abs(o.x - x) < 14 && o.lane === obstacle.lane);
-    if (rivals.length) continue; // never put a reward behind a lethal same-lane hazard
+    // Use the same arrival envelope as ordinary fish. A pedestrian's authored
+    // lane is its sidewalk origin, not the lane it will occupy on arrival.
+    if (unsafeFishLanes(obstacles.filter(o=>o!==obstacle),x).has(obstacle.lane)) continue;
     prizes.push({
       id: `l${levelId}-jump-${obstacle.id}`,
       x, lane: obstacle.lane, golden: true, bonus: true,
