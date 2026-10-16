@@ -102,7 +102,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    if(await target.count() && await target.isVisible().catch(()=>false)){
      fpsEnemySeenCount++;
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
-     for(let n=0;n<4;n++){
+     for(let n=0;n<7;n++){
        // Enemies may die, enter cover or move out of frame between the
        // locator check and measurement. A real touch player keeps going;
        // do not wait 30 seconds for a vanished HUD badge.
@@ -110,12 +110,12 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        if(!rect||!(await target.isVisible().catch(()=>false)))break;
        const center={x:844/2,y:390/2};
        const desiredX=rect.x+rect.width/2, desiredY=rect.y+rect.height+22;
-       const dx=Math.max(-75,Math.min(75,(desiredX-center.x)*0.40));
-       const dy=Math.max(-48,Math.min(48,(desiredY-center.y)*0.40));
+       const dx=Math.max(-86,Math.min(86,(desiredX-center.x)*0.40));
+       const dy=Math.max(-60,Math.min(60,(desiredY-center.y)*0.40));
        if(Math.abs(dx)+Math.abs(dy)<7)break;
        await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},230,12+n);
      }
-     await hold('#touch .btn[data-mk-action="fire"]',1100);
+     await hold('#touch .btn[data-mk-action="fire"]',1450);
      return;
    }
    // A real novice can read the screen's route hint, so the script should
