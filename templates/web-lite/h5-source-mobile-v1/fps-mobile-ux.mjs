@@ -145,7 +145,7 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
 export function cfTouchTutorial(challenge) {
   if (challenge?.kind === 'hits')
     return challenge.drill==='reposition'
-      ? (challenge.elite ? '先手动命中，横移后再追击' : '首枪自动开火，横移后手动追击')
+      ? (challenge.elite ? '横移追击，按住开火可拖动瞄准' : '首枪辅助，换位后按住开火拖动瞄准')
       : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
@@ -346,12 +346,19 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
 
 /** Only camera-visible and actually unobstructed marker positions may
  * generate novice aiming directions. No actor tracking behind walls. */
+/** Fire button finger doubles as a view joystick, without creating a shot or
+ * editing any hit/health stat. Cap one outlier touchmove for a steady thumb. */
+export function cfFireDragLookDelta(dx,dy) {
+  if(!Number.isFinite(dx)||!Number.isFinite(dy))return {x:0,y:0};
+  const clamp=v=>Math.max(-96,Math.min(96,v*1.6));
+  return {x:clamp(dx),y:clamp(dy)};
+}
 export function cfVisibleAimCoach(x,y) {
   if(!Number.isFinite(x)||!Number.isFinite(y))return '';
-  if(x<=-0.23)return '← 左滑视角，对准红色敌人';
-  if(x>=0.23)return '→ 右滑视角，对准红色敌人';
-  if(y>=0.30)return '↑ 上滑视角，对准敌人';
-  if(y<=-0.30)return '↓ 下滑视角，对准敌人';
+  if(x<=-0.23)return '← 按住开火向左滑动';
+  if(x>=0.23)return '→ 按住开火向右滑动';
+  if(y>=0.30)return '↑ 按住开火向上滑动';
+  if(y<=-0.30)return '↓ 按住开火向下滑动';
   return '◎ 准星接近敌人 · 按住开火';
 }
 
@@ -506,11 +513,20 @@ export function createFpsMobileUx(game, root, doc) {
   const touchControls = doc.getElementById('touch');
   let playerEngaged=false;
   const aimTouchStarts=new Map();
+  const fireDragTouches=new Map();
   let lastTouchAt=-Infinity;
   const markTouch=()=>{lastTouchAt=performance.now();};
   const onTouchStart=e=>{
     markTouch();
-    if(!cfAutoFireEligible(activeChallenge,game.player?.stats?.hits||0)||!game.playing||game.paused)return;
+    if(!game.playing||game.paused||game.ended)return;
+    if(e.target?.closest?.('.btn[data-mk-action="fire"]')){
+      // Native fire-button touchstart stops bubbling, so the upstream window
+      // camera listener cannot reuse this SAME right thumb for aiming.
+      for(const t of e.changedTouches||[])
+        fireDragTouches.set(t.identifier,{x:t.clientX,y:t.clientY});
+      return;
+    }
+    if(!cfAutoFireEligible(activeChallenge,game.player?.stats?.hits||0))return;
     if(e.target?.closest?.('.btn,.pad'))return;
     const limit=(doc.defaultView?.innerWidth||844)*0.44;
     for(const t of e.changedTouches||[])if(t.clientX>limit)
@@ -518,15 +534,32 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const onTouchMove=e=>{
     markTouch();
-    if(!cfAutoFireEligible(activeChallenge,game.player?.stats?.hits||0)||!game.playing||game.paused)return;
+    if(!game.playing||game.paused||game.ended)return;
+    const p=game.player;
     for(const t of e.changedTouches||[]){
-      const v=aimTouchStarts.get(t.identifier);
-      if(v&&Math.hypot(t.clientX-v.x,t.clientY-v.y)>12)playerEngaged=true;
+      const v=fireDragTouches.get(t.identifier);
+      if(v){
+        const delta=cfFireDragLookDelta(t.clientX-v.x,t.clientY-v.y);
+        v.x=t.clientX;v.y=t.clientY;
+        if(p?.alive&&p.touch?.fire){
+          p.touchLook ||= {x:0,y:0};
+          p.touchLook.x+=delta.x;p.touchLook.y+=delta.y;
+        }
+        continue;
+      }
+      if(cfAutoFireEligible(activeChallenge,p?.stats?.hits||0)){
+        const aim=aimTouchStarts.get(t.identifier);
+        if(aim&&Math.hypot(t.clientX-aim.x,t.clientY-aim.y)>12)
+          playerEngaged=true;
+      }
     }
   };
   const onTouchEnd=e=>{
     markTouch();
-    for(const t of e.changedTouches||[])aimTouchStarts.delete(t.identifier);
+    for(const t of e.changedTouches||[]){
+      aimTouchStarts.delete(t.identifier);
+      fireDragTouches.delete(t.identifier);
+    }
   };
   // The pinned desktop Player.bind() fires a bullet on canvas mousedown.
   // Browsers synthesize mousedown after short touch-aim gestures unless this
@@ -1115,7 +1148,7 @@ export function createFpsMobileUx(game, root, doc) {
       doc.removeEventListener('touchcancel',onTouchEnd,true);
       doc.removeEventListener('mousedown',stopCompatibilityMouse,true);
       doc.removeEventListener('mouseup',stopCompatibilityMouse,true);
-      aimTouchStarts.clear();
+      aimTouchStarts.clear();fireDragTouches.clear();
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
