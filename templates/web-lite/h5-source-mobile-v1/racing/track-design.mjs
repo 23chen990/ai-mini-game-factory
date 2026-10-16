@@ -185,6 +185,90 @@ export function createRaceTrackTheme(theme,track,course) {
   };
 }
 
+
+/**
+ * Lightweight, course-specific WORLD landmarks (no proprietary models).
+ * Each road receives a different combination of sculptural pylons and palette,
+ * placed outside the guardrail at two memorable sectors. Visual-only:
+ * neither collision, speed, score nor checkpoint logic is modified.
+ */
+const COURSE_ACCENTS = Object.freeze([
+  0x33d8eb,0xffa33b,0x936dff,0x4ce0bd,
+  0xffc65a,0xfa5f91,0x49b8ff,0x84ebff,
+  0xeed067,0xee4edc,0x58e3c7,0xb4d8ff,
+  0xf0bc55,0xff8f42,0x73d8ff,0xe4bcfa,
+]);
+export function buildRaceLandmarks(THREE,track,course) {
+  const n=Number(course?.slice(5));
+  if(!Number.isInteger(n)||n<1||n>16||!track?.sample)
+    throw Error('Course-specific world landmarks require a native track');
+  const group=new THREE.Group();
+  group.name='unique-course-landmarks-'+course;
+  const material=new THREE.MeshStandardMaterial({
+    color:COURSE_ACCENTS[n-1],roughness:.46,metalness:.26,
+    emissive:COURSE_ACCENTS[n-1],emissiveIntensity:.13,
+  });
+  const pale=new THREE.MeshStandardMaterial({
+    color:0xf0f7fa,roughness:.79,metalness:.09,
+  });
+  const floorMat=new THREE.MeshStandardMaterial({color:0x283c51,roughness:.94});
+  const share=(root,geo,mat,x,y,z)=>{
+    const mesh=new THREE.Mesh(geo,mat);mesh.position.set(x,y,z);
+    mesh.castShadow=true;mesh.receiveShadow=true;root.add(mesh);return mesh;
+  };
+  const shapes=[
+    (root)=>{ // city tower
+      share(root,new THREE.BoxGeometry(3.5,16,3.5),floorMat,0,8,0);
+      share(root,new THREE.BoxGeometry(5,2,5),material,0,17,0);
+    },
+    (root)=>{ // desert obelisk
+      share(root,new THREE.CylinderGeometry(1.2,2.4,17,4),material,0,8.5,0);
+      share(root,new THREE.ConeGeometry(2.1,5,4),pale,0,19,0);
+    },
+    (root)=>{ // elevated torus beacon
+      share(root,new THREE.CylinderGeometry(1.6,2,12,8),floorMat,0,6,0);
+      const ring=share(root,new THREE.TorusGeometry(6,.7,7,16),material,0,15,0);
+      ring.rotation.y=Math.PI/3;
+    },
+    (root)=>{ // coastal sail
+      share(root,new THREE.CylinderGeometry(.55,.8,17,7),floorMat,0,8.5,0);
+      const sail=share(root,new THREE.ConeGeometry(6.5,13,3),material,4.5,11,0);
+      sail.rotation.z=.28;
+    },
+    (root)=>{ // heritage temple gate
+      for(const x of [-3,3])share(root,new THREE.CylinderGeometry(1.4,1.7,15,7),floorMat,x,7.5,0);
+      share(root,new THREE.BoxGeometry(10,3.5,3),material,0,17,0);
+    },
+    (root)=>{ // lightning staircase
+      for(let i=0;i<3;i++)share(root,new THREE.BoxGeometry(4.5,3,4.5),i%2?material:pale,0,3+i*4,0);
+    },
+    (root)=>{ // sea-cliff rock
+      share(root,new THREE.DodecahedronGeometry(8,0),floorMat,0,6,0);
+      share(root,new THREE.ConeGeometry(3.2,9,5),material,0,14,0);
+    },
+    (root)=>{ // crystalline snow shrine
+      share(root,new THREE.CylinderGeometry(1.2,2,9,5),floorMat,0,4.5,0);
+      share(root,new THREE.OctahedronGeometry(7,0),material,0,15.5,0);
+    },
+  ];
+  // A different signature pair in every numbered course.
+  const types=[(n+7)%8,(n*5+2)%8],fractions=n%2?[.27,.72]:[.32,.77];
+  for(let sector=0;sector<2;sector++){
+    const sample=track.sample(track.length*fractions[sector],{});
+    for(const side of [-1,1]){
+      const root=new THREE.Group();
+      root.name='course-landmark-'+course+'-'+sector+'-'+side;
+      const offset=track.halfW+(sector?12:10);
+      root.position.set(sample.x+sample.rx*side*offset,
+        sample.y-1.5,sample.z+sample.rz*side*offset);
+      // No track collision: every mesh lies beyond the side guardrail.
+      shapes[types[sector]](root);
+      group.add(root);
+    }
+  }
+  return group;
+}
+
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
 export function applyTrackDesign(layouts) {
   const report = {};
