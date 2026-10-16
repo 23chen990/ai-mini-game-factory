@@ -301,6 +301,10 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
   const goal = actual(challenge.target);
   if (outcome === 'won') {
+    if (challenge.kind === 'hits'&&challenge.drill==='reposition')
+      return '战术突围完成：首枪命中、离开原位 '+actual(metrics.drillTravel)+
+        '米、手动追击 '+actual(metrics.drillFollowUpHits)+
+        '次。下一关挑战 AWM 精准击杀。';
     if (challenge.kind === 'hits')
       return '亲自命中 ' + hits + ' 次。下一关要使用 AWM 取得真正的击杀。';
     if (challenge.kind === 'kills')
