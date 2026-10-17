@@ -102,7 +102,7 @@ export function createCfCoverAssault(game,root,doc) {
   root.append(panel);
   const $=id=>panel.querySelector('#mk-cover-'+id);
   const buttons={left:$('left'),right:$('right')};
-  let enabled=false,challenge=null,route=null,aimSide=null;
+  let enabled=false,challenge=null,route=null;
   let barriers=[],paths={left:null,right:null},sites={left:null,right:null};
   let lastStatus='',lastUi=0,stuckAt=0,lastProgress=null,failedRoutes=0;
   const clearInputs=()=>{
@@ -169,7 +169,7 @@ export function createCfCoverAssault(game,root,doc) {
     html.dataset.fpsCover=String(enabled);
     root.dataset.fpsCover=String(enabled);
     panel.hidden=!enabled;
-    route=null;aimSide=null;sites={left:null,right:null};
+    route=null;sites={left:null,right:null};
     paths={left:null,right:null};failedRoutes=0;lastUi=0;lastStatus='';
     clearInputs();
     if(!enabled){game.__mkCoverV20=null;return {enabled:false};}
@@ -214,7 +214,7 @@ export function createCfCoverAssault(game,root,doc) {
     const from={x:p.pos.x,z:p.pos.z},to=sites[side];
     const path=cfCoverPath(game.nav,from,to);
     if(!path){failedRoutes++;refreshUi(true);return false;}
-    route=path.slice(1);aimSide=side;lastProgress={x:p.pos.x,z:p.pos.z};
+    route=path.slice(1);lastProgress={x:p.pos.x,z:p.pos.z};
     stuckAt=Number(game.time)||0;
     if(game.__mkCoverV20){
       game.__mkCoverV20.routeMoves++;game.__mkCoverV20.failedRoutes=failedRoutes;
