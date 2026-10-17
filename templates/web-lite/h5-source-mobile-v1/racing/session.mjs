@@ -8,6 +8,18 @@ export function setRaceSound(audio, enabled) {
   return true;
 }
 export const normalizeRaceQuality = value => ['low', 'mid', 'high'].includes(value) ? value : 'mid';
+/** A narrow keyboard-controlled desktop window must not become a phone HUD. */
+export function raceScreenProfile(width, height, {coarse = false, anyCoarse = false, touchPoints = 0} = {}) {
+  const shortSide=Math.min(width,height);
+  const naturalTouch=Boolean(coarse)||(Boolean(anyCoarse)&&touchPoints>0&&shortSide<=820);
+  return naturalTouch?'touch':'desktop';
+}
+// Mobile-only chase composition: larger car, readable bend entry, stable boosts.
+const PHONE_CAMERA=Object.freeze({dist:9.45,h:3.45,look:7.8,lookH:1.45});
+const WIDE_PHONE_CAMERA=Object.freeze({dist:9.1,h:3.3,look:7.5,lookH:1.45});
+export function racePhoneCamera(width,height) {
+  return width/Math.max(1,height)>=2.17?WIDE_PHONE_CAMERA:PHONE_CAMERA;
+}
 export const raceReady = game => !!(game?.track && game.input && !game.loading);
 /** Never begin or charge fuel for a stage if its physical track failed to load. */
 export const stageTrackReady = (game, stage) => !!(game?.track && !game.loading && game.map?.id === stage?.map && stage?.course && game.track.__RACE_COURSE_ID === stage.course && game.settings?.course === stage.course);
@@ -31,7 +43,7 @@ export function settleNative(game) {
   clearNativeInput(game.input ?? { down: new Set(), pressed: new Set(), touchPressed: new Set(), touch: {} });
   return result;
 }
-export const raceCameraFov = (speed, nitro, small) => Math.min(78, 66 + Math.abs(speed) * .055 + (nitro ? 4 : 0) + (small ? 2 : 0));
+export const raceCameraFov = (speed, nitro, small) => Math.min(69, 61.5 + Math.abs(speed) * .046 + (nitro ? 1.8 : 0) + (small ? .8 : 0));
 // Keep scene luminance stable across the frequent automatic boost cycles.
 export const raceBloomStrength = () => .3;
 const tunedFx = new WeakSet();
