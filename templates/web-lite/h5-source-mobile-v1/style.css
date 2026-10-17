@@ -999,3 +999,23 @@ html[data-reference-game="cf-transport-ship"] .mk-fps-enemy.mk-fps-returnfire{
 @media(prefers-reduced-motion:reduce){
   html[data-reference-game="cf-transport-ship"] .mk-fps-enemy.mk-fps-returnfire{animation:none}
 }
+
+/* V17: the real native first-kill moment is visible but never covers the
+ * sight center, primary fire action, or opposing actor position. */
+html[data-reference-game="cf-transport-ship"] #mk-fps-hit-feedback[data-milestone="firstkill"]{
+  top:calc(50% - 78px);
+  padding:5px 12px;
+  border:1px solid rgba(255,218,121,.72);
+  border-radius:9px;
+  background:linear-gradient(90deg,rgba(44,27,11,.88),rgba(74,34,13,.93));
+  color:#fff4cb;
+  font-weight:850;
+  font-size:clamp(14px,2.6vw,20px);
+  letter-spacing:.035em;
+  box-shadow:0 5px 20px rgba(0,0,0,.32),0 0 18px rgba(255,187,73,.23);
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-reference-game="cf-transport-ship"] #mk-fps-hit-feedback[data-milestone="firstkill"]{
+    animation:none!important
+  }
+}

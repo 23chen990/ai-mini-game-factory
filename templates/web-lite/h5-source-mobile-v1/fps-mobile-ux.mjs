@@ -653,6 +653,28 @@ export function cfCombatHapticPattern(event) {
   if(event.kind==='damage'&&event.hpLoss>=10)return 8;
   return null;
 }
+/** A personal kill requires a forward delta in the ORIGINAL actor's k stat;
+ * never decorate team score, a replay reset, or a mere native hit as a kill. */
+export function cfNativeKillPayoff(previousKills,currentKills) {
+  if(!Number.isSafeInteger(previousKills)||!Number.isSafeInteger(currentKills)||
+    previousKills<0||currentKills<=previousKills)return '';
+  const delta=currentKills-previousKills;
+  if(previousKills===0)return '✦ 首杀 · 打开突破口';
+  return delta>1?'✦ 连续击倒 +'+delta:'✦ 亲手击倒 +1';
+}
+/** Results-only native fire line: enemy shots are NOT injuries or kills. */
+export function cfBattleRecap(metrics,firstKillMs=null) {
+  if(!metrics||!['shots','hits','kills','enemyShots'].every(k=>
+    Number.isSafeInteger(metrics[k])&&metrics[k]>=0&&metrics[k]<=100_000))
+    return '';
+  const text=['实战：命中'+metrics.hits+'次',
+    '亲手击倒'+metrics.kills+'人',
+    '敌方开火'+metrics.enemyShots+'发'];
+  if(metrics.kills>0&&Number.isFinite(firstKillMs)&&firstKillMs>=0&&
+    firstKillMs<=30_000)
+    text.push('首杀'+(firstKillMs/1000).toFixed(1)+'秒');
+  return text.join(' · ');
+}
 export function cfHitCue(challenge, nativeHits, increase, drill = null) {
   if (!challenge || !Number.isFinite(nativeHits) || !Number.isFinite(increase) ||
       nativeHits < 1 || increase < 1) return '';
@@ -1977,7 +1999,8 @@ export function createFpsMobileUx(game, root, doc) {
         nudgeAim();
         const hits=p.stats?.hits||0;
         const combat={hits,kills:p.stats?.k||0,hp:p.hp,alive:p.alive===true};
-        const diff=cfRealCombatFeedback(previousCombat,combat);
+        const beforeCombat=previousCombat;
+        const diff=cfRealCombatFeedback(beforeCombat,combat);
         previousCombat=combat;
         const pattern=cfCombatHapticPattern(diff);
         if(pattern!==null&&game.touchMode===true&&
@@ -1987,11 +2010,13 @@ export function createFpsMobileUx(game, root, doc) {
         }
         if(diff.kind==='kill'||diff.kind==='hit'){
           const message=diff.kind==='kill'
-            ? '★ 亲手击杀 +'+diff.kills
+            ? cfNativeKillPayoff(beforeCombat?.kills,combat.kills)
             : cfHitCue(activeChallenge,hits,diff.hits,drill);
           if(message){
             hitCue.textContent=message;hitCue.dataset.kind=diff.kind;
-            hitCue.hidden=false;cueExpiresAt=now+(diff.kind==='kill'?950:630);
+            hitCue.dataset.milestone=diff.kind==='kill'&&beforeCombat?.kills===0
+              ?'firstkill':'';
+            hitCue.hidden=false;cueExpiresAt=now+(diff.kind==='kill'?1100:630);
           }
         }
         if(diff.hpLoss>0){

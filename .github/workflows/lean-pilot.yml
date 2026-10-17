@@ -368,7 +368,7 @@ jobs:
   # V14 independent native-player first 30s and failure/free-retry QA. Builds
   # the same pinned original Three.js and never injects actor stats or winners.
   cf-v14-first30-native-3d:
-    if: github.event.pull_request.head.ref == 'feat/cf-v14-first30-replay-metrics-20261017' || github.event.pull_request.head.ref == 'feat/cf-v15-native-clock-mobile-performance-20261017' || github.event.pull_request.head.ref == 'feat/cf-v16-responsive-firefight-proof-20261017'
+    if: github.event.pull_request.head.ref == 'feat/cf-v14-first30-replay-metrics-20261017' || github.event.pull_request.head.ref == 'feat/cf-v15-native-clock-mobile-performance-20261017' || github.event.pull_request.head.ref == 'feat/cf-v16-responsive-firefight-proof-20261017' || github.event.pull_request.head.ref == 'feat/cf-v17-first-native-kill-payoff-20261017'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:

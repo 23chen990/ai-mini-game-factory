@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "issueId": "cf-v17-first-native-kill-payoff",
+  "game": "cf-transport-ship",
+  "runId": "h5-cf-challenges-20261013",
+  "workspace": "runs/h5-cf-challenges-20261013/workspace/game",
+  "route": "formal-fixer",
+  "classification": "CORE_LOOP_FIRST30_REWARD_AND_FAILURE_ATTRIBUTION",
+  "baseCommit": "faed9bf6f1684c5406fe18d9b9535a08513d1491",
+  "evidence": {
+    "source": "CI original native Three.js SwiftShader touchscreen QA 39031081126, CF-V16-QA-faed9bf6.json",
+    "observed": {
+      "first30NativeTimeSec": 11.3,
+      "playerShots": 4,
+      "playerHits": 4,
+      "playerKills": 0,
+      "openingBotRealShots": 5,
+      "enemyReleased": true
+    },
+    "problem": "Opening is demonstrably a hit tutorial, not yet a documented human-press first kill. Postgame shows task text but not native first-kill/fire-pressure sequence."
+  },
+  "reproductionMatrix": [
+    {
+      "object": "first rifle opponent",
+      "lifecycle": "start->player fires->damage->first kill or flee",
+      "renderer": "original Three.js actor and authored cargo lane",
+      "device": "667x375 simulated touchscreen Chromium",
+      "gate": "NORMAL_INPUT_REQUIRED"
+    },
+    {
+      "object": "one native first kill HUD",
+      "lifecycle": "player k 0->1",
+      "renderer": "existing hit cue above reticle",
+      "device": "portrait-pause+landscape/mobile",
+      "gate": "VISIBLE_FEEDBACK_REQUIRED"
+    },
+    {
+      "object": "result recap",
+      "lifecycle": "loss/win after a real terminal",
+      "renderer": "CF result copy and local stats",
+      "device": "mobile HTTP",
+      "gate": "SOURCED_NATIVE_COUNTERS_ONLY"
+    },
+    {
+      "object": "remote phones",
+      "lifecycle": "fresh installed browser",
+      "renderer": "physical Safari/Chrome",
+      "device": "iOS/Android",
+      "gate": "NOT_RUN"
+    }
+  ],
+  "scope": [
+    "CF-only H5 source and CF-specific QA/tests/workflow condition",
+    "do not alter native actor damage, hitboxes, HP, kills, spawns, round clock, rewards, others' games"
+  ],
+  "acceptance": [
+    "Normal repeated touch fire (only input events, no injection) yields a personal original actor kill within first 30 simulation seconds and is recorded by local firstKillMs",
+    "First genuine native kill has recognizable temporary celebratory confirmation; no badge from team/AI kills or reset/respawn",
+    "Result recap states native shots/hits/personal kills and original enemy shots as distinct facts; never describes enemy fire as damage",
+    "All existing 60 native QA, eight mission smoke, 45s terminal and free replay remain passing",
+    "Original build ZIP and QA video/screenshots pulled from CI of exact PR head"
+  ],
+  "releaseBlockers": [
+    "Real novices, human replay after enemy-caused failure",
+    "physical iPhone/Android",
+    "approved live TapTap ad SDK callback",
+    "upstream third-party source/assets full commercial license"
+  ],
+  "status": "FIX_ATTEMPT_3_NATIVE_RETEST_PENDING",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sha": "3aff98ecba0ba23bcf92ef48c1f58107ff2a6047",
+      "ciRun": 39032819110,
+      "rootCause": "First-kill QA proved real personal kill in ~1.8 native simulated seconds (11 fired, 2 hit, k=1; visible cue); prior unconditional same-opponent-shot requirement failed because that bot was killed before it could reply.",
+      "passed": [
+        "native personal first kill",
+        "rendered first-kill cue",
+        "8 missions smoke",
+        "normal 45-second terminal/free replay",
+        "147 unit tests"
+      ],
+      "failed": [
+        "first30-enemy-really-opens-fire-not-only-ai-intent"
+      ],
+      "decision": "Do not weaken real counterfire. Split the player-fast-kill path and no-player-attack bot counterfire path as independent natural-initial-run branches."
+    },
+    {
+      "attempt": 2,
+      "sha": "12a3cf420169e73a40164ca46d799ccd3a8a4357",
+      "ciRun": 39033781524,
+      "passed": [
+        "normal touch first real native personal kill under 30s",
+        "all native smoke/terminal/free retry",
+        "no-attack real opening bot native fire 5 shots",
+        "no-attack genuine damage and native death at ~4.2sim",
+        "147 unit tests, HTTP browser"
+      ],
+      "failed": [
+        "first30-kill-reward-rendered-from-real-player-counter"
+      ],
+      "cause": "Personal kill sometimes occurred on the INITIAL 380ms touch before the later kill sampling loop; UI cue existed but the loop began after 1100ms visibility had expired. Keep requirement, observe from before first touch."
+    },
+    {
+      "attempt": 3,
+      "sha": "4c04e629f759573b4eeb1ca2e37e67f0475d9fd1",
+      "ciRun": "PENDING",
+      "hypothesis": "Attach and retain read-only MutationObserver before first touch and sample its displayed first-kill event; only continue held firing when needed for actual kill.",
+      "acceptance": [
+        "Native player counter increments in <30sim",
+        "first kill cue visibly appears according to prearmed DOM mutation record",
+        "no-fire opponent genuinely injures player",
+        "full 45s natural terminal and retry remain unmodified"
+      ],
+      "noGameplayMutation": true
+    }
+  ]
+}

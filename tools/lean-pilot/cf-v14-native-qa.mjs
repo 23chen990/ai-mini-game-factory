@@ -1,4 +1,4 @@
-/* global process,console,window,document,innerWidth,innerHeight,getComputedStyle,URL,performance,setTimeout,localStorage */
+/* global process,console,window,document,innerWidth,innerHeight,getComputedStyle,URL,performance,setTimeout,localStorage,MutationObserver */
 import {chromium} from '@playwright/test';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
@@ -62,7 +62,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     return {
       phase:root?.dataset.phase,challenge:root?.dataset.challenge,
       gamePhase:g?.ended?'finished':g?.paused?'paused':g?.playing?'running':'ready',
-      time:g?.time||0,player:p?{alive:p.alive,
+      time:g?.time||0,player:p?{alive:p.alive,hp:p.hp,
         x:p.pos.x,y:p.pos.y,z:p.pos.z,vy:p.vel?.y,
         onGround:p.onGround,jumpCD:p.jumpCD,
         jumpHeadroom:typeof g?.world?.blocked==='function'
@@ -219,24 +219,50 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         vy:s.player?.vy,onGround:s.player?.onGround,
         jumpCD:s.player?.jumpCD,input:s.player?.input?.jump})),
       after:afterJump.player});
-    // Two real CDP fingers: walk+fire at once, then OS-style touchcancel.
-    const f0=center(fireRect);
-    await event('touchStart',[{...p0,id:51}]);
-    await event('touchStart',[{...p0,id:51},{...f0,id:52}]);
-    await event('touchMove',[{x:p0.x,y:p0.y-43,id:51},{x:f0.x-17,y:f0.y-9,id:52}]);
-    await sleep(340);
-    const combined=await inspect();
-    check('two-thumbs-simultaneous-input',Math.abs(combined.player.input.mz)>.25&&
-      combined.player.input.fire===true,
-      {combined:combined.player});
-    await event('touchCancel',[]);
-    await sleep(220);
-    const cancelled=await inspect();
+    // Two normal CDP fingers: walk + fire together, followed by OS-style
+    // touchcancel. The original Three.js fight can KILL the player mid-input;
+    // native death correctly clears movement. In that one causal branch,
+    // release all touches, await real 4s native respawn and repeat once.
+    // This never sets HP, state, position, stats, clock or the input assertion.
+    const f0=center(fireRect),multiTouchTraces=[];
+    let combined=null,cancelled=null,multiSuccess=false;
+    for(let attempt=1;attempt<=2;attempt++){
+      const current=await inspect();
+      if(!current.player?.alive){
+        await page.waitForFunction(()=>{
+          const g=window.__H5NativeGame;
+          return g?.playing===true&&!g?.paused&&
+            g?.player?.alive===true;
+        },null,{timeout:30000,polling:100});
+      }
+      await event('touchStart',[{...p0,id:51}]);
+      await event('touchStart',[{...p0,id:51},{...f0,id:52}]);
+      await event('touchMove',[
+        {x:p0.x,y:p0.y-43,id:51},{x:f0.x-17,y:f0.y-9,id:52}]);
+      await sleep(340);
+      combined=await inspect();
+      await event('touchCancel',[]);
+      await sleep(220);
+      cancelled=await inspect();
+      multiSuccess=combined.player?.alive===true&&
+        Math.abs(combined.player.input.mz)>.25&&
+        combined.player.input.fire===true;
+      multiTouchTraces.push({
+        attempt,aliveDuring:combined.player?.alive,
+        deaths:combined.player?.deaths,
+        walk:combined.player?.input.mz,
+        firing:combined.player?.input.fire,
+        cancelled:cancelled.player?.input
+      });
+      if(multiSuccess||combined.player?.alive===true)break;
+    }
+    check('two-thumbs-simultaneous-input',multiSuccess,
+      {combined:combined.player,attempts:multiTouchTraces});
     check('ios-style-cancel-releases-all-native-touches',
       cancelled.player.input.mx===0&&cancelled.player.input.mz===0&&
       cancelled.player.input.fire===false&&cancelled.player.input.firePressed===false&&
       cancelled.player.input.dx===0&&cancelled.player.input.dy===0,
-      {cancelled:cancelled.player});
+      {cancelled:cancelled.player,attempts:multiTouchTraces});
     await snap('v14-multitouch-cancel');
     await page.locator('#mk-pause').tap();
     await page.waitForSelector('#mobile-kit[data-phase="paused"]',{timeout:9000});
@@ -273,6 +299,25 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       rookie.openingBot.holdUntil<=12&&rookie.openingBot.holdUntil>=7,
       {bot:rookie.openingBot,route:rookie.route});
     const authenticRookieShots=rookie.player.shots;
+    // Install a READ-ONLY DOM observer BEFORE the first real finger press:
+    // the native target may die in <380ms, and a later screenshot/poll is too
+    // late for the brief first-kill cue. This never edits game state/UI.
+    await page.evaluate(()=>{
+      const el=document.getElementById('mk-fps-hit-feedback');
+      window.__cfKillCueObservations=[];
+      const read=()=>{
+        if(el?.hidden===false&&/首杀/.test(el.textContent||''))
+          window.__cfKillCueObservations.push({
+            text:el.textContent,
+            displayed:getComputedStyle(el).display!=='none'
+          });
+      };
+      const observer=new MutationObserver(read);
+      window.__cfKillCueObserver=observer;
+      observer.observe(el,{attributes:true,attributeFilter:['hidden'],
+        subtree:true,childList:true,characterData:true});
+      read();
+    });
     await button('#touch .btn[data-mk-action="fire"]',380,70);
     const firedRookie=await inspect();
     check('first30-fire-requires-native-player-shot',
@@ -286,6 +331,59 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       firedRookie.openingBot?.holdUntil<=5.1,
       {before:rookie.openingBot,after:firedRookie.openingBot,
         playerShots:firedRookie.player.shots});
+    // Normal sustained single-thumb fire — do NOT set HP, aim, actor stats,
+    // spawn, game clock or outcome. This is an actual native FIRST KILL gate.
+    const firstKillTouch=center(await rect('#touch .btn[data-mk-action="fire"]'));
+    const killPressTrace=[];
+    const cueObserved=async()=>page.evaluate(()=>{
+      return (window.__cfKillCueObservations||[]).some(e=>
+        e.displayed===true&&/首杀/.test(e.text));
+    });
+    let firstKillCueSeen=await cueObserved();
+    killPressTrace.push({seconds:+(firedRookie.time-rookie.time).toFixed(2),
+      shots:firedRookie.player.shots,hits:firedRookie.player.hits,
+      kills:firedRookie.player.kills,
+      enemyShots:firedRookie.openingBot?.realShots,
+      cueObserved:firstKillCueSeen});
+    if(firstKillCueSeen)await snap('v17-first-native-kill-visible');
+    if(!firstKillCueSeen || !firedRookie.player.kills){
+      await event('touchStart',[{...firstKillTouch,id:79}]);
+      try {
+      for(let n=0;n<28;n++){
+        await sleep(450);
+        const state=await inspect();
+        const cue=await page.evaluate(()=>{
+          const el=document.getElementById('mk-fps-hit-feedback');
+          return {text:el?.textContent||'',visible:el?.hidden===false};
+        });
+        killPressTrace.push({seconds:+(state.time-rookie.time).toFixed(2),
+          shots:state.player?.shots,hits:state.player?.hits,
+          kills:state.player?.kills,enemyShots:state.openingBot?.realShots,
+          cue:cue.visible?cue.text:null});
+        if(!firstKillCueSeen&&await cueObserved()){
+          firstKillCueSeen=true;
+          await snap('v17-first-native-kill-visible');
+        }
+        if((state.player?.kills||0)>=1&&firstKillCueSeen)break;
+        if(state.time-rookie.time>29)break;
+      }
+      }finally{await event('touchEnd',[]);}
+    }
+    const killResult=await inspect();
+    samples.push({id:'tags',when:'first-personal-native-kill',
+      realTouch:true,trace:killPressTrace});
+    check('first30-real-personal-kill-from-normal-sustained-thumb',
+      killResult.player?.kills>=1&&
+      killResult.player.hits>=1&&
+      killResult.player.shots>=firedRookie.player.shots&&
+      killResult.time-rookie.time<30,
+      {nativeSec:killResult.time-rookie.time,player:killResult.player,
+        trace:killPressTrace});
+    const observedCues=await page.evaluate(()=>
+      window.__cfKillCueObservations||[]);
+    check('first30-kill-reward-rendered-from-real-player-counter',
+      firstKillCueSeen&&observedCues.some(e=>e.displayed),
+      {trace:killPressTrace,observedCues});
     // Software WebGL can render 6 seconds of native simulation in 11 wall
     // seconds. Always wait on the ORIGINAL GAME CLOCK, never force timers or
     // weaken the 10-second tactical release; capture the wall/sim gap as
@@ -300,9 +398,9 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       {hits:afterRookieWindow.player?.hits,shots:afterRookieWindow.player?.shots,
         nativeSeconds:afterRookieWindow.time-rookie.time});
     const wallSec=(performance.now()-wallStart)/1000;
-    check('first30-enemy-really-opens-fire-not-only-ai-intent',
-      (afterRookieWindow.openingBot?.realShots||0)>=1,
-      {enemy:afterRookieWindow.openingBot});
+    // The original opponent was genuinely eliminated in the opening;
+    // it is fair for a player's decisive first kill to PREVENT return fire.
+    // A separate no-attack branch below must prove genuine counterfire.
     check('stationary-novice-target-released-by-real-11sec-native-clock',
       afterRookieWindow.time-rookie.time>=10.5&&
       (afterRookieWindow.openingBot?.training===false||
@@ -312,6 +410,45 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
        wallSec:+wallSec.toFixed(2),
        browser:'SWIFTSHADER_CHROMIUM_NOT_A_REAL_PHONE'});
     await snap('v14-first30-live-pressure');
+
+    // Separate causal branch: player never presses fire or any other input.
+    // A rival surviving its own native opening MUST return actual gunfire,
+    // and its bullets must present a genuine damage/death risk by 30s.
+    // Do not teleport, aim for bots, modify health, or create bullets.
+    const noAttack=await enter('tags');
+    const noAttackTrace=[];
+    const noAttackWallStart=performance.now();
+    while(performance.now()-noAttackWallStart<95_000){
+      await sleep(1700);
+      const status=await inspect();
+      noAttackTrace.push({
+        nativeSec:+(status.time-noAttack.time).toFixed(2),
+        phase:status.phase,
+        playerShots:status.player?.shots||0,
+        playerHP:status.player?.hp,
+        playerDeaths:status.player?.deaths||0,
+        enemyShots:status.openingBot?.realShots||0,
+        enemyRole:status.openingBot?.role,
+        enemyTraining:status.openingBot?.training
+      });
+      const age=status.time-noAttack.time;
+      if((age>=13&&status.openingBot?.realShots>0&&
+         (status.player?.hp<100||status.player?.deaths>0))||
+        age>=28||status.phase==='finished')break;
+    }
+    const observedCounterfire=noAttackTrace.some(x=>x.enemyShots>0);
+    const observedHit=noAttackTrace.some(x=>x.playerHP<100||x.playerDeaths>0);
+    check('first30-original-rival-fires-when-player-does-not-attack',
+      observedCounterfire&&
+      noAttackTrace.some(x=>x.nativeSec<=30&&x.enemyShots>0)&&
+      noAttackTrace.every(x=>x.playerShots===0),
+      {trace:noAttackTrace});
+    check('first30-unaltered-opponent-fire-can-really-injure-player',
+      observedHit&&observedCounterfire,
+      {trace:noAttackTrace});
+    samples.push({id:'tags',when:'no-player-attack-genuine-pressure',
+      realTouch:true,trace:noAttackTrace});
+    await snap('v17-no-player-fire-real-pressure');
 
     // Smoke each original mission/weapon using visible controls only.
     // This is NOT an eight-mission victory or full skill-curve claim.
