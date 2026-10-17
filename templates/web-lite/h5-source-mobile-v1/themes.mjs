@@ -10,6 +10,44 @@ export function cfMobileActorBudget(challenge){
   return challenge.elite===true?Math.min(4,base+1):base;
 }
 
+/** CF solo PvE. Native startMatch still creates standard actor objects using
+ * its pinned third-party engine, then BEFORE the first simulation frame we
+ * detach friendly AI from the authoritative actors collection and Three.js
+ * scene. Native projectiles, enemy Bot AI and player damage remain untouched.
+ *
+ * Removing friends from game.actors (rather than making them invisible)
+ * means they cannot shoot, block a lane, soak enemy bullets, steal kills,
+ * be selected as targets, appear on radar, or respawn. Only the player has
+ * the friendly team. Called on EVERY startMatch including instant replays.
+ */
+export function cfRemoveNativeAllies(game,challenge){
+  if(challenge?.lite!==true)return {applied:false,removed:0};
+  const player=game?.player;
+  if(!player?.team||!Array.isArray(game.actors))
+    return {applied:false,removed:0};
+  const allies=game.actors.filter(actor=>actor&&
+    actor!==player&&actor.team===player.team);
+  for(const actor of allies){
+    if(actor.soldier?.root)game.renderer?.scene?.remove?.(actor.soldier.root);
+  }
+  const tags=Array.isArray(game.tags)?game.tags:[];
+  const keptTags=[];
+  for(const tag of tags){
+    if(allies.includes(tag.actor)){
+      if(tag.sprite)game.renderer?.scene?.remove?.(tag.sprite);
+      tag.sprite?.material?.map?.dispose?.();
+      tag.sprite?.material?.dispose?.();
+    }else keptTags.push(tag);
+  }
+  game.tags=keptTags;
+  game.actors=game.actors.filter(actor=>!allies.includes(actor));
+  game.__mkSoloPve=true;
+  return {applied:true,removed:allies.length,
+    playerCount:game.actors.filter(actor=>actor===player).length,
+    enemyCount:game.actors.filter(actor=>actor!==player&&
+      actor.team!==player.team).length};
+}
+
 /** Small source-facing bridge, not a combat implementation. */
 export function createFpsAdapter(game, doc) {
   return {
