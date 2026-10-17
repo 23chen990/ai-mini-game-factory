@@ -109,18 +109,20 @@ export function patchV8NativeAi(source) {
   const changedTarget="const target = aiV8TargetLine(this,tr,clamp(inside + this.personal * hw * 0.8, -hw, hw),hw);";
   const oldStep="this.dist += this.s * dt + this.pushD;\n    this.pushD = 0;\n    const s = tr.sample(this.dist, this.s2);";
   const newStep="const travel = this.s * dt + this.pushD;\n    this.dist += travel;\n    this.pushD = 0;\n    const s = advanceAiV8Road(this,tr,travel) || tr.sample(this.dist, this.s2);";
+  const originalHalf='const hw = tr.halfW - 2.2;';
+  const nativeHalf='const hw = (tr.v9WidthAt?.(d) ?? tr.halfW) - 2.2;';
   const oldGrade="this.slope = tr.slope[s.i];";
   const newGrade="this.slope = s.__V8_FORK_AI__ ? s.grade : tr.slope[s.i];";
   const originalPace='let vt = Math.min(vmaxBase, vCorner + (this.nitroTime > 0 ? 6 : 0));';
   const forkPace='let vt = aiV8ForkDesiredSpeed(this,tr,Math.min(vmaxBase, vCorner + (this.nitroTime > 0 ? 6 : 0)));';
   if(source.includes(imported) && source.includes(changedTarget) &&
-     source.includes(newStep) && source.includes(newGrade) && source.includes(forkPace))return source;
+     source.includes(newStep) && source.includes(newGrade) && source.includes(forkPace) && source.includes(nativeHalf))return source;
   if(!source.includes('export class AICar') ||
-    [target,oldStep,oldGrade,originalPace].some(a=>source.split(a).length!==2))
+    [target,oldStep,oldGrade,originalPace,originalHalf].some(a=>source.split(a).length!==2))
     throw Error('Pinned native AI anchors changed');
   return imported+'\n'+source.replace(target,changedTarget)
     .replace(oldStep,newStep).replace(oldGrade,newGrade)
-     .replace(originalPace,forkPace);
+     .replace(originalPace,forkPace).replace(originalHalf,nativeHalf);
 }
 export function patchShortcutNativeCar(source) {
   const expected='const lim = tr.halfW - 1.1;';
