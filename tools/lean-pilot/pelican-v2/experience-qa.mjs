@@ -190,16 +190,33 @@ try{
    const forecastDistance=v.distance+(Number.isFinite(seconds)?Math.max(0,seconds)*7.5:0);
    visibleHazardClearance[i]=Math.max(visibleHazardClearance[i],forecastDistance+4);
   }
-  const blocked=i=>v.lanes[i].danger||v.distance<visibleHazardClearance[i];
+  // A future red van at 3-4s does not make the current open lane unsafe
+  // NOW when an adjacent barrier is only 0.8s away. React to the earliest
+  // collision deadline rather than abandoning the lane for a farther threat.
+  // Every decision still uses the actual public three-lane radar only.
+  const ttc=i=>{
+   const text=v.lanes[i]?.text??'';
+   const parsed=Number(text.match(/(\\d+(?:\\.\\d+)?)\\s*s/u)?.[1]);
+   return v.lanes[i]?.danger?(Number.isFinite(parsed)?parsed:0):Infinity;
+  };
+  const imminent=i=>ttc(i)<=2.0;
+  const dangerVisible=v.lanes.some(l=>l.danger);
   let want=v.lane;
-  if(blocked(want)){
-   const safe=[0,1,2].filter(i=>!blocked(i));
-   want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??want;
-  }else{
-   const fish=v.lanes.findIndex((l,i)=>l.fish&&!blocked(i));
+  if(imminent(want)){
+   const safe=[0,1,2].filter(i=>i!==want&&ttc(i)>2.35);
+   safe.sort((a,b)=>
+    Number(v.distance>=visibleHazardClearance[b])-Number(v.distance>=visibleHazardClearance[a])||
+    Math.abs(a-v.lane)-Math.abs(b-v.lane));
+   want=safe[0]??want;
+  }else if(!dangerVisible){
+   // Only chase optional fish on a genuinely clear approach, not between
+   // a near barrier and the following oncoming van.
+   const fish=v.lanes.findIndex((l,i)=>l.fish&&v.distance>=visibleHazardClearance[i]);
    if(fish>=0)want=fish;
   }
-  if(want!==v.lane&&!blocked(v.lane)&&blocked(v.lane+Math.sign(want-v.lane)))want=v.lane;
+  // A 0 -> 2 turn crosses lane 1. Never cross an immediately fatal lane
+  // just to take a visible optional fish.
+  if(want!==v.lane&&Math.abs(want-v.lane)===2&&imminent(1))want=v.lane;
   if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
   await page.waitForTimeout(55);
  }
