@@ -18,12 +18,12 @@ const src=path.join(run,'workspace/source/qq-speed/src');
 const build=JSON.parse(await readFile(path.join(run,'artifacts/build-racing.json'),'utf8'));
 const raw=await readFile(path.join(src,'layouts.js'),'utf8');
 const start="import { applyTrackDesign } from './race-track-design.mjs';\n";
-const end='\napplyTrackDesign(LAYOUTS, { v8: true });';
+const end='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true });';
 if(!raw.startsWith(start)||!raw.trimEnd().endsWith(end))
   throw Error('Unknown pinned native layout adapter; refusing synthetic physics QA');
 const layouts=(await import('data:text/javascript;base64,'+Buffer.from(
   raw.slice(start.length).trimEnd().slice(0,-end.length)).toString('base64'))).LAYOUTS;
-const revised=JSON.parse(JSON.stringify(layouts));applyTrackDesign(revised,{v8:true});
+const revised=JSON.parse(JSON.stringify(layouts));applyTrackDesign(revised,{v8:true,v9:true});
 const { Track }=await import(pathToFileURL(path.join(src,'track.js')).href);
 const { PlayerCar }=await import(pathToFileURL(path.join(src,'vehicle.js')).href);
 const { AICar }=await import(pathToFileURL(path.join(src,'ai.js')).href);
