@@ -376,7 +376,6 @@ async function boot() {
     await loadTrack(career.stage.map, false);
   if (!stageTrackReady(g,career.stage)) throw Error('赛道身份校验失败，禁止开始错误的关卡');
   root.dataset.loaded = 'true';
-  if (!mobile) $('note').textContent = '键盘仍可操作；手机仅支持轮盘驾驶';
   display('ready');
   let lastFuelTick = 0;
   const frame = now => {
