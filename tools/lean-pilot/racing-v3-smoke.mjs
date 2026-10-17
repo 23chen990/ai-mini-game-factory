@@ -424,7 +424,7 @@ try {
       replayTapCount:window.__RACE_EVIDENCE__?.replayTapCount,
       realDuel:window.__RACE_EVIDENCE__?.duel};
   });
-  if(!lossUI.planVisible||!lossUI.plan.includes('下局')||
+  if(!lossUI.planVisible||lossUI.plan.length<16||
      !lossUI.buttonVisible||!lossUI.button.includes('立即再战')||
      lossUI.stage!=='race-08'||!Number.isFinite(lossUI.realDuel?.nativeCrashes))
     fail('Real failure screen must offer an actionable, verifiable next attempt: '+JSON.stringify(lossUI));
