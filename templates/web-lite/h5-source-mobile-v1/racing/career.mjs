@@ -1,23 +1,23 @@
 export const CAREER_KEY = 'h5-mobile:qq-speed:career:v1';
 const make = (id, chapter, name, map, laps, diff, kind, mode, rank, goal, extra = {}) => Object.freeze({ id, chapter, name, map, course: 'race-' + id, laps, diff, kind, mode, rank, goal, ...extra });
-/** Four original locations, one driving model. Content is configuration, not 16 new tracks. */
+/** No beginner exception: every one of 16 stages demands real rank and technique. */
 export const STAGES = Object.freeze([
-  make('01', 1, '城市起航', 'city', 1, 0, 'race', 'speed', 6, '完成首次比赛'),
-  make('02', 1, '沙漠加速', 'egypt', 2, 0, 'speed', 'speed', 4, '经过测速点时达到 150 km/h', { target: 150 }),
-  make('03', 1, '内线超车', 'city', 2, 1, 'overtake', 'speed', 4, '弯道或出弯时真正超过对手 1 次', { target: 1 }),
-  make('04', 1, '海湾连漂', 'aegean', 2, 0, 'drift', 'speed', 4, '完成 3 次有效漂移', { target: 3 }),
-  make('05', 2, '沙漠道具箱', 'egypt', 2, 0, 'item', 'item', 4, '拾取 1 个道具', { target: 1 }),
-  make('06', 2, '城市道具战', 'city', 2, 1, 'item', 'item', 3, '拾取 2 个道具并冲线', { target: 2 }),
-  make('07', 2, '海湾限时赛', 'aegean', 2, 1, 'time', 'speed', 5, '在 115 秒内完成', { target: 115 }),
-  make('08', 2, '雪地夺旗', 'snow', 2, 1, 'race', 'speed', 3, '进入前三名'),
-  make('09', 3, '沙漠补时赛', 'egypt', 2, 1, 'relay', 'speed', 5, '通过加速带补时，完成比赛', { baseTime: 90, bonus: 12, maxTime: 210 }),
-  make('10', 3, '城市逆转战', 'city', 3, 1, 'item', 'item', 3, '拾取 2 个道具并进入前四', { target: 2 }),
-  make('11', 3, '海岛穿插战', 'aegean', 2, 2, 'overtake', 'speed', 3, '弯道或出弯时真正超过对手 2 次', { target: 2 }),
-  make('12', 3, '雪地淘汰赛', 'snow', 2, 1, 'elimination', 'speed', 3, '避开 2 次末位淘汰并冲线'),
-  make('13', 4, '都市车神', 'city', 3, 2, 'boss', 'speed', 5, '跑赢指定车神并进入前五名'),
-  make('14', 4, '沙丘测速', 'egypt', 2, 2, 'speed', 'speed', 3, '经过测速点时达到 185 km/h', { target: 185 }),
-  make('15', 4, '雪地混战', 'snow', 3, 2, 'item', 'item', 3, '拾取 3 个道具并进入前三', { target: 3 }),
-  make('16', 4, '终极车神', 'aegean', 3, 2, 'boss', 'speed', 3, '超过指定车神，夺得前三'),
+  make('01', 1, '城市攻防环', 'city', 2, 1, 'race', 'speed', 3, '跑满两圈并争取前三名'),
+  make('02', 1, '沙漠疾速考核', 'egypt', 2, 0, 'speed', 'speed', 3, '三个测速点至少一次达到 175 km/h', {'target':175}),
+  make('03', 1, '内线双反超', 'city', 2, 1, 'overtake', 'speed', 3, '弯道或出弯时真正超过对手 2 次', {'target':2}),
+  make('04', 1, '海湾高压连漂', 'aegean', 2, 0, 'drift', 'speed', 3, '完成 5 次有效漂移', {'target':5}),
+  make('05', 2, '神殿道具争夺', 'egypt', 2, 0, 'item', 'item', 3, '实取 2 个道具箱并进入前三', {'target':2}),
+  make('06', 2, '城市道具混战', 'city', 2, 1, 'item', 'item', 3, '拾取 3 个道具并进入前三', {'target':3}),
+  make('07', 2, '海崖极限限时', 'aegean', 2, 1, 'time', 'speed', 3, '在 105 秒内完成并进入前三', {'target':105}),
+  make('08', 2, '雪地决胜', 'snow', 2, 1, 'race', 'speed', 2, '进入前二名'),
+  make('09', 3, '沙丘极限补时', 'egypt', 2, 1, 'relay', 'speed', 3, '抢加速带补时并冲进前三', {'baseTime':90,'bonus':12,'maxTime':210}),
+  make('10', 3, '城市逆转争冠', 'city', 3, 1, 'item', 'item', 2, '拾取 3 个道具并进入前二名', {'target':3}),
+  make('11', 3, '海蛇三次超越', 'aegean', 2, 2, 'overtake', 'speed', 2, '弯道或出弯时真正超过对手 3 次', {'target':3}),
+  make('12', 3, '雪地末位猎杀', 'snow', 2, 1, 'elimination', 'speed', 2, '避开 2 次末位淘汰并进入前二'),
+  make('13', 4, '都市终极车神', 'city', 3, 2, 'boss', 'speed', 2, '跑赢指定车神并进入前二名'),
+  make('14', 4, '沙丘极速冲顶', 'egypt', 2, 2, 'speed', 'speed', 2, '测速点至少一次达到 190 km/h', {'target':190}),
+  make('15', 4, '极地道具冠军战', 'snow', 3, 2, 'item', 'item', 2, '拾取 4 个道具并进入前二名', {'target':4}),
+  make('16', 4, '悬崖冠军决战', 'aegean', 3, 2, 'boss', 'speed', 1, '超过指定车神，夺得第一名'),
 ]);
 export const SKIN_STARS = Object.freeze([0, 3, 6, 10, 14, 19, 25, 34]);
 export const SKIN_NAMES = Object.freeze(['烈焰红', '冰蓝', '紫电', '黄金', '珍珠白', '樱粉', '翡翠', '暗夜']);

@@ -1,5 +1,5 @@
 /** Pure arcade presentation. Never mutates native driving, result or save state. */
-import { COURSE_BLUEPRINTS } from './track-design.mjs';
+import { COURSE_BLUEPRINTS, injectTechnicalSectors } from './track-design.mjs';
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const finite = value => typeof value === 'number' && Number.isFinite(value);
@@ -9,7 +9,11 @@ export function careerCourseSvg(course) {
   const id = typeof course === 'string' ? course.replace(/^race-/, '') : '';
   const blueprint = COURSE_BLUEPRINTS[id];
   if (!blueprint) return '';
-  const points = blueprint[4].split(' ').map(point => point.split(',').map(Number));
+  // Mirror the precise authored spline control points, not the old pre-S-turn
+  // lobby outline. Real native Track Catmull-Rom remains authoritative on road.
+  const points = injectTechnicalSectors(
+    blueprint[4].split(' ').map(point => point.split(',').map(Number)),
+    id, blueprint[3]);
   if (points.length < 6 || !points.every(point => point.length === 3 && point.every(finite))) return '';
   const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
   const x0 = Math.min(...xs), y0 = Math.min(...ys), dx = Math.max(1, Math.max(...xs) - x0), dy = Math.max(1, Math.max(...ys) - y0);
@@ -33,40 +37,22 @@ export function raceProgressPercent(player, track, stage) {
   return clamp(Math.round(player.progress / distance * 100), 0, 100);
 }
 
-/** Gap is measured from native completed metres, never manufactured catch-up speed. */
-export function nearbyRival(game) {
-  const field = game?.standings, player = game?.player;
-  if (!Array.isArray(field) || !player || !finite(player.progress)) return null;
-  const rank = field.indexOf(player);
-  if (rank < 0) return null;
-  const opponent = rank > 0 ? field[rank - 1] : field[1];
-  if (!opponent || !finite(opponent.progress) || opponent.finished) return null;
-  const distance = Math.abs(opponent.progress - player.progress);
-  if (distance > 105 || distance < 1) return null;
-  return { label: rank > 0 ? '追击前车' : '守住领先', metres: Math.round(distance), threat: rank === 0 && distance < 28 };
-}
-
-/** Only real native events can trigger these player-facing micro-rewards. */
-export function raceEventMoment(event) {
-  switch (event?.type) {
-    case 'driftEnd':
-      return event.data?.clean === true && Number(event.data?.time ?? event.time) > .22
-        ? { title: '漂亮过弯', kind: 'skill' } : null;
-    case 'pad': return { title: '加速带！', kind: 'boost' };
-    case 'nitro': return { title: '氮气冲刺！', kind: 'boost' };
-    case 'smallBoost':
-      return { title: event.data?.perfect ? '完美小喷！' : '小喷！', kind: 'boost' };
-    case 'landBoost': return { title: '落地喷！', kind: 'boost' };
-    case 'gaugeFull': return { title: '氮气已就绪', kind: 'ready' };
-    default: return null;
+/** Minimal race fact, not a gameplay coach. Native rank, timer, lap and
+ * minimap already occupy the regular HUD. Only unusual stage gates get a
+ * single short number (e.g. 2/5); elimination has its own physical meter.
+ */
+export function compactRaceObjective(stage,stats={},raceTime=0) {
+  if(!stage||typeof stage.kind!=='string')return '';
+  const n=value=>finite(value)?Math.max(0,value):0;
+  const progress=(value,target)=>Math.min(n(target),Math.floor(n(value)))+'/'+Math.floor(n(target));
+  switch(stage.kind) {
+    case 'drift':return '漂移 '+progress(stats.cleanDrifts,stage.target);
+    case 'overtake':return '超车 '+progress(stats.cleanPasses,stage.target);
+    case 'item':return '道具 '+progress(stats.pickups,stage.target);
+    case 'speed':return '测速 '+Math.floor(n(stats.gateSpeed))+'/'+Math.floor(n(stage.target));
+    case 'time':
+    case 'relay':
+      return '剩余 '+Math.max(0,Math.ceil(n(stats.timeAllowance)-n(raceTime)))+'s';
+    default:return '';
   }
-}
-/** Native stage metrics, never UI-simulated rewards. */
-export function raceMetricMoment(previous, current) {
-  if (!current || !previous) return null;
-  if ((current.cleanPasses ?? 0) > (previous.cleanPasses ?? 0))
-    return { title: '弯道反超！', kind: 'skill' };
-  if ((current.pickups ?? 0) > (previous.pickups ?? 0))
-    return { title: '道具到手！', kind: 'item' };
-  return null;
 }

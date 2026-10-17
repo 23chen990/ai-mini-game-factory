@@ -10,7 +10,7 @@ import { Buffer } from 'node:buffer';
 import { pathToFileURL } from 'node:url';
 import { ManualRaceDriver, TouchActions } from '../../templates/web-lite/h5-source-mobile-v1/racing/driver.mjs';
 import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
-import { tuneOpponentField } from '../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs';
+import { tuneOpponentField, seedCompetitiveField } from '../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs';
 import { applyTrackDesign } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 
 const run=path.join(process.cwd(),'runs/h5-qq-mobile-20261013');
@@ -121,12 +121,13 @@ for(const [id,map] of [['13','city'],['16','aegean']]){
  * and exposes an actual pace gap for difficulty tuning.
  */
 function nativeAceSkill(stage) {
-  if(stage.kind==='boss')return stage.id==='16'?1.35:1.58;
+  if(stage.kind==='boss')return stage.id==='16'?2.10:2.04;
   const range=stage.diff===0?[.55,.75]:stage.diff===1?[.85,1.05]:[1.2,1.38];
   const field=Array.from({length:5},(_,i)=>({
     isPlayer:false,skill:range[0]+(range[1]-range[0])*i/4
   }));
   tuneOpponentField(field,stage);
+  seedCompetitiveField(field,stage);
   if(stage.kind==='overtake')for(const rival of field.slice(0,2))
     rival.skill=Math.max(rival.skill,1.12);
   return Math.max(...field.map(r=>r.skill));
@@ -159,13 +160,83 @@ for(const stage of STAGES){
       ?+((guided.elapsedSec-ace.elapsedSec)/ace.elapsedSec*100).toFixed(1):null
   };
 }
+/** Small fixed-seed SOLO-AI trials for the whole competitive pack.
+ * This is not a six-car actual race and has NO opponent contact, collisions
+ * with other racers, items or real player responses. It validates that
+ * narrowing later stages did not strand the catchable/slower rivals.
+ */
+report.fieldPace={};
+for(const id of STAGES.map(s=>s.id)){
+  const stage=STAGES.find(x=>x.id===id),layout=revised[stage.course];
+  const srcRange=stage.diff===0?[.55,.75]:stage.diff===1?[.85,1.05]:[1.2,1.38];
+  const cars=Array.from({length:5},(_,i)=>({
+    isPlayer:false,skill:srcRange[0]+(srcRange[1]-srcRange[0])*i/4,
+  }));
+  tuneOpponentField(cars,stage);
+  seedCompetitiveField(cars,stage);
+  if(stage.kind==='boss')cars[0].skill=stage.id==='16'?2.10:2.04;
+  if(stage.kind==='overtake')for(const car of cars.slice(0,2))
+    car.skill=Math.max(car.skill,1.12);
+  const entrants=cars.map((car,i)=>({
+    skill:car.skill,
+    ...nativeAiRun(layout,car.skill,stage.laps,2026101700+Number(id)+i),
+  }));
+  const late=report.courses[id].late;
+  report.fieldPace[id]={
+    raceId:id,entrants,
+    beatPrivilegedLate:late.status==='FINISHED'
+      ?entrants.filter(x=>x.status==='FINISHED'&&x.elapsedSec<late.elapsedSec).length : null,
+    note:'SOLO simulations with distinct seeded AICars and no racer-on-racer traffic; NOT a measured human finish rank',
+  };
+}
 report.courseAudit={independentCourseCount:Object.keys(report.courses).length,
   guidedCompletions:Object.values(report.courses).filter(c=>c.guided.status==='FINISHED').length,
   lateCompletions:Object.values(report.courses).filter(c=>c.late.status==='FINISHED').length,
   aceCompletions:Object.values(report.courses).filter(c=>c.ace.status==='FINISHED').length,
-  methodology:'Privileged guided/late controllers vs native unmodified AICar on same actual course, no contact or rubber band; never a human win-rate or full campaign',
-  noRankTampering:true};
+  methodology:'Privileged guided/late controllers vs native unmodified AICar with fixed pre-race seed on actual courses; no collisions, race tactics, or adaptive rubber; never a human win-rate or full campaign',
+  noRankTampering:true,packProbeCount:Object.keys(report.fieldPace).length};
 
+/** V4.9 regression: real native physics must reward planned steering.
+ * Not a human performance test; guided/late read private Track geometry.
+ * The same-spline solo AI field only establishes that a careless controller
+ * CAN be beaten, not that a six-car online race was witnessed.
+ */
+report.challengeGate={};
+for(const id of ['01','05','11','16']){
+  const c=report.courses[id],f=report.fieldPace[id];
+  if(c.guided.status!=='FINISHED'||c.late.status!=='FINISHED')
+    throw Error('Guided and late wheel controllers must both physically finish '+id);
+  const cornerCost=+(c.late.elapsedSec-c.guided.elapsedSec).toFixed(1);
+  if(cornerCost<4)throw Error('Physical native corner execution has too little consequence '+id+': '+cornerCost);
+  if(f.beatPrivilegedLate<2)
+    throw Error('At least two original native AI drivers must outrun late steering '+id);
+  report.challengeGate[id]={cornerLossSec:cornerCost,
+    nativeBotsFasterThanLate:f.beatPrivilegedLate};
+}
+/** Native AICar actually MOVES into a strategic lane after personal targeting.
+ * Regression against "fake lane AI": personality must change native lat,
+ * leaving room inside the physical rails. No collision engine in this probe.
+ */
+report.nativeLanePhysics={};
+for(const id of ['01','05','11','16']){
+  const tr=new Track(revised['race-'+id]);
+  const a=new AICar(tr,null,'native line A',1.55,mulberry32(20261001));
+  const b=new AICar(tr,null,'native line B',1.55,mulberry32(20261001));
+  a.reset(-25,0);b.reset(-25,0);
+  a.personal=0;b.personal=-.76;
+  let maxSeparationM=0,insideRails=true;
+  for(let i=0;i<720;i++){
+    a.update(STEP,true,i*STEP,1);b.update(STEP,true,i*STEP,1);
+    maxSeparationM=Math.max(maxSeparationM,Math.abs(a.lat-b.lat));
+    if(Math.abs(a.lat)>tr.halfW-2.0||Math.abs(b.lat)>tr.halfW-2.0)
+      insideRails=false;
+  }
+  if(!insideRails||maxSeparationM<2.8)
+    throw Error('Native AI lane decision is invisible or not physically safe '+id+
+      ': '+maxSeparationM.toFixed(2)+'m');
+  report.nativeLanePhysics[id]={maxLateralSeparationM:+maxSeparationM.toFixed(2),
+    insideNativeRails:insideRails,simulationOnly:true};
+}
 const out=path.join(run,'artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'native-player-pace-v34.json'),JSON.stringify(report,null,2)+'\n');
@@ -174,6 +245,10 @@ console.log(JSON.stringify({buildHash:report.buildHash,physics:'pinned PlayerCar
     name,{original:series.original.guided.manual,
       reshaped:series.reshaped.guided.manual,
       late:series.reshaped.late.manual}])),courseAudit:report.courseAudit,
+  fieldPace:Object.fromEntries(Object.entries(report.fieldPace).map(([id,v])=>
+    [id,{soloSkills:v.entrants.map(x=>x.skill),soloFinishTimes:v.entrants.map(x=>x.elapsedSec),
+      beatPrivilegedLate:v.beatPrivilegedLate}])),
+  challengeGate:report.challengeGate,nativeLanePhysics:report.nativeLanePhysics,
   stagePace:Object.fromEntries(Object.entries(report.courses).map(([id,c])=>[id,{
     guided:c.guided.status==='FINISHED'?c.guided.elapsedSec:c.guided.status,
     late:c.late.status==='FINISHED'?c.late.elapsedSec:c.late.status,

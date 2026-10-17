@@ -79,9 +79,11 @@ for(let i=1;i<=16;i++){
         Math.abs(p.lat)>=tr.halfW-1.5) ||
       courseTheme.tunnels.some(t=>!(t.f0>0&&t.f1>t.f0&&t.f1<1)))
     throw Error('Stage-specific speed-pad/tunnel placement is not on the real road: '+id);
+  // No easy-stage sharp-turn exemption: 01 now gets the same physical cap as
+  // its peers. Native PlayerCar drivability is checked independently.
   if(geometry.sameLevelClosePairs>0 ||
       geometry.lengthM<1700 || geometry.lengthM>3300 ||
-      geometry.sharpPct>(id==='01'?9:id==='02'?14:Number(id)<=10?23:29))
+      geometry.sharpPct>(Number(id)<=10?23:29))
     throw Error('Unsafe stage '+id+' physical geometry '+JSON.stringify({
       collisions:geometry.sameLevelClosePairs,sharpPct:geometry.sharpPct,length:geometry.lengthM}));
   courses[id]={scene:map,courseName:COURSE_BLUEPRINTS[id][0],

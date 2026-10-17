@@ -91,7 +91,7 @@ export const TRACK_RESHAPES = Object.freeze({
 export const CAREER_COURSE_MAPS = Object.freeze(
   'city egypt city aegean egypt city aegean snow egypt city aegean snow city egypt snow aegean'.split(' '));
 export const COURSE_BLUEPRINTS = Object.freeze({
-  '01': ['新城练习环','宽弧入门','NEON START',1,'0,0,0 140,0,0 330,5,0 475,70,0 550,190,0 545,330,0 460,435,0 320,480,0 150,455,0 0,395,0 -85,280,0 -95,140,0'],
+  '01': ['新城攻防环','四段逆向弯·双圈前三','NEON CHALLENGE',1,'0,0,0 140,0,0 330,5,0 475,70,0 550,190,0 545,330,0 460,435,0 320,480,0 150,455,0 0,395,0 -85,280,0 -95,140,0'],
   '02': ['风蚀箭谷','高速跳台','DUNE SPRINT',1,'0,0,0 185,0,0 400,-10,0 565,15,7 650,120,13 660,270,4 610,360,1 490,370,0 420,300,0 370,205,0 290,200,0 230,300,0 120,420,0 -65,430,0 -195,345,0 -210,190,0 -145,70,0'],
   '03': ['风车立交','双层切线','OVERPASS PINWHEEL',1,'0,0,0 170,-10,0 330,5,0 475,105,2 490,220,7 405,315,11 325,300,7 235,260,2 195,350,0 245,470,0 120,550,0 -45,510,0 -145,380,0 -110,265,0 -5,235,0 55,175,0 -55,125,0 -120,35,0'],
   '04': ['海鸥湾','海崖连漂','GULLWING COAST',1,'0,0,0 170,-15,2 340,0,5 455,65,8 490,200,13 610,220,18 670,340,21 620,445,19 480,465,15 390,415,13 300,430,17 170,525,18 -5,500,14 -140,405,10 -165,275,7 -80,190,6 50,200,7 115,125,4 -15,85,2'],
@@ -118,17 +118,17 @@ export const COURSE_BLUEPRINTS = Object.freeze({
  * Do not automatically widen/cut guardrails to make difficult turns free.
  */
 export const COURSE_TECHNICAL_SECTORS=Object.freeze({
-  '01':[[1,14,1],[7,14,-1]],
-  '02':[[1,18,-1],[12,19,1]],
-  '03':[[2,16,1],[10,16,-1]],
-  '04':[[1,18,1],[11,19,-1]],
-  '05':[[1,18,-1],[12,18,1]],
+  '01':[[1,21,-1],[5,19,1],[7,19,-1],[9,17,1]],
+  '02':[[1,20,-1],[3,17,1],[12,21,1]],
+  '03':[[2,21,1],[8,18,-1],[10,20,-1]],
+  '04':[[1,20,1],[7,19,-1],[11,21,-1]],
+  '05':[[1,18,-1],[12,18,1],[14,18,-1]],
   '06':[[1,17,1],[18,19,-1],[21,17,1]],
-  '07':[[1,16,-1],[12,16,1]],
+  '07':[[1,17,-1],[8,17,-1],[12,19,1],[17,17,-1]],
   '08':[[1,17,-1],[16,17,1],[19,15,-1]],
   '09':[[3,16,1],[13,16,-1]],
   '10':[[1,18,1],[12,17,-1],[17,16,1]],
-  '11':[[1,17,-1],[11,17,1],[16,16,-1]],
+  '11':[[1,19,-1],[7,18,1],[11,20,1],[16,18,-1]],
   '12':[[2,17,1],[12,18,-1],[15,17,1],[17,16,-1]],
   '13':[[1,18,1],[9,18,-1],[14,18,1]],
   '14':[[1,17,-1],[11,18,1],[15,17,-1]],
@@ -163,6 +163,28 @@ export function careerCourseDetails(id) {
   };
 }
 const parseLocalRoute = entry => entry.split(' ').map(part => part.split(',').map(Number));
+/** Physical road width is part of the actual native Track collider.
+ * All 16 roads demand real line control (including 01). An 18m minimum
+ * provides physical recoverability, not an easy tutorial.
+ * No invisible barriers, cosmetic width, or per-player adaptation. */
+export const COURSE_ROAD_WIDTHS = Object.freeze({
+  '10':18.5,
+  '11':18,
+  '12':18.5,
+  '13':18.5,
+  '14':18,
+  '15':18,
+  '16':18,
+  '01':19,
+  '02':18.5,
+  '03':19,
+  '04':19,
+  '05':18,
+  '06':19.5,
+  '07':18,
+  '08':19,
+  '09':19,
+});
 export function createCareerLayouts(layouts) {
   const fingerprints=new Set(),titles=new Set();
   for(let i=1;i<=16;i++){
@@ -188,7 +210,7 @@ export function createCareerLayouts(layouts) {
     const signature=JSON.stringify(points);
     if(fingerprints.has(signature))throw Error('Duplicate authored course shape '+id);
     fingerprints.add(signature);
-    layouts['race-'+id]={width:base.width,points};
+    layouts['race-'+id]={width:COURSE_ROAD_WIDTHS[id]??base.width,points};
   }
   if(fingerprints.size!==16||titles.size!==16)throw Error('Expected 16 distinct hand-authored courses');
   return fingerprints.size;

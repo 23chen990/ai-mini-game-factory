@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { TRACK_RESHAPES, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS, injectTechnicalSectors, careerCourseDetails, createRaceTrackTheme, createRaceSky, buildRaceLandmarks, applyTrackDesign } from '../racing/track-design.mjs';
+import { TRACK_RESHAPES, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS, COURSE_ROAD_WIDTHS, injectTechnicalSectors, careerCourseDetails, createRaceTrackTheme, createRaceSky, buildRaceLandmarks, applyTrackDesign } from '../racing/track-design.mjs';
 import { WrongWayRecovery } from '../racing/recovery.mjs';
 import { roadHint } from '../racing/road-coach.mjs';
 import { chooseCornerSigns, installCornerSigns, disposeCornerSigns } from '../racing/corner-signs.mjs';
@@ -294,7 +294,8 @@ test('V3.6 gives each of the 16 career stages an independent drivable spline ide
   for(const id of ids){
     const base=layouts[mapOf(id)];
     const variant=layouts[id];
-    assert.equal(variant.width,base.width);
+    assert.equal(variant.width,COURSE_ROAD_WIDTHS[id.slice(5)]??base.width);
+    if(COURSE_ROAD_WIDTHS[id.slice(5)])assert.ok(variant.width<base.width,'must alter physical collision corridor '+id);
     assert.deepEqual(variant.points[0],base.points[0],'retain exact race start');
     assert.ok(variant.points.every(p=>p.length===3&&p.every(Number.isFinite)));
   }

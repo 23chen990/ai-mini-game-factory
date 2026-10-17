@@ -3,7 +3,8 @@ import { ManualRaceDriver, TouchActions } from './driver.mjs';
 import { RacingJoystick } from './joystick.mjs';
 import { careerCourseDetails } from './track-design.mjs';
 import { raceSpeedHUD } from './speed-hud.mjs';
-import { careerCourseSvg, raceProgressPercent, nearbyRival, raceEventMoment, raceMetricMoment } from './presentation.mjs';
+import { RaceDuelTracker } from './duel-loop.mjs';
+import { careerCourseSvg, compactRaceObjective } from './presentation.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
@@ -13,18 +14,19 @@ const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海�
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
-root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button><div id="race-speed" hidden aria-label="当前速度"><strong id="race-speed-value">0</strong><span>KM/H</span><small id="race-speed-state"></small></div>
-  <div id="race-live-goal" hidden></div><div id="race-moment" aria-live="off" hidden></div><div id="race-chase" hidden></div><div id="race-progress" hidden><span id="race-progress-label">赛程 0%</span><span class="race-progress-bar"><i id="race-progress-fill"></i></span></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-held-item" hidden aria-live="off"></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="左右拖动方向轮盘，松手回正"><div class="race-stick-track"><span aria-hidden="true" class="race-stick-left">‹</span><span aria-hidden="true" class="race-stick-right">›</span><i id="race-stick-knob"></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
+root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button><div id="race-speed" hidden aria-label="当前速度"><strong id="race-speed-value">0</strong><span>KM/H</span></div>
+  <div id="race-compact-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="左右拖动方向轮盘，松手回正"><div class="race-stick-track"><span aria-hidden="true" class="race-stick-left">‹</span><span aria-hidden="true" class="race-stick-right">›</span><i id="race-stick-knob"></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING / CAREER</div><h1 id="race-heading">极速飞驰</h1>
-    <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手轮盘滑动转向，松手回正<br><small>右手按漂移，拉回车头后点小喷。</small></p></div>
+    <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手轮盘 · 右手漂移 / 小喷 / 氮气</p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10" hidden>${'<span></span>'.repeat(10)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
     <p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
     <div id="race-settings" hidden><label for="race-steering-sens">转向</label><select id="race-steering-sens" aria-label="轮盘转向灵敏度"><option value="calm">柔和</option><option value="normal">标准</option><option value="sharp">灵敏</option></select><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">均衡画质，性能不足时自动调低</small></div>
     <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-lobby" class="race-secondary" hidden>返回选关</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
-    <p id="race-note">漂移集气，干净出弯更容易获得完美小喷</p>
-  </div><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>横过来，准备出发</b><span>左手轮盘，右手漂移和加速</span><small>转回横屏后，点击继续比赛</small></aside>`;
+    <p id="race-note"></p>
+  </div><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>请使用横屏</b><span>横屏后继续比赛</span></aside>`;
 document.body.append(root);
 const $ = id => root.querySelector('#race-' + id);
+const duel = new RaceDuelTracker();
 const joystick = new RacingJoystick(), actions = new TouchActions(),
   driver = new ManualRaceDriver(actions), quality = new QualityMonitor();
 const SENS_STORE = 'h5-qq-mobile-20261013:steering-sensitivity:v1';
@@ -35,8 +37,8 @@ $('steering-sens').value = joystick.sensitivity;
 let touchDriving = mobile;
 let g, phase = 'ready', started = false, result = null, loading = true, lastFrame = performance.now(), inputTime = performance.now();
 let nativeStartRace, policyReady = false, backgrounded = document.hidden;
-let events = [], best = {}, momentUntil = 0, lastMomentAt = -Infinity, lastRacePassed = false;
-let previousMetrics = { cleanPasses: 0, pickups: 0 };
+let events = [], best = {}, lastRacePassed = false;
+let replayTapCount = 0;
 let adNotice = '', adNoticeUntil = 0;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1'; // Preserve legacy save key across input migration.
 const QUALITY_STORE = 'h5-qq-mobile-20261013:graphics-quality:v1';
@@ -80,25 +82,24 @@ function renderLobby() {
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
-  root.dataset.previewRevision = 'racing-v41-native-rivals';
+  root.dataset.previewRevision = 'racing-v51-touch-clearance';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V4.1';
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V5.1';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = courseInfo?.feel ?? '';
-  $('stage-goal').textContent = '过关必须：'+stage.goal + '，且完成前' + stage.rank + '名 · 累计 ' + careerStars(career.progress) + ' ★' +
-    (career.dailySnapshot ? ' · 连续挑战 ' + career.progress.daily.streak + ' 天' : '');
+  $('stage-goal').textContent = stage.goal + ' · ★ ' + careerStars(career.progress);
   $('skin').replaceChildren();
   for (let i = 0; i < SKIN_NAMES.length; i++) {
     const opt = document.createElement('option');opt.value = String(i);opt.disabled = !skinUnlocked(career.progress, i);
     opt.textContent = SKIN_NAMES[i] + (opt.disabled ? ' · 需 ' + SKIN_STARS[i] + ' 星' : '');$('skin').append(opt);
   }
   $('skin').value = String(career.progress.skin);
-  if (phase === 'ready') $('note').textContent = career.dailySnapshot ? '每天一场新挑战' : stage.mode === 'item' ? '漂移集气、点氮气加速，拾取后点道具' : stage.kind === 'overtake' ? '弯道真正反超，才算成功' : '左手轮盘，右手按漂移；出弯点小喷';
+  if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), revision: 'V4.5' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, revision: 'V5.1' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -109,16 +110,6 @@ function releaseInput() {
   if (g) clearNativeInput(g.input);
   syncJoystickVisual();
   for (const button of root.querySelectorAll('[data-race-action]')) button.classList.remove('held');
-}
-/** One brief earned reaction at a time; high-value passes may replace a lower-value flash. */
-function showMoment(moment, priority = false) {
-  if (!moment || !g || g.state !== 'race' || phase !== 'race') return;
-  if (!priority && g.raceTime - lastMomentAt < 2.4) return;
-  $('moment').textContent = moment.title;
-  $('moment').dataset.kind = moment.kind;
-  $('moment').hidden = false;
-  momentUntil = performance.now() + (priority ? 1250 : 900);
-  lastMomentAt = g.raceTime;
 }
 function display(next) {
   phase = next; root.dataset.phase = next; root.dataset.stageKind = career.stage.kind;
@@ -132,13 +123,13 @@ function display(next) {
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   if (next !== 'race') $('knockout').hidden = true;
-  $('speed').hidden = next !== 'race'; $('progress').hidden = next !== 'race'; $('chase').hidden = next !== 'race' || !$('chase').textContent; $('moment').hidden = next !== 'race' || performance.now() >= momentUntil;
-  $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && !!career.objectiveLabel(g));$('held-item').hidden = !racing || career.stage.mode !== 'item';
+  $('speed').hidden = next !== 'race'; $('compact-goal').hidden = next !== 'race' || !$('compact-goal').textContent;
+  $('note').hidden = next !== 'ready'; // :empty CSS hides silence; critical loading errors remain visible.
   for (const button of root.querySelectorAll('[data-race-action]')) button.disabled = next !== 'race';
   $('joystick').setAttribute('aria-disabled',String(next !== 'race'));
   $('joystick').classList.toggle('disabled',next !== 'race');
   root.dataset.itemMode = career.stage.mode === 'item' ? 'true' : 'false';
-  if (next === 'paused') { $('heading').textContent = '休息一下'; $('quality').value = g.settings.quality; $('sound').textContent = soundEnabled ? '声音：开' : '声音：关'; $('sound').setAttribute('aria-pressed', String(soundEnabled)); $('note').textContent = '已松开所有按键，准备好再继续'; }
+  if (next === 'paused') { $('heading').textContent = '暂停'; $('quality').value = g.settings.quality; $('sound').textContent = soundEnabled ? '声音：开' : '声音：关'; $('sound').setAttribute('aria-pressed', String(soundEnabled)); }
 }
 function pause() {
   if (!g || !started || result || !['race', 'countdown'].includes(g.state)) { releaseInput(); return; }
@@ -163,11 +154,13 @@ function start() {
     $('note').textContent = '油量不足，等待自然恢复或主动看广告加油';
     display('ready');fuelView();return;
   }
-  releaseInput();result = null;events = [];momentUntil = 0;lastMomentAt = -Infinity;lastRacePassed = false;
-  previousMetrics = { cleanPasses: 0, pickups: 0 };started = true;
+  releaseInput();result = null;events = [];lastRacePassed = false;
+  duel.reset();$('compact-goal').textContent = '';started = true;
   try {
     career.configure(g);
-    g.camMode = 1;g.mobileMode = driver.enabled;nativeStartRace();
+    // Mobile camera / anti-jitter settings follow the actual touch mode.
+    // ManualRaceDriver has no .enabled flag after the single-wheel migration.
+    g.camMode = 1;g.mobileMode = touchDriving;nativeStartRace();
     if (g.state !== 'countdown') throw Error('原生比赛未进入倒计时');
     career.begin(g);
     inputTime = performance.now();$('heading').textContent = career.stage.name;display('countdown');fuelView();
@@ -184,19 +177,20 @@ function finish() {
   const graded = career.finalize(g, result);
   const stars = graded?.stars ?? 0;
   lastRacePassed = stars > 0;
-  $('heading').textContent = stars ? '冲线成功  ' + '★'.repeat(stars) : '差一点，再来！';
+  $('heading').textContent = result.finished ? '第 ' + result.place + ' 名' : '未完赛';
   if (result.finished && (!best[result.map] || result.time < best[result.map])) {
     best[result.map] = result.time;try { localStorage.setItem(STORE, JSON.stringify(best)); } catch { /* Play remains available. */ }
   }
   const newSkin = SKIN_STARS.findIndex((required,i) => i > 0 && beforeStars < required && graded?.total >= required);
   const failure = stars ? null : stageFailureFeedback(career.stage, result, graded?.metric ?? {});
+  $('replay').textContent = '再来一局 ↻';
   $('result-copy').textContent = stars
     ? (career.dailySnapshot
       ? '每日挑战成功 · 第 ' + result.place + ' 名 · ' + time(result.time) + ' · 当日最佳 ' + time(graded.best) +
         ' · 连续挑战 ' + career.progress.daily.streak + ' 天'
       : '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星' +
         (newSkin > 0 ? ' · 解锁车漆：' + SKIN_NAMES[newSkin] : ''))
-    : '还差：' + failure.reason + ' · ' + failure.tip;
+    : (result.finished ? '未达成目标 · ' : '未完赛 · ') + failure.reason;
   $('result-stats').innerHTML = [['有效漂移', graded?.metric.cleanDrifts ?? 0], ['弯道超车', graded?.metric.cleanPasses ?? 0], ['拾取道具', graded?.metric.pickups ?? 0], ['小喷', result.stats.small]].map(([label, value]) => `<span><b>${value ?? 0}</b>${label}</span>`).join('');
   $('results').replaceChildren();
   for (const row of result.rows) {
@@ -227,7 +221,11 @@ async function loadTrack(id, autoStart) {
 $('start').addEventListener('click', start); $('pause').addEventListener('click', pause); $('resume').addEventListener('click', resume);
 // A second finger is not guaranteed to synthesize click while the steering finger stays down.
 $('pause').addEventListener('pointerdown', event => { event.preventDefault();pause(); });
-$('replay').addEventListener('click', start);$('restart').addEventListener('click', start);
+$('replay').addEventListener('click', () => {
+  // Count actual voluntary replays only after the native countdown starts.
+  const wasFinished=phase==='finished';start();
+  if(wasFinished && phase==='countdown')replayTapCount++;
+});$('restart').addEventListener('click', start);
 $('lobby').addEventListener('click', () => {
   if (!g || loading) return;
   releaseInput();started = false;result = null;g.startDemo();display('ready');renderLobby();
@@ -256,7 +254,7 @@ $('fuel-ad').addEventListener('click', async () => {
     '广告未完成，油量不变';
   adNoticeUntil = performance.now() + 7000;
   renderLobby();fuelView();
-  if (phase === 'ready') $('note').textContent = adNotice;
+  if (phase === 'ready') $('note').textContent = '';
 });
 $('sound').addEventListener('click', () => {
   soundEnabled = !soundEnabled;
@@ -366,7 +364,6 @@ async function boot() {
     const pending = player.events.map(event => ({ ...event, data: { ...event.data } }));nativeEvents(player);
     for (const event of pending) {
       career.onEvent(event, g);events.push({ atRaceSec: g.raceTime, type: event.type, ...event.data }); if (events.length > 800) events.shift();
-      showMoment(raceEventMoment(event));
     }
   };
   // No transient text banners over live driving. Native car motion, audio, impact
@@ -379,7 +376,6 @@ async function boot() {
     await loadTrack(career.stage.map, false);
   if (!stageTrackReady(g,career.stage)) throw Error('赛道身份校验失败，禁止开始错误的关卡');
   root.dataset.loaded = 'true';
-  if (!mobile) $('note').textContent = '键盘仍可操作；手机仅支持轮盘驾驶';
   display('ready');
   let lastFuelTick = 0;
   const frame = now => {
@@ -390,27 +386,15 @@ async function boot() {
       else if (g.state !== phase && ['race', 'countdown', 'paused'].includes(g.state)) display(g.state);
       if (g.state === 'race') {
         const failure = career.frame(g);
-        career.drainNotices(); // Event stream is still recorded for QA; no overlay queue grows.
-        const metrics = {cleanPasses: career.metrics.cleanPasses, pickups: career.metrics.pickups};
-        const metricMoment = raceMetricMoment(previousMetrics, metrics);
-        previousMetrics = metrics;
-        if (metricMoment) showMoment(metricMoment, true);
-        const progress = raceProgressPercent(g.player, g.track, career.stage);
-        $('progress-label').textContent = '赛程 ' + progress + '%';
-        $('progress-fill').style.width = progress + '%';
-        const rival = nearbyRival(g);
-        $('chase').textContent = rival ? rival.label + ' · ' + rival.metres + 'm' : '';
-        $('chase').dataset.threat = String(!!rival?.threat);
-        $('chase').hidden = !rival;
-        if (momentUntil && now >= momentUntil) $('moment').hidden = true;
+        duel.frame(g); // Keep genuine native overtakes for test telemetry; no toast.
+        career.drainNotices(); // Lifecycle notices are not a running commentary.
+        const objective=compactRaceObjective(career.stage,career.metrics,g.raceTime);
+        if ($('compact-goal').textContent!==objective) $('compact-goal').textContent=objective;
+        $('compact-goal').hidden=!objective;
         const speedView = raceSpeedHUD(g.player);
         if ($('speed-value').textContent !== speedView.value) $('speed-value').textContent = speedView.value;
-        const controlCue = g.player.spin > .1 ? '打滑中' : g.player.wrongWay > .35 ? '逆行 · 反打方向' : speedView.label;
-        if ($('speed-state').textContent !== controlCue) $('speed-state').textContent = controlCue;
         $('speed').dataset.boost = String(speedView.boost);
         $('speed').dataset.slow = String(speedView.slow);
-        const goal = career.objectiveLabel(g);
-        if ($('live-goal').textContent !== goal) $('live-goal').textContent = goal;
         const knockout = career.eliminationCue(g);
         $('knockout').hidden = !knockout;
         if (knockout) {
@@ -428,7 +412,7 @@ async function boot() {
         const nitroBtn = root.querySelector('[data-race-action="nitro"]');
         if (nitroBtn) {
           nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
-          const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : g.player.nitroTime > 0 ? '加速中' : '集气中';
+          const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : '氮气';
           if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
         }
         const smallBtn = root.querySelector('[data-race-action="small"]');
@@ -436,10 +420,10 @@ async function boot() {
         const itemBtn = root.querySelector('[data-race-action="item"]');
         if (itemBtn) itemBtn.classList.toggle('ready',!!g.player.items?.[0]);
         const held = g.player.items?.[0];
-        $('held-item').hidden = !g.itemMode || !held;
-        if (held) {
-          const info = (ITEM_ICONS[held] ?? '❔') + ' ' + (ITEM_LABELS[held] ?? '未知道具') + ' · 点击道具键';
-          if ($('held-item').textContent !== info) $('held-item').textContent = info;
+        if (itemBtn) {
+          const icon=held ? (ITEM_ICONS[held] ?? '❔') : '道具';
+          if(itemBtn.textContent!==icon)itemBtn.textContent=icon;
+          itemBtn.setAttribute('aria-label',held?'使用'+(ITEM_LABELS[held]??'道具'):'使用道具');
         }
         if (failure) {if (!g.resultShown) g.showResults();finish();}
         root.classList.toggle('drifting', g.player.drifting);

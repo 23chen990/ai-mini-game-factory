@@ -57,14 +57,27 @@ test('race mobile HUD isolates three-lap elimination warning from the live speed
   assert.match(ui,/joystickSurface\.addEventListener\('lostpointercapture', endStick\)/);
 });
 
-test('mid-race overlays stay removed while HUD goals, safe controls and hit feedback remain',async()=>{
+test('QQ-style uncluttered HUD never shows repeat coaching, player keeps full touch controls',async()=>{
   const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
   const css=await readFile(new URL('../racing/mobile.css',import.meta.url),'utf8');
-  assert.doesNotMatch(ui,/race-road-hint|roadHint\(|feedback\(|碰撞减速/);
-  assert.doesNotMatch(css,/race-road-hint|race-feedback/);
+  assert.doesNotMatch(ui,/race-road-hint|roadHint\(|feedback\(|碰撞减速|cornerEntryCue\(/);
+  assert.doesNotMatch(ui,/race-moment|race-chase|race-progress|race-live-goal|race-held-item|race-retry-plan|race-speed-state/);
+  assert.doesNotMatch(css,/race-road-hint|race-feedback|race-moment|race-chase|race-progress|race-live-goal|race-held-item|race-retry-plan/);
   assert.match(css,/#msgs \{ display:none!important; \}/);
   assert.match(ui,/career\.drainNotices\(\)/);
-  assert.match(ui,/race-live-goal/);
+  assert.match(ui,/race-compact-goal/);
+  assert.match(ui,/career\.progress\.rounds > 0/);
   assert.match(ui,/race-controls/);
   assert.match(css,/#hitflash/);
+});
+
+test('clean HUD cannot leave stale DOM lookups that crash the animation frame',async()=>{
+  const source=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  const created=new Set([...source.matchAll(/\bid="race-([^"]+)"/g)].map(match=>match[1]));
+  const queried=[...source.matchAll(/\$\(['"]([a-z0-9-]+)['"]\)/g)].map(match=>match[1]);
+  const dangling=[...new Set(queried.filter(id=>!created.has(id)))];
+  assert.deepEqual(dangling,[],
+    'every static helper lookup must have a real race-kit element; removed HUD prompts cannot crash requestAnimationFrame');
+  assert.doesNotMatch(source,/['"]live-goal['"]/);
+  assert.match(source,/requestAnimationFrame\(frame\)/);
 });
