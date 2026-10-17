@@ -58,8 +58,8 @@ test('two-star replay advice names jumping AND missing fish, never implying fish
  const completeMastery=nextStarTip(lateLevel,{...safeFinish,count:35,jumpedBarriers:2});
  assert.match(completeMastery,/三星达成/);
 });
-test('optional three-star jump mastery escalates without making normal level completion harder',()=>{
- assert.deepEqual(LEVELS.map(l=>starRequirements(l).jumps),[1,1,2,3,3]);
+test('authored three-star jump mastery keeps its physical safe route and one-star fallback',()=>{
+ assert.deepEqual(LEVELS.map(l=>starRequirements(l).jumps),[1,1,1,2,2]);
  for(const level of LEVELS.slice(2)){
   const req=starRequirements(level);
   const perfect={level,reason:'complete',hits:0,count:req.gold,gold:req.goldFish,

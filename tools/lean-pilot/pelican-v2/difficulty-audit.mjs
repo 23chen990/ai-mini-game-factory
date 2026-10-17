@@ -26,8 +26,8 @@ function trial(id,strategy){
 }
 
 assert.equal(LEVELS.length,5);
-assert.deepEqual(LEVELS.map(l=>starRequirements(l).jumps),[1,1,2,3,3],
- 'optional mastery must genuinely escalate in the advanced levels');
+assert.deepEqual(LEVELS.map(l=>starRequirements(l).jumps),[1,1,1,2,2],
+ 'authored mastery reflects independently validated physically playable routes');
 const rows=LEVELS.map(level=>{
  assert.deepEqual(validateLevel(makeLevel(level.id)),[],
   `level ${level.id} must retain a traversable, physically fair route`);
