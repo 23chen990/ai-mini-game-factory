@@ -1,3 +1,4 @@
+/* global URLSearchParams */
 /**
  * INTERNAL QA ONLY — comparison controllers inspired by official published
  * GRID Autosport Wheel Touch / Arrow Touch and QQ Speed Mobile's steering
