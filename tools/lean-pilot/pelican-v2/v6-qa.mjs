@@ -70,8 +70,11 @@ try{
  // Pause-screen replay must bank this genuine run before beginning another one.
  await tap('[data-level="6"]');await tap('#co-start');
  await page.waitForFunction(()=>document.querySelector('#co-mastery')?.textContent?.includes('差 '),null,{timeout:5000});
+ const recordText=await page.locator('#co-mastery').innerText(),liveRecord=await snap();
+ const displayedGap=Number(recordText.match(/差\\s*(\\d+)m/u)?.[1]);
  check('live-record-chase-is-grounded-in-persisted-personal-best',
-  (await page.locator('#co-mastery').innerText()).includes('差 '+r.collection.bestDistance+'m'));
+  Number.isFinite(displayedGap)&&Math.abs(displayedGap+Math.floor(liveRecord.distance)-r.collection.bestDistance)<=3,
+  {displayedGap,liveDistance:liveRecord.distance,oldBest:r.collection.bestDistance});
  await page.waitForFunction(()=>window.__coast.snapshot().count>=3||window.__coast.snapshot().phase==='finished',null,{timeout:35000});
  const beforeRestart=await snap();
  check('second-real-run-has-earned-fish',beforeRestart.phase==='running'&&beforeRestart.count>=3);
