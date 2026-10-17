@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {cfScoutHoldSeconds,cfScoutReadyDelaySeconds,cfRealCombatFeedback}
   from '../fps-mobile-ux.mjs';
 import {cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,
-  cfFinishPlaytest,cfMarkReplay,cfExportPlaytest} from '../cf-playtest-metrics.mjs';
+  cfFinishPlaytest,cfMarkReplay,cfExportPlaytest} from '../cf-player-loop.mjs';
 
 test('V14 first enemy becomes an actual threat within the opening, then returns to native AI',()=>{
   const first={kind:'hits',drill:'reposition',elite:false,limitMs:60000};
@@ -91,4 +92,10 @@ test('V14 first30 analytics are strictly local, bounded, versioned and safe on b
    '{"version":1,"starts":-1,"finishes":0,"retriesAfterLoss":0,"recent":[]}']){
    assert.deepEqual(cfLoadPlaytest(invalid),cfNewPlaytest());
  }
+});
+
+test('V14 local metrics run from existing registered CF-only runtime module',()=>{
+  const main=readFileSync(new URL('../main.mjs',import.meta.url),'utf8');
+  assert.equal(main.includes('cf-playtest-metrics.mjs'),false);
+  assert.equal(main.match(/^import /gm)?.length,4,'standalone H5 supports exactly four registered imports');
 });
