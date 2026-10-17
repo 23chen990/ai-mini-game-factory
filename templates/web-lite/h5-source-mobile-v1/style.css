@@ -656,14 +656,19 @@ html[data-reference-game="cf-transport-ship"] #touch .btn{
   opacity:var(--cf-touch-opacity,.85)!important;
 }
 html[data-reference-game="cf-transport-ship"] #mk-fps-options{
-  width:100%;
-  flex-shrink:0;
-  text-align:left;
+  position:absolute;
+  right:12px;
+  top:11px;
+  z-index:7;
+  width:auto;
+  text-align:right;
+  pointer-events:auto;
 }
 html[data-reference-game="cf-transport-ship"] #mk-fps-pref-toggle{
-  min-height:38px;
-  width:100%;
-  padding:6px 10px;
+  min-height:33px;
+  min-width:86px;
+  width:auto;
+  padding:5px 8px;
   border-color:rgba(141,196,212,.26);
   background:rgba(9,34,53,.55);
   color:#c9e5ec;
@@ -671,8 +676,16 @@ html[data-reference-game="cf-transport-ship"] #mk-fps-pref-toggle{
   font-weight:700;
 }
 html[data-reference-game="cf-transport-ship"] #mk-fps-pref-form{
+  position:absolute;
+  right:0;
+  top:39px;
+  width:min(258px,calc(100vw - 38px));
+  max-height:calc(100dvh - 90px);
+  overflow-y:auto;
+  box-sizing:border-box;
   padding:9px 12px;
-  margin-top:5px;
+  margin-top:0;
+  box-shadow:0 12px 35px rgba(0,8,19,.84);
   display:grid;
   grid-template-columns:minmax(0,1fr);
   gap:4px;
