@@ -316,8 +316,9 @@ export function cfStepExtraction(state,{gameTime,player,actors=[],team,
  * first session minute + first completed round are ad-free, reward is opt-in,
  * never on native gunfire or the countdown itself. */
 export function cfCanOfferRevive({challenge,metrics,round,progress,
-  sinceStartupMs,config,sdkReady=false,used=false,declined=false}={}) {
-  if(!sdkReady||used||declined||round?.phase!=='running'||progress?.rounds<1||
+  sinceStartupMs,config,sdkReady=false,used=false,declined=false,nearWin=true}={}) {
+  if(!sdkReady||used||declined||nearWin!==true||
+    round?.phase!=='running'||progress?.rounds<1||
     !Number.isFinite(sinceStartupMs)||sinceStartupMs<60000||
     config?.status!==1||config.source!=='check_ads_status'||
     !config.appId||config.screenOrientation!==1||typeof config.spaceId!=='string'||

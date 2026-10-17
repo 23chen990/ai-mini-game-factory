@@ -20,9 +20,14 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     throw Error('Refuse cross-game or substituted engine');
   const hash=await buildHash(game);
   const server=await serveRun(base,RUN_ID,0);
+  // Genuine browser recording of the entire normal-input session.
+  // It is not physical-device footage or a claim of real-player engagement.
+  const videoDir=path.join(root,'videos');
+  await mkdir(videoDir,{recursive:true});
   const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']});
   const context=await browser.newContext({
-    viewport:{width:667,height:375},hasTouch:true,isMobile:true,deviceScaleFactor:1
+    viewport:{width:667,height:375},hasTouch:true,isMobile:true,deviceScaleFactor:1,
+    recordVideo:{dir:videoDir,size:{width:667,height:375}}
   });
   const page=await context.newPage(),cdp=await context.newCDPSession(page);
   const screenshots=[],checks=[],errors=[],samples=[];
@@ -58,9 +63,15 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       phase:root?.dataset.phase,challenge:root?.dataset.challenge,
       gamePhase:g?.ended?'finished':g?.paused?'paused':g?.playing?'running':'ready',
       time:g?.time||0,player:p?{alive:p.alive,
-        x:p.pos.x,z:p.pos.z,yaw:p.yaw,pitch:p.pitch,
+        x:p.pos.x,y:p.pos.y,z:p.pos.z,vy:p.vel?.y,
+        onGround:p.onGround,jumpCD:p.jumpCD,
+        jumpHeadroom:typeof g?.world?.blocked==='function'
+          ?!g.world.blocked(p.pos.x,p.pos.y+0.12,p.pos.z,
+            p.radius*.93,p.height+.15):null,
+        yaw:p.yaw,pitch:p.pitch,
         shots:p.stats?.shots,hits:p.stats?.hits,kills:p.stats?.k,deaths:p.stats?.d,
-        weapon:p.weapon?.id,scoped:p.scoped,
+        weapon:p.weapon?.id,mag:p.weapon?.mag,
+        reloading:p.weapon?.reloading,scoped:p.scoped,
         input:{mx:p.touch?.mx,mz:p.touch?.mz,fire:p.touch?.fire,
           firePressed:p.touch?.firePressed,jump:p.touch?.jump,
           dx:p.touchLook?.x||0,dy:p.touchLook?.y||0}
@@ -83,6 +94,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         realShots:bot.stats?.shots||0}:null,
       renderer:g?.renderer?{quality:g.renderer.quality,
         pixelRatio:g.renderer.renderer?.getPixelRatio?.(),
+        composerRatio:g.renderer.composer?._pixelRatio,
         bloom:g.renderer.bloom!==undefined}:null,
       reviveVisible:document.getElementById('mk-revive-actions')?.hidden===false
     };
@@ -105,6 +117,16 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
   const enter=async(id)=>{
     await page.goto('http://127.0.0.1:'+server.address().port,{
       waitUntil:'domcontentloaded',timeout:45000});
+    if(id==='assault'){
+      // Verify while loading, before H5 sets [hidden] or native boot finishes.
+      // The factory's left/right/space buttons must never flash in this FPS.
+      await page.waitForSelector('#mobile-kit #mk-controls',{
+        state:'attached',timeout:50000});
+      const sharedControlDisplay=await page.evaluate(()=>
+        getComputedStyle(document.querySelector('#mobile-kit #mk-controls')).display);
+      check('cf-initial-loading-hides-factory-left-right-jump',
+        sharedControlDisplay==='none',{display:sharedControlDisplay});
+    }
     await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:50000});
     await page.locator('#mk-chapters button[data-chapter="'+(MISSIONS.indexOf(id)<4?0:1)+'"]').tap();
     await page.locator('#mk-challenges button[data-challenge-id="'+id+'"]').tap();
@@ -153,7 +175,49 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     const afterFire=await inspect();
     check('original-bullets-fired-only-from-native-fire-button',
       afterFire.player.shots>beforeFire&&afterFire.player.input.fire===false,
-      {beforeFire,afterFire:afterFire.player});
+      {beforeFire,after:afterFire.player});
+    // Genuine fire+camera and reload/jump: normal CDP fingers only.
+    const beforeDrag=await inspect(),fc=center(fireRect);
+    await gesture(fc,{x:fc.x-25,y:fc.y-6},470,28);
+    const afterDrag=await inspect();
+    check('one-thumb-fire-drag-aim-and-real-bullets',
+      Math.abs(afterDrag.player.yaw-beforeDrag.player.yaw)>0.015&&
+      afterDrag.player.shots>beforeDrag.player.shots,
+      {before:beforeDrag.player,after:afterDrag.player});
+    const beforeReload=await inspect();
+    await button('#touch .btn[data-mk-action="reload"]',240,29);
+    const afterReload=await inspect();
+    check('touch-reload-starts-real-weapon-reload',
+      beforeReload.player.mag<30&&afterReload.player.reloading===true,
+      {before:beforeReload.player,after:afterReload.player});
+    // An original jump arc can be brief below a cargo overhang. Sample
+    // DURING the real physical finger hold rather than only after release.
+    // A click without genuine native vertical motion must still fail QA.
+    const beforeJump=await inspect(),jrect=await rect(
+      '#touch .btn[data-mk-action="jump"]');
+    if(!jrect)throw Error('Jump touch target missing from visible HUD');
+    const jc=center(jrect);
+    const hitTarget=await page.evaluate(pt=>
+      document.elementFromPoint(pt.x,pt.y)?.closest?.(
+        '.btn[data-mk-action="jump"]')!==null,jc);
+    check('jump-button-unobstructed-hit-target',hitTarget,{rect:jrect});
+    const jumpSamples=[];
+    await event('touchStart',[{...jc,id:30}]);
+    try{
+      for(let n=0;n<9;n++){
+        await sleep(95);
+        jumpSamples.push(await inspect());
+      }
+    }finally{await event('touchEnd',[]);}
+    const afterJump=await inspect();
+    const physical=jumpSamples.some(s=>s.player?.y>beforeJump.player.y+.045||
+      s.player?.vy>0.4);
+    check('touch-jump-changes-real-native-physics',physical,{
+      before:beforeJump.player,
+      samples:jumpSamples.map(s=>({t:s.time,y:s.player?.y,
+        vy:s.player?.vy,onGround:s.player?.onGround,
+        jumpCD:s.player?.jumpCD,input:s.player?.input?.jump})),
+      after:afterJump.player});
     // Two real CDP fingers: walk+fire at once, then OS-style touchcancel.
     const f0=center(fireRect);
     await event('touchStart',[{...p0,id:51}]);
@@ -223,6 +287,9 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       return g?.playing===true&&g?.time>=deadline;
     },rookie.time+11,{timeout:75_000,polling:250});
     const afterRookieWindow=await inspect();
+    check('first30-genuine-native-player-hit',afterRookieWindow.player?.hits>=1,
+      {hits:afterRookieWindow.player?.hits,shots:afterRookieWindow.player?.shots,
+        nativeSeconds:afterRookieWindow.time-rookie.time});
     const wallSec=(performance.now()-wallStart)/1000;
     check('stationary-novice-target-released-by-real-11sec-native-clock',
       afterRookieWindow.time-rookie.time>=10.5&&
@@ -262,10 +329,40 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
 
     // Real native shot followed by genuine failure from missing the walking
     // objective. No score, actor health, win/loss or position is edited.
-    await enter('survive');
+    const survivalStart=await enter('survive');
     await button('#touch .btn[data-mk-action="fire"]',440,82);
-    await page.waitForSelector('#mobile-kit[data-phase="finished"]',{timeout:200000});
-    const settled=await inspect();
+    // Real game simulation, not wall time, determines the 45-second mission.
+    // Low FPS software WebGL may need much more wall time. Sample its native
+    // clock throughout, fail if it actually stalls, and retain clock evidence.
+    const clockSamples=[];
+    const watchStart=performance.now();
+    let lastAdvance=watchStart,lastClock=survivalStart.time;
+    let settled=null;
+    while(performance.now()-watchStart<390000) {
+      await sleep(4000);
+      const state=await inspect();
+      const wallSec=+( (performance.now()-watchStart)/1000 ).toFixed(2);
+      const clock={wallSec,nativeSec:state.time,
+        phase:state.phase,nativePhase:state.gamePhase,
+        ratio:state.renderer?.pixelRatio,composerRatio:state.renderer?.composerRatio,
+        deaths:state.player?.deaths};
+      clockSamples.push(clock);
+      if(state.time>lastClock+.02){
+        lastClock=state.time;lastAdvance=performance.now();
+      }
+      if(state.phase==='finished'){settled=state;break;}
+      if(state.phase!=='running'||state.gamePhase==='paused')
+        throw Error('Natural survival interrupted: '+JSON.stringify(clock));
+      if(performance.now()-lastAdvance>45000)
+        throw Error('Native simulation clock stalled: '+JSON.stringify(clockSamples.slice(-8)));
+    }
+    samples.push({id:'survive',when:'natural-terminal-clock',clockSamples});
+    if(!settled)throw Error('Natural survival unfinished within bounded software-render budget: '+
+      JSON.stringify(clockSamples.slice(-8)));
+    check('survival-real-native-clock-advanced',clockSamples.length>1&&
+      clockSamples.some(v=>v.nativeSec>survivalStart.time+20)&&
+      clockSamples.every((v,i)=>i===0||v.nativeSec>=clockSamples[i-1].nativeSec),
+      {last:clockSamples.at(-1),samples:clockSamples.length});
     terminal=settled;
     check('natural-real-shot-lack-of-travel-failure',settled.phase==='finished'&&
       await page.locator('#mobile-kit').getAttribute('data-outcome')==='lost',

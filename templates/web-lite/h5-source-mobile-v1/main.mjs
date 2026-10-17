@@ -2,7 +2,7 @@
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed } from './fps-mobile-ux.mjs';
-import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest} from './cf-player-loop.mjs';
+import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -453,6 +453,10 @@ async function boot() {
           : activeChallenge.maxDeaths!==undefined
             ? '☠ ' + (metrics.deaths||0) + '/' + activeChallenge.maxDeaths + ' · ' + result.label
             : result.label;
+        if(id==='cf-transport-ship'){
+          const combatLabel=cfRifleCombatStatus(activeChallenge,metrics);
+          if(combatLabel)$('status').textContent=combatLabel;
+        }
         const rewardedRespawn=cfNativeReviveStatus(metrics,reviveUsed);
         if(rewardedRespawn)$('status').textContent=rewardedRespawn;
         $('goal').value = activeChallenge.kind==='defend'
@@ -476,6 +480,7 @@ async function boot() {
               challenge:activeChallenge,metrics,round,progress,config,
               sdkReady:typeof window.tap?.createRewardedVideoAd==='function',
               sinceStartupMs:now-startedAt,
+              nearWin:Boolean(cfNearMissCue(activeChallenge,metrics,round.elapsedMs)),
               used:reviveOffered||reviveUsed,declined:reviveDeclined
             })){
             reviveOffered=true;
