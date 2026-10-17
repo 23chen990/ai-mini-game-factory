@@ -993,7 +993,7 @@ export function createFpsMobileUx(game, root, doc) {
   let visibleAimCoach = '';
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
-  let defense=null,nextDefenseRouteAt=0,assault=null;
+  let defense=null,nextDefenseRouteAt=0,assault=null,extraction=null;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -1375,7 +1375,17 @@ export function createFpsMobileUx(game, root, doc) {
     },
     assaultMetrics() {
       return assault?{assaultStage:assault.stage,assaultTravel:assault.travel,
-        assaultKills:assault.postKills,assaultNet:assault.net}:{};
+        assaultKills:assault.postKills,assaultNet:assault.net,
+        assaultSiteValid:assault.checkpointValid===true,
+        assaultInZone:assault.inZone===true,
+        assaultSiteDistance:assault.checkpointDistance}:{};
+    },
+    extractionMetrics() {
+      if(!extraction)return {};
+      return {evacSiteValid:extraction.valid===true,
+        evacExtracted:extraction.extracted===true,
+        evacHeldSec:extraction.held,evacInZone:extraction.inside===true,
+        evacContested:extraction.contested===true};
     },
     defenseMetrics() {
       if(!defense)return {};
@@ -1394,7 +1404,7 @@ export function createFpsMobileUx(game, root, doc) {
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
       drill=cfAdvanceDrill(activeChallenge);
-      defense=null;assault=null;nextDefenseRouteAt=0;defensePin.hidden=true;
+      defense=null;assault=null;extraction=null;nextDefenseRouteAt=0;defensePin.hidden=true;
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
@@ -1404,10 +1414,12 @@ export function createFpsMobileUx(game, root, doc) {
         ? '⚡ 精英：自己瞄准开火'
         : activeChallenge?.kind === 'kills'
         ? '先观察，找到目标后开镜'
-        : activeChallenge?.kind === 'survive'
+        : activeChallenge?.extractSeconds
+          ? '完成移动击杀后，去远端撤离点坚守'
+          : activeChallenge?.kind === 'survive'
           ? '沿掩体移动，注意身后'
           : activeChallenge?.kind === 'assault'
-          ? '先侧移到新射击位，再亲手击杀'
+          ? '沿路线前往进攻位，再亲手击杀'
           : activeChallenge?.kind === 'defend'
           ? (activeChallenge.reverse?'先攻B区，再回防A区':'先守A区，再守B区')
           : '前方有目标 · 右手瞄准';
@@ -1435,17 +1447,34 @@ export function createFpsMobileUx(game, root, doc) {
         challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
       const rendezvous=activeChallenge?.kind==='defend'
         ?{path:false,trainingScout:false} :prepareFirstEncounter();
-      if(activeChallenge?.kind==='assault')
+      const needsSites=activeChallenge?.kind==='defend'||
+        activeChallenge?.kind==='assault'||!!activeChallenge?.extractSeconds;
+      const sites=needsSites?cfChooseDefenseSites({
+        player:p,nav:game.nav,world:game.world,actors:game.actors}):null;
+      if(activeChallenge?.kind==='assault'){
         assault=cfAdvanceAssault(activeChallenge,null,{
-          kills:p?.stats?.k||0,travel:0,x:p?.pos?.x,z:p?.pos?.z});
+          kills:p?.stats?.k||0,travel:0,x:p?.pos?.x,z:p?.pos?.z,
+          alive:p?.alive===true,checkpoint:sites?.[0]});
+        game.__mobileBalanceReview.assaultSiteValid=assault?.checkpointValid===true;
+        game.__mobileBalanceReview.assaultSite=assault?.checkpoint;
+      }
+      if(activeChallenge?.extractSeconds){
+        const far=sites?.[1];
+        const playerPath=far&&game.nav?.findPath?.(
+          p.pos.x,p.pos.z,far.x,far.z);
+        extraction=cfStartExtraction(Array.isArray(playerPath)&&
+          playerPath.length>=2?far:null);
+        game.__mobileBalanceReview.evacSiteValid=extraction.valid;
+        game.__mobileBalanceReview.evacSite=extraction.site;
+      }
       if(activeChallenge?.kind==='defend') {
-        let sites=cfChooseDefenseSites({player:p,nav:game.nav,world:game.world,actors:game.actors});
-        if(sites&&activeChallenge.reverse){
-          const far=sites[1];
+        let defenseSites=sites;
+        if(defenseSites&&activeChallenge.reverse){
+          const far=defenseSites[1];
           const path=game.nav?.findPath?.(p.pos.x,p.pos.z,far.x,far.z);
-          sites=Array.isArray(path)&&path.length>=2?[far,sites[0]]:null;
+          defenseSites=Array.isArray(path)&&path.length>=2?[far,defenseSites[0]]:null;
         }
-        defense=cfStartDefense(sites);
+        defense=cfStartDefense(defenseSites);
         game.__mobileBalanceReview.defenseSitesValid=defense.valid;
         game.__mobileBalanceReview.defenseSites=defense.sites;
         if(defense.valid)cfRouteDefenseBots(game,defense.sites[0]);
@@ -1499,9 +1528,29 @@ export function createFpsMobileUx(game, root, doc) {
         }
         drill=updated;
       }
-      if(active&&activeChallenge?.kind==='assault')
+      if(active&&activeChallenge?.kind==='assault'){
+        const lastStage=assault?.stage;
         assault=cfAdvanceAssault(activeChallenge,assault,{
-          kills:p.stats?.k||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z});
+          kills:p.stats?.k||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z,
+          alive:p.alive===true});
+        if(lastStage===0&&assault?.stage===1){
+          hitCue.textContent='◆ 进攻位已到达，开始计入亲手击杀';
+          hitCue.hidden=false;cueExpiresAt=now+1200;
+        }
+      }
+      if(active&&activeChallenge?.extractSeconds&&extraction){
+        const wasReady=extraction.extracted;
+        extraction=cfStepExtraction(extraction,{
+          gameTime:Number(game.time),player:p,actors:game.actors,team:p.team,
+          travel:walkedMeters,kills:p.stats?.k||0,
+          minTravel:activeChallenge.minTravel,minKills:activeChallenge.minKills,
+          seconds:activeChallenge.extractSeconds,
+          radius:activeChallenge.extractRadius});
+        if(!wasReady&&extraction.extracted){
+          hitCue.textContent='◆ 撤离区坚守成功，活到结束';
+          hitCue.hidden=false;cueExpiresAt=now+1400;
+        }
+      }
       if (!active) {
         if (activeChallenge?.kind==='hits') p.mouse.l=false;
         if(fireDragTouches.size>0) {
@@ -1510,7 +1559,33 @@ export function createFpsMobileUx(game, root, doc) {
         autoAimActor=null;autoFireActive=false;
         target.hidden = true; guide.hidden = true; defensePin.hidden=true; clearMarkers(); return;
       }
-      if(activeChallenge?.kind==='defend'&&defense){
+      if(activeChallenge?.kind==='assault'&&assault?.checkpoint){
+        const point=assault.checkpoint;
+        const turn=routeArrow(p,[point.x,point.z],activeChallenge.waypointRadius*.75);
+        defensePin.textContent=assault.stage===1?'◆ 进攻位已到达 · 击杀计数开启'
+          :'◆ 进攻位 · '+(turn?turn.symbol+' '+turn.distance+'米':
+          '在圈内继续移动 '+Math.floor(assault.travel)+'/'+activeChallenge.minTravel+'米');
+        defensePin.hidden=assault.stage===1;
+      }else if(activeChallenge?.extractSeconds&&extraction?.valid){
+        const point=extraction.site;
+        const eligible=walkedMeters>=activeChallenge.minTravel&&
+          (p.stats?.k||0)>=activeChallenge.minKills;
+        const turn=routeArrow(p,[point.x,point.z],activeChallenge.extractRadius*.75);
+        const remaining=extraction.extracted?'撤离已就绪 · 坚持存活':
+          !eligible?'移动'+Math.floor(walkedMeters)+'/'+activeChallenge.minTravel+
+            '米，击杀'+(p.stats?.k||0)+'/'+activeChallenge.minKills:
+          extraction.contested?'⚔ 敌人在撤离区 · 先清场':
+          extraction.inside?'◆ 坚守撤离区 '+Math.floor(extraction.held)+'/'+
+            activeChallenge.extractSeconds+'秒':
+          (turn?turn.symbol+' '+turn.distance+'米':'进入撤离区');
+        defensePin.textContent='◆ 撤离点 · '+remaining;
+        defensePin.hidden=false;
+        const elapsed=Math.max(0,Number(game.time)-startedGameSeconds);
+        if((elapsed>=40||eligible)&&!extraction.extracted&&now>=nextDefenseRouteAt){
+          nextDefenseRouteAt=now+1700;
+          cfRouteDefenseBots(game,{id:'E',...point});
+        }
+      }else if(activeChallenge?.kind==='defend'&&defense){
         const prevStage=defense.stage;
         defense=cfStepDefense(defense,{
           gameTime:Number(game.time),player:p,actors:game.actors,team:p.team,
@@ -1589,7 +1664,8 @@ export function createFpsMobileUx(game, root, doc) {
         }
         lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
-        if (activeChallenge?.kind==='defend'||activeChallenge?.kind==='assault') {
+        if (activeChallenge?.kind==='defend'||activeChallenge?.kind==='assault'||
+          activeChallenge?.extractSeconds) {
           guide.textContent='';
         }else if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
           const turn=routeArrow(p,routePath);
@@ -1623,6 +1699,7 @@ export function createFpsMobileUx(game, root, doc) {
       // player has not yet found a target. It never sits on the reticle.
       guide.hidden = !p.alive ||
         ['defend','assault'].includes(activeChallenge?.kind) ||
+        !!activeChallenge?.extractSeconds ||
         (activeChallenge?.drill==='reposition'&&drill?.stage>0
           ? drill.stage===2&&drill.follow>0&&elapsed-drillStageAt>7&&
             [...markers.values()].some(el=>!el.hidden)
@@ -1643,7 +1720,7 @@ export function createFpsMobileUx(game, root, doc) {
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); defensePin.remove(); tutorial.remove();
-      defense=null;assault=null;
+      defense=null;assault=null;extraction=null;
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
         button.removeAttribute('aria-label');
