@@ -198,7 +198,7 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V7.0'||
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V8.0'||
      worldIdentity.uiRevision!=='racing-v80-integrated')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
@@ -317,7 +317,7 @@ try {
   const firstFile=await firstDownload;
   const initialExport=JSON.parse(await readFile(await firstFile.path(),'utf8'));
   if(firstFile.suggestedFilename()!=='racing-v80-local-playtest.json'||
-     initialExport.build!=='V7.0'||initialExport.verifiedHumanPlay!==false||
+     initialExport.build!=='V8.0'||initialExport.verifiedHumanPlay!==false||
      initialExport.metrics.starts!==0||initialExport.metrics.finishes!==0)
     fail('Menu export must start empty and explicitly reject human-play claims: '+JSON.stringify(initialExport));
   report.initialExport={filename:firstFile.suggestedFilename(),starts:0,private:true};
