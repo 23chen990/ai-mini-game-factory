@@ -262,7 +262,9 @@ export function cfAdvanceAssault(challenge,previous=null,native={}) {
   const z=Number.isFinite(native.z)?native.z:null;
   const validSite=native.checkpoint&&Number.isFinite(native.checkpoint.x)&&
     Number.isFinite(native.checkpoint.z);
-  const point=previous?.checkpoint||(validSite?{x:native.checkpoint.x,z:native.checkpoint.z}:null);
+  const point=previous?.checkpoint||(validSite?{
+    ...(native.checkpoint.id==='A'?{id:'A'}:{}),
+    x:native.checkpoint.x,z:native.checkpoint.z}:null);
   const state=previous??{stage:0,anchorX:x,anchorZ:z,startTravel:travel,
     killBaseline:kills,lastKills:kills,postKills:0,
     checkpoint:point,checkpointValid:!!point};
@@ -286,7 +288,9 @@ export function cfAdvanceAssault(challenge,previous=null,native={}) {
  * advance it; no actor positions, kills or health are injected. */
 export function cfStartExtraction(site) {
   const valid=!!site&&Number.isFinite(site.x)&&Number.isFinite(site.z);
-  return {valid,site:valid?{x:site.x,z:site.z}:null,
+  return {valid,site:valid?{
+    ...(['A','B'].includes(site.id)?{id:site.id}:{}),
+    x:site.x,z:site.z}:null,
     held:0,extracted:false,inside:false,contested:false,lastTime:null};
 }
 export function cfStepExtraction(state,{gameTime,player,actors=[],team,
