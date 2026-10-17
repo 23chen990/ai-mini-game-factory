@@ -6,6 +6,7 @@ import { Buffer } from 'node:buffer';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
 import { SHORTCUT_PLANS, installPhysicalShortcut } from '../../templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs';
+import { benchmarkV9Fork } from './racing-shortcut-cost.mjs';
 import { applyTrackDesign, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, createRaceTrackTheme } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 import { PAD_LANES } from '../../templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs';
 
@@ -163,7 +164,8 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
     branchLengthM:+fork.length.toFixed(1),mainSegmentM:fork.end-fork.start,
     physicalSavingM:+fork.gain.toFixed(1),widthM:fork.width,neckWidthM:fork.neckWidth,
     playerProjectionPoints:active.length,
-    minMidCorridorClearanceM:+minMidCorridorClearance.toFixed(1)};
+    minMidCorridorClearanceM:+minMidCorridorClearance.toFixed(1),
+    physicalTimeProxy:benchmarkV9Fork(track,fork)};
   mesh.traverse(o=>{o.geometry?.dispose();if(o.material&&!Array.isArray(o.material))o.material.dispose();});
 }
 if(Object.keys(shortcutAudit).length!==10)throw Error('Missing ten genuine physical shortcut tracks');
