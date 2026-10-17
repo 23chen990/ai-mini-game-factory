@@ -1,0 +1,14 @@
+{
+  "schemaVersion":1,
+  "route":"formal-fixer",
+  "targetGame":"qq-speed",
+  "workspace":"runs/h5-qq-mobile-20261013/workspace/game",
+  "base":"d1e2da5d8c16e31dd5f186e1680b266ca2458a09",
+  "classification":"desktop-render-performance-and-track-pacing",
+  "previousAttempts":"Retain COUNTDOWN_RENDER_TRIAGE and PACING_RETEST_NOTES. Previous resolution and MSAA experiments failed; do not repeat them.",
+  "hypothesis":"Isolate native CPU step/render time versus DOM compositing and world scene submission; low resolution did not fix desktop stalls. Need measured root cause before runtime changes.",
+  "matrix":{"state":["fresh-ready","countdown","race"],"presentation":["desktop","touch"],"diagnosticOnly":["baseline","no-css-effects","no-world","restored"]},
+  "acceptance":["Original desktop/touch 45s start gates unchanged","No artificial clock or race-state edits","Actual same-SHA native and browser regressions","Stage03 activity checked only within real race bounds","Other games, fuel, stars, saves and chosen wheel preserved"],
+  "diagnosticIsProductionPass":false,
+  "physicalDeviceQA":"NOT_RUN"
+}

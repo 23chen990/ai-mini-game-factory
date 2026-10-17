@@ -4,6 +4,7 @@ on:
     paths:
       - 'templates/web-lite/h5-source-mobile-v1/racing/**'
       - 'tools/lean-pilot/racing-cold-start-qa.mjs'
+      - 'tools/lean-pilot/racing-render-probe.mjs'
       - '.github/workflows/racing-cold-start-qa.yml'
 permissions:
   contents: read
@@ -18,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [desktop, touch]
+        mode: [desktop, touch, render-probe]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -32,7 +33,8 @@ jobs:
           npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
           pnpm install --frozen-lockfile --ignore-scripts
           node --check tools/lean-pilot/racing-cold-start-qa.mjs
-          pnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs
+          node --check tools/lean-pilot/racing-render-probe.mjs
+          pnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs tools/lean-pilot/racing-render-probe.mjs
       - name: Same approved pinned native engine as primary racing CI
         shell: bash
         run: |
@@ -50,7 +52,11 @@ jobs:
       - name: Matching browser
         run: pnpm exec playwright install --with-deps chromium
       - name: Real CSS cascade and unseeded cold start
+        if: matrix.mode != 'render-probe'
         run: node tools/lean-pilot/racing-cold-start-qa.mjs ${{ matrix.mode }}
+      - name: Diagnostic layer isolation - NOT a production pass
+        if: matrix.mode == 'render-probe'
+        run: node tools/lean-pilot/racing-render-probe.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -61,3 +67,13 @@ jobs:
             tools/lean-pilot/tests/racing-build.test.mjs
           retention-days: 7
           if-no-files-found: warn
+      - name: Package exact source for offline diagnosis
+        if: always() && matrix.mode == 'render-probe'
+        run: |
+          tar -czf "$RUNNER_TEMP/racing-source-review.tgz" templates/web-lite/h5-source-mobile-v1 tools/lean-pilot runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/build runs/h5-qq-mobile-20261013/workspace/source/qq-speed/package.json runs/h5-qq-mobile-20261013/workspace/game/index.html runs/h5-qq-mobile-20261013/workspace/game/style.css runs/h5-qq-mobile-20261013/artifacts/build-racing.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && matrix.mode == 'render-probe'
+        with:
+          name: racing-source-review-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/racing-source-review.tgz
+          retention-days: 7
