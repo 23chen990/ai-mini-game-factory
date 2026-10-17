@@ -28,7 +28,7 @@ export const V10_SCENE_SIGNATURES=Object.freeze({
  '19':[[.24,'coast-sails'],[.77,'coast-cliff']],
  '20':[[.19,'ice-spires'],[.72,'ice-arches']],
  '21':[[.22,'city-cranes'],[.73,'city-bridge']],
- '22':[[.17,'coast-cliff'],[.74,'coast-ridge']],
+ '22':[[.17,'desert-terraces'],[.74,'desert-pillars']],
  '23':[[.22,'coast-terraces'],[.82,'coast-sails']],
  '24':[[.21,'ice-bridge'],[.75,'ice-spires']],
  '25':[[.23,'city-flyover'],[.75,'city-cranes']],
@@ -36,7 +36,7 @@ export const V10_SCENE_SIGNATURES=Object.freeze({
  '27':[[.19,'coast-cliff'],[.76,'coast-terraces']],
  '28':[[.20,'ice-arches'],[.79,'ice-bridge']],
  '29':[[.21,'city-block'],[.75,'city-bridge']],
- '30':[[.23,'city-bridge'],[.79,'city-flyover']],
+ '30':[[.23,'coast-terraces'],[.79,'coast-cliff']],
 });
 const P=Object.freeze({
  city:[0x40536a,0x91b5c4],
