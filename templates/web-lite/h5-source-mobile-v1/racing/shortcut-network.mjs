@@ -68,7 +68,7 @@ function samplesFor(track,plan,scale=1){
 export const V9_SHORTCUT_THEMES=Object.freeze({
   'race-05':{style:'temple',bend:4,preferred:.32},
   'race-10':{style:'city',bend:5,preferred:.23},
-  'race-12':{style:'ice',bend:4,preferred:.62},
+  'race-12':{style:'ice',bend:4,preferred:.62,maxLength:208},
   'race-13':{style:'city',bend:7,preferred:.32},
   'race-16':{style:'cliff',bend:3,preferred:.58},
   'race-18':{style:'desert',bend:5,preferred:.24},
@@ -87,7 +87,8 @@ const segmentClear=(track,points,length,width)=>{
     const p=points[i],half=width*.5;
     let near=Infinity;
     for(let d=0;d<track.length;d+=7){
-      const q=track.sample(d,{});
+      const j=track.px ? Math.floor(d/track.ds)%track.N : -1;
+      const q=j>=0 ? {x:track.px[j],y:track.py[j],z:track.pz[j]} : track.sample(d,{});
       if(Math.abs(q.y-p.y)>4.5)continue;
       near=Math.min(near,distance2(q,p));
     }
@@ -104,12 +105,12 @@ export function chooseV9Shortcut(track,course){
   // Explore natural corners: only a 140-270m local sector is eligible.
   for(let start=startLow;start<startHigh;start+=27){
     const a=track.sample(start,{});
-    for(const span of [158,176,194,212,232,254,276]){
+    for(const span of [145,160,175,190,205,220,235]){
       const end=start+span;
       if(end>track.length-140)continue;
       const b=track.sample(end,{}),middle=track.sample(start+span*.5,{});
       const chord=distance2(a,b);
-      if(chord<70||chord>198||span-chord<39||span-chord>120||
+      if(chord<70||chord>198||span-chord<35||span-chord>110||
         Math.abs(a.y-b.y)>16)continue;
       const area=Math.abs((b.x-a.x)*(middle.z-a.z)-(b.z-a.z)*(middle.x-a.x))/chord;
       if(area<18)continue;
@@ -117,7 +118,7 @@ export function chooseV9Shortcut(track,course){
         style:theme.style,label:theme.style+' apex cut'};
       let shape;
       try{shape=samplesFor(track,cfg,1);}catch{continue;}
-      if(shape.length>212||shape.gain<25||shape.gain>86||
+      if(shape.length>(theme.maxLength??178)||shape.gain<24||shape.gain>82||
         Math.abs(a.y-b.y)/shape.length>.115)continue;
       // Prefer short, visibly meaningful cuts near the authored sector,
       // while allowing search elsewhere if old anchor no longer fits.
