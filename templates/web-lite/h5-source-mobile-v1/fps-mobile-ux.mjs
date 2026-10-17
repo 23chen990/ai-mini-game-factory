@@ -1124,7 +1124,7 @@ export function createFpsMobileUx(game, root, doc) {
   root.append(defensePin);
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
-  let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
+  let activeChallenge = null, nextBalanceAt = 0, cueExpiresAt = 0;
   let previousCombat=null,damageExpiresAt=0;
   let drill = null, drillStageAt = 0, flankGoal = null, flankDeaths = -1;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
@@ -1583,7 +1583,6 @@ export function createFpsMobileUx(game, root, doc) {
       routePath=null;routeLastAt=0;lastVisibleEnemy=null;firstHitSpot=null;
       nextUpdate = 0;
       nextBalanceAt = 0;
-      lastHits = game.player?.stats?.hits || 0;
       previousCombat=game.player?{
         hits:game.player.stats?.hits||0,kills:game.player.stats?.k||0,
         hp:game.player.hp,alive:game.player.alive===true}:null;
@@ -1825,7 +1824,6 @@ export function createFpsMobileUx(game, root, doc) {
         if(diff.hpLoss>0){
           damageVignette.hidden=false;damageExpiresAt=now+410;
         }
-        lastHits=hits;
         const seen = [...markers.values()].some(el => !el.hidden);
         if (activeChallenge?.kind==='defend'||activeChallenge?.kind==='assault'||
           activeChallenge?.extractSeconds) {
