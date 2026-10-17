@@ -200,6 +200,8 @@ test('V8 native AI hook is strict and avoids checkpoint/progress surgery',()=>{
   const src=[
     "import { TUNE } from './vehicle.js';",
     "export class AICar {",
+    "const hw = tr.halfW - 2.2;",
+    "let vt = Math.min(vmaxBase, vCorner + (this.nitroTime > 0 ? 6 : 0));",
     "const target = clamp(inside + this.personal * hw * 0.8, -hw, hw);",
     "this.dist += this.s * dt + this.pushD;\n    this.pushD = 0;\n    const s = tr.sample(this.dist, this.s2);",
     "this.slope = tr.slope[s.i];",
