@@ -141,7 +141,7 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
     minMidCorridorClearanceM:+minMidCorridorClearance.toFixed(1)};
   mesh.traverse(o=>{o.geometry?.dispose();if(o.material&&!Array.isArray(o.material))o.material.dispose();});
 }
-if(Object.keys(shortcutAudit).length!==5)throw Error('Missing one of five real shortcut tracks');
+if(Object.keys(shortcutAudit).length!==10)throw Error('Missing ten genuine physical shortcut tracks');
 const report={schemaVersion:2,buildHash:build.buildHash,upstream:build.sourceRevision,
   limitation:'Static Catmull-Rom centerline only; not natural-driving/phone performance QA',
   maps,courses,shortcuts:shortcutAudit};
