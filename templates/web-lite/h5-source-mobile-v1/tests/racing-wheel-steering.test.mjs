@@ -56,3 +56,8 @@ test('rotary wheel accepts held countdown input and exports only timing aggregat
  assert.match(ui,/phoneInput:touchHealth\.snapshot\(\)/);
  assert.doesNotMatch(ui,/race-control-mode/);
 });
+
+test('countdown pre-grip is not misreported as slow input processing',async()=>{
+ const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+ assert.match(ui,/recordStickEvent=\(kind='move'\)=>\{if\(phase!=='race'\)return;/);
+});

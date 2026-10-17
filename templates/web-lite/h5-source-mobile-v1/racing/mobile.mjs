@@ -359,7 +359,7 @@ $('quality').addEventListener('change', () => {
 });
 const joystickSurface = $('joystick');
 const actionButtons=Object.fromEntries([...root.querySelectorAll('[data-race-action]')].map(button=>[button.dataset.raceAction,button]));
-const recordStickEvent=(kind='move')=>{touchSerial++;lastStickEventAt=performance.now();touchHealth.touch(lastStickEventAt,joystick.snapshot(),kind);};
+const recordStickEvent=(kind='move')=>{if(phase!=='race')return;touchSerial++;lastStickEventAt=performance.now();touchHealth.touch(lastStickEventAt,joystick.snapshot(),kind);};
 joystickSurface.addEventListener('pointerdown', e => {
   if (e.cancelable) e.preventDefault();
   if (!g || (phase !== 'race' && phase !== 'countdown')) return;
