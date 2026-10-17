@@ -245,6 +245,35 @@ async function raceStart(page, index, name) {
     fail(name+': true native-corner signage count differs from road geometry: '+JSON.stringify(early));
   if(index===4 && (early.itemBoxes!==8 || early.itemShape!=='IcosahedronGeometry' || early.itemBillboards!==1 || !early.questionOverlay))
     fail('native V3.1 item boxes must be diamond + visible question billboard: '+JSON.stringify(early));
+  if(index===4) {
+    // Native browser regression: simulate ONLY the inventory-slot UI state,
+    // not a pickup, success, mission score, race clear or unlocked reward.
+    // Exercises actual bundled HUD.update invoked by Game.updateRaceHUD.
+    const hudItems=await page.evaluate(()=>{
+      const g=window.game,p=g?.player;
+      if(!g?.itemMode||!p||!Array.isArray(p.items)||!g.hud?.slots?.length)return {error:'native item HUD missing'};
+      const saved=[...p.items],seen=[];
+      try {
+        for(const [id,name] of [['shockwave','近身冲击波'],['thunder','雷电攻击'],['barricade','后方路障']]){
+          p.items.splice(0,p.items.length,id);
+          g.updateRaceHUD(0);
+          seen.push({id,actual:g.hud.slots[0]?.textContent??'',name});
+        }
+        p.items.splice(0,p.items.length,'unexpected-qa-only-item-id');
+        g.updateRaceHUD(0);
+        seen.push({id:'unknown',actual:g.hud.slots[0]?.textContent??'',name:'未知道具'});
+      } finally {
+        p.items.splice(0,p.items.length,...saved);
+        g.updateRaceHUD(0);
+      }
+      return {seen};
+    });
+    if(!hudItems?.seen||hudItems.seen.length!==4||
+      hudItems.seen.some(row=>!row.actual.includes(row.name)))
+      fail('Real native eight-item HUD slot must render every new item safely: '+JSON.stringify(hudItems));
+    report.nativeV8HudInventory={qaStagedOnly:true,actualNativeHud:true,
+      tested:hudItems.seen.map(row=>row.id)};
+  }
   if(index===4){
     // This probe calls the ORIGINAL Track projection with synthetic WORLD
     // points; it does not touch the player's position, stats or finish.
