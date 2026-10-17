@@ -33,7 +33,16 @@ export async function smokeCampaign(runId){
      chapter:[...document.querySelectorAll('#mk-chapters button')]
        .map(b=>({name:b.textContent,active:b.getAttribute('aria-pressed')==='true'})),
      cards:[...document.querySelectorAll('#mk-challenges button')]
-       .map(b=>({id:b.dataset.challengeId,pressed:b.getAttribute('aria-pressed')==='true'})),
+       .map(b=>{
+         const title=b.querySelector('b')?.getBoundingClientRect(),
+           subtitle=b.querySelector('small')?.getBoundingClientRect(),
+           bounds=b.getBoundingClientRect();
+         return {id:b.dataset.challengeId,pressed:b.getAttribute('aria-pressed')==='true',
+           textFits:!!title&&!!subtitle&&title.bottom+1<=subtitle.top&&
+             subtitle.bottom<=bounds.bottom-1&&title.left>=bounds.left&&
+             subtitle.left>=bounds.left,
+           titleHeight:title?.height,subtitleHeight:subtitle?.height};
+       }),
      panelFits:panel?panel.left>=0&&panel.top>=0&&panel.right<=innerWidth&&panel.bottom<=innerHeight:false,
      startVisible:!!document.getElementById('mk-start')&&
        getComputedStyle(document.getElementById('mk-start')).display!=='none',
@@ -76,6 +85,7 @@ export async function smokeCampaign(runId){
    check('eight-mission-paging-chapter2-in-short-landscape',
      first.cards.length===4&&first.cards[0].id==='assault'&&
      first.cards[3].id==='counter'&&first.cards.filter(x=>x.pressed).length===1&&
+     first.cards.every(x=>x.textFits===true)&&
      first.chapter[1]?.active===true&&first.panelFits&&first.startVisible,first);
    await launch('assault');
    const before=await snapshot();
