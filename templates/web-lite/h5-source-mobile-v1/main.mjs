@@ -1,6 +1,6 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout, URL, URLSearchParams, navigator */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
-import { requestRewardedVideo, createFpsAdapter, cfMobileActorBudget } from './themes.mjs';
+import { requestRewardedVideo, createFpsAdapter, cfMobileActorBudget, cfRemoveNativeAllies } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap } from './fps-mobile-ux.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus,cfMobileMission} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
@@ -271,6 +271,10 @@ async function boot() {
         g.opts.primary = c.weapon;
         g.__mkAwmKills = 0;
         originalStart(c);
+        // The pinned native engine's team-size property also creates
+        // N-1 friendly bots; this truly removes them BEFORE any game update.
+        // Do not merely hide teammates or let them farm the user's kills.
+        if(c?.lite===true)g.__mkSoloStart=cfRemoveNativeAllies(g,c);
       };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
         enemyShots:(g.actors||[]).reduce((n,a)=>
