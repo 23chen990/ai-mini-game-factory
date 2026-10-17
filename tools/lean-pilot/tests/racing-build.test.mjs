@@ -270,3 +270,25 @@ test('mobile balanced quality avoids bloom, half-float composer and shadows; des
   assert.equal(api.patchMobileMidRendering(patched),patched);
   assert.throws(()=>api.patchMobileMidRendering('unknown'),/anchor changed/);
 });
+
+test('touch front wheels reflect actual current analogue countersteering, not the initial drift direction',()=>{
+  const input=[
+    "const steerT = Number.isFinite(inp.steerAxis) ? Math.max(-1, Math.min(1, inp.steerAxis)) : (inp.left ? 1 : 0) - (inp.right ? 1 : 0);",
+    "if (w.front) w.steer.rotation.y = this.drifting ? -this.driftDir * 0.3 : this.steer * 0.38;"
+  ].join('\n');
+  const patched=api.patchTouchWheelVisualFeedback(input);
+  assert.match(patched,/__RACE_TOUCH_WHEEL_ACTIVE__ = Number\.isFinite\(inp\.steerAxis\)/);
+  assert.match(patched,/this\.drifting && !this\.__RACE_TOUCH_WHEEL_ACTIVE__/);
+  assert.equal(api.patchTouchWheelVisualFeedback(patched),patched);
+  assert.throws(()=>api.patchTouchWheelVisualFeedback(input.replace('0.38','0.2')),/anchor changed/);
+  assert.throws(()=>api.patchTouchWheelVisualFeedback('unrelated code'),/anchor changed/);
+  const wheelLine=patched.split('\n').find(line=>line.startsWith('if (w.front)'));
+  const expression=wheelLine.split(' = ')[1].replace(/;$/,'');
+  const visualAngle=new Function('return '+expression);
+  const state={drifting:true,__RACE_TOUCH_WHEEL_ACTIVE__:true,driftDir:1,steer:.8};
+  assert.ok(visualAngle.call(state)>0,'left thumb must visually turn the front wheels left');
+  state.steer=-.8;
+  assert.ok(visualAngle.call(state)<0,'opposite thumb turns front wheels right during drift');
+  state.__RACE_TOUCH_WHEEL_ACTIVE__=false;
+  assert.equal(visualAngle.call(state),-.3,'desktop keeps existing stylized drift-wheel pose');
+});

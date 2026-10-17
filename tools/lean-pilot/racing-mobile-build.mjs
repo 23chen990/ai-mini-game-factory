@@ -262,6 +262,24 @@ export function patchMobileDriftCounterGrip(source) {
   return source.replace(original, revised);
 }
 
+/** The old renderer locks FRONT WHEEL ART to the ORIGINAL drift direction,
+ * even after the player counters with the opposite thumb. Physics already
+ * receives the right input, but the 3D car visually says the opposite.
+ * Render steering from real analogue input on mobile, leaving desktop drift
+ * posing, native physics, collisions and AI untouched. */
+export function patchTouchWheelVisualFeedback(source) {
+  const analog = "const steerT = Number.isFinite(inp.steerAxis) ? Math.max(-1, Math.min(1, inp.steerAxis)) : (inp.left ? 1 : 0) - (inp.right ? 1 : 0);";
+  const analogUpdated = "const steerT = Number.isFinite(inp.steerAxis) ? Math.max(-1, Math.min(1, inp.steerAxis)) : (inp.left ? 1 : 0) - (inp.right ? 1 : 0);\n    this.__RACE_TOUCH_WHEEL_ACTIVE__ = Number.isFinite(inp.steerAxis);";
+  const wheel = "if (w.front) w.steer.rotation.y = this.drifting ? -this.driftDir * 0.3 : this.steer * 0.38;";
+  const wheelUpdated = "if (w.front) w.steer.rotation.y = this.drifting && !this.__RACE_TOUCH_WHEEL_ACTIVE__ ? -this.driftDir * 0.3 : this.steer * 0.38;";
+  if (source.includes(analogUpdated) && source.includes(wheelUpdated)) return source;
+  if (source.includes(analogUpdated) || source.includes(wheelUpdated))
+    throw Error('Partial native touch wheel art patch');
+  if (source.split(analog).length !== 2 || source.split(wheel).length !== 2)
+    throw Error('Pinned native touch wheel art anchor changed');
+  return source.replace(analog, analogUpdated).replace(wheel, wheelUpdated);
+}
+
 /** A drift cannot immediately re-trigger on the same still-held drift key.
  * Both graceful exit and wall impact pass through the native endDrift method.
  * Re-arm only when the player has actually released the drift key. */
@@ -426,7 +444,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await readFile(path.join(owned, 'career-expansion.mjs'), 'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchItemModeNitro(patchMobileDriftCounterGrip(patchCounterSteer(patchMobileSteeringResponse(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))))));
+  const annotatedVehicle = patchItemModeNitro(patchMobileDriftCounterGrip(patchTouchWheelVisualFeedback(patchCounterSteer(patchMobileSteeringResponse(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle)))))))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');

@@ -435,7 +435,8 @@ try {
   await page.waitForFunction(()=>{
     const pin=window.game?.__QA_LAST_CONTROL_PIN__;
     return pin && pin.steerAxis<-.5 && pin.right===true &&
-      pin.left===false && pin.shift===true;
+      pin.left===false && pin.shift===true &&
+      window.game?.player?.__RACE_TOUCH_WHEEL_ACTIVE__===true;
   },null,{timeout:18000});
   // Verify the SAME native simulated actor responds, not merely the touch DOM
   // and wrapper input mapping. Software WebGL can take multiple seconds.
