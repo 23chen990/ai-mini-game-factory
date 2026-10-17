@@ -98,7 +98,7 @@ function renderLobby() {
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
-  root.dataset.previewRevision = 'racing-v90-integrated';
+  root.dataset.previewRevision = 'racing-v91-wheel-hud';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
     ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V9.0';
@@ -360,8 +360,8 @@ const endStick=(e)=>{
   }
 };
 joystickSurface.addEventListener('pointerup',endStick);
-joystickSurface.addEventListener('pointercancel',endStick);
-joystickSurface.addEventListener('lostpointercapture',endStick);
+joystickSurface.addEventListener('pointercancel', endStick);
+joystickSurface.addEventListener('lostpointercapture', endStick);
 window.addEventListener('pointermove', e => {
   if(!wheelCaptureFallback||joystick.pointerId!==e.pointerId||joystickSurface.contains(e.target))return;
   if(joystick.update(e.pointerId,e.clientX,e.clientY)){
