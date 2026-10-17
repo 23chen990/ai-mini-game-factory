@@ -10,7 +10,7 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
-export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v8-rival-ai.mjs']);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
 
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
@@ -260,6 +260,31 @@ export function patchRaceMaps(source) {
   if (source.includes(imported) || source.includes(invoke)) throw Error('Partial lane patch');
   return imported+'\n'+source+'\n'+invoke+'\n';
 }
+/** Three extra item types are native use/update effects; no spoofed pickups. */
+export function patchV8NativeItems(source) {
+  const imported="import { V8_ITEM_WEIGHTS, v8UseExtraItem, v8UpdateExtraItems, v8AiItemUseful, v8DisposeBarrier } from './race-v8-item-rules.mjs';";
+  const changedWeights='const WEIGHTS = V8_ITEM_WEIGHTS;';
+  const cases="      case 'shockwave':\n      case 'thunder':\n      case 'barricade':\n        v8UseExtraItem(it,r,g,this,THREE);\n        break;\n";
+  if(source.includes(imported)&&source.includes(changedWeights)&&
+     source.includes(cases)&&source.includes('v8UpdateExtraItems(this,dt);'))
+    return source;
+  const a=source.indexOf('const WEIGHTS = {');
+  const b=source.indexOf('\n};\n\nfunction pick(',a);
+  const useAnchor="      case 'nitro':";
+  const tickAnchor="    const t = performance.now() * 0.001;";
+  const thinkAnchor="    const it = r.items[0];";
+  const removeAnchor="        this.group.remove(bn.mesh);";
+  const resetAnchor="    for (const b of this.bananas) this.group.remove(b.mesh);";
+  if(!source.includes('export class ItemSystem')||a<0||b<a||
+     [useAnchor,tickAnchor,thinkAnchor,removeAnchor,resetAnchor].some(x=>source.split(x).length!==2))
+     throw Error('Pinned item source anchors changed');
+  return imported+'\n'+source.slice(0,a)+changedWeights+source.slice(b+4)
+    .replace(useAnchor,cases+useAnchor)
+    .replace(tickAnchor,tickAnchor+'\n    v8UpdateExtraItems(this,dt);')
+    .replace(thinkAnchor,thinkAnchor+'\n    if (!v8AiItemUseful(it,r,this.game)) return;')
+    .replace(removeAnchor,removeAnchor+'\n        if (bn.__V8_BARRIER__) v8DisposeBarrier(bn.mesh);')
+    .replace(resetAnchor,"    for (const b of this.bananas) { this.group.remove(b.mesh);if(b.__V8_BARRIER__)v8DisposeBarrier(b.mesh); }\n    this.v8Bolts=[];");
+}
 export function patchRaceItems(source) {
   const imported = "import { upgradeItemBoxes } from './race-item-visuals.mjs';";
   const hook = "this.applyMobileVisuals = () => upgradeItemBoxes(this, THREE);";
@@ -347,7 +372,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   for (const [nativeName, adapterName, ownedName, transform] of [
     ['layouts.js', 'race-track-design.mjs', 'track-design.mjs', patchRaceLayouts],
     ['maps.js', 'race-lane-design.mjs', 'lane-design.mjs', patchRaceMaps],
-    ['items.js', 'race-item-visuals.mjs', 'item-visuals.mjs', patchRaceItems],
+    ['items.js', 'race-item-visuals.mjs', 'item-visuals.mjs', source => patchV8NativeItems(patchRaceItems(source))],
   ]) {
     const nativePath = path.join(project, 'src', nativeName);
     await writeFile(nativePath, transform(await readFile(nativePath, 'utf8')));
@@ -370,6 +395,8 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   if(adaptedAi!==originalAi)await writeFile(nativeAiPath,adaptedAi);
   await writeFile(path.join(project,'src/race-v8-rival-ai.mjs'),
     await readFile(path.join(owned,'v8-rival-ai.mjs'),'utf8'));
+  await writeFile(path.join(project,'src/race-v8-item-rules.mjs'),
+    await readFile(path.join(owned,'v8-item-rules.mjs'),'utf8'));
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');
   const adaptedTrack = patchShortcutNativeTrack(originalTrack);
