@@ -99,7 +99,12 @@ export async function probeNativeRevive(runId){
       cancelled.adsVisible===true,cancelled);
     await page.evaluate(()=>{window.__qaAdNextResult='completed';});
     await page.locator('#mk-revive-ad').tap();
-    await page.waitForTimeout(400);
+    // On headless software WebGL the first genuine frame after returning
+    // from an ad may arrive >400ms later. Keep the exact same visible
+    // requirement, but wait for a REAL native render instead of sampling
+    // a stale UI before its first frame. No actor/game.time manipulation.
+    await page.waitForFunction(()=>document.getElementById('mk-status')
+      ?.textContent?.includes('续战已生效'),null,{timeout:7000});
     const resumed=await snapshot();
     await page.screenshot({path:path.join(root,'screenshots','cf-v10-revive-native-countdown.png')});
     check('completed-fixture-only-video-resumes-original-game-timer',
