@@ -27,7 +27,7 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING / CAREER</div><h1 id="race-heading">极速飞驰</h1><button id="race-export" type="button" aria-label="导出本机试玩数据JSON">导出数据 ↓</button>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手转动方向盘 · 右手漂移 / 小喷 / 氮气</p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10" hidden>${'<span></span>'.repeat(10)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
-    <p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
+    <div id="race-result-stars" hidden aria-label="本场与历史星级"></div><p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
     <div id="race-settings" hidden><label for="race-steering-sens">转向</label><select id="race-steering-sens" aria-label="方向盘转向灵敏度"><option value="calm">柔和</option><option value="normal">标准</option><option value="sharp">灵敏</option></select><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">优先流畅，暂停时可调整画质</small></div>
     <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-retry-ad" class="race-secondary" hidden>看广告 · 下局额外氮气</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-lobby" class="race-secondary" hidden>返回选关</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
     <p id="race-note"></p>
@@ -94,7 +94,7 @@ function renderLobby() {
     const option = document.createElement('option');
     option.value = String(index);option.disabled = !open;
     const stars = career.progress.stars[s.id] ?? 0;
-    option.textContent = open ? (s.id + ' · ' + s.name + ' ' + '★'.repeat(stars)) : ('🔒 ' + s.id + ' · ' + s.name);
+    option.textContent = open ? (s.id + ' · ' + s.name + ' ' + '★'.repeat(stars)+'☆'.repeat(3-stars)) : ('🔒 ' + s.id + ' · ' + s.name);
     chapterGroup.append(option);
   }
   const dailyOption = document.createElement('option');
@@ -159,7 +159,7 @@ function display(next) {
   $('next').classList.remove('race-secondary');
   $('export').hidden = next !== 'ready' && next !== 'finished';
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
-  for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
+  for (const id of ['result-stars','result-copy','result-stats','results']) $(id).hidden = next !== 'finished';
   if (next !== 'race') $('knockout').hidden = true;
   $('speed').hidden = next !== 'race'; $('compact-goal').hidden = next !== 'race' || !$('compact-goal').textContent;
   $('note').hidden = next !== 'ready'; // :empty CSS hides silence; critical loading errors remain visible.
@@ -213,11 +213,27 @@ function finish() {
   if (!g.resultShown) g.showResults();
   result = settleNative(g);releaseInput();
   const beforeStars = careerStars(career.progress);
+  const previousBest=career.dailySnapshot ? career.progress.daily.stars :
+    (career.progress.stars[career.stage.id]??0);
   const graded = career.finalize(g, result);
   const stars = graded?.stars ?? 0;
+  const bestStars=career.dailySnapshot ? career.progress.daily.stars :
+    (career.progress.stars[career.stage.id]??0);
+  const starView=$('result-stars');starView.replaceChildren();
+  for(let i=1;i<=3;i++){
+    const icon=document.createElement('span');
+    icon.textContent='★';icon.className=i<=bestStars?'earned':'empty';
+    starView.append(icon);
+  }
+  const starLabel=document.createElement('small');
+  starLabel.textContent=bestStars>previousBest
+    ? `本场 ${stars} 星 · 新纪录 ${previousBest} → ${bestStars} 星`
+    : `本场 ${stars} 星 · 历史最高 ${bestStars} 星`;
+  starView.append(starLabel);
+  starView.setAttribute('aria-label',starLabel.textContent);
   const forkRun=shortcutDecisions.finish();
   trial.finish(career.stage,result,stars,g.raceTime,duel.snapshot(g,career.stage),forkRun);
-  lastRacePassed = stars > 0;
+  lastRacePassed = bestStars > 0;
   justFinishedPassed = lastRacePassed;
   $('heading').textContent = result.finished ? '第 ' + result.place + ' 名' : '未完赛';
   if (result.finished && (!best[result.map] || result.time < best[result.map])) {
@@ -232,7 +248,7 @@ function finish() {
         ' · 连续挑战 ' + career.progress.daily.streak + ' 天'
       : '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星' +
         (newSkin > 0 ? ' · 解锁车漆：' + SKIN_NAMES[newSkin] : ''))
-    : (result.finished ? '未达成目标 · ' : '未完赛 · ') + failure.reason +
+    : (result.finished ? '本次未进前三 · ' : '未完赛 · ') + failure.reason +
       (() => { const gap = rankFinishGapSeconds(career.stage,result);
         return gap !== null ? ' · 距目标名次 ' + gap.toFixed(1) + ' 秒' : ''; })();
   if (forkRun.entries > 0)

@@ -422,3 +422,18 @@ html[data-race-platform="touch"] #race-joystick{max-height:43vh}
 
 /* Status text under the nitro/item button cannot catch the other thumb. */
 #race-kit #race-controls #race-action-pad button::after{pointer-events:none}
+
+/* On results only: a clear three-star podium and retained best record. */
+#race-kit #race-result-stars{display:flex;align-items:center;justify-content:center;gap:clamp(6px,1.6vw,12px);
+  margin:2px auto 5px;min-height:35px;font-variant-numeric:tabular-nums}
+#race-kit #race-result-stars[hidden]{display:none!important}
+#race-kit #race-result-stars span{font-size:clamp(24px,6vh,40px);line-height:1;text-shadow:0 2px 8px #0006}
+#race-kit #race-result-stars span.earned{color:#ffd675;text-shadow:0 0 13px #ffb44083}
+#race-kit #race-result-stars span.empty{color:#77909b;opacity:.62}
+#race-kit #race-result-stars small{font:700 clamp(10px,2.2vh,12px)/1.25 system-ui;
+  color:#d9edf3;margin-left:6px;white-space:normal;max-width:200px;text-align:left}
+@media(max-height:360px){
+ #race-kit #race-result-stars{margin:0 auto 2px;min-height:26px;gap:4px}
+ #race-kit #race-result-stars span{font-size:22px}
+ #race-kit #race-result-stars small{font-size:10px;max-width:165px}
+}

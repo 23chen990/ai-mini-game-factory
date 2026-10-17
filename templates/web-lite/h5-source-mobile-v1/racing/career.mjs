@@ -1,6 +1,11 @@
 import { EXTRA_STAGES } from './career-expansion.mjs';
 export const CAREER_KEY = 'h5-mobile:qq-speed:career:v1';
-const make = (id, chapter, name, map, laps, diff, kind, mode, rank, goal, extra = {}) => Object.freeze({ id, chapter, name, map, course: 'race-' + id, laps, diff, kind, mode, rank, goal, ...extra });
+/** Only genuine finished podium placement determines the three visible medals. */
+export const PODIUM_GOAL='前三名通关 · 第1名三星 / 第2名二星 / 第3名一星';
+export const rankStars=(finished,place)=>finished===true&&Number.isInteger(place)&&place>=1&&place<=3?4-place:0;
+const make=(id,chapter,name,map,laps,diff,kind,mode,rank,goal,extra={})=>
+  Object.freeze({id,chapter,name,map,course:'race-'+id,laps,diff,kind,mode,
+    rank:Math.max(3,rank),goal:PODIUM_GOAL,mission:goal,...extra});
 /** Every stage demands real rank/technique; 17-30 add eight-chapter progression. */
 export const STAGES = Object.freeze([
   make('01', 1, '城市攻防环', 'city', 2, 1, 'race', 'speed', 3, '跑满两圈并争取前三名'),
@@ -19,7 +24,7 @@ export const STAGES = Object.freeze([
   make('14', 4, '沙丘极速冲顶', 'egypt', 2, 2, 'speed', 'speed', 2, '测速点至少一次达到 190 km/h', {'target':190}),
   make('15', 4, '极地道具冠军战', 'snow', 3, 2, 'item', 'item', 2, '争取前二名，拾取 4 个道具挑战三星', {'target':4}),
   make('16', 4, '悬崖冠军决战', 'aegean', 3, 2, 'boss', 'speed', 1, '超过指定车神，夺得第一名'),
-  ...EXTRA_STAGES,
+  ...EXTRA_STAGES.map(stage=>Object.freeze({...stage,rank:3,mission:stage.goal,goal:PODIUM_GOAL})),
 ]);
 export const SKIN_STARS = Object.freeze([0, 3, 6, 10, 14, 19, 25, 34]);
 export const SKIN_NAMES = Object.freeze(['烈焰红', '冰蓝', '紫电', '黄金', '珍珠白', '樱粉', '翡翠', '暗夜']);
@@ -87,27 +92,10 @@ export function stageMetric(stage, stats = {}) {
     default: return 0;
   }
 }
-/** A pass should unlock the next challenge only when its actual stage objective is met. */
-export function gradeStage(stage, result, stats = {}) {
-  const metric = stageMetric(stage, stats), time = finite(result?.time), place = finite(result?.place);
-  const ordinary = result?.finished === true && place > 0 && place <= stage.rank;
-  const extra = stage.kind === 'boss' ? stats.beatBoss === true :
-    stage.kind === 'elimination' ? stats.eliminated !== true && finite(stats.survived) >= 2 :
-    stage.kind === 'time' ? time > 0 && time <= stage.target :
-    stage.kind === 'relay' ? stats.timedOut !== true && metric >= 1 :
-    ['speed', 'drift'].includes(stage.kind) ? metric >= stage.target : true;
-  if (!ordinary || !extra || stats.timedOut || stats.eliminated) return 0;
-  let stars = 1;
-  if (place <= Math.max(1, stage.rank - 1)) stars++;
-  const clean = finite(result?.stats?.crash) <= (stage.laps === 1 ? 2 : 4) && finite(stats.rescues) === 0;
-  const mastery = stage.kind === 'time' ? time <= stage.target * .87 :
-    stage.kind === 'speed' ? metric >= stage.target + 20 :
-    stage.kind === 'drift' ? metric >= Math.max(6,stage.target + 1) :
-    stage.kind === 'overtake' ? metric >= stage.target + 1 :
-    stage.kind === 'item' ? metric >= stage.target + 1 :
-    stage.kind === 'relay' ? metric >= 2 : true;
-  if (place === 1 && clean && mastery) stars++;
-  return stars;
+/** Timing, driving tasks and clean turns remain authentic challenges, but
+ * they cannot inflate or revoke stars earned from an actual finishing rank. */
+export function gradeStage(_stage,result,_stats={}) {
+  return rankStars(result?.finished,result?.place);
 }
 /** Player-facing diagnosis after an actual graded defeat.
  * Pure presentation: never affects rank, stage metrics, fuel, stars or unlocks.
@@ -133,47 +121,16 @@ export function stageFailureFeedback(stage, result, stats = {}) {
     const percent = Math.round(Math.max(0, Math.min(1, n(result?.completion))) * 100);
     return { reason: `尚未完成比赛（进度 ${percent}%）`, tip };
   }
-  const reasons = [];
-  const place = n(result.place);
-  if (place < 1 || place > stage.rank)
-    reasons.push(`第${place || '?'}名，要求前${stage.rank}名`);
-  switch (stage.kind) {
-    case 'speed':
-      if (n(stats.gateSpeed) < stage.target) reasons.push(count(stats.gateSpeed, stage.target, '最佳测速 km/h'));
-      break;
-    case 'drift':
-      if (n(stats.cleanDrifts) < stage.target) reasons.push(count(stats.cleanDrifts, stage.target, '有效漂移'));
-      break;
-    case 'overtake':
-      // Technique counter is an optional mastery objective in V8.
-      break;
-    case 'item':
-      // Earn more stars by using the boxes; a fair rank win still advances.
-      break;
-    case 'time':
-      if (!(n(result.time) > 0 && result.time <= stage.target))
-        reasons.push(`用时 ${n(result.time).toFixed(1)} 秒，限时 ${stage.target} 秒`);
-      break;
-    case 'relay':
-      if (n(stats.padCount) < 1) reasons.push('未经过加速带取得补时');
-      break;
-    case 'elimination':
-      if (n(stats.survived) < 2) reasons.push(count(stats.survived, 2, '成功避开淘汰'));
-      break;
-    case 'boss':
-      if (stats.beatBoss !== true) reasons.push('未超过指定车神');
-      break;
-    default: break;
-  }
-  return { reason: reasons.join('；') || '该场未达到目标', tip };
+  return {reason:`第${n(result.place)||'?'}名，要求前三名`,tip};
 }
 
 export function recordStage(career, stage, result, stats) {
   const stars = gradeStage(stage, result, stats);
   const next = { ...career, stars: { ...career.stars }, times: { ...career.times }, rounds: career.rounds + 1 };
-  if (stars > (next.stars[stage.id] ?? 0)) next.stars[stage.id] = stars;
+  const previousStars=next.stars[stage.id]??0,bestStars=Math.max(stars,previousStars);
+  if(bestStars>previousStars)next.stars[stage.id]=bestStars;
   if (result.finished && result.time > 0 && (!next.times[stage.id] || result.time < next.times[stage.id])) next.times[stage.id] = result.time;
-  return { stars, career: next, total: careerStars(next) };
+  return { stars, previousStars, bestStars, improvement:bestStars-previousStars, career:next, total:careerStars(next) };
 }
 /** Pick a checkpoint without relying on absolute three.js coordinates. */
 export const fractionPassed = (oldProgress, newProgress, totalDistance, threshold) =>
