@@ -1,0 +1,103 @@
+name: CF V10 pinned native campaign QA
+on:
+  pull_request:
+    paths:
+      - 'templates/web-lite/h5-source-mobile-v1/**'
+      - 'tools/lean-pilot/**'
+      - '.github/workflows/cf-v10-pinned-native-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: cf-v10-real-campaign-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  private-native-3d:
+    if: github.event.pull_request.head.ref == 'qa/cf-v10-campaign-real3d-20261017'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      RUN_ID: h5-cf-challenges-20261013
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.11.0'
+      - name: Install locked owned dependencies and real Chromium
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm exec playwright install --with-deps chromium
+      - name: Check owned campaign rules, ad reward policy and QA script
+        run: |
+          pnpm exec eslint tools/lean-pilot/cf-v10-campaign-real3d-qa.mjs tools/lean-pilot/cf-v10-native-revive-fixture-qa.mjs templates/web-lite/h5-source-mobile-v1/*.mjs
+          node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+          npm run pilot:typecheck
+      - name: Fetch exact audited original 3D engine (never substitute a dummy)
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_root="$RUNNER_TEMP/cf-pinned-source"
+          mkdir -p "$source_root"
+          git -C "$source_root" init -q
+          git -C "$source_root" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$source_root" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$source_root" checkout -q FETCH_HEAD
+          test "$(git -C "$source_root" rev-parse HEAD)" = 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          echo "H5_PINNED_SOURCE_ROOT=$source_root" >> "$GITHUB_ENV"
+      - name: Build real source + V10 owning adapter and validate source manifest
+        run: |
+          pnpm pilot build "$RUN_ID" cf-transport-ship
+          pnpm pilot check "$RUN_ID"
+      - name: Open every second-chapter mission in real mobile Chromium
+        id: mission_qa
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node tools/lean-pilot/cf-v10-campaign-real3d-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-v10-browser.log"
+      - name: Verify voluntary revive against actual original 3D death and four-second respawn
+        id: native_revive
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node tools/lean-pilot/cf-v10-native-revive-fixture-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-v10-native-revive.log"
+      - name: Export H5 and pinned original asset attribution - internal only
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          game="runs/$RUN_ID/workspace/game"
+          if [ ! -f "$game/index.html" ];then
+            echo 'BUILD_NOT_READY';exit 0
+          fi
+          pnpm pilot export "$RUN_ID" > "$RUNNER_TEMP/cf-v10-export.json"
+          mkdir -p "$RUNNER_TEMP/cf-v10-preview"
+          html=$(find "runs/$RUN_ID" -maxdepth 1 -name 'cf-transport-ship-*.html' -print -quit)
+          test -n "$html"
+          cp "$html" "$RUNNER_TEMP/cf-v10-preview/index.html"
+          cp "$game/LICENSE.three.txt" "$RUNNER_TEMP/cf-v10-preview/LICENSE.three.txt"
+          (cd "$RUNNER_TEMP/cf-v10-preview" && zip -q "$RUNNER_TEMP/cf-v10-preview.zip" index.html LICENSE.three.txt)
+          sha256sum "$RUNNER_TEMP/cf-v10-preview.zip" > "$RUNNER_TEMP/cf-v10-sha.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cf-v10-internal-campaign-${{ github.event.pull_request.head.sha }}
+          path: |
+            ${{ runner.temp }}/cf-v10-preview.zip
+            ${{ runner.temp }}/cf-v10-sha.txt
+            ${{ runner.temp }}/cf-v10-browser.log
+            ${{ runner.temp }}/cf-v10-native-revive.log
+            runs/h5-cf-challenges-20261013/cf-v10-native-revive-browser.json
+            ${{ runner.temp }}/cf-v10-export.json
+            runs/h5-cf-challenges-20261013/cf-v10-campaign-browser.json
+            runs/h5-cf-challenges-20261013/screenshots/cf-v10-*.png
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Preserve native original-3D failure as a FAILED CI run
+        if: steps.mission_qa.outcome == 'failure' || steps.native_revive.outcome == 'failure'
+        run: |
+          echo 'Genuine source V10 campaign browser checks FAILED'
+          exit 1
