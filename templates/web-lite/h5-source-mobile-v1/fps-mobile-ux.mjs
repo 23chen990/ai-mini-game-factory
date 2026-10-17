@@ -1194,6 +1194,13 @@ export function createFpsMobileUx(game, root, doc) {
     markTouch();
     if(!game.playing||game.paused||game.ended)return;
     if(cover.enabled&&cover.isButton(e.target)){
+      // Real iOS touch-generated compatibility mousedown is suppressed by
+      // the shooter (to avoid phantom bullets), so handle cover selection
+      // on the finger contact itself, not on a synthetic browser click.
+      const left=e.target.closest?.('#mk-cover-left');
+      const right=e.target.closest?.('#mk-cover-right');
+      if(left)cover.choose('left');
+      else if(right)cover.choose('right');
       e.stopPropagation();return;
     }
     // Native button handlers would queue a jump/fire even when the player is
