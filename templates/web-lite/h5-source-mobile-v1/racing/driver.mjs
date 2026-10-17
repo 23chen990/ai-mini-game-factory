@@ -53,11 +53,17 @@ export class ManualRaceDriver {
   frame(raw, player, state, { canStep = true, itemMode = false, track = null, now = 0 } = {}) {
     if (state !== 'race' || !player || player.finished) { this.actions.clear(); return empty(); }
     const axis = Number.isFinite(raw.steerAxis) ? Math.max(-1, Math.min(1, raw.steerAxis)) : null;
+    // A <1-render-frame drift press can otherwise disappear: unlike spray/
+    // nitro, drift used to read ONLY the currently held pointer. Consume the
+    // pending real tap on the next PHYSICS step, never on a render-only frame.
+    // A pointercancel removes the pending tap, and stale inputs expire.
+    this.actions.expire('drift', now, .22);
+    const driftEdge = this.actions.consume('drift', canStep);
     const input = {
       ...empty(), up: true,
       left: axis === null ? !!raw.left : axis > 0.12,
       right: axis === null ? !!raw.right : axis < -0.12,
-      shift: this.actions.isHeld('drift'),
+      shift: this.actions.isHeld('drift') || driftEdge,
     };
     if (axis !== null) input.steerAxis = axis;
     // Spinning at full throttle is not meaningful difficulty when there is no

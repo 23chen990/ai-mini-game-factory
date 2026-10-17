@@ -26,6 +26,16 @@ test('画质偏好：首次使用均衡，用户选流畅后刷新仍优先流�
   for(const value of ['low','mid','high']) assert.equal(normalize(value),value);
   for(const value of [null,undefined,'','ultra','manual',{},0]) assert.equal(normalize(value),'mid');
 });
+test('first mobile race starts performance-first; desktop and explicit choices are preserved',()=>{
+  const fn=need('initialRaceQuality');
+  assert.equal(fn(null,true),'low');
+  assert.equal(fn(undefined,true),'low');
+  assert.equal(fn('garbage',true),'low');
+  assert.equal(fn(null,false),'mid');
+  assert.equal(fn('mid',true),'mid');
+  assert.equal(fn('high',true),'high');
+  assert.equal(fn('low',false),'low');
+});
 test('暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复',()=>{
   const mute=need('setRaceSound');
   assert.equal(mute(null,false),false);
@@ -80,6 +90,32 @@ test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；�
   g.mobileMode = false;g.fx.glow.emit(...args);assert.deepEqual(calls.at(-1).args, args);
   const bloom = need('raceBloomStrength');assert.equal(bloom(true), bloom(false));assert.ok(bloom(true) <= .3);
 });
+test('mobile quality downgrade is triggered by sustained 40 FPS, not by isolated spikes or tab resume',()=>{
+  const Monitor=need('QualityMonitor');
+  const stable=new Monitor();
+  for(let i=0;i<180;i++) assert.equal(stable.frame(1/60,'high'),null);
+  assert.ok(stable.fps>=55);
+  for(let i=0;i<12;i++) stable.frame(.045,'high');
+  for(let i=0;i<150;i++) assert.equal(stable.frame(1/60,'high'),null,'brief jank must recover');
+  assert.equal(stable.frame(1,'high'),null,'a single tab resume gap cannot cause a downgrade');
+  let q='high',steps=[];
+  const monitor=new Monitor();
+  for(let i=0;i<300;i++){
+    const next=monitor.frame(.025,q);
+    if(next){steps.push(next);q=next;}
+  }
+  assert.deepEqual(steps,['mid','low'],'persistent 40 FPS drops twice until low');
+  const extreme=new Monitor();
+  for(let i=0;i<3;i++) assert.equal(extreme.frame(.4,'high'),null);
+  assert.ok(extreme.fps <= 3,'severe repeated jank must appear in telemetry');
+  assert.equal(extreme.frame(.4,'high'),'mid');
+  for(let i=0;i<3;i++) assert.equal(extreme.frame(.4,'mid'),null);
+  assert.equal(extreme.frame(.4,'mid'),'low','extreme device slowdowns step down again');
+  const manual=new Monitor();manual.manual=true;
+  for(let i=0;i<200;i++) assert.equal(manual.frame(.04,'high'),null);
+  assert.ok(manual.fps<35);
+});
+
 test('自适应只在持续低帧率后降一档；手选画质保留', () => {
   const Monitor = need('QualityMonitor'), q = new Monitor();
   for (let i = 0; i < 200; i++) assert.equal(q.frame(.016, 'mid'), null);
@@ -87,4 +123,46 @@ test('自适应只在持续低帧率后降一档；手选画质保留', () => {
   assert.equal(change, 'low');assert.equal(q.frame(.05, 'low'), null);
   const manual = new Monitor();manual.manual = true;
   for (let i = 0; i < 180; i++) assert.equal(manual.frame(.05, 'high'), null);
+});
+
+test('HUD redraw cadence is independent of native input and race simulation',async()=>{
+  const due=need('shouldRefreshRaceHud');
+  assert.equal(due(100,-Infinity),true,'first active race frame must paint');
+  assert.equal(due(116,100),false,'same frame batch should avoid redundant DOM work');
+  assert.equal(due(132,100),false);
+  assert.equal(due(133,100),true,'normal 60fps gets updates around 30Hz');
+  assert.equal(due(90,100),true,'clock discontinuity must redraw');
+  assert.equal(due(400,100),true,'slow frames still redraw immediately');
+  assert.equal(due(NaN,100),false);
+  const {readFile}=await import('node:fs/promises');
+  const {URL}=await import('node:url');
+  const mobileSource=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  const start=mobileSource.indexOf('const frame = now =>');
+  const core=mobileSource.indexOf('const failure = career.frame(g);',start);
+  const tracker=mobileSource.indexOf('duel.frame(g);',start);
+  const ui=mobileSource.indexOf('if (shouldRefreshRaceHud(now, lastHudTick)) {',start);
+  const bottom=mobileSource.indexOf('if (failure) {',ui);
+  const perf=mobileSource.indexOf('quality.frame(dt, g.settings.quality);',bottom);
+  assert.ok(start>=0 && core>start && tracker>core && ui>tracker && bottom>ui && perf>bottom);
+  assert.ok(mobileSource.slice(ui,bottom).includes('raceSpeedHUD(g.player)'));
+  assert.ok(mobileSource.slice(ui,bottom).includes("actionButtons.nitro"));
+});
+
+test('player-chosen quality is respected unless the mobile game is almost unplayable',()=>{
+  const Monitor=need('QualityMonitor'), m=new Monitor();m.manual=true;
+  for(let i=0;i<150;i++) assert.equal(m.frame(.04,'high'),null,
+    '25 FPS does not silently override the selected tier');
+  let quality='high',steps=[];
+  for(let i=0;i<65;i++) {
+    const next=m.frame(.075,quality);
+    if(next){steps.push(next);quality=next;}
+  }
+  assert.deepEqual(steps,['mid','low'],
+    'sustained 13 FPS must fall back even after a saved manual preference');
+  assert.equal(m.frame(.075,'low'),null);
+  const spiky=new Monitor();spiky.manual=true;
+  assert.equal(spiky.frame(.4,'high'),null);
+  assert.equal(spiky.frame(.016,'high'),null,'a single tab resume frame does not lower quality');
+  for(let i=0;i<3;i++) assert.equal(spiky.frame(.4,'high'),null);
+  assert.equal(spiky.frame(.4,'high'),'mid','repeated very long frames trigger a rescue');
 });

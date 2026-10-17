@@ -41,6 +41,60 @@ export function patchRacingSource(source) {
   return output;
 }
 
+/** Mobile GPU budget: don't allocate native multisample anti-aliasing,
+ * shadows and half-float post-processing before the racing overlay boots.
+ * The player may still explicitly select balanced/clear after startup.
+ * Fail closed against a new unreviewed upstream Three.js constructor. */
+export function patchMobileInitialRendering(source) {
+  const changes = [
+    ["quality: IS_TOUCH ? 'mid' : 'high'", "quality: IS_TOUCH ? 'low' : 'high'"],
+    ["canvas: this.canvas, antialias: true, powerPreference: 'high-performance'",
+     "canvas: this.canvas, antialias: !IS_TOUCH, powerPreference: 'high-performance'"],
+  ];
+  if (changes.every(([,next])=>source.includes(next))) return source;
+  if (changes.some(([,next])=>source.includes(next))) throw Error('Partial native phone render patch');
+  for (const [original] of changes) {
+    if (source.split(original).length !== 2) throw Error('Pinned mobile render anchor changed');
+  }
+  let out=source;
+  for (const [from,to] of changes) out=out.replace(from,to);
+  return out;
+}
+
+/** Mobile mid tier should not run expensive half-float post processing and
+ * dynamic shadows. Keep the original THREE pipeline for desktop and for an
+ * explicit high-quality choice, while offering an inexpensive 1.2x mid tier. */
+export function patchMobileMidRendering(source) {
+  const changes = [
+    ["q === 'mid' ? Math.min(dpr, 1.5) : 1",
+     "q === 'mid' ? Math.min(dpr, IS_TOUCH ? 1.2 : 1.5) : 1"],
+    ["this.renderer.shadowMap.enabled = q !== 'low';",
+     "this.renderer.shadowMap.enabled = q !== 'low' && !(IS_TOUCH && q === 'mid');"],
+    ["this.sun.castShadow = q !== 'low';",
+     "this.sun.castShadow = q !== 'low' && !(IS_TOUCH && q === 'mid');"],
+    ["if (q === 'low') return;",
+     "if (q === 'low' || (IS_TOUCH && q === 'mid')) return;"],
+  ];
+  if (changes.every(([,next])=>source.includes(next))) return source;
+  if (changes.some(([,next])=>source.includes(next))) throw Error('Partial native medium render patch');
+  for (const [old] of changes) {
+    if (source.split(old).length !== 2) throw Error('Pinned medium render anchor changed');
+  }
+  let out=source;
+  for (const [from,to] of changes) out=out.replace(from,to);
+  return out;
+}
+
+/** Speed up only the touch camera, not the desktop camera or vehicle motion.
+ * A slow chase camera can look like steering latency even at 60 FPS. */
+export function patchMobileCameraFollow(source) {
+  const original = 'this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 4.5 : 7, dt);';
+  const updated = 'this.camYaw = dampAngle(this.camYaw, yawT, this.mobileMode ? (P.drifting ? 8.5 : 13) : (P.drifting ? 4.5 : 7), dt);';
+  if (source.includes(updated)) return source;
+  if (source.split(original).length !== 2) throw Error('Native camera follow anchor changed');
+  return source.replace(original, updated);
+}
+
 /** Pin a course identity to the ACTUAL Track created by the native scene.
  * Do not change physics, lap math or race outcomes. Unknown stage IDs must
  * fail closed instead of silently replaying one of the old four tracks.
@@ -173,6 +227,57 @@ export function patchAnalogSteer(source) {
   let result = source;
   for (const [original, revised] of changes) result = result.replace(original, revised);
   return result;
+}
+
+/** Reduce touch steering input lag and high-speed steering starvation.
+ * Keyboard retains the original physics. Steering still obeys native yaw,
+ * grip, collision and speed; no hidden auto-turn or auto-brake is added. */
+export function patchMobileSteeringResponse(source) {
+  const changes = [
+    ['this.steer = damp(this.steer, steerT, 12, dt);',
+     'this.steer = damp(this.steer, steerT, Number.isFinite(inp.steerAxis) ? 28 : 12, dt);'],
+    ['const turn = T.turnRate * clamp(sp / 9, 0, 1) * (1 - 0.55 * clamp(sp / T.vmax, 0, 1.3));',
+     'const turn = T.turnRate * clamp(sp / 9, 0, 1) * (1 - (Number.isFinite(inp.steerAxis) ? 0.46 : 0.55) * clamp(sp / T.vmax, 0, 1.3));'],
+  ];
+  if (changes.every(([,next]) => source.includes(next))) return source;
+  if (changes.some(([,next]) => source.includes(next))) throw Error('Partial native touch response patch');
+  for (const [old] of changes)
+    if (source.split(old).length !== 2) throw Error('Native touch response anchor changed');
+  let result = source;
+  for (const [old,next] of changes) result = result.replace(old,next);
+  return result;
+}
+
+/** Genuine opposite wheel input must also recover the vehicle's movement vector.
+ * Existing negative yaw already changes heading immediately, but very low
+ * in-drift grip can leave movement sliding in the old direction noticeably.
+ * Only touch analogue + held countersteer gets intermediate grip. No
+ * auto-turn, no instantaneous lateral reset, and no keyboard/AI changes.
+ */
+export function patchMobileDriftCounterGrip(source) {
+  const original = 'const k = held ? T.driftGrip : T.driftGripRelease;';
+  const revised = 'const k = held && Number.isFinite(inp.steerAxis) && align < -0.25 ? T.driftGrip + (T.driftGripRelease - T.driftGrip) * .55 : held ? T.driftGrip : T.driftGripRelease;';
+  if (source.includes(revised)) return source;
+  if (source.split(original).length !== 2) throw Error('Pinned mobile drift counter-grip anchor changed');
+  return source.replace(original, revised);
+}
+
+/** The old renderer locks FRONT WHEEL ART to the ORIGINAL drift direction,
+ * even after the player counters with the opposite thumb. Physics already
+ * receives the right input, but the 3D car visually says the opposite.
+ * Render steering from real analogue input on mobile, leaving desktop drift
+ * posing, native physics, collisions and AI untouched. */
+export function patchTouchWheelVisualFeedback(source) {
+  const analog = "const steerT = Number.isFinite(inp.steerAxis) ? Math.max(-1, Math.min(1, inp.steerAxis)) : (inp.left ? 1 : 0) - (inp.right ? 1 : 0);";
+  const analogUpdated = "const steerT = Number.isFinite(inp.steerAxis) ? Math.max(-1, Math.min(1, inp.steerAxis)) : (inp.left ? 1 : 0) - (inp.right ? 1 : 0);\n    this.__RACE_TOUCH_WHEEL_ACTIVE__ = Number.isFinite(inp.steerAxis);";
+  const wheel = "if (w.front) w.steer.rotation.y = this.drifting ? -this.driftDir * 0.3 : this.steer * 0.38;";
+  const wheelUpdated = "if (w.front) w.steer.rotation.y = this.drifting && !this.__RACE_TOUCH_WHEEL_ACTIVE__ ? -this.driftDir * 0.3 : this.steer * 0.38;";
+  if (source.includes(analogUpdated) && source.includes(wheelUpdated)) return source;
+  if (source.includes(analogUpdated) || source.includes(wheelUpdated))
+    throw Error('Partial native touch wheel art patch');
+  if (source.split(analog).length !== 2 || source.split(wheel).length !== 2)
+    throw Error('Pinned native touch wheel art anchor changed');
+  return source.replace(analog, analogUpdated).replace(wheel, wheelUpdated);
 }
 
 /** A drift cannot immediately re-trigger on the same still-held drift key.
@@ -339,7 +444,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await readFile(path.join(owned, 'career-expansion.mjs'), 'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))));
+  const annotatedVehicle = patchItemModeNitro(patchMobileDriftCounterGrip(patchTouchWheelVisualFeedback(patchCounterSteer(patchMobileSteeringResponse(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle)))))))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');
@@ -352,7 +457,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchRacingSource(beforeMain)))))));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchMobileMidRendering(patchMobileInitialRendering(patchMobileCameraFollow(patchRacingSource(beforeMain))))))))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);

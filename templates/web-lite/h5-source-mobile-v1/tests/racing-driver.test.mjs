@@ -117,3 +117,44 @@ test('input layer exports no old automatic steering class or binary key controll
   assert.equal('TouchSteering' in module,false);
   assert.equal(typeof module.ManualRaceDriver,'function');
 });
+
+test('sub-frame drift tap survives release until the next real physics step exactly once',()=>{
+  const {actions,driver}=create(),p=car();
+  actions.press(41,'drift',4);actions.release(41);
+  assert.equal(driver.frame({steerAxis:.8},p,'race',{canStep:false,now:4.015}).shift,false);
+  assert.equal(driver.frame({steerAxis:.8},p,'race',{canStep:true,now:4.030}).shift,true);
+  assert.equal(driver.frame({steerAxis:.8},p,'race',{canStep:true,now:4.046}).shift,false);
+  assert.equal(actions.pending.has('drift'),false,'short tap edge is fully consumed');
+});
+test('held drift stays active without replaying a phantom tap on release',()=>{
+  const {actions,driver}=create(),p=car();
+  actions.press(42,'drift',8);
+  assert.equal(driver.frame({steerAxis:-.8},p,'race',{canStep:true,now:8.02}).shift,true);
+  assert.equal(driver.frame({steerAxis:-.8},p,'race',{canStep:true,now:8.04}).shift,true);
+  actions.release(42);
+  assert.equal(driver.frame({steerAxis:-.8},p,'race',{canStep:true,now:8.06}).shift,false);
+});
+test('cancelled and expired drift edges must never synthesize phantom physics commands',()=>{
+  const {actions,driver}=create(),p=car();
+  actions.press(43,'drift',10);actions.cancel(43);
+  assert.equal(driver.frame({steerAxis:.9},p,'race',{canStep:true,now:10.01}).shift,false);
+  actions.press(44,'drift',11);actions.release(44);
+  assert.equal(driver.frame({steerAxis:.9},p,'race',{canStep:false,now:11.25}).shift,false);
+  assert.equal(driver.frame({steerAxis:.9},p,'race',{canStep:true,now:11.26}).shift,false);
+  actions.press(45,'drift',12);actions.release(45);
+  assert.equal(driver.frame({},p,'paused',{now:12.01}).shift,false);
+  assert.equal(driver.frame({steerAxis:.9},p,'race',{now:12.02}).shift,false);
+});
+test('quick drift followed by small spray only issues the corresponding explicit actions',()=>{
+  const {actions,driver}=create(),p=car({drifting:true,smallWindow:0});
+  actions.press(1,'drift',20);actions.release(1);
+  actions.press(2,'small',20.04);actions.release(2);
+  let input=driver.frame({steerAxis:.9},p,'race',{now:20.05});
+  assert.equal(input.shift,true);
+  assert.equal(input.wPressed,false,'small spray waits for a native window');
+  p.drifting=false;p.smallWindow=.48;
+  input=driver.frame({steerAxis:0},p,'race',{now:20.12});
+  assert.equal(input.shift,false);
+  assert.equal(input.wPressed,true);
+  assert.equal(driver.frame({},p,'race',{now:20.14}).wPressed,false);
+});

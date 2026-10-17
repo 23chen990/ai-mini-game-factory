@@ -94,6 +94,16 @@ async function raceStart(page, index, name) {
   }));
   if(before.disabled)fail('start button disabled for '+name);
   await page.click('#race-start');
+  const startControls = await page.evaluate(() => {
+    const game=window.game,wheel=document.querySelector('#race-joystick');
+    const computed=wheel&&document.defaultView.getComputedStyle(wheel);
+    return {nativeState:game?.state,phase:document.querySelector('#race-kit')?.dataset.phase,
+      wheelActive:wheel?.getAttribute('aria-disabled')==='false',
+      wheelCaptures:computed?.pointerEvents==='auto'};
+  });
+  if (startControls.nativeState !== 'countdown' || startControls.phase !== 'countdown' ||
+      !startControls.wheelActive || !startControls.wheelCaptures)
+    fail('Countdown must accept a resting left thumb before GO: '+JSON.stringify(startControls));
   try {
     // GitHub's software WebGL renderer advances fixed-step time at ~1/10 real speed.
     // This is a browser-start smoke, not a latency benchmark on production phones.
@@ -268,12 +278,18 @@ try {
     noArrows:!document.querySelector('#race-left')&&!document.querySelector('#race-right'),
     noAutoGuide:!document.querySelector('#race-guide')?.textContent.includes('自动漂移'),
     oneLineFirstGuide:document.querySelector('#race-guide')?.hidden===false &&
-      !document.querySelector('#race-guide')?.textContent.includes('松手回正')
+      !document.querySelector('#race-guide')?.textContent.includes('松手回正'),
+    quality:window.game?.settings?.quality,
+    renderPixelRatio:window.game?.renderer?.getPixelRatio(),
+    hasComposer:!!window.game?.composer,
+    hasShadows:!!window.game?.renderer?.shadowMap?.enabled
   }));
   if(initialControls.mode!=='joystick'||!initialControls.wheel||
      initialControls.sensitivity!=='normal'||!initialControls.noSwitch||
-     !initialControls.noArrows||!initialControls.noAutoGuide||!initialControls.oneLineFirstGuide)
-    fail('Only joystick input is allowed, even after a stored old assist preference: '+JSON.stringify(initialControls));
+     !initialControls.noArrows||!initialControls.noAutoGuide||!initialControls.oneLineFirstGuide||
+     initialControls.quality!=='low'||initialControls.renderPixelRatio>1.01||
+     initialControls.hasComposer||initialControls.hasShadows)
+    fail('New mobile player needs a single responsive wheel and low GPU default: '+JSON.stringify(initialControls));
   report.initialControls=initialControls;
   // Genuine browser render of the default lobby at two landscape widths.
   // No seeded save, DOM mutation or mocked UI goes into these screenshots.
@@ -316,7 +332,7 @@ try {
   report.thumbHitboxes=[];
   for(const [width,height] of [[640,320],[667,375],[740,360],[812,375],[844,390],[932,430],[1024,600]]) {
     await page.setViewportSize({width,height});
-    const boxes=await page.evaluate(()=>{
+    const {targets:boxes,speed}=await page.evaluate(()=>{
       const root=document.querySelector('#race-kit');
       const prior=root.dataset.itemMode;root.dataset.itemMode='true';
       const selectors=['#race-joystick',
@@ -333,12 +349,16 @@ try {
       };
       const targets=selectors.map(target);
       root.dataset.itemMode=prior;
-      return targets;
+      const r=document.querySelector('#race-speed')?.getBoundingClientRect();
+      return {targets,speed:r?{left:r.left,right:r.right,top:r.top,bottom:r.bottom}:null};
     });
     const overlaps=(a,b)=>Math.min(a.right,b.right)>Math.max(a.left,b.left)+.01&&
       Math.min(a.bottom,b.bottom)>Math.max(a.top,b.top)+.01;
     const vGap=(a,b)=>Math.max(a.top-b.bottom,b.top-a.bottom,0);
     const byName=Object.fromEntries(boxes.map(x=>[x.name,x]));
+    if(speed && overlaps(byName.wheel,speed))
+      fail('Speed readout visually overlaps the mobile thumb steering zone at '+
+        width+'x'+height+': '+JSON.stringify({speed,wheel:byName.wheel}));
     const sprayNitroGap=vGap(byName.small,byName.nitro);
     const itemDriftGap=vGap(byName.item,byName.drift);
     for(const [i,a] of boxes.entries()){
@@ -393,26 +413,40 @@ try {
     };
   });
   const cdp=await context.newCDPSession(page);
-  const leftThumb={x:wheel.x+wheel.width*.18,y:wheel.y+wheel.height*.5,id:101};
-  const rightThumb={...leftThumb,x:wheel.x+wheel.width*.82};
+  const centerThumb={x:wheel.x+wheel.width*.5,y:wheel.y+wheel.height*.5,id:101};
+  const leftThumb={...centerThumb,x:wheel.x+wheel.width*.18};
+  const rightThumb={...centerThumb,x:wheel.x+wheel.width*.82};
   const driftThumb={x:drift.x+drift.width/2,y:drift.y+drift.height/2,id:102};
+  // Thumb may naturally land at any location in the enlarged steering zone.
+  // It must not initiate an accidental sharp turn until it actually moves.
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftThumb]});
+  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[centerThumb]});
+  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[leftThumb]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>.5,null,{timeout:8000});
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[driftThumb]});
+  // Send ALL currently active contact points: single-element touchStart /
+  // touchMove arrays silently cancel the other thumb on some Chromium builds.
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftThumb,driftThumb]});
   await page.waitForFunction(()=>document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),null,{timeout:8000});
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[rightThumb]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[rightThumb,driftThumb]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis<-.5,null,{timeout:8000});
   await page.waitForFunction(()=>{
     const pin=window.game?.__QA_LAST_CONTROL_PIN__;
     return pin && pin.steerAxis<-.5 && pin.right===true &&
-      pin.left===false && pin.shift===true;
+      pin.left===false && pin.shift===true &&
+      window.game?.player?.__RACE_TOUCH_WHEEL_ACTIVE__===true;
   },null,{timeout:18000});
+  // Verify the SAME native simulated actor responds, not merely the touch DOM
+  // and wrapper input mapping. Software WebGL can take multiple seconds.
+  await page.waitForFunction(()=>window.game?.player?.steer < -.20,null,{timeout:18000});
   const simultaneous=await page.evaluate(()=>({
     axis:window.__RACE_EVIDENCE__?.steerAxis,
     nativePin:window.game?.__QA_LAST_CONTROL_PIN__,
     driftHeld:document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),
   }));
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[driftThumb]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[rightThumb]});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
   if(!(simultaneous.axis<-.5&&simultaneous.driftHeld&&simultaneous.nativePin?.right===true&&simultaneous.nativePin?.shift===true))

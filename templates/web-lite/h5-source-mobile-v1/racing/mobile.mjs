@@ -10,7 +10,7 @@ import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
-import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx } from './session.mjs';
+import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, initialRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
@@ -28,7 +28,7 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
 document.body.append(root);
 const $ = id => root.querySelector('#race-' + id);
 const duel = new RaceDuelTracker();
-const joystick = new RacingJoystick(), actions = new TouchActions(),
+const joystick = new RacingJoystick({ floating: true, deadzone: .055, fullThrow: .58 }), actions = new TouchActions(),
   driver = new ManualRaceDriver(actions), quality = new QualityMonitor();
 const SENS_STORE = 'h5-qq-mobile-20261013:steering-sensitivity:v1';
 try { joystick.setSensitivity(localStorage.getItem(SENS_STORE)); } catch { /* Default safe sensitivity. */ }
@@ -38,6 +38,7 @@ $('steering-sens').value = joystick.sensitivity;
 let touchDriving = mobile;
 let g, phase = 'ready', started = false, result = null, loading = true, lastFrame = performance.now(), inputTime = performance.now();
 let nativeStartRace, policyReady = false, backgrounded = document.hidden;
+let touchSerial = 0, consumedTouchSerial = -1, lastStickEventAt = 0, lastTouchSampleAgeMs = null;
 let events = [], best = {}, lastRacePassed = false;
 let replayTapCount = 0;
 let justFinishedPassed = null;
@@ -110,10 +111,11 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), nativeSteer: g?.player?.steer ?? null, playerYaw: g?.player?.h ?? null, cameraYaw: g?.camYaw ?? null, drifting: !!g?.player?.drifting, fpsEstimate: quality.fps, renderPixelRatio: g?.renderer?.getPixelRatio() ?? null, composerActive: !!g?.composer, shadowsActive: !!g?.renderer?.shadowMap?.enabled, floatingWheel: joystick.floating, wheelAnchorPx: Math.round(joystick.anchorX), touchToInputSampleMs: lastTouchSampleAgeMs, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
+  $('joystick').style.setProperty('--race-stick-anchor', joystick.anchorX.toFixed(1) + 'px');
   $('joystick').classList.toggle('held',joystick.active);
 }
 function releaseInput() {
@@ -138,8 +140,12 @@ function display(next) {
   $('speed').hidden = next !== 'race'; $('compact-goal').hidden = next !== 'race' || !$('compact-goal').textContent;
   $('note').hidden = next !== 'ready'; // :empty CSS hides silence; critical loading errors remain visible.
   for (const button of root.querySelectorAll('[data-race-action]')) button.disabled = next !== 'race';
-  $('joystick').setAttribute('aria-disabled',String(next !== 'race'));
-  $('joystick').classList.toggle('disabled',next !== 'race');
+  // Players naturally rest their left thumb on the wheel during countdown.
+  // Capture it now, then the same held thumb can steer from the GO frame.
+  // Native ManualRaceDriver still rejects steering outside the race state.
+  const wheelActive = next === 'race' || next === 'countdown';
+  $('joystick').setAttribute('aria-disabled',String(!wheelActive));
+  $('joystick').classList.toggle('disabled',!wheelActive);
   root.dataset.itemMode = career.stage.mode === 'item' ? 'true' : 'false';
   if (next === 'paused') { $('heading').textContent = '暂停'; $('quality').value = g.settings.quality; $('sound').textContent = soundEnabled ? '声音：开' : '声音：关'; $('sound').setAttribute('aria-pressed', String(soundEnabled)); }
 }
@@ -314,25 +320,28 @@ $('quality').addEventListener('change', () => {
   $('quality-note').textContent = '已保存画质偏好，下次打开继续生效';
 });
 const joystickSurface = $('joystick');
+const actionButtons = Object.fromEntries([...root.querySelectorAll('[data-race-action]')].map(button => [button.dataset.raceAction, button]));
+const recordStickEvent = () => { touchSerial++; lastStickEventAt = performance.now(); };
 joystickSurface.addEventListener('pointerdown', e => {
   e.preventDefault();
-  if (!g || phase !== 'race') return;
+  if (!g || (phase !== 'race' && phase !== 'countdown')) return;
   const r = joystickSurface.getBoundingClientRect();
-  if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width / 2)) return;
-  touchDriving = true; g.mobileMode = true;
+  if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width * .36)) return;
+  touchDriving = true; g.mobileMode = true; recordStickEvent();
   joystickSurface.setPointerCapture(e.pointerId); syncJoystickVisual();
 });
 joystickSurface.addEventListener('pointermove', e => {
   if (joystick.update(e.pointerId, e.clientX)) {
+    recordStickEvent();
     if (e.cancelable) e.preventDefault();
     syncJoystickVisual();
   }
 });
 joystickSurface.addEventListener('pointerup', e => {
-  if (joystick.release(e.pointerId)) {e.preventDefault(); syncJoystickVisual();}
+  if (joystick.release(e.pointerId)) {e.preventDefault(); recordStickEvent(); syncJoystickVisual();}
 });
 const endStick = e => {
-  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault(); syncJoystickVisual();}
+  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault(); recordStickEvent(); syncJoystickVisual();}
 };
 joystickSurface.addEventListener('pointercancel', endStick);
 joystickSurface.addEventListener('lostpointercapture', endStick);
@@ -375,8 +384,9 @@ async function boot() {
   setRaceSound(g.audio,soundEnabled);
   let rememberedQuality;
   try {rememberedQuality = localStorage.getItem(QUALITY_STORE);} catch {rememberedQuality = null;}
-  g.mobileMode = mobile;g.camMode = 1;g.settings.quality = normalizeRaceQuality(rememberedQuality);
+  g.mobileMode = mobile;g.camMode = 1;g.settings.quality = initialRaceQuality(rememberedQuality, mobile);
   quality.manual = rememberedQuality === 'low' || rememberedQuality === 'mid' || rememberedQuality === 'high';
+  if (!quality.manual && mobile) $('quality-note').textContent = '默认流畅画质，优先保证操作跟手';
   career.configure(g);g.setupQuality();
   career.patchNative(g);
   const meta = window.__PLATFORM_META__ ?? await fetch('platform.json').then(r => r.ok ? r.json() : null).catch(() => null);
@@ -395,6 +405,10 @@ async function boot() {
     const raw = nativeFrame(), canStep = g.acc + dt >= 1 / 120;
     if (!touchDriving) return raw;
     raw.steerAxis = joystick.snapshot();
+    if (touchSerial !== consumedTouchSerial) {
+      consumedTouchSerial = touchSerial;
+      lastTouchSampleAgeMs = Math.min(500, Math.max(0, Math.round(performance.now() - lastStickEventAt)));
+    }
     const translated = driver.frame(raw,g.player,g.state,{canStep,itemMode:g.itemMode,track:g.track,now:g.raceTime ?? 0});
     if (career.index > 0 && g.state === 'race' && g.raceTime < .28) translated.upPressed = false;
     return translated;
@@ -417,7 +431,7 @@ async function boot() {
   if (!stageTrackReady(g,career.stage)) throw Error('赛道身份校验失败，禁止开始错误的关卡');
   root.dataset.loaded = 'true';
   display('ready');
-  let lastFuelTick = 0;
+  let lastFuelTick = 0, lastHudTick = -Infinity;
   const frame = now => {
     const dt = (now - lastFrame) / 1000;lastFrame = now;
     if ((phase === 'ready' || phase === 'finished') && now - lastFuelTick > 1000) { lastFuelTick = now;fuelView(); }
@@ -428,45 +442,50 @@ async function boot() {
         const failure = career.frame(g);
         duel.frame(g); // Keep genuine native overtakes for test telemetry; no toast.
         career.drainNotices(); // Lifecycle notices are not a running commentary.
-        const objective=compactRaceObjective(career.stage,career.metrics,g.raceTime);
-        if ($('compact-goal').textContent!==objective) $('compact-goal').textContent=objective;
-        $('compact-goal').hidden=!objective;
-        const speedView = raceSpeedHUD(g.player);
-        if ($('speed-value').textContent !== speedView.value) $('speed-value').textContent = speedView.value;
-        $('speed').dataset.boost = String(speedView.boost);
-        $('speed').dataset.slow = String(speedView.slow);
-        const knockout = career.eliminationCue(g);
-        $('knockout').hidden = !knockout;
-        if (knockout) {
-          $('knockout').dataset.near = String(knockout.near);
-          $('knockout').dataset.danger = String(knockout.atRisk && knockout.near);
-          $('knockout-fill').style.width = knockout.fraction * 100 + '%';
-          $('knockout-meter').setAttribute('aria-valuenow', String(Math.round(knockout.fraction * 100)));
-          $('knockout-meter').setAttribute('aria-valuetext', `第 ${knockout.round} 次淘汰还剩 ${knockout.remaining} 米，第 ${knockout.place}/${knockout.count} 名`);
-          [...$('field').children].forEach((slot, i) => {
-            slot.hidden = i >= knockout.count;slot.classList.toggle('me', i + 1 === knockout.place);slot.classList.toggle('last', i + 1 === knockout.count);
-          });
-        }
-        // Native item races also earn nitro from manually controlled drifting.
-        if (g.itemMode && touchDriving) document.getElementById('gaugebox')?.classList.remove('hidden');
-        const nitroBtn = root.querySelector('[data-race-action="nitro"]');
-        if (nitroBtn) {
-          nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
-          const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : '氮气';
-          if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
-        }
-        const smallBtn = root.querySelector('[data-race-action="small"]');
-        if (smallBtn) smallBtn.classList.toggle('ready',g.player.smallWindow > 0);
-        const itemBtn = root.querySelector('[data-race-action="item"]');
-        if (itemBtn) itemBtn.classList.toggle('ready',!!g.player.items?.[0]);
-        const held = g.player.items?.[0];
-        if (itemBtn) {
-          const icon=held ? (ITEM_ICONS[held] ?? '❔') : '道具';
-          if(itemBtn.textContent!==icon)itemBtn.textContent=icon;
-          itemBtn.setAttribute('aria-label',held?'使用'+(ITEM_LABELS[held]??'道具'):'使用道具');
+        root.classList.toggle('drifting', g.player.drifting);
+        // Keep actual racing, input/physics, AI, mission failure and quality
+        // checks on every frame; only visual DOM readouts run at ~30 Hz.
+        if (shouldRefreshRaceHud(now, lastHudTick)) {
+          lastHudTick = now;
+          const objective=compactRaceObjective(career.stage,career.metrics,g.raceTime);
+          if ($('compact-goal').textContent!==objective) $('compact-goal').textContent=objective;
+          $('compact-goal').hidden=!objective;
+          const speedView = raceSpeedHUD(g.player);
+          if ($('speed-value').textContent !== speedView.value) $('speed-value').textContent = speedView.value;
+          $('speed').dataset.boost = String(speedView.boost);
+          $('speed').dataset.slow = String(speedView.slow);
+          const knockout = career.eliminationCue(g);
+          $('knockout').hidden = !knockout;
+          if (knockout) {
+            $('knockout').dataset.near = String(knockout.near);
+            $('knockout').dataset.danger = String(knockout.atRisk && knockout.near);
+            $('knockout-fill').style.width = knockout.fraction * 100 + '%';
+            $('knockout-meter').setAttribute('aria-valuenow', String(Math.round(knockout.fraction * 100)));
+            $('knockout-meter').setAttribute('aria-valuetext', `第 ${knockout.round} 次淘汰还剩 ${knockout.remaining} 米，第 ${knockout.place}/${knockout.count} 名`);
+            [...$('field').children].forEach((slot, i) => {
+              slot.hidden = i >= knockout.count;slot.classList.toggle('me', i + 1 === knockout.place);slot.classList.toggle('last', i + 1 === knockout.count);
+            });
+          }
+          // Native item races also earn nitro from manually controlled drifting.
+          if (g.itemMode && touchDriving) document.getElementById('gaugebox')?.classList.remove('hidden');
+          const nitroBtn = actionButtons.nitro;
+          if (nitroBtn) {
+            nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
+            const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : '氮气';
+            if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
+          }
+          const smallBtn = actionButtons.small;
+          if (smallBtn) smallBtn.classList.toggle('ready',g.player.smallWindow > 0);
+          const itemBtn = actionButtons.item;
+          if (itemBtn) itemBtn.classList.toggle('ready',!!g.player.items?.[0]);
+          const held = g.player.items?.[0];
+          if (itemBtn) {
+            const icon=held ? (ITEM_ICONS[held] ?? '❔') : '道具';
+            if(itemBtn.textContent!==icon)itemBtn.textContent=icon;
+            itemBtn.setAttribute('aria-label',held?'使用'+(ITEM_LABELS[held]??'道具'):'使用道具');
+          }
         }
         if (failure) {if (!g.resultShown) g.showResults();finish();}
-        root.classList.toggle('drifting', g.player.drifting);
         const lower = quality.frame(dt, g.settings.quality);
         if (lower) { g.settings.quality = lower;g.setupQuality();$('quality-note').textContent = '已自动调低画质，优先保持驾驶流畅'; }
       }

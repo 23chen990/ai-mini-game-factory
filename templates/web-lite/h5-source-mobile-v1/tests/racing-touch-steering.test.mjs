@@ -81,3 +81,28 @@ test('clean HUD cannot leave stale DOM lookups that crash the animation frame',a
   assert.doesNotMatch(source,/['"]live-goal['"]/);
   assert.match(source,/requestAnimationFrame\(frame\)/);
 });
+
+test('wheel captures a thumb during the countdown and carries it into racing',async()=>{
+  const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  assert.match(ui,/const wheelActive = next === 'race' \|\| next === 'countdown'/);
+  assert.match(ui,/phase !== 'race' && phase !== 'countdown'/);
+  assert.match(ui,/const translated = driver\.frame\(raw,g\.player,g\.state/);
+  const {ManualRaceDriver}=await import('../racing/driver.mjs');
+  const driver=new ManualRaceDriver();
+  const p={s:30,spin:0,wrongWay:0,finished:false};
+  assert.equal(driver.frame({steerAxis:1},p,'countdown').left,false,
+    'pre-GO joystick must not turn the native car');
+  assert.equal(driver.frame({steerAxis:1},p,'race').left,true,
+    'existing thumb input steers immediately once race starts');
+});
+
+test('phone uses a single adaptive floating joystick with a large thumb hit area',async()=>{
+  const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  const css=await readFile(new URL('../racing/mobile.css',import.meta.url),'utf8');
+  assert.match(ui,/new RacingJoystick\(\{ floating: true, deadzone: \.055, fullThrow: \.58 \}\)/);
+  assert.match(ui,/r\.width \* \.36/);
+  assert.match(ui,/--race-stick-anchor/);
+  assert.match(css,/width:clamp\(154px,43vh,178px\)/);
+  assert.match(css,/var\(--race-stick-anchor, 0px\)/);
+  assert.doesNotMatch(ui,/race-control-mode|data-race-direction/);
+});

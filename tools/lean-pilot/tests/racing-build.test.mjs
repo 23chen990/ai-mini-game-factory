@@ -28,6 +28,32 @@ test('赛车源补丁保留原输入、物理和AI流程，只约束手机镜头
   }
   assert.equal(api.patchRacingSource(output), output);
 });
+test('mobile camera yaw follows faster without changing desktop yaw or legacy source fixture', () => {
+  assert.equal(typeof api.patchMobileCameraFollow, 'function');
+  const line = 'this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 4.5 : 7, dt);';
+  const newLine = api.patchMobileCameraFollow(line);
+  assert.match(newLine,/this\.mobileMode \? \(P\.drifting \? 8\.5 : 13\)/);
+  assert.match(newLine,/\(P\.drifting \? 4\.5 : 7\)/);
+  assert.equal(api.patchMobileCameraFollow(newLine),newLine);
+  assert.throws(()=>api.patchMobileCameraFollow('unknown source'),/anchor changed/);
+  assert.ok(api.patchRacingSource(patchFixture).includes('const inp = this.input.frame();'));
+});
+
+test('mobile steering improves reversal response but keeps keyboard steering and real physical dynamics', () => {
+  assert.equal(typeof api.patchMobileSteeringResponse,'function');
+  const source = [
+    'this.steer = damp(this.steer, steerT, 12, dt);',
+    'const turn = T.turnRate * clamp(sp / 9, 0, 1) * (1 - 0.55 * clamp(sp / T.vmax, 0, 1.3));',
+    'this.h += this.steer * turn * dt * dir * (onGround ? 1 : 0.35);',
+  ].join('\n');
+  const updated = api.patchMobileSteeringResponse(source);
+  assert.match(updated,/Number\.isFinite\(inp\.steerAxis\) \? 28 : 12/);
+  assert.match(updated,/Number\.isFinite\(inp\.steerAxis\) \? 0\.46 : 0\.55/);
+  assert.match(updated,/this\.h \+= this\.steer \* turn \* dt/);
+  assert.equal(api.patchMobileSteeringResponse(updated),updated);
+  assert.throws(()=>api.patchMobileSteeringResponse(source.replace('12, dt','7, dt')),/anchor changed/);
+});
+
 test('未知源版本不能静默套用补丁', () => {
   assert.equal(typeof api.patchRacingSource, 'function', '缺少隔离赛车构建');
   assert.throws(() => api.patchRacingSource('class OtherGame {}'), /anchor|锚点/u);
@@ -194,4 +220,75 @@ test('fixed desert monument safety keeps pyramid models away from new racing sur
   assert.match(out,/buildPyramid\(\)/,'original sculpture remains when safe');
   assert.equal(api.patchFixedDesertLandmarks(out),out);
   assert.throws(()=>api.patchFixedDesertLandmarks('unexpected native geometry'),/landmark placement changed/);
+});
+
+test('real touch countersteer regains lateral grip without changing keyboard drift or auto-steering',()=>{
+  const original = 'const k = held ? T.driftGrip : T.driftGripRelease;';
+  assert.equal(typeof api.patchMobileDriftCounterGrip,'function');
+  const patched=api.patchMobileDriftCounterGrip(original);
+  assert.equal(api.patchMobileDriftCounterGrip(patched),patched);
+  assert.match(patched,/Number\.isFinite\(inp\.steerAxis\) && align < -0\.25/);
+  const expression=patched.slice('const k = '.length,-1);
+  const choose=new Function('held','inp','align','T','return '+expression);
+  const tune={driftGrip:2,driftGripRelease:5.2};
+  assert.equal(choose(true,{steerAxis:1},1,tune),2);
+  assert.equal(choose(true,{},-1,tune),2,'desktop keys keep original drift grip');
+  assert.equal(choose(false,{steerAxis:-1},-1,tune),5.2,'release still uses original grip');
+  const counter=choose(true,{steerAxis:-1},-.8,tune);
+  assert.ok(counter>3.5 && counter<5.2,'touch must countersteer faster but not snap instantly');
+  assert.throws(()=>api.patchMobileDriftCounterGrip('unexpected source'),/anchor changed/);
+});
+
+test('mobile cold start does not allocate full postprocessing/shadow workload or renderer MSAA',()=>{
+  const source = [
+    "quality: IS_TOUCH ? 'mid' : 'high'",
+    "canvas: this.canvas, antialias: true, powerPreference: 'high-performance'",
+    "this.renderer.shadowMap.enabled = q !== 'low';",
+    "if (q === 'low') return;"
+  ].join('\n');
+  const patched=api.patchMobileInitialRendering(source);
+  assert.match(patched,/quality: IS_TOUCH \? 'low' : 'high'/);
+  assert.match(patched,/canvas: this\.canvas, antialias: !IS_TOUCH/);
+  assert.match(patched,/if \(q === 'low'\) return;/);
+  assert.equal(api.patchMobileInitialRendering(patched),patched);
+  assert.throws(()=>api.patchMobileInitialRendering('unknown source'),/anchor changed/);
+  assert.throws(()=>api.patchMobileInitialRendering(source.replace("antialias: true","antialias: false")),/anchor changed/);
+});
+
+test('mobile balanced quality avoids bloom, half-float composer and shadows; desktop remains original',()=>{
+  const original=[
+    "this.renderer.setPixelRatio(q === 'high' ? Math.min(dpr, 2) : q === 'mid' ? Math.min(dpr, 1.5) : 1);",
+    "this.renderer.shadowMap.enabled = q !== 'low';",
+    "this.sun.castShadow = q !== 'low';",
+    "if (q === 'low') return;"
+  ].join('\n');
+  const patched=api.patchMobileMidRendering(original);
+  assert.match(patched,/IS_TOUCH \? 1\.2 : 1\.5/);
+  assert.match(patched,/shadowMap\.enabled = q !== 'low' && !\(IS_TOUCH && q === 'mid'\)/);
+  assert.match(patched,/this\.sun\.castShadow = q !== 'low' && !\(IS_TOUCH && q === 'mid'\)/);
+  assert.match(patched,/if \(q === 'low' \|\| \(IS_TOUCH && q === 'mid'\)\) return/);
+  assert.equal(api.patchMobileMidRendering(patched),patched);
+  assert.throws(()=>api.patchMobileMidRendering('unknown'),/anchor changed/);
+});
+
+test('touch front wheels reflect actual current analogue countersteering, not the initial drift direction',()=>{
+  const input=[
+    "const steerT = Number.isFinite(inp.steerAxis) ? Math.max(-1, Math.min(1, inp.steerAxis)) : (inp.left ? 1 : 0) - (inp.right ? 1 : 0);",
+    "if (w.front) w.steer.rotation.y = this.drifting ? -this.driftDir * 0.3 : this.steer * 0.38;"
+  ].join('\n');
+  const patched=api.patchTouchWheelVisualFeedback(input);
+  assert.match(patched,/__RACE_TOUCH_WHEEL_ACTIVE__ = Number\.isFinite\(inp\.steerAxis\)/);
+  assert.match(patched,/this\.drifting && !this\.__RACE_TOUCH_WHEEL_ACTIVE__/);
+  assert.equal(api.patchTouchWheelVisualFeedback(patched),patched);
+  assert.throws(()=>api.patchTouchWheelVisualFeedback(input.replace('0.38','0.2')),/anchor changed/);
+  assert.throws(()=>api.patchTouchWheelVisualFeedback('unrelated code'),/anchor changed/);
+  const wheelLine=patched.split('\n').find(line=>line.startsWith('if (w.front)'));
+  const expression=wheelLine.split(' = ')[1].replace(/;$/,'');
+  const visualAngle=new Function('return '+expression);
+  const state={drifting:true,__RACE_TOUCH_WHEEL_ACTIVE__:true,driftDir:1,steer:.8};
+  assert.ok(visualAngle.call(state)>0,'left thumb must visually turn the front wheels left');
+  state.steer=-.8;
+  assert.ok(visualAngle.call(state)<0,'opposite thumb turns front wheels right during drift');
+  state.__RACE_TOUCH_WHEEL_ACTIVE__=false;
+  assert.equal(visualAngle.call(state),-.3,'desktop keeps existing stylized drift-wheel pose');
 });
