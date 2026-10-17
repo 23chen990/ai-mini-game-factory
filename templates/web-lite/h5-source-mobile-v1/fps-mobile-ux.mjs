@@ -920,7 +920,7 @@ export function createFpsMobileUx(game, root, doc) {
   let visibleAimCoach = '';
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
-  let defense=null,nextDefenseRouteAt=0;
+  let defense=null,nextDefenseRouteAt=0,assault=null;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -1300,6 +1300,10 @@ export function createFpsMobileUx(game, root, doc) {
       return drill?{drillStage:drill.stage,drillFirstHit:drill.firstHit,
         drillTravel:drill.distance,drillFollowUpHits:drill.follow}:{};
     },
+    assaultMetrics() {
+      return assault?{assaultStage:assault.stage,assaultTravel:assault.travel,
+        assaultKills:assault.postKills,assaultNet:assault.net}:{};
+    },
     defenseMetrics() {
       if(!defense)return {};
       return {defenseSitesValid:defense.valid===true,
@@ -1317,7 +1321,7 @@ export function createFpsMobileUx(game, root, doc) {
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
       drill=cfAdvanceDrill(activeChallenge);
-      defense=null;nextDefenseRouteAt=0;defensePin.hidden=true;
+      defense=null;assault=null;nextDefenseRouteAt=0;defensePin.hidden=true;
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
@@ -1329,8 +1333,10 @@ export function createFpsMobileUx(game, root, doc) {
         ? '先观察，找到目标后开镜'
         : activeChallenge?.kind === 'survive'
           ? '沿掩体移动，注意身后'
+          : activeChallenge?.kind === 'assault'
+          ? '先侧移到新射击位，再亲手击杀'
           : activeChallenge?.kind === 'defend'
-          ? '先守A区，再守B区'
+          ? (activeChallenge.reverse?'先攻B区，再回防A区':'先守A区，再守B区')
           : '前方有目标 · 右手瞄准';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
@@ -1356,8 +1362,16 @@ export function createFpsMobileUx(game, root, doc) {
         challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
       const rendezvous=activeChallenge?.kind==='defend'
         ?{path:false,trainingScout:false} :prepareFirstEncounter();
+      if(activeChallenge?.kind==='assault')
+        assault=cfAdvanceAssault(activeChallenge,null,{
+          kills:p?.stats?.k||0,travel:0,x:p?.pos?.x,z:p?.pos?.z});
       if(activeChallenge?.kind==='defend') {
-        const sites=cfChooseDefenseSites({player:p,nav:game.nav,world:game.world,actors:game.actors});
+        let sites=cfChooseDefenseSites({player:p,nav:game.nav,world:game.world,actors:game.actors});
+        if(sites&&activeChallenge.reverse){
+          const far=sites[1];
+          const path=game.nav?.findPath?.(p.pos.x,p.pos.z,far.x,far.z);
+          sites=Array.isArray(path)&&path.length>=2?[far,sites[0]]:null;
+        }
         defense=cfStartDefense(sites);
         game.__mobileBalanceReview.defenseSitesValid=defense.valid;
         game.__mobileBalanceReview.defenseSites=defense.sites;
@@ -1412,6 +1426,9 @@ export function createFpsMobileUx(game, root, doc) {
         }
         drill=updated;
       }
+      if(active&&activeChallenge?.kind==='assault')
+        assault=cfAdvanceAssault(activeChallenge,assault,{
+          kills:p.stats?.k||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z});
       if (!active) {
         if (activeChallenge?.kind==='hits') p.mouse.l=false;
         if(fireDragTouches.size>0) {
@@ -1429,7 +1446,7 @@ export function createFpsMobileUx(game, root, doc) {
           radius:activeChallenge.radius
         });
         if(defense.stage>prevStage){
-          hitCue.textContent='◆ 据点 '+('AB'[prevStage])+' 已守住';
+          hitCue.textContent='◆ 据点 '+defense.sites[prevStage].id+' 已守住';
           hitCue.hidden=false;cueExpiresAt=now+1050;
         }
         const site=defense.sites?.[defense.stage];
@@ -1499,7 +1516,7 @@ export function createFpsMobileUx(game, root, doc) {
         }
         lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
-        if (activeChallenge?.kind==='defend') {
+        if (activeChallenge?.kind==='defend'||activeChallenge?.kind==='assault') {
           guide.textContent='';
         }else if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
           const turn=routeArrow(p,routePath);
@@ -1531,7 +1548,8 @@ export function createFpsMobileUx(game, root, doc) {
       }
       // Combat stays legible: hint only on opening, or briefly when the
       // player has not yet found a target. It never sits on the reticle.
-      guide.hidden = !p.alive || activeChallenge?.kind==='defend' ||
+      guide.hidden = !p.alive ||
+        ['defend','assault'].includes(activeChallenge?.kind) ||
         (activeChallenge?.drill==='reposition'&&drill?.stage>0
           ? drill.stage===2&&drill.follow>0&&elapsed-drillStageAt>7&&
             [...markers.values()].some(el=>!el.hidden)
@@ -1552,7 +1570,7 @@ export function createFpsMobileUx(game, root, doc) {
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); defensePin.remove(); tutorial.remove();
-      defense=null;
+      defense=null;assault=null;
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
         button.removeAttribute('aria-label');
