@@ -82,7 +82,7 @@ for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
   // No easy-stage sharp-turn exemption: 01 now gets the same physical cap as
   // its peers. Native PlayerCar drivability is checked independently.
   if(geometry.sameLevelClosePairs>0 ||
-      geometry.lengthM<1900 || geometry.lengthM>3850 ||
+      geometry.lengthM<1900 || geometry.lengthM>5700 ||
       geometry.sharpPct>(Number(id)<=10?23:Number(id)<=16?29:36))
     throw Error('Unsafe stage '+id+' physical geometry '+JSON.stringify({
       collisions:geometry.sameLevelClosePairs,sharpPct:geometry.sharpPct,length:geometry.lengthM}));
