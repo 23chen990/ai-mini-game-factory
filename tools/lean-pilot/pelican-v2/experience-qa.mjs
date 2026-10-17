@@ -165,7 +165,42 @@ try{
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
  const safeEnd=Date.now()+50000;
- while(Date.now()<safeEnd){const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),kind:n.dataset.kind}))}));if(v.distance>=238||v.phase==='finished')break;const blocked=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=(['car','van'].includes(v.lanes[i].kind)?4.5:3);let want=v.lane;if(blocked(want)){const safe=[0,1,2].filter(i=>!blocked(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??want;}else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!blocked(i));if(fish>=0)want=fish;}if(want!==v.lane&&!blocked(v.lane)&&blocked(v.lane+Math.sign(want-v.lane)))want=v.lane;if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);await page.waitForTimeout(55);}
+ // Only public distance and radar are used. A hazard does not become safe as
+ // soon as its marker drops out: allow the rear wheel to clear its collision
+ // envelope before steering back for the next fish.
+ const visibleHazardClearance=[0,0,0];
+ while(Date.now()<safeEnd){
+  const v=await page.evaluate(()=>({
+   phase:document.querySelector('#coast').dataset.phase,
+   distance:Number(document.querySelector('#co-distance').textContent.match(/^\\d+/)?.[0]??0),
+   lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),
+   lanes:[...document.querySelectorAll('.co-lane')].map(n=>({
+    text:n.textContent,danger:n.classList.contains('danger'),
+    fish:n.classList.contains('fish'),kind:n.dataset.kind,
+   })),
+  }));
+  if(v.distance>=238||v.phase==='finished')break;
+  for(let i=0;i<3;i++){
+   if(!v.lanes[i].danger)continue;
+   const seconds=Number(v.lanes[i].text.match(/(\\d+(?:\\.\\d+)?)\\s*s/)?.[1]);
+   // The first level rides at 7.5 m/s. Keep a 4m tail from the actual
+   // player-visible countdown, including when the icon is replaced by fish.
+   const forecastDistance=v.distance+(Number.isFinite(seconds)?Math.max(0,seconds)*7.5:0);
+   visibleHazardClearance[i]=Math.max(visibleHazardClearance[i],forecastDistance+4);
+  }
+  const blocked=i=>v.lanes[i].danger||v.distance<visibleHazardClearance[i];
+  let want=v.lane;
+  if(blocked(want)){
+   const safe=[0,1,2].filter(i=>!blocked(i));
+   want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??want;
+  }else{
+   const fish=v.lanes.findIndex((l,i)=>l.fish&&!blocked(i));
+   if(fish>=0)want=fish;
+  }
+  if(want!==v.lane&&!blocked(v.lane)&&blocked(v.lane+Math.sign(want-v.lane)))want=v.lane;
+  if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
+  await page.waitForTimeout(55);
+ }
 const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({phase:detour.phase,reason:detour.reason,distance:detour.distance,events:detour.events?.slice(-12)}));await shot('safe-detour');
  check('safe-detour-does-not-require-jump',detour.phase==='running'&&!detour.events.some(e=>e.type==='jump')&&detour.events.some(e=>e.type==='barrier-cleared'&&!e.jumped),detour);
  await tap('#co-pause');await tap('#co-select');const selected=await page.locator('[data-level="1"]').innerText();const progress=await page.locator('#co-progress').innerText();check('mastery-saved-and-visible-on-route',selected.includes('★★★')&&selected.includes('纪录 '+best.fish+' 鱼')&&progress.includes('3/15'),{selected,progress,best});await shot('saved-mastery');
