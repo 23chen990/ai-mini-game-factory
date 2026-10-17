@@ -45,7 +45,7 @@ try{
  check('disabled-revive-cannot-fake-ad-or-change-reward',r.revives===0&&r.phase==='finished'&&r.reward.bank===beforeDisabled.reward.bank&&r.reward.rounds===beforeDisabled.reward.rounds,r);
  await tap('#co-replay');r=await snap();check('free-replay-keeps-accounting-with-new-run',r.phase==='running'&&r.revives===0&&r.reward.bank===beforeDisabled.reward.bank&&r.reward.rounds===1,r);
  const replayHud=await page.locator('#co-distance').innerText();
- check('fresh-replay-hud-resets-before-any-new-input',r.distance<3&&Number(replayHud.match(/^\\d+/u)?.[0])===Math.floor(r.distance),
+ check('fresh-replay-hud-resets-before-any-new-input',r.distance<3&&Number(replayHud.match(/^\d+/u)?.[0])===Math.floor(r.distance),
   {realDistance:r.distance,visibleDistance:replayHud,previousFailureDistance:beforeDisabled.distance});
  // Exact new V4 centre vehicle. A legitimate detour avoids the preceding
  // barrier; no teleport, save injection, debug control or internal event.
