@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
+import {URL} from 'node:url';
 import {cfRifleCombatStatus} from '../cf-player-loop.mjs';
 import {cfObservedFlankPlan,cfCombatHapticPattern,cfNearMissCue,cfBufferedJumpAllowed}
   from '../fps-mobile-ux.mjs';
