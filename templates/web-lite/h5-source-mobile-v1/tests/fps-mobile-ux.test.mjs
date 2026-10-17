@@ -2,6 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfBeginTouchFire, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, cfSeenLaneSight, cfReacquireLane, cfNativeShotAimError, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfNoviceScoutStrafe, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
+test('CF V18 dead-player touches cannot arm gun or buffered jump, but menus remain accessible',async()=>{
+ const {cfIgnoreDeadCombatTouch}=await import('../fps-mobile-ux.mjs');
+ assert.equal(cfIgnoreDeadCombatTouch({alive:false,nativeControl:true}),true);
+ assert.equal(cfIgnoreDeadCombatTouch({alive:false,nativeControl:false}),false);
+ assert.equal(cfIgnoreDeadCombatTouch({alive:true,nativeControl:true}),false);
+ assert.equal(cfIgnoreDeadCombatTouch({alive:undefined,nativeControl:true}),true);
+ assert.equal(cfIgnoreDeadCombatTouch(null),true===false);
+});
+
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
  assert.equal(teamSide('BL','GR'),'enemy');
