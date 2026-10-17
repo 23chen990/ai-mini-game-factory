@@ -6,6 +6,7 @@ on:
       - 'tools/lean-pilot/racing-cold-start-qa.mjs'
       - 'tools/lean-pilot/racing-browser-config.mjs'
       - 'tools/lean-pilot/racing-real-browser-preload.mjs'
+      - 'tools/lean-pilot/racing-context-isolation.mjs'
       - '.github/workflows/racing-cold-start-qa.yml'
 permissions:
   contents: read
@@ -20,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [desktop, touch]
+        mode: [desktop, touch, context]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -34,7 +35,7 @@ jobs:
           npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
           pnpm install --frozen-lockfile --ignore-scripts
           node --test templates/web-lite/h5-source-mobile-v1/tests/racing-browser-config.test.mjs
-          pnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs
+          pnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-context-isolation.mjs
       - name: Same approved pinned native engine as primary racing CI
         shell: bash
         run: |
@@ -52,7 +53,11 @@ jobs:
       - name: Matching complete Chromium browser
         run: pnpm exec playwright install --with-deps chromium
       - name: Original cold-start assertions in complete Chromium - no timeout changes
+        if: matrix.mode != 'context'
         run: node --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-cold-start-qa.mjs ${{ matrix.mode }}
+      - name: Diagnostic GPU queue and HUD isolation - never a production pass
+        if: matrix.mode == 'context'
+        run: node tools/lean-pilot/racing-context-isolation.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
