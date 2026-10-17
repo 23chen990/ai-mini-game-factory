@@ -1,6 +1,7 @@
 /* global process, console, window, document, performance, requestAnimationFrame */
-/** Test-browser presentation comparison. Does not change any game code/state.
- * Run under xvfb-run. Diagnostic results are not production acceptance by themselves.
+/** Diagnostic only: compare Chromium's whole-browser software driver with its
+ * WebGL-only fallback. No change to the H5, its clock, input or acceptance time.
+ * Official modes: chromium/src/docs/gpu/swiftshader.md. Local trusted H5 only.
  */
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createServer} from 'node:http';
@@ -10,7 +11,7 @@ import {chromium} from '@playwright/test';
 const run=path.resolve('runs/h5-qq-mobile-20261013'),game=path.join(run,'workspace/game');
 const out=path.join(run,'artifacts/cold-start-render-probe');await mkdir(out,{recursive:true});
 const build=JSON.parse(await readFile(path.join(run,'artifacts/build-racing.json'),'utf8'));
-const report={node:process.version,buildHash:build.buildHash,productionGate:false,scope:'Same unmodified H5; browser presentation diagnostics only',variants:[]};
+const report={node:process.version,buildHash:build.buildHash,productionGate:false,scope:'Same unmodified H5; Chromium renderer configuration comparison',variants:[]};
 const server=createServer(async(req,res)=>{
   try{
     const clean=(req.url??'/').split('?')[0];const file=path.resolve(game,'.'+(clean==='/'?'/index.html':clean));
@@ -19,15 +20,34 @@ const server=createServer(async(req,res)=>{
   }catch{res.writeHead(404);res.end();}
 });
 server.listen(0,'127.0.0.1');await once(server,'listening');
-for(const variant of ['headless-vsync-off','headed-normal']){
+for(const variant of ['webgl-fallback','whole-browser-driver']){
   let browser,page;
   const result={variant,changedGameState:false,viewport:{width:1366,height:768},errors:[],snapshots:[],passed:false};
   try{
-    browser=await chromium.launch({headless:variant!=='headed-normal',args:[
-      '--disable-dev-shm-usage','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader',
-      ...(variant==='headless-vsync-off'?['--disable-gpu-vsync','--disable-frame-rate-limit']:[])
+    browser=await chromium.launch({headless:true,args:[
+      '--disable-dev-shm-usage','--use-gl=angle',
+      variant==='webgl-fallback'?'--use-angle=swiftshader-webgl':'--use-angle=swiftshader',
+      '--enable-unsafe-swiftshader'
     ]});
     const context=await browser.newContext({viewport:result.viewport,deviceScaleFactor:1,isMobile:false,hasTouch:false});
+    // Fresh minimal-page control: no game or old in-flight GPU commands exist.
+    const control=await context.newPage();
+    await control.setContent('<canvas width="1366" height="768"></canvas>');
+    result.blankControl=await control.evaluate(async()=>{
+      const canvas=document.querySelector('canvas'),gl=canvas.getContext('webgl2');
+      if(!gl)return {available:false};
+      const ext=gl.getExtension('WEBGL_debug_renderer_info');
+      const renderer=ext?gl.getParameter(ext.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER);
+      const frames=[],start=performance.now();let last=start;
+      await new Promise(resolve=>{
+        const frame=now=>{
+          frames.push(now-last);last=now;gl.clearColor(.1,.2,.4,1);gl.clear(gl.COLOR_BUFFER_BIT);
+          if(now-start>=3000)resolve();else requestAnimationFrame(frame);
+        };requestAnimationFrame(frame);
+      });
+      return {available:true,renderer,frames:frames.length,elapsedMs:performance.now()-start,frameMean:frames.reduce((a,b)=>a+b,0)/frames.length};
+    });
+    await control.close();
     page=await context.newPage();page.on('pageerror',e=>result.errors.push(e.message));
     await page.addInitScript(()=>{
       window.__FRAME_PROBE__=[];let last=null;

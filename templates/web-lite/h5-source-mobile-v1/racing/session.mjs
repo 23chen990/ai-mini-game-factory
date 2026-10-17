@@ -74,7 +74,6 @@ export const raceCameraFov = (speed, nitro, small) => Math.min(69, 61.5 + Math.a
 export const raceBloomStrength = () => .3;
 const tunedFx = new WeakSet();
 export function tuneRaceFx(game) {
-  installRaceLowMaterialBudget(game,globalThis.window?.__RACE_THREE__);
   installCountdownQualitySafety(game);
   if (!game.fx || tunedFx.has(game.fx)) return;
   tunedFx.add(game.fx);
@@ -240,74 +239,4 @@ export function installCountdownQualitySafety(game, {now = () => globalThis.perf
   };
   countdownQualityInstalled.add(game);
   return true;
-}
-
-/** Low quality must also lower shader cost, not just disable shadows/bloom.
- * Keep every mesh, texture, vertex colour, light cue and physical object. Only
- * Standard/Physical surface shading is replaced; custom shaders stay intact.
- * Original materials are restored by identity before native cleanup and whenever
- * an explicit higher tier is selected. The adapter owns only its derived mats.
- */
-export function installRaceLowMaterialBudget(game, THREE) {
-  if (!game?.scene?.traverse || !THREE?.MeshLambertMaterial || !THREE?.Material ||
-      typeof game.setupQuality !== 'function' || game.__RACE_MATERIAL_BUDGET__) return false;
-  const cache=new Map(), originals=new WeakMap();
-  const mapMaterial=(material,fn)=>Array.isArray(material)?material.map(fn):fn(material);
-  const restore=root=>root?.traverse(object=>{
-    if(object.material)object.material=mapMaterial(object.material,m=>originals.get(m)??m);
-  });
-  const copyKeys=['map','alphaMap','lightMap','lightMapIntensity','aoMap','aoMapIntensity',
-    'emissiveMap','emissiveIntensity','vertexColors','transparent','opacity','alphaTest',
-    'side','depthTest','depthWrite','colorWrite','blending','blendSrc','blendDst',
-    'blendEquation','premultipliedAlpha','fog','polygonOffset','polygonOffsetFactor',
-    'polygonOffsetUnits','wireframe','toneMapped','visible','flatShading'];
-  const release=material=>{material.dispose();};
-  const apply=()=>{
-    restore(game.scene);
-    if(game.settings?.quality!=='low'){
-      for(const m of cache.values())release(m);cache.clear();return;
-    }
-    const seen=new Set();
-    const convert=m=>{
-      if(!m?.isMeshStandardMaterial || m.displacementMap ||
-          m.onBeforeCompile!==THREE.Material.prototype.onBeforeCompile)return m;
-      seen.add(m);
-      let low=cache.get(m);
-      if(!low){
-        const params={};for(const key of copyKeys)if(m[key]!==undefined)params[key]=m[key];
-        low=new THREE.MeshLambertMaterial(params);
-        // Live gate lights mutate Color objects; do not freeze or clone them.
-        low.color=m.color;low.emissive=m.emissive;low.name=m.name??'';
-        cache.set(m,low);originals.set(low,m);
-      }
-      return low;
-    };
-    game.scene.traverse(object=>{
-      if(object.isMesh&&object.material)object.material=mapMaterial(object.material,convert);
-    });
-    for(const [original,low] of cache)if(!seen.has(original)){release(low);cache.delete(original);}
-  };
-  const setup=game.setupQuality;
-  game.setupQuality=function(...args){restore(game.scene);const value=setup.apply(this,args);apply();return value;};
-  if(typeof game.makeRacers==='function'){
-    const make=game.makeRacers;
-    game.makeRacers=function(...args){
-      for(const racer of game.racers??[])restore(racer.model);
-      const value=make.apply(this,args);apply();return value;
-    };
-  }
-  if(typeof game.disposeLevel==='function'){
-    const dispose=game.disposeLevel;
-    game.disposeLevel=function(...args){
-      restore(game.level);for(const racer of game.racers??[])restore(racer.model);
-      const value=dispose.apply(this,args);apply();return value;
-    };
-  }
-  if(typeof game.loadMap==='function'){
-    const load=game.loadMap;
-    game.loadMap=async function(...args){const value=await load.apply(this,args);apply();return value;};
-  }
-  game.__RACE_MATERIAL_BUDGET__={stats:()=>({cached:cache.size,tier:game.settings?.quality}),
-    dispose:()=>{restore(game.scene);for(const low of cache.values())release(low);cache.clear();}};
-  apply();return true;
 }
