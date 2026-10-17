@@ -126,7 +126,26 @@ try{
    if(result.reason!=='complete')break;
   }
   const finished=await snapshot();if(finished.reason==='complete'&&finished.level===5){
-   await tap('#co-ad');check('unintegrated-ad-honest-no-block',await page.locator('#co-notice').innerText().then(s=>s.includes('尚未接入')),{notice:await page.locator('#co-notice').innerText()});
+   // A real ad SDK is not connected. There must be no tappable fake reward
+   // action: verify hidden controls, the honest local status, and free replay.
+   const beforeUnavailable=await snapshot();
+   const adControls={
+    extraHidden:await page.locator('#co-ad').isHidden(),
+    reviveHidden:await page.locator('#co-revive').isHidden(),
+    retryEnabled:await page.locator('#co-replay').isVisible()&&await page.locator('#co-replay').isEnabled(),
+    status:await page.locator('#co-storage').innerText()
+   };
+   check('unintegrated-ads-hidden-free-replay-available',
+    adControls.extraHidden&&adControls.reviveHidden&&adControls.retryEnabled&&adControls.status.includes('广告未接入'),adControls);
+   await page.waitForTimeout(250);
+   const afterUnavailable=await snapshot();
+   check('unavailable-ads-never-create-currency-or-revive',
+    beforeUnavailable.phase==='finished'&&afterUnavailable.phase==='finished'&&
+    beforeUnavailable.revives===afterUnavailable.revives&&
+    beforeUnavailable.reward.bank===afterUnavailable.reward.bank&&
+    beforeUnavailable.collection.coins===afterUnavailable.collection.coins,
+    {before:{revives:beforeUnavailable.revives,bank:beforeUnavailable.reward.bank,coins:beforeUnavailable.collection.coins},
+     after:{revives:afterUnavailable.revives,bank:afterUnavailable.reward.bank,coins:afterUnavailable.collection.coins}});
    const prior=navs;await tap('#co-replay');await page.waitForTimeout(1000);check('in-memory-replay',navs===prior&&(await snapshot()).phase==='running',{navigationBefore:prior,navigationAfter:navs});
    await tap('#co-pause');await page.reload();await page.waitForSelector('#coast[data-loaded="true"]');const saved=await snapshot();check('refresh-keeps-five-unlocked',saved.save.unlocked===5&&saved.save.completed.every(Boolean),saved);const startLabel=await page.locator('#co-start').innerText();check('restored-selected-level-label',await page.locator('[data-level="5"]').evaluate(n=>n.classList.contains('selected'))&&startLabel.includes('夜间赶海'),{startLabel,unlocked:saved.save.unlocked});await shot('all-unlocked');
   }
