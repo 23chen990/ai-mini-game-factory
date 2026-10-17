@@ -538,17 +538,25 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
   const goal = actual(challenge.target);
   if (challenge.kind === 'defend') {
-    const captured=actual(metrics.defenseCaptured),site='AB'[Math.min(1,captured)];
+    const captured=actual(metrics.defenseCaptured),site=(challenge.reverse?'BA':'AB')[Math.min(1,captured)];
     if(outcome==='won')
-      return 'A、B双点防守成功！下次尝试零阵亡，缩短真实占点耗时。';
+      return (challenge.reverse?'B→A逆向占领':'A→B双点防守')+
+        '成功！下次尝试零阵亡，缩短真实占点耗时。';
     if(metrics.defenseSitesValid!==true)
       return '据点路线不可用，本局没有虚构奖励。请重试或切换支持 WebGL 的设备。';
     if(metrics.defenseBreached===true)
       return '敌军在'+site+'点独占过久。下次提前到位，或在敌方接近时迎击。';
-    if(deaths>challenge.maxDeaths)
-      return '阵亡'+deaths+'次，超过本关'+challenge.maxDeaths+'次限制。下次试试沿掩体侧路回点。';
+    if(deaths>challenge.maxDeaths+(challenge.bonusDeaths===1?1:0))
+      return '阵亡'+deaths+'次，超过本关允许的阵亡限制。下次试试沿掩体侧路回点。';
     return '真实守住 '+captured+'/'+goal+' 处。前往'+site+
       '点：只有玩家亲自站在圈内、活着的敌人离开圈外，进度才会增加。';
+  }
+  if (challenge.kind === 'assault') {
+    const moved=actual(metrics.assaultTravel),killed=actual(metrics.assaultKills);
+    return outcome==='won'
+      ?'真实侧翼换位 '+moved+'米后，自己击杀 '+killed+' 人。'
+      :'换位 '+moved+'/'+challenge.minTravel+'米，换位后亲手击杀 '+
+        killed+'/'+challenge.target+'人；AI队友击杀不计入。';
   }
   if (outcome === 'won') {
     if (challenge.kind === 'hits'&&challenge.drill==='reposition')
@@ -558,10 +566,12 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
     if (challenge.kind === 'hits')
       return '亲自命中 ' + hits + ' 次。下一关要使用 AWM 取得真正的击杀。';
     if (challenge.kind === 'kills')
-      return 'AWM 真实击杀 ' + awmKills + ' 人。接下来试试移动与生存的配合。';
-    return '累计移动 ' + travel + ' 米、被击倒 ' + deaths + ' 次。下次试试零死亡通关。';
+      return 'AWM 真实击杀 ' + awmKills + ' 人'+
+        (challenge.minTravel?'，同时移动'+travel+'米':'')+'。';
+    return '累计真实移动 '+travel+' 米、被击倒 '+deaths+' 次'+
+      (challenge.minKills?'、亲手击杀'+actual(metrics.kills)+'人':'')+'。';
   }
-  if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths)
+  if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths+(challenge.bonusDeaths===1?1:0))
     return '被击倒 ' + deaths + ' 次，本关最多允许 ' +
       challenge.maxDeaths + ' 次。下次借掩体换位，先避开敌方火力。';
   if (challenge.kind === 'hits'&&challenge.drill==='reposition') {
@@ -584,19 +594,25 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
       Math.max(0,goal-hits) + ' 次。下次继续跟住目标，直到出现命中确认。';
   }
   if (challenge.kind === 'kills') {
+    if(challenge.minTravel&&travel<challenge.minTravel)
+      return '击杀 '+awmKills+'/'+challenge.target+'人，移动'+travel+'/'+
+        challenge.minTravel+'米；两个条件都要完成。';
     if (awmKills === 0 && hits > 0)
       return '命中 ' + hits + ' 次，但 AWM 击杀仍为 0/' + goal +
         '。命中不等于击杀，下次开镜锁定目标再补枪。';
     return 'AWM 击杀 ' + awmKills + '/' + goal +
       '。先找红色目标，开镜瞄准胸部，再按开火。';
   }
-  if (deaths > goal)
-    return '被击倒 ' + deaths + ' 次，超过最多 ' + goal +
-      ' 次的限制。下次沿集装箱掩体换位，减少正面暴露。';
+  if (deaths > goal+(challenge.bonusDeaths===1?1:0))
+    return '被击倒 ' + deaths + ' 次，超过允许 ' +
+      (goal+(challenge.bonusDeaths===1?1:0)) + ' 次的限制。';
   const min = actual(challenge.minTravel);
   if (travel < min)
     return '只移动 ' + travel + '/' + min + ' 米，还差 ' +
       (min-travel) + ' 米。下次用左手摇杆沿掩体移动，不要原地停留。';
+  if(challenge.minKills&&actual(metrics.kills)<challenge.minKills)
+    return '已移动'+travel+'米，但自己的击杀为'+actual(metrics.kills)+'/'+
+      challenge.minKills+'。队友击杀不计算。';
   return '移动和阵亡条件已达成，但未坚持到时限。借助掩体保持移动直到倒计时结束。';
 }
 
@@ -608,9 +624,10 @@ export function cfMissionFacts(challenge) {
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
     ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
-    challenge.kind === 'kills' ? '击杀 ' + challenge.target + ' 人' :
-    challenge.kind === 'defend' ? '守 A → B · 各'+challenge.holdSeconds+'秒' :
-      '移动 ' + (challenge.minTravel || 0) + ' m';
+    challenge.kind === 'kills' ? '击杀'+challenge.target+'人'+(challenge.minTravel?' · 行进'+challenge.minTravel+'米':'') :
+    challenge.kind === 'assault' ? '行进'+challenge.minTravel+'米→杀'+challenge.target+'人' :
+    challenge.kind === 'defend' ? '守 '+(challenge.reverse?'B → A':'A → B')+' · 各'+challenge.holdSeconds+'秒' :
+      '移动'+(challenge.minTravel||0)+'米'+(challenge.minKills?' · 击杀'+challenge.minKills:'');
   return [
     { label:'装备',value:weapon },
     { label:'目标',value:target },
@@ -635,8 +652,14 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     ];
   if (challenge.kind === 'kills') return [
     {label:'狙杀',value:number(metrics.awmKills) + ' / ' + challenge.target},
-    {label:'命中',value:String(number(metrics.hits))},
+    {label:challenge.minTravel?'移动':'命中',value:challenge.minTravel
+      ? number(metrics.travel)+' / '+challenge.minTravel+' m':String(number(metrics.hits))},
     {label:'阵亡',value:String(deaths)}
+  ];
+  if (challenge.kind === 'assault') return [
+    {label:'换位',value:number(metrics.assaultTravel)+' / '+challenge.minTravel+' m'},
+    {label:'本人击杀',value:number(metrics.assaultKills)+' / '+challenge.target},
+    {label:'阵亡',value:deaths+' / '+challenge.maxDeaths}
   ];
   if (challenge.kind === 'defend') return [
     {label:'据点',value:number(metrics.defenseCaptured)+' / '+challenge.target},
@@ -646,7 +669,8 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
   return [
     {label:'生存',value:Math.min(Math.floor(number(elapsedMs)/1000),Math.ceil(challenge.limitMs/1000)) + ' / ' + Math.ceil(challenge.limitMs/1000) + ' s'},
     {label:'移动',value:number(metrics.travel) + ' / ' + challenge.minTravel + ' m'},
-    {label:'阵亡',value:deaths + ' / ' + challenge.target}
+    {label:challenge.minKills?'亲手击杀':'阵亡',value:challenge.minKills
+      ?number(metrics.kills)+' / '+challenge.minKills:deaths+' / '+challenge.target}
   ];
 }
 
