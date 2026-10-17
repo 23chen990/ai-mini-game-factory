@@ -316,7 +316,8 @@ export function createCoastAdventure(api) {
   const prizeAhead=next?.obstacle.kind==='barrier'&&run.fishes.some(f=>f.bonus&&!f.caught&&f.sourceObstacleId===next.obstacle.id&&f.x-run.distance<50);
   const betweenLanes=fish&&Number.isFinite(fish.z)&&Math.min(...LANES.map(z=>Math.abs(z-fish.z)))>.2;
    const gateCue=safeGateCue(lanes);
-  $('radar-label').textContent=gateCue??(currentRisk?'⚠️ 当前路线接近障碍 · 向旁边微调':next?.obstacle.kind==='pedestrian'?'前方有人横穿 · 提前避开红色车道':prizeAhead?'前方路障 · 跳过去追奖励金鱼（也可绕开）':(betweenLanes?'🐟 鱼在道线之间 · 按住或拖动微调':'前方路况 · 红色危险车道'));
+  const postRewardCar=run.level.id===1&&run.distance>=142&&run.distance<171?rewardExitWarning(run):null;
+   $('radar-label').textContent=postRewardCar?'🌟 接完金鱼，前方来车 · 及时变道':gateCue??(currentRisk?'⚠️ 当前路线接近障碍 · 向旁边微调':next?.obstacle.kind==='pedestrian'?'前方有人横穿 · 提前避开红色车道':prizeAhead?'前方路障 · 跳过去追奖励金鱼（也可绕开）':(betweenLanes?'🐟 鱼在道线之间 · 按住或拖动微调':'前方路况 · 红色危险车道'));
 
   const barrier=upcoming.find(h=>h.obstacle.kind==='barrier'&&h.obstacle.lane===run.laneIndex&&h.seconds>.15&&h.seconds<=1.45);
   const jumpButton=root.querySelector('[data-action="jump"]');
