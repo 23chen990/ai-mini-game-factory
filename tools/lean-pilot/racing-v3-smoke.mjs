@@ -198,8 +198,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V5.3'||
-     worldIdentity.uiRevision!=='racing-v53-core-loop')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V6.0'||
+     worldIdentity.uiRevision!=='racing-v60-career30')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -296,7 +296,7 @@ try {
   }
   await page.setViewportSize({width:844,height:390});
   const title=await page.locator('#race-stage').locator('option').count();
-  if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
+  if(title!==31)fail('Expected 30 campaign stages + daily, got '+title);
   // Real user-triggered browser download, checked from bytes rather than just
   // checking a button exists. It must be a local QA report, not a human claim.
   const firstDownload=page.waitForEvent('download');
@@ -489,8 +489,8 @@ try {
   // Explicit synthetic progress: tests the stage ENTRY chain only, never claims playthrough.
   report.seededCampaign=true;
   await page.evaluate(() => {
-    const stars={};for(let i=1;i<=16;i++)stars[String(i).padStart(2,'0')]=1;
-    localStorage.setItem('h5-mobile:qq-speed:career:v1',JSON.stringify({version:1,stars,times:{},skin:0,rounds:16}));
+    const stars={};for(let i=1;i<=30;i++)stars[String(i).padStart(2,'0')]=1;
+    localStorage.setItem('h5-mobile:qq-speed:career:v1',JSON.stringify({version:1,stars,times:{},skin:0,rounds:30}));
   });
   const cases=[[1,'02-egypt-speed'],[3,'04-aegean-drift'],[4,'05-egypt-items'],
     [6,'07-cliff-technical'],[10,'11-serpent-technical'],[7,'08-snow-rank']];
@@ -595,6 +595,24 @@ try {
   await page.click('#race-start');
   await page.waitForFunction(() => window.game?.state==='countdown' && !!window.game?.player,null,{timeout:12000});
   report.lobbyRecovery={syntheticDNF:true,resultsToAIOnlyMenu:true,changedTracksTwice:true,secondRaceCreatedPlayer:true};
+  // The last stage MUST be a new physical map in the real 3D engine. Seeded
+  // progression here is test fixture only, never a natural campaign win.
+  await page.setViewportSize({width:844,height:390});
+  await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
+  await raceStart(page,29,'30-skyline-real-native-final');
+  const late=await page.evaluate(()=>({
+    stage:window.__RACE_EVIDENCE__?.requestedCourse,
+    native:window.game?.track?.__RACE_COURSE_ID,
+    width:window.game?.track?.halfW*2,
+    laps:window.game?.settings?.laps,
+    field:window.game?.racers?.filter(r=>!r.isPlayer).map(r=>r.skill),
+    boss:document.querySelector('#race-stage-goal')?.textContent,
+    visual:!!window.game?.level?.getObjectByName('physical-course-identity-race-30')
+  }));
+  if(late.stage!=='race-30'||late.native!=='race-30'||late.width!==17||
+     late.laps!==3||late.field?.length<2||Math.max(...late.field)<2.12||!late.visual)
+    fail('Final boss must have a unique, physical hard race-30 track and native opponent: '+JSON.stringify(late));
+  report.finalCourse={qaSeeded:true,physicalWorld:true,...late};
 
   // Verify saved low-end-device quality is respected on a subsequent launch.
   await page.evaluate(() => localStorage.setItem('h5-qq-mobile-20261013:graphics-quality:v1','low'));
