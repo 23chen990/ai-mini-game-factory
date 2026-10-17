@@ -176,7 +176,7 @@ try{
   await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();await shot('pedestrian-fall');await page.waitForTimeout(1300);const waiting=await snapshot();await shot('pedestrian-wait');check('pedestrian-stops-but-countdown-runs',waiting.distance===ped.distance&&waiting.elapsed>ped.elapsed+1.1&&waiting.stun>1,{ped,waiting});await page.waitForTimeout(1000);await shot('pedestrian-rising');// Do not idle 1.2 seconds on a moving roadway after recovery: the next
    // physical obstacle is close. Observe actual recovery, make a trusted
    // pause touch immediately, then do slow screenshot/acceptance work safely.
-   await page.waitForFunction(()=>{const r=window.__coast.snapshot();return r.phase==='running'&&r.stun===0&&r.distance>waiting.distance},null,{timeout:7000});
+   await page.waitForFunction(minDistance=>{const r=window.__coast.snapshot();return r.phase==='running'&&r.stun===0&&r.distance>minDistance},waiting.distance,{timeout:7000});
    const recovered=await snapshot();await tap('#co-pause');const pausedAfterRecovery=await snapshot();
    await shot('pedestrian-recovery');
    check('pedestrian-recovers-once',recovered.phase==='running'&&recovered.distance>waiting.distance&&
