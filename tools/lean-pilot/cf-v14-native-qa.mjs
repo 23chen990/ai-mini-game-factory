@@ -430,9 +430,8 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       firedRookie.openingBot?.holdUntil<=5.1,
       {before:rookie.openingBot,after:firedRookie.openingBot,
         playerShots:firedRookie.player.shots});
-    // Normal sustained single-thumb fire — do NOT set HP, aim, actor stats,
-    // spawn, game clock or outcome. This is an actual native FIRST KILL gate.
-    const firstKillTouch=center(await rect('#touch .btn[data-mk-action="fire"]'));
+    // Native first-kill gate: realistic aim and fire gestures only. No stat,
+    // actor location, clock, damage, or outcome modification.
     const killPressTrace=[];
     const cueObserved=async()=>page.evaluate(()=>{
       return (window.__cfKillCueObservations||[]).some(e=>
