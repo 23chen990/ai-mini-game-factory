@@ -1,6 +1,16 @@
 /* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
 import {cfStartDefense,cfStepDefense,cfAdvanceAssault,cfStartExtraction,cfStepExtraction} from './engine.mjs';
+/** CSS/UI stays at native resolution; only CF native WebGL render pixels change.
+ * Adjust after sustained measured frame-rate intervals, not single spikes. */
+export function cfAdaptivePixelRatio(current,fps,fastIntervals=0) {
+  const ratio=Number.isFinite(current)&&current>=.6&&current<=1?current:1;
+  if(!Number.isFinite(fps)||fps<=0)return ratio;
+  if(fps<16)return Math.max(.6,Math.round((ratio-.15)*100)/100);
+  if(fps<28)return Math.max(.6,Math.round((ratio-.1)*100)/100);
+  if(fps>48&&fastIntervals>=3)return Math.min(1,Math.round((ratio+.1)*100)/100);
+  return ratio;
+}
 export function teamSide(ownTeam, actorTeam) {
   if (!['BL', 'GR'].includes(ownTeam) || !['BL', 'GR'].includes(actorTeam)) return 'unknown';
   return ownTeam === actorTeam ? 'ally' : 'enemy';
@@ -1133,6 +1143,7 @@ export function createFpsMobileUx(game, root, doc) {
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
   let defense=null,nextDefenseRouteAt=0,assault=null,extraction=null;
+  let perfWindowStart=0,perfFrames=0,perfFastWindows=0,perfLastAdjust=0;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -1583,6 +1594,8 @@ export function createFpsMobileUx(game, root, doc) {
       routePath=null;routeLastAt=0;lastVisibleEnemy=null;firstHitSpot=null;
       nextUpdate = 0;
       nextBalanceAt = 0;
+      perfWindowStart=performance.now();perfFrames=0;perfFastWindows=0;
+      perfLastAdjust=perfWindowStart;
       previousCombat=game.player?{
         hits:game.player.stats?.hits||0,kills:game.player.stats?.k||0,
         hp:game.player.hp,alive:game.player.alive===true}:null;
@@ -1649,6 +1662,22 @@ export function createFpsMobileUx(game, root, doc) {
     },
     update(running, now = performance.now()) {
       const active = !!(running && game.playing && !game.paused && !game.ended);
+      // Native time advances in real Game.update; on slow software WebGL
+      // this lowers raster work, never speeds up actor simulation or rewards.
+      if(active&&game.renderer?.renderer?.setPixelRatio) {
+        if(!perfWindowStart)perfWindowStart=now;
+        perfFrames++;
+        const windowMs=now-perfWindowStart;
+        if(windowMs>=4000&&now-perfLastAdjust>=4000) {
+          const fps=perfFrames*1000/windowMs;
+          perfFastWindows=fps>48?perfFastWindows+1:0;
+          const renderer=game.renderer.renderer;
+          const current=renderer.getPixelRatio();
+          const target=cfAdaptivePixelRatio(current,fps,perfFastWindows);
+          if(Math.abs(target-current)>.001)renderer.setPixelRatio(target);
+          perfLastAdjust=now;perfWindowStart=now;perfFrames=0;
+        }
+      }else{perfWindowStart=now;perfFrames=0;perfFastWindows=0;}
       html.dataset.fpsActive = String(active);
       if (!active || now >= cueExpiresAt) hitCue.hidden = true;
       if (!active || now >= damageExpiresAt)damageVignette.hidden=true;
