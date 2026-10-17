@@ -61,9 +61,9 @@ const CHALLENGES = {
     {id:'defense',title:'双点反击',instructions:'100秒内亲自坚守A、B两处真实据点，各5秒；敌军独占据点8秒即失守。最多阵亡2次。',limitMs:100000,kind:'defend',target:2,holdSeconds:5,breachSeconds:8,radius:5,maxDeaths:2,weapon:'m4a1'},
     // Campaign 02: each mission requires a genuinely different native action.
     // No unlock fees, phantom kills, injected hitpoints, or ad-only levels.
-    {id:'assault',title:'火线截击',instructions:'100秒：先真实推进12米，再亲手击杀2名敌人；最多阵亡2次。',limitMs:100000,kind:'assault',target:2,minTravel:12,maxDeaths:2,weapon:'m4a1'},
+    {id:'assault',title:'火线截击',instructions:'100秒：真实推进12米并进入战术进攻位，再亲手击杀2名敌人；最多阵亡2次。',limitMs:100000,kind:'assault',target:2,minTravel:12,maxDeaths:2,waypointRadius:5,weapon:'m4a1'},
     {id:'marksman',title:'移动狙杀',instructions:'110秒：用AWM亲手击杀2人，同时移动10米；最多阵亡2次。',limitMs:110000,kind:'kills',target:2,minTravel:10,maxDeaths:2,weapon:'awm'},
-    {id:'evac',title:'火线撤离',instructions:'70秒：移动35米、亲手击杀1人并坚持到倒计时结束；最多阵亡1次。',limitMs:70000,kind:'survive',target:1,minTravel:35,minKills:1,weapon:'mp5'},
+    {id:'evac',title:'火线撤离',instructions:'70秒：移动35米、亲手击杀1人，再去真实撤离区守满6秒，坚持到倒计时结束；最多阵亡1次。',limitMs:70000,kind:'survive',target:1,minTravel:35,minKills:1,extractSeconds:6,extractRadius:5,weapon:'mp5'},
     {id:'counter',title:'逆线夺点',instructions:'100秒：先攻远端B，再返回近端A，各坚守5秒；敌军独占7秒则失败。最多阵亡1次。',limitMs:100000,kind:'defend',target:2,holdSeconds:5,breachSeconds:7,radius:5,maxDeaths:1,weapon:'m4a1',reverse:true},
   ],
 };
@@ -78,11 +78,11 @@ export function cfEliteChallenge(base) {
   if(base?.id==='defense'&&base.kind==='defend')
     return {...base,elite:true,limitMs:85000,maxDeaths:0,holdSeconds:7,breachSeconds:7,radius:4.2};
   if(base?.id==='assault'&&base.kind==='assault')
-    return {...base,elite:true,limitMs:85000,maxDeaths:1,minTravel:18,target:3};
+    return {...base,elite:true,limitMs:85000,maxDeaths:1,minTravel:18,target:3,waypointRadius:4.2};
   if(base?.id==='marksman'&&base.kind==='kills')
     return {...base,elite:true,limitMs:95000,maxDeaths:1,minTravel:15,target:3};
   if(base?.id==='evac'&&base.kind==='survive')
-    return {...base,elite:true,limitMs:80000,target:0,minTravel:50,minKills:2};
+    return {...base,elite:true,limitMs:80000,target:0,minTravel:50,minKills:2,extractSeconds:8,extractRadius:4.2};
   if(base?.id==='counter'&&base.kind==='defend')
     return {...base,elite:true,limitMs:90000,maxDeaths:0,holdSeconds:7,breachSeconds:6,radius:4.2};
   throw Error('Unsupported CF elite challenge');
@@ -124,10 +124,12 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
     const travel=Math.max(0,Number(m.assaultTravel)||0);
     const budgetExceeded=Number.isInteger(c.maxDeaths)&&deaths>c.maxDeaths+(c.bonusDeaths===1?1:0);
     value=Math.min(c.target,kills);
-    failed=budgetExceeded;
+    const legalSite=m.assaultSiteValid===true;
+    failed=budgetExceeded||!legalSite;
     complete=!failed&&m.assaultStage===1&&travel>=c.minTravel&&kills>=c.target;
-    label=m.assaultStage===1?'🎯 换位后击杀 '+kills+'/'+c.target
-      :'↗ 先换位 '+Math.floor(travel)+'/'+c.minTravel+'米';
+    label=!legalSite?'✕ 进攻位寻路不可用':
+      m.assaultStage===1?'🎯 进攻位已到达 · 本人击杀 '+kills+'/'+c.target
+      :'↗ 前往进攻位 · 行进 '+Math.floor(travel)+'/'+c.minTravel+'米';
   }
   if(c.kind==='defend') {
     const deaths=Math.max(0,Number(m.deaths)||0);
@@ -150,10 +152,16 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
     // The null fallback retains compatibility with existing offline callers.
     const survivedFullClock=elapsedMs===null ? terminal :
       Number.isFinite(elapsedMs) && elapsedMs>=c.limitMs;
+    const extractionLegal=!c.extractSeconds||m.evacSiteValid===true;
+    const extractionComplete=!c.extractSeconds||m.evacExtracted===true;
+    failed=failed||!extractionLegal;
     complete=terminal&&survivedFullClock&&!failed&&travel>=minTravel&&
-      (!c.minKills||Math.max(0,Number(m.kills)||0)>=c.minKills);
+      (!c.minKills||Math.max(0,Number(m.kills)||0)>=c.minKills)&&extractionComplete;
     label=`❤ 死亡 ${value}/${c.target+(c.bonusDeaths===1?1:0)} · 移动 ${travel}/${minTravel}米`+
-      (c.minKills?' · 击杀 '+(Number(m.kills)||0)+'/'+c.minKills:'');
+      (c.minKills?' · 击杀 '+(Number(m.kills)||0)+'/'+c.minKills:'')+
+      (c.extractSeconds?(!extractionLegal?' · 撤离点不可达':
+       m.evacExtracted===true?' · 撤离已准备就绪':
+       ' · 撤离 '+Math.floor(Math.max(0,Number(m.evacHeldSec)||0))+'/'+c.extractSeconds+'秒'):'');
   }
   return {outcome:failed?'lost':complete?'won':terminal?'lost':'running',value,label,rewardScore:c.kind==='survive'?(complete?3:0):c.kind==='defend'?(complete?5:value):value};
 }
@@ -252,16 +260,52 @@ export function cfAdvanceAssault(challenge,previous=null,native={}) {
   const travel=Number.isFinite(native.travel)?Math.max(0,native.travel):0;
   const x=Number.isFinite(native.x)?native.x:null;
   const z=Number.isFinite(native.z)?native.z:null;
+  const validSite=native.checkpoint&&Number.isFinite(native.checkpoint.x)&&
+    Number.isFinite(native.checkpoint.z);
+  const point=previous?.checkpoint||(validSite?{x:native.checkpoint.x,z:native.checkpoint.z}:null);
   const state=previous??{stage:0,anchorX:x,anchorZ:z,startTravel:travel,
-    killBaseline:kills,lastKills:kills,postKills:0};
+    killBaseline:kills,lastKills:kills,postKills:0,
+    checkpoint:point,checkpointValid:!!point};
   const moved=Math.max(0,travel-state.startTravel);
   const net=state.anchorX!==null&&state.anchorZ!==null&&x!==null&&z!==null
     ?Math.hypot(x-state.anchorX,z-state.anchorZ):0;
-  const ready=state.stage===1||
-    (moved>=challenge.minTravel&&net>=challenge.minTravel*.75);
+  const distance=point&&x!==null&&z!==null
+    ?Math.hypot(x-point.x,z-point.z):Infinity;
+  const inZone=native.alive===true&&distance<=Math.max(1,Number(challenge.waypointRadius)||5);
+  const ready=state.stage===1||!!(state.checkpointValid&&inZone&&
+    moved>=challenge.minTravel&&net>=challenge.minTravel*.75);
   return {...state,stage:ready?1:0,lastKills:kills,
     killBaseline:state.stage===0&&ready?kills:state.killBaseline,
-    travel:moved,net,postKills:ready?Math.max(0,kills-(state.stage===0?kills:state.killBaseline)):0};
+    travel:moved,net,
+    checkpointDistance:Number.isFinite(distance)?distance:null,
+    inZone,postKills:ready?Math.max(0,kills-(state.stage===0?kills:state.killBaseline)):0};
+}
+
+/** Actual extraction uses a walkable, route-verified original-world
+ * marker. Original player movement/kills and simulation game.time alone can
+ * advance it; no actor positions, kills or health are injected. */
+export function cfStartExtraction(site) {
+  const valid=!!site&&Number.isFinite(site.x)&&Number.isFinite(site.z);
+  return {valid,site:valid?{x:site.x,z:site.z}:null,
+    held:0,extracted:false,inside:false,contested:false,lastTime:null};
+}
+export function cfStepExtraction(state,{gameTime,player,actors=[],team,
+  travel=0,kills=0,minTravel=0,minKills=0,seconds=6,radius=5}={}) {
+  if(!state||!state.valid||state.extracted)return state;
+  const now=Number(gameTime);
+  if(!Number.isFinite(now)||now<0||
+    (state.lastTime!==null&&now<state.lastTime))return state;
+  const dt=state.lastTime===null?0:Math.min(.25,Math.max(0,now-state.lastTime));
+  const point=state.site;
+  const inCircle=pos=>Number.isFinite(pos?.x)&&Number.isFinite(pos?.z)&&
+    Math.hypot(pos.x-point.x,pos.z-point.z)<=Math.max(1,Number(radius)||5);
+  const inside=player?.alive===true&&inCircle(player.pos);
+  const contested=Array.isArray(actors)&&actors.some(a=>
+    a?.alive===true&&a.team!==undefined&&a.team!==team&&inCircle(a.pos));
+  const ready=inside&&!contested&&Number(travel)>=minTravel&&Number(kills)>=minKills;
+  const held=ready?state.held+dt:Math.max(0,state.held-dt*.4);
+  return {...state,lastTime:now,inside,contested,held,
+    extracted:held+1e-8>=Math.max(1,Number(seconds)||6)};
 }
 
 /** Placement policy is intentionally stricter than an SDK availability flag:
@@ -275,7 +319,9 @@ export function cfCanOfferRevive({challenge,metrics,round,progress,
     !config.appId||config.screenOrientation!==1||typeof config.spaceId!=='string'||
     !config.spaceId)return false;
   if(challenge?.elite===true||challenge?.bonusDeaths||!metrics||
-    metrics.defenseBreached===true)return false;
+    metrics.defenseBreached===true||
+    (challenge?.kind==='assault'&&metrics.assaultSiteValid!==true)||
+    (challenge?.extractSeconds&&metrics.evacSiteValid!==true))return false;
   const budget=challenge.kind==='survive'?challenge.target:challenge.maxDeaths;
   if(!Number.isInteger(budget)||budget<0)return false;
   const deaths=Number(metrics.deaths);
