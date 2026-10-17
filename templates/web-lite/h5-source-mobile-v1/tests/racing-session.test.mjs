@@ -87,7 +87,7 @@ test('mobile quality downgrade is triggered by sustained 40 FPS, not by isolated
   assert.ok(stable.fps>=55);
   for(let i=0;i<12;i++) stable.frame(.045,'high');
   for(let i=0;i<150;i++) assert.equal(stable.frame(1/60,'high'),null,'brief jank must recover');
-  assert.equal(stable.frame(1,'high'),null,'tab resume gap is not a frame sample');
+  assert.equal(stable.frame(1,'high'),null,'a single tab resume gap cannot cause a downgrade');
   let q='high',steps=[];
   const monitor=new Monitor();
   for(let i=0;i<300;i++){
@@ -95,6 +95,12 @@ test('mobile quality downgrade is triggered by sustained 40 FPS, not by isolated
     if(next){steps.push(next);q=next;}
   }
   assert.deepEqual(steps,['mid','low'],'persistent 40 FPS drops twice until low');
+  const extreme=new Monitor();
+  for(let i=0;i<3;i++) assert.equal(extreme.frame(.4,'high'),null);
+  assert.ok(extreme.fps <= 3,'severe repeated jank must appear in telemetry');
+  assert.equal(extreme.frame(.4,'high'),'mid');
+  for(let i=0;i<3;i++) assert.equal(extreme.frame(.4,'mid'),null);
+  assert.equal(extreme.frame(.4,'mid'),'low','extreme device slowdowns step down again');
   const manual=new Monitor();manual.manual=true;
   for(let i=0;i<200;i++) assert.equal(manual.frame(.04,'high'),null);
   assert.ok(manual.fps<35);

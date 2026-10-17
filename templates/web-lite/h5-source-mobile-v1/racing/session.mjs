@@ -56,9 +56,24 @@ export class QualityMonitor {
   constructor() {
     this.slow = 0; this.samples = 0; this.dropped = false; this.manual = false;
     this.windowTime = 0; this.currentQuality = null; this.averageDt = 1 / 60; this.fps = 60;
+    this.consecutiveStalls = 0;
   }
   frame(dt, quality) {
-    if (!Number.isFinite(dt) || dt <= 0 || dt > .25) return null;
+    if (!Number.isFinite(dt) || dt <= 0) return null;
+    // A background-resume gap is not evidence of slow graphics. Repeated
+    // >=250ms *visible* frames are: don't leave very slow phones on high.
+    if (dt > .25) {
+      this.fps = Math.max(1, Math.round(1 / dt));
+      if (this.manual || quality === 'low') return null;
+      this.consecutiveStalls++;
+      if (this.consecutiveStalls < 4) return null;
+      this.consecutiveStalls = 0;
+      this.slow = 0; this.samples = 0; this.windowTime = 0;
+      const lower = quality === 'high' ? 'mid' : 'low';
+      this.currentQuality = lower; this.dropped = true;
+      return lower;
+    }
+    this.consecutiveStalls = 0;
     this.averageDt = this.averageDt * .9 + dt * .1;
     this.fps = Math.round(Math.min(120, Math.max(1, 1 / this.averageDt)));
     if (this.manual || quality === 'low') return null;
