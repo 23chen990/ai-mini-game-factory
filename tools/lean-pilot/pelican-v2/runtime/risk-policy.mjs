@@ -80,9 +80,17 @@ function moveOneLane(view,state,wantedLane,reason,allowRewardLane=null){
  // comfortably ahead. Otherwise "middle is red" prevents any two-lane escape
  // and traps a legitimate rider in the closing outside lane (rain 499m gate).
  // This is two ordinary adjacent taps, not teleportation or collision immunity.
- const transitEarly= Math.abs(wantedLane-current)===2 &&
-  laneIsVehicle(view.lanes[current])&&laneIsVehicle(view.lanes[next])&&
-  Number.isFinite(view.lanes[current].seconds)&&view.lanes[current].seconds>=3.5&&
+ // Public HUD: an imminent pedestrian crossing can trap the rider on the
+ // right directly before the rain 499m two-vehicle gate. Crossing a far-away
+ // van is legitimate only while its visible countdown leaves a 3.5s buffer.
+ // This still requires TWO normal adjacent touches, never teleportation.
+ const currentVehicleEarly=laneIsVehicle(view.lanes[current])&&
+  Number.isFinite(view.lanes[current].seconds)&&view.lanes[current].seconds>=3.5;
+ const pedestrianEarlyExit=view.lanes[current]?.kind==='pedestrian'&&
+  laneIsImminent(view.lanes[current])&&
+  Number.isFinite(view.lanes[current].seconds)&&view.lanes[current].seconds>=1.5;
+ const transitEarly=Math.abs(wantedLane-current)===2&&
+  (currentVehicleEarly||pedestrianEarlyExit)&&laneIsVehicle(view.lanes[next])&&
   Number.isFinite(view.lanes[next].seconds)&&view.lanes[next].seconds>=3.5&&
   !laneIsBlocked(view.lanes[wantedLane]);
  if(laneIsBlocked(view.lanes[next],{allowReward})&&!transitEarly)

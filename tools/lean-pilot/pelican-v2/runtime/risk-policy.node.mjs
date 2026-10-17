@@ -97,6 +97,24 @@ test('two-lane rain pressure gate permits early visible vehicle crossing, never 
  const blockedDestination=decide({...ahead,lanes:[lane({danger:true,kind:'barrier',seconds:1.3}),van(4.3),van(4.2)]},s);
  assert.notEqual(blockedDestination.action,'left','the destination must itself be publicly safe');
 });
+test('rain pedestrian then dual vehicles permits early visible two-tap escape, never late suicide',()=>{
+ const clear=lane(),ped=t=>lane({danger:true,kind:'pedestrian',seconds:t});
+ const van=t=>lane({danger:true,kind:'vehicle',seconds:t});
+ // At 478m a pedestrian from the left crosses the right lane; at 499m
+ // the van and car close centre/right. A skilled rider uses the 4s HUD.
+ const state=policy.createRiskPolicyState(4,{barrierId:'l4-o10',distance:593});
+ const early=view({level:4,distance:450,laneIndex:2,lanes:[clear,van(4),ped(3)]});
+ const first=decide(early,state);
+ assert.equal(first.action,'left');
+ assert.equal(first.toLane,1,'first of exactly two actual lane taps');
+ assert.equal(first.reason,'visible-danger-or-fish-early-crossing');
+ const second=decide({...early,distance:454,laneIndex:1,lanes:[clear,van(4),ped(2)]},first.state);
+ assert.equal(second.action,'left');assert.equal(second.toLane,0);
+ const late=decide({...early,distance:476,lanes:[clear,van(3),ped(1)]},state);
+ assert.notEqual(late.action,'left','too little warning to cross a van');
+ const blockedEnd=decide({...early,lanes:[lane({danger:true,kind:'vehicle',seconds:3}),van(4),ped(3)]},state);
+ assert.notEqual(blockedEnd.action,'left','final lane blocked means no early crossing');
+});
 test('a reward route never enters the adjacent simultaneous fatal van lane',()=>{
  const visibleVan=policy.visibleLaneFromHud({className:'co-lane danger',text:'🚐 2.0s'});
  assert.equal(visibleVan.kind,'vehicle');
