@@ -97,10 +97,10 @@ function renderLobby() {
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
-  root.dataset.previewRevision = 'racing-v90-integrated';
+  root.dataset.previewRevision = 'racing-v100-integrated';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V9.0';
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V10.0';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = (courseInfo?.feel ?? '') +
@@ -115,7 +115,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(),fpsEstimate:quality.fps,touchToInputSampleMs:lastTouchSampleAgeMs, trial: trial.snapshot(), revision: 'V9.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(),fpsEstimate:quality.fps,touchToInputSampleMs:lastTouchSampleAgeMs, trial: trial.snapshot(), revision: 'V10.0' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -424,11 +424,19 @@ async function boot() {
     if (career.index > 0 && g.state === 'race' && g.raceTime < .28) translated.upPressed = false;
     return translated;
   };
+  let v10AuthenticBurstAt=-Infinity;
   const nativeEvents = g.handleEvents.bind(g);
   g.handleEvents = player => {
     const pending = player.events.map(event => ({ ...event, data: { ...event.data } }));nativeEvents(player);
     for (const event of pending) {
       career.onEvent(event, g);events.push({ atRaceSec: g.raceTime, type: event.type, ...event.data }); if (events.length > 800) events.shift();
+      // Only real native earned micro-spray or double boost gives a small
+      // speedometer highlight. This is never an advice overlay or fake award.
+      if ((event.type==='smallBoost'&&event.data?.perfect)||
+           event.type==='double') {
+        v10AuthenticBurstAt=performance.now();
+        root.dataset.v10Burst='true';
+      }
     }
   };
   // No transient text banners over live driving. Native car motion, audio, impact
@@ -445,6 +453,8 @@ async function boot() {
   let lastFuelTick = 0, lastHudTick=-Infinity;
   const frame = now => {
     const dt = (now - lastFrame) / 1000;lastFrame = now;
+    if(root.dataset.v10Burst==='true'&&now-v10AuthenticBurstAt>550)
+      root.dataset.v10Burst='false';
     if ((phase === 'ready' || phase === 'finished') && now - lastFuelTick > 1000) { lastFuelTick = now;fuelView(); }
     if (started && !result && g.player) {
       if (g.player.finished || g.resultShown) finish();
