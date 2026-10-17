@@ -221,7 +221,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
  * The art is intentionally not an 8-way MOBA stick: throttle is automatic. */
 #race-joystick {
   display:block;position:absolute;left:var(--race-left);bottom:var(--race-bottom);
-  width:clamp(110px,34vh,142px);aspect-ratio:1;touch-action:none;
+  width:clamp(124px,36vh,150px);aspect-ratio:1;touch-action:none;
   pointer-events:auto;user-select:none;-webkit-user-select:none;
 }
 #race-joystick .race-stick-track {
@@ -257,7 +257,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 }
 #race-action-pad button.ready {color:#f2fff8;border-color:#99ffe0;}
 @media(max-height:335px) {
-  #race-joystick {width:105px;}
+  #race-joystick {width:116px;}
   #race-action-pad {transform:scale(.88);transform-origin:right bottom;}
   #race-kit #gaugebox {bottom:calc(var(--race-bottom) + 1px);}
 }

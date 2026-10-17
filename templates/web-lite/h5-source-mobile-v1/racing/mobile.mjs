@@ -38,6 +38,7 @@ $('steering-sens').value = joystick.sensitivity;
 let touchDriving = mobile;
 let g, phase = 'ready', started = false, result = null, loading = true, lastFrame = performance.now(), inputTime = performance.now();
 let nativeStartRace, policyReady = false, backgrounded = document.hidden;
+let touchSerial = 0, consumedTouchSerial = -1, lastStickEventAt = 0, lastTouchSampleAgeMs = null;
 let events = [], best = {}, lastRacePassed = false;
 let replayTapCount = 0;
 let justFinishedPassed = null;
@@ -110,7 +111,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), fpsEstimate: quality.fps, touchToInputSampleMs: lastTouchSampleAgeMs, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -314,25 +315,28 @@ $('quality').addEventListener('change', () => {
   $('quality-note').textContent = '已保存画质偏好，下次打开继续生效';
 });
 const joystickSurface = $('joystick');
+const actionButtons = Object.fromEntries([...root.querySelectorAll('[data-race-action]')].map(button => [button.dataset.raceAction, button]));
+const recordStickEvent = () => { touchSerial++; lastStickEventAt = performance.now(); };
 joystickSurface.addEventListener('pointerdown', e => {
   e.preventDefault();
   if (!g || phase !== 'race') return;
   const r = joystickSurface.getBoundingClientRect();
   if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width / 2)) return;
-  touchDriving = true; g.mobileMode = true;
+  touchDriving = true; g.mobileMode = true; recordStickEvent();
   joystickSurface.setPointerCapture(e.pointerId); syncJoystickVisual();
 });
 joystickSurface.addEventListener('pointermove', e => {
   if (joystick.update(e.pointerId, e.clientX)) {
+    recordStickEvent();
     if (e.cancelable) e.preventDefault();
     syncJoystickVisual();
   }
 });
 joystickSurface.addEventListener('pointerup', e => {
-  if (joystick.release(e.pointerId)) {e.preventDefault(); syncJoystickVisual();}
+  if (joystick.release(e.pointerId)) {e.preventDefault(); recordStickEvent(); syncJoystickVisual();}
 });
 const endStick = e => {
-  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault(); syncJoystickVisual();}
+  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault(); recordStickEvent(); syncJoystickVisual();}
 };
 joystickSurface.addEventListener('pointercancel', endStick);
 joystickSurface.addEventListener('lostpointercapture', endStick);
@@ -395,6 +399,10 @@ async function boot() {
     const raw = nativeFrame(), canStep = g.acc + dt >= 1 / 120;
     if (!touchDriving) return raw;
     raw.steerAxis = joystick.snapshot();
+    if (touchSerial !== consumedTouchSerial) {
+      consumedTouchSerial = touchSerial;
+      lastTouchSampleAgeMs = Math.min(500, Math.max(0, Math.round(performance.now() - lastStickEventAt)));
+    }
     const translated = driver.frame(raw,g.player,g.state,{canStep,itemMode:g.itemMode,track:g.track,now:g.raceTime ?? 0});
     if (career.index > 0 && g.state === 'race' && g.raceTime < .28) translated.upPressed = false;
     return translated;
@@ -449,15 +457,15 @@ async function boot() {
         }
         // Native item races also earn nitro from manually controlled drifting.
         if (g.itemMode && touchDriving) document.getElementById('gaugebox')?.classList.remove('hidden');
-        const nitroBtn = root.querySelector('[data-race-action="nitro"]');
+        const nitroBtn = actionButtons.nitro;
         if (nitroBtn) {
           nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
           const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : '氮气';
           if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
         }
-        const smallBtn = root.querySelector('[data-race-action="small"]');
+        const smallBtn = actionButtons.small;
         if (smallBtn) smallBtn.classList.toggle('ready',g.player.smallWindow > 0);
-        const itemBtn = root.querySelector('[data-race-action="item"]');
+        const itemBtn = actionButtons.item;
         if (itemBtn) itemBtn.classList.toggle('ready',!!g.player.items?.[0]);
         const held = g.player.items?.[0];
         if (itemBtn) {

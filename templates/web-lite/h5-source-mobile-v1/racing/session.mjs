@@ -49,13 +49,31 @@ export function tuneRaceFx(game) {
     };
   }
 }
+/** Adaptive phone graphics: persistent 40-45 FPS is not smooth racing.
+ * A short burst or a tab-resume gap must not downgrade quality. User-selected
+ * quality remains authoritative; automatic quality can step high -> mid -> low. */
 export class QualityMonitor {
-  constructor() { this.slow = 0; this.samples = 0; this.dropped = false; this.manual = false; }
+  constructor() {
+    this.slow = 0; this.samples = 0; this.dropped = false; this.manual = false;
+    this.windowTime = 0; this.currentQuality = null; this.averageDt = 1 / 60; this.fps = 60;
+  }
   frame(dt, quality) {
-    if (this.manual || this.dropped || quality === 'low') return null;
+    if (!Number.isFinite(dt) || dt <= 0 || dt > .25) return null;
+    this.averageDt = this.averageDt * .9 + dt * .1;
+    this.fps = Math.round(Math.min(120, Math.max(1, 1 / this.averageDt)));
+    if (this.manual || quality === 'low') return null;
+    if (this.currentQuality !== quality) {
+      this.currentQuality = quality;
+      this.slow = 0; this.samples = 0; this.windowTime = 0;
+    }
     this.samples++;
-    this.slow = dt > .036 ? this.slow + Math.min(.05, dt) : Math.max(0, this.slow - dt * 2);
-    if (this.samples >= 90 && this.slow >= 3) { this.dropped = true; return quality === 'high' ? 'mid' : 'low'; }
-    return null;
+    this.windowTime += dt;
+    // A genuinely sustained <~46 FPS trend, not an occasional dropped frame.
+    this.slow = Math.max(0, this.slow + (dt > .0218 ? Math.min(.05, dt) : -dt * .85));
+    if (this.samples < 55 || this.windowTime < 1.25 || this.slow < .48) return null;
+    const lower = quality === 'high' ? 'mid' : 'low';
+    this.currentQuality = lower;
+    this.slow = 0; this.samples = 0; this.windowTime = 0; this.dropped = true;
+    return lower;
   }
 }

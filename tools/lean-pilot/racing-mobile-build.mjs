@@ -38,7 +38,17 @@ export function patchRacingSource(source) {
     if (output.split(threeAnchor).length !== 2) throw Error('Native Three.js entry anchor changed');
     output = output.replace(threeAnchor, () => threeAnchor + '\n' + sharedThree);
   }
-  return output;
+  return patchMobileCameraFollow(output);
+}
+
+/** Speed up only the touch camera, not the desktop camera or vehicle motion.
+ * A slow chase camera can look like steering latency even at 60 FPS. */
+export function patchMobileCameraFollow(source) {
+  const original = 'this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 4.5 : 7, dt);';
+  const updated = 'this.camYaw = dampAngle(this.camYaw, yawT, this.mobileMode ? (P.drifting ? 8.5 : 13) : (P.drifting ? 4.5 : 7), dt);';
+  if (source.includes(updated)) return source;
+  if (source.split(original).length !== 2) throw Error('Native camera follow anchor changed');
+  return source.replace(original, updated);
 }
 
 /** Pin a course identity to the ACTUAL Track created by the native scene.
@@ -172,6 +182,25 @@ export function patchAnalogSteer(source) {
   for (const [original] of changes) if (source.split(original).length !== 2) throw Error('Native analog steering anchor changed');
   let result = source;
   for (const [original, revised] of changes) result = result.replace(original, revised);
+  return result;
+}
+
+/** Reduce touch steering input lag and high-speed steering starvation.
+ * Keyboard retains the original physics. Steering still obeys native yaw,
+ * grip, collision and speed; no hidden auto-turn or auto-brake is added. */
+export function patchMobileSteeringResponse(source) {
+  const changes = [
+    ['this.steer = damp(this.steer, steerT, 12, dt);',
+     'this.steer = damp(this.steer, steerT, Number.isFinite(inp.steerAxis) ? 28 : 12, dt);'],
+    ['const turn = T.turnRate * clamp(sp / 9, 0, 1) * (1 - 0.55 * clamp(sp / T.vmax, 0, 1.3));',
+     'const turn = T.turnRate * clamp(sp / 9, 0, 1) * (1 - (Number.isFinite(inp.steerAxis) ? 0.46 : 0.55) * clamp(sp / T.vmax, 0, 1.3));'],
+  ];
+  if (changes.every(([,next]) => source.includes(next))) return source;
+  if (changes.some(([,next]) => source.includes(next))) throw Error('Partial native touch response patch');
+  for (const [old] of changes)
+    if (source.split(old).length !== 2) throw Error('Native touch response anchor changed');
+  let result = source;
+  for (const [old,next] of changes) result = result.replace(old,next);
   return result;
 }
 
@@ -339,7 +368,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await readFile(path.join(owned, 'career-expansion.mjs'), 'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))));
+  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchMobileSteeringResponse(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle)))))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');
