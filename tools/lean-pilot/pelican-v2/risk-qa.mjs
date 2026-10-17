@@ -79,21 +79,25 @@ async function shot(page,name,{levelId=activeLevelId,targetBarrierId=null,kind='
  const item={at:new Date().toISOString(),levelId,targetBarrierId,kind,path:path.relative(RUN,file),sha256:sha(await readFile(file))};
  report.screenshots.push(item);return item;
 }
-async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,decisionView=null,decision:policyDecision=null}={}){
+async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,decisionView=null,decision:policyDecision=null,fastReaction=false}={}){
  const touchStart=await page.evaluate(()=>window.__riskTouchEvidence?.length??0);
  const before=await recordSnapshot(page,'before-touch-tap',{levelId,targetBarrierId});
- const action={at:new Date().toISOString(),type:'touch-tap',input:'Playwright public touchscreen.tap at visible button center',selector,levelId,targetBarrierId,normalInputOnly:true,stateInjection:false};
+ const action={at:new Date().toISOString(),type:'touch-tap',input:'Playwright public touchscreen.tap at visible button center',selector,levelId,targetBarrierId,normalInputOnly:true,stateInjection:false,fastReaction};
  if(decisionView)action.visibleDecisionView=decisionView;
  if(policyDecision)action.policyDecision=policyDecision;
  report.actions.push(action);
  if(selector.startsWith('[data-action')&&before.value.phase!=='running')throw Error('Gameplay stopped: '+before.value.reason+' at '+before.value.distance+'m');
  action.touchPoint=await tapVisible(page,selector);
- await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
- const after=await recordSnapshot(page,'after-touch-tap',{levelId,targetBarrierId});
+ // A screenshot-like two-frame evidence wait after a lane change can consume
+ // the whole consecutive-barrier window on software-rendered mobile emulation.
+ // Keep the public touch and trusted pointer capture; defer the full post-tap
+ // snapshot only when the REAL next hazard needs an immediate follow-up input.
+ if(!fastReaction)await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ const after=fastReaction?null:await recordSnapshot(page,'after-touch-tap',{levelId,targetBarrierId});
  const touches=await page.evaluate(start=>window.__riskTouchEvidence?.slice(start)??[],touchStart);
- action.completedAt=new Date().toISOString();action.beforeSnapshotId=before.id;action.afterSnapshotId=after.id;action.nativeTouchEvidence=touches;
+ action.completedAt=new Date().toISOString();action.beforeSnapshotId=before.id;action.afterSnapshotId=after?.id??null;action.nativeTouchEvidence=touches;
  action.trustedTouch=touches.some(event=>event.pointerType==='touch'&&event.isTrusted===true);
- action.visibleViewAfter=await readVisibleView(page);
+ if(!fastReaction)action.visibleViewAfter=await readVisibleView(page);
  return action;
 }
 function makeEpisode(target){
@@ -231,7 +235,11 @@ async function runLevel(level){
    }
    if(decision.action==='left'||decision.action==='right'||decision.action==='jump'){
     const selector=`[data-action="${decision.action}"]`;
-    const action=await tap(page,selector,{levelId:level.id,targetBarrierId:episode?.barrierId??null,decisionView:{distance:view.distance,laneIndex:view.laneIndex,lanes:view.lanes.map(lane=>({...lane}))},decision:{action:decision.action,toLane:decision.toLane,reason:decision.reason,countdown:decision.countdown}});
+    const previous=level.targets[targetIndex-1];
+    const fastReaction=Boolean(previous&&target&&target.distance-previous.distance<=30&&
+     view.distance>=previous.distance+7&&view.distance<target.distance-4&&
+     ['left','right'].includes(decision.action));
+    const action=await tap(page,selector,{levelId:level.id,targetBarrierId:episode?.barrierId??null,fastReaction,decisionView:{distance:view.distance,laneIndex:view.laneIndex,lanes:view.lanes.map(lane=>({...lane}))},decision:{action:decision.action,toLane:decision.toLane,reason:decision.reason,countdown:decision.countdown}});
     if(decision.action==='jump'&&episode&&!episode.jump){
      const proof=await readSnapshot(page);
      console.log('RISK_JUMP_ACTION '+JSON.stringify({engine,level:level.id,target:episode.barrierId,visibleDistance:view.distance,phase:proof.phase,reason:proof.reason,lane:proof.lane,laneTarget:proof.laneTarget,laneIndex:proof.laneIndex,bufferedJump:proof.bufferedJump,airY:proof.y,events:(proof.events??[]).filter(e=>['jump','jump-buffered','failed'].includes(e.type)).slice(-3),trustedTouch:action.trustedTouch}));
