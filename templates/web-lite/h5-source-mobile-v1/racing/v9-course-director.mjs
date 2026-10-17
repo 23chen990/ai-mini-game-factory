@@ -73,7 +73,49 @@ export function validateV9Rhythms(){
  * finish/start positions intact, while avoiding 105 near-identical S bends.
  */
 export function shapeV9RhythmSegments(local,courseId,scale,originalSectors){
-  validateV9Rhythms();
+  
+/** Low-budget real lane-width modulation. The widest portions give actual
+ * overtaking space, while one authored technical approach in each stage is
+ * physically narrower. All road mesh, guardrails, player collision and AI
+ * lateral goals use the same scalar; never paint a fake narrow road.
+ *
+ * Pattern parameters deliberately vary among stages to avoid a fixed
+ * wide-straight/narrow-S cadence. Width remains above the vehicle safety
+ * margin on both mobile and desktop.
+ */
+export const V9_WIDTH_BANDS=Object.freeze(Object.fromEntries(
+  Object.keys(V9_STAGE_RHYTHMS).map(id=>{
+    const n=Number(id),p=V9_STAGE_RHYTHMS[id],breather=p.beats.indexOf(null);
+    const narrowAt=+.12+((n*7)%53)/100;
+    const wideAt=breather>=0
+      ? .66+((n*3)%16)/100
+      : .70+((n*5)%11)/100;
+    return [id,Object.freeze([
+      Object.freeze({at:narrowAt,span:.07+((n%3)*.015),factor:.86+(n%3)*.02}),
+      Object.freeze({at:wideAt,span:.10+((n%4)*.01),factor:1.045+(n%2)*.02}),
+    ])];
+  })
+));
+const smooth01=t=>{const x=Math.max(0,Math.min(1,t));return x*x*(3-2*x);};
+export function v9RoadHalfWidthAt(base,profile,fraction) {
+  if(!Number.isFinite(base)||base<=0)throw Error('Invalid original road width');
+  if(!profile)return base;
+  if(!Number.isFinite(fraction)||!Array.isArray(profile))
+    throw Error('Invalid V9 road width station');
+  const f=((fraction%1)+1)%1;
+  let factor=1;
+  for(const band of profile){
+    const dist=Math.min(Math.abs(f-band.at),1-Math.abs(f-band.at));
+    if(dist>=band.span)continue;
+    const influence=smooth01((band.span-dist)/band.span);
+    factor+=(band.factor-1)*influence;
+  }
+  if(!Number.isFinite(factor)||factor<.83||factor>1.08)
+    throw Error('Unsafe physical road width band');
+  return base*factor;
+}
+
+validateV9Rhythms();
   const plan=V9_STAGE_RHYTHMS[courseId];
   if(!plan||!Array.isArray(local)||!finite(scale)||scale<=0||
      !Array.isArray(originalSectors)||originalSectors.length!==plan.beats.length)
