@@ -504,6 +504,20 @@ export function buildRaceLandmarks(THREE,track,course) {
   }
   group.add(buildCourseIdentity(THREE,track,course,n));
   group.add(buildV8CourseTerrain(THREE,track,course));
+  if(n===7||n===22) {
+    // A visible finish at the real one-way finish distance, not the loop seam.
+    // No collider: native onLap handles the actual crossing and ranking.
+    const at=track.sample(track.length*(n===7?.82:.84),{});
+    const finish=new THREE.Group();finish.name='v8-single-run-finish-'+course;
+    finish.position.set(at.x,at.y,at.z);
+    finish.rotation.y=at.hd;
+    const gold=new THREE.MeshBasicMaterial({color:0xffdd62});
+    for(const side of [-1,1])
+      share(finish,new THREE.BoxGeometry(1.8,8,1.8),gold,
+        side*(track.halfW+2.8),4,0);
+    share(finish,new THREE.BoxGeometry(track.halfW*2+7,1.7,2),gold,0,8,0);
+    group.add(finish);
+  }
   return group;
 }
 
