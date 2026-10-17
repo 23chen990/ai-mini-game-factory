@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createEndlessLevel,endlessSegment,extendEndless} from './endless.mjs';
+import {createEndlessLevel,endlessSegment,extendEndless,endlessTier,endlessCruiseSpeed,ENDLESS_TIERS} from './endless.mjs';
 import {newRun,retireRun,settle,newSave,advance,input} from './adventure.mjs';
 
 test('infinite coast is deterministic by seed and index, never by player lane',()=>{
@@ -72,4 +72,50 @@ test('long-session event buffer keeps absolute offsets for current HUD feedback'
  assert.equal(r.events.at(-1).type,'steer-input');
  assert.equal(r.events.at(-1).source,'tap');
  assert.equal(r.events.at(-1).target,0);
+});
+
+test('five higher-pressure zones ramp real speed smoothly without unfair speed spikes',()=>{
+ assert.equal(ENDLESS_TIERS.length,5);
+ assert.deepEqual(ENDLESS_TIERS.map(t=>t.speed),[8.3,8.8,9.4,10,10.5]);
+ assert.deepEqual(ENDLESS_TIERS.map(t=>t.at),[0,420,980,1800,3200]);
+ for(const tier of ENDLESS_TIERS.slice(1)){
+  assert.equal(endlessTier(tier.at).id,tier.id);
+  const old=ENDLESS_TIERS[tier.id-1];
+  assert.ok(Math.abs(endlessCruiseSpeed(tier.at)-old.speed)<1e-8);
+  assert.ok(Math.abs(endlessCruiseSpeed(tier.at+110)-tier.speed)<1e-8);
+ }
+ assert.ok(endlessCruiseSpeed(1000000)<=10.5);
+ const r=newRun(6,{seed:91});
+ r.obstacles=[];r.fishes=[];r.endless.nextX=3000;r.distance=419.95;
+ advance(r,.2);
+ assert.equal(r.endless.tier,1);
+ assert.equal(r.events.filter(e=>e.type==='endless-tier'&&e.tier===1).length,1);
+ assert.equal(r.phase,'running');
+ r.distance=1200;
+ advance(r,.1);
+ assert.ok(r.speed>=9.39&&r.speed<=9.41,'actual simulation speed ramps to the authored tier');
+});
+test('thousands of seeded challenge gates retain a true open route and adequate reaction room',()=>{
+ for(const seed of [0,1,77,12345,20261017,99999999]){
+  let lastX=0,previousOpen=null;
+  for(let index=0;index<160;index++){
+   const x=100+index*70;
+   const segment=endlessSegment(seed,index,x);
+   assert.ok(segment.obstacles.length<=2);
+   assert.ok(segment.obstacles.every(o=>o.lane!==segment.open));
+   assert.ok(segment.obstacles.every(o=>o.offset>=0&&o.offset<=8));
+   assert.equal(new Set(segment.obstacles.map(o=>o.lane)).size,segment.obstacles.length);
+   if(index>=2)assert.equal(segment.obstacles.length,2);
+   if(index>=16&&previousOpen!==null&&x>=980)
+    assert.notEqual(segment.open,previousOpen,'advanced gaps rotate instead of allowing idle camping');
+   if(index>0)assert.ok(x-lastX>=62);
+   previousOpen=segment.open;lastX=x;
+  }
+ }
+ const r=newRun(6,{seed:12});
+ r.distance=4300;
+ extendEndless(r);
+ assert.ok(r.obstacles.length>0);
+ assert.ok(r.obstacles.every(o=>o.x>=r.distance-90));
+ assert.ok(r.obstacles.some(o=>o.id.startsWith('endless-o-')));
 });
