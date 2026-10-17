@@ -125,6 +125,8 @@ async function boot() {
     }).join('');
     $('goal').max = id === 'cf-transport-ship' && displayChallenge.drill==='reposition'
       ? displayChallenge.openingHits + displayChallenge.minTravel + displayChallenge.target
+      : id === 'cf-transport-ship' && selected.kind === 'defend'
+        ? displayChallenge.target*displayChallenge.holdSeconds
       : id === 'cf-transport-ship' && selected.kind === 'survive' ? selected.limitMs / 1000 : selected.target;
     $('goal').value = 0; root.dataset.challenge = selected.id;
     if (id === 'cf-transport-ship') {
@@ -187,7 +189,8 @@ async function boot() {
       native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
         kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,
-        travel:fpsUx?.distanceMeters()||0,...fpsUx?.drillMetrics()});
+        travel:fpsUx?.distanceMeters()||0,...fpsUx?.drillMetrics(),
+        ...fpsUx?.defenseMetrics()});
       native.simulatedSeconds = () => g.time;
       fpsUx = createFpsMobileUx(g, root, document);
       renderFpsPrefs();break; }
@@ -232,6 +235,8 @@ async function boot() {
   const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return; activeChallenge = id === 'cf-transport-ship' ? (elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
     if(activeChallenge?.drill==='reposition')
       $('goal').max=activeChallenge.openingHits+activeChallenge.minTravel+activeChallenge.target;
+    if(activeChallenge?.kind==='defend')
+      $('goal').max=activeChallenge.target*activeChallenge.holdSeconds;
     await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
@@ -279,7 +284,14 @@ async function boot() {
         const metrics = native.metrics();
         const result = challengeResult(activeChallenge, metrics, round.phase === 'finished' || phase === 'finished', round.elapsedMs);
         round.score = result.rewardScore;
-        $('status').textContent = activeChallenge.drill==='reposition'
+        $('status').textContent = activeChallenge.kind==='defend'
+          ? (metrics.defenseBreached?'✕ 据点失守':
+             '◆ '+(metrics.defenseSite||'A')+' '+
+             Math.floor(metrics.defenseHeld||0)+'/'+activeChallenge.holdSeconds+'秒'+
+             (metrics.defenseContested?' · 争夺中':
+              (metrics.defenseEnemyHeld||0)>=2
+                ? ' · 敌'+Math.floor(metrics.defenseEnemyHeld)+'/'+activeChallenge.breachSeconds+'秒':''))
+          : activeChallenge.drill==='reposition'
           ? result.label
           : activeChallenge.kind === 'survive'
           ? '❤ 余' + Math.max(0, activeChallenge.target - (metrics.deaths || 0)) + '次 · ↗ ' +
@@ -287,7 +299,10 @@ async function boot() {
           : activeChallenge.maxDeaths!==undefined
             ? '☠ ' + (metrics.deaths||0) + '/' + activeChallenge.maxDeaths + ' · ' + result.label
             : result.label;
-        $('goal').value = activeChallenge.drill==='reposition'
+        $('goal').value = activeChallenge.kind==='defend'
+          ? Math.min(activeChallenge.target,(metrics.defenseCaptured||0))*activeChallenge.holdSeconds+
+            Math.min(activeChallenge.holdSeconds,metrics.defenseHeld||0)
+          : activeChallenge.drill==='reposition'
           ? (metrics.drillFirstHit?activeChallenge.openingHits:0) +
             Math.min(activeChallenge.minTravel,metrics.drillTravel||0) +
             Math.min(activeChallenge.target,metrics.drillFollowUpHits||0)
