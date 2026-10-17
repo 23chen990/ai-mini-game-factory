@@ -1702,6 +1702,7 @@ export function createFpsMobileUx(game, root, doc) {
     },
     onStart(challenge) {
       activeChallenge = challenge || null;
+      root.dataset.fpsLite=String(activeChallenge?.lite===true);
       if(activeChallenge?.lite===true && game?.opts){
         // An authored narrow combat FOV enlarges target silhouettes on phones.
         // Original camera follows opts.fov through Player.update().
