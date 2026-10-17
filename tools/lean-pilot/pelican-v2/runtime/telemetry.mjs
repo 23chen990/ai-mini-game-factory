@@ -11,16 +11,17 @@ export function loadPlaytestMetrics(raw){
   const data=JSON.parse(raw);
   if(!data||data.version!==1||!data.counters||typeof data.counters!=='object'||Array.isArray(data.counters)||!Array.isArray(data.events)||data.events.length>90)return null;
   for(const [event,n]of Object.entries(data.counters))if(!EVENTS.has(event)||!valid(n))return null;
-  const events=data.events.filter(e=>EVENTS.has(e?.event)&&validTimestamp(e?.at)&&[1,2,3,4,5,6].includes(e?.level)&&valid(e?.distance));
-  return {version:1,counters:{...data.counters},events:events.slice(-80).map(e=>({event:e.event,level:e.level,distance:e.distance,at:e.at}))};
+  const events=data.events.filter(e=>EVENTS.has(e?.event)&&validTimestamp(e?.at)&&[1,2,3,4,5,6].includes(e?.level)&&valid(e?.distance)&&valid(e?.elapsedSec??0));
+  return {version:1,counters:{...data.counters},events:events.slice(-80).map(e=>({event:e.event,level:e.level,distance:e.distance,elapsedSec:e.elapsedSec??0,at:e.at}))};
  }catch{return null;}
 }
-export function recordPlaytestEvent(metrics,event,{level=1,distance=0}={}){
+export function recordPlaytestEvent(metrics,event,{level=1,distance=0,elapsed=0}={}){
  if(!EVENTS.has(event))return false;
  const cleanLevel=[1,2,3,4,5,6].includes(level)?level:1;
  const cleanDistance=valid(Math.floor(distance))?Math.floor(distance):0;
  metrics.counters[event]=Math.min(9999999,(metrics.counters[event]??0)+1);
- metrics.events.push({event,level:cleanLevel,distance:cleanDistance,at:Date.now()});
+ const elapsedSec=valid(Math.floor(elapsed))?Math.floor(elapsed):0;
+ metrics.events.push({event,level:cleanLevel,distance:cleanDistance,elapsedSec,at:Date.now()});
  if(metrics.events.length>80)metrics.events.shift();
  return true;
 }
