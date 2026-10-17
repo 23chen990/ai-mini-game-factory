@@ -44,8 +44,17 @@ export function clearNativeInput(input) {
   input.down.clear(); input.pressed.clear(); input.touchPressed.clear();
   for (const key of Object.keys(input.touch)) input.touch[key] = false;
 }
+/** The single-run courses finish before their geometry closes back uphill.
+ * Keep these fractions aligned with patchV8PointToPoint; never move the finish
+ * merely to improve an engagement metric. This helper is read-only. */
+export const RACE_FINISH_FRACTIONS = Object.freeze({'race-07': .82, 'race-22': .84});
+export function raceDistanceM(trackLength, {course, laps = 1} = {}) {
+  if (!Number.isFinite(trackLength) || trackLength <= 0 ||
+      !Number.isInteger(laps) || laps < 1) throw Error('Invalid physical race distance');
+  return trackLength * (RACE_FINISH_FRACTIONS[course] ?? laps);
+}
 export function resultSummary(game) {
-  const p = game.player, distance = game.track.length * game.settings.laps;
+  const p = game.player, distance = raceDistanceM(game.track.length,game.settings);
   return {
     finished: !!p.finished, place: game.standings.indexOf(p) + 1,
     time: p.finished ? p.finishTime : null, map: game.settings.map,
@@ -65,6 +74,7 @@ export const raceCameraFov = (speed, nitro, small) => Math.min(69, 61.5 + Math.a
 export const raceBloomStrength = () => .3;
 const tunedFx = new WeakSet();
 export function tuneRaceFx(game) {
+  installCountdownQualitySafety(game);
   if (!game.fx || tunedFx.has(game.fx)) return;
   tunedFx.add(game.fx);
   for (const kind of ['smoke', 'glow']) {
@@ -190,4 +200,43 @@ export class RaceInputHealth {
       timingScope:'pointer-event-to-native-input-sample-and-overlay-RAF-only'
     };
   }
+}
+
+
+/** Pre-race rendering must not depend on reaching race state to recover.
+ * The native loop caps simulation dt; measure real render intervals instead.
+ * Only the existing severe-stall policy applies here, preserving ordinary
+ * manual preferences. Do not save, alter physics, or skip the countdown.
+ */
+const countdownQualityInstalled = new WeakSet();
+export function installCountdownQualitySafety(game, {now = () => globalThis.performance.now()} = {}) {
+  if (!game || typeof game.render !== 'function' ||
+      typeof game.setupQuality !== 'function' || !game.settings ||
+      typeof now !== 'function' || countdownQualityInstalled.has(game)) return false;
+  const monitor = new QualityMonitor();
+  monitor.manual = true; // Same severe-only exception used for saved preferences.
+  let previous = null;
+  const nativeRender = game.render;
+  game.render = function(...args) {
+    const active = this.state === 'countdown' && !globalThis.document?.hidden;
+    const time = now();
+    if (!active || !Number.isFinite(time)) {
+      previous = null;
+      monitor.consecutiveStalls = 0;
+      monitor.severeManualLag = 0;
+    } else {
+      const elapsed = previous === null ? 0 : (time - previous) / 1000;
+      previous = time;
+      if (elapsed > 0) {
+        const lower = monitor.frame(elapsed, this.settings.quality);
+        if (lower) {
+          this.settings.quality = lower;
+          this.setupQuality();
+        }
+      }
+    }
+    return nativeRender.apply(this, args);
+  };
+  countdownQualityInstalled.add(game);
+  return true;
 }

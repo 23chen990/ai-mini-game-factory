@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "targetGame": "qq-speed",
+  "runId": "h5-qq-mobile-20261013",
+  "workspace": "runs/h5-qq-mobile-20261013/workspace/game",
+  "baseCommit": "6e3e12b5f845b06558d8928d7beca8c4aee3ef80",
+  "reason": "Cross-module gameplay and native build validation; human feedback cannot be closed by unit tests.",
+  "evidenceScope": "Source-backed audit; no current user phone recording; local centreline reconstruction is not native PlayerCar or human QA.",
+  "reproductionMatrix": {
+    "objects": ["mobile camera","rotary wheel","course 02","course 07","course 22","other 27 courses","result completion"],
+    "states": ["start","mid-race","lap transition","one-way finish","replay"],
+    "renderPaths": ["actual native Track geometry","mobile touch overlay","desktop keyboard"],
+    "devices": ["pure Node tests","GitHub Chromium software WebGL","physical iPhone NOT_RUN","physical Android NOT_RUN"]
+  },
+  "findings": [
+    {"id":"MOBILE-OLD-CLAIMS","status":"SUPERSEDED_IN_V91","details":"V9.1 already has close mobile-only camera, low-quality default, pointer fallback and the chosen sole rotary wheel. Preserve rather than replace."},
+    {"id":"02-STRAIGHT","status":"ALREADY_REDUCED_IN_V91","details":"Existing grandSweep shortened the former opening low-curvature interval. Do not add gratuitous bends."},
+    {"id":"07-PACING","status":"PATCHED_AWAITING_NATIVE_QA","details":"Add an early entry decision and a late in-race release arc; do not count or edit the hidden return road."},
+    {"id":"22-PACING","status":"PATCHED_AWAITING_NATIVE_QA","details":"Move existing grandSweep from original node 15 (mainly after the 84% finish) to node 11, add early and middle decisions. Unrelated 28 geometries remain unchanged."},
+    {"id":"ONE-WAY-COMPLETION","status":"LOCAL_REGRESSION_PASS","details":"Result summary previously divided by a full loop, returning 82%/84% after a valid one-way finish. Use actual race distance without modifying rank or finish."},
+    {"id":"PRIOR-REPORT-RETURN","status":"CORRECTED","details":"The uphill closing section is not raced. Low curvature is not proof of zero input, and constant-speed seconds are not observed play time."}
+  ],
+  "acceptance": ["10 dependency-free regression tests pass","All 30 built native layouts match audited data","07 longest low-curvature interval below 300m and improves on baseline","22 longest low-curvature interval below 400m and improves by more than half","Other 28 course geometry metrics unchanged","Existing full native geometry/shortcut/AI/Chromium gates remain unchanged","Human device feel and actual decision use NOT_RUN"],
+  "notChanged": ["sole rotary control","rank/star/fuel rules","save keys","AI pace","car steering or braking physics","advertising","other games","main branch","V9 and V10 preview branches"],
+  "localTests": {"tests":10,"passed":10,"failed":0},
+  "humanQA":"NOT_RUN",
+  "publishable":false
+}

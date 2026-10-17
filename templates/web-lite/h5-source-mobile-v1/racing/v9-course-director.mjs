@@ -56,6 +56,28 @@ const STYLES=Object.freeze({
   // wheel commitments. Still genuine spline points and native collisions.
   doubleApex:[[.14,.18],[.34,1.02],[.51,.18],[.68,-.96],[.85,-.20]],
 });
+/** V9.1 pacing correction is limited to measured low-turn intervals.
+ * Indices refer to ORIGINAL nodes, never indices shifted by previous inserts.
+ * Offsets use the same pre-V8-stretch metre convention as the authored beats.
+ * The first node, return road, near-fork entry and all car physics are intact. */
+export const V91_PACING_SECTORS = Object.freeze({
+  '03': Object.freeze([
+    Object.freeze({index:0, amplitude:12, side:1, shape:'entry'})
+  ]),
+  '07': Object.freeze([
+    Object.freeze({index:0, amplitude:12, side:1, shape:'entry'}),
+    Object.freeze({index:14, amplitude:12, side:-1, shape:'release'})
+  ]),
+  '22': Object.freeze([
+    Object.freeze({index:0, amplitude:10, side:-1, shape:'entry'}),
+    Object.freeze({index:9, amplitude:12, side:1, shape:'switch'})
+  ])
+});
+const PACING_SHAPES = Object.freeze({
+  entry:[[.30,0],[.58,1],[.82,.25]],
+  release:[[.23,.25],[.54,1],[.80,.35]],
+  switch:[[.26,.65],[.55,-.8],[.81,-.15]]
+});
 const finite=v=>typeof v==='number'&&Number.isFinite(v);
 export function validateV9Rhythms(){
   const ids=Object.keys(V9_STAGE_RHYTHMS);
@@ -118,17 +140,21 @@ export function v9RoadHalfWidthAt(base,profile,fraction) {
 }
 
 
-export function shapeV9RhythmSegments(local,courseId,scale,originalSectors){
+export function shapeV9RhythmSegments(local,courseId,scale,originalSectors,{pacing=true}={}){
   
 validateV9Rhythms();
   const plan=V9_STAGE_RHYTHMS[courseId];
   if(!plan||!Array.isArray(local)||!finite(scale)||scale<=0||
      !Array.isArray(originalSectors)||originalSectors.length!==plan.beats.length)
     throw Error('Missing authored rhythm contract '+courseId);
-  const out=local.map(v=>v.slice()),seen=new Set();
+  const out=local.map(v=>v.slice()),seen=new Set(),insertions=[];
   let applied=0;
   for(let k=originalSectors.length-1;k>=0;k--){
-    const [index,amplitude,side]=originalSectors[k],style=plan.beats[k];
+    const [authoredIndex,amplitude,side]=originalSectors[k],style=plan.beats[k];
+    // The old 22 grandSweep at node 15 was mainly beyond its 84% finish.
+    // Place the same authored corner at node 11, inside the actual race.
+    const index=pacing && courseId==='22' && authoredIndex===15 &&
+      style==='grandSweep' ? 11 : authoredIndex;
     if(!Number.isInteger(index)||index<1||index>=local.length-1||
        seen.has(index)||!finite(amplitude)||amplitude<10||amplitude>30||
        ![-1,1].includes(side))throw Error('Invalid authored rhythm segment '+courseId);
@@ -158,10 +184,30 @@ validateV9Rhythms();
       +(a[1]+dz*t+normalZ*side*maximum*w).toFixed(4),
       +(a[2]+(b[2]-a[2])*t).toFixed(4),
     ]);
-    out.splice(index+1,0,...points);
+    insertions.push({index,points});
     applied++;
   }
+  let pacingApplied=0;
+  for(const entry of pacing ? V91_PACING_SECTORS[courseId]??[] : []) {
+    const {index,amplitude,side,shape}=entry;
+    if(!Number.isInteger(index)||index<0||index>=local.length-1||seen.has(index))
+      throw Error('Invalid pacing anchor '+courseId);
+    const a=local[index],b=local[index+1],dx=b[0]-a[0],dz=b[1]-a[1];
+    const span=Math.hypot(dx,dz),profile=PACING_SHAPES[shape];
+    if(!profile||!finite(span)||span*scale<100)
+      throw Error('Pacing sector too short '+courseId);
+    const offset=side*amplitude/scale;
+    const points=profile.map(([t,w])=>[
+      +(a[0]+dx*t-dz/span*offset*w).toFixed(4),
+      +(a[1]+dz*t+dx/span*offset*w).toFixed(4),
+      +(a[2]+(b[2]-a[2])*t).toFixed(4)
+    ]);
+    insertions.push({index,points});seen.add(index);pacingApplied++;
+  }
+  // Sort once so insertions can never reinterpret another sector's indices.
+  for(const {index,points} of insertions.sort((a,b)=>b.index-a.index))
+    out.splice(index+1,0,...points);
   if(!applied)throw Error('No real V9 geometry changes '+courseId);
-  return {points:out,identity:plan.identity,applied,rest:originalSectors.length-applied};
+  return {points:out,identity:plan.identity,applied,rest:originalSectors.length-applied,pacingApplied};
 }
 validateV9Rhythms();

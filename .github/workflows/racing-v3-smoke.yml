@@ -5,6 +5,8 @@ on:
       - 'templates/web-lite/h5-source-mobile-v1/**'
       - 'tools/lean-pilot/racing-mobile-build.mjs'
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
+      - 'tools/lean-pilot/racing-browser-config.mjs'
+      - 'tools/lean-pilot/racing-real-browser-preload.mjs'
       - 'tools/lean-pilot/racing-geometry-audit.mjs'
       - 'tools/lean-pilot/racing-shortcut-cost.mjs'
       - 'tools/lean-pilot/tests/racing-shortcut-cost.test.mjs'
@@ -53,7 +55,7 @@ jobs:
           node --test tools/lean-pilot/tests/racing-shortcut-cost.test.mjs
           node --test tools/lean-pilot/tests/racing-visible-policy.test.mjs
           node --test tools/lean-pilot/racing-delivery-verify.test.mjs
-          pnpm exec eslint tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          pnpm exec eslint tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash
@@ -80,10 +82,10 @@ jobs:
         run: node tools/lean-pilot/racing-native-player-qa.mjs
       - name: Install matching Chromium browser
         run: pnpm exec playwright install --with-deps chromium
-      - name: Launch actual bundled WebGL racing in Chromium
+      - name: Launch actual bundled WebGL racing in complete Chromium
         run: |
           node --test tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
-          node tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
+          node --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
       - name: One-stage natural visible-touch diagnostic (non-gating)
         if: github.event_name == 'workflow_dispatch' && inputs.natural_touch == true
         continue-on-error: true
