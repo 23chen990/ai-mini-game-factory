@@ -4,7 +4,7 @@ import { EXPANSION_COURSES, EXTRA_STAGES } from '../racing/career-expansion.mjs'
 import { STAGES, CAREER_KEY, newCareer, loadCareer, stageUnlocked, gradeStage,
   recordStage } from '../racing/career.mjs';
 import { CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, COURSE_ROAD_WIDTHS,
-  COURSE_TECHNICAL_SECTORS, createCareerLayouts, injectTechnicalSectors,
+  createCareerLayouts, injectTechnicalSectors,
   careerCourseDetails } from '../racing/track-design.mjs';
 
 const stageId=n=>String(n).padStart(2,'0');
