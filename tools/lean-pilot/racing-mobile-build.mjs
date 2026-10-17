@@ -38,7 +38,7 @@ export function patchRacingSource(source) {
     if (output.split(threeAnchor).length !== 2) throw Error('Native Three.js entry anchor changed');
     output = output.replace(threeAnchor, () => threeAnchor + '\n' + sharedThree);
   }
-  return patchMobileCameraFollow(output);
+  return output;
 }
 
 /** Speed up only the touch camera, not the desktop camera or vehicle motion.
@@ -381,7 +381,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchRacingSource(beforeMain)))))));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchMobileCameraFollow(patchRacingSource(beforeMain))))))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);

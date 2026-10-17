@@ -80,6 +80,26 @@ test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；�
   g.mobileMode = false;g.fx.glow.emit(...args);assert.deepEqual(calls.at(-1).args, args);
   const bloom = need('raceBloomStrength');assert.equal(bloom(true), bloom(false));assert.ok(bloom(true) <= .3);
 });
+test('mobile quality downgrade is triggered by sustained 40 FPS, not by isolated spikes or tab resume',()=>{
+  const Monitor=need('QualityMonitor');
+  const stable=new Monitor();
+  for(let i=0;i<180;i++) assert.equal(stable.frame(1/60,'high'),null);
+  assert.ok(stable.fps>=55);
+  for(let i=0;i<12;i++) stable.frame(.045,'high');
+  for(let i=0;i<150;i++) assert.equal(stable.frame(1/60,'high'),null,'brief jank must recover');
+  assert.equal(stable.frame(1,'high'),null,'tab resume gap is not a frame sample');
+  let q='high',steps=[];
+  const monitor=new Monitor();
+  for(let i=0;i<300;i++){
+    const next=monitor.frame(.025,q);
+    if(next){steps.push(next);q=next;}
+  }
+  assert.deepEqual(steps,['mid','low'],'persistent 40 FPS drops twice until low');
+  const manual=new Monitor();manual.manual=true;
+  for(let i=0;i<200;i++) assert.equal(manual.frame(.04,'high'),null);
+  assert.ok(manual.fps<35);
+});
+
 test('自适应只在持续低帧率后降一档；手选画质保留', () => {
   const Monitor = need('QualityMonitor'), q = new Monitor();
   for (let i = 0; i < 200; i++) assert.equal(q.frame(.016, 'mid'), null);

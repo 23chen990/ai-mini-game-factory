@@ -70,7 +70,7 @@ export class QualityMonitor {
     this.windowTime += dt;
     // A genuinely sustained <~46 FPS trend, not an occasional dropped frame.
     this.slow = Math.max(0, this.slow + (dt > .0218 ? Math.min(.05, dt) : -dt * .85));
-    if (this.samples < 55 || this.windowTime < 1.25 || this.slow < .48) return null;
+    if (this.samples < 55 || this.windowTime < 1.25 || this.slow < 1.10) return null;
     const lower = quality === 'high' ? 'mid' : 'low';
     this.currentQuality = lower;
     this.slow = 0; this.samples = 0; this.windowTime = 0; this.dropped = true;

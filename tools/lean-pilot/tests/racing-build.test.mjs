@@ -28,6 +28,32 @@ test('赛车源补丁保留原输入、物理和AI流程，只约束手机镜头
   }
   assert.equal(api.patchRacingSource(output), output);
 });
+test('mobile camera yaw follows faster without changing desktop yaw or legacy source fixture', () => {
+  assert.equal(typeof api.patchMobileCameraFollow, 'function');
+  const line = 'this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 4.5 : 7, dt);';
+  const newLine = api.patchMobileCameraFollow(line);
+  assert.match(newLine,/this\.mobileMode \? \(P\.drifting \? 8\.5 : 13\)/);
+  assert.match(newLine,/\(P\.drifting \? 4\.5 : 7\)/);
+  assert.equal(api.patchMobileCameraFollow(newLine),newLine);
+  assert.throws(()=>api.patchMobileCameraFollow('unknown source'),/anchor changed/);
+  assert.ok(api.patchRacingSource(patchFixture).includes('const inp = this.input.frame();'));
+});
+
+test('mobile steering improves reversal response but keeps keyboard steering and real physical dynamics', () => {
+  assert.equal(typeof api.patchMobileSteeringResponse,'function');
+  const source = [
+    'this.steer = damp(this.steer, steerT, 12, dt);',
+    'const turn = T.turnRate * clamp(sp / 9, 0, 1) * (1 - 0.55 * clamp(sp / T.vmax, 0, 1.3));',
+    'this.h += this.steer * turn * dt * dir * (onGround ? 1 : 0.35);',
+  ].join('\n');
+  const updated = api.patchMobileSteeringResponse(source);
+  assert.match(updated,/Number\.isFinite\(inp\.steerAxis\) \? 28 : 12/);
+  assert.match(updated,/Number\.isFinite\(inp\.steerAxis\) \? 0\.46 : 0\.55/);
+  assert.match(updated,/this\.h \+= this\.steer \* turn \* dt/);
+  assert.equal(api.patchMobileSteeringResponse(updated),updated);
+  assert.throws(()=>api.patchMobileSteeringResponse(source.replace('12, dt','7, dt')),/anchor changed/);
+});
+
 test('未知源版本不能静默套用补丁', () => {
   assert.equal(typeof api.patchRacingSource, 'function', '缺少隔离赛车构建');
   assert.throws(() => api.patchRacingSource('class OtherGame {}'), /anchor|锚点/u);

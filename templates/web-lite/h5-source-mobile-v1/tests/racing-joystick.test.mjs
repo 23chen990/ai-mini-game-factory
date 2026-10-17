@@ -25,6 +25,23 @@ test('fixed wheel: real analogue angle, small corrections, direction reversal an
   assert.equal(j.snapshot(),0);
   assert.equal(j.active,false);
 });
+test('touch wheel has shorter throw but preserves neutral/no tremor and countersteer', () => {
+  const j = new RacingJoystick();
+  assert.equal(j.deadzone,.075);
+  assert.equal(j.fullThrow,.66);
+  j.press(90,200,200,70);
+  j.update(90,196);
+  assert.equal(j.snapshot(),0,'tiny finger jitter is not steering');
+  j.update(90,177);
+  assert.ok(j.snapshot()>0&&j.snapshot()<1);
+  j.update(90,153);
+  assert.equal(j.snapshot(),1,'firm thumb displacement reaches full lock');
+  j.update(90,247);
+  assert.equal(j.snapshot(),-1,'no artificial intermediate direction lock on countersteer');
+  j.release(90);
+  assert.equal(j.snapshot(),0);
+});
+
 test('second finger cannot steal joystick; unrelated pointercancel cannot clear control', () => {
   const j=new RacingJoystick();
   j.press(1,95,100,50);
