@@ -1,6 +1,7 @@
 /* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
 import {cfStartDefense,cfStepDefense,cfAdvanceAssault,cfStartExtraction,cfStepExtraction} from './engine.mjs';
+import {createCfCoverAssault,cfV20CoverEnabled} from './cf-cover-assault.mjs';
 /** CSS/UI stays at native resolution; only CF native WebGL render pixels change.
  * Adjust after sustained measured frame-rate intervals, not single spikes. */
 /** A lower WebGL drawing buffer alone does NOT resize Three.js EffectComposer
@@ -56,15 +57,20 @@ export function withinScopedLens({x,y,width,height,scoped}) {
   return Math.hypot(x*width/2,y*height/2) <= Math.min(width,height)*.455;
 }
 /** Let a novice actually take the AWM opening shot while native 3v3 continues. */
-export function holdOpeningTeammateFire(actors,ownTeam,now) {
+export function holdOpeningTeammateFire(actors,ownTeam,now,duration=13) {
   if(!Number.isFinite(now)) return 0;
   let held=0;
   for(const actor of actors||[]) {
     if(!actor || actor.isPlayer || !actor.alive || actor.team!==ownTeam)continue;
-    actor.readyAt=Math.max(Number(actor.readyAt)||0,now+13);
+    actor.readyAt=Math.max(Number(actor.readyAt)||0,
+      now+Math.max(0,Math.min(13,Number.isFinite(duration)?duration:13)));
     held++;
   }
   return held;
+}
+/** Keep native combat controls inert while dead; pause/revive overlays still work. */
+export function cfIgnoreDeadCombatTouch({alive,nativeControl}={}) {
+  return alive!==true&&nativeControl===true;
 }
 /** Touch-generated mouse compatibility events must never fire the native PC rifle. */
 export function blockMobileTouchMouse({touchMode,fromTouch,msSinceTouch}) {
@@ -112,7 +118,7 @@ export function cfReactToRealScoutThreat({actor,player,challenge,now}={}) {
 export function cfScoutHoldSeconds(challenge) {
   if(challenge?.elite===true)return challenge.kind==='kills'?6:4;
   if(challenge?.kind==='kills')return 15;
-  if(challenge?.kind==='hits'&&challenge.drill==='reposition')return 10;
+  if(challenge?.kind==='hits'&&challenge.drill==='reposition')return challenge?.lite===true?9:10;
   return 7;
 }
 /** Time before the native bot may open fire (not invulnerability).
@@ -120,7 +126,9 @@ export function cfScoutHoldSeconds(challenge) {
 export function cfScoutReadyDelaySeconds(challenge) {
   if(challenge?.elite===true)return challenge.kind==='kills'?3.5:2.5;
   if(challenge?.kind==='kills')return 6.5;
-  return challenge?.kind==='hits'&&challenge.drill==='reposition'?4.5:5;
+  if(cfV20CoverEnabled(challenge)&&challenge.id==='tags')return 5.3;
+  return challenge?.kind==='hits'&&challenge.drill==='reposition'?
+    (challenge?.lite===true?3.5:4.5):5;
 }
 /** Original Bot instances use native death/rebirth and gun physics.
  * Only this beginner drill authors a nearby, walkable team respawn lane.
@@ -161,6 +169,7 @@ export function cfEliteUnlocked(record) {
 }
 /** First rifle mission trains with auto-fire, while expert needs genuine touch input. */
 export function cfAutoFireEligible(challenge, realHits = 0) {
+  if(challenge?.lite===true)return false;
   return challenge?.kind === 'hits' && challenge.elite !== true &&
     (challenge.drill !== 'reposition' || (Number.isFinite(realHits) &&
       realHits < challenge.openingHits));
@@ -203,6 +212,7 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
 }
 /** Preview copy mirrors each mission's actual input mechanics. */
 export function cfTouchTutorial(challenge) {
+  if(challenge?.lite===true)return '右手拖动瞄准 · 按住开火追踪';
   if (challenge?.kind === 'hits')
     return challenge.drill==='reposition'
       ? (challenge.elite ? '精英手动首枪，横移后按住开火拖动瞄准' : '首枪自动开火；换位后按住开火拖动瞄准')
@@ -216,6 +226,7 @@ export function cfTouchTutorial(challenge) {
 }
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
+  if(challenge.lite===true)return Math.ceil(challenge.limitMs/1000)+'秒 · '+challenge.objective;
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
     ? challenge.elite===true
       ? Math.ceil(challenge.limitMs/1000)+'秒精英突围：手动首枪，换位'+
@@ -281,6 +292,23 @@ export function mobileEnemyDifficulty(kind, seconds = 0, stats = {}, elite = fal
     fov: lerp(expert ? 1.6 : 1.48, expert ? 1.9 : 1.75),
     bunny: expert ? 0.015 : 0
   };
+}
+
+/** CF lite: more counterplay, never fabricated damage or omniscient aim.
+ * Enemy reaction tightens after combat begins; player shots and native
+ * geometry/LOS decide the real outcome. Friendly bots retain base behavior. */
+export function cfLiteEnemyProfile(base,challenge,elapsedSec=0) {
+  if(!base||challenge?.lite!==true)return base;
+  const weight={tags:.12,precision:.07,survive:.20,defense:.22,
+    assault:.20,marksman:.13,evac:.24,counter:.27}[challenge.id]??.12;
+  const elapsed=Number.isFinite(elapsedSec)?Math.max(0,elapsedSec):0;
+  const k=weight*(.45+.55*Math.min(1,elapsed/24));
+  const limit=(v,min,max)=>Math.min(max,Math.max(min,v));
+  return {...base,
+    react:base.react.map(v=>+limit(v*(1-k),.22,2.4).toFixed(3)),
+    aimErr:+limit(base.aimErr*(1-k*.38),.038,.20).toFixed(3),
+    strafe:+limit(base.strafe*(1+k*.75),.07,.9).toFixed(3),
+    track:+limit(base.track*(1+k*.20),1.2,5.5).toFixed(3)};
 }
 
 // Select among *existing authored spawn points* instead of teleporting into
@@ -451,12 +479,12 @@ export function cfNativeShotAimError({targetYaw,targetPitch,playerYaw,playerPitc
 // A genuine, hittable intro opponent placed inside an existing clear cargo
 // lane. Candidate positions are derived from the user's forward bearing and
 // checked against real world geometry, nav walkability and line of sight.
-export function chooseFirstEncounterSpot({player, world, nav, actors = [], distances = [10.0,8.5,7.0]}) {
+export function chooseFirstEncounterSpot({player, world, nav, actors = [], distances = [10.0,8.5,7.0], laterals = [0.65,-0.65,0]}) {
   if (!player?.pos || !world?.blocked || !world?.raycast || !nav?.walkable || !nav?.idx) return null;
   const forwardX=-Math.sin(player.yaw), forwardZ=-Math.cos(player.yaw);
   const rightX=Math.cos(player.yaw), rightZ=-Math.sin(player.yaw);
   for(const range of distances) {
-    for(const lateral of [0.65,-0.65,0]) {
+    for(const lateral of laterals) {
       const x=player.pos.x+forwardX*range+rightX*lateral;
       const z=player.pos.z+forwardZ*range+rightZ*lateral;
       const id=nav.idx(x,z);
@@ -474,6 +502,137 @@ export function chooseFirstEncounterSpot({player, world, nav, actors = [], dista
   return null;
 }
 
+
+/** A visible red arrow above a doorway is not enough. The original gun
+ * fires native physical rays, so the initial target needs an exposed torso
+ * and space to either side rather than one head-height gap through metal. */
+export function cfOpeningBodyLaneClear(world,spawn,spot){
+  if(!world?.raycast||!world?.blocked||
+    ![spawn?.x,spawn?.z,spot?.x,spot?.z].every(Number.isFinite))
+    return false;
+  const fx=spot.x-spawn.x,fz=spot.z-spawn.z;
+  const forward=Math.hypot(fx,fz);
+  if(!(forward>=5))return false;
+  const sideX=-fz/forward,sideZ=fx/forward;
+  for(const side of [-.55,0,.55]){
+    const x=spot.x+sideX*side,z=spot.z+sideZ*side;
+    if(world.blocked(x,.05,z,.22,1.55))return false;
+    for(const targetY of [1.0,1.48]){
+      const dx=x-spawn.x,dz=z-spawn.z,dy=targetY-1.55;
+      const distance=Math.hypot(dx,dy,dz);
+      const hit=world.raycast(spawn.x,1.55,spawn.z,
+        dx/distance,dy/distance,dz/distance,
+        Math.max(0,distance-.35),'sight');
+      if(hit&&Number(hit.t)<distance-.3)return false;
+    }
+  }
+  return true;
+}
+
+/** Unlike a centered HUD marker, this physically checks the camera's
+ * horizontal shooting view. A candidate with a huge cargo wall directly
+ * under the reticle is unsuitable for a quick first-person H5 first fight.
+ * Rays are the original native WORLD BULLET rays, not UI projections.
+ */
+export function cfOpeningCameraQuality(world,pose,yaw,depth=3.8) {
+  if(!world?.raycast||!pose||![pose.x,pose.z,yaw].every(Number.isFinite))
+    return 0;
+  let clear=0;
+  for(const angle of [0,-.31,.31]){
+    const a=yaw+angle;
+    const dx=-Math.sin(a),dz=-Math.cos(a);
+    const hit=world.raycast(pose.x,1.54,pose.z,
+      dx,0,dz,depth,'bullet');
+    if(!hit||!Number.isFinite(hit.t)||hit.t>=depth-.15)clear++;
+    else if(angle===0)return 0; // Actual crosshair faces a physical wall.
+  }
+  return clear;
+}
+
+/** A short H5 level must start with a REAL enemy visible in a real firing
+ * corridor, not with a hero staring into a container wall. This selects an
+ * existing map spawn and an authored camera bearing BEFORE the match starts.
+ * It does not aim the camera during fighting, bend bullets or invent an enemy.
+ *
+ * A visible enemy needs more than a ray to its shoulder: require walkability,
+ * a navigable path and free head-height space BEHIND the enemy, so its badge
+ * and hitbox cannot be swallowed by a container face. */
+export function cfChooseVisibleOpeningLane({
+  spawns, world, nav, actors=[], team, eyeH=1.6,
+  distances=[10,9,8,7],h5WideView=false
+}={}) {
+  if(!Array.isArray(spawns)||!spawns.length||
+    !world?.raycast||!world?.blocked||!nav?.idx||
+    !nav?.walkable||!nav?.findPath)return null;
+  const others=actors.filter(a=>a?.alive&&a.team===team&&
+    !a.isPlayer&&a.pos);
+  let best=null;
+  // Existing team spawns are frequently against a visually dominant cargo
+  // wall. For V20 only, preposition the initial player a few real NavGrid
+  // metres forward from an authored spawn. This occurs BEFORE play begins
+  // and never changes in-flight player coordinates or hit/kill state.
+  const poses=[];
+  for(const start of spawns) {
+    if(![start?.x,start?.z,start?.yaw].every(Number.isFinite))continue;
+    const fx=-Math.sin(start.yaw),fz=-Math.cos(start.yaw);
+    for(const step of h5WideView?[4.2,2.4,0]:[0]){
+      const point={x:start.x+fx*step,z:start.z+fz*step,yaw:start.yaw};
+      if(world.blocked(point.x,.05,point.z,.38,1.9))continue;
+      const cell=nav.idx(point.x,point.z);
+      if(cell<0||!nav.walkable(cell))continue;
+      if(step>0){
+        const walk=nav.findPath(start.x,start.z,point.x,point.z);
+        if(!Array.isArray(walk)||walk.length<2)continue;
+      }
+      poses.push(point);
+    }
+  }
+  const turns=h5WideView?[0,-.3,.3,-.6,.6]:[0,-.42,.42,-.82,.82,-1.18,1.18];
+  for(const backstop of [2.2,.8]) {
+    for(const spawn of poses) {
+      if(others.some(a=>Math.hypot(a.pos.x-spawn.x,a.pos.z-spawn.z)<2))continue;
+      for(const turn of turns){
+        const yaw=spawn.yaw+turn;
+        const probe={pos:{x:spawn.x,y:.02,z:spawn.z},yaw,eyeH};
+        const spot=chooseFirstEncounterSpot({
+          player:probe,world,nav,actors,
+          distances,laterals:[0,.45,-.45]
+        });
+        if(!spot)continue;
+        const dx=spot.x-spawn.x,dz=spot.z-spawn.z;
+        const distance=Math.hypot(dx,dz);
+        const headY=(Number.isFinite(eyeH)?eyeH:1.6)+.02;
+        const blocker=world.raycast(spawn.x,headY,spawn.z,
+          dx/distance,0,dz/distance,distance+backstop,'sight');
+        if(blocker&&Number(blocker.t)<distance+backstop-.1)continue;
+        const path=nav.findPath(spawn.x,spawn.z,spot.x,spot.z);
+        if(!Array.isArray(path)||path.length<2)continue;
+        if(!cfOpeningBodyLaneClear(world,spawn,spot))continue;
+        const aimYaw=Math.atan2(-(spot.x-spawn.x),-(spot.z-spawn.z));
+        const viewQuality=h5WideView
+          ?cfOpeningCameraQuality(world,spawn,aimYaw,3.8):3;
+        if(h5WideView&&viewQuality<2)continue;
+        // H5 rewards a large, actually hittable opponent in a broad viewport.
+        const score=h5WideView
+          ?viewQuality*3+(10-distance)*.7-.7*Math.abs(turn)-
+            .2*Math.max(0,path.length-2)
+          :distance-.95*Math.abs(turn)+backstop*.8-
+            .2*Math.max(0,path.length-2);
+        if(!best||score>best.score)best={
+          spawn:{x:spawn.x,z:spawn.z,yaw:aimYaw},
+          spot,turn:+turn.toFixed(2),distance:+distance.toFixed(2),
+          score:+score.toFixed(2),backstop,viewQuality
+        };
+        if(h5WideView&&backstop>=2.2&&viewQuality===3&&
+          distance>=6.4&&distance<=7.7&&path.length<=4)return best;
+        if(!h5WideView&&backstop>=2.2&&distance>=8.8&&
+          Math.abs(turn)<=.42&&path.length<=5)return best;
+      }
+    }
+    if(best)return best;
+  }
+  return null;
+}
 
 /** Choose an authored player spawn with a *genuinely clear* sniper view.
  * Never teleport mid-round, spawn a fake target, or ignore real map collision.
@@ -584,9 +743,12 @@ export function cfReleaseTouchFire(touch,cancelPending=false) {
   touch.fire=false;
   if(cancelPending)touch.firePressed=false;
 }
-export function cfFireDragLookDelta(dx,dy) {
+/** Symmetric free-turn with target friction. Friction scales ONLY real input;
+ * there is no invisible aim delta, camera snap or look inertia. */
+export function cfFireDragLookDelta(dx,dy,friction=1) {
   if(!Number.isFinite(dx)||!Number.isFinite(dy))return {x:0,y:0};
-  const clamp=v=>Math.max(-96,Math.min(96,v*1.6));
+  const f=Number.isFinite(friction)?Math.max(.55,Math.min(1,friction)):1;
+  const clamp=v=>Math.max(-96,Math.min(96,v*2.9*f));
   return {x:clamp(dx),y:clamp(dy)};
 }
 export function cfVisibleAimCoach(x,y) {
@@ -693,6 +855,15 @@ export function cfHitCue(challenge, nativeHits, increase, drill = null) {
  * completely optional regardless of the outcome. */
 export function cfNearMissCue(challenge, metrics={}, elapsedMs=0) {
   if(!challenge||!metrics)return null;
+  if(challenge.lite===true){
+    const defeated=challenge.kind==='hits'?Math.max(0,Math.floor(Number(metrics.kills)||0)):
+      challenge.kind==='kills'?Math.max(0,Math.floor(Number(metrics.awmKills)||0)):
+      challenge.kind==='assault'?Math.max(0,Math.floor(Number(metrics.assaultKills)||0)):0;
+    if(challenge.kind==='defend'&&metrics.defenseCaptured===1)return null;
+    if(defeated>0&&defeated+1===challenge.target)
+      return '已经击倒'+defeated+'人，就差最后一人';
+    return null;
+  }
   const count=n=>Number.isFinite(n)?Math.max(0,Math.floor(n)):0;
   const goal=count(challenge.target);
   if(challenge.kind==='defend'&&metrics.defenseSitesValid===true){
@@ -747,6 +918,14 @@ export function cfNativeReviveStatus(metrics={},rewarded=false) {
 /** End-of-round teaching based on observed player stats, never simulated rewards. */
 export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return '';
+  if(challenge.lite===true){
+    if(outcome==='won')return '任务完成！这次亲手击倒'+
+      Math.max(0,Math.floor(Number(metrics.kills)||0))+'人。';
+    if(challenge.kind==='defend')return '据点尚未守住：留意标记区域与进入区域的敌人。';
+    if(challenge.extractSeconds)return '撤离未完成：清掉敌人，进入撤离区并守到进度结束。';
+    if(challenge.kind==='assault')return '尚未突破进攻位：先进入标记区域，再击败守军。';
+    return '这次还没完成 '+challenge.objective+'。可以免费再试一次。';
+  }
   const actual = v => Number.isFinite(v) ? Math.max(0,Math.floor(v)) : 0;
   const hits = actual(metrics.hits), awmKills = actual(metrics.awmKills);
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
@@ -846,6 +1025,9 @@ export function cfMissionFacts(challenge) {
   if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return [];
   const weapon = challenge.weapon === 'awm' ? 'AWM' :
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
+  if(challenge.lite===true)return [
+    {label:'装备',value:weapon},{label:'任务',value:challenge.objective},
+    {label:'限时',value:Math.ceil(challenge.limitMs/1000)+'秒'}];
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
     ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
     challenge.kind === 'kills' ? '击杀 '+challenge.target+' 人'+(challenge.minTravel?' · 行进'+challenge.minTravel+'米':'') :
@@ -865,6 +1047,19 @@ export function cfMissionFacts(challenge) {
 /** Stat chips are derived from native player measurements, never team kills. */
 export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
   if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return [];
+  if(challenge.lite===true){
+    const count=x=>Math.max(0,Math.floor(Number(x)||0));
+    const value=challenge.kind==='defend'?count(metrics.defenseCaptured):
+      challenge.kind==='assault'?count(metrics.assaultKills):
+      challenge.kind==='kills'?count(metrics.awmKills):count(metrics.kills);
+    const label=challenge.kind==='defend'?'守住据点':
+      challenge.kind==='assault'?'进攻位击倒':
+      challenge.kind==='survive'?'亲手击倒':'亲手击倒';
+    const goal=challenge.kind==='survive'?challenge.minKills||0:challenge.target;
+    return [{label,value:value+'/'+goal},
+      {label:'阵亡',value:String(count(metrics.deaths))},
+      {label:'耗时',value:Math.ceil(elapsedMs/1000)+'秒'}];
+  }
   const number = value => Number.isFinite(value) ? Math.max(0,Math.floor(value)) : 0;
   const deaths = number(metrics.deaths);
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
@@ -1011,6 +1206,7 @@ export function createFpsMobileUx(game, root, doc) {
   const legacyTouchNote = doc.getElementById('touchNote');
   if (legacyTouchNote) legacyTouchNote.textContent = '';
   const touchControls = doc.getElementById('touch');
+  const cover=createCfCoverAssault(game,root,doc);
   let playerEngaged=false;
   const aimTouchStarts=new Map();
   const fireDragTouches=new Map();
@@ -1018,6 +1214,7 @@ export function createFpsMobileUx(game, root, doc) {
   const pad=nativePads[0],stickKnob=nativePads[1];
   let moveFinger=null;
   let queuedJumpAt=null;
+  let controlsReleasedOnDeath=false;
   let lastTouchAt=-Infinity;
   const markTouch=()=>{lastTouchAt=performance.now();};
   const stickCenter=()=>{
@@ -1030,6 +1227,7 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const resetAllTouches=()=>{
     moveFinger=null;queuedJumpAt=null;
+    cover.release();
     resetKnob();
     return cfResetMobileTouch(game.player,aimTouchStarts,fireDragTouches);
   };
@@ -1038,12 +1236,32 @@ export function createFpsMobileUx(game, root, doc) {
   const onTouchStart=e=>{
     markTouch();
     if(!game.playing||game.paused||game.ended)return;
+    if(cover.enabled&&cover.isButton(e.target)){
+      // Real iOS touch-generated compatibility mousedown is suppressed by
+      // the shooter (to avoid phantom bullets), so handle cover selection
+      // on the finger contact itself, not on a synthetic browser click.
+      const left=e.target.closest?.('#mk-cover-left');
+      const right=e.target.closest?.('#mk-cover-right');
+      if(left)cover.choose('left');
+      else if(right)cover.choose('right');
+      e.stopPropagation();return;
+    }
+    // Native button handlers would queue a jump/fire even when the player is
+    // dead; that stale input could trigger immediately on respawn. Block ONLY
+    // the in-game control layer, never the pause/revive or browser UI.
+    if(cfIgnoreDeadCombatTouch({alive:game.player?.alive,
+      nativeControl:!!e.target?.closest?.('#touch')})){
+      e.stopPropagation();return;
+    }
     if(e.target?.closest?.('.btn[data-mk-action="fire"]')){
       // Fire button still belongs to the native gun; camera movement from
       // THIS thumb is routed separately since native buttons stop bubbling.
       for(const t of e.changedTouches||[])
         fireDragTouches.set(t.identifier,{x:t.clientX,y:t.clientY});
-      if(game.player?.alive)cfBeginTouchFire(game.player.touch);
+      if(game.player?.alive){
+        cfBeginTouchFire(game.player.touch);
+        cover.onFire(true);
+      }
       return;
     }
     if(e.target?.closest?.('.btn[data-mk-action="jump"]')){
@@ -1073,10 +1291,19 @@ export function createFpsMobileUx(game, root, doc) {
       }
     }
   };
+  const aimFriction=()=>{
+    const p=game.player,target=game.aimTarget;
+    return activeChallenge?.lite===true&&p?.alive&&target?.alive&&
+      target.team!==p.team ? .65 : 1;
+  };
   const onTouchMove=e=>{
     markTouch();
     if(!game.playing||game.paused||game.ended)return;
-    if(!controlledTarget(e))e.stopPropagation();
+    // A native FIRE button has no touchmove listener, but the pinned engine's
+    // WINDOW look listener claims that FIRE finger on touchstart and adds 1.6x
+    // *again* if move bubbles. Own all active fight moves here, including
+    // button-origin moves; preserve target touchstart/touchend for native fire.
+    e.stopPropagation();
     const p=game.player;
     for(const t of e.changedTouches||[]){
       if(t.identifier===moveFinger){
@@ -1094,7 +1321,8 @@ export function createFpsMobileUx(game, root, doc) {
       }
       const fire=fireDragTouches.get(t.identifier);
       if(fire){
-        const delta=cfFireDragLookDelta(t.clientX-fire.x,t.clientY-fire.y);
+        const delta=cfFireDragLookDelta(t.clientX-fire.x,t.clientY-fire.y,
+          aimFriction()*(cover.enabled ? 0.72 : 1));
         fire.x=t.clientX;fire.y=t.clientY;
         if(p?.alive){
           if(p.touch&&!p.touch.fire)cfBeginTouchFire(p.touch);
@@ -1109,7 +1337,8 @@ export function createFpsMobileUx(game, root, doc) {
       }
       const aim=aimTouchStarts.get(t.identifier);
       if(aim){
-        const delta=cfFireDragLookDelta(t.clientX-aim.x,t.clientY-aim.y);
+        const delta=cfFireDragLookDelta(t.clientX-aim.x,t.clientY-aim.y,
+          aimFriction()*(cover.enabled ? 0.72 : 1));
         aim.x=t.clientX;aim.y=t.clientY;
         if(p?.alive){
           p.touchLook ||= {x:0,y:0};
@@ -1125,7 +1354,7 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const onTouchEnd=e=>{
     markTouch();
-    if(!controlledTarget(e))e.stopPropagation();
+    if(!controlledTarget(e)||cover.isButton(e.target))e.stopPropagation();
     if(e.type==='touchcancel'){
       // iOS can cancel one finger while others remain down. Fail closed:
       // release every held native action; no synthetic shots or movement.
@@ -1143,7 +1372,9 @@ export function createFpsMobileUx(game, root, doc) {
       aimTouchStarts.delete(t.identifier);
       fireDragTouches.delete(t.identifier);
     }
-    if(hadFireFinger&&fireDragTouches.size===0)releaseNativeFire();
+    if(hadFireFinger&&fireDragTouches.size===0){
+      releaseNativeFire();cover.onFire(false);
+    }
   };
   const onLifecycleInterrupt=()=>resetAllTouches();
   const onVisibilityInterrupt=()=>{if(doc.hidden)resetAllTouches();};
@@ -1201,8 +1432,13 @@ export function createFpsMobileUx(game, root, doc) {
   tutorial.innerHTML = '<span><b>①</b> 左手摇杆移动</span><span><b>②</b> 右侧滑动瞄准</span><span><b>③</b> 点按或按住开火</span>';
   root.querySelector('#mk-panel')?.insertBefore(tutorial, root.querySelector('#mk-challenges'));
   function updateTutorial(challenge) {
+    if(cfV20CoverEnabled(challenge))tutorial.innerHTML=
+      '<span><b>①</b> 右侧滑动瞄准</span><span><b>②</b> 左手按住射击，松手躲避</span><span><b>③</b> 点左右掩体换位</span>';
+    else tutorial.innerHTML=
+      '<span><b>①</b> 左手摇杆移动</span><span><b>②</b> 右侧滑动瞄准</span><span><b>③</b> 点按或按住开火</span>';
     const tip=tutorial.querySelector('span:last-child');
-    if(tip)tip.innerHTML='<b>③</b> ' + cfTouchTutorial(challenge);
+    if(tip&&!cfV20CoverEnabled(challenge))
+      tip.innerHTML='<b>③</b> ' + cfTouchTutorial(challenge);
   }
   const originalToast = game.hud.toast.bind(game.hud);
   game.hud.toast = (value, duration) => {
@@ -1299,10 +1535,30 @@ export function createFpsMobileUx(game, root, doc) {
     if(!p || !destination || !game.nav?.findPath) return {path:false,trainingScout:false};
     const enemies=(game.actors||[]).filter(a=>
       a && !a.isPlayer && a.team!==p.team && a.alive && a.primary!=='awm');
-    if((activeChallenge?.kind==='hits' || activeChallenge?.kind==='kills') && enemies.length) {
+    if((activeChallenge?.kind==='hits'||activeChallenge?.kind==='kills'||
+      cfV20CoverEnabled(activeChallenge))&&enemies.length) {
       const sniper=activeChallenge.kind==='kills';
-      let spot=chooseFirstEncounterSpot({player:p,world:game.world,nav:game.nav,actors:game.actors,
-        distances:sniper?[18,16,14,12,10,8.5,7]:undefined});
+      // First seconds of a lightweight H5 match must show a real target.
+      // Rotate only the authored starting camera, NEVER auto-track mid-match.
+      const lane=cfV20CoverEnabled(activeChallenge)
+        ?cfChooseVisibleOpeningLane({
+          spawns:game.map?.spawns?.[p.team],world:game.world,
+          nav:game.nav,actors:game.actors,team:p.team,eyeH:p.eyeH,
+          h5WideView:true,distances:[7.4,6.6,5.8]
+        }):null;
+      if(lane) {
+        p.pos.set(lane.spawn.x,.02,lane.spawn.z);
+        p.yaw=lane.spawn.yaw;p.pitch=0;p.vel.set(0,0,0);
+      }
+      let spot=lane?.spot||chooseFirstEncounterSpot({
+        player:p,world:game.world,nav:game.nav,actors:game.actors,
+        distances:sniper?[18,16,14,12,10,8.5,7]:undefined
+      });
+      if(game.__mobileBalanceReview){
+        game.__mobileBalanceReview.openingVisibleLane=!!lane;
+        game.__mobileBalanceReview.openingLane=lane
+          ?{distance:lane.distance,turn:lane.turn,backstop:lane.backstop}:null;
+      }
       if(!spot && sniper) {
         const lane=chooseMobileSniperLane({player:p,spawns:game.map?.spawns?.[p.team],
           world:game.world,nav:game.nav,actors:game.actors});
@@ -1348,6 +1604,7 @@ export function createFpsMobileUx(game, root, doc) {
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
+        else if(lane) holdOpeningTeammateFire(game.actors,p.team,game.time,6);
         scout.__mobileTrainingHoldUntil=game.time+cfScoutHoldSeconds(activeChallenge);
         return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance,
           initialVisibleSpot:[spot.x,spot.z]};
@@ -1368,7 +1625,7 @@ export function createFpsMobileUx(game, root, doc) {
     // blindly charging a remembered enemy's position through container walls.
     // Both coordinates are genuinely observed player history, never hidden
     // enemy world positions. Expert players still pursue sightings directly.
-    const follow=activeChallenge?.drill==='reposition'&&drill?.stage===2;
+    const follow=activeChallenge?.lite!==true&&activeChallenge?.drill==='reposition'&&drill?.stage===2;
     const observedShotLane=follow&&activeChallenge?.elite!==true&&firstHitSpot
       ? [firstHitSpot.x,firstHitSpot.z] : null;
     const known=follow?lastVisibleEnemy:null;
@@ -1418,7 +1675,9 @@ export function createFpsMobileUx(game, root, doc) {
         stabilized=cfStabilizeNoviceScout(actor,activeChallenge);
       }
       // Only opponents gain expert reaction and aim: allies cannot carry the mission.
-      const profile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
+      const baseProfile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
+      const profile=actor.team!==p.team
+        ?cfLiteEnemyProfile(baseProfile,activeChallenge,elapsed):baseProfile;
       actor.diff = {...profile,strafe:cfNoviceScoutStrafe(profile,stabilized),
         react:[...profile.react]};
       actor.recoilControl = profile.ctrl;
@@ -1485,7 +1744,8 @@ export function createFpsMobileUx(game, root, doc) {
           ...angles,distance,visible:true,
           firing:!!(forceFiring||p.touch?.fire||(simple&&playerEngaged)),
           sniperReady:ready,
-          training:activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true
+          training:activeChallenge?.lite!==true&&
+            activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true
         });
         if(!aim.yaw&&!aim.pitch)continue;
         const score=Math.abs(angles.yawError)+Math.abs(angles.pitchError)+
@@ -1615,7 +1875,7 @@ export function createFpsMobileUx(game, root, doc) {
         projected=pos;visiblePart=part;break;
       }
       if(!projected)continue;
-      if(activeChallenge?.drill==='reposition'&&drill?.stage===2){
+      if(activeChallenge?.lite!==true&&activeChallenge?.drill==='reposition'&&drill?.stage===2){
         const delta=Math.hypot(projected.x,projected.y);
         if(delta<closestAim){
           closestAim=delta;
@@ -1696,9 +1956,16 @@ export function createFpsMobileUx(game, root, doc) {
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
       resetAllTouches();
+      cover.beforeNativeStart();
     },
     onStart(challenge) {
       activeChallenge = challenge || null;
+      root.dataset.fpsLite=String(activeChallenge?.lite===true);
+      if(activeChallenge?.lite===true && game?.opts){
+        // An authored narrow combat FOV enlarges target silhouettes on phones.
+        // Original camera follows opts.fov through Player.update().
+        game.opts.fov=70;
+      }
       if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
@@ -1708,8 +1975,10 @@ export function createFpsMobileUx(game, root, doc) {
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
-      playerEngaged=false;resetAllTouches();
-      guide.textContent = activeChallenge?.elite===true
+      playerEngaged=false;controlsReleasedOnDeath=false;resetAllTouches();
+      guide.textContent = activeChallenge?.lite===true
+        ? activeChallenge.encounter
+        :activeChallenge?.elite===true
         ? '⚡ 精英：自己瞄准开火'
         : activeChallenge?.kind === 'kills'
         ? '先观察，找到目标后开镜'
@@ -1746,6 +2015,9 @@ export function createFpsMobileUx(game, root, doc) {
         p.pitch = 0;
         p.vel.set(0, 0, 0);
       }
+      // The visible mission clock is authoritative in lite PVE. An unrelated
+      // original team kill limit must never terminate the player's objective.
+      if(activeChallenge?.lite===true)game.goal=Math.max(300,Number(game.goal)||0);
       game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null,
         challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
       const rendezvous=activeChallenge?.kind==='defend'
@@ -1792,6 +2064,15 @@ export function createFpsMobileUx(game, root, doc) {
       game.__mobileBalanceReview.teamSize=game.opts.size;
       applyBalance(0);
       recolorNativeAllies();
+      cover.begin(activeChallenge);
+      const fireButton=buttons.find(b=>b.dataset.mkAction==='fire');
+      if(fireButton){
+        fireButton.textContent=cover.enabled?'探身开火':'开火';
+        fireButton.setAttribute('aria-label',cover.enabled?
+          '按住探身射击，松开原生下蹲躲避':'按住开火并拖动瞄准');
+      }
+      if(game.__mobileBalanceReview)
+        game.__mobileBalanceReview.coverV20=game.__mkCoverV20||null;
     },
     update(running, now = performance.now()) {
       const active = !!(running && game.playing && !game.paused && !game.ended);
@@ -1825,6 +2106,12 @@ export function createFpsMobileUx(game, root, doc) {
       if (!active || now >= cueExpiresAt) hitCue.hidden = true;
       if (!active || now >= damageExpiresAt)damageVignette.hidden=true;
       const p = game.player;
+      cover.update(active);
+      if(active&&p&&!p.alive&&!controlsReleasedOnDeath){
+        resetAllTouches();controlsReleasedOnDeath=true;
+      } else if(p?.alive){
+        controlsReleasedOnDeath=false;
+      }
       if(active&&p?.alive&&activeChallenge?.id==='tags'){
         // Never wake hidden enemies from fabricated hit/health signals.
         // A valid real shot is audible; a fresh real hit causes faster cover AI.
@@ -1862,7 +2149,7 @@ export function createFpsMobileUx(game, root, doc) {
         }
         previousPosition = { x:p.pos.x, z:p.pos.z };
       } else previousPosition = null;
-      if(active&&activeChallenge?.drill==='reposition'&&p) {
+      if(active&&activeChallenge?.drill==='reposition'&&activeChallenge.lite!==true&&p) {
         const updated=cfAdvanceDrill(activeChallenge,drill,
           {hits:p.stats?.hits||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z});
         if(updated?.stage!==drill?.stage) {
@@ -1880,6 +2167,11 @@ export function createFpsMobileUx(game, root, doc) {
         assault=cfAdvanceAssault(activeChallenge,assault,{
           kills:p.stats?.k||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z,
           alive:p.alive===true});
+        if(activeChallenge?.lite===true&&assault?.checkpoint&&
+           !assault?.postKills&&now>=nextDefenseRouteAt){
+          nextDefenseRouteAt=now+1800;
+          cfRouteDefenseBots(game,{id:'P',...assault.checkpoint});
+        }
         if(lastStage===0&&assault?.stage===1){
           hitCue.textContent='◆ 进攻位已到达，开始计入亲手击杀';
           hitCue.hidden=false;cueExpiresAt=now+1200;
@@ -1894,7 +2186,8 @@ export function createFpsMobileUx(game, root, doc) {
           seconds:activeChallenge.extractSeconds,
           radius:activeChallenge.extractRadius});
         if(!wasReady&&extraction.extracted){
-          hitCue.textContent='◆ 撤离区坚守成功，活到结束';
+          hitCue.textContent=activeChallenge?.lite===true
+            ?'◆ 撤离成功！':'◆ 撤离区坚守成功，活到结束';
           hitCue.hidden=false;cueExpiresAt=now+1400;
         }
       }
@@ -1926,11 +2219,12 @@ export function createFpsMobileUx(game, root, doc) {
         defensePin.textContent='◆ 撤离点 · '+remaining;
         defensePin.hidden=false;
         const elapsed=Math.max(0,Number(game.time)-startedGameSeconds);
-        if((elapsed>=40||eligible)&&!extraction.extracted&&now>=nextDefenseRouteAt){
+        if((elapsed>=12||eligible)&&!extraction.extracted&&now>=nextDefenseRouteAt){
           nextDefenseRouteAt=now+1700;
           cfRouteDefenseBots(game,{id:'E',...point});
         }
-      }else if(activeChallenge?.kind==='defend'&&defense){
+      }else if(activeChallenge?.kind==='defend'&&defense&&
+         !(activeChallenge.lite===true&&defense.stage>=activeChallenge.target)){
         const prevStage=defense.stage;
         defense=cfStepDefense(defense,{
           gameTime:Number(game.time),player:p,actors:game.actors,team:p.team,
@@ -1974,7 +2268,7 @@ export function createFpsMobileUx(game, root, doc) {
         routeLastAt=now+900;
         if(activeChallenge?.kind==='defend'){
           routePath=null;
-        }else if(activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
+        }else if(activeChallenge?.lite!==true&&activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
           const deaths=p.stats?.d||0;
           if(!flankGoal||deaths!==flankDeaths){
             flankDeaths=deaths;
@@ -2026,12 +2320,12 @@ export function createFpsMobileUx(game, root, doc) {
         if (activeChallenge?.kind==='defend'||activeChallenge?.kind==='assault'||
           activeChallenge?.extractSeconds) {
           guide.textContent='';
-        }else if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
+        }else if (activeChallenge?.lite!==true&&activeChallenge?.drill==='reposition'&&drill?.stage===1) {
           const turn=routeArrow(p,routePath);
           guide.textContent=(turn?.symbol||'↔')+' 换位 '+
             Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m'+
             (turn?' · 沿可走路线':' · 左右横移');
-        } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
+        } else if(activeChallenge?.lite!==true&&activeChallenge?.drill==='reposition'&&drill?.stage===2) {
           const turn=!seen?routeArrow(p,routePath,
             firstHitSpot&&activeChallenge.elite!==true?0.6:2.2):null;
           const reAim=!turn&&lastVisibleEnemy
@@ -2070,6 +2364,7 @@ export function createFpsMobileUx(game, root, doc) {
       originalEnemySpawns=null;trainingSpawnTeam=null;
       if(activeChallenge?.kind==='hits'&&game.player)game.player.mouse.l=false;
       damageVignette.remove();
+      cover.destroy();
       doc.removeEventListener('touchstart',onTouchStart,true);
       doc.removeEventListener('touchmove',onTouchMove,true);
       doc.removeEventListener('touchend',onTouchEnd,true);

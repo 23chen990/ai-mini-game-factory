@@ -86,6 +86,13 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         panels.top>=-1&&panels.bottom<=innerHeight+1:false,
       status:document.getElementById('mk-status')?.textContent||'',
       route:g?.__mobileBalanceReview||null,
+      solo:g?.__mkSoloPve===true?{
+        friends:(g.actors||[]).filter(a=>!a.isPlayer&&a.team===p?.team).length,
+        enemies:(g.actors||[]).filter(a=>!a.isPlayer&&a.team!==p?.team).length,
+        players:(g.actors||[]).filter(a=>a.isPlayer).length,
+        tags:g.tags?.length||0,
+        removed:g.__mkSoloStart?.removed??null
+      }:null,
       openingBot:bot?{alive:bot.alive===true,
         readyIn:bot.readyAt-(g?.time||0),
         holdUntil:bot.__mobileTrainingHoldUntil-(g?.time||0),
@@ -149,6 +156,11 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       Array.isArray(initial.route?.assaultSite?[
         initial.route.assaultSite.x,initial.route.assaultSite.z
       ]:null)&&initial.route?.assaultSiteValid===true,{route:initial.route});
+    check('solo-assault-real-native-only-one-hero-no-ai-allies',
+      initial.solo?.players===1&&initial.solo?.friends===0&&
+      initial.solo?.enemies===3&&initial.solo?.tags===0&&
+      initial.solo?.removed===2,
+      {solo:initial.solo,route:initial.route});
     check('original-mobile-webgl-truly-started-at-low-quality',
       initial.renderer?.quality==='low'&&initial.renderer?.bloom===false&&
       initial.renderer?.pixelRatio<=1.01,{renderer:initial.renderer});
@@ -159,6 +171,35 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // This gesture touches NO button. Neither native gun nor assistant fires.
     await gesture(lookStart,{x:lookStart.x+44,y:lookStart.y+8},240,21);
     const afterLook=await inspect();
+    const liteControls=await page.locator('#mobile-kit')
+      .getAttribute('data-fps-lite')==='true';
+    if(liteControls){
+      const a=fireRect,centerX=a.x+a.width/2;
+      check('lite-fire-button-has-both-directional-runway',
+        centerX>250&&667-centerX>=120&&a.width>=76,
+        {rect:a,centerX,rightTravel:667-centerX});
+      const left=await page.evaluate(()=>{
+        const ids=['fire','jump','scope','reload'];
+        return ids.map(id=>{
+          const el=document.querySelector('#touch .btn[data-mk-action="'+id+'"]');
+          const r=el?.getBoundingClientRect();
+          return {id,hidden:el?.hidden,rect:r?{x:r.x,y:r.y,w:r.width,h:r.height}:null};
+        });
+      });
+      const overlap=(a,b)=>a&&b&&a.x<b.x+b.w&&b.x<a.x+a.w&&
+        a.y<b.y+b.h&&b.y<a.y+a.h;
+      check('lite-thumb-buttons-never-overlap',
+        left.filter(x=>!x.hidden).every((x,i,all)=>all.every((y,j)=>
+          i===j||!overlap(x.rect,y.rect))),{buttons:left});
+      await gesture(lookStart,{x:lookStart.x-44,y:lookStart.y-8},180,23);
+      const reverse=await inspect();
+      check('lite-opposing-swipe-reverses-camera-without-shooting',
+        (afterLook.player.yaw-initial.player.yaw)*
+          (reverse.player.yaw-afterLook.player.yaw)<-0.0007&&
+        reverse.player.shots===initial.player.shots,
+        {start:initial.player.yaw,right:afterLook.player.yaw,
+          left:reverse.player.yaw});
+    }
     check('right-swipe-turns-camera-but-not-gun',
       Math.abs(afterLook.player.yaw-initial.player.yaw)>0.025&&
       afterLook.player.shots===initial.player.shots,
@@ -179,46 +220,105 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       {beforeFire,after:afterFire.player});
     // Genuine fire+camera and reload/jump: normal CDP fingers only.
     const beforeDrag=await inspect(),fc=center(fireRect);
+    // Window touchmove must never see a FIRE-origin drag. The original
+    // upstream TouchControls would otherwise apply another 1.6x rotation.
+    await page.evaluate(()=>{
+      window.__cfWindowFireMoveCount=0;
+      window.__cfCountFireMove=()=>window.__cfWindowFireMoveCount++;
+      window.addEventListener('touchmove',window.__cfCountFireMove);
+    });
     await gesture(fc,{x:fc.x-25,y:fc.y-6},470,28);
+    const bubbledFireMoves=await page.evaluate(()=>{
+      const count=window.__cfWindowFireMoveCount;
+      window.removeEventListener('touchmove',window.__cfCountFireMove);
+      delete window.__cfCountFireMove;delete window.__cfWindowFireMoveCount;
+      return count;
+    });
+    check('fire-drag-never-double-counted-by-upstream-window-look',
+      bubbledFireMoves===0,{windowTouchmoves:bubbledFireMoves});
     const afterDrag=await inspect();
     check('one-thumb-fire-drag-aim-and-real-bullets',
       Math.abs(afterDrag.player.yaw-beforeDrag.player.yaw)>0.015&&
       afterDrag.player.shots>beforeDrag.player.shots,
       {before:beforeDrag.player,after:afterDrag.player});
-    const beforeReload=await inspect();
-    await button('#touch .btn[data-mk-action="reload"]',240,29);
-    const afterReload=await inspect();
-    check('touch-reload-starts-real-weapon-reload',
-      beforeReload.player.mag<30&&afterReload.player.reloading===true,
-      {before:beforeReload.player,after:afterReload.player});
+    // The first real 1v1 is lethal. Reload is forbidden while dead:
+    // wait for a GENUINE native respawn, fire a real short burst when the
+    // new magazine is full, then press reload while still alive. Never edit
+    // ammo, health, timers or native weapon status to pass the test.
+    let beforeReload=null,afterReload=null,realReload=false;
+    const reloadAttempts=[];
+    for(let attempt=1;attempt<=3;attempt++){
+      await page.waitForFunction(()=>{
+        const g=window.__H5NativeGame;
+        return g?.playing===true&&!g?.paused&&g.player?.alive===true;
+      },null,{timeout:32000,polling:80});
+      beforeReload=await inspect();
+      if(beforeReload.player.mag===30){
+        await button('#touch .btn[data-mk-action="fire"]',550,60+attempt);
+        beforeReload=await inspect();
+      }
+      if(!beforeReload.player?.alive){
+        reloadAttempts.push({attempt,diedBeforeReload:true});continue;
+      }
+      await button('#touch .btn[data-mk-action="reload"]',210,70+attempt);
+      afterReload=await inspect();
+      realReload=beforeReload.player.mag<30&&
+        beforeReload.player.alive===true&&
+        afterReload.player.alive===true&&
+        afterReload.player.reloading===true;
+      reloadAttempts.push({attempt,aliveBefore:beforeReload.player.alive,
+        magBefore:beforeReload.player.mag,
+        aliveAfter:afterReload.player.alive,
+        reloading:afterReload.player.reloading});
+      if(realReload)break;
+    }
+    check('touch-reload-starts-real-weapon-reload',realReload,
+      {before:beforeReload?.player,after:afterReload?.player,
+        attempts:reloadAttempts});
     // An original jump arc can be brief below a cargo overhang. Sample
     // DURING the real physical finger hold rather than only after release.
     // A click without genuine native vertical motion must still fail QA.
-    const beforeJump=await inspect(),jrect=await rect(
-      '#touch .btn[data-mk-action="jump"]');
+    const jrect=await rect('#touch .btn[data-mk-action="jump"]');
     if(!jrect)throw Error('Jump touch target missing from visible HUD');
     const jc=center(jrect);
     const hitTarget=await page.evaluate(pt=>
       document.elementFromPoint(pt.x,pt.y)?.closest?.(
         '.btn[data-mk-action="jump"]')!==null,jc);
     check('jump-button-unobstructed-hit-target',hitTarget,{rect:jrect});
-    const jumpSamples=[];
-    await event('touchStart',[{...jc,id:30}]);
-    try{
-      for(let n=0;n<9;n++){
-        await sleep(95);
-        jumpSamples.push(await inspect());
-      }
-    }finally{await event('touchEnd',[]);}
-    const afterJump=await inspect();
-    const physical=jumpSamples.some(s=>s.player?.y>beforeJump.player.y+.045||
-      s.player?.vy>0.4);
+    let beforeJump=null,afterJump=null,physical=false;
+    const jumpSamples=[],jumpAttempts=[];
+    for(let attempt=1;attempt<=3;attempt++){
+      // In 4v4 a real bot can kill the player during earlier touch tests.
+      // Wait for the ORIGINAL native respawn; a dead player cannot jump.
+      await page.waitForFunction(()=>{
+        const g=window.__H5NativeGame,p=g?.player;
+        return g?.playing===true&&!g?.paused&&p?.alive===true&&
+          p?.onGround===true;
+      },null,{timeout:32000,polling:80});
+      beforeJump=await inspect();
+      const initial=jumpSamples.length;
+      await event('touchStart',[{...jc,id:30+attempt}]);
+      try{
+        for(let n=0;n<9;n++){
+          await sleep(90);
+          jumpSamples.push(await inspect());
+        }
+      }finally{await event('touchEnd',[]);}
+      afterJump=await inspect();
+      const trial=jumpSamples.slice(initial);
+      physical=trial.some(v=>v.player?.y>beforeJump.player.y+.045||
+        v.player?.vy>0.4);
+      jumpAttempts.push({attempt,aliveBefore:beforeJump.player.alive,
+        diedDuring:trial.some(v=>v.player?.alive===false),physical});
+      if(physical||!jumpAttempts.at(-1).diedDuring)break;
+    }
     check('touch-jump-changes-real-native-physics',physical,{
-      before:beforeJump.player,
-      samples:jumpSamples.map(s=>({t:s.time,y:s.player?.y,
-        vy:s.player?.vy,onGround:s.player?.onGround,
-        jumpCD:s.player?.jumpCD,input:s.player?.input?.jump})),
-      after:afterJump.player});
+      before:beforeJump?.player,
+      attempts:jumpAttempts,
+      samples:jumpSamples.map(v=>({t:v.time,y:v.player?.y,
+        vy:v.player?.vy,onGround:v.player?.onGround,
+        jumpCD:v.player?.jumpCD,input:v.player?.input?.jump})),
+      after:afterJump?.player});
     // Two normal CDP fingers: walk + fire together, followed by OS-style
     // touchcancel. The original Three.js fight can KILL the player mid-input;
     // native death correctly clears movement. In that one causal branch,
@@ -264,6 +364,19 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       cancelled.player.input.dx===0&&cancelled.player.input.dy===0,
       {cancelled:cancelled.player,attempts:multiTouchTraces});
     await snap('v14-multitouch-cancel');
+    const stressed=await inspect();
+    samples.push({id:'assault',when:'after-real-touch-and-enemy-pressure',
+      ...stressed});
+    // A lone hero can genuinely lose (or win) during the many seconds of
+    // stress testing move/fire/reload/jump. Pause/orientation must be tested
+    // from a FRESH native solo encounter, not a settled match whose pause
+    // button is rightly hidden. Never resurrect player HP or change clocks.
+    const pauseTrial=await enter('assault');
+    check('solo-pause-trial-is-fresh-native-combat',
+      pauseTrial.gamePhase==='running'&&pauseTrial.solo?.players===1&&
+      pauseTrial.solo?.friends===0&&pauseTrial.solo?.enemies===3,
+      {previous:stressed.phase,new:pauseTrial.gamePhase,
+        solo:pauseTrial.solo});
     await page.locator('#mk-pause').tap();
     await page.waitForSelector('#mobile-kit[data-phase="paused"]',{timeout:9000});
     const paused=await inspect();
@@ -298,7 +411,67 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       rookie.openingBot.readyIn<=6&&rookie.openingBot.readyIn>=0&&
       rookie.openingBot.holdUntil<=12&&rookie.openingBot.holdUntil>=7,
       {bot:rookie.openingBot,route:rookie.route});
+    const coverState=await page.evaluate(()=>{
+      const g=window.__H5NativeGame;
+      return {mode:g?.__mkCoverV20,
+        props:(g?.world?.colliders||[]).filter(c=>c.tag==='cf-v20-real-cover').length,
+        controlsVisible:!document.getElementById('mk-cover-raid')?.hidden};
+    });
+    check('v20-original-world-cover-object-and-visible-actions',
+      coverState.mode?.enabled===true&&coverState.props>=1&&
+      coverState.controlsVisible,coverState);
     const authenticRookieShots=rookie.player.shots;
+    // Do not certify a mobile shooter whose first viewport contains only
+    // container walls. Markers are already projected through the ORIGINAL
+    // camera and visibility-tested against the ORIGINAL world raycaster.
+    const initialVisible=await page.evaluate(()=>[...document.querySelectorAll(
+      '.mk-fps-enemy')].filter(el=>el.hidden===false&&
+        getComputedStyle(el).display!=='none').map(el=>({
+          left:el.style.left,top:el.style.top,
+          title:el.textContent?.trim()
+        })));
+    check('h5-lite-opening-actual-los-enemy-is-visible',
+      rookie.route?.openingVisibleLane===true&&initialVisible.length>0,
+      {route:rookie.route,markers:initialVisible,player:rookie.player});
+    await snap('v18-lite-opening-target');
+    // V18 has no auto aim. Aim using ONLY the on-screen, LOS-verified visible
+    // opponent marker and genuine right-thumb CDP swipes, never actor coords.
+    const rookieLite=await page.locator('#mobile-kit')
+      .getAttribute('data-fps-lite')==='true';
+    const visibleAim=async()=>{
+      const aim=await page.evaluate(()=>{
+        const el=[...document.querySelectorAll('.mk-fps-enemy')].find(e=>
+          !e.hidden&&getComputedStyle(e).display!=='none');
+        if(!el)return null;
+        const x=parseFloat(el.style.left),y=parseFloat(el.style.top);
+        return Number.isFinite(x)&&Number.isFinite(y)?{
+          x:x*innerWidth/100,y:y*innerHeight/100,
+          cx:innerWidth/2,cy:innerHeight/2,
+          w:innerWidth,h:innerHeight
+        }:null;
+      });
+      if(!aim)return {visible:false,aligned:false};
+      const dx=aim.x-aim.cx,dy=aim.y-aim.cy;
+      // Ten CSS pixels is already well inside the torso's apparent target
+      // area at an 8-10m H5 opening. Don't waste 10 seconds chasing a
+      // constantly changing 4px marker while the real encounter expires.
+      if(Math.hypot(dx,dy)<12)return {visible:true,aligned:true,dx,dy};
+      const from={x:Math.round(aim.w*.61),y:Math.round(aim.h*.31),id:92};
+      const mx=Math.max(-65,Math.min(65,dx*.55));
+      const my=Math.max(-45,Math.min(45,dy*.55));
+      const dest={x:from.x+mx,y:from.y+my,id:92};
+      // Entire swipe is a real, bounded single-finger gesture. Do not
+      // transfer an unrelated FIRE finger between CDP touch sessions:
+      // every TouchStart has its matching TouchEnd.
+      await gesture(from,dest,90,92);
+      return {visible:true,aligned:false,dx,dy};
+    };
+    const openingAimTrace=[];
+    if(rookieLite)for(let n=0;n<3;n++){
+      const result=await visibleAim(null);openingAimTrace.push(result);
+      if(!result.visible||result.aligned)break;
+      await sleep(95);
+    }
     // Install a READ-ONLY DOM observer BEFORE the first real finger press:
     // the native target may die in <380ms, and a later screenshot/poll is too
     // late for the brief first-kill cue. This never edits game state/UI.
@@ -318,8 +491,13 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         subtree:true,childList:true,characterData:true});
       read();
     });
-    await button('#touch .btn[data-mk-action="fire"]',380,70);
+    await snap('v18-aim-before-first-shot');
+    await button('#touch .btn[data-mk-action="fire"]',780,70);
     const firedRookie=await inspect();
+    if(rookieLite)check('lite-first-shot-is-manual-not-native-auto-fire',
+      firedRookie.route?.autoFireActivations===0&&
+        firedRookie.player?.shots>authenticRookieShots,
+      {review:firedRookie.route,aimTrace:openingAimTrace});
     check('first30-fire-requires-native-player-shot',
       firedRookie.player.shots>authenticRookieShots,
       {before:authenticRookieShots,after:firedRookie.player.shots});
@@ -331,9 +509,8 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       firedRookie.openingBot?.holdUntil<=5.1,
       {before:rookie.openingBot,after:firedRookie.openingBot,
         playerShots:firedRookie.player.shots});
-    // Normal sustained single-thumb fire — do NOT set HP, aim, actor stats,
-    // spawn, game clock or outcome. This is an actual native FIRST KILL gate.
-    const firstKillTouch=center(await rect('#touch .btn[data-mk-action="fire"]'));
+    // Native first-kill gate: realistic aim and fire gestures only. No stat,
+    // actor location, clock, damage, or outcome modification.
     const killPressTrace=[];
     const cueObserved=async()=>page.evaluate(()=>{
       return (window.__cfKillCueObservations||[]).some(e=>
@@ -347,10 +524,39 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       cueObserved:firstKillCueSeen});
     if(firstKillCueSeen)await snap('v17-first-native-kill-visible');
     if(!firstKillCueSeen || !firedRookie.player.kills){
-      await event('touchStart',[{...firstKillTouch,id:79}]);
-      try {
-      for(let n=0;n<28;n++){
-        await sleep(450);
+      // These are genuine repeated human-like LOOK -> FIRE gestures. Every
+      // touch is fully released before starting another, even across deaths;
+      // only the actual native player, original bullets and world line of
+      // sight can produce a kill. No hidden actor coordinates are consumed.
+      for(let n=0;n<72;n++){
+        const pre=await inspect();
+        if(pre.time-rookie.time>=29)break;
+        if(!pre.player?.alive){
+          await sleep(300);continue;
+        }
+        const aim=rookieLite?await visibleAim():{
+          visible:true,aligned:true,dx:0,dy:0
+        };
+        openingAimTrace.push(aim);
+        if(!aim.visible){
+          // A normal FPS user walks toward the gunfight when no opponent is
+          // visible. Sample the actual joystick and original collision:
+          // alternate short forward advances and real camera searching.
+          if(n%3===1){
+            const padBox=await rect('#touch .pad');
+            if(padBox){
+              const c=center(padBox);
+              await gesture(c,{x:c.x,y:c.y-49},500,98);
+            }
+          }else{
+            const origin={x:408,y:112},sign=n%8<6?1:-1;
+            await gesture(origin,{x:origin.x+sign*46,y:origin.y},100,93);
+          }
+        }else if(aim.aligned||n%2===0) {
+          // Single thumb triggers actual native weapon bursts. The cursor is
+          // never moved programmatically; each shot is a genuine input.
+          await button('#touch .btn[data-mk-action="fire"]',520,79);
+        }
         const state=await inspect();
         const cue=await page.evaluate(()=>{
           const el=document.getElementById('mk-fps-hit-feedback');
@@ -365,14 +571,12 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
           await snap('v17-first-native-kill-visible');
         }
         if((state.player?.kills||0)>=1&&firstKillCueSeen)break;
-        if(state.time-rookie.time>29)break;
       }
-      }finally{await event('touchEnd',[]);}
     }
     const killResult=await inspect();
     samples.push({id:'tags',when:'first-personal-native-kill',
-      realTouch:true,trace:killPressTrace});
-    check('first30-real-personal-kill-from-normal-sustained-thumb',
+      realTouch:true,aimInputOnly:true,openingAimTrace,trace:killPressTrace});
+    check('first30-real-personal-kill-from-manual-thumb-bursts',
       killResult.player?.kills>=1&&
       killResult.player.hits>=1&&
       killResult.player.shots>=firedRookie.player.shots&&
@@ -410,6 +614,13 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
        wallSec:+wallSec.toFixed(2),
        browser:'SWIFTSHADER_CHROMIUM_NOT_A_REAL_PHONE'});
     await snap('v14-first30-live-pressure');
+    // Failing an H5 shooter with no native personal hit/kill in 30s is a P0
+    // gameplay blocker. Fail fast WITH the actual screenshots/trace instead
+    // of spending ~12min on downstream maps after the key gate has failed.
+    if(rookieLite&&(!killResult.player?.kills||
+       !afterRookieWindow.player?.hits||!firstKillCueSeen)){
+      throw Error('H5_NATIVE_FIRST30_NOT_PLAYABLE: inspect actual LOS, touch and shot traces');
+    }
 
     // Separate causal branch: player never presses fire or any other input.
     // A rival surviving its own native opening MUST return actual gunfire,
@@ -454,6 +665,12 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // This is NOT an eight-mission victory or full skill-curve claim.
     for(const id of MISSIONS){
       const before=await enter(id);
+      const enemiesExpected={tags:1,precision:2,survive:3,defense:3,
+        assault:3,marksman:2,evac:3,counter:4}[id];
+      check(id+'-solo-hero-vs-real-native-enemies',
+        before.solo?.players===1&&before.solo?.friends===0&&
+        before.solo?.enemies===enemiesExpected&&before.solo?.tags===0,
+        {id,solo:before.solo,expected:enemiesExpected});
       check(id+'-native-world-and-weapon',before.ready&&
         before.gamePhase==='running'&&before.player?.alive===true&&
         (typeof before.player.weapon==='string')&&
@@ -479,6 +696,31 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // Real native shot followed by genuine failure from missing the walking
     // objective. No score, actor health, win/loss or position is edited.
     const survivalStart=await enter('survive');
+    const beforeCoverMove=await inspect();
+    const coverOptions=await page.evaluate(()=>{
+      const g=window.__H5NativeGame;
+      return {state:g?.__mkCoverV20,
+        choices:['left','right'].map(id=>({
+          id,disabled:document.getElementById('mk-cover-'+id)?.disabled
+        }))};
+    });
+    check('v20-third-stage-uses-original-nav-and-cover-choices',
+      coverOptions.state?.enabled===true&&
+      coverOptions.state?.barriers>=1&&coverOptions.state?.available>=1,
+      coverOptions);
+    const legal=coverOptions.choices.find(c=>c.disabled===false);
+    if(legal){
+      await page.locator('#mk-cover-'+legal.id).tap();
+      await sleep(1500);
+    }
+    const afterCoverMove=await inspect();
+    const actuallyMoved=Math.hypot(
+      afterCoverMove.player.x-beforeCoverMove.player.x,
+      afterCoverMove.player.z-beforeCoverMove.player.z);
+    check('v20-cover-choice-moves-actual-player-through-native-physics',
+      !!legal&&actuallyMoved>.18&&actuallyMoved<12&&
+      afterCoverMove.route?.coverV20?.routeMoves>=1,
+      {meters:actuallyMoved,state:afterCoverMove.route?.coverV20});
     await button('#touch .btn[data-mk-action="fire"]',440,82);
     // Real game simulation, not wall time, determines the 45-second mission.
     // Low FPS software WebGL may need much more wall time. Sample its native
@@ -513,7 +755,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       clockSamples.every((v,i)=>i===0||v.nativeSec>=clockSamples[i-1].nativeSec),
       {last:clockSamples.at(-1),samples:clockSamples.length});
     terminal=settled;
-    check('natural-real-shot-lack-of-travel-failure',settled.phase==='finished'&&
+    check('solo-survival-real-shot-no-kill-timeout-failure',settled.phase==='finished'&&
       await page.locator('#mobile-kit').getAttribute('data-outcome')==='lost',
       {status:settled.status,seconds:settled.time});
     check('free-retry-without-ad',
@@ -546,7 +788,12 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       await page.locator('#mobile-kit').getAttribute('data-challenge')==='survive');
     check('instant-free-replay-keeps-native-renderer-no-reload',
       (await page.evaluate(()=>performance.timeOrigin))===oldOrigin);
-    check('free-retry-starts-fresh-real-match',(await inspect()).gamePhase==='running');
+    const replay=await inspect();
+    check('free-retry-starts-fresh-real-match',replay.gamePhase==='running');
+    check('solo-warm-retry-never-resurrects-friendly-ai',
+      replay.solo?.players===1&&replay.solo?.friends===0&&
+      replay.solo?.enemies===3&&replay.solo?.tags===0,
+      {solo:replay.solo});
     const localAfterReplay=await page.evaluate(()=>{
       try{return JSON.parse(localStorage.getItem('h5-cf:local-playtest:v1'));}
       catch{return null;}

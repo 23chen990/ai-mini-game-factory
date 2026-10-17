@@ -1019,3 +1019,117 @@ html[data-reference-game="cf-transport-ship"] #mk-fps-hit-feedback[data-mileston
     animation:none!important
   }
 }
+
+/* CF V18: open a real rightward thumb travel corridor and keep world legible. */
+@media(orientation:landscape){
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]{
+  right:max(100px,calc(90px + env(safe-area-inset-right,0px)))!important;
+  bottom:max(62px,calc(56px + env(safe-area-inset-bottom,0px)))!important;
+  width:82px!important;height:82px!important;
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="jump"]{
+  right:max(20px,calc(14px + env(safe-area-inset-right,0px)))!important;
+  bottom:max(28px,calc(24px + env(safe-area-inset-bottom,0px)))!important;
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="reload"]{
+  right:max(19px,calc(13px + env(safe-area-inset-right,0px)))!important;
+  bottom:169px!important;
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="scope"]{
+  right:max(191px,calc(181px + env(safe-area-inset-right,0px)))!important;
+  bottom:142px!important;
+ }
+}
+/* Reduce nonessential blurring from UI layer; native postprocessing is separately profiled. */
+html[data-reference-game="cf-transport-ship"][data-fps-active="true"] #mk-fps-guide{
+ text-shadow:0 1px 2px #000!important;
+}
+
+/* V18 lite combat: remove scoreboards that compete with the objective. */
+html[data-reference-game="cf-transport-ship"] #mobile-kit[data-fps-lite="true"] #mk-fps-board,
+html[data-reference-game="cf-transport-ship"] #mobile-kit[data-fps-lite="true"] .mk-header>span:has(#mk-best),
+html[data-reference-game="cf-transport-ship"] #mobile-kit[data-fps-lite="true"] .mk-meter>span:has(#mk-score){display:none!important;}
+
+/* CF V20 real cover-to-cover first-person H5 vertical slice (missions 01/03).
+   Real native crouch/ballistics; separate HUD only, no fake shield overlay. */
+html[data-reference-game="cf-transport-ship"] #mk-cover-raid[hidden],
+html[data-reference-game="cf-transport-ship"] #mk-cover-raid[hidden] *{
+  display:none!important;
+}
+html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #touch .pad,
+html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #touch .knob,
+html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #radarWrap,
+html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #touch .btn[data-mk-action="jump"],
+html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #touch .btn[data-mk-action="reload"],
+html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #touch .btn[data-mk-action="scope"]{
+  display:none!important;
+}
+html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #touch .btn[data-mk-action="fire"]{
+  position:fixed!important;
+  left:max(24px,calc(17px + env(safe-area-inset-left,0px)))!important;
+  right:auto!important;
+  bottom:max(40px,calc(32px + env(safe-area-inset-bottom,0px)))!important;
+  width:90px!important;height:90px!important;
+  border-radius:50%!important;
+  font-size:17px!important;
+  background:#ae3c2edb!important;
+  border:2px solid #ffd4ba!important;
+  touch-action:none!important;
+  user-select:none!important;
+  z-index:90!important;
+}
+html[data-reference-game="cf-transport-ship"] #mk-cover-raid{
+  position:fixed;inset:0;
+  z-index:87;pointer-events:none;
+  display:block;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+}
+html[data-reference-game="cf-transport-ship"] #mk-cover-status{
+  position:absolute;
+  top:clamp(74px,18vh,91px);left:50%;transform:translateX(-50%);
+  border-radius:20px;
+  padding:6px 12px;max-width:58vw;
+  background:rgba(5,18,29,.72);border:1px solid #aec7da42;
+  color:#e8f5fc;font-size:clamp(11px,2.1vw,13px);
+  text-align:center;white-space:nowrap;
+  text-shadow:0 1px 2px #000;
+}
+html[data-reference-game="cf-transport-ship"] #mk-cover-nav{
+  position:absolute;inset:0;pointer-events:none;
+}
+html[data-reference-game="cf-transport-ship"] #mk-cover-nav button{
+  position:absolute;bottom:max(24px,calc(18px + env(safe-area-inset-bottom,0px)));
+  width:clamp(90px,15vw,120px);height:56px;
+  padding:0 6px;touch-action:manipulation;
+  border:1.5px solid #b9dfffaa;border-radius:18px;
+  background:#123346d9;color:#ecf9ff;
+  font-weight:800;font-size:clamp(13px,2.3vw,16px);
+  box-shadow:0 3px 12px #0008;
+  pointer-events:auto;
+}
+html[data-reference-game="cf-transport-ship"] #mk-cover-nav #mk-cover-left{
+  left:calc(50% - clamp(100px,17vw,132px));
+}
+html[data-reference-game="cf-transport-ship"] #mk-cover-nav #mk-cover-right{
+  left:calc(50% + 12px);
+}
+html[data-reference-game="cf-transport-ship"] #mk-cover-nav button:active{
+  background:#237490ed;
+}
+html[data-reference-game="cf-transport-ship"] #mk-cover-nav button:disabled{
+  opacity:.28;box-shadow:none;pointer-events:none;
+}
+html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #mk-fps-guide{
+  max-width:220px!important;
+}
+@media(max-height:340px) and (orientation:landscape){
+  html[data-reference-game="cf-transport-ship"] #mk-cover-status{
+    top:68px;padding:3px 8px;
+  }
+  html[data-reference-game="cf-transport-ship"] #mk-cover-nav button{
+    height:46px;bottom:15px;
+  }
+  html[data-reference-game="cf-transport-ship"][data-fps-cover="true"] #touch .btn[data-mk-action="fire"]{
+    width:78px!important;height:78px!important;bottom:20px!important;
+  }
+}

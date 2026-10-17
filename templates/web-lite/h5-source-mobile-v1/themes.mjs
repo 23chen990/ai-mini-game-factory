@@ -1,8 +1,99 @@
 /* global setTimeout, clearTimeout */
+/** Tiny H5 FPS levels should teach one input at a time and stay light:
+ * the first fight is a REAL 1v1, then authored combat grows gradually.
+ * These are native actors per faction, not a fake player/shot multiplier. */
+export function cfMobileActorBudget(challenge){
+  if(challenge?.lite!==true)return null;
+  const tiers={tags:1,precision:2,survive:3,defense:3,
+    assault:3,marksman:2,evac:3,counter:4};
+  const base=tiers[challenge.id]??4;
+  return challenge.elite===true?Math.min(4,base+1):base;
+}
+
+/** CF solo PvE. Native startMatch still creates standard actor objects using
+ * its pinned third-party engine, then BEFORE the first simulation frame we
+ * detach friendly AI from the authoritative actors collection and Three.js
+ * scene. Native projectiles, enemy Bot AI and player damage remain untouched.
+ *
+ * Removing friends from game.actors (rather than making them invisible)
+ * means they cannot shoot, block a lane, soak enemy bullets, steal kills,
+ * be selected as targets, appear on radar, or respawn. Only the player has
+ * the friendly team. Called on EVERY startMatch including instant replays.
+ */
+export function cfRemoveNativeAllies(game,challenge){
+  if(challenge?.lite!==true)return {applied:false,removed:0};
+  const player=game?.player;
+  if(!player?.team||!Array.isArray(game.actors))
+    return {applied:false,removed:0};
+  const allies=game.actors.filter(actor=>actor&&
+    actor!==player&&actor.team===player.team);
+  for(const actor of allies){
+    if(actor.soldier?.root)game.renderer?.scene?.remove?.(actor.soldier.root);
+  }
+  const tags=Array.isArray(game.tags)?game.tags:[];
+  const keptTags=[];
+  for(const tag of tags){
+    if(allies.includes(tag.actor)){
+      if(tag.sprite)game.renderer?.scene?.remove?.(tag.sprite);
+      tag.sprite?.material?.map?.dispose?.();
+      tag.sprite?.material?.dispose?.();
+    }else keptTags.push(tag);
+  }
+  game.tags=keptTags;
+  game.actors=game.actors.filter(actor=>!allies.includes(actor));
+  game.__mkSoloPve=true;
+  return {applied:true,removed:allies.length,
+    playerCount:game.actors.filter(actor=>actor===player).length,
+    enemyCount:game.actors.filter(actor=>actor!==player&&
+      actor.team!==player.team).length};
+}
+
+/** Genuine original Bot roles shape each short encounter, instead of
+ * simulating teams or altering weapon damage / hitboxes. These roles exist
+ * in the pinned Bot AI. pickGoal() uses the real authored NavGrid. */
+export function cfSoloEncounterRoles(id){
+  return ({
+    tags:['hold'],
+    precision:['hold','flank'],
+    survive:['rush','flank','rush'],
+    defense:['rush','flank','rush'],
+    assault:['hold','rush','flank'],
+    marksman:['hold','flank'],
+    evac:['rush','flank','rush'],
+    counter:['rush','flank','rush','flank']
+  })[id]||['rush'];
+}
+export function cfAssignSoloEnemyRoles(game,challenge){
+  if(challenge?.lite!==true||game?.__mkSoloPve!==true)return 0;
+  const roles=cfSoloEncounterRoles(challenge.id);
+  const enemies=(game.actors||[]).filter(a=>a&&
+    !a.isPlayer&&a.team!==game.player?.team);
+  let assigned=0;
+  for(let i=0;i<enemies.length;i++){
+    const bot=enemies[i];
+    if(typeof bot.pickGoal!=='function')continue;
+    bot.role=roles[i%roles.length];
+    bot.stage=0;
+    bot.path=null;bot.pi=0;
+    bot.pickGoal();
+    assigned++;
+  }
+  return assigned;
+}
+
 /** Small source-facing bridge, not a combat implementation. */
 export function createFpsAdapter(game, doc) {
   return {
-    start: (challenge) => { const size=challenge?.kind==='hits'?1:challenge?.kind==='defend'?2:challenge?.kind==='kills'?3:4; Object.assign(game.opts, { size, goal: 30, diff: 'easy', quality: 'low' }); game.hud.syncControls(); doc.getElementById('btnStart').click(); },
+    start: (challenge) => {
+      // The source adapter is the last writer before Game.startMatch():
+      // previously it overwrote the lite 4v4 and PVE kill quota back to 1v1/30.
+      const lite=challenge?.lite===true;
+      const size=lite?cfMobileActorBudget(challenge):challenge?.kind==='hits'?1:
+        challenge?.kind==='defend'?2:challenge?.kind==='kills'?3:4;
+      Object.assign(game.opts,{size,goal:lite?300:30,diff:'easy',quality:'low'});
+      game.hud.syncControls();
+      doc.getElementById('btnStart').click();
+    },
     pause: () => { if (game.playing && !game.ended && !game.paused) game.pause(); },
     resume: () => game.resume(true),
     phase: () => game.ended ? 'finished' : game.paused ? 'paused' : game.playing ? 'running' : 'ready',
