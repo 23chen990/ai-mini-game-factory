@@ -8,7 +8,7 @@ test('CF V18 dead-player touches cannot arm gun or buffered jump, but menus rema
  assert.equal(cfIgnoreDeadCombatTouch({alive:false,nativeControl:false}),false);
  assert.equal(cfIgnoreDeadCombatTouch({alive:true,nativeControl:true}),false);
  assert.equal(cfIgnoreDeadCombatTouch({alive:undefined,nativeControl:true}),true);
- assert.equal(cfIgnoreDeadCombatTouch(null),true===false);
+ assert.equal(cfIgnoreDeadCombatTouch(),false);
 });
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
