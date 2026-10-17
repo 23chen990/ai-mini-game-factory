@@ -213,14 +213,25 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     check('first30-fire-requires-native-player-shot',
       firedRookie.player.shots>authenticRookieShots,
       {before:authenticRookieShots,after:firedRookie.player.shots});
-    await sleep(11_100);
+    // Software WebGL can render 6 seconds of native simulation in 11 wall
+    // seconds. Always wait on the ORIGINAL GAME CLOCK, never force timers or
+    // weaken the 10-second tactical release; capture the wall/sim gap as
+    // performance evidence rather than claiming physical-device readiness.
+    const wallStart=performance.now();
+    await page.waitForFunction(deadline=>{
+      const g=window.__H5NativeGame;
+      return g?.playing===true&&g?.time>=deadline;
+    },rookie.time+11,{timeout:75_000,polling:250});
     const afterRookieWindow=await inspect();
+    const wallSec=(performance.now()-wallStart)/1000;
     check('stationary-novice-target-released-by-real-11sec-native-clock',
       afterRookieWindow.time-rookie.time>=10.5&&
       (afterRookieWindow.openingBot?.training===false||
        afterRookieWindow.openingBot?.alive===false),
       {before:rookie.openingBot,after:afterRookieWindow.openingBot,
-       elapsed:afterRookieWindow.time-rookie.time});
+       simulatedSec:afterRookieWindow.time-rookie.time,
+       wallSec:+wallSec.toFixed(2),
+       browser:'SWIFTSHADER_CHROMIUM_NOT_A_REAL_PHONE'});
     await snap('v14-first30-live-pressure');
 
     // Smoke each original mission/weapon using visible controls only.
