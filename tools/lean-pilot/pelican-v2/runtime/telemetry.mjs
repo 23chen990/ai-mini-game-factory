@@ -3,6 +3,7 @@
 const EVENTS=new Set(['start','finish','fail','retire','retry','endless_gate',
  'shop_buy','shop_equip','revive_offer','revive_unavailable']);
 const valid=n=>Number.isSafeInteger(n)&&n>=0&&n<=9999999;
+const validTimestamp=n=>Number.isSafeInteger(n)&&n>=0&&n<=9999999999999;
 export function newPlaytestMetrics(){return {version:1,counters:{},events:[]};}
 export function loadPlaytestMetrics(raw){
  try{
@@ -10,7 +11,7 @@ export function loadPlaytestMetrics(raw){
   const data=JSON.parse(raw);
   if(!data||data.version!==1||!data.counters||typeof data.counters!=='object'||Array.isArray(data.counters)||!Array.isArray(data.events)||data.events.length>90)return null;
   for(const [event,n]of Object.entries(data.counters))if(!EVENTS.has(event)||!valid(n))return null;
-  const events=data.events.filter(e=>EVENTS.has(e?.event)&&valid(e?.at)&&[1,2,3,4,5,6].includes(e?.level)&&valid(e?.distance));
+  const events=data.events.filter(e=>EVENTS.has(e?.event)&&validTimestamp(e?.at)&&[1,2,3,4,5,6].includes(e?.level)&&valid(e?.distance));
   return {version:1,counters:{...data.counters},events:events.slice(-80)};
  }catch{return null;}
 }
