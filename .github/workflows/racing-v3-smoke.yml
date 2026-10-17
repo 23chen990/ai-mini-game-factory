@@ -5,6 +5,7 @@ on:
       - 'templates/web-lite/h5-source-mobile-v1/**'
       - 'tools/lean-pilot/racing-mobile-build.mjs'
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
+      - 'tools/lean-pilot/racing-controls-ab-qa.mjs'
       - 'tools/lean-pilot/racing-geometry-audit.mjs'
       - 'tools/lean-pilot/racing-ai-pace-audit.mjs'
       - 'tools/lean-pilot/racing-native-player-qa.mjs'
@@ -50,7 +51,7 @@ jobs:
           node --test tools/lean-pilot/tests/racing-build.test.mjs
           node --test tools/lean-pilot/tests/racing-visible-policy.test.mjs
           node --test tools/lean-pilot/racing-delivery-verify.test.mjs
-          pnpm exec eslint tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          pnpm exec eslint tools/lean-pilot/racing-controls-ab-qa.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash
@@ -81,6 +82,9 @@ jobs:
         run: |
           node --test tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
           node tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
+      - name: Run internal A/B/C steering variants on the exact bundled WebGL racer
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'feat/racing-v62-controls-qa-20261017'
+        run: node tools/lean-pilot/racing-controls-ab-qa.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-controls-ab-qa
       - name: One-stage natural visible-touch diagnostic (non-gating)
         if: github.event_name == 'workflow_dispatch' && inputs.natural_touch == true
         continue-on-error: true
@@ -124,6 +128,7 @@ jobs:
           path: |
             runs/h5-qq-mobile-20261013/artifacts/racing-v3-delivery/*
             runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/*
+            runs/h5-qq-mobile-20261013/artifacts/racing-controls-ab-qa/*
             runs/h5-qq-mobile-20261013/evidence/v32-natural-ci/*
           retention-days: 7
           if-no-files-found: warn
@@ -131,11 +136,11 @@ jobs:
   publish-qa-preview:
     name: Verified H5 phone preview (QA only)
     needs: racing-v3
-    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'feat/racing-v60-30-unique-stages-20261017' || github.event.pull_request.head.ref == 'feat/racing-v60-mobile-response-20261017' || github.event.pull_request.head.ref == 'feat/racing-v62-p0-mobile-touch-fix-20261017') && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'feat/racing-v60-30-unique-stages-20261017' || github.event.pull_request.head.ref == 'feat/racing-v60-mobile-response-20261017' || github.event.pull_request.head.ref == 'feat/racing-v62-p0-mobile-touch-fix-20261017' || github.event.pull_request.head.ref == 'feat/racing-v62-controls-qa-20261017') && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 9
     env:
-      RACE_PREVIEW_BRANCH: ${{ github.event.pull_request.head.ref == 'feat/racing-v62-p0-mobile-touch-fix-20261017' && 'preview/racing-v63-touch-trust-20261017' || (github.event.pull_request.head.ref == 'feat/racing-v60-mobile-response-20261017' && 'preview/racing-v61-mobile-response-20261017' || 'preview/racing-v60-career30-20261017') }}
+      RACE_PREVIEW_BRANCH: ${{ github.event.pull_request.head.ref == 'feat/racing-v62-controls-qa-20261017' && 'preview/racing-control-lab-v1-20261017' || (github.event.pull_request.head.ref == 'feat/racing-v62-p0-mobile-touch-fix-20261017' && 'preview/racing-v63-touch-trust-20261017' || (github.event.pull_request.head.ref == 'feat/racing-v60-mobile-response-20261017' && 'preview/racing-v61-mobile-response-20261017' || 'preview/racing-v60-career30-20261017')) }}
     permissions:
       contents: write
       actions: read
