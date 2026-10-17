@@ -76,7 +76,8 @@ export function buildV10RoadRumble(THREE,track,course) {
       for(const p of [
         [a,side*(hwA-w)],[a,side*hwA],
         [b,side*(hwB-w)],[b,side*hwB]
-      ])vertices.push(p[0].x+p[0].rx*p[1],p[0].y+.115,
+      ])vertices.push(p[0].x+p[0].rx*p[1],
+        p[0].y+p[1]*Math.sin(Number.isFinite(p[0].bank)?p[0].bank:0)+.115,
         p[0].z+p[0].rz*p[1]);
       faces.push(idx,idx+1,idx+2,idx+1,idx+3,idx+2);
     }
