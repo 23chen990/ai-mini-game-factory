@@ -124,6 +124,12 @@ async function raceStart(page, index, name) {
       .some(x=>x.material?.depthTest===false && x.material?.map?.image &&
         x.renderOrder>=10 && x.scale.x>=4) ?? false,
     roadWidth:(window.game?.track?.halfW ?? 0)*2,
+    v9RoadBands:window.game?.track?.__V9_WIDTH_PROFILE__?.length ?? 0,
+    v9ActualNarrowing:(()=>{
+      const t=window.game?.track,b=t?.__V9_WIDTH_PROFILE__?.[0];
+      return b && typeof t.v9WidthAt==='function'
+        ? Math.max(0,t.halfW-t.v9WidthAt(b.at*t.length)) : 0;
+    })(),
     padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
     trackSamples:window.game?.track?.N ?? 0,
     cornerSigns:window.game?.__RACE_CORNER_SIGNS__?.sprites?.length ?? 0,
@@ -137,6 +143,12 @@ async function raceStart(page, index, name) {
     })(),
     shortcut:!!window.game?.track?.__RACE_SHORTCUT__,
     shortcutGain:window.game?.track?.__RACE_SHORTCUT__?.gain ?? 0,
+    shortcutLength:window.game?.track?.__RACE_SHORTCUT__?.length ?? 0,
+    shortcutStyle:window.game?.track?.__RACE_SHORTCUT__?.style ?? null,
+    shortcutCurb:!!window.game?.level?.getObjectByName('physical-shortcut-curb'),
+    shortcutFascia:!!window.game?.level?.getObjectByName('physical-shortcut-bridge-fascia'),
+    shortcutPaint:!!window.game?.level?.getObjectByName('physical-shortcut-centre-dashes'),
+    shortcutAdvanceSigns:window.game?.level?.getObjectByName('physical-shortcut-approach')?.children?.length ?? 0,
     shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
     shortcutRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
     nativeThreeLoaded:!!window.__RACE_THREE__?.Sprite,
@@ -198,8 +210,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V8.0'||
-     worldIdentity.uiRevision!=='racing-v80-integrated')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V9.0'||
+     worldIdentity.uiRevision!=='racing-v90-integrated')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -214,9 +226,13 @@ async function raceStart(page, index, name) {
   // Compare the actual rendered native geometry with the source-of-truth
   // designed width, not a stale number copied from an earlier track version.
   const expectedWidth=COURSE_ROAD_WIDTHS[expectedCourse.slice(5)]??TRACK_RESHAPES[expectedMap]?.width;
-  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
+  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600 || early.v9RoadBands!==2 || early.v9ActualNarrowing<.35)
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
-  if(index===4 && (!early.shortcut || early.shortcutGain<35 || !early.shortcutRoad || !early.shortcutRails))
+  if(index===4 && (!early.shortcut || early.shortcutGain<25 || early.shortcutGain>82 ||
+     early.shortcutLength<75 || early.shortcutLength>210 ||
+     early.shortcutStyle!=='temple' || !early.shortcutRoad || !early.shortcutRails ||
+     !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint ||
+     early.shortcutAdvanceSigns!==2))
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
   if(index===0 && early.shortcut)
     fail(name+': 01 course cannot contain an unannounced shortcut');
@@ -511,6 +527,30 @@ try {
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
     if (index===4) {
+      // QA-only actual WebGL screenshots at a physical V9 fork. These are
+      // deliberately labelled STAGED and are NEVER used as human clear proof.
+      const v9Fork=await page.evaluate(()=>{
+        const game=window.game,p=game.player,shortcut=game.track.__RACE_SHORTCUT__;
+        if(!shortcut?.v9)return null;
+        const d=shortcut.start-32;
+        p.reset(d,0);p.lastD=d;p.progress=d;p.lapsDone=0;
+        return {start:shortcut.start,len:shortcut.length,gain:shortcut.gain,style:shortcut.style};
+      });
+      if(!v9Fork || v9Fork.len>210 || v9Fork.gain<25)
+        fail('Cannot capture a real V9 staged junction: '+JSON.stringify(v9Fork));
+      await page.waitForTimeout(1500);
+      await page.screenshot({path:path.join(dest,'05-v9-junction-approach-qa-staged.png')});
+      await page.evaluate(()=>{
+        const g=window.game,p=g.player,s=g.track.__RACE_SHORTCUT__;
+        const fork=s.samples[Math.round(s.samples.length*.37)],d=s.start+(s.end-s.start)*fork.arc/s.length;
+        p.reset(d,0);p.x=fork.x;p.y=fork.y;p.z=fork.z;
+        p.d=d;p.lastD=d;p.progress=d;p.h=fork.hd;p.m=fork.hd;
+        p.proj.__RACE_SHORTCUT_ACTIVE=true;p.proj.__RACE_SHORTCUT_HALF_WIDTH=s.widthAt(fork.arc)*.5;
+        p.proj.__RACE_SHORTCUT_ARC=fork.arc;
+      });
+      await page.waitForTimeout(1500);
+      await page.screenshot({path:path.join(dest,'05-v9-short-road-qa-staged.png')});
+      report.v9ForkVisual={qaStaged:true,nativeWebGL:true,...v9Fork};
       // QA-only close-up for ART READABILITY; this is camera/vehicle staging,
       // not legitimate progress, rank, a real item pickup, or a stage clear.
       const visual=await page.evaluate(()=>{
