@@ -32,8 +32,8 @@ test('淘汰可视提示显示真实赛段进度、末位危险；过点和换�
 
 test('failure diagnosis distinguishes authentic rank, technique and boss losses without awarding a pass',()=> {
   const cases=[
-    [STAGES[2],result(6),{cleanPasses:0},/第6名，要求前3名/],
-    [STAGES[6],{...result(6),time:97.3},{},/第6名，要求前3名/],
+    [STAGES[2],result(6),{cleanPasses:0},/第6名，要求前三名/],
+    [STAGES[6],{...result(6),time:97.3},{},/第6名，要求前三名/],
     [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前三名/],
     [STAGES[15],result(4),{beatBoss:false},/第4名，要求前三名/],
     [STAGES[14],result(4),{pickups:1},/第4名，要求前三名/],
