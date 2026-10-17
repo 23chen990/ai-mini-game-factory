@@ -1,3 +1,4 @@
+import { shapeV9RhythmSegments, V9_WIDTH_BANDS } from './v9-course-director.mjs';
 import { EXPANSION_COURSES } from './career-expansion.mjs';
 import { applyV8CourseGeometry, V8_COURSES } from './v8-course-geometry.mjs';
 /** V3.5: Four distinct ORIGINAL racing rhythms inspired by kart-racer design principles.
@@ -193,7 +194,8 @@ export const COURSE_ROAD_WIDTHS = Object.freeze({
   '08':19,
   '09':19,
 });
-export function createCareerLayouts(layouts, { v8 = false } = {}) {
+export function createCareerLayouts(layouts, { v8 = false, v9 = false } = {}) {
+  if(v9&&!v8)throw Error('V9 driving rhythms require native V8 3D geometry');
   const fingerprints=new Set(),titles=new Set();
   for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
     const id=String(i).padStart(2,'0'),base=layouts[CAREER_COURSE_MAPS[i-1]],
@@ -201,7 +203,10 @@ export function createCareerLayouts(layouts, { v8 = false } = {}) {
     if(!base?.__racingV31||!blueprint||!Array.isArray(base.points))
       throw Error('V3.7 requires verified biome and independent course '+id);
     const [title,feel,english,scale,sketch]=blueprint;
-    const local=injectTechnicalSectors(parseLocalRoute(sketch),id,scale);
+    const sourceRoute=parseLocalRoute(sketch);
+    const local=v9
+      ? shapeV9RhythmSegments(sourceRoute,id,scale,COURSE_TECHNICAL_SECTORS[id]).points
+      : injectTechnicalSectors(sourceRoute,id,scale);
     const v8Geometry=v8 ? applyV8CourseGeometry(local,id,scale) : null;
     const authored=v8Geometry?.points ?? local;
     const planScale=v8Geometry?.scale ?? scale;
@@ -221,7 +226,8 @@ export function createCareerLayouts(layouts, { v8 = false } = {}) {
     const signature=JSON.stringify(points);
     if(fingerprints.has(signature))throw Error('Duplicate authored course shape '+id);
     fingerprints.add(signature);
-    layouts['race-'+id]={width:COURSE_ROAD_WIDTHS[id]??base.width,points};
+    layouts['race-'+id]={width:COURSE_ROAD_WIDTHS[id]??base.width,points,
+      ...(v9?{v9WidthProfile:V9_WIDTH_BANDS[id]}:{})};
   }
   if(fingerprints.size!==CAREER_COURSE_MAPS.length||titles.size!==CAREER_COURSE_MAPS.length)
     throw Error('Expected '+CAREER_COURSE_MAPS.length+' distinct hand-authored courses');
@@ -300,11 +306,38 @@ const COURSE_ACCENTS = Object.freeze([
  * cannot pretend to have loaded a new circuit just by changing a lobby card.
  * Keep native Track/vehicle physics, legitimate shortcut paths and road mesh.
  */
+/**
+ * Avoid dropping a generic course-number bridge into the middle of a real
+ * shortcut. On stage 05 the old .52*3006m = 1563m arch stood directly over
+ * the 1488-1693m physical branch and obscured the mobile driving sightline.
+ * Opt-in V9 only; V8 course-brand landmarks stay unchanged.
+ */
+export function v9CourseIdentityFractions(track) {
+  const original=[.065,.52];
+  const fork=track?.__RACE_SHORTCUT__;
+  if(!track?.__V9_WIDTH_PROFILE__||!fork||
+    !Number.isFinite(track.length)||track.length<900)
+    return original;
+  const safelyAway=fraction=>{
+    const d=fraction*track.length;
+    return d<fork.start-140||d>fork.end+95;
+  };
+  if(safelyAway(.52))return original;
+  for(const fraction of [.36,.72,.26,.80]) {
+    if(safelyAway(fraction))return [.065,fraction];
+  }
+  throw Error('No safe numbered-arch location away from real V9 fork');
+}
+
 function buildCourseIdentity(THREE, track, course, n) {
   const group = new THREE.Group();
   group.name = 'physical-course-identity-' + course;
   const color = COURSE_ACCENTS[n - 1], biome = CAREER_COURSE_MAPS[n - 1];
-  const metal = new THREE.MeshStandardMaterial({color:0x14233a,roughness:.55,metalness:.5});
+  const v9=!!track.__V9_WIDTH_PROFILE__;
+  const structuralColor=v9?({city:0x304459,egypt:0x8e704c,
+    aegean:0x647a80,snow:0x8ea9b8}[biome]??0x465366):0x14233a;
+  const metal = new THREE.MeshStandardMaterial({
+    color:structuralColor,roughness:v9?.89:.55,metalness:v9?.05:.5});
   const bright = new THREE.MeshBasicMaterial({color});
   const white = new THREE.MeshBasicMaterial({color:0xf2f8ff});
   const mesh = (parent, geometry, material, x, y, z) => {
@@ -316,18 +349,23 @@ function buildCourseIdentity(THREE, track, course, n) {
   const sideDistance = track.halfW + 5.5;
   // Over-road arches are high above the actual vehicle and entirely visual.
   // The first sign is visible soon after GO; the second gives a mid-lap cue.
-  for (const [index, fraction] of [.065, .52].entries()) {
+  for (const [index, fraction] of v9CourseIdentityFractions(track).entries()) {
     const sample = track.sample(track.length * fraction, {});
     const portal = new THREE.Group();
     portal.name = 'course-' + course + '-sector-arch-' + (index + 1);
     portal.position.set(sample.x, sample.y, sample.z);
     portal.rotation.y = sample.hd;
+    const archHeight=v9&&index===1?12.5:18;
     for (const x of [-sideDistance,sideDistance]) {
-      mesh(portal,new THREE.BoxGeometry(2,18,2),metal,x,9,0);
-      mesh(portal,new THREE.BoxGeometry(2.6,3,2.6),bright,x,17.5,0);
+      mesh(portal,new THREE.BoxGeometry(v9?1.6:2,archHeight,v9?1.6:2),
+        metal,x,archHeight*.5,0);
+      mesh(portal,new THREE.BoxGeometry(v9?2:2.6,v9?2.2:3,v9?2:2.6),
+        bright,x,archHeight-.5,0);
     }
-    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,2.3,2.1),metal,0,18,0);
-    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,.5,2.4),bright,0,19.3,0);
+    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,v9?1.6:2.3,2.1),
+      metal,0,archHeight,0);
+    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,.5,2.4),
+      bright,0,archHeight+1.3,0);
     if (index === 0) {
       mesh(portal,new THREE.BoxGeometry(10,5.3,1.2),metal,0,23,0);
       const glyphs = ['abcdef','bc','abged','abgcd','fgbc','afgcd','afgecd','abc','abcdefg','abfgcd'];
@@ -433,6 +471,70 @@ export function buildV8CourseTerrain(THREE,track,course) {
   return group;
 }
 
+/**
+ * V9 environment is paced to the ACTUAL road, not randomly scattered decor.
+ * Terrain silhouettes respond to elevation/curvature and are grounded beyond
+ * the collision corridor. Only 5 paired low-poly groups per loaded stage.
+ * Complex tracks get retention cliffs; desert gets stone tiers, city gets
+ * district gates, snow gets ridge shelves. All identity meshes are original.
+ */
+export function buildV9RoadsideSectors(THREE,track,course) {
+  const root=new THREE.Group();root.name='v9-paced-roadside-'+course;
+  if(!track?.__V9_WIDTH_PROFILE__||!Number.isFinite(track.length))return root;
+  const id=Number(course.slice(5)),map=CAREER_COURSE_MAPS[id-1];
+  const stone=map==='egypt'?0xa97e50:map==='snow'?0x8ab1c4:
+    map==='aegean'?0x687782:0x4b6277;
+  const light=map==='egypt'?0xebc592:map==='snow'?0xdaf5f4:
+    map==='aegean'?0xd0b898:0xa2c5dc;
+  const baseMat=new THREE.MeshStandardMaterial({color:stone,roughness:.95});
+  const edgeMat=new THREE.MeshStandardMaterial({color:light,roughness:.82,metalness:.04});
+  const rockGeo=new THREE.DodecahedronGeometry(1,0);
+  const iceGeo=new THREE.OctahedronGeometry(1,0);
+  const tierGeo=new THREE.BoxGeometry(1,1,1);
+  for(let k=0;k<5;k++){
+    const frac=.13+k*.18+((id+k)%3)*.018;
+    const station=track.sample(track.length*frac,{});
+    const width=track.v9WidthAt?.(station.d)??track.halfW;
+    const turn=track.curv?.[station.i]??0;
+    const steep=Math.abs(track.slope?.[station.i]??0);
+    const h=11+(id+k*4)%13+Math.min(17,steep*120);
+    for(const side of [-1,1]){
+      const grp=new THREE.Group();
+      grp.name='v9-terrain-'+course+'-'+k+'-'+side;
+      const offset=width+16+((id+k*3)%7);
+      grp.position.set(station.x+station.rx*side*offset,
+        station.y-5,station.z+station.rz*side*offset);
+      // Local Y placement is clamped near the true road surface, helping
+      // players perceive downhill movement as landmarks step with elevation.
+      const add=(geo,mat,x,y,z,sx,sy,sz)=>{
+        const obj=new THREE.Mesh(geo,mat);
+        obj.position.set(x,y,z);obj.scale.set(sx,sy,sz);
+        obj.receiveShadow=true;grp.add(obj);
+      };
+      if(map==='city'){
+        // Understated split districts, unlike repeated universal neon pillars.
+        add(tierGeo,baseMat,0,h*.53,0,6,h,6);
+        add(tierGeo,edgeMat,0,h+1.8,0,8,1.8,8);
+        if(k%2===0)add(tierGeo,baseMat,9,h*.24,-4,4,h*.44,4);
+      }else if(map==='egypt'){
+        add(tierGeo,baseMat,0,3.5,0,16,7,10);
+        add(rockGeo,baseMat,0,9,0,9,h*.38,8);
+        add(tierGeo,edgeMat,-3,8,0,18,1.2,11);
+      }else if(map==='snow'){
+        add(tierGeo,baseMat,0,2.3,0,14,4.5,10);
+        add(iceGeo,edgeMat,0,h*.55,0,5.5,h*.65,5);
+        if(Math.abs(turn)>.008)add(iceGeo,baseMat,9,7,-3,3,8,3);
+      }else{
+        add(rockGeo,baseMat,0,h*.46,0,11,h*.6,9);
+        add(tierGeo,baseMat,side*3,2.4,0,17,5,14);
+        if(k%2===1)add(rockGeo,edgeMat,7,h*.82,1,5,h*.35,5);
+      }
+      root.add(grp);
+    }
+  }
+  return root;
+}
+
 export function buildRaceLandmarks(THREE,track,course) {
   const group=new THREE.Group();
   if(TRACK_RESHAPES[course])return group; // Pinned native pre-career demo.
@@ -504,6 +606,7 @@ export function buildRaceLandmarks(THREE,track,course) {
   }
   group.add(buildCourseIdentity(THREE,track,course,n));
   group.add(buildV8CourseTerrain(THREE,track,course));
+  if(track.__V9_WIDTH_PROFILE__)group.add(buildV9RoadsideSectors(THREE,track,course));
   if(n===7||n===22) {
     // A visible finish at the real one-way finish distance, not the loop seam.
     // No collider: native onLap handles the actual crossing and ranking.
@@ -556,7 +659,7 @@ export function createRaceSky(sky,course) {
 }
 
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
-export function applyTrackDesign(layouts, { v8 = false } = {}) {
+export function applyTrackDesign(layouts, { v8 = false, v9 = false } = {}) {
   const report = {};
   for (const [key, plan] of Object.entries(TRACK_RESHAPES)) {
     const layout = layouts?.[key];
@@ -575,6 +678,6 @@ export function applyTrackDesign(layouts, { v8 = false } = {}) {
     Object.defineProperty(layout,'__racingV31',{value:true,enumerable:false});
     report[key] = points.length;
   }
-  createCareerLayouts(layouts,{v8});
+  createCareerLayouts(layouts,{v8,v9});
   return report;
 }

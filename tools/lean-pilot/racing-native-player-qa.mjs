@@ -18,12 +18,12 @@ const src=path.join(run,'workspace/source/qq-speed/src');
 const build=JSON.parse(await readFile(path.join(run,'artifacts/build-racing.json'),'utf8'));
 const raw=await readFile(path.join(src,'layouts.js'),'utf8');
 const start="import { applyTrackDesign } from './race-track-design.mjs';\n";
-const end='\napplyTrackDesign(LAYOUTS, { v8: true });';
+const end='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true });';
 if(!raw.startsWith(start)||!raw.trimEnd().endsWith(end))
   throw Error('Unknown pinned native layout adapter; refusing synthetic physics QA');
 const layouts=(await import('data:text/javascript;base64,'+Buffer.from(
   raw.slice(start.length).trimEnd().slice(0,-end.length)).toString('base64'))).LAYOUTS;
-const revised=JSON.parse(JSON.stringify(layouts));applyTrackDesign(revised,{v8:true});
+const revised=JSON.parse(JSON.stringify(layouts));applyTrackDesign(revised,{v8:true,v9:true});
 const { Track }=await import(pathToFileURL(path.join(src,'track.js')).href);
 const { PlayerCar }=await import(pathToFileURL(path.join(src,'vehicle.js')).href);
 const { AICar }=await import(pathToFileURL(path.join(src,'ai.js')).href);
@@ -202,17 +202,19 @@ report.courseAudit={independentCourseCount:Object.keys(report.courses).length,
  * CAN be beaten, not that a six-car online race was witnessed.
  */
 report.challengeGate={};
+const challengeFailures=[];
 for(const id of ['01','05','11','16']){
   const c=report.courses[id],f=report.fieldPace[id];
   if(c.guided.status!=='FINISHED'||c.late.status!=='FINISHED')
     throw Error('Guided and late wheel controllers must both physically finish '+id);
   const cornerCost=+(c.late.elapsedSec-c.guided.elapsedSec).toFixed(1);
-  if(cornerCost<4)throw Error('Physical native corner execution has too little consequence '+id+': '+cornerCost);
+  if(cornerCost<4)challengeFailures.push('Physical native corner execution has too little consequence '+id+': '+cornerCost);
   if(f.beatPrivilegedLate<2)
-    throw Error('At least two original native AI drivers must outrun late steering '+id);
+    challengeFailures.push('At least two original native AI drivers must outrun late steering '+id);
   report.challengeGate[id]={cornerLossSec:cornerCost,
     nativeBotsFasterThanLate:f.beatPrivilegedLate};
 }
+if(challengeFailures.length)throw Error(challengeFailures.join('; '));
 /** Native AICar actually MOVES into a strategic lane after personal targeting.
  * Regression against "fake lane AI": personality must change native lat,
  * leaving room inside the physical rails. No collision engine in this probe.

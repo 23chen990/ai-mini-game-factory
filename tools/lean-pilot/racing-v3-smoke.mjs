@@ -124,9 +124,16 @@ async function raceStart(page, index, name) {
       .some(x=>x.material?.depthTest===false && x.material?.map?.image &&
         x.renderOrder>=10 && x.scale.x>=4) ?? false,
     roadWidth:(window.game?.track?.halfW ?? 0)*2,
+    v9RoadBands:window.game?.track?.__V9_WIDTH_PROFILE__?.length ?? 0,
+    v9ActualNarrowing:(()=>{
+      const t=window.game?.track,b=t?.__V9_WIDTH_PROFILE__?.[0];
+      return b && typeof t.v9WidthAt==='function'
+        ? Math.max(0,t.halfW-t.v9WidthAt(b.at*t.length)) : 0;
+    })(),
     padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
     trackSamples:window.game?.track?.N ?? 0,
     cornerSigns:window.game?.__RACE_CORNER_SIGNS__?.sprites?.length ?? 0,
+    maxCornerSignSize:Math.max(0,...(window.game?.__RACE_CORNER_SIGNS__?.sprites??[]).map(x=>x.scale.x)),
     eligibleCornerSamples:(()=>{
       const t=window.game?.track;if(!t?.curv)return 0;
       let n=0;for(let i=0;i<t.N;i+=8){
@@ -137,6 +144,13 @@ async function raceStart(page, index, name) {
     })(),
     shortcut:!!window.game?.track?.__RACE_SHORTCUT__,
     shortcutGain:window.game?.track?.__RACE_SHORTCUT__?.gain ?? 0,
+    shortcutLength:window.game?.track?.__RACE_SHORTCUT__?.length ?? 0,
+    shortcutStyle:window.game?.track?.__RACE_SHORTCUT__?.style ?? null,
+    shortcutCurb:!!window.game?.level?.getObjectByName('physical-shortcut-curb'),
+    shortcutFascia:!!window.game?.level?.getObjectByName('physical-shortcut-bridge-fascia'),
+    shortcutPaint:!!window.game?.level?.getObjectByName('physical-shortcut-centre-dashes'),
+    shortcutPortal:!!window.game?.level?.getObjectByName('physical-shortcut-portal'),
+    shortcutAdvanceSigns:window.game?.level?.getObjectByName('physical-shortcut-approach')?.children?.length ?? 0,
     shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
     shortcutRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
     nativeThreeLoaded:!!window.__RACE_THREE__?.Sprite,
@@ -182,7 +196,14 @@ async function raceStart(page, index, name) {
     const arches=node?.children?.filter(x=>x.name?.includes('sector-arch')) ?? [];
     const scenery=node?.children?.filter(x=>x.name?.includes('landscape')) ?? [];
     const evidence=window.__RACE_EVIDENCE__;
+    const nativeTrack=game?.track,midArch=arches[1];
+    const v9SafeMid=nativeTrack?.__V9_WIDTH_PROFILE__ && midArch &&
+      nativeTrack.__RACE_SHORTCUT__ ? nativeTrack.sample(nativeTrack.length*.36,{}) : null;
+    const v9MidArchMoved=!!v9SafeMid && !!midArch &&
+      Math.hypot(midArch.position.x-v9SafeMid.x,midArch.position.z-v9SafeMid.z)<.05;
+    const midArchColor=midArch?.children?.[0]?.material?.color?.getHex?.() ?? null;
     return {course,exists:!!node,arches:arches.length,scenery:scenery.length,
+      v9MidArchMoved,midArchColor,
       numberedMeshCount:arches[0]?.children?.length??0,
       actualCourse:evidence?.actualCourse,requestedCourse:evidence?.requestedCourse,
       actualTrackLength:evidence?.actualTrackLength,
@@ -198,9 +219,14 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V8.0'||
-     worldIdentity.uiRevision!=='racing-v80-integrated')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V9.0'||
+     worldIdentity.uiRevision!=='racing-v90-integrated')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
+  // V9 stage-05's black generic sector arch previously occupied the real
+  // short fork between 1488-1693m. It must be ACTUALLY RELOCATED IN WEBGL.
+  if(index===4 && (!worldIdentity.v9MidArchMoved ||
+      worldIdentity.midArchColor===0x14233a))
+    fail('V9 shortcut cannot be hidden under an oversized generic black arch: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.mobileCamera)fail(name+': actual touch driving must enable mobile camera and anti-jitter rendering');
@@ -214,20 +240,53 @@ async function raceStart(page, index, name) {
   // Compare the actual rendered native geometry with the source-of-truth
   // designed width, not a stale number copied from an earlier track version.
   const expectedWidth=COURSE_ROAD_WIDTHS[expectedCourse.slice(5)]??TRACK_RESHAPES[expectedMap]?.width;
-  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600)
+  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600 || early.v9RoadBands!==2 || early.v9ActualNarrowing<.35)
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
-  if(index===4 && (!early.shortcut || early.shortcutGain<35 || !early.shortcutRoad || !early.shortcutRails))
+  if(index===4 && (!early.shortcut || early.shortcutGain<25 || early.shortcutGain>82 ||
+     early.shortcutLength<75 || early.shortcutLength>210 ||
+     early.shortcutStyle!=='temple' || !early.shortcutRoad || !early.shortcutRails ||
+     !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint || !early.shortcutPortal ||
+     early.shortcutAdvanceSigns!==2))
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
   if(index===0 && early.shortcut)
     fail(name+': 01 course cannot contain an unannounced shortcut');
   // Any technical road with sharp corners must expose trackside turn signs.
   // Native curvature, not HUD text prompts, is the source of truth.
-  if(!early.nativeThreeLoaded || early.cornerSigns>7 ||
+  if(!early.nativeThreeLoaded || early.cornerSigns>4 || early.maxCornerSignSize>4.2 ||
      (early.eligibleCornerSamples>0 && early.cornerSigns<1) ||
      (early.eligibleCornerSamples===0 && early.cornerSigns!==0))
     fail(name+': true native-corner signage count differs from road geometry: '+JSON.stringify(early));
   if(index===4 && (early.itemBoxes!==8 || early.itemShape!=='IcosahedronGeometry' || early.itemBillboards!==1 || !early.questionOverlay))
     fail('native V3.1 item boxes must be diamond + visible question billboard: '+JSON.stringify(early));
+  if(index===4) {
+    // Native browser regression: simulate ONLY the inventory-slot UI state,
+    // not a pickup, success, mission score, race clear or unlocked reward.
+    // Exercises actual bundled HUD.update invoked by Game.updateRaceHUD.
+    const hudItems=await page.evaluate(()=>{
+      const g=window.game,p=g?.player;
+      if(!g?.itemMode||!p||!Array.isArray(p.items)||!g.hud?.slots?.length)return {error:'native item HUD missing'};
+      const saved=[...p.items],seen=[];
+      try {
+        for(const [id,name] of [['shockwave','近身冲击波'],['thunder','雷电攻击'],['barricade','后方路障']]){
+          p.items.splice(0,p.items.length,id);
+          g.updateRaceHUD(0);
+          seen.push({id,actual:g.hud.slots[0]?.textContent??'',name});
+        }
+        p.items.splice(0,p.items.length,'unexpected-qa-only-item-id');
+        g.updateRaceHUD(0);
+        seen.push({id:'unknown',actual:g.hud.slots[0]?.textContent??'',name:'未知道具'});
+      } finally {
+        p.items.splice(0,p.items.length,...saved);
+        g.updateRaceHUD(0);
+      }
+      return {seen};
+    });
+    if(!hudItems?.seen||hudItems.seen.length!==4||
+      hudItems.seen.some(row=>!row.actual.includes(row.name)))
+      fail('Real native eight-item HUD slot must render every new item safely: '+JSON.stringify(hudItems));
+    report.nativeV8HudInventory={qaStagedOnly:true,actualNativeHud:true,
+      tested:hudItems.seen.map(row=>row.id)};
+  }
   if(index===4){
     // This probe calls the ORIGINAL Track projection with synthetic WORLD
     // points; it does not touch the player's position, stats or finish.
@@ -511,6 +570,34 @@ try {
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
     if (index===4) {
+      // Reset the native follow camera after teleporting a QA-only car; otherwise
+      // the captured frame shows terrain midway across the map, not the fork.
+      // QA-only actual WebGL screenshots at a physical V9 fork. These are
+      // deliberately labelled STAGED and are NEVER used as human clear proof.
+      const v9Fork=await page.evaluate(()=>{
+        const game=window.game,p=game.player,shortcut=game.track.__RACE_SHORTCUT__;
+        if(!shortcut?.v9)return null;
+        const d=shortcut.start-32;
+        p.reset(d,0);p.lastD=d;p.progress=d;p.lapsDone=0;
+        if(typeof game.snapCamera==='function')game.snapCamera();
+        return {start:shortcut.start,len:shortcut.length,gain:shortcut.gain,style:shortcut.style};
+      });
+      if(!v9Fork || v9Fork.len>210 || v9Fork.gain<25)
+        fail('Cannot capture a real V9 staged junction: '+JSON.stringify(v9Fork));
+      await page.waitForTimeout(1500);
+      await page.screenshot({path:path.join(dest,'05-v9-junction-approach-qa-staged.png')});
+      await page.evaluate(()=>{
+        const g=window.game,p=g.player,s=g.track.__RACE_SHORTCUT__;
+        const fork=s.samples[Math.round(s.samples.length*.37)],d=s.start+(s.end-s.start)*fork.arc/s.length;
+        p.reset(d,0);p.x=fork.x;p.y=fork.y;p.z=fork.z;
+        p.d=d;p.lastD=d;p.progress=d;p.h=fork.hd;p.m=fork.hd;
+        p.proj.__RACE_SHORTCUT_ACTIVE=true;p.proj.__RACE_SHORTCUT_HALF_WIDTH=s.widthAt(fork.arc)*.5;
+        p.proj.__RACE_SHORTCUT_ARC=fork.arc;
+        if(typeof g.snapCamera==='function')g.snapCamera();
+      });
+      await page.waitForTimeout(1500);
+      await page.screenshot({path:path.join(dest,'05-v9-short-road-qa-staged.png')});
+      report.v9ForkVisual={qaStaged:true,nativeWebGL:true,...v9Fork};
       // QA-only close-up for ART READABILITY; this is camera/vehicle staging,
       // not legitimate progress, rank, a real item pickup, or a stage clear.
       const visual=await page.evaluate(()=>{

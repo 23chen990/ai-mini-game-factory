@@ -6,6 +6,8 @@ on:
       - 'tools/lean-pilot/racing-mobile-build.mjs'
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
       - 'tools/lean-pilot/racing-geometry-audit.mjs'
+      - 'tools/lean-pilot/racing-shortcut-cost.mjs'
+      - 'tools/lean-pilot/tests/racing-shortcut-cost.test.mjs'
       - 'tools/lean-pilot/racing-ai-pace-audit.mjs'
       - 'tools/lean-pilot/racing-native-player-qa.mjs'
       - 'tools/lean-pilot/racing-fuel-lifecycle-qa.mjs'
@@ -30,7 +32,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   racing-v3:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/racing-career-items-iaa-20261014' || github.event.pull_request.head.ref == 'feat/racing-v31-tracks-items-recovery-20261014' || github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-rivals-map-verification-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-classic-countersteer-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-v46-challenge-20261017' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v5') || (startsWith(github.event.pull_request.head.ref, 'feat/racing-v60-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v61-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v62-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v70-') || startsWith(github.event.pull_request.head.ref, 'feat/racing-v8-'))))))
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/racing-career-items-iaa-20261014' || github.event.pull_request.head.ref == 'feat/racing-v31-tracks-items-recovery-20261014' || github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-rivals-map-verification-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-classic-countersteer-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-v46-challenge-20261017' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v5') || (startsWith(github.event.pull_request.head.ref, 'feat/racing-v60-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v61-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v62-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v70-') || startsWith(github.event.pull_request.head.ref, 'feat/racing-v8-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v9-'))))))
     runs-on: ubuntu-24.04
     timeout-minutes: 26
     steps:
@@ -48,9 +50,10 @@ jobs:
         run: |
           node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
           node --test tools/lean-pilot/tests/racing-build.test.mjs
+          node --test tools/lean-pilot/tests/racing-shortcut-cost.test.mjs
           node --test tools/lean-pilot/tests/racing-visible-policy.test.mjs
           node --test tools/lean-pilot/racing-delivery-verify.test.mjs
-          pnpm exec eslint tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          pnpm exec eslint tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash
@@ -131,11 +134,11 @@ jobs:
   publish-qa-preview:
     name: Verified H5 phone preview (QA only)
     needs: racing-v3
-    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'chatgpt/racing-v70-iaa-short-session-20261017' || github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017') && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'chatgpt/racing-v70-iaa-short-session-20261017' || github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017') && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 9
     env:
-      RACE_QA_BRANCH: ${{ github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' && 'preview/racing-v80-integrated-20261017' || 'preview/racing-v70-iaa-short-session-20261017' }}
+      RACE_QA_BRANCH: ${{ github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017' && 'preview/racing-v90-integrated-20261017' || (github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' && 'preview/racing-v80-integrated-20261017' || 'preview/racing-v70-iaa-short-session-20261017') }}
     permissions:
       contents: write
       actions: read

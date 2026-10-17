@@ -15,13 +15,13 @@ const src=path.join(run,'workspace/source/qq-speed/src');
 const build=JSON.parse(await readFile(path.join(run,'artifacts/build-racing.json'),'utf8'));
 const raw=await readFile(path.join(src,'layouts.js'),'utf8');
 const prefix="import { applyTrackDesign } from './race-track-design.mjs';\n";
-const suffix='\napplyTrackDesign(LAYOUTS, { v8: true });';
+const suffix='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true });';
 if(!raw.startsWith(prefix)||!raw.trimEnd().endsWith(suffix))
   throw Error('Unknown pinned racing layout adapter; refusing unverified AI comparison');
 const originalText=raw.slice(prefix.length).trimEnd().slice(0,-suffix.length);
 const layouts=(await import('data:text/javascript;base64,'+Buffer.from(originalText).toString('base64'))).LAYOUTS;
 const revised=JSON.parse(JSON.stringify(layouts));
-applyTrackDesign(revised,{v8:true});
+applyTrackDesign(revised,{v8:true,v9:true});
 const {Track}=await import(pathToFileURL(path.join(src,'track.js')).href);
 const {AICar}=await import(pathToFileURL(path.join(src,'ai.js')).href);
 const {mulberry32}=await import(pathToFileURL(path.join(src,'util.js')).href);

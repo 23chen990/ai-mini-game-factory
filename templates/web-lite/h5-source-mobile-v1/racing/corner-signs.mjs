@@ -22,10 +22,49 @@ export function chooseCornerSigns(track, maxCount = 7) {
   }
   return chosen.sort((a,b)=>a.d-b.d);
 }
-function arrowTexture(THREE,doc,left) {
+/**
+ * V9: Track's own physical fork has useful environment cues.
+ * Do not hide them behind the legacy 7 x 7 metre opaque U-turn billboards.
+ * Keep historic V8 and earlier behavior byte-for-byte compatible.
+ */
+export function v9CornerSignPresentation(track) {
+  if(!track?.__V9_WIDTH_PROFILE__)
+    return {scale:7,offset:5.5,height:4.3,panel:true};
+  return {scale:3.8,offset:9.2,height:3.2,panel:false};
+}
+export function chooseV9CornerSigns(track) {
+  const candidates=chooseCornerSigns(track);
+  if(!track?.__V9_WIDTH_PROFILE__)return candidates;
+  const fork=track?.__RACE_SHORTCUT__;
+  const cleared=fork ? candidates.filter(corner=>
+    Math.abs(corner.d-fork.start)>105 &&
+    Math.abs(corner.d-fork.end)>105) : candidates;
+  // Rare tracks with all bends at the shortcut still need one natural
+  // road-direction cue; do not let a billboard forcefully overlap the fork.
+  return (cleared.length?cleared:candidates).slice(0,4);
+}
+
+function arrowTexture(THREE,doc,left,quiet=false) {
   const c=doc.createElement('canvas');c.width=192;c.height=192;
   const ctx=c.getContext('2d');
   if(!ctx)return null;
+  if(quiet){
+    // Transparent paired road chevrons, not a full opaque square competing
+    // with V9's smaller physical fork portals and road geometry.
+    ctx.save();ctx.translate(96,96);if(left)ctx.scale(-1,1);
+    ctx.lineCap='round';ctx.lineJoin='round';
+    for(const shift of [-21,22]){
+      ctx.beginPath();
+      ctx.moveTo(shift-18,-41);ctx.lineTo(shift+13,0);
+      ctx.lineTo(shift-18,41);
+      ctx.lineWidth=17;ctx.strokeStyle='rgba(30,44,54,.90)';ctx.stroke();
+      ctx.lineWidth=10;ctx.strokeStyle='rgba(249,215,152,.98)';ctx.stroke();
+    }
+    ctx.restore();
+    const texture=new THREE.CanvasTexture(c);
+    texture.colorSpace=THREE.SRGBColorSpace;
+    return texture;
+  }
   ctx.fillStyle='rgba(7,39,64,.94)';
   ctx.beginPath();ctx.roundRect(8,8,176,176,26);ctx.fill();
   ctx.strokeStyle='#ffe081';ctx.lineWidth=10;ctx.stroke();
@@ -52,9 +91,10 @@ export function disposeCornerSigns(game) {
 export function installCornerSigns(game,THREE,doc) {
   disposeCornerSigns(game);
   if(!game?.level || !game.track || !THREE?.Sprite || !doc?.createElement) return 0;
-  const corners=chooseCornerSigns(game.track);
+  const corners=chooseV9CornerSigns(game.track);
+  const visual=v9CornerSignPresentation(game.track);
   if(!corners.length)return 0;
-  const textures=[arrowTexture(THREE,doc,true),arrowTexture(THREE,doc,false)];
+  const textures=[arrowTexture(THREE,doc,true,!visual.panel),arrowTexture(THREE,doc,false,!visual.panel)];
   if(textures.some(x=>!x))return 0;
   const materials=textures.map(texture=>new THREE.SpriteMaterial({
     map:texture,transparent:true,depthWrite:false,depthTest:true,
@@ -64,11 +104,13 @@ export function installCornerSigns(game,THREE,doc) {
     // Sign stands before the sharp turn and outside the guardrail.
     const sample=game.track.sample(corner.d-37,{});
     const direction=corner.curve>0 ? -1 : 1;
-    const lateral=direction*(game.track.halfW+5.5);
+    const localHalf=typeof game.track.v9WidthAt==='function'
+      ? game.track.v9WidthAt(corner.d-37) : game.track.halfW;
+    const lateral=direction*(localHalf+visual.offset);
     const sprite=new THREE.Sprite(materials[corner.curve>0?0:1]);
     sprite.position.set(sample.x+sample.rx*lateral,
-      sample.y+4.3,sample.z+sample.rz*lateral);
-    sprite.scale.set(7,7,1);
+      sample.y+visual.height,sample.z+sample.rz*lateral);
+    sprite.scale.set(visual.scale,visual.scale,1);
     game.level.add(sprite);sprites.push(sprite);
   }
   game.__RACE_CORNER_SIGNS__={sprites,materials,textures};

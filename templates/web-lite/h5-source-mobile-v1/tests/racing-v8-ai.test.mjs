@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { aiV8TargetLine, advanceAiV8Road } from '../racing/v8-rival-ai.mjs';
+import { aiV8TargetLine, advanceAiV8Road, aiV8ForkDesiredSpeed } from '../racing/v8-rival-ai.mjs';
 import { installPhysicalShortcut } from '../racing/shortcut-network.mjs';
 
 const makeTrack=(scale=1.09)=>{
@@ -51,4 +51,30 @@ test('cautious AI can choose the main track and malformed data fails closed',()=
   assert.equal(advanceAiV8Road(cautious,track,1),null);
   assert.equal(aiV8TargetLine(cautious,track,2,9.5),2);
   assert.equal(advanceAiV8Road(cautious,track,NaN),null);
+});
+
+test('V9 shortcut AI brakes according to genuine physical turn before and inside the fork',()=>{
+  const tr=makeTrack(),fork=installPhysicalShortcut(tr,'race-13',{v8:true});
+  const ai={track:tr,dist:fork.start-28,skill:1.3,personal:0,
+    lat:0,latV:0,s2:{},rnd:()=>0};
+  // V8 unaffected by opt-in design.
+  assert.equal(aiV8ForkDesiredSpeed(ai,tr,70),70);
+  fork.v9=true;
+  const approach=aiV8ForkDesiredSpeed(ai,tr,70);
+  assert.ok(Number.isFinite(approach)&&approach<70&&approach>=14);
+  let bendAt=0,bendRate=0;
+  for(let i=2;i<fork.samples.length-2;i++){
+    const a=fork.samples[i],b=fork.samples[i+1];
+    const v=Math.abs(Math.atan2(Math.sin(b.hd-a.hd),
+      Math.cos(b.hd-a.hd)))/Math.max(.001,b.arc-a.arc);
+    if(v>bendRate){bendRate=v;bendAt=a.arc;}
+  }
+  ai.__V8_FORK_STATE__={lap:0,arc:Math.max(0,bendAt-16)};
+  const inside=aiV8ForkDesiredSpeed(ai,tr,70);
+  assert.ok(Number.isFinite(inside)&&inside<70&&inside>=14);
+  ai.__V8_FORK_STATE__=null;
+  ai.rnd=()=>.999;
+  ai.__V8_FORK_CHOICE_KEY__=null;
+  const cautious=aiV8ForkDesiredSpeed(ai,tr,70);
+  assert.equal(cautious,70);
 });

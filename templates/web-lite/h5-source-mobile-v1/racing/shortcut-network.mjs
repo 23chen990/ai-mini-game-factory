@@ -57,6 +57,105 @@ function samplesFor(track,plan,scale=1){
     throw Error('Shortcut must earn a small skill-based saving, not a free highway');
   return {samples,length,gain};
 }
+
+/**
+ * V9 drives inside a LOCAL corner: find a 150-290m bend whose endpoint
+ * tangents can be joined by a 75-200m navigable short cut. Never use a
+ * progress/position teleport, and never keep the V8 350-420m parallel roads.
+ * The search uses the ACTUAL final Catmull-Rom native Track (including V9
+ * rhythm and elevation), not stale stage-distance markers.
+ */
+export const V9_SHORTCUT_THEMES=Object.freeze({
+  'race-05':{style:'temple',bend:4,preferred:.32},
+  'race-10':{style:'city',bend:5,preferred:.23},
+  'race-12':{style:'ice',bend:4,preferred:.62,maxLength:208},
+  'race-13':{style:'city',bend:7,preferred:.32},
+  'race-16':{style:'cliff',bend:3,preferred:.58},
+  'race-18':{style:'desert',bend:5,preferred:.24},
+  'race-22':{style:'cliff',bend:3,preferred:.17},
+  'race-25':{style:'city',bend:5,preferred:.48},
+  'race-27':{style:'sky',bend:4,preferred:.14},
+  'race-30':{style:'sky',bend:6,preferred:.53},
+});
+const round=(x,n=2)=>Math.round(x*10**n)/10**n;
+const distance2=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
+const segmentClear=(track,points,length,cfg)=>{
+  // Validate the same 33-67% exposed central corridor as the pinned
+  // native geometry audit. Use the exact varying branch width and same
+  // height threshold; don't pass a candidate by undersampling the road.
+  let least=Infinity;
+  for(let i=Math.floor(points.length*.33);i<=Math.ceil(points.length*.67);i+=2){
+    const p=points[i],w=cfg.width-(cfg.width-cfg.neckWidth)*
+      Math.sin(Math.PI*p.arc/length)**2,half=w*.5;
+    const radius=track.halfW+half+4;
+    let near=radius;
+    if(typeof track.forEachNear==='function'){
+      track.forEachNear(p.x,p.z,radius,(j,d)=>{
+        if(Math.abs(track.py[j]-p.y)<=5.5)near=Math.min(near,d);
+      });
+    }else if(track.px){
+      for(let j=0;j<track.N;j+=2){
+        if(Math.abs(track.py[j]-p.y)>5.5)continue;
+        near=Math.min(near,Math.hypot(p.x-track.px[j],p.z-track.pz[j]));
+      }
+    }else{
+      for(let d=0;d<track.length;d+=3){
+        const q=track.sample(d,{});
+        if(Math.abs(q.y-p.y)>5.5)continue;
+        near=Math.min(near,distance2(q,p));
+      }
+    }
+    least=Math.min(least,near-(track.halfW+half));
+    if(least<.60)return least;
+  }
+  return least;
+};
+export function chooseV9Shortcut(track,course){
+  const theme=V9_SHORTCUT_THEMES[course];
+  if(!theme||!Number.isFinite(track?.length)||track.length<1000||
+     typeof track.sample!=='function')return null;
+  const width=11.5,neckWidth=8.8,options=[];
+  const startLow=track.length*.10,startHigh=track.length*.81;
+  // Explore natural corners: only a 140-270m local sector is eligible.
+  for(let start=startLow;start<startHigh;start+=27){
+    const a=track.sample(start,{});
+    for(const span of [145,160,175,190,205,220,235]){
+      const end=start+span;
+      if(end>track.length-140)continue;
+      const b=track.sample(end,{}),middle=track.sample(start+span*.5,{});
+      const chord=distance2(a,b);
+      if(chord<70||chord>198||span-chord<35||span-chord>110||
+        Math.abs(a.y-b.y)>16)continue;
+      const area=Math.abs((b.x-a.x)*(middle.z-a.z)-(b.z-a.z)*(middle.x-a.x))/chord;
+      if(area<18)continue;
+      const cfg={start,end,width,neckWidth,bend:theme.bend,
+        style:theme.style,label:theme.style+' apex cut'};
+      let shape;
+      try{shape=samplesFor(track,cfg,1);}catch{continue;}
+      if(shape.length>(theme.maxLength??178)||shape.gain<24||shape.gain>82||
+        Math.abs(a.y-b.y)/shape.length>.115)continue;
+      // Prefer short, visibly meaningful cuts near the authored sector,
+      // while allowing search elsewhere if old anchor no longer fits.
+      const normStart=start/track.length;
+      const closeness=Math.min(Math.abs(normStart-theme.preferred),
+        1-Math.abs(normStart-theme.preferred));
+      const value=shape.gain*.6+(210-shape.length)*.17+
+        Math.min(area,90)*.15-closeness*32;
+      options.push({cfg,shape,value});
+    }
+  }
+  options.sort((a,b)=>b.value-a.value);
+  // Scan just the strongest candidates against both physical road surfaces.
+  for(const candidate of options.slice(0,90)){
+    const clearance=segmentClear(track,candidate.shape.samples,
+      candidate.shape.length,candidate.cfg);
+    if(clearance>=.60)
+      return {...candidate.cfg,estimatedLength:round(candidate.shape.length),
+        estimatedGain:round(candidate.shape.gain),clearance:round(clearance)};
+  }
+  return null; // Build must fail closed, never silently turn a bad fork into a shortcut.
+}
+
 function nearest(samples,x,z){
   let best=null;
   for(let i=0;i<samples.length-1;i++){
@@ -74,13 +173,14 @@ function nearest(samples,x,z){
   }
   return best;
 }
-export function installPhysicalShortcut(track,course,{v8=false}={}){
+export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
   const original=SHORTCUT_PLANS[course];if(!original)return null;
-  // World-space distance anchors must track V8's genuine physical stretch.
-  // Keep the V7 2-argument API stable for historical tests and old replays.
-  const scale=v8 ? (V8_COURSES[course.slice(5)]?.stretch??1) : 1;
-  const cfg={...original,start:original.start*scale,
-    end:original.end*scale,bend:original.bend*scale};
+  // V9 joins a short LOCAL apex of the actual final native track; no V8
+  // fixed-distance anchors may be reused after the route is reshaped.
+  const scale=v9 ? 1 : v8 ? (V8_COURSES[course.slice(5)]?.stretch??1) : 1;
+  const cfg=v9 ? chooseV9Shortcut(track,course) : {...original,
+    start:original.start*scale,end:original.end*scale,bend:original.bend*scale};
+  if(!cfg)throw Error('No safe short apex fork on '+course+'; revise road layout');
   if(!track||typeof track.sample!=='function'||typeof track.project!=='function')
     throw Error('Physical shortcut needs real native Track');
   const {samples,length,gain}=samplesFor(track,cfg,scale),start=cfg.start,end=cfg.end;
@@ -159,6 +259,40 @@ export function installPhysicalShortcut(track,course,{v8=false}={}){
   };
   const buildMesh=(THREE,groundAt)=>{
     const group=new THREE.Group();group.name='physical-shortcut-'+course;
+    // Preserve the V8 appearance and exact geometry outside opt-in V9.
+    // In V9, kerbs, fascia, paint, rails and piers share biome materials.
+    const palettes={
+      temple:{road:0x756b5a,curb:0xd7b781,shoulder:0x534c40,rail:0x7a6852,sign:0xeab870},
+      desert:{road:0x745f49,curb:0xf4ce8b,shoulder:0x594737,rail:0x9a7955,sign:0xf3c77c},
+      city:{road:0x343f4c,curb:0xf0b55f,shoulder:0x24303b,rail:0x687789,sign:0xecc471},
+      ice:{road:0x6b91a9,curb:0xdcf7f6,shoulder:0x41697d,rail:0xa6cce1,sign:0xe7f9ff},
+      cliff:{road:0x5a6268,curb:0xf4d59e,shoulder:0x343e45,rail:0x89979f,sign:0xffd08a},
+      sky:{road:0x4c6078,curb:0xb5eeec,shoulder:0x2e4459,rail:0x819cb2,sign:0x92e8df},
+    };
+    const palette=v9 ? palettes[cfg.style]??palettes.cliff :
+      {road:0x536b7c,curb:0x4bdbea,shoulder:0x536b7c,rail:0x4bdbea,sign:0x5de9ef};
+    const surfaceMaterial=(color,emissiveIntensity=0)=>new THREE.MeshStandardMaterial({
+      color,roughness:.91,metalness:.06,side:THREE.DoubleSide,
+      emissive:emissiveIntensity?color:0x000000,emissiveIntensity,
+    });
+    // A single indexed ribbon per feature avoids one draw call per curb tile.
+    const ribbon=(name,material,from,to,lift,step=1)=>{
+      const vv=[],ind=[];
+      for(let i=0;i<samples.length;i+=step){
+        const p=samples[i],w=widthAt(p.arc)*.5;
+        for(const side of [from(w),to(w)]){
+          vv.push(p.x+p.rx*side,p.y+lift,p.z+p.rz*side);
+        }
+      }
+      const rows=vv.length/6;
+      for(let i=0;i<rows-1;i++){let a=2*i;ind.push(a,a+1,a+2,a+1,a+3,a+2);}
+      const g=new THREE.BufferGeometry();
+      g.setAttribute('position',new THREE.Float32BufferAttribute(vv,3));
+      g.setIndex(ind);g.computeVertexNormals();
+      const mesh=new THREE.Mesh(g,material);
+      mesh.name=name;mesh.receiveShadow=true;group.add(mesh);
+      return mesh;
+    };
     const vertices=[],uv=[],index=[];
     for(const p of samples)for(const side of [-1,1]){
       vertices.push(p.x+p.rx*side*widthAt(p.arc)*.5,p.y+.08,
@@ -171,9 +305,54 @@ export function installPhysicalShortcut(track,course,{v8=false}={}){
     geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geometry.setIndex(index);
     geometry.computeVertexNormals();
     const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({
-      color:0x536b7c,roughness:.93,side:THREE.DoubleSide,
+      color:palette.road,roughness:.93,side:THREE.DoubleSide,
     }));
     mesh.name='physical-shortcut-road';mesh.receiveShadow=true;group.add(mesh);
+    if(v9){
+      // Real material hierarchy: shoulders under kerbs, visible white edge
+      // paint, thin road side fascia, and understated centre dashes.
+      for(const sign of [-1,1]){
+        ribbon('physical-shortcut-shoulder',surfaceMaterial(palette.shoulder),
+          w=>sign*(w-.02),w=>sign*(w+.77),.035,2);
+        ribbon('physical-shortcut-curb',surfaceMaterial(palette.curb),
+          w=>sign*(w-.69),w=>sign*(w-.15),.135,2);
+        ribbon('physical-shortcut-edge-paint',surfaceMaterial(0xe4e6df),
+          w=>sign*(w-1.20),w=>sign*(w-1.06),.142,3);
+      }
+      const dashes=[],dIndices=[];
+      for(let d=15;d<length-14;d+=19){
+        const a=samples.find(p=>p.arc>=d),b=samples.find(p=>p.arc>=d+4.5);
+        if(!a||!b)continue;
+        const base=dashes.length/3,half=.13;
+        for(const p of [a,b])for(const side of [-1,1])
+          dashes.push(p.x+p.rx*half*side,p.y+.15,p.z+p.rz*half*side);
+        dIndices.push(base,base+1,base+2,base+1,base+3,base+2);
+      }
+      if(dashes.length){
+        const g=new THREE.BufferGeometry();
+        g.setAttribute('position',new THREE.Float32BufferAttribute(dashes,3));
+        g.setIndex(dIndices);g.computeVertexNormals();
+        const paint=new THREE.Mesh(g,surfaceMaterial(0xe6e9de));
+        paint.name='physical-shortcut-centre-dashes';group.add(paint);
+      }
+      // A real vertical fascia makes elevated shortcuts read like engineered
+      // bridge decks instead of zero-thickness ribbons suspended in air.
+      for(const side of [-1,1]){
+        const vv=[],ind=[];
+        for(let i=0;i<samples.length;i+=2){
+          const p=samples[i],l=side*(widthAt(p.arc)*.5+.58);
+          for(const dy of [-1.1,.05])
+            vv.push(p.x+p.rx*l,p.y+dy,p.z+p.rz*l);
+        }
+        const rows=vv.length/6;
+        for(let i=0;i<rows-1;i++){const a=i*2;ind.push(a,a+1,a+2,a+1,a+3,a+2);}
+        const g=new THREE.BufferGeometry();
+        g.setAttribute('position',new THREE.Float32BufferAttribute(vv,3));
+        g.setIndex(ind);g.computeVertexNormals();
+        const fascia=new THREE.Mesh(g,surfaceMaterial(palette.shoulder));
+        fascia.name='physical-shortcut-bridge-fascia';group.add(fascia);
+      }
+    }
     for(const side of [-1,1]){
       const rails=[];
       for(let i=0;i<samples.length-1;i++){
@@ -190,7 +369,7 @@ export function installPhysicalShortcut(track,course,{v8=false}={}){
       g.setAttribute('position',new THREE.Float32BufferAttribute(rails,3));
       g.computeVertexNormals();
       const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({
-        color:0x4bdbea,side:THREE.DoubleSide,roughness:.72,
+        color:palette.rail,side:THREE.DoubleSide,roughness:.72,
       }));
       m.name='physical-shortcut-rails';group.add(m);
     }
@@ -200,14 +379,17 @@ export function installPhysicalShortcut(track,course,{v8=false}={}){
     // no HUD coach, collision, checkpoint, speed boost or route teleport.
     const approach=new THREE.Group();approach.name='physical-shortcut-approach';
     const markerMat=new THREE.MeshStandardMaterial({
-      color:0x5de9ef,emissive:0x1a6671,emissiveIntensity:.65,roughness:.4
+      color:palette.sign,emissive:v9?0x2c2a22:0x1a6671,emissiveIntensity:v9?.20:.65,roughness:.6
     });
     for(const distanceBefore of [98,52]){
       const at=track.sample(start-distanceBefore,{}),arrow=new THREE.Group();
       arrow.name='physical-shortcut-direction';
       arrow.position.set(at.x+at.rx*entrySide*(track.halfW+4.2),at.y,at.z+at.rz*entrySide*(track.halfW+4.2));
       arrow.rotation.y=at.hd;
-      const post=new THREE.Mesh(new THREE.BoxGeometry(.95,5.4,.95),markerMat);
+      const postGeo=v9&&['ice','sky'].includes(cfg.style)
+        ? new THREE.CylinderGeometry(.5,1.35,5.4,4)
+        : new THREE.BoxGeometry(v9?1.35:.95,5.4,v9?1.35:.95);
+      const post=new THREE.Mesh(postGeo,markerMat);
       post.position.y=2.7;arrow.add(post);
       const point=new THREE.Mesh(new THREE.ConeGeometry(1.7,2.8,3),markerMat);
       // Local +X faces opposite the native Track.sample() right vector;
@@ -216,26 +398,49 @@ export function installPhysicalShortcut(track,course,{v8=false}={}){
       arrow.add(point);approach.add(arrow);
     }
     group.add(approach);
-    // Two low-cost beacons flank the actual entrance. They communicate an
-    // optional physical route without text pop-ups or free teleport arrows.
+    // Gates are environmental structures, not V8's four identical glowing
+    // tubes. Leave native guardrail openings and player collision untouched.
+    // Keep all supports beyond the drivable 11.5->8.8m road shoulder.
+    const gateMat=new THREE.MeshStandardMaterial({
+      color:palette.rail,roughness:.86,metalness:.06,side:THREE.DoubleSide
+    });
     for(const progress of [20,length-21]){
       const sample=samples.find(p=>p.arc>=progress)??samples.at(-1);
+      const half=widthAt(sample.arc)*.5;
       for(const side of [-1,1]){
-        const h=4.8;
-        const beacon=new THREE.Mesh(new THREE.CylinderGeometry(.45,.6,h,6),
-          new THREE.MeshStandardMaterial({color:0x49e4d9,emissive:0x125e63,
+        const h=v9?6.2:4.8;
+        const angular=['ice','sky'].includes(cfg.style);
+        const gateGeo=!v9 ? new THREE.CylinderGeometry(.45,.6,h,6) :
+          angular ? new THREE.OctahedronGeometry(1,0) :
+          ['temple','desert'].includes(cfg.style)
+            ? new THREE.BoxGeometry(2.2,h,2.2) : new THREE.BoxGeometry(1.45,h,1.65);
+        const beacon=new THREE.Mesh(gateGeo,v9?gateMat:
+          new THREE.MeshStandardMaterial({color:palette.sign,emissive:0x125e63,
             emissiveIntensity:.6,roughness:.6}));
-        const half=widthAt(sample.arc)*.5;
-        beacon.position.set(sample.x+sample.rx*side*(half+1.9),
-          sample.y+h*.5,sample.z+sample.rz*side*(half+1.9));
+        if(v9&&angular)beacon.scale.set(1.4,h*.53,1.4);
+        beacon.position.set(sample.x+sample.rx*side*(half+2.05),
+          sample.y+h*.5,sample.z+sample.rz*side*(half+2.05));
+        beacon.rotation.y=sample.hd;
         beacon.name='physical-shortcut-gate';group.add(beacon);
       }
+      // A raised crossbeam frames only the ENTRY choice. It is never an
+      // invisible barrier, HUD instruction or speed trigger; full clearance
+      // remains 6.4m above the actual shortcut driving surface.
+      if(v9&&progress===20){
+        const portal=new THREE.Mesh(
+          new THREE.BoxGeometry(widthAt(sample.arc)+4.8,.65,1.45),
+          surfaceMaterial(palette.curb));
+        portal.position.set(sample.x,sample.y+6.4,sample.z);
+        portal.rotation.y=sample.hd;
+        portal.name='physical-shortcut-portal';
+        group.add(portal);
+      }
     }
-    if(typeof groundAt==='function')for(let i=18;i<samples.length-18;i+=18){
+    if(typeof groundAt==='function')for(let i=18;i<samples.length-18;i+=(v9?27:18)){
       const p=samples[i],h=groundAt(p.x,p.z),rise=p.y-h-1.1;
       if(rise>4){
-        const support=new THREE.Mesh(new THREE.CylinderGeometry(.85,1.1,rise,6),
-          new THREE.MeshStandardMaterial({color:0x748ca2,roughness:.92}));
+        const support=new THREE.Mesh(v9?new THREE.BoxGeometry(2.5,rise,2.5):new THREE.CylinderGeometry(.85,1.1,rise,6),
+          new THREE.MeshStandardMaterial({color:v9?palette.rail:0x748ca2,roughness:.92}));
         support.position.set(p.x,h+rise*.5,p.z);group.add(support);
       }
     }
@@ -253,7 +458,7 @@ export function installPhysicalShortcut(track,course,{v8=false}={}){
     ctx.strokeStyle='rgba(90,235,255,.98)';ctx.lineWidth=4;ctx.stroke();
     return true;
   };
-  const shortcut={course,start,end,scale,entrySide,exitSide,width:cfg.width,neckWidth:cfg.neckWidth,
+  const shortcut={course,start,end,scale,v9,style:cfg.style??'legacy',entrySide,exitSide,width:cfg.width,neckWidth:cfg.neckWidth,
     length,gain,samples,widthAt,opening,project,recover,terrainProxy,buildMesh,drawMinimap};
   track.__RACE_SHORTCUT__=shortcut;track.project=project;
   return shortcut;

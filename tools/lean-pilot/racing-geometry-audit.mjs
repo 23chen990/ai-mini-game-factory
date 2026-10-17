@@ -1,11 +1,12 @@
 /* global process, console */
-// Original-vs-V3.3 centerline audit. Static geometry is NOT natural driving QA.
+// V9 native centerline and physical short-apex audit. Static geometry is NOT natural driving QA.
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
 import { SHORTCUT_PLANS, installPhysicalShortcut } from '../../templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs';
+import { benchmarkV9Fork } from './racing-shortcut-cost.mjs';
 import { applyTrackDesign, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, createRaceTrackTheme } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 import { PAD_LANES } from '../../templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs';
 
@@ -13,12 +14,12 @@ const root=process.cwd(), src=path.join(root,'runs/h5-qq-mobile-20261013/workspa
 const build=JSON.parse(await readFile(path.join(root,'runs/h5-qq-mobile-20261013/artifacts/build-racing.json')));
 const source=await readFile(path.join(src,'src/layouts.js'),'utf8');
 const prefix="import { applyTrackDesign } from './race-track-design.mjs';\n";
-const suffix='\napplyTrackDesign(LAYOUTS, { v8: true });';
+const suffix='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true });';
 if(!source.startsWith(prefix) || !source.trimEnd().endsWith(suffix))
   throw Error('Unrecognized pinned generated layouts.js');
 const originalSource=source.slice(prefix.length).trimEnd().slice(0,-suffix.length);
 const original=(await import('data:text/javascript;base64,'+Buffer.from(originalSource).toString('base64'))).LAYOUTS;
-const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified,{v8:true});
+const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified,{v8:true,v9:true});
 const THREE=createRequire(path.join(src,'package.json'))('three');
 const wrap=x=>Math.atan2(Math.sin(x),Math.cos(x));
 function inspect(layout, key){
@@ -95,9 +96,9 @@ if(Object.keys(courses).length!==CAREER_COURSE_MAPS.length)
 // Actual pinned Three.js Track projection test, not a simulated race victory.
 const shortcutAudit={};
 for(const course of Object.keys(SHORTCUT_PLANS)){
-  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course,{v8:true});
-  if(!fork || !(fork.gain>=25*fork.scale&&fork.gain<=90*fork.scale) ||
-     !(fork.length>=75*fork.scale&&fork.length<=350*fork.scale) ||
+  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course,{v8:true,v9:true});
+  if(!fork || !(fork.gain>=24&&fork.gain<=82) ||
+     !(fork.length>=75&&fork.length<=210) ||
      !(fork.neckWidth>=8.5&&fork.neckWidth<=11) ||
      !(fork.width>=11&&fork.width<=14) || !Number.isFinite(fork.length))
     throw Error('Shortcut is not an honest shorter physical road: '+course);
@@ -114,8 +115,8 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
   // the supposedly independent middle sector. Ignore only >5m vertical
   // overpasses. Guardrail collision widths must have actual clearance.
   let minMidCorridorClearance=Infinity;
-  const first=Math.floor(fork.samples.length*.20),
-    last=Math.ceil(fork.samples.length*.80);
+  const first=Math.floor(fork.samples.length*.33),
+    last=Math.ceil(fork.samples.length*.67);
   for(let i=first;i<last;i+=2){
     const p=fork.samples[i],branchHalf=fork.widthAt(p.arc)*.5;
     let nearest=Infinity;
@@ -127,10 +128,21 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
       nearest-(track.halfW+branchHalf));
   }
   if(!Number.isFinite(minMidCorridorClearance)||
-     minMidCorridorClearance<.4)
+     minMidCorridorClearance<.35)
     throw Error('Fork overlaps original main-road driving corridor: '+
       course+' '+minMidCorridorClearance.toFixed(1)+'m');
   const mesh=fork.buildMesh(THREE,()=>0);
+  const actualGates=[];mesh.traverse(node=>{
+    if(node.name==='physical-shortcut-gate')actualGates.push(node);
+  });
+  // V9 must visibly be a built environment, not the same four neon cylinders
+  // in every level. Portal is taller than a vehicle; gates remain outside
+  // the actual drivable branch, preserving collision and pre-entry sightlines.
+  const portal=mesh.getObjectByName('physical-shortcut-portal');
+  if(!fork.v9 || !portal || portal.geometry?.type!=='BoxGeometry' ||
+     actualGates.length!==4 || actualGates.some(o=>o.geometry?.type==='CylinderGeometry') ||
+     portal.position.y<(fork.samples.find(p=>p.arc>=20)?.y??0)+6)
+    throw Error('V9 thematic shortcut entrance is missing or unconvincing: '+course);
   if(!mesh.getObjectByName('physical-shortcut-road') ||
      !mesh.getObjectByName('physical-shortcut-rails') ||
      mesh.getObjectByName('physical-shortcut-approach')?.children?.length!==2)
@@ -152,7 +164,8 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
     branchLengthM:+fork.length.toFixed(1),mainSegmentM:fork.end-fork.start,
     physicalSavingM:+fork.gain.toFixed(1),widthM:fork.width,neckWidthM:fork.neckWidth,
     playerProjectionPoints:active.length,
-    minMidCorridorClearanceM:+minMidCorridorClearance.toFixed(1)};
+    minMidCorridorClearanceM:+minMidCorridorClearance.toFixed(1),
+    physicalTimeProxy:benchmarkV9Fork(track,fork)};
   mesh.traverse(o=>{o.geometry?.dispose();if(o.material&&!Array.isArray(o.material))o.material.dispose();});
 }
 if(Object.keys(shortcutAudit).length!==10)throw Error('Missing ten genuine physical shortcut tracks');

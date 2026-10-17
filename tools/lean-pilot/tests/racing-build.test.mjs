@@ -83,7 +83,7 @@ test('actual esbuild script injection keeps valid $& tokens and exactly one clos
 test('V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes',()=>{
   const layouts = "export const LAYOUTS = { city: {}, egypt: {}, snow: {}, aegean: {} };";
   const patchedLayouts = api.patchRaceLayouts(layouts);
-  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS, \{ v8: true \}\)/);
+  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS, \{ v8: true, v9: true \}\)/);
   assert.equal(api.patchRaceLayouts(patchedLayouts),patchedLayouts);
   assert.throws(()=>api.patchRaceLayouts('const X = {};'), /Pinned track/);
   const src = "import * as THREE from 'three';\nexport class ItemSystem {\n  constructor() {\n    this.foo=1;\n  }\n\n  reset() {}\n}";
@@ -160,7 +160,7 @@ test('native fork adapters are exact, idempotent and preserve original accelerat
     'P.update(DT, first ? pin : noEdge, active, this.itemMode);',
   ].join('\n');
   const patched=api.patchShortcutNativeWorld(world);
-  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse, \{v8:true\}\)/);
+  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse, \{v8:true,v9:true\}\)/);
   assert.match(patched,/terrainProxy\(track\)/);
   assert.match(patched,/physical|buildMesh\(THREE, ground.heightAt\)/);
   assert.match(patched,/__RACE_SHORTCUT__\?\.recover\(P\)/);
@@ -200,6 +200,8 @@ test('V8 native AI hook is strict and avoids checkpoint/progress surgery',()=>{
   const src=[
     "import { TUNE } from './vehicle.js';",
     "export class AICar {",
+    "const hw = tr.halfW - 2.2;",
+    "let vt = Math.min(vmaxBase, vCorner + (this.nitroTime > 0 ? 6 : 0));",
     "const target = clamp(inside + this.personal * hw * 0.8, -hw, hw);",
     "this.dist += this.s * dt + this.pushD;\n    this.pushD = 0;\n    const s = tr.sample(this.dist, this.s2);",
     "this.slope = tr.slope[s.i];",
@@ -236,4 +238,27 @@ test('V8 one-way finish hooks preserve native progress and onLap bookkeeping',()
   assert.equal(api.patchV8PointToPoint(patched),patched);
   assert.throws(()=>api.patchV8PointToPoint('class AnotherGame {}'),
     /one-way progress anchor changed/);
+});
+
+test('native eight-item HUD matches V8 pickups and never crashes on a new item ID',()=>{
+  const original=[
+    "export const ITEM_INFO = {",
+    "  nitro: { icon: '🔥', name: '氮气' },",
+    "  missile: { icon: '🚀', name: '导弹' },",
+    "  banana: { icon: '🍌', name: '香蕉皮' },",
+    "  shield: { icon: '😇', name: '天使' },",
+    "  magnet: { icon: '🧲', name: '磁铁' },",
+    "};",
+    "const html = it ? `${ITEM_INFO[it].icon}<small>${ITEM_INFO[it].name}</small>` : '';",
+  ].join('\n');
+  const patched=api.patchV8NativeHudItems(original);
+  assert.equal(api.patchV8NativeHudItems(patched),patched,'native HUD adapter must be idempotent');
+  assert.match(patched,/shockwave: \{ icon: '💥', name: '近身冲击波' \}/u);
+  assert.match(patched,/thunder: \{ icon: '🌩️', name: '雷电攻击' \}/u);
+  assert.match(patched,/barricade: \{ icon: '🚧', name: '后方路障' \}/u);
+  assert.match(patched,/ITEM_INFO\[it\]\?\.icon/u,'unknown source items must not stop a race');
+  for(const [id,name] of [['nitro','氮气'],['shockwave','近身冲击波'],['thunder','雷电攻击'],['barricade','后方路障']])
+    assert.ok(patched.includes("  "+id+":")&&patched.includes(name),id);
+  assert.throws(()=>api.patchV8NativeHudItems('export const ITEM_INFO = {};'),/HUD item|pinned|anchor/iu);
+  assert.throws(()=>api.patchV8NativeHudItems(original.replace("  magnet: { icon: '🧲', name: '磁铁' },","")),/HUD item|pinned|anchor/iu);
 });

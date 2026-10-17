@@ -45,6 +45,47 @@ function branchPoint(samples,arc) {
     z:a.z+(b.z-a.z)*t,hd:heading,tx:dx,tz:dz,rx:-dz,rz:dx,
     bank:0,grade:(b.y-a.y)/Math.max(1e-5,b.arc-a.arc)};
 }
+/**
+ * V9 AI pays the same corner-speed tradeoff as a native road bend.
+ * Only the desired speed is modified: the pinned AICar retains its normal
+ * dt acceleration/braking integrator, so a fork never grants free velocity.
+ * Unlike a fixed slowdown, the cap follows actual signed heading curvature.
+ */
+export function aiV8ForkDesiredSpeed(ai,track,nativeDesired) {
+  const road=track?.__RACE_SHORTCUT__;
+  if(!road?.v9 || !Number.isFinite(nativeDesired)||!Number.isFinite(ai?.dist))
+    return nativeDesired;
+  const want=entryFor(ai,road);
+  const state=ai.__V8_FORK_STATE__;
+  if(!state&&!want?.wants)return nativeDesired;
+  let arc=state?.arc;
+  if(!Number.isFinite(arc)){
+    const distance=mod(road.start-ai.dist,track.length);
+    if(distance>105)return nativeDesired;
+    arc=0;
+  }
+  const points=road.samples;
+  if(!Array.isArray(points)||points.length<8)return nativeDesired;
+  const sampleAt=d=>{
+    let lo=0,hi=points.length-1;
+    while(lo+1<hi){const k=(lo+hi)>>1;if(points[k].arc<d)lo=k;else hi=k;}
+    return points[lo];
+  };
+  // Compute the largest direction change ahead over real physical metres.
+  // Fast approach braking begins before a short fork, not after its apex.
+  const look=state?Math.min(road.length-7,arc+55):Math.min(road.length-7,75);
+  let maxCurv=0;
+  for(let d=Math.max(4,arc);d<look;d+=8){
+    const a=sampleAt(d),b=sampleAt(Math.min(d+12,road.length-1));
+    const angle=Math.atan2(Math.sin(b.hd-a.hd),Math.cos(b.hd-a.hd));
+    maxCurv=Math.max(maxCurv,Math.abs(angle)/Math.max(6,b.arc-a.arc));
+  }
+  const skill=Number.isFinite(ai.skill)?clamp(ai.skill,.65,2.2):1;
+  const lateral=13+19*skill;
+  const cornerCap=Math.sqrt(lateral/Math.max(maxCurv,.001));
+  return Math.min(nativeDesired,Math.max(14,cornerCap));
+}
+
 export function advanceAiV8Road(ai,track,travelled) {
   const road=track?.__RACE_SHORTCUT__;
   if(!road||!valid(ai?.dist)||!valid(travelled)||travelled<0||!valid(track.length))
