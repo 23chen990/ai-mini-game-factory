@@ -202,9 +202,44 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      // The touch is the ORIGINAL visible reload button, not an ammo mutation.
      const reload=page.locator('#touch .btn[data-mk-action="reload"]');
      if(await reload.count()&&await reload.isVisible()){
-       await reload.tap();
-       actions.push({atMs:Date.now()-started,input:'visible-native-reload-before-followup'});
-       await page.waitForTimeout(600);
+       const btn=await reload.boundingBox();
+       const x=btn.x+btn.width/2,y=btn.y+btn.height/2;
+       const before=await page.evaluate(({x,y})=>{
+         const g=window.__H5NativeGame,w=g?.player?.weapon,
+           element=document.elementFromPoint(x,y);
+         return {mag:w?.mag??null,capacity:w?.def?.mag??null,
+           reloadUntil:w?.reloadUntil??0,time:g?.time??null,
+           alive:g?.player?.alive??false,
+           receivesPointer:element?.closest?.('[data-mk-action="reload"]')!==null,
+           hitElement:element?.id||element?.tagName||null,
+           phase:document.querySelector('#mobile-kit')?.dataset.phase};
+       },{x,y});
+       // CDP touch at the actual visible pixel is what a physical finger
+       // performs. Playwright .tap() sometimes waits behind the WebGL canvas
+       // for 30s and prevents testing the later combat altogether.
+       const reloadCdp=await context.newCDPSession(page);
+       try{
+         await reloadCdp.send('Input.dispatchTouchEvent',{
+           type:'touchStart',touchPoints:[{x,y,id:99}]});
+         await page.waitForTimeout(90);
+         await reloadCdp.send('Input.dispatchTouchEvent',{
+           type:'touchEnd',touchPoints:[]});
+       }finally{await reloadCdp.detach();}
+       await page.waitForTimeout(350);
+       const after=await page.evaluate(()=>{
+         const g=window.__H5NativeGame,w=g?.player?.weapon;
+         return {mag:w?.mag??null,reloadUntil:w?.reloadUntil??0,
+           time:g?.time??null,alive:g?.player?.alive??false};
+       });
+       const triggered=before.mag===before.capacity ||
+         after.reloadUntil>after.time ||
+         (Number.isFinite(before.mag)&&after.mag>before.mag);
+       actions.push({atMs:Date.now()-started,input:'visible-native-reload-before-followup',
+         detail:{before,after,triggered}});
+       fpsExtendedChecks.push({name:'cf-visible-reload-receives-real-touch',
+         passed:triggered&&before.receivesPointer===true,
+         detail:{before,after,triggered,
+           evidence:'Same physical screen coordinates, no direct ammo or input mutation'}});
      }
    }
    if(firstBadge){
