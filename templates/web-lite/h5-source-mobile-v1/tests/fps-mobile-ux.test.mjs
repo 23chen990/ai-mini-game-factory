@@ -703,3 +703,19 @@ test('CF V18 real swipe gain is symmetric and only slows under a real aligned ta
  assert.match(cfTouchTutorial(lite),/按住开火/);
  assert.doesNotMatch(mobileChallengeCopy({...lite,limitMs:75000,objective:'亲手击倒2名敌人'}),/换位/);
 });
+
+test('CF V18 opponent pressure is native-difficulty only and mode-dependent',async()=>{
+ const {cfLiteEnemyProfile,mobileEnemyDifficulty}=await import('../fps-mobile-ux.mjs');
+ const base=mobileEnemyDifficulty('hits',5,{hits:0,k:0,d:0});
+ const profile=cfLiteEnemyProfile(base,{id:'tags',lite:true},5);
+ assert.notStrictEqual(profile,base);
+ assert.ok(profile.react[0]<base.react[0]&&profile.react[0]>=.22);
+ assert.ok(profile.aimErr<base.aimErr&&profile.aimErr>=.038);
+ assert.equal(profile.headP,base.headP,'headshot odds unchanged');
+ assert.equal(profile.bunny,base.bunny,'original movement and weapon physics unchanged');
+ const late=cfLiteEnemyProfile(base,{id:'counter',lite:true},30);
+ assert.ok(late.react[0]<profile.react[0]);
+ assert.ok(late.strafe>profile.strafe);
+ assert.strictEqual(cfLiteEnemyProfile(base,{id:'counter',lite:false},50),base);
+ assert.strictEqual(cfLiteEnemyProfile(null,{id:'counter',lite:true},50),null);
+});
