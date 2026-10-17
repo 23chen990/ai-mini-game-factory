@@ -10,7 +10,7 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
-export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v9-course-director.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v9-course-director.mjs', 'v10-driving-feel.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
 
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
@@ -228,6 +228,56 @@ export function patchV8CameraFeel(source) {
     throw Error('V8 mobile camera follow anchor changed');
   return source.replace(original,revised).replace(heightOriginal,heightRevised);
 }
+/**
+ * V10 actual native handling: no automatic path correction or speed gifts.
+ * Opposite analogue wheel input has a faster, symmetric steering servo;
+ * holding the drift button while reversing the stick actively reverses yaw.
+ * All collisions, acceleration, lap progress and earned nitro stay native.
+ */
+export function patchV10NativeVehicle(source) {
+  const importLine="import { v10SteerDamping, v10DriftYaw, V10_DRIVE_TUNE } from './race-v10-driving-feel.mjs';";
+  const oldSteer='this.steer = damp(this.steer, steerT, (Math.abs(steerT) > .12 && Math.sign(this.steer) !== Math.sign(steerT)) ? 33 : 21, dt);';
+  const newSteer='this.steer = damp(this.steer, steerT, v10SteerDamping(this.steer,steerT), dt);';
+  const oldYaw='const yaw = held ? (align < -0.08 ? -T.driftYawAlign * 1.45 * Math.min(1, -align) : T.driftYaw * Math.max(0, align) + T.driftYawAlign * align) : (align < -0.08 ? -1.25 * Math.min(1, -align) : 0.45 + 0.9 * align) * Math.exp(-2.2 * this.releaseTime);';
+  const newYaw='const yaw = v10DriftYaw(align,held,this.releaseTime,T);';
+  const oldTurn='(1 - 0.55 * clamp(sp / T.vmax, 0, 1.3))';
+  const newTurn='(1 - (Number.isFinite(inp.steerAxis) ? (1 - V10_DRIVE_TUNE.mobileHighSpeedTurnRetention) : .55) * clamp(sp / T.vmax, 0, 1.3))';
+  if(source.includes(importLine)&&source.includes(newSteer)&&source.includes(newYaw)&&source.includes(newTurn))
+    return source;
+  if([oldSteer,oldYaw,oldTurn].some(x=>source.split(x).length!==2)||
+     source.includes(importLine))throw Error('V10 native analogue steering/drift patch anchor drifted');
+  return importLine+'\n'+source.replace(oldSteer,newSteer).replace(oldYaw,newYaw).replace(oldTurn,newTurn);
+}
+/** Compact behind-car camera: the actual road and corner exit fill the
+ * landscape phone view instead of a distant, high 12.5m spectator camera.
+ * Steering still comes ONLY from the user's thumb and native tire physics.
+ */
+export function patchV10NativeCamera(source) {
+  const imported="import { v10MobileCameraPreset, v10MobileCameraYaw, v10TrackFacingLook } from './race-v10-driving-feel.mjs';";
+  const pairs=[
+    ['const m = modes[this.camMode];',
+     'const m = this.mobileMode ? v10MobileCameraPreset(P.s,P.drifting,P.driftAngle) : modes[this.camMode];'],
+    ['const yawT = P.s >= 0 ? P.m + wrapAngle(P.h - P.m) * 0.35 : P.h;',
+     'const yawT = this.mobileMode ? v10MobileCameraYaw(P.h,P.m,P.drifting,P.s) : P.s >= 0 ? P.m + wrapAngle(P.h - P.m) * 0.35 : P.h;'],
+    ['this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 9 : 12, dt);',
+     'this.camYaw = dampAngle(this.camYaw, yawT, this.mobileMode ? (P.drifting ? 10 : 14) : (P.drifting ? 9 : 12), dt);'],
+    ['const dist = m.dist + Math.abs(P.s) * 0.018 + boostPull;',
+     'const dist = this.mobileMode ? m.dist + boostPull * .38 : m.dist + Math.abs(P.s) * .018 + boostPull;'],
+    ['const look = new THREE.Vector3(P.x + Math.sin(this.camYaw) * m.look, P.y + m.lookH, P.z + Math.cos(this.camYaw) * m.look);',
+     'const look = new THREE.Vector3(P.x + Math.sin(this.camYaw) * m.look, P.y + m.lookH, P.z + Math.cos(this.camYaw) * m.look);\n    if(this.mobileMode){\n      const bend=v10TrackFacingLook(P,this.track);\n      if(bend.available){\n        look.x+=Math.max(-2.2,Math.min(2.2,(bend.x-look.x)*.12));\n        look.z+=Math.max(-2.2,Math.min(2.2,(bend.z-look.z)*.12));\n        look.y+=Math.max(-1,Math.min(1.5,(bend.y-P.y)*.2));\n      }\n    }'],
+    ['cam.lookAt(this.camLook);\n    const fovT =',
+     'cam.lookAt(this.camLook);\n    if(this.mobileMode&&P.drifting) cam.rotateZ((P.driftDir||0)*m.roll);\n    const fovT ='],
+    ['cam.fov = damp(cam.fov, fovT, 4, dt);',
+     'cam.fov = damp(cam.fov, fovT, this.mobileMode ? 6 : 4, dt);'],
+  ];
+  if(source.includes(imported)&&pairs.every(([,b])=>source.includes(b)))return source;
+  if(source.includes(imported)||pairs.some(([a])=>source.split(a).length!==2))
+    throw Error('V10 native chase camera anchor drifted');
+  let result=imported+'\n'+source;
+  for(const [a,b]of pairs)result=result.replace(a,b);
+  return result;
+}
+
 /** Single-run finish is a real physical road location for long downhill stages.
  * Original progress tracking and finish bookkeeping remain authoritative.
  * Every racer must actually reach the fraction of the native measured road.
@@ -484,12 +534,14 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
       await readFile(path.join(owned,moduleName),'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchV8SteeringResponse(patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle)))))));
+  const annotatedVehicle = patchV10NativeVehicle(patchV8SteeringResponse(patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeAiPath = path.join(project,'src/ai.js');
   const originalAi = await readFile(nativeAiPath,'utf8');
   const adaptedAi = patchV8NativeAi(originalAi);
   if(adaptedAi!==originalAi)await writeFile(nativeAiPath,adaptedAi);
+  await writeFile(path.join(project,'src/race-v10-driving-feel.mjs'),
+    await readFile(path.join(owned,'v10-driving-feel.mjs'),'utf8'));
   await writeFile(path.join(project,'src/race-v8-rival-ai.mjs'),
     await readFile(path.join(owned,'v8-rival-ai.mjs'),'utf8'));
   await writeFile(path.join(project,'src/race-v8-item-rules.mjs'),
@@ -506,7 +558,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   let adaptedMain = beforeMain;
-  for(const patch of [patchRacingSource,patchV8CameraFeel,patchV8PointToPoint,
+  for(const patch of [patchRacingSource,patchV8CameraFeel,patchV10NativeCamera,patchV8PointToPoint,
     patchManualNitroEdge,patchCareerRouteSource,patchShortcutNativeWorld,
     patchCourseSkyAndScenery,patchRaceDesertRelief])
     adaptedMain=patch(adaptedMain);
