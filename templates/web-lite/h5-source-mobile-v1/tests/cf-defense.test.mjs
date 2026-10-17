@@ -82,10 +82,13 @@ test('one enemy actually follows a native NavGrid path and retains original comb
 });
 
 test('novice point forgiveness fixes observed 4.36m near-miss without rewarding AFK or elite',()=>{
+ const actualSite={id:'A',x:-22,z:-6.8};
  const atEdge={...me,pos:{x:-24.965975,z:-3.6}};
- const actualDistance=Math.hypot(atEdge.pos.x-points[0].x,atEdge.pos.z-points[0].z);
+ const actualDistance=Math.hypot(atEdge.pos.x-actualSite.x,atEdge.pos.z-actualSite.z);
  assert.ok(actualDistance>4.2&&actualDistance<5);
- const initial=cfStartDefense(points);
+ // The other pure tests intentionally use a synthetic point at x=-20;
+ // this regression must use the real pinned-world A x=-22.
+ const initial=cfStartDefense([actualSite,points[1]]);
  const admitted=cfStepDefense(
    cfStepDefense(initial,{gameTime:0,player:atEdge,actors:[foe],team:'BL',
      holdSeconds:c.holdSeconds,breachSeconds:c.breachSeconds,radius:c.radius}),
