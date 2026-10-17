@@ -124,7 +124,7 @@ function display(next) {
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   if (next !== 'race') $('knockout').hidden = true;
   $('speed').hidden = next !== 'race'; $('compact-goal').hidden = next !== 'race' || !$('compact-goal').textContent;
-  $('note').hidden = next !== 'ready' || !$('note').textContent;
+  $('note').hidden = next !== 'ready'; // :empty CSS hides silence; critical loading errors remain visible.
   for (const button of root.querySelectorAll('[data-race-action]')) button.disabled = next !== 'race';
   $('joystick').setAttribute('aria-disabled',String(next !== 'race'));
   $('joystick').classList.toggle('disabled',next !== 'race');
