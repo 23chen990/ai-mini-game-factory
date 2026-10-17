@@ -48,6 +48,24 @@ test('an already committed jump cannot be spent on a different closer barrier',(
  assert.equal(policy.radarIsExpectedBarrier(view({distance:320}),missingTime,target,2),false);
 });
 
+test('two full-lane changes from right fish to 75m left prize need 4 seconds public radar',()=>{
+ const target={barrierId:'l1-o4',distance:75};
+ const radar=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟4s'});
+ const early=view({level:1,distance:45,laneIndex:2,
+  lanes:[radar,lane(),lane({fish:true})]});
+ assert.equal(policy.radarIsExpectedBarrier(early,radar,target,1),true);
+ const first=decide(early,policy.createRiskPolicyState(1,target));
+ assert.equal(first.action,'left');
+ assert.equal(first.toLane,1);
+ const stillSafe=decide({...early,distance:52,laneIndex:1,
+  lanes:[{...radar,seconds:3},lane(),lane({fish:true})]},first.state);
+ assert.equal(stillSafe.action,'left');
+ assert.equal(stillSafe.toLane,0);
+ const third=decide({...early,distance:61,laneIndex:0,jumpReady:true,
+  lanes:[{...radar,seconds:2},lane(),lane()]},stillSafe.state);
+ assert.equal(third.action,'jump');
+ assert.equal(third.state.jumpIssued,true);
+});
 test('a reward route never enters the adjacent simultaneous fatal van lane',()=>{
  const visibleVan=policy.visibleLaneFromHud({className:'co-lane danger',text:'🚐 2.0s'});
  assert.equal(visibleVan.kind,'vehicle');
