@@ -204,7 +204,9 @@ export function installPhysicalShortcut(track,course){
       const post=new THREE.Mesh(new THREE.BoxGeometry(.95,5.4,.95),markerMat);
       post.position.y=2.7;arrow.add(post);
       const point=new THREE.Mesh(new THREE.ConeGeometry(1.7,2.8,3),markerMat);
-      point.position.y=6.2;point.rotation.z=entrySide>0?-Math.PI/2:Math.PI/2;
+      // Local +X faces opposite the native Track.sample() right vector;
+      // invert the chevron so its tip points to the real entry-side opening.
+      point.position.y=6.2;point.rotation.z=entrySide>0?Math.PI/2:-Math.PI/2;
       arrow.add(point);approach.add(arrow);
     }
     group.add(approach);
