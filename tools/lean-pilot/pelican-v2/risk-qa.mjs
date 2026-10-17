@@ -110,7 +110,7 @@ async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,dec
  return action;
 }
 function makeEpisode(target){
- return {barrierId:target.barrierId,goldFishId:target.goldFishId,distance:target.distance,hudSeen:false,hudLane:null,hudSnapshotId:null,approachScreenshot:null,deferredApproachScreenshot:false,jump:null,holdComplete:false,holdDurationMs:null,holdSamples:[],barrierClearSnapshotId:null,bonusFishCatchSnapshotId:null,goldHud:null,screenshots:[]};
+ return {barrierId:target.barrierId,goldFishId:target.goldFishId,distance:target.distance,hudSeen:false,hudLane:null,hudSnapshotId:null,approachScreenshot:null,deferredApproachScreenshot:false,deferredGoldPhoto:false,jump:null,holdComplete:false,holdDurationMs:null,holdSamples:[],barrierClearSnapshotId:null,bonusFishCatchSnapshotId:null,goldHud:null,screenshots:[]};
 }
 function eventFor(snapshot,type,objectId){return snapshot.events?.find(event=>event.type===type&&event.objectId===objectId)??null;}
 async function saveEvidenceShot(page,episode,kind){
@@ -233,7 +233,17 @@ async function runLevel(level){
      const barrierClear=eventFor(observed,'barrier-cleared',evidenceTarget.barrierId);
      if(barrierClear&&!evidenceEpisode.barrierClearSnapshotId){const record=await recordSnapshot(page,'exact-barrier-cleared-event',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.barrierClearSnapshotId=record.id;await saveEvidenceShot(page,evidenceEpisode,'barrier-cleared');}
      const bonusFishCatch=eventFor(observed,'fish-caught',evidenceEpisode.goldFishId);
-     if(bonusFishCatch&&!evidenceEpisode.bonusFishCatchSnapshotId){const record=await recordSnapshot(page,'exact-golden-bonus-fish-caught',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.bonusFishCatchSnapshotId=record.id;evidenceEpisode.goldHud=await visibleHud(page);await saveEvidenceShot(page,evidenceEpisode,'golden-bonus-fish-caught');}
+     if(bonusFishCatch&&!evidenceEpisode.bonusFishCatchSnapshotId){
+      const record=await recordSnapshot(page,'exact-golden-bonus-fish-caught',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});
+      evidenceEpisode.bonusFishCatchSnapshotId=record.id;
+      // Gold HUD is captured at the genuine pickup; both it and the full
+      // unedited game video remain the reward proof.
+      evidenceEpisode.goldHud=await visibleHud(page);
+      const nextTarget=level.targets[targetIndex+1];
+      const nextIsClose=nextTarget&&nextTarget.distance-evidenceTarget.distance<=30;
+      if(nextIsClose)evidenceEpisode.deferredGoldPhoto=true;
+      else await saveEvidenceShot(page,evidenceEpisode,'golden-bonus-fish-caught');
+     }
     }
    }
    while(targetIndex<level.targets.length&&
@@ -264,6 +274,17 @@ async function runLevel(level){
      console.log('RISK_JUMP_ACTION '+JSON.stringify({engine,level:level.id,target:episode.barrierId,visibleDistance:view.distance,phase:proof.phase,reason:proof.reason,lane:proof.lane,laneTarget:proof.laneTarget,laneIndex:proof.laneIndex,bufferedJump:proof.bufferedJump,airY:proof.y,events:(proof.events??[]).filter(e=>['jump','jump-buffered','failed'].includes(e.type)).slice(-3),trustedTouch:action.trustedTouch}));
      const holdStartMs=await page.evaluate(()=>performance.now());state={...state,jumpAtMs:holdStartMs};
      episode.jump={at:action.at,completedAt:action.completedAt,nowMs:holdStartMs,distance:view.distance,laneIndex:view.laneIndex,goldCounter:view.goldCounter,jumpReady:view.jumpReady,countdown:decision.countdown,actionIndex:report.actions.indexOf(action)};
+     // After the next trusted touch is received, screenshots can no longer
+     // steal reaction time from its 2.25s physics buffer. A delayed photo is
+     // labelled as such; the at-pickup HUD snapshot and video are unchanged.
+     if(action.trustedTouch){
+      for(const earlier of episodes){
+       if(earlier.deferredGoldPhoto){
+        await saveEvidenceShot(page,earlier,'golden-bonus-fish-caught-post-next-input');
+        earlier.deferredGoldPhoto=false;
+       }
+      }
+     }
      if(episode.deferredApproachScreenshot){
       episode.approachScreenshot=(await saveEvidenceShot(page,episode,'reward-approach')).path;
       episode.deferredApproachScreenshot=false;
