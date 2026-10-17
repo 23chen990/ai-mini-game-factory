@@ -1138,7 +1138,11 @@ export function createFpsMobileUx(game, root, doc) {
   const onTouchMove=e=>{
     markTouch();
     if(!game.playing||game.paused||game.ended)return;
-    if(!controlledTarget(e))e.stopPropagation();
+    // A native FIRE button has no touchmove listener, but the pinned engine's
+    // WINDOW look listener claims that FIRE finger on touchstart and adds 1.6x
+    // *again* if move bubbles. Own all active fight moves here, including
+    // button-origin moves; preserve target touchstart/touchend for native fire.
+    e.stopPropagation();
     const p=game.player;
     for(const t of e.changedTouches||[]){
       if(t.identifier===moveFinger){
