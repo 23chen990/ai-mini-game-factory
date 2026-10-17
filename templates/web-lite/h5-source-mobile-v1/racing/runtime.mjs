@@ -22,14 +22,14 @@ export class RacingCareer {
     this.config = null;this.tap = null;this.fuelEnabled = false;this.adBusy = false;this.attempt = 0;
     // One earned free replay per stage/session after an actual failed result.
     // Never mutate native vehicle, rank or reward callbacks.
-    this.freeReplayCourse = null;this.usedFreeReplays = new Set();
+    this.freeReplayStageId = null;this.usedFreeReplays = new Set();
     this.startedAt = Date.now();this.active = false;this.notice = [];this.boss = null;
     this.metrics = this.freshMetrics();
   }
   get stage() { return this.dailySnapshot ?? STAGES[this.index]; }
   canDaily() { return (this.progress.stars['04'] ?? 0) > 0; }
   setDaily(date = new Date()) { if (!this.canDaily()) return false;
-    if (this.freeReplayCourse !== dailyStage(date).course) this.freeReplayCourse = null;
+    if (this.freeReplayStageId !== dailyStage(date).id) this.freeReplayStageId = null;
     this.dailySnapshot = dailyStage(date);return true; }
   freshMetrics() { return { pickups: 0, bonusItems: 0, rescues: 0, pursuitWarnings: 0, cleanDrifts: 0, cleanPasses: 0, padCount: 0, gateSpeed: 0, survived: 0, eliminated: false, timedOut: false, beatBoss: false, lastPadAt: -100, previousProgress: 0, checkedSpeed: 0, checkpoints: 0, knockoutWarnings: 0, timeAllowance: 0 }; }
   save() {
@@ -40,7 +40,7 @@ export class RacingCareer {
     } catch { this.storageOK = false;this.fuelEnabled = false;return false; }
   }
   setStage(index) { if (!stageUnlocked(this.progress, index)) return false;
-    if (this.stage.course !== STAGES[index].course) this.freeReplayCourse = null;
+    if (this.stage.id !== STAGES[index].id) this.freeReplayStageId = null;
     this.index = index;this.dailySnapshot = null;return true; }
   setSkin(index) { if (!skinUnlocked(this.progress, index)) return false;this.progress.skin = index;this.save();return true; }
   nextStage() { return !this.dailySnapshot && this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
@@ -54,7 +54,7 @@ export class RacingCareer {
     if (this.adBusy || (this.dailySnapshot ? !this.canDaily() : !stageUnlocked(this.progress, this.index))) return false;
     if (!this.fuelEnabled) return true;
     this.fuel = syncFuel(this.fuel);
-    return this.freeReplayCourse === this.stage.course || this.fuel.amount >= FUEL_RULES.raceCost;
+    return this.freeReplayStageId === this.stage.id || this.fuel.amount >= FUEL_RULES.raceCost;
   }
   begin(game) {
     this.active = true;this.boss = null;this.bossName = '';this.notice = [];this.metrics = this.freshMetrics();
@@ -96,9 +96,9 @@ export class RacingCareer {
     if (this.fuelEnabled) {
       // Claim only AFTER native countdown has successfully begun. This must
       // never become extra fuel or transfer to a different stage.
-      if (this.freeReplayCourse === this.stage.course) {
-        this.usedFreeReplays.add(this.stage.course);
-        this.freeReplayCourse = null;
+      if (this.freeReplayStageId === this.stage.id) {
+        this.usedFreeReplays.add(this.stage.id);
+        this.freeReplayStageId = null;
       } else {
         const spent = spendRaceFuel(this.fuel);
         if (spent.ok) { this.fuel = spent.state;this.save(); }
@@ -282,12 +282,12 @@ export class RacingCareer {
     this.progress = outcome.career;
     // One free retry after failure only. No resets on subsequent losses;
     // tickets do not persist to the next browser session.
-    this.freeReplayCourse = outcome.stars === 0 && this.fuelEnabled &&
-      !this.usedFreeReplays.has(stage.course) ? stage.course : null;
+    this.freeReplayStageId = outcome.stars === 0 && this.fuelEnabled &&
+      !this.usedFreeReplays.has(stage.id) ? stage.id : null;
     this.save();
     return { ...outcome, best, metric: { ...this.metrics } };
   }
-  hasFreeReplay() { return this.fuelEnabled && this.freeReplayCourse === this.stage.course; }
+  hasFreeReplay() { return this.fuelEnabled && this.freeReplayStageId === this.stage.id; }
   fuelText() {
     if (!this.storageOK) return '本地存储不可用 · 试玩不限油，关卡进度可能不会保留';
     if (!this.fuelEnabled) return '油量系统未开通 · 当前不限油试玩';
