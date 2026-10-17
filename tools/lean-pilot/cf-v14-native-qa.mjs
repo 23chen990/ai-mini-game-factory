@@ -390,7 +390,10 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       });
       if(!aim)return {visible:false,aligned:false};
       const dx=aim.x-aim.cx,dy=aim.y-aim.cy;
-      if(Math.hypot(dx,dy)<4.5)return {visible:true,aligned:true,dx,dy};
+      // Ten CSS pixels is already well inside the torso's apparent target
+      // area at an 8-10m H5 opening. Don't waste 10 seconds chasing a
+      // constantly changing 4px marker while the real encounter expires.
+      if(Math.hypot(dx,dy)<12)return {visible:true,aligned:true,dx,dy};
       const from={x:Math.round(aim.w*.61),y:Math.round(aim.h*.31),id:92};
       const mx=Math.max(-65,Math.min(65,dx*.55));
       const my=Math.max(-45,Math.min(45,dy*.55));
@@ -402,7 +405,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       return {visible:true,aligned:false,dx,dy};
     };
     const openingAimTrace=[];
-    if(rookieLite)for(let n=0;n<11;n++){
+    if(rookieLite)for(let n=0;n<3;n++){
       const result=await visibleAim(null);openingAimTrace.push(result);
       if(!result.visible||result.aligned)break;
       await sleep(95);
@@ -426,7 +429,8 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         subtree:true,childList:true,characterData:true});
       read();
     });
-    await button('#touch .btn[data-mk-action="fire"]',380,70);
+    await snap('v18-aim-before-first-shot');
+    await button('#touch .btn[data-mk-action="fire"]',780,70);
     const firedRookie=await inspect();
     if(rookieLite)check('lite-first-shot-is-manual-not-native-auto-fire',
       firedRookie.route?.autoFireActivations===0&&
