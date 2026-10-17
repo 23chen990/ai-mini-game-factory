@@ -601,7 +601,13 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     patchCourseSkyAndScenery,patchRaceDesertRelief])
     adaptedMain=patch(adaptedMain);
   await writeFile(path.join(project, 'src/main.js'), adaptedMain);
-  await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
+  // The template imports its sibling, but generated native main.js uses
+  // the copied, clearly named race-v10 module in the pinned Three.js src/.
+  const sessionNative=inputFiles[1].replace(
+    "from './v10-driving-feel.mjs'",
+    "from './race-v10-driving-feel.mjs'");
+  if(sessionNative===inputFiles[1])throw Error('V10 camera session import anchor changed');
+  await writeFile(path.join(project, 'src/race-session.mjs'),sessionNative);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
   const bundle = await esbuild.build({ entryPoints: [path.join(owned, 'mobile.mjs')], bundle: true, minify: true, format: 'iife', target: 'es2020', write: false, legalComments: 'inline' });
