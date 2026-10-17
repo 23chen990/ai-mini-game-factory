@@ -88,7 +88,9 @@ export class RacingCareer {
       try{
         this.storage.setItem(CAREER_KEY,JSON.stringify(updated));
       }catch{
-        // Never claim a permanent rewarded unlock without durable storage.
+        // A failing storage cannot claim a permanent rewarded unlock.
+        // Disable further ads so the player cannot waste another video.
+        this.storageOK=false;this.adReady=false;this.fuelEnabled=false;
         return {status:'save-failed'};
       }
       this.progress=updated;
