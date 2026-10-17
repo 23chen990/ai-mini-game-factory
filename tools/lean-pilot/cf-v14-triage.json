@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "target": {
+    "game": "cf-transport-ship",
+    "runId": "h5-cf-challenges-20261013",
+    "workspace": "runs/h5-cf-challenges-20261013/workspace/game",
+    "branchBase": "e237e3af78133ca57f8c4fac609c94eb90b064ff"
+  },
+  "scope": "CF source-adapter and CF-only real native-game browser QA",
+  "reproduction": {
+    "observation": "V13 first novice rifle scout remains held for limitMs+5 (65s for 60s mission) and has delayed firearm readiness at game.time+13s; first-round player feedback lacks verified time-to-shot/hit/kill data.",
+    "branches": [
+      "fresh selection -> first 30s",
+      "genuine bullet/hit/damage",
+      "natural failure -> free retry",
+      "pause/resume and new match",
+      "result-only voluntary local stats export"
+    ],
+    "renderers": [
+      "pinned original Three.js 3D; 667x375 landscape Chromium CDP multitouch",
+      "physical iPhone Safari and Android Chrome not yet run"
+    ],
+    "affected": [
+      "novice rifle player",
+      "sniper opening should remain distinct",
+      "elite behavior unaffected",
+      "all 8 missions preserve native rules"
+    ]
+  },
+  "classification": "GAMEPLAY_CORE_LOOP_AND_REPLAY_INSTRUMENTATION",
+  "acceptance": [
+    "newbie rifle scout can fire after <=6 simulation seconds and leaves static hold by <=12s; does not fabricate stats, kill, health or position",
+    "every feedback visual is gated by genuine native player counters/HP; absence of stats triggers no celebratory feedback",
+    "first movement/shot/hit/kill/replay tracking remains anonymous local-only, opt-in manual export; bounded state; no financial or retention claims",
+    "true original 3D browser first30 natural touch, pause, native defeat and free retry test, without stat or win injections",
+    "new exact head all relevant lint/type/unit, original 3D natural QA, and shared factory HTTP QA pass"
+  ],
+  "externalBlockers": [
+    "physical phones",
+    "commercial rights for upstream engine/assets",
+    "live TapTap ad SDK and eCPM",
+    "8 natural wins and player sample"
+  ]
+}
