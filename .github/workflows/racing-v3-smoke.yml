@@ -186,11 +186,11 @@ jobs:
               + 'HTML_SHA256=' + digest + '\n', encoding='utf8')
           print('QA_ARTIFACT_VERIFIED_HTML_SHA256=' + digest)
           PY
-      - name: Publish only the verified V4.9 replay loop to its isolated QA branch
+      - name: Publish only the verified V5.0 uncluttered race HUD to isolated QA branch
         shell: bash
         run: |
           set -euo pipefail
-          git fetch --no-tags origin refs/heads/preview/racing-v49-duel-retry-20261017
+          git fetch --no-tags origin refs/heads/preview/racing-v50-clean-hud-20261017
           preview="$RUNNER_TEMP/racing-preview-wt"
           git worktree add --detach "$preview" FETCH_HEAD
           cp "$RUNNER_TEMP/racing-verified/index.html" "$preview/index.html"
@@ -202,7 +202,7 @@ jobs:
             echo 'PREVIEW_UNCHANGED=1' >> "$GITHUB_STEP_SUMMARY"
           else
             git -C "$preview" commit -m "test(racing-preview): SHA-verified H5 from ${{ github.event.pull_request.head.sha }}"
-            git -C "$preview" push origin HEAD:refs/heads/preview/racing-v49-duel-retry-20261017
+            git -C "$preview" push origin HEAD:refs/heads/preview/racing-v50-clean-hud-20261017
           fi
           echo 'Preview branch updated; external HTTP hash gate runs separately.' >> "$GITHUB_STEP_SUMMARY"
-          echo 'https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v49-duel-retry-20261017/index.html' >> "$GITHUB_STEP_SUMMARY"
+          echo 'https://raw.githack.com/23chen990/ai-mini-game-factory/preview/racing-v50-clean-hud-20261017/index.html' >> "$GITHUB_STEP_SUMMARY"
