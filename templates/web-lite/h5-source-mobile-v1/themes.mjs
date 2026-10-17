@@ -48,6 +48,39 @@ export function cfRemoveNativeAllies(game,challenge){
       actor.team!==player.team).length};
 }
 
+/** Genuine original Bot roles shape each short encounter, instead of
+ * simulating teams or altering weapon damage / hitboxes. These roles exist
+ * in the pinned Bot AI. pickGoal() uses the real authored NavGrid. */
+export function cfSoloEncounterRoles(id){
+  return ({
+    tags:['hold'],
+    precision:['hold','flank'],
+    survive:['rush','flank','rush'],
+    defense:['rush','flank','rush'],
+    assault:['hold','rush','flank'],
+    marksman:['hold','flank'],
+    evac:['rush','flank','rush'],
+    counter:['rush','flank','rush','flank']
+  })[id]||['rush'];
+}
+export function cfAssignSoloEnemyRoles(game,challenge){
+  if(challenge?.lite!==true||game?.__mkSoloPve!==true)return 0;
+  const roles=cfSoloEncounterRoles(challenge.id);
+  const enemies=(game.actors||[]).filter(a=>a&&
+    !a.isPlayer&&a.team!==game.player?.team);
+  let assigned=0;
+  for(let i=0;i<enemies.length;i++){
+    const bot=enemies[i];
+    if(typeof bot.pickGoal!=='function')continue;
+    bot.role=roles[i%roles.length];
+    bot.stage=0;
+    bot.path=null;bot.pi=0;
+    bot.pickGoal();
+    assigned++;
+  }
+  return assigned;
+}
+
 /** Small source-facing bridge, not a combat implementation. */
 export function createFpsAdapter(game, doc) {
   return {
