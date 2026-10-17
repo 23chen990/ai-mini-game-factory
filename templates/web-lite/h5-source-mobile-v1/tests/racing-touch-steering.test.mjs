@@ -99,10 +99,20 @@ test('wheel captures a thumb during the countdown and carries it into racing',as
 test('phone uses a single adaptive floating joystick with a large thumb hit area',async()=>{
   const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
   const css=await readFile(new URL('../racing/mobile.css',import.meta.url),'utf8');
-  assert.match(ui,/new RacingJoystick\(\{ floating: true, deadzone: \.055, fullThrow: \.58 \}\)/);
+  assert.match(ui,/new RacingJoystick\(\{ floating: true, rimTap: true, deadzone: \.055, fullThrow: \.58 \}\)/);
   assert.match(ui,/r\.width \* \.36/);
   assert.match(ui,/--race-stick-anchor/);
   assert.match(css,/width:clamp\(154px,43vh,178px\)/);
   assert.match(css,/var\(--race-stick-anchor, 0px\)/);
   assert.doesNotMatch(ui,/race-control-mode|data-race-direction/);
+});
+
+test('phone wheel has fallback pointer release outside hit region and exports local input timing',async()=>{
+  const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  assert.match(ui,/window\.addEventListener\('pointerup'/);
+  assert.match(ui,/window\.addEventListener\('pointercancel'/);
+  assert.match(ui,/wheelCaptureFallback/);
+  assert.match(ui,/touchHealth\.sample\(performance\.now\(\)\)/);
+  assert.match(ui,/phoneInput:touchHealth\.snapshot\(\)/);
+  assert.match(ui,/new RacingJoystick\(\{ floating: true, rimTap: true/);
 });

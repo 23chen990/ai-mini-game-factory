@@ -6,11 +6,12 @@ const clamp = (value, lo, hi) => Math.min(hi, Math.max(lo, value));
 const SENSITIVITIES = Object.freeze({ calm: 0.84, normal: 1, sharp: 1.18 });
 
 export class RacingJoystick {
-  constructor({ deadzone = 0.075, fullThrow = 0.66, sensitivity = 'normal', floating = false } = {}) {
+  constructor({ deadzone = 0.075, fullThrow = 0.66, sensitivity = 'normal', floating = false, rimTap = false } = {}) {
     this.deadzone = clamp(deadzone, 0, 0.3);
     this.fullThrow = clamp(fullThrow, this.deadzone + 0.15, 1);
     this.sensitivity = Object.hasOwn(SENSITIVITIES, sensitivity) ? sensitivity : 'normal';
     this.floating = !!floating;
+    this.rimTap = !!rimTap && this.floating;
     this.clear();
   }
   setSensitivity(value) {
@@ -22,10 +23,14 @@ export class RacingJoystick {
         !Number.isFinite(centreX) || !Number.isFinite(radius) || radius <= 0) return false;
     this.pointerId = id;
     this.surfaceCentreX = centreX;
-    // Native mobile joystick begins NEUTRAL wherever the thumb first lands.
-    // The fixed-center legacy mapping stays available to old offline tests,
-    // but is not a second player-facing mode.
-    this.centreX = this.floating ? clientX : centreX;
+    // The visible wheel has LEFT/RIGHT arrows: a rim tap must turn now, not
+    // silently do nothing until the thumb drags. A central thumb touch stays
+    // neutral and uses the existing relative/floating motion for precision.
+    // Touches outside the visible ring also stay relative (no surprise turn).
+    const rimOffset = clientX - centreX;
+    this.rimPressed = this.rimTap && Math.abs(rimOffset) >= radius * .34 &&
+      Math.abs(rimOffset) <= radius * 1.05;
+    this.centreX = this.floating && !this.rimPressed ? clientX : centreX;
     this.radius = radius;
     this.update(id, clientX);
     return true;
@@ -62,6 +67,7 @@ export class RacingJoystick {
   }
   clear() {
     this.pointerId = null;
+    this.rimPressed = false;
     this.centreX = 0;
     this.surfaceCentreX = 0;
     this.anchorX = 0;

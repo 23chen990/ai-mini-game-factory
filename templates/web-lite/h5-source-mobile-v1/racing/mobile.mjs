@@ -10,7 +10,7 @@ import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
-import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, initialRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud } from './session.mjs';
+import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, initialRaceQuality, RaceInputHealth, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
@@ -28,7 +28,7 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
 document.body.append(root);
 const $ = id => root.querySelector('#race-' + id);
 const duel = new RaceDuelTracker();
-const joystick = new RacingJoystick({ floating: true, deadzone: .055, fullThrow: .58 }), actions = new TouchActions(),
+const joystick = new RacingJoystick({ floating: true, rimTap: true, deadzone: .055, fullThrow: .58 }), actions = new TouchActions(),
   driver = new ManualRaceDriver(actions), quality = new QualityMonitor();
 const SENS_STORE = 'h5-qq-mobile-20261013:steering-sensitivity:v1';
 try { joystick.setSensitivity(localStorage.getItem(SENS_STORE)); } catch { /* Default safe sensitivity. */ }
@@ -39,6 +39,8 @@ let touchDriving = mobile;
 let g, phase = 'ready', started = false, result = null, loading = true, lastFrame = performance.now(), inputTime = performance.now();
 let nativeStartRace, policyReady = false, backgrounded = document.hidden;
 let touchSerial = 0, consumedTouchSerial = -1, lastStickEventAt = 0, lastTouchSampleAgeMs = null;
+let wheelCaptureFallback = false;
+const touchHealth = new RaceInputHealth();
 let events = [], best = {}, lastRacePassed = false;
 let replayTapCount = 0;
 let justFinishedPassed = null;
@@ -111,7 +113,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), nativeSteer: g?.player?.steer ?? null, playerYaw: g?.player?.h ?? null, cameraYaw: g?.camYaw ?? null, drifting: !!g?.player?.drifting, fpsEstimate: quality.fps, renderPixelRatio: g?.renderer?.getPixelRatio() ?? null, composerActive: !!g?.composer, shadowsActive: !!g?.renderer?.shadowMap?.enabled, floatingWheel: joystick.floating, wheelAnchorPx: Math.round(joystick.anchorX), touchToInputSampleMs: lastTouchSampleAgeMs, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), nativeSteer: g?.player?.steer ?? null, playerYaw: g?.player?.h ?? null, cameraYaw: g?.camYaw ?? null, drifting: !!g?.player?.drifting, fpsEstimate: quality.fps, renderPixelRatio: g?.renderer?.getPixelRatio() ?? null, composerActive: !!g?.composer, shadowsActive: !!g?.renderer?.shadowMap?.enabled, floatingWheel: joystick.floating, wheelAnchorPx: Math.round(joystick.anchorX), touchToInputSampleMs: lastTouchSampleAgeMs, phoneInput: touchHealth.snapshot(), rimPress: joystick.rimPressed, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -119,7 +121,7 @@ function syncJoystickVisual() {
   $('joystick').classList.toggle('held',joystick.active);
 }
 function releaseInput() {
-  joystick.clear(); actions.clear();
+  joystick.clear(); actions.clear(); wheelCaptureFallback = false;
   if (g) clearNativeInput(g.input);
   syncJoystickVisual();
   for (const button of root.querySelectorAll('[data-race-action]')) button.classList.remove('held');
@@ -246,7 +248,12 @@ async function loadTrack(id, autoStart) {
 $('export').addEventListener('click', () => {
   const button=$('export');
   try {
-    const content=trial.exportJSON();
+    // Aggregate-only timings; no touch coordinates, pointer IDs or user data.
+    const content=JSON.stringify({
+      ...JSON.parse(trial.exportJSON()),
+      phoneInput:touchHealth.snapshot(),
+      phoneInputNotes:'Native frame input latency and UI frame times; NOT touch-to-visible-pixel latency or a human success-rate measurement'
+    },null,2);
     const blob=new Blob([content],{type:'application/json;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const anchor=document.createElement('a');
@@ -321,36 +328,66 @@ $('quality').addEventListener('change', () => {
 });
 const joystickSurface = $('joystick');
 const actionButtons = Object.fromEntries([...root.querySelectorAll('[data-race-action]')].map(button => [button.dataset.raceAction, button]));
-const recordStickEvent = () => { touchSerial++; lastStickEventAt = performance.now(); };
+const recordStickEvent = kind => { touchSerial++; lastStickEventAt = performance.now(); touchHealth.touch(lastStickEventAt, joystick.snapshot(), kind); };
 joystickSurface.addEventListener('pointerdown', e => {
   e.preventDefault();
   if (!g || (phase !== 'race' && phase !== 'countdown')) return;
   const r = joystickSurface.getBoundingClientRect();
   if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width * .36)) return;
-  touchDriving = true; g.mobileMode = true; recordStickEvent();
-  joystickSurface.setPointerCapture(e.pointerId); syncJoystickVisual();
+  touchDriving = true; g.mobileMode = true; recordStickEvent('press');
+  try { joystickSurface.setPointerCapture(e.pointerId); wheelCaptureFallback = false; }
+  catch { wheelCaptureFallback = true; } // Older Safari / interrupted capture.
+  syncJoystickVisual();
 });
 joystickSurface.addEventListener('pointermove', e => {
   if (joystick.update(e.pointerId, e.clientX)) {
-    recordStickEvent();
+    recordStickEvent('move');
     if (e.cancelable) e.preventDefault();
     syncJoystickVisual();
   }
 });
-joystickSurface.addEventListener('pointerup', e => {
-  if (joystick.release(e.pointerId)) {e.preventDefault(); recordStickEvent(); syncJoystickVisual();}
-});
-const endStick = e => {
-  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault(); recordStickEvent(); syncJoystickVisual();}
+const endStick = (e, kind = 'cancel') => {
+  if (joystick.release(e.pointerId)) {
+    if (e.cancelable) e.preventDefault();
+    wheelCaptureFallback = false;recordStickEvent(kind);syncJoystickVisual();
+  }
 };
+joystickSurface.addEventListener('pointerup', e => endStick(e, 'release'));
 joystickSurface.addEventListener('pointercancel', endStick);
 joystickSurface.addEventListener('lostpointercapture', endStick);
+// Capturing a pointer is not uniformly reliable across older WebKit builds.
+// A window-level fallback tracks/relinquishes ONLY the already-owned pointer;
+// it does not steal the other thumb or add a second control scheme.
+window.addEventListener('pointermove', e => {
+  if (!wheelCaptureFallback || joystick.pointerId !== e.pointerId) return;
+  if (joystick.update(e.pointerId,e.clientX)) {
+    if (e.cancelable) e.preventDefault();
+    recordStickEvent('move');syncJoystickVisual();
+  }
+});
+window.addEventListener('pointerup', e => {
+  endStick(e, 'release');
+  const action=actions.pointers.get(e.pointerId);
+  if (action) {
+    actions.release(e.pointerId);
+    actionButtons[action]?.classList.toggle('held',actions.isHeld(action));
+  }
+});
+window.addEventListener('pointercancel', e => {
+  endStick(e, 'cancel');
+  const action=actions.pointers.get(e.pointerId);
+  if (action) {
+    actions.cancel(e.pointerId);
+    actionButtons[action]?.classList.toggle('held',actions.isHeld(action));
+  }
+});
 for (const button of root.querySelectorAll('[data-race-action]')) {
   const action = button.dataset.raceAction;
   button.addEventListener('pointerdown',e=>{
     e.preventDefault(); if (phase !== 'race') return;
     touchDriving = true; if (g) g.mobileMode = true;
-    button.setPointerCapture(e.pointerId); actions.press(e.pointerId,action,g?.raceTime ?? 0);button.classList.add('held');
+    try { button.setPointerCapture(e.pointerId); } catch { /* Global pointerup/cancel releases this action. */ }
+    actions.press(e.pointerId,action,g?.raceTime ?? 0);button.classList.add('held');
   });
   button.addEventListener('pointerup',e=>{ e.preventDefault();actions.release(e.pointerId);button.classList.toggle('held',actions.isHeld(action)); });
   const cancel=e=>{ if(e.cancelable)e.preventDefault(); actions.cancel(e.pointerId);button.classList.toggle('held',actions.isHeld(action)); };
@@ -407,7 +444,7 @@ async function boot() {
     raw.steerAxis = joystick.snapshot();
     if (touchSerial !== consumedTouchSerial) {
       consumedTouchSerial = touchSerial;
-      lastTouchSampleAgeMs = Math.min(500, Math.max(0, Math.round(performance.now() - lastStickEventAt)));
+      lastTouchSampleAgeMs = touchHealth.sample(performance.now());
     }
     const translated = driver.frame(raw,g.player,g.state,{canStep,itemMode:g.itemMode,track:g.track,now:g.raceTime ?? 0});
     if (career.index > 0 && g.state === 'race' && g.raceTime < .28) translated.upPressed = false;
@@ -434,6 +471,7 @@ async function boot() {
   let lastFuelTick = 0, lastHudTick = -Infinity;
   const frame = now => {
     const dt = (now - lastFrame) / 1000;lastFrame = now;
+    touchHealth.frame(dt);
     if ((phase === 'ready' || phase === 'finished') && now - lastFuelTick > 1000) { lastFuelTick = now;fuelView(); }
     if (started && !result && g.player) {
       if (g.player.finished || g.resultShown) finish();

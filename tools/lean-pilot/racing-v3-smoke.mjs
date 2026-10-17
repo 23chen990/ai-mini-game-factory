@@ -417,10 +417,11 @@ try {
   const leftThumb={...centerThumb,x:wheel.x+wheel.width*.18};
   const rightThumb={...centerThumb,x:wheel.x+wheel.width*.82};
   const driftThumb={x:drift.x+drift.width/2,y:drift.y+drift.height/2,id:102};
-  // Thumb may naturally land at any location in the enlarged steering zone.
-  // It must not initiate an accidental sharp turn until it actually moves.
+  // The illustrated left/right rim is an actual touch control, not just art:
+  // a resting thumb ON the visible left rim must steer BEFORE dragging.
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftThumb]});
-  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
+  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>.65,null,{timeout:8000});
+  await page.waitForFunction(()=>window.game?.player?.steer>.12,null,{timeout:18000});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[centerThumb]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
@@ -442,6 +443,7 @@ try {
   // and wrapper input mapping. Software WebGL can take multiple seconds.
   await page.waitForFunction(()=>window.game?.player?.steer < -.20,null,{timeout:18000});
   const simultaneous=await page.evaluate(()=>({
+    phoneInput:window.__RACE_EVIDENCE__?.phoneInput,
     axis:window.__RACE_EVIDENCE__?.steerAxis,
     nativePin:window.game?.__QA_LAST_CONTROL_PIN__,
     driftHeld:document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),
@@ -449,7 +451,8 @@ try {
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[rightThumb]});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
-  if(!(simultaneous.axis<-.5&&simultaneous.driftHeld&&simultaneous.nativePin?.right===true&&simultaneous.nativePin?.shift===true))
+  if(!(simultaneous.axis<-.5&&simultaneous.driftHeld&&simultaneous.nativePin?.right===true&&simultaneous.nativePin?.shift===true&&
+       simultaneous.phoneInput?.directionReversals>=1&&simultaneous.phoneInput?.sampleCount>0))
     fail('Stick countersteer must remain responsive during independent drift thumb: '+JSON.stringify(simultaneous));
   const wheelRelease=await page.evaluate(()=>({
     axis:window.__RACE_EVIDENCE__.steerAxis,

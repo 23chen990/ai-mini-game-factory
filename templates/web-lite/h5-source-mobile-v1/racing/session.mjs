@@ -119,3 +119,51 @@ export function shouldRefreshRaceHud(nowMs, lastMs, intervalMs = 33) {
   return Number.isFinite(nowMs) &&
     (!Number.isFinite(lastMs) || nowMs < lastMs || nowMs - lastMs >= intervalMs);
 }
+
+/** Aggregate-only diagnostics for real phone QA. Pointer timing and frame
+ * cadence are sampled independently: neither is GPU presentation latency.
+ * No user identifiers, raw positions or uploaded events are recorded. */
+export class RaceInputHealth {
+  constructor() {
+    this.touchEvents=0;this.touchMoves=0;this.touchCancels=0;
+    this.directionReversals=0;this.lastSign=0;this.eventSerial=0;this.sampleSerial=0;
+    this.lastTouchAt=null;this.sampleMs=[];this.frameMs=[];
+  }
+  touch(now,axis,kind='move') {
+    if (!Number.isFinite(now)) return;
+    this.touchEvents++;this.eventSerial++;
+    this.lastTouchAt=now;
+    if (kind==='move') this.touchMoves++;
+    if (kind==='cancel') this.touchCancels++;
+    const sign=Number.isFinite(axis)&&Math.abs(axis)>.18?Math.sign(axis):0;
+    if (kind==='press') this.lastSign=0;
+    if (sign && this.lastSign && sign!==this.lastSign) this.directionReversals++;
+    if (sign) this.lastSign=sign;
+    if (kind==='release'||kind==='cancel') this.lastSign=0;
+  }
+  sample(now) {
+    if (this.eventSerial===this.sampleSerial||!Number.isFinite(this.lastTouchAt)||
+        !Number.isFinite(now))return null;
+    this.sampleSerial=this.eventSerial;
+    const age=Math.max(0,Math.min(1000,now-this.lastTouchAt));
+    this.sampleMs.push(age);if(this.sampleMs.length>120)this.sampleMs.shift();
+    return Math.round(age);
+  }
+  frame(dt) {
+    if (!Number.isFinite(dt)||dt<=0||dt>1)return;
+    this.frameMs.push(dt*1000);
+    if(this.frameMs.length>120)this.frameMs.shift();
+  }
+  snapshot() {
+    const p95=list=>list.length?Math.round([...list].sort((a,b)=>a-b)[Math.ceil(list.length*.95)-1]*10)/10:null;
+    return {
+      touchEvents:this.touchEvents,touchMoves:this.touchMoves,
+      touchCancels:this.touchCancels,directionReversals:this.directionReversals,
+      inputSampleMsP95:p95(this.sampleMs),frameMsP95:p95(this.frameMs),
+      framesOver50ms:this.frameMs.filter(value=>value>50).length,
+      sampleCount:this.sampleMs.length,frameCount:this.frameMs.length,
+      // Never mislabel these as real screen presentation latency.
+      timingScope:'pointer-event-to-native-input-sample-and-overlay-RAF-only'
+    };
+  }
+}

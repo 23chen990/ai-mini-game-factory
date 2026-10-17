@@ -227,3 +227,28 @@ test('floating wheel rejects unrelated pointers and retains the chosen sensitivi
   assert.ok(j.snapshot()<0,'positive finger movement turns right');
   j.clear();assert.equal(j.snapshot(),0);
 });
+
+test('phone rim tap is immediately responsive but centre press remains neutral',()=>{
+  const j=new RacingJoystick({floating:true,rimTap:true,deadzone:.055,fullThrow:.58});
+  j.press(100,247,300,60);
+  assert.equal(j.rimPressed,true);
+  assert.ok(j.snapshot()>.75,'a visible LEFT rim tap must initiate native steering immediately');
+  j.update(100,353);
+  assert.ok(j.snapshot()<-.6,'same held thumb can immediately countersteer');
+  j.release(100);assert.equal(j.snapshot(),0);
+  j.press(101,300,300,60);
+  assert.equal(j.rimPressed,false);
+  assert.equal(j.snapshot(),0,'center remains precision floating thumb');
+  j.update(101,288);assert.ok(j.snapshot()>.25);
+  j.release(101);
+});
+test('phone rim intent is bounded to visible wheel, outer loose touches stay relative',()=>{
+  const j=new RacingJoystick({floating:true,rimTap:true,deadzone:.055,fullThrow:.58});
+  j.press(1,365,300,60);
+  assert.equal(j.snapshot(),0,'touch outside visible rim cannot surprise-turn');
+  j.update(1,380);assert.ok(j.snapshot()<-.3);
+  j.release(1);
+  j.press(2,300+60*.30,300,60);
+  assert.equal(j.snapshot(),0,'thumb on center knob is neutral');
+  j.release(2);
+});
