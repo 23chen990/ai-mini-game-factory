@@ -140,7 +140,7 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
   const portal=mesh.getObjectByName('physical-shortcut-portal');
   if(!fork.v9 || !portal || portal.geometry?.type!=='BoxGeometry' ||
      actualGates.length!==4 || actualGates.some(o=>o.geometry?.type==='CylinderGeometry') ||
-     portal.position.y<track.sample(fork.start,{ }).y+5)
+     portal.position.y<(fork.samples.find(p=>p.arc>=20)?.y??0)+6)
     throw Error('V9 thematic shortcut entrance is missing or unconvincing: '+course);
   if(!mesh.getObjectByName('physical-shortcut-road') ||
      !mesh.getObjectByName('physical-shortcut-rails') ||
