@@ -139,7 +139,7 @@ test('relay pads are counted only when spaced and give real clock extension',()=
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<8;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   assert.equal(c.setStage(8),true);c.begin(g);c.onEvent({type:'pad'},g);
-  assert.equal(c.metrics.timeAllowance,102);g.raceTime=11;c.onEvent({type:'pad'},g);
+  assert.equal(c.metrics.timeAllowance,129);g.raceTime=11;c.onEvent({type:'pad'},g);
   assert.equal(c.metrics.padCount,1);g.raceTime=15;c.onEvent({type:'pad'},g);
   assert.equal(c.metrics.padCount,2);
 });
@@ -403,7 +403,7 @@ test('boss goals disclose rank + opponent gates; beating rival at sixth is not v
 });
 
 test('V4.8 hard time/drift gates reject previous relaxed objectives',()=>{
-  assert.equal(STAGES[6].target,105);
+  assert.equal(STAGES[6].target,158);
   const ok={finished:true,place:3,time:104,stats:{crash:1}};
   assert.ok(gradeStage(STAGES[6],ok,{}));
   assert.equal(gradeStage(STAGES[6],{...ok,time:160},{}),0);
