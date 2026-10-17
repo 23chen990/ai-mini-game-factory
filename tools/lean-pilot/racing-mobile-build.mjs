@@ -204,6 +204,20 @@ export function patchMobileSteeringResponse(source) {
   return result;
 }
 
+/** Genuine opposite wheel input must also recover the vehicle's movement vector.
+ * Existing negative yaw already changes heading immediately, but very low
+ * in-drift grip can leave movement sliding in the old direction noticeably.
+ * Only touch analogue + held countersteer gets intermediate grip. No
+ * auto-turn, no instantaneous lateral reset, and no keyboard/AI changes.
+ */
+export function patchMobileDriftCounterGrip(source) {
+  const original = 'const k = held ? T.driftGrip : T.driftGripRelease;';
+  const revised = 'const k = held && Number.isFinite(inp.steerAxis) && align < -0.25 ? T.driftGrip + (T.driftGripRelease - T.driftGrip) * .55 : held ? T.driftGrip : T.driftGripRelease;';
+  if (source.includes(revised)) return source;
+  if (source.split(original).length !== 2) throw Error('Pinned mobile drift counter-grip anchor changed');
+  return source.replace(original, revised);
+}
+
 /** A drift cannot immediately re-trigger on the same still-held drift key.
  * Both graceful exit and wall impact pass through the native endDrift method.
  * Re-arm only when the player has actually released the drift key. */
@@ -368,7 +382,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await readFile(path.join(owned, 'career-expansion.mjs'), 'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchMobileSteeringResponse(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle)))))));
+  const annotatedVehicle = patchItemModeNitro(patchMobileDriftCounterGrip(patchCounterSteer(patchMobileSteeringResponse(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');

@@ -436,6 +436,7 @@ async function boot() {
         const failure = career.frame(g);
         duel.frame(g); // Keep genuine native overtakes for test telemetry; no toast.
         career.drainNotices(); // Lifecycle notices are not a running commentary.
+        root.classList.toggle('drifting', g.player.drifting);
         // Keep actual racing, input/physics, AI, mission failure and quality
         // checks on every frame; only visual DOM readouts run at ~30 Hz.
         if (shouldRefreshRaceHud(now, lastHudTick)) {
@@ -477,7 +478,6 @@ async function boot() {
             if(itemBtn.textContent!==icon)itemBtn.textContent=icon;
             itemBtn.setAttribute('aria-label',held?'使用'+(ITEM_LABELS[held]??'道具'):'使用道具');
           }
-          root.classList.toggle('drifting', g.player.drifting);
         }
         if (failure) {if (!g.resultShown) g.showResults();finish();}
         const lower = quality.frame(dt, g.settings.quality);

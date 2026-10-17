@@ -221,3 +221,20 @@ test('fixed desert monument safety keeps pyramid models away from new racing sur
   assert.equal(api.patchFixedDesertLandmarks(out),out);
   assert.throws(()=>api.patchFixedDesertLandmarks('unexpected native geometry'),/landmark placement changed/);
 });
+
+test('real touch countersteer regains lateral grip without changing keyboard drift or auto-steering',()=>{
+  const original = 'const k = held ? T.driftGrip : T.driftGripRelease;';
+  assert.equal(typeof api.patchMobileDriftCounterGrip,'function');
+  const patched=api.patchMobileDriftCounterGrip(original);
+  assert.equal(api.patchMobileDriftCounterGrip(patched),patched);
+  assert.match(patched,/Number\.isFinite\(inp\.steerAxis\) && align < -0\.25/);
+  const expression=patched.slice('const k = '.length,-1);
+  const choose=new Function('held','inp','align','T','return '+expression);
+  const tune={driftGrip:2,driftGripRelease:5.2};
+  assert.equal(choose(true,{steerAxis:1},1,tune),2);
+  assert.equal(choose(true,{},-1,tune),2,'desktop keys keep original drift grip');
+  assert.equal(choose(false,{steerAxis:-1},-1,tune),5.2,'release still uses original grip');
+  const counter=choose(true,{steerAxis:-1},-.8,tune);
+  assert.ok(counter>3.5 && counter<5.2,'touch must countersteer faster but not snap instantly');
+  assert.throws(()=>api.patchMobileDriftCounterGrip('unexpected source'),/anchor changed/);
+});
