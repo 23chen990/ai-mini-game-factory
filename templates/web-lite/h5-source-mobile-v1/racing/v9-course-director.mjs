@@ -150,7 +150,7 @@ validateV9Rhythms();
     // Keep known V9 technical fork geometry in the same safe general envelope.
     const challengeAmplitude={
       '01':1.07,'02':1.15,'05':1.16,'07':1.18,
-      '11':1.04,'16':1.04,'22':1.18
+      '11':1.04,'16':1.04,'22':.73
     };
     const maximum=amplitude*(challengeAmplitude[courseId]??baseline)/scale;
     const points=STYLES[style].map(([t,w])=>[
