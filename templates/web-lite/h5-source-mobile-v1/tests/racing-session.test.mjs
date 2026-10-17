@@ -56,10 +56,10 @@ test('输入释放同时清除触屏、键盘、两个边沿集合', () => {
   const input = { down: new Set(['ArrowLeft']), pressed: new Set(['KeyW']), touchPressed: new Set(['TouchNitro']), touch: { up: true, left: true, shift: true } };
   clear(input);assert.equal(input.down.size + input.pressed.size + input.touchPressed.size, 0);assert.ok(Object.values(input.touch).every(v => !v));
 });
-test('手机镜头FOV有温和速度反馈且不超过78度', () => {
+test('V10手机镜头FOV有可感知的速度反馈且不超过88度', () => {
   const fov = need('raceCameraFov');
   assert.ok(fov(55, true, false) > fov(55, false, false));
-  assert.ok(fov(86, true, true) <= 78);assert.ok(fov(0, false, false) >= 66);
+  assert.ok(fov(86, true, true) <= 88);assert.ok(fov(0, false, false) >= 68);assert.ok(fov(70,true,false)>=85);
 });
 test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数', () => {
   const tune = need('tuneRaceFx'), calls = [];
@@ -78,7 +78,7 @@ test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；�
     assert.deepEqual(call.args.slice(13), args.slice(13));
   }
   g.mobileMode = false;g.fx.glow.emit(...args);assert.deepEqual(calls.at(-1).args, args);
-  const bloom = need('raceBloomStrength');assert.equal(bloom(true), bloom(false));assert.ok(bloom(true) <= .3);
+  const bloom = need('raceBloomStrength');assert.ok(bloom(true) > bloom(false));assert.ok(bloom(true) <= .46);
 });
 test('自适应只在持续低帧率后降一档；手选画质保留', () => {
   const Monitor = need('QualityMonitor'), q = new Monitor();

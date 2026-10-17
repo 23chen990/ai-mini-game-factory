@@ -77,6 +77,24 @@ export const V9_SHORTCUT_THEMES=Object.freeze({
   'race-27':{style:'sky',bend:4,preferred:.14},
   'race-30':{style:'sky',bend:6,preferred:.53},
 });
+/** V10 signed, stage-specific real driving contracts. The player must
+ * commit earlier, pass a genuinely narrower physical road and countersteer
+ * to rejoin. No faux slowdown, hidden boost requirement or progress warp.
+ * The site still passes the full V9 native 3D clearance audit.
+ */
+export const V10_SHORTCUT_PROFILES=Object.freeze({
+  'race-05':{neck:8.25,action:'temple late-apex precision'},
+  'race-10':{neck:8.05,action:'urban tight corner exit'},
+  'race-12':{neck:7.95,action:'ice bridge early entry'},
+  'race-13':{neck:7.70,action:'crown switchback line'},
+  'race-16':{neck:7.65,action:'cliff countersteer recovery'},
+  'race-18':{neck:7.50,action:'ribbon through ravine'},
+  'race-22':{neck:7.35,action:'downhill canyon inside line'},
+  'race-25':{neck:7.35,action:'viaduct inside apex'},
+  'race-27':{neck:7.20,action:'skyline loaded countersteer'},
+  'race-30':{neck:7.05,action:'finale high-risk fork'},
+});
+
 const round=(x,n=2)=>Math.round(x*10**n)/10**n;
 const distance2=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 const segmentClear=(track,points,length,cfg)=>{
@@ -110,11 +128,11 @@ const segmentClear=(track,points,length,cfg)=>{
   }
   return least;
 };
-export function chooseV9Shortcut(track,course){
-  const theme=V9_SHORTCUT_THEMES[course];
+export function chooseV9Shortcut(track,course,{v10=false}={}){
+  const theme=V9_SHORTCUT_THEMES[course],authored=v10?V10_SHORTCUT_PROFILES[course]:null;
   if(!theme||!Number.isFinite(track?.length)||track.length<1000||
      typeof track.sample!=='function')return null;
-  const width=11.5,neckWidth=8.8,options=[];
+  const width=11.5,neckWidth=authored?.neck??8.8,options=[];
   const startLow=track.length*.10,startHigh=track.length*.81;
   // Explore natural corners: only a 140-270m local sector is eligible.
   for(let start=startLow;start<startHigh;start+=27){
@@ -140,7 +158,7 @@ export function chooseV9Shortcut(track,course){
       const closeness=Math.min(Math.abs(normStart-theme.preferred),
         1-Math.abs(normStart-theme.preferred));
       const value=shape.gain*.6+(210-shape.length)*.17+
-        Math.min(area,90)*.15-closeness*32;
+        Math.min(area,90)*.15-closeness*(v10?53:32);
       options.push({cfg,shape,value});
     }
   }
@@ -150,7 +168,9 @@ export function chooseV9Shortcut(track,course){
     const clearance=segmentClear(track,candidate.shape.samples,
       candidate.shape.length,candidate.cfg);
     if(clearance>=.60)
-      return {...candidate.cfg,estimatedLength:round(candidate.shape.length),
+      return {...candidate.cfg,
+        ...(authored?{v10SkillAction:authored.action}:{}),
+        estimatedLength:round(candidate.shape.length),
         estimatedGain:round(candidate.shape.gain),clearance:round(clearance)};
   }
   return null; // Build must fail closed, never silently turn a bad fork into a shortcut.
@@ -173,12 +193,56 @@ function nearest(samples,x,z){
   }
   return best;
 }
-export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
+/** Native road-space paint geometry only: three early decision arrows plus
+ * four neck warnings. No fake speed pickups, steer help or render-only road.
+ * Positions derive from the SAME physical main/branch splines and remain
+ * strictly inside both drivable road envelopes.
+ */
+export function forkDecisionPaint(track,fork) {
+  if(typeof track?.sample!=='function'||!Number.isFinite(track.halfW)||
+     !fork?.samples?.length||!Number.isFinite(fork.start)||
+     !Number.isFinite(fork.length)||typeof fork.widthAt!=='function'||
+     ![-1,1].includes(fork.entrySide))
+    throw Error('Fork paint needs a physical main and branch');
+  const approach=[],neck=[];
+  const position=(sample,lateral)=>[
+    sample.x+sample.rx*lateral,sample.y+.19,sample.z+sample.rz*lateral
+  ];
+  const tri=(dest,a,b,c)=>dest.push(...a,...b,...c);
+  const side=fork.entrySide;
+  // All approach arrows lie inside the main racing surface, unlike the
+  // existing two distant roadside posts. Readable at speed without a popup.
+  for(const before of [104,70,36]) {
+    const back=track.sample(fork.start-before-3,{}),
+      front=track.sample(fork.start-before+5,{});
+    const outer=Math.min(3.6,track.halfW*.40);
+    tri(approach,position(back,side*.8),position(back,side*outer),
+      position(front,side*outer));
+  }
+  const sampleAt=distance=>{
+    for(let i=1;i<fork.samples.length;i++)
+      if(fork.samples[i].arc>=distance)return fork.samples[i];
+    return fork.samples.at(-1);
+  };
+  // Paint makes the real mid-branch narrowing visible BEFORE the driver
+  // touches the guardrail. These are polygons, never collision geometry.
+  for(const fraction of [.35,.46,.57,.68]){
+    const a=sampleAt(fork.length*fraction),b=sampleAt(fork.length*fraction+2.1);
+    const half=Math.min(fork.widthAt(a.arc),fork.widthAt(b.arc))*.5-.9;
+    if(half<=1.5)throw Error('Physical fork lacks legal paint corridor');
+    const left=position(a,-half),right=position(a,half),
+      nextLeft=position(b,-half),nextRight=position(b,half);
+    tri(neck,left,right,nextLeft);tri(neck,right,nextRight,nextLeft);
+  }
+  return {approach,neck};
+}
+export function installPhysicalShortcut(track,course,{v8=false,v9=false,v10=false}={}){
+  if(v10&&!v9)throw Error('V10 skill shortcut requires actual V9 physical road');
   const original=SHORTCUT_PLANS[course];if(!original)return null;
   // V9 joins a short LOCAL apex of the actual final native track; no V8
   // fixed-distance anchors may be reused after the route is reshaped.
   const scale=v9 ? 1 : v8 ? (V8_COURSES[course.slice(5)]?.stretch??1) : 1;
-  const cfg=v9 ? chooseV9Shortcut(track,course) : {...original,
+  const cfg=v9 ? chooseV9Shortcut(track,course,{v10}) : {...original,
     start:original.start*scale,end:original.end*scale,bend:original.bend*scale};
   if(!cfg)throw Error('No safe short apex fork on '+course+'; revise road layout');
   if(!track||typeof track.sample!=='function'||typeof track.project!=='function')
@@ -208,7 +272,13 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
       relative(onMain.d,start,track.length)>=-12&&
       relative(onMain.d,start,track.length)<=88&&
       other.dist<=widthAt(other.arc)*.5-1.3&&Math.abs(y-other.y)<5.5;
-    if(!(was||(atEntrance&&mainDist>other.dist+1.8))){
+    // Native Track.project reuses its output object. A stale ACTIVE flag
+    // must never magnetically glue a crashed car to a remote fork, especially
+    // when a high bridge crosses a normal lane. Keep a generous 4.5m
+    // guardrail-recovery margin; beyond it, restore honest native projection.
+    const canCarry=was&&other.dist<=widthAt(other.arc)*.5+4.5&&
+      Math.abs(y-other.y)<5.5;
+    if(!(canCarry||(atEntrance&&mainDist>other.dist+1.8))){
       onMain.__RACE_SHORTCUT_ACTIVE=false;return onMain;
     }
     // At both joining gates the ordinary surface resumes continuity.
@@ -271,6 +341,23 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
     };
     const palette=v9 ? palettes[cfg.style]??palettes.cliff :
       {road:0x536b7c,curb:0x4bdbea,shoulder:0x536b7c,rail:0x4bdbea,sign:0x5de9ef};
+    if(v9){
+      const painted=forkDecisionPaint(track,{start,length,samples,widthAt,entrySide});
+      // At most two additional small draw calls regardless of track length.
+      // World-surface geometry provides the hint, not a text HUD overlay.
+      for(const [name,positions,color] of [
+        ['physical-shortcut-approach-paint',painted.approach,palette.sign],
+        ['physical-shortcut-neck-paint',painted.neck,palette.curb],
+      ]){
+        const g=new THREE.BufferGeometry();
+        g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+        g.computeVertexNormals();
+        const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({
+          color,roughness:.89,side:THREE.DoubleSide,depthWrite:false,
+        }));
+        m.name=name;group.add(m);
+      }
+    }
     const surfaceMaterial=(color,emissiveIntensity=0)=>new THREE.MeshStandardMaterial({
       color,roughness:.91,metalness:.06,side:THREE.DoubleSide,
       emissive:emissiveIntensity?color:0x000000,emissiveIntensity,
@@ -458,7 +545,7 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
     ctx.strokeStyle='rgba(90,235,255,.98)';ctx.lineWidth=4;ctx.stroke();
     return true;
   };
-  const shortcut={course,start,end,scale,v9,style:cfg.style??'legacy',entrySide,exitSide,width:cfg.width,neckWidth:cfg.neckWidth,
+  const shortcut={course,start,end,scale,v9,v10,skillAction:cfg.v10SkillAction??null,style:cfg.style??'legacy',entrySide,exitSide,width:cfg.width,neckWidth:cfg.neckWidth,
     length,gain,samples,widthAt,opening,project,recover,terrainProxy,buildMesh,drawMinimap};
   track.__RACE_SHORTCUT__=shortcut;track.project=project;
   return shortcut;

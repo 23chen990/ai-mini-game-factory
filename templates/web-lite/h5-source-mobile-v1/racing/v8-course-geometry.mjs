@@ -59,10 +59,13 @@ export function sampleElevation(knots, fraction) {
 /** Preserve the control-point XY topology, add authored relief and longer
  * genuinely physical kilometres without changing collision/score directly.
  */
-export function applyV8CourseGeometry(local,id,baseScale) {
+export function applyV8CourseGeometry(local,id,baseScale,{elevationOffsets=null}={}) {
   const cfg=V8_COURSES[id];
   if(!cfg || !Number.isFinite(baseScale) || baseScale<=0 ||
      !Array.isArray(local) || local.length<12) throw Error('Invalid V8 course');
+  if(elevationOffsets && (elevationOffsets.length!==local.length ||
+    elevationOffsets.some(v=>!Number.isFinite(v)||v<0||v>7)))
+    throw Error('Invalid physical V10 crest offsets '+id);
   const n=local.length;
   const ds=local.map((a,i)=>Math.hypot(local[(i+1)%n][0]-a[0],local[(i+1)%n][1]-a[1]));
   const perimeter=ds.reduce((a,b)=>a+b,0);
@@ -70,7 +73,8 @@ export function applyV8CourseGeometry(local,id,baseScale) {
   let along=0;
   const points=local.map((p,i)=>{
     if(p.length!==3 || !p.every(Number.isFinite))throw Error('Invalid V8 road vertex');
-    const h=sampleElevation(cfg.knots,along/perimeter);
+    const h=sampleElevation(cfg.knots,along/perimeter)+
+      (elevationOffsets?.[i]??0);
     along+=ds[i];
     return [p[0],p[1],+h.toFixed(4)];
   });

@@ -14,12 +14,12 @@ const root=process.cwd(), src=path.join(root,'runs/h5-qq-mobile-20261013/workspa
 const build=JSON.parse(await readFile(path.join(root,'runs/h5-qq-mobile-20261013/artifacts/build-racing.json')));
 const source=await readFile(path.join(src,'src/layouts.js'),'utf8');
 const prefix="import { applyTrackDesign } from './race-track-design.mjs';\n";
-const suffix='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true });';
+const suffix='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true, v10: true });';
 if(!source.startsWith(prefix) || !source.trimEnd().endsWith(suffix))
   throw Error('Unrecognized pinned generated layouts.js');
 const originalSource=source.slice(prefix.length).trimEnd().slice(0,-suffix.length);
 const original=(await import('data:text/javascript;base64,'+Buffer.from(originalSource).toString('base64'))).LAYOUTS;
-const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified,{v8:true,v9:true});
+const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified,{v8:true,v9:true,v10:true});
 const THREE=createRequire(path.join(src,'package.json'))('three');
 const wrap=x=>Math.atan2(Math.sin(x),Math.cos(x));
 function inspect(layout, key){
@@ -96,10 +96,10 @@ if(Object.keys(courses).length!==CAREER_COURSE_MAPS.length)
 // Actual pinned Three.js Track projection test, not a simulated race victory.
 const shortcutAudit={};
 for(const course of Object.keys(SHORTCUT_PLANS)){
-  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course,{v8:true,v9:true});
+  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course,{v8:true,v9:true,v10:true});
   if(!fork || !(fork.gain>=24&&fork.gain<=82) ||
      !(fork.length>=75&&fork.length<=210) ||
-     !(fork.neckWidth>=8.5&&fork.neckWidth<=11) ||
+     !(fork.neckWidth>=7.0&&fork.neckWidth<=8.3) || !fork.v10 || !fork.skillAction ||
      !(fork.width>=11&&fork.width<=14) || !Number.isFinite(fork.length))
     throw Error('Shortcut is not an honest shorter physical road: '+course);
   const p={},details=[];

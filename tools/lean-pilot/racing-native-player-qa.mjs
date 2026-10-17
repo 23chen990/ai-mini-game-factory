@@ -18,12 +18,12 @@ const src=path.join(run,'workspace/source/qq-speed/src');
 const build=JSON.parse(await readFile(path.join(run,'artifacts/build-racing.json'),'utf8'));
 const raw=await readFile(path.join(src,'layouts.js'),'utf8');
 const start="import { applyTrackDesign } from './race-track-design.mjs';\n";
-const end='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true });';
+const end='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true, v10: true });';
 if(!raw.startsWith(start)||!raw.trimEnd().endsWith(end))
   throw Error('Unknown pinned native layout adapter; refusing synthetic physics QA');
 const layouts=(await import('data:text/javascript;base64,'+Buffer.from(
   raw.slice(start.length).trimEnd().slice(0,-end.length)).toString('base64'))).LAYOUTS;
-const revised=JSON.parse(JSON.stringify(layouts));applyTrackDesign(revised,{v8:true,v9:true});
+const revised=JSON.parse(JSON.stringify(layouts));applyTrackDesign(revised,{v8:true,v9:true,v10:true});
 const { Track }=await import(pathToFileURL(path.join(src,'track.js')).href);
 const { PlayerCar }=await import(pathToFileURL(path.join(src,'vehicle.js')).href);
 const { AICar }=await import(pathToFileURL(path.join(src,'ai.js')).href);
@@ -215,6 +215,39 @@ for(const id of ['01','05','11','16']){
     nativeBotsFasterThanLate:f.beatPrivilegedLate};
 }
 if(challengeFailures.length)throw Error(challengeFailures.join('; '));
+/** V10 real steering regression: two identical native PlayerCars receive
+ * opposite joystick values WHILE HOLDING DRIFT. Counter-steering must change
+ * the physical heading, not just an HUD or steering-wheel illustration.
+ * This is a deterministic engine test, never human gameplay evidence.
+ */
+report.v10Countersteer={};
+for(const id of ['01','07','22']){
+  const tr=new Track(revised['race-'+id]);
+  const buildPlayer=()=>{
+    const p=new PlayerCar(tr,null,'native-v10-countersteer');
+    p.reset(tr.length*.2,0);p.s=35;
+    return p;
+  };
+  const held=buildPlayer(),opposite=buildPlayer();
+  const before={up:true,shift:true,steerAxis:.9};
+  for(let tick=0;tick<25;tick++){
+    held.update(STEP,before,true,false);
+    opposite.update(STEP,before,true,false);
+  }
+  const wasDrifting=opposite.drifting;
+  const beforeHeading=opposite.h;
+  for(let tick=0;tick<28;tick++){
+    held.update(STEP,before,true,false);
+    opposite.update(STEP,{...before,steerAxis:-.95},true,false);
+  }
+  const physicalCorrection=Math.abs(wrap(held.h-opposite.h));
+  if(!wasDrifting||physicalCorrection<.17)
+    throw Error('V10 opposite analogue lock did not pull real native car heading '+id+
+      ': '+physicalCorrection.toFixed(3)+'rad');
+  report.v10Countersteer[id]={native: true,initialDrift:wasDrifting,
+    headingSeparationRad:+physicalCorrection.toFixed(3),
+    startHeadingRad:+beforeHeading.toFixed(3)};
+}
 /** Native AICar actually MOVES into a strategic lane after personal targeting.
  * Regression against "fake lane AI": personality must change native lat,
  * leaving room inside the physical rails. No collision engine in this probe.

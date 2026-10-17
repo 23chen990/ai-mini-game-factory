@@ -146,13 +146,21 @@ async function raceStart(page, index, name) {
     shortcutGain:window.game?.track?.__RACE_SHORTCUT__?.gain ?? 0,
     shortcutLength:window.game?.track?.__RACE_SHORTCUT__?.length ?? 0,
     shortcutStyle:window.game?.track?.__RACE_SHORTCUT__?.style ?? null,
+    v10ShortcutSkill:window.game?.track?.__RACE_SHORTCUT__?.skillAction??null,
+    v10ShortcutNeck:window.game?.track?.__RACE_SHORTCUT__?.neckWidth??null,
     shortcutCurb:!!window.game?.level?.getObjectByName('physical-shortcut-curb'),
     shortcutFascia:!!window.game?.level?.getObjectByName('physical-shortcut-bridge-fascia'),
     shortcutPaint:!!window.game?.level?.getObjectByName('physical-shortcut-centre-dashes'),
+    shortcutApproachPaint:window.game?.level?.getObjectByName('physical-shortcut-approach-paint')?.geometry?.attributes?.position?.count??0,
+    shortcutNeckPaint:window.game?.level?.getObjectByName('physical-shortcut-neck-paint')?.geometry?.attributes?.position?.count??0,
     shortcutPortal:!!window.game?.level?.getObjectByName('physical-shortcut-portal'),
     shortcutAdvanceSigns:window.game?.level?.getObjectByName('physical-shortcut-approach')?.children?.length ?? 0,
     shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
     shortcutRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
+    v10DrivingIdentity:window.game?.track?.__V10_STAGE_IDENTITY__??null,
+    v10RoadMarks:window.game?.level?.getObjectByName('v10-native-rumble-edge-marks')?.geometry?.attributes?.position?.count??0,
+    v10WorldScenes:window.game?.level?.getObjectByName(
+      'v10-roadside-identity-'+window.game?.track?.__RACE_COURSE_ID)?.children?.length??0,
     nativeThreeLoaded:!!window.__RACE_THREE__?.Sprite,
     progress:window.game?.player?.progress ?? 0,
     controlsVisible:!!document.querySelector('#race-controls:not([hidden])'),
@@ -178,6 +186,15 @@ async function raceStart(page, index, name) {
     impact:window.game?.player?.impact ?? null,
     lat:window.game?.player?.lat ?? null,
     rank:window.game?.standings?.indexOf(window.game?.player) + 1,
+    mobileChaseDistance:(()=>{
+      const g=window.game,p=g?.player,c=g?.camera?.position;
+      return p&&c?Math.hypot(c.x-p.x,c.y-p.y,c.z-p.z):null;
+    })(),
+    actualCameraFov:window.game?.camera?.fov??null,
+    mobileLookAhead:(()=>{
+      const g=window.game,p=g?.player,look=g?.camLook;
+      return p&&look?Math.hypot(look.x-p.x,look.z-p.z):null;
+    })(),
     wheel:document.querySelector('#race-joystick')?.getBoundingClientRect().toJSON(),
     drift:document.querySelector('[data-race-action="drift"]')?.getBoundingClientRect().toJSON(),
     goal:document.querySelector('#race-compact-goal')?.textContent,
@@ -197,13 +214,17 @@ async function raceStart(page, index, name) {
     const scenery=node?.children?.filter(x=>x.name?.includes('landscape')) ?? [];
     const evidence=window.__RACE_EVIDENCE__;
     const nativeTrack=game?.track,midArch=arches[1];
-    const v9SafeMid=nativeTrack?.__V9_WIDTH_PROFILE__ && midArch &&
-      nativeTrack.__RACE_SHORTCUT__ ? nativeTrack.sample(nativeTrack.length*.36,{}) : null;
-    const v9MidArchMoved=!!v9SafeMid && !!midArch &&
-      Math.hypot(midArch.position.x-v9SafeMid.x,midArch.position.z-v9SafeMid.z)<.05;
+    const fork=nativeTrack?.__RACE_SHORTCUT__;
+    const potentialMid=nativeTrack?.sample(nativeTrack.length*.52,{});
+    const overlapAt52=!!fork &&
+      nativeTrack.length*.52>=fork.start-140 &&
+      nativeTrack.length*.52<=fork.end+95;
+    const v10ArchClear=!overlapAt52 || (midArch&&potentialMid &&
+      Math.hypot(midArch.position.x-potentialMid.x,
+        midArch.position.z-potentialMid.z)>10);
     const midArchColor=midArch?.children?.[0]?.material?.color?.getHex?.() ?? null;
     return {course,exists:!!node,arches:arches.length,scenery:scenery.length,
-      v9MidArchMoved,midArchColor,
+      v10ArchClear,midArchColor,
       numberedMeshCount:arches[0]?.children?.length??0,
       actualCourse:evidence?.actualCourse,requestedCourse:evidence?.requestedCourse,
       actualTrackLength:evidence?.actualTrackLength,
@@ -219,17 +240,23 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V9.0'||
-     worldIdentity.uiRevision!=='racing-v90-integrated')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V10.0'||
+     worldIdentity.uiRevision!=='racing-v100-integrated')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
-  // V9 stage-05's black generic sector arch previously occupied the real
+  // V10 stage-05's black generic sector arch previously occupied the real
   // short fork between 1488-1693m. It must be ACTUALLY RELOCATED IN WEBGL.
-  if(index===4 && (!worldIdentity.v9MidArchMoved ||
+  if(index===4 && (!worldIdentity.v10ArchClear ||
       worldIdentity.midArchColor===0x14233a))
     fail('V9 shortcut cannot be hidden under an oversized generic black arch: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.mobileCamera)fail(name+': actual touch driving must enable mobile camera and anti-jitter rendering');
+  if(!Number.isFinite(after.mobileChaseDistance) ||
+     after.mobileChaseDistance>16.0 ||
+     !Number.isFinite(after.actualCameraFov) || after.actualCameraFov<65 ||
+     after.actualCameraFov>89 ||
+     !Number.isFinite(after.mobileLookAhead) || after.mobileLookAhead<5)
+     fail(name+': V10 native mobile chase camera did not bring car closer while tracking real exit: '+JSON.stringify(after));
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
     fail(name+': native vehicle did not progress with real auto throttle; '+JSON.stringify({early,after,error:movementError?.message}));
   const originalPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];
@@ -240,12 +267,14 @@ async function raceStart(page, index, name) {
   // Compare the actual rendered native geometry with the source-of-truth
   // designed width, not a stale number copied from an earlier track version.
   const expectedWidth=COURSE_ROAD_WIDTHS[expectedCourse.slice(5)]??TRACK_RESHAPES[expectedMap]?.width;
-  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600 || early.v9RoadBands!==2 || early.v9ActualNarrowing<.35)
+  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600 || early.v9RoadBands!==2 || early.v9ActualNarrowing<.35 || !early.v10DrivingIdentity || early.v10RoadMarks<150 || early.v10WorldScenes!==2)
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
   if(index===4 && (!early.shortcut || early.shortcutGain<25 || early.shortcutGain>82 ||
      early.shortcutLength<75 || early.shortcutLength>210 ||
-     early.shortcutStyle!=='temple' || !early.shortcutRoad || !early.shortcutRails ||
+     early.shortcutStyle!=='temple' || early.v10ShortcutSkill!=='temple late-apex precision' ||
+     !(early.v10ShortcutNeck>=7&&early.v10ShortcutNeck<=8.3) || !early.shortcutRoad || !early.shortcutRails ||
      !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint || !early.shortcutPortal ||
+     early.shortcutApproachPaint!==9 || early.shortcutNeckPaint!==24 ||
      early.shortcutAdvanceSigns!==2))
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
   if(index===0 && early.shortcut)
