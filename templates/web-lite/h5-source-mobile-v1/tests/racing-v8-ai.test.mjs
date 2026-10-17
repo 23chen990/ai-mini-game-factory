@@ -62,7 +62,14 @@ test('V9 shortcut AI brakes according to genuine physical turn before and inside
   fork.v9=true;
   const approach=aiV8ForkDesiredSpeed(ai,tr,70);
   assert.ok(Number.isFinite(approach)&&approach<70&&approach>=14);
-  ai.__V8_FORK_STATE__={lap:0,arc:fork.length*.40};
+  let bendAt=0,bendRate=0;
+  for(let i=2;i<fork.samples.length-2;i++){
+    const a=fork.samples[i],b=fork.samples[i+1];
+    const v=Math.abs(Math.atan2(Math.sin(b.hd-a.hd),
+      Math.cos(b.hd-a.hd)))/Math.max(.001,b.arc-a.arc);
+    if(v>bendRate){bendRate=v;bendAt=a.arc;}
+  }
+  ai.__V8_FORK_STATE__={lap:0,arc:Math.max(0,bendAt-16)};
   const inside=aiV8ForkDesiredSpeed(ai,tr,70);
   assert.ok(Number.isFinite(inside)&&inside<70&&inside>=14);
   ai.__V8_FORK_STATE__=null;
