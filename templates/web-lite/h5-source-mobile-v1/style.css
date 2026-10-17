@@ -1019,3 +1019,28 @@ html[data-reference-game="cf-transport-ship"] #mk-fps-hit-feedback[data-mileston
     animation:none!important
   }
 }
+
+/* CF V18: open a real rightward thumb travel corridor and keep world legible. */
+@media(orientation:landscape){
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]{
+  right:max(100px,calc(90px + env(safe-area-inset-right,0px)))!important;
+  bottom:max(62px,calc(56px + env(safe-area-inset-bottom,0px)))!important;
+  width:82px!important;height:82px!important;
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="jump"]{
+  right:max(20px,calc(14px + env(safe-area-inset-right,0px)))!important;
+  bottom:max(28px,calc(24px + env(safe-area-inset-bottom,0px)))!important;
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="reload"]{
+  right:max(19px,calc(13px + env(safe-area-inset-right,0px)))!important;
+  bottom:169px!important;
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="scope"]{
+  right:max(191px,calc(181px + env(safe-area-inset-right,0px)))!important;
+  bottom:142px!important;
+ }
+}
+/* Reduce nonessential blurring from UI layer; native postprocessing is separately profiled. */
+html[data-reference-game="cf-transport-ship"][data-fps-active="true"] #mk-fps-guide{
+ text-shadow:0 1px 2px #000!important;
+}
