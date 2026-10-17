@@ -91,7 +91,7 @@ export const EXPANSION_COURSES = Object.freeze({
     "kind": "overtake",
     "mode": "speed",
     "rank": 2,
-    "goal": "真实弯道超车 4 次并进入前二",
+    "goal": "进入前二，弯道超车 4 次挑战三星",
     "target": 4,
     "technical": [
       [
@@ -129,7 +129,7 @@ export const EXPANSION_COURSES = Object.freeze({
     "kind": "item",
     "mode": "item",
     "rank": 2,
-    "goal": "真实拾取 4 个道具并进入前二",
+    "goal": "进入前二，拾取 4 个道具挑战三星",
     "target": 4,
     "technical": [
       [
@@ -337,7 +337,7 @@ export const EXPANSION_COURSES = Object.freeze({
     "kind": "item",
     "mode": "item",
     "rank": 2,
-    "goal": "实取 5 个道具并进入前二",
+    "goal": "进入前二，拾取 5 个道具挑战三星",
     "target": 5,
     "technical": [
       [
@@ -422,7 +422,7 @@ export const EXPANSION_COURSES = Object.freeze({
     "kind": "overtake",
     "mode": "speed",
     "rank": 1,
-    "goal": "至少 5 次真实弯道反超并获得第一",
+    "goal": "夺得第一，弯道反超 5 次挑战三星",
     "target": 5,
     "technical": [
       [
@@ -465,7 +465,7 @@ export const EXPANSION_COURSES = Object.freeze({
     "kind": "item",
     "mode": "item",
     "rank": 1,
-    "goal": "实取 5 个道具并夺冠",
+    "goal": "夺冠，拾取 5 个道具挑战三星",
     "target": 5,
     "technical": [
       [
