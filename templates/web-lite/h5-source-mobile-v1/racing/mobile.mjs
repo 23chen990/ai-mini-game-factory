@@ -267,8 +267,7 @@ function finish() {
   }
   const newSkin = SKIN_STARS.findIndex((required,i) => i > 0 && beforeStars < required && graded?.total >= required);
   const failure = stars ? null : stageFailureFeedback(career.stage, result, graded?.metric ?? {});
-  $('replay').textContent = career.hasFreeReplay() ? '免费再来一局 ↻' :
-    bestStars===1 ? '重赛冲二星 ↻' : bestStars===2 ? '重赛冲三星 ↻' : '再来一局 ↻';
+  $('replay').textContent = career.hasFreeReplay() ? '免费再来一局 ↻' : '再来一局 ↻';
   $('result-copy').textContent = stars
     ? (career.dailySnapshot
       ? '每日挑战成功 · 第 ' + result.place + ' 名 · ' + time(result.time) + ' · 当日最佳 ' + time(graded.best) +
