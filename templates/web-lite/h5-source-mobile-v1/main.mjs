@@ -1,7 +1,7 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout, URL, URLSearchParams, navigator */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
-import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed } from './fps-mobile-ux.mjs';
+import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap } from './fps-mobile-ux.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
@@ -538,9 +538,12 @@ async function boot() {
               :(activeChallenge.elite?'精英复战失败':'本次挑战未完成');
           if(id==='cf-transport-ship')
             $('replay').textContent=nearMiss?'↻ 再试一次，完成最后一步':'↻ 重试本关';
+          const combatRecap=id==='cf-transport-ship'
+            ?cfBattleRecap(metrics,cfPlaytestSession?.firstKillMs):'';
           $('copy').textContent = id === 'cf-transport-ship'
             ? (reviveUsed?'本局额外获得一次阵亡机会。':'')+
-              cfMissionDebrief(activeChallenge, metrics, result.outcome)
+              cfMissionDebrief(activeChallenge, metrics, result.outcome)+
+              (combatRecap?' '+combatRecap:'')
             : `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
           if (id === 'cf-transport-ship')
             renderFacts($('fps-results'), cfResultFacts(activeChallenge,metrics,round.elapsedMs));
