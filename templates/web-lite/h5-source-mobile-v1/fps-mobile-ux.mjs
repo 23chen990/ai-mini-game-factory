@@ -287,6 +287,23 @@ export function mobileEnemyDifficulty(kind, seconds = 0, stats = {}, elite = fal
   };
 }
 
+/** CF lite: more counterplay, never fabricated damage or omniscient aim.
+ * Enemy reaction tightens after combat begins; player shots and native
+ * geometry/LOS decide the real outcome. Friendly bots retain base behavior. */
+export function cfLiteEnemyProfile(base,challenge,elapsedSec=0) {
+  if(!base||challenge?.lite!==true)return base;
+  const weight={tags:.12,precision:.07,survive:.20,defense:.22,
+    assault:.20,marksman:.13,evac:.24,counter:.27}[challenge.id]??.12;
+  const elapsed=Number.isFinite(elapsedSec)?Math.max(0,elapsedSec):0;
+  const k=weight*(.45+.55*Math.min(1,elapsed/24));
+  const limit=(v,min,max)=>Math.min(max,Math.max(min,v));
+  return {...base,
+    react:base.react.map(v=>+limit(v*(1-k),.22,2.4).toFixed(3)),
+    aimErr:+limit(base.aimErr*(1-k*.38),.038,.20).toFixed(3),
+    strafe:+limit(base.strafe*(1+k*.75),.07,.9).toFixed(3),
+    track:+limit(base.track*(1+k*.20),1.2,5.5).toFixed(3)};
+}
+
 // Select among *existing authored spawn points* instead of teleporting into
 // combat. A clear forward route reduces first-session container dead ends.
 export function selectMobileSpawn(spawns, team, actors, world) {
@@ -1463,7 +1480,9 @@ export function createFpsMobileUx(game, root, doc) {
         stabilized=cfStabilizeNoviceScout(actor,activeChallenge);
       }
       // Only opponents gain expert reaction and aim: allies cannot carry the mission.
-      const profile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
+      const baseProfile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
+      const profile=actor.team!==p.team
+        ?cfLiteEnemyProfile(baseProfile,activeChallenge,elapsed):baseProfile;
       actor.diff = {...profile,strafe:cfNoviceScoutStrafe(profile,stabilized),
         react:[...profile.react]};
       actor.recoilControl = profile.ctrl;
