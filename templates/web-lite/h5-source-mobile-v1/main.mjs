@@ -1,8 +1,8 @@
-/* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
+/* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout, URL, URLSearchParams */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed } from './fps-mobile-ux.mjs';
-import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal} from './cf-player-loop.mjs';
+import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -32,6 +32,26 @@ async function boot() {
   let selected = levels.find(c => c.id === challengeProgress.selected), activeChallenge;
   let chapter = id==='cf-transport-ship'?Math.floor(levels.indexOf(selected)/4):0;
   let elite = id === 'cf-transport-ship' && challengeProgress.elite === true;
+  // Map identity is selected BEFORE the original 3D Game.init(), which builds
+  // real colliders and a native NavGrid. A chapter switch needs ONE reload;
+  // retries within the same map retain V12's instant native restart.
+  const arenaForSelected = c => cfArenaForLevel(
+    levels.findIndex(x=>x.id===c?.id));
+  const currentArena = () => new URLSearchParams(location.search)
+    .get('arena')==='depot'?'depot':'ship';
+  const routeToArena = (challenge,replace=false) => {
+    if(id!=='cf-transport-ship')return false;
+    const want=arenaForSelected(challenge);
+    if(want===currentArena())return false;
+    const url=new URL(location.href);
+    if(want==='depot')url.searchParams.set('arena','depot');
+    else url.searchParams.delete('arena');
+    if(replace)location.replace(url.toString());
+    else location.assign(url.toString());
+    return true;
+  };
+  // Reopening a saved chapter on an older URL must never load the wrong scene.
+  if(routeToArena(selected,true))return;
   let fpsUx = null;
   let round = null, startedAt = performance.now(), last = performance.now(), lastFpsNativeSec = 0, native, fishStart = 0, jumpStart = 0, lastNativePhase = 'ready', assistActive = false;
   let reviveOffered=false,reviveUsed=false,reviveDeclined=false,reviveBusy=false;
@@ -49,11 +69,11 @@ async function boot() {
         <input id="mk-fps-pref-opacity" type="range" min="0.4" max="1" step="0.05" value="0.85"/>
         <button id="mk-fps-pref-reset" type="button">恢复默认</button>
       </div>
-    </div><nav id="mk-chapters" hidden aria-label="战役章节"><button type="button" data-chapter="0" aria-pressed="true">第一章 · 基础作战</button><button type="button" data-chapter="1" aria-pressed="false">第二章 · 战术进阶</button></nav><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-elite" hidden aria-pressed="false">⚡ 精英复战</button><div id="mk-fps-actions"><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button></div><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><div id="mk-revive-actions" hidden role="group" aria-label="失败后可选复活"><p>完整观看后本局多一次可阵亡机会，再按原生倒计时复活。</p><button id="mk-revive-ad" type="button">▶ 看广告 · 续战本局</button><button id="mk-revive-decline" type="button">不看广告 · 结束本局</button></div><p id="mk-notice"></p><small id="mk-storage"></small></div>
+    </div><nav id="mk-chapters" hidden aria-label="战役章节"><button type="button" data-chapter="0" aria-pressed="true">第一章 · 运输船</button><button type="button" data-chapter="1" aria-pressed="false">第二章 · 货运基地</button></nav><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-elite" hidden aria-pressed="false">⚡ 精英复战</button><div id="mk-fps-actions"><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button></div><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><div id="mk-revive-actions" hidden role="group" aria-label="失败后可选复活"><p>完整观看后本局多一次可阵亡机会，再按原生倒计时复活。</p><button id="mk-revive-ad" type="button">▶ 看广告 · 续战本局</button><button id="mk-revive-decline" type="button">不看广告 · 结束本局</button></div><p id="mk-notice"></p><small id="mk-storage"></small></div>
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
-  const names = { 'pelican-bike': '骑行抓鱼 · 挑战', 'qq-speed': '赛车 · 私有触控试玩', 'cf-transport-ship': '运输船 · 任务挑战' };
+  const names = { 'pelican-bike': '骑行抓鱼 · 挑战', 'qq-speed': '赛车 · 私有触控试玩', 'cf-transport-ship': currentArena()==='depot'?'货运基地 · 战术进阶':'运输船 · 任务挑战' };
   $('title').textContent = names[id]; $('heading').textContent = names[id]; $('best').textContent = progress.best;
   $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '左手移动、右手瞄准，按住开火。手机横屏游玩；离开页面自动暂停。';
   if (!storageAvailable) $('storage').textContent = '存储不可用，本次仍可游玩';
@@ -157,7 +177,7 @@ async function boot() {
     if(!Number.isInteger(page)||page<0||page>1||page===chapter)return;
     chapter=page;selected=levels[chapter*4];elite=false;
     challengeProgress.elite=false;challengeProgress.selected=selected.id;
-    persist();renderSelection();
+    persist();if(!routeToArena(selected))renderSelection();
   });
   $('challenges').addEventListener('click', e => {
     const c = levels.find(c => c.id === e.target.closest('[data-challenge-id]')?.dataset.challengeId);
@@ -165,6 +185,7 @@ async function boot() {
     selected = c; elite = false;
     if (id === 'cf-transport-ship') challengeProgress.elite = false;
     challengeProgress.selected = c.id; persist();
+    if(routeToArena(c))return;
     if (round?.phase === 'finished') location.reload(); else renderSelection();
   });
   $('elite').addEventListener('click', () => {
@@ -260,6 +281,7 @@ async function boot() {
   const start = async () => { if (portraitBlocked() ||
       (root.dataset.phase !== 'ready' &&
        !cfWarmRestartAllowed(id,root.dataset.phase))) return;
+    if(routeToArena(selected))return;
     reviveOffered=false;reviveUsed=false;reviveDeclined=false;reviveBusy=false;
     clearInput();
     activeChallenge = id === 'cf-transport-ship' ? (elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
@@ -289,8 +311,10 @@ async function boot() {
     challengeProgress.selected=next.id;
     challengeProgress.elite=false;
     selected=next;
+    chapter=Math.floor((index+1)/4);
     elite=false;
     persist();
+    if(routeToArena(next))return;
     renderSelection();
     void start();
   });
