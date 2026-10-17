@@ -114,3 +114,26 @@ test('自适应只在持续低帧率后降一档；手选画质保留', () => {
   const manual = new Monitor();manual.manual = true;
   for (let i = 0; i < 180; i++) assert.equal(manual.frame(.05, 'high'), null);
 });
+
+test('HUD redraw cadence is independent of native input and race simulation',async()=>{
+  const due=need('shouldRefreshRaceHud');
+  assert.equal(due(100,-Infinity),true,'first active race frame must paint');
+  assert.equal(due(116,100),false,'same frame batch should avoid redundant DOM work');
+  assert.equal(due(132,100),false);
+  assert.equal(due(133,100),true,'normal 60fps gets updates around 30Hz');
+  assert.equal(due(90,100),true,'clock discontinuity must redraw');
+  assert.equal(due(400,100),true,'slow frames still redraw immediately');
+  assert.equal(due(NaN,100),false);
+  const {readFile}=await import('node:fs/promises');
+  const {URL}=await import('node:url');
+  const mobileSource=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  const start=mobileSource.indexOf('const frame = now =>');
+  const core=mobileSource.indexOf('const failure = career.frame(g);',start);
+  const tracker=mobileSource.indexOf('duel.frame(g);',start);
+  const ui=mobileSource.indexOf('if (shouldRefreshRaceHud(now, lastHudTick)) {',start);
+  const bottom=mobileSource.indexOf('if (failure) {',ui);
+  const perf=mobileSource.indexOf('quality.frame(dt, g.settings.quality);',bottom);
+  assert.ok(start>=0 && core>start && tracker>core && ui>tracker && bottom>ui && perf>bottom);
+  assert.ok(mobileSource.slice(ui,bottom).includes('raceSpeedHUD(g.player)'));
+  assert.ok(mobileSource.slice(ui,bottom).includes("actionButtons.nitro"));
+});

@@ -92,3 +92,11 @@ export class QualityMonitor {
     return lower;
   }
 }
+
+/** UI paint is intentionally separate from the native simulation / input loop.
+ * A 30 Hz readout is readable on phones without running heavy DOM work at 120 Hz.
+ * Always redraw after tab clock discontinuities and on the first live frame. */
+export function shouldRefreshRaceHud(nowMs, lastMs, intervalMs = 33) {
+  return Number.isFinite(nowMs) &&
+    (!Number.isFinite(lastMs) || nowMs < lastMs || nowMs - lastMs >= intervalMs);
+}
