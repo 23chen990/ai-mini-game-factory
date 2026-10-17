@@ -14,7 +14,8 @@ test('only second chapter uses original depot arena; no game types are silently 
 test('arena change is a real source-level map before 3D nav build, not a backdrop swap',()=>{
  const build=readFileSync(new URL('../../../../tools/lean-pilot/h5-mobile-build.mjs',import.meta.url),'utf8');
  const native=readFileSync(new URL('../cf-depot-source.js',import.meta.url),'utf8');
- assert.match(build,/src\/cf-depot-source\.js/);
+ assert.match(build,/\['cf-depot-source\.js','cf-depot-source\.js'\]/);
+ assert.match(build,/path\.join\(project,'src',name\)/);
  assert.match(build,/this\.qs\.get\('arena'\)/);
  assert.match(build,/buildDepotMap\(this\.renderer\.scene, this\.world\)/);
  assert.match(native,/world\.add\(/);
