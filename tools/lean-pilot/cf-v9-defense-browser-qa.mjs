@@ -12,7 +12,7 @@ export async function checkRealDefense(runId) {
  const server=await serveRun(path.join(ROOT,'runs'),runId,0);
  const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']});
  const context=await browser.newContext({viewport:{width:844,height:390},hasTouch:true,isMobile:true,deviceScaleFactor:1});
- const page=await context.newPage(),checks=[],errors=[];
+ const page=await context.newPage(),checks=[],errors=[],observations=[];
  page.on('pageerror',e=>errors.push(e.message));
  await mkdir(path.join(root,'screenshots'),{recursive:true});
  const verify=(name,passed,detail)=>checks.push({name,passed:passed===true,detail});
@@ -117,17 +117,18 @@ export async function checkRealDefense(runId) {
      await approachCdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
    }finally{await approachCdp.detach();}
    const nearA=await snapshot();
-   await page.waitForTimeout(5300);
+   await page.waitForTimeout(15000);
    const afterHold=await snapshot();
    await page.screenshot({path:path.join(root,'screenshots/mobile-v9-defense-approach.png')});
    const distanceToA=nearA.player&&sites[0]
      ?Math.hypot(nearA.player.x-sites[0].x,nearA.player.z-sites[0].z):null;
-   checks.push({name:'cf-v9-first-site-natural-experiment',passed:true,
-     detail:{nonGatingObservation:true,physicalMetersToA:distanceToA,
-       arrivedInsideZone:distanceToA!==null&&distanceToA<=4.2,
-       capturedA:afterHold.goal>=5||/● B/.test(afterHold.pin||''),
-       initial: moved, afterWalk:nearA, afterWait:afterHold,
-       note:'Only original CDP joystick used. Human shooting tactics not simulated; not a full victory claim'}});
+   observations.push({name:'cf-v9-first-site-natural-experiment',
+     nonGating:true,physicalMetersToA:distanceToA,
+     arrivedInsideZone:distanceToA!==null&&distanceToA<=5,
+     capturedA:afterHold.goal>=5||/● B/.test(afterHold.pin||''),
+     nativeProgress:afterHold.goal,
+     initial:moved,afterWalk:nearA,afterWait:afterHold,
+     note:'Only original CDP joystick used. Progress is NOT assumed or counted as a pass; no simulated shooting or full victory claim'});
    await page.locator('#mk-pause').tap();
    const paused=await snapshot();
    verify('real-mobile-pause-keeps-ownership-frozen',paused.phase==='paused'&&paused.paused===true,
@@ -140,7 +141,7 @@ export async function checkRealDefense(runId) {
  const report={schemaVersion:1,scope:'REAL_3D_DEFENSE_SCENE_SMOKE',
    passed:errors.length===0&&checks.every(c=>c.passed),
    qualification:'Real native stage/route/touch smoke, NOT a full human two-site win or live-phone performance claim',
-   checks,errors};
+   checks,observations,errors};
  await writeFile(path.join(root,'cf-v9-defense-browser.json'),JSON.stringify(report,null,2));
  return report;
 }
