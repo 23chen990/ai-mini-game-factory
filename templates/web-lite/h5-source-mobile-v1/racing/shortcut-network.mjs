@@ -386,7 +386,10 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
       arrow.name='physical-shortcut-direction';
       arrow.position.set(at.x+at.rx*entrySide*(track.halfW+4.2),at.y,at.z+at.rz*entrySide*(track.halfW+4.2));
       arrow.rotation.y=at.hd;
-      const post=new THREE.Mesh(new THREE.BoxGeometry(.95,5.4,.95),markerMat);
+      const postGeo=v9&&['ice','sky'].includes(cfg.style)
+        ? new THREE.CylinderGeometry(.5,1.35,5.4,4)
+        : new THREE.BoxGeometry(v9?1.35:.95,5.4,v9?1.35:.95);
+      const post=new THREE.Mesh(postGeo,markerMat);
       post.position.y=2.7;arrow.add(post);
       const point=new THREE.Mesh(new THREE.ConeGeometry(1.7,2.8,3),markerMat);
       // Local +X faces opposite the native Track.sample() right vector;
@@ -395,19 +398,42 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
       arrow.add(point);approach.add(arrow);
     }
     group.add(approach);
-    // Two low-cost beacons flank the actual entrance. They communicate an
-    // optional physical route without text pop-ups or free teleport arrows.
+    // Gates are environmental structures, not V8's four identical glowing
+    // tubes. Leave native guardrail openings and player collision untouched.
+    // Keep all supports beyond the drivable 11.5->8.8m road shoulder.
+    const gateMat=new THREE.MeshStandardMaterial({
+      color:palette.rail,roughness:.86,metalness:.06,side:THREE.DoubleSide
+    });
     for(const progress of [20,length-21]){
       const sample=samples.find(p=>p.arc>=progress)??samples.at(-1);
+      const half=widthAt(sample.arc)*.5;
       for(const side of [-1,1]){
-        const h=4.8;
-        const beacon=new THREE.Mesh(new THREE.CylinderGeometry(.45,.6,h,6),
-          new THREE.MeshStandardMaterial({color:palette.sign,emissive:v9?0x1b2526:0x125e63,
-            emissiveIntensity:v9?.18:.6,roughness:.6}));
-        const half=widthAt(sample.arc)*.5;
-        beacon.position.set(sample.x+sample.rx*side*(half+1.9),
-          sample.y+h*.5,sample.z+sample.rz*side*(half+1.9));
+        const h=v9?6.2:4.8;
+        const angular=['ice','sky'].includes(cfg.style);
+        const gateGeo=!v9 ? new THREE.CylinderGeometry(.45,.6,h,6) :
+          angular ? new THREE.OctahedronGeometry(1,0) :
+          ['temple','desert'].includes(cfg.style)
+            ? new THREE.BoxGeometry(2.2,h,2.2) : new THREE.BoxGeometry(1.45,h,1.65);
+        const beacon=new THREE.Mesh(gateGeo,v9?gateMat:
+          new THREE.MeshStandardMaterial({color:palette.sign,emissive:0x125e63,
+            emissiveIntensity:.6,roughness:.6}));
+        if(v9&&angular)beacon.scale.set(1.4,h*.53,1.4);
+        beacon.position.set(sample.x+sample.rx*side*(half+2.05),
+          sample.y+h*.5,sample.z+sample.rz*side*(half+2.05));
+        beacon.rotation.y=sample.hd;
         beacon.name='physical-shortcut-gate';group.add(beacon);
+      }
+      // A raised crossbeam frames only the ENTRY choice. It is never an
+      // invisible barrier, HUD instruction or speed trigger; full clearance
+      // remains 6.4m above the actual shortcut driving surface.
+      if(v9&&progress===20){
+        const portal=new THREE.Mesh(
+          new THREE.BoxGeometry(widthAt(sample.arc)+4.8,.65,1.45),
+          surfaceMaterial(palette.curb));
+        portal.position.set(sample.x,sample.y+6.4,sample.z);
+        portal.rotation.y=sample.hd;
+        portal.name='physical-shortcut-portal';
+        group.add(portal);
       }
     }
     if(typeof groundAt==='function')for(let i=18;i<samples.length-18;i+=(v9?27:18)){

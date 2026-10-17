@@ -133,6 +133,7 @@ async function raceStart(page, index, name) {
     padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
     trackSamples:window.game?.track?.N ?? 0,
     cornerSigns:window.game?.__RACE_CORNER_SIGNS__?.sprites?.length ?? 0,
+    maxCornerSignSize:Math.max(0,...(window.game?.__RACE_CORNER_SIGNS__?.sprites??[]).map(x=>x.scale.x)),
     eligibleCornerSamples:(()=>{
       const t=window.game?.track;if(!t?.curv)return 0;
       let n=0;for(let i=0;i<t.N;i+=8){
@@ -148,6 +149,7 @@ async function raceStart(page, index, name) {
     shortcutCurb:!!window.game?.level?.getObjectByName('physical-shortcut-curb'),
     shortcutFascia:!!window.game?.level?.getObjectByName('physical-shortcut-bridge-fascia'),
     shortcutPaint:!!window.game?.level?.getObjectByName('physical-shortcut-centre-dashes'),
+    shortcutPortal:!!window.game?.level?.getObjectByName('physical-shortcut-portal'),
     shortcutAdvanceSigns:window.game?.level?.getObjectByName('physical-shortcut-approach')?.children?.length ?? 0,
     shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
     shortcutRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
@@ -231,14 +233,14 @@ async function raceStart(page, index, name) {
   if(index===4 && (!early.shortcut || early.shortcutGain<25 || early.shortcutGain>82 ||
      early.shortcutLength<75 || early.shortcutLength>210 ||
      early.shortcutStyle!=='temple' || !early.shortcutRoad || !early.shortcutRails ||
-     !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint ||
+     !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint || !early.shortcutPortal ||
      early.shortcutAdvanceSigns!==2))
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
   if(index===0 && early.shortcut)
     fail(name+': 01 course cannot contain an unannounced shortcut');
   // Any technical road with sharp corners must expose trackside turn signs.
   // Native curvature, not HUD text prompts, is the source of truth.
-  if(!early.nativeThreeLoaded || early.cornerSigns>7 ||
+  if(!early.nativeThreeLoaded || early.cornerSigns>4 || early.maxCornerSignSize>4.2 ||
      (early.eligibleCornerSamples>0 && early.cornerSigns<1) ||
      (early.eligibleCornerSamples===0 && early.cornerSigns!==0))
     fail(name+': true native-corner signage count differs from road geometry: '+JSON.stringify(early));
@@ -567,6 +569,7 @@ try {
         if(!shortcut?.v9)return null;
         const d=shortcut.start-32;
         p.reset(d,0);p.lastD=d;p.progress=d;p.lapsDone=0;
+        if(typeof game.snapCamera==='function')game.snapCamera();
         return {start:shortcut.start,len:shortcut.length,gain:shortcut.gain,style:shortcut.style};
       });
       if(!v9Fork || v9Fork.len>210 || v9Fork.gain<25)
@@ -580,6 +583,7 @@ try {
         p.d=d;p.lastD=d;p.progress=d;p.h=fork.hd;p.m=fork.hd;
         p.proj.__RACE_SHORTCUT_ACTIVE=true;p.proj.__RACE_SHORTCUT_HALF_WIDTH=s.widthAt(fork.arc)*.5;
         p.proj.__RACE_SHORTCUT_ARC=fork.arc;
+        if(typeof g.snapCamera==='function')g.snapCamera();
       });
       await page.waitForTimeout(1500);
       await page.screenshot({path:path.join(dest,'05-v9-short-road-qa-staged.png')});
