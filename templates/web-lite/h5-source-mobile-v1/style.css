@@ -875,3 +875,14 @@ html[data-reference-game="cf-transport-ship"] #mobile-kit[data-phase="revive"] #
     min-height:48px!important;padding:5px 6px 5px 31px!important
   }
 }
+
+/* CF V12: native mobile input surface owns active thumb gestures.
+ * Keep ready, pause and result panels scrollable. */
+html[data-reference-game="cf-transport-ship"][data-fps-active="true"] #touch,
+html[data-reference-game="cf-transport-ship"][data-fps-active="true"] #touch .pad,
+html[data-reference-game="cf-transport-ship"][data-fps-active="true"] #touch .btn,
+html[data-reference-game="cf-transport-ship"][data-fps-active="true"] canvas {
+  touch-action:none!important;
+  -webkit-user-select:none;
+  user-select:none;
+}
