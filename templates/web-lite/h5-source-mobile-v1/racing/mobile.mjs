@@ -70,13 +70,20 @@ function fuelView() {
 function renderLobby() {
   const stage = career.stage;
   $('stage').replaceChildren();
+  let chapterGroup = null, activeChapter = -1;
   for (let index = 0; index < STAGES.length; index++) {
     const s = STAGES[index], open = stageUnlocked(career.progress, index);
+    if (s.chapter !== activeChapter) {
+      activeChapter = s.chapter;
+      chapterGroup = document.createElement('optgroup');
+      chapterGroup.label = '第 ' + activeChapter + ' 章';
+      $('stage').append(chapterGroup);
+    }
     const option = document.createElement('option');
     option.value = String(index);option.disabled = !open;
     const stars = career.progress.stars[s.id] ?? 0;
     option.textContent = open ? (s.id + ' · ' + s.name + ' ' + '★'.repeat(stars)) : ('🔒 ' + s.id + ' · ' + s.name);
-    $('stage').append(option);
+    chapterGroup.append(option);
   }
   const dailyOption = document.createElement('option');
   dailyOption.value = 'daily';dailyOption.disabled = !career.canDaily();
