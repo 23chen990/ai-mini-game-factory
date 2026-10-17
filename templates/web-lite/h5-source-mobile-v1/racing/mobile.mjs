@@ -1,4 +1,4 @@
-/* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout, fetch */
+/* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout, fetch, Blob, URL */
 import { ManualRaceDriver, TouchActions } from './driver.mjs';
 import { RacingJoystick } from './joystick.mjs';
 import { careerCourseDetails } from './track-design.mjs';
@@ -17,7 +17,7 @@ const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coars
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
 root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button><div id="race-speed" hidden aria-label="当前速度"><strong id="race-speed-value">0</strong><span>KM/H</span></div>
   <div id="race-compact-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="左右拖动方向轮盘，松手回正"><div class="race-stick-track"><span aria-hidden="true" class="race-stick-left">‹</span><span aria-hidden="true" class="race-stick-right">›</span><i id="race-stick-knob"></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
-  <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING / CAREER</div><h1 id="race-heading">极速飞驰</h1>
+  <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING / CAREER</div><h1 id="race-heading">极速飞驰</h1><button id="race-export" type="button" aria-label="导出本机试玩数据JSON">导出数据 ↓</button>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手轮盘 · 右手漂移 / 小喷 / 氮气</p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10" hidden>${'<span></span>'.repeat(10)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
     <p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
@@ -62,7 +62,8 @@ function fuelView() {
   $('fuel-box').classList.toggle('empty', metered && career.fuel.amount === 0);
   $('storage-warning').hidden = career.storageOK;
   for (const id of ['start', 'replay', 'restart', 'next']) $(id).disabled = loading || !policyReady || career.adBusy || empty;
-  $('start').textContent = !policyReady ? '读取油量规则…' : empty ? '⏳ 等待油量恢复' : '开始比赛';
+  $('start').textContent = !policyReady ? '读取油量规则…' : empty ? '⏳ 等待油量恢复' :
+    career.hasFreeReplay() ? '免费再赛 ↻' : '开始比赛';
   $('fuel-ad').hidden = !career.canOfferAd();
   $('fuel-ad').disabled = career.adBusy;
 }
@@ -85,10 +86,10 @@ function renderLobby() {
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
-  root.dataset.previewRevision = 'racing-v52-trial-evidence';
+  root.dataset.previewRevision = 'racing-v53-core-loop';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V5.2';
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V5.3';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = courseInfo?.feel ?? '';
@@ -102,7 +103,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V5.2' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V5.3' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -123,6 +124,7 @@ function display(next) {
   $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || !canAdvance; $('lobby').hidden = next !== 'finished';
   $('replay').classList.toggle('race-secondary', next === 'finished' && canAdvance);
   $('next').classList.remove('race-secondary');
+  $('export').hidden = next !== 'ready' && next !== 'finished';
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   if (next !== 'race') $('knockout').hidden = true;
@@ -189,7 +191,7 @@ function finish() {
   }
   const newSkin = SKIN_STARS.findIndex((required,i) => i > 0 && beforeStars < required && graded?.total >= required);
   const failure = stars ? null : stageFailureFeedback(career.stage, result, graded?.metric ?? {});
-  $('replay').textContent = '再来一局 ↻';
+  $('replay').textContent = career.hasFreeReplay() ? '免费再来一局 ↻' : '再来一局 ↻';
   $('result-copy').textContent = stars
     ? (career.dailySnapshot
       ? '每日挑战成功 · 第 ' + result.place + ' 名 · ' + time(result.time) + ' · 当日最佳 ' + time(graded.best) +
@@ -226,6 +228,24 @@ async function loadTrack(id, autoStart) {
   } catch (error) { $('note').textContent = '赛道加载失败：' + error.message;display('ready'); }
   finally { loading = false;$('map').disabled = false;fuelView(); }
 }
+/** Download only after explicit tap. All bytes remain on the player's device;
+ * failed downloads report failure instead of pretending an export succeeded. */
+$('export').addEventListener('click', () => {
+  const button=$('export');
+  try {
+    const content=trial.exportJSON();
+    const blob=new Blob([content],{type:'application/json;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const anchor=document.createElement('a');
+    anchor.href=url;anchor.download='racing-v53-local-playtest.json';
+    document.body.append(anchor);anchor.click();anchor.remove();
+    button.textContent='数据已准备';
+    setTimeout(()=>{ URL.revokeObjectURL(url); button.textContent='导出数据 ↓'; },1500);
+  } catch {
+    button.textContent='导出失败';
+    setTimeout(()=>{ button.textContent='导出数据 ↓'; },1500);
+  }
+});
 $('start').addEventListener('click', start); $('pause').addEventListener('click', pause); $('resume').addEventListener('click', resume);
 // A second finger is not guaranteed to synthesize click while the steering finger stays down.
 $('pause').addEventListener('pointerdown', event => { event.preventDefault();pause(); });
