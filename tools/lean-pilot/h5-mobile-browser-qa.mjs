@@ -12,7 +12,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const fpsThreatTrace=[],fpsExtendedChecks=[];
  let fpsScriptSteps=0,fpsEnemySeenCount=0,fpsRouteTurns=0,fpsContactScreenshot=false;
  let fpsMoveLast=-1,fpsMoveStall=0,fpsRepositionScreenshot=false,fpsManualScreenshot=false;
- let fpsOneThumbAudit=null,fpsManualReloaded=false;
+ let fpsOneThumbAudit=null,fpsManualReloaded=false,fpsFireStart=null;
  const readFpsThreat = async () => page.evaluate(() => {
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
@@ -217,29 +217,32 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        // CDP touch at the actual visible pixel is what a physical finger
        // performs. Playwright .tap() sometimes waits behind the WebGL canvas
        // for 30s and prevents testing the later combat altogether.
-       const reloadCdp=await context.newCDPSession(page);
-       try{
-         await reloadCdp.send('Input.dispatchTouchEvent',{
-           type:'touchStart',touchPoints:[{x,y,id:99}]});
-         await page.waitForTimeout(90);
-         await reloadCdp.send('Input.dispatchTouchEvent',{
-           type:'touchEnd',touchPoints:[]});
-       }finally{await reloadCdp.detach();}
-       await page.waitForTimeout(350);
+       if(before.mag<before.capacity){
+         const reloadCdp=await context.newCDPSession(page);
+         try{
+           await reloadCdp.send('Input.dispatchTouchEvent',{
+             type:'touchStart',touchPoints:[{x,y,id:99}]});
+           await page.waitForTimeout(75);
+           await reloadCdp.send('Input.dispatchTouchEvent',{
+             type:'touchEnd',touchPoints:[]});
+         }finally{await reloadCdp.detach();}
+         await page.waitForTimeout(350);
+       }
        const after=await page.evaluate(()=>{
          const g=window.__H5NativeGame,w=g?.player?.weapon;
          return {mag:w?.mag??null,reloadUntil:w?.reloadUntil??0,
            time:g?.time??null,alive:g?.player?.alive??false};
        });
-       const triggered=before.mag===before.capacity ||
-         after.reloadUntil>after.time ||
+       const alreadyFull=before.mag===before.capacity;
+       const triggered=after.reloadUntil>after.time ||
          (Number.isFinite(before.mag)&&after.mag>before.mag);
        actions.push({atMs:Date.now()-started,input:'visible-native-reload-before-followup',
-         detail:{before,after,triggered}});
-       fpsExtendedChecks.push({name:'cf-visible-reload-receives-real-touch',
-         passed:triggered&&before.receivesPointer===true,
-         detail:{before,after,triggered,
-           evidence:'Same physical screen coordinates, no direct ammo or input mutation'}});
+         detail:{before,after,alreadyFull,triggered}});
+       fpsExtendedChecks.push({name:'cf-visible-reload-touch-when-needed',
+         passed:before.receivesPointer===true&&(alreadyFull||triggered),
+         detail:{before,after,alreadyFull,triggered,
+           evidence:alreadyFull?'Full magazine: hit-test only, native reload not claimed':
+             'Native touch triggered actual weapon reload; no ammunition mutation'}});
      }
    }
    if(firstBadge){
@@ -255,46 +258,53 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        // screen-projected visible parts. Aim adjustments are only proportional
        // to exposed pixel error and remain bounded inside the physical thumb
        // reach; no bot coordinates, stats, or synthetic hits steer the action.
-       const box=await page.locator('#touch .btn[data-mk-action="fire"]').boundingBox();
-       if(!box)return;
-       const start={x:box.x+box.width/2,y:box.y+box.height/2};
+       const start=fpsFireStart;
+       if(!start)return;
        const cursor={...start},cdp=await context.newCDPSession(page);
-       const nativeBefore=await page.evaluate(()=>({
-         hits:window.__H5NativeGame?.player?.stats?.hits??0,
-         shots:window.__H5NativeGame?.player?.stats?.shots??0
-       }));
-       let tracked=0,lost=0;
-       try {
+       const sampleNative=()=>page.evaluate(()=>{
+         const g=window.__H5NativeGame,p=g?.player,w=p?.weapon;
+         return {hits:p?.stats?.hits??0,shots:p?.stats?.shots??0,
+           alive:p?.alive??false,fire:p?.touch?.fire??false,
+           mag:w?.mag??null,reloadUntil:w?.reloadUntil??null,
+           time:g?.time??null,phase:document.querySelector('#mobile-kit')?.dataset.phase};
+       });
+       const nativeBefore=await sampleNative();
+       // A visible target just peeking around cover can disappear within a
+       // single frame. A human still remembers its last screen pixel briefly.
+       // Hold the original trigger while tracking; do NOT abort all shooting
+       // merely because an enemy badge vanishes for 0.4 seconds.
+       const initial=firstBadge;let remembered=initial,tracked=0,lost=0;
+       let activeDuring=null;
+       try{
          await cdp.send('Input.dispatchTouchEvent',{
-           type:'touchStart',touchPoints:[{...cursor,id:91}]
-         });
-         for(let n=0;n<16;n++) {
-           const phase=await page.locator('#mobile-kit').getAttribute('data-phase');
-           if(phase!=='running')break;
+           type:'touchStart',touchPoints:[{...cursor,id:91}]});
+         for(let n=0;n<20;n++){
            const marker=await visibleBadge();
-           if(marker){
-             lost=0;tracked++;
-             const dx=Math.max(-20,Math.min(20,(marker.x-viewport.width/2)*.30));
-             const dy=Math.max(-14,Math.min(14,(marker.y-viewport.height/2)*.30));
-             cursor.x=Math.max(start.x-70,Math.min(start.x+70,cursor.x+dx));
-             cursor.y=Math.max(start.y-70,Math.min(start.y+54,cursor.y+dy));
+           if(marker){remembered=marker;tracked++;lost=0;}
+           else lost++;
+           if(remembered&&lost<=5){
+             const dx=Math.max(-22,Math.min(22,(remembered.x-viewport.width/2)*.31));
+             const dy=Math.max(-16,Math.min(16,(remembered.y-viewport.height/2)*.31));
+             cursor.x=Math.max(start.x-110,Math.min(start.x+110,cursor.x+dx));
+             cursor.y=Math.max(start.y-90,Math.min(start.y+52,cursor.y+dy));
              await cdp.send('Input.dispatchTouchEvent',{
-               type:'touchMove',touchPoints:[{...cursor,id:91}]
-             });
-           }else if(++lost>3)break;
-           await page.waitForTimeout(145);
+               type:'touchMove',touchPoints:[{...cursor,id:91}]});
+           }
+           if(n===4)activeDuring=await sampleNative();
+           // This input is an actual thumb continuously holding the real
+           // fire control; original rifle ticks, ballistics, HP stay native.
+           await page.waitForTimeout(110);
+           if(lost>9)break;
          }
-         await page.waitForTimeout(180);
+         await page.waitForTimeout(150);
        }finally{
          await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]}).catch(()=>{});
          await cdp.detach();
        }
-       const nativeAfter=await page.evaluate(()=>({
-         hits:window.__H5NativeGame?.player?.stats?.hits??0,
-         shots:window.__H5NativeGame?.player?.stats?.shots??0
-       }));
+       const nativeAfter=await sampleNative();
        actions.push({atMs:Date.now()-started,input:'native-manual-fire-track',
-         detail:{before:nativeBefore,after:nativeAfter,trackedVisibleFrames:tracked}});
+         detail:{before:nativeBefore,during:activeDuring,after:nativeAfter,
+           trackedVisibleFrames:tracked,temporarilyHidden:lost,initialVisiblePart:initial.part}});
        return;
      }
      for(let n=0;n<7;n++){
@@ -418,6 +428,11 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    await page.locator('#mk-start').tap();actions.push({atMs:Date.now()-started,input:'tap',target:'#mk-start'});
    await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
    if(isFps){
+     // Visible original control is fixed throughout a round. Cache its
+     // screen rectangle BEFORE combat to avoid losing a 1s firing window to
+     // repeated Playwright locator waits under software WebGL pressure.
+     const fb=await page.locator('#touch .btn[data-mk-action="fire"]').boundingBox();
+     if(fb)fpsFireStart={x:fb.x+fb.width/2,y:fb.y+fb.height/2};
      const hud=await page.evaluate(()=>{
        const meter=document.querySelector('#mobile-kit .mk-meter'),
          board=document.getElementById('mk-fps-board'),
