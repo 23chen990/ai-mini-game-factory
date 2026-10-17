@@ -146,6 +146,8 @@ async function raceStart(page, index, name) {
     shortcutGain:window.game?.track?.__RACE_SHORTCUT__?.gain ?? 0,
     shortcutLength:window.game?.track?.__RACE_SHORTCUT__?.length ?? 0,
     shortcutStyle:window.game?.track?.__RACE_SHORTCUT__?.style ?? null,
+    v10ShortcutSkill:window.game?.track?.__RACE_SHORTCUT__?.skillAction??null,
+    v10ShortcutNeck:window.game?.track?.__RACE_SHORTCUT__?.neckWidth??null,
     shortcutCurb:!!window.game?.level?.getObjectByName('physical-shortcut-curb'),
     shortcutFascia:!!window.game?.level?.getObjectByName('physical-shortcut-bridge-fascia'),
     shortcutPaint:!!window.game?.level?.getObjectByName('physical-shortcut-centre-dashes'),
@@ -267,7 +269,8 @@ async function raceStart(page, index, name) {
     fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
   if(index===4 && (!early.shortcut || early.shortcutGain<25 || early.shortcutGain>82 ||
      early.shortcutLength<75 || early.shortcutLength>210 ||
-     early.shortcutStyle!=='temple' || !early.shortcutRoad || !early.shortcutRails ||
+     early.shortcutStyle!=='temple' || early.v10ShortcutSkill!=='temple late-apex precision' ||
+     !(early.v10ShortcutNeck>=7&&early.v10ShortcutNeck<=8.3) || !early.shortcutRoad || !early.shortcutRails ||
      !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint || !early.shortcutPortal ||
      early.shortcutAdvanceSigns!==2))
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
