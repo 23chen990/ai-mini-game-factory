@@ -94,7 +94,7 @@ export function stageMetric(stage, stats = {}) {
 }
 /** Timing, driving tasks and clean turns remain authentic challenges, but
  * they cannot inflate or revoke stars earned from an actual finishing rank. */
-export function gradeStage(_stage,result,_stats={}) {
+export function gradeStage(_stage,result) {
   return rankStars(result?.finished,result?.place);
 }
 /** Player-facing diagnosis after an actual graded defeat.
@@ -102,7 +102,6 @@ export function gradeStage(_stage,result,_stats={}) {
  */
 export function stageFailureFeedback(stage, result, stats = {}) {
   const n = value => Number.isFinite(value) ? value : 0;
-  const count = (value, target, label) => `${label} ${n(value)}/${target}`;
   const tips = {
     race: '先把赛车开稳、少碰墙，争取进入目标名次',
     speed: '测速点前尽量保持直线，减少转向和撞墙失速',
