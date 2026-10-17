@@ -708,7 +708,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       clockSamples.every((v,i)=>i===0||v.nativeSec>=clockSamples[i-1].nativeSec),
       {last:clockSamples.at(-1),samples:clockSamples.length});
     terminal=settled;
-    check('natural-real-shot-lack-of-travel-failure',settled.phase==='finished'&&
+    check('solo-survival-real-shot-no-kill-timeout-failure',settled.phase==='finished'&&
       await page.locator('#mobile-kit').getAttribute('data-outcome')==='lost',
       {status:settled.status,seconds:settled.time});
     check('free-retry-without-ad',
@@ -741,7 +741,12 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       await page.locator('#mobile-kit').getAttribute('data-challenge')==='survive');
     check('instant-free-replay-keeps-native-renderer-no-reload',
       (await page.evaluate(()=>performance.timeOrigin))===oldOrigin);
-    check('free-retry-starts-fresh-real-match',(await inspect()).gamePhase==='running');
+    const replay=await inspect();
+    check('free-retry-starts-fresh-real-match',replay.gamePhase==='running');
+    check('solo-warm-retry-never-resurrects-friendly-ai',
+      replay.solo?.players===1&&replay.solo?.friends===0&&
+      replay.solo?.enemies===3&&replay.solo?.tags===0,
+      {solo:replay.solo});
     const localAfterReplay=await page.evaluate(()=>{
       try{return JSON.parse(localStorage.getItem('h5-cf:local-playtest:v1'));}
       catch{return null;}
