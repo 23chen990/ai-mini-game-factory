@@ -1,4 +1,4 @@
-/* global process,console,window */
+/* global process,console,window,document */
 import {chromium,webkit} from '@playwright/test';
 import assert from 'node:assert/strict';
 import {readFile,mkdir} from 'node:fs/promises';
