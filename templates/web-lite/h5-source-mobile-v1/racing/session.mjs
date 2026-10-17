@@ -28,7 +28,7 @@ export function racePhoneCamera(width,height) {
  * Off-road/airborne/fork-ambiguous states use the stable native camera. */
 export function racePhoneLookOffset(track, player, lookMeters) {
   const proj=player?.proj;
-  if(player?.airborne || typeof track?.sample!=='function' ||
+  if(player?.airborne || proj?.__RACE_SHORTCUT_ACTIVE===true || typeof track?.sample!=='function' ||
      !Number.isFinite(player?.y) || !Number.isFinite(proj?.d) ||
      !Number.isFinite(lookMeters) || lookMeters<=0) return 0;
   if(Number.isFinite(proj.lat) && Math.abs(proj.lat) >

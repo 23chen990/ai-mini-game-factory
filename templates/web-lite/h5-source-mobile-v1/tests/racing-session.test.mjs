@@ -145,6 +145,7 @@ test('phone downhill camera samples true road elevation, avoids airborne/fork gu
   const car={y:104,proj:{d:50,lat:1},airborne:false};
   assert.ok(offset(road,car,8)<0,'downhill road ahead lowers the look point');
   assert.equal(offset(road,{...car,airborne:true},8),0);
+  assert.equal(offset(road,{...car,proj:{d:50,lat:1,__RACE_SHORTCUT_ACTIVE:true}},8),0,'fork height cannot be read from unrelated main-road centerline');
   assert.equal(offset(road,{...car,proj:{d:50,lat:60}},8),0);
   assert.equal(offset(null,car,8),0);
   assert.equal(offset({sample(){return {y:Infinity}}},car,8),0);
