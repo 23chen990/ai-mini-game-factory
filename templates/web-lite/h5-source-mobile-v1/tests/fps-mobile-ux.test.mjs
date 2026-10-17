@@ -779,3 +779,32 @@ test('CF H5 opening target must expose a full real torso and a gun-width corrido
  assert.equal(cfOpeningBodyLaneClear(open,{x:0,z:0},{x:2,z:0}),false);
  assert.equal(cfOpeningBodyLaneClear(null,from,enemy),false);
 });
+
+test('V20 actual H5 crosshair rejects a blank close wall even if UI tags are visible',async()=>{
+ const {cfOpeningCameraQuality,cfChooseVisibleOpeningLane}=await import('../fps-mobile-ux.mjs');
+ const pose={x:0,z:0,yaw:-Math.PI/2};
+ const open={blocked:()=>false,raycast:()=>null};
+ assert.equal(cfOpeningCameraQuality(open,pose,pose.yaw),3);
+ const centerWall={...open,raycast:(x,y,z,dx,dy,dz,depth,mode)=>{
+   assert.equal(mode,'bullet');
+   return Math.abs(dz)<.05?{t:1.5}:null;
+ }};
+ assert.equal(cfOpeningCameraQuality(centerWall,pose,pose.yaw),0,
+   'red offscreen badge is not enough when crosshair faces solid cargo');
+ const nav={
+   idx:()=>1,walkable:()=>true,
+   findPath:(ax,az,bx,bz)=>[[ax,az],[bx,bz]]
+ };
+ const wide=cfChooseVisibleOpeningLane({
+   spawns:[{x:0,z:0,yaw:-Math.PI/2}],world:open,nav,
+   actors:[],team:'BL',h5WideView:true,distances:[7.4,6.6,5.8]
+ });
+ assert.ok(wide,'find close legal, original-world bullet-visible H5 lane');
+ assert.ok(wide.distance>=5.8&&wide.distance<=7.5);
+ assert.equal(wide.viewQuality,3);
+ assert.ok(wide.spawn.x>0,'player may only advance from authored spawn before game begins');
+ assert.equal(cfChooseVisibleOpeningLane({
+   spawns:[{x:0,z:0,yaw:-Math.PI/2}],world:centerWall,nav,
+   actors:[],team:'BL',h5WideView:true,distances:[7.4,6.6,5.8]
+ }),null,'never accept a reticle that points into an actual steel wall');
+});
