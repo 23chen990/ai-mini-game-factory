@@ -1,4 +1,4 @@
-/* global process, console, window, document, requestAnimationFrame */
+/* global process, console, window, document, requestAnimationFrame, performance */
 import {webkit,chromium} from '@playwright/test';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {URL} from 'node:url';
@@ -28,11 +28,10 @@ const tap=async (selector,{fastReaction=false}={})=>{const before=await page.eva
  // A real touch is mandatory. Do not wait through software-rendered frames
  // before the next visible jump / lane decision.
  if(!fastReaction)await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
- const after=fastReaction?await page.evaluate(()=>({
+ const after=fastReaction?{...await page.evaluate(()=>({
   phase:document.querySelector('#coast')?.dataset.phase,
   distance:Number(document.querySelector('#co-distance')?.textContent?.match(/\d+/u)?.[0]??0),
-  level:before.level,
- })):await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
+ })),level:before.level}:await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
 const snapshot=()=>page.evaluate(()=>window.__coast.snapshot());
 async function fresh(){context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir:qaDir,size:{width:390,height:844}}});page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('framenavigated',f=>{if(f===page.mainFrame())navs++;});
  await page.addInitScript(()=>{window.__qaFrames=[];let prev;const f=t=>{if(prev&&window.__qaFrames.length<100000)window.__qaFrames.push(t-prev);prev=t;requestAnimationFrame(f);};requestAnimationFrame(f);});await page.goto(base);await page.waitForSelector('#coast[data-loaded="true"]');}
