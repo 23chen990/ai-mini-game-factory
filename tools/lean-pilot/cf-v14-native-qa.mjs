@@ -346,7 +346,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       });
       if(!aim)return {visible:false,aligned:false};
       const dx=aim.x-aim.cx,dy=aim.y-aim.cy;
-      if(Math.hypot(dx,dy)<12)return {visible:true,aligned:true,dx,dy};
+      if(Math.hypot(dx,dy)<4.5)return {visible:true,aligned:true,dx,dy};
       const from={x:Math.round(aim.w*.61),y:Math.round(aim.h*.31),id:92};
       const mx=Math.max(-65,Math.min(65,dx*.55));
       const my=Math.max(-45,Math.min(45,dy*.55));
@@ -358,7 +358,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       return {visible:true,aligned:false,dx,dy};
     };
     const openingAimTrace=[];
-    if(rookieLite)for(let n=0;n<7;n++){
+    if(rookieLite)for(let n=0;n<11;n++){
       const result=await visibleAim(null);openingAimTrace.push(result);
       if(!result.visible||result.aligned)break;
       await sleep(95);
@@ -415,29 +415,54 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       cueObserved:firstKillCueSeen});
     if(firstKillCueSeen)await snap('v17-first-native-kill-visible');
     if(!firstKillCueSeen || !firedRookie.player.kills){
-      await event('touchStart',[{...firstKillTouch,id:79}]);
+      // A real phone automatically releases FIRE when its user dies or lifts
+      // their thumb. Re-press only after native respawn, and physically
+      // reacquire the visible target with right-thumb CDP input. Never
+      // hold a dead finger indefinitely or inject aim/actor state.
+      let fireHeld=false;
       try {
-      for(let n=0;n<28;n++){
-        await sleep(450);
-        if(rookieLite&&n%3===0)openingAimTrace.push(
-          await visibleAim({...firstKillTouch,id:79}));
-        const state=await inspect();
-        const cue=await page.evaluate(()=>{
-          const el=document.getElementById('mk-fps-hit-feedback');
-          return {text:el?.textContent||'',visible:el?.hidden===false};
-        });
-        killPressTrace.push({seconds:+(state.time-rookie.time).toFixed(2),
-          shots:state.player?.shots,hits:state.player?.hits,
-          kills:state.player?.kills,enemyShots:state.openingBot?.realShots,
-          cue:cue.visible?cue.text:null});
-        if(!firstKillCueSeen&&await cueObserved()){
-          firstKillCueSeen=true;
-          await snap('v17-first-native-kill-visible');
+        for(let n=0;n<64;n++){
+          const pre=await inspect();
+          if(!pre.player?.alive){
+            if(fireHeld){await event('touchEnd',[]);fireHeld=false;}
+            await sleep(350);
+            continue;
+          }
+          if(rookieLite){
+            const aim=await visibleAim(fireHeld?{...firstKillTouch,id:79}:null);
+            openingAimTrace.push(aim);
+            if(!aim.visible&&n%3===0){
+              // Natural player search swipe: direction alternates, no hidden
+              // world positions or actor coordinates used to choose direction.
+              const origin={x:408,y:112},sign=n%2===0?1:-1;
+              await gesture(origin,{x:origin.x+sign*33,y:origin.y},100,93);
+            }
+          }
+          if(!fireHeld){
+            await event('touchStart',[{...firstKillTouch,id:79}]);
+            fireHeld=true;
+          }
+          await sleep(350);
+          const state=await inspect();
+          if(state.player?.alive===false&&fireHeld){
+            await event('touchEnd',[]);fireHeld=false;
+          }
+          const cue=await page.evaluate(()=>{
+            const el=document.getElementById('mk-fps-hit-feedback');
+            return {text:el?.textContent||'',visible:el?.hidden===false};
+          });
+          killPressTrace.push({seconds:+(state.time-rookie.time).toFixed(2),
+            shots:state.player?.shots,hits:state.player?.hits,
+            kills:state.player?.kills,enemyShots:state.openingBot?.realShots,
+            cue:cue.visible?cue.text:null});
+          if(!firstKillCueSeen&&await cueObserved()){
+            firstKillCueSeen=true;
+            await snap('v17-first-native-kill-visible');
+          }
+          if((state.player?.kills||0)>=1&&firstKillCueSeen)break;
+          if(state.time-rookie.time>29)break;
         }
-        if((state.player?.kills||0)>=1&&firstKillCueSeen)break;
-        if(state.time-rookie.time>29)break;
-      }
-      }finally{await event('touchEnd',[]);}
+      }finally{if(fireHeld)await event('touchEnd',[]);}
     }
     const killResult=await inspect();
     samples.push({id:'tags',when:'first-personal-native-kill',
