@@ -184,7 +184,7 @@ async function boot() {
         : Math.ceil(c.limitMs / 1000) + '秒';
       return `<button data-challenge-id="${c.id}" data-kind="${c.kind}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${state}</small></button>`;
     }).join('');
-    $('goal').max = id === 'cf-transport-ship' && displayChallenge.drill==='reposition'
+    $('goal').max = id === 'cf-transport-ship' && displayChallenge.drill==='reposition' && displayChallenge.lite!==true
       ? displayChallenge.openingHits + displayChallenge.minTravel + displayChallenge.target
       : id==='cf-transport-ship'&&selected.kind==='assault'
         ?displayChallenge.minTravel+displayChallenge.target
@@ -329,7 +329,9 @@ async function boot() {
     reviveOffered=false;reviveUsed=false;reviveDeclined=false;reviveBusy=false;
     clearInput();
     activeChallenge = id === 'cf-transport-ship' ? cfMobileMission(elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
-    if(activeChallenge?.drill==='reposition'&&!activeChallenge.lite)
+    if(activeChallenge?.drill==='reposition'&&activeChallenge.lite===true)
+      $('goal').max=activeChallenge.target;
+    else if(activeChallenge?.drill==='reposition')
       $('goal').max=activeChallenge.openingHits+activeChallenge.minTravel+activeChallenge.target;
     if(activeChallenge?.kind==='defend')
       $('goal').max=activeChallenge.target*activeChallenge.holdSeconds;
