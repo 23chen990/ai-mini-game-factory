@@ -196,7 +196,14 @@ async function raceStart(page, index, name) {
     const arches=node?.children?.filter(x=>x.name?.includes('sector-arch')) ?? [];
     const scenery=node?.children?.filter(x=>x.name?.includes('landscape')) ?? [];
     const evidence=window.__RACE_EVIDENCE__;
+    const nativeTrack=game?.track,midArch=arches[1];
+    const v9SafeMid=nativeTrack?.__V9_WIDTH_PROFILE__ && midArch &&
+      nativeTrack.__RACE_SHORTCUT__ ? nativeTrack.sample(nativeTrack.length*.36,{}) : null;
+    const v9MidArchMoved=!!v9SafeMid && !!midArch &&
+      Math.hypot(midArch.position.x-v9SafeMid.x,midArch.position.z-v9SafeMid.z)<.05;
+    const midArchColor=midArch?.children?.[0]?.material?.color?.getHex?.() ?? null;
     return {course,exists:!!node,arches:arches.length,scenery:scenery.length,
+      v9MidArchMoved,midArchColor,
       numberedMeshCount:arches[0]?.children?.length??0,
       actualCourse:evidence?.actualCourse,requestedCourse:evidence?.requestedCourse,
       actualTrackLength:evidence?.actualTrackLength,
@@ -215,6 +222,10 @@ async function raceStart(page, index, name) {
      !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V9.1'||
      worldIdentity.uiRevision!=='racing-v91-wheel-hud')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
+  // Native 3D stage 05 split must not be hidden by the old large black arch.
+  if(index===4 && (!worldIdentity.v9MidArchMoved ||
+      worldIdentity.midArchColor===0x14233a))
+    fail('V9 shortcut cannot be hidden under an oversized generic black arch: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.mobileCamera)fail(name+': actual touch driving must enable mobile camera and anti-jitter rendering');

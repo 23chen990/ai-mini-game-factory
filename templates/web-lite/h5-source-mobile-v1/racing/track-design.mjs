@@ -306,11 +306,38 @@ const COURSE_ACCENTS = Object.freeze([
  * cannot pretend to have loaded a new circuit just by changing a lobby card.
  * Keep native Track/vehicle physics, legitimate shortcut paths and road mesh.
  */
+/**
+ * Avoid dropping a generic course-number bridge into the middle of a real
+ * shortcut. On stage 05 the old .52*3006m = 1563m arch stood directly over
+ * the 1488-1693m physical branch and obscured the mobile driving sightline.
+ * Opt-in V9 only; V8 course-brand landmarks stay unchanged.
+ */
+export function v9CourseIdentityFractions(track) {
+  const original=[.065,.52];
+  const fork=track?.__RACE_SHORTCUT__;
+  if(!track?.__V9_WIDTH_PROFILE__||!fork||
+    !Number.isFinite(track.length)||track.length<900)
+    return original;
+  const safelyAway=fraction=>{
+    const d=fraction*track.length;
+    return d<fork.start-140||d>fork.end+95;
+  };
+  if(safelyAway(.52))return original;
+  for(const fraction of [.36,.72,.26,.80]) {
+    if(safelyAway(fraction))return [.065,fraction];
+  }
+  throw Error('No safe numbered-arch location away from real V9 fork');
+}
+
 function buildCourseIdentity(THREE, track, course, n) {
   const group = new THREE.Group();
   group.name = 'physical-course-identity-' + course;
   const color = COURSE_ACCENTS[n - 1], biome = CAREER_COURSE_MAPS[n - 1];
-  const metal = new THREE.MeshStandardMaterial({color:0x14233a,roughness:.55,metalness:.5});
+  const v9=!!track.__V9_WIDTH_PROFILE__;
+  const structuralColor=v9?({city:0x304459,egypt:0x8e704c,
+    aegean:0x647a80,snow:0x8ea9b8}[biome]??0x465366):0x14233a;
+  const metal = new THREE.MeshStandardMaterial({
+    color:structuralColor,roughness:v9?.89:.55,metalness:v9?.05:.5});
   const bright = new THREE.MeshBasicMaterial({color});
   const white = new THREE.MeshBasicMaterial({color:0xf2f8ff});
   const mesh = (parent, geometry, material, x, y, z) => {
@@ -322,18 +349,23 @@ function buildCourseIdentity(THREE, track, course, n) {
   const sideDistance = track.halfW + 5.5;
   // Over-road arches are high above the actual vehicle and entirely visual.
   // The first sign is visible soon after GO; the second gives a mid-lap cue.
-  for (const [index, fraction] of [.065, .52].entries()) {
+  for (const [index, fraction] of v9CourseIdentityFractions(track).entries()) {
     const sample = track.sample(track.length * fraction, {});
     const portal = new THREE.Group();
     portal.name = 'course-' + course + '-sector-arch-' + (index + 1);
     portal.position.set(sample.x, sample.y, sample.z);
     portal.rotation.y = sample.hd;
+    const archHeight=v9&&index===1?12.5:18;
     for (const x of [-sideDistance,sideDistance]) {
-      mesh(portal,new THREE.BoxGeometry(2,18,2),metal,x,9,0);
-      mesh(portal,new THREE.BoxGeometry(2.6,3,2.6),bright,x,17.5,0);
+      mesh(portal,new THREE.BoxGeometry(v9?1.6:2,archHeight,v9?1.6:2),
+        metal,x,archHeight*.5,0);
+      mesh(portal,new THREE.BoxGeometry(v9?2:2.6,v9?2.2:3,v9?2:2.6),
+        bright,x,archHeight-.5,0);
     }
-    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,2.3,2.1),metal,0,18,0);
-    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,.5,2.4),bright,0,19.3,0);
+    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,v9?1.6:2.3,2.1),
+      metal,0,archHeight,0);
+    mesh(portal,new THREE.BoxGeometry(sideDistance*2+3,.5,2.4),
+      bright,0,archHeight+1.3,0);
     if (index === 0) {
       mesh(portal,new THREE.BoxGeometry(10,5.3,1.2),metal,0,23,0);
       const glyphs = ['abcdef','bc','abged','abgcd','fgbc','afgcd','afgecd','abc','abcdefg','abfgcd'];
