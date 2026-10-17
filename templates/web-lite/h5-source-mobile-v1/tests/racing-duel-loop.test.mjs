@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { RaceDuelTracker, replayCue, readRaceAttempt, saveRaceAttempt, RETRY_LEDGER_KEY }
+import { RaceDuelTracker, cornerEntryCue, replayCue, readRaceAttempt, saveRaceAttempt, RETRY_LEDGER_KEY }
   from '../racing/duel-loop.mjs';
 
 const make = () => {
@@ -103,4 +103,19 @@ test('anonymous replay snapshot is local, per actual race, bounded and crash-saf
   assert.equal(saveRaceAttempt(throwing,'race-01',result,run),false);
   obj[RETRY_LEDGER_KEY]='{"v":1,"stage":"race-01","finished":true,"place":99,"gapToPassM":-1}';
   assert.equal(readRaceAttempt(storage,'race-01'),null);
+});
+
+
+test('hard-corner advice is signed native geometry, compact and only inside existing HUD',()=>{
+  const g=make();g.player.d=200;g.player.s=37;
+  g.track.curvAhead=()=>.024;
+  assert.equal(cornerEntryCue(g),'↶ 左急弯·提前入弯');
+  g.track.curvAhead=()=>-.024;
+  assert.equal(cornerEntryCue(g),'↷ 右急弯·提前入弯');
+  g.track.curvAhead=(d)=>d<250?.024:-.02;
+  assert.equal(cornerEntryCue(g),'↶↷ S弯·及时反打');
+  g.player.s=18;assert.equal(cornerEntryCue(g),'');
+  g.player.s=45;g.state='paused';assert.equal(cornerEntryCue(g),'');
+  g.state='race';g.player.wrongWay=.9;assert.equal(cornerEntryCue(g),'');
+  g.player.wrongWay=0;g.player.airborne=true;assert.equal(cornerEntryCue(g),'');
 });
