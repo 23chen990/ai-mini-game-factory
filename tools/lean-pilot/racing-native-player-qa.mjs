@@ -215,6 +215,39 @@ for(const id of ['01','05','11','16']){
     nativeBotsFasterThanLate:f.beatPrivilegedLate};
 }
 if(challengeFailures.length)throw Error(challengeFailures.join('; '));
+/** V10 real steering regression: two identical native PlayerCars receive
+ * opposite joystick values WHILE HOLDING DRIFT. Counter-steering must change
+ * the physical heading, not just an HUD or steering-wheel illustration.
+ * This is a deterministic engine test, never human gameplay evidence.
+ */
+report.v10Countersteer={};
+for(const id of ['01','07','22']){
+  const tr=new Track(revised['race-'+id]);
+  const buildPlayer=()=>{
+    const p=new PlayerCar(tr,null,'native-v10-countersteer');
+    p.reset(tr.length*.2,0);p.s=35;
+    return p;
+  };
+  const held=buildPlayer(),opposite=buildPlayer();
+  const before={up:true,shift:true,steerAxis:.9};
+  for(let tick=0;tick<25;tick++){
+    held.update(STEP,before,true,false);
+    opposite.update(STEP,before,true,false);
+  }
+  const wasDrifting=opposite.drifting;
+  const beforeHeading=opposite.h;
+  for(let tick=0;tick<28;tick++){
+    held.update(STEP,before,true,false);
+    opposite.update(STEP,{...before,steerAxis:-.95},true,false);
+  }
+  const physicalCorrection=Math.abs(wrap(held.h-opposite.h));
+  if(!wasDrifting||physicalCorrection<.17)
+    throw Error('V10 opposite analogue lock did not pull real native car heading '+id+
+      ': '+physicalCorrection.toFixed(3)+'rad');
+  report.v10Countersteer[id]={native: true,initialDrift:wasDrifting,
+    headingSeparationRad:+physicalCorrection.toFixed(3),
+    startHeadingRad:+beforeHeading.toFixed(3)};
+}
 /** Native AICar actually MOVES into a strategic lane after personal targeting.
  * Regression against "fake lane AI": personality must change native lat,
  * leaving room inside the physical rails. No collision engine in this probe.
