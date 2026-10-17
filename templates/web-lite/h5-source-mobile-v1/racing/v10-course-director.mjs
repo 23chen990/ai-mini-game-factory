@@ -37,7 +37,7 @@ export const V10_STAGE_SIGNATURES=Object.freeze({
   '23':{identity:'sea bridge: wide crossing then corner commitment',beats:[[9,'sweep',21],[13,'late',19]]},
   '24':{identity:'white-night hook: loaded line and sudden return',beats:[[6,'switch',23],[16,'late',22]]},
   '25':{identity:'quantum viaduct: inner apex defended under pressure',beats:[[3,'apex',24],[13,'switch',20]]},
-  '26':{identity:'sunset ring: broad rolling drift then late brake',beats:[[2,'arc',20],[8,'late',19]]},
+  '26':{identity:'sunset ring: broad rolling drift then hard narrowing apex',beats:[[2,'arc',20],[8,'apex',19]]},
   '27':{identity:'cloud snake: rhythmic countersteer with sky fork',beats:[[7,'switch',22],[17,'apex',21]]},
   '28':{identity:'aurora branches: bridge crest and hard braking line',beats:[[3,'crest',20],[11,'late',20]]},
   '29':{identity:'night cross: defending an apex under traffic',beats:[[4,'late',22],[10,'switch',22]]},
