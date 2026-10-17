@@ -62,7 +62,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     return {
       phase:root?.dataset.phase,challenge:root?.dataset.challenge,
       gamePhase:g?.ended?'finished':g?.paused?'paused':g?.playing?'running':'ready',
-      time:g?.time||0,player:p?{alive:p.alive,
+      time:g?.time||0,player:p?{alive:p.alive,hp:p.hp,
         x:p.pos.x,y:p.pos.y,z:p.pos.z,vy:p.vel?.y,
         onGround:p.onGround,jumpCD:p.jumpCD,
         jumpHeadroom:typeof g?.world?.blocked==='function'
@@ -304,7 +304,10 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
           shots:state.player?.shots,hits:state.player?.hits,
           kills:state.player?.kills,enemyShots:state.openingBot?.realShots,
           cue:cue.visible?cue.text:null});
-        if(cue.visible&&/首杀/.test(cue.text))firstKillCueSeen=true;
+        if(cue.visible&&/首杀/.test(cue.text)&&!firstKillCueSeen){
+          firstKillCueSeen=true;
+          await snap('v17-first-native-kill-visible');
+        }
         if((state.player?.kills||0)>=1&&firstKillCueSeen)break;
         if(state.time-rookie.time>29)break;
       }
@@ -335,9 +338,9 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       {hits:afterRookieWindow.player?.hits,shots:afterRookieWindow.player?.shots,
         nativeSeconds:afterRookieWindow.time-rookie.time});
     const wallSec=(performance.now()-wallStart)/1000;
-    check('first30-enemy-really-opens-fire-not-only-ai-intent',
-      (afterRookieWindow.openingBot?.realShots||0)>=1,
-      {enemy:afterRookieWindow.openingBot});
+    // The original opponent was genuinely eliminated in the opening;
+    // it is fair for a player's decisive first kill to PREVENT return fire.
+    // A separate no-attack branch below must prove genuine counterfire.
     check('stationary-novice-target-released-by-real-11sec-native-clock',
       afterRookieWindow.time-rookie.time>=10.5&&
       (afterRookieWindow.openingBot?.training===false||
@@ -347,6 +350,45 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
        wallSec:+wallSec.toFixed(2),
        browser:'SWIFTSHADER_CHROMIUM_NOT_A_REAL_PHONE'});
     await snap('v14-first30-live-pressure');
+
+    // Separate causal branch: player never presses fire or any other input.
+    // A rival surviving its own native opening MUST return actual gunfire,
+    // and its bullets must present a genuine damage/death risk by 30s.
+    // Do not teleport, aim for bots, modify health, or create bullets.
+    const noAttack=await enter('tags');
+    const noAttackTrace=[];
+    const noAttackWallStart=performance.now();
+    while(performance.now()-noAttackWallStart<95_000){
+      await sleep(1700);
+      const status=await inspect();
+      noAttackTrace.push({
+        nativeSec:+(status.time-noAttack.time).toFixed(2),
+        phase:status.phase,
+        playerShots:status.player?.shots||0,
+        playerHP:status.player?.hp,
+        playerDeaths:status.player?.deaths||0,
+        enemyShots:status.openingBot?.realShots||0,
+        enemyRole:status.openingBot?.role,
+        enemyTraining:status.openingBot?.training
+      });
+      const age=status.time-noAttack.time;
+      if((age>=13&&status.openingBot?.realShots>0&&
+         (status.player?.hp<100||status.player?.deaths>0))||
+        age>=28||status.phase==='finished')break;
+    }
+    const observedCounterfire=noAttackTrace.some(x=>x.enemyShots>0);
+    const observedHit=noAttackTrace.some(x=>x.playerHP<100||x.playerDeaths>0);
+    check('first30-original-rival-fires-when-player-does-not-attack',
+      observedCounterfire&&
+      noAttackTrace.some(x=>x.nativeSec<=30&&x.enemyShots>0)&&
+      noAttackTrace.every(x=>x.playerShots===0),
+      {trace:noAttackTrace});
+    check('first30-unaltered-opponent-fire-can-really-injure-player',
+      observedHit&&observedCounterfire,
+      {trace:noAttackTrace});
+    samples.push({id:'tags',when:'no-player-attack-genuine-pressure',
+      realTouch:true,trace:noAttackTrace});
+    await snap('v17-no-player-fire-real-pressure');
 
     // Smoke each original mission/weapon using visible controls only.
     // This is NOT an eight-mission victory or full skill-curve claim.
