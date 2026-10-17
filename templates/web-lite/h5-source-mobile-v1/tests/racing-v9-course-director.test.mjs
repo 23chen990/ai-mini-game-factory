@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { V9_STAGE_RHYTHMS, validateV9Rhythms, shapeV9RhythmSegments, V9_WIDTH_BANDS, v9RoadHalfWidthAt } from '../racing/v9-course-director.mjs';
-import { createCareerLayouts, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS } from '../racing/track-design.mjs';
+import { createCareerLayouts, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, v9CourseIdentityFractions } from '../racing/track-design.mjs';
 const bases=()=>Object.fromEntries(['city','egypt','aegean','snow'].map(map=>[map,{__racingV31:true,width:23,points:[[0,0,0]]}]));
 const length=points=>points.reduce((sum,a,i)=>{
   const b=points[(i+1)%points.length];
@@ -69,4 +69,20 @@ test('V9 width variation changes actual safe driving width, not only line paint'
     assert.ok(Math.abs(v9RoadHalfWidthAt(half,profile,.13)-
       v9RoadHalfWidthAt(half,profile,1.13))<1e-7,id);
   }
+});
+
+test('V9 terrain-themed numbered arch moves away from actual physical shortcut junction',()=>{
+  const track={length:3006,__V9_WIDTH_PROFILE__:[{at:.5,span:.1,factor:.86}],
+    __RACE_SHORTCUT__:{start:1488,end:1693}};
+  const fractions=v9CourseIdentityFractions(track);
+  assert.equal(fractions.length,2);
+  assert.equal(fractions[0],.065,'opening gate remains the real stage ID');
+  assert.notEqual(fractions[1],.52,'old 18m black arch sat directly inside V9 stage 05 shortcut');
+  const at=fractions[1]*track.length;
+  assert.ok(at<track.__RACE_SHORTCUT__.start-140||
+    at>track.__RACE_SHORTCUT__.end+95,'V9 arch clears the entire split and merge approach');
+  assert.deepEqual(v9CourseIdentityFractions({...track,__V9_WIDTH_PROFILE__:null}),[.065,.52],
+    'V8 old preview remains untouched');
+  assert.deepEqual(v9CourseIdentityFractions({...track,__RACE_SHORTCUT__:null}),[.065,.52],
+    'Stages without physical forks keep the intended mid-course signature');
 });
