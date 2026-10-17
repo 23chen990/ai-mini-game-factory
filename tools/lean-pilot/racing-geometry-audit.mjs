@@ -95,9 +95,9 @@ if(Object.keys(courses).length!==CAREER_COURSE_MAPS.length)
 // Actual pinned Three.js Track projection test, not a simulated race victory.
 const shortcutAudit={};
 for(const course of Object.keys(SHORTCUT_PLANS)){
-  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course);
-  if(!fork || !(fork.gain>=25&&fork.gain<=90) ||
-     !(fork.length>=75&&fork.length<=350) ||
+  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course,{v8:true});
+  if(!fork || !(fork.gain>=25*fork.scale&&fork.gain<=90*fork.scale) ||
+     !(fork.length>=75*fork.scale&&fork.length<=350*fork.scale) ||
      !(fork.neckWidth>=8.5&&fork.neckWidth<=11) ||
      !(fork.width>=11&&fork.width<=14) || !Number.isFinite(fork.length))
     throw Error('Shortcut is not an honest shorter physical road: '+course);
