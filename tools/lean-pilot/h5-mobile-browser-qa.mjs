@@ -130,8 +130,11 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    if(/手动追击/u.test(objective)&&!fpsManualScreenshot){
      await shot('mobile-v7-manual-followup');fpsManualScreenshot=true;
    }
+   const manualStage=/手动追击/u.test(objective);
    const aimed=page.locator('#mk-fps-target[data-side="enemy"]');
-   if(await aimed.count()&&await aimed.isVisible()){
+   // After movement the player MUST actively aim and fire. Do not steal a
+   // visible manual-stage opportunity for the initial auto-fire test path.
+   if(!manualStage&&await aimed.count()&&await aimed.isVisible()){
      fpsEnemySeenCount++;
      // Give simple mode time to fire before using the manual fallback.
      const before=await page.evaluate(()=>window.__H5NativeGame?.player?.stats?.shots??0);
@@ -145,8 +148,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    if(await target.count() && await target.isVisible().catch(()=>false)){
      fpsEnemySeenCount++;
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
-     if(/手动追击/u.test(objective)&&
-       (!fpsOneThumbAudit?.rotated||!fpsOneThumbAudit?.fired)){
+     if(manualStage&&(!fpsOneThumbAudit?.rotated||!fpsOneThumbAudit?.fired)){
        // The visible marker can disappear BETWEEN isVisible and boundingBox.
        // Do not hang the entire real-game QA waiting for an invisible enemy.
        const r=await target.boundingBox({timeout:650}).catch(()=>null);
@@ -170,6 +172,13 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},230,12+n);
      }
      await hold('#touch .btn[data-mk-action="fire"]',1450);
+     return;
+   }
+   if(manualStage&&await aimed.count()&&await aimed.isVisible()){
+     // A truly native crosshair can still see a target between transient
+     // badge frames. Use real manual fire, never simulated hit counters.
+     fpsEnemySeenCount++;
+     await hold('#touch .btn[data-mk-action="fire"]',1050);
      return;
    }
    // A real novice can read the screen's route hint, so the script should
