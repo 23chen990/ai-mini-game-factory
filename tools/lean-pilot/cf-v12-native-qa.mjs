@@ -227,12 +227,13 @@ export async function reviewCfV12({base=path.join(ROOT,'runs')}={}){
     check('free-retry-without-ad',
       await page.locator('#mk-replay').isVisible()&&!settled.reviveVisible);
     await snap('v12-real-natural-failure');
+    const oldOrigin=await page.evaluate(()=>performance.timeOrigin);
     await page.locator('#mk-replay').tap();
-    await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:50000});
+    await page.waitForSelector('#mobile-kit[data-phase="running"]',{timeout:50000});
     check('retry-preserves-selected-mission',
       await page.locator('#mobile-kit').getAttribute('data-challenge')==='survive');
-    await page.locator('#mk-start').tap();
-    await page.waitForSelector('#mobile-kit[data-phase="running"]',{timeout:50000});
+    check('instant-free-replay-keeps-native-renderer-no-reload',
+      (await page.evaluate(()=>performance.timeOrigin))===oldOrigin);
     check('free-retry-starts-fresh-real-match',(await inspect()).gamePhase==='running');
     await snap('v12-free-retry-started');
   }catch(e){
