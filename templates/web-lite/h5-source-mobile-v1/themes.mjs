@@ -2,7 +2,7 @@
 /** Small source-facing bridge, not a combat implementation. */
 export function createFpsAdapter(game, doc) {
   return {
-    start: (challenge) => { const size=challenge?.kind==='hits'?1:challenge?.kind==='kills'?3:4; Object.assign(game.opts, { size, goal: 30, diff: 'easy', quality: 'low' }); game.hud.syncControls(); doc.getElementById('btnStart').click(); },
+    start: (challenge) => { const size=challenge?.kind==='hits'?1:challenge?.kind==='defend'?2:challenge?.kind==='kills'?3:4; Object.assign(game.opts, { size, goal: 30, diff: 'easy', quality: 'low' }); game.hud.syncControls(); doc.getElementById('btnStart').click(); },
     pause: () => { if (game.playing && !game.ended && !game.paused) game.pause(); },
     resume: () => game.resume(true),
     phase: () => game.ended ? 'finished' : game.paused ? 'paused' : game.playing ? 'running' : 'ready',

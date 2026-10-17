@@ -737,3 +737,56 @@ html[data-reference-game="cf-transport-ship"] #mk-challenges button small{
   overflow-wrap:anywhere;
   line-height:1.25;
 }
+
+
+/* CF V9 genuine defended-objective locator: site coordinates are declared
+ * mission objectives, NOT enemy-tracking data. No controls are covered. */
+html[data-reference-game="cf-transport-ship"] #mk-fps-defense-pin {
+  position:absolute;
+  pointer-events:none;
+  left:50%;
+  top:clamp(77px,23vh,94px);
+  transform:translateX(-50%);
+  padding:4px 11px;
+  max-width:48vw;
+  box-sizing:border-box;
+  border-radius:9px;
+  border:1px solid rgba(245,207,114,.62);
+  color:#ffedbf;
+  background:rgba(12,28,40,.9);
+  box-shadow:0 3px 10px #0005;
+  font-size:clamp(11px,2vw,13px);
+  line-height:1.2;
+  letter-spacing:.02em;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  text-align:center;
+  z-index:2;
+}
+html[data-reference-game="cf-transport-ship"] #mobile-kit:not([data-phase="running"]) #mk-fps-defense-pin,
+html[data-reference-game="cf-transport-ship"] #mk-fps-defense-pin[hidden]{
+  display:none!important;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges:has(button[data-challenge-id="defense"]){
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:5px;
+  margin:6px 0;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button[data-challenge-id="defense"]{
+  border-color:rgba(244,211,135,.58);
+}
+@media(max-height:375px){
+ html[data-reference-game="cf-transport-ship"] #mk-fps-defense-pin{
+   top:76px;
+   padding:3px 8px;
+ }
+ html[data-reference-game="cf-transport-ship"] #mk-challenges:has(button[data-challenge-id="defense"]){
+   gap:4px;
+ }
+ html[data-reference-game="cf-transport-ship"] #mk-challenges:has(button[data-challenge-id="defense"]) button{
+   min-height:37px;
+   margin:0;
+   padding:5px 3px;
+ }
+}

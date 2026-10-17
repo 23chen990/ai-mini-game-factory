@@ -32,11 +32,13 @@ export async function standaloneHtml(gameRoot,theme='observatory',runId='standal
       // component; arbitrary imports from other modules remain prohibited.
       const isCf=name==='cf-player-loop.mjs'&&
         /^import \{challengeResult\} from '\.\/engine\.mjs';\r?\n$/.test(line);
-      if(!isMain&&!isCf)throw new Error(`Unsupported import in ${name}`);
+      const isDefense=name==='fps-mobile-ux.mjs'&&
+        /^import \{cfStartDefense,cfStepDefense\} from '\.\/engine\.mjs';\r?\n$/.test(line);
+      if(!isMain&&!isCf&&!isDefense)throw new Error(`Unsupported import in ${name}`);
       imports++;return '';
     }).replace(/^export /gm,'');
     const expectedImports=name==='main.mjs'?(hasFpsUx?4:2)
-      :name==='cf-player-loop.mjs'?1:0;
+      :name==='cf-player-loop.mjs'||name==='fps-mobile-ux.mjs'?1:0;
     if(/^\s*(?:import|export)\s/m.test(bundled)||imports!==expectedImports)
       throw new Error(`Unsupported module syntax in ${name}`);
     scripts.push(`// ${name}\n${bundled}`);

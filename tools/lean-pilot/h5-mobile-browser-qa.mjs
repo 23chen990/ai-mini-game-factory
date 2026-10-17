@@ -286,7 +286,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await page.setViewportSize(viewport);
      const b=entryMobile.brief;
      fpsExtendedChecks.push({name:'cf-v6-ready-ui',
-       passed:entryMobile.panelFits&&entryMobile.smallFits&&b.cards===3&&b.selected===1&&
+       passed:entryMobile.panelFits&&entryMobile.smallFits&&b.cards===4&&b.selected===1&&
          b.autoFireTutorial&&b.allWithinPanel&&b.startHeight>=48&&
          b.facts.some(x=>/M4A1/.test(x))&&b.facts.some(x=>/3枪/.test(x))&&
          b.facts.some(x=>/8m/.test(x))&&b.facts.some(x=>/60 s/.test(x)),

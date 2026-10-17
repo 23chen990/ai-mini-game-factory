@@ -6,7 +6,7 @@
 import {challengeResult} from './engine.mjs';
 
 export const CF_CONTROL_DEFAULTS=Object.freeze({sensitivity:1,opacity:.85});
-const CF_IDS=new Set(['tags','precision','survive']);
+const CF_IDS=new Set(['tags','precision','survive','defense']);
 const GRADE_LABELS=['未完成','完成','优秀','完美'];
 
 function snapped(value,fallback,min,max) {

@@ -1,5 +1,6 @@
 /* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
+import {cfStartDefense,cfStepDefense} from './engine.mjs';
 export function teamSide(ownTeam, actorTeam) {
   if (!['BL', 'GR'].includes(ownTeam) || !['BL', 'GR'].includes(actorTeam)) return 'unknown';
   return ownTeam === actorTeam ? 'ally' : 'enemy';
@@ -155,6 +156,7 @@ export function cfTouchTutorial(challenge) {
       : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
+  if (challenge?.kind === 'defend') return '左手进据点，右手开火阻止敌军占点';
   return '点按或按住开火';
 }
 export function mobileChallengeCopy(challenge) {
@@ -175,6 +177,9 @@ export function mobileChallengeCopy(challenge) {
   if (challenge.kind === 'survive') return challenge.elite===true
     ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
     : '坚持45秒，移动20米，最多被击倒2次';
+  if (challenge.kind === 'defend') return challenge.elite===true
+    ? '85秒精英反击：先守A再守B，各坚持7秒；零阵亡，敌军也会抢点'
+    : '100秒双点反击：亲自守住A和B，各5秒；敌军独占8秒就失守';
   return challenge.instructions || '';
 }
 
@@ -514,11 +519,24 @@ export function cfHitCue(challenge, nativeHits, increase, drill = null) {
 
 /** End-of-round teaching based on observed player stats, never simulated rewards. */
 export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
-  if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return '';
+  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return '';
   const actual = v => Number.isFinite(v) ? Math.max(0,Math.floor(v)) : 0;
   const hits = actual(metrics.hits), awmKills = actual(metrics.awmKills);
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
   const goal = actual(challenge.target);
+  if (challenge.kind === 'defend') {
+    const captured=actual(metrics.defenseCaptured),site='AB'[Math.min(1,captured)];
+    if(outcome==='won')
+      return 'A、B双点防守成功！下次尝试零阵亡，缩短真实占点耗时。';
+    if(metrics.defenseSitesValid!==true)
+      return '据点路线不可用，本局没有虚构奖励。请重试或切换支持 WebGL 的设备。';
+    if(metrics.defenseBreached===true)
+      return '敌军在'+site+'点独占过久。下次提前到位，或在敌方接近时迎击。';
+    if(deaths>challenge.maxDeaths)
+      return '阵亡'+deaths+'次，超过本关'+challenge.maxDeaths+'次限制。下次试试沿掩体侧路回点。';
+    return '真实守住 '+captured+'/'+goal+' 处。前往'+site+
+      '点：只有玩家亲自站在圈内、活着的敌人离开圈外，进度才会增加。';
+  }
   if (outcome === 'won') {
     if (challenge.kind === 'hits'&&challenge.drill==='reposition')
       return '战术突围完成：首枪命中、离开原位 '+actual(metrics.drillTravel)+
@@ -572,12 +590,13 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
 
 /** Short, accurate mission facts for the start screen. All values are authored rules. */
 export function cfMissionFacts(challenge) {
-  if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return [];
+  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return [];
   const weapon = challenge.weapon === 'awm' ? 'AWM' :
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
     ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
     challenge.kind === 'kills' ? '击杀 ' + challenge.target + ' 人' :
+    challenge.kind === 'defend' ? '守 A → B · 各'+challenge.holdSeconds+'秒' :
       '移动 ' + (challenge.minTravel || 0) + ' m';
   return [
     { label:'装备',value:weapon },
@@ -588,7 +607,7 @@ export function cfMissionFacts(challenge) {
 
 /** Stat chips are derived from native player measurements, never team kills. */
 export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
-  if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return [];
+  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return [];
   const number = value => Number.isFinite(value) ? Math.max(0,Math.floor(value)) : 0;
   const deaths = number(metrics.deaths);
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
@@ -606,11 +625,85 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     {label:'命中',value:String(number(metrics.hits))},
     {label:'阵亡',value:String(deaths)}
   ];
+  if (challenge.kind === 'defend') return [
+    {label:'据点',value:number(metrics.defenseCaptured)+' / '+challenge.target},
+    {label:'敌军',value:metrics.defenseBreached===true?'已攻破':'未攻破'},
+    {label:'阵亡',value:deaths+' / '+challenge.maxDeaths}
+  ];
   return [
     {label:'生存',value:Math.min(Math.floor(number(elapsedMs)/1000),Math.ceil(challenge.limitMs/1000)) + ' / ' + Math.ceil(challenge.limitMs/1000) + ' s'},
     {label:'移动',value:number(metrics.travel) + ' / ' + challenge.minTravel + ' m'},
     {label:'阵亡',value:deaths + ' / ' + challenge.target}
   ];
+}
+
+/**
+ * Only two already-existing, walkable 3D-map locations qualify as objectives.
+ * Both the player AND an actual enemy bot need genuine world-nav paths. Never
+ * spawn a target, mutate collision geometry or credit a phantom zone.
+ */
+export function cfChooseDefenseSites({player,nav,world,actors=[]}) {
+  if(!player?.pos||!['BL','GR'].includes(player.team)||
+    !nav?.findPath||!nav?.idx||!nav?.walkable||!world?.blocked)return null;
+  const side=player.team==='BL'?1:-1;
+  const foes=actors.filter(a=>a?.team!==player.team&&a?.alive&&a?.pos);
+  if(!foes.length)return null;
+  const candidates=[
+    [[-22,-6.8],[-18,-6.8],[-20,6.8],[-16,-6.8],[-16,7],[-14,-8],[-13,1.5]],
+    [[-8,6.8],[-10,6.8],[-8,-6.8],[-5,7.8],[-6,-7.6],[-4,1.5],[1,7.8]]
+  ];
+  const sites=[];
+  const isLegal=(x,z,from)=>{
+    const idx=nav.idx(x,z);
+    if(idx<0||!nav.walkable(idx)||world.blocked(x,.05,z,.55,1.75))return false;
+    const path=nav.findPath(from.x,from.z,x,z);
+    return Array.isArray(path)&&path.length>=2;
+  };
+  for(let i=0;i<2;i++){
+    let found=null;
+    for(const [ax,az] of candidates[i]){
+      const x=ax*side,z=az*side;
+      const origin=sites.at(-1)||player.pos;
+      if(i>0&&Math.hypot(x-sites[0].x,z-sites[0].z)<8)continue;
+      if(!isLegal(x,z,origin))continue;
+      if(!foes.some(enemy=>isLegal(x,z,enemy.pos)))continue;
+      found={id:'AB'[i],x,z};
+      break;
+    }
+    if(!found)return null;
+    sites.push(found);
+  }
+  return sites;
+}
+
+/** Send existing native bots down real NavGrid paths, not through obstacles.
+ * Native senses, ballistics, hitboxes and attack logic still take priority. */
+export function cfRouteDefenseBots(game,site) {
+  if(!site||!game?.player||!game?.nav?.findPath)return 0;
+  let routed=0;
+  for(const bot of game.actors||[]){
+    if(!bot?.alive||bot.isPlayer||bot.team===game.player.team||!bot.pos)continue;
+    if(bot.visible===true||Number(game.time)-Number(bot.lastSeenT)<2.5)continue;
+    const distance=Math.hypot(bot.pos.x-site.x,bot.pos.z-site.z);
+    const key=site.id+':'+(bot.stats?.d||0);
+    if(distance<=2.5){
+      if(bot.__mkDefenseGoalKey!==key||bot.role!=='hold'){
+        bot.role='hold';bot.goal=[site.x,site.z];
+        bot.path=null;bot.pi=0;
+        bot.holdYaw=game.player.team==='BL'?-Math.PI/2:Math.PI/2;
+        bot.holdT=0;bot.__mkDefenseGoalKey=key;
+      }
+      routed++;
+      continue;
+    }
+    if(bot.__mkDefenseGoalKey===key&&Array.isArray(bot.path)&&bot.pi<bot.path.length)continue;
+    const path=game.nav.findPath(bot.pos.x,bot.pos.z,site.x,site.z);
+    if(!Array.isArray(path)||path.length<2)continue;
+    bot.role='rush';bot.stage=0;bot.path=path;bot.pi=1;
+    bot.goal=[site.x,site.z];bot.__mkDefenseGoalKey=key;
+    routed++;
+  }
+  return routed;
 }
 
 export function createFpsMobileUx(game, root, doc) {
@@ -777,6 +870,10 @@ export function createFpsMobileUx(game, root, doc) {
   guide.textContent = '◆ 蓝色队友 · ▼ 红色敌人';
   guide.hidden = true;
   root.append(guide);
+  const defensePin=doc.createElement('div');
+  defensePin.id='mk-fps-defense-pin';
+  defensePin.hidden=true;defensePin.setAttribute('aria-hidden','true');
+  root.append(defensePin);
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
@@ -786,6 +883,7 @@ export function createFpsMobileUx(game, root, doc) {
   let visibleAimCoach = '';
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
+  let defense=null,nextDefenseRouteAt=0;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -1165,13 +1263,24 @@ export function createFpsMobileUx(game, root, doc) {
       return drill?{drillStage:drill.stage,drillFirstHit:drill.firstHit,
         drillTravel:drill.distance,drillFollowUpHits:drill.follow}:{};
     },
-    onSelect(challenge) { updateTutorial(challenge); },
+    defenseMetrics() {
+      if(!defense)return {};
+      return {defenseSitesValid:defense.valid===true,
+        defenseCaptured:defense.captured,defenseStage:defense.stage,
+        defenseBreached:defense.breached===true,
+        defenseHeld:defense.held,defenseEnemyHeld:defense.enemyHeld,
+        defenseInside:defense.playerInside===true,
+        defenseContested:defense.contested===true,
+        defenseSite:defense.sites?.[defense.stage]?.id||null};
+    },
+    onSelect(challenge) { updateTutorial(challenge); defensePin.hidden=true; },
     onStart(challenge) {
       activeChallenge = challenge || null;
       if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
       drill=cfAdvanceDrill(activeChallenge);
+      defense=null;nextDefenseRouteAt=0;defensePin.hidden=true;
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
@@ -1183,6 +1292,8 @@ export function createFpsMobileUx(game, root, doc) {
         ? '先观察，找到目标后开镜'
         : activeChallenge?.kind === 'survive'
           ? '沿掩体移动，注意身后'
+          : activeChallenge?.kind === 'defend'
+          ? '先守A区，再守B区'
           : '前方有目标 · 右手瞄准';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
@@ -1206,7 +1317,15 @@ export function createFpsMobileUx(game, root, doc) {
       }
       game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null,
         challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
-      const rendezvous=prepareFirstEncounter();
+      const rendezvous=activeChallenge?.kind==='defend'
+        ?{path:false,trainingScout:false} :prepareFirstEncounter();
+      if(activeChallenge?.kind==='defend') {
+        const sites=cfChooseDefenseSites({player:p,nav:game.nav,world:game.world,actors:game.actors});
+        defense=cfStartDefense(sites);
+        game.__mobileBalanceReview.defenseSitesValid=defense.valid;
+        game.__mobileBalanceReview.defenseSites=defense.sites;
+        if(defense.valid)cfRouteDefenseBots(game,defense.sites[0]);
+      }
       if(rendezvous.trainingScout&&Array.isArray(rendezvous.initialVisibleSpot))
         lastVisibleEnemy={x:rendezvous.initialVisibleSpot[0],
           z:rendezvous.initialVisibleSpot[1],at:game.time};
@@ -1234,7 +1353,7 @@ export function createFpsMobileUx(game, root, doc) {
         game.hud.el.cSmall.textContent = '即将自动复活';
       }
       tutorial.hidden = active && now - started > 6500;
-      if (!p) { target.hidden = true; guide.hidden = true; clearMarkers(); return; }
+      if (!p) { target.hidden = true; guide.hidden = true; defensePin.hidden=true; clearMarkers(); return; }
       html.dataset.fpsOwnTeam = p.team;
       if (active && p.alive) {
         if (previousPosition) {
@@ -1262,8 +1381,34 @@ export function createFpsMobileUx(game, root, doc) {
           releaseNativeFire(true);fireDragTouches.clear();
         }
         autoAimActor=null;autoFireActive=false;
-        target.hidden = true; guide.hidden = true; clearMarkers(); return;
+        target.hidden = true; guide.hidden = true; defensePin.hidden=true; clearMarkers(); return;
       }
+      if(activeChallenge?.kind==='defend'&&defense){
+        const prevStage=defense.stage;
+        defense=cfStepDefense(defense,{
+          gameTime:Number(game.time),player:p,actors:game.actors,team:p.team,
+          holdSeconds:activeChallenge.holdSeconds,
+          breachSeconds:activeChallenge.breachSeconds,
+          radius:activeChallenge.radius
+        });
+        if(defense.stage>prevStage){
+          hitCue.textContent='◆ 据点 '+('AB'[prevStage])+' 已守住';
+          hitCue.hidden=false;cueExpiresAt=now+1050;
+        }
+        const site=defense.sites?.[defense.stage];
+        if(site&&p.alive&&!defense.breached){
+          if(now>=nextDefenseRouteAt){
+            nextDefenseRouteAt=now+1350;
+            cfRouteDefenseBots(game,site);
+          }
+          const turn=routeArrow(p,[site.x,site.z],activeChallenge.radius*.75);
+          const pointText=defense.contested?'⚔ 双方争夺':defense.playerInside
+            ?'◆ 守点 '+Math.floor(defense.held)+'/'+activeChallenge.holdSeconds+'秒'
+            : (turn?turn.symbol+' '+turn.distance+'米':'已到据点');
+          defensePin.textContent='● '+site.id+' · '+pointText;
+          defensePin.hidden=false;
+        }else defensePin.hidden=true;
+      }else defensePin.hidden=true;
       const score = playerRelativeScore(game.score, p.team);
       const msg = score.ally + ':' + score.enemy;
       if (msg !== lastBoard) {
@@ -1280,7 +1425,9 @@ export function createFpsMobileUx(game, root, doc) {
       }
       if(now >= routeLastAt) {
         routeLastAt=now+900;
-        if(activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
+        if(activeChallenge?.kind==='defend'){
+          routePath=null;
+        }else if(activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
           const deaths=p.stats?.d||0;
           if(!flankGoal||deaths!==flankDeaths){
             flankDeaths=deaths;
@@ -1315,7 +1462,9 @@ export function createFpsMobileUx(game, root, doc) {
         }
         lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
-        if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
+        if (activeChallenge?.kind==='defend') {
+          guide.textContent='';
+        }else if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
           const turn=routeArrow(p,routePath);
           guide.textContent=(turn?.symbol||'↔')+' 换位 '+
             Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m'+
@@ -1345,7 +1494,7 @@ export function createFpsMobileUx(game, root, doc) {
       }
       // Combat stays legible: hint only on opening, or briefly when the
       // player has not yet found a target. It never sits on the reticle.
-      guide.hidden = !p.alive ||
+      guide.hidden = !p.alive || activeChallenge?.kind==='defend' ||
         (activeChallenge?.drill==='reposition'&&drill?.stage>0
           ? drill.stage===2&&drill.follow>0&&elapsed-drillStageAt>7&&
             [...markers.values()].some(el=>!el.hidden)
@@ -1365,7 +1514,8 @@ export function createFpsMobileUx(game, root, doc) {
       aimTouchStarts.clear();fireDragTouches.clear();releaseNativeFire(true);
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
-      board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
+      board.remove(); target.remove(); hitCue.remove(); guide.remove(); defensePin.remove(); tutorial.remove();
+      defense=null;
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
         button.removeAttribute('aria-label');
