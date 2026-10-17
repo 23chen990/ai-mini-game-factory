@@ -133,6 +133,7 @@ async function raceStart(page, index, name) {
     padLanes:window.game?.track?.boostPads?.map(p=>p.lat) ?? [],
     trackSamples:window.game?.track?.N ?? 0,
     cornerSigns:window.game?.__RACE_CORNER_SIGNS__?.sprites?.length ?? 0,
+    maxCornerSignSize:Math.max(0,...(window.game?.__RACE_CORNER_SIGNS__?.sprites??[]).map(x=>x.scale.x)),
     eligibleCornerSamples:(()=>{
       const t=window.game?.track;if(!t?.curv)return 0;
       let n=0;for(let i=0;i<t.N;i+=8){
@@ -239,7 +240,7 @@ async function raceStart(page, index, name) {
     fail(name+': 01 course cannot contain an unannounced shortcut');
   // Any technical road with sharp corners must expose trackside turn signs.
   // Native curvature, not HUD text prompts, is the source of truth.
-  if(!early.nativeThreeLoaded || early.cornerSigns>7 ||
+  if(!early.nativeThreeLoaded || early.cornerSigns>4 || early.maxCornerSignSize>4.2 ||
      (early.eligibleCornerSamples>0 && early.cornerSigns<1) ||
      (early.eligibleCornerSamples===0 && early.cornerSigns!==0))
     fail(name+': true native-corner signage count differs from road geometry: '+JSON.stringify(early));
