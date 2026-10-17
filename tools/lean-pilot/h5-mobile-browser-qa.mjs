@@ -12,17 +12,36 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const fpsThreatTrace=[],fpsExtendedChecks=[];
  let fpsScriptSteps=0,fpsEnemySeenCount=0,fpsRouteTurns=0,fpsContactScreenshot=false;
  let fpsMoveLast=-1,fpsMoveStall=0,fpsRepositionScreenshot=false,fpsManualScreenshot=false;
- let fpsOneThumbAudit=null;
+ let fpsOneThumbAudit=null,fpsManualReloaded=false,fpsFireStart=null;
  const readFpsThreat = async () => page.evaluate(() => {
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
    const opponents=g.actors.filter(a=>a.team!==p.team);
+   // Read-only forensic evidence, NEVER passed to the touch-input coach:
+   // distinguish a head-only target from a genuinely open chest shot.
+   const foe=opponents.find(a=>a.alive&&a.soldier);
+   const eye=foe&&g.renderer?.camera&&p.eye(g.renderer.camera.position.clone());
+   const lineOpen=(point)=>{
+     if(!eye||!point||!g.world?.raycast)return null;
+     const vec=point.sub(eye),length=vec.length();
+     if(!(length>0.2))return null;
+     return !g.world.raycast(eye.x,eye.y,eye.z,
+       vec.x/length,vec.y/length,vec.z/length,
+       Math.max(0,length-.15),'sight');
+   };
+   const nativeVisibility=foe?{
+     chest:lineOpen(foe.soldier.chestWorld(eye.clone())),
+     head:lineOpen(foe.soldier.headWorld(eye.clone()))
+   }:null;
    const badge=[...document.querySelectorAll('.mk-fps-enemy')]
      .find(el=>!el.hidden&&getComputedStyle(el).display!=='none');
    const rect=badge?.getBoundingClientRect();
    return {
      gameTime:+g.time.toFixed(1),
      yaw:+p.yaw.toFixed(3),pitch:+p.pitch.toFixed(3),
+     recoilPitch:+(p.punchP||0).toFixed(3),recoilYaw:+(p.punchY||0).toFixed(3),
+     nativeVisibility,
+     nativeCrosshairEnemy:g.aimTarget?.alive===true&&g.aimTarget.team!==p.team,
      handFire:p.touch?.fire===true,
      onscreenEnemyPixel:rect?{
        x:Math.round(rect.left+rect.width/2),
@@ -159,17 +178,73 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    // native world-geometry LOS checks. Take visibility AND position in ONE
    // browser evaluation: awaiting two Playwright locator calls separately
    // loses real visible targets during frequent HUD updates.
+   // The badge's DOM left/top are the original LOS-checked world projection.
+   // Its bounding box is translated -115% by CSS; bottom+22 was NOT a native
+   // target coordinate and repeatedly aimed bullets at invisible cargo steel.
    const visibleBadge=()=>page.evaluate(()=>{
+     const kit=document.getElementById('mobile-kit'),root=kit?.getBoundingClientRect();
+     if(!root)return null;
      for(const el of document.querySelectorAll('.mk-fps-enemy:not([hidden])')){
-       if(getComputedStyle(el).display==='none'||
-          getComputedStyle(el).visibility==='hidden')continue;
-       const r=el.getBoundingClientRect();
-       if(r.width>0&&r.height>0)
-         return {x:r.left+r.width/2,y:r.bottom+22};
+       const style=getComputedStyle(el);
+       if(style.display==='none'||style.visibility==='hidden')continue;
+       const x=parseFloat(el.style.left),y=parseFloat(el.style.top);
+       if(Number.isFinite(x)&&Number.isFinite(y)&&x>=0&&x<=100&&y>=0&&y<=100)
+         return {x:root.left+root.width*x/100,y:root.top+root.height*y/100,
+           part:el.dataset.visiblePart||'unknown'};
      }
      return null;
    });
    const firstBadge=await visibleBadge();
+   if(manualStage&&!fpsManualReloaded){
+     fpsManualReloaded=true;
+     // A competent player reloads before a new firefight rather than entering
+     // the third phase with the magazine depleted by the opening encounter.
+     // The touch is the ORIGINAL visible reload button, not an ammo mutation.
+     const reload=page.locator('#touch .btn[data-mk-action="reload"]');
+     if(await reload.count()&&await reload.isVisible()){
+       const btn=await reload.boundingBox();
+       const x=btn.x+btn.width/2,y=btn.y+btn.height/2;
+       const before=await page.evaluate(({x,y})=>{
+         const g=window.__H5NativeGame,w=g?.player?.weapon,
+           element=document.elementFromPoint(x,y);
+         return {mag:w?.mag??null,capacity:w?.def?.mag??null,
+           reloadUntil:w?.reloadUntil??0,time:g?.time??null,
+           alive:g?.player?.alive??false,
+           receivesPointer:element?.closest?.('[data-mk-action="reload"]')!==null,
+           hitElement:element?.id||element?.tagName||null,
+           phase:document.querySelector('#mobile-kit')?.dataset.phase};
+       },{x,y});
+       // CDP touch at the actual visible pixel is what a physical finger
+       // performs. Playwright .tap() sometimes waits behind the WebGL canvas
+       // for 30s and prevents testing the later combat altogether.
+       if(before.mag<before.capacity){
+         const reloadCdp=await context.newCDPSession(page);
+         try{
+           await reloadCdp.send('Input.dispatchTouchEvent',{
+             type:'touchStart',touchPoints:[{x,y,id:99}]});
+           await page.waitForTimeout(75);
+           await reloadCdp.send('Input.dispatchTouchEvent',{
+             type:'touchEnd',touchPoints:[]});
+         }finally{await reloadCdp.detach();}
+         await page.waitForTimeout(350);
+       }
+       const after=await page.evaluate(()=>{
+         const g=window.__H5NativeGame,w=g?.player?.weapon;
+         return {mag:w?.mag??null,reloadUntil:w?.reloadUntil??0,
+           time:g?.time??null,alive:g?.player?.alive??false};
+       });
+       const alreadyFull=before.mag===before.capacity;
+       const triggered=after.reloadUntil>after.time ||
+         (Number.isFinite(before.mag)&&after.mag>before.mag);
+       actions.push({atMs:Date.now()-started,input:'visible-native-reload-before-followup',
+         detail:{before,after,alreadyFull,triggered}});
+       fpsExtendedChecks.push({name:'cf-visible-reload-touch-when-needed',
+         passed:before.receivesPointer===true&&(alreadyFull||triggered),
+         detail:{before,after,alreadyFull,triggered,
+           evidence:alreadyFull?'Full magazine: hit-test only, native reload not claimed':
+             'Native touch triggered actual weapon reload; no ammunition mutation'}});
+     }
+   }
    if(firstBadge){
      fpsEnemySeenCount++;
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
@@ -177,6 +252,60 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        const dx=Math.max(-108,Math.min(75,(firstBadge.x-viewport.width/2)*.32));
        const dy=Math.max(-55,Math.min(55,(firstBadge.y-viewport.height/2)*.38));
        fpsOneThumbAudit=await fireDragToward(dx,dy);
+     }
+     if(manualStage) {
+       // Keep the SAME real thumb on the native fire button while tracking
+       // screen-projected visible parts. Aim adjustments are only proportional
+       // to exposed pixel error and remain bounded inside the physical thumb
+       // reach; no bot coordinates, stats, or synthetic hits steer the action.
+       const start=fpsFireStart;
+       if(!start)return;
+       const cursor={...start},cdp=await context.newCDPSession(page);
+       const sampleNative=()=>page.evaluate(()=>{
+         const g=window.__H5NativeGame,p=g?.player,w=p?.weapon;
+         return {hits:p?.stats?.hits??0,shots:p?.stats?.shots??0,
+           alive:p?.alive??false,fire:p?.touch?.fire??false,
+           mag:w?.mag??null,reloadUntil:w?.reloadUntil??null,
+           time:g?.time??null,phase:document.querySelector('#mobile-kit')?.dataset.phase};
+       });
+       const nativeBefore=await sampleNative();
+       // A visible target just peeking around cover can disappear within a
+       // single frame. A human still remembers its last screen pixel briefly.
+       // Hold the original trigger while tracking; do NOT abort all shooting
+       // merely because an enemy badge vanishes for 0.4 seconds.
+       const initial=firstBadge;let remembered=initial,tracked=0,lost=0;
+       let activeDuring=null;
+       try{
+         await cdp.send('Input.dispatchTouchEvent',{
+           type:'touchStart',touchPoints:[{...cursor,id:91}]});
+         for(let n=0;n<20;n++){
+           const marker=await visibleBadge();
+           if(marker){remembered=marker;tracked++;lost=0;}
+           else lost++;
+           if(remembered&&lost<=5){
+             const dx=Math.max(-22,Math.min(22,(remembered.x-viewport.width/2)*.31));
+             const dy=Math.max(-16,Math.min(16,(remembered.y-viewport.height/2)*.31));
+             cursor.x=Math.max(start.x-110,Math.min(start.x+110,cursor.x+dx));
+             cursor.y=Math.max(start.y-90,Math.min(start.y+52,cursor.y+dy));
+             await cdp.send('Input.dispatchTouchEvent',{
+               type:'touchMove',touchPoints:[{...cursor,id:91}]});
+           }
+           if(n===4)activeDuring=await sampleNative();
+           // This input is an actual thumb continuously holding the real
+           // fire control; original rifle ticks, ballistics, HP stay native.
+           await page.waitForTimeout(110);
+           if(lost>9)break;
+         }
+         await page.waitForTimeout(150);
+       }finally{
+         await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]}).catch(()=>{});
+         await cdp.detach();
+       }
+       const nativeAfter=await sampleNative();
+       actions.push({atMs:Date.now()-started,input:'native-manual-fire-track',
+         detail:{before:nativeBefore,during:activeDuring,after:nativeAfter,
+           trackedVisibleFrames:tracked,temporarilyHidden:lost,initialVisiblePart:initial.part}});
+       return;
      }
      for(let n=0;n<7;n++){
        const marker=await visibleBadge();
@@ -292,6 +421,44 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          b.facts.some(x=>/8m/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
        detail:b});
    }
+   if(isFps){
+     // Exercise actual menu setting inputs, then reset native sensitivity
+     // before the independent 3D combat trial for identical challenge odds.
+     const before=await page.evaluate(()=>({
+       sens:window.__H5NativeGame?.opts?.sens??null,
+       optionsVisible:getComputedStyle(document.getElementById('mk-fps-options')).display!=='none',
+       settingsClosed:document.getElementById('mk-fps-pref-form')?.hidden===true
+     }));
+     await page.locator('#mk-fps-pref-toggle').click();
+     await page.locator('#mk-fps-pref-look').focus();
+     await page.keyboard.press('ArrowRight');
+     await page.locator('#mk-fps-pref-opacity').focus();
+     await page.keyboard.press('ArrowLeft');
+     const configured=await page.evaluate(()=>{
+       const g=window.__H5NativeGame;
+       const store=JSON.parse(localStorage.getItem('h5-cf:controls:v1')||'null');
+       return {sens:g?.opts?.sens,look:store?.controls?.sensitivity,
+         opacity:store?.controls?.opacity,
+         css:parseFloat(document.documentElement.style.getPropertyValue('--cf-touch-opacity')),
+         expanded:document.getElementById('mk-fps-pref-toggle').getAttribute('aria-expanded')}
+     });
+     await page.locator('#mk-fps-pref-reset').click();
+     const reset=await page.evaluate(()=>({
+       nativeSens:window.__H5NativeGame?.opts?.sens??null,
+       saved:JSON.parse(localStorage.getItem('h5-cf:controls:v1')||'null')?.controls
+     }));
+     await page.locator('#mk-fps-pref-toggle').click();
+     fpsExtendedChecks.push({name:'cf-v8-calibration-visible-native-and-persisted',
+       passed:before.optionsVisible&&before.settingsClosed&&
+         Math.abs(configured.look-1.05)<1e-6&&
+         Math.abs(configured.opacity-.8)<1e-6&&
+         Math.abs(configured.css-.8)<1e-6&&
+         Math.abs(configured.sens-before.sens*1.05)<1e-5&&
+         configured.expanded==='true'&&
+         Math.abs(reset.nativeSens-before.sens)<1e-5&&
+         reset.saved?.sensitivity===1&&reset.saved?.opacity===.85,
+       detail:{before,configured,reset,note:'Native look only; no bullet or hits manipulation'}});
+   }
    const startBox=await page.locator('#mk-start').boundingBox();
    check('mobile-entry', readyMs<=30000&&startBox?.width>=44&&startBox?.height>=44&&
      (!isFps || entryMobile.desktopMenuHidden&&entryMobile.tutorialShown&&entryMobile.panelFits&&entryMobile.smallFits),
@@ -299,6 +466,11 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    await page.locator('#mk-start').tap();actions.push({atMs:Date.now()-started,input:'tap',target:'#mk-start'});
    await page.waitForSelector('#mobile-kit[data-native-phase="running"]',{timeout:45000});
    if(isFps){
+     // Visible original control is fixed throughout a round. Cache its
+     // screen rectangle BEFORE combat to avoid losing a 1s firing window to
+     // repeated Playwright locator waits under software WebGL pressure.
+     const fb=await page.locator('#touch .btn[data-mk-action="fire"]').boundingBox();
+     if(fb)fpsFireStart={x:fb.x+fb.width/2,y:fb.y+fb.height/2};
      const hud=await page.evaluate(()=>{
        const meter=document.querySelector('#mobile-kit .mk-meter'),
          board=document.getElementById('mk-fps-board'),
@@ -489,6 +661,19 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          /^换位\d+ \/ 8 m/u.test(facts.facts[1])&&
          facts.phase==='finished'&&!facts.activeGuide&&resultLayout,
        detail:facts});
+     const medal=await page.evaluate(()=>{
+       const e=document.getElementById('mk-fps-award'),
+         outcome=document.getElementById('mobile-kit')?.dataset.outcome;
+       const saved=JSON.parse(localStorage.getItem('h5-cf:mastery:v1')||'null');
+       return {outcome,text:e?.textContent,shown:e?.hidden===false,
+         record:saved?.records?.['tags:normal']??null};
+     });
+     fpsExtendedChecks.push({name:'cf-v8-genuine-earned-medal-and-fastest-time',
+       passed:medal.outcome==='won'&&medal.shown&&/★/.test(medal.text||'')&&
+         /最速纪录|最快/.test(medal.text||'')&&
+         medal.record?.wins>=1&&medal.record?.bestMs>0&&
+         medal.record?.bestStars>=1,
+       detail:medal});
    }
    await shot('mobile-terminal');
    if(run.theme==='cf-transport-ship'){
@@ -559,6 +744,14 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:45000});
      const restored=best===await page.locator('#mk-best').innerText();
      check('mobile-save-reload',restored,{savedBest:best,restored,unfinishedRound:'RESTARTS_EXPLICITLY',advance:won&&hasNext});
+     if(shooter){
+       const pb=await page.evaluate(()=>JSON.parse(localStorage.getItem('h5-cf:mastery:v1')||'null')
+         ?.records?.['tags:normal']??null);
+       fpsExtendedChecks.push({name:'cf-v8-personal-best-survives-next-mission-reload',
+         passed:won ? pb?.wins>=1&&pb.bestMs>0&&pb.bestStars>=1
+           : (!pb||pb?.wins===0),
+         detail:{pb,winnerFromOriginalNativeFight:won}});
+     }
      if(shooter && !(won&&hasNext)) await page.locator('#mk-challenges [data-challenge-id="precision"]').tap();
      if(shooter && won&&hasNext) {
        const chosen=await page.locator('#mk-challenges [data-challenge-id="precision"]').getAttribute('aria-pressed');
