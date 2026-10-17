@@ -173,7 +173,13 @@ try{
   const n=navs;await tap('#co-replay');await page.waitForTimeout(700);check('failure-replay-without-navigation',navs===n&&(await snapshot()).phase==='running',{navigationCount:navs});await tap('#co-pause');await tap('#co-select');await tap('[data-level="1"]');await tap('#co-start');
   // Exact crossing position: two right nudges from neutral reach the outer
   // road, rather than assuming a fractional 1.18m nudge is a lane centre.
-  await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();await shot('pedestrian-fall');await page.waitForTimeout(1300);const waiting=await snapshot();await shot('pedestrian-wait');check('pedestrian-stops-but-countdown-runs',waiting.distance===ped.distance&&waiting.elapsed>ped.elapsed+1.1&&waiting.stun>1,{ped,waiting});await page.waitForTimeout(1000);await shot('pedestrian-rising');// Do not idle 1.2 seconds on a moving roadway after recovery: the next
+  await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();
+  // Read the actual timer before software PNG capture can consume the stun.
+  await page.waitForTimeout(800);const waiting=await snapshot();
+  check('pedestrian-stops-but-countdown-runs',
+   waiting.phase==='running'&&waiting.distance===ped.distance&&
+   waiting.elapsed>ped.elapsed+.45&&waiting.stun>0&&waiting.stun<ped.stun,{ped,waiting});
+  await shot('pedestrian-fall');await shot('pedestrian-wait');await page.waitForTimeout(1000);await shot('pedestrian-rising');// Do not idle 1.2 seconds on a moving roadway after recovery: the next
    // physical obstacle is close. Observe actual recovery, make a trusted
    // pause touch immediately, then do slow screenshot/acceptance work safely.
    await page.waitForFunction(minDistance=>{const r=window.__coast.snapshot();return r.phase==='running'&&r.stun===0&&r.distance>minDistance},waiting.distance,{timeout:7000});
@@ -189,11 +195,9 @@ try{
     {pausedAfterRecovery,stillPaused});
   // V4 route keeps every new hazard. Detour around 140, pass the new centre
   // car on its right, then return only after the 205m left barrier.
-  await tap('#co-replay');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
-  // Its real +9m prize is caught around 241m, not at 237m. Only accept
-  // visible, physically earned events after those distances.
-  await waitDistance(231);await shot('barrier-jump');await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');await waitDistance(245);
-  // Public touch nudges to fractional metres instead of forcing a road lane center.
+  // A real one-touch fractional lane/gauge check belongs on open tarmac.
+  // The post-prize car at ~257m is deliberately dangerous and must remain so.
+  await tap('#co-replay');await waitDistance(12);
   const before=await snapshot(),action=before.laneTarget>.7?'left':'right';
   await tap(`[data-action="${action}"]`);await page.waitForTimeout(1000);
   const moved=await snapshot(),expected=Math.max(-ROAD_EDGE_FOR_QA,
@@ -211,6 +215,14 @@ try{
    gauge.width>=100&&gauge.laneMarkOpacity===0&&Number.isFinite(gauge.position)&&
    Math.abs(gauge.position-expectedGauge)<=1,
    {gauge,actualLane:moved.lane,expectedGauge});
+  await shot('fractional-road-position-before-traffic');
+  // Fresh native replay restores the identical high-pressure detour at 115m.
+  await tap('#co-pause');await tap('#co-replay');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
+  // Its real +9m prize is caught around 241m, not at 237m. Only accept
+  // visible, physically earned events after those distances.
+  await waitDistance(231);await shot('barrier-jump');await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');
+  // Public touch nudges to fractional metres instead of forcing a road lane center.
+
   segment('collisions');
  }
  if(mode==='safety'||mode==='all'){
