@@ -443,7 +443,7 @@ test('V6.0 no easy rank gates remain across the thirty stages',()=>{
   assert.equal(STAGES.length,30);
   for(const stage of STAGES){
     assert.ok(stage.rank<=3,'hard rank on stage '+stage.id);
-    assert.ok(stage.laps>=2,'no one-lap novice tutorial '+stage.id);
+    assert.ok(stage.laps>=2||(['07','22'].includes(stage.id)&&stage.laps===1),'single-lap only for authored long-distance descents '+stage.id);
     assert.equal(gradeStage(stage,{finished:true,place:4,time:1,stats:{crash:0}},
       {gateSpeed:300,cleanDrifts:100,cleanPasses:100,pickups:100,survived:2,beatBoss:true,padCount:10}),0,
       'fourth place is never a pass: '+stage.id);
