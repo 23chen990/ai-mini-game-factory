@@ -14,11 +14,11 @@ export const SHORTCUT_PLANS=Object.freeze({
   'race-16':{start:1565,end:1885,width:11.5,neckWidth:8.5,bend:25,label:'Cliffside technical cut'},
   // Every later shortcut is a REAL guarded fork using native Track.project:
   // do not credit laps or reward speed without physical road entry.
-  'race-18':{start:606,end:1027,width:12,neckWidth:9.3,bend:30,label:'Dune chicane inside choice'},
+  'race-18':{start:606,end:1026,width:12,neckWidth:9.3,bend:30,label:'Dune chicane inside choice'},
   'race-22':{start:504,end:891,width:12,neckWidth:9.3,bend:24,label:'Ridge hairpin line'},
   'race-25':{start:1354,end:1707,width:12,neckWidth:9.3,bend:24,label:'Quantum short exit'},
   'race-27':{start:334,end:721,width:12,neckWidth:9.3,bend:30,label:'Cloud serpent crosscut'},
-  'race-30':{start:1728,end:2149,width:11.5,neckWidth:8.8,bend:24,label:'Skyline final-risk apex'},
+  'race-30':{start:1728,end:2148,width:11.5,neckWidth:8.8,bend:24,label:'Skyline final-risk apex'},
 });
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const mod=(v,n)=>((v%n)+n)%n;
