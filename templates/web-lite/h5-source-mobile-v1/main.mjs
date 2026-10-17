@@ -380,16 +380,36 @@ async function boot() {
             ? Math.min(activeChallenge.limitMs / 1000, Math.round(round.elapsedMs / 1000))
             : Math.min(result.value, activeChallenge.target);
         if (result.outcome !== 'running') {
+          // An explicit, opt-in failed-life offer interrupts only a genuine
+          // DEATH-BUDGET loss. This is never a mid-fight forced ad.
+          if(id==='cf-transport-ship'&&result.outcome==='lost'&&
+            phase==='running'&&cfCanOfferRevive({
+              challenge:activeChallenge,metrics,round,progress,config,
+              sdkReady:typeof window.tap?.createRewardedVideoAd==='function',
+              sinceStartupMs:now-startedAt,
+              used:reviveOffered||reviveUsed,declined:reviveDeclined
+            })){
+            reviveOffered=true;
+            pauseRound(round);native.pause();clearInput();
+            $('heading').textContent='本局已达阵亡上限';
+            $('copy').textContent='本次失利可以直接结束并免费重试；也可以自愿完整观看一条激励视频，获得本局额外一次阵亡机会。';
+            $('notice').textContent='';
+            showPhase('revive');
+          }else{
           finishRound(round, progress); native.pause(); clearInput(); persist();
-          recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome);
+          recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome,
+            {assisted:reviveUsed});
+          const actualMetrics=reviveUsed?{...metrics,adRevived:true}:metrics;
           const award=id==='cf-transport-ship'
-            ?cfRecordMastery(cfMastery,activeChallenge,metrics,result.outcome,round.elapsedMs):null;
+            ?cfRecordMastery(cfMastery,activeChallenge,actualMetrics,result.outcome,round.elapsedMs):null;
           persist();
           root.dataset.outcome = result.outcome;
           if(id==='cf-transport-ship'){
             const medal=award?.medal;
             const best=award?.record?.bestMs;
-            $('fps-award').textContent=medal
+            $('fps-award').textContent=reviveUsed
+              ? '本次为激励广告辅助续战 · 无三星与个人最速记录'
+              : medal
               ? '★'.repeat(medal.stars)+'☆'.repeat(3-medal.stars)+' '+
                 medal.label+(award.newBest?' · 最速纪录！':'')+
                 ' · 本局'+(medal.timeMs/1000).toFixed(1)+'秒'+
@@ -399,20 +419,27 @@ async function boot() {
                   ? ' · '+cfNextMedalGoal(activeChallenge,medal):'')
               : '本次未取得勋章 · 完成挑战可解锁个人最速与星级';
           }
-          $('heading').textContent = result.outcome === 'won' ? (activeChallenge.elite ? '⚡ 精英复战成功！' : '✓ ' + activeChallenge.title + '完成！') : (activeChallenge.elite ? '精英复战失败' : '本次挑战未完成');
+          $('heading').textContent = result.outcome === 'won'
+            ? (reviveUsed?'◆ 辅助续战成功！':activeChallenge.elite?'⚡ 精英复战成功！':'✓ '+activeChallenge.title+'完成！')
+            : (activeChallenge.elite?'精英复战失败':'本次挑战未完成');
           $('copy').textContent = id === 'cf-transport-ship'
-            ? cfMissionDebrief(activeChallenge, metrics, result.outcome)
+            ? (reviveUsed?'本局额外获得一次阵亡机会。':'')+
+              cfMissionDebrief(activeChallenge, metrics, result.outcome)
             : `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
           if (id === 'cf-transport-ship')
             renderFacts($('fps-results'), cfResultFacts(activeChallenge,metrics,round.elapsedMs));
-          $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent =
+          const finishedChip=$('challenges').querySelector(
+            `[data-challenge-id="${activeChallenge.id}"] small`);
+          if(finishedChip)finishedChip.textContent =
             id==='cf-transport-ship'&&cfRecordLabel(cfMastery,activeChallenge)!=='尚未通关'
               ?cfRecordLabel(cfMastery,activeChallenge)
-              :result.outcome==='won'?(activeChallenge.elite?'⚡ 精英通关':'✓ 已完成'):'可重试';
+              :result.outcome==='won'?(reviveUsed?'◆ 辅助完成':
+                activeChallenge.elite?'⚡ 精英通关':'✓ 已完成'):'可重试';
           $('best').textContent = progress.best; showPhase('finished');
           // The placement is wired but hidden until the actual H5 account's check_ads_status is verified.
           $('ad').hidden = id==='cf-transport-ship'||config.status !== 1 ||
             !adAllowed(round, progress, now - startedAt);
+          }
         }
       }
       $('score').textContent = round.score;
