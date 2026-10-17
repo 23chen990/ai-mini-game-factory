@@ -57,6 +57,90 @@ function samplesFor(track,plan,scale=1){
     throw Error('Shortcut must earn a small skill-based saving, not a free highway');
   return {samples,length,gain};
 }
+
+/**
+ * V9 drives inside a LOCAL corner: find a 150-290m bend whose endpoint
+ * tangents can be joined by a 75-200m navigable short cut. Never use a
+ * progress/position teleport, and never keep the V8 350-420m parallel roads.
+ * The search uses the ACTUAL final Catmull-Rom native Track (including V9
+ * rhythm and elevation), not stale stage-distance markers.
+ */
+export const V9_SHORTCUT_THEMES=Object.freeze({
+  'race-05':{style:'temple',bend:4,preferred:.32},
+  'race-10':{style:'city',bend:5,preferred:.23},
+  'race-12':{style:'ice',bend:4,preferred:.62},
+  'race-13':{style:'city',bend:7,preferred:.32},
+  'race-16':{style:'cliff',bend:3,preferred:.58},
+  'race-18':{style:'desert',bend:5,preferred:.24},
+  'race-22':{style:'cliff',bend:3,preferred:.17},
+  'race-25':{style:'city',bend:5,preferred:.48},
+  'race-27':{style:'sky',bend:4,preferred:.14},
+  'race-30':{style:'sky',bend:6,preferred:.53},
+});
+const round=(x,n=2)=>Math.round(x*10**n)/10**n;
+const distance2=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
+const segmentClear=(track,points,length,width)=>{
+  // A true off-main fork; a visually painted strip INSIDE the main road
+  // must not count. Compare same-height corridors only.
+  let least=Infinity;
+  for(let i=Math.floor(points.length*.33);i<=Math.floor(points.length*.67);i+=4){
+    const p=points[i],half=width*.5;
+    let near=Infinity;
+    for(let d=0;d<track.length;d+=7){
+      const q=track.sample(d,{});
+      if(Math.abs(q.y-p.y)>4.5)continue;
+      near=Math.min(near,distance2(q,p));
+    }
+    least=Math.min(least,near-(track.halfW+half));
+  }
+  return least;
+};
+export function chooseV9Shortcut(track,course){
+  const theme=V9_SHORTCUT_THEMES[course];
+  if(!theme||!Number.isFinite(track?.length)||track.length<1000||
+     typeof track.sample!=='function')return null;
+  const width=11.5,neckWidth=8.8,options=[];
+  const startLow=track.length*.10,startHigh=track.length*.81;
+  // Explore natural corners: only a 140-270m local sector is eligible.
+  for(let start=startLow;start<startHigh;start+=27){
+    const a=track.sample(start,{});
+    for(const span of [158,176,194,212,232,254,276]){
+      const end=start+span;
+      if(end>track.length-140)continue;
+      const b=track.sample(end,{}),middle=track.sample(start+span*.5,{});
+      const chord=distance2(a,b);
+      if(chord<70||chord>198||span-chord<39||span-chord>120||
+        Math.abs(a.y-b.y)>16)continue;
+      const area=Math.abs((b.x-a.x)*(middle.z-a.z)-(b.z-a.z)*(middle.x-a.x))/chord;
+      if(area<18)continue;
+      const cfg={start,end,width,neckWidth,bend:theme.bend,
+        style:theme.style,label:theme.style+' apex cut'};
+      let shape;
+      try{shape=samplesFor(track,cfg,1);}catch{continue;}
+      if(shape.length>212||shape.gain<25||shape.gain>86||
+        Math.abs(a.y-b.y)/shape.length>.115)continue;
+      // Prefer short, visibly meaningful cuts near the authored sector,
+      // while allowing search elsewhere if old anchor no longer fits.
+      const normStart=start/track.length;
+      const closeness=Math.min(Math.abs(normStart-theme.preferred),
+        1-Math.abs(normStart-theme.preferred));
+      const value=shape.gain*.6+(210-shape.length)*.17+
+        Math.min(area,90)*.15-closeness*32;
+      options.push({cfg,shape,value});
+    }
+  }
+  options.sort((a,b)=>b.value-a.value);
+  // Scan just the strongest candidates against both physical road surfaces.
+  for(const candidate of options.slice(0,24)){
+    const clearance=segmentClear(track,candidate.shape.samples,
+      candidate.shape.length,candidate.cfg.neckWidth);
+    if(clearance>=.35)
+      return {...candidate.cfg,estimatedLength:round(candidate.shape.length),
+        estimatedGain:round(candidate.shape.gain),clearance:round(clearance)};
+  }
+  return null; // Build must fail closed, never silently turn a bad fork into a shortcut.
+}
+
 function nearest(samples,x,z){
   let best=null;
   for(let i=0;i<samples.length-1;i++){
@@ -74,13 +158,14 @@ function nearest(samples,x,z){
   }
   return best;
 }
-export function installPhysicalShortcut(track,course,{v8=false}={}){
+export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
   const original=SHORTCUT_PLANS[course];if(!original)return null;
-  // World-space distance anchors must track V8's genuine physical stretch.
-  // Keep the V7 2-argument API stable for historical tests and old replays.
-  const scale=v8 ? (V8_COURSES[course.slice(5)]?.stretch??1) : 1;
-  const cfg={...original,start:original.start*scale,
-    end:original.end*scale,bend:original.bend*scale};
+  // V9 joins a short LOCAL apex of the actual final native track; no V8
+  // fixed-distance anchors may be reused after the route is reshaped.
+  const scale=v9 ? 1 : v8 ? (V8_COURSES[course.slice(5)]?.stretch??1) : 1;
+  const cfg=v9 ? chooseV9Shortcut(track,course) : {...original,
+    start:original.start*scale,end:original.end*scale,bend:original.bend*scale};
+  if(!cfg)throw Error('No safe short apex fork on '+course+'; revise road layout');
   if(!track||typeof track.sample!=='function'||typeof track.project!=='function')
     throw Error('Physical shortcut needs real native Track');
   const {samples,length,gain}=samplesFor(track,cfg,scale),start=cfg.start,end=cfg.end;
@@ -253,7 +338,7 @@ export function installPhysicalShortcut(track,course,{v8=false}={}){
     ctx.strokeStyle='rgba(90,235,255,.98)';ctx.lineWidth=4;ctx.stroke();
     return true;
   };
-  const shortcut={course,start,end,scale,entrySide,exitSide,width:cfg.width,neckWidth:cfg.neckWidth,
+  const shortcut={course,start,end,scale,v9,style:cfg.style??'legacy',entrySide,exitSide,width:cfg.width,neckWidth:cfg.neckWidth,
     length,gain,samples,widthAt,opening,project,recover,terrainProxy,buildMesh,drawMinimap};
   track.__RACE_SHORTCUT__=shortcut;track.project=project;
   return shortcut;
