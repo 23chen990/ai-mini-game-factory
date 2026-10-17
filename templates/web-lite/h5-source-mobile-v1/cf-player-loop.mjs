@@ -5,6 +5,11 @@
  */
 import {challengeResult} from './engine.mjs';
 
+/** Campaign level order is fixed for the 8-stage V13 internal build:
+ * Chapter 1 uses the original ship, Chapter 2 uses authored depot geometry. */
+export function cfArenaForLevel(index) {
+  return Number.isInteger(index)&&index>=4&&index<8?'depot':'ship';
+}
 export const CF_CONTROL_DEFAULTS=Object.freeze({sensitivity:1,opacity:.85});
 const CF_IDS=new Set(['tags','precision','survive','defense','assault','marksman','evac','counter']);
 const GRADE_LABELS=['未完成','完成','优秀','完美'];
