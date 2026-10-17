@@ -253,7 +253,7 @@ export function installPhysicalShortcut(track,course,{v8=false}={}){
     ctx.strokeStyle='rgba(90,235,255,.98)';ctx.lineWidth=4;ctx.stroke();
     return true;
   };
-  const shortcut={course,start,end,scale,width:cfg.width,neckWidth:cfg.neckWidth,
+  const shortcut={course,start,end,scale,entrySide,exitSide,width:cfg.width,neckWidth:cfg.neckWidth,
     length,gain,samples,widthAt,opening,project,recover,terrainProxy,buildMesh,drawMinimap};
   track.__RACE_SHORTCUT__=shortcut;track.project=project;
   return shortcut;
