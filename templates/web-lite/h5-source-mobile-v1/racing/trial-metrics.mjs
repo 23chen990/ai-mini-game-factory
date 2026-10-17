@@ -10,7 +10,7 @@ export const RACE_TRIAL_KEY = 'h5-mobile:qq-speed:playtest:v1';
 const MAX_RECENT = 40;
 const MAX_RAW_LENGTH = 16000;
 const safeCourse = value => typeof value === 'string' &&
-  /^race-(0[1-9]|1[0-6])$/.test(value);
+  /^race-(0[1-9]|[12][0-9]|30)$/.test(value);
 const safeCount = value => Number.isSafeInteger(value) && value >= 0
   ? Math.min(value, 1000000) : 0;
 const safeSeconds = value => typeof value === 'number' &&
