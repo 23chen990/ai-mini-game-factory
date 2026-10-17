@@ -161,6 +161,7 @@ export function cfEliteUnlocked(record) {
 }
 /** First rifle mission trains with auto-fire, while expert needs genuine touch input. */
 export function cfAutoFireEligible(challenge, realHits = 0) {
+  if(challenge?.lite===true)return false;
   return challenge?.kind === 'hits' && challenge.elite !== true &&
     (challenge.drill !== 'reposition' || (Number.isFinite(realHits) &&
       realHits < challenge.openingHits));
@@ -203,6 +204,7 @@ export function cfAdvanceDrill(challenge, previous = null, native = {}) {
 }
 /** Preview copy mirrors each mission's actual input mechanics. */
 export function cfTouchTutorial(challenge) {
+  if(challenge?.lite===true)return '右手拖动瞄准 · 按住开火追踪';
   if (challenge?.kind === 'hits')
     return challenge.drill==='reposition'
       ? (challenge.elite ? '精英手动首枪，横移后按住开火拖动瞄准' : '首枪自动开火；换位后按住开火拖动瞄准')
@@ -216,6 +218,7 @@ export function cfTouchTutorial(challenge) {
 }
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
+  if(challenge.lite===true)return Math.ceil(challenge.limitMs/1000)+'秒 · '+challenge.objective;
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
     ? challenge.elite===true
       ? Math.ceil(challenge.limitMs/1000)+'秒精英突围：手动首枪，换位'+
@@ -1318,7 +1321,7 @@ export function createFpsMobileUx(game, root, doc) {
         // Scripted level opening: reposition one EXISTING enemy before play,
         // rather than spawning a dummy or giving the player free hits.
         const scout=enemies[0];
-        if(activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true&&
+        if(activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true&&activeChallenge.lite!==true&&
            Array.isArray(game.map?.spawns?.[scout.team])) {
           const secondary=chooseFirstEncounterSpot({
             player:p,world:game.world,nav:game.nav,actors:game.actors,
@@ -1368,7 +1371,7 @@ export function createFpsMobileUx(game, root, doc) {
     // blindly charging a remembered enemy's position through container walls.
     // Both coordinates are genuinely observed player history, never hidden
     // enemy world positions. Expert players still pursue sightings directly.
-    const follow=activeChallenge?.drill==='reposition'&&drill?.stage===2;
+    const follow=activeChallenge?.lite!==true&&activeChallenge?.drill==='reposition'&&drill?.stage===2;
     const observedShotLane=follow&&activeChallenge?.elite!==true&&firstHitSpot
       ? [firstHitSpot.x,firstHitSpot.z] : null;
     const known=follow?lastVisibleEnemy:null;
@@ -1439,7 +1442,7 @@ export function createFpsMobileUx(game, root, doc) {
   }
 
   function nudgeAim(forceFiring = false) {
-    if(activeChallenge?.elite===true)return;
+    if(activeChallenge?.elite===true||activeChallenge?.lite===true)return;
     const p = game.player, cam = game.renderer?.camera;
     // After the tutorial hit we stop automatic shooting and idle aim snaps.
     // A small native sight correction remains ONLY while the user holds fire,
@@ -1862,7 +1865,7 @@ export function createFpsMobileUx(game, root, doc) {
         }
         previousPosition = { x:p.pos.x, z:p.pos.z };
       } else previousPosition = null;
-      if(active&&activeChallenge?.drill==='reposition'&&p) {
+      if(active&&activeChallenge?.drill==='reposition'&&activeChallenge.lite!==true&&p) {
         const updated=cfAdvanceDrill(activeChallenge,drill,
           {hits:p.stats?.hits||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z});
         if(updated?.stage!==drill?.stage) {
@@ -1974,7 +1977,7 @@ export function createFpsMobileUx(game, root, doc) {
         routeLastAt=now+900;
         if(activeChallenge?.kind==='defend'){
           routePath=null;
-        }else if(activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
+        }else if(activeChallenge?.lite!==true&&activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
           const deaths=p.stats?.d||0;
           if(!flankGoal||deaths!==flankDeaths){
             flankDeaths=deaths;
