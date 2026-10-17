@@ -283,13 +283,13 @@ test('弯道牌只建轻量 Sprite，换图时会释放图标材质/贴图而不
   assert.equal(level.objects.length,0);
 });
 
-test('V3.6 gives each of the 16 career stages an independent drivable spline identity',()=>{
+test('V6.0 gives all 30 career stages an independent drivable spline identity',()=>{
   const layouts=fixture();
   applyTrackDesign(layouts);
-  const ids=Array.from({length:16},(_,i)=>'race-'+String(i+1).padStart(2,'0'));
+  const ids=Array.from({length:30},(_,i)=>'race-'+String(i+1).padStart(2,'0'));
   assert.equal(ids.every(id=>Array.isArray(layouts[id]?.points)),true);
   const unique=new Set(ids.map(id=>JSON.stringify(layouts[id].points)));
-  assert.equal(unique.size,16,'no stage should silently reuse a previous physical spline');
+  assert.equal(unique.size,30,'no stage should silently reuse a previous physical spline');
   const mapOf=id=>CAREER_COURSE_MAPS[Number(id.slice(-2))-1];
   for(const id of ids){
     const base=layouts[mapOf(id)];
@@ -305,12 +305,12 @@ test('V3.6 gives each of the 16 career stages an independent drivable spline ide
 });
 
 
-test('V3.7 keeps sixteen FULL hand-authored outlines, not 4 routes with a few point edits',()=>{
+test('V6.0 keeps thirty FULL hand-authored outlines, not 4 routes with a few point edits',()=>{
   const layouts=fixture();
   applyTrackDesign(layouts);
-  assert.equal(Object.keys(COURSE_BLUEPRINTS).length,16);
+  assert.equal(Object.keys(COURSE_BLUEPRINTS).length,30);
   const titles=new Set(),raw=new Set();
-  for(let n=1;n<=16;n++){
+  for(let n=1;n<=30;n++){
     const id=String(n).padStart(2,'0'),d=careerCourseDetails(id),p=layouts['race-'+id].points;
     assert.ok(d?.title && d?.feel && d?.biome && d?.english,'real course identity '+id);
     assert.equal(titles.has(d.title),false,'same name reused for distinct stage');
@@ -321,8 +321,8 @@ test('V3.7 keeps sixteen FULL hand-authored outlines, not 4 routes with a few po
     const coords=new Set(p.slice(1).map(x=>x.slice(0,2).join(',')));
     assert.ok(coords.size>=11,'no cosmetic 2-3 point variant '+id);
   }
-  assert.equal(titles.size,16);
-  assert.equal(raw.size,16);
+  assert.equal(titles.size,30);
+  assert.equal(raw.size,30);
   for(const id of ['03','05','07','09','12','15','16'])
     assert.notDeepEqual(layouts['race-'+id].points,
       layouts[careerCourseDetails(id).biome].points,'no old four-map reuse '+id);
@@ -344,13 +344,13 @@ test('V3.7 source-themed pickup placement follows REAL route, and native four-sc
   assert.equal(testTheme.curbB,'#142034');
   const identity=new Set();
   const padRoutes=[];
-  for(let number=1;number<=16;number++){
+  for(let number=1;number<=30;number++){
     const id='race-'+String(number).padStart(2,'0');
     const plan=createRaceTrackTheme(source,physics,id);
     identity.add(plan.curbA);
     padRoutes.push(JSON.stringify(plan.boostPads));
   }
-  assert.equal(identity.size,16,'sixteen real native tracks need sixteen visible road palettes');
+  assert.equal(identity.size,30,'thirty real native tracks need sixteen visible road palettes');
   assert.ok(new Set(padRoutes).size>=12,'course-specific physical reward lanes may not reuse one pattern');
   assert.ok(testTheme.boostPads.every(p=>!('at' in p)&&p.f>.07&&p.f<.94));
   assert.equal(testTheme.tunnels.length,1);
@@ -396,14 +396,14 @@ test('V4.2 numbered physical course gates and biome-specific tall props exist in
 test('V3.7 every career track has a distinct sky palette without changing demo scene config',()=>{
   const original=Object.freeze({top:'#112233',horizon:'#445566',bottom:'#778899',sunColor:'#ffffff'});
   const skies=[];
-  for(let n=1;n<=16;n++){
+  for(let n=1;n<=30;n++){
     const id='race-'+String(n).padStart(2,'0');
     const sky=createRaceSky(original,id);
     assert.notEqual(sky,original);
     assert.equal(sky.sunColor,original.sunColor);
     skies.push([sky.top,sky.horizon,sky.bottom].join('/'));
   }
-  assert.equal(new Set(skies).size,16);
+  assert.equal(new Set(skies).size,30);
   assert.equal(createRaceSky(original,'snow'),original,'native demo keeps original weather');
   assert.throws(()=>createRaceSky(original,'race-99'),/Unknown stage sky/);
 });
@@ -412,10 +412,10 @@ test('V3.7 every career track has a distinct sky palette without changing demo s
 test('V3.8 each independent career course contains authored two-key S-bend sectors',()=>{
   const layouts=fixture();applyTrackDesign(layouts);
   const entries=Object.entries(COURSE_TECHNICAL_SECTORS);
-  assert.equal(entries.length,16);
+  assert.equal(entries.length,30);
   for(const [id,sectors] of entries){
     const blueprint=COURSE_BLUEPRINTS[id],base=blueprint[4].split(' ');
-    assert.ok(sectors.length>=2 && sectors.length<=4,id+' diverse difficulty progression');
+    assert.ok(sectors.length>=2 && sectors.length<=5,id+' diverse difficulty progression');
     const course=layouts['race-'+id];
     assert.equal(course.points.length,base.length+sectors.length*2,id+' spline truly built with extra corners');
     assert.ok(sectors.every(([i,amp,side])=>i>=1&&i<base.length-1&&amp>=12&&amp<=28&&[-1,1].includes(side)));
