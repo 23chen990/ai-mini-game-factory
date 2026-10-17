@@ -207,7 +207,7 @@ async function boot() {
         };
         g.__mkAwmKillHooked = true;
       }
-      native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
+      native.start = c => { fpsUx?.beforeNativeStart?.(); g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
         kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,
         alive:g.player?.alive===true,nativeRespawnSec:g.player?.respawnT||0,
