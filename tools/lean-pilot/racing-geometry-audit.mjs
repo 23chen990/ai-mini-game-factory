@@ -99,7 +99,7 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
   const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course,{v8:true,v9:true,v10:true});
   if(!fork || !(fork.gain>=24&&fork.gain<=82) ||
      !(fork.length>=75&&fork.length<=210) ||
-     !(fork.neckWidth>=8.5&&fork.neckWidth<=11) ||
+     !(fork.neckWidth>=7.0&&fork.neckWidth<=8.3) || !fork.v10 || !fork.skillAction ||
      !(fork.width>=11&&fork.width<=14) || !Number.isFinite(fork.length))
     throw Error('Shortcut is not an honest shorter physical road: '+course);
   const p={},details=[];
