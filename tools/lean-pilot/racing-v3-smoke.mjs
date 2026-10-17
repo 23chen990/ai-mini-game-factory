@@ -316,7 +316,9 @@ try {
         return {name:el.dataset.raceAction||'wheel',
           left:rect.left,right:rect.right,top:rect.top,bottom:rect.bottom,
           width:rect.width,height:rect.height,
-          visible:cs.display!=='none'&&cs.visibility!=='hidden'&&!el.hidden};
+          visible:cs.display!=='none'&&cs.visibility!=='hidden'&&!el.hidden,
+          centerHit:el.contains(document.elementFromPoint(rect.left+rect.width/2,
+            rect.top+rect.height/2))};
       };
       const targets=selectors.map(target);
       root.dataset.itemMode=prior;
@@ -329,7 +331,7 @@ try {
     const sprayNitroGap=vGap(byName.small,byName.nitro);
     const itemDriftGap=vGap(byName.item,byName.drift);
     for(const [i,a] of boxes.entries()){
-      if(!a.visible||a.width<46||a.height<46||a.left<-.5||a.top<-.5||
+      if(!a.visible||!a.centerHit||a.width<46||a.height<46||a.left<-.5||a.top<-.5||
          a.right>width+.5||a.bottom>height+.5)
         fail('Phone has a hidden, clipped or too-small manual touch target at '+
           width+'x'+height+': '+JSON.stringify(a));
