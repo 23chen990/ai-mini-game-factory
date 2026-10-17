@@ -1,4 +1,4 @@
-import { shapeV9RhythmSegments } from './v9-course-director.mjs';
+import { shapeV9RhythmSegments, V9_WIDTH_BANDS } from './v9-course-director.mjs';
 import { EXPANSION_COURSES } from './career-expansion.mjs';
 import { applyV8CourseGeometry, V8_COURSES } from './v8-course-geometry.mjs';
 /** V3.5: Four distinct ORIGINAL racing rhythms inspired by kart-racer design principles.
@@ -226,7 +226,8 @@ export function createCareerLayouts(layouts, { v8 = false, v9 = false } = {}) {
     const signature=JSON.stringify(points);
     if(fingerprints.has(signature))throw Error('Duplicate authored course shape '+id);
     fingerprints.add(signature);
-    layouts['race-'+id]={width:COURSE_ROAD_WIDTHS[id]??base.width,points};
+    layouts['race-'+id]={width:COURSE_ROAD_WIDTHS[id]??base.width,points,
+      ...(v9?{v9WidthProfile:V9_WIDTH_BANDS[id]}:{})};
   }
   if(fingerprints.size!==CAREER_COURSE_MAPS.length||titles.size!==CAREER_COURSE_MAPS.length)
     throw Error('Expected '+CAREER_COURSE_MAPS.length+' distinct hand-authored courses');
