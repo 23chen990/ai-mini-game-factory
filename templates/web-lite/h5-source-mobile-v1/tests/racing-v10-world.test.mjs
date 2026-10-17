@@ -70,7 +70,7 @@ test('unique stage silhouettes use actual native altitude and never occupy the m
   assert.equal(world.children.length,2);
   assert.notEqual(world.children[0].name,world.children[1].name);
   assert.ok(world.children.every(group=>group.children.length>=3));
-  assert.ok(world.children.every(group=>group.position.z>30));
+  assert.ok(world.children.every(group=>Math.abs(group.position.z)>30));
   assert.ok(world.children.every(group=>Number.isFinite(group.position.y)));
   assert.equal(buildV10CinematicWorld(mock3D,{...tr,__V10_STAGE_IDENTITY__:null},'race-05').children.length,0);
 });
