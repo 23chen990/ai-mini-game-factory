@@ -130,3 +130,31 @@ test('phone follows closer car yet looks ahead on V9 technical bends',()=>{
  }
  assert.equal(camera(844,390),wide);
 });
+
+test('first mobile frame uses safe rendering budget, saved user preference still wins',()=>{
+  const quality=need('initialRaceQuality');
+  assert.equal(quality(null,true),'low');
+  assert.equal(quality(undefined,false),'mid');
+  assert.equal(quality('high',true),'high');
+  assert.equal(quality('mid',true),'mid');
+  assert.equal(quality('low',false),'low');
+});
+test('phone downhill camera samples true road elevation, avoids airborne/fork guesses',()=>{
+  const offset=need('racePhoneLookOffset');
+  const road={halfW:10,sample(d){return {y:110-d*.12}}};
+  const car={y:104,proj:{d:50,lat:1},airborne:false};
+  assert.ok(offset(road,car,8)<0,'downhill road ahead lowers the look point');
+  assert.equal(offset(road,{...car,airborne:true},8),0);
+  assert.equal(offset(road,{...car,proj:{d:50,lat:60}},8),0);
+  assert.equal(offset(null,car,8),0);
+  assert.equal(offset({sample(){return {y:Infinity}}},car,8),0);
+  const climb={halfW:9,sample(d){return {y:100+d*.6}}};
+  assert.ok(offset(climb,{y:100,proj:{d:50,lat:1}},8)>0);
+});
+test('manual graphics cannot become unsteerable at sustained 14 FPS',()=>{
+  const Monitor=need('QualityMonitor'),monitor=new Monitor();
+  monitor.manual=true;let downgraded=null;
+  for(let i=0;i<30;i++)downgraded=monitor.frame(.075,'high')??downgraded;
+  assert.equal(downgraded,'mid','emergency one-level transient downgrade');
+  assert.equal(monitor.manual,true,'do not rewrite stored preference');
+});

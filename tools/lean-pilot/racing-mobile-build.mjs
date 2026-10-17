@@ -12,6 +12,50 @@ const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
 export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'wheel-steering.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v9-course-director.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
 
+/** Mobile GPU budget: don't allocate native multisample anti-aliasing,
+ * shadows and half-float post-processing before the racing overlay boots.
+ * The player may still explicitly select balanced/clear after startup.
+ * Fail closed against a new unreviewed upstream Three.js constructor. */
+export function patchMobileInitialRendering(source) {
+  const changes = [
+    ["quality: IS_TOUCH ? 'mid' : 'high'", "quality: IS_TOUCH ? 'low' : 'high'"],
+    ["canvas: this.canvas, antialias: true, powerPreference: 'high-performance'",
+     "canvas: this.canvas, antialias: !IS_TOUCH, powerPreference: 'high-performance'"],
+  ];
+  if (changes.every(([,next])=>source.includes(next))) return source;
+  if (changes.some(([,next])=>source.includes(next))) throw Error('Partial native phone render patch');
+  for (const [original] of changes) {
+    if (source.split(original).length !== 2) throw Error('Pinned mobile render anchor changed');
+  }
+  let out=source;
+  for (const [from,to] of changes) out=out.replace(from,to);
+  return out;
+}
+
+/** Mobile mid tier should not run expensive half-float post processing and
+ * dynamic shadows. Keep the original THREE pipeline for desktop and for an
+ * explicit high-quality choice, while offering an inexpensive 1.2x mid tier. */
+export function patchMobileMidRendering(source) {
+  const changes = [
+    ["q === 'mid' ? Math.min(dpr, 1.5) : 1",
+     "q === 'mid' ? Math.min(dpr, IS_TOUCH ? 1.2 : 1.5) : 1"],
+    ["this.renderer.shadowMap.enabled = q !== 'low';",
+     "this.renderer.shadowMap.enabled = q !== 'low' && !(IS_TOUCH && q === 'mid');"],
+    ["this.sun.castShadow = q !== 'low';",
+     "this.sun.castShadow = q !== 'low' && !(IS_TOUCH && q === 'mid');"],
+    ["if (q === 'low') return;",
+     "if (q === 'low' || (IS_TOUCH && q === 'mid')) return;"],
+  ];
+  if (changes.every(([,next])=>source.includes(next))) return source;
+  if (changes.some(([,next])=>source.includes(next))) throw Error('Partial native medium render patch');
+  for (const [old] of changes) {
+    if (source.split(old).length !== 2) throw Error('Pinned medium render anchor changed');
+  }
+  let out=source;
+  for (const [from,to] of changes) out=out.replace(from,to);
+  return out;
+}
+
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
   const jitter = 'if (P.nitroTime > 0) {\n      cam.position.x';
@@ -27,7 +71,7 @@ export function patchRacingSource(source) {
   if (!output.includes('this.mobileMode ? raceBloomStrength(')) {
     const bloom = "if (this.bloom) this.bloom.strength = (this.settings.quality === 'high' ? 0.75 : 0.6) + (P && P.nitroTime > 0 ? 0.3 : 0);";
     if (output.split(bloom).length !== 2) throw Error('Racing bloom anchor changed');
-    output = output.replace("import { raceCameraFov } from './race-session.mjs';", "import { raceCameraFov, raceBloomStrength, racePhoneCamera } from './race-session.mjs';")
+    output = output.replace("import { raceCameraFov } from './race-session.mjs';", "import { raceCameraFov, raceBloomStrength, racePhoneCamera, racePhoneLookOffset } from './race-session.mjs';")
       .replace(bloom, "if (this.bloom) this.bloom.strength = this.mobileMode ? raceBloomStrength(P && P.nitroTime > 0) : (this.settings.quality === 'high' ? 0.75 : 0.6) + (P && P.nitroTime > 0 ? 0.3 : 0);");
   }
   // The native engine owns Three.js. Share its already loaded namespace with
@@ -220,9 +264,9 @@ export function patchV8SteeringResponse(source) {
 /** Tight camera yaw and pitch response so downslope/rapid opposite lock are visible. */
 export function patchV8CameraFeel(source) {
   const original='this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 4.5 : 7, dt);';
-  const revised='this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 9 : 12, dt);';
+  const revised='this.camYaw = dampAngle(this.camYaw, yawT, this.mobileMode ? (P.drifting ? 9 : 12) : (P.drifting ? 4.5 : 7), dt);';
   const heightOriginal='this.camPos.y = damp(this.camPos.y, want.y, 8, dt);';
-  const heightRevised='this.camPos.y = damp(this.camPos.y, want.y, 12, dt);';
+  const heightRevised='this.camPos.y = damp(this.camPos.y, want.y, this.mobileMode ? 12 : 8, dt);';
   if(source.includes(revised)&&source.includes(heightRevised))return source;
   if(source.split(original).length!==2 || source.split(heightOriginal).length!==2)
     throw Error('V8 mobile camera follow anchor changed');
@@ -235,7 +279,9 @@ export function patchDualPlatformCamera(source) {
     ['const m = modes[this.camMode];',
      'const m = this.mobileMode ? racePhoneCamera(window.innerWidth, window.innerHeight) : modes[this.camMode];'],
     ['const dist = m.dist + Math.abs(P.s) * 0.018 + boostPull;',
-     'const dist = m.dist + Math.abs(P.s) * (this.mobileMode ? 0.010 : 0.018) + (this.mobileMode ? boostPull * .25 : boostPull);']
+     'const dist = m.dist + Math.abs(P.s) * (this.mobileMode ? 0.010 : 0.018) + (this.mobileMode ? boostPull * .25 : boostPull);'],
+    ['const look = new THREE.Vector3(P.x + Math.sin(this.camYaw) * m.look, P.y + m.lookH, P.z + Math.cos(this.camYaw) * m.look);',
+     'const look = new THREE.Vector3(P.x + Math.sin(this.camYaw) * m.look, P.y + m.lookH + (this.mobileMode ? racePhoneLookOffset(this.track,P,m.look) : 0), P.z + Math.cos(this.camYaw) * m.look);']
   ];
   const applied=transforms.filter(([,to])=>source.includes(to)).length;
   if(applied===transforms.length)return source;
@@ -525,7 +571,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   let adaptedMain = beforeMain;
-  for(const patch of [patchRacingSource,patchV8CameraFeel,patchDualPlatformCamera,patchV8PointToPoint,
+  for(const patch of [patchMobileInitialRendering,patchMobileMidRendering,patchRacingSource,patchV8CameraFeel,patchDualPlatformCamera,patchV8PointToPoint,
     patchManualNitroEdge,patchCareerRouteSource,patchShortcutNativeWorld,
     patchCourseSkyAndScenery,patchRaceDesertRelief])
     adaptedMain=patch(adaptedMain);

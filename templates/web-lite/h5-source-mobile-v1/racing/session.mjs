@@ -8,6 +8,9 @@ export function setRaceSound(audio, enabled) {
   return true;
 }
 export const normalizeRaceQuality = value => ['low', 'mid', 'high'].includes(value) ? value : 'mid';
+/** V6.2 handset-first GPU budget; an explicit saved preference still wins. */
+export const initialRaceQuality = (saved, touch) =>
+  ['low','mid','high'].includes(saved) ? saved : touch ? 'low' : 'mid';
 /** A narrow keyboard-controlled desktop window must not become a phone HUD. */
 export function raceScreenProfile(width, height, {coarse = false, anyCoarse = false, touchPoints = 0} = {}) {
   const shortSide=Math.min(width,height);
@@ -19,6 +22,20 @@ const PHONE_CAMERA=Object.freeze({dist:9.45,h:3.45,look:7.8,lookH:1.45});
 const WIDE_PHONE_CAMERA=Object.freeze({dist:9.1,h:3.3,look:7.5,lookH:1.45});
 export function racePhoneCamera(width,height) {
   return width/Math.max(1,height)>=2.17?WIDE_PHONE_CAMERA:PHONE_CAMERA;
+}
+/** Aim slightly into the actual road elevation on steep V9 descents/crests.
+ * The road is read-only: never edit racing geometry, steering or checkpoints.
+ * Off-road/airborne/fork-ambiguous states use the stable native camera. */
+export function racePhoneLookOffset(track, player, lookMeters) {
+  const proj=player?.proj;
+  if(player?.airborne || typeof track?.sample!=='function' ||
+     !Number.isFinite(player?.y) || !Number.isFinite(proj?.d) ||
+     !Number.isFinite(lookMeters) || lookMeters<=0) return 0;
+  if(Number.isFinite(proj.lat) && Math.abs(proj.lat) >
+     (Number.isFinite(track.halfW) ? track.halfW+7 : 25)) return 0;
+  const ahead=track.sample(proj.d+Math.max(12,lookMeters*2.5),{});
+  const delta=ahead?.y-player.y;
+  return Number.isFinite(delta) ? Math.max(-2.2,Math.min(2.2,delta*.35)) : 0;
 }
 export const raceReady = game => !!(game?.track && game.input && !game.loading);
 /** Never begin or charge fuel for a stage if its physical track failed to load. */
@@ -69,6 +86,7 @@ export class QualityMonitor {
     this.slow = 0; this.samples = 0; this.dropped = false; this.manual = false;
     this.windowTime = 0; this.currentQuality = null; this.averageDt = 1 / 60; this.fps = 60;
     this.consecutiveStalls = 0;
+    this.severeManualLag = 0;
   }
   frame(dt, quality) {
     if (!Number.isFinite(dt) || dt <= 0) return null;
@@ -76,7 +94,7 @@ export class QualityMonitor {
     // >=250ms *visible* frames are: don't leave very slow phones on high.
     if (dt > .25) {
       this.fps = Math.max(1, Math.round(1 / dt));
-      if (this.manual || quality === 'low') return null;
+      if (quality === 'low') return null;
       this.consecutiveStalls++;
       if (this.consecutiveStalls < 4) return null;
       this.consecutiveStalls = 0;
@@ -88,7 +106,20 @@ export class QualityMonitor {
     this.consecutiveStalls = 0;
     this.averageDt = this.averageDt * .9 + dt * .1;
     this.fps = Math.round(Math.min(120, Math.max(1, 1 / this.averageDt)));
-    if (this.manual || quality === 'low') return null;
+    if (quality === 'low') return null;
+    // Respect normal manual preference. Repeated near-14-FPS frames are a
+    // safety exception: a still-picture racing game cannot steer reliably.
+    // Only the CURRENT session is downgraded, never the stored preference.
+    if (this.manual) {
+      this.severeManualLag = dt>.06 ?
+        this.severeManualLag + Math.min(dt,.12) :
+        Math.max(0,this.severeManualLag-dt*2);
+      if(this.severeManualLag<1.3)return null;
+      this.severeManualLag=0;
+      const lower=quality==='high'?'mid':'low';
+      this.currentQuality=lower;this.dropped=true;
+      return lower;
+    }
     if (this.currentQuality !== quality) {
       this.currentQuality = quality;
       this.slow = 0; this.samples = 0; this.windowTime = 0;
