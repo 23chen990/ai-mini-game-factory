@@ -83,7 +83,7 @@ test('actual esbuild script injection keeps valid $& tokens and exactly one clos
 test('V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes',()=>{
   const layouts = "export const LAYOUTS = { city: {}, egypt: {}, snow: {}, aegean: {} };";
   const patchedLayouts = api.patchRaceLayouts(layouts);
-  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS, \{ v8: true \}\)/);
+  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS, \{ v8: true, v9: true \}\)/);
   assert.equal(api.patchRaceLayouts(patchedLayouts),patchedLayouts);
   assert.throws(()=>api.patchRaceLayouts('const X = {};'), /Pinned track/);
   const src = "import * as THREE from 'three';\nexport class ItemSystem {\n  constructor() {\n    this.foo=1;\n  }\n\n  reset() {}\n}";
@@ -160,7 +160,7 @@ test('native fork adapters are exact, idempotent and preserve original accelerat
     'P.update(DT, first ? pin : noEdge, active, this.itemMode);',
   ].join('\n');
   const patched=api.patchShortcutNativeWorld(world);
-  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse, \{v8:true\}\)/);
+  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse, \{v8:true,v9:true\}\)/);
   assert.match(patched,/terrainProxy\(track\)/);
   assert.match(patched,/physical|buildMesh\(THREE, ground.heightAt\)/);
   assert.match(patched,/__RACE_SHORTCUT__\?\.recover\(P\)/);
