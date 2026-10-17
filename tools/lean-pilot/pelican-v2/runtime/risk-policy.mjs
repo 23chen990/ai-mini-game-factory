@@ -111,6 +111,18 @@ export function decideRiskAction(view,state){
   &&view.distance>=target.distance-TARGET_WINDOW_LEAD_METERS
   &&view.distance<=target.distance+TARGET_WINDOW_TRAIL_METERS;
  const rewardLane=lanes.findIndex(lane=>lane?.jumpReward===true&&lane.kind==='barrier');
+ // Back-to-back barriers may leave a different reward icon on the radar while
+ // the correctly lined-up next barrier is already ready to jump. The button
+ // is public player-visible feedback from the actual physics, not QA state.
+ // Give it priority over an unrelated fish/reward lane; never jump into a car.
+ if(inTargetWindow&&!state.jumpIssued&&current===state.committedRewardLane&&
+    view.jumpReady===true&&view.distance<target.distance-3.15&&
+    !laneIsVehicle(lanes[current])){
+  nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;
+  nextState.lastJumpCountdown=Number.isFinite(lanes[current]?.seconds)?lanes[current].seconds:null;
+  nextState.goldAtJump=Number.isFinite(view.goldCounter)?view.goldCounter:null;
+  return decision('jump',nextState,'confirmed-next-barrier-ready',current,nextState.lastJumpCountdown);
+ }
  if(inTargetWindow&&!state.jumpIssued&&rewardLane>=0&&!laneIsVehicle(lanes[rewardLane])&&
   (current===rewardLane||Number.isFinite(lanes[rewardLane].seconds)&&
    lanes[rewardLane].seconds<=(Math.abs(current-rewardLane)===2?3.65:2.7))){
