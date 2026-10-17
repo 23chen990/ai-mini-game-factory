@@ -1,6 +1,6 @@
 /* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
-import {cfStartDefense,cfStepDefense} from './engine.mjs';
+import {cfStartDefense,cfStepDefense,cfAdvanceAssault} from './engine.mjs';
 export function teamSide(ownTeam, actorTeam) {
   if (!['BL', 'GR'].includes(ownTeam) || !['BL', 'GR'].includes(actorTeam)) return 'unknown';
   return ownTeam === actorTeam ? 'ally' : 'enemy';
@@ -155,6 +155,7 @@ export function cfTouchTutorial(challenge) {
       ? (challenge.elite ? '精英手动首枪，横移后按住开火拖动瞄准' : '首枪自动开火；换位后按住开火拖动瞄准')
       : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
+  if (challenge?.kind === 'assault') return '先真实换位，再亲手击杀敌人';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
   if (challenge?.kind === 'defend') return '左手进据点，右手开火阻止敌军占点';
   return '点按或按住开火';
@@ -171,15 +172,27 @@ export function mobileChallengeCopy(challenge) {
     : challenge.elite===true
       ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
       : '1v1入门：准星对准敌人自动开火，命中3次';
-  if (challenge.kind === 'kills') return challenge.elite===true
-    ? '精英狙击：75秒内 AWM 击杀1人，最多阵亡1次'
-    : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
-  if (challenge.kind === 'survive') return challenge.elite===true
-    ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
-    : '坚持45秒，移动20米，最多被击倒2次';
-  if (challenge.kind === 'defend') return challenge.elite===true
-    ? '85秒精英反击：先守A再守B，各坚持7秒；零阵亡，敌军也会抢点'
-    : '100秒双点反击：亲自守住A和B，各5秒；敌军独占8秒就失守';
+  if (challenge.kind === 'assault') return Math.ceil(challenge.limitMs/1000)+
+    '秒：先实际移动'+challenge.minTravel+'米，再亲自击杀'+challenge.target+
+    '名敌人；最多阵亡'+challenge.maxDeaths+'次';
+  if (challenge.kind === 'kills') return challenge.minTravel
+    ? Math.ceil(challenge.limitMs/1000)+'秒：AWM击杀'+challenge.target+
+      '人并移动'+challenge.minTravel+'米；最多阵亡'+challenge.maxDeaths+'次'
+    : challenge.elite===true
+      ? '精英狙击：75秒内 AWM 击杀1人，最多阵亡1次'
+      : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
+  if (challenge.kind === 'survive') return challenge.minKills
+    ? Math.ceil(challenge.limitMs/1000)+'秒：坚持存活，移动'+challenge.minTravel+
+      '米，亲手击杀'+challenge.minKills+'人，最多阵亡'+challenge.target+'次'
+    : challenge.elite===true
+      ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
+      : '坚持45秒，移动20米，最多被击倒2次';
+  if (challenge.kind === 'defend') return challenge.reverse
+    ? Math.ceil(challenge.limitMs/1000)+'秒逆向争夺：远端B点→近端A点各守'+
+      challenge.holdSeconds+'秒；敌人独占'+challenge.breachSeconds+'秒即失守'
+    : challenge.elite===true
+      ? '85秒精英反击：先守A再守B，各坚持7秒；零阵亡，敌军也会抢点'
+      : '100秒双点反击：亲自守住A和B，各5秒；敌军独占8秒就失守';
   return challenge.instructions || '';
 }
 
@@ -519,7 +532,7 @@ export function cfHitCue(challenge, nativeHits, increase, drill = null) {
 
 /** End-of-round teaching based on observed player stats, never simulated rewards. */
 export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
-  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return '';
+  if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return '';
   const actual = v => Number.isFinite(v) ? Math.max(0,Math.floor(v)) : 0;
   const hits = actual(metrics.hits), awmKills = actual(metrics.awmKills);
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
@@ -590,7 +603,7 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
 
 /** Short, accurate mission facts for the start screen. All values are authored rules. */
 export function cfMissionFacts(challenge) {
-  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return [];
+  if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return [];
   const weapon = challenge.weapon === 'awm' ? 'AWM' :
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
@@ -607,7 +620,7 @@ export function cfMissionFacts(challenge) {
 
 /** Stat chips are derived from native player measurements, never team kills. */
 export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
-  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return [];
+  if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return [];
   const number = value => Number.isFinite(value) ? Math.max(0,Math.floor(value)) : 0;
   const deaths = number(metrics.deaths);
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
