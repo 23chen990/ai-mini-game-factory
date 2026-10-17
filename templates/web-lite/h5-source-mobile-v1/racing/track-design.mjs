@@ -210,10 +210,12 @@ export function createCareerLayouts(layouts, { v8 = false, v9 = false, v10 = fal
     const baseline=v9
       ? shapeV9RhythmSegments(sourceRoute,id,scale,COURSE_TECHNICAL_SECTORS[id]).points
       : injectTechnicalSectors(sourceRoute,id,scale);
-    const local=v10
+    const v10Geometry=v10
       ? shapeV10SignatureSectors(sourceRoute,baseline,COURSE_TECHNICAL_SECTORS[id],
-        id,scale,V8_COURSES[id].stretch).points : baseline;
-    const v8Geometry=v8 ? applyV8CourseGeometry(local,id,scale) : null;
+        id,scale,V8_COURSES[id].stretch) : null;
+    const local=v10Geometry?.points ?? baseline;
+    const v8Geometry=v8 ? applyV8CourseGeometry(local,id,scale,
+      {elevationOffsets:v10Geometry?.elevationOffsets??null}) : null;
     const authored=v8Geometry?.points ?? local;
     const planScale=v8Geometry?.scale ?? scale;
     if(!Number.isFinite(scale)||scale<.6||scale>1.2||local.length<12||
