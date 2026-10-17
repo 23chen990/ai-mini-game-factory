@@ -29,7 +29,7 @@ export function portraitMasteryClear(s){
 
 export function readRoutePresentation() {
  const box=node=>{const r=node.getBoundingClientRect();return {x:r.x,y:r.y,right:r.right,bottom:r.bottom};};
- return {ready:document.querySelector('#coast')?.dataset.phase==='ready',rows:[...document.querySelectorAll('#co-route [data-level]')].map(row=>({box:box(row),titleFont:parseFloat(window.getComputedStyle(row.querySelector('b')).fontSize),contents:[...row.querySelectorAll('b,small,em')].map(box)}))};
+ return {ready:document.querySelector('#coast')?.dataset.phase==='ready',rows:[...document.querySelectorAll('#co-route [data-level]')].map(row=>({box:box(row),titleFont:parseFloat(window.getComputedStyle(row.querySelector('b')).fontSize),contents:[...row.querySelectorAll('b,small,em')].filter(node=>node.getClientRects().length>0).map(box)}))};
 }
 
 export function routePresentationPassed(r) {
