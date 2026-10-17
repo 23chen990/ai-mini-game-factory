@@ -78,7 +78,7 @@ test('V14 first30 analytics are strictly local, bounded, versioned and safe on b
  for(let i=0;i<44;i++){
    const session=cfBeginPlaytest(book,i%2===0?'tags':'precision');
    cfSamplePlaytest(session,30000,{shots:0,hits:0,k:0,d:0,travel:0});
-   cfFinishPlaytest(book,45000,'lost',{shots:0,hits:0,k:0,d:0,travel:0},session);
+   cfFinishPlaytest(book,session,45000,'lost',{shots:0,hits:0,k:0,d:0,travel:0});
  }
  assert.ok(book.recent.length<=30);
  const json=cfExportPlaytest(book);
