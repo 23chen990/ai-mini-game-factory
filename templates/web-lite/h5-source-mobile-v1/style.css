@@ -648,3 +648,92 @@ html[data-reference-game="cf-transport-ship"] #hud #center .small {
     padding:5px 8px!important;
   }
 }
+
+
+/* CF V8: opt-in configuration, hidden during firefights; no center reticle
+   obstruction, no controls added to the live gun HUD. */
+html[data-reference-game="cf-transport-ship"] #touch .btn{
+  opacity:var(--cf-touch-opacity,.85)!important;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-options{
+  position:absolute;
+  right:12px;
+  top:11px;
+  z-index:7;
+  width:auto;
+  text-align:right;
+  pointer-events:auto;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-pref-toggle{
+  min-height:33px;
+  min-width:86px;
+  width:auto;
+  padding:5px 8px;
+  border-color:rgba(141,196,212,.26);
+  background:rgba(9,34,53,.55);
+  color:#c9e5ec;
+  font-size:12px;
+  font-weight:700;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-pref-form{
+  position:absolute;
+  right:0;
+  top:39px;
+  width:min(258px,calc(100vw - 38px));
+  max-height:calc(100dvh - 90px);
+  overflow-y:auto;
+  box-sizing:border-box;
+  padding:9px 12px;
+  margin-top:0;
+  box-shadow:0 12px 35px rgba(0,8,19,.84);
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:4px;
+  background:rgba(8,25,42,.91);
+  border:1px solid rgba(141,196,212,.28);
+  border-radius:10px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-pref-form label{
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:#dbebf4;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-pref-form output{
+  color:#f2ca83;
+  font-variant-numeric:tabular-nums;
+  margin-left:8px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-pref-form input[type="range"]{
+  box-sizing:border-box;
+  appearance:auto;
+  width:100%;
+  min-height:26px;
+  margin:0 0 3px;
+  accent-color:#e5bd6e;
+  touch-action:pan-x;
+  cursor:pointer;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-pref-reset{
+  min-height:38px;
+  width:100%;
+  margin:0;
+  padding:5px 8px;
+  font-size:11px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-fps-award{
+  width:100%;
+  box-sizing:border-box;
+  background:rgba(13,55,58,.66);
+  border:1px solid rgba(110,227,192,.36);
+  border-radius:8px;
+  padding:6px 8px;
+  font-size:11px;
+  line-height:1.5;
+  color:#d9f9ed;
+  text-align:center;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button small{
+  overflow-wrap:anywhere;
+  line-height:1.25;
+}

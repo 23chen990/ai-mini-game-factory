@@ -2,6 +2,7 @@
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts } from './fps-mobile-ux.mjs';
+import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -18,6 +19,16 @@ async function boot() {
   const levels = challengesFor(id), challengeKey = key + ':challenges';
   let challengeProgress = newChallengeProgress(id);
   try { challengeProgress = loadChallengeProgress(localStorage.getItem(challengeKey), id) ?? challengeProgress; } catch { storageAvailable = false; }
+  // CF mobile preferences and task medals live in their own versioned keys:
+  // no changes to the existing games' local saves or engine contracts.
+  const cfControlsKey='h5-cf:controls:v1', cfMedalsKey='h5-cf:mastery:v1';
+  let cfControls={...CF_CONTROL_DEFAULTS},cfMastery=cfNewMastery(),cfOriginalSens=null;
+  if(id==='cf-transport-ship') {
+    try {
+      cfControls=cfLoadControls(localStorage.getItem(cfControlsKey));
+      cfMastery=cfLoadMastery(localStorage.getItem(cfMedalsKey));
+    } catch {storageAvailable=false;}
+  }
   let selected = levels.find(c => c.id === challengeProgress.selected), activeChallenge;
   let elite = id === 'cf-transport-ship' && challengeProgress.elite === true;
   let fpsUx = null;
@@ -25,7 +36,18 @@ async function boot() {
   const root = document.createElement('section'); root.id = 'mobile-kit';
   root.innerHTML = `<header class="mk-header"><b id="mk-title"></b><span>最佳 <b id="mk-best">0</b></span><button id="mk-pause" aria-label="暂停">⏸ 暂停</button></header>
     <div class="mk-meter"><span id="mk-status">准备出发</span><span>积分 <b id="mk-score">0</b></span><span id="mk-time"></span><progress id="mk-goal" max="8" value="0"></progress></div>
-    <div id="mk-panel"><div id="mk-fps-kicker" hidden>FIELD OPS / 任务选择</div><h2 id="mk-heading"></h2><p id="mk-copy"></p><div id="mk-fps-brief" hidden aria-label="当前任务参数"></div><div id="mk-fps-results" hidden role="group" aria-label="本局真实战绩"></div><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-elite" hidden aria-pressed="false">⚡ 精英复战</button><div id="mk-fps-actions"><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button></div><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
+    <div id="mk-panel"><div id="mk-fps-kicker" hidden>FIELD OPS / 任务选择</div><h2 id="mk-heading"></h2><p id="mk-copy"></p><div id="mk-fps-brief" hidden aria-label="当前任务参数"></div><div id="mk-fps-results" hidden role="group" aria-label="本局真实战绩"></div>
+    <div id="mk-fps-award" hidden role="status" aria-live="polite"></div>
+    <div id="mk-fps-options" hidden>
+      <button id="mk-fps-pref-toggle" type="button" aria-expanded="false">⚙ 操作设置</button>
+      <div id="mk-fps-pref-form" hidden>
+        <label for="mk-fps-pref-look">视角灵敏度 <output id="mk-fps-pref-look-value">1.00×</output></label>
+        <input id="mk-fps-pref-look" type="range" min="0.65" max="1.55" step="0.05" value="1"/>
+        <label for="mk-fps-pref-opacity">触控按钮透明度 <output id="mk-fps-pref-opacity-value">85%</output></label>
+        <input id="mk-fps-pref-opacity" type="range" min="0.4" max="1" step="0.05" value="0.85"/>
+        <button id="mk-fps-pref-reset" type="button">恢复默认</button>
+      </div>
+    </div><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-elite" hidden aria-pressed="false">⚡ 精英复战</button><div id="mk-fps-actions"><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button></div><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><p id="mk-notice"></p><small id="mk-storage"></small></div>
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
@@ -33,7 +55,43 @@ async function boot() {
   $('title').textContent = names[id]; $('heading').textContent = names[id]; $('best').textContent = progress.best;
   $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '左手移动、右手瞄准，按住开火。手机横屏游玩；离开页面自动暂停。';
   if (!storageAvailable) $('storage').textContent = '存储不可用，本次仍可游玩';
-  const persist = () => { try { localStorage.setItem(key, saveProgress(progress, id)); localStorage.setItem(challengeKey, saveChallengeProgress(challengeProgress)); } catch { storageAvailable = false; $('storage').textContent = '存储不可用，本次仍可游玩'; } };
+  const persist = () => { try {
+    localStorage.setItem(key, saveProgress(progress, id));
+    localStorage.setItem(challengeKey, saveChallengeProgress(challengeProgress));
+    if(id==='cf-transport-ship'){
+      localStorage.setItem(cfControlsKey,cfSaveControls(cfControls));
+      localStorage.setItem(cfMedalsKey,cfSaveMastery(cfMastery));
+    }
+  } catch { storageAvailable = false; $('storage').textContent = '存储不可用，本次仍可游玩'; } };
+  const renderFpsPrefs = () => {
+    if(id!=='cf-transport-ship')return;
+    $('fps-pref-look').value=String(cfControls.sensitivity);
+    $('fps-pref-opacity').value=String(cfControls.opacity);
+    $('fps-pref-look-value').textContent=cfControls.sensitivity.toFixed(2)+'×';
+    $('fps-pref-opacity-value').textContent=Math.round(cfControls.opacity*100)+'%';
+    // All original native touch and fire-drag look inputs share sensitivity.
+    const g=window.__H5NativeGame;
+    if(g?.opts&&cfOriginalSens===null)cfOriginalSens=g.opts.sens;
+    if(g?.opts)cfApplyControls(g,cfControls,cfOriginalSens);
+    document.documentElement.style.setProperty('--cf-touch-opacity',String(cfControls.opacity));
+  };
+  const setFpsPrefs = patch => {
+    cfControls=cfNormalizeControls({...cfControls,...patch});
+    renderFpsPrefs();persist();
+  };
+  if(id==='cf-transport-ship'){
+    $('fps-pref-toggle').addEventListener('click',()=>{
+      const open=$('fps-pref-form').hidden;
+      $('fps-pref-form').hidden=!open;
+      $('fps-pref-toggle').setAttribute('aria-expanded',String(open));
+    });
+    $('fps-pref-look').addEventListener('input',event=>
+      setFpsPrefs({sensitivity:Number(event.target.value)}));
+    $('fps-pref-opacity').addEventListener('input',event=>
+      setFpsPrefs({opacity:Number(event.target.value)}));
+    $('fps-pref-reset').addEventListener('click',()=>setFpsPrefs({...CF_CONTROL_DEFAULTS}));
+    renderFpsPrefs();
+  }
   // Real DOM text instead of hidden stats, templates, or fabricated battle scores.
   const renderFacts = (element, facts) => {
     element.replaceChildren(...facts.map(({label,value}) => {
@@ -58,7 +116,10 @@ async function boot() {
       : selected.instructions;
     $('challenges').innerHTML = levels.map(c => {
       const record = challengeProgress.records[c.id];
-      const state = record?.eliteWins > 0 ? '⚡ 精英通关'
+      const medalLabel=id==='cf-transport-ship'?
+        cfRecordLabel(cfMastery,c):'';
+      const state=medalLabel&&medalLabel!=='尚未通关'?medalLabel
+        : record?.eliteWins > 0 ? '⚡ 精英通关'
         : record?.wins ? '✓ 已完成' : Math.ceil(c.limitMs / 1000) + '秒';
       return `<button data-challenge-id="${c.id}" data-kind="${c.kind}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${state}</small></button>`;
     }).join('');
@@ -71,6 +132,7 @@ async function boot() {
       fpsUx?.onSelect(displayChallenge);
       $('fps-brief').hidden=false;
       $('fps-results').hidden=true;
+      $('fps-award').hidden=true;
       if(root.dataset.loaded==='true')$('start').textContent=elite?'⚡ 开始精英挑战 →':'进入战场 →';
     }
   };
@@ -123,7 +185,12 @@ async function boot() {
         g.__mkAwmKillHooked = true;
       }
       native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
-      native.metrics = () => ({hits:g.player?.stats?.hits||0,kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,travel:fpsUx?.distanceMeters()||0,...fpsUx?.drillMetrics()}); native.simulatedSeconds = () => g.time; fpsUx = createFpsMobileUx(g, root, document); break; }
+      native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
+        kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,
+        travel:fpsUx?.distanceMeters()||0,...fpsUx?.drillMetrics()});
+      native.simulatedSeconds = () => g.time;
+      fpsUx = createFpsMobileUx(g, root, document);
+      renderFpsPrefs();break; }
     await wait();
   }
   if (!native) { $('copy').textContent = '加载尚未完成，请刷新或换用支持 WebGL 的浏览器。'; return; }
@@ -146,6 +213,12 @@ async function boot() {
         : phase==='paused' ? 'PAUSED / 已暂停' : 'FIELD OPS / 选择挑战';
       $('fps-brief').hidden=phase!=='ready';
       $('fps-results').hidden=phase!=='finished';
+      $('fps-award').hidden=phase!=='finished';
+      $('fps-options').hidden=!['ready','paused'].includes(phase);
+      if(!['ready','paused'].includes(phase)) {
+        $('fps-pref-form').hidden=true;
+        $('fps-pref-toggle').setAttribute('aria-expanded','false');
+      }
     }
     const nextIndex = activeChallenge ? levels.findIndex(c => c.id === activeChallenge.id)+1 : -1;
     const next = id === 'cf-transport-ship' && phase === 'finished' &&
@@ -223,15 +296,34 @@ async function boot() {
             : Math.min(result.value, activeChallenge.target);
         if (result.outcome !== 'running') {
           finishRound(round, progress); native.pause(); clearInput(); persist();
-          recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome); persist();
+          recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome);
+          const award=id==='cf-transport-ship'
+            ?cfRecordMastery(cfMastery,activeChallenge,metrics,result.outcome,round.elapsedMs):null;
+          persist();
           root.dataset.outcome = result.outcome;
+          if(id==='cf-transport-ship'){
+            const medal=award?.medal;
+            const best=award?.record?.bestMs;
+            $('fps-award').textContent=medal
+              ? '★'.repeat(medal.stars)+'☆'.repeat(3-medal.stars)+' '+
+                medal.label+(award.newBest?' · 最速纪录！':'')+
+                ' · 本局'+(medal.timeMs/1000).toFixed(1)+'秒'+
+                (medal.accuracy!==null?' · 命中率'+medal.accuracy+'%':'')+
+                (best?' · 最快'+(best/1000).toFixed(1)+'秒':'')+
+                (cfNextMedalGoal(activeChallenge,medal)
+                  ? ' · '+cfNextMedalGoal(activeChallenge,medal):'')
+              : '本次未取得勋章 · 完成挑战可解锁个人最速与星级';
+          }
           $('heading').textContent = result.outcome === 'won' ? (activeChallenge.elite ? '⚡ 精英复战成功！' : '✓ ' + activeChallenge.title + '完成！') : (activeChallenge.elite ? '精英复战失败' : '本次挑战未完成');
           $('copy').textContent = id === 'cf-transport-ship'
             ? cfMissionDebrief(activeChallenge, metrics, result.outcome)
             : `${result.label} · ${activeChallenge.instructions} 本局 ${round.score}分 · 补给 ${progress.bank}。`;
           if (id === 'cf-transport-ship')
             renderFacts($('fps-results'), cfResultFacts(activeChallenge,metrics,round.elapsedMs));
-          $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent = result.outcome === 'won' ? (activeChallenge.elite ? '⚡ 精英通关' : '✓ 已完成') : '可重试';
+          $('challenges').querySelector(`[data-challenge-id="${activeChallenge.id}"] small`).textContent =
+            id==='cf-transport-ship'&&cfRecordLabel(cfMastery,activeChallenge)!=='尚未通关'
+              ?cfRecordLabel(cfMastery,activeChallenge)
+              :result.outcome==='won'?(activeChallenge.elite?'⚡ 精英通关':'✓ 已完成'):'可重试';
           $('best').textContent = progress.best; showPhase('finished');
           // The placement is wired but hidden until the actual H5 account's check_ads_status is verified.
           $('ad').hidden = config.status !== 1 || !adAllowed(round, progress, now - startedAt);
