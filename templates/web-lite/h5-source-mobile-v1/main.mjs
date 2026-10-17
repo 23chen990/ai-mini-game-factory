@@ -49,7 +49,7 @@ async function boot() {
         <input id="mk-fps-pref-opacity" type="range" min="0.4" max="1" step="0.05" value="0.85"/>
         <button id="mk-fps-pref-reset" type="button">恢复默认</button>
       </div>
-    </div><nav id="mk-chapters" hidden aria-label="战役章节"><button type="button" data-chapter="0" aria-pressed="true">第一章 · 基础作战</button><button type="button" data-chapter="1" aria-pressed="false">第二章 · 战术进阶</button></nav><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-elite" hidden aria-pressed="false">⚡ 精英复战</button><div id="mk-fps-actions"><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button></div><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><div id="mk-revive-actions" hidden role="group" aria-label="失败后可选复活"><p>自愿观看完整激励视频，可给本局增加一次阵亡机会；恢复后由游戏正常复活，不保证一定获胜。</p><button id="mk-revive-ad" type="button">▶ 看完整广告 · 本局续战一次</button><button id="mk-revive-decline" type="button">不看广告 · 结束本局</button></div><p id="mk-notice"></p><small id="mk-storage"></small></div>
+    </div><nav id="mk-chapters" hidden aria-label="战役章节"><button type="button" data-chapter="0" aria-pressed="true">第一章 · 基础作战</button><button type="button" data-chapter="1" aria-pressed="false">第二章 · 战术进阶</button></nav><nav id="mk-challenges" aria-label="选择挑战"></nav><button id="mk-elite" hidden aria-pressed="false">⚡ 精英复战</button><div id="mk-fps-actions"><button id="mk-start" disabled>▶ 场景准备中</button><button id="mk-resume" hidden>▶ 继续</button><button id="mk-replay" hidden>↻ 再来一局</button><button id="mk-next" hidden>▶ 下一关</button></div><button id="mk-assist" hidden>🧭 10补给换下局15秒追鱼辅助</button><button id="mk-ad" hidden>观看广告，补给翻倍</button><div id="mk-revive-actions" hidden role="group" aria-label="失败后可选复活"><p>完整观看后本局多一次可阵亡机会，再按原生倒计时复活。</p><button id="mk-revive-ad" type="button">▶ 看广告 · 续战本局</button><button id="mk-revive-decline" type="button">不看广告 · 结束本局</button></div><p id="mk-notice"></p><small id="mk-storage"></small></div>
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
@@ -402,7 +402,7 @@ async function boot() {
             $('heading').textContent='本局已达阵亡上限';
             const near=cfNearMissCue(activeChallenge,metrics,round.elapsedMs);
             $('copy').textContent=(near?near+'。':'')+
-              '可直接结束并免费重试；或自愿完整观看激励视频，让本局增加一次可阵亡机会。';
+              '可以直接结束后免费重试，或者看广告继续本局。';
             $('notice').textContent='';
             showPhase('revive');
           }else{
