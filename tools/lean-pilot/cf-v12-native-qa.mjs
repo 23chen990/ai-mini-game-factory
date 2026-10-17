@@ -1,4 +1,4 @@
-/* global process,console,window,document,innerWidth,innerHeight,getComputedStyle */
+/* global process,console,window,document,innerWidth,innerHeight,getComputedStyle,URL,performance,setTimeout */
 import {chromium} from '@playwright/test';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
@@ -238,7 +238,7 @@ export async function reviewCfV12({base=path.join(ROOT,'runs')}={}){
     await snap('v12-free-retry-started');
   }catch(e){
     errors.push(String(e?.stack||e));
-    check('qa-execution','failed'===true,{error:String(e?.message||e)});
+    check('qa-execution',false,{error:String(e?.message||e)});
     try{await snap('v12-error');}catch{ /* preserve original error */ }
   }finally{
     report={
