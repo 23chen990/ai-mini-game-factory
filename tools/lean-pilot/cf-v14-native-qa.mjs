@@ -262,10 +262,39 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
 
     // Real native shot followed by genuine failure from missing the walking
     // objective. No score, actor health, win/loss or position is edited.
-    await enter('survive');
+    const survivalStart=await enter('survive');
     await button('#touch .btn[data-mk-action="fire"]',440,82);
-    await page.waitForSelector('#mobile-kit[data-phase="finished"]',{timeout:200000});
-    const settled=await inspect();
+    // Real game simulation, not wall time, determines the 45-second mission.
+    // Low FPS software WebGL may need much more wall time. Sample its native
+    // clock throughout, fail if it actually stalls, and retain clock evidence.
+    const clockSamples=[];
+    const watchStart=performance.now();
+    let lastAdvance=watchStart,lastClock=survivalStart.time;
+    let settled=null;
+    while(performance.now()-watchStart<390000) {
+      await sleep(4000);
+      const state=await inspect();
+      const wallSec=+( (performance.now()-watchStart)/1000 ).toFixed(2);
+      const clock={wallSec,nativeSec:state.time,
+        phase:state.phase,nativePhase:state.gamePhase,
+        ratio:state.renderer?.pixelRatio,deaths:state.player?.deaths};
+      clockSamples.push(clock);
+      if(state.time>lastClock+.02){
+        lastClock=state.time;lastAdvance=performance.now();
+      }
+      if(state.phase==='finished'){settled=state;break;}
+      if(state.phase!=='running'||state.gamePhase==='paused')
+        throw Error('Natural survival interrupted: '+JSON.stringify(clock));
+      if(performance.now()-lastAdvance>45000)
+        throw Error('Native simulation clock stalled: '+JSON.stringify(clockSamples.slice(-8)));
+    }
+    samples.push({id:'survive',when:'natural-terminal-clock',clockSamples});
+    if(!settled)throw Error('Natural survival unfinished within bounded software-render budget: '+
+      JSON.stringify(clockSamples.slice(-8)));
+    check('survival-real-native-clock-advanced',clockSamples.length>1&&
+      clockSamples.some(v=>v.nativeSec>survivalStart.time+20)&&
+      clockSamples.every((v,i)=>i===0||v.nativeSec>=clockSamples[i-1].nativeSec),
+      {last:clockSamples.at(-1),samples:clockSamples.length});
     terminal=settled;
     check('natural-real-shot-lack-of-travel-failure',settled.phase==='finished'&&
       await page.locator('#mobile-kit').getAttribute('data-outcome')==='lost',
