@@ -26,10 +26,12 @@ test('CF defense is a fourth truly distinct mode, without altering three legacy 
  assert.equal(c.kind,'defend');assert.equal(c.target,2);
  assert.equal(c.limitMs,100000);assert.equal(c.holdSeconds,5);
  assert.equal(c.breachSeconds,8);assert.equal(c.maxDeaths,2);
+ assert.equal(c.radius,5,'Novice capture should include the observed natural approach at 4.36m');
  const elite=cfEliteChallenge(c);
  assert.equal(elite.elite,true);assert.equal(elite.holdSeconds,7);
  assert.equal(elite.maxDeaths,0);assert.equal(elite.limitMs,85000);
  assert.equal(elite.breachSeconds,7);
+ assert.equal(elite.radius,4.2,'Elite requires closer control and true exposure');
  assert.equal(challengesFor('pelican-bike').length,3);
  assert.equal(challengesFor('qq-speed').length,3);
 });
@@ -77,6 +79,35 @@ test('one enemy actually follows a native NavGrid path and retains original comb
  assert.equal(cfRouteDefenseBots(scene,points[1]),1,
    'Native respawn may replan to the new active site');
  assert.deepEqual(bot.goal,[-8,6.8]);
+});
+
+test('novice point forgiveness fixes observed 4.36m near-miss without rewarding AFK or elite',()=>{
+ const atEdge={...me,pos:{x:-24.965975,z:-3.6}};
+ const actualDistance=Math.hypot(atEdge.pos.x-points[0].x,atEdge.pos.z-points[0].z);
+ assert.ok(actualDistance>4.2&&actualDistance<5);
+ const initial=cfStartDefense(points);
+ const admitted=cfStepDefense(
+   cfStepDefense(initial,{gameTime:0,player:atEdge,actors:[foe],team:'BL',
+     holdSeconds:c.holdSeconds,breachSeconds:c.breachSeconds,radius:c.radius}),
+   {gameTime:.1,player:atEdge,actors:[foe],team:'BL',
+     holdSeconds:c.holdSeconds,breachSeconds:c.breachSeconds,radius:c.radius});
+ assert.equal(admitted.playerInside,true);
+ assert.ok(admitted.held>0&&admitted.held<1);
+ const hard=cfStepDefense(
+   cfStepDefense(initial,{gameTime:0,player:atEdge,actors:[foe],team:'BL',radius:4.2}),
+   {gameTime:.1,player:atEdge,actors:[foe],team:'BL',radius:4.2});
+ assert.equal(hard.playerInside,false);
+ assert.equal(hard.held,0);
+ const absent=cfStepDefense(
+   cfStepDefense(initial,{gameTime:0,player:{...atEdge,alive:false},actors:[foe],team:'BL',radius:5}),
+   {gameTime:.1,player:{...atEdge,alive:false},actors:[foe],team:'BL',radius:5});
+ assert.equal(absent.held,0);
+ const disputed={...foe,pos:{x:-22,z:-6.8}};
+ const contested=cfStepDefense(
+   cfStepDefense(initial,{gameTime:0,player:atEdge,actors:[disputed],team:'BL',radius:5}),
+   {gameTime:.1,player:atEdge,actors:[disputed],team:'BL',radius:5});
+ assert.equal(contested.contested,true);
+ assert.equal(contested.held,0);
 });
 
 test('genuine player needs to defend A then B for independent real-time spans',()=>{
