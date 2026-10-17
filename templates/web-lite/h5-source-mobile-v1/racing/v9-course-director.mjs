@@ -72,8 +72,6 @@ export function validateV9Rhythms(){
  * fraction of a spline. This leaves the original course skeleton and all
  * finish/start positions intact, while avoiding 105 near-identical S bends.
  */
-export function shapeV9RhythmSegments(local,courseId,scale,originalSectors){
-  
 /** Low-budget real lane-width modulation. The widest portions give actual
  * overtaking space, while one authored technical approach in each stage is
  * physically narrower. All road mesh, guardrails, player collision and AI
@@ -115,6 +113,9 @@ export function v9RoadHalfWidthAt(base,profile,fraction) {
   return base*factor;
 }
 
+
+export function shapeV9RhythmSegments(local,courseId,scale,originalSectors){
+  
 validateV9Rhythms();
   const plan=V9_STAGE_RHYTHMS[courseId];
   if(!plan||!Array.isArray(local)||!finite(scale)||scale<=0||
