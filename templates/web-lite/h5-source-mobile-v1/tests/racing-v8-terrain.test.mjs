@@ -41,8 +41,7 @@ test('V8 opt-in creates physically longer, terrain-diverse 30 stages without tou
     const hs=next.points.map(p=>p[2]);
     assert.ok(hs.every(h=>h>=0&&h<=70&&Number.isFinite(h)),id);
     assert.ok(Math.max(...hs)-Math.min(...hs)>8,id);
-    assert.ok(next.points.every((p,j)=>p[2]!==old.points[j][2] || j===0 || j<next.points.length),
-      'points remain finite');
+    assert.ok(next.points.every(p=>p.every(Number.isFinite)),id);
     heights.add(hs.map(h=>Math.round(h*10)).join(':'));
     assert.ok(plan.knots.length>=7,id);
   }
