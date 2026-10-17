@@ -65,3 +65,20 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
  #co-radar{top:220px}
 }
 @media(orientation:portrait) and (max-height:650px){.co-lane-indicator{top:165px;bottom:auto}}
+
+
+/* V6: lightweight earned cosmetic rail beneath the five-stage campaign.
+   Menu only; no overlays over the running road, no additional render pass. */
+#co-collection{margin-top:7px;padding:9px;background:#e8efdf;border:1px solid #c8d8bc;border-radius:14px;min-height:90px}
+.co-collection-total{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:7px}
+.co-collection-total b{font-size:13px;color:#24524e;white-space:nowrap}
+.co-collection-total small{font-size:10px;color:#5b736b;text-align:right}
+.co-style-items{display:flex;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;padding-bottom:3px}
+#coast .co-style-items button{flex:0 0 auto;min-height:46px;min-width:100px;padding:5px 9px!important;background:#fcfbef!important;border:1px solid #cbdacb!important;border-radius:10px!important;color:#345953!important;box-shadow:none!important;text-align:left;line-height:1.12}
+#coast .co-style-items button.on{border:2px solid #268577!important;background:#d7f5e0!important}
+.co-style-items button b{font-size:11px;display:block}
+.co-style-items button small{font-size:10px;display:block;color:#637971;margin-top:3px}
+#coast[data-phase="ready"] .co-card{min-height:0}
+#coast[data-phase="ready"] .co-collection{flex-shrink:0}
+@media(orientation:landscape){#co-collection{padding:5px 7px;min-height:64px;margin-top:5px}.co-collection-total{margin-bottom:3px}.co-style-items button{min-width:80px!important;min-height:36px!important}#coast[data-phase="ready"] .co-route{grid-auto-rows:min-content}}
+@media(orientation:portrait) and (max-height:650px){#co-collection{min-height:62px;margin-top:4px;padding:5px}.co-collection-total small{display:none}#coast .co-style-items button{min-height:38px}}
