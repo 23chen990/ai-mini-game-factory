@@ -8,7 +8,7 @@ test('natural first level is more active while fish and barriers remain obtainab
  const r=newRun(1),level=r.level;
  assert.ok(level.obstacles.length>=10,'more threats than the original four');
  assert.ok(level.fish.filter(f=>f.shoal).length>=4,'branching shoal route');
- assert.deepEqual(level.obstacles.slice(0,4).map(o=>o.x),[90,140,162,225],
+ assert.deepEqual(level.obstacles.slice(0,4).map(o=>o.x),[90,140,162,233],
    'retain critical regression obstacle indices');
  assert.ok(level.obstacles.some(o=>o.kind==='car'));
 });

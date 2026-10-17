@@ -49,6 +49,13 @@ try{
   second.bestStreak>=2&&streakHud.includes('⚡')&&
   Number(streakHud.match(/[0-9]+/u)?.[0])===second.bestStreak,
   {streakHud,earned:second.bestStreak,events:second.events.filter(e=>e.type==='fish-caught')});
+ // Actual right → centre → right sequence: all three early fish can be
+ // earned with real tap input, but the screenshot must not consume the
+ // 16m reaction window between the second and the first gold.
+ await tap('[data-action="left"]');
+ await page.waitForFunction(()=>Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0)>=49,
+  null,{timeout:8000});
+ await tap('[data-action="right"]');
  await shot('actual-offcentre-second-fish-caught');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
@@ -56,7 +63,7 @@ try{
  let escapedBonus=false,escapeLane=null,escapeUntil=-1;
  const end=Date.now()+65000;
  while(Date.now()<end){
-  const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),bonus:n.classList.contains('jump-reward'),kind:n.dataset.kind})),feedback:document.querySelector('#co-feedback strong')?.textContent??'',feedbackDetail:document.querySelector('#co-feedback small')?.textContent??'',gold:Number(document.querySelector('[data-goal="gold"]')?.textContent.match(/\d+/u)?.[0]??NaN),jumps:Number(document.querySelector('[data-goal="jump"]')?.textContent.match(/\d+/u)?.[0]??NaN)}));
+  const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),bonus:n.classList.contains('jump-reward'),kind:n.dataset.kind})),feedback:document.querySelector('#co-feedback strong')?.textContent??'',feedbackDetail:document.querySelector('#co-feedback small')?.textContent??'',radarLabel:document.querySelector('#co-radar-label')?.textContent??'',jumpReady:document.querySelector('[data-action="jump"]')?.classList.contains('ready')===true,gold:Number(document.querySelector('[data-goal="gold"]')?.textContent.match(/\d+/u)?.[0]??NaN),jumps:Number(document.querySelector('[data-goal="jump"]')?.textContent.match(/\d+/u)?.[0]??NaN)}));
   if(v.phase==='finished')break;
   if(!choiceShot&&v.lanes.some(l=>l.bonus)){choiceShot=true;check('jump-gold-route-signalled-with-safe-detour',true,v);await shot('jump-choice');}
   if(!goldShot){const firstGold=(await snap()).events.find(e=>e.type==='fish-caught'&&e.golden&&!e.bonus);if(firstGold){goldShot=true;check('first-gold-before-ten-seconds',firstGold.at<10,firstGold);await shot('first-gold');}}
@@ -70,9 +77,11 @@ try{
   // A successful bonus can be followed by a rapidly approaching car.
   // The game now gives a *visible* escape warning. Respond through a normal
   // left/right button rather than staying in the reward lane until collision.
-  const warnedVehicle=v.feedbackDetail.includes('前方来车')||
+  // Confirmed bonus pickup at ~148m is itself a legitimate visible escape
+  // decision; do not wait until the 164m car is already inside the hitbox.
+  const warnedVehicle=v.feedbackDetail.includes('前方来车')||v.radarLabel.includes('来车')||
    v.lanes[1]?.danger&&['car','van'].includes(v.lanes[1].kind);
-  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&warnedVehicle){
+  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&(warnedVehicle||v.distance>=148)){
    const safeSide=[0,2].filter(i=>!risky(i)&&!v.lanes[i].danger);
    if(safeSide.length){escapedBonus=true;escapeLane=safeSide[0];escapeUntil=v.distance+24;}
   }
@@ -87,7 +96,7 @@ try{
    want=safe[0]??v.lane;escapeLane=want;
   }
   else if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(v.lanes[1].bonus&&!jumped){want=1;if(!jumped&&v.lane===1&&seconds(1)<=1.4){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o1. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
+  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=125&&v.distance<140)){want=1;if(v.lane===1&&(v.jumpReady||seconds(1)<=1.4)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o1. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
@@ -165,7 +174,67 @@ try{
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
  const safeEnd=Date.now()+50000;
- while(Date.now()<safeEnd){const v=await page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish'),kind:n.dataset.kind}))}));if(v.distance>=238||v.phase==='finished')break;const blocked=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=(['car','van'].includes(v.lanes[i].kind)?4.5:3);let want=v.lane;if(blocked(want)){const safe=[0,1,2].filter(i=>!blocked(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??want;}else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!blocked(i));if(fish>=0)want=fish;}if(want!==v.lane&&!blocked(v.lane)&&blocked(v.lane+Math.sign(want-v.lane)))want=v.lane;if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);await page.waitForTimeout(55);}
+ // Only public distance and radar are used. A hazard does not become safe as
+ // soon as its marker drops out: allow the rear wheel to clear its collision
+ // envelope before steering back for the next fish.
+ const visibleHazardClearance=[0,0,0];
+ while(Date.now()<safeEnd){
+  const v=await page.evaluate(()=>({
+   phase:document.querySelector('#coast').dataset.phase,
+   distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),
+   lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),
+   lanes:[...document.querySelectorAll('.co-lane')].map(n=>({
+    text:n.textContent,danger:n.classList.contains('danger'),
+    fish:n.classList.contains('fish'),kind:n.dataset.kind,
+   })),
+  }));
+  if(v.distance>=238||v.phase==='finished')break;
+  for(let i=0;i<3;i++){
+   if(!v.lanes[i].danger)continue;
+   const seconds=Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)\s*s/)?.[1]);
+   // The first level rides at 7.5 m/s. Keep a 4m tail from the actual
+   // player-visible countdown, including when the icon is replaced by fish.
+   const forecastDistance=v.distance+(Number.isFinite(seconds)?Math.max(0,seconds)*7.5:0);
+   visibleHazardClearance[i]=Math.max(visibleHazardClearance[i],forecastDistance+4);
+  }
+  // A future red van at 3-4s does not make the current open lane unsafe
+  // NOW when an adjacent barrier is only 0.8s away. React to the earliest
+  // collision deadline rather than abandoning the lane for a farther threat.
+  // Every decision still uses the actual public three-lane radar only.
+  const ttc=i=>{
+   const text=v.lanes[i]?.text??'';
+   const parsed=Number(text.match(/(\d+(?:\.\d+)?)\s*s/u)?.[1]);
+   return v.lanes[i]?.danger?(Number.isFinite(parsed)?parsed:0):Infinity;
+  };
+  const imminent=i=>ttc(i)<=2.0;
+  const dangerVisible=v.lanes.some(l=>l.danger);
+  const dangerCount=v.lanes.filter(l=>l.danger).length;
+  let want=v.lane;
+  // If TWO separate lanes already show red within the public 4.5s forecast,
+  // commit to the single open lane early. Waiting for each separate 2.0s
+  // deadline is too late to cross a red middle lane on a small phone.
+  if(dangerCount===2){
+   const free=[0,1,2].find(i=>!v.lanes[i].danger&&v.distance>=visibleHazardClearance[i]);
+   if(free!==undefined)want=free;
+  }
+  if(want===v.lane&&imminent(want)){
+   const safe=[0,1,2].filter(i=>i!==want&&ttc(i)>2.35);
+   safe.sort((a,b)=>
+    Number(v.distance>=visibleHazardClearance[b])-Number(v.distance>=visibleHazardClearance[a])||
+    Math.abs(a-v.lane)-Math.abs(b-v.lane));
+   want=safe[0]??want;
+  }else if(want===v.lane&&!dangerVisible){
+   // Only chase optional fish on a genuinely clear approach, not between
+   // a near barrier and the following oncoming van.
+   const fish=v.lanes.findIndex((l,i)=>l.fish&&v.distance>=visibleHazardClearance[i]);
+   if(fish>=0)want=fish;
+  }
+  // A 0 -> 2 turn crosses lane 1. Never cross an immediately fatal lane
+  // just to take a visible optional fish.
+  if(want!==v.lane&&Math.abs(want-v.lane)===2&&imminent(1))want=v.lane;
+  if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
+  await page.waitForTimeout(55);
+ }
 const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({phase:detour.phase,reason:detour.reason,distance:detour.distance,events:detour.events?.slice(-12)}));await shot('safe-detour');
  check('safe-detour-does-not-require-jump',detour.phase==='running'&&!detour.events.some(e=>e.type==='jump')&&detour.events.some(e=>e.type==='barrier-cleared'&&!e.jumped),detour);
  await tap('#co-pause');await tap('#co-select');const selected=await page.locator('[data-level="1"]').innerText();const progress=await page.locator('#co-progress').innerText();check('mastery-saved-and-visible-on-route',selected.includes('★★★')&&selected.includes('纪录 '+best.fish+' 鱼')&&progress.includes('3/15'),{selected,progress,best});await shot('saved-mastery');
@@ -188,10 +257,10 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
  const menu=await page.evaluate(()=>{
   const start=document.querySelector('#co-start'),r=start.getBoundingClientRect(),route=document.querySelector('#co-route');
   return {ready:document.querySelector('#coast')?.dataset.phase==='ready',start:{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom},
-   routeScrollable:route.scrollHeight>route.clientHeight,documentWidth:document.documentElement.scrollWidth};
+   routeScrollable:route.scrollHeight>route.clientHeight,routeHeight:route.clientHeight,documentWidth:document.documentElement.scrollWidth};
  });
  const routePresentation=await page.evaluate(readRoutePresentation);
- check('small-phone-start-visible-and-menu-not-overflow',menu.ready&&menu.start.x>=0&&menu.start.bottom<=568&&menu.start.height>=36&&menu.documentWidth<=320&&routePresentationPassed(routePresentation),{...menu,routePresentation});
+ check('small-phone-start-visible-and-menu-not-overflow',menu.ready&&menu.start.x>=0&&menu.start.bottom<=568&&menu.start.height>=36&&menu.documentWidth<=320&&menu.routeHeight>=100&&routePresentationPassed(routePresentation),{...menu,routePresentation});
  await shot('small-phone-route-menu');
  await tap('#co-start');await page.waitForTimeout(450);
  const small=await page.evaluate(readCompactPresentation);

@@ -1,4 +1,4 @@
-/* global process, console, window, document, requestAnimationFrame */
+/* global process, console, window, document, requestAnimationFrame, performance */
 import {webkit,chromium} from '@playwright/test';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {URL} from 'node:url';
@@ -9,6 +9,7 @@ import {browserOptions,qaDpr} from './browser-options.mjs';
 import {tapVisible} from './touch.mjs';
 import {campaignWallBudgetMs} from './runtime/qa-budget.mjs';
 import {capturePath} from './qa-capture-paths.mjs';
+import {RISK_LEVELS,TARGET_WINDOW_TRAIL_METERS,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const mode=process.argv[2]??'campaign',engine=process.env.QA_ENGINE??'webkit';
 const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'qa-'+mode+'-'+engine);await mkdir(qaDir,{recursive:true});
@@ -23,16 +24,37 @@ function segment(name){segments.push({name,checkStart,checkEnd:report.checks.len
 const ROAD_EDGE_FOR_QA=2.15;
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(JSON.stringify({name,passed,evidence}));};
 const shot=async name=>{const p=path.join(qaDir,capturePath(captureSection,name));await mkdir(path.dirname(p),{recursive:true});await page.screenshot({path:p});report.screenshots.push({path:path.relative(RUN,p),sha256:sha(await readFile(p))});};
-const tap=async selector=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance,level:before.level}};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
+const tap=async (selector,{fastReaction=false}={})=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance,level:before.level}};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const touchPoint=await tapVisible(page,selector);
+ // A real touch is mandatory. Do not wait through software-rendered frames
+ // before the next visible jump / lane decision.
+ if(!fastReaction)await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
+ const after=fastReaction?{...await page.evaluate(()=>({
+  phase:document.querySelector('#coast')?.dataset.phase,
+  distance:Number(document.querySelector('#co-distance')?.textContent?.match(/\d+/u)?.[0]??0),
+ })),level:before.level}:await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
 const snapshot=()=>page.evaluate(()=>window.__coast.snapshot());
 async function fresh(){context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir:qaDir,size:{width:390,height:844}}});page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('framenavigated',f=>{if(f===page.mainFrame())navs++;});
  await page.addInitScript(()=>{window.__qaFrames=[];let prev;const f=t=>{if(prev&&window.__qaFrames.length<100000)window.__qaFrames.push(t-prev);prev=t;requestAnimationFrame(f);};requestAnimationFrame(f);});await page.goto(base);await page.waitForSelector('#coast[data-loaded="true"]');}
-const view=()=>page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(x=>x.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish')}))}));
+const view=async()=>{
+ const raw=await page.evaluate(()=>({
+  phase:document.querySelector('#coast').dataset.phase,
+  distance:Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0),
+  lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(node=>node.classList.contains('on')),
+  lanes:[...document.querySelectorAll('.co-lane')].map(node=>({className:node.className,text:node.textContent.trim()})),
+  goldCounter:Number(document.querySelector('#co-mastery [data-goal="gold"]')?.textContent?.match(/\d+/u)?.[0]??NaN),
+  jumpReady:document.querySelector('[data-action="jump"]')?.classList.contains('ready')===true,
+  nowMs:performance.now(),
+ }));
+ return {...raw,laneIndex:raw.lane,lanes:raw.lanes.map(visibleLaneFromHud)};
+};
 async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={}){
  // Host software WebGL can run below real-time. Bound wall time by authored ride length;
  // never accelerate game simulation, inject scores or fabricate unlocks.
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  const wallStarted=Date.now(),budgetMs=campaignWallBudgetMs(stage,maxMs),end=wallStarted+budgetMs;let lastTap=0,nearShot=false;
+ const authored=Number.isInteger(stage)?RISK_LEVELS.find(level=>level.id===stage):null;
+ const rewardTargets=authored?.targets??[];let targetIndex=0;
+ let policyState=rewardTargets.length?createRiskPolicyState(stage,rewardTargets[0]):null;
  const finish=async status=>{
   const result=await snapshot();
   report.driveBudgets.push({stage,status,budgetMs,wallElapsedMs:Date.now()-wallStarted,gameElapsedSeconds:result.elapsed??null,
@@ -40,15 +62,37 @@ async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={})
   return result;
  };
  while(Date.now()<end){const v=await view();if(v.phase==='finished'||v.distance>=stopAtDistance)return finish(v.phase==='finished'?'settled':'distance-reached');if(v.phase==='paused'){await tap('#co-resume');continue;}
-  const imminent=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=4;
-  let want=v.lane;
-  if(imminent(v.lane)){const safe=[0,1,2].filter(i=>!imminent(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
-  else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!imminent(i));if(fish>=0)want=fish;}
-  if(avoidFish){const safe=[0,1,2].filter(i=>!imminent(i)&&!v.lanes[i].fish);if(safe.length)want=safe.includes(v.lane)?v.lane:safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0];}
-  // A player already in a safe lane declines a fish that requires crossing a red lane.
-  if(want!==v.lane&&!imminent(v.lane)&&imminent(v.lane+Math.sign(want-v.lane)))want=v.lane;
-  if(Date.now()-lastTap>180&&want!==v.lane){await tap(`[data-action="${want<v.lane?'left':'right'}"]`);lastTap=Date.now();}
-  if(!nearShot&&v.lanes.some(l=>l.danger&&Number(l.text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=3)){nearShot=true;await shot('level-'+stage+'-hazard');}
+  const imminent=i=>v.lanes[i]?.danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=4;
+  let decision=null;
+  if(!avoidFish&&policyState){
+   // This independent unlock/save/replay runner previously NEVER pressed jump.
+   // Read public HUD + READY class; normal Playwright touchscreen input only.
+   while(targetIndex<rewardTargets.length-1&&
+    v.distance>rewardTargets[targetIndex].distance+TARGET_WINDOW_TRAIL_METERS&&
+    policyState.stage!=='capture'){
+    targetIndex++;policyState=createRiskPolicyState(stage,rewardTargets[targetIndex]);
+   }
+   decision=decideRiskAction(v,policyState);policyState=decision.state;
+   if(['left','right','jump'].includes(decision.action)){
+    await tap(`[data-action="${decision.action}"]`,{fastReaction:true});lastTap=Date.now();
+    if(decision.action==='left'||decision.action==='right')
+     await page.waitForFunction(expected=>[...document.querySelectorAll('.co-lane-indicator i')]
+      .findIndex(node=>node.classList.contains('on'))===expected,decision.toLane,{timeout:1800});
+   }
+  }else{
+   let want=v.lane;
+   if(imminent(v.lane)){const safe=[0,1,2].filter(i=>!imminent(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
+   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!imminent(i));if(fish>=0)want=fish;}
+   if(avoidFish){const safe=[0,1,2].filter(i=>!imminent(i)&&!v.lanes[i].fish);if(safe.length)want=safe.includes(v.lane)?v.lane:safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0];}
+   if(want!==v.lane&&!imminent(v.lane)&&imminent(v.lane+Math.sign(want-v.lane)))want=v.lane;
+   if(Date.now()-lastTap>180&&want!==v.lane){await tap(`[data-action="${want<v.lane?'left':'right'}"]`);lastTap=Date.now();}
+  }
+  // The separate risk QA records every true barrier prize. This screenshot
+  // should not block a timed input while the CURRENT player lane is at risk.
+  if(!nearShot&&v.lanes.some(l=>l.danger&&Number(l.text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=3)
+     &&(!decision||decision.action==='wait'&&!v.lanes[v.lane]?.danger)){
+   nearShot=true;await shot('level-'+stage+'-hazard');
+  }
   await page.waitForTimeout(90);
  }
  const result=await finish('runner-wall-budget-exhausted');
@@ -82,7 +126,26 @@ try{
    if(result.reason!=='complete')break;
   }
   const finished=await snapshot();if(finished.reason==='complete'&&finished.level===5){
-   await tap('#co-ad');check('unintegrated-ad-honest-no-block',await page.locator('#co-notice').innerText().then(s=>s.includes('尚未接入')),{notice:await page.locator('#co-notice').innerText()});
+   // A real ad SDK is not connected. There must be no tappable fake reward
+   // action: verify hidden controls, the honest local status, and free replay.
+   const beforeUnavailable=await snapshot();
+   const adControls={
+    extraHidden:await page.locator('#co-ad').isHidden(),
+    reviveHidden:await page.locator('#co-revive').isHidden(),
+    retryEnabled:await page.locator('#co-replay').isVisible()&&await page.locator('#co-replay').isEnabled(),
+    status:await page.locator('#co-storage').innerText()
+   };
+   check('unintegrated-ads-hidden-free-replay-available',
+    adControls.extraHidden&&adControls.reviveHidden&&adControls.retryEnabled&&adControls.status.includes('广告未接入'),adControls);
+   await page.waitForTimeout(250);
+   const afterUnavailable=await snapshot();
+   check('unavailable-ads-never-create-currency-or-revive',
+    beforeUnavailable.phase==='finished'&&afterUnavailable.phase==='finished'&&
+    beforeUnavailable.revives===afterUnavailable.revives&&
+    beforeUnavailable.reward.bank===afterUnavailable.reward.bank&&
+    beforeUnavailable.collection.coins===afterUnavailable.collection.coins,
+    {before:{revives:beforeUnavailable.revives,bank:beforeUnavailable.reward.bank,coins:beforeUnavailable.collection.coins},
+     after:{revives:afterUnavailable.revives,bank:afterUnavailable.reward.bank,coins:afterUnavailable.collection.coins}});
    const prior=navs;await tap('#co-replay');await page.waitForTimeout(1000);check('in-memory-replay',navs===prior&&(await snapshot()).phase==='running',{navigationBefore:prior,navigationAfter:navs});
    await tap('#co-pause');await page.reload();await page.waitForSelector('#coast[data-loaded="true"]');const saved=await snapshot();check('refresh-keeps-five-unlocked',saved.save.unlocked===5&&saved.save.completed.every(Boolean),saved);const startLabel=await page.locator('#co-start').innerText();check('restored-selected-level-label',await page.locator('[data-level="5"]').evaluate(n=>n.classList.contains('selected'))&&startLabel.includes('夜间赶海'),{startLabel,unlocked:saved.save.unlocked});await shot('all-unlocked');
   }
@@ -110,11 +173,31 @@ try{
   const n=navs;await tap('#co-replay');await page.waitForTimeout(700);check('failure-replay-without-navigation',navs===n&&(await snapshot()).phase==='running',{navigationCount:navs});await tap('#co-pause');await tap('#co-select');await tap('[data-level="1"]');await tap('#co-start');
   // Exact crossing position: two right nudges from neutral reach the outer
   // road, rather than assuming a fractional 1.18m nudge is a lane centre.
-  await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();await shot('pedestrian-fall');await page.waitForTimeout(1300);const waiting=await snapshot();await shot('pedestrian-wait');check('pedestrian-stops-but-countdown-runs',waiting.distance===ped.distance&&waiting.elapsed>ped.elapsed+1.1&&waiting.stun>1,{ped,waiting});await page.waitForTimeout(1000);await shot('pedestrian-rising');await page.waitForTimeout(1200);const recovered=await snapshot();await shot('pedestrian-recovery');check('pedestrian-recovers-once',recovered.phase==='running'&&recovered.distance>waiting.distance&&recovered.events.filter(e=>e.type==='pedestrian-hit').length===1,recovered);
+  await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();
+  // Read the actual timer before software PNG capture can consume the stun.
+  await page.waitForTimeout(800);const waiting=await snapshot();
+  check('pedestrian-stops-but-countdown-runs',
+   waiting.phase==='running'&&waiting.distance===ped.distance&&
+   waiting.elapsed>ped.elapsed+.45&&waiting.stun>0&&waiting.stun<ped.stun,{ped,waiting});
+  await shot('pedestrian-fall');await shot('pedestrian-wait');await page.waitForTimeout(1000);await shot('pedestrian-rising');// Do not idle 1.2 seconds on a moving roadway after recovery: the next
+   // physical obstacle is close. Observe actual recovery, make a trusted
+   // pause touch immediately, then do slow screenshot/acceptance work safely.
+   await page.waitForFunction(minDistance=>{const r=window.__coast.snapshot();return r.phase==='running'&&r.stun===0&&r.distance>minDistance},waiting.distance,{timeout:7000});
+   const recovered=await snapshot();await tap('#co-pause');const pausedAfterRecovery=await snapshot();
+   await shot('pedestrian-recovery');
+   check('pedestrian-recovers-once',recovered.phase==='running'&&recovered.distance>waiting.distance&&
+    recovered.events.filter(e=>e.type==='pedestrian-hit').length===1&&pausedAfterRecovery.phase==='paused',
+    {recovered,pausedAfterRecovery});
+   await page.waitForTimeout(240);const stillPaused=await snapshot();
+   check('recovered-rider-pauses-without-extra-vehicle-impact',
+    stillPaused.phase==='paused'&&stillPaused.distance===pausedAfterRecovery.distance&&
+    stillPaused.elapsed===pausedAfterRecovery.elapsed&&stillPaused.events.filter(e=>e.type==='failed').length===0,
+    {pausedAfterRecovery,stillPaused});
   // V4 route keeps every new hazard. Detour around 140, pass the new centre
   // car on its right, then return only after the 205m left barrier.
-  await tap('#co-pause');await tap('#co-replay');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');await page.waitForFunction(()=>Number(document.querySelector('#co-distance')?.textContent.match(/^\d+/)?.[0]??0)>=223,null,{timeout:5000});await shot('barrier-jump');await waitDistance(229);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(237);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');await waitDistance(245);
-  // Public touch nudges to fractional metres instead of forcing a road lane center.
+  // A real one-touch fractional lane/gauge check belongs on open tarmac.
+  // The post-prize car at ~257m is deliberately dangerous and must remain so.
+  await tap('#co-replay');await waitDistance(12);
   const before=await snapshot(),action=before.laneTarget>.7?'left':'right';
   await tap(`[data-action="${action}"]`);await page.waitForTimeout(1000);
   const moved=await snapshot(),expected=Math.max(-ROAD_EDGE_FOR_QA,
@@ -132,6 +215,14 @@ try{
    gauge.width>=100&&gauge.laneMarkOpacity===0&&Number.isFinite(gauge.position)&&
    Math.abs(gauge.position-expectedGauge)<=1,
    {gauge,actualLane:moved.lane,expectedGauge});
+  await shot('fractional-road-position-before-traffic');
+  // Fresh native replay restores the identical high-pressure detour at 115m.
+  await tap('#co-pause');await tap('#co-replay');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
+  // Its real +9m prize is caught around 241m, not at 237m. Only accept
+  // visible, physically earned events after those distances.
+  await waitDistance(231);await shot('barrier-jump');await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');
+  // Public touch nudges to fractional metres instead of forcing a road lane center.
+
   segment('collisions');
  }
  if(mode==='safety'||mode==='all'){

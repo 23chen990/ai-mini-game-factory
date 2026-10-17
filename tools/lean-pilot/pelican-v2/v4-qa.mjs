@@ -19,7 +19,8 @@ const snap=()=>page.evaluate(()=>window.__coast.snapshot());
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(JSON.stringify({name,passed:passed===true}));if(!passed)throw Error(name);};
 const shot=async name=>{const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({name,path:path.relative(RUN,file),sha256:sha(await readFile(file))});};
 const tap=async selector=>{const before=await snap(),point=await tapVisible(page,selector);report.actions.push({selector,point,before,at:new Date().toISOString()});};
-const distance=async n=>{await page.waitForFunction(target=>document.querySelector('#coast').dataset.phase==='finished'||Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0])>=target,n,{timeout:45000});const r=await snap();if(r.phase!=='running')throw Error('Unexpected death before '+n+': '+r.reason);};
+const distance=async n=>{await page.waitForFunction(target=>document.querySelector('#coast').dataset.phase==='finished'||Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0])>=target,n,{timeout:45000});const r=await snap();if(r.phase!=='running')throw Error('Unexpected death before '+n+': '+r.reason);
+ if(r.distance<n-1)throw Error('Visible HUD distance claimed '+n+'m while actual run is only '+r.distance.toFixed(2)+'m');};
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
  await page.evaluate(()=>{window.__v4Frames=[];const observe=()=>{const root=document.querySelector('#coast');if(root&&window.__v4Frames.length<12000)window.__v4Frames.push({at:performance.now(),phase:root.dataset.phase,beat:root.dataset.beat,label:document.querySelector('#co-distance-box span')?.textContent,crash:root.classList.contains('crashing')});requestAnimationFrame(observe);};observe();});
@@ -39,16 +40,27 @@ try{
  await page.setViewportSize({width:390,height:844});await tap('#co-replay');
  await page.waitForSelector('#coast[data-phase="finished"]',{timeout:40000});await page.locator('#co-modal').waitFor({state:'visible'});
  r=await snap();check('actual-barrier-death-settles-once-without-ad',r.reason==='barrier'&&r.events.some(e=>e.type==='failed'&&e.objectId==='l1-o1')&&r.settled===true&&r.reward?.settled===true&&r.reward.rounds===1&&r.reward.bank===r.rewardScore,r);await shot('barrier-death-revive-unavailable');
- check('revive-visible-disabled-free-replay-enabled',await page.locator('#co-revive').isVisible()&&await page.locator('#co-revive').isDisabled()&&await page.locator('#co-replay').isEnabled(),{text:await page.locator('#co-revive').innerText()});
- const beforeDisabled=r,box=await page.locator('#co-revive').boundingBox();await page.touchscreen.tap(box.x+box.width/2,box.y+box.height/2);await page.waitForTimeout(300);r=await snap();
- check('disabled-revive-cannot-fake-ad-or-change-reward',r.revives===0&&r.phase==='finished'&&r.reward.bank===beforeDisabled.reward.bank&&r.reward.rounds===beforeDisabled.reward.rounds,r);
+ check('unavailable-ad-buttons-hidden-free-replay-enabled',await page.locator('#co-revive').isHidden()&&await page.locator('#co-ad').isHidden()&&await page.locator('#co-replay').isEnabled()&&(await page.locator('#co-storage').innerText()).includes('广告未接入'),{reviveHidden:await page.locator('#co-revive').isHidden(),adHidden:await page.locator('#co-ad').isHidden()});
+ const beforeDisabled=r;await page.waitForTimeout(300);r=await snap();
+ check('hidden-unavailable-ads-never-revive-or-change-reward',r.revives===0&&r.phase==='finished'&&r.reward.bank===beforeDisabled.reward.bank&&r.reward.rounds===beforeDisabled.reward.rounds,r);
  await tap('#co-replay');r=await snap();check('free-replay-keeps-accounting-with-new-run',r.phase==='running'&&r.revives===0&&r.reward.bank===beforeDisabled.reward.bank&&r.reward.rounds===1,r);
+ const replayHud=await page.locator('#co-distance').innerText();
+ check('fresh-replay-hud-resets-before-any-new-input',r.distance<3&&Number(replayHud.match(/^\d+/u)?.[0])===Math.floor(r.distance),
+  {realDistance:r.distance,visibleDistance:replayHud,previousFailureDistance:beforeDisabled.distance});
  // Exact new V4 centre vehicle. A legitimate detour avoids the preceding
  // barrier; no teleport, save injection, debug control or internal event.
  await distance(115);await tap('[data-action="left"]');await distance(145);await tap('[data-action="right"]');
  await page.waitForSelector('#coast[data-phase="finished"]',{timeout:15000});await page.locator('#co-modal').waitFor({state:'visible'});r=await snap();
  check('actual-new-vehicle-death-settles-once',r.reason==='vehicle'&&r.events.some(e=>e.type==='failed'&&e.objectId==='l1-o6')&&r.settled&&r.reward.settled&&r.reward.rounds===2&&r.reward.bank===beforeDisabled.reward.bank+r.rewardScore,r);await shot('new-v4-vehicle-death');
- const bank=r.reward.bank;await tap('#co-select');await page.reload();await page.waitForSelector('#coast[data-loaded="true"]');await tap('#co-start');r=await snap();
+ // Export the outcome of a real vehicle collision, not injected game state.
+  const exportedFailurePending=page.waitForEvent('download',{timeout:10000});
+  await tap('#co-export');
+  const exportedFailure=JSON.parse(await readFile(await (await exportedFailurePending).path(),'utf8'));
+  check('anonymous-playtest-export-identifies-actual-vehicle-death',
+   exportedFailure.lastEvents.some(e=>e.event==='fail'&&e.reason==='vehicle'&&e.level===1&&e.distance>=115)&&
+   !('userId' in exportedFailure)&&!('deviceId' in exportedFailure),
+   exportedFailure.lastEvents.filter(e=>e.event==='fail'));
+  const bank=r.reward.bank;await tap('#co-select');await page.reload();await page.waitForSelector('#coast[data-loaded="true"]');await tap('#co-start');r=await snap();
  check('route-refresh-retains-exact-earned-accounting',r.reward.rounds===2&&r.reward.bank===bank&&r.save.unlocked===1&&r.save.completed.every(v=>!v),r);await shot('free-restart-after-refresh');
  report.frames=await page.evaluate(()=>window.__v4Frames??[]);
 }catch(error){report.errors.push(error.stack);report.failureSnapshot=await snap().catch(()=>null);await shot('failure').catch(()=>{});}

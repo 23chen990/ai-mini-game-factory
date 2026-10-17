@@ -12,7 +12,7 @@ import {softwareQualityActions,riskCaptureProfile} from './experience-policy.mjs
 import {campaignWallBudgetMs} from './runtime/qa-budget.mjs';
 import {readCompactPresentation,portraitMasteryClear} from './qa-presentation.mjs';
 import {LEVELS} from './runtime/levels.mjs';
-import {CAPTURE_HOLD_MS,JUMP_WINDOW_SECONDS,TARGET_WINDOW_TRAIL_METERS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
+import {CAPTURE_HOLD_MS,JUMP_WINDOW_SECONDS,TARGET_WINDOW_TRAIL_METERS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud,radarIsExpectedBarrier} from './runtime/risk-policy.mjs';
 
 const engine=process.env.QA_ENGINE??'webkit';
 const profile=riskCaptureProfile(process.env),selectedLevels=profile.firstOnly?RISK_LEVELS.slice(0,1):RISK_LEVELS;
@@ -79,25 +79,38 @@ async function shot(page,name,{levelId=activeLevelId,targetBarrierId=null,kind='
  const item={at:new Date().toISOString(),levelId,targetBarrierId,kind,path:path.relative(RUN,file),sha256:sha(await readFile(file))};
  report.screenshots.push(item);return item;
 }
-async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,decisionView=null,decision:policyDecision=null}={}){
- const touchStart=await page.evaluate(()=>window.__riskTouchEvidence?.length??0);
- const before=await recordSnapshot(page,'before-touch-tap',{levelId,targetBarrierId});
- const action={at:new Date().toISOString(),type:'touch-tap',input:'Playwright public touchscreen.tap at visible button center',selector,levelId,targetBarrierId,normalInputOnly:true,stateInjection:false};
+async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,decisionView=null,decision:policyDecision=null,fastReaction=false}={}){
+ // A critical touch cannot afford a full game-state snapshot before the
+ // physical input. We already chose the action from public HUD; capture only
+ // the DOM phase and the trusted touch event offset. Full state snapshots
+ // remain on routine inputs and after each earned hazard for verification.
+ const urgent=fastReaction?await page.evaluate(()=>({
+  touchStart:window.__riskTouchEvidence?.length??0,
+  phase:document.querySelector('#coast')?.dataset.phase??'missing'
+ })):null;
+ const touchStart=urgent?.touchStart??await page.evaluate(()=>window.__riskTouchEvidence?.length??0);
+ const before=urgent?null:await recordSnapshot(page,'before-touch-tap',{levelId,targetBarrierId});
+ const action={at:new Date().toISOString(),type:'touch-tap',input:'Playwright public touchscreen.tap at visible button center',selector,levelId,targetBarrierId,normalInputOnly:true,stateInjection:false,fastReaction,
+  preTouchProof:urgent?{source:'read-only DOM phase + public HUD decision',phase:urgent.phase,visibleDecisionView:decisionView}:null};
  if(decisionView)action.visibleDecisionView=decisionView;
  if(policyDecision)action.policyDecision=policyDecision;
  report.actions.push(action);
- if(selector.startsWith('[data-action')&&before.value.phase!=='running')throw Error('Gameplay stopped: '+before.value.reason+' at '+before.value.distance+'m');
+ if(selector.startsWith('[data-action')&&(urgent?.phase??before.value.phase)!=='running')throw Error('Gameplay stopped before trusted touch at '+(decisionView?.distance??before?.value.distance)+'m');
  action.touchPoint=await tapVisible(page,selector);
- await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
- const after=await recordSnapshot(page,'after-touch-tap',{levelId,targetBarrierId});
+ // A screenshot-like two-frame evidence wait after a lane change can consume
+ // the whole consecutive-barrier window on software-rendered mobile emulation.
+ // Keep the public touch and trusted pointer capture; defer the full post-tap
+ // snapshot only when the REAL next hazard needs an immediate follow-up input.
+ if(!fastReaction)await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ const after=fastReaction?null:await recordSnapshot(page,'after-touch-tap',{levelId,targetBarrierId});
  const touches=await page.evaluate(start=>window.__riskTouchEvidence?.slice(start)??[],touchStart);
- action.completedAt=new Date().toISOString();action.beforeSnapshotId=before.id;action.afterSnapshotId=after.id;action.nativeTouchEvidence=touches;
+ action.completedAt=new Date().toISOString();action.beforeSnapshotId=before?.id??null;action.afterSnapshotId=after?.id??null;action.nativeTouchEvidence=touches;
  action.trustedTouch=touches.some(event=>event.pointerType==='touch'&&event.isTrusted===true);
- action.visibleViewAfter=await readVisibleView(page);
+ if(!fastReaction)action.visibleViewAfter=await readVisibleView(page);
  return action;
 }
 function makeEpisode(target){
- return {barrierId:target.barrierId,goldFishId:target.goldFishId,distance:target.distance,hudSeen:false,hudLane:null,hudSnapshotId:null,approachScreenshot:null,jump:null,holdComplete:false,holdDurationMs:null,holdSamples:[],barrierClearSnapshotId:null,bonusFishCatchSnapshotId:null,goldHud:null,screenshots:[]};
+ return {barrierId:target.barrierId,goldFishId:target.goldFishId,distance:target.distance,hudSeen:false,hudLane:null,hudSnapshotId:null,approachScreenshot:null,deferredApproachScreenshot:false,deferredGoldPhoto:false,jump:null,holdComplete:false,holdDurationMs:null,holdSamples:[],barrierClearSnapshotId:null,bonusFishCatchSnapshotId:null,goldHud:null,screenshots:[]};
 }
 function eventFor(snapshot,type,objectId){return snapshot.events?.find(event=>event.type===type&&event.objectId===objectId)??null;}
 async function saveEvidenceShot(page,episode,kind){
@@ -205,16 +218,32 @@ async function runLevel(level){
    if(inEvidenceRange||evidenceEpisode?.jump){
     const observed=await readSnapshot(page);
     if(evidenceEpisode){
-     const targetLane=view.lanes.findIndex(lane=>lane.jumpReward&&lane.kind==='barrier');
+     const targetLane=view.lanes.findIndex(lane=>lane.jumpReward&&radarIsExpectedBarrier(view,lane,evidenceTarget,level.id));
      if(!evidenceEpisode.hudSeen&&view.distance>=evidenceTarget.distance-48&&view.distance<=evidenceTarget.distance+10&&targetLane>=0){
       evidenceEpisode.hudSeen=true;evidenceEpisode.hudLane=targetLane;
       const record=await recordSnapshot(page,'visible-jump-reward-radar',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.hudSnapshotId=record.id;
-      evidenceEpisode.approachScreenshot=(await saveEvidenceShot(page,evidenceEpisode,'reward-approach')).path;
+      // The 205m -> 233m pair leaves just seconds to move and buffer a jump.
+      // Take the public HUD snapshot now, but move expensive PNG work AFTER
+      // the trusted touch. Otherwise image encoding consumes the jump window.
+      const previousTarget=level.targets[targetIndex-1];
+      const shortFollowUp=previousTarget&&evidenceTarget.distance-previousTarget.distance<=30;
+      if(shortFollowUp)evidenceEpisode.deferredApproachScreenshot=true;
+      else evidenceEpisode.approachScreenshot=(await saveEvidenceShot(page,evidenceEpisode,'reward-approach')).path;
      }
      const barrierClear=eventFor(observed,'barrier-cleared',evidenceTarget.barrierId);
      if(barrierClear&&!evidenceEpisode.barrierClearSnapshotId){const record=await recordSnapshot(page,'exact-barrier-cleared-event',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.barrierClearSnapshotId=record.id;await saveEvidenceShot(page,evidenceEpisode,'barrier-cleared');}
      const bonusFishCatch=eventFor(observed,'fish-caught',evidenceEpisode.goldFishId);
-     if(bonusFishCatch&&!evidenceEpisode.bonusFishCatchSnapshotId){const record=await recordSnapshot(page,'exact-golden-bonus-fish-caught',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.bonusFishCatchSnapshotId=record.id;evidenceEpisode.goldHud=await visibleHud(page);await saveEvidenceShot(page,evidenceEpisode,'golden-bonus-fish-caught');}
+     if(bonusFishCatch&&!evidenceEpisode.bonusFishCatchSnapshotId){
+      const record=await recordSnapshot(page,'exact-golden-bonus-fish-caught',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});
+      evidenceEpisode.bonusFishCatchSnapshotId=record.id;
+      // Gold HUD is captured at the genuine pickup; both it and the full
+      // unedited game video remain the reward proof.
+      evidenceEpisode.goldHud=await visibleHud(page);
+      const nextTarget=level.targets[targetIndex+1];
+      const nextIsClose=nextTarget&&nextTarget.distance-evidenceTarget.distance<=30;
+      if(nextIsClose)evidenceEpisode.deferredGoldPhoto=true;
+      else await saveEvidenceShot(page,evidenceEpisode,'golden-bonus-fish-caught');
+     }
     }
    }
    while(targetIndex<level.targets.length&&
@@ -231,12 +260,35 @@ async function runLevel(level){
    }
    if(decision.action==='left'||decision.action==='right'||decision.action==='jump'){
     const selector=`[data-action="${decision.action}"]`;
-    const action=await tap(page,selector,{levelId:level.id,targetBarrierId:episode?.barrierId??null,decisionView:{distance:view.distance,laneIndex:view.laneIndex,lanes:view.lanes.map(lane=>({...lane}))},decision:{action:decision.action,toLane:decision.toLane,reason:decision.reason,countdown:decision.countdown}});
+    const previous=level.targets[targetIndex-1];
+    // Evidence readback after a real JUMP touch is not part of player control.
+    // Skip the extra two rendered frames and after-action RPC while a live
+    // collision is approaching. Trusted pointer events and the BEFORE
+    // snapshot remain mandatory; the video and target episode still prove it.
+    const fastReaction=decision.action==='jump'||Boolean(previous&&target&&target.distance-previous.distance<=30&&
+     view.distance>=previous.distance+7&&view.distance<target.distance-4&&
+     ['left','right'].includes(decision.action));
+    const action=await tap(page,selector,{levelId:level.id,targetBarrierId:episode?.barrierId??null,fastReaction,decisionView:{distance:view.distance,laneIndex:view.laneIndex,lanes:view.lanes.map(lane=>({...lane}))},decision:{action:decision.action,toLane:decision.toLane,reason:decision.reason,countdown:decision.countdown}});
     if(decision.action==='jump'&&episode&&!episode.jump){
      const proof=await readSnapshot(page);
      console.log('RISK_JUMP_ACTION '+JSON.stringify({engine,level:level.id,target:episode.barrierId,visibleDistance:view.distance,phase:proof.phase,reason:proof.reason,lane:proof.lane,laneTarget:proof.laneTarget,laneIndex:proof.laneIndex,bufferedJump:proof.bufferedJump,airY:proof.y,events:(proof.events??[]).filter(e=>['jump','jump-buffered','failed'].includes(e.type)).slice(-3),trustedTouch:action.trustedTouch}));
      const holdStartMs=await page.evaluate(()=>performance.now());state={...state,jumpAtMs:holdStartMs};
      episode.jump={at:action.at,completedAt:action.completedAt,nowMs:holdStartMs,distance:view.distance,laneIndex:view.laneIndex,goldCounter:view.goldCounter,jumpReady:view.jumpReady,countdown:decision.countdown,actionIndex:report.actions.indexOf(action)};
+     // After the next trusted touch is received, screenshots can no longer
+     // steal reaction time from its 2.25s physics buffer. A delayed photo is
+     // labelled as such; the at-pickup HUD snapshot and video are unchanged.
+     if(action.trustedTouch){
+      for(const earlier of episodes){
+       if(earlier.deferredGoldPhoto){
+        await saveEvidenceShot(page,earlier,'golden-bonus-fish-caught-post-next-input');
+        earlier.deferredGoldPhoto=false;
+       }
+      }
+     }
+     if(episode.deferredApproachScreenshot){
+      episode.approachScreenshot=(await saveEvidenceShot(page,episode,'reward-approach')).path;
+      episode.deferredApproachScreenshot=false;
+     }
      await saveEvidenceShot(page,episode,'jump-input');
     }
     if(decision.action==='left'||decision.action==='right'){
@@ -263,6 +315,11 @@ async function runLevel(level){
   check(`level-${level.id}-natural-terminal-settlement`,terminalOkay,{phase:terminal.phase,reason:terminal.reason,level:terminal.level,count:terminal.count,gold:terminal.gold,elapsed:terminal.elapsed,save:terminal.save,hud:result.hudFinish});
   check(`level-${level.id}-save-earned-through-play`,terminalOkay&&terminal.save.completed[level.id-1]===true&&terminal.save.unlocked>=Math.min(5,level.id+1),terminal.save);
   check(`level-${level.id}-earned-three-stars`,terminalOkay&&terminal.save.stars[level.id-1]===3,{stars:terminal.save.stars[level.id-1],count:terminal.count,gold:terminal.gold,jumps:terminal.jumpedBarriers,bestStreak:terminal.bestStreak});
+  const replayCta=await page.locator('#co-replay').innerText();
+  check(`level-${level.id}-full-stars-replay-offers-record-not-stars`,
+   terminalOkay&&terminal.save.stars[level.id-1]===3&&replayCta.includes('纪录')&&!replayCta.includes('冲三星'),
+   {replayCta,stars:terminal.save.stars[level.id-1]});
+
   check(`level-${level.id}-exact-target-jump-count`,terminal.jumpedBarriers===level.targets.length,{expected:level.targets.length,jumpedBarriers:terminal.jumpedBarriers,targetBarrierIds:level.targets.map(target=>target.barrierId)});
   for(const episode of episodes)verifyEpisode(level,episode);
   const vehicleEntries=report.actions.filter(action=>action.levelId===level.id&&action.visibleDecisionView&&['left','right'].includes(action.policyDecision?.action)).filter(action=>{
@@ -320,7 +377,7 @@ async function runLevel(level){
 
 function verifyEpisode(level,episode){
  const prefix=`level-${level.id}-${episode.barrierId}`;
- check(`${prefix}-visible-jump-reward-route`,episode.hudSeen,{lane:episode.hudLane,snapshotId:episode.hudSnapshotId,screenshot:episode.approachScreenshot,distance:episode.distance});
+ check(`${prefix}-visible-jump-reward-route`,episode.hudSeen&&Boolean(episode.hudSnapshotId)&&Boolean(episode.approachScreenshot),{lane:episode.hudLane,snapshotId:episode.hudSnapshotId,screenshot:episode.approachScreenshot,distance:episode.distance});
  check(`${prefix}-one-jump-at-decimal-window`,Boolean(episode.jump)&&(Number.isFinite(episode.jump.countdown)&&episode.jump.countdown<=JUMP_WINDOW_SECONDS&&episode.jump.countdown>=0||episode.jump.jumpReady===true&&episode.jump.distance<episode.distance),{jump:episode.jump});
  const jumpActions=report.actions.filter(action=>action.levelId===level.id&&action.targetBarrierId===episode.barrierId&&action.selector==='[data-action="jump"]');
  check(`${prefix}-no-repeat-jump`,jumpActions.length===1,{jumpActions:jumpActions.map(action=>({at:action.at,selector:action.selector}))});

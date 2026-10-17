@@ -12,9 +12,28 @@ test('five distinct safe courses: first-level traffic follows teaching; second l
  assert.ok(openingTraffic.length>=3,'V4 retains alternating vehicle decisions');
  assert.ok(openingTraffic.every(o=>o.x>=100),'early steering/fishing teaching precedes lethal traffic');
  assert.ok(LEVELS[0].obstacles.some(o=>o.kind==='barrier'&&o.x<openingTraffic[0].x),'jump-or-detour teaching precedes cars');
- assert.ok(!LEVELS[1].obstacles.some(o=>['car','van'].includes(o.kind)));
+ // Level 2 is pedestrian/barrier-dominant, but its last visible choke
+ // introduces ONE vehicle before level 3 so repeated jump spam cannot clear.
+ const lateVehicles=LEVELS[1].obstacles.filter(o=>['car','van'].includes(o.kind));
+ assert.equal(lateVehicles.length,1);
+ assert.ok(lateVehicles[0].x>=380,'late fair vehicle remains telegraphed, not a surprise first-second death');
+ assert.ok(LEVELS[1].obstacles.filter(o=>o.x<lateVehicles[0].x).every(o=>!['car','van'].includes(o.kind)));
  assert.ok(LEVELS[2].obstacles.some(o=>o.kind==='car')&&LEVELS[2].obstacles.some(o=>o.kind==='van'));
  assert.equal(LEVELS[3].weather,'rain');assert.ok(LEVELS[4].hour>=18);assert.ok(LEVELS[4].hour<18.5,'dusk road must stay readable');
+});
+test('night two-gate fish path visibly rewards right-side preparation then demands a left escape',()=>{
+ const night=LEVELS[4];
+ const planned=[[351,2],[367,2],[383,2],[399,2],[415,2],[431,2],[447,2],[463,2],[479,2],[495,1],[511,0],[527,0]];
+ for(const [x,lane] of planned){
+  const fish=night.fish.find(f=>f.x===x&&!f.bonus&&!f.shoal);
+  assert.ok(fish,`missing real authored route fish at ${x}m`);
+  assert.equal(fish.lane,lane,`fish at ${x}m must guide the known open lane`);
+  assert.equal(fish.z??LANES[fish.lane],LANES[lane],`fish at ${x}m is physically in its visible lane`);
+ }
+ const gates=[433,475,558].map(x=>night.obstacles.filter(o=>o.x===x&&['car','van'].includes(o.kind)));
+ assert.deepEqual(gates.map(group=>group.map(o=>o.lane).sort()),[[0,1],[0,1],[1,2]],
+  'safe 433/475m RIGHT then 558m LEFT exits are authored, not granted dynamically');
+ assert.deepEqual(validateLevel(makeLevel(5)),[],'the entire harder five-level course must remain physically fair');
 });
 test('fairness validator rejects all blocked roads, unsafe fish and insufficient reaction spacing',()=>{
  const l=makeLevel(3);l.obstacles=[0,1,2].map(lane=>({id:'x'+lane,kind:'car',x:90,lane,speed:3}));assert.ok(validateLevel(l).some(x=>x.includes('blocked')));
@@ -109,4 +128,18 @@ test('static coast boot appears before the old PC intro and old intro stays hidd
  assert.ok(result.indexOf('id="coast-boot"')<result.indexOf('id="intro"'));
  assert.equal((result.match(/id="coast-boot"/g)||[]).length,1);
  assert.throws(()=>brandPelicanBoot(result),/anchor changed/);
+});
+
+test('early 2.25-second mobile jump queue is real and cannot arm from too far away',()=>{
+ const ready=newRun(1);
+ ready.distance=124;ready.lane=0;ready.laneTarget=0;ready.laneIndex=1;
+ input(ready,'jump');
+ assert.equal(ready.bufferedJump,'l1-o1','player gets an actual visible two-second preparation window');
+ assert.equal(ready.vy,0,'prepared touch must not trigger an immediate false jump');
+ tick(ready,2);
+ assert.ok(ready.events.some(e=>e.type==='jump'&&e.objectId==='l1-o1'&&e.buffered===true));
+ const tooFar=newRun(1);
+ tooFar.distance=120;input(tooFar,'jump');
+ assert.equal(tooFar.bufferedJump,null,'jump cannot arm a hazard beyond the intentional 2.25s window');
+ assert.ok(tooFar.vy>0,'ordinary early swipe remains a real jump');
 });

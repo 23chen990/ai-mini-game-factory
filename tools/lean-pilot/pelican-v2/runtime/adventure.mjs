@@ -1,16 +1,22 @@
 import {makeLevel,LANES,BOUNDS} from './levels.mjs';
 import {springLane,riderFeel,cameraTarget} from './feel.mjs';
 import {fishPoints,fishRoadZ,normalizeBest,rateStars,updateBest} from './engagement.mjs';
+import {createEndlessLevel,extendEndless,endlessTier,endlessCruiseSpeed} from './endless.mjs';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 // Casual touch assist: early press arms only the next same-lane low barrier.
 // The actual jump is still integrated by the normal collision/physics loop.
-export const JUMP_BUFFER_SECONDS=1.45;
+export const JUMP_BUFFER_SECONDS=2.25;
 export const JUMP_TRIGGER_METERS=3.0;
 export const FREE_ROAD_EDGE=2.15;
 export const TAP_STEER_DISTANCE=1.18;
 const nearestLane=z=>clamp(Math.round((z-LANES[0])/(LANES[1]-LANES[0])),0,2);
-const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500)r.events.shift();};
-export function newRun(id) {const level=makeLevel(id);return {phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false,revives:0,reviveGrace:0}; }
+const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500){r.events.shift();r.eventOffset=(r.eventOffset??0)+1;}};
+export function newRun(id,{seed=Math.floor(Date.now()/86400000)}={}) {const level=id===6?createEndlessLevel(seed):makeLevel(id);const run={phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],eventOffset:0,fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false,revives:0,reviveGrace:0};
+ if(level.endless){run.endless={seed:level.seed,index:0,nextX:100,tier:0};
+  run.fishes.push(...[15,31,47].map((x,i)=>({id:`endless-warmup-${i}`,x,lane:1,golden:false,bonus:false,caught:false})));
+  extendEndless(run);
+ }
+ return run; }
 // Original authorized bike allowed any road position, not three locked stops.
  // Lane indices now describe *where hazards are authored*, not legal rider positions.
 export function steerTo(r, target, source='drag') {
@@ -61,6 +67,7 @@ function finish(r,reason,object){r.phase='finished';r.reason=reason;r.speed=0;r.
 // A revival is only granted by a verified rewarded-ad completion in the UI.
 // Never revive an already settled run, a fish shortage, or a time-out.
 export function canRevive(r){return !!r&&r.phase==='finished'&&!r.settled&&r.revives===0&&['vehicle','barrier'].includes(r.reason);}
+export function retireRun(r){if(r?.phase!=='running'&&r?.phase!=='paused')return false;if(!r?.level?.endless)return false;finish(r,'retired');return true;}
 export function revive(r){
  if(!canRevive(r))return false;
  const object=r.obstacles.find(o=>o.id===r.lastCollisionId);
@@ -80,7 +87,13 @@ function step(r,dt){
  r.elapsed+=dt;
  if(r.reviveGrace>0)r.reviveGrace=Math.max(0,r.reviveGrace-dt);
  if(r.stun>0){r.stun=Math.max(0,r.stun-dt);r.speed=0;if(r.stun===0)event(r,'recovered');}
- else{r.speed=r.level.speed;r.distance=Math.min(r.level.distance,r.distance+r.speed*dt);}
+ else{r.speed=r.level.endless?endlessCruiseSpeed(r.distance):r.level.speed;
+  r.distance=Math.min(r.level.distance,r.distance+r.speed*dt);}
+ if(r.level.endless){
+  const tier=endlessTier(r.distance);
+  if(tier.id>r.endless.tier){r.endless.tier=tier.id;event(r,'endless-tier',{tier:tier.id,name:tier.name});}
+  extendEndless(r);
+ }
  // Same continuous damped dynamics as the source, but with an actual analog
  // target. A 0.4m drag remains 0.4m; release never snaps back to lane centers.
  const previousV=r.laneV;
@@ -146,8 +159,8 @@ function step(r,dt){
    event(r,'fish-caught',{objectId:f.id,golden:f.golden,bonus:!!f.bonus,first:r.count===1,count:r.count,streak:r.streak,comboPoints});
   }
  }
- if(r.distance>=r.level.distance)finish(r,r.count<r.level.goal.count?'fish-short':r.gold<r.level.goal.gold?'gold-short':'complete');
- else if(r.elapsed>=r.level.seconds)finish(r,'timeout');
+ if(!r.level.endless&&r.distance>=r.level.distance)finish(r,r.count<r.level.goal.count?'fish-short':r.gold<r.level.goal.gold?'gold-short':'complete');
+ else if(!r.level.endless&&r.elapsed>=r.level.seconds)finish(r,'timeout');
 }
 export function newSave() { return {version:2,unlocked:1,stars:[0,0,0,0,0],completed:[false,false,false,false,false],best:normalizeBest(null)}; }
 export function loadSave(raw) {try{if(typeof raw!=='string'||raw.length>2500)return null;const s=JSON.parse(raw);if(s.version!==2||!Number.isInteger(s.unlocked)||s.unlocked<1||s.unlocked>5||!Array.isArray(s.stars)||s.stars.length!==5||s.stars.some(n=>!Number.isInteger(n)||n<0||n>3)||!Array.isArray(s.completed)||s.completed.length!==5||s.completed.some(x=>typeof x!=='boolean'))return null;return {version:2,unlocked:s.unlocked,stars:s.stars,completed:s.completed,best:normalizeBest(s.best)};}catch{return null;} }

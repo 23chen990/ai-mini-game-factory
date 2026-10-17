@@ -4,14 +4,14 @@ import {makeBarrierPrizes} from './engagement.mjs';
 export {LANES} from './safety.mjs';
 // Authored encounters, shared coast. Distances/timing/content are original to this project.
 const definitions = [
- {id:1,name:'海岸出发',subtitle:'海岸挑战 · 连续吞鱼、跳障追金鱼、预判车流',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[225,'barrier',1],
+ {id:1,name:'海岸出发',subtitle:'海岸挑战 · 连续吞鱼、跳障追金鱼、预判车流',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[233,'barrier',1],
   // V4 authored pressure beats are appended to keep the original obstacle IDs and QA evidence stable.
   // 75m optional left jump; then a right-vehicle/center-jump decision, later alternating safe gaps.
   [75,'barrier',0],[130,'car',2],[181,'car',1],[205,'barrier',0],[248,'van',2],[274,'car',1]]},
  {id:2,name:'行人出没',subtitle:'斑马线 · 看行人方向，躲避后追金鱼',mastery:{jumps:1},distance:420,speed:8,seconds:70,goal:{count:12,gold:1},hour:16,weather:'clear',reward:22,rows:[[76,'pedestrian',0],[134,'pedestrian',2],[192,'pedestrian',0],[246,'barrier',1],[298,'pedestrian',2],[356,'barrier',0]]},
  {id:3,name:'危险公路',subtitle:'危险公路 · 汽车换道，路障可跳',mastery:{jumps:1},distance:540,speed:8.8,seconds:82,goal:{count:17,gold:2},hour:15.5,weather:'clear',reward:30,rows:[[100,'car',1],[161,'pedestrian',0],[222,'van',2],[222,'barrier',1],[298,'car',0],[360,'barrier',2],[421,'van',1],[483,'car',2]]},
  {id:4,name:'雨中骑行',subtitle:'雨天路滑 · 提前变道，挑战连续两次跳障',mastery:{jumps:2},distance:630,speed:9.2,seconds:88,goal:{count:20,gold:2},hour:16.4,weather:'rain',reward:38,rows:[[100,'car',1],[162,'pedestrian',2],[225,'van',0],[225,'barrier',1],[294,'car',2],[350,'barrier',1],[410,'car',0],[410,'van',2],[478,'pedestrian',0],[536,'van',1],[593,'barrier',2]]},
- {id:5,name:'夜间赶海',subtitle:'夜间赶海 · 提前预判，追逐稀有金鱼',mastery:{jumps:2},distance:720,speed:9.6,seconds:95,goal:{count:24,gold:3},hour:18.38,weather:'dusk',reward:50,rows:[[95,'car',1],[151,'pedestrian',0],[210,'van',2],[210,'barrier',1],[276,'car',0],[334,'barrier',2],[396,'van',1],[454,'pedestrian',2],[516,'car',0],[516,'van',1],[584,'barrier',0],[644,'car',2],[694,'pedestrian',0]]},
+ {id:5,name:'夜间赶海',subtitle:'夜间赶海 · 提前预判，追逐稀有金鱼',mastery:{jumps:2},distance:720,speed:9.6,seconds:95,goal:{count:24,gold:3},hour:18.38,weather:'dusk',reward:50,rows:[[95,'car',1],[151,'pedestrian',0],[210,'van',2],[210,'barrier',1],[276,'car',0],[334,'barrier',2],[396,'van',1],[454,'pedestrian',2],[475,'car',0],[475,'van',1],[584,'barrier',0],[644,'car',2],[694,'pedestrian',0]]},
 ];
 // V5 authored pressure gates: a visibly open escape lane at every two-lane
 // squeeze. Existing obstacle IDs stay stable because these rows are appended,
@@ -24,7 +24,7 @@ export const PRESSURE_GATES=Object.freeze({
   [198,'barrier',1],[198,'barrier',2], // left gap
   [282,'barrier',0],[282,'barrier',1], // right gap
   [331,'barrier',0],[331,'barrier',2], // centre gap
-  [390,'barrier',1],[390,'barrier',2], // left gap, final approach
+  [390,'car',1],[390,'barrier',2], // visible late vehicle: blind centre jumping fails, LEFT gap remains
  ]),
  3:Object.freeze([
   [270,'car',0],[270,'van',1], // right gap after 222m legacy choke
@@ -42,13 +42,21 @@ export const PRESSURE_GATES=Object.freeze({
   [145,'car',0],[145,'van',2], // centre gap
   [303,'car',0],[303,'van',1], // right gap
   [433,'car',0],[433,'van',1], // right gap
-  [558,'van',1],[558,'car',2], // left gap after 516m
+  [558,'van',1],[558,'car',2], // left gap after 475m
  ]),
 });
 export const BOUNDS = {car:{x:1.5,z:.63},van:{x:1.8,z:.66},pedestrian:{x:.25,z:.25},barrier:{x:.24,z:.59}};
 // Conservative envelopes include approach motion, player body and pedestrian crossing.
 export function unsafeLanes(obstacles,x) { return unsafeFishLanes(obstacles,x); }
 // Distinct, deterministic reward routes; dangerous lanes always override fish placement.
+// A genuinely playable night route: after the earned 334m RIGHT jump and
+// its 343m fish, stay RIGHT before the 396m centre van and both 433/475m
+// left+centre traffic gates. The former 351-383m left-fish temptation
+// trapped first-time riders on the LEFT when both warning lanes turned red.
+// The 495m centre then 511/527m left fish make the next 558m left opening
+// a deliberate two-turn decision. All fish are physical, earned and safe;
+// no magnet, collision forgiveness or dynamic difficulty is introduced.
+export const NIGHT_SAFE_FISH_TRAIL=Object.freeze({351:2,367:2,383:2,399:2,415:2,431:2,447:2,463:2,479:2,495:1,511:0,527:0});
 const FISH_PATTERNS = [
  [1,2,0,1,2,0,2,1], // genuine left/right decisions after the first three tutorial fish
  [1,2,2,1,0,0,2,1], // alternating crossings
@@ -62,6 +70,7 @@ export const LEVELS=definitions.map(d=>{
  const crossesBlocked=(from,to,bad)=>Array.from({length:Math.abs(from-to)+1},(_,j)=>Math.min(from,to)+j).some(l=>bad.has(l));
  for(let x=15,i=0;x<d.distance-10;x+=16,i++){
   const bad=unsafeLanes(obstacles,x);let lane=i<3?1:pattern[Math.floor(i/2)%pattern.length];
+  if(d.id===5&&Object.prototype.hasOwnProperty.call(NIGHT_SAFE_FISH_TRAIL,x))lane=NIGHT_SAFE_FISH_TRAIL[x];
   // Do not lure the player across a blocked middle lane to reach an apparently safe fish.
   if(crossesBlocked(lastLane,lane,bad))lane=[lastLane,1,2,0].find(l=>!crossesBlocked(lastLane,l,bad))??[1,2,0].find(l=>!bad.has(l))??2;
   lastLane=lane;fish.push({id:`l${d.id}-f${i}`,x,lane,golden:i>1&&i%7===3});
@@ -79,6 +88,24 @@ export const LEVELS=definitions.map(d=>{
  if(d.id===1){
   for(const [x,lane,golden] of [[81,1,false],[117,0,false],[194,2,false],[211,1,false],[253,0,true],[284,2,false]]){
    if(!unsafeLanes(obstacles,x).has(lane))fish.push({id:`l1-shoal-${x}`,x,lane,golden,shoal:true});
+  }
+ }
+ // The level-2 exit after the 356m jump gives one extra REAL catch
+ // along the only safe lane. It rewards staying on the earned prize route
+ // instead of lowering the immutable 17-fish three-star requirement.
+ if(d.id===2){
+  const x=372,lane=0;
+  if(!unsafeLanes(obstacles,x).has(lane))
+   fish.push({id:'l2-prize-trail-372',x,lane,golden:false,shoal:true});
+ }
+ // A late first-level four-fish sprint can only be earned by taking the
+ // LEFT clear exit after the optional 233m jump. It preserves the real
+ // 4-catch mastery rule while rewarding holding a chosen lane instead of
+ // a lottery of software-rendered reaction frames.
+ if(d.id===1){
+  for(const x of [260,264,267]){
+   if(!unsafeLanes(obstacles,x).has(0))
+    fish.push({id:`l1-clean-exit-${x}`,x,lane:0,golden:false,shoal:true});
   }
  }
  // V5 high-risk coast: short fish trains reward riders who commit to an
