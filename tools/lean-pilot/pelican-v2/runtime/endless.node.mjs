@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createEndlessLevel,endlessSegment,extendEndless} from './endless.mjs';
-import {newRun,retireRun,settle,newSave,advance} from './adventure.mjs';
+import {newRun,retireRun,settle,newSave,advance,input} from './adventure.mjs';
 
 test('infinite coast is deterministic by seed and index, never by player lane',()=>{
  const sequences=[...Array(120)].map((_,i)=>endlessSegment(20261017,i));
@@ -62,4 +62,14 @@ test('endless retirement settles once, never grants stars or opens ad revival',(
  assert.equal(settle(save,r),false);
  assert.deepEqual(save.stars,[0,0,0,0,0]);
  assert.equal(save.unlocked,1);
+});
+
+test('long-session event buffer keeps absolute offsets for current HUD feedback',()=>{
+ const r=newRun(6,{seed:88});
+ for(let i=0;i<630;i++)input(r,i%2===0?'left':'right');
+ assert.equal(r.events.length,500);
+ assert.equal(r.eventOffset,130);
+ assert.equal(r.events.at(-1).type,'steer-input');
+ assert.equal(r.events.at(-1).source,'tap');
+ assert.equal(r.events.at(-1).target,0);
 });
