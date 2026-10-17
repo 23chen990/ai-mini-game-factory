@@ -2,9 +2,7 @@
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed } from './fps-mobile-ux.mjs';
-import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel} from './cf-player-loop.mjs';
-import {cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,
-  cfFinishPlaytest,cfMarkReplay,cfExportPlaytest} from './cf-playtest-metrics.mjs';
+import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
