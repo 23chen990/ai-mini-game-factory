@@ -268,7 +268,7 @@ export function routeArrow(player, goal, stopDistance=2.2) {
  * Pure map geometry only: no enemy tracking, no fabricated movement, no
  * player's statistics or native physics modified. Returning null is safe.
  */
-export function cfFlankWaypoint({player,world,nav,minDistance=8}) {
+export function cfFlankWaypoint({player,world,nav,minDistance=8,lastSeen=null}) {
   if(!player?.pos || !Number.isFinite(player.yaw) ||
      !world?.blocked || !nav?.idx || !nav?.walkable || !nav?.findPath) return null;
   const x=player.pos.x,z=player.pos.z,yaw=player.yaw;
@@ -297,15 +297,82 @@ export function cfFlankWaypoint({player,world,nav,minDistance=8}) {
         }
         // A waypoint behind a very long detour isn't useful to a beginner.
         if(!valid||length>radius*1.8+3)continue;
-        const score=length+Math.abs(along)*.7+(along>0?1.8:0);
+        // A side route is useful only when it opens an actual firing lane.
+        // lastSeen is the already rendered opponent position, never a hidden
+        // live bot lookup. Prefer sightlines without making blocked paths legal.
+        const sightClear=cfSeenLaneSight(world,{x:tx,z:tz},lastSeen,
+          (Number.isFinite(player.pos.y)?player.pos.y:0)+
+          (Number.isFinite(player.eyeH)?player.eyeH:1.6));
+        const score=length+Math.abs(along)*.7+(along>0?1.8:0)+
+          (lastSeen&&sightClear!==true?24:0);
         if(!best||score<best.score)
-          best={x:tx,z:tz,score,pathLength:length,side};
+          best={x:tx,z:tz,score,pathLength:length,side,sightClear};
       }
     }
-    // Do not evaluate distant candidates after finding a nearby legal lane.
-    if(best)return best;
+    // If a farther legal flank reopens sight, prefer it to a nearer blind end.
+    if(best&&(!lastSeen||best.sightClear===true))return best;
   }
   return null;
+}
+
+/** World-geometry ray from an accessible floor position to a location that
+ * a player has ALREADY seen. No current hidden actor coordinates are read. */
+export function cfSeenLaneSight(world,origin,lastSeen,eyeY=1.6) {
+  if(!world?.raycast||![origin?.x,origin?.z,lastSeen?.x,lastSeen?.z,eyeY]
+    .every(Number.isFinite))return null;
+  const dx=lastSeen.x-origin.x,dz=lastSeen.z-origin.z,dy=1.45-eyeY;
+  const length=Math.hypot(dx,dy,dz);
+  if(length<1.5||length>52)return false;
+  return !world.raycast(origin.x,eyeY,origin.z,
+    dx/length,dy/length,dz/length,Math.max(0,length-0.6),'sight');
+}
+
+/** Stop retreating all the way to the first shot after an 8m flank. Find
+ * the NEAREST still-walkable, LOS-checked vantage on that remembered corridor.
+ * Returning null means the current lane is already clear: turn the camera
+ * and shoot instead of needlessly walking backward. */
+export function cfReacquireLane({player,firstHitSpot,lastSeen,world,nav}) {
+  if(!player?.pos||![player.pos.x,player.pos.z,firstHitSpot?.x,
+    firstHitSpot?.z,lastSeen?.x,lastSeen?.z].every(Number.isFinite)||
+    !world?.blocked||!world?.raycast||!nav?.idx||!nav?.walkable||
+    !nav?.findPath)return null;
+  const x=player.pos.x,z=player.pos.z;
+  const eyeY=(Number.isFinite(player.pos.y)?player.pos.y:0)+
+    (Number.isFinite(player.eyeH)?player.eyeH:1.6);
+  if(cfSeenLaneSight(world,{x,z},lastSeen,eyeY)===true)return null;
+  const dx=firstHitSpot.x-x,dz=firstHitSpot.z-z,dist=Math.hypot(dx,dz);
+  if(dist<0.4)return null;
+  for(const fraction of [0.16,0.3,0.44,0.58,0.72,0.86,1]) {
+    const tx=x+fraction*dx,tz=z+fraction*dz;
+    const id=nav.idx(tx,tz);
+    if(id<0||!nav.walkable(id)||world.blocked(tx,0.05,tz,0.38,1.9))continue;
+    if(cfSeenLaneSight(world,{x:tx,z:tz},lastSeen,eyeY)!==true)continue;
+    const path=nav.lineFree?.(x,z,tx,tz)
+      ? [[x,z],[tx,tz]]
+      : nav.findPath(x,z,tx,tz);
+    if(!Array.isArray(path)||path.length<2)continue;
+    let travelled=0,valid=true;
+    for(let i=1;i<path.length;i++){
+      const a=path[i-1],b=path[i];
+      if(!Array.isArray(a)||!Array.isArray(b)||
+        ![...a,...b].every(Number.isFinite)){valid=false;break;}
+      travelled+=Math.hypot(b[0]-a[0],b[1]-a[1]);
+    }
+    if(valid&&travelled<=Math.max(3,dist*fraction*1.9+2))
+      return {x:tx,z:tz,travel:travelled,seenOnly:true};
+  }
+  return null;
+}
+
+/** Use the ACTUAL native rifle direction (yaw/pitch plus gun recoil), not
+ * the apparent screen camera angle, when offering firing-only aim friction. */
+export function cfNativeShotAimError({targetYaw,targetPitch,playerYaw,playerPitch,
+  recoilYaw=0,recoilPitch=0}) {
+  if(![targetYaw,targetPitch,playerYaw,playerPitch,recoilYaw,recoilPitch]
+    .every(Number.isFinite))return null;
+  const yaw=targetYaw-(playerYaw+recoilYaw);
+  return {yawError:Math.atan2(Math.sin(yaw),Math.cos(yaw)),
+    pitchError:targetPitch-(playerPitch+recoilPitch)};
 }
 
 // A genuine, hittable intro opponent placed inside an existing clear cargo
@@ -832,7 +899,16 @@ export function createFpsMobileUx(game, root, doc) {
     const observedShotLane=follow&&activeChallenge?.elite!==true&&firstHitSpot
       ? [firstHitSpot.x,firstHitSpot.z] : null;
     const known=follow?lastVisibleEnemy:null;
-    const dest=observedShotLane||
+    // First try a fresh shooting lane: the nearest safe, walkable point
+    // with clear world sight to a formerly visible enemy, not the original
+    // first-shot tile. No live hidden opponent coordinates are used.
+    const sightLane=observedShotLane&&known&&p
+      ? cfReacquireLane({player:p,firstHitSpot,lastSeen:known,
+        world:game.world,nav:game.nav}) : null;
+    if(observedShotLane&&known&&p&&!sightLane&&
+      cfSeenLaneSight(game.world,p.pos,known,
+        p.pos.y+(Number.isFinite(p.eyeH)?p.eyeH:1.6))===true)return null;
+    const dest=sightLane?[sightLane.x,sightLane.z]:observedShotLane||
       (known?[known.x,known.z]:firstEncounterDestination(p?.team));
     if(!p || !dest || !game.nav?.findPath) return null;
     const path=game.nav.findPath(p.pos.x,p.pos.z,dest[0],dest[1]);
@@ -884,26 +960,45 @@ export function createFpsMobileUx(game, root, doc) {
     if (!ready) return;
     const eye = p.eye(cam.position.clone());
     let best = null, bestScore = Infinity;
-    for (const actor of game.actors || []) {
-      if (!actor.alive || actor.protectT > 0 || actor.team === p.team || !actor.soldier) continue;
-      const chest = actor.soldier.chestWorld(cam.position.clone());
-      const dir = chest.sub(eye), distance = dir.length();
-      if (!(distance > 1 && distance <= 27)) continue;
-      const trueYaw = Math.atan2(-dir.x, -dir.z);
-      const errYaw = Math.atan2(Math.sin(trueYaw-p.yaw), Math.cos(trueYaw-p.yaw));
-      const errPitch = Math.atan2(dir.y, Math.hypot(dir.x, dir.z)) - p.pitch;
-      const aim = mobileAimCorrection({
-        yawError: errYaw,pitchError: errPitch,distance,visible:true,
-        firing:!!(forceFiring||p.touch?.fire||(simple&&playerEngaged)),
-        sniperReady:ready,
-        training:activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true
-      });
-      if (!aim.yaw && !aim.pitch) continue;
-      const hit = game.world.raycast(eye.x, eye.y, eye.z,
-        dir.x / distance, dir.y / distance, dir.z / distance, distance - 0.15, 'sight');
-      if (hit) continue;
-      const score = Math.abs(errYaw) + Math.abs(errPitch);
-      if (score < bestScore) { bestScore = score; best = aim; }
+    for (const [actor,marker] of markers) {
+      // Only use a CURRENTLY rendered and world-LOS verified enemy marker.
+      if (marker.hidden||!actor.alive||actor.protectT>0||
+        actor.team===p.team||!actor.soldier)continue;
+      // Original marker may show an exposed head while the torso remains
+      // behind a container. A chest-only aid silently fails there.
+      for(const [part,body] of [
+        ['chest',actor.soldier.chestWorld(eye.clone())],
+        ['head',actor.soldier.headWorld(eye.clone())]
+      ]){
+        const dir=body.sub(eye),distance=dir.length();
+        if(!(distance>1&&distance<=27))continue;
+        const hit=game.world.raycast(eye.x,eye.y,eye.z,
+          dir.x/distance,dir.y/distance,dir.z/distance,
+          Math.max(0,distance-0.15),'sight');
+        if(hit)continue;
+        const angles=cfNativeShotAimError({
+          targetYaw:Math.atan2(-dir.x,-dir.z),
+          targetPitch:Math.atan2(dir.y,Math.hypot(dir.x,dir.z)),
+          playerYaw:p.yaw,playerPitch:p.pitch,
+          recoilYaw:p.punchY||0,recoilPitch:p.punchP||0
+        });
+        if(!angles)continue;
+        // An exposed head is a smaller manual target than a visible torso.
+        // Do not snap a novice to a tiny head from a wide camera angle.
+        if(part==='head'&&
+          (Math.abs(angles.yawError)>0.11||
+           Math.abs(angles.pitchError)>0.085))continue;
+        const aim=mobileAimCorrection({
+          ...angles,distance,visible:true,
+          firing:!!(forceFiring||p.touch?.fire||(simple&&playerEngaged)),
+          sniperReady:ready,
+          training:activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true
+        });
+        if(!aim.yaw&&!aim.pitch)continue;
+        const score=Math.abs(angles.yawError)+Math.abs(angles.pitchError)+
+          (part==='head'?0.06:0);
+        if(score<bestScore){bestScore=score;best=aim;}
+      }
     }
     if (best) {
       p.yaw += best.yaw;
@@ -1007,11 +1102,11 @@ export function createFpsMobileUx(game, root, doc) {
       if (teamSide(p.team, actor.team) !== 'enemy' || !actor.alive || !actor.soldier) continue;
       // A projected head location is not enough: an obstruction ray is required.
       const candidates=[
-        actor.soldier.headWorld(cam.position.clone()),
-        actor.soldier.chestWorld(cam.position.clone())
+        ['chest',actor.soldier.chestWorld(cam.position.clone())],
+        ['head',actor.soldier.headWorld(cam.position.clone())]
       ];
-      let projected=null;
-      for(const body of candidates) {
+      let projected=null,visiblePart='';
+      for(const [part,body] of candidates) {
         const dir=body.clone().sub(cam.position);
         const distance=dir.length();
         if(!(distance>0 && distance<=44))continue;
@@ -1024,14 +1119,16 @@ export function createFpsMobileUx(game, root, doc) {
         }) || cover ||
           !withinScopedLens({x:pos.x,y:pos.y,width:doc.defaultView?.innerWidth||844,
             height:doc.defaultView?.innerHeight||390,scoped:p.scoped>0}))continue;
-        projected=pos;break;
+        projected=pos;visiblePart=part;break;
       }
       if(!projected)continue;
       if(activeChallenge?.drill==='reposition'&&drill?.stage===2){
         const delta=Math.hypot(projected.x,projected.y);
         if(delta<closestAim){
           closestAim=delta;
-          visibleAimCoach=cfVisibleAimCoach(projected.x,projected.y);
+          visibleAimCoach=visiblePart==='head'&&delta<0.23
+            ? '◎ 敌人露头 · 瞄高后开火'
+            : cfVisibleAimCoach(projected.x,projected.y);
         }
       }
       // The projected marker passed both camera-frustum and LOS raycast tests:
@@ -1049,6 +1146,8 @@ export function createFpsMobileUx(game, root, doc) {
         markers.set(actor, el);
       }
       el.hidden = false;
+      el.dataset.visiblePart=visiblePart;
+      el.textContent=visiblePart==='head'?'▼ 露头':'▼ 敌';
       el.style.left = ((projected.x + 1) * 50).toFixed(2) + '%';
       el.style.top = ((1 - projected.y) * 50).toFixed(2) + '%';
       shown.add(actor);
@@ -1186,7 +1285,8 @@ export function createFpsMobileUx(game, root, doc) {
           if(!flankGoal||deaths!==flankDeaths){
             flankDeaths=deaths;
             flankGoal=cfFlankWaypoint({player:p,world:game.world,nav:game.nav,
-              minDistance:Math.max(2,activeChallenge.minTravel-(drill.distance||0))});
+              minDistance:Math.max(2,activeChallenge.minTravel-(drill.distance||0)),
+              lastSeen:lastVisibleEnemy});
           }
           const path=flankGoal&&game.nav?.findPath?.(
             p.pos.x,p.pos.z,flankGoal.x,flankGoal.z);
@@ -1199,7 +1299,7 @@ export function createFpsMobileUx(game, root, doc) {
         }
       }
       if (now >= nextUpdate) {
-        nextUpdate = now + 160;
+        nextUpdate = now + (drill?.stage===2?110:160);
         recolorNativeAllies();
         updateEnemyMarkers();
         nudgeAim();
