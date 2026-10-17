@@ -81,12 +81,12 @@ export class RaceQAWheelSteering extends QAController {
     }
     this.lastAngle=next;
     this.visualDegrees=this.turn*180/Math.PI;
-    this.axis=clamp(-this.turn/this.maxAngle*sensitivity[this.sensitivity],-1,1);
+    this.axis=Math.abs(this.turn)<1e-9 ? 0 : clamp(-this.turn/this.maxAngle*sensitivity[this.sensitivity],-1,1);
     return true;
   }
   setSensitivity(value) {
     super.setSensitivity(value);
-    if (this.active) this.axis=clamp(-this.turn/this.maxAngle*sensitivity[this.sensitivity],-1,1);
+    if (this.active) this.axis=Math.abs(this.turn)<1e-9 ? 0 : clamp(-this.turn/this.maxAngle*sensitivity[this.sensitivity],-1,1);
   }
 }
 
