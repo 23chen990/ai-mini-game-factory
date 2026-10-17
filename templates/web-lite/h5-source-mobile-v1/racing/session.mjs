@@ -44,8 +44,17 @@ export function clearNativeInput(input) {
   input.down.clear(); input.pressed.clear(); input.touchPressed.clear();
   for (const key of Object.keys(input.touch)) input.touch[key] = false;
 }
+/** The single-run courses finish before their geometry closes back uphill.
+ * Keep these fractions aligned with patchV8PointToPoint; never move the finish
+ * merely to improve an engagement metric. This helper is read-only. */
+export const RACE_FINISH_FRACTIONS = Object.freeze({'race-07': .82, 'race-22': .84});
+export function raceDistanceM(trackLength, {course, laps = 1} = {}) {
+  if (!Number.isFinite(trackLength) || trackLength <= 0 ||
+      !Number.isInteger(laps) || laps < 1) throw Error('Invalid physical race distance');
+  return trackLength * (RACE_FINISH_FRACTIONS[course] ?? laps);
+}
 export function resultSummary(game) {
-  const p = game.player, distance = game.track.length * game.settings.laps;
+  const p = game.player, distance = raceDistanceM(game.track.length,game.settings);
   return {
     finished: !!p.finished, place: game.standings.indexOf(p) + 1,
     time: p.finished ? p.finishTime : null, map: game.settings.map,

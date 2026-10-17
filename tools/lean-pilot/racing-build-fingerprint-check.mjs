@@ -28,3 +28,10 @@ test('actual built H5 fingerprint covers all ordered racing runtime sources',asy
   assert.match(hud,/ITEM_INFO\[it\]\?\.icon/u,
     'An unknown pickup must not crash the original native HUD renderer');
 });
+
+// Post-build gate uses the exact generated native Track, not an independent spline approximation.
+test('all 30 real courses have finish-bounded activity reports and repaired 07/22 intervals',async()=>{
+  const {runNativePacingAudit}=await import('./racing-pacing-native-audit.mjs');
+  const report=await runNativePacingAudit();
+  assert.equal(report.engineeringPassed,true);
+});
