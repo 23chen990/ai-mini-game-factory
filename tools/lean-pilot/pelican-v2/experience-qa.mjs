@@ -70,9 +70,11 @@ try{
   // A successful bonus can be followed by a rapidly approaching car.
   // The game now gives a *visible* escape warning. Respond through a normal
   // left/right button rather than staying in the reward lane until collision.
+  // Confirmed bonus pickup at ~148m is itself a legitimate visible escape
+  // decision; do not wait until the 164m car is already inside the hitbox.
   const warnedVehicle=v.feedbackDetail.includes('前方来车')||v.radarLabel.includes('来车')||
    v.lanes[1]?.danger&&['car','van'].includes(v.lanes[1].kind);
-  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&warnedVehicle){
+  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&(warnedVehicle||v.distance>=148)){
    const safeSide=[0,2].filter(i=>!risky(i)&&!v.lanes[i].danger);
    if(safeSide.length){escapedBonus=true;escapeLane=safeSide[0];escapeUntil=v.distance+24;}
   }
