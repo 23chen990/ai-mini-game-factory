@@ -897,8 +897,11 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     const value=challenge.kind==='defend'?count(metrics.defenseCaptured):
       challenge.kind==='assault'?count(metrics.assaultKills):
       challenge.kind==='kills'?count(metrics.awmKills):count(metrics.kills);
-    return [{label:'亲手击倒 / 完成',value:value+'/'+
-      (challenge.kind==='survive'?challenge.minKills||0:challenge.target)},
+    const label=challenge.kind==='defend'?'守住据点':
+      challenge.kind==='assault'?'进攻位击倒':
+      challenge.kind==='survive'?'亲手击倒':'亲手击倒';
+    const goal=challenge.kind==='survive'?challenge.minKills||0:challenge.target;
+    return [{label,value:value+'/'+goal},
       {label:'阵亡',value:String(count(metrics.deaths))},
       {label:'耗时',value:Math.ceil(elapsedMs/1000)+'秒'}];
   }
@@ -2086,7 +2089,7 @@ export function createFpsMobileUx(game, root, doc) {
         if (activeChallenge?.kind==='defend'||activeChallenge?.kind==='assault'||
           activeChallenge?.extractSeconds) {
           guide.textContent='';
-        }else if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
+        }else if (activeChallenge?.lite!==true&&activeChallenge?.drill==='reposition'&&drill?.stage===1) {
           const turn=routeArrow(p,routePath);
           guide.textContent=(turn?.symbol||'↔')+' 换位 '+
             Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m'+
