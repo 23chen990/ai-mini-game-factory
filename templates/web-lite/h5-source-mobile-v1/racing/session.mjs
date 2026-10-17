@@ -49,13 +49,54 @@ export function tuneRaceFx(game) {
     };
   }
 }
+/** Adaptive phone graphics: persistent 40-45 FPS is not smooth racing.
+ * A short burst or a tab-resume gap must not downgrade quality. User-selected
+ * quality remains authoritative; automatic quality can step high -> mid -> low. */
 export class QualityMonitor {
-  constructor() { this.slow = 0; this.samples = 0; this.dropped = false; this.manual = false; }
-  frame(dt, quality) {
-    if (this.manual || this.dropped || quality === 'low') return null;
-    this.samples++;
-    this.slow = dt > .036 ? this.slow + Math.min(.05, dt) : Math.max(0, this.slow - dt * 2);
-    if (this.samples >= 90 && this.slow >= 3) { this.dropped = true; return quality === 'high' ? 'mid' : 'low'; }
-    return null;
+  constructor() {
+    this.slow = 0; this.samples = 0; this.dropped = false; this.manual = false;
+    this.windowTime = 0; this.currentQuality = null; this.averageDt = 1 / 60; this.fps = 60;
+    this.consecutiveStalls = 0;
   }
+  frame(dt, quality) {
+    if (!Number.isFinite(dt) || dt <= 0) return null;
+    // A background-resume gap is not evidence of slow graphics. Repeated
+    // >=250ms *visible* frames are: don't leave very slow phones on high.
+    if (dt > .25) {
+      this.fps = Math.max(1, Math.round(1 / dt));
+      if (this.manual || quality === 'low') return null;
+      this.consecutiveStalls++;
+      if (this.consecutiveStalls < 4) return null;
+      this.consecutiveStalls = 0;
+      this.slow = 0; this.samples = 0; this.windowTime = 0;
+      const lower = quality === 'high' ? 'mid' : 'low';
+      this.currentQuality = lower; this.dropped = true;
+      return lower;
+    }
+    this.consecutiveStalls = 0;
+    this.averageDt = this.averageDt * .9 + dt * .1;
+    this.fps = Math.round(Math.min(120, Math.max(1, 1 / this.averageDt)));
+    if (this.manual || quality === 'low') return null;
+    if (this.currentQuality !== quality) {
+      this.currentQuality = quality;
+      this.slow = 0; this.samples = 0; this.windowTime = 0;
+    }
+    this.samples++;
+    this.windowTime += dt;
+    // A genuinely sustained <~46 FPS trend, not an occasional dropped frame.
+    this.slow = Math.max(0, this.slow + (dt > .0218 ? Math.min(.05, dt) : -dt * .85));
+    if (this.samples < 55 || this.windowTime < 1.25 || this.slow < 1.10) return null;
+    const lower = quality === 'high' ? 'mid' : 'low';
+    this.currentQuality = lower;
+    this.slow = 0; this.samples = 0; this.windowTime = 0; this.dropped = true;
+    return lower;
+  }
+}
+
+/** UI paint is intentionally separate from the native simulation / input loop.
+ * A 30 Hz readout is readable on phones without running heavy DOM work at 120 Hz.
+ * Always redraw after tab clock discontinuities and on the first live frame. */
+export function shouldRefreshRaceHud(nowMs, lastMs, intervalMs = 33) {
+  return Number.isFinite(nowMs) &&
+    (!Number.isFinite(lastMs) || nowMs < lastMs || nowMs - lastMs >= intervalMs);
 }
