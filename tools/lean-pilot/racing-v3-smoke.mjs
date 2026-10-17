@@ -198,8 +198,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V4.8'||
-     worldIdentity.uiRevision!=='racing-v48-all-hard')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V4.9'||
+     worldIdentity.uiRevision!=='racing-v49-duel-retry')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -415,7 +415,38 @@ try {
   await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
   await page.screenshot({path:path.join(dest,'08-result-740x360-qa-staged.png')});
   await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
-  // Only the "返回选关" button is visible after results; the stage menu is intentionally hidden.
+  const lossUI=await page.evaluate(()=>{
+    const plan=document.querySelector('#race-retry-plan');
+    const btn=document.querySelector('#race-replay');
+    return {plan:plan?.textContent??'',planVisible:!!plan&&!plan.hidden,
+      button:btn?.textContent??'',buttonVisible:!!btn&&!btn.hidden,
+      stage:window.__RACE_EVIDENCE__?.requestedCourse,
+      replayTapCount:window.__RACE_EVIDENCE__?.replayTapCount,
+      realDuel:window.__RACE_EVIDENCE__?.duel};
+  });
+  if(!lossUI.planVisible||!lossUI.plan.includes('下局')||
+     !lossUI.buttonVisible||!lossUI.button.includes('立即再战')||
+     lossUI.stage!=='race-08'||!Number.isFinite(lossUI.realDuel?.nativeCrashes))
+    fail('Real failure screen must offer an actionable, verifiable next attempt: '+JSON.stringify(lossUI));
+  // This is a QA-STAGED DNF; we only assert genuine single-tap reset into
+  // the same native course, never invent a human desire to replay or a win.
+  await page.locator('#race-replay').tap();
+  await page.waitForFunction(() =>
+    document.querySelector('#race-kit')?.dataset.phase==='countdown'&&
+    window.__RACE_EVIDENCE__?.requestedCourse==='race-08'&&
+    window.__RACE_EVIDENCE__?.actualCourse==='race-08'&&
+    window.__RACE_EVIDENCE__?.replayTapCount===1,
+  null,{timeout:12000});
+  const replay=await page.evaluate(()=>({stage:window.__RACE_EVIDENCE__?.actualCourse,
+    tapCount:window.__RACE_EVIDENCE__?.replayTapCount,
+    duel:window.__RACE_EVIDENCE__?.duel}));
+  if(replay.duel?.lostPositions!==0||replay.duel?.corners!==0)
+    fail('Retry must clear race telemetry but preserve the real physical stage: '+JSON.stringify(replay));
+  await page.evaluate(()=>window.game.showResults());
+  await page.waitForFunction(()=>document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
+  report.replay={stagedDnfOnly:true,actionableFailure:true,
+    sameNativeCourse:true,oneTapCountdown:true,clearCounters:true};
+  // The stage selector appears in the menu, not inside the results panel.
   await page.locator('#race-lobby').tap();
   await page.waitForFunction(() => {
     const g=window.game;
