@@ -395,8 +395,6 @@ async function boot() {
         if ($('speed-value').textContent !== speedView.value) $('speed-value').textContent = speedView.value;
         $('speed').dataset.boost = String(speedView.boost);
         $('speed').dataset.slow = String(speedView.slow);
-        const goal = career.objectiveLabel(g);
-        if ($('live-goal').textContent !== goal) $('live-goal').textContent = goal;
         const knockout = career.eliminationCue(g);
         $('knockout').hidden = !knockout;
         if (knockout) {
