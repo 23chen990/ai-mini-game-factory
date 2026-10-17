@@ -26,9 +26,34 @@ export const STAGES = Object.freeze([
   make('16', 4, '悬崖冠军决战', 'aegean', 3, 2, 'boss', 'speed', 1, '超过指定车神，夺得第一名'),
   ...EXTRA_STAGES.map(stage=>Object.freeze({...stage,rank:3,mission:stage.goal,goal:PODIUM_GOAL})),
 ]);
+/** First five races have no extra star gate. Every checkpoint still requires
+ * a real podium finish in the immediately preceding stage. */
+export const STAR_CHECKPOINTS=Object.freeze({'06':8,'11':18,'16':29,'21':40,'26':51,'30':60});
+export const starGateRequirement=index=>
+  Number.isInteger(index)&&index>=0&&index<STAGES.length ?
+    (STAR_CHECKPOINTS[STAGES[index].id]??0) : 0;
+export function starGateStatus(career,index) {
+  const stage=STAGES[index], required=starGateRequirement(index);
+  const earned=careerStars(career);
+  const previousCleared=index===0||!!(stage && (career?.stars?.[STAGES[index-1]?.id]??0)>0);
+  const pass=stage && required ? career?.gatePasses?.[stage.id] : null;
+  // Preserve a previous player's already-earned medal on the gated stage,
+  // even if their save predates the rollout.
+  const alreadyCompleted=!!(stage && required && STAGES.slice(index)
+    .some(s=>(career?.stars?.[s.id]??0)>0));
+  const gateSatisfied=!required||earned>=required||pass==='ad'||pass==='legacy'||alreadyCompleted;
+  return {
+    index, stageId:stage?.id??null, required, earned,
+    missing:Math.max(0,required-earned),
+    previousCleared, gateSatisfied,
+    adUnlocked:pass==='ad',legacyUnlocked:pass==='legacy'||alreadyCompleted,
+    unlocked:!!stage && previousCleared && gateSatisfied,
+    starLocked:!!stage && previousCleared && !gateSatisfied,
+  };
+}
 export const SKIN_STARS = Object.freeze([0, 3, 6, 10, 14, 19, 25, 34]);
 export const SKIN_NAMES = Object.freeze(['烈焰红', '冰蓝', '紫电', '黄金', '珍珠白', '樱粉', '翡翠', '暗夜']);
-export const newCareer = () => ({ version: 1, stars: {}, times: {}, skin: 0, rounds: 0,
+export const newCareer = () => ({ version: 1, stars: {}, times: {}, gatePasses: {}, skin: 0, rounds: 0,
   daily: { date: '', best: 0, stars: 0, streak: 0, lastWonDate: '' } });
 export function localDayKey(date = new Date()) {
   return [date.getFullYear(), String(date.getMonth()+1).padStart(2,'0'), String(date.getDate()).padStart(2,'0')].join('-');
@@ -41,8 +66,8 @@ export function dailyStage(date = new Date()) {
   return Object.freeze({ ...original, id: 'daily-' + key, chapter: 9, name: '每日挑战 · ' + original.name });
 }
 export const careerStars = career => STAGES.reduce((n, stage) => n + (career?.stars?.[stage.id] ?? 0), 0);
-export function stageUnlocked(career, index) {
-  return index === 0 || (index > 0 && index < STAGES.length && (career?.stars?.[STAGES[index - 1].id] ?? 0) > 0);
+export function stageUnlocked(career,index) {
+  return starGateStatus(career,index).unlocked;
 }
 export const skinUnlocked = (career, skinIndex) => Number.isInteger(skinIndex) && skinIndex >= 0 && skinIndex < SKIN_STARS.length && careerStars(career) >= SKIN_STARS[skinIndex];
 export function loadCareer(raw, legacyBest) {
@@ -64,6 +89,20 @@ export function loadCareer(raw, legacyBest) {
     for (const stage of STAGES) {
       const star = v.stars[stage.id]; if (Number.isInteger(star) && star >= 0 && star <= 3) state.stars[stage.id] = star;
       const t = v.times[stage.id]; if (typeof t === 'number' && Number.isFinite(t) && t > 0 && t < 100000) state.times[stage.id] = t;
+    }
+    // Old V1 saves did not contain gatePasses. Grandfather ONLY those actual
+    // stages they could already enter before the star-gate update, including
+    // a checkpoint they opened but never won. New V1 saves always have {}.
+    if(!Object.hasOwn(v,'gatePasses')){
+      for(const id of Object.keys(STAR_CHECKPOINTS)) {
+        const index=STAGES.findIndex(s=>s.id===id);
+        if((state.stars[STAGES[index-1].id]??0)>0)state.gatePasses[id]='legacy';
+      }
+    }else if(v.gatePasses && typeof v.gatePasses==='object' && !Array.isArray(v.gatePasses)){
+      for(const id of Object.keys(STAR_CHECKPOINTS)){
+        if(v.gatePasses[id]==='ad'||v.gatePasses[id]==='legacy')
+          state.gatePasses[id]=v.gatePasses[id];
+      }
     }
     state.rounds = Number.isSafeInteger(v.rounds) && v.rounds >= 0 ? Math.min(v.rounds, 1_000_000) : 0;
     state.skin = skinUnlocked(state, v.skin) ? v.skin : 0;
