@@ -4,7 +4,7 @@ on:
     paths:
       - 'templates/web-lite/h5-source-mobile-v1/**'
       - 'tools/lean-pilot/**'
-      - '.github/workflows/cf-v11-pinned-native-qa.yml'
+      - '.github/workflows/cf-v11-real-tactical-qa.yml'
 permissions:
   contents: read
 concurrency:
@@ -90,7 +90,7 @@ jobs:
             ${{ runner.temp }}/cf-v11-sha.txt
             ${{ runner.temp }}/cf-v11-browser.log
             ${{ runner.temp }}/cf-v11-native-revive.log
-            runs/h5-cf-challenges-20261013/cf-v11-native-revive-browser.json
+            runs/h5-cf-challenges-20261013/cf-v10-native-revive-browser.json
             ${{ runner.temp }}/cf-v11-export.json
             runs/h5-cf-challenges-20261013/cf-v11-tactical-browser.json
             runs/h5-cf-challenges-20261013/screenshots/cf-v11-*.png
