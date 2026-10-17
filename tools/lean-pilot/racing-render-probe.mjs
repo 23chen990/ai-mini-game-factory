@@ -32,18 +32,28 @@ try{
     };};
     for(const key of ['render','step','updateCamera'])wrap(window.game,key,key);
     wrap(window.game.renderer,'render','threeRender');
+    window.__RENDER_PROBE__.savedRender=window.game.render;
     const frame=now=>{const p=window.__RENDER_PROBE__;p.raf.push(now-p.last);p.last=now;if(p.raf.length>300)p.raf.shift();requestAnimationFrame(frame);};
     requestAnimationFrame(frame);
   });
   await page.locator('#race-start').click();
   const cdp=await page.context().newCDPSession(page);await cdp.send('Profiler.enable');
-  for(const phase of ['baseline','no-css-effects','no-world','restored']){
+  for(const phase of ['baseline','no-css-effects','no-world','no-render','minimal-render','restored']){
     if(phase==='no-css-effects')await page.addStyleTag({content:'*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;box-shadow:none!important;text-shadow:none!important;}'});
     if(phase==='no-world')await page.evaluate(()=>{window.game.level.visible=false;});
+    if(phase==='no-render')await page.evaluate(()=>{window.game.render=function(){};});
+    if(phase==='minimal-render')await page.evaluate(()=>{
+      const g=window.game,T=window.__RACE_THREE__,scene=new T.Scene();
+      scene.add(new T.Mesh(new T.BoxGeometry(1,1,1),new T.MeshBasicMaterial({color:0xffffff})));
+      g.render=function(){this.renderer.render(scene,this.camera);};
+    });
     if(phase==='restored')await page.evaluate(()=>{
+      window.game.render=window.__RENDER_PROBE__.savedRender;
       window.game.level.visible=true;
       if(document.head.lastElementChild?.tagName==='STYLE')document.head.lastElementChild.remove();
     });
+    // Warm shader variants after each diagnostic change before timing steady state.
+    await page.waitForTimeout(3000);
     await page.evaluate(()=>{window.__RENDER_PROBE__.times={};window.__RENDER_PROBE__.raf=[];window.__RENDER_PROBE__.last=performance.now();});
     await cdp.send('Profiler.start');await page.waitForTimeout(5000);
     const profile=await cdp.send('Profiler.stop');
@@ -51,7 +61,7 @@ try{
     const snap=await page.evaluate(()=>{
       const g=window.game,probe=window.__RENDER_PROBE__,reduce=list=>({n:list.length,total:list.reduce((a,b)=>a+b,0),max:Math.max(0,...list),mean:list.length?list.reduce((a,b)=>a+b,0)/list.length:0});
       const meshes=[];g.scene.traverse(x=>{if(x.isMesh)meshes.push({name:x.name,type:x.type,verts:x.geometry?.attributes?.position?.count??0,material:x.material?.type,visible:x.visible});});
-      return {at:performance.now(),state:g.state,cdT:g.cdT,raceTime:g.raceTime,quality:g.settings.quality,composer:!!g.composer,buffer:[g.canvas.width,g.canvas.height],calls:g.renderer.info.render.calls,triangles:g.renderer.info.render.triangles,geometries:g.renderer.info.memory.geometries,raf:reduce(probe.raf),times:Object.fromEntries(Object.entries(probe.times).map(([k,v])=>[k,reduce(v)])),meshCount:meshes.length,largest:meshes.sort((a,b)=>b.verts-a.verts).slice(0,12)};
+      return {at:performance.now(),state:g.state,cdT:g.cdT,raceTime:g.raceTime,quality:g.settings.quality,composer:!!g.composer,materialBudget:g.__RACE_MATERIAL_BUDGET__?.stats(),buffer:[g.canvas.width,g.canvas.height],calls:g.renderer.info.render.calls,triangles:g.renderer.info.render.triangles,geometries:g.renderer.info.memory.geometries,raf:reduce(probe.raf),times:Object.fromEntries(Object.entries(probe.times).map(([k,v])=>[k,reduce(v)])),meshCount:meshes.length,largest:meshes.sort((a,b)=>b.verts-a.verts).slice(0,12)};
     });
     report.phases.push({phase,...snap});console.log('RENDER_PROBE='+JSON.stringify({phase,...snap}));
   }
