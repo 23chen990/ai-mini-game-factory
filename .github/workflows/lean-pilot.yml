@@ -212,3 +212,78 @@ jobs:
           path: ${{ runner.temp }}/three-h5-results/*.json
           retention-days: 7
           if-no-files-found: warn
+
+  # V12 product branch only: independent original-3D touch gate, not a mock
+  # scene, native win injection, public deployment or platform approval.
+  cf-v12-native-mobile-3d:
+    if: github.event.pull_request.head.ref == 'feat/cf-v12-mobile-touch-recovery-20261017'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      RUN_ID: h5-cf-challenges-20261013
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.11.0'
+      - name: Locked existing dependencies and Chromium
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm exec playwright install --with-deps chromium
+      - name: Test native-touch regression, lint and types
+        run: |
+          node --check tools/lean-pilot/cf-v12-native-qa.mjs
+          node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+          pnpm exec eslint tools/lean-pilot/cf-v12-native-qa.mjs templates/web-lite/h5-source-mobile-v1/*.mjs templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+          npm run pilot:typecheck
+      - name: Fetch immutable source for original real 3D world
+        shell: bash
+        run: |
+          set -euo pipefail
+          source_root="$RUNNER_TEMP/cf-v12-source"
+          mkdir -p "$source_root"
+          git -C "$source_root" init -q
+          git -C "$source_root" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$source_root" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$source_root" checkout -q FETCH_HEAD
+          test "$(git -C "$source_root" rev-parse HEAD)" = 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          echo "H5_PINNED_SOURCE_ROOT=$source_root" >> "$GITHUB_ENV"
+      - name: Build and check original Three.js V12, not a fixture
+        run: |
+          pnpm pilot build "$RUN_ID" cf-transport-ship
+          pnpm pilot check "$RUN_ID"
+      - name: Actual 3D natural mobile input, eight modes, fail and free retry
+        id: real_v12
+        shell: bash
+        run: |
+          set -o pipefail
+          node tools/lean-pilot/cf-v12-native-qa.mjs 2>&1 | tee "$RUNNER_TEMP/cf-v12-natural.log"
+      - name: Export only as INTERNAL playtest ZIP with Three.js attribution
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          pnpm pilot export "$RUN_ID" > "$RUNNER_TEMP/cf-v12-export.json"
+          mkdir -p "$RUNNER_TEMP/cf-v12-playtest"
+          html=$(find "runs/$RUN_ID" -maxdepth 1 -name 'cf-transport-ship-*.html' -print -quit)
+          test -n "$html"
+          cp "$html" "$RUNNER_TEMP/cf-v12-playtest/index.html"
+          cp "runs/$RUN_ID/workspace/game/LICENSE.three.txt" "$RUNNER_TEMP/cf-v12-playtest/LICENSE.three.txt"
+          (cd "$RUNNER_TEMP/cf-v12-playtest" && zip -q "$RUNNER_TEMP/cf-v12-private-playtest.zip" index.html LICENSE.three.txt)
+          sha256sum "$RUNNER_TEMP/cf-v12-private-playtest.zip" > "$RUNNER_TEMP/cf-v12-private-sha256.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cf-v12-internal-real3d-${{ github.event.pull_request.head.sha }}
+          path: |
+            ${{ runner.temp }}/cf-v12-natural.log
+            ${{ runner.temp }}/cf-v12-export.json
+            ${{ runner.temp }}/cf-v12-private-playtest.zip
+            ${{ runner.temp }}/cf-v12-private-sha256.txt
+            runs/h5-cf-challenges-20261013/cf-v12-native-qa.json
+            runs/h5-cf-challenges-20261013/screenshots/cf-v12-*.png
+          retention-days: 7
+          if-no-files-found: warn
