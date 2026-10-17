@@ -81,7 +81,10 @@ export class RaceDuelTracker {
       }
       if(nextSide)this.sides.set(rival,{
         side:nextSide,rivalProgress:rival.progress,playerProgress:p.progress,
-        playerWasFirst:game.standings?.[0]===p
+        // Hold the last physically stable lead state, not UI standings
+        // reshuffled while the two cars were inside the passing threshold.
+        playerWasFirst:old?.side===nextSide?old.playerWasFirst:
+          game.standings?.[0]===p
       });
     }
     if(close)this.duelSeconds+=dt;
@@ -109,6 +112,22 @@ export class RaceDuelTracker {
       nativeCrashes:finite(p?.stats?.crash)?p.stats.crash:this.lastNativeCrashes
     };
   }
+}
+
+/** Very short corner cue inside the EXISTING speed HUD; never adds a
+ * floating driving overlay or invents a brake button for auto-throttle.
+ */
+export function cornerEntryCue(game) {
+  const p=game?.player,tr=game?.track;
+  if(game?.state!=='race'||!p||p.finished||p.airborne||
+     (p.wrongWay??0)>.35||!finite(p.s)||p.s<27||
+     !finite(p.d)||typeof tr?.curvAhead!=='function')return '';
+  const near=tr.curvAhead(p.d+32,48);
+  if(!finite(near)||Math.abs(near)<.016)return '';
+  const next=tr.curvAhead(p.d+85,50);
+  if(finite(next)&&Math.abs(next)>=.012&&Math.sign(near)!==Math.sign(next))
+    return '↶↷ S弯·及时反打';
+  return near>0?'↶ 左急弯·提前入弯':'↷ 右急弯·提前入弯';
 }
 
 /** The margin is distance, NOT fabricated seconds. Return a practical next
