@@ -1,3 +1,4 @@
+import { V8_COURSES } from './v8-course-geometry.mjs';
 /** Optional physical forked roads for Dual-Key Racing.
  * V3.8 replaces 400-580m long 16-17m wide "free second highways" with
  * local inside-corner technical cuts. Inspired by the *decision structure*
@@ -24,7 +25,7 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const mod=(v,n)=>((v%n)+n)%n;
 const cubic=(a,b,c,d,t)=>{const r=1-t;return r*r*r*a+3*r*r*t*b+3*r*t*t*c+t*t*t*d;};
 const relative=(d,origin,L)=>{let x=mod(d-origin,L);if(x>L/2)x-=L;return x;};
-function samplesFor(track,plan){
+function samplesFor(track,plan,scale=1){
   const a=track.sample(plan.start,{}),d=track.sample(plan.end,{});
   const chord=Math.hypot(d.x-a.x,d.z-a.z);
   if(chord<65||plan.end<=plan.start+130||plan.end>track.length-110||chord>=plan.end-plan.start-16)
@@ -52,7 +53,7 @@ function samplesFor(track,plan){
     Object.assign(samples[i],{tx,tz,rx:-tz,rz:tx,hd:Math.atan2(tx,tz)});
   }
   const length=samples.at(-1).arc,gain=plan.end-plan.start-length;
-  if(length<75||gain<25||gain>90)
+  if(length<75*scale||gain<25*scale||gain>90*scale)
     throw Error('Shortcut must earn a small skill-based saving, not a free highway');
   return {samples,length,gain};
 }
@@ -73,11 +74,16 @@ function nearest(samples,x,z){
   }
   return best;
 }
-export function installPhysicalShortcut(track,course){
-  const cfg=SHORTCUT_PLANS[course];if(!cfg)return null;
+export function installPhysicalShortcut(track,course,{v8=false}={}){
+  const original=SHORTCUT_PLANS[course];if(!original)return null;
+  // World-space distance anchors must track V8's genuine physical stretch.
+  // Keep the V7 2-argument API stable for historical tests and old replays.
+  const scale=v8 ? (V8_COURSES[course.slice(5)]?.stretch??1) : 1;
+  const cfg={...original,start:original.start*scale,
+    end:original.end*scale,bend:original.bend*scale};
   if(!track||typeof track.sample!=='function'||typeof track.project!=='function')
     throw Error('Physical shortcut needs real native Track');
-  const {samples,length,gain}=samplesFor(track,cfg),start=cfg.start,end=cfg.end;
+  const {samples,length,gain}=samplesFor(track,cfg,scale),start=cfg.start,end=cfg.end;
   const widthAt=arc=>cfg.width-(cfg.width-cfg.neckWidth)*
     Math.sin(Math.PI*clamp(arc/length,0,1))**2;
   const ahead=track.sample(start+65,{}),probe=samples[Math.floor(samples.length*.26)],
@@ -247,7 +253,7 @@ export function installPhysicalShortcut(track,course){
     ctx.strokeStyle='rgba(90,235,255,.98)';ctx.lineWidth=4;ctx.stroke();
     return true;
   };
-  const shortcut={course,start,end,width:cfg.width,neckWidth:cfg.neckWidth,
+  const shortcut={course,start,end,scale,width:cfg.width,neckWidth:cfg.neckWidth,
     length,gain,samples,widthAt,opening,project,recover,terrainProxy,buildMesh,drawMinimap};
   track.__RACE_SHORTCUT__=shortcut;track.project=project;
   return shortcut;
