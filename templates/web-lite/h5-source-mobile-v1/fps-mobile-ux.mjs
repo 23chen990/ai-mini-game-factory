@@ -1,6 +1,7 @@
 /* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
 import {cfStartDefense,cfStepDefense,cfAdvanceAssault,cfStartExtraction,cfStepExtraction} from './engine.mjs';
+import {createCfCoverAssault,cfV20CoverEnabled} from './cf-cover-assault.mjs';
 /** CSS/UI stays at native resolution; only CF native WebGL render pixels change.
  * Adjust after sustained measured frame-rate intervals, not single spikes. */
 /** A lower WebGL drawing buffer alone does NOT resize Three.js EffectComposer
@@ -1162,6 +1163,7 @@ export function createFpsMobileUx(game, root, doc) {
   const legacyTouchNote = doc.getElementById('touchNote');
   if (legacyTouchNote) legacyTouchNote.textContent = '';
   const touchControls = doc.getElementById('touch');
+  const cover=createCfCoverAssault(game,root,doc);
   let playerEngaged=false;
   const aimTouchStarts=new Map();
   const fireDragTouches=new Map();
@@ -1182,6 +1184,7 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const resetAllTouches=()=>{
     moveFinger=null;queuedJumpAt=null;
+    cover.release();
     resetKnob();
     return cfResetMobileTouch(game.player,aimTouchStarts,fireDragTouches);
   };
@@ -1190,6 +1193,9 @@ export function createFpsMobileUx(game, root, doc) {
   const onTouchStart=e=>{
     markTouch();
     if(!game.playing||game.paused||game.ended)return;
+    if(cover.enabled&&cover.isButton(e.target)){
+      e.stopPropagation();return;
+    }
     // Native button handlers would queue a jump/fire even when the player is
     // dead; that stale input could trigger immediately on respawn. Block ONLY
     // the in-game control layer, never the pause/revive or browser UI.
@@ -1202,7 +1208,10 @@ export function createFpsMobileUx(game, root, doc) {
       // THIS thumb is routed separately since native buttons stop bubbling.
       for(const t of e.changedTouches||[])
         fireDragTouches.set(t.identifier,{x:t.clientX,y:t.clientY});
-      if(game.player?.alive)cfBeginTouchFire(game.player.touch);
+      if(game.player?.alive){
+        cfBeginTouchFire(game.player.touch);
+        cover.onFire(true);
+      }
       return;
     }
     if(e.target?.closest?.('.btn[data-mk-action="jump"]')){
@@ -1262,7 +1271,8 @@ export function createFpsMobileUx(game, root, doc) {
       }
       const fire=fireDragTouches.get(t.identifier);
       if(fire){
-        const delta=cfFireDragLookDelta(t.clientX-fire.x,t.clientY-fire.y,aimFriction());
+        const delta=cfFireDragLookDelta(t.clientX-fire.x,t.clientY-fire.y,
+          aimFriction()*(cover.enabled?.72:1));
         fire.x=t.clientX;fire.y=t.clientY;
         if(p?.alive){
           if(p.touch&&!p.touch.fire)cfBeginTouchFire(p.touch);
@@ -1277,7 +1287,8 @@ export function createFpsMobileUx(game, root, doc) {
       }
       const aim=aimTouchStarts.get(t.identifier);
       if(aim){
-        const delta=cfFireDragLookDelta(t.clientX-aim.x,t.clientY-aim.y,aimFriction());
+        const delta=cfFireDragLookDelta(t.clientX-aim.x,t.clientY-aim.y,
+          aimFriction()*(cover.enabled?.72:1));
         aim.x=t.clientX;aim.y=t.clientY;
         if(p?.alive){
           p.touchLook ||= {x:0,y:0};
@@ -1293,7 +1304,7 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const onTouchEnd=e=>{
     markTouch();
-    if(!controlledTarget(e))e.stopPropagation();
+    if(!controlledTarget(e)||cover.isButton(e.target))e.stopPropagation();
     if(e.type==='touchcancel'){
       // iOS can cancel one finger while others remain down. Fail closed:
       // release every held native action; no synthetic shots or movement.
@@ -1311,7 +1322,9 @@ export function createFpsMobileUx(game, root, doc) {
       aimTouchStarts.delete(t.identifier);
       fireDragTouches.delete(t.identifier);
     }
-    if(hadFireFinger&&fireDragTouches.size===0)releaseNativeFire();
+    if(hadFireFinger&&fireDragTouches.size===0){
+      releaseNativeFire();cover.onFire(false);
+    }
   };
   const onLifecycleInterrupt=()=>resetAllTouches();
   const onVisibilityInterrupt=()=>{if(doc.hidden)resetAllTouches();};
@@ -1369,8 +1382,13 @@ export function createFpsMobileUx(game, root, doc) {
   tutorial.innerHTML = '<span><b>①</b> 左手摇杆移动</span><span><b>②</b> 右侧滑动瞄准</span><span><b>③</b> 点按或按住开火</span>';
   root.querySelector('#mk-panel')?.insertBefore(tutorial, root.querySelector('#mk-challenges'));
   function updateTutorial(challenge) {
+    if(cfV20CoverEnabled(challenge))tutorial.innerHTML=
+      '<span><b>①</b> 右侧滑动瞄准</span><span><b>②</b> 左手按住射击，松手躲避</span><span><b>③</b> 点左右掩体换位</span>';
+    else tutorial.innerHTML=
+      '<span><b>①</b> 左手摇杆移动</span><span><b>②</b> 右侧滑动瞄准</span><span><b>③</b> 点按或按住开火</span>';
     const tip=tutorial.querySelector('span:last-child');
-    if(tip)tip.innerHTML='<b>③</b> ' + cfTouchTutorial(challenge);
+    if(tip&&!cfV20CoverEnabled(challenge))
+      tip.innerHTML='<b>③</b> ' + cfTouchTutorial(challenge);
   }
   const originalToast = game.hud.toast.bind(game.hud);
   game.hud.toast = (value, duration) => {
@@ -1886,6 +1904,7 @@ export function createFpsMobileUx(game, root, doc) {
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
       resetAllTouches();
+      cover.beforeNativeStart();
     },
     onStart(challenge) {
       activeChallenge = challenge || null;
@@ -1993,6 +2012,9 @@ export function createFpsMobileUx(game, root, doc) {
       game.__mobileBalanceReview.teamSize=game.opts.size;
       applyBalance(0);
       recolorNativeAllies();
+      cover.begin(activeChallenge);
+      if(game.__mobileBalanceReview)
+        game.__mobileBalanceReview.coverV20=game.__mkCoverV20||null;
     },
     update(running, now = performance.now()) {
       const active = !!(running && game.playing && !game.paused && !game.ended);
@@ -2026,6 +2048,7 @@ export function createFpsMobileUx(game, root, doc) {
       if (!active || now >= cueExpiresAt) hitCue.hidden = true;
       if (!active || now >= damageExpiresAt)damageVignette.hidden=true;
       const p = game.player;
+      cover.update(active);
       if(active&&p&&!p.alive&&!controlsReleasedOnDeath){
         resetAllTouches();controlsReleasedOnDeath=true;
       } else if(p?.alive){
@@ -2283,6 +2306,7 @@ export function createFpsMobileUx(game, root, doc) {
       originalEnemySpawns=null;trainingSpawnTeam=null;
       if(activeChallenge?.kind==='hits'&&game.player)game.player.mouse.l=false;
       damageVignette.remove();
+      cover.destroy();
       doc.removeEventListener('touchstart',onTouchStart,true);
       doc.removeEventListener('touchmove',onTouchMove,true);
       doc.removeEventListener('touchend',onTouchEnd,true);
