@@ -21,7 +21,7 @@ export function raceScreenProfile(width, height, {coarse = false, anyCoarse = fa
 const PHONE_CAMERA=Object.freeze({dist:9.45,h:3.45,look:7.8,lookH:1.45});
 const WIDE_PHONE_CAMERA=Object.freeze({dist:9.1,h:3.3,look:7.5,lookH:1.45});
 export function racePhoneCamera(width,height) {
-  return width/Math.max(1,height)>=2.17?WIDE_PHONE_CAMERA:PHONE_CAMERA;
+  return width/Math.max(1,height)>=2.13?WIDE_PHONE_CAMERA:PHONE_CAMERA;
 }
 /** Aim slightly into the actual road elevation on steep V9 descents/crests.
  * The road is read-only: never edit racing geometry, steering or checkpoints.
