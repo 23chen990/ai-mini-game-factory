@@ -379,7 +379,7 @@ export class RacingCareer {
     this.fuel = syncFuel(this.fuel);
     const left = fuelTimeLeft(this.fuel);
     const mm = left ? ' · 下次恢复 ' + Math.ceil(left / 60000) + ' 分钟' : '';
-    return '⛽ ' + this.fuel.amount + '/' + FUEL_RULES.max + ' · 每场 -1' + mm;
+    return '⛽ ' + this.fuel.amount + '/' + FUEL_RULES.max + ' · 每局 -5 · 每分钟 +1' + mm;
   }
   canOfferAd() {
     // With a hard first stage, do not softlock failed players out of voluntary
