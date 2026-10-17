@@ -83,8 +83,13 @@ export async function buildSourceMobile(base, runId, gameId, { sourceRoot = proc
   const {stdout:buildLog}=await exec(process.execPath,['build.mjs'],{cwd:project,timeout:60000,maxBuffer:1024*1024});
   const originalHtml=await readFile(path.join(project,'dist/index.html'),'utf8');
   let html=originalHtml.replace('<html',`<html data-reference-game="${gameId}"`);
-  const query=gameId==='pelican-bike'?'q=low':gameId==='cf-transport-ship'?'touch=1&nolock=1':'q=low';
-  const defaults=`<script>if(!location.search)history.replaceState(null,'',location.pathname+'?${query}');</script>`;
+  const query=gameId==='pelican-bike'?'q=low':'q=low';
+  // The ORIGINAL renderer, textures and postprocessing are constructed
+  // before the H5 adapter starts a match. Setting opts.quality later does NOT
+  // remove its high-cost framebuffer/bloom. Normalize boot query first.
+  const defaults=gameId==='cf-transport-ship'
+    ? `<script>(()=>{const p=new URLSearchParams(location.search);if(!p.has('q'))p.set('q','low');if(!p.has('touch'))p.set('touch','1');if(!p.has('nolock'))p.set('nolock','1');const s=p.toString();if(location.search.slice(1)!==s)history.replaceState(null,'',location.pathname+'?'+s+location.hash)})();</script>`
+    : `<script>if(!location.search)history.replaceState(null,'',location.pathname+'?${query}');</script>`;
   html=html.replace('</head>',defaults+'<link rel="stylesheet" href="style.css"></head>');
   html=html.replace('</body>','<script type="module" src="main.mjs"></script></body>');
   await writeFile(path.join(game,'index.html'),html);
