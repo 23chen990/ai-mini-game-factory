@@ -93,7 +93,9 @@ async function boot() {
   const cfNativePlaytestSnapshot = metrics => ({
     shots:metrics?.shots||0,hits:metrics?.hits||0,
     k:metrics?.kills||0,d:metrics?.deaths||0,
-    travel:metrics?.travel||0
+    travel:metrics?.travel||0,
+    enemyShots:metrics?.enemyShots||0,
+    hp:metrics?.hp, recentEnemyDamage:metrics?.recentEnemyDamage===true
   });
   if(id==='cf-transport-ship'){
     $('cf-playtest-copy').addEventListener('click',async()=>{
@@ -256,6 +258,15 @@ async function boot() {
       }
       native.start = c => { fpsUx?.beforeNativeStart?.(); g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
+        enemyShots:(g.actors||[]).reduce((n,a)=>
+          !a?.isPlayer&&a.team!==g.player?.team&&Number.isFinite(a.stats?.shots)
+            ?n+Math.max(0,Math.floor(a.stats.shots)):n,0),
+        hp:g.player?.hp??100,
+        recentEnemyDamage:!!(g.player?.lastAttacker&&
+          g.player.lastAttacker!==g.player&&
+          g.player.lastAttacker.team!==g.player.team&&
+          Number.isFinite(g.player?.lastHurt)&&Number.isFinite(g.time)&&
+          g.time>=g.player.lastHurt&&g.time-g.player.lastHurt<=.5),
         kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,
         alive:g.player?.alive===true,nativeRespawnSec:g.player?.respawnT||0,
         travel:fpsUx?.distanceMeters()||0,...fpsUx?.drillMetrics(),

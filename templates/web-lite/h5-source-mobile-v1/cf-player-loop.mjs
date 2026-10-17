@@ -163,6 +163,7 @@ const VALID=new Set(['tags','precision','survive','defense','assault',
   'marksman','evac','counter']);
 const LIMIT=30;
 const TIMES=['firstMoveMs','firstShotMs','firstHitMs','firstKillMs'];
+const PRESSURE_TIMES=['firstEnemyShotMs','firstDamageMs'];
 const COUNTS=['shots','hits','kills','deaths'];
 const nonnegative=v=>Number.isSafeInteger(v)&&v>=0&&v<=1_000_000;
 const whole=(v,max=1_000_000)=>Number.isFinite(v)&&v>=0
@@ -180,6 +181,10 @@ function validEntry(e) {
   for(const key of COUNTS)if(!nonnegative(e[key])||e[key]>100_000)return false;
   for(const key of TIMES)if(e[key]!==null&&
     (!nonnegative(e[key])||e[key]>30000))return false;
+  for(const key of PRESSURE_TIMES)if(e[key]!==undefined&&e[key]!==null&&
+    (!nonnegative(e[key])||e[key]>30000))return false;
+  if(e.enemyShots!==undefined&&(!nonnegative(e.enemyShots)||e.enemyShots>100_000))
+    return false;
   return true;
 }
 export function cfLoadPlaytest(raw){
@@ -197,7 +202,9 @@ export function cfLoadPlaytest(raw){
         mission:e.mission,result:e.result,durationSec:e.durationSec,
         assisted:e.assisted===true,
         ...Object.fromEntries(TIMES.map(k=>[k,e[k]])),
-        ...Object.fromEntries(COUNTS.map(k=>[k,e[k]]))
+        ...Object.fromEntries(PRESSURE_TIMES.map(k=>[k,e[k]??null])),
+        ...Object.fromEntries(COUNTS.map(k=>[k,e[k]])),
+        enemyShots:e.enemyShots??0
       }))};
   } catch{return cfNewPlaytest();}
 }
@@ -205,9 +212,12 @@ export function cfBeginPlaytest(book,mission,native={}) {
   if(!book||!VALID.has(mission)||book.starts>=1_000_000)return null;
   book.starts++;
   return {
-    mission,baseline:snap(native),
+    mission,baseline:snap(native),enemyBaseline:whole(native?.enemyShots,100_000),
+    previousHP:Number.isFinite(native?.hp)?Math.max(0,native.hp):null,
+    previousDeaths:gameCounter(native,'deaths'),
     lastElapsedMs:0,firstMoveMs:null,firstShotMs:null,
-    firstHitMs:null,firstKillMs:null,closed:false,entry:null
+    firstHitMs:null,firstKillMs:null,firstEnemyShotMs:null,firstDamageMs:null,
+    closed:false,entry:null
   };
 }
 export function cfSamplePlaytest(session,elapsedMs,native={}) {
@@ -217,6 +227,16 @@ export function cfSamplePlaytest(session,elapsedMs,native={}) {
   session.lastElapsedMs=time;
   if(time>30_000)return false;
   const current=snap(native);
+  const actualEnemyShots=whole(native?.enemyShots,100_000);
+  if(session.firstEnemyShotMs===null&&actualEnemyShots>session.enemyBaseline)
+    session.firstEnemyShotMs=rounded(time);
+  const hp=Number.isFinite(native?.hp)?Math.max(0,native.hp):null;
+  if(session.firstDamageMs===null&&hp!==null&&session.previousHP!==null&&
+    hp<session.previousHP&&current.deaths===session.previousDeaths&&
+    native?.recentEnemyDamage===true)
+    session.firstDamageMs=rounded(time);
+  session.previousHP=hp;
+  session.previousDeaths=current.deaths;
   for(const [key,field] of [
     ['shots','firstShotMs'],['hits','firstHitMs'],['kills','firstKillMs']]){
     if(session[field]===null&&current[key]>session.baseline[key])
@@ -240,8 +260,10 @@ export function cfFinishPlaytest(book,session,elapsedMs,outcome,native={},option
     assisted:options?.adAssisted===true,
     durationSec:Math.min(2000,Math.round(elapsedMs/1000)),
     ...Object.fromEntries(TIMES.map(k=>[k,session[k]])),
+    ...Object.fromEntries(PRESSURE_TIMES.map(k=>[k,session[k]])),
     ...Object.fromEntries(COUNTS.map(k=>[
-      k,Math.max(0,current[k]-session.baseline[k])]))
+      k,Math.max(0,current[k]-session.baseline[k])])),
+    enemyShots:Math.max(0,whole(native?.enemyShots,100_000)-session.enemyBaseline)
   };
   session.entry=entry;
   if(book.finishes<1_000_000)book.finishes++;
@@ -261,7 +283,7 @@ export function cfExportPlaytest(book) {
   return JSON.stringify({
     scope:'only-local-voluntary-export',
     notRetentionOrRevenueProof:true,
-    note:'Manual export of native counters and rounded play time; assisted means a verified rewarded-ad revive. No ad views, revenue, IDs, device, location, or network data.',
+    note:'Manual export of native counters and rounded play time. Enemy shots do not imply hits. First damage requires an observed HP decrease from a recent native enemy attacker. Assisted requires verified rewarded video. No ad views, revenue, IDs, device, location, or network data.',
     ...data
   },null,2);
 }

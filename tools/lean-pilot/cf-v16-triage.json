@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "issueId": "cf-v16-responsive-firefight-proof",
+  "game": "cf-transport-ship",
+  "runId": "h5-cf-challenges-20261013",
+  "workspace": "runs/h5-cf-challenges-20261013/workspace/game",
+  "route": "formal-fixer",
+  "owner": "CF gameplay and native QA",
+  "baseCommit": "fa883c634a8e3a842e22b03285dc6a0f65ddc764",
+  "classification": "CORE_LOOP_PLAYER_EXPERIENCE_AND_ANONYMOUS_LOCAL_PRESSURE_EVIDENCE",
+  "observed": [
+    "V15 original Three.js mobile Chromium engineering 58/58 on run 39029533096",
+    "Opening rifle recorded first genuine hit but did not prove first native kill",
+    "Initial first-hit training bot kept role hold for 10 game seconds regardless of player's genuine gunshot/hit; it can fire around 4.5 seconds",
+    "Earlier natural failure was a 45s survival loss from not moving rather than enemy defeating player",
+    "Local first30 metrics omit the time of enemy return-fire and real enemy damage"
+  ],
+  "hypotheses": [
+    "Player gunfire and actual damage should shorten only a nearby real intro bot's alert/hold window; do not speed up all bots or give enemies hidden player information",
+    "Purely counting personal shots can imply action without real counter-pressure; native enemy shot/hurt observations provide independent evidence"
+  ],
+  "reproductionMatrix": [
+    {
+      "object": "first original intro enemy",
+      "state": "visible hold before 10 native seconds",
+      "renderer": "Three.js native world + mobile marker",
+      "device": "Chromium touch SwiftShader emulation",
+      "status": "OBSERVED"
+    },
+    {
+      "object": "ordinary enemy",
+      "state": "normal pursuit/flank",
+      "renderer": "native Three.js",
+      "device": "Chromium touch",
+      "status": "REGRESSION_REQUIRED"
+    },
+    {
+      "object": "first30 local record",
+      "state": "new round + old saved V14/V15 record",
+      "renderer": "H5 localStorage / manual export",
+      "device": "browser",
+      "status": "UNIT_AND_BROWSER_REQUIRED"
+    },
+    {
+      "object": "real first enemy damage",
+      "state": "fresh native HP decrease",
+      "renderer": "native Actor.damage",
+      "device": "physical iPhone/Android",
+      "status": "NOT_RUN"
+    }
+  ],
+  "allowedScope": [
+    "CF-only source modules, CSS, tests, CF native QA, PR-specific workflow condition",
+    "no racing, pelican or shared game rules"
+  ],
+  "acceptance": [
+    "Actual player gunshot alerts the original alive enemy after a reasonable readable minimum reaction window; genuine direct hit accelerates its opportunity to return fire",
+    "Training enemy resumes original NavGrid and ballistic AI early; never set health, actor coords, game time, or inject hits/kills",
+    "Visible enemy reaction communicates warning without revealing occluded opponents or masking reticle",
+    "Local first30 stores firstEnemyShotMs and firstDamageMs only from native shots/fresh enemy damage; older 30-run records load intact",
+    "End-to-end native Three.js normal touch and natural terminal/free retry remain green on exact PR HEAD; exact SHA artifacts downloadable",
+    "No real ad views or returns faked; no third-party commercial release claim"
+  ],
+  "releaseGates": {
+    "humanFirst30Kill": "NOT_PROVED",
+    "humanPressureAndRetry": "NOT_RUN",
+    "physicalPhone": "NOT_RUN",
+    "eightNaturalVictories": "NOT_RUN",
+    "TapTapLiveSDK": "NOT_RUN",
+    "commercialRights": "UNVERIFIED"
+  },
+  "status": "IMPLEMENTATION_IN_PROGRESS"
+}

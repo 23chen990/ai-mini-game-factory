@@ -91,7 +91,8 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         holdUntil:bot.__mobileTrainingHoldUntil-(g?.time||0),
         training:bot.__mobileTrainingScout===true,
         role:bot.role,
-        realShots:bot.stats?.shots||0}:null,
+        realShots:bot.stats?.shots||0,
+        responseStage:bot.__mkIntroThreatStage||0}:null,
       renderer:g?.renderer?{quality:g.renderer.quality,
         pixelRatio:g.renderer.renderer?.getPixelRatio?.(),
         composerRatio:g.renderer.composer?._pixelRatio,
@@ -277,6 +278,14 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     check('first30-fire-requires-native-player-shot',
       firedRookie.player.shots>authenticRookieShots,
       {before:authenticRookieShots,after:firedRookie.player.shots});
+    // A genuine player shot (or actual damage) wakes the real nearby bot;
+    // this is a shorter reaction/cover hold, not edited health or kills.
+    check('first30-real-shot-triggers-fair-enemy-retaliation',
+      firedRookie.openingBot?.responseStage>=1&&
+      firedRookie.openingBot?.readyIn>-0.8&&
+      firedRookie.openingBot?.holdUntil<=5.1,
+      {before:rookie.openingBot,after:firedRookie.openingBot,
+        playerShots:firedRookie.player.shots});
     // Software WebGL can render 6 seconds of native simulation in 11 wall
     // seconds. Always wait on the ORIGINAL GAME CLOCK, never force timers or
     // weaken the 10-second tactical release; capture the wall/sim gap as
@@ -291,6 +300,9 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       {hits:afterRookieWindow.player?.hits,shots:afterRookieWindow.player?.shots,
         nativeSeconds:afterRookieWindow.time-rookie.time});
     const wallSec=(performance.now()-wallStart)/1000;
+    check('first30-enemy-really-opens-fire-not-only-ai-intent',
+      (afterRookieWindow.openingBot?.realShots||0)>=1,
+      {enemy:afterRookieWindow.openingBot});
     check('stationary-novice-target-released-by-real-11sec-native-clock',
       afterRookieWindow.time-rookie.time>=10.5&&
       (afterRookieWindow.openingBot?.training===false||
@@ -382,6 +394,9 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       lastEntry?.mission==='survive'&&lastEntry?.result==='lost'&&
       lastEntry?.shots>=1&&Number.isFinite(lastEntry?.firstShotMs)&&
       lastEntry.firstShotMs<=30_000&&
+      Number.isInteger(lastEntry.enemyShots)&&
+      Object.hasOwn(lastEntry,'firstEnemyShotMs')&&
+      Object.hasOwn(lastEntry,'firstDamageMs')&&
       !Object.hasOwn(exportReport,'claimedAdViews'),
       {lastEntry,counts:{
         starts:exportReport.starts,finishes:exportReport.finishes,

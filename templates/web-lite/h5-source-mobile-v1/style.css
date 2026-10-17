@@ -984,3 +984,18 @@ html[data-reference-game="cf-transport-ship"] #mk-cf-playtest textarea{
 html[data-reference-game="cf-transport-ship"] #mk-controls{
   display:none!important;
 }
+
+/* V16: show first-shot retaliation only on the real visible enemy marker.
+ * Original NavGrid / gun AI owns the encounter; no hidden location display.
+ * The crosshair stays untouched. */
+html[data-reference-game="cf-transport-ship"] .mk-fps-enemy.mk-fps-returnfire{
+  outline:2px solid #ffd078;outline-offset:3px;
+  box-shadow:0 0 0 5px #f44d392e,0 0 16px #ff704866;
+  animation:cfReturnFire 0.85s ease-in-out 2;
+}
+@keyframes cfReturnFire{
+  50%{outline-color:#ff654a;box-shadow:0 0 0 9px #ff62492b}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-reference-game="cf-transport-ship"] .mk-fps-enemy.mk-fps-returnfire{animation:none}
+}
