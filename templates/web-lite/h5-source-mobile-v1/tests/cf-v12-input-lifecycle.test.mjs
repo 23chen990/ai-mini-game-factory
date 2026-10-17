@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {cfResetMobileTouch,cfJoystickVector} from '../fps-mobile-ux.mjs';
+import {cfResetMobileTouch,cfJoystickVector,cfWarmRestartAllowed} from '../fps-mobile-ux.mjs';
 
 test('CF V12 interrupted multitouch releases native fire, joystick and unconsumed tap',()=>{
   const player={
@@ -71,4 +71,15 @@ test('CF V12 pause reset releases an old crouch toggle but not native combat sta
   assert.equal(cfResetMobileTouch(player),true);
   assert.equal(player.touch.crouch,false);
   assert.deepEqual(player.stats,{k:4,shots:32});
+});
+
+test('CF V12 only real completed match can instantly restart its original 3D engine',()=>{
+ assert.equal(cfWarmRestartAllowed('cf-transport-ship','finished'),true);
+ for(const phase of ['ready','running','paused','revive','loading'])
+   assert.equal(cfWarmRestartAllowed('cf-transport-ship',phase),false);
+ for(const theme of ['pelican-bike','qq-speed',null])
+   assert.equal(cfWarmRestartAllowed(theme,'finished'),false);
+ const main=readFileSync(new URL('../main.mjs',import.meta.url),'utf8');
+ assert.match(main,/cfWarmRestartAllowed\(id,root\.dataset\.phase\)/);
+ assert.match(main,/void start\(\)/);
 });
