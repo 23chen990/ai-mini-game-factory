@@ -239,3 +239,18 @@ test('V8 one-way finish hooks preserve native progress and onLap bookkeeping',()
   assert.throws(()=>api.patchV8PointToPoint('class AnotherGame {}'),
     /one-way progress anchor changed/);
 });
+
+test('phone and desktop camera differences preserve native car/road physics',()=>{
+ assert.equal(typeof api.patchDualPlatformCamera,'function');
+ const before=[
+  "import { racePhoneCamera } from './race-session.mjs';",
+  'const m = modes[this.camMode];',
+  'const dist = m.dist + Math.abs(P.s) * 0.018 + boostPull;'
+ ].join('\n');
+ const after=api.patchDualPlatformCamera(before);
+ assert.ok(after.includes('this.mobileMode ? racePhoneCamera('));
+ assert.ok(after.includes('this.mobileMode ? 0.010 : 0.018'));
+ assert.ok(after.includes('this.mobileMode ? boostPull * .25 : boostPull'));
+ assert.equal(api.patchDualPlatformCamera(after),after);
+ assert.throws(()=>api.patchDualPlatformCamera('const m = modes[this.camMode];'),/Missing racing phone camera import/);
+});
