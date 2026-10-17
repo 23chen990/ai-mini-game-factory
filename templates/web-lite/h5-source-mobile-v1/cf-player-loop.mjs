@@ -17,7 +17,7 @@ export function cfArenaForLevel(index) {
  */
 export function cfMobileMission(base) {
   if(!base || typeof base.id!=='string')return base;
-  const elite=base.elite===true, small=elite?1:0;
+  const elite=base.elite===true;
   const variants={
     tags:{target:elite?4:2,limitMs:elite?60000:75000,maxDeaths:elite?0:2,
       objective:'亲手击倒'+(elite?4:2)+'名敌人',
