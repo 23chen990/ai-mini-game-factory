@@ -20,13 +20,16 @@ test('all 30 courses use distinct original driving-beat sequences, including rec
 test('V8 native course construction uses authored V9 geometry; non-V8 compatibility preserved',()=>{
   const legacy=bases(),current=bases();
   assert.equal(createCareerLayouts(legacy),30);
-  assert.equal(createCareerLayouts(current,{v8:true}),30);
+  assert.equal(createCareerLayouts(current,{v8:true,v9:true}),30);
+  const safe=bases();
+  assert.equal(createCareerLayouts(safe,{v8:true}),30);
+  assert.throws(()=>createCareerLayouts(bases(),{v9:true}),/require native V8/);
   let applied=0;
   for(let i=1;i<=30;i++){
     const id=String(i).padStart(2,'0'),key='race-'+id;
     const before=legacy[key].points,after=current[key].points;
     assert.equal(CAREER_COURSE_MAPS[i-1]!==undefined,true);
-    assert.notDeepEqual(after,before,id+' V9 is not merely cosmetic');
+    assert.notDeepEqual(after,safe[key].points,id+' V9 is not merely cosmetic');
     assert.ok(after.length>=before.length,id);
     assert.ok(after.every(x=>x.length===3&&x.every(Number.isFinite)),id);
     assert.ok(length(after)>1800,id+' not a tiny arena');
