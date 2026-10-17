@@ -1,3 +1,4 @@
+/* global localStorage */
 /* global process, console, window, document, getComputedStyle, innerWidth, innerHeight, performance, requestAnimationFrame */
 import {chromium} from '@playwright/test';
 import {mkdir,writeFile,readFile} from 'node:fs/promises';
