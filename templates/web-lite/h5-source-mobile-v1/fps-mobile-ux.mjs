@@ -519,11 +519,24 @@ export function cfHitCue(challenge, nativeHits, increase, drill = null) {
 
 /** End-of-round teaching based on observed player stats, never simulated rewards. */
 export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
-  if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return '';
+  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return '';
   const actual = v => Number.isFinite(v) ? Math.max(0,Math.floor(v)) : 0;
   const hits = actual(metrics.hits), awmKills = actual(metrics.awmKills);
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
   const goal = actual(challenge.target);
+  if (challenge.kind === 'defend') {
+    const captured=actual(metrics.defenseCaptured),site='AB'[Math.min(1,captured)];
+    if(outcome==='won')
+      return 'A、B双点防守成功！下次尝试零阵亡，缩短真实占点耗时。';
+    if(metrics.defenseSitesValid!==true)
+      return '据点路线不可用，本局没有虚构奖励。请重试或切换支持 WebGL 的设备。';
+    if(metrics.defenseBreached===true)
+      return '敌军在'+site+'点独占过久。下次提前到位，或在敌方接近时迎击。';
+    if(deaths>challenge.maxDeaths)
+      return '阵亡'+deaths+'次，超过本关'+challenge.maxDeaths+'次限制。下次试试沿掩体侧路回点。';
+    return '真实守住 '+captured+'/'+goal+' 处。前往'+site+
+      '点：只有玩家亲自站在圈内、活着的敌人离开圈外，进度才会增加。';
+  }
   if (outcome === 'won') {
     if (challenge.kind === 'hits'&&challenge.drill==='reposition')
       return '战术突围完成：首枪命中、离开原位 '+actual(metrics.drillTravel)+
@@ -577,12 +590,13 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
 
 /** Short, accurate mission facts for the start screen. All values are authored rules. */
 export function cfMissionFacts(challenge) {
-  if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return [];
+  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return [];
   const weapon = challenge.weapon === 'awm' ? 'AWM' :
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
     ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
     challenge.kind === 'kills' ? '击杀 ' + challenge.target + ' 人' :
+    challenge.kind === 'defend' ? '守 A → B · 各'+challenge.holdSeconds+'秒' :
       '移动 ' + (challenge.minTravel || 0) + ' m';
   return [
     { label:'装备',value:weapon },
@@ -593,7 +607,7 @@ export function cfMissionFacts(challenge) {
 
 /** Stat chips are derived from native player measurements, never team kills. */
 export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
-  if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return [];
+  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return [];
   const number = value => Number.isFinite(value) ? Math.max(0,Math.floor(value)) : 0;
   const deaths = number(metrics.deaths);
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
@@ -610,6 +624,11 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     {label:'狙杀',value:number(metrics.awmKills) + ' / ' + challenge.target},
     {label:'命中',value:String(number(metrics.hits))},
     {label:'阵亡',value:String(deaths)}
+  ];
+  if (challenge.kind === 'defend') return [
+    {label:'据点',value:number(metrics.defenseCaptured)+' / '+challenge.target},
+    {label:'敌军',value:metrics.defenseBreached===true?'已攻破':'未攻破'},
+    {label:'阵亡',value:deaths+' / '+challenge.maxDeaths}
   ];
   return [
     {label:'生存',value:Math.min(Math.floor(number(elapsedMs)/1000),Math.ceil(challenge.limitMs/1000)) + ' / ' + Math.ceil(challenge.limitMs/1000) + ' s'},
