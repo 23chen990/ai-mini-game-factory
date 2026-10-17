@@ -245,6 +245,40 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
   };
   const buildMesh=(THREE,groundAt)=>{
     const group=new THREE.Group();group.name='physical-shortcut-'+course;
+    // Preserve the V8 appearance and exact geometry outside opt-in V9.
+    // In V9, kerbs, fascia, paint, rails and piers share biome materials.
+    const palettes={
+      temple:{road:0x756b5a,curb:0xd7b781,shoulder:0x534c40,rail:0x7a6852,sign:0xeab870},
+      desert:{road:0x745f49,curb:0xf4ce8b,shoulder:0x594737,rail:0x9a7955,sign:0xf3c77c},
+      city:{road:0x343f4c,curb:0xf0b55f,shoulder:0x24303b,rail:0x687789,sign:0xecc471},
+      ice:{road:0x6b91a9,curb:0xdcf7f6,shoulder:0x41697d,rail:0xa6cce1,sign:0xe7f9ff},
+      cliff:{road:0x5a6268,curb:0xf4d59e,shoulder:0x343e45,rail:0x89979f,sign:0xffd08a},
+      sky:{road:0x4c6078,curb:0xb5eeec,shoulder:0x2e4459,rail:0x819cb2,sign:0x92e8df},
+    };
+    const palette=v9 ? palettes[cfg.style]??palettes.cliff :
+      {road:0x536b7c,curb:0x4bdbea,shoulder:0x536b7c,rail:0x4bdbea,sign:0x5de9ef};
+    const surfaceMaterial=(color,emissiveIntensity=0)=>new THREE.MeshStandardMaterial({
+      color,roughness:.91,metalness:.06,side:THREE.DoubleSide,
+      emissive:emissiveIntensity?color:0x000000,emissiveIntensity,
+    });
+    // A single indexed ribbon per feature avoids one draw call per curb tile.
+    const ribbon=(name,material,from,to,lift,step=1)=>{
+      const vv=[],ind=[];
+      for(let i=0;i<samples.length;i+=step){
+        const p=samples[i],w=widthAt(p.arc)*.5;
+        for(const side of [from(w),to(w)]){
+          vv.push(p.x+p.rx*side,p.y+lift,p.z+p.rz*side);
+        }
+      }
+      const rows=vv.length/6;
+      for(let i=0;i<rows-1;i++){let a=2*i;ind.push(a,a+1,a+2,a+1,a+3,a+2);}
+      const g=new THREE.BufferGeometry();
+      g.setAttribute('position',new THREE.Float32BufferAttribute(vv,3));
+      g.setIndex(ind);g.computeVertexNormals();
+      const mesh=new THREE.Mesh(g,material);
+      mesh.name=name;mesh.receiveShadow=true;group.add(mesh);
+      return mesh;
+    };
     const vertices=[],uv=[],index=[];
     for(const p of samples)for(const side of [-1,1]){
       vertices.push(p.x+p.rx*side*widthAt(p.arc)*.5,p.y+.08,
@@ -257,9 +291,54 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
     geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));geometry.setIndex(index);
     geometry.computeVertexNormals();
     const mesh=new THREE.Mesh(geometry,new THREE.MeshStandardMaterial({
-      color:0x536b7c,roughness:.93,side:THREE.DoubleSide,
+      color:palette.road,roughness:.93,side:THREE.DoubleSide,
     }));
     mesh.name='physical-shortcut-road';mesh.receiveShadow=true;group.add(mesh);
+    if(v9){
+      // Real material hierarchy: shoulders under kerbs, visible white edge
+      // paint, thin road side fascia, and understated centre dashes.
+      for(const sign of [-1,1]){
+        ribbon('physical-shortcut-shoulder',surfaceMaterial(palette.shoulder),
+          w=>sign*(w-.02),w=>sign*(w+.77),.035,2);
+        ribbon('physical-shortcut-curb',surfaceMaterial(palette.curb),
+          w=>sign*(w-.69),w=>sign*(w-.15),.135,2);
+        ribbon('physical-shortcut-edge-paint',surfaceMaterial(0xe4e6df),
+          w=>sign*(w-1.20),w=>sign*(w-1.06),.142,3);
+      }
+      const dashes=[],dIndices=[];
+      for(let d=15;d<length-14;d+=19){
+        const a=samples.find(p=>p.arc>=d),b=samples.find(p=>p.arc>=d+4.5);
+        if(!a||!b)continue;
+        const base=dashes.length/3,half=.13;
+        for(const p of [a,b])for(const side of [-1,1])
+          dashes.push(p.x+p.rx*half*side,p.y+.15,p.z+p.rz*half*side);
+        dIndices.push(base,base+1,base+2,base+1,base+3,base+2);
+      }
+      if(dashes.length){
+        const g=new THREE.BufferGeometry();
+        g.setAttribute('position',new THREE.Float32BufferAttribute(dashes,3));
+        g.setIndex(dIndices);g.computeVertexNormals();
+        const paint=new THREE.Mesh(g,surfaceMaterial(0xe6e9de));
+        paint.name='physical-shortcut-centre-dashes';group.add(paint);
+      }
+      // A real vertical fascia makes elevated shortcuts read like engineered
+      // bridge decks instead of zero-thickness ribbons suspended in air.
+      for(const side of [-1,1]){
+        const vv=[],ind=[];
+        for(let i=0;i<samples.length;i+=2){
+          const p=samples[i],l=side*(widthAt(p.arc)*.5+.58);
+          for(const dy of [-1.1,.05])
+            vv.push(p.x+p.rx*l,p.y+dy,p.z+p.rz*l);
+        }
+        const rows=vv.length/6;
+        for(let i=0;i<rows-1;i++){const a=i*2;ind.push(a,a+1,a+2,a+1,a+3,a+2);}
+        const g=new THREE.BufferGeometry();
+        g.setAttribute('position',new THREE.Float32BufferAttribute(vv,3));
+        g.setIndex(ind);g.computeVertexNormals();
+        const fascia=new THREE.Mesh(g,surfaceMaterial(palette.shoulder));
+        fascia.name='physical-shortcut-bridge-fascia';group.add(fascia);
+      }
+    }
     for(const side of [-1,1]){
       const rails=[];
       for(let i=0;i<samples.length-1;i++){
@@ -276,7 +355,7 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
       g.setAttribute('position',new THREE.Float32BufferAttribute(rails,3));
       g.computeVertexNormals();
       const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({
-        color:0x4bdbea,side:THREE.DoubleSide,roughness:.72,
+        color:palette.rail,side:THREE.DoubleSide,roughness:.72,
       }));
       m.name='physical-shortcut-rails';group.add(m);
     }
@@ -286,7 +365,7 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
     // no HUD coach, collision, checkpoint, speed boost or route teleport.
     const approach=new THREE.Group();approach.name='physical-shortcut-approach';
     const markerMat=new THREE.MeshStandardMaterial({
-      color:0x5de9ef,emissive:0x1a6671,emissiveIntensity:.65,roughness:.4
+      color:palette.sign,emissive:v9?0x2c2a22:0x1a6671,emissiveIntensity:v9?.20:.65,roughness:.6
     });
     for(const distanceBefore of [98,52]){
       const at=track.sample(start-distanceBefore,{}),arrow=new THREE.Group();
@@ -309,19 +388,19 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
       for(const side of [-1,1]){
         const h=4.8;
         const beacon=new THREE.Mesh(new THREE.CylinderGeometry(.45,.6,h,6),
-          new THREE.MeshStandardMaterial({color:0x49e4d9,emissive:0x125e63,
-            emissiveIntensity:.6,roughness:.6}));
+          new THREE.MeshStandardMaterial({color:palette.sign,emissive:v9?0x1b2526:0x125e63,
+            emissiveIntensity:v9?.18:.6,roughness:.6}));
         const half=widthAt(sample.arc)*.5;
         beacon.position.set(sample.x+sample.rx*side*(half+1.9),
           sample.y+h*.5,sample.z+sample.rz*side*(half+1.9));
         beacon.name='physical-shortcut-gate';group.add(beacon);
       }
     }
-    if(typeof groundAt==='function')for(let i=18;i<samples.length-18;i+=18){
+    if(typeof groundAt==='function')for(let i=18;i<samples.length-18;i+=(v9?27:18)){
       const p=samples[i],h=groundAt(p.x,p.z),rise=p.y-h-1.1;
       if(rise>4){
-        const support=new THREE.Mesh(new THREE.CylinderGeometry(.85,1.1,rise,6),
-          new THREE.MeshStandardMaterial({color:0x748ca2,roughness:.92}));
+        const support=new THREE.Mesh(v9?new THREE.BoxGeometry(2.5,rise,2.5):new THREE.CylinderGeometry(.85,1.1,rise,6),
+          new THREE.MeshStandardMaterial({color:v9?palette.rail:0x748ca2,roughness:.92}));
         support.position.set(p.x,h+rise*.5,p.z);group.add(support);
       }
     }
