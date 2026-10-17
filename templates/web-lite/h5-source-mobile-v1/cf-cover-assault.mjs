@@ -204,7 +204,8 @@ export function createCfCoverAssault(game,root,doc) {
     // H5 first screen must show the genuine opponent BEFORE we duck behind
     // a real steel shield. The novice gets 1.6 native seconds to look;
     // this is NOT invulnerability or automatic fire.
-    observeUntil=(Number(game.time)||0)+1.6;
+    observeUntil=(Number(game.time)||0)+
+      (challenge?.id==='tags'?3.1:1.4);
     if(p.touch){p.touch.crouch=false;p.touch.mx=0;p.touch.mz=0;}
     refreshUi(true);
     game.__mkCoverV20={enabled:true,mode:'cover-to-cover',
