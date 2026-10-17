@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfNoviceScoutStrafe, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfBeginTouchFire, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfNoviceScoutStrafe, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -604,4 +604,25 @@ test('CF only genuine novice real scout reduces lateral drift without changing e
  assert.deepEqual(original,{strafe:.34,turn:3.6,aimErr:.09},
   'never mutate input profile, health, damage or firing characteristics');
  assert.equal(cfNoviceScoutStrafe({},true),0);
+});
+
+
+test('CF one-thumb firing stays native through lost button events without inventing shots',()=>{
+ const native={mx:.4,mz:-.2,fire:false,firePressed:false,shots:7,hits:1};
+ assert.equal(cfBeginTouchFire(native),true);
+ assert.equal(native.fire,true);assert.equal(native.firePressed,true);
+ native.firePressed=false; // Original Player.update consumes the edge.
+ assert.equal(cfBeginTouchFire(native),true);
+ assert.equal(native.firePressed,false,
+  'continued drag may hold native fire but cannot generate another press edge');
+ assert.equal(native.shots,7);assert.equal(native.hits,1);
+ assert.deepEqual({mx:native.mx,mz:native.mz},{mx:.4,mz:-.2},
+  'the right fire finger must not steal the native left joystick');
+ cfReleaseTouchFire(native);
+ assert.equal(native.fire,false);assert.equal(native.firePressed,false);
+ assert.equal(cfBeginTouchFire(null),false);
+ const interrupted={fire:false,firePressed:false};
+ cfBeginTouchFire(interrupted);
+ cfReleaseTouchFire(interrupted,true);
+ assert.deepEqual(interrupted,{fire:false,firePressed:false});
 });
