@@ -1,6 +1,7 @@
+import { EXTRA_STAGES } from './career-expansion.mjs';
 export const CAREER_KEY = 'h5-mobile:qq-speed:career:v1';
 const make = (id, chapter, name, map, laps, diff, kind, mode, rank, goal, extra = {}) => Object.freeze({ id, chapter, name, map, course: 'race-' + id, laps, diff, kind, mode, rank, goal, ...extra });
-/** No beginner exception: every one of 16 stages demands real rank and technique. */
+/** Every stage demands real rank/technique; 17-30 add eight-chapter progression. */
 export const STAGES = Object.freeze([
   make('01', 1, '城市攻防环', 'city', 2, 1, 'race', 'speed', 3, '跑满两圈并争取前三名'),
   make('02', 1, '沙漠疾速考核', 'egypt', 2, 0, 'speed', 'speed', 3, '三个测速点至少一次达到 175 km/h', {'target':175}),
@@ -18,6 +19,7 @@ export const STAGES = Object.freeze([
   make('14', 4, '沙丘极速冲顶', 'egypt', 2, 2, 'speed', 'speed', 2, '测速点至少一次达到 190 km/h', {'target':190}),
   make('15', 4, '极地道具冠军战', 'snow', 3, 2, 'item', 'item', 2, '拾取 4 个道具并进入前二名', {'target':4}),
   make('16', 4, '悬崖冠军决战', 'aegean', 3, 2, 'boss', 'speed', 1, '超过指定车神，夺得第一名'),
+  ...EXTRA_STAGES,
 ]);
 export const SKIN_STARS = Object.freeze([0, 3, 6, 10, 14, 19, 25, 34]);
 export const SKIN_NAMES = Object.freeze(['烈焰红', '冰蓝', '紫电', '黄金', '珍珠白', '樱粉', '翡翠', '暗夜']);
@@ -31,7 +33,7 @@ export function dailyStage(date = new Date()) {
   const pool = [STAGES[2], STAGES[4], STAGES[6], STAGES[8], STAGES[11], STAGES[12], STAGES[14]];
   const index = Number(key.replaceAll('-','')) % pool.length;
   const original = pool[index];
-  return Object.freeze({ ...original, id: 'daily-' + key, chapter: 5, name: '每日挑战 · ' + original.name });
+  return Object.freeze({ ...original, id: 'daily-' + key, chapter: 9, name: '每日挑战 · ' + original.name });
 }
 export const careerStars = career => STAGES.reduce((n, stage) => n + (career?.stars?.[stage.id] ?? 0), 0);
 export function stageUnlocked(career, index) {
