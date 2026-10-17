@@ -257,10 +257,10 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
  const menu=await page.evaluate(()=>{
   const start=document.querySelector('#co-start'),r=start.getBoundingClientRect(),route=document.querySelector('#co-route');
   return {ready:document.querySelector('#coast')?.dataset.phase==='ready',start:{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom},
-   routeScrollable:route.scrollHeight>route.clientHeight,documentWidth:document.documentElement.scrollWidth};
+   routeScrollable:route.scrollHeight>route.clientHeight,routeHeight:route.clientHeight,documentWidth:document.documentElement.scrollWidth};
  });
  const routePresentation=await page.evaluate(readRoutePresentation);
- check('small-phone-start-visible-and-menu-not-overflow',menu.ready&&menu.start.x>=0&&menu.start.bottom<=568&&menu.start.height>=36&&menu.documentWidth<=320&&routePresentationPassed(routePresentation),{...menu,routePresentation});
+ check('small-phone-start-visible-and-menu-not-overflow',menu.ready&&menu.start.x>=0&&menu.start.bottom<=568&&menu.start.height>=36&&menu.documentWidth<=320&&menu.routeHeight>=100&&routePresentationPassed(routePresentation),{...menu,routePresentation});
  await shot('small-phone-route-menu');
  await tap('#co-start');await page.waitForTimeout(450);
  const small=await page.evaluate(readCompactPresentation);

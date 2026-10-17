@@ -95,3 +95,11 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 /* First-play route scan: hide detailed star requirements for other levels.
    Switching the selected route reveals that route's true requirements. */
 #coast[data-phase="ready"] .co-route button:not(.selected) .co-master{display:none}
+
+/* A 320x568 phone needs two visible route rows, not a 50px slot.
+   Reclaim the dead space between the menu card and its top header; this
+   affects only the pre-ride portrait menu, never rider HUD or touch controls. */
+@media(orientation:portrait) and (max-height:650px){
+ #coast[data-phase="ready"] #co-modal{padding-top:max(84px,calc(env(safe-area-inset-top,0px) + 74px));padding-bottom:max(10px,env(safe-area-inset-bottom,0px))}
+ #coast[data-phase="ready"] .co-card{height:calc(100dvh - 104px);max-height:calc(100dvh - 104px)}
+}
