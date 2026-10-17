@@ -530,6 +530,55 @@ export function cfHitCue(challenge, nativeHits, increase, drill = null) {
   return '✓ 有效命中 +' + delta;
 }
 
+/** Near-win feedback is shown only AFTER a real result, never as clutter
+ * on the combat HUD and never from AI team scores. Advertisements remain
+ * completely optional regardless of the outcome. */
+export function cfNearMissCue(challenge, metrics={}, elapsedMs=0) {
+  if(!challenge||!metrics)return null;
+  const count=n=>Number.isFinite(n)?Math.max(0,Math.floor(n)):0;
+  const goal=count(challenge.target);
+  if(challenge.kind==='defend'&&metrics.defenseSitesValid===true){
+    const cap=count(metrics.defenseCaptured);
+    if(cap>=1&&cap<goal)
+      return '已守住第一处据点，第二处还没拿下';
+    if(cap===0&&Number(metrics.defenseHeld)>=Number(challenge.holdSeconds)*.65)
+      return '第一处据点已经守住大半时间';
+  }
+  if(challenge.kind==='assault'&&metrics.assaultStage===1){
+    const kills=count(metrics.assaultKills);
+    if(kills>=1&&kills<goal)
+      return '换位已经完成，只差最后'+(goal-kills)+'次亲手击杀';
+  }
+  if(challenge.kind==='kills'&&goal>1){
+    const kills=count(metrics.awmKills);
+    if(kills>=1&&kills<goal)
+      return 'AWM已击杀'+kills+'人，再击杀'+(goal-kills)+'人并完成移动';
+  }
+  if(challenge.kind==='hits'&&challenge.drill==='reposition'&&
+    metrics.drillStage===2){
+    const hits=count(metrics.drillFollowUpHits);
+    if(hits>=1&&hits<goal)
+      return '换位已完成，追击还差'+(goal-hits)+'次有效命中';
+  }
+  if(challenge.kind==='survive'&&Number.isFinite(elapsedMs)&&
+    Number.isFinite(challenge.limitMs)&&
+    elapsedMs>=challenge.limitMs*.7&&
+    Number(metrics.travel)>=Number(challenge.minTravel||0)*.8&&
+    (!challenge.minKills||count(metrics.kills)>=challenge.minKills)){
+    const left=Math.max(0,Math.ceil((challenge.limitMs-elapsedMs)/1000));
+    if(left>0)return '坚持到最后阶段，还差'+left+'秒';
+  }
+  return null;
+}
+
+/** Rewarded video never raises HP directly: the actual native engine owns
+ * its 4-second death/respawn cycle. The UI mirrors its remaining time. */
+export function cfNativeReviveStatus(metrics={},rewarded=false) {
+  const sec=Number(metrics.nativeRespawnSec);
+  return rewarded===true&&metrics.alive===false&&
+    Number.isFinite(sec)&&sec>0 ?'✚ 续战已生效 · '+Math.ceil(sec)+'秒后复活':null;
+}
+
 /** End-of-round teaching based on observed player stats, never simulated rewards. */
 export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return '';
