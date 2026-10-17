@@ -759,3 +759,23 @@ test('CF H5 opening lane chooses real unobstructed sightlines, never a wall',asy
  }),null,'opaque walls make a target ineligible');
  assert.equal(cfChooseVisibleOpeningLane({spawns:[],world,nav}),null);
 });
+
+test('CF H5 opening target must expose a full real torso and a gun-width corridor',async()=>{
+ const {cfOpeningBodyLaneClear}=await import('../fps-mobile-ux.mjs');
+ const from={x:0,z:0},enemy={x:9,z:0};
+ const open={blocked:()=>false,raycast:()=>null};
+ assert.equal(cfOpeningBodyLaneClear(open,from,enemy),true);
+ const metalAtTorso={...open,
+   raycast:(x,y,z,dx,dy,dz,max)=>{
+     if(dy<-.025&&max>3)return {t:5};
+     return null;
+   }};
+ assert.equal(cfOpeningBodyLaneClear(metalAtTorso,from,enemy),false,
+   'a visible floating marker cannot excuse obstructed real chest shots');
+ const metalAtEdge={...open,
+   blocked:(x,y,z)=>z>.45};
+ assert.equal(cfOpeningBodyLaneClear(metalAtEdge,from,enemy),false,
+   'firing lane must leave safe space beside the target');
+ assert.equal(cfOpeningBodyLaneClear(open,{x:0,z:0},{x:2,z:0}),false);
+ assert.equal(cfOpeningBodyLaneClear(null,from,enemy),false);
+});
