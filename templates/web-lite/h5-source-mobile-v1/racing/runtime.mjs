@@ -64,7 +64,7 @@ export class RacingCareer {
     this.passes.lastCrashes = game.player?.stats?.crash ?? 0;
     // Tune only actual native AI.skill values. AICar.update still handles
     // every car's corner pace, nitro, items and genuine on-road position.
-    // All sixteen stages, including 01 and both bosses, receive fixed strong fields.
+    // All thirty stages, including both early tracks and final bosses, receive fixed competitive fields.
     tuneOpponentField(game.racers,this.stage);
     seedCompetitiveField(game.racers,this.stage);
     configureRivalTactics(game.racers,this.stage);
@@ -90,7 +90,8 @@ export class RacingCareer {
         this.bossName = this.boss.name;
         // Full-strength named boss alongside a real competitive pack.
         // Native cornering and nitro remain physical; no forced race results.
-        this.boss.skill=this.stage.id==='16'?2.10:Math.max(this.boss.skill,2.04);
+        this.boss.skill=this.stage.id==='30'?2.18:
+          this.stage.id==='16'?2.10:Math.max(this.boss.skill,2.04);
       }
     }
     if (this.fuelEnabled) {
