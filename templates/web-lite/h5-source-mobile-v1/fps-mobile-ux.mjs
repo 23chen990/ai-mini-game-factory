@@ -604,7 +604,7 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
       '。先找红色目标，开镜瞄准胸部，再按开火。';
   }
   if (deaths > goal+(challenge.bonusDeaths===1?1:0))
-    return '被击倒 ' + deaths + ' 次，超过允许 ' +
+    return '被击倒 ' + deaths + ' 次，超过最多 ' +
       (goal+(challenge.bonusDeaths===1?1:0)) + ' 次的限制。';
   const min = actual(challenge.minTravel);
   if (travel < min)
