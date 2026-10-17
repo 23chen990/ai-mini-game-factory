@@ -131,6 +131,17 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
     throw Error('Fork overlaps original main-road driving corridor: '+
       course+' '+minMidCorridorClearance.toFixed(1)+'m');
   const mesh=fork.buildMesh(THREE,()=>0);
+  const actualGates=[];mesh.traverse(node=>{
+    if(node.name==='physical-shortcut-gate')actualGates.push(node);
+  });
+  // V9 must visibly be a built environment, not the same four neon cylinders
+  // in every level. Portal is taller than a vehicle; gates remain outside
+  // the actual drivable branch, preserving collision and pre-entry sightlines.
+  const portal=mesh.getObjectByName('physical-shortcut-portal');
+  if(!fork.v9 || !portal || portal.geometry?.type!=='BoxGeometry' ||
+     actualGates.length!==4 || actualGates.some(o=>o.geometry?.type==='CylinderGeometry') ||
+     portal.position.y<track.sample(fork.start,{ }).y+5)
+    throw Error('V9 thematic shortcut entrance is missing or unconvincing: '+course);
   if(!mesh.getObjectByName('physical-shortcut-road') ||
      !mesh.getObjectByName('physical-shortcut-rails') ||
      mesh.getObjectByName('physical-shortcut-approach')?.children?.length!==2)
