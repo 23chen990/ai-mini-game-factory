@@ -133,7 +133,7 @@ export class RaceTrialMetrics {
    * full gameplay trace or claimed ad revenue. A snapshot can include QA runs. */
   exportJSON() {
     return JSON.stringify({
-      schemaVersion:1,game:'racing-h5',build:'V6.0',
+      schemaVersion:1,game:'racing-h5',build:'V6.1',
       verifiedHumanPlay:false,containsPersonalIdentifiers:false,
       generatedOnDevice:true,
       explanation:'本地试玩摘要（可能包含自动化 QA）；广告完成信号不是结算收入',

@@ -21,7 +21,7 @@ function mockTrack(){
   return track;
 }
 test('shortcut registry has only permitted physical stage roads; default stages stay on long route',()=>{
-  assert.deepEqual(Object.keys(SHORTCUT_PLANS),['race-05','race-10','race-12','race-13','race-16']);
+  assert.deepEqual(Object.keys(SHORTCUT_PLANS),['race-05','race-10','race-12','race-13','race-16','race-18','race-22','race-25','race-27','race-30']);
   assert.equal(installPhysicalShortcut(mockTrack(),'race-01'),null);
   assert.equal(installPhysicalShortcut(mockTrack(),'unknown'),null);
   assert.ok(Object.values(SHORTCUT_PLANS).every(p=>

@@ -93,10 +93,10 @@ function renderLobby() {
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
-  root.dataset.previewRevision = 'racing-v60-career30';
+  root.dataset.previewRevision = 'racing-v61-rebuilt-routes';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V6.0';
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V6.1';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = courseInfo?.feel ?? '';
@@ -110,7 +110,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.1' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -244,7 +244,7 @@ $('export').addEventListener('click', () => {
     const blob=new Blob([content],{type:'application/json;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const anchor=document.createElement('a');
-    anchor.href=url;anchor.download='racing-v60-local-playtest.json';
+    anchor.href=url;anchor.download='racing-v61-local-playtest.json';
     document.body.append(anchor);anchor.click();anchor.remove();
     button.textContent='数据已准备';
     setTimeout(()=>{ URL.revokeObjectURL(url); button.textContent='导出数据 ↓'; },1500);
