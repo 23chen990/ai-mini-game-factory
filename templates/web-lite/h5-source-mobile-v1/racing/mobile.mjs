@@ -203,7 +203,7 @@ function resume() {
   releaseInput(); g.togglePause(); inputTime = performance.now(); display(g.state);
 }
 function start() {
-  if (!g || loading || !policyReady || backgrounded || document.hidden || portrait() || career.adBusy || !['ready', 'finished', 'paused'].includes(phase)) return;
+  if (!g || loading || !policyReady || backgrounded || document.hidden || portrait() || career.adBusy || gateSelectionIndex!==null || !['ready', 'finished', 'paused'].includes(phase)) return;
   if (career.dailySnapshot && career.dailySnapshot.id !== 'daily-' + localDayKey()) {
     career.setDaily();renderLobby();loadTrack(career.stage.map, false);
     return; // Never charge for yesterday's stale challenge.
@@ -350,10 +350,37 @@ $('next').addEventListener('click', () => {
   career.setStage(next);renderLobby();loadTrack(career.stage.map, true);
 });
 $('stage').addEventListener('change', () => {
-  const value = $('stage').value;
-  const selected = value === 'daily' ? career.setDaily() : career.setStage(Number(value));
-  if (!selected) {renderLobby();return;}
-  renderLobby();loadTrack(career.stage.map, false);
+  const value=$('stage').value, index=Number(value);
+  const gate=value==='daily'?null:career.gateStatus(index);
+  if(gate?.starLocked){
+    // This is an explicit player choice, never an unsolicited makeup prompt.
+    gateSelectionIndex=index;renderLobby();return;
+  }
+  gateSelectionIndex=null;
+  const selected=value==='daily'?career.setDaily():career.setStage(index);
+  if(!selected){renderLobby();return;}
+  renderLobby();loadTrack(career.stage.map,false);
+});
+$('star-ad').addEventListener('click',async()=>{
+  const index=gateSelectionIndex;
+  if(phase!=='ready'||index===null||!career.canOfferGateAd(index))return;
+  const button=$('star-ad');button.disabled=true;
+  button.textContent='广告加载中…';
+  const out=await career.watchGateAd(index);
+  trial.rewardedOutcome(out.status);
+  if(out.status==='completed'){
+    gateSelectionIndex=null;
+    if(!career.setStage(index)){
+      renderLobby();$('note').textContent='通行证已保存，请重新选择该关卡';return;
+    }
+    renderLobby();await loadTrack(career.stage.map,false);
+  }else{
+    renderLobby();
+    $('note').textContent=out.status==='save-failed'
+      ?'存档失败，未发放永久通行证；本次无需重复观看'
+      :'广告未完成，本关仍需满足累计星数';
+  }
+  fuelView();
 });
 $('skin').addEventListener('change', () => {
   if (!career.setSkin(Number($('skin').value))) {renderLobby();return;}
