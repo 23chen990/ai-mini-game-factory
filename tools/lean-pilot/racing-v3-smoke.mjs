@@ -198,8 +198,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V6.0'||
-     worldIdentity.uiRevision!=='racing-v60-career30')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V6.1'||
+     worldIdentity.uiRevision!=='racing-v61-rebuilt-routes')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -303,8 +303,8 @@ try {
   await page.locator('#race-export').tap();
   const firstFile=await firstDownload;
   const initialExport=JSON.parse(await readFile(await firstFile.path(),'utf8'));
-  if(firstFile.suggestedFilename()!=='racing-v60-local-playtest.json'||
-     initialExport.build!=='V6.0'||initialExport.verifiedHumanPlay!==false||
+  if(firstFile.suggestedFilename()!=='racing-v61-local-playtest.json'||
+     initialExport.build!=='V6.1'||initialExport.verifiedHumanPlay!==false||
      initialExport.metrics.starts!==0||initialExport.metrics.finishes!==0)
     fail('Menu export must start empty and explicitly reject human-play claims: '+JSON.stringify(initialExport));
   report.initialExport={filename:firstFile.suggestedFilename(),starts:0,private:true};
