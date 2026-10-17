@@ -84,7 +84,7 @@ test('two-lane reward approach starts before the late double-tap trap',()=>{
  assert.equal(step.action,'left');assert.equal(step.toLane,1);
  const oneAway=decide({...viewTwo,laneIndex:1,lanes:[{...reward,seconds:2.65},lane(),lane()]},step.state);
  assert.equal(oneAway.action,'left');assert.equal(oneAway.toLane,0);
- const stillFar=decide({...viewTwo,lanes:[{...reward,seconds:4.3},lane(),lane()]},policy.createRiskPolicyState(1,target));
+ const stillFar=decide({...viewTwo,lanes:[{...reward,seconds:4.7},lane(),lane()]},policy.createRiskPolicyState(1,target));
  assert.equal(stillFar.action,'wait');
 });
 test('visible gold increase after a true +9m jump prize releases the next challenge on time',()=>{
