@@ -91,12 +91,12 @@ jobs:
           RACE_QA_DIAGNOSTIC_RACE_SECS: '25'
           RACE_QA_LABEL: 'v32-natural-ci'
         run: node tools/lean-pilot/racing-career-qa.mjs
-      - name: Native 16-stage + daily integrated simulation (not natural gameplay, non-gating)
+      - name: Native 30-stage + daily integrated simulation (synthetic, non-gating)
         continue-on-error: true
         timeout-minutes: 11
         env:
-          RACE_SWEEP_STAGES: '17'
-          RACE_SWEEP_MAX_WALL_MS: '540000'
+          RACE_SWEEP_STAGES: '31'
+          RACE_SWEEP_MAX_WALL_MS: '600000'
         run: |
           node --check tools/lean-pilot/racing-integrated-campaign-audit.mjs
           node tools/lean-pilot/racing-integrated-campaign-audit.mjs
