@@ -163,36 +163,58 @@ export function applyRivalTactics(game,stage) {
   if(!game||game.state!=='race'||!game.player||!game.track||!stage||
      !Array.isArray(game.racers)||typeof game.track.curvAhead!=='function')return 0;
   const {player,track}=game;
+  const usableHalf=Math.max(4,(Number.isFinite(track.halfW)?track.halfW:9)-2.2);
+  // Native AICar target lateral position = inside + personal * usableHalf * .8.
+  // A separation >=3.9m clears the pinned 3.1m car collision radius with room
+  // for a recovery correction. The road width sets the bound; no teleport.
+  const attackPersonal=clamp(3.9/(usableHalf*.8),.64,.84);
   let changed=0;
   for(const rival of game.racers) {
     const t=rival?.__RACE_TACTIC__;
     if(!t||rival.isPlayer||rival.finished||!Number.isFinite(rival.progress)||
        !Number.isFinite(rival.dist)||!Number.isFinite(rival.s))continue;
-    const gap=rival.progress-player.progress; // + = rival ahead
+    const gap=rival.progress-player.progress;
     const base=clamp(t.basePersonal+t.laneBias,-.42,.42);
     const curvature=Math.abs(track.curvAhead(rival.dist,90));
     let target=base;
-    // Unlike the first draft (which noticed only the player), scan the real
-    // physical traffic. An AI car in front can block another AI as well.
-    // Side changes stay cosmetic-to-collision: native lateral acceleration
-    // gradually moves the car and real Game.collide still handles contact.
-    let blocker=null,blockerGap=Infinity;
-    for(const car of game.racers) {
-      if(car===rival||car.finished||!Number.isFinite(car.progress)||
-         !Number.isFinite(car.lat)||!Number.isFinite(car.s))continue;
-      const ahead=car.progress-rival.progress;
-      if(ahead>7&&ahead<80&&ahead<blockerGap&&car.s>=20&&
-         Math.abs(car.lat-rival.lat)<5.2&&rival.s>=car.s-3){
-        blocker=car;blockerGap=ahead;
+    // Keep a chosen lane until the opponent has been passed by a full car
+    // length. Returning to center at the exact progress crossing caused the
+    // old pass attempt to cut back into the physical collision cylinder.
+    const committed=t.committedPass;
+    if(committed) {
+      const other=committed.blocker;
+      const remaining=other?.progress-rival.progress;
+      if(!other||other.finished||!Number.isFinite(remaining)||
+         remaining<=-16||remaining>105){
+        t.committedPass=null;
+      } else if(curvature<=.009){
+        target=committed.personal;
       }
     }
-    if(blocker&&curvature<=.010&&rival.s>27) {
-      const side=blocker.lat>rival.lat+.3?-1:blocker.lat<rival.lat-.3?1:t.passSide;
-      target=clamp(t.basePersonal+side*t.passBias,-.42,.42);
-    // A gentle, real inside-line defense when the player is genuinely behind.
-    } else if(gap>=7&&gap<=55&&curvature>.005&&curvature<.018) {
-      const curve=track.curvAhead(rival.dist,65);
-      target=clamp(t.basePersonal-Math.sign(curve)*t.defendBias,-.42,.42);
+    if(!t.committedPass) {
+      // Unlike the original prototype, every real racer can be the blocker:
+      // player or another AI. A defender cannot forcibly move the attacker.
+      let blocker=null,blockerGap=Infinity;
+      for(const car of game.racers) {
+        if(car===rival||car.finished||!Number.isFinite(car.progress)||
+           !Number.isFinite(car.lat)||!Number.isFinite(car.s))continue;
+        const ahead=car.progress-rival.progress;
+        if(ahead>9&&ahead<95&&ahead<blockerGap&&car.s>=20&&
+           Math.abs(car.lat-rival.lat)<5.3&&rival.s>=car.s-3){
+          blocker=car;blockerGap=ahead;
+        }
+      }
+      if(blocker&&curvature<=.008&&rival.s>28) {
+        const side=blocker.lat>rival.lat+.3?-1:
+          blocker.lat<rival.lat-.3?1:t.passSide;
+        const personal=clamp(side*attackPersonal+t.basePersonal*.2,-.86,.86);
+        t.committedPass={blocker,personal};
+        target=personal;
+      // A real, gentle inside-line defense while player chases the leader.
+      } else if(gap>=7&&gap<=55&&curvature>.005&&curvature<.018){
+        const curve=track.curvAhead(rival.dist,65);
+        target=clamp(t.basePersonal-Math.sign(curve)*t.defendBias,-.42,.42);
+      }
     }
     if(Math.abs(rival.personal-target)>.015){rival.personal=target;changed++;}
   }
