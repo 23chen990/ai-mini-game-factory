@@ -229,12 +229,40 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       Math.abs(afterDrag.player.yaw-beforeDrag.player.yaw)>0.015&&
       afterDrag.player.shots>beforeDrag.player.shots,
       {before:beforeDrag.player,after:afterDrag.player});
-    const beforeReload=await inspect();
-    await button('#touch .btn[data-mk-action="reload"]',240,29);
-    const afterReload=await inspect();
-    check('touch-reload-starts-real-weapon-reload',
-      beforeReload.player.mag<30&&afterReload.player.reloading===true,
-      {before:beforeReload.player,after:afterReload.player});
+    // The first real 1v1 is lethal. Reload is forbidden while dead:
+    // wait for a GENUINE native respawn, fire a real short burst when the
+    // new magazine is full, then press reload while still alive. Never edit
+    // ammo, health, timers or native weapon status to pass the test.
+    let beforeReload=null,afterReload=null,realReload=false;
+    const reloadAttempts=[];
+    for(let attempt=1;attempt<=3;attempt++){
+      await page.waitForFunction(()=>{
+        const g=window.__H5NativeGame;
+        return g?.playing===true&&!g?.paused&&g.player?.alive===true;
+      },null,{timeout:32000,polling:80});
+      beforeReload=await inspect();
+      if(beforeReload.player.mag===30){
+        await button('#touch .btn[data-mk-action="fire"]',550,60+attempt);
+        beforeReload=await inspect();
+      }
+      if(!beforeReload.player?.alive){
+        reloadAttempts.push({attempt,diedBeforeReload:true});continue;
+      }
+      await button('#touch .btn[data-mk-action="reload"]',210,70+attempt);
+      afterReload=await inspect();
+      realReload=beforeReload.player.mag<30&&
+        beforeReload.player.alive===true&&
+        afterReload.player.alive===true&&
+        afterReload.player.reloading===true;
+      reloadAttempts.push({attempt,aliveBefore:beforeReload.player.alive,
+        magBefore:beforeReload.player.mag,
+        aliveAfter:afterReload.player.alive,
+        reloading:afterReload.player.reloading});
+      if(realReload)break;
+    }
+    check('touch-reload-starts-real-weapon-reload',realReload,
+      {before:beforeReload?.player,after:afterReload?.player,
+        attempts:reloadAttempts});
     // An original jump arc can be brief below a cargo overhang. Sample
     // DURING the real physical finger hold rather than only after release.
     // A click without genuine native vertical motion must still fail QA.
