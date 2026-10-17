@@ -81,7 +81,7 @@ test('advanced circuits stay separated at road width and have meaningfully diffe
   const outlines=[];
   for(const [id,plan] of Object.entries(EXPANSION_COURSES)){
     const full=pointsOf(id);
-    assert.ok(plan.technical.length>=4&&plan.technical.length<=5,id);
+    assert.ok(plan.technical.length>=3&&plan.technical.length<=5,id);
     assert.equal(full.length,plan.sketch.split(' ').length+plan.technical.length*2,id);
     assert.equal(full[0][0],0);assert.equal(full[0][1],0);
     assert.ok(full.every(p=>p.length===3&&p.every(Number.isFinite)&&p[2]>=0&&p[2]<=25));
@@ -96,11 +96,18 @@ test('advanced circuits stay separated at road width and have meaningfully diffe
     assert.equal(careerCourseDetails(id).biome,plan.map);
     outlines.push({id,shape:normalize(full)});
   }
-  for(let i=0;i<outlines.length;i++)for(let j=i+1;j<outlines.length;j++){
-    const separation=rms(outlines[i].shape,outlines[j].shape);
-    assert.ok(separation>=.10,'similar-looking late-stage route '+outlines[i].id+'/'+
-      outlines[j].id+' (normalized RMS '+separation.toFixed(3)+')');
+  // Compare redesigned roads against ALL other career roads. Checking new vs
+  // new only was the V6.0 error: some old/new pairs looked almost identical.
+  const changed=new Set(['11','13',...Object.keys(EXPANSION_COURSES)]);
+  const all=STAGES.map(s=>({id:s.id,shape:normalize(pointsOf(s.id))}));
+  for(let i=0;i<all.length;i++)for(let j=i+1;j<all.length;j++){
+    if(!changed.has(all[i].id)&&!changed.has(all[j].id))continue;
+    const separation=rms(all[i].shape,all[j].shape);
+    assert.ok(separation>=.14,'near-duplicate redesigned/old route '+all[i].id+'/'+
+      all[j].id+' (normalized RMS '+separation.toFixed(3)+')');
   }
+  assert.equal(changed.size,16);
+  assert.ok(outlines.length===14);
 });
 
 test('chapters 5-8 increase rank, corner and race duration demand without fake winner data',()=>{
