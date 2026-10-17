@@ -13,12 +13,12 @@ const root=process.cwd(), src=path.join(root,'runs/h5-qq-mobile-20261013/workspa
 const build=JSON.parse(await readFile(path.join(root,'runs/h5-qq-mobile-20261013/artifacts/build-racing.json')));
 const source=await readFile(path.join(src,'src/layouts.js'),'utf8');
 const prefix="import { applyTrackDesign } from './race-track-design.mjs';\n";
-const suffix='\napplyTrackDesign(LAYOUTS);';
+const suffix='\napplyTrackDesign(LAYOUTS, { v8: true });';
 if(!source.startsWith(prefix) || !source.trimEnd().endsWith(suffix))
   throw Error('Unrecognized pinned generated layouts.js');
 const originalSource=source.slice(prefix.length).trimEnd().slice(0,-suffix.length);
 const original=(await import('data:text/javascript;base64,'+Buffer.from(originalSource).toString('base64'))).LAYOUTS;
-const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified);
+const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified,{v8:true});
 const THREE=createRequire(path.join(src,'package.json'))('three');
 const wrap=x=>Math.atan2(Math.sin(x),Math.cos(x));
 function inspect(layout, key){
@@ -82,7 +82,7 @@ for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
   // No easy-stage sharp-turn exemption: 01 now gets the same physical cap as
   // its peers. Native PlayerCar drivability is checked independently.
   if(geometry.sameLevelClosePairs>0 ||
-      geometry.lengthM<1700 || geometry.lengthM>3300 ||
+      geometry.lengthM<1900 || geometry.lengthM>5700 ||
       geometry.sharpPct>(Number(id)<=10?23:Number(id)<=16?29:36))
     throw Error('Unsafe stage '+id+' physical geometry '+JSON.stringify({
       collisions:geometry.sameLevelClosePairs,sharpPct:geometry.sharpPct,length:geometry.lengthM}));
@@ -95,9 +95,9 @@ if(Object.keys(courses).length!==CAREER_COURSE_MAPS.length)
 // Actual pinned Three.js Track projection test, not a simulated race victory.
 const shortcutAudit={};
 for(const course of Object.keys(SHORTCUT_PLANS)){
-  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course);
-  if(!fork || !(fork.gain>=25&&fork.gain<=90) ||
-     !(fork.length>=75&&fork.length<=350) ||
+  const track=new NativeTrack(modified[course]),fork=installPhysicalShortcut(track,course,{v8:true});
+  if(!fork || !(fork.gain>=25*fork.scale&&fork.gain<=90*fork.scale) ||
+     !(fork.length>=75*fork.scale&&fork.length<=350*fork.scale) ||
      !(fork.neckWidth>=8.5&&fork.neckWidth<=11) ||
      !(fork.width>=11&&fork.width<=14) || !Number.isFinite(fork.length))
     throw Error('Shortcut is not an honest shorter physical road: '+course);

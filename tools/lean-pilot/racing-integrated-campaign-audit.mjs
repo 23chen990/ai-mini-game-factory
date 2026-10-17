@@ -38,13 +38,16 @@ let browser;
 try{
   browser=await chromium.launch({headless:true,args:['--enable-webgl','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader','--disable-gpu-sandbox']});
   const ctx=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,deviceScaleFactor:1});
-  await ctx.addInitScript(()=>{
+  const seededStageIds=STAGES.map(stage=>stage.id);
+  await ctx.addInitScript(ids=>{
+    // Explicit SERIALIZED DATA, not a Node closure unavailable in Chromium.
     // Unlocked options are a TEST FIXTURE, NEVER earned progress.
-    const stars=Object.fromEntries(Array.from({length:STAGES.length},(_,i)=>[String(i+1).padStart(2,'0'),1]));
-    localStorage.setItem('h5-mobile:qq-speed:career:v1',JSON.stringify({version:1,stars,times:{},skin:0,rounds:STAGES.length}));
+    const stars=Object.fromEntries(ids.map(id=>[id,1]));
+    localStorage.setItem('h5-mobile:qq-speed:career:v1',
+      JSON.stringify({version:1,stars,times:{},skin:0,rounds:ids.length}));
     localStorage.setItem('h5-qq-mobile-20261013:graphics-quality:v1','low');
     localStorage.setItem('h5-qq-mobile-20261013:audio-enabled:v1','0');
-  });
+  },seededStageIds);
   const page=await ctx.newPage();
   page.on('pageerror',err=>report.errors.push('Browser: '+err.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded',timeout:45000});
@@ -123,7 +126,8 @@ try{
           summary:document.querySelector('#race-result-copy')?.textContent||'',
           metrics:document.querySelector('#race-result-stats')?.textContent||''};
       });
-      const success=shown&&result.finished&&result.title.includes('挑战成功');
+      const success=shown&&result.finished&&
+        !/未达成目标|未完赛/.test(result.summary);
       report.runs.push({id,title,status:success?'SYNTHETIC_OBJECTIVE_PASS':'SYNTHETIC_OBJECTIVE_BLOCKED',stop,trace,result});
       console.log(JSON.stringify({id,status:report.runs.at(-1).status,stop,finish:result.finished,time:result.time,place:result.place,summary:result.summary}));
       await save();

@@ -1,4 +1,5 @@
 import { EXPANSION_COURSES } from './career-expansion.mjs';
+import { applyV8CourseGeometry, V8_COURSES } from './v8-course-geometry.mjs';
 /** V3.5: Four distinct ORIGINAL racing rhythms inspired by kart-racer design principles.
  * No competitor map coordinates, assets, branch shortcuts, checkpoint edits, speed buffs
  * or reduced career goals. Each cut is anchored to the exact pinned upstream layout.
@@ -192,7 +193,7 @@ export const COURSE_ROAD_WIDTHS = Object.freeze({
   '08':19,
   '09':19,
 });
-export function createCareerLayouts(layouts) {
+export function createCareerLayouts(layouts, { v8 = false } = {}) {
   const fingerprints=new Set(),titles=new Set();
   for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
     const id=String(i).padStart(2,'0'),base=layouts[CAREER_COURSE_MAPS[i-1]],
@@ -201,18 +202,21 @@ export function createCareerLayouts(layouts) {
       throw Error('V3.7 requires verified biome and independent course '+id);
     const [title,feel,english,scale,sketch]=blueprint;
     const local=injectTechnicalSectors(parseLocalRoute(sketch),id,scale);
+    const v8Geometry=v8 ? applyV8CourseGeometry(local,id,scale) : null;
+    const authored=v8Geometry?.points ?? local;
+    const planScale=v8Geometry?.scale ?? scale;
     if(!Number.isFinite(scale)||scale<.6||scale>1.2||local.length<12||
        local.length>40||titles.has(title)||!english||!feel||
        local[0].some(n=>n!==0))
       throw Error('Invalid authored course blueprint '+id);
     titles.add(title);
     const [ox,oz]=base.points[0],desert=CAREER_COURSE_MAPS[i-1]==='egypt';
-    const points=local.map(p=>{
-      if(p.length!==3||!p.every(Number.isFinite)||p[2]<0||p[2]>25)
+    const points=authored.map(p=>{
+      if(p.length!==3||!p.every(Number.isFinite)||p[2]<0||p[2]>(v8 ? 70 : 25))
         throw Error('Non-finite or unsafe V3.7 course point '+id);
       return desert ?
-        [ox-p[1]*scale,oz+p[0]*scale,p[2]] :
-        [ox+p[0]*scale,oz+p[1]*scale,p[2]];
+        [ox-p[1]*planScale,oz+p[0]*planScale,p[2]] :
+        [ox+p[0]*planScale,oz+p[1]*planScale,p[2]];
     });
     const signature=JSON.stringify(points);
     if(fingerprints.has(signature))throw Error('Duplicate authored course shape '+id);
@@ -379,6 +383,56 @@ function buildCourseIdentity(THREE, track, course, n) {
   return group;
 }
 
+/** Real roadside landforms anchored to V8 vertical road stations.
+ * Stage-specific footprint and height; cheap low-poly, outside colliders.
+ * No HUD pop-ups, source-game assets or fake surface/collision edits.
+ */
+export function buildV8CourseTerrain(THREE,track,course) {
+  const group=new THREE.Group(),id=course?.slice(5),cfg=V8_COURSES[id];
+  if(!cfg||!track?.sample||!Number.isFinite(track.length))return group;
+  group.name='v8-landform-'+course;
+  const n=Number(id),biome=CAREER_COURSE_MAPS[n-1];
+  const colors={city:0x40576d,egypt:0xa97842,aegean:0x526c81,snow:0x81abc2};
+  const base=new THREE.MeshStandardMaterial({color:colors[biome],roughness:.96});
+  const accent=new THREE.MeshStandardMaterial({
+    color:biome==='snow'?0xc8effb:biome==='egypt'?0xe8af61:0x79b3c2,
+    roughness:.73,emissiveIntensity:.06});
+  const shape=(root,geometry,material,x,y,z)=>{
+    const obj=new THREE.Mesh(geometry,material);
+    obj.position.set(x,y,z);root.add(obj);return obj;
+  };
+  const count=4+n%3;
+  for(let i=0;i<count;i++){
+    const f=.09+(i+.48)*( .82/count );
+    const at=track.sample(track.length*f,{});
+    const feature=new THREE.Group();feature.name='v8-landform-sector-'+course+'-'+i;
+    const side=((n+i)%2)?1:-1;
+    const offset=track.halfW+20+(n+i*7)%13;
+    feature.position.set(at.x+at.rx*side*offset,at.y-7,
+      at.z+at.rz*side*offset);
+    const h=14+((n*3+i*5)%19)+Math.max(0,at.y*.12);
+    if(biome==='city'){
+      shape(feature,new THREE.BoxGeometry(5,h,5),base,0,h*.5,0);
+      shape(feature,new THREE.BoxGeometry(8,1.2,8),accent,0,h+.8,0);
+      if(i%2===0)shape(feature,new THREE.BoxGeometry(3,h*.5,3),base,9,h*.25,0);
+    }else if(biome==='egypt'){
+      shape(feature,new THREE.CylinderGeometry(3.5,9,h,5),base,0,h*.5,0);
+      shape(feature,new THREE.ConeGeometry(5,9,5),accent,0,h+3,0);
+      shape(feature,new THREE.BoxGeometry(18,2,8),base,-7,1,0);
+    }else if(biome==='aegean'){
+      shape(feature,new THREE.CylinderGeometry(6,10,h,6),base,0,h*.5,0);
+      shape(feature,new THREE.DodecahedronGeometry(8,0),base,8,h*.6,0);
+      shape(feature,new THREE.BoxGeometry(14,2,11),accent,1,h*.23,0);
+    }else{
+      shape(feature,new THREE.CylinderGeometry(2.5,6,h,6),base,0,h*.5,0);
+      shape(feature,new THREE.OctahedronGeometry(5+(i%3),0),accent,1,h+.8,0);
+      shape(feature,new THREE.BoxGeometry(12,2.2,7),accent,-6,1.3,0);
+    }
+    group.add(feature);
+  }
+  return group;
+}
+
 export function buildRaceLandmarks(THREE,track,course) {
   const group=new THREE.Group();
   if(TRACK_RESHAPES[course])return group; // Pinned native pre-career demo.
@@ -449,6 +503,21 @@ export function buildRaceLandmarks(THREE,track,course) {
     }
   }
   group.add(buildCourseIdentity(THREE,track,course,n));
+  group.add(buildV8CourseTerrain(THREE,track,course));
+  if(n===7||n===22) {
+    // A visible finish at the real one-way finish distance, not the loop seam.
+    // No collider: native onLap handles the actual crossing and ranking.
+    const at=track.sample(track.length*(n===7?.82:.84),{});
+    const finish=new THREE.Group();finish.name='v8-single-run-finish-'+course;
+    finish.position.set(at.x,at.y,at.z);
+    finish.rotation.y=at.hd;
+    const gold=new THREE.MeshBasicMaterial({color:0xffdd62});
+    for(const side of [-1,1])
+      share(finish,new THREE.BoxGeometry(1.8,8,1.8),gold,
+        side*(track.halfW+2.8),4,0);
+    share(finish,new THREE.BoxGeometry(track.halfW*2+7,1.7,2),gold,0,8,0);
+    group.add(finish);
+  }
   return group;
 }
 
@@ -487,7 +556,7 @@ export function createRaceSky(sky,course) {
 }
 
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
-export function applyTrackDesign(layouts) {
+export function applyTrackDesign(layouts, { v8 = false } = {}) {
   const report = {};
   for (const [key, plan] of Object.entries(TRACK_RESHAPES)) {
     const layout = layouts?.[key];
@@ -506,6 +575,6 @@ export function applyTrackDesign(layouts) {
     Object.defineProperty(layout,'__racingV31',{value:true,enumerable:false});
     report[key] = points.length;
   }
-  createCareerLayouts(layouts);
+  createCareerLayouts(layouts,{v8});
   return report;
 }

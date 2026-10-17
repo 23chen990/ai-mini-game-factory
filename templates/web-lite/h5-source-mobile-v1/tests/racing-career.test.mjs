@@ -32,11 +32,11 @@ test('淘汰可视提示显示真实赛段进度、末位危险；过点和换�
 
 test('failure diagnosis distinguishes authentic rank, technique and boss losses without awarding a pass',()=> {
   const cases=[
-    [STAGES[2],result(1),{cleanPasses:0},/有效弯道超车 0\/2/],
+    [STAGES[2],result(6),{cleanPasses:0},/第6名，要求前3名/],
     [STAGES[6],{...result(6),time:97.3},{},/第6名，要求前3名/],
     [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前2名/],
     [STAGES[15],result(2),{beatBoss:false},/未超过指定车神/],
-    [STAGES[14],result(4),{pickups:1},/实际拾取道具 1\/4/],
+    [STAGES[14],result(4),{pickups:1},/第4名，要求前2名/],
   ];
   for(const [stage,r,stats,expected] of cases){
     const before=JSON.stringify({r,stats});
@@ -56,17 +56,17 @@ test('30 staged challenges use four biome worlds and eight distinct objectives',
   assert.ok(new Set(STAGES.map(s=>s.kind)).size>=8);assert.ok(STAGES.filter(s=>s.laps>1).length>=12);
   assert.equal(STAGES[0].laps,2);
 });
-test('overtake briefing explains how a genuine corner pass works, but still rejects rank-only wins',()=>{
-  assert.match(STAGES[2].goal,/弯道或出弯.*超过对手 2 次/);
-  assert.match(STAGES[10].goal,/弯道或出弯.*超过对手 3 次/);
-  assert.equal(gradeStage(STAGES[2],result(1),{cleanPasses:0}),0);
-  assert.equal(gradeStage(STAGES[10],result(1),{cleanPasses:1}),0);
+test('V8 ranks decide advancement; genuine corner passes earn third-star mastery',()=>{
+  assert.match(STAGES[2].goal,/弯道超车 2 次挑战三星/);
+  assert.match(STAGES[10].goal,/弯道超车 3 次挑战三星/);
+  assert.equal(gradeStage(STAGES[2],result(1),{cleanPasses:0}),2);
+  assert.equal(gradeStage(STAGES[10],result(1),{cleanPasses:1}),2);
 });
-test('unlock is linear, rank alone cannot pass an objective',()=>{
+test('unlock is linear, real rank controls ordinary racing advancement',()=>{
   let c=newCareer();assert.equal(stageUnlocked(c,1),false);
   c=recordStage(c,STAGES[0],result(),{}).career;
   assert.equal(stageUnlocked(c,1),true);assert.equal(stageUnlocked(c,2),false);
-  assert.equal(gradeStage(STAGES[2],result(),{cleanPasses:0}),0);
+  assert.equal(gradeStage(STAGES[2],result(),{cleanPasses:0}),2);
   assert.ok(gradeStage(STAGES[2],result(),{cleanPasses:2}));
 });
 test('valid drift counts real driftEnd above .22 seconds',()=>{
@@ -78,7 +78,7 @@ test('valid drift counts real driftEnd above .22 seconds',()=>{
 });
 test('time / relay / boss / elimination gates never auto-pass',()=>{
   assert.ok(gradeStage(STAGES[6],result(),{}));
-  assert.equal(gradeStage(STAGES[6],{...result(),time:150},{}),0);
+  assert.equal(gradeStage(STAGES[6],{...result(),time:180},{}),0);
   assert.equal(gradeStage(STAGES[8],result(),{padCount:0}),0);
   assert.ok(gradeStage(STAGES[8],result(),{padCount:1}));
   assert.equal(gradeStage(STAGES[11],result(),{survived:1}),0);
@@ -139,7 +139,7 @@ test('relay pads are counted only when spaced and give real clock extension',()=
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<8;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
   assert.equal(c.setStage(8),true);c.begin(g);c.onEvent({type:'pad'},g);
-  assert.equal(c.metrics.timeAllowance,102);g.raceTime=11;c.onEvent({type:'pad'},g);
+  assert.equal(c.metrics.timeAllowance,129);g.raceTime=11;c.onEvent({type:'pad'},g);
   assert.equal(c.metrics.padCount,1);g.raceTime=15;c.onEvent({type:'pad'},g);
   assert.equal(c.metrics.padCount,2);
 });
@@ -168,7 +168,7 @@ test('career UI objectives reflect real progress, not dummy counters',()=>{
   c.setStage(2);c.begin(g);
   assert.match(c.objectiveLabel(g),/0\/2/);
   c.metrics.cleanPasses=1;assert.match(c.objectiveLabel(g),/1\/2/);
-  assert.equal(gradeStage(c.stage,result(),c.metrics),0);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),2);
   c.metrics.cleanPasses=2;
   assert.ok(gradeStage(c.stage,result(),c.metrics));
 });
@@ -214,10 +214,10 @@ test('corner-pass gift cannot counterfeit a required physical item-box pickup',(
   assert.equal(c.setStage(4),true);c.begin(g);
   c.onItemGet('nitro','overtake');
   assert.equal(c.metrics.bonusItems,1);assert.equal(c.metrics.pickups,0);
-  assert.equal(gradeStage(c.stage,result(),c.metrics),0);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),2);
   c.onItemGet('shield','box');
   assert.equal(c.metrics.pickups,1);
-  assert.equal(gradeStage(c.stage,result(),c.metrics),0);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),2);
   c.onItemGet('nitro','box');
   assert.equal(c.metrics.pickups,2);
   assert.ok(gradeStage(c.stage,result(),c.metrics)>0);
@@ -403,10 +403,10 @@ test('boss goals disclose rank + opponent gates; beating rival at sixth is not v
 });
 
 test('V4.8 hard time/drift gates reject previous relaxed objectives',()=>{
-  assert.equal(STAGES[6].target,105);
+  assert.equal(STAGES[6].target,158);
   const ok={finished:true,place:3,time:104,stats:{crash:1}};
   assert.ok(gradeStage(STAGES[6],ok,{}));
-  assert.equal(gradeStage(STAGES[6],{...ok,time:106},{}),0);
+  assert.equal(gradeStage(STAGES[6],{...ok,time:160},{}),0);
   assert.equal(STAGES[3].target,5,'opening chapter demands proper technical drifting');
   const drive={finished:true,place:1,time:95,stats:{crash:0}};
   assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:5}),2);
@@ -443,7 +443,7 @@ test('V6.0 no easy rank gates remain across the thirty stages',()=>{
   assert.equal(STAGES.length,30);
   for(const stage of STAGES){
     assert.ok(stage.rank<=3,'hard rank on stage '+stage.id);
-    assert.ok(stage.laps>=2,'no one-lap novice tutorial '+stage.id);
+    assert.ok(stage.laps>=2||(['07','22'].includes(stage.id)&&stage.laps===1),'single-lap only for authored long-distance descents '+stage.id);
     assert.equal(gradeStage(stage,{finished:true,place:4,time:1,stats:{crash:0}},
       {gateSpeed:300,cleanDrifts:100,cleanPasses:100,pickups:100,survived:2,beatBoss:true,padCount:10}),0,
       'fourth place is never a pass: '+stage.id);
