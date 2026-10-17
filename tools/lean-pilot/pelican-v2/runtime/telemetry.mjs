@@ -12,7 +12,7 @@ export function loadPlaytestMetrics(raw){
   if(!data||data.version!==1||!data.counters||typeof data.counters!=='object'||Array.isArray(data.counters)||!Array.isArray(data.events)||data.events.length>90)return null;
   for(const [event,n]of Object.entries(data.counters))if(!EVENTS.has(event)||!valid(n))return null;
   const events=data.events.filter(e=>EVENTS.has(e?.event)&&validTimestamp(e?.at)&&[1,2,3,4,5,6].includes(e?.level)&&valid(e?.distance));
-  return {version:1,counters:{...data.counters},events:events.slice(-80)};
+  return {version:1,counters:{...data.counters},events:events.slice(-80).map(e=>({event:e.event,level:e.level,distance:e.distance,at:e.at}))};
  }catch{return null;}
 }
 export function recordPlaytestEvent(metrics,event,{level=1,distance=0}={}){
