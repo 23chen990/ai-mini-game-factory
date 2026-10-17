@@ -29,7 +29,9 @@ test('racing uses the actual player finish and rank; intermediate podium and AI 
 });
 test('weapon missions distinguish actual hits, kills and survival, with explicit deadline failure',()=>{
   const levels=core.challengesFor('cf-transport-ship');
-  assert.equal(core.challengeResult(levels[0],{hits:3,kills:0,deaths:0},false).outcome,'won');
+  const stageDone={hits:6,kills:0,deaths:0,drillStage:2,drillFirstHit:true,
+    drillTravel:12,drillFollowUpHits:3};
+  assert.equal(core.challengeResult(levels[0],stageDone,false).outcome,'won');
   assert.equal(core.challengeResult(levels[1],{hits:3,kills:0,deaths:0},true).outcome,'lost');
   assert.equal(core.challengeResult(levels[1],{kills:1,awmKills:1},false).outcome,'won');
   assert.equal(core.challengeResult(levels[2],{deaths:2},false).outcome,'running');
@@ -50,7 +52,7 @@ test('challenge selection and independent best/results persist; old score/ad pro
 });
 test('mission points reward real progress rather than crediting nonexistent shooter kills',()=>{
   const [hits,,survival]=core.challengesFor('cf-transport-ship');
-  assert.equal(core.challengeResult(hits,{hits:3,kills:0},false).rewardScore,3);
+  assert.equal(core.challengeResult(hits,{drillStage:2,drillFirstHit:true,drillTravel:12,drillFollowUpHits:3},false).rewardScore,3);
   assert.equal(core.challengeResult(survival,{deaths:1,travel:20},true).rewardScore,3);
   assert.equal(core.challengeResult(survival,{deaths:3},true).rewardScore,0);
 });
@@ -101,7 +103,7 @@ test('CF expert replay is optional, gated by regular win and preserves historica
 test('CF elite rules tighten real deadlines and life budgets without changing beginner goals',()=>{
  const [rifle,sniper,survival]=core.challengesFor('cf-transport-ship');
  const er=core.cfEliteChallenge(rifle),es=core.cfEliteChallenge(sniper),ev=core.cfEliteChallenge(survival);
- assert.deepEqual({limit:er.limitMs,death:er.maxDeaths,goal:er.target,elite:er.elite},{limit:45000,death:1,goal:3,elite:true});
+ assert.deepEqual({limit:er.limitMs,death:er.maxDeaths,goal:er.target,travel:er.minTravel,elite:er.elite},{limit:45000,death:0,goal:4,travel:18,elite:true});
  assert.deepEqual({limit:es.limitMs,death:es.maxDeaths,goal:es.target,elite:es.elite},{limit:75000,death:1,goal:1,elite:true});
  assert.deepEqual({limit:ev.limitMs,death:ev.target,travel:ev.minTravel,elite:ev.elite},{limit:45000,death:1,travel:30,elite:true});
  assert.equal(rifle.limitMs,60000);
@@ -112,9 +114,10 @@ test('CF elite rules tighten real deadlines and life budgets without changing be
 });
 test('CF elite player can lose from actual deaths even with genuine hits, never from friendly kills',()=>{
  const [rifle,sniper,survival]=core.challengesFor('cf-transport-ship').map(core.cfEliteChallenge);
- assert.equal(core.challengeResult(rifle,{hits:3,deaths:1},false).outcome,'won');
- assert.equal(core.challengeResult(rifle,{hits:3,deaths:2},false).outcome,'lost');
- assert.equal(core.challengeResult(rifle,{hits:2,deaths:1},true).outcome,'lost');
+ const done={hits:9,drillStage:2,drillFirstHit:true,drillTravel:18,drillFollowUpHits:4};
+ assert.equal(core.challengeResult(rifle,{...done,deaths:0},false).outcome,'won');
+ assert.equal(core.challengeResult(rifle,{...done,deaths:1},false).outcome,'lost');
+ assert.equal(core.challengeResult(rifle,{...done,drillFollowUpHits:3,deaths:0},true).outcome,'lost');
  assert.equal(core.challengeResult(sniper,{awmKills:1,deaths:1},false).outcome,'won');
  assert.equal(core.challengeResult(sniper,{awmKills:1,deaths:2},false).outcome,'lost');
  assert.equal(core.challengeResult(sniper,{kills:5,awmKills:0,deaths:0},true).outcome,'lost');
@@ -122,4 +125,37 @@ test('CF elite player can lose from actual deaths even with genuine hits, never 
  assert.equal(core.challengeResult(survival,{deaths:1,travel:30},true,45000).outcome,'won');
  assert.equal(core.challengeResult(survival,{deaths:2,travel:45},true,45000).outcome,'lost');
  assert.equal(core.challengeResult(survival,{deaths:0,travel:45},true,44999).outcome,'lost');
+});
+
+
+test('CF rifle drill rejects idle, stationary auto spray, early hits and fake team kills',()=>{
+ const c=core.challengesFor('cf-transport-ship')[0];
+ assert.equal(c.drill,'reposition');assert.equal(c.target,3);
+ assert.equal(c.openingHits,1);assert.equal(c.minTravel,8);
+ assert.equal(c.maxDeaths,2);
+ const full={hits:12,drillFirstHit:true,drillStage:2,drillTravel:12,
+  drillFollowUpHits:3,deaths:0};
+ assert.equal(core.challengeResult(c,{},true).outcome,'lost');
+ assert.equal(core.challengeResult(c,{hits:20,drillFirstHit:false,drillStage:0},true).outcome,'lost');
+ assert.equal(core.challengeResult(c,{hits:20,drillFirstHit:true,drillStage:1,drillTravel:0},true).outcome,'lost');
+ assert.equal(core.challengeResult(c,{...full,drillTravel:7.99},true).outcome,'lost');
+ assert.equal(core.challengeResult(c,{...full,drillFollowUpHits:2},true).outcome,'lost');
+ assert.equal(core.challengeResult(c,{...full,drillStage:1},true).outcome,'lost');
+ assert.equal(core.challengeResult(c,{...full,kills:99,drillFollowUpHits:0},true).outcome,'lost');
+ assert.equal(core.challengeResult(c,{...full,deaths:3},false).outcome,'lost');
+ assert.equal(core.challengeResult(c,{...full,deaths:1},false).outcome,'won');
+ assert.equal(core.challengeResult(c,{...full},true).outcome,'won');
+ assert.equal(core.challengeResult(c,{...full,drillFollowUpHits:0},false).outcome,'running');
+ assert.equal(core.challengeResult(c,{...full,drillFollowUpHits:1},false).rewardScore,1);
+});
+test('CF elite needs a complete fresh three-stage no-death mission',()=>{
+ const base=core.challengesFor('cf-transport-ship')[0],elite=core.cfEliteChallenge(base);
+ const complete={drillFirstHit:true,drillStage:2,drillTravel:18,
+  drillFollowUpHits:4,deaths:0};
+ assert.equal(core.challengeResult(elite,complete,false).outcome,'won');
+ assert.equal(core.challengeResult(elite,{...complete,deaths:1},false).outcome,'lost');
+ assert.equal(core.challengeResult(elite,{...complete,drillTravel:17.9},false).outcome,'running');
+ assert.equal(core.challengeResult(elite,{...complete,drillFollowUpHits:3},true).outcome,'lost');
+ assert.equal(base.target,3);assert.equal(base.minTravel,8);
+ assert.equal(base.maxDeaths,2);assert.equal(base.limitMs,60000);
 });

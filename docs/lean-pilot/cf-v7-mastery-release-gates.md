@@ -1,0 +1,75 @@
+# 《运输船任务挑战》CF V7｜可玩性、性能、广告与授权的硬门槛
+
+> 状态：`CODE_REVIEW / INTERNAL_PLAYTEST_ONLY`。游戏暂不可作为已获授权或已经通过真机性能验收的商业发行产品。本文件不是产品授权或测试完成证明。
+
+## 1. 核心变化：从 6 秒自动通关改为可学习的挑战
+
+- **普通步枪**：真实命中第一枪（早期辅助）→ 离开第一枪位置至少 **8 米**且有同等真实累计移动 → 仅统计换位完成后的 **3 次**真实命中。总时限 60 游戏秒，最多被击倒 2 次（第 3 次判负）。
+- **精英步枪**：首枪也手动、真实换位 **18 米**、再手动命中 **4 次**，45 游戏秒，零阵亡。依赖已确认的普通通关记录解锁。
+- 所有命中都来自原生玩家 stats.hits；AI 击杀、不移动自动开火、死亡瞬移、原地左右抖动、换位前命中不能当作追击战绩。新手自动瞄准开火仅持续到第一枪实际命中，之后必须主动射击，手动射击时允许少量非透视瞄准修正。
+- 补充了与失败原因对应的具体反馈；关卡目标、任务 HUD 和结算必须与上述逻辑一致。通关奖励/记账依然走原有去重生命周期。
+
+## 2. 可玩性闸门（不得用单元测试代替）
+
+| 维度 | 上线前验收 | 当前 |
+|---|---|---|
+| 代码规则 | stage / hit baseline / traveled-vs-net displacement / death budgets / no AFK loophole | 自动化记录见 PR #28 |
+| 真实 3D 浏览器 | 原生 M4 第一次命中、换位、后续手动命中且真的通关；不能注入坐标/时间/统计 | 见独立真实浏览器 Actions；勿伪称通过 |
+| 不应挂机胜利 | 不动/不按按钮、队友击杀、移位前射击都不能导致普通和精英胜利 | 单元测试通过不等于真人通过 |
+| 三局新玩家 | 8–12 名未读教程玩家每人连续 3 局，记录首枪、第一次失败原因、是否愿再玩和操作误触 | NOT_RUN |
+| 真正有挑战又公平 | 最初 5–10 秒内看见并尝试射击；允许失败但能说出原因；普通关不能自动速通，精英更难且可达成 | 需真实试玩数据而非目标性宣称 |
+
+## 3. 真机性能与双手触控
+
+原先 Cloud Chromium 使用 **软件 WebGL**，p95 出现数百毫秒帧间隔，不能据此推断手机上的帧率；也不能声称已经在真实 iPhone / Android 测试。当前使用原始引擎 `low` 质量设置、无 Bloom、低倍抗锯齿，CF 敌人 HUD 投影频率降低到 160ms 一次。没有偷偷改动命中、碰撞、物理时间。
+
+真机必须至少提供 iPhone Safari/宿主 WebView 与一台中低端 Android：录制 60 秒普通步枪 + 狙击 + 生存交互；在实际设备上计算 FPS p50/p95、长帧、点击到出枪、发热/卡顿；观察 667×375 等短横屏的射击、跳跃、换弹与暂停按钮是否被刘海、安全区或 HUD 遮挡。若明显掉帧，先研究原生 EffectComposer 分辨率策略，避免错误地按软件渲染指标盲目缩画质。
+
+## 4. 广告复活：不能假装已经接入
+
+当前 `themes.mjs` 只存在 **结算后奖励翻倍** 的平台广告入口，且由真实 `check_ads_status`、`tap.createRewardedVideoAd`、appId/spaceId、正确的宿主方向及完整 onClose 奖励证明严格门控。普通浏览器的按钮必须保持不可用；**当前并没有已确认能真实播放的「失败后看广告复活」能力**。
+
+未来若接入真实复活，必须满足：只在确实失败时出现、自愿点击、一次失败最多复活一次、广告完整观看 callback 才解锁；取消/失败/超时不会复活也不记奖励；网络和异步回调不会复活下一局；原生暂停恢复、任务计时、阵亡预算恢复都要用真实逻辑，自然触控回归通过；绝不能注入或捏造命中/击杀/关卡胜利。缺少广告账户与真实 ID 时仅规划，不投放伪广告。
+
+## 5. 上架法律/素材权限
+
+引用的上游 Three.js 射击项目是 `riba2534/claude-opus-5-5-demo` 的固定提交 `54adc1fb64155f9dd7c1c90ecae7b8185ac540b8`。仓库及游戏目录的公开文件中**尚未核验到明确授予商业使用权的游戏代码 LICENSE**；随包 Third-party Three.js LICENSE 并不自动覆盖上游整个游戏、地图、武器美术及品牌素材。要上线应取得可存档的原作者书面商用许可，或独立替换成有权使用的原创代码及素材，并保留依赖清单与出处。禁止未获授权使用 CrossFire / CF 等第三方游戏商标进行官方联名或混淆式上架。
+
+## 6. 发布决定
+
+- `CODE_READY` 仅表示当前提交 CI 合格，不等于 `GAMEPLAY_READY` 或 `PUBLIC_RELEASE`。
+- `PUBLIC_RELEASE=NO`，直到真实游戏自然输入成功证据、真人盲测、真机性能、广告（如启用）和商业权利归档分别核验。
+- 不要使用捏造视频、AI 代替玩家战绩、跳关、无输入自动胜利或仿真广告来代替验收。
+
+## 7. 首轮真实触控平衡证据
+
+第一次 V7 真正 Three.js 浏览器输入验证中，首枪约第 4.9 个游戏秒命中，但仅完成约 6 米实际换位时已两次阵亡，未进入完整追击流程。此为真实失败，不是通关：因此将**普通版**从 12m/1 次允许阵亡，调整为 8m/2 次；零阵亡精英版维持更高要求。难度修改后必须重新构建并独立验证，不得沿用修改前哈希或声称已自然胜利。
+
+## 8. 第二轮真实触控失败与原因导向修复（不可冒充通过）
+
+[第二轮真实 3D 失败证据](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38927625233)：首个原生命中约 4.8 游戏秒；起点约 (-34,-3.6)，初始目标距离 10m。自动触控玩家随后向前推动摇杆，直冲敌人，首死约 14.5 游戏秒时敌人已逼近约 0.3m；第 23 秒二次死亡，此时 8m 换位阶段仍未达成。结算为 **3 次阵亡、真实换位 2/8m、追击 0/3，失败**，不得使用该构建宣称自然胜利。
+
+因果改动：
+- 将任务与战斗指引从含糊的“沿掩体前进”修正为**横向左右换位、避开正面交火线**；自然触控 QA 玩家据此优先横移，而非盲目前冲。
+- 玩家死亡自动复活时，**保留此前真实走出的换位进度**，但始终拒绝原地左右抖动增加进度，也不计入任何复活传送距离。通过真实移动与净位移的分段峰值计算。
+- 首个训练敌人守住真实场景中可见的中距离火线 **18 游戏秒**，但其原生武器准备时间仍是 13 秒，允许真实反击；解除守点后仍可按原生 AI 主动推进。精英模式仍更快。
+
+调整后须由最新提交重新跑离线测试和真正 Three.js 自然触控，在达到完整普通关**原生首枪→安全换位→手动后续 3 次真实命中**之前，均保持 `GAMEPLAY_READY=NO`；真人/手机/商业许可同样未通过。
+
+## 9. V7 touch UX stabilization and the unwaived release gate
+
+- 最新失败记录：自然 3D 关卡跑到 `换位8/8m`，最后完成 `追击0/3`，见 [QA #38936182956](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38936182956)。这证明敌人可再次露面、真实射击发生，并不证明跟枪体验足够好。
+- **真正的操控缺陷**：固定上游 `touch.js` 的开火按钮会停止事件冒泡，开火拇指无法同时被窗口的视角触摸监听识别。因此增加原生触控中“在开火按钮内按住、拖动同一根手指”的角度输入，并保留原始触控开枪、弹道、命中、弹匣、生命值与死亡行为。不自动瞄准被墙挡住的目标。
+- 把开火键从右边缘稍向内移动，给左右双向拖动都留空间；跳跃、狙击镜键相应错开。缩小真实阵亡提示，保证横屏仍能看见枪战背景；并补齐触摸结束、取消、暂停与销毁时主动释放开火标记。
+- **视觉引导**：只对原生世界射线无遮挡且投影在实际相机视野中的敌人展示左/右/上/下滑动提示。玩家若失去目标只导航回自己见过的最后位置，而不使用穿墙 GPS。
+- **真机 & 商业门槛不可让步**：真实 Three.js 浏览器需要同时证明同指手势使 yaw 改变 + 原生 shots 增加，以及在一局内首枪、8m 真移动、之后三次手动原生命中和自然获胜；缺任何一项都是 `GAMEPLAY_READY=NO`。真机 FPS、真人可用性、TapTap 广告账户以及上游版权仍分别 `NOT_RUN`。当前仅作内部演示，不能宣称可正式上架。
+
+历史段落中提到的 18s/26s 训练敌人守点策略、12m/1 次阵亡为**旧版本原因追溯**，不得当作当前普通关配置；本次普通关仍为 60s、8m、最多阵亡 2 次。
+
+## 10. Reacquisition rule: verified firing lane, not enemy GPS
+
+[2026-10-16 V7 software-WebGL QA #38941832500](https://github.com/23chen990/ai-mini-game-factory/actions/runs/38941832500) documented a native first hit and genuine 8/8m reposition but zero visible targets and zero further shots before game over (2 deaths). This exposed an instructional error: routing a beginner directly to an old **enemy** position can carry them behind opaque containers, even though the enemy remains alive and shooting.
+
+Current *novice only* stage-2 fallback now routes to the player's own real **first-hit firing lane** (a location demonstrably having had a shooting line), then uses the last truly visible opponent's old world position only for a LEFT/RIGHT camera-turn suggestion. Once facing that old sightline, a real left-thumb sidestep may be needed to peek out. There is **no teleport, reveal of occluded live target state, manufactured bullet, synthetic victory or relaxed hit count**. Expert mode still routes directly to remembered opponent positions.
+
+Natural Three.js verification must still independently demonstrate the post-reposition 3 real manual hits; testing a function with a mocked nav-grid is not the same as a complete mobile battle.

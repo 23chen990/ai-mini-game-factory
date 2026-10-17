@@ -493,19 +493,27 @@ html[data-reference-game="cf-transport-ship"] #touch .btn:active{
   transform:scale(.94);filter:brightness(1.18);
 }
 html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]{
-  right:max(18px,env(safe-area-inset-right))!important;
+  /* Give the firing thumb room to drag RIGHT as well as LEFT. */
+  right:max(clamp(67px,11vw,100px),env(safe-area-inset-right))!important;
   bottom:82px!important;width:76px!important;height:76px!important;
   border:2px solid #ffc4a8!important;
   background:radial-gradient(circle at 35% 28%,#e06e5a,#9e302e 70%)!important;
   box-shadow:0 2px 0 #622727,0 0 0 5px #c4504d23,0 6px 16px #1a0d14b3!important;
   font-size:15px!important;font-weight:900!important;
 }
+html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]::after{
+  content:"↔ 拖动瞄准";
+  position:absolute;left:3px;right:3px;bottom:5px;
+  font:700 9px/1.15 system-ui,sans-serif;
+  color:#ffddd4;letter-spacing:0;
+  text-align:center;pointer-events:none;
+}
 html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="jump"]{
-  right:max(116px,calc(106px + env(safe-area-inset-right)))!important;
+  right:max(190px,calc(180px + env(safe-area-inset-right)))!important;
   bottom:51px!important;
 }
 html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="scope"]{
-  right:max(117px,calc(108px + env(safe-area-inset-right)))!important;
+  right:max(200px,calc(190px + env(safe-area-inset-right)))!important;
 }
 html[data-reference-game="cf-transport-ship"] #toast{
   max-width:160px!important;padding:3px 7px!important;
@@ -600,5 +608,43 @@ html[data-reference-game="cf-transport-ship"] .mk-meter progress{
   }
   html[data-reference-game="cf-transport-ship"] .mk-meter progress{
     width:36px;
+  }
+}
+
+
+/* CF V7 compact native respawn notification: retain the real killed-by text
+   and respawn countdown without covering most of the 375/390px playing field. */
+html[data-reference-game="cf-transport-ship"] #hud #center:not(.hidden) {
+  top:27%!important;
+  width:min(66vw,320px)!important;
+  max-height:29vh;
+  box-sizing:border-box;
+  padding:7px 10px!important;
+  border:1px solid rgba(176,211,227,.37);
+  border-radius:11px;
+  background:linear-gradient(180deg,rgba(10,29,43,.91),rgba(10,22,34,.85));
+  box-shadow:0 5px 15px rgba(1,9,22,.38);
+  pointer-events:none;
+  text-shadow:0 1px 2px rgba(0,0,0,.8);
+}
+html[data-reference-game="cf-transport-ship"] #hud #center .big {
+  font-size:clamp(12px,2.2vw,15px)!important;
+  line-height:1.25!important;
+  font-weight:760!important;
+  letter-spacing:0!important;
+  overflow-wrap:anywhere;
+  text-wrap:balance;
+}
+html[data-reference-game="cf-transport-ship"] #hud #center .small {
+  font-size:11px!important;
+  line-height:1.2!important;
+  margin-top:3px!important;
+  color:#c7d8e5!important;
+}
+@media(max-width:700px) {
+  html[data-reference-game="cf-transport-ship"] #hud #center:not(.hidden) {
+    top:24%!important;
+    width:min(71vw,294px)!important;
+    padding:5px 8px!important;
   }
 }

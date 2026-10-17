@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, selectMobileSpawn, firstEncounterDestination, routeArrow, mobileSimpleFireAllowed, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfNoviceScoutStrafe, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -313,4 +313,295 @@ test('CF V6 start-screen touch instructions match the selected actual fire behav
  assert.match(cfTouchTutorial({kind:'survive'}),/边移动/);
  assert.match(cfTouchTutorial({kind:'survive'}),/开火/);
  assert.match(cfTouchTutorial({}),/开火/);
+});
+
+
+test('CF v7 drill counts only native hits AFTER a real 12m reposition',()=>{
+ const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:12,target:3,elite:false};
+ let s=cfAdvanceDrill(c);
+ assert.deepEqual(s,{stage:0,startTravel:0,hitBaseline:null,anchorX:null,anchorZ:null,
+   lastX:null,lastZ:null,lastTravel:0,earnedDistance:0,peakDistance:0,
+   distance:0,follow:0,firstHit:false});
+ assert.equal(cfAutoFireEligible(c,0),true);
+ s=cfAdvanceDrill(c,s,{hits:0,travel:25});
+ assert.equal(s.stage,0,'moving without first hit does not bypass first stage');
+ s=cfAdvanceDrill(c,s,{hits:1,travel:25});
+ assert.equal(s.stage,1);assert.equal(s.startTravel,25);
+ assert.equal(cfAutoFireEligible(c,1),false,'first hit disables auto-fire');
+ s=cfAdvanceDrill(c,s,{hits:13,travel:36.99});
+ assert.equal(s.stage,1,'all premovement hits must be discarded');
+ assert.equal(s.follow,0);assert.ok(s.distance<12);
+ s=cfAdvanceDrill(c,s,{hits:14,travel:37});
+ assert.equal(s.stage,2);assert.equal(s.hitBaseline,14);assert.equal(s.follow,0);
+ s=cfAdvanceDrill(c,s,{hits:16,travel:38});
+ assert.equal(s.follow,2);assert.equal(s.firstHit,true);
+ s=cfAdvanceDrill(c,s,{hits:17,travel:42});
+ assert.equal(s.follow,3);assert.ok(s.distance>=12);
+ assert.equal(cfAdvanceDrill({kind:'kills'}),null);
+});
+
+test('CF v7 first hit is an assisted tutorial, then mission requires real manual aiming',()=>{
+ const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:12,target:3,maxDeaths:1};
+ assert.equal(cfAutoFireEligible(c,0),true);
+ assert.equal(cfAutoFireEligible(c,1),false);
+ assert.equal(cfAutoFireEligible({...c,elite:true},0),false);
+ assert.equal(cfAutoFireEligible({...c,elite:true},8),false);
+ assert.match(cfTouchTutorial(c),/自动开火/);
+ assert.match(cfTouchTutorial({...c,elite:true}),/手动/);
+ assert.match(mobileChallengeCopy(c),/换位12米/);
+ assert.match(mobileChallengeCopy({...c,elite:true,minTravel:18,target:4,maxDeaths:0}),/零阵亡/);
+ assert.equal(cfHitCue(c,1,1,{stage:1,follow:0}),'✓ 首枪命中 · 向掩体换位');
+ assert.equal(cfHitCue(c,4,1,{stage:2,follow:2}),'✓ 追击命中 2/3');
+ assert.deepEqual(cfMissionFacts({...c,limitMs:60000}),[
+  {label:'装备',value:'M4A1'},{label:'目标',value:'1枪→12m→3枪'},{label:'限时',value:'60 s'}]);
+ assert.deepEqual(cfResultFacts(c,{hits:99,drillFollowUpHits:2,drillTravel:12.6,deaths:1}),[
+  {label:'追击',value:'2 / 3'},{label:'换位',value:'12 / 12 m'},
+  {label:'阵亡',value:'1 / 1'}]);
+ assert.match(cfMissionDebrief(c,{hits:0,drillFirstHit:false},'lost'),/第一次真实命中/);
+ assert.match(cfMissionDebrief(c,{hits:5,drillFirstHit:true,drillStage:1,drillTravel:9},'lost'),/9\/12/);
+ assert.match(cfMissionDebrief(c,{hits:9,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:2},'lost'),/2\/3/);
+ assert.match(cfMissionDebrief(c,{hits:9,deaths:2,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:3},'lost'),/最多允许 1 次/);
+ assert.match(cfMissionDebrief(c,{hits:9,deaths:0,drillFirstHit:true,drillStage:2,drillTravel:12,drillFollowUpHits:3},'won'),/手动追击 3 次/);
+});
+
+
+test('CF reposition cannot be cheesed by stepping back and forth or respawn teleport',()=>{
+ const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:12,target:3};
+ let d=cfAdvanceDrill(c,null,{hits:0,travel:0,x:-30,z:-7});
+ d=cfAdvanceDrill(c,d,{hits:1,travel:1,x:-29,z:-7});
+ assert.equal(d.stage,1);assert.equal(d.anchorX,-29);
+ assert.equal(d.anchorZ,-7);
+ // 28m accumulated on a tiny loop still is not a real displacement.
+ d=cfAdvanceDrill(c,d,{hits:9,travel:29,x:-28,z:-7});
+ assert.equal(d.stage,1);assert.equal(d.distance,1);assert.equal(d.follow,0);
+ // A native respawn teleport is not itself recorded in walk distance.
+ d=cfAdvanceDrill(c,d,{hits:9,travel:29.1,x:12,z:7});
+ assert.equal(d.stage,1);assert.equal(d.distance,1);
+ assert.equal(d.anchorX,12);assert.equal(d.anchorZ,7);
+ // A true 14m walk away from the post-respawn anchor is now valid.
+ d=cfAdvanceDrill(c,d,{hits:9,travel:43.1,x:-2,z:7});
+ assert.equal(d.stage,2);assert.ok(d.distance>=12);
+ assert.equal(d.hitBaseline,9);
+ d=cfAdvanceDrill(c,d,{hits:11,travel:43.1,x:-15,z:-7});
+ assert.equal(d.follow,2);
+ // Once the position checkpoint is earned, chasing backward doesn't revoke it.
+ d=cfAdvanceDrill(c,d,{hits:11,travel:57.1,x:12,z:7});
+ assert.equal(d.stage,2);assert.ok(d.distance>=12);
+});
+
+
+test('CF v7 retains genuine partial move across native respawns but never credits teleport',()=>{
+ const c={kind:'hits',drill:'reposition',openingHits:1,minTravel:8,target:3};
+ let d=cfAdvanceDrill(c,null,{hits:1,travel:0,x:0,z:0});
+ d=cfAdvanceDrill(c,d,{hits:1,travel:5,x:5,z:0});
+ assert.equal(d.stage,1);assert.equal(d.distance,5);assert.equal(d.peakDistance,5);
+ d=cfAdvanceDrill(c,d,{hits:1,travel:5,x:30,z:5});
+ assert.equal(d.stage,1);assert.equal(d.distance,5);
+ assert.equal(d.earnedDistance,5);assert.equal(d.peakDistance,0);
+ assert.equal(d.startTravel,5);
+ d=cfAdvanceDrill(c,d,{hits:1,travel:8,x:33,z:5});
+ assert.equal(d.stage,2);assert.equal(d.distance,8);
+ assert.equal(d.hitBaseline,1);
+ d=cfAdvanceDrill(c,d,{hits:3,travel:9,x:34,z:5});
+ assert.equal(d.follow,2);assert.ok(d.distance>=8);
+ assert.equal(cfAdvanceDrill(c,d,{hits:4,travel:15,x:30,z:5}).follow,3);
+});
+
+
+test('CF novice opening opponent returns fire from readable cover before a later real rush',()=>{
+ const novice={kind:'hits',drill:'reposition',elite:false};
+ assert.equal(cfScoutHoldSeconds(novice),65);
+ assert.equal(cfScoutHoldSeconds({kind:'hits',elite:false}),7);
+ assert.equal(cfScoutHoldSeconds({kind:'kills'}),20);
+ assert.equal(cfScoutHoldSeconds({kind:'survive'}),7);
+ assert.equal(cfScoutHoldSeconds({...novice,elite:true}),3);
+ assert.equal(cfScoutHoldSeconds({kind:'kills',elite:true}),7);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},64.99),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},65),true);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:false,__mobileTrainingHoldUntil:18},22),false);
+});
+
+
+test('CF flank coach proposes a real reachable side route, never fabricates an obstacle-free lane',()=>{
+ const player={pos:{x:0,z:0},yaw:0};
+ const openWorld={blocked:()=>false};
+ let pathCalls=0;
+ const openNav={
+  idx:(x,z)=>Math.abs(x)<=25&&Math.abs(z)<=25?0:-1,
+  walkable:k=>k>=0,
+  lineFree:()=>true,
+  findPath:()=>{pathCalls++;throw Error('direct walkable lane needs no A-star');}
+ };
+ const selected=cfFlankWaypoint({player,world:openWorld,nav:openNav,minDistance:8});
+ assert.ok(selected&&selected.x>=9.5);
+ assert.equal(selected.side,1);
+ assert.ok(Math.abs(selected.z)<=2);
+ assert.equal(pathCalls,0,'straight accessible flank uses cheap direct walk path');
+ assert.deepEqual(player,{pos:{x:0,z:0},yaw:0},'coach never teleports player');
+ const leftNav={...openNav,idx:x=>x>0?-1:0};
+ const left=cfFlankWaypoint({player,world:openWorld,nav:leftNav,minDistance:8});
+ assert.ok(left&&left.x<-8);
+ assert.equal(left.side,-1);
+ assert.equal(cfFlankWaypoint({player,world:{blocked:()=>true},nav:openNav}),null);
+ const badNav={...openNav,lineFree:()=>false,
+  findPath:(x,z,tx,tz)=>[[x,z],[100,100],[tx,tz]]};
+ assert.equal(cfFlankWaypoint({player,world:openWorld,nav:badNav}),null,
+  'path requiring a huge detour is not advertised as safe');
+ assert.equal(cfFlankWaypoint({player,nav:openNav}),null);
+});
+
+
+test('CF follow-up fire gets limited aim friction only when the novice actively shoots',()=>{
+ const near={yawError:.17,pitchError:.12,distance:16,
+   visible:true,firing:true,sniperReady:true};
+ assert.deepEqual(mobileAimCorrection({...near,training:false}),{yaw:0,pitch:0});
+ const assisted=mobileAimCorrection({...near,training:true});
+ assert.ok(assisted.yaw>0&&assisted.yaw<=.025);
+ assert.ok(assisted.pitch>0&&assisted.pitch<=.019);
+ for(const value of [{firing:false},{visible:false},{distance:28},
+  {yawError:.21},{pitchError:.15},{sniperReady:false}]){
+  assert.deepEqual(mobileAimCorrection({...near,...value,training:true}),{yaw:0,pitch:0});
+ }
+ // This function changes only view angles; the original gun still requires
+ // actual fire input, line-of-sight and a native bullet-hit callback.
+ assert.ok(!('hit' in assisted) && !('fire' in assisted));
+});
+
+
+test('CF observed-cover training bot remains available but not invulnerable for the whole beginner clock',()=>{
+ const c={kind:'hits',drill:'reposition',limitMs:60000,elite:false};
+ assert.equal(cfScoutHoldSeconds(c),65);
+ assert.equal(cfScoutHoldSeconds({...c,limitMs:45000}),50);
+ assert.equal(cfScoutHoldSeconds({...c,elite:true}),3);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},60),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},66),true);
+});
+
+
+test('CF native tutorial respawn locations are authored original world spots, not fake actor hits',()=>{
+ const first={x:-25,z:-4,yaw:Math.PI/2},second={x:-20,z:-4,yaw:Math.PI/2};
+ const a=cfTrainingRespawnSpots(first,second);
+ assert.deepEqual(a,[first,second]);
+ assert.notEqual(a[0],first,'owned spawn records must not mutate frozen original');
+ assert.equal(cfTrainingRespawnSpots(first,{x:-24,z:-4,yaw:0}).length,1,
+  'overlapping enemy respawns must not spawn-camp');
+ assert.equal(cfTrainingRespawnSpots(first,{x:5,z:-4,yaw:0}).length,1,
+  'opposite-map spawn cannot be advertised as local training arena');
+ assert.deepEqual(cfTrainingRespawnSpots({x:NaN,z:0,yaw:0}),[]);
+ assert.deepEqual(cfTrainingRespawnSpots(null),[]);
+});
+
+test('CF holding a native bot lane never moves the actor or changes health/weapon',()=>{
+ const novice={kind:'hits',drill:'reposition',elite:false};
+ const actor={__mobileTrainingScout:true,alive:true,
+  pos:{x:-23,z:1},role:'rush',goal:[30,10],path:[[0,0],[30,10]],
+  pi:1,holdT:32,hp:64,stats:{d:1,hits:6},weapon:{id:'m4a1'}};
+ const oldPosition={...actor.pos},weapon=actor.weapon,stats=actor.stats;
+ assert.equal(cfStabilizeNoviceScout(actor,novice),true);
+ assert.equal(actor.role,'hold');assert.deepEqual(actor.goal,[-23,1]);
+ assert.equal(actor.path,null);assert.equal(actor.pi,0);assert.equal(actor.holdT,0);
+ assert.deepEqual(actor.pos,oldPosition);assert.equal(actor.hp,64);
+ assert.equal(actor.weapon,weapon);assert.equal(actor.stats,stats);
+ assert.equal(cfStabilizeNoviceScout({...actor,alive:false},novice),false);
+ assert.equal(cfStabilizeNoviceScout({...actor,__mobileTrainingScout:false},novice),false);
+ assert.equal(cfStabilizeNoviceScout(actor,{...novice,elite:true}),false);
+ assert.equal(cfStabilizeNoviceScout(actor,{kind:'survive'}),false);
+});
+
+
+test('CF visible-aim tutorial indicates only camera-confirmed on-screen swipe, never invisible tracking',()=>{
+ assert.equal(cfVisibleAimCoach(-.65,0),'← 按住开火向左滑动');
+ assert.equal(cfVisibleAimCoach(.65,0),'→ 按住开火向右滑动');
+ assert.equal(cfVisibleAimCoach(0,.46),'↑ 按住开火向上滑动');
+ assert.equal(cfVisibleAimCoach(0,-.46),'↓ 按住开火向下滑动');
+ assert.equal(cfVisibleAimCoach(0,0),'◎ 准星接近敌人 · 按住开火');
+ for(const a of [NaN,Infinity,-Infinity,undefined]){
+  assert.equal(cfVisibleAimCoach(a,0),'');
+  assert.equal(cfVisibleAimCoach(0,a),'');
+ }
+});
+
+
+test('CF native fire-button gesture gives one right thumb both hold-fire and camera drag',()=>{
+ assert.deepEqual(cfFireDragLookDelta(0,0),{x:0,y:0});
+ const gesture=cfFireDragLookDelta(-30,20);
+ assert.ok(gesture.x < -47.9 && gesture.x > -48.1);
+ assert.ok(gesture.y > 31.9 && gesture.y < 32.1);
+ assert.deepEqual(cfFireDragLookDelta(1000,-1000),{x:96,y:-96},
+  'one outlier touchmove must not rotate the camera through multiple turns');
+ for(const invalid of [NaN,Infinity,undefined]){
+  assert.deepEqual(cfFireDragLookDelta(invalid,8),{x:0,y:0});
+  assert.deepEqual(cfFireDragLookDelta(8,invalid),{x:0,y:0});
+ }
+ const a=cfFireDragLookDelta(20,0),b=cfFireDragLookDelta(-20,0);
+ assert.ok(a.x>0&&b.x<0,'camera follows the same two swipe directions as native touch look');
+ assert.equal('fire' in a,false,'input conversion cannot spawn bullets or award hits');
+});
+
+
+test('CF quick fire tap survives touchend but cancellation pause and teardown always stop native shots',()=>{
+ const tap={fire:true,firePressed:true};
+ cfReleaseTouchFire(tap);
+ assert.deepEqual(tap,{fire:false,firePressed:true},
+  'original native Player.update must see a quick-tap firePressed even if released first');
+ const cancelled={fire:true,firePressed:true};
+ cfReleaseTouchFire(cancelled,true);
+ assert.deepEqual(cancelled,{fire:false,firePressed:false},
+  'cancelled/restarted touch must never leave sticky gun fire');
+ const paused={fire:true,firePressed:false};
+ cfReleaseTouchFire(paused,true);
+ assert.deepEqual(paused,{fire:false,firePressed:false});
+ assert.equal(cfReleaseTouchFire(null,true),undefined);
+});
+
+
+test('CF post-cover reacquisition turns toward a previously seen location, never a hidden live target',()=>{
+ const p={pos:{x:0,z:0},yaw:0};
+ assert.match(cfLastSeenLookCue(p,{x:-10,z:-10}),/^← 向左转视角/u);
+ assert.match(cfLastSeenLookCue(p,{x:10,z:-10}),/^→ 向右转视角/u);
+ assert.match(cfLastSeenLookCue(p,{x:0,z:-10}),/^↔ 左右探身/u);
+ assert.equal(cfLastSeenLookCue(p,{x:0,z:-.2}),null);
+ assert.equal(cfLastSeenLookCue(p,null),null);
+ assert.equal(cfLastSeenLookCue({...p,yaw:NaN},{x:10,z:10}),null);
+ // No mutating the player's position, no output containing bot stats/coords.
+ assert.deepEqual(p,{pos:{x:0,z:0},yaw:0});
+});
+
+
+test('CF first-shot camera assistance selects only a previously sighted, real line-of-sight enemy',()=>{
+ const valid={side:'enemy',alive:true,visible:true,blocked:false,distance:10,
+  yawError:.10,pitchError:.07};
+ assert.equal(cfIntroAssistCandidate(valid),true);
+ for(const bad of [
+  {side:'ally'}, {side:'unknown'},{alive:false},{visible:false},
+  {blocked:true},{distance:0},{distance:29},
+  {yawError:.20},{pitchError:.14},{pitchError:NaN},{yawError:NaN}
+ ]){
+  assert.equal(cfIntroAssistCandidate({...valid,...bad}),false,
+   'must reject every hidden, covered, invalid, dead or non-opponent candidate');
+ }
+ assert.equal(cfAutoFireEligible({kind:'hits',drill:'reposition',openingHits:1},1),false,
+  'this slight first-shot assistance permanently ends after the first genuine hit');
+});
+
+
+test('CF novice returns precisely to player-proven shooting lane with a joystick navigation cue',()=>{
+ const player={pos:{x:-33,z:-3.2},yaw:-Math.PI/2};
+ // 1 meter is relevant in a narrow cargo doorway, though old generic
+ // navigation stopped providing hints at 2.2 meters.
+ const lane=[-34,-3.6];
+ assert.equal(routeArrow(player,lane),null);
+ const exact=routeArrow(player,lane,.6);
+ assert.ok(exact&&['←','→','↑'].includes(exact.symbol));
+ assert.ok(exact.distance>0);
+ assert.equal(routeArrow({pos:{x:-34,z:-3.6},yaw:-Math.PI/2},lane,.6),null);
+});
+test('CF only genuine novice real scout reduces lateral drift without changing enemy guns or elite',()=>{
+ const original={strafe:.34,turn:3.6,aimErr:.09};
+ assert.equal(cfNoviceScoutStrafe(original,true),.07);
+ assert.equal(cfNoviceScoutStrafe(original,false),.34);
+ assert.equal(cfNoviceScoutStrafe({strafe:.04},true),.04);
+ assert.deepEqual(original,{strafe:.34,turn:3.6,aimErr:.09},
+  'never mutate input profile, health, damage or firing characteristics');
+ assert.equal(cfNoviceScoutStrafe({},true),0);
 });

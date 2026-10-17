@@ -57,6 +57,46 @@ export function mobileScoutHoldExpired(actor, seconds) {
     Number.isFinite(actor?.__mobileTrainingHoldUntil) && Number.isFinite(seconds) &&
     seconds >= actor.__mobileTrainingHoldUntil;
 }
+/** Keep a novice opponent in an honest mid-range firefight before it rushes;
+    its gun remains enabled at the real readyAt, not an invulnerable dummy. */
+export function cfScoutHoldSeconds(challenge) {
+  if(challenge?.elite===true)return challenge.kind==='kills'?7:3;
+  if(challenge?.kind==='kills')return 20;
+  // Beginner learn-to-flank scenario: one normal, shooting bot remains at
+  // original visible cover until the actual 60s challenge expires. It is
+  // NOT invulnerable, no input/hit is forged, and elite still rushes.
+  return challenge?.kind==='hits'&&challenge.drill==='reposition'
+    ? Math.ceil((challenge.limitMs||60000)/1000)+5 : 7;
+}
+/** Original Bot instances use native death/rebirth and gun physics.
+ * Only this beginner drill authors a nearby, walkable team respawn lane.
+ */
+export function cfTrainingRespawnSpots(first,second=null) {
+  if(!first||![first.x,first.z,first.yaw].every(Number.isFinite))return [];
+  const spawns=[{x:first.x,z:first.z,yaw:first.yaw}];
+  if(second&&[second.x,second.z,second.yaw].every(Number.isFinite)){
+    const gap=Math.hypot(first.x-second.x,first.z-second.z);
+    if(gap>=3&&gap<=18)spawns.push({x:second.x,z:second.z,yaw:second.yaw});
+  }
+  return spawns;
+}
+/** Stabilize only the opening AI lane objective: bot still strafes and fires,
+ * and we never move a living actor or touch health/hit counters. */
+export function cfStabilizeNoviceScout(actor,challenge) {
+  if(challenge?.elite===true||challenge?.drill!=='reposition'||
+     actor?.__mobileTrainingScout!==true||actor?.alive!==true||
+     !Number.isFinite(actor.pos?.x)||!Number.isFinite(actor.pos?.z))return false;
+  actor.role='hold';actor.goal=[actor.pos.x,actor.pos.z];
+  actor.path=null;actor.pi=0;actor.holdT=0;
+  return true;
+}
+/** An ordinary training bot still moves and shoots but is not allowed to
+ * wander out of its original cargo shooting lane during the lesson. */
+export function cfNoviceScoutStrafe(profile,stabilized) {
+  const raw=Number(profile?.strafe);
+  return !Number.isFinite(raw)?0:stabilized?Math.min(raw,0.07):raw;
+}
+
 export function mobileTouchAction(index) {
   return ['fire', 'duplicate-fire', 'jump', 'crouch', 'reload', 'switch', 'scope'][index] || 'unknown';
 }
@@ -66,22 +106,69 @@ export function cfEliteUnlocked(record) {
   return Number.isSafeInteger(record?.wins) && record.wins > 0;
 }
 /** First rifle mission trains with auto-fire, while expert needs genuine touch input. */
-export function cfAutoFireEligible(challenge) {
-  return challenge?.kind === 'hits' && challenge.elite !== true;
+export function cfAutoFireEligible(challenge, realHits = 0) {
+  return challenge?.kind === 'hits' && challenge.elite !== true &&
+    (challenge.drill !== 'reposition' || (Number.isFinite(realHits) &&
+      realHits < challenge.openingHits));
+}
+/** Progress only when genuine native hit and movement counters increase. */
+export function cfAdvanceDrill(challenge, previous = null, native = {}) {
+  if (challenge?.drill !== 'reposition') return null;
+  const hits=Number.isFinite(native.hits)?Math.max(0,Math.floor(native.hits)):0;
+  const travel=Number.isFinite(native.travel)?Math.max(0,native.travel):0;
+  let {stage=0,startTravel=0,hitBaseline=null,anchorX=null,anchorZ=null,
+    lastX=null,lastZ=null,lastTravel=travel,earnedDistance=0,peakDistance=0} = previous||{};
+  const x=Number.isFinite(native.x)?native.x:null;
+  const z=Number.isFinite(native.z)?native.z:null;
+  if(stage===0&&hits>=challenge.openingHits) {
+    stage=1;startTravel=travel;anchorX=x;anchorZ=z;
+    earnedDistance=0;peakDistance=0;
+  }
+  // Native respawn jumps without native walking. Keep genuine earlier
+  // movement while never crediting a teleport as progress.
+  if(stage===1&&lastX!==null&&lastZ!==null&&x!==null&&z!==null &&
+     Math.hypot(x-lastX,z-lastZ)>Math.max(0,travel-lastTravel)+2.4) {
+    earnedDistance+=peakDistance;
+    peakDistance=0;
+    startTravel=travel;anchorX=x;anchorZ=z;
+  }
+  // Only peak net displacement per life earns progress; joystick oscillation
+  // around the same point can't grind the remaining distance.
+  const walked=Math.max(0,travel-startTravel);
+  const net=anchorX!==null&&anchorZ!==null&&x!==null&&z!==null
+    ? Math.hypot(x-anchorX,z-anchorZ):walked;
+  if(stage===1)peakDistance=Math.max(peakDistance,Math.min(walked,net));
+  let distance=earnedDistance+peakDistance;
+  if(stage===1&&distance>=challenge.minTravel) {
+    stage=2;hitBaseline=hits;
+  }
+  if(stage===2)distance=Math.max(challenge.minTravel,distance);
+  return {stage,startTravel,hitBaseline,anchorX,anchorZ,
+    lastX:x,lastZ:z,lastTravel:travel,earnedDistance,peakDistance,distance,
+    follow:stage===2?Math.max(0,hits-hitBaseline):0,firstHit:stage>0};
 }
 /** Preview copy mirrors each mission's actual input mechanics. */
 export function cfTouchTutorial(challenge) {
   if (challenge?.kind === 'hits')
-    return cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
+    return challenge.drill==='reposition'
+      ? (challenge.elite ? '精英手动首枪，横移后按住开火拖动瞄准' : '首枪自动开火；换位后按住开火拖动瞄准')
+      : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
   return '点按或按住开火';
 }
 export function mobileChallengeCopy(challenge) {
   if (!challenge) return '';
-  if (challenge.kind === 'hits') return challenge.elite===true
-    ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
-    : '1v1入门：准星对准敌人自动开火，命中3次';
+  if (challenge.kind === 'hits') return challenge.drill==='reposition'
+    ? challenge.elite===true
+      ? Math.ceil(challenge.limitMs/1000)+'秒精英突围：手动首枪，换位'+
+        challenge.minTravel+'米，再命中'+challenge.target+'次；零阵亡'
+      : Math.ceil(challenge.limitMs/1000)+'秒步枪突围：首枪辅助，换位'+
+        challenge.minTravel+'米，手动再命中'+challenge.target+
+        '次；最多阵亡'+challenge.maxDeaths+'次'
+    : challenge.elite===true
+      ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
+      : '1v1入门：准星对准敌人自动开火，命中3次';
   if (challenge.kind === 'kills') return challenge.elite===true
     ? '精英狙击：75秒内 AWM 击杀1人，最多阵亡1次'
     : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
@@ -149,11 +236,24 @@ export function firstEncounterDestination(team) {
   if (team === 'GR') return [17.5, 7.0];
   return null;
 }
-export function routeArrow(player, goal) {
+/** Face only a LAST SEEN enemy position from a historically verified clear
+ * firing lane; no present-day hidden enemy GPS or automatic aim movements. */
+export function cfLastSeenLookCue(player,known) {
+  if(!player?.pos || !Number.isFinite(player.yaw) ||
+    !Number.isFinite(known?.x)||!Number.isFinite(known?.z))return null;
+  const dx=known.x-player.pos.x,dz=known.z-player.pos.z;
+  if(Math.hypot(dx,dz)<1.2)return null;
+  const bearing=Math.atan2(-dx,-dz);
+  const error=Math.atan2(Math.sin(bearing-player.yaw),Math.cos(bearing-player.yaw));
+  if(error>0.18)return '← 向左转视角 · 寻找红色敌人';
+  if(error< -0.18)return '→ 向右转视角 · 寻找红色敌人';
+  return '↔ 左右探身 · 找回刚才的射击视线';
+}
+export function routeArrow(player, goal, stopDistance=2.2) {
   if (!player || !goal) return null;
   const dx = goal[0] - player.pos.x, dz = goal[1] - player.pos.z;
   const distance = Math.hypot(dx,dz);
-  if (!Number.isFinite(distance) || distance < 2.2) return null;
+  if (!Number.isFinite(distance) || distance < stopDistance) return null;
   const angle = Math.atan2(-dx,-dz);
   const offset = Math.atan2(Math.sin(angle-player.yaw),Math.cos(angle-player.yaw));
   return {
@@ -162,6 +262,52 @@ export function routeArrow(player, goal) {
     distance:Math.round(distance)
   };
 }
+
+/**
+ * Suggest a genuinely navigable lateral lane after the first confirmed hit.
+ * Pure map geometry only: no enemy tracking, no fabricated movement, no
+ * player's statistics or native physics modified. Returning null is safe.
+ */
+export function cfFlankWaypoint({player,world,nav,minDistance=8}) {
+  if(!player?.pos || !Number.isFinite(player.yaw) ||
+     !world?.blocked || !nav?.idx || !nav?.walkable || !nav?.findPath) return null;
+  const x=player.pos.x,z=player.pos.z,yaw=player.yaw;
+  if(!Number.isFinite(x)||!Number.isFinite(z))return null;
+  const required=Math.max(2,Math.min(22,Number(minDistance)||8));
+  const rightX=Math.cos(yaw),rightZ=-Math.sin(yaw);
+  const forwardX=-Math.sin(yaw),forwardZ=-Math.cos(yaw);
+  let best=null;
+  for(const radius of [required+1.5,required+3.0,required+4.5]) {
+    for(const side of [1,-1]) {
+      for(const along of [0,-2]) {
+        const tx=x+rightX*radius*side+forwardX*along;
+        const tz=z+rightZ*radius*side+forwardZ*along;
+        const k=nav.idx(tx,tz);
+        if(k<0||!nav.walkable(k)||world.blocked(tx,.05,tz,.38,1.9))continue;
+        const path=nav.lineFree?.(x,z,tx,tz)
+          ? [[x,z],[tx,tz]]
+          : nav.findPath(x,z,tx,tz);
+        if(!Array.isArray(path)||path.length<2)continue;
+        let length=0,valid=true;
+        for(let i=1;i<path.length;i++){
+          const a=path[i-1],b=path[i];
+          if(!Array.isArray(a)||!Array.isArray(b)||
+            ![...a,...b].every(Number.isFinite)){valid=false;break;}
+          length+=Math.hypot(b[0]-a[0],b[1]-a[1]);
+        }
+        // A waypoint behind a very long detour isn't useful to a beginner.
+        if(!valid||length>radius*1.8+3)continue;
+        const score=length+Math.abs(along)*.7+(along>0?1.8:0);
+        if(!best||score<best.score)
+          best={x:tx,z:tz,score,pathLength:length,side};
+      }
+    }
+    // Do not evaluate distant candidates after finding a nearby legal lane.
+    if(best)return best;
+  }
+  return null;
+}
+
 // A genuine, hittable intro opponent placed inside an existing clear cargo
 // lane. Candidate positions are derived from the user's forward bearing and
 // checked against real world geometry, nav walkability and line of sight.
@@ -217,17 +363,54 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
   return null;
 }
 
-export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady }) {
+/** Only camera-visible and actually unobstructed marker positions may
+ * generate novice aiming directions. No actor tracking behind walls. */
+/** Fire button finger doubles as a view joystick, without creating a shot or
+ * editing any hit/health stat. Cap one outlier touchmove for a steady thumb. */
+/** End/cancel a real mobile fire gesture without swallowing a short tap.
+ * Ordinary touchend leaves native firePressed pending until Player.update().
+ * OS cancellation, pause, restart and destroy discard that pending tap. */
+export function cfReleaseTouchFire(touch,cancelPending=false) {
+  if(!touch)return;
+  touch.fire=false;
+  if(cancelPending)touch.firePressed=false;
+}
+export function cfFireDragLookDelta(dx,dy) {
+  if(!Number.isFinite(dx)||!Number.isFinite(dy))return {x:0,y:0};
+  const clamp=v=>Math.max(-96,Math.min(96,v*1.6));
+  return {x:clamp(dx),y:clamp(dy)};
+}
+export function cfVisibleAimCoach(x,y) {
+  if(!Number.isFinite(x)||!Number.isFinite(y))return '';
+  if(x<=-0.23)return '← 按住开火向左滑动';
+  if(x>=0.23)return '→ 按住开火向右滑动';
+  if(y>=0.30)return '↑ 按住开火向上滑动';
+  if(y<=-0.30)return '↓ 按住开火向下滑动';
+  return '◎ 准星接近敌人 · 按住开火';
+}
+
+export function mobileAimCorrection({ yawError, pitchError, distance, visible, firing, sniperReady, training=false }) {
+  const limitYaw=training?0.19:0.14,limitPitch=training?0.13:0.105;
   if (!visible || !firing || sniperReady === false ||
     !Number.isFinite(distance) || distance < 1 || distance > 27 ||
     !Number.isFinite(yawError) || !Number.isFinite(pitchError) ||
-    Math.abs(yawError) > 0.14 || Math.abs(pitchError) > 0.105) return {yaw:0,pitch:0};
+    Math.abs(yawError) > limitYaw || Math.abs(pitchError) > limitPitch)
+    return {yaw:0,pitch:0};
+  const maxYaw=training?0.025:0.019,maxPitch=training?0.019:0.014;
   return {
-    yaw: Math.max(-0.019, Math.min(0.019, yawError * 0.30)),
-    pitch: Math.max(-0.014, Math.min(0.014, pitchError * 0.30))
+    yaw: Math.max(-maxYaw, Math.min(maxYaw, yawError * (training?0.36:0.30))),
+    pitch: Math.max(-maxPitch, Math.min(maxPitch, pitchError * (training?0.36:0.30)))
   };
 }
 
+/** A first-shot tutorial may assist only an ACTUALLY ON-SCREEN enemy with an
+ * unobstructed real ray to its chest. It never chooses hidden targets. */
+export function cfIntroAssistCandidate({side,alive,visible,blocked,distance,yawError,pitchError}) {
+  return side==='enemy'&&alive===true&&visible===true&&blocked===false &&
+    Number.isFinite(distance)&&distance>1&&distance<=27 &&
+    Number.isFinite(yawError)&&Math.abs(yawError)<=0.19 &&
+    Number.isFinite(pitchError)&&Math.abs(pitchError)<=0.13;
+}
 export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked,heldSeconds,yawError,pitchError,engaged}) {
   return engaged===true && kind==='hits' && weapon==='m4a1' && side==='enemy' &&
     alive===true && blocked===false && Number.isFinite(distance) &&
@@ -238,12 +421,16 @@ export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked
 
 
 /** Only actual native hit-counter increments create a brief onscreen confirmation. */
-export function cfHitCue(challenge, nativeHits, increase) {
+export function cfHitCue(challenge, nativeHits, increase, drill = null) {
   if (!challenge || !Number.isFinite(nativeHits) || !Number.isFinite(increase) ||
       nativeHits < 1 || increase < 1) return '';
   const hits = Math.floor(nativeHits), delta = Math.floor(increase);
-  if (challenge.kind === 'hits')
+  if (challenge.kind === 'hits') {
+    if (challenge.drill==='reposition') return drill?.stage===2
+      ? '✓ 追击命中 ' + Math.min(drill.follow,challenge.target) + '/' + challenge.target
+      : '✓ 首枪命中 · 向掩体换位';
     return '✓ 命中 ' + Math.min(hits, challenge.target) + '/' + challenge.target;
+  }
   return '✓ 有效命中 +' + delta;
 }
 
@@ -255,6 +442,10 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
   const goal = actual(challenge.target);
   if (outcome === 'won') {
+    if (challenge.kind === 'hits'&&challenge.drill==='reposition')
+      return '战术突围完成：首枪命中、离开原位 '+actual(metrics.drillTravel)+
+        ' 米、手动追击 '+actual(metrics.drillFollowUpHits)+
+        ' 次。下一关挑战 AWM 精准击杀。';
     if (challenge.kind === 'hits')
       return '亲自命中 ' + hits + ' 次。下一关要使用 AWM 取得真正的击杀。';
     if (challenge.kind === 'kills')
@@ -262,8 +453,20 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
     return '累计移动 ' + travel + ' 米、被击倒 ' + deaths + ' 次。下次试试零死亡通关。';
   }
   if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths)
-    return '被击倒 ' + deaths + ' 次，精英关最多允许 ' +
+    return '被击倒 ' + deaths + ' 次，本关最多允许 ' +
       challenge.maxDeaths + ' 次。下次借掩体换位，先避开敌方火力。';
+  if (challenge.kind === 'hits'&&challenge.drill==='reposition') {
+    const follow=actual(metrics.drillFollowUpHits);
+    const moved=actual(metrics.drillTravel);
+    if(metrics.drillFirstHit!==true)
+      return '还没有第一次真实命中。跟住红色目标，准星对准后' +
+        (challenge.elite?'手动按开火。':'自动开火。');
+    if(metrics.drillStage===1)
+      return '首枪已命中，但只换位 '+moved+'/'+challenge.minTravel+
+        '米。下次沿集装箱移动，让敌人失去原来的射击角度。';
+    return '换位已完成，追击命中 '+follow+'/'+challenge.target+
+      '次。下次重新找角度，按开火按钮补足剩余命中。';
+  }
   if (challenge.kind === 'hits') {
     if (hits === 0)
       return '0/' + goal + ' 次命中。用右手移动准星寻找红色敌人，' +
@@ -294,7 +497,8 @@ export function cfMissionFacts(challenge) {
   if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return [];
   const weapon = challenge.weapon === 'awm' ? 'AWM' :
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
-  const target = challenge.kind === 'hits' ? '命中 ' + challenge.target + ' 次' :
+  const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
+    ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
     challenge.kind === 'kills' ? '击杀 ' + challenge.target + ' 人' :
       '移动 ' + (challenge.minTravel || 0) + ' m';
   return [
@@ -309,11 +513,16 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
   if (!challenge || !['hits','kills','survive'].includes(challenge.kind)) return [];
   const number = value => Number.isFinite(value) ? Math.max(0,Math.floor(value)) : 0;
   const deaths = number(metrics.deaths);
-  if (challenge.kind === 'hits') return [
-    {label:'命中',value:number(metrics.hits) + ' / ' + challenge.target},
-    {label:'阵亡',value:String(deaths)},
-    {label:'耗时',value:Math.ceil(number(elapsedMs)/1000) + ' s'}
-  ];
+  if (challenge.kind === 'hits') return challenge.drill==='reposition'
+    ? [
+      {label:'追击',value:number(metrics.drillFollowUpHits)+' / '+challenge.target},
+      {label:'换位',value:number(metrics.drillTravel)+' / '+challenge.minTravel+' m'},
+      {label:'阵亡',value:deaths+' / '+challenge.maxDeaths}
+    ] : [
+      {label:'命中',value:number(metrics.hits) + ' / ' + challenge.target},
+      {label:'阵亡',value:String(deaths)},
+      {label:'耗时',value:Math.ceil(number(elapsedMs)/1000) + ' s'}
+    ];
   if (challenge.kind === 'kills') return [
     {label:'狙杀',value:number(metrics.awmKills) + ' / ' + challenge.target},
     {label:'命中',value:String(number(metrics.hits))},
@@ -339,11 +548,20 @@ export function createFpsMobileUx(game, root, doc) {
   const touchControls = doc.getElementById('touch');
   let playerEngaged=false;
   const aimTouchStarts=new Map();
+  const fireDragTouches=new Map();
   let lastTouchAt=-Infinity;
   const markTouch=()=>{lastTouchAt=performance.now();};
   const onTouchStart=e=>{
     markTouch();
-    if(!cfAutoFireEligible(activeChallenge)||!game.playing||game.paused)return;
+    if(!game.playing||game.paused||game.ended)return;
+    if(e.target?.closest?.('.btn[data-mk-action="fire"]')){
+      // Native fire-button touchstart stops bubbling, so the upstream window
+      // camera listener cannot reuse this SAME right thumb for aiming.
+      for(const t of e.changedTouches||[])
+        fireDragTouches.set(t.identifier,{x:t.clientX,y:t.clientY});
+      return;
+    }
+    if(!cfAutoFireEligible(activeChallenge,game.player?.stats?.hits||0))return;
     if(e.target?.closest?.('.btn,.pad'))return;
     const limit=(doc.defaultView?.innerWidth||844)*0.44;
     for(const t of e.changedTouches||[])if(t.clientX>limit)
@@ -351,15 +569,41 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const onTouchMove=e=>{
     markTouch();
-    if(!cfAutoFireEligible(activeChallenge)||!game.playing||game.paused)return;
+    if(!game.playing||game.paused||game.ended)return;
+    const p=game.player;
     for(const t of e.changedTouches||[]){
-      const v=aimTouchStarts.get(t.identifier);
-      if(v&&Math.hypot(t.clientX-v.x,t.clientY-v.y)>12)playerEngaged=true;
+      const v=fireDragTouches.get(t.identifier);
+      if(v){
+        const delta=cfFireDragLookDelta(t.clientX-v.x,t.clientY-v.y);
+        v.x=t.clientX;v.y=t.clientY;
+        if(p?.alive&&p.touch?.fire){
+          p.touchLook ||= {x:0,y:0};
+          p.touchLook.x+=delta.x;p.touchLook.y+=delta.y;
+        }
+        continue;
+      }
+      if(cfAutoFireEligible(activeChallenge,p?.stats?.hits||0)){
+        const aim=aimTouchStarts.get(t.identifier);
+        if(aim&&Math.hypot(t.clientX-aim.x,t.clientY-aim.y)>12)
+          playerEngaged=true;
+      }
     }
+  };
+  const releaseNativeFire=(cancelPending=false)=>{
+    cfReleaseTouchFire(game.player?.touch,cancelPending);
   };
   const onTouchEnd=e=>{
     markTouch();
-    for(const t of e.changedTouches||[])aimTouchStarts.delete(t.identifier);
+    const hadFireFinger=fireDragTouches.size>0;
+    for(const t of e.changedTouches||[]){
+      aimTouchStarts.delete(t.identifier);
+      fireDragTouches.delete(t.identifier);
+    }
+    // The upstream button listens to touchend, not touchcancel.
+    // Clear the native fire flag on either ending path, even after a dragged
+    // thumb leaves the button or the operating system interrupts the gesture.
+    if(hadFireFinger&&fireDragTouches.size===0)
+      releaseNativeFire(e.type==='touchcancel');
   };
   // The pinned desktop Player.bind() fires a bullet on canvas mousedown.
   // Browsers synthesize mousedown after short touch-aim gestures unless this
@@ -382,7 +626,10 @@ export function createFpsMobileUx(game, root, doc) {
   for (const [index, button] of buttons.entries()) {
     const action = mobileTouchAction(index);
     button.dataset.mkAction = action;
-    if (action === 'fire') button.textContent = '开火';
+    if (action === 'fire') {
+      button.textContent = '开火';
+      button.setAttribute('aria-label','按住开火并拖动瞄准');
+    }
     if (action === 'reload') button.textContent = '换弹';
     if (action === 'jump') button.textContent = '跳';
     if (action === 'scope') button.textContent = '开镜';
@@ -393,7 +640,7 @@ export function createFpsMobileUx(game, root, doc) {
     }
     // The original source only handles touchend, not cancellation.
     if (action === 'fire') button.addEventListener('touchstart', () => {
-      if(cfAutoFireEligible(activeChallenge))playerEngaged=true;
+      if(cfAutoFireEligible(activeChallenge,game.player?.stats?.hits||0))playerEngaged=true;
       if(activeChallenge?.elite!==true)nudgeAim(true);
     }, {capture:true,passive:true});
     button.addEventListener('touchcancel', () => {
@@ -448,8 +695,11 @@ export function createFpsMobileUx(game, root, doc) {
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
+  let drill = null, drillStageAt = 0, flankGoal = null, flankDeaths = -1;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
-  let routePath = null, routeLastAt = 0;
+  let routePath = null, routeLastAt = 0, lastVisibleEnemy = null, firstHitSpot = null;
+  let visibleAimCoach = '';
+  let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
 
   function recolorNativeAllies() {
@@ -511,6 +761,19 @@ export function createFpsMobileUx(game, root, doc) {
         // Scripted level opening: reposition one EXISTING enemy before play,
         // rather than spawning a dummy or giving the player free hits.
         const scout=enemies[0];
+        if(activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true&&
+           Array.isArray(game.map?.spawns?.[scout.team])) {
+          const secondary=chooseFirstEncounterSpot({
+            player:p,world:game.world,nav:game.nav,actors:game.actors,
+            distances:[14,13,12]
+          });
+          const authored=cfTrainingRespawnSpots(spot,secondary);
+          if(authored.length){
+            originalEnemySpawns=game.map.spawns[scout.team];
+            trainingSpawnTeam=scout.team;
+            game.map.spawns[scout.team]=authored;
+          }
+        }
         scout.spawn({x:spot.x,z:spot.z,yaw:spot.yaw});
         scout.onSpawn?.();
         // Hold the first readable sight line briefly; never grant fake hits.
@@ -523,12 +786,13 @@ export function createFpsMobileUx(game, root, doc) {
         scout.protectT=0;
         // Allow new players several *simulation seconds* to recognize, aim
         // and shoot. Afterward the standard Bot can shoot normally.
-        scout.readyAt=Math.max(scout.readyAt,game.time+(activeChallenge?.elite===true?5:13));
+        scout.readyAt=Math.max(scout.readyAt,game.time+(activeChallenge?.elite===true?4:13));
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
-        scout.__mobileTrainingHoldUntil=game.time+(activeChallenge?.elite===true?(sniper?7:3):sniper?20:7);
-        return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance};
+        scout.__mobileTrainingHoldUntil=game.time+cfScoutHoldSeconds(activeChallenge);
+        return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance,
+          initialVisibleSpot:[spot.x,spot.z]};
       }
     }
     for(const bot of enemies) {
@@ -541,12 +805,24 @@ export function createFpsMobileUx(game, root, doc) {
     return {path:false,trainingScout:false};
   }
   function findRoute() {
-    const p=game.player, dest=firstEncounterDestination(p?.team);
+    const p=game.player;
+    // New players should RECOVER the proven first-shot sightline instead of
+    // blindly charging a remembered enemy's position through container walls.
+    // Both coordinates are genuinely observed player history, never hidden
+    // enemy world positions. Expert players still pursue sightings directly.
+    const follow=activeChallenge?.drill==='reposition'&&drill?.stage===2;
+    const observedShotLane=follow&&activeChallenge?.elite!==true&&firstHitSpot
+      ? [firstHitSpot.x,firstHitSpot.z] : null;
+    const known=follow?lastVisibleEnemy:null;
+    const dest=observedShotLane||
+      (known?[known.x,known.z]:firstEncounterDestination(p?.team));
     if(!p || !dest || !game.nav?.findPath) return null;
     const path=game.nav.findPath(p.pos.x,p.pos.z,dest[0],dest[1]);
-    if(!Array.isArray(path) || path.length<2)return null;
+    if(!Array.isArray(path)||path.length<2)
+      return observedShotLane||null;
+    const minStep=observedShotLane?0.6:2.2;
     return path.find((pt,i)=>i>0 && Array.isArray(pt) &&
-      Math.hypot(pt[0]-p.pos.x,pt[1]-p.pos.z)>2.2) || dest;
+      Math.hypot(pt[0]-p.pos.x,pt[1]-p.pos.z)>minStep) || dest;
   }
   function applyBalance(elapsed) {
     const p = game.player;
@@ -558,15 +834,19 @@ export function createFpsMobileUx(game, root, doc) {
     // before a novice player gets a first encounter.
     for (const actor of game.actors || []) {
       if (!actor || actor.isPlayer || !actor.diff) continue;
+      let stabilized=false;
       if(mobileScoutHoldExpired(actor,game.time)) {
         actor.__mobileTrainingScout=false;
         actor.__mobileSniperScout=false;
         actor.role='rush';
         actor.pickGoal?.();
+      } else {
+        stabilized=cfStabilizeNoviceScout(actor,activeChallenge);
       }
       // Only opponents gain expert reaction and aim: allies cannot carry the mission.
       const profile=expertProfile&&actor.team!==p.team ? expertProfile : normalProfile;
-      actor.diff = {...profile, react: [...profile.react]};
+      actor.diff = {...profile,strafe:cfNoviceScoutStrafe(profile,stabilized),
+        react:[...profile.react]};
       actor.recoilControl = profile.ctrl;
     }
   }
@@ -574,7 +854,11 @@ export function createFpsMobileUx(game, root, doc) {
   function nudgeAim(forceFiring = false) {
     if(activeChallenge?.elite===true)return;
     const p = game.player, cam = game.renderer?.camera;
-    const simple = activeChallenge?.kind==='hits' && p?.weapon?.id==='m4a1';
+    // After the tutorial hit we stop automatic shooting and idle aim snaps.
+    // A small native sight correction remains ONLY while the user holds fire,
+    // avoiding the abrupt aim-feel cliff common on mobile FPS.
+    const simple=cfAutoFireEligible(activeChallenge,p?.stats?.hits||0) &&
+      p?.weapon?.id==='m4a1';
     if (!p?.alive || !game.playing || game.paused || !cam ||
         !(forceFiring || p.touch?.fire || (simple&&playerEngaged))) return;
     const sniper = p.weapon?.def?.type === 'sniper';
@@ -591,8 +875,10 @@ export function createFpsMobileUx(game, root, doc) {
       const errYaw = Math.atan2(Math.sin(trueYaw-p.yaw), Math.cos(trueYaw-p.yaw));
       const errPitch = Math.atan2(dir.y, Math.hypot(dir.x, dir.z)) - p.pitch;
       const aim = mobileAimCorrection({
-        yawError: errYaw, pitchError: errPitch, distance, visible: true,
-        firing: true, sniperReady: ready
+        yawError: errYaw,pitchError: errPitch,distance,visible:true,
+        firing:!!(forceFiring||p.touch?.fire||(simple&&playerEngaged)),
+        sniperReady:ready,
+        training:activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true
       });
       if (!aim.yaw && !aim.pitch) continue;
       const hit = game.world.raycast(eye.x, eye.y, eye.z,
@@ -608,10 +894,40 @@ export function createFpsMobileUx(game, root, doc) {
   }
 
   function updateAutoFire() {
-    const p=game.player, actor=game.aimTarget;
-    const simple=cfAutoFireEligible(activeChallenge);
+    const p=game.player;
+    const simple=cfAutoFireEligible(activeChallenge,p?.stats?.hits||0);
+    let actor=game.aimTarget;
+    // The pinned renderer's exact hitbox ray may be null even when the enemy
+    // has a genuinely visible, LOS-checked HUD marker directly ahead.
+    // First-hit assistance can select that already seen actor in a narrow cone.
+    // Native M4 bullets, impact physics and hit counters remain untouched.
+    if(simple&&p?.alive&&playerEngaged&&
+       (!actor?.alive||actor.team===p.team)){
+      const cam=game.renderer?.camera,world=game.world;
+      if(cam&&world){
+        const eye=p.eye(cam.position.clone());
+        let closest=Infinity;
+        for(const [candidate,marker] of markers){
+          if(marker.hidden||!candidate?.alive||candidate.team===p.team||
+             !candidate.soldier)continue;
+          const dir=candidate.soldier.chestWorld(eye.clone()).sub(eye);
+          const distance=dir.length();
+          if(!(distance>1&&distance<=27))continue;
+          const blocked=!!world.raycast(eye.x,eye.y,eye.z,
+            dir.x/distance,dir.y/distance,dir.z/distance,
+            Math.max(0,distance-0.18),'sight');
+          const yaw=Math.atan2(-dir.x,-dir.z),pitch=Math.atan2(dir.y,Math.hypot(dir.x,dir.z));
+          const yawError=Math.atan2(Math.sin(yaw-p.yaw),Math.cos(yaw-p.yaw));
+          const pitchError=pitch-p.pitch;
+          if(!cfIntroAssistCandidate({side:teamSide(p.team,candidate.team),
+             alive:true,visible:true,blocked,distance,yawError,pitchError}))continue;
+          const score=Math.abs(yawError)+Math.abs(pitchError);
+          if(score<closest){closest=score;actor=candidate;}
+        }
+      }
+    }
     if (!simple || !p?.alive || !game.playing || game.paused || !playerEngaged) {
-      if (simple && p) p.mouse.l=false;
+      if (p && (simple || autoFireActive)) p.mouse.l=false;
       autoAimActor=null;autoFireActive=false;
       return;
     }
@@ -646,7 +962,7 @@ export function createFpsMobileUx(game, root, doc) {
     const side = p?.alive && actor?.alive ? teamSide(p.team, actor.team) : 'unknown';
     const label = side === 'ally' ? '◆ 友军' : side === 'enemy'
       ? activeChallenge?.kind==='hits'
-        ? (cfAutoFireEligible(activeChallenge) ? '▼ 敌方目标' : '▼ 点击开火')
+        ? (cfAutoFireEligible(activeChallenge,p?.stats?.hits||0) ? '▼ 敌方目标' : '▼ 点击开火')
         : '▼ 敌方目标'
       : '';
     html.dataset.fpsAimSide = side;
@@ -659,6 +975,7 @@ export function createFpsMobileUx(game, root, doc) {
   }
 
   function clearMarkers() {
+    visibleAimCoach='';
     for (const el of markers.values()) el.hidden = true;
   }
 
@@ -666,6 +983,8 @@ export function createFpsMobileUx(game, root, doc) {
     const p = game.player, cam = game.renderer?.camera;
     if (!p?.alive || !cam || !game.world) { clearMarkers(); return; }
     const shown = new Set();
+    visibleAimCoach='';
+    let closestAim=Infinity;
     for (const actor of game.actors || []) {
       if (teamSide(p.team, actor.team) !== 'enemy' || !actor.alive || !actor.soldier) continue;
       // A projected head location is not enough: an obstruction ray is required.
@@ -690,6 +1009,17 @@ export function createFpsMobileUx(game, root, doc) {
         projected=pos;break;
       }
       if(!projected)continue;
+      if(activeChallenge?.drill==='reposition'&&drill?.stage===2){
+        const delta=Math.hypot(projected.x,projected.y);
+        if(delta<closestAim){
+          closestAim=delta;
+          visibleAimCoach=cfVisibleAimCoach(projected.x,projected.y);
+        }
+      }
+      // The projected marker passed both camera-frustum and LOS raycast tests:
+      // remembering this location is equivalent to a real player's sighting.
+      if(activeChallenge?.drill==='reposition')
+        lastVisibleEnemy={x:actor.pos.x,z:actor.pos.z,at:game.time};
       let el = markers.get(actor);
       if (!el) {
         el = doc.createElement('div');
@@ -714,11 +1044,22 @@ export function createFpsMobileUx(game, root, doc) {
 
   return {
     distanceMeters() { return +walkedMeters.toFixed(2); },
+    drillMetrics() {
+      return drill?{drillStage:drill.stage,drillFirstHit:drill.firstHit,
+        drillTravel:drill.distance,drillFollowUpHits:drill.follow}:{};
+    },
     onSelect(challenge) { updateTutorial(challenge); },
     onStart(challenge) {
       activeChallenge = challenge || null;
+      if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
+        game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
+      originalEnemySpawns=null;trainingSpawnTeam=null;
+      drill=cfAdvanceDrill(activeChallenge);
+      drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
-      autoAimActor=null;autoAimSince=0;autoFireActive=false;playerEngaged=false;aimTouchStarts.clear();
+      autoAimActor=null;autoAimSince=0;autoFireActive=false;
+      playerEngaged=false;aimTouchStarts.clear();fireDragTouches.clear();
+      releaseNativeFire(true);
       guide.textContent = activeChallenge?.elite===true
         ? '⚡ 精英：自己瞄准开火'
         : activeChallenge?.kind === 'kills'
@@ -728,7 +1069,7 @@ export function createFpsMobileUx(game, root, doc) {
           : '前方有目标 · 右手瞄准';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
-      routePath=null;routeLastAt=0;
+      routePath=null;routeLastAt=0;lastVisibleEnemy=null;firstHitSpot=null;
       nextUpdate = 0;
       nextBalanceAt = 0;
       lastHits = game.player?.stats?.hits || 0;
@@ -749,6 +1090,9 @@ export function createFpsMobileUx(game, root, doc) {
       game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null,
         challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
       const rendezvous=prepareFirstEncounter();
+      if(rendezvous.trainingScout&&Array.isArray(rendezvous.initialVisibleSpot))
+        lastVisibleEnemy={x:rendezvous.initialVisibleSpot[0],
+          z:rendezvous.initialVisibleSpot[1],at:game.time};
       game.__mobileBalanceReview.firstRendezvousPath=rendezvous.path;
       game.__mobileBalanceReview.trainingScout=rendezvous.trainingScout;
        game.__mobileBalanceReview.sniperScout=rendezvous.sniperScout===true;
@@ -782,8 +1126,24 @@ export function createFpsMobileUx(game, root, doc) {
         }
         previousPosition = { x:p.pos.x, z:p.pos.z };
       } else previousPosition = null;
+      if(active&&activeChallenge?.drill==='reposition'&&p) {
+        const updated=cfAdvanceDrill(activeChallenge,drill,
+          {hits:p.stats?.hits||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z});
+        if(updated?.stage!==drill?.stage) {
+          if(drill?.stage===0&&updated?.stage===1)
+            firstHitSpot={x:p.pos.x,z:p.pos.z};
+          drillStageAt=Math.max(0,(Number(game.time)||0)-startedGameSeconds);
+          guide.textContent=updated?.stage===1
+            ? '↔ 首枪命中 · 横向换位 '+Math.floor(updated.distance)+'/'+activeChallenge.minTravel+'m'
+            : '◎ 换位完成 · 现在手动开火';
+        }
+        drill=updated;
+      }
       if (!active) {
         if (activeChallenge?.kind==='hits') p.mouse.l=false;
+        if(fireDragTouches.size>0) {
+          releaseNativeFire(true);fireDragTouches.clear();
+        }
         autoAimActor=null;autoFireActive=false;
         target.hidden = true; guide.hidden = true; clearMarkers(); return;
       }
@@ -802,18 +1162,33 @@ export function createFpsMobileUx(game, root, doc) {
         applyBalance(Math.max(0,(Number(game.time) || 0)-startedGameSeconds));
       }
       if(now >= routeLastAt) {
-        routeLastAt=now+1500;
-        routePath=findRoute();
+        routeLastAt=now+900;
+        if(activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
+          const deaths=p.stats?.d||0;
+          if(!flankGoal||deaths!==flankDeaths){
+            flankDeaths=deaths;
+            flankGoal=cfFlankWaypoint({player:p,world:game.world,nav:game.nav,
+              minDistance:Math.max(2,activeChallenge.minTravel-(drill.distance||0))});
+          }
+          const path=flankGoal&&game.nav?.findPath?.(
+            p.pos.x,p.pos.z,flankGoal.x,flankGoal.z);
+          routePath=Array.isArray(path)&&path.length>1
+            ? (path.find((pt,i)=>i>0&&Math.hypot(pt[0]-p.pos.x,pt[1]-p.pos.z)>2)
+              || [flankGoal.x,flankGoal.z])
+            : null;
+        } else {
+          flankGoal=null;routePath=findRoute();
+        }
       }
       if (now >= nextUpdate) {
-        nextUpdate = now + 120;
+        nextUpdate = now + 160;
         recolorNativeAllies();
         updateEnemyMarkers();
         nudgeAim();
         const hits = p.stats?.hits || 0;
         if (hits > lastHits) {
           // This is driven solely by native player.stats.hits, not aiming or shooting.
-          const text = cfHitCue(activeChallenge, hits, hits-lastHits);
+          const text = cfHitCue(activeChallenge, hits, hits-lastHits, drill);
           if (text) {
             hitCue.textContent = text;
             hitCue.hidden = false;
@@ -822,7 +1197,25 @@ export function createFpsMobileUx(game, root, doc) {
         }
         lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
-        if (hits === 0 && elapsed >= 5) {
+        if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
+          const turn=routeArrow(p,routePath);
+          guide.textContent=(turn?.symbol||'↔')+' 换位 '+
+            Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m'+
+            (turn?' · 沿可走路线':' · 左右横移');
+        } else if(activeChallenge?.drill==='reposition'&&drill?.stage===2) {
+          const turn=!seen?routeArrow(p,routePath,
+            firstHitSpot&&activeChallenge.elite!==true?0.6:2.2):null;
+          const reAim=!turn&&lastVisibleEnemy
+            ? cfLastSeenLookCue(p,lastVisibleEnemy) : null;
+          guide.textContent=seen
+            ? (visibleAimCoach||'◎ 对准红色目标按开火')+
+              ' · '+drill.follow+'/'+activeChallenge.target
+            : turn
+              ? '🚶'+turn.symbol+' 左摇杆移动回首枪射击位 · '+drill.follow+'/'+activeChallenge.target
+              : reAim
+                ? reAim+' · '+drill.follow+'/'+activeChallenge.target
+                : '↔ 探身寻找敌人 · '+drill.follow+'/'+activeChallenge.target;
+        } else if (hits === 0 && elapsed >= 5) {
           const turn=routeArrow(p,routePath);
           guide.textContent = seen
             ? activeChallenge?.kind==='hits'
@@ -835,9 +1228,15 @@ export function createFpsMobileUx(game, root, doc) {
       // Combat stays legible: hint only on opening, or briefly when the
       // player has not yet found a target. It never sits on the reticle.
       guide.hidden = !p.alive ||
-        (p.stats?.hits ? elapsed > 5 : elapsed > 16 && elapsed % 12 > 3);
+        (activeChallenge?.drill==='reposition'&&drill?.stage>0
+          ? drill.stage===2&&drill.follow>0&&elapsed-drillStageAt>7&&
+            [...markers.values()].some(el=>!el.hidden)
+          : (p.stats?.hits ? elapsed>5 : elapsed>16&&elapsed%12>3));
     },
     destroy() {
+      if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
+        game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
+      originalEnemySpawns=null;trainingSpawnTeam=null;
       if(activeChallenge?.kind==='hits'&&game.player)game.player.mouse.l=false;
       doc.removeEventListener('touchstart',onTouchStart,true);
       doc.removeEventListener('touchmove',onTouchMove,true);
@@ -845,12 +1244,13 @@ export function createFpsMobileUx(game, root, doc) {
       doc.removeEventListener('touchcancel',onTouchEnd,true);
       doc.removeEventListener('mousedown',stopCompatibilityMouse,true);
       doc.removeEventListener('mouseup',stopCompatibilityMouse,true);
-      aimTouchStarts.clear();
+      aimTouchStarts.clear();fireDragTouches.clear();releaseNativeFire(true);
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
+        button.removeAttribute('aria-label');
       }
       for (const el of markers.values()) el.remove();
       markers.clear();

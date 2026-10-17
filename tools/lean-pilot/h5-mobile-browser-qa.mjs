@@ -9,13 +9,25 @@ const ROOT=fileURLToPath(new URL('../../',import.meta.url));
 export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
  const{run,root,game}=await loadRun(base,runId),hash=await buildHash(game),server=await serveRun(base,runId,0);
  const url='http://127.0.0.1:'+server.address().port,checks=[],artifacts=[],errors=[],actions=[];
- const fpsThreatTrace=[],fpsExtendedChecks=[]; let fpsScriptSteps=0,fpsEnemySeenCount=0,fpsRouteTurns=0,fpsContactScreenshot=false;
+ const fpsThreatTrace=[],fpsExtendedChecks=[];
+ let fpsScriptSteps=0,fpsEnemySeenCount=0,fpsRouteTurns=0,fpsContactScreenshot=false;
+ let fpsMoveLast=-1,fpsMoveStall=0,fpsRepositionScreenshot=false,fpsManualScreenshot=false;
+ let fpsOneThumbAudit=null;
  const readFpsThreat = async () => page.evaluate(() => {
    const g=window.__H5NativeGame, p=g?.player;
    if(!g||!p)return null;
    const opponents=g.actors.filter(a=>a.team!==p.team);
+   const badge=[...document.querySelectorAll('.mk-fps-enemy')]
+     .find(el=>!el.hidden&&getComputedStyle(el).display!=='none');
+   const rect=badge?.getBoundingClientRect();
    return {
      gameTime:+g.time.toFixed(1),
+     yaw:+p.yaw.toFixed(3),pitch:+p.pitch.toFixed(3),
+     handFire:p.touch?.fire===true,
+     onscreenEnemyPixel:rect?{
+       x:Math.round(rect.left+rect.width/2),
+       y:Math.round(rect.bottom+22)
+     }:null,
      challenge:document.getElementById('mobile-kit')?.dataset.challenge,
      shots:p.stats.shots,hits:p.stats.hits,kills:p.stats.k,deaths:p.stats.d,
      hp:Math.max(0,Math.round(p.hp)),alive:p.alive,
@@ -32,6 +44,7 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      configuredTeamSize:g.opts.size,
      autoFireActivations:g.__mobileBalanceReview?.autoFireActivations??0,
      playerEngaged:g.__mobileBalanceReview?.playerEngaged??false,
+     visibleObjective:document.getElementById('mk-status')?.textContent||'',
      hintVisible:(()=>{const e=document.querySelector('#mk-fps-guide');return e&&getComputedStyle(e).display!=='none'?e.textContent:'';})()
    };
  }).catch(()=>null);
@@ -54,10 +67,85 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
    } finally { await cdp.detach(); }
  };
+ // The only inputs are touch coordinates derived from the visible badge.
+ const fireDragToward=async(dx,dy)=>{
+   const box=await page.locator('#touch .btn[data-mk-action="fire"]').boundingBox();
+   if(!box)return null;
+   const x=box.x+box.width/2,y=box.y+box.height/2;
+   // A voluntary ~25px aim swipe remains genuine thumb input even if the
+   // screen badge is only a few pixels off centre. It gives the camera move
+   // a measurable angle, then normal human swipes can re-centre the reticle.
+   const signedMin=v=>Math.abs(v)<25?(v<0?-25:25):v;
+   const mx=Math.max(12-x,Math.min(viewport.width-12-x,signedMin(dx)));
+   const my=Math.max(12-y,Math.min(viewport.height-12-y,dy));
+   const read=()=>page.evaluate(()=>{
+     const g=window.__H5NativeGame,p=g?.player;
+     return {yaw:p?.yaw??null,pitch:p?.pitch??null,
+       shots:p?.stats?.shots??0,alive:p?.alive??false,
+       fire:p?.touch?.fire??false,phase:document.querySelector('#mobile-kit')?.dataset.phase};
+   });
+   const before=await read(),cdp=await context.newCDPSession(page);
+   let during=null;
+   try{
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',
+       touchPoints:[{x,y,id:88}]});
+     for(let n=1;n<=4;n++){
+       await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',
+         touchPoints:[{x:x+mx*n/4,y:y+my*n/4,id:88}]});
+       await page.waitForTimeout(95);
+     }
+     during=await read();
+     await page.waitForTimeout(500);
+   }finally{
+     await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]}).catch(()=>{});
+     await cdp.detach();
+   }
+   const after=await read();
+   const audit={before,during,after,delta:{x:mx,y:my},
+     rotated:[during,after].some(v=>v&&
+       ((Number.isFinite(before.yaw)&&Number.isFinite(v.yaw)&&
+          Math.abs(v.yaw-before.yaw)>.012)||
+        (Number.isFinite(before.pitch)&&Number.isFinite(v.pitch)&&
+          Math.abs(v.pitch-before.pitch)>.012))),
+     fired:[during,after].some(v=>v&&v.shots>before.shots)};
+   actions.push({atMs:Date.now()-started,input:'native-one-thumb-fire-drag',detail:audit});
+   return audit;
+ };
  const coachedFpsStep=async () => {
    fpsScriptSteps++;
+   // Coach reads only the ACTUAL objective text on screen, never bot
+   // coordinates, unrendered mission state, player world path or stage flags.
+   const objective=(await page.locator('#mk-status').textContent())||'';
+   const shifting=/↔ 换位\s*(\d+)\/(\d+)m/u.exec(objective);
+   if(shifting){
+     const walked=Number(shifting[1]);
+     fpsMoveStall=walked<=fpsMoveLast?fpsMoveStall+1:0;
+     fpsMoveLast=walked;
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     if(!pad)return;
+     const origin={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
+     // Follow ONLY the displayed flank arrow; this is accessible to an
+     // actual player and comes from nav/collision-checked original geometry.
+     const shown=await page.locator('#mk-fps-guide').textContent()||'';
+     const arrow=shown.trim()[0];
+     const recommended=arrow==='←'?[-53,0]:
+       arrow==='→'?[53,0]:arrow==='↑'?[0,-53]:[53,0];
+     // If progress stalled for multiple actual 2s holds, explore another
+     // lateral direction without privileged native coordinates.
+     const motion=fpsMoveStall>=6?[0,53]:
+       fpsMoveStall>=3?[-recommended[0],-recommended[1]]:recommended;
+     await mobileStroke(origin,{x:origin.x+motion[0],y:origin.y+motion[1]},2000,53);
+     if(!fpsRepositionScreenshot){await shot('mobile-v7-reposition');fpsRepositionScreenshot=true;}
+     return;
+   }
+   if(/手动追击/u.test(objective)&&!fpsManualScreenshot){
+     await shot('mobile-v7-manual-followup');fpsManualScreenshot=true;
+   }
+   const manualStage=/手动追击/u.test(objective);
    const aimed=page.locator('#mk-fps-target[data-side="enemy"]');
-   if(await aimed.count()&&await aimed.isVisible()){
+   // After movement the player MUST actively aim and fire. Do not steal a
+   // visible manual-stage opportunity for the initial auto-fire test path.
+   if(!manualStage&&await aimed.count()&&await aimed.isVisible()){
      fpsEnemySeenCount++;
      // Give simple mode time to fire before using the manual fallback.
      const before=await page.evaluate(()=>window.__H5NativeGame?.player?.stats?.shots??0);
@@ -67,30 +155,74 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
      return;
    }
-   const target=page.locator('.mk-fps-enemy:not([hidden])').first();
-   if(await target.count() && await target.isVisible().catch(()=>false)){
+   // A live enemy marker is generated only after camera projection and
+   // native world-geometry LOS checks. Take visibility AND position in ONE
+   // browser evaluation: awaiting two Playwright locator calls separately
+   // loses real visible targets during frequent HUD updates.
+   const visibleBadge=()=>page.evaluate(()=>{
+     for(const el of document.querySelectorAll('.mk-fps-enemy:not([hidden])')){
+       if(getComputedStyle(el).display==='none'||
+          getComputedStyle(el).visibility==='hidden')continue;
+       const r=el.getBoundingClientRect();
+       if(r.width>0&&r.height>0)
+         return {x:r.left+r.width/2,y:r.bottom+22};
+     }
+     return null;
+   });
+   const firstBadge=await visibleBadge();
+   if(firstBadge){
      fpsEnemySeenCount++;
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
-     for(let n=0;n<4;n++){
-       // Enemies may die, enter cover or move out of frame between the
-       // locator check and measurement. A real touch player keeps going;
-       // do not wait 30 seconds for a vanished HUD badge.
-       const rect=await target.boundingBox({timeout:700}).catch(()=>null);
-       if(!rect||!(await target.isVisible().catch(()=>false)))break;
-       const center={x:844/2,y:390/2};
-       const desiredX=rect.x+rect.width/2, desiredY=rect.y+rect.height+22;
-       const dx=Math.max(-75,Math.min(75,(desiredX-center.x)*0.40));
-       const dy=Math.max(-48,Math.min(48,(desiredY-center.y)*0.40));
-       if(Math.abs(dx)+Math.abs(dy)<7)break;
-       await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},230,12+n);
+     if(manualStage&&(!fpsOneThumbAudit?.rotated||!fpsOneThumbAudit?.fired)){
+       const dx=Math.max(-108,Math.min(75,(firstBadge.x-viewport.width/2)*.32));
+       const dy=Math.max(-55,Math.min(55,(firstBadge.y-viewport.height/2)*.38));
+       fpsOneThumbAudit=await fireDragToward(dx,dy);
      }
-     await hold('#touch .btn[data-mk-action="fire"]',1100);
+     for(let n=0;n<7;n++){
+       const marker=await visibleBadge();
+       if(!marker)break;
+       const center={x:viewport.width/2,y:viewport.height/2};
+       const dx=Math.max(-86,Math.min(86,(marker.x-center.x)*.40));
+       const dy=Math.max(-60,Math.min(60,(marker.y-center.y)*.40));
+       if(Math.abs(dx)+Math.abs(dy)<7)break;
+       await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},190,12+n);
+     }
+     await hold('#touch .btn[data-mk-action="fire"]',1050);
+     return;
+   }
+   if(manualStage&&await aimed.count()&&await aimed.isVisible()){
+     // A truly native crosshair can still see a target between transient
+     // badge frames. Use real manual fire, never simulated hit counters.
+     fpsEnemySeenCount++;
+     await hold('#touch .btn[data-mk-action="fire"]',1050);
      return;
    }
    // A real novice can read the screen's route hint, so the script should
    // follow that hint before it tries random blind strafing.
    const guide=page.locator('#mk-fps-guide');
    const guidance=await guide.isVisible()?await guide.textContent():'';
+   if(guidance?.startsWith('🚶')){
+     // The route arrow now explicitly means MOVE on the left joystick.
+     // Do not rotate the right camera thumb for a walking instruction.
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     if(pad){
+       const x=pad.x+pad.width/2,y=pad.y+pad.height/2;
+       const motion=guidance.includes('←')?[-52,0]:
+         guidance.includes('→')?[52,0]:[0,-52];
+       await mobileStroke({x,y},{x:x+motion[0],y:y+motion[1]},1250,76);
+     }
+     return;
+   }
+   if(guidance?.startsWith('↔')){
+     // Sidestep with the actual left joystick when UI says "peek".
+     const pad=await page.locator('#touch .pad').first().boundingBox();
+     if(pad){
+       const start={x:pad.x+pad.width/2,y:pad.y+pad.height/2};
+       const side=fpsScriptSteps%4<2?-48:48;
+       await mobileStroke(start,{x:start.x+side,y:start.y},950,71);
+     }
+     return;
+   }
    if(guidance?.startsWith('←')||guidance?.startsWith('→')){
      const right=guidance.startsWith('→');
      fpsRouteTurns++;
@@ -156,7 +288,8 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      fpsExtendedChecks.push({name:'cf-v6-ready-ui',
        passed:entryMobile.panelFits&&entryMobile.smallFits&&b.cards===3&&b.selected===1&&
          b.autoFireTutorial&&b.allWithinPanel&&b.startHeight>=48&&
-         b.facts.some(x=>/M4A1/.test(x))&&b.facts.some(x=>/3 次/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
+         b.facts.some(x=>/M4A1/.test(x))&&b.facts.some(x=>/3枪/.test(x))&&
+         b.facts.some(x=>/8m/.test(x))&&b.facts.some(x=>/60 s/.test(x)),
        detail:b});
    }
    const startBox=await page.locator('#mk-start').boundingBox();
@@ -206,6 +339,12 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await page.locator('#mk-resume').tap();
      check('mobile-pause-resume',pauseFrozen&&phaseDuringPause==='paused',
        {visiblePaused:phaseDuringPause,clockFrozen:pauseFrozen,checkedBeforeFastBeginnerWin:true});
+     // Verify one-thumb hold-fire+look before the bot can plausibly kill a
+     // novice, independently of whether the later hard 3-hit pursuit wins.
+     // This is an actual visible touch button press, native camera angle
+     // input and native shot counter, not direct player state injection.
+     if(await page.locator('#mobile-kit').getAttribute('data-phase')==='running')
+       fpsOneThumbAudit=await fireDragToward(30,0);
    }
    if(run.theme==='pelican-bike'){
      await hold('[data-code="ArrowLeft"]',1200);await hold('[data-code="ArrowRight"]',1200);
@@ -247,7 +386,10 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        const overlap=visible.some((a,i)=>visible.slice(i+1).some(b=>
          a.left<b.left+b.width && b.left<a.left+a.width &&
          a.top<b.top+b.height && b.top<a.top+a.height));
-       return {actions:nodes,overlap,active:document.documentElement.dataset.fpsActive,
+       const fire=visible.find(n=>n.action==='fire');
+       const fireRightAimRoom=fire?innerWidth-fire.left-fire.width/2:0;
+       return {actions:nodes,overlap,fireRightAimRoom,
+         active:document.documentElement.dataset.fpsActive,
          desktopMenuHidden:getComputedStyle(document.getElementById('menu')).display==='none',
          labelsPresent:!!document.getElementById('mk-fps-target')&&!!document.getElementById('mk-fps-board')};
      });
@@ -291,7 +433,8 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      const earlyCombat = await readFpsThreat();
      if(earlyCombat)fpsThreatTrace.push(earlyCombat);
      const working = shotsAfter > shotsBefore && thumbMotion && !layout.overlap && layout.desktopMenuHidden &&
-       layout.labelsPresent && layout.active === 'true' && layout.actions.every(n=>!n.visible||n.fits) &&
+       layout.labelsPresent && layout.active === 'true' && layout.fireRightAimRoom>=95 &&
+       layout.actions.every(n=>!n.visible||n.fits) &&
        ['fire','jump','reload'].every(a=>layout.actions.some(n=>n.action===a&&n.visible)) &&
        ['duplicate-fire','crouch','switch'].every(a=>layout.actions.some(n=>n.action===a&&!n.visible));
      actions.push({atMs:Date.now()-started,input:'visual-layout-audit',detail:{shotsBefore,shotsAfter,layout,thumbMotion,distance,lookAngle}});
@@ -342,11 +485,26 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        facts.bounds[2]<=facts.viewport[0]&&facts.bounds[3]<=facts.viewport[1];
      fpsExtendedChecks.push({name:'cf-v6-result-ui',
        passed:facts.facts.length===3&&
-         facts.facts[0].includes(String(facts.actualHits)+' / 3')&&
+         /^追击\d+ \/ 3/u.test(facts.facts[0])&&
+         /^换位\d+ \/ 8 m/u.test(facts.facts[1])&&
          facts.phase==='finished'&&!facts.activeGuide&&resultLayout,
        detail:facts});
    }
    await shot('mobile-terminal');
+   if(run.theme==='cf-transport-ship'){
+     const resultOutcome=await page.locator('#mobile-kit').getAttribute('data-outcome');
+     const target=await page.locator('#mk-fps-results').textContent();
+     fpsExtendedChecks.push({name:'cf-v7-native-one-thumb-fire-drag',
+       passed:fpsOneThumbAudit?.rotated===true&&fpsOneThumbAudit?.fired===true,
+       detail:fpsOneThumbAudit??{reason:'No genuinely visible manual-stage target to drag toward'}});
+     fpsExtendedChecks.push({name:'cf-v7-legitimate-multistage-success',
+       passed:phase==='finished'&&resultOutcome==='won'&&
+         /追击3 \/ 3/u.test(target)&&/换位8 \/ 8 m/u.test(target),
+       detail:{phase,outcome:resultOutcome,missionResults:target,
+         reachedMoveStage:fpsRepositionScreenshot,
+         reachedManualStage:fpsManualScreenshot,
+         visualInputSteps:fpsScriptSteps}});
+   }
    const terminal={phase,visibleHeading:await page.locator('#mk-heading').innerText(),score,wallMs:Date.now()-started};
    if(run.theme==='cf-transport-ship'){
      terminal.fpsThreatSummary={
