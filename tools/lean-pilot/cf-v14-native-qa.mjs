@@ -696,6 +696,31 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // Real native shot followed by genuine failure from missing the walking
     // objective. No score, actor health, win/loss or position is edited.
     const survivalStart=await enter('survive');
+    const beforeCoverMove=await inspect();
+    const coverOptions=await page.evaluate(()=>{
+      const g=window.__H5NativeGame;
+      return {state:g?.__mkCoverV20,
+        choices:['left','right'].map(id=>({
+          id,disabled:document.getElementById('mk-cover-'+id)?.disabled
+        }))};
+    });
+    check('v20-third-stage-uses-original-nav-and-cover-choices',
+      coverOptions.state?.enabled===true&&
+      coverOptions.state?.barriers>=1&&coverOptions.state?.available>=1,
+      coverOptions);
+    const legal=coverOptions.choices.find(c=>c.disabled===false);
+    if(legal){
+      await page.locator('#mk-cover-'+legal.id).tap();
+      await sleep(1500);
+    }
+    const afterCoverMove=await inspect();
+    const actuallyMoved=Math.hypot(
+      afterCoverMove.player.x-beforeCoverMove.player.x,
+      afterCoverMove.player.z-beforeCoverMove.player.z);
+    check('v20-cover-choice-moves-actual-player-through-native-physics',
+      !!legal&&actuallyMoved>.18&&actuallyMoved<12&&
+      afterCoverMove.route?.coverV20?.routeMoves>=1,
+      {meters:actuallyMoved,state:afterCoverMove.route?.coverV20});
     await button('#touch .btn[data-mk-action="fire"]',440,82);
     // Real game simulation, not wall time, determines the 45-second mission.
     // Low FPS software WebGL may need much more wall time. Sample its native
