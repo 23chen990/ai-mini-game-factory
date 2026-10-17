@@ -462,6 +462,35 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
  * drive that SAME native Player.touch state. Never fabricate bullets or hits.
  * A held touch must not repeatedly restart firePressed after Player.update.
  */
+/** Cancel orphaned mobile fingers when WebKit/Chrome interrupts an input sequence.
+ * Only input state is affected; bullets, health, movement position and stats remain native. */
+export function cfResetMobileTouch(player,aimTouches,fireTouches) {
+  let changed=false;
+  for(const map of [aimTouches,fireTouches]){
+    if(map?.size){map.clear();changed=true;}
+  }
+  if(!player)return changed;
+  const t=player.touch;
+  if(t){
+    for(const key of ['fire','firePressed','jump']){
+      if(t[key]!==false){t[key]=false;changed=true;}
+    }
+    for(const key of ['mx','mz']){
+      if(t[key]!==0){t[key]=0;changed=true;}
+    }
+  }
+  if(player.touchLook){
+    for(const key of ['x','y']){
+      if(player.touchLook[key]!==0){player.touchLook[key]=0;changed=true;}
+    }
+  }
+  if(player.mouse){
+    for(const key of ['l','r','lp','rp']){
+      if(player.mouse[key]!==false){player.mouse[key]=false;changed=true;}
+    }
+  }
+  return changed;
+}
 export function cfBeginTouchFire(touch) {
   if(!touch)return false;
   if(touch.fire!==true)touch.firePressed=true;
@@ -877,6 +906,9 @@ export function createFpsMobileUx(game, root, doc) {
       }
     }
   };
+  const resetAllTouches=()=>cfResetMobileTouch(game.player,aimTouchStarts,fireDragTouches);
+  const onLifecycleInterrupt=()=>resetAllTouches();
+  const onVisibilityInterrupt=()=>{if(doc.hidden)resetAllTouches();};
   const releaseNativeFire=(cancelPending=false)=>{
     cfReleaseTouchFire(game.player?.touch,cancelPending);
   };
@@ -886,6 +918,12 @@ export function createFpsMobileUx(game, root, doc) {
     for(const t of e.changedTouches||[]){
       aimTouchStarts.delete(t.identifier);
       fireDragTouches.delete(t.identifier);
+    }
+    if(e.type==='touchcancel'){
+      // A cancelled gesture may involve only one finger while others remain
+      // down. Drop all pending native inputs rather than inherit stuck movement.
+      resetAllTouches();
+      return;
     }
     // The upstream button listens to touchend, not touchcancel.
     // Clear the native fire flag on either ending path, even after a dragged
@@ -910,6 +948,9 @@ export function createFpsMobileUx(game, root, doc) {
   doc.addEventListener('touchmove',onTouchMove,{capture:true,passive:true});
   doc.addEventListener('touchend',onTouchEnd,{capture:true,passive:true});
   doc.addEventListener('touchcancel',onTouchEnd,{capture:true,passive:true});
+  doc.defaultView?.addEventListener('blur',onLifecycleInterrupt);
+  doc.defaultView?.addEventListener('pagehide',onLifecycleInterrupt);
+  doc.addEventListener('visibilitychange',onVisibilityInterrupt);
   const buttons = touchControls ? [...touchControls.querySelectorAll('.btn')] : [];
   for (const [index, button] of buttons.entries()) {
     const action = mobileTouchAction(index);
@@ -1408,8 +1449,7 @@ export function createFpsMobileUx(game, root, doc) {
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
-      playerEngaged=false;aimTouchStarts.clear();fireDragTouches.clear();
-      releaseNativeFire(true);
+      playerEngaged=false;resetAllTouches();
       guide.textContent = activeChallenge?.elite===true
         ? '⚡ 精英：自己瞄准开火'
         : activeChallenge?.kind === 'kills'
@@ -1553,9 +1593,7 @@ export function createFpsMobileUx(game, root, doc) {
       }
       if (!active) {
         if (activeChallenge?.kind==='hits') p.mouse.l=false;
-        if(fireDragTouches.size>0) {
-          releaseNativeFire(true);fireDragTouches.clear();
-        }
+        resetAllTouches();
         autoAimActor=null;autoFireActive=false;
         target.hidden = true; guide.hidden = true; defensePin.hidden=true; clearMarkers(); return;
       }
@@ -1714,9 +1752,12 @@ export function createFpsMobileUx(game, root, doc) {
       doc.removeEventListener('touchmove',onTouchMove,true);
       doc.removeEventListener('touchend',onTouchEnd,true);
       doc.removeEventListener('touchcancel',onTouchEnd,true);
+      doc.defaultView?.removeEventListener('blur',onLifecycleInterrupt);
+      doc.defaultView?.removeEventListener('pagehide',onLifecycleInterrupt);
+      doc.removeEventListener('visibilitychange',onVisibilityInterrupt);
       doc.removeEventListener('mousedown',stopCompatibilityMouse,true);
       doc.removeEventListener('mouseup',stopCompatibilityMouse,true);
-      aimTouchStarts.clear();fireDragTouches.clear();releaseNativeFire(true);
+      resetAllTouches();
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); defensePin.remove(); tutorial.remove();
