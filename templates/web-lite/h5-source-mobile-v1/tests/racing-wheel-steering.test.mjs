@@ -47,3 +47,12 @@ test('production UI exposes one wheel and no QA mode selector',async()=>{
  assert.match(css,/race-wheel-spoke/);assert.match(css,/data-race-action="drift"/);
  assert.doesNotMatch(ui,/createInternalRaceController|race-control-mode/);
 });
+
+test('rotary wheel accepts held countdown input and exports only timing aggregates',async()=>{
+ const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+ assert.match(ui,/phase !== 'race' && phase !== 'countdown'/);
+ assert.match(ui,/classList\.toggle\('disabled',!racing\)/);
+ assert.match(ui,/touchHealth\.sample\(performance\.now\(\)\)/);
+ assert.match(ui,/phoneInput:touchHealth\.snapshot\(\)/);
+ assert.doesNotMatch(ui,/race-control-mode/);
+});

@@ -158,3 +158,18 @@ test('manual graphics cannot become unsteerable at sustained 14 FPS',()=>{
   assert.equal(downgraded,'mid','emergency one-level transient downgrade');
   assert.equal(monitor.manual,true,'do not rewrite stored preference');
 });
+
+test('input diagnostics are aggregate-only and do not claim display latency',()=>{
+ const Metric=need('RaceInputHealth'),m=new Metric();
+ m.touch(100,0,'press');m.touch(107,.8,'move');m.sample(114);
+ m.touch(122,-.8,'move');m.sample(131);
+ m.touch(140,0,'cancel');m.sample(144);
+ m.frame(.016);m.frame(.06);
+ const q=m.snapshot();
+ assert.equal(q.touchEvents,4);assert.equal(q.touchMoves,2);
+ assert.equal(q.touchCancels,1);assert.equal(q.directionReversals,1);
+ assert.ok(q.inputSampleMsP95>=9 && q.inputSampleMsP95<=15);
+ assert.equal(q.framesOver50ms,1);
+ assert.equal(q.timingScope,'pointer-event-to-native-input-sample-and-overlay-RAF-only');
+ assert.ok(!('coordinates' in q)&&!('pointerId' in q)&&!('userId' in q));
+});

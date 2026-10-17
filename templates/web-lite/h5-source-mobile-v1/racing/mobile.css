@@ -419,3 +419,6 @@ html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-guide p{fon
   html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-panel{width:min(830px,calc(100% - 72px))}
 }
 html[data-race-platform="touch"] #race-joystick{max-height:43vh}
+
+/* Status text under the nitro/item button cannot catch the other thumb. */
+#race-kit #race-controls #race-action-pad button::after{pointer-events:none}
