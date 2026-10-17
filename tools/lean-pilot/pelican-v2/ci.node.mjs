@@ -17,8 +17,13 @@ test('route text stays inside its card and adjacent rows never overlap',()=>{
  assert.equal(routePresentationPassed({...r,rows:[{...r.rows[0],contents:[{x:68,y:195,right:244,bottom:290}]},r.rows[1]]}),false,'Inherited fixed48px height lets title and mastery overflow');
 });
 test('compact mastery stays in the instrument area with all five readable goals',()=>{
- const good={running:true,buttons:[{x:14,y:484,width:90,height:66,right:104,bottom:550},{x:114,y:484,width:90,height:66,right:204,bottom:550},{x:214,y:484,width:90,height:66,right:304,bottom:550}],font:12,bar:{x:12,y:122,right:308,bottom:164},goalBottom:118,radarLabel:{y:174},goalFonts:[12,12,12,12,12],bodyWidth:320};
+ const good={running:true,buttons:[{x:14,y:484,width:72,height:66,right:86,bottom:550},{x:94,y:484,width:72,height:66,right:166,bottom:550},{x:218,y:484,width:88,height:66,right:306,bottom:550}],font:12,bar:{x:12,y:122,right:308,bottom:164},goalBottom:118,radarLabel:{y:174},goalFonts:[12,12,12,12,12],bodyWidth:320};
  assert.equal(compactPresentationPassed(good),true);
+ assert.equal(compactPresentationPassed({...good,buttons:[
+  {x:14,y:484,width:90,height:66,right:104,bottom:550},
+  {x:114,y:484,width:90,height:66,right:204,bottom:550},
+  {x:214,y:484,width:90,height:66,right:304,bottom:550}
+ ]}),false,'three evenly spaced keys force the left thumb too far right for countersteer');
  assert.equal(compactPresentationPassed({...good,bar:{...good.bar,y:412,bottom:470}}),false,'Old compact panel hides the rider');
  assert.equal(compactPresentationPassed({...good,bar:{...good.bar,y:110}}),false,'Do not fix rider clipping by hiding primary goals');
  assert.equal(compactPresentationPassed({...good,goalFonts:[12,12,12,12]}),false,'No omitted time or no-hit criterion');
