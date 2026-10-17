@@ -215,13 +215,13 @@ export function installCountdownQualitySafety(game, {now = () => globalThis.perf
       typeof now !== 'function' || countdownQualityInstalled.has(game)) return false;
   const monitor = new QualityMonitor();
   monitor.manual = true; // Same severe-only exception used for saved preferences.
-  let previous = null, lowStalls = 0;
+  let previous = null;
   const nativeRender = game.render;
   game.render = function(...args) {
     const active = this.state === 'countdown' && !globalThis.document?.hidden;
     const time = now();
     if (!active || !Number.isFinite(time)) {
-      previous = null;lowStalls = 0;
+      previous = null;
       monitor.consecutiveStalls = 0;
       monitor.severeManualLag = 0;
     } else {
@@ -232,22 +232,7 @@ export function installCountdownQualitySafety(game, {now = () => globalThis.perf
         if (lower) {
           this.settings.quality = lower;
           this.setupQuality();
-          lowStalls = 0;
-        } else if (this.settings.quality === 'low') {
-          // Low tier can still exceed a weak GPU's pixel budget. Only four
-          // consecutive >250ms render intervals justify reducing the 3D buffer.
-          // HUD CSS pixels, camera aspect, input coordinates and physics stay put.
-          lowStalls = elapsed > .25 ? lowStalls + 1 : 0;
-          if (lowStalls >= 4) {
-            lowStalls = 0;
-            const renderer = this.renderer, ratio = renderer?.getPixelRatio?.();
-            if (Number.isFinite(ratio) && ratio > .5 &&
-                typeof renderer.setPixelRatio === 'function' && typeof this.resize === 'function') {
-              renderer.setPixelRatio(ratio > .75 ? .75 : .5);
-              this.resize();
-            }
-          }
-        } else lowStalls = 0;
+        }
       }
     }
     return nativeRender.apply(this, args);
