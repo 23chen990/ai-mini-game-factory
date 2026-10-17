@@ -318,3 +318,20 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   font:650 11px/1 -apple-system,BlinkMacSystemFont,system-ui;
 }
 #race-kit #race-export:active {background:#275270;}
+
+/* V10 real corner-to-spray payoff. A restrained speedometer highlight
+ * follows ONLY a native perfect small-spray/double-boost event. Never puts a
+ * banner across approaching corners, nor modifies the touch hit boxes. */
+#race-kit[data-phase="race"][data-v10-burst="true"] #race-speed {
+  box-shadow:0 0 0 1.5px rgba(250,216,130,.88),
+    0 0 17px rgba(255,203,94,.28);
+  background:#193546df;
+}
+#race-kit[data-phase="race"][data-v10-burst="true"] #race-speed strong {
+  color:#fff4c8;
+}
+@media(prefers-reduced-motion:reduce){
+  #race-kit[data-phase="race"][data-v10-burst="true"] #race-speed {
+    box-shadow:0 0 0 1px rgba(250,216,130,.7);
+  }
+}
