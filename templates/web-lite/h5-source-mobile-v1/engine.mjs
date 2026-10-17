@@ -58,6 +58,7 @@ const CHALLENGES = {
     {id:'tags',title:'步枪突围',instructions:'60秒内先命中1次，再换位8米，手动追击命中3次；最多阵亡2次。',limitMs:60000,kind:'hits',target:3,weapon:'m4a1',drill:'reposition',openingHits:1,minTravel:8,maxDeaths:2},
     {id:'precision',title:'狙击尝试',instructions:'90秒内用 AWM 击杀1名敌人。轻点开镜、瞄准后开火。',limitMs:90000,kind:'kills',target:1,weapon:'awm'},
     {id:'survive',title:'小队生存',instructions:'MP5起手，坚持45秒，累计移动20米，死亡不超过2次。',limitMs:45000,kind:'survive',target:2,minTravel:20,weapon:'mp5'},
+    {id:'defense',title:'双点反击',instructions:'100秒内亲自坚守A、B两处真实据点，各5秒；敌军独占据点8秒即失守。最多阵亡2次。',limitMs:100000,kind:'defend',target:2,holdSeconds:5,breachSeconds:8,radius:4.2,maxDeaths:2,weapon:'m4a1'},
   ],
 };
 /** Optional, earned CF replay contract. Native damage/kill rules stay untouched. */
@@ -68,6 +69,8 @@ export function cfEliteChallenge(base) {
     return {...base,elite:true,limitMs:75000,maxDeaths:1};
   if(base?.id==='survive'&&base.kind==='survive')
     return {...base,elite:true,target:1,minTravel:30};
+  if(base?.id==='defense'&&base.kind==='defend')
+    return {...base,elite:true,limitMs:85000,maxDeaths:0,holdSeconds:7,breachSeconds:7};
   throw Error('Unsupported CF elite challenge');
 }
 export function challengesFor(gameId) {
@@ -99,6 +102,18 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
       label=`🎯 ${value}/${c.target}${c.kind==='hits'?'命中':c.weapon==='awm'?'AWM击杀':'击杀'}`;
     }
   }
+  if(c.kind==='defend') {
+    const deaths=Math.max(0,Number(m.deaths)||0);
+    const stages=Math.max(0,Math.floor(Number(m.defenseCaptured)||0));
+    const breach=m.defenseBreached===true;
+    const valid=m.defenseSitesValid===true;
+    value=Math.min(c.target,stages);
+    failed=breach||!valid||(Number.isInteger(c.maxDeaths)&&deaths>c.maxDeaths);
+    complete=!failed&&value===c.target&&m.defenseStage===c.target;
+    label=breach?'✕ 据点失守':
+      !valid?'✕ 据点路线不可用':
+      '◆ 已守住 '+value+'/'+c.target+' 处';
+  }
   if(c.kind==='survive') {
     value=Math.min(c.target+1,m.deaths||0);
     failed=value>c.target;
@@ -111,7 +126,7 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
     complete=terminal&&survivedFullClock&&!failed&&travel>=minTravel;
     label=`❤ 死亡 ${value}/${c.target} · 移动 ${travel}/${minTravel}米`;
   }
-  return {outcome:failed?'lost':complete?'won':terminal?'lost':'running',value,label,rewardScore:c.kind==='survive'?(complete?3:0):value};
+  return {outcome:failed?'lost':complete?'won':terminal?'lost':'running',value,label,rewardScore:c.kind==='survive'?(complete?3:0):c.kind==='defend'?(complete?5:value):value};
 }
 export function newChallengeProgress(gameId) {
   const result={version:1,gameId,selected:challengesFor(gameId)[0].id,records:{}};
@@ -139,4 +154,55 @@ export function loadChallengeProgress(raw,gameId) {
     }
     return p;
   }catch{return null;}
+}
+
+
+/**
+ * Control-point state is observed exclusively from REAL game.time, player
+ * coordinates, enemy actor coordinates and native deaths. No bot score or
+ * scripted contact grants a captured site. Unlike the rifle drill this
+ * creates an actually different space-control decision.
+ */
+export function cfStartDefense(sites) {
+  const valid=Array.isArray(sites)&&sites.length===2&&
+    sites.every((s,i)=>s?.id==='AB'[i]&&Number.isFinite(s.x)&&Number.isFinite(s.z))&&
+    Math.hypot(sites[0].x-sites[1].x,sites[0].z-sites[1].z)>=8;
+  return {valid:!!valid,sites:valid?sites.map(s=>({id:s.id,x:s.x,z:s.z})):[],
+    stage:0,captured:0,held:0,enemyHeld:0,breached:false,
+    playerInside:false,enemyInside:false,contested:false,lastTime:null};
+}
+export function cfStepDefense(state,{gameTime,player,actors=[],team,holdSeconds=5,
+  breachSeconds=8,radius=4.2}={}) {
+  if(!state||!state.valid||state.breached||state.stage>=2)return state;
+  const now=Number(gameTime);
+  if(!Number.isFinite(now)||now<0)return state;
+  const site=state.sites[state.stage];
+  const dt=state.lastTime===null?0:Math.min(.25,Math.max(0,now-state.lastTime));
+  if(state.lastTime!==null&&now<state.lastTime)return state;
+  const inside=pos=>Number.isFinite(pos?.x)&&Number.isFinite(pos?.z)&&
+    Math.hypot(pos.x-site.x,pos.z-site.z)<=radius;
+  const playerInside=player?.alive===true&&inside(player.pos);
+  const enemyInside=Array.isArray(actors)&&actors.some(a=>a?.alive===true&&
+    a.team!==team&&a.team!==undefined&&inside(a.pos));
+  let held=state.held,enemyHeld=state.enemyHeld;
+  if(playerInside&&!enemyInside) {
+    held+=dt;
+    enemyHeld=Math.max(0,enemyHeld-dt*.75);
+  } else if(enemyInside&&!playerInside) {
+    enemyHeld+=dt;
+    held=Math.max(0,held-dt*.28);
+  } else if(!playerInside&&!enemyInside) {
+    enemyHeld=Math.max(0,enemyHeld-dt*.5);
+    held=Math.max(0,held-dt*.20);
+  }
+  const heldEnough=Math.max(1,Number(holdSeconds)||5);
+  const enemyEnough=Math.max(1,Number(breachSeconds)||8);
+  const breached=enemyHeld+1e-8>=enemyEnough;
+  const won=!breached&&held+1e-8>=heldEnough;
+  return {...state,lastTime:now,playerInside,enemyInside,
+    contested:playerInside&&enemyInside,breached,
+    stage:won?state.stage+1:state.stage,
+    captured:won?state.captured+1:state.captured,
+    held:won?0:held,
+    enemyHeld:won?0:enemyHeld};
 }
