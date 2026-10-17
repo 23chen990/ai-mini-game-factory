@@ -159,6 +159,35 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // This gesture touches NO button. Neither native gun nor assistant fires.
     await gesture(lookStart,{x:lookStart.x+44,y:lookStart.y+8},240,21);
     const afterLook=await inspect();
+    const liteControls=await page.locator('#mobile-kit')
+      .getAttribute('data-fps-lite')==='true';
+    if(liteControls){
+      const a=fireRect,centerX=a.x+a.width/2;
+      check('lite-fire-button-has-both-directional-runway',
+        centerX>250&&667-centerX>=120&&a.width>=76,
+        {rect:a,centerX,rightTravel:667-centerX});
+      const left=await page.evaluate(()=>{
+        const ids=['fire','jump','scope','reload'];
+        return ids.map(id=>{
+          const el=document.querySelector('#touch .btn[data-mk-action="'+id+'"]');
+          const r=el?.getBoundingClientRect();
+          return {id,hidden:el?.hidden,rect:r?{x:r.x,y:r.y,w:r.width,h:r.height}:null};
+        });
+      });
+      const overlap=(a,b)=>a&&b&&a.x<b.x+b.w&&b.x<a.x+a.w&&
+        a.y<b.y+b.h&&b.y<a.y+a.h;
+      check('lite-thumb-buttons-never-overlap',
+        left.filter(x=>!x.hidden).every((x,i,all)=>all.every((y,j)=>
+          i===j||!overlap(x.rect,y.rect))),{buttons:left});
+      await gesture(lookStart,{x:lookStart.x-44,y:lookStart.y-8},180,23);
+      const reverse=await inspect();
+      check('lite-opposing-swipe-reverses-camera-without-shooting',
+        (afterLook.player.yaw-initial.player.yaw)*
+          (reverse.player.yaw-afterLook.player.yaw)<-0.0007&&
+        reverse.player.shots===initial.player.shots,
+        {start:initial.player.yaw,right:afterLook.player.yaw,
+          left:reverse.player.yaw});
+    }
     check('right-swipe-turns-camera-but-not-gun',
       Math.abs(afterLook.player.yaw-initial.player.yaw)>0.025&&
       afterLook.player.shots===initial.player.shots,
@@ -355,6 +384,10 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     });
     await button('#touch .btn[data-mk-action="fire"]',380,70);
     const firedRookie=await inspect();
+    if(rookieLite)check('lite-first-shot-is-manual-not-native-auto-fire',
+      firedRookie.route?.autoFireActivations===0&&
+        firedRookie.player?.shots>authenticRookieShots,
+      {review:firedRookie.route,aimTrace:openingAimTrace});
     check('first30-fire-requires-native-player-shot',
       firedRookie.player.shots>authenticRookieShots,
       {before:authenticRookieShots,after:firedRookie.player.shots});
