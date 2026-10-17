@@ -40,10 +40,10 @@ test('overtake briefing explains how a genuine corner pass works, but still reje
   assert.equal(gradeStage(STAGES[2],result(1),{cleanPasses:0}),0);
   assert.equal(gradeStage(STAGES[10],result(1),{cleanPasses:1}),0);
 });
-test('unlock is linear, rank alone cannot pass an objective',()=>{
-  let c=newCareer();assert.equal(stageUnlocked(c,1),false);
+test('QA branch: every stage is open from a fresh career, rank alone cannot pass an objective',()=>{
+  let c=newCareer();assert.equal(stageUnlocked(c,1),true);assert.equal(stageUnlocked(c,15),true);
   c=recordStage(c,STAGES[0],result(),{}).career;
-  assert.equal(stageUnlocked(c,1),true);assert.equal(stageUnlocked(c,2),false);
+  assert.equal(stageUnlocked(c,1),true);assert.equal(stageUnlocked(c,2),true);
   assert.equal(gradeStage(STAGES[2],result(),{cleanPasses:0}),0);
   assert.ok(gradeStage(STAGES[2],result(),{cleanPasses:1}));
 });
@@ -103,8 +103,8 @@ test('elimination removes AI model and stands but never removes the player',()=>
   assert.equal(removeEliminatedAi(g,p),false);assert.equal(removeEliminatedAi(g,ai),true);
   assert.equal(g.racers.length,1);assert.equal(gone.length,1);
 });
-test('career starts on first available stage without fuel paywall if ad slot missing',()=>{
-  const c=new RacingCareer(memory());assert.equal(c.stage.id,'01');assert.equal(c.setStage(1),false);
+test('QA branch: career starts on stage 01 and any stage is selectable without fuel paywall if ad slot missing',()=>{
+  const c=new RacingCareer(memory());assert.equal(c.stage.id,'01');assert.equal(c.setStage(15),true);
   c.setupAd({status:'PENDING'},null);assert.equal(c.fuelEnabled,false);assert.equal(c.canStart(),true);
   c.configure(game());const g=game();c.begin(g);assert.equal(c.fuel.amount,10);
 });

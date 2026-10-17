@@ -13,7 +13,7 @@ export const FUEL_RULES = Object.freeze({
   offerAtOrBelow: 5,
 });
 
-export const FUEL_KEY = 'h5-mobile:qq-speed:fuel:v1';
+export const FUEL_KEY = 'h5-mobile:qq-speed:fuel:qa-unlocked-v1';
 const integer = (value) => Number.isSafeInteger(value) && value >= 0;
 const clock = (now) => integer(now) ? now : 0;
 

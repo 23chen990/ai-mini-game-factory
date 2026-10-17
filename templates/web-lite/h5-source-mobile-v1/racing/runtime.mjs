@@ -15,8 +15,10 @@ export class RacingCareer {
     } catch {
       this.progress = newCareer();this.fuel = newFuelState();this.storageOK = false;
     }
-    this.index = STAGES.findIndex((_, i) => !stageUnlocked(this.progress, i));
-    this.index = this.index < 0 ? STAGES.length - 1 : Math.max(0, this.index - 1);
+    // QA branch preview/racing-v100-qa-unlocked-20261017: every stage is open, so a
+    // fresh tester still starts on stage 01 and picks any level from the lobby.
+    // Mainline keeps its "resume on the last unlocked stage" behaviour untouched.
+    this.index = 0;
     this.dailySnapshot = null;
     this.auto = new AutoItems();this.passes = new OvertakeTracker();this.recovery = new WrongWayRecovery();this.pressure = new RivalPressure();
     this.config = null;this.tap = null;this.fuelEnabled = false;this.adBusy = false;this.attempt = 0;

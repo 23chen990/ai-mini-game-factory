@@ -4,7 +4,7 @@ import { FUEL_KEY, FUEL_RULES, newFuelState, syncFuel, spendRaceFuel, fuelTimeLe
   grantAdvertFuel, fuelAdEligible, fuelPlatformReady, loadFuel, saveFuel } from '../fuel.mjs';
 const M=60_000, T=1_800_000_000_000;
 test('racing fuel: stable save key and proven racing-style numbers',()=>{
-  assert.equal(FUEL_KEY,'h5-mobile:qq-speed:fuel:v1');
+  assert.equal(FUEL_KEY,'h5-mobile:qq-speed:fuel:qa-unlocked-v1');
   assert.equal(FUEL_RULES.max,10); assert.equal(FUEL_RULES.regenMs,5*M); assert.equal(FUEL_RULES.adGrant,2);
 });
 test('full start, successful race spends one, and exhausted player cannot enter another',()=>{

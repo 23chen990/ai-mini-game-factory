@@ -1,5 +1,43 @@
 INTERNAL HUMAN PLAYTEST ONLY - NOT LICENSED COMMERCIAL RELEASE
-SOURCE_COMMIT=224272ef0b53619b910ab18da81ea9b362f049c9
-UPSTREAM_COMMIT=54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
-BUILD_SHA256=8a87f4db67d570b420818558cae1d3b29a7a8e5548e0ea7cc1487f2c908f4560
-HTML_SHA256=c5c18c5df06da23c67b4c1c9a111f357defea0a731ecec8c25dc5276d4aa3852
+QA BRANCH - ALL STAGES UNLOCKED - ISOLATED TEST SAVE
+BASE_BRANCH=preview/racing-v100-integrated-20261017
+BASE_COMMIT=e89f6e3eb64463f7ce2dcbbde23ac72261d7970c
+UPSTREAM_SOURCE_COMMIT=224272ef0b53619b910ab18da81ea9b362f049c9
+ENGINE_COMMIT=54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+BASE_HTML_SHA256=c5c18c5df06da23c67b4c1c9a111f357defea0a731ecec8c25dc5276d4aa3852
+QA_HTML_SHA256=60781128177b3652ebb4459d1eaa34e156dcc92b0474fde8a95a7bafcb8ebf41
+
+WHY THIS BRANCH EXISTS
+  Phone playtesting of V10 needs every stage open without replaying the
+  career. This branch keeps the SHA-verified V10 build byte-identical except
+  for four surgical edits (see below). Racing physics, shortcut network, AI,
+  items, stage definitions and all grading logic are untouched.
+
+THE FOUR EDITS (verified: exactly one bundle line differs from base)
+  1. stageUnlocked() now returns true unconditionally.
+     -> all 16 stages selectable from the lobby on a fresh save.
+  2. CAREER_KEY: 'h5-mobile:qq-speed:career:v1'
+             -> 'h5-mobile:qq-speed:career:qa-unlocked-v1'
+  3. FUEL_KEY:    'h5-mobile:qq-speed:fuel:v1'
+             ->    'h5-mobile:qq-speed:fuel:qa-unlocked-v1'
+     -> test progress and fuel never touch the production save slots, so
+        official-version progress on the same device stays intact.
+  4. RacingCareer constructor starts on stage index 0.
+     -> without this, an all-unlocked career would resume on the LAST stage
+        (the mainline findIndex fallback), which would drop testers straight
+        into the final boss stage and recalibrate AI speeds.
+
+SOURCE MIRRORS THE SAME FOUR EDITS
+  templates/web-lite/h5-source-mobile-v1/racing/career.mjs  (CAREER_KEY, stageUnlocked)
+  templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs (constructor index)
+  templates/web-lite/h5-source-mobile-v1/fuel.mjs           (FUEL_KEY)
+  templates/web-lite/h5-source-mobile-v1/tests/fuel.test.mjs and
+  templates/web-lite/h5-source-mobile-v1/tests/racing-career.test.mjs assert the
+  QA semantics. node --test on those two suites: 49/49 pass.
+
+BUILD NOTE
+  The private pinned engine source (54adc1fb) is not present in this
+  environment, so the artifact was produced by surgical patching of the
+  SHA-verified V10 build rather than a full rebuild. This is deliberate: it
+  guarantees every other byte equals the certified V10 artifact. The template
+  edits above keep a future full rebuild consistent with this artifact.

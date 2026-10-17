@@ -1,4 +1,4 @@
-export const CAREER_KEY = 'h5-mobile:qq-speed:career:v1';
+export const CAREER_KEY = 'h5-mobile:qq-speed:career:qa-unlocked-v1';
 const make = (id, chapter, name, map, laps, diff, kind, mode, rank, goal, extra = {}) => Object.freeze({ id, chapter, name, map, laps, diff, kind, mode, rank, goal, ...extra });
 /** Four original locations, one driving model. Content is configuration, not 16 new tracks. */
 export const STAGES = Object.freeze([
@@ -35,7 +35,10 @@ export function dailyStage(date = new Date()) {
 }
 export const careerStars = career => STAGES.reduce((n, stage) => n + (career?.stars?.[stage.id] ?? 0), 0);
 export function stageUnlocked(career, index) {
-  return index === 0 || (index > 0 && index < STAGES.length && (career?.stars?.[STAGES[index - 1].id] ?? 0) > 0);
+  // QA branch preview/racing-v100-qa-unlocked-20261017: every stage is open so
+  // testers can jump to any level directly. The mainline unlock rule (previous
+  // stage with at least one star) is untouched on the official branches.
+  return true;
 }
 export const skinUnlocked = (career, skinIndex) => Number.isInteger(skinIndex) && skinIndex >= 0 && skinIndex < SKIN_STARS.length && careerStars(career) >= SKIN_STARS[skinIndex];
 export function loadCareer(raw, legacyBest) {
