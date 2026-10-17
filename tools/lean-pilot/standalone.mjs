@@ -20,14 +20,25 @@ export async function standaloneHtml(gameRoot,theme='observatory',runId='standal
   }
   const css=(await safeRead(gameRoot,'style.css')).toString('utf8');const scripts=[];
   const hasFpsUx=spec.id==='h5-source-mobile-v1'&&candidate.fpsUxVersion===1;
-  const bundleModules=hasFpsUx?['engine.mjs','themes.mjs','fps-mobile-ux.mjs','main.mjs']:['engine.mjs','themes.mjs','main.mjs'];
+  const bundleModules=hasFpsUx
+    ?['engine.mjs','themes.mjs','fps-mobile-ux.mjs','cf-player-loop.mjs','main.mjs']
+    :['engine.mjs','themes.mjs','main.mjs'];
   for(const name of bundleModules){
     const source=(await safeRead(gameRoot,name)).toString('utf8');let imports=0;
     const bundled=source.replace(/^import .*?;\r?\n/gm,line=>{
-      if(name!=='main.mjs'||!/^import \{[^}]+\} from '\.\/(engine|themes|fps-mobile-ux)\.mjs';\r?\n$/.test(line))throw new Error(`Unsupported import in ${name}`);
+      const isMain=name==='main.mjs'&&
+        /^import \{[^}]+\} from '\.\/(engine|themes|fps-mobile-ux|cf-player-loop)\.mjs';\r?\n$/.test(line);
+      // Only allow this one checked pure dependency from the extra CF
+      // component; arbitrary imports from other modules remain prohibited.
+      const isCf=name==='cf-player-loop.mjs'&&
+        /^import \{challengeResult\} from '\.\/engine\.mjs';\r?\n$/.test(line);
+      if(!isMain&&!isCf)throw new Error(`Unsupported import in ${name}`);
       imports++;return '';
     }).replace(/^export /gm,'');
-    if(/^\s*(?:import|export)\s/m.test(bundled)||(name==='main.mjs'&&imports!==(hasFpsUx?3:2)))throw new Error(`Unsupported module syntax in ${name}`);
+    const expectedImports=name==='main.mjs'?(hasFpsUx?4:2)
+      :name==='cf-player-loop.mjs'?1:0;
+    if(/^\s*(?:import|export)\s/m.test(bundled)||imports!==expectedImports)
+      throw new Error(`Unsupported module syntax in ${name}`);
     scripts.push(`// ${name}\n${bundled}`);
   }
   const replaceOne=(marker,replacement)=>{if(html.split(marker).length!==2)throw new Error(`Missing or repeated entry marker: ${marker}`);html=html.replace(marker,()=>replacement);};
