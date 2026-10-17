@@ -1,5 +1,6 @@
 /* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
+import {cfStartDefense,cfStepDefense} from './engine.mjs';
 export function teamSide(ownTeam, actorTeam) {
   if (!['BL', 'GR'].includes(ownTeam) || !['BL', 'GR'].includes(actorTeam)) return 'unknown';
   return ownTeam === actorTeam ? 'ally' : 'enemy';
@@ -155,6 +156,7 @@ export function cfTouchTutorial(challenge) {
       : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
+  if (challenge?.kind === 'defend') return '左手进据点，右手开火阻止敌军占点';
   return '点按或按住开火';
 }
 export function mobileChallengeCopy(challenge) {
@@ -175,6 +177,9 @@ export function mobileChallengeCopy(challenge) {
   if (challenge.kind === 'survive') return challenge.elite===true
     ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
     : '坚持45秒，移动20米，最多被击倒2次';
+  if (challenge.kind === 'defend') return challenge.elite===true
+    ? '85秒精英反击：先守A再守B，各坚持7秒；零阵亡，敌军也会抢点'
+    : '100秒双点反击：亲自守住A和B，各5秒；敌军独占8秒就失守';
   return challenge.instructions || '';
 }
 
@@ -611,6 +616,75 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     {label:'移动',value:number(metrics.travel) + ' / ' + challenge.minTravel + ' m'},
     {label:'阵亡',value:deaths + ' / ' + challenge.target}
   ];
+}
+
+/**
+ * Only two already-existing, walkable 3D-map locations qualify as objectives.
+ * Both the player AND an actual enemy bot need genuine world-nav paths. Never
+ * spawn a target, mutate collision geometry or credit a phantom zone.
+ */
+export function cfChooseDefenseSites({player,nav,world,actors=[]}) {
+  if(!player?.pos||!['BL','GR'].includes(player.team)||
+    !nav?.findPath||!nav?.idx||!nav?.walkable||!world?.blocked)return null;
+  const side=player.team==='BL'?1:-1;
+  const foes=actors.filter(a=>a?.team!==player.team&&a?.alive&&a?.pos);
+  if(!foes.length)return null;
+  const candidates=[
+    [[-22,-6.8],[-18,-6.8],[-20,6.8],[-16,-6.8],[-16,7],[-14,-8],[-13,1.5]],
+    [[-8,6.8],[-10,6.8],[-8,-6.8],[-5,7.8],[-6,-7.6],[-4,1.5],[1,7.8]]
+  ];
+  const sites=[];
+  const isLegal=(x,z,from)=>{
+    const idx=nav.idx(x,z);
+    if(idx<0||!nav.walkable(idx)||world.blocked(x,.05,z,.55,1.75))return false;
+    const path=nav.findPath(from.x,from.z,x,z);
+    return Array.isArray(path)&&path.length>=2;
+  };
+  for(let i=0;i<2;i++){
+    let found=null;
+    for(const [ax,az] of candidates[i]){
+      const x=ax*side,z=az*side;
+      const origin=sites.at(-1)||player.pos;
+      if(i>0&&Math.hypot(x-sites[0].x,z-sites[0].z)<8)continue;
+      if(!isLegal(x,z,origin))continue;
+      if(!foes.some(enemy=>isLegal(x,z,enemy.pos)))continue;
+      found={id:'AB'[i],x,z};
+      break;
+    }
+    if(!found)return null;
+    sites.push(found);
+  }
+  return sites;
+}
+
+/** Send existing native bots down real NavGrid paths, not through obstacles.
+ * Native senses, ballistics, hitboxes and attack logic still take priority. */
+export function cfRouteDefenseBots(game,site) {
+  if(!site||!game?.player||!game?.nav?.findPath)return 0;
+  let routed=0;
+  for(const bot of game.actors||[]){
+    if(!bot?.alive||bot.isPlayer||bot.team===game.player.team||!bot.pos)continue;
+    if(bot.visible===true||Number(game.time)-Number(bot.lastSeenT)<2.5)continue;
+    const distance=Math.hypot(bot.pos.x-site.x,bot.pos.z-site.z);
+    const key=site.id+':'+(bot.stats?.d||0);
+    if(distance<=2.5){
+      if(bot.__mkDefenseGoalKey!==key||bot.role!=='hold'){
+        bot.role='hold';bot.goal=[site.x,site.z];
+        bot.path=null;bot.pi=0;
+        bot.holdYaw=game.player.team==='BL'?-Math.PI/2:Math.PI/2;
+        bot.holdT=0;bot.__mkDefenseGoalKey=key;
+      }
+      routed++;
+      continue;
+    }
+    if(bot.__mkDefenseGoalKey===key&&Array.isArray(bot.path)&&bot.pi<bot.path.length)continue;
+    const path=game.nav.findPath(bot.pos.x,bot.pos.z,site.x,site.z);
+    if(!Array.isArray(path)||path.length<2)continue;
+    bot.role='rush';bot.stage=0;bot.path=path;bot.pi=1;
+    bot.goal=[site.x,site.z];bot.__mkDefenseGoalKey=key;
+    routed++;
+  }
+  return routed;
 }
 
 export function createFpsMobileUx(game, root, doc) {
