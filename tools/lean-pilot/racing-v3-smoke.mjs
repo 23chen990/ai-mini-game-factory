@@ -166,7 +166,7 @@ async function raceStart(page, index, name) {
     rank:window.game?.standings?.indexOf(window.game?.player) + 1,
     wheel:document.querySelector('#race-joystick')?.getBoundingClientRect().toJSON(),
     drift:document.querySelector('[data-race-action="drift"]')?.getBoundingClientRect().toJSON(),
-    goal:document.querySelector('#race-live-goal')?.textContent,
+    goal:document.querySelector('#race-compact-goal')?.textContent,
     fuel:document.querySelector('#race-fuel-info')?.textContent,
   }));
   const current=STAGES[index??0];
@@ -198,8 +198,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V4.9'||
-     worldIdentity.uiRevision!=='racing-v49-duel-retry')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V5.0'||
+     worldIdentity.uiRevision!=='racing-v50-clean-hud')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -219,9 +219,9 @@ async function raceStart(page, index, name) {
   if(index===4 && (!early.shortcut || early.shortcutGain<35 || !early.shortcutRoad || !early.shortcutRails))
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
   if(index===0 && early.shortcut)
-    fail(name+': tutorial may not silently contain a shortcut');
-  // A deliberately smooth beginner oval has no sharp-corner signs. Any track
-  // containing native curvature above the sign threshold must still show one.
+    fail(name+': 01 course cannot contain an unannounced shortcut');
+  // Any technical road with sharp corners must expose trackside turn signs.
+  // Native curvature, not HUD text prompts, is the source of truth.
   if(!early.nativeThreeLoaded || early.cornerSigns>7 ||
      (early.eligibleCornerSamples>0 && early.cornerSigns<1) ||
      (early.eligibleCornerSamples===0 && early.cornerSigns!==0))
@@ -266,11 +266,13 @@ try {
     sensitivity:document.querySelector('#race-steering-sens')?.value,
     noSwitch:!document.querySelector('#race-control-mode'),
     noArrows:!document.querySelector('#race-left')&&!document.querySelector('#race-right'),
-    noAutoGuide:!document.querySelector('#race-guide')?.textContent.includes('自动漂移')
+    noAutoGuide:!document.querySelector('#race-guide')?.textContent.includes('自动漂移'),
+    oneLineFirstGuide:document.querySelector('#race-guide')?.hidden===false &&
+      !document.querySelector('#race-guide')?.textContent.includes('松手回正')
   }));
   if(initialControls.mode!=='joystick'||!initialControls.wheel||
      initialControls.sensitivity!=='normal'||!initialControls.noSwitch||
-     !initialControls.noArrows||!initialControls.noAutoGuide)
+     !initialControls.noArrows||!initialControls.noAutoGuide||!initialControls.oneLineFirstGuide)
     fail('Only joystick input is allowed, even after a stored old assist preference: '+JSON.stringify(initialControls));
   report.initialControls=initialControls;
   // Genuine browser render of the default lobby at two landscape widths.
@@ -297,16 +299,21 @@ try {
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
   await raceStart(page,0,'01-city-hard-ranked');
   const nativeHudLayout=await page.evaluate(()=>{
-    const bounds=id=>document.querySelector(id)?.getBoundingClientRect();
-    const overlap=(a,b)=>!!a&&!!b&&a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
-    const gauge=bounds('#gaugebox'),distance=bounds('#race-progress');
-    const count=bounds('#race-live-goal'),speed=bounds('#race-speed');
-    return {gauge:gauge?.toJSON(),distance:distance?.toJSON(),
-      distanceCollidesWithNitro:overlap(gauge,distance),
-      goalCollidesWithSpeed:overlap(count,speed)};
+    const rect=id=>document.querySelector(id)?.getBoundingClientRect();
+    const overlaps=(a,b)=>!!a&&!!b&&a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
+    const optional=rect('#race-compact-goal'),speed=rect('#race-speed');
+    const forbidden=['#race-moment','#race-chase','#race-progress',
+      '#race-live-goal','#race-retry-plan','#race-held-item','#race-speed-state'];
+    const core=['#bigrank','#lapbox','#timebox','#minimap','#race-speed','#race-joystick'];
+    return {forbidden:forbidden.filter(x=>document.querySelector(x)),
+      missingCore:core.filter(x=>!document.querySelector(x)),
+      goalOverlapsSpeed:overlaps(optional,speed),
+      compactGoalHidden:document.querySelector('#race-compact-goal')?.hidden,
+      guideHidden:document.querySelector('#race-guide')?.hidden};
   });
-  if(nativeHudLayout.distanceCollidesWithNitro||nativeHudLayout.goalCollidesWithSpeed)
-    fail('Active racing HUD overlay intersection: '+JSON.stringify(nativeHudLayout));
+  if(nativeHudLayout.forbidden.length||nativeHudLayout.missingCore.length||
+     nativeHudLayout.goalOverlapsSpeed||nativeHudLayout.compactGoalHidden!==true)
+    fail('Race view must show only native facts, not coaching overlays: '+JSON.stringify(nativeHudLayout));
   report.nativeHudLayout=nativeHudLayout;
   // Real multi-pointer Chromium touch (not mutated game state). Steering follows
   // a continuous axis, and a second thumb independently holds the drift key.
@@ -416,18 +423,20 @@ try {
   await page.screenshot({path:path.join(dest,'08-result-740x360-qa-staged.png')});
   await page.waitForFunction(() => document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
   const lossUI=await page.evaluate(()=>{
-    const plan=document.querySelector('#race-retry-plan');
     const btn=document.querySelector('#race-replay');
-    return {plan:plan?.textContent??'',planVisible:!!plan&&!plan.hidden,
+    const text=document.querySelector('#race-result-copy')?.textContent??'';
+    return {summary:text,
+      noRetryEssay:!document.querySelector('#race-retry-plan'),
       button:btn?.textContent??'',buttonVisible:!!btn&&!btn.hidden,
       stage:window.__RACE_EVIDENCE__?.requestedCourse,
       replayTapCount:window.__RACE_EVIDENCE__?.replayTapCount,
       realDuel:window.__RACE_EVIDENCE__?.duel};
   });
-  if(!lossUI.planVisible||lossUI.plan.length<16||
-     !lossUI.buttonVisible||!lossUI.button.includes('立即再战')||
+  if(!lossUI.noRetryEssay||!lossUI.summary.includes('未完赛')||
+     /下局|下一局|应该|提前入弯|再试一次/.test(lossUI.summary)||
+     !lossUI.buttonVisible||!lossUI.button.includes('再来一局')||
      lossUI.stage!=='race-08'||!Number.isFinite(lossUI.realDuel?.nativeCrashes))
-    fail('Real failure screen must offer an actionable, verifiable next attempt: '+JSON.stringify(lossUI));
+    fail('Results must show factual finish data and one replay action, not a coaching essay: '+JSON.stringify(lossUI));
   // This is a QA-STAGED DNF; we only assert genuine single-tap reset into
   // the same native course, never invent a human desire to replay or a win.
   await page.locator('#race-replay').tap();
@@ -444,7 +453,7 @@ try {
     fail('Retry must clear race telemetry but preserve the real physical stage: '+JSON.stringify(replay));
   await page.evaluate(()=>window.game.showResults());
   await page.waitForFunction(()=>document.querySelector('#race-kit')?.dataset.phase==='finished',null,{timeout:12000});
-  report.replay={stagedDnfOnly:true,actionableFailure:true,
+  report.replay={stagedDnfOnly:true,factualScoreboard:true,noRetryEssay:true,
     sameNativeCourse:true,oneTapCountdown:true,clearCounters:true};
   // The stage selector appears in the menu, not inside the results panel.
   await page.locator('#race-lobby').tap();
