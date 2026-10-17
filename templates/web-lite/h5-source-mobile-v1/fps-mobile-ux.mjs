@@ -696,6 +696,15 @@ export function cfHitCue(challenge, nativeHits, increase, drill = null) {
  * completely optional regardless of the outcome. */
 export function cfNearMissCue(challenge, metrics={}, elapsedMs=0) {
   if(!challenge||!metrics)return null;
+  if(challenge.lite===true){
+    const defeated=challenge.kind==='hits'?Math.max(0,Math.floor(Number(metrics.kills)||0)):
+      challenge.kind==='kills'?Math.max(0,Math.floor(Number(metrics.awmKills)||0)):
+      challenge.kind==='assault'?Math.max(0,Math.floor(Number(metrics.assaultKills)||0)):0;
+    if(challenge.kind==='defend'&&metrics.defenseCaptured===1)return null;
+    if(defeated>0&&defeated+1===challenge.target)
+      return '已经击倒'+defeated+'人，就差最后一人';
+    return null;
+  }
   const count=n=>Number.isFinite(n)?Math.max(0,Math.floor(n)):0;
   const goal=count(challenge.target);
   if(challenge.kind==='defend'&&metrics.defenseSitesValid===true){
@@ -750,6 +759,14 @@ export function cfNativeReviveStatus(metrics={},rewarded=false) {
 /** End-of-round teaching based on observed player stats, never simulated rewards. */
 export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return '';
+  if(challenge.lite===true){
+    if(outcome==='won')return '任务完成！这次亲手击倒'+
+      Math.max(0,Math.floor(Number(metrics.kills)||0))+'人。';
+    if(challenge.kind==='defend')return '据点尚未守住：留意标记区域与进入区域的敌人。';
+    if(challenge.extractSeconds)return '撤离未完成：清掉敌人，进入撤离区并守到进度结束。';
+    if(challenge.kind==='assault')return '尚未突破进攻位：先进入标记区域，再击败守军。';
+    return '这次还没完成 '+challenge.objective+'。可以免费再试一次。';
+  }
   const actual = v => Number.isFinite(v) ? Math.max(0,Math.floor(v)) : 0;
   const hits = actual(metrics.hits), awmKills = actual(metrics.awmKills);
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
@@ -849,6 +866,9 @@ export function cfMissionFacts(challenge) {
   if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return [];
   const weapon = challenge.weapon === 'awm' ? 'AWM' :
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
+  if(challenge.lite===true)return [
+    {label:'装备',value:weapon},{label:'任务',value:challenge.objective},
+    {label:'限时',value:Math.ceil(challenge.limitMs/1000)+'秒'}];
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
     ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
     challenge.kind === 'kills' ? '击杀 '+challenge.target+' 人'+(challenge.minTravel?' · 行进'+challenge.minTravel+'米':'') :
@@ -868,6 +888,16 @@ export function cfMissionFacts(challenge) {
 /** Stat chips are derived from native player measurements, never team kills. */
 export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
   if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return [];
+  if(challenge.lite===true){
+    const count=x=>Math.max(0,Math.floor(Number(x)||0));
+    const value=challenge.kind==='defend'?count(metrics.defenseCaptured):
+      challenge.kind==='assault'?count(metrics.assaultKills):
+      challenge.kind==='kills'?count(metrics.awmKills):count(metrics.kills);
+    return [{label:'亲手击倒 / 完成',value:value+'/'+
+      (challenge.kind==='survive'?challenge.minKills||0:challenge.target)},
+      {label:'阵亡',value:String(count(metrics.deaths))},
+      {label:'耗时',value:Math.ceil(elapsedMs/1000)+'秒'}];
+  }
   const number = value => Number.isFinite(value) ? Math.max(0,Math.floor(value)) : 0;
   const deaths = number(metrics.deaths);
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
