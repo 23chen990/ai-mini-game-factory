@@ -144,34 +144,39 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
      return;
    }
-   const target=page.locator('.mk-fps-enemy:not([hidden])').first();
-   if(await target.count() && await target.isVisible().catch(()=>false)){
+   // A live enemy marker is generated only after camera projection and
+   // native world-geometry LOS checks. Take visibility AND position in ONE
+   // browser evaluation: awaiting two Playwright locator calls separately
+   // loses real visible targets during frequent HUD updates.
+   const visibleBadge=()=>page.evaluate(()=>{
+     for(const el of document.querySelectorAll('.mk-fps-enemy:not([hidden])')){
+       if(getComputedStyle(el).display==='none'||
+          getComputedStyle(el).visibility==='hidden')continue;
+       const r=el.getBoundingClientRect();
+       if(r.width>0&&r.height>0)
+         return {x:r.left+r.width/2,y:r.bottom+22};
+     }
+     return null;
+   });
+   const firstBadge=await visibleBadge();
+   if(firstBadge){
      fpsEnemySeenCount++;
      if(!fpsContactScreenshot){await shot('mobile-first-visible-enemy');fpsContactScreenshot=true;}
      if(manualStage&&(!fpsOneThumbAudit?.rotated||!fpsOneThumbAudit?.fired)){
-       // The visible marker can disappear BETWEEN isVisible and boundingBox.
-       // Do not hang the entire real-game QA waiting for an invisible enemy.
-       const r=await target.boundingBox({timeout:650}).catch(()=>null);
-       if(r){
-         const dx=Math.max(-108,Math.min(75,(r.x+r.width/2-viewport.width/2)*.32));
-         const dy=Math.max(-55,Math.min(55,(r.y+r.height+22-viewport.height/2)*.38));
-         fpsOneThumbAudit=await fireDragToward(dx,dy);
-       }
+       const dx=Math.max(-108,Math.min(75,(firstBadge.x-viewport.width/2)*.32));
+       const dy=Math.max(-55,Math.min(55,(firstBadge.y-viewport.height/2)*.38));
+       fpsOneThumbAudit=await fireDragToward(dx,dy);
      }
      for(let n=0;n<7;n++){
-       // Enemies may die, enter cover or move out of frame between the
-       // locator check and measurement. A real touch player keeps going;
-       // do not wait 30 seconds for a vanished HUD badge.
-       const rect=await target.boundingBox({timeout:700}).catch(()=>null);
-       if(!rect||!(await target.isVisible().catch(()=>false)))break;
-       const center={x:844/2,y:390/2};
-       const desiredX=rect.x+rect.width/2, desiredY=rect.y+rect.height+22;
-       const dx=Math.max(-86,Math.min(86,(desiredX-center.x)*0.40));
-       const dy=Math.max(-60,Math.min(60,(desiredY-center.y)*0.40));
+       const marker=await visibleBadge();
+       if(!marker)break;
+       const center={x:viewport.width/2,y:viewport.height/2};
+       const dx=Math.max(-86,Math.min(86,(marker.x-center.x)*.40));
+       const dy=Math.max(-60,Math.min(60,(marker.y-center.y)*.40));
        if(Math.abs(dx)+Math.abs(dy)<7)break;
-       await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},230,12+n);
+       await mobileStroke({x:530,y:190},{x:530+dx,y:190+dy},190,12+n);
      }
-     await hold('#touch .btn[data-mk-action="fire"]',1450);
+     await hold('#touch .btn[data-mk-action="fire"]',1050);
      return;
    }
    if(manualStage&&await aimed.count()&&await aimed.isVisible()){
