@@ -79,20 +79,34 @@ export const V9_SHORTCUT_THEMES=Object.freeze({
 });
 const round=(x,n=2)=>Math.round(x*10**n)/10**n;
 const distance2=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
-const segmentClear=(track,points,length,width)=>{
-  // A true off-main fork; a visually painted strip INSIDE the main road
-  // must not count. Compare same-height corridors only.
+const segmentClear=(track,points,length,cfg)=>{
+  // Validate the same 33-67% exposed central corridor as the pinned
+  // native geometry audit. Use the exact varying branch width and same
+  // height threshold; don't pass a candidate by undersampling the road.
   let least=Infinity;
-  for(let i=Math.floor(points.length*.33);i<=Math.floor(points.length*.67);i+=4){
-    const p=points[i],half=width*.5;
-    let near=Infinity;
-    for(let d=0;d<track.length;d+=7){
-      const j=track.px ? Math.floor(d/track.ds)%track.N : -1;
-      const q=j>=0 ? {x:track.px[j],y:track.py[j],z:track.pz[j]} : track.sample(d,{});
-      if(Math.abs(q.y-p.y)>4.5)continue;
-      near=Math.min(near,distance2(q,p));
+  for(let i=Math.floor(points.length*.33);i<=Math.ceil(points.length*.67);i+=2){
+    const p=points[i],w=cfg.width-(cfg.width-cfg.neckWidth)*
+      Math.sin(Math.PI*p.arc/length)**2,half=w*.5;
+    const radius=track.halfW+half+4;
+    let near=radius;
+    if(typeof track.forEachNear==='function'){
+      track.forEachNear(p.x,p.z,radius,(j,d)=>{
+        if(Math.abs(track.py[j]-p.y)<=5.5)near=Math.min(near,d);
+      });
+    }else if(track.px){
+      for(let j=0;j<track.N;j+=2){
+        if(Math.abs(track.py[j]-p.y)>5.5)continue;
+        near=Math.min(near,Math.hypot(p.x-track.px[j],p.z-track.pz[j]));
+      }
+    }else{
+      for(let d=0;d<track.length;d+=3){
+        const q=track.sample(d,{});
+        if(Math.abs(q.y-p.y)>5.5)continue;
+        near=Math.min(near,distance2(q,p));
+      }
     }
     least=Math.min(least,near-(track.halfW+half));
+    if(least<.60)return least;
   }
   return least;
 };
@@ -132,9 +146,9 @@ export function chooseV9Shortcut(track,course){
   }
   options.sort((a,b)=>b.value-a.value);
   // Scan just the strongest candidates against both physical road surfaces.
-  for(const candidate of options.slice(0,24)){
+  for(const candidate of options.slice(0,90)){
     const clearance=segmentClear(track,candidate.shape.samples,
-      candidate.shape.length,candidate.cfg.neckWidth);
+      candidate.shape.length,candidate.cfg);
     if(clearance>=.60)
       return {...candidate.cfg,estimatedLength:round(candidate.shape.length),
         estimatedGain:round(candidate.shape.gain),clearance:round(clearance)};
