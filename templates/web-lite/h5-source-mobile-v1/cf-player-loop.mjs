@@ -10,12 +10,48 @@ import {challengeResult} from './engine.mjs';
 export function cfArenaForLevel(index) {
   return Number.isInteger(index)&&index>=4&&index<8?'depot':'ship';
 }
+/** CF V18 mobile-first mission layer.
+ * Preserve old challenge IDs and saved records. Old base challenges remain
+ * intact for historical tests/replays; only new sessions get lite rules.
+ * The one visible objective follows what the player can actually perceive.
+ */
+export function cfMobileMission(base) {
+  if(!base || typeof base.id!=='string')return base;
+  const elite=base.elite===true, small=elite?1:0;
+  const variants={
+    tags:{target:elite?4:2,limitMs:elite?60000:75000,maxDeaths:elite?0:2,
+      objective:'亲手击倒'+(elite?4:2)+'名敌人',
+      encounter:'清理船舱入口 · 利用箱体换角度'},
+    precision:{limitMs:elite?65000:80000,
+      objective:'AWM击倒1名敌人',encounter:'找到视线 · 开镜射击'},
+    survive:{limitMs:45000,minTravel:0,minKills:1,maxDeaths:elite?1:2,target:elite?1:2,
+      objective:'坚守45秒并亲手击倒1人',encounter:'跟住敌人 · 利用掩体活下来'},
+    defense:{target:1,holdSeconds:elite?9:7,limitMs:elite?65000:80000,
+      objective:'守住A区'+(elite?9:7)+'秒',encounter:'敌人会争夺A区 · 先清掉威胁'},
+    assault:{minTravel:0,target:elite?3:2,limitMs:elite?75000:90000,
+      objective:'抵达进攻位并击倒'+(elite?3:2)+'人',
+      encounter:'穿过仓库侧路 · 抵达亮起的进攻位'},
+    marksman:{minTravel:0,target:elite?3:2,limitMs:elite?80000:100000,
+      objective:'AWM击倒'+(elite?3:2)+'人',encounter:'观察掩体间隙 · 不强制绕路'},
+    evac:{minTravel:0,minKills:elite?2:1,extractSeconds:elite?8:5,
+      finishOnExtract:true,limitMs:elite?85000:90000,
+      objective:'击倒'+(elite?2:1)+'名敌人并到撤离区坚守'+(elite?8:5)+'秒',
+      encounter:'撤离点就在前方 · 清出通路即可离开'},
+    counter:{target:1,reverse:true,holdSeconds:elite?9:7,
+      limitMs:elite?75000:85000,
+      objective:'抢占并守住远端B区'+(elite?9:7)+'秒',
+      encounter:'先逼退防守敌人 · 守住B区即可完成'}
+  };
+  const config=variants[base.id];
+  return config?{...base,...config,lite:true,
+    instructions:config.objective}:base;
+}
 export const CF_CONTROL_DEFAULTS=Object.freeze({sensitivity:1,opacity:.85});
 const CF_IDS=new Set(['tags','precision','survive','defense','assault','marksman','evac','counter']);
 const GRADE_LABELS=['未完成','完成','优秀','完美'];
 /** Real drill progress as short combat status. Full rules live on ready UI. */
 export function cfRifleCombatStatus(challenge,metrics={}) {
-  if(challenge?.id!=='tags'||challenge?.drill!=='reposition')return null;
+  if(challenge?.lite===true||challenge?.id!=='tags'||challenge?.drill!=='reposition')return null;
   if(metrics.drillFirstHit!==true)return '◎ 前方交火 · 找准目标';
   const travel=Math.max(0,Number(metrics.drillTravel)||0);
   if(metrics.drillStage!==2)
