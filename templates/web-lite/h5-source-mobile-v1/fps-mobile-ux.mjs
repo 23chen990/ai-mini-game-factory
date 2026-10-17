@@ -56,12 +56,13 @@ export function withinScopedLens({x,y,width,height,scoped}) {
   return Math.hypot(x*width/2,y*height/2) <= Math.min(width,height)*.455;
 }
 /** Let a novice actually take the AWM opening shot while native 3v3 continues. */
-export function holdOpeningTeammateFire(actors,ownTeam,now) {
+export function holdOpeningTeammateFire(actors,ownTeam,now,duration=13) {
   if(!Number.isFinite(now)) return 0;
   let held=0;
   for(const actor of actors||[]) {
     if(!actor || actor.isPlayer || !actor.alive || actor.team!==ownTeam)continue;
-    actor.readyAt=Math.max(Number(actor.readyAt)||0,now+13);
+    actor.readyAt=Math.max(Number(actor.readyAt)||0,
+      now+Math.max(0,Math.min(13,Number.isFinite(duration)?duration:13)));
     held++;
   }
   return held;
@@ -1502,6 +1503,7 @@ export function createFpsMobileUx(game, root, doc) {
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
+        else if(lane) holdOpeningTeammateFire(game.actors,p.team,game.time,6);
         scout.__mobileTrainingHoldUntil=game.time+cfScoutHoldSeconds(activeChallenge);
         return {path:true,trainingScout:!sniper,sniperScout:sniper,range:spot.distance,
           initialVisibleSpot:[spot.x,spot.z]};
