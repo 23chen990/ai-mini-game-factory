@@ -1044,3 +1044,8 @@ html[data-reference-game="cf-transport-ship"] #mk-fps-hit-feedback[data-mileston
 html[data-reference-game="cf-transport-ship"][data-fps-active="true"] #mk-fps-guide{
  text-shadow:0 1px 2px #000!important;
 }
+
+/* V18 lite combat: remove scoreboards that compete with the objective. */
+html[data-reference-game="cf-transport-ship"] #mobile-kit[data-fps-lite="true"] #mk-fps-board,
+html[data-reference-game="cf-transport-ship"] #mobile-kit[data-fps-lite="true"] .mk-header>span:has(#mk-best),
+html[data-reference-game="cf-transport-ship"] #mobile-kit[data-fps-lite="true"] .mk-meter>span:has(#mk-score){display:none!important;}
