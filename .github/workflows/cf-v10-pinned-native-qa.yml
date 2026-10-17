@@ -31,7 +31,7 @@ jobs:
           pnpm exec playwright install --with-deps chromium
       - name: Check owned campaign rules, ad reward policy and QA script
         run: |
-          pnpm exec eslint tools/lean-pilot/cf-v10-campaign-real3d-qa.mjs templates/web-lite/h5-source-mobile-v1/*.mjs
+          pnpm exec eslint tools/lean-pilot/cf-v10-campaign-real3d-qa.mjs tools/lean-pilot/cf-v10-native-revive-fixture-qa.mjs templates/web-lite/h5-source-mobile-v1/*.mjs
           node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
           npm run pilot:typecheck
       - name: Fetch exact audited original 3D engine (never substitute a dummy)
@@ -57,6 +57,13 @@ jobs:
         run: |
           set -o pipefail
           node tools/lean-pilot/cf-v10-campaign-real3d-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-v10-browser.log"
+      - name: Verify voluntary revive against actual original 3D death and four-second respawn
+        id: native_revive
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node tools/lean-pilot/cf-v10-native-revive-fixture-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-v10-native-revive.log"
       - name: Export H5 and pinned original asset attribution - internal only
         if: always()
         shell: bash
@@ -82,13 +89,15 @@ jobs:
             ${{ runner.temp }}/cf-v10-preview.zip
             ${{ runner.temp }}/cf-v10-sha.txt
             ${{ runner.temp }}/cf-v10-browser.log
+            ${{ runner.temp }}/cf-v10-native-revive.log
+            runs/h5-cf-challenges-20261013/cf-v10-native-revive-browser.json
             ${{ runner.temp }}/cf-v10-export.json
             runs/h5-cf-challenges-20261013/cf-v10-campaign-browser.json
             runs/h5-cf-challenges-20261013/screenshots/cf-v10-*.png
           retention-days: 7
           if-no-files-found: warn
       - name: Preserve native original-3D failure as a FAILED CI run
-        if: steps.mission_qa.outcome == 'failure'
+        if: steps.mission_qa.outcome == 'failure' || steps.native_revive.outcome == 'failure'
         run: |
           echo 'Genuine source V10 campaign browser checks FAILED'
           exit 1
