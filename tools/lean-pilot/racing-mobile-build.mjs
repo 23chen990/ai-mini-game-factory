@@ -27,7 +27,7 @@ export function patchRacingSource(source) {
   if (!output.includes('this.mobileMode ? raceBloomStrength(')) {
     const bloom = "if (this.bloom) this.bloom.strength = (this.settings.quality === 'high' ? 0.75 : 0.6) + (P && P.nitroTime > 0 ? 0.3 : 0);";
     if (output.split(bloom).length !== 2) throw Error('Racing bloom anchor changed');
-    output = output.replace("import { raceCameraFov } from './race-session.mjs';", "import { raceCameraFov, raceBloomStrength } from './race-session.mjs';")
+    output = output.replace("import { raceCameraFov } from './race-session.mjs';", "import { raceCameraFov, raceBloomStrength, racePhoneCamera } from './race-session.mjs';")
       .replace(bloom, "if (this.bloom) this.bloom.strength = this.mobileMode ? raceBloomStrength(P && P.nitroTime > 0) : (this.settings.quality === 'high' ? 0.75 : 0.6) + (P && P.nitroTime > 0 ? 0.3 : 0);");
   }
   // The native engine owns Three.js. Share its already loaded namespace with
@@ -227,6 +227,25 @@ export function patchV8CameraFeel(source) {
   if(source.split(original).length!==2 || source.split(heightOriginal).length!==2)
     throw Error('V8 mobile camera follow anchor changed');
   return source.replace(original,revised).replace(heightOriginal,heightRevised);
+}
+/** Native camera remains the same engine, with a closer mobile-only chase composition.
+ * No change to cars, road geometry, collisions, checkpoint progress or physics. */
+export function patchDualPlatformCamera(source) {
+  const transforms=[
+    ['const m = modes[this.camMode];',
+     'const m = this.mobileMode ? racePhoneCamera(window.innerWidth, window.innerHeight) : modes[this.camMode];'],
+    ['const dist = m.dist + Math.abs(P.s) * 0.018 + boostPull;',
+     'const dist = m.dist + Math.abs(P.s) * (this.mobileMode ? 0.010 : 0.018) + (this.mobileMode ? boostPull * .25 : boostPull);']
+  ];
+  const applied=transforms.filter(([,to])=>source.includes(to)).length;
+  if(applied===transforms.length)return source;
+  if(applied)throw Error('Partial desktop/phone camera patch');
+  if(!source.includes('racePhoneCamera'))throw Error('Missing racing phone camera import');
+  for(const [from,to] of transforms){
+    if(source.split(from).length!==2)throw Error('Dual-platform camera anchor changed: '+from);
+    source=source.replace(from,to);
+  }
+  return source;
 }
 /** Single-run finish is a real physical road location for long downhill stages.
  * Original progress tracking and finish bookkeeping remain authoritative.
@@ -477,7 +496,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   let adaptedMain = beforeMain;
-  for(const patch of [patchRacingSource,patchV8CameraFeel,patchV8PointToPoint,
+  for(const patch of [patchRacingSource,patchV8CameraFeel,patchDualPlatformCamera,patchV8PointToPoint,
     patchManualNitroEdge,patchCareerRouteSource,patchShortcutNativeWorld,
     patchCourseSkyAndScenery,patchRaceDesertRelief])
     adaptedMain=patch(adaptedMain);
