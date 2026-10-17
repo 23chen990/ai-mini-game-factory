@@ -411,6 +411,15 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       rookie.openingBot.readyIn<=6&&rookie.openingBot.readyIn>=0&&
       rookie.openingBot.holdUntil<=12&&rookie.openingBot.holdUntil>=7,
       {bot:rookie.openingBot,route:rookie.route});
+    const coverState=await page.evaluate(()=>{
+      const g=window.__H5NativeGame;
+      return {mode:g?.__mkCoverV20,
+        props:(g?.world?.colliders||[]).filter(c=>c.tag==='cf-v20-real-cover').length,
+        controlsVisible:!document.getElementById('mk-cover-raid')?.hidden};
+    });
+    check('v20-original-world-cover-object-and-visible-actions',
+      coverState.mode?.enabled===true&&coverState.props>=1&&
+      coverState.controlsVisible,coverState);
     const authenticRookieShots=rookie.player.shots;
     // Do not certify a mobile shooter whose first viewport contains only
     // container walls. Markers are already projected through the ORIGINAL
