@@ -6,7 +6,7 @@ const clamp = (value, lo, hi) => Math.min(hi, Math.max(lo, value));
 const SENSITIVITIES = Object.freeze({ calm: 0.84, normal: 1, sharp: 1.18 });
 
 export class RacingJoystick {
-  constructor({ deadzone = 0.095, fullThrow = 0.76, sensitivity = 'normal' } = {}) {
+  constructor({ deadzone = 0.075, fullThrow = 0.66, sensitivity = 'normal' } = {}) {
     this.deadzone = clamp(deadzone, 0, 0.3);
     this.fullThrow = clamp(fullThrow, this.deadzone + 0.15, 1);
     this.sensitivity = Object.hasOwn(SENSITIVITIES, sensitivity) ? sensitivity : 'normal';
@@ -34,7 +34,7 @@ export class RacingJoystick {
     const travel = distance <= this.deadzone ? 0 :
       clamp((distance - this.deadzone) / (this.fullThrow - this.deadzone), 0, 1);
     this.axis = travel === 0 ? 0 : -Math.sign(horizontal) * clamp(travel * SENSITIVITIES[this.sensitivity], 0, 1);
-    this.knobX = horizontal * 0.58 * this.radius;
+    this.knobX = Math.sign(horizontal) * Math.min(distance / this.fullThrow, 1) * .55 * this.radius;
     return true;
   }
   release(id) {

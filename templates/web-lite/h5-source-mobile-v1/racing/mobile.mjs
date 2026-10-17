@@ -12,7 +12,7 @@ import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
-import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx } from './session.mjs';
+import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
@@ -24,7 +24,7 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10" hidden>${'<span></span>'.repeat(10)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
     <p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
     <div id="race-settings" hidden><label for="race-steering-sens">转向</label><select id="race-steering-sens" aria-label="轮盘转向灵敏度"><option value="calm">柔和</option><option value="normal">标准</option><option value="sharp">灵敏</option></select><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">均衡画质，性能不足时自动调低</small></div>
-    <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-lobby" class="race-secondary" hidden>返回选关</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
+    <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-retry-ad" class="race-secondary" hidden>看广告 · 下局额外氮气</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-lobby" class="race-secondary" hidden>返回选关</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
     <p id="race-note"></p>
   </div><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>请使用横屏</b><span>横屏后继续比赛</span></aside>`;
 document.body.append(root);
@@ -43,6 +43,7 @@ let g, phase = 'ready', started = false, result = null, loading = true, lastFram
 let nativeStartRace, policyReady = false, backgrounded = document.hidden;
 let events = [], best = {}, lastRacePassed = false;
 let replayTapCount = 0;
+let touchSerial=0,consumedTouchSerial=-1,lastStickEventAt=0,lastTouchSampleAgeMs=null;
 let justFinishedPassed = null;
 let adNotice = '', adNoticeUntil = 0;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1'; // Preserve legacy save key across input migration.
@@ -64,7 +65,7 @@ function fuelView() {
   for (const [index, segment] of [...$('fuel-gauge').children].entries()) segment.classList.toggle('filled', index < career.fuel.amount);
   $('fuel-box').classList.toggle('empty', metered && career.fuel.amount === 0);
   $('storage-warning').hidden = career.storageOK;
-  for (const id of ['start', 'replay', 'restart', 'next']) $(id).disabled = loading || !policyReady || career.adBusy || empty;
+  for (const id of ['start', 'replay', 'restart', 'next','retry-ad']) $(id).disabled = loading || !policyReady || career.adBusy || empty;
   $('start').textContent = !policyReady ? '读取油量规则…' : empty ? '⏳ 等待油量恢复' :
     career.hasFreeReplay() ? '免费再赛 ↻' : '开始比赛';
   $('fuel-ad').hidden = !career.canOfferAd();
@@ -96,10 +97,10 @@ function renderLobby() {
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
-  root.dataset.previewRevision = 'racing-v62-route-decisions';
+  root.dataset.previewRevision = 'racing-v70-short-session';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V6.2';
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V7.0';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = (courseInfo?.feel ?? '') +
@@ -114,7 +115,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(), trial: trial.snapshot(), revision: 'V6.2' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(),fpsEstimate:quality.fps,touchToInputSampleMs:lastTouchSampleAgeMs, trial: trial.snapshot(), revision: 'V7.0' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -132,7 +133,7 @@ function display(next) {
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
   $('start').hidden = next !== 'ready'; $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
   const canAdvance = lastRacePassed && career.nextStage() !== career.index;
-  $('replay').hidden = next !== 'finished'; $('next').hidden = next !== 'finished' || !canAdvance; $('lobby').hidden = next !== 'finished';
+  $('replay').hidden = next !== 'finished'; $('retry-ad').hidden = next !== 'finished' || !career.canOfferRetryBoost(); $('next').hidden = next !== 'finished' || !canAdvance; $('lobby').hidden = next !== 'finished';
   $('replay').classList.toggle('race-secondary', next === 'finished' && canAdvance);
   $('next').classList.remove('race-secondary');
   $('export').hidden = next !== 'ready' && next !== 'finished';
@@ -251,7 +252,7 @@ $('export').addEventListener('click', () => {
     const blob=new Blob([content],{type:'application/json;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const anchor=document.createElement('a');
-    anchor.href=url;anchor.download='racing-v62-local-playtest.json';
+    anchor.href=url;anchor.download='racing-v70-local-playtest.json';
     document.body.append(anchor);anchor.click();anchor.remove();
     button.textContent='数据已准备';
     setTimeout(()=>{ URL.revokeObjectURL(url); button.textContent='导出数据 ↓'; },1500);
@@ -303,6 +304,17 @@ $('fuel-ad').addEventListener('click', async () => {
   renderLobby();fuelView();
   if (phase === 'ready') $('note').textContent = '';
 });
+$('retry-ad').addEventListener('click',async()=>{
+  if(phase!=='finished'||!career.canOfferRetryBoost())return;
+  $('retry-ad').disabled=true;
+  const out=await career.watchRetryBoostAd();
+  trial.rewardedOutcome(out.status);
+  if(out.status==='completed'){
+    $('result-copy').textContent+=' · 下局同关额外氮气 +1（手动使用）';
+    $('replay').textContent='带氮气再战 ↻';
+  }
+  display('finished');fuelView();
+});
 $('sound').addEventListener('click', () => {
   soundEnabled = !soundEnabled;
   if (g) setRaceSound(g.audio,soundEnabled);
@@ -321,25 +333,27 @@ $('quality').addEventListener('change', () => {
   $('quality-note').textContent = '已保存画质偏好，下次打开继续生效';
 });
 const joystickSurface = $('joystick');
+const recordStickEvent=()=>{touchSerial++;lastStickEventAt=performance.now();};
 joystickSurface.addEventListener('pointerdown', e => {
   e.preventDefault();
   if (!g || phase !== 'race') return;
   const r = joystickSurface.getBoundingClientRect();
   if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width / 2)) return;
-  touchDriving = true; g.mobileMode = true;
+  touchDriving = true; g.mobileMode = true;recordStickEvent();
   joystickSurface.setPointerCapture(e.pointerId); syncJoystickVisual();
 });
 joystickSurface.addEventListener('pointermove', e => {
   if (joystick.update(e.pointerId, e.clientX)) {
+    recordStickEvent();
     if (e.cancelable) e.preventDefault();
     syncJoystickVisual();
   }
 });
 joystickSurface.addEventListener('pointerup', e => {
-  if (joystick.release(e.pointerId)) {e.preventDefault(); syncJoystickVisual();}
+  if (joystick.release(e.pointerId)) {e.preventDefault();recordStickEvent(); syncJoystickVisual();}
 });
 const endStick = e => {
-  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault(); syncJoystickVisual();}
+  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault();recordStickEvent(); syncJoystickVisual();}
 };
 joystickSurface.addEventListener('pointercancel', endStick);
 joystickSurface.addEventListener('lostpointercapture', endStick);
@@ -402,6 +416,10 @@ async function boot() {
     const raw = nativeFrame(), canStep = g.acc + dt >= 1 / 120;
     if (!touchDriving) return raw;
     raw.steerAxis = joystick.snapshot();
+    if(touchSerial!==consumedTouchSerial){
+      consumedTouchSerial=touchSerial;
+      lastTouchSampleAgeMs=Math.min(500,Math.max(0,Math.round(performance.now()-lastStickEventAt)));
+    }
     const translated = driver.frame(raw,g.player,g.state,{canStep,itemMode:g.itemMode,track:g.track,now:g.raceTime ?? 0});
     if (career.index > 0 && g.state === 'race' && g.raceTime < .28) translated.upPressed = false;
     return translated;
@@ -424,7 +442,7 @@ async function boot() {
   if (!stageTrackReady(g,career.stage)) throw Error('赛道身份校验失败，禁止开始错误的关卡');
   root.dataset.loaded = 'true';
   display('ready');
-  let lastFuelTick = 0;
+  let lastFuelTick = 0, lastHudTick=-Infinity;
   const frame = now => {
     const dt = (now - lastFrame) / 1000;lastFrame = now;
     if ((phase === 'ready' || phase === 'finished') && now - lastFuelTick > 1000) { lastFuelTick = now;fuelView(); }
@@ -436,42 +454,45 @@ async function boot() {
         duel.frame(g); // Keep genuine native overtakes for test telemetry; no toast.
         shortcutDecisions.frame(g); // Observe native Track.project; no speed or progress changes.
         career.drainNotices(); // Lifecycle notices are not a running commentary.
-        const objective=compactRaceObjective(career.stage,career.metrics,g.raceTime);
-        if ($('compact-goal').textContent!==objective) $('compact-goal').textContent=objective;
-        $('compact-goal').hidden=!objective;
-        const speedView = raceSpeedHUD(g.player);
-        if ($('speed-value').textContent !== speedView.value) $('speed-value').textContent = speedView.value;
-        $('speed').dataset.boost = String(speedView.boost);
-        $('speed').dataset.slow = String(speedView.slow);
-        const knockout = career.eliminationCue(g);
-        $('knockout').hidden = !knockout;
-        if (knockout) {
-          $('knockout').dataset.near = String(knockout.near);
-          $('knockout').dataset.danger = String(knockout.atRisk && knockout.near);
-          $('knockout-fill').style.width = knockout.fraction * 100 + '%';
-          $('knockout-meter').setAttribute('aria-valuenow', String(Math.round(knockout.fraction * 100)));
-          $('knockout-meter').setAttribute('aria-valuetext', `第 ${knockout.round} 次淘汰还剩 ${knockout.remaining} 米，第 ${knockout.place}/${knockout.count} 名`);
-          [...$('field').children].forEach((slot, i) => {
-            slot.hidden = i >= knockout.count;slot.classList.toggle('me', i + 1 === knockout.place);slot.classList.toggle('last', i + 1 === knockout.count);
-          });
-        }
-        // Native item races also earn nitro from manually controlled drifting.
-        if (g.itemMode && touchDriving) document.getElementById('gaugebox')?.classList.remove('hidden');
-        const nitroBtn = root.querySelector('[data-race-action="nitro"]');
-        if (nitroBtn) {
-          nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
-          const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : '氮气';
-          if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
-        }
-        const smallBtn = root.querySelector('[data-race-action="small"]');
-        if (smallBtn) smallBtn.classList.toggle('ready',g.player.smallWindow > 0);
-        const itemBtn = root.querySelector('[data-race-action="item"]');
-        if (itemBtn) itemBtn.classList.toggle('ready',!!g.player.items?.[0]);
-        const held = g.player.items?.[0];
-        if (itemBtn) {
-          const icon=held ? (ITEM_ICONS[held] ?? '❔') : '道具';
-          if(itemBtn.textContent!==icon)itemBtn.textContent=icon;
-          itemBtn.setAttribute('aria-label',held?'使用'+(ITEM_LABELS[held]??'道具'):'使用道具');
+        if(shouldRefreshRaceHud(now,lastHudTick)) {
+          lastHudTick=now;
+          const objective=compactRaceObjective(career.stage,career.metrics,g.raceTime);
+          if ($('compact-goal').textContent!==objective) $('compact-goal').textContent=objective;
+          $('compact-goal').hidden=!objective;
+          const speedView = raceSpeedHUD(g.player);
+          if ($('speed-value').textContent !== speedView.value) $('speed-value').textContent = speedView.value;
+          $('speed').dataset.boost = String(speedView.boost);
+          $('speed').dataset.slow = String(speedView.slow);
+          const knockout = career.eliminationCue(g);
+          $('knockout').hidden = !knockout;
+          if (knockout) {
+            $('knockout').dataset.near = String(knockout.near);
+            $('knockout').dataset.danger = String(knockout.atRisk && knockout.near);
+            $('knockout-fill').style.width = knockout.fraction * 100 + '%';
+            $('knockout-meter').setAttribute('aria-valuenow', String(Math.round(knockout.fraction * 100)));
+            $('knockout-meter').setAttribute('aria-valuetext', `第 ${knockout.round} 次淘汰还剩 ${knockout.remaining} 米，第 ${knockout.place}/${knockout.count} 名`);
+            [...$('field').children].forEach((slot, i) => {
+              slot.hidden = i >= knockout.count;slot.classList.toggle('me', i + 1 === knockout.place);slot.classList.toggle('last', i + 1 === knockout.count);
+            });
+          }
+          // Native item races also earn nitro from manually controlled drifting.
+          if (g.itemMode && touchDriving) document.getElementById('gaugebox')?.classList.remove('hidden');
+          const nitroBtn = root.querySelector('[data-race-action="nitro"]');
+          if (nitroBtn) {
+            nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
+            const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : '氮气';
+            if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
+          }
+          const smallBtn = root.querySelector('[data-race-action="small"]');
+          if (smallBtn) smallBtn.classList.toggle('ready',g.player.smallWindow > 0);
+          const itemBtn = root.querySelector('[data-race-action="item"]');
+          if (itemBtn) itemBtn.classList.toggle('ready',!!g.player.items?.[0]);
+          const held = g.player.items?.[0];
+          if (itemBtn) {
+            const icon=held ? (ITEM_ICONS[held] ?? '❔') : '道具';
+            if(itemBtn.textContent!==icon)itemBtn.textContent=icon;
+            itemBtn.setAttribute('aria-label',held?'使用'+(ITEM_LABELS[held]??'道具'):'使用道具');
+          }
         }
         if (failure) {if (!g.resultShown) g.showResults();finish();}
         root.classList.toggle('drifting', g.player.drifting);

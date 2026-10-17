@@ -169,3 +169,19 @@ test('a held drift cannot automatically re-enter after countersteer exit or wall
   assert.match(adapted,/this\.__RACE_DRIFT_REARMED__ !== false/);
   assert.equal(patchAnalogSteer(adapted),adapted);
 });
+
+
+test('a sub-frame drift tap is never swallowed when iPhone render/physics cadence differs',()=>{
+  const a=new TouchActions(),d=new ManualRaceDriver(a),p=sample();
+  a.press(99,'drift',10);
+  const renderOnly=d.frame({steerAxis:.7},p,'race',{canStep:false,now:10.01});
+  assert.equal(renderOnly.shift,true,'the held key remains pressed');
+  a.release(99);
+  const physics=d.frame({steerAxis:.7},p,'race',{canStep:true,now:10.07});
+  assert.equal(physics.shift,true,'short real press survives next native step');
+  assert.equal(d.frame({steerAxis:.7},p,'race',{canStep:true,now:10.08}).shift,false,'one tap, no sticky drift');
+  a.press(100,'drift',20);a.cancel(100);
+  assert.equal(d.frame({steerAxis:.7},p,'race',{canStep:true,now:20.04}).shift,false,'cancel cannot synthesize a press');
+  a.press(101,'drift',30);a.release(101);
+  assert.equal(d.frame({steerAxis:.7},p,'race',{canStep:true,now:30.31}).shift,false,'stale drift cannot trigger');
+});

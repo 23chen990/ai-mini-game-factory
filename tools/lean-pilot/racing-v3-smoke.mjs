@@ -198,8 +198,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V6.2'||
-     worldIdentity.uiRevision!=='racing-v62-route-decisions')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V7.0'||
+     worldIdentity.uiRevision!=='racing-v70-short-session')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -265,6 +265,7 @@ try {
     wheel:!!document.querySelector('#race-joystick'),
     sensitivity:document.querySelector('#race-steering-sens')?.value,
     noSwitch:!document.querySelector('#race-control-mode'),
+    noPhantomAd:document.querySelector('#race-retry-ad')?.hidden===true,
     noArrows:!document.querySelector('#race-left')&&!document.querySelector('#race-right'),
     noAutoGuide:!document.querySelector('#race-guide')?.textContent.includes('自动漂移'),
     oneLineFirstGuide:document.querySelector('#race-guide')?.hidden===false &&
@@ -272,9 +273,21 @@ try {
   }));
   if(initialControls.mode!=='joystick'||!initialControls.wheel||
      initialControls.sensitivity!=='normal'||!initialControls.noSwitch||
-     !initialControls.noArrows||!initialControls.noAutoGuide||!initialControls.oneLineFirstGuide)
+     !initialControls.noArrows||!initialControls.noAutoGuide||!initialControls.oneLineFirstGuide||!initialControls.noPhantomAd)
     fail('Only joystick input is allowed, even after a stored old assist preference: '+JSON.stringify(initialControls));
   report.initialControls=initialControls;
+  // No TapTap rewarded bridge in this QA browser. The fail-retry ad MUST be
+  // absent, never a fake disabled money button or an automatically served ad.
+  const adSafety=await page.evaluate(()=>({
+    retryHidden:document.querySelector('#race-retry-ad')?.hidden,
+    fuelHidden:document.querySelector('#race-fuel-ad')?.hidden,
+    noInterstitial:!document.querySelector('[data-race-interstitial]'),
+    boostDoesNotAppearWithoutSDK:!document.querySelector('#race-retry-ad:not([hidden])')
+  }));
+  if(!adSafety.retryHidden||!adSafety.fuelHidden||!adSafety.noInterstitial||
+     !adSafety.boostDoesNotAppearWithoutSDK)
+    fail('Unconfigured WebGL browser must remain ad-free: '+JSON.stringify(adSafety));
+  report.adSafety=adSafety;
   // Genuine browser render of the default lobby at two landscape widths.
   // No seeded save, DOM mutation or mocked UI goes into these screenshots.
   for (const [width,height] of [[844,390],[740,360]]) {
@@ -303,8 +316,8 @@ try {
   await page.locator('#race-export').tap();
   const firstFile=await firstDownload;
   const initialExport=JSON.parse(await readFile(await firstFile.path(),'utf8'));
-  if(firstFile.suggestedFilename()!=='racing-v62-local-playtest.json'||
-     initialExport.build!=='V6.2'||initialExport.verifiedHumanPlay!==false||
+  if(firstFile.suggestedFilename()!=='racing-v70-local-playtest.json'||
+     initialExport.build!=='V7.0'||initialExport.verifiedHumanPlay!==false||
      initialExport.metrics.starts!==0||initialExport.metrics.finishes!==0)
     fail('Menu export must start empty and explicitly reject human-play claims: '+JSON.stringify(initialExport));
   report.initialExport={filename:firstFile.suggestedFilename(),starts:0,private:true};

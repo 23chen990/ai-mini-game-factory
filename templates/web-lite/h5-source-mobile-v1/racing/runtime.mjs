@@ -23,6 +23,10 @@ export class RacingCareer {
     // One earned free replay per stage/session after an actual failed result.
     // Never mutate native vehicle, rank or reward callbacks.
     this.freeReplayStageId = null;this.usedFreeReplays = new Set();
+    // A short-session optional rewarded boost, NOT a paywall or fake in-race revive.
+    this.retryOfferRound = -1;this.retryAdAttempts = 0;
+    this.retryAdLastAt = 0;this.bonusNitroStageId = null;
+    this.rewardedProvider = requestRewardedVideo;
     this.startedAt = Date.now();this.active = false;this.notice = [];this.boss = null;
     this.metrics = this.freshMetrics();
   }
@@ -40,7 +44,10 @@ export class RacingCareer {
     } catch { this.storageOK = false;this.fuelEnabled = false;return false; }
   }
   setStage(index) { if (!stageUnlocked(this.progress, index)) return false;
-    if (this.stage.id !== STAGES[index].id) this.freeReplayStageId = null;
+    if (this.stage.id !== STAGES[index].id) {
+      this.freeReplayStageId = null;
+      this.retryOfferRound = -1;
+    }
     this.index = index;this.dailySnapshot = null;return true; }
   setSkin(index) { if (!skinUnlocked(this.progress, index)) return false;this.progress.skin = index;this.save();return true; }
   nextStage() { return !this.dailySnapshot && this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
@@ -106,6 +113,14 @@ export class RacingCareer {
         else { this.fuelEnabled = false;this.notice.push('油量同步异常，当前比赛不扣油'); }
       }
     }
+    // One *real* manual nitro stock granted at countdown. No changes to
+    // race progress, AI skill, rank, vehicle position or ad completion claims.
+    if(this.bonusNitroStageId === this.stage.id && game.player &&
+       Number.isFinite(game.player.nitroCount)){
+      game.player.nitroCount=Math.min(3,Math.max(0,game.player.nitroCount)+1);
+      this.bonusNitroStageId=null;
+    }
+    this.retryOfferRound=-1;
   }
   onItemGet(item, source = 'box') {
     if (!this.active) return;
@@ -281,6 +296,7 @@ export class RacingCareer {
       best = daily.best || null;
     }
     this.progress = outcome.career;
+    this.retryOfferRound = outcome.stars === 0 ? this.progress.rounds : -1;
     // One free retry after failure only. No resets on subsequent losses;
     // tickets do not persist to the next browser session.
     this.freeReplayStageId = outcome.stars === 0 && this.fuelEnabled &&
@@ -289,6 +305,35 @@ export class RacingCareer {
     return { ...outcome, best, metric: { ...this.metrics } };
   }
   hasFreeReplay() { return this.fuelEnabled && this.freeReplayStageId === this.stage.id; }
+  /**
+   * Only after a REAL graded loss; never during a race, before playing,
+   * without the official ad slot, or as a condition for the next free retry.
+   * A two-offer cap avoids repeated prompts during short IAA sessions.
+   */
+  canOfferRetryBoost() {
+    const elapsed=Date.now()-this.startedAt;
+    return this.fuelEnabled && !this.adBusy &&
+      this.retryOfferRound === this.progress.rounds &&
+      this.retryOfferRound > 0 && this.retryAdAttempts < 2 &&
+      elapsed >= 60_000 && this.canStart() &&
+      this.bonusNitroStageId !== this.stage.id &&
+      (this.retryAdLastAt===0 || Date.now()-this.retryAdLastAt >= 90_000);
+  }
+  async watchRetryBoostAd() {
+    if(!this.canOfferRetryBoost())return {status:'unavailable'};
+    const round=this.progress.rounds,stageId=this.stage.id;
+    this.retryOfferRound=-1; // At most one offered view per genuine failed result.
+    this.retryAdAttempts++;this.retryAdLastAt=Date.now();this.adBusy=true;
+    try {
+      const out=await this.rewardedProvider({tap:this.tap,config:this.config});
+      if(out?.status!=='completed')return {status:out?.status??'failed'};
+      if(this.progress.rounds!==round || this.stage.id!==stageId)
+        return {status:'stale'};
+      this.bonusNitroStageId=stageId;
+      return {status:'completed',stageId};
+    } catch {return {status:'failed'};}
+    finally {this.adBusy=false;}
+  }
   fuelText() {
     if (!this.storageOK) return '本地存储不可用 · 试玩不限油，关卡进度可能不会保留';
     if (!this.fuelEnabled) return '油量系统未开通 · 当前不限油试玩';

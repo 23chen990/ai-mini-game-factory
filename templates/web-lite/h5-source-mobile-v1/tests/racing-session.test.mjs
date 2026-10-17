@@ -88,3 +88,29 @@ test('自适应只在持续低帧率后降一档；手选画质保留', () => {
   const manual = new Monitor();manual.manual = true;
   for (let i = 0; i < 180; i++) assert.equal(manual.frame(.05, 'high'), null);
 });
+
+
+test('UI refresh at 30 Hz cannot throttle 120Hz physics or misread a backwards clock',()=>{
+  const refresh=need('shouldRefreshRaceHud');
+  assert.equal(refresh(0,-Infinity),true);
+  assert.equal(refresh(100,80),false);
+  assert.equal(refresh(115,80),true);
+  assert.equal(refresh(12,80),true);
+  const sequence=Array.from({length:120},(_,i)=>i*1000/120);
+  let last=-Infinity,domPaints=0;
+  for(const t of sequence)if(refresh(t,last)){last=t;domPaints++;}
+  assert.ok(domPaints>=24 && domPaints<=32,'about 30 DOM paints per second');
+});
+test('phone quality drops on sustained <46FPS rather than isolated delayed frames',()=>{
+  const Monitor=need('QualityMonitor'), q=new Monitor();
+  for(let i=0;i<100;i++)assert.equal(q.frame(.016,'high'),null);
+  assert.equal(q.frame(.12,'high'),null,'single WebGL stall cannot downgrade');
+  let lower=null;
+  for(let i=0;i<180;i++)lower=q.frame(.027,'high')??lower;
+  assert.equal(lower,'mid');
+  let again=null;
+  for(let i=0;i<180;i++)again=q.frame(.027,'mid')??again;
+  assert.equal(again,'low','can step down twice after separate slow windows');
+  const manual=new Monitor();manual.manual=true;
+  for(let i=0;i<200;i++)assert.equal(manual.frame(.05,'high'),null);
+});

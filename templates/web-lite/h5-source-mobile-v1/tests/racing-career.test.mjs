@@ -485,3 +485,78 @@ test('stage/daily switch cannot transfer a free retry; wins never grant one',()=
   assert.equal(c.hasFreeReplay(),false);
   assert.equal(c.setDaily(new Date(2026,9,17,12)),false,'daily still gated by stage 04');
 });
+
+test('short IAA session: one real loss may voluntarily earn a single *manual* race nitro',async()=>{
+  const c=new RacingCareer(memory()),g=game();
+  const config={status:1,source:'check_ads_status',appId:'test-app',spaceId:'test-slot',screenOrientation:1};
+  c.setupAd(config,{createRewardedVideoAd(){}});
+  c.rewardedProvider=async()=>({status:'completed'});
+  c.startedAt=Date.now()-95000;
+  assert.equal(c.canOfferRetryBoost(),false,'no rewarded request before any real race');
+  g.player.nitroCount=0;
+  c.begin(g);
+  const originalSpeed=g.player.s,originalProgress=g.player.progress;
+  c.finalize(g,{finished:false,place:5,time:null,stats:{crash:2}});
+  assert.equal(c.hasFreeReplay(),true,'voluntary ad must NEVER remove free same-stage replay');
+  assert.equal(c.canOfferRetryBoost(),true);
+  assert.deepEqual(await c.watchRetryBoostAd(),{status:'completed',stageId:'01'});
+  assert.equal(c.canOfferRetryBoost(),false,'cannot watch a second ad for the same failure');
+  assert.equal(c.bonusNitroStageId,'01');
+  c.begin(g);
+  assert.equal(g.player.nitroCount,1,'real native nitro stock given only after countdown');
+  assert.equal(c.bonusNitroStageId,null);
+  assert.equal(g.player.s,originalSpeed,'no scripted speed');
+  assert.equal(g.player.progress,originalProgress,'no scripted distance or rank');
+  c.begin(g);
+  assert.equal(g.player.nitroCount,1,'reward cannot multiply on race restarts');
+});
+
+test('ads are unavailable in offline/free mode, on wins, before 60s, and after cancellation',async()=>{
+  const offline=new RacingCareer(memory()),g=game();
+  offline.startedAt=Date.now()-180000;
+  offline.begin(g);
+  offline.finalize(g,{finished:false,place:4,time:null,stats:{crash:1}});
+  assert.equal(offline.canOfferRetryBoost(),false);
+  assert.equal(offline.canStart(),true,'no ad SDK -> no fuel or paywall');
+
+  const c=new RacingCareer(memory());
+  c.setupAd({status:1,source:'check_ads_status',appId:'test',spaceId:'slot',screenOrientation:1},
+    {createRewardedVideoAd(){}});
+  c.startedAt=Date.now()-59000;
+  c.begin(g);c.finalize(g,{finished:true,place:1,time:90,stats:{crash:0}});
+  assert.equal(c.canOfferRetryBoost(),false,'real win never offers an ad');
+  c.begin(g);c.finalize(g,{finished:false,place:4,time:null,stats:{crash:1}});
+  assert.equal(c.canOfferRetryBoost(),false,'short page session does not trigger ads');
+  c.startedAt=Date.now()-95000;
+  assert.equal(c.canOfferRetryBoost(),true);
+  c.rewardedProvider=async()=>({status:'cancelled'});
+  assert.equal((await c.watchRetryBoostAd()).status,'cancelled');
+  assert.equal(c.bonusNitroStageId,null,'cancelled video must not grant stock');
+  assert.equal(c.canOfferRetryBoost(),false);
+});
+
+test('late ad callback after another stage or run cannot credit a different result',async()=>{
+  const c=new RacingCareer(memory()),g=game();
+  c.setupAd({status:1,source:'check_ads_status',appId:'test',spaceId:'slot',screenOrientation:1},
+    {createRewardedVideoAd(){}});
+  c.startedAt=Date.now()-100000;
+  c.begin(g);
+  c.finalize(g,{finished:false,place:4,time:null,stats:{crash:1}});
+  let done;
+  c.rewardedProvider=()=>new Promise(resolve=>{done=resolve;});
+  const request=c.watchRetryBoostAd();
+  assert.equal(c.canStart(),false,'video busy prevents simultaneous race start');
+  done({status:'completed'});
+  assert.equal((await request).status,'completed');
+  assert.equal(c.bonusNitroStageId,'01');
+  // A different stage must never consume the earlier stage-specific reward.
+  c.progress.stars['01']=1;
+  c.setStage(1);
+  g.player.nitroCount=0;c.begin(g);
+  assert.equal(g.player.nitroCount,0);
+  assert.equal(c.bonusNitroStageId,'01');
+  c.setStage(0);
+  c.begin(g);
+  assert.equal(g.player.nitroCount,1);
+  assert.equal(c.bonusNitroStageId,null);
+});
