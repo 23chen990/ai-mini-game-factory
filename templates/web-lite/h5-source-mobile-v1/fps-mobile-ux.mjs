@@ -624,7 +624,7 @@ export function cfMissionFacts(challenge) {
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
     ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
-    challenge.kind === 'kills' ? '击杀'+challenge.target+'人'+(challenge.minTravel?' · 行进'+challenge.minTravel+'米':'') :
+    challenge.kind === 'kills' ? '击杀 '+challenge.target+' 人'+(challenge.minTravel?' · 行进'+challenge.minTravel+'米':'') :
     challenge.kind === 'assault' ? '行进'+challenge.minTravel+'米→杀'+challenge.target+'人' :
     challenge.kind === 'defend' ? '守 '+(challenge.reverse?'B → A':'A → B')+' · 各'+challenge.holdSeconds+'秒' :
       '移动'+(challenge.minTravel||0)+'米'+(challenge.minKills?' · 击杀'+challenge.minKills:'');
