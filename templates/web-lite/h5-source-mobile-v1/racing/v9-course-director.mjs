@@ -34,7 +34,7 @@ export const V9_STAGE_RHYTHMS = Object.freeze({
   '19': {identity:'tidal peninsula / edge-control transitions', beats:['grandSweep','chicane','late']},
   '20': {identity:'crystal summit / alternating short technicals', beats:['chicane','doubleApex','apex']},
   '21': {identity:'open highway / late single-bend showdown', beats:[null,'grandSweep',null,'late']},
-  '22': {identity:'canyon single-run descent / open risky exits', beats:['grandSweep','late','apex',null]},
+  '22': {identity:'canyon single-run descent / early safe fork then decisive outer exit arc', beats:[null,'late','apex','grandSweep']},
   '23': {identity:'island crossing / one loaded midair entry', beats:['sweep','doubleApex','chicane','apex']},
   '24': {identity:'snow hook / narrow-turn approach after speed', beats:['grandSweep','apex','late',null]},
   '25': {identity:'urban stacked road / shortcut precision', beats:['late','sweep',null,'doubleApex']},

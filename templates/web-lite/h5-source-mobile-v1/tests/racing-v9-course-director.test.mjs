@@ -72,11 +72,13 @@ test('V9 width variation changes actual safe driving width, not only line paint'
 });
 
 
-test('the former low-input stages 02/07/22 start with real long-arc steering work',()=>{
- for(const id of ['02','07','22']){
+test('formerly passive stages 02/07 add early long steering arcs; stage22 preserves its near-apex real shortcut',()=>{
+ for(const id of ['02','07']){
   assert.equal(V9_STAGE_RHYTHMS[id].beats[0],'grandSweep',id);
   assert.ok(V9_STAGE_RHYTHMS[id].beats.some(x=>x==='apex'||x==='chicane'||x==='late'),id);
  }
+ assert.equal(V9_STAGE_RHYTHMS['22'].beats[0],null);
+ assert.equal(V9_STAGE_RHYTHMS['22'].beats.at(-1),'grandSweep');
 });
 test('every late campaign map has a long sustained arc or linked countersteer sector',()=>{
  for(let n=17;n<=30;n++){
