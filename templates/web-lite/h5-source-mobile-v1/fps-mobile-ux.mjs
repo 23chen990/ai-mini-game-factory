@@ -1075,6 +1075,7 @@ export function createFpsMobileUx(game, root, doc) {
   const pad=nativePads[0],stickKnob=nativePads[1];
   let moveFinger=null;
   let queuedJumpAt=null;
+  let controlsReleasedOnDeath=false;
   let lastTouchAt=-Infinity;
   const markTouch=()=>{lastTouchAt=performance.now();};
   const stickCenter=()=>{
@@ -1095,6 +1096,12 @@ export function createFpsMobileUx(game, root, doc) {
   const onTouchStart=e=>{
     markTouch();
     if(!game.playing||game.paused||game.ended)return;
+    // Native button handlers would queue a jump/fire even when the player is
+    // dead; that stale input could trigger immediately on respawn. Block ONLY
+    // the in-game control layer, never the pause/revive or browser UI.
+    if(game.player?.alive!==true&&e.target?.closest?.('#touch')){
+      e.stopPropagation();return;
+    }
     if(e.target?.closest?.('.btn[data-mk-action="fire"]')){
       // Fire button still belongs to the native gun; camera movement from
       // THIS thumb is routed separately since native buttons stop bubbling.
@@ -1783,7 +1790,7 @@ export function createFpsMobileUx(game, root, doc) {
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
-      playerEngaged=false;resetAllTouches();
+      playerEngaged=false;controlsReleasedOnDeath=false;resetAllTouches();
       guide.textContent = activeChallenge?.lite===true
         ? activeChallenge.encounter
         :activeChallenge?.elite===true
@@ -1905,6 +1912,11 @@ export function createFpsMobileUx(game, root, doc) {
       if (!active || now >= cueExpiresAt) hitCue.hidden = true;
       if (!active || now >= damageExpiresAt)damageVignette.hidden=true;
       const p = game.player;
+      if(active&&p&&!p.alive&&!controlsReleasedOnDeath){
+        resetAllTouches();controlsReleasedOnDeath=true;
+      } else if(p?.alive){
+        controlsReleasedOnDeath=false;
+      }
       if(active&&p?.alive&&activeChallenge?.id==='tags'){
         // Never wake hidden enemies from fabricated hit/health signals.
         // A valid real shot is audible; a fresh real hit causes faster cover AI.
