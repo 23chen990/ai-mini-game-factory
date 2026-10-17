@@ -210,8 +210,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V9.0'||
-     worldIdentity.uiRevision!=='racing-v90-integrated')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V9.1'||
+     worldIdentity.uiRevision!=='racing-v91-wheel-hud')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
