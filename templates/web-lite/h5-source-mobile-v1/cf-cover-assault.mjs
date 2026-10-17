@@ -61,8 +61,8 @@ export function cfCoverShieldSpec(pos,yaw) {
   if(!pos||![pos.x,pos.z,yaw].every(Number.isFinite))return null;
   // Just over crouched eye-height and below standing muzzle/eye-height.
   // Offset ~1.05m IN FRONT of the legal player stand point.
-  return {x:pos.x-Math.sin(yaw)*1.06,y:.53,
-    z:pos.z-Math.cos(yaw)*1.06,sx:1.8,sy:1.06,sz:.36,
+  return {x:pos.x-Math.sin(yaw)*1.06,y:.65,
+    z:pos.z-Math.cos(yaw)*1.06,sx:1.8,sy:1.30,sz:.36,
     yaw,mat:'metal',solid:true,sight:true,bullet:'block',
     tag:'cf-v20-real-cover'};
 }
@@ -85,7 +85,7 @@ export function cfCoverCanPlace(world,spec,playerPoint) {
   for(const side of [-.62,0,.62]){
     const x=spec.x+Math.cos(spec.yaw)*side;
     const z=spec.z-Math.sin(spec.yaw)*side;
-    if(world.blocked(x,.08,z,.18,1.08))return false;
+    if(world.blocked(x,.08,z,.18,1.30))return false;
   }
   return !world.blocked(playerPoint.x,.05,playerPoint.z,.40,1.73);
 }
@@ -172,7 +172,7 @@ export function createCfCoverAssault(game,root,doc) {
     route=null;aimSide=null;sites={left:null,right:null};
     paths={left:null,right:null};failedRoutes=0;lastUi=0;lastStatus='';
     clearInputs();
-    if(!enabled)return {enabled:false};
+    if(!enabled){game.__mkCoverV20=null;return {enabled:false};}
     const p=game.player;
     if(!p?.pos||!game.world||!game.nav)return {enabled:true,ready:false};
     // Author only small, real waist-high world geometry at legal sites.
@@ -185,6 +185,13 @@ export function createCfCoverAssault(game,root,doc) {
     }
     if(created){
       game.world.build();rebuildNav();
+    } else {
+      // Without a real visible native collider, retreat to the intact
+      // original FPS input rather than displaying imaginary protection.
+      enabled=false;panel.hidden=true;
+      html.dataset.fpsCover='false';root.dataset.fpsCover='false';
+      game.__mkCoverV20={enabled:false,reason:'no-physical-cover',barriers:0};
+      return game.__mkCoverV20;
     }
     const here={x:p.pos.x,z:p.pos.z};
     for(const side of ['left','right']){
