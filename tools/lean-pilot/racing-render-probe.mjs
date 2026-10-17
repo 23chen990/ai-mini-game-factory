@@ -40,7 +40,10 @@ try{
   for(const phase of ['baseline','no-css-effects','no-world','restored']){
     if(phase==='no-css-effects')await page.addStyleTag({content:'*{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;filter:none!important;box-shadow:none!important;text-shadow:none!important;}'});
     if(phase==='no-world')await page.evaluate(()=>{window.game.level.visible=false;});
-    if(phase==='restored')await page.evaluate(()=>{window.game.level.visible=true;document.head.lastElementChild?.tagName==='STYLE'&&document.head.lastElementChild.remove();});
+    if(phase==='restored')await page.evaluate(()=>{
+      window.game.level.visible=true;
+      if(document.head.lastElementChild?.tagName==='STYLE')document.head.lastElementChild.remove();
+    });
     await page.evaluate(()=>{window.__RENDER_PROBE__.times={};window.__RENDER_PROBE__.raf=[];window.__RENDER_PROBE__.last=performance.now();});
     await cdp.send('Profiler.start');await page.waitForTimeout(5000);
     const profile=await cdp.send('Profiler.stop');
