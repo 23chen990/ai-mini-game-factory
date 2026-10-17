@@ -1,0 +1,94 @@
+name: CF V9 actual A-B control-point QA
+on:
+  pull_request:
+    paths:
+      - 'templates/web-lite/h5-source-mobile-v1/**'
+      - 'tools/lean-pilot/**'
+      - '.github/workflows/cf-v9-native-defense-qa.yml'
+permissions:
+  contents: read
+concurrency:
+  group: cf-v9-real-defense-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  real-3d-defense:
+    if: github.event.pull_request.head.ref == 'qa/cf-v9-real-defense-native-20261017'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      RUN_ID: h5-cf-challenges-20261013
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.11.0'
+      - name: Locked dependencies, real Chromium
+        run: |
+          npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+          pnpm install --frozen-lockfile --ignore-scripts
+          pnpm exec playwright install --with-deps chromium
+      - name: Lint all owned H5 and strict synthetic-negative checks
+        run: |
+          pnpm exec eslint tools/lean-pilot/cf-v9-defense-browser-qa.mjs templates/web-lite/h5-source-mobile-v1/*.mjs
+          node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+          npm run pilot:typecheck
+      - name: Fetch immutable original 3D game source
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/cf-pinned-source"
+          mkdir -p "$root"
+          git -C "$root" init -q
+          git -C "$root" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git
+          git -C "$root" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          git -C "$root" checkout -q FETCH_HEAD
+          test "$(git -C "$root" rev-parse HEAD)" = 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8
+          echo "H5_PINNED_SOURCE_ROOT=$root" >> "$GITHUB_ENV"
+      - name: Build and verify real unchanged Three.js engine with V9 owned adapter
+        run: |
+          pnpm pilot build "$RUN_ID" cf-transport-ship
+          pnpm pilot check "$RUN_ID"
+      - name: Verify actual map, two native bot routes, touch movement and pause
+        id: defense_qa
+        continue-on-error: true
+        shell: bash
+        run: |
+          set -o pipefail
+          node tools/lean-pilot/cf-v9-defense-browser-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-v9-defense.log"
+      - name: Export private actual H5, never deploy
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          game="runs/$RUN_ID/workspace/game"
+          if [ ! -f "$game/index.html" ];then
+            echo 'NO_PRODUCT_BUILD'; exit 0
+          fi
+          pnpm pilot export "$RUN_ID" > "$RUNNER_TEMP/cf-export.json"
+          mkdir -p "$RUNNER_TEMP/cf-h5"
+          html=$(find "runs/$RUN_ID" -maxdepth 1 -name 'cf-transport-ship-*.html' -print -quit)
+          test -n "$html"
+          cp "$html" "$RUNNER_TEMP/cf-h5/index.html"
+          cp "$game/LICENSE.three.txt" "$RUNNER_TEMP/cf-h5/LICENSE.three.txt"
+          (cd "$RUNNER_TEMP/cf-h5" && zip -q "$RUNNER_TEMP/cf-v9-private.zip" index.html LICENSE.three.txt)
+          sha256sum "$RUNNER_TEMP/cf-v9-private.zip" > "$RUNNER_TEMP/cf-v9-sha256.txt"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cf-v9-defense-private-${{ github.event.pull_request.head.sha }}
+          path: |
+            ${{ runner.temp }}/cf-v9-private.zip
+            ${{ runner.temp }}/cf-v9-sha256.txt
+            ${{ runner.temp }}/cf-v9-defense.log
+            ${{ runner.temp }}/cf-export.json
+            runs/h5-cf-challenges-20261013/workspace/cf-v9-defense-browser.json
+            runs/h5-cf-challenges-20261013/screenshots/mobile-v9-defense*.png
+          retention-days: 7
+          if-no-files-found: warn
+      - name: Strict native scene smoke failure remains a failed run
+        if: steps.defense_qa.outcome == 'failure'
+        run: |
+          echo 'REAL 3D defense QA failed: NO CLAIM of real gameplay readiness'
+          exit 1
