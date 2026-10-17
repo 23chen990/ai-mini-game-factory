@@ -83,7 +83,7 @@ jobs:
             ${{ runner.temp }}/cf-v9-sha256.txt
             ${{ runner.temp }}/cf-v9-defense.log
             ${{ runner.temp }}/cf-export.json
-            runs/h5-cf-challenges-20261013/workspace/cf-v9-defense-browser.json
+            runs/h5-cf-challenges-20261013/cf-v9-defense-browser.json
             runs/h5-cf-challenges-20261013/screenshots/mobile-v9-defense*.png
           retention-days: 7
           if-no-files-found: warn
