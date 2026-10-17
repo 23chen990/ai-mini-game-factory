@@ -287,7 +287,7 @@ try {
     oneLineFirstGuide:document.querySelector('#race-guide')?.hidden===false &&
       !document.querySelector('#race-guide')?.textContent.includes('松手回正')
   }));
-  if(initialControls.mode!=='joystick'||!initialControls.wheel||
+  if(initialControls.mode!=='wheel'||!initialControls.wheel||
      initialControls.sensitivity!=='normal'||!initialControls.noSwitch||
      !initialControls.noArrows||!initialControls.noAutoGuide||!initialControls.oneLineFirstGuide||!initialControls.noPhantomAd)
     fail('Only joystick input is allowed, even after a stored old assist preference: '+JSON.stringify(initialControls));
@@ -422,14 +422,18 @@ try {
     };
   });
   const cdp=await context.newCDPSession(page);
-  const leftThumb={x:wheel.x+wheel.width*.18,y:wheel.y+wheel.height*.5,id:101};
-  const rightThumb={...leftThumb,x:wheel.x+wheel.width*.82};
+  // Rotate on the rim: stationary touches must NOT steer the new Wheel Touch controller.
+  const cx=wheel.x+wheel.width/2,cy=wheel.y+wheel.height/2,r=wheel.width*.37;
+  const leftThumb={x:cx,y:cy-r,id:101};
+  const leftTurn={...leftThumb,x:cx-r*.75,y:cy-r*.66};
+  const rightThumb={...leftThumb,x:cx+r*.75,y:cy-r*.66};
   const driftThumb={x:drift.x+drift.width/2,y:drift.y+drift.height/2,id:102};
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftThumb]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[leftTurn]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>.5,null,{timeout:8000});
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[driftThumb]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftTurn,driftThumb]});
   await page.waitForFunction(()=>document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),null,{timeout:8000});
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[rightThumb]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[rightThumb,driftThumb]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis<-.5,null,{timeout:8000});
   await page.waitForFunction(()=>{
     const pin=window.game?.__QA_LAST_CONTROL_PIN__;
@@ -478,7 +482,7 @@ try {
     fail('Pause sound toggle did not mute and persist: '+JSON.stringify(audioMuted));
   await page.locator('#race-resume').tap();
   await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:8000});
-  report.touch={actualCDPTouch:true,joystickCountersteer:true,simultaneousDrift:true,releaseClears:true,paused:true,cleared,resumed:true,audioMuted:true};
+  report.touch={actualCDPTouch:true,rotaryWheelCountersteer:true,simultaneousDrift:true,releaseClears:true,paused:true,cleared,resumed:true,audioMuted:true};
   // QA-only injected wrongWay status, NOT a natural 180-degree player turn.
   // On an already-forward-facing car, native physics may self-correct the
   // injected meter before the forced recovery threshold can fire. Both genuine
