@@ -1,6 +1,6 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout, URL, URLSearchParams, navigator */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
-import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
+import { requestRewardedVideo, createFpsAdapter, cfMobileActorBudget } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap } from './fps-mobile-ux.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus,cfMobileMission} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
@@ -263,7 +263,7 @@ async function boot() {
         if(c?.lite===true){
           // Bounded native actor count for mobile WebGL. The original AI,
           // world and ballistics remain real; there is no phantom damage.
-          g.opts.size=4;
+          g.opts.size=cfMobileActorBudget(c);
           // Ignore original team kill quota; campaign's own real condition
           // or its visible countdown is the only victory/failure source.
           g.opts.goal=300;
