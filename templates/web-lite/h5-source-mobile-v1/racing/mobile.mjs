@@ -359,7 +359,8 @@ joystickSurface.addEventListener('lostpointercapture', endStick);
 // A window-level fallback tracks/relinquishes ONLY the already-owned pointer;
 // it does not steal the other thumb or add a second control scheme.
 window.addEventListener('pointermove', e => {
-  if (!wheelCaptureFallback || joystick.pointerId !== e.pointerId) return;
+  if (!wheelCaptureFallback || joystick.pointerId !== e.pointerId ||
+      joystickSurface.contains(e.target)) return;
   if (joystick.update(e.pointerId,e.clientX)) {
     if (e.cancelable) e.preventDefault();
     recordStickEvent('move');syncJoystickVisual();

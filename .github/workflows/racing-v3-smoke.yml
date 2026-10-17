@@ -30,7 +30,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   racing-v3:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/racing-career-items-iaa-20261014' || github.event.pull_request.head.ref == 'feat/racing-v31-tracks-items-recovery-20261014' || github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-rivals-map-verification-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-classic-countersteer-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-v46-challenge-20261017' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v5') || startsWith(github.event.pull_request.head.ref, 'feat/racing-v60-')))
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/racing-career-items-iaa-20261014' || github.event.pull_request.head.ref == 'feat/racing-v31-tracks-items-recovery-20261014' || github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-rivals-map-verification-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-classic-countersteer-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-v46-challenge-20261017' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v5') || startsWith(github.event.pull_request.head.ref, 'feat/racing-v60-') || startsWith(github.event.pull_request.head.ref, 'feat/racing-v62-')))
     runs-on: ubuntu-24.04
     timeout-minutes: 26
     steps:
@@ -131,11 +131,11 @@ jobs:
   publish-qa-preview:
     name: Verified H5 phone preview (QA only)
     needs: racing-v3
-    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'feat/racing-v60-30-unique-stages-20261017' || github.event.pull_request.head.ref == 'feat/racing-v60-mobile-response-20261017') && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'feat/racing-v60-30-unique-stages-20261017' || github.event.pull_request.head.ref == 'feat/racing-v60-mobile-response-20261017' || github.event.pull_request.head.ref == 'feat/racing-v62-p0-mobile-touch-fix-20261017') && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 9
     env:
-      RACE_PREVIEW_BRANCH: ${{ github.event.pull_request.head.ref == 'feat/racing-v60-mobile-response-20261017' && 'preview/racing-v61-mobile-response-20261017' || 'preview/racing-v60-career30-20261017' }}
+      RACE_PREVIEW_BRANCH: ${{ github.event.pull_request.head.ref == 'feat/racing-v62-p0-mobile-touch-fix-20261017' && 'preview/racing-v63-touch-trust-20261017' || (github.event.pull_request.head.ref == 'feat/racing-v60-mobile-response-20261017' && 'preview/racing-v61-mobile-response-20261017' || 'preview/racing-v60-career30-20261017') }}
     permissions:
       contents: write
       actions: read
@@ -188,7 +188,7 @@ jobs:
               + 'HTML_SHA256=' + digest + '\n', encoding='utf8')
           print('QA_ARTIFACT_VERIFIED_HTML_SHA256=' + digest)
           PY
-      - name: Publish only the verified V6.0 thirty-course playtest to isolated QA branch
+      - name: Publish only the SHA-verified racing playtest to the correct isolated QA branch
         shell: bash
         run: |
           set -euo pipefail

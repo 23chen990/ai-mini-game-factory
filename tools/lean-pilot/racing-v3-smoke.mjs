@@ -459,6 +459,16 @@ try {
     driftHeld:document.querySelector('[data-race-action="drift"]').classList.contains('held')
   }));
   if(wheelRelease.axis!==0||wheelRelease.driftHeld)fail('Touches must release without sticky turning/drift: '+JSON.stringify(wheelRelease));
+  // A real OS gesture interruption has to cancel a held wheel. A synthetic
+  // pointerup is not sufficient to cover Android/Safari cancellation paths.
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftThumb]});
+  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>.65,null,{timeout:8000});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchCancel',touchPoints:[]});
+  await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
+  await page.waitForFunction(()=>window.game?.__QA_LAST_CONTROL_PIN__?.steerAxis===0,null,{timeout:18000});
+  const cancelledInput=await page.evaluate(()=>window.__RACE_EVIDENCE__?.phoneInput);
+  if((cancelledInput?.touchCancels??0)<1)
+    fail('Real touchCancel must clear active input and be represented in private QA aggregates: '+JSON.stringify(cancelledInput));
   const knockoutLayout=await page.evaluate(()=>{
     const kit=document.querySelector('#race-kit'),speed=document.querySelector('#race-speed');
     const badge=document.querySelector('#race-knockout');
