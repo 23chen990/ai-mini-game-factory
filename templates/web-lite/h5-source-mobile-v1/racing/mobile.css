@@ -437,3 +437,29 @@ html[data-race-platform="touch"] #race-joystick{max-height:43vh}
  #race-kit #race-result-stars span{font-size:22px}
  #race-kit #race-result-stars small{font-size:10px;max-width:165px}
 }
+
+/* Fuel V2: six readable blocks represent five units each (not 30 tiny ticks).
+ * Exact fuel remains visible in the text, and the DOM meter reports 0..30. */
+#race-kit #race-fuel-gauge{width:clamp(140px,21vw,182px);height:13px;gap:4px}
+#race-kit #race-fuel-gauge span{
+  border-radius:4px;border:1px solid #a6cddd65;
+  background:linear-gradient(90deg,#e6bf66 var(--fill,0%),#0a2034 var(--fill,0%));
+}
+#race-kit #race-fuel-gauge span.filled{border-color:#ffe3a2}
+#race-kit .race-actions #race-star-ad{
+  min-height:44px;padding:11px 20px;
+  background:linear-gradient(120deg,#e7bd6b,#cf9235);
+  border:1px solid #ffe1aa;color:#102838;
+  box-shadow:0 4px 17px #0005;
+}
+#race-kit[data-star-locked="true"] #race-stage-goal{
+  font-weight:800;color:#ffda81;letter-spacing:.2px;
+}
+#race-kit[data-star-locked="true"] #race-course-card{
+  border-color:#f7bf6a8c;
+}
+#race-kit #race-star-ad[hidden]{display:none!important}
+@media(max-height:375px){
+  #race-kit #race-fuel-gauge{width:135px}
+  #race-kit .race-actions #race-star-ad{padding:9px 12px;min-height:40px}
+}
