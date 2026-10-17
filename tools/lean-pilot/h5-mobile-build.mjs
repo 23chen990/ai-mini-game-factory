@@ -83,7 +83,7 @@ export async function buildSourceMobile(base, runId, gameId, { sourceRoot = proc
   const {stdout:buildLog}=await exec(process.execPath,['build.mjs'],{cwd:project,timeout:60000,maxBuffer:1024*1024});
   const originalHtml=await readFile(path.join(project,'dist/index.html'),'utf8');
   let html=originalHtml.replace('<html',`<html data-reference-game="${gameId}"`);
-  const query=gameId==='pelican-bike'?'q=low':'q=low';
+  const query='q=low';
   // The ORIGINAL renderer, textures and postprocessing are constructed
   // before the H5 adapter starts a match. Setting opts.quality later does NOT
   // remove its high-cost framebuffer/bloom. Normalize boot query first.
