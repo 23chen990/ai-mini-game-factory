@@ -10,7 +10,7 @@ import {cfChooseDefenseSites,cfMissionDebrief,cfMissionFacts,
 const challenges=challengesFor('cf-transport-ship');
 const assault=challenges.find(x=>x.id==='assault');
 const evac=challenges.find(x=>x.id==='evac');
-const point={x:-8,z:6.8},atPoint={alive:true,team:'BL',pos:{...point}};
+const point={id:'B',x:-8,z:6.8},atPoint={alive:true,team:'BL',pos:{...point}};
 const enemies=[{alive:true,team:'GR',pos:{x:15,z:7}}];
 const hold=(state,t,{player=atPoint,bots=enemies,travel=35,kills=1,challenge=evac}={})=>
   cfStepExtraction(state,{gameTime:t,player,actors:bots,team:'BL',travel,kills,
@@ -22,10 +22,11 @@ function repeat(state,start,end,options={}){
 }
 
 test('actual first A-attack location is required in addition to walked meters and displacement',()=>{
- const site={x:-22,z:-6.8};
+ const site={id:'A',x:-22,z:-6.8};
  let a=cfAdvanceAssault(assault,null,{
    kills:0,travel:0,x:-31,z:-6.8,alive:true,checkpoint:site});
  assert.equal(a.checkpointValid,true);
+ assert.equal(a.checkpoint.id,'A','Authored navigable site identity preserved');
  a=cfAdvanceAssault(assault,a,{kills:3,travel:13,x:-20,z:7,alive:true});
  assert.equal(a.stage,0,'Long real walk away from site is not a capture');
  assert.equal(a.postKills,0);
@@ -58,6 +59,7 @@ test('evac requires genuine personal kill, movement, uncontested checkpoint and 
  assert.equal(cfStartExtraction({x:NaN,z:2}).valid,false);
  let x=cfStartExtraction(point);
  assert.equal(x.valid,true);
+ assert.equal(x.site.id,'B','The real original-world extraction marker stays B');
  x=repeat(x,0,7,{travel:35,kills:0});
  assert.equal(x.extracted,false);
  assert.equal(x.held,0,'Teammate kills cannot substitute native own kill');
