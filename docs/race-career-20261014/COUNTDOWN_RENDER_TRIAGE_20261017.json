@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "qq-speed",
+  "workspace": "runs/h5-qq-mobile-20261013/workspace/game",
+  "route": "formal-fixer",
+  "hypothesis": "Severe rendering stalls during countdown never reach the race-only quality monitor",
+  "evidence": {
+    "sourceCommit": "aa80568b44e7452d8ef51c1da0c77c4679b18bf1",
+    "workflowRun": 39043567987,
+    "desktopArtifact": 12104757365,
+    "touchArtifact": 12105330606,
+    "desktop": {
+      "focus": true,
+      "visibility": "visible",
+      "hasPlayer": true,
+      "state": "countdown",
+      "quality": "mid",
+      "composer": true,
+      "observedAtMs": 87487,
+      "countdownSimulationSeconds": 2.0502,
+      "raceTime": 0,
+      "note": "The 45-second start gate was missed; the later screenshot also timed out. No game state was forced. These are software WebGL observations, not physical desktop performance."
+    },
+    "touch": {"coldStartPassed": true,"cssCasesPassed": 12,"gameErrors": 0,"humanDevice": false}
+  },
+  "repair": "Reuse severe-only QualityMonitor before native render during visible countdown; clear on pause/hidden; keep native renderer, simulation dt, countdown clock, saved preference, physics and race result untouched.",
+  "localRegression": {"before": {"newTests": 8,"failed": 8},"after": {"newTests": 8,"passed": 8},"allNewFixTests": {"passed":18,"failed":0}},
+  "requiredRuntimeRetest": "Same SHA cold desktop/touch jobs AND original full Chromium gate. Do not lengthen the original timeout or force game state to pass.",
+  "realPhoneQA": "NOT_RUN",
+  "publishable": false
+}

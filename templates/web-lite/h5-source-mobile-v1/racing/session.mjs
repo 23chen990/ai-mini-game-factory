@@ -74,6 +74,7 @@ export const raceCameraFov = (speed, nitro, small) => Math.min(69, 61.5 + Math.a
 export const raceBloomStrength = () => .3;
 const tunedFx = new WeakSet();
 export function tuneRaceFx(game) {
+  installCountdownQualitySafety(game);
   if (!game.fx || tunedFx.has(game.fx)) return;
   tunedFx.add(game.fx);
   for (const kind of ['smoke', 'glow']) {
@@ -199,4 +200,43 @@ export class RaceInputHealth {
       timingScope:'pointer-event-to-native-input-sample-and-overlay-RAF-only'
     };
   }
+}
+
+
+/** Pre-race rendering must not depend on reaching race state to recover.
+ * The native loop caps simulation dt; measure real render intervals instead.
+ * Only the existing severe-stall policy applies here, preserving ordinary
+ * manual preferences. Do not save, alter physics, or skip the countdown.
+ */
+const countdownQualityInstalled = new WeakSet();
+export function installCountdownQualitySafety(game, {now = () => globalThis.performance.now()} = {}) {
+  if (!game || typeof game.render !== 'function' ||
+      typeof game.setupQuality !== 'function' || !game.settings ||
+      typeof now !== 'function' || countdownQualityInstalled.has(game)) return false;
+  const monitor = new QualityMonitor();
+  monitor.manual = true; // Same severe-only exception used for saved preferences.
+  let previous = null;
+  const nativeRender = game.render;
+  game.render = function(...args) {
+    const active = this.state === 'countdown' && !globalThis.document?.hidden;
+    const time = now();
+    if (!active || !Number.isFinite(time)) {
+      previous = null;
+      monitor.consecutiveStalls = 0;
+      monitor.severeManualLag = 0;
+    } else {
+      const elapsed = previous === null ? 0 : (time - previous) / 1000;
+      previous = time;
+      if (elapsed > 0) {
+        const lower = monitor.frame(elapsed, this.settings.quality);
+        if (lower) {
+          this.settings.quality = lower;
+          this.setupQuality();
+        }
+      }
+    }
+    return nativeRender.apply(this, args);
+  };
+  countdownQualityInstalled.add(game);
+  return true;
 }
