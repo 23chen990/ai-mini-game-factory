@@ -21,24 +21,26 @@ export async function standaloneHtml(gameRoot,theme='observatory',runId='standal
   const css=(await safeRead(gameRoot,'style.css')).toString('utf8');const scripts=[];
   const hasFpsUx=spec.id==='h5-source-mobile-v1'&&candidate.fpsUxVersion===1;
   const bundleModules=hasFpsUx
-    ?['engine.mjs','themes.mjs','fps-mobile-ux.mjs','cf-player-loop.mjs','main.mjs']
+    ?['engine.mjs','themes.mjs','cf-cover-assault.mjs','fps-mobile-ux.mjs','cf-player-loop.mjs','main.mjs']
     :['engine.mjs','themes.mjs','main.mjs'];
   for(const name of bundleModules){
     const source=(await safeRead(gameRoot,name)).toString('utf8');let imports=0;
     const bundled=source.replace(/^import .*?;\r?\n/gm,line=>{
       const isMain=name==='main.mjs'&&
-        /^import \{[^}]+\} from '\.\/(engine|themes|fps-mobile-ux|cf-player-loop)\.mjs';\r?\n$/.test(line);
+        /^import \{[^}]+\} from '\.\/(engine|themes|fps-mobile-ux|cf-player-loop|cf-cover-assault)\.mjs';\r?\n$/.test(line);
       // Only allow this one checked pure dependency from the extra CF
       // component; arbitrary imports from other modules remain prohibited.
       const isCf=name==='cf-player-loop.mjs'&&
         /^import \{challengeResult\} from '\.\/engine\.mjs';\r?\n$/.test(line);
       const isDefense=name==='fps-mobile-ux.mjs'&&
         /^import \{cfStartDefense,cfStepDefense,cfAdvanceAssault,cfStartExtraction,cfStepExtraction\} from '\.\/engine\.mjs';\r?\n$/.test(line);
-      if(!isMain&&!isCf&&!isDefense)throw new Error(`Unsupported import in ${name}`);
+      const isCover=name==='fps-mobile-ux.mjs'&&
+        /^import \{createCfCoverAssault,cfV20CoverEnabled\} from '\.\/cf-cover-assault\.mjs';\r?\n$/.test(line);
+      if(!isMain&&!isCf&&!isDefense&&!isCover)throw new Error(`Unsupported import in ${name}`);
       imports++;return '';
     }).replace(/^export /gm,'');
-    const expectedImports=name==='main.mjs'?(hasFpsUx?4:2)
-      :name==='cf-player-loop.mjs'||name==='fps-mobile-ux.mjs'?1:0;
+    const expectedImports=name==='main.mjs'?(hasFpsUx?5:2)
+      :name==='cf-player-loop.mjs'?1:name==='fps-mobile-ux.mjs'?2:0;
     if(/^\s*(?:import|export)\s/m.test(bundled)||imports!==expectedImports)
       throw new Error(`Unsupported module syntax in ${name}`);
     scripts.push(`// ${name}\n${bundled}`);
