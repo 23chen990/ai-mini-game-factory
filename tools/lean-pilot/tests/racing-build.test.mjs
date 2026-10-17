@@ -160,7 +160,7 @@ test('native fork adapters are exact, idempotent and preserve original accelerat
     'P.update(DT, first ? pin : noEdge, active, this.itemMode);',
   ].join('\n');
   const patched=api.patchShortcutNativeWorld(world);
-  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse, \{v8:true,v9:true\}\)/);
+  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse, \{v8:true,v9:true,v10:true\}\)/);
   assert.match(patched,/terrainProxy\(track\)/);
   assert.match(patched,/physical|buildMesh\(THREE, ground.heightAt\)/);
   assert.match(patched,/__RACE_SHORTCUT__\?\.recover\(P\)/);
