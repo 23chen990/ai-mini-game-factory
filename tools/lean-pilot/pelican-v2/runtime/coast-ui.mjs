@@ -82,7 +82,7 @@ export function createCoastAdventure(api) {
  // Restrict dynamic shadow casters to the close player and hazards; static coast remains lit.
  scene.traverse(o=>{if(o.isMesh){o.castShadow=false;for(const m of Array.isArray(o.material)?o.material:[o.material])if(m?.map)m.map.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());}});rider.traverse(o=>{if(o.isMesh)o.castShadow=true;});
  const followLook=new THREE.Vector3();let cameraReady=false;
- function notice(title,copy,kind=''){const el=$('feedback');el.className='visible '+kind;el.querySelector('strong').textContent=title;el.querySelector('small').textContent=copy;feedbackUntil=now+1400;}
+ function notice(title,copy,kind=''){if(run?.phase==='running'&&run.bufferedJump&&title!=='↟ 已准备起跳')return;const el=$('feedback');el.className='visible '+kind;el.querySelector('strong').textContent=title;el.querySelector('small').textContent=copy;feedbackUntil=now+1400;}
  function routes(){
   const route=$('route'),earned=allStars(save);
   const selectedLevel=selected===6?{name:'无尽海岸',subtitle:'自由追鱼 · 安全路况不断变化 · 随时暂停结算'}:LEVELS[selected-1];
