@@ -19,9 +19,9 @@ export function cfMobileMission(base) {
   if(!base || typeof base.id!=='string')return base;
   const elite=base.elite===true;
   const variants={
-    tags:{title:'01 · 货箱破门',target:elite?4:2,limitMs:elite?55000:65000,maxDeaths:elite?0:2,
-      objective:'亲手击倒'+(elite?4:2)+'名敌人',
-      encounter:'清理船舱入口 · 利用箱体换角度'},
+    tags:{title:'01 · 货箱破门',target:elite?2:1,limitMs:elite?45000:50000,maxDeaths:elite?0:1,
+      objective:'亲手击倒'+(elite?2:1)+'名敌人',
+      encounter:'前方1名守卫 · 先瞄准再开火'},
     precision:{title:'02 · 远点狙击',limitMs:elite?60000:70000,
       objective:'AWM击倒1名敌人',encounter:'找到视线 · 开镜射击'},
     survive:{title:'03 · 围攻生存',limitMs:45000,minTravel:0,minKills:1,maxDeaths:elite?1:2,target:elite?1:2,
