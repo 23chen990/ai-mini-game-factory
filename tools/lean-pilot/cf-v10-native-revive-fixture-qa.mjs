@@ -55,6 +55,7 @@ export async function probeNativeRevive(runId){
       nativeRespawnSeconds:p?.respawnT,nativeDeaths:p?.stats?.d,
       nativeSeconds:g?.time,shownAds:window.__qaAdsShown,
       notice:document.getElementById('mk-notice')?.textContent,
+      gameStatus:document.getElementById('mk-status')?.textContent,
       adsVisible:document.getElementById('mk-revive-actions')?.hidden===false};
   });
   try{
@@ -82,6 +83,8 @@ export async function probeNativeRevive(runId){
     });
     await page.waitForSelector('#mobile-kit[data-phase="revive"]',{timeout:15000});
     const prompt=await snapshot();
+    await mkdir(path.join(root,'screenshots'),{recursive:true});
+    await page.screenshot({path:path.join(root,'screenshots','cf-v10-revive-offer.png')});
     check('genuine-engine-fatal-lives-trigger-optional-offer',
       before.phase==='running'&&nativeActions.deaths===3&&
       nativeActions.alive===false&&prompt.phase==='revive'&&
@@ -98,9 +101,11 @@ export async function probeNativeRevive(runId){
     await page.locator('#mk-revive-ad').tap();
     await page.waitForTimeout(400);
     const resumed=await snapshot();
+    await page.screenshot({path:path.join(root,'screenshots','cf-v10-revive-native-countdown.png')});
     check('completed-fixture-only-video-resumes-original-game-timer',
       resumed.shownAds===2&&resumed.phase==='running'&&
-      resumed.nativePaused===false&&resumed.nativeDeaths===3,
+      resumed.nativePaused===false&&resumed.nativeDeaths===3&&
+      resumed.gameStatus?.includes('续战已生效')===true,
       resumed);
     await page.waitForFunction(()=>window.__H5NativeGame?.player?.alive===true,
       {timeout:12000});
