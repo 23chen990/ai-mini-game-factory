@@ -476,12 +476,12 @@ export function cfNativeShotAimError({targetYaw,targetPitch,playerYaw,playerPitc
 // A genuine, hittable intro opponent placed inside an existing clear cargo
 // lane. Candidate positions are derived from the user's forward bearing and
 // checked against real world geometry, nav walkability and line of sight.
-export function chooseFirstEncounterSpot({player, world, nav, actors = [], distances = [10.0,8.5,7.0]}) {
+export function chooseFirstEncounterSpot({player, world, nav, actors = [], distances = [10.0,8.5,7.0], laterals = [0.65,-0.65,0]}) {
   if (!player?.pos || !world?.blocked || !world?.raycast || !nav?.walkable || !nav?.idx) return null;
   const forwardX=-Math.sin(player.yaw), forwardZ=-Math.cos(player.yaw);
   const rightX=Math.cos(player.yaw), rightZ=-Math.sin(player.yaw);
   for(const range of distances) {
-    for(const lateral of [0.65,-0.65,0]) {
+    for(const lateral of laterals) {
       const x=player.pos.x+forwardX*range+rightX*lateral;
       const z=player.pos.z+forwardZ*range+rightZ*lateral;
       const id=nav.idx(x,z);
@@ -499,6 +499,64 @@ export function chooseFirstEncounterSpot({player, world, nav, actors = [], dista
   return null;
 }
 
+
+/** A short H5 level must start with a REAL enemy visible in a real firing
+ * corridor, not with a hero staring into a container wall. This selects an
+ * existing map spawn and an authored camera bearing BEFORE the match starts.
+ * It does not aim the camera during fighting, bend bullets or invent an enemy.
+ *
+ * A visible enemy needs more than a ray to its shoulder: require walkability,
+ * a navigable path and free head-height space BEHIND the enemy, so its badge
+ * and hitbox cannot be swallowed by a container face. */
+export function cfChooseVisibleOpeningLane({
+  spawns, world, nav, actors=[], team, eyeH=1.6
+}={}) {
+  if(!Array.isArray(spawns)||!spawns.length||
+    !world?.raycast||!world?.blocked||!nav?.idx||
+    !nav?.walkable||!nav?.findPath)return null;
+  const others=actors.filter(a=>a?.alive&&a.team===team&&
+    !a.isPlayer&&a.pos);
+  let best=null;
+  const turns=[0,-.42,.42,-.82,.82,-1.18,1.18];
+  // Try a 2.2m backstop first. Relax it only when this genuine map geometry
+  // makes no wider corridor possible; even fallback cannot go through walls.
+  for(const backstop of [2.2,.8]) {
+    for(const spawn of spawns) {
+      if(![spawn?.x,spawn?.z,spawn?.yaw].every(Number.isFinite)||
+        world.blocked(spawn.x,.05,spawn.z,.38,1.9))continue;
+      const startCell=nav.idx(spawn.x,spawn.z);
+      if(startCell<0||!nav.walkable(startCell))continue;
+      if(others.some(a=>Math.hypot(a.pos.x-spawn.x,a.pos.z-spawn.z)<2))continue;
+      for(const turn of turns){
+        const yaw=spawn.yaw+turn;
+        const probe={pos:{x:spawn.x,y:.02,z:spawn.z},yaw,eyeH};
+        const spot=chooseFirstEncounterSpot({
+          player:probe,world,nav,actors,
+          distances:[10,9,8,7],laterals:[0,.45,-.45]
+        });
+        if(!spot)continue;
+        const dx=spot.x-spawn.x,dz=spot.z-spawn.z;
+        const distance=Math.hypot(dx,dz);
+        const headY=(Number.isFinite(eyeH)?eyeH:1.6)+.02;
+        const blocker=world.raycast(spawn.x,headY,spawn.z,
+          dx/distance,0,dz/distance,distance+backstop,'sight');
+        if(blocker&&Number(blocker.t)<distance+backstop-.1)continue;
+        const path=nav.findPath(spawn.x,spawn.z,spot.x,spot.z);
+        if(!Array.isArray(path)||path.length<2)continue;
+        // Prefer closer, centered, broad lanes. Never favor a hidden actor.
+        const score=distance-.95*Math.abs(turn)+backstop*.8-
+          .2*Math.max(0,path.length-2);
+        if(!best||score>best.score)best={
+          spawn:{x:spawn.x,z:spawn.z,yaw},
+          spot,turn:+turn.toFixed(2),distance:+distance.toFixed(2),
+          score:+score.toFixed(2),backstop
+        };
+      }
+    }
+    if(best)return best;
+  }
+  return null;
+}
 
 /** Choose an authored player spawn with a *genuinely clear* sniper view.
  * Never teleport mid-round, spawn a fake target, or ignore real map collision.
@@ -1379,8 +1437,26 @@ export function createFpsMobileUx(game, root, doc) {
       a && !a.isPlayer && a.team!==p.team && a.alive && a.primary!=='awm');
     if((activeChallenge?.kind==='hits' || activeChallenge?.kind==='kills') && enemies.length) {
       const sniper=activeChallenge.kind==='kills';
-      let spot=chooseFirstEncounterSpot({player:p,world:game.world,nav:game.nav,actors:game.actors,
-        distances:sniper?[18,16,14,12,10,8.5,7]:undefined});
+      // First seconds of a lightweight H5 match must show a real target.
+      // Rotate only the authored starting camera, NEVER auto-track mid-match.
+      const lane=activeChallenge?.lite===true&&activeChallenge?.id==='tags'
+        ?cfChooseVisibleOpeningLane({
+          spawns:game.map?.spawns?.[p.team],world:game.world,
+          nav:game.nav,actors:game.actors,team:p.team,eyeH:p.eyeH
+        }):null;
+      if(lane) {
+        p.pos.set(lane.spawn.x,.02,lane.spawn.z);
+        p.yaw=lane.spawn.yaw;p.pitch=0;p.vel.set(0,0,0);
+      }
+      let spot=lane?.spot||chooseFirstEncounterSpot({
+        player:p,world:game.world,nav:game.nav,actors:game.actors,
+        distances:sniper?[18,16,14,12,10,8.5,7]:undefined
+      });
+      if(game.__mobileBalanceReview){
+        game.__mobileBalanceReview.openingVisibleLane=!!lane;
+        game.__mobileBalanceReview.openingLane=lane
+          ?{distance:lane.distance,turn:lane.turn,backstop:lane.backstop}:null;
+      }
       if(!spot && sniper) {
         const lane=chooseMobileSniperLane({player:p,spawns:game.map?.spawns?.[p.team],
           world:game.world,nav:game.nav,actors:game.actors});
