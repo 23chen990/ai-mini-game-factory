@@ -66,5 +66,40 @@
     "approved live TapTap ad SDK callback",
     "upstream third-party source/assets full commercial license"
   ],
-  "status": "TEST_FIRST_IN_PROGRESS"
+  "status": "FIX_ATTEMPT_2_NATIVE_RETEST_PENDING",
+  "attempts": [
+    {
+      "attempt": 1,
+      "sha": "3aff98ecba0ba23bcf92ef48c1f58107ff2a6047",
+      "ciRun": 39032819110,
+      "rootCause": "First-kill QA proved real personal kill in ~1.8 native simulated seconds (11 fired, 2 hit, k=1; visible cue); prior unconditional same-opponent-shot requirement failed because that bot was killed before it could reply.",
+      "passed": [
+        "native personal first kill",
+        "rendered first-kill cue",
+        "8 missions smoke",
+        "normal 45-second terminal/free replay",
+        "147 unit tests"
+      ],
+      "failed": [
+        "first30-enemy-really-opens-fire-not-only-ai-intent"
+      ],
+      "decision": "Do not weaken real counterfire. Split the player-fast-kill path and no-player-attack bot counterfire path as independent natural-initial-run branches."
+    },
+    {
+      "attempt": 2,
+      "sha": "c9d85f2aef63b91ac80dd22064f4569d4aa00f23",
+      "ciRun": "PENDING",
+      "requirements": [
+        "Original rival fires real bullets when still alive and player never attacks",
+        "On idle exposed player, original enemy fire causes authentic HP loss or death, not only intent",
+        "Normal-input rapid kill branch still produces real native kill + visible cue; gameplay rules unchanged"
+      ],
+      "nonGoals": [
+        "fake enemy shots",
+        "injected player damage",
+        "unconditional enemy firing through death",
+        "skip 45s survival QA"
+      ]
+    }
+  ]
 }
