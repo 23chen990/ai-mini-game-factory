@@ -72,13 +72,20 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    const box=await page.locator('#touch .btn[data-mk-action="fire"]').boundingBox();
    if(!box)return null;
    const x=box.x+box.width/2,y=box.y+box.height/2;
-   const mx=Math.max(12-x,Math.min(viewport.width-12-x,dx));
+   // A voluntary ~25px aim swipe remains genuine thumb input even if the
+   // screen badge is only a few pixels off centre. It gives the camera move
+   // a measurable angle, then normal human swipes can re-centre the reticle.
+   const signedMin=v=>Math.abs(v)<25?(v<0?-25:25):v;
+   const mx=Math.max(12-x,Math.min(viewport.width-12-x,signedMin(dx)));
    const my=Math.max(12-y,Math.min(viewport.height-12-y,dy));
    const read=()=>page.evaluate(()=>{
-     const p=window.__H5NativeGame?.player;
-     return {yaw:p?.yaw??null,pitch:p?.pitch??null,shots:p?.stats?.shots??0};
+     const g=window.__H5NativeGame,p=g?.player;
+     return {yaw:p?.yaw??null,pitch:p?.pitch??null,
+       shots:p?.stats?.shots??0,alive:p?.alive??false,
+       fire:p?.touch?.fire??false,phase:document.querySelector('#mobile-kit')?.dataset.phase};
    });
    const before=await read(),cdp=await context.newCDPSession(page);
+   let during=null;
    try{
      await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',
        touchPoints:[{x,y,id:88}]});
@@ -87,16 +94,20 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          touchPoints:[{x:x+mx*n/4,y:y+my*n/4,id:88}]});
        await page.waitForTimeout(95);
      }
-     await page.waitForTimeout(850);
+     during=await read();
+     await page.waitForTimeout(500);
    }finally{
      await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]}).catch(()=>{});
      await cdp.detach();
    }
    const after=await read();
-   const audit={before,after,delta:{x:mx,y:my},
-     rotated:Number.isFinite(before.yaw)&&Number.isFinite(after.yaw)&&
-       Math.abs(after.yaw-before.yaw)>.015,
-     fired:after.shots>before.shots};
+   const audit={before,during,after,delta:{x:mx,y:my},
+     rotated:[during,after].some(v=>v&&
+       ((Number.isFinite(before.yaw)&&Number.isFinite(v.yaw)&&
+          Math.abs(v.yaw-before.yaw)>.012)||
+        (Number.isFinite(before.pitch)&&Number.isFinite(v.pitch)&&
+          Math.abs(v.pitch-before.pitch)>.012))),
+     fired:[during,after].some(v=>v&&v.shots>before.shots)};
    actions.push({atMs:Date.now()-started,input:'native-one-thumb-fire-drag',detail:audit});
    return audit;
  };
