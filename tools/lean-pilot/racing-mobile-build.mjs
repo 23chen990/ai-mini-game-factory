@@ -73,6 +73,35 @@ export function patchShortcutNativeTrack(source) {
     throw Error('Pinned native guardrail construction changed');
   return source.replace(anchor, anchor+'\n          if ('+marker+') continue;');
 }
+/** Native V9 road width must agree everywhere: pavement, guardrails,
+ * curbs, player collision and AI line target. Never narrow only the paint.
+ * Fail if pinned Three.js code changes rather than editing an unknown class.
+ */
+export function patchV9NativeRoadWidth(source) {
+  const imported="import { v9RoadHalfWidthAt } from './v9-course-director.mjs';";
+  const marker="this.v9WidthAt = d => v9RoadHalfWidthAt(this.halfW,this.__V9_WIDTH_PROFILE__,d/this.length);";
+  if(source.includes(imported)&&source.includes(marker))return source;
+  const changes=[
+    ["this.halfW = layout.width / 2;",
+      "this.halfW = layout.width / 2;\n    this.__V9_WIDTH_PROFILE__=layout.v9WidthProfile??null;\n    "+marker+"\n    this.v9HalfWidthAtIndex=i=>this.v9WidthAt(i*this.ds);"],
+    ["const lat = s ? hw : -hw;",
+      "const localHw=this.v9HalfWidthAtIndex(i);\n          const lat = s ? localHw : -localHw;"],
+    ["const latIn = side * hw, latOut = side * (hw + th);",
+      "const localHw=this.v9HalfWidthAtIndex(i);\n          const latIn = side * localHw, latOut = side * (localHw + th);"],
+    ["const latOut = side * (hw + th);",
+      "const localHw=this.v9HalfWidthAtIndex(i);\n          const latOut = side * (localHw + th);"],
+    ["const l = -(hw + th), rr = hw + th;",
+      "const localHw=this.v9HalfWidthAtIndex(i);\n        const l = -(localHw + th), rr = localHw + th;"],
+    ["const l0 = side * (hw - cw), l1 = side * hw;",
+      "const localHw=this.v9HalfWidthAtIndex(i);\n            const l0 = side * (localHw - cw), l1 = side * localHw;"],
+  ];
+  if(!source.includes('export class Track')||
+     changes.some(([a])=>source.split(a).length!==2))
+    throw Error('Pinned native variable road width anchor changed');
+  let result=imported+'\n'+source;
+  for(const [a,b] of changes)result=result.replace(a,b);
+  return result;
+}
 /** Apply truthful AI route-following only to generated native copy. */
 export function patchV8NativeAi(source) {
   const imported="import { aiV8TargetLine, advanceAiV8Road, aiV8ForkDesiredSpeed } from './race-v8-rival-ai.mjs';";
@@ -95,7 +124,7 @@ export function patchV8NativeAi(source) {
 }
 export function patchShortcutNativeCar(source) {
   const expected='const lim = tr.halfW - 1.1;';
-  const changed='const lim = (p.__RACE_SHORTCUT_ACTIVE ? p.__RACE_SHORTCUT_HALF_WIDTH : tr.halfW) - 1.1;';
+  const changed='const lim = (p.__RACE_SHORTCUT_ACTIVE ? p.__RACE_SHORTCUT_HALF_WIDTH : (tr.v9WidthAt?.(p.d) ?? tr.halfW)) - 1.1;';
   if(source.includes(changed))return source;
   if(source.split(expected).length!==2 || !source.includes('export class PlayerCar'))
     throw Error('Pinned native collision-width anchor changed');
@@ -436,7 +465,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await readFile(path.join(owned,'v8-item-rules.mjs'),'utf8'));
   const nativeTrackPath = path.join(project, 'src/track.js');
   const originalTrack = await readFile(nativeTrackPath, 'utf8');
-  const adaptedTrack = patchShortcutNativeTrack(originalTrack);
+  const adaptedTrack = patchShortcutNativeTrack(patchV9NativeRoadWidth(originalTrack));
   if (adaptedTrack !== originalTrack) await writeFile(nativeTrackPath, adaptedTrack);
   await writeFile(path.join(project, 'src/race-shortcut-network.mjs'),
     await readFile(path.join(owned, 'shortcut-network.mjs'), 'utf8'));
