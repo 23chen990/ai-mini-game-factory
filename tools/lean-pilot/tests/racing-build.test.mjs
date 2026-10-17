@@ -239,3 +239,26 @@ test('V8 one-way finish hooks preserve native progress and onLap bookkeeping',()
   assert.throws(()=>api.patchV8PointToPoint('class AnotherGame {}'),
     /one-way progress anchor changed/);
 });
+
+test('native eight-item HUD matches V8 pickups and never crashes on a new item ID',()=>{
+  const original=[
+    "export const ITEM_INFO = {",
+    "  nitro: { icon: '🔥', name: '氮气' },",
+    "  missile: { icon: '🚀', name: '导弹' },",
+    "  banana: { icon: '🍌', name: '香蕉皮' },",
+    "  shield: { icon: '😇', name: '天使' },",
+    "  magnet: { icon: '🧲', name: '磁铁' },",
+    "};",
+    "const html = it ? `${ITEM_INFO[it].icon}<small>${ITEM_INFO[it].name}</small>` : '';",
+  ].join('\n');
+  const patched=api.patchV8NativeHudItems(original);
+  assert.equal(api.patchV8NativeHudItems(patched),patched,'native HUD adapter must be idempotent');
+  assert.match(patched,/shockwave: \{ icon: '💥', name: '近身冲击波' \}/u);
+  assert.match(patched,/thunder: \{ icon: '🌩️', name: '雷电攻击' \}/u);
+  assert.match(patched,/barricade: \{ icon: '🚧', name: '后方路障' \}/u);
+  assert.match(patched,/ITEM_INFO\[it\]\?\.icon/u,'unknown source items must not stop a race');
+  for(const [id,name] of [['nitro','氮气'],['shockwave','近身冲击波'],['thunder','雷电攻击'],['barricade','后方路障']])
+    assert.ok(patched.includes("  "+id+":")&&patched.includes(name),id);
+  assert.throws(()=>api.patchV8NativeHudItems('export const ITEM_INFO = {};'),/HUD item|pinned|anchor/iu);
+  assert.throws(()=>api.patchV8NativeHudItems(original.replace("  magnet: { icon: '🧲', name: '磁铁' },","")),/HUD item|pinned|anchor/iu);
+});
