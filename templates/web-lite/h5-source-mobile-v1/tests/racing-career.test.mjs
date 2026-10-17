@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { URL } from 'node:url';
-import { STAGES, newCareer, loadCareer, localDayKey, dailyStage, careerStars, stageUnlocked, skinUnlocked, recordStage, gradeStage, stageFailureFeedback, validDrift, fractionPassed } from '../racing/career.mjs';
+import { STAGES, newCareer, loadCareer, localDayKey, dailyStage, careerStars, stageUnlocked, starGateStatus, STAR_CHECKPOINTS, skinUnlocked, recordStage, gradeStage, stageFailureFeedback, validDrift, fractionPassed } from '../racing/career.mjs';
 import { thinItemBoxes, installItemCleanup, itemDecision, AutoItems, OvertakeTracker, awardCornerPass, removeEliminatedAi } from '../racing/items.mjs';
 import { RacingCareer } from '../racing/runtime.mjs';
 import { COMPETITIVE_FIELD_V42 } from '../racing/rival-pressure.mjs';
@@ -133,10 +133,12 @@ test('elimination removes AI model and stands but never removes the player',()=>
   assert.equal(removeEliminatedAi(g,p),false);assert.equal(removeEliminatedAi(g,ai),true);
   assert.equal(g.racers.length,1);assert.equal(gone.length,1);
 });
-test('career starts on first available stage without fuel paywall if ad slot missing',()=>{
+test('career still deducts five fuel even when there is no rewarded ad SDK',()=>{
   const c=new RacingCareer(memory());assert.equal(c.stage.id,'01');assert.equal(c.setStage(1),false);
-  c.setupAd({status:'PENDING'},null);assert.equal(c.fuelEnabled,false);assert.equal(c.canStart(),true);
-  c.configure(game());const g=game();c.begin(g);assert.equal(c.fuel.amount,10);
+  c.setupAd({status:'PENDING'},null);assert.equal(c.fuelEnabled,true);
+  assert.equal(c.adReady,false);assert.equal(c.canStart(),true);
+  c.configure(game());const g=game();c.begin(g);assert.equal(c.fuel.amount,25);
+  assert.equal(c.canOfferAd(),false);
 });
 test('AI reaching finish first does not end a two-lap race after 10 seconds',()=>{
   const c=new RacingCareer(memory()),g=game();c.patchNative(g);g.firstFinish=0;g.raceTime=20;
@@ -182,13 +184,13 @@ test('career UI objectives reflect real progress, not dummy counters',()=>{
 });
 test('high-pressure stage01 failures do not block voluntary low-fuel ad recovery',()=>{
   const c=new RacingCareer(memory());
-  c.fuelEnabled=true;c.progress.rounds=0;c.startedAt=Date.now()-900000;
+  c.fuelEnabled=true;c.adReady=true;c.progress.rounds=0;c.startedAt=Date.now()-900000;
   c.fuel.amount=2;
   assert.equal(c.canOfferAd(),false,'never offer ads before the first real attempt');
   c.progress.rounds=1;
   assert.equal(c.progress.stars['01']??0,0,'first loss must not count as a win');
   assert.equal(c.canOfferAd(),true,'valid failed attempt may voluntarily refuel');
-  c.fuel.amount=10;
+  c.fuel.amount=30;
   assert.equal(c.canOfferAd(),false,'do not nag when the player has fuel');
 });
 
@@ -305,7 +307,7 @@ test('完整奖励视频后发生存档故障：临时补油但不虚报永久�
   failWrite=true;
   const out=await c.watchFuelAd();
   assert.equal(out.status,'session-credit');
-  assert.equal(out.fuel,4);
+  assert.equal(out.fuel,12);
   assert.equal(c.storageOK,false);assert.equal(c.fuelEnabled,false);
   assert.equal(c.canStart(),true,'do not punish user who fully watched the ad');
 });
@@ -339,7 +341,8 @@ test('thinned native item routes dispose deleted box geometries, leave shared sk
 test('V4.6 native item rivals hold the fixed pre-race pace band without faking progress',()=>{
   const c=new RacingCareer(memory()),g=game();
   for(let i=0;i<5;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
-  c.setStage(5);g.racers[1].skill=.85;g.racers[2].skill=1.05;
+  c.progress.stars['01']=3;c.progress.stars['02']=2;
+  assert.equal(c.setStage(5),true);g.racers[1].skill=.85;g.racers[2].skill=1.05;
   const before=g.racers.map(r=>r.progress);c.begin(g);
   assert.deepEqual(g.racers.slice(1).map(r=>r.skill),COMPETITIVE_FIELD_V42['06']);
   assert.ok(g.racers[2].skill-g.racers[1].skill >= .3,'a real strong rival contests a catchable pack');
@@ -362,8 +365,8 @@ test('career retains the submitted expert field speeds while boss and middle fie
 });
 test('V4.6 expert opponent remains a physical ace with no progress edits',()=>{
   const c=new RacingCareer(memory()),g=game();
-  for(let i=0;i<10;i++)c.progress.stars[String(i+1).padStart(2,'0')]=1;
-  c.setStage(10);g.racers[1].skill=1.2;g.racers[2].skill=1.38;
+  for(let i=0;i<10;i++)c.progress.stars[String(i+1).padStart(2,'0')]=2;
+  assert.equal(c.setStage(10),true);g.racers[1].skill=1.2;g.racers[2].skill=1.38;
   const before=g.racers.map(r=>r.progress);c.begin(g);
   assert.deepEqual(g.racers.slice(1).map(r=>r.skill),COMPETITIVE_FIELD_V42['11']);
   assert.ok(g.racers[2].skill>=1.5,'expert still has a meaningful native pace advantage');
@@ -460,7 +463,7 @@ test('V6.0 no easy rank gates remain across the thirty stages',()=>{
 // V5.3 commercial UX: fuel should never softlock the very first honest loss.
 test('failed rank/objective earns exactly one free same-stage replay, even at zero fuel',()=>{
   const c=new RacingCareer(memory()),g=game();
-  c.fuelEnabled=true;c.fuel.amount=1;
+  c.fuelEnabled=true;c.fuel.amount=5;
   assert.equal(c.canStart(),true);
   c.begin(g);
   assert.equal(c.fuel.amount,0);
@@ -608,4 +611,115 @@ test('stage menu and results show retained medals without mutating native input'
  assert.match(ui,/const bestStars=/);
  assert.match(ui,/starView\.replaceChildren\(\)/);
  assert.match(css,/#race-result-stars span\.earned/);
+});
+
+
+test('six authored career checkpoints demand cumulative medal record, not any specific old level',()=>{
+  assert.deepEqual(STAR_CHECKPOINTS,{'06':8,'11':18,'16':29,'21':40,'26':51,'30':60});
+  const checks=[['06',5,8],['11',10,18],['16',15,29],['21',20,40],['26',25,51],['30',29,60]];
+  for(const [id,index,threshold] of checks) {
+    const state=newCareer();
+    const previousId=STAGES[index-1].id;
+    state.stars[previousId]=1;
+    assert.equal(starGateStatus(state,index).required,threshold);
+    assert.equal(starGateStatus(state,index).starLocked,true,'player must explicitly earn enough stars: '+id);
+    let stars=1;
+    for(let i=0;i<index-1&&stars<threshold;i++){
+      const n=Math.min(3,threshold-stars);
+      if(n>0){state.stars[STAGES[i].id]=n;stars+=n;}
+    }
+    assert.ok(careerStars(state)>=threshold,'checkpoint should be reachable with previous stages: '+id);
+    assert.equal(stageUnlocked(state,index),true);
+    assert.equal(starGateStatus(state,index).missing,0);
+    state.stars[previousId]=0;
+    assert.equal(stageUnlocked(state,index),false,'star threshold never skips immediately previous stage');
+  }
+  assert.equal(starGateStatus(newCareer(),0).unlocked,true);
+  assert.equal(starGateStatus(newCareer(),30).unlocked,false);
+});
+test('old saved unlocked chapter must not get relocked by the rollout',()=>{
+  const older={version:1,stars:{'01':3,'02':1,'03':1,'04':1,'05':1},
+    times:{},skin:0,rounds:5,daily:{date:'',best:0,stars:0,streak:0,lastWonDate:''}};
+  const restored=loadCareer(JSON.stringify(older));
+  assert.equal(restored.gatePasses['06'],'legacy');
+  assert.equal(stageUnlocked(restored,5),true,'existing opened stage preserved');
+  assert.equal(careerStars(restored),7,'grandfathering never forges earned stars');
+  const saved=loadCareer(JSON.stringify(restored));
+  assert.equal(saved.gatePasses['06'],'legacy','persist pass after next save');
+  assert.equal(saved.gatePasses['11'],undefined,'no free unlock of future checkpoint');
+});
+test('completed rewarded gate ad unlocks only the selected checkpoint and never gives stars or fuel',async()=>{
+  const store=memory(),c=new RacingCareer(store);
+  for(let i=0;i<5;i++)c.progress.stars[STAGES[i].id]=1;
+  assert.equal(c.gateStatus(5).starLocked,true);
+  c.setupAd({status:1,source:'check_ads_status',appId:'verified-app',
+    spaceId:'verified-slot',screenOrientation:1},{createRewardedVideoAd(){}});
+  const fuelBefore=c.fuel.amount,starsBefore=careerStars(c.progress);
+  c.rewardedProvider=async()=>({status:'completed'});
+  const out=await c.watchGateAd(5);
+  assert.equal(out.status,'completed');assert.equal(out.stageId,'06');
+  assert.equal(c.progress.gatePasses['06'],'ad');
+  assert.equal(c.gateStatus(5).unlocked,true);
+  assert.equal(c.gateStatus(10).gateSatisfied,false);
+  assert.equal(c.fuel.amount,fuelBefore);
+  assert.equal(careerStars(c.progress),starsBefore);
+  assert.equal(c.canOfferGateAd(5),false,'cannot be asked to watch same checkpoint twice');
+  const reloaded=new RacingCareer(store);
+  assert.equal(reloaded.gateStatus(5).unlocked,true);
+  assert.equal(reloaded.progress.gatePasses['06'],'ad');
+  assert.equal(reloaded.setStage(5),true);
+  assert.equal(reloaded.fuel.amount,30,'no race was started while ad ran');
+});
+test('cancelled, failed and incomplete gate videos never unlock or mint stars',async()=>{
+  const c=new RacingCareer(memory());
+  for(let i=0;i<5;i++)c.progress.stars[STAGES[i].id]=1;
+  c.setupAd({status:1,source:'check_ads_status',appId:'verified',
+    spaceId:'slot',screenOrientation:1},{createRewardedVideoAd(){}});
+  for(const status of ['cancelled','failed','timed-out','unavailable']){
+    c.rewardedProvider=async()=>({status});
+    assert.equal((await c.watchGateAd(5)).status,status);
+    assert.equal(c.gateStatus(5).starLocked,true);
+    assert.equal(c.progress.gatePasses['06'],undefined);
+  }
+  assert.equal(careerStars(c.progress),5);
+});
+test('late ad result, double-tap and failed disk write cannot claim permanent stage access',async()=>{
+  const writes=new Map();let reject=false;
+  const store={getItem:k=>writes.get(k)??null,setItem(k,v){if(reject)throw Error('quota');writes.set(k,v);}};
+  const c=new RacingCareer(store);
+  for(let i=0;i<5;i++)c.progress.stars[STAGES[i].id]=1;
+  c.setupAd({status:1,source:'check_ads_status',appId:'verified',
+    spaceId:'slot',screenOrientation:1},{createRewardedVideoAd(){}});
+  let finish;
+  c.rewardedProvider=()=>new Promise(resolve=>{finish=resolve;});
+  const pending=c.watchGateAd(5);
+  assert.equal(c.canOfferGateAd(5),false,'only one rewarded ad request at a time');
+  assert.equal(c.canStart(),false,'no race while an ad is pending');
+  assert.equal((await c.watchGateAd(5)).status,'unavailable');
+  finish({status:'completed'});
+  assert.equal((await pending).status,'completed');
+  assert.equal(c.gateStatus(5).unlocked,true);
+  // A different checkpoint and new rewarded completion cannot be claimed
+  // when persistent storage cannot save its pass.
+  for(let i=0;i<10;i++)c.progress.stars[STAGES[i].id]=1;
+  c.progress.stars['01']=3;c.progress.stars['02']=3;c.progress.stars['03']=3;
+  c.progress.stars['04']=2; // 18 total? actual = 10 + 2 + 2 + 2 + 1 =17
+  assert.equal(c.gateStatus(10).starLocked,true);
+  c.rewardedProvider=async()=>({status:'completed'});
+  reject=true;
+  assert.equal((await c.watchGateAd(10)).status,'save-failed');
+  assert.equal(c.progress.gatePasses['11'],undefined);
+  assert.equal(c.gateStatus(10).unlocked,false);
+});
+test('checkpoints with no official reward SDK remain playable through earned star medals',()=>{
+  const c=new RacingCareer(memory());
+  for(let i=0;i<5;i++)c.progress.stars[STAGES[i].id]=1;
+  c.setupAd({status:'PENDING'},null);
+  assert.equal(c.fuelEnabled,true);assert.equal(c.adReady,false);
+  assert.equal(c.canOfferGateAd(5),false);
+  assert.equal(c.gateStatus(5).missing,3);
+  c.progress.stars['01']=3;c.progress.stars['02']=2;
+  assert.equal(c.gateStatus(5).missing,0);
+  assert.equal(c.setStage(5),true);
+  assert.equal(c.fuelText().includes('每局 -5 · 每分钟 +1'),true);
 });
