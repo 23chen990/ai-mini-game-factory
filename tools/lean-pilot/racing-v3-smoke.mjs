@@ -346,6 +346,52 @@ try {
      !adSafety.boostDoesNotAppearWithoutSDK)
     fail('Unconfigured WebGL browser must remain ad-free: '+JSON.stringify(adSafety));
   report.adSafety=adSafety;
+  const fuelUI=await page.evaluate(()=>({
+    cap:document.querySelector('#race-fuel-gauge')?.getAttribute('aria-valuemax'),
+    segments:document.querySelectorAll('#race-fuel-gauge span').length,
+    label:document.querySelector('#race-fuel-info')?.textContent,
+    amount:document.querySelector('#race-fuel-gauge')?.getAttribute('aria-valuenow'),
+    adHidden:document.querySelector('#race-star-ad')?.hidden
+  }));
+  if(fuelUI.cap!=='30'||fuelUI.segments!==6||fuelUI.amount!=='30'||
+     !fuelUI.label.includes('每局 -5 · 每分钟 +1')||!fuelUI.adHidden)
+    fail('Mobile fuel and star gate must use real 30/5/1m economy, no synthetic ads: '+JSON.stringify(fuelUI));
+  report.fuelAtStart=fuelUI;
+  // Verify a locked checkpoint is visible only when explicitly chosen,
+  // never auto-populated into the player's view as an unsolicited prompt.
+  await page.evaluate(()=>localStorage.setItem('h5-mobile:qq-speed:career:v1',
+    JSON.stringify({version:1,stars:{'01':1,'02':1,'03':1,'04':1,'05':1},
+      gatePasses:{},times:{},skin:0,rounds:5})));
+  await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
+  const initiallyQuiet=await page.evaluate(()=>({
+    firstSelected:document.querySelector('#race-stage')?.value,
+    lockedOption:document.querySelector('#race-stage option[value="5"]')?.disabled,
+    adHidden:document.querySelector('#race-star-ad')?.hidden,
+    max:document.querySelector('#race-fuel-gauge')?.getAttribute('aria-valuemax')
+  }));
+  if(initiallyQuiet.firstSelected!=='4'||initiallyQuiet.lockedOption!==false||
+     !initiallyQuiet.adHidden||initiallyQuiet.max!=='30')
+    fail('Explicitly-selectable star gate must not interrupt the normal stage lobby: '+JSON.stringify(initiallyQuiet));
+  await page.selectOption('#race-stage','5');
+  const gateView=await page.evaluate(()=>{
+    const game=window.game,kit=document.querySelector('#race-kit');
+    return {
+      selected:kit.querySelector('#race-stage')?.value,
+      locked:kit.dataset.starLocked,
+      heading:kit.querySelector('#race-stage-goal')?.textContent,
+      raceStartHidden:kit.querySelector('#race-start')?.hidden,
+      adHidden:kit.querySelector('#race-star-ad')?.hidden,
+      nativeBefore:game?.state
+    };
+  });
+  await page.evaluate(()=>window.game?.startRace());
+  const postBypass=await page.evaluate(()=>window.game?.state);
+  if(gateView.selected!=='5'||gateView.locked!=='true'||!gateView.heading.includes('5/8')||
+     !gateView.raceStartHidden||!gateView.adHidden||postBypass==='countdown')
+    fail('Locked checkpoint must remain locked without real stars/ad, including native menu bypass: '+JSON.stringify({gateView,postBypass}));
+  report.starGate={quietUntilSelected:true,threshold:'5/8',nativeBypassBlocked:true,adsUnavailableInBrowser:true};
+  await page.evaluate(()=>localStorage.removeItem('h5-mobile:qq-speed:career:v1'));
+  await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
   // Genuine browser render of the default lobby at two landscape widths.
   // No seeded save, DOM mutation or mocked UI goes into these screenshots.
   for (const [width,height] of [[844,390],[740,360]]) {
@@ -570,6 +616,10 @@ try {
   const cases=[[1,'02-egypt-speed'],[3,'04-aegean-drift'],[4,'05-egypt-items'],
     [6,'07-cliff-technical'],[10,'11-serpent-technical'],[7,'08-snow-rank']];
   for(const [index,name] of cases) {
+    // Synthetic QA seed ONLY for isolated 3D stage-entry smoke: do not
+    // confuse six-and-more forced starts with one real six-race fuel tank.
+    await page.evaluate(()=>localStorage.setItem('h5-mobile:qq-speed:fuel:v1',
+      JSON.stringify({version:2,amount:30,updatedAt:Date.now(),lastAdAt:0,lastAdId:''})));
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
     if (index===4) {
