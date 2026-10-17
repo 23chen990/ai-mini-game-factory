@@ -4,7 +4,7 @@ import {makeBarrierPrizes} from './engagement.mjs';
 export {LANES} from './safety.mjs';
 // Authored encounters, shared coast. Distances/timing/content are original to this project.
 const definitions = [
- {id:1,name:'海岸出发',subtitle:'海岸挑战 · 连续吞鱼、跳障追金鱼、预判车流',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[225,'barrier',1],
+ {id:1,name:'海岸出发',subtitle:'海岸挑战 · 连续吞鱼、跳障追金鱼、预判车流',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[233,'barrier',1],
   // V4 authored pressure beats are appended to keep the original obstacle IDs and QA evidence stable.
   // 75m optional left jump; then a right-vehicle/center-jump decision, later alternating safe gaps.
   [75,'barrier',0],[130,'car',2],[181,'car',1],[205,'barrier',0],[248,'van',2],[274,'car',1]]},
