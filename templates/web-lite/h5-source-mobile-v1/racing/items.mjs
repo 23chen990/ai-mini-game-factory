@@ -1,6 +1,6 @@
 /** The original ItemSystem remains authoritative: only decide when to press use. */
-export const ITEM_LABELS = Object.freeze({ nitro: '氮气加速', shield: '防护盾', missile: '追踪导弹', magnet: '追击磁铁', banana: '香蕉皮' });
-export const ITEM_ICONS = Object.freeze({ nitro:'⚡', shield:'🛡', missile:'🚀', magnet:'🧲', banana:'🍌' });
+export const ITEM_LABELS = Object.freeze({ nitro: '氮气加速', shield: '防护盾', missile: '追踪导弹', magnet: '追击磁铁', banana: '香蕉皮', shockwave: '近身冲击波', thunder: '雷电攻击', barricade: '后方路障' });
+export const ITEM_ICONS = Object.freeze({ nitro:'⚡', shield:'🛡', missile:'🚀', magnet:'🧲', banana:'🍌', shockwave:'💥', thunder:'🌩️', barricade:'🚧' });
 export function thinItemBoxes(system) {
   if (!system?.boxes || system.boxes.length < 15) return 0;
   const rows = [[0, 3], [1, 4], [0, 2], [1, 3]];
@@ -51,7 +51,9 @@ export function itemDecision(game) {
     case 'missile': return ahead && gap > 3 && gap < 180;
     case 'magnet': return ahead && gap > 4 && gap < 125;
     case 'shield': return game.missileWarn > 0 || game.racers.some(r => !r.isPlayer && r.progress < p.progress && p.progress - r.progress < 18 && r.items?.includes('missile'));
-    case 'banana': return game.racers.some(r => !r.isPlayer && r.progress < p.progress && p.progress - r.progress < 55);
+    case 'banana':case 'barricade': return game.racers.some(r => !r.isPlayer && r.progress < p.progress && p.progress - r.progress < 55);
+    case 'shockwave': return game.racers.some(r => !r.isPlayer && !r.finished && Math.abs(r.y-p.y)<6 && Math.hypot(r.x-p.x,r.z-p.z)<16);
+    case 'thunder': return ahead && gap > 2 && gap < 110 && Math.abs(ahead.y-p.y)<6;
     default: return false;
   }
 }
