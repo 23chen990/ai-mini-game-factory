@@ -81,7 +81,7 @@ test('visible gold increase after a true +9m jump prize releases the next challe
  assert.equal(noGold.reason,'capture-hold','mere proximity is not evidence of earned gold');
 });
 test('a visible READY jump control is a valid fallback when the radar prize cue has changed',()=>{
- const target={barrierId:'l1-o3',distance:225};
+ const target={barrierId:'l1-o3',distance:233};
  const s=policy.createRiskPolicyState(1,target);
  const confirmed={...s,committedRewardLane:1};
  const viewReady=view({level:1,distance:217,laneIndex:1,jumpReady:true,goldCounter:4,lanes:[lane({fish:true}),lane(),lane()]});
@@ -104,7 +104,7 @@ test('a real visible jump reward establishes a stable target through transient o
  assert.equal(unsafe.action,'wait','never run into a visible vehicle despite the earlier reward commitment');
 });
 test('two barriers 20m apart: real READY takes priority over another reward lane',()=>{
- const target={barrierId:'l1-o3',distance:225};
+ const target={barrierId:'l1-o3',distance:233};
  const s={...policy.createRiskPolicyState(1,target),committedRewardLane:1};
  const otherReward=lane({danger:true,jumpReward:true,kind:'barrier',seconds:1.4});
  const ready=view({level:1,distance:217,laneIndex:1,nowMs:1900,jumpReady:true,goldCounter:4,
@@ -114,7 +114,7 @@ test('two barriers 20m apart: real READY takes priority over another reward lane
  assert.equal(step.reason,'confirmed-next-barrier-ready');
  assert.equal(step.state.goldAtJump,4);
  assert.notEqual(decide({...ready,lanes:[otherReward,lane({danger:true,kind:'vehicle',seconds:1}),lane()]},s).action,'jump','do not jump through visible oncoming vehicle');
- assert.notEqual(decide({...ready,distance:224.3},s).action,'jump','never send a late queued jump inside the hitbox');
+ assert.notEqual(decide({...ready,distance:232.3},s).action,'jump','never send a late queued jump inside the hitbox');
 });
 
 test('the policy acts in the early buffered jump window',()=>{
@@ -176,7 +176,7 @@ test('a distant reward does not discard safe side fish before the two-second app
 
 test('the target manifest includes both NEW V4 barriers and every legacy exact bonus-fish id',()=>{
  assert.deepEqual(policy.RISK_LEVELS.map(level=>level.targets.map(({barrierId,distance,goldFishId})=>[barrierId,distance,goldFishId])),[
-  [['l1-o4',75,'l1-jump-l1-o4'],['l1-o1',140,'l1-jump-l1-o1'],['l1-o7',205,'l1-jump-l1-o7'],['l1-o3',225,'l1-jump-l1-o3']],
+  [['l1-o4',75,'l1-jump-l1-o4'],['l1-o1',140,'l1-jump-l1-o1'],['l1-o7',205,'l1-jump-l1-o7'],['l1-o3',233,'l1-jump-l1-o3']],
   [['l2-o3',246,'l2-jump-l2-o3'],['l2-o5',356,'l2-jump-l2-o5']],
   [['l3-o3',222,'l3-jump-l3-o3'],['l3-o5',360,'l3-jump-l3-o5']],
   [['l4-o3',225,'l4-jump-l4-o3'],['l4-o5',350,'l4-jump-l4-o5'],['l4-o10',593,'l4-jump-l4-o10']],
