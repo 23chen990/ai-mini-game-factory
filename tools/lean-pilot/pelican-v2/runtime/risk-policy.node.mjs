@@ -11,6 +11,43 @@ const view = (overrides={}) => ({
 });
 const decide = (v,s=newState()) => policy.decideRiskAction(v,s);
 
+test('visible barrier countdown refuses 331m decoy when the target is 356m',()=>{
+ const target={barrierId:'l2-o5',distance:356};
+ const s=policy.createRiskPolicyState(2,target);
+ const early=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.4s'});
+ const viewBefore=view({level:2,distance:319,laneIndex:0,
+  lanes:[early,lane(),lane()]});
+ assert.equal(policy.radarIsExpectedBarrier(viewBefore,early,target,2),false,
+  'a 331m pressure gate is not the 356m prize even if the icon is identical');
+ const before=decide(viewBefore,s);
+ assert.notEqual(before.action,'jump');
+ assert.equal(before.state.committedRewardLane,null);
+ const approach=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟3s'});
+ const viewNow=view({level:2,distance:338,laneIndex:1,
+  lanes:[approach,lane(),lane()]});
+ assert.equal(policy.radarIsExpectedBarrier(viewNow,approach,target,2),true);
+ const aligned=decide(viewNow,s);
+ assert.equal(aligned.action,'left');
+ assert.equal(aligned.state.committedRewardLane,0);
+ const ready=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.3s'});
+ const real=decide({...viewNow,distance:346,laneIndex:0,jumpReady:true,
+  lanes:[ready,lane(),lane()]},aligned.state);
+ assert.equal(real.action,'jump');
+ assert.equal(real.state.jumpIssued,true);
+ assert.equal(real.state.target.barrierId,'l2-o5');
+});
+test('an already committed jump cannot be spent on a different closer barrier',()=>{
+ const target={barrierId:'l2-o5',distance:356};
+ const s={...policy.createRiskPolicyState(2,target),committedRewardLane:0};
+ const decoy=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.4s'});
+ const n=decide(view({level:2,distance:319,laneIndex:0,jumpReady:true,
+  lanes:[decoy,lane(),lane()]}),s);
+ assert.notEqual(n.action,'jump');
+ assert.equal(n.state.jumpIssued,false);
+ const missingTime=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟'});
+ assert.equal(policy.radarIsExpectedBarrier(view({distance:320}),missingTime,target,2),false);
+});
+
 test('a reward route never enters the adjacent simultaneous fatal van lane',()=>{
  const visibleVan=policy.visibleLaneFromHud({className:'co-lane danger',text:'🚐 2.0s'});
  assert.equal(visibleVan.kind,'vehicle');
