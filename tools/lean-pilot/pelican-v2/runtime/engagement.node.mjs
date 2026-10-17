@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { makeBarrierPrizes, fishPoints, earnedPrizePrecedesRisk, starRequirements, rateStars, nextStarTip, normalizeBest, updateBest, allStars } from './engagement.mjs';
+import {LEVELS,validateLevel,NIGHT_SAFE_FISH_TRAIL} from './levels.mjs';
 const level = { id: 1, distance: 300, seconds: 55, goal: {count: 8, gold: 0}, mastery: {jumps: 1}};
 const run = overrides => ({level,reason:'complete',hits:0,count:12,gold:2,jumpedBarriers:1,bestStreak:8,elapsed:40,score:20,rewardScore:35,...overrides});
 test('prize is real, visible and behind a jumpable obstacle, never at obstacle center',()=>{
@@ -67,4 +68,36 @@ test('personal best is monotone and only completed runs count',()=>{
  const save={stars:[1,2,3,0,0],best:normalizeBest(null)};
  updateBest(save,run({count:13,bestStreak:7,score:40}));updateBest(save,run({count:8,bestStreak:999,reason:'vehicle',score:999}));
  assert.equal(save.best[0].fish,13);assert.equal(save.best[0].streak,7);assert.equal(allStars(save),6);
+});
+
+test('nightly fast paired-vehicle gates have an actual reachable public fish trail',()=>{
+ const night=LEVELS[4];
+ assert.equal(night.speed,9.6);
+ assert.equal(night.obstacles.length,21,'keep all 13 legacy and 8 extra threat IDs');
+ assert.deepEqual([night.obstacles[8].x,night.obstacles[9].x],[475,475],
+  'the 475m dual traffic gate preserves original l5-o8 and l5-o9 IDs');
+ assert.deepEqual([night.obstacles[17].x,night.obstacles[18].x,night.obstacles[19].x,night.obstacles[20].x],
+  [433,433,558,558],'four pressure threat IDs stay stable');
+ assert.equal(558-475>=80,true,
+  'two genuinely different open-lane gates need a legible transition');
+ for(const [distance,index] of [[399,2],[495,1],[511,0],[527,0]]){
+  const fish=night.fish.find(item=>item.id===`l5-f${(distance-15)/16}`);
+  assert.ok(fish,'a real physical fish exists at '+distance);
+  assert.equal(fish.x,distance);
+  assert.equal(fish.lane,index,'visible fish guides toward the future open lane');
+  assert.equal(fish.caught,undefined,'fish is not auto-awarded');
+  assert.equal(NIGHT_SAFE_FISH_TRAIL[distance],index);
+ }
+ assert.deepEqual(validateLevel(night),[],
+  'fish breadcrumbs must remain collision-safe and all obstacle groups escapable');
+});
+
+test('level two rewards staying on the earned last jump lane without granting three stars',()=>{
+ const levelTwo=LEVELS[1];
+ const extra=levelTwo.fish.find(f=>f.id==='l2-prize-trail-372');
+ assert.ok(extra,'extra real physical pickup exists');
+ assert.deepEqual({x:extra.x,lane:extra.lane,golden:extra.golden,shoal:extra.shoal},
+  {x:372,lane:0,golden:false,shoal:true});
+ assert.equal(starRequirements(levelTwo).gold,17,'three-star demand is unchanged');
+ assert.deepEqual(validateLevel(levelTwo),[]);
 });
