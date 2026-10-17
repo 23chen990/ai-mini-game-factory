@@ -75,9 +75,35 @@ export async function buildSourceMobile(base, runId, gameId, { sourceRoot = proc
     const marker='const game = new Game();';if(original.split(marker).length!==2)throw Error('FPS bridge anchor changed');
     const bridge='\n// Owned private H5 glue; the original engine and combat are preserved.\nwindow.__H5NativeGame = game;\n';
     await writeFile(entry,original.replace(marker,marker+bridge));changes.push({file:'src/main.js',beforeSha256:sha256(original),afterSha256:sha256(await readFile(entry)),purpose:'Expose a small integration surface for actual mobile pause and input release.'});
+    // Authored depot renderer and pure blueprint are copied only into the
+    // exact pinned PRIVATE fork; never alter the upstream third-party repository.
+    for(const [owned,name] of [
+      ['cf-depot-layout.mjs','cf-depot-layout.js'],
+      ['cf-depot-source.js','cf-depot-source.js']
+    ]){
+      const ownedPath=path.join(ROOT,'templates/web-lite/h5-source-mobile-v1',owned);
+      const bytes=await readFile(ownedPath);
+      await writeFile(path.join(project,'src',name),bytes,{flag:'wx'});
+      changes.push({file:'src/'+name,ownedSource:owned,ownedSha256:sha256(bytes),
+        purpose:'Original authored geometry; visuals and World collision share primitive data.'});
+    }
     const file=path.join(project,'src/game.js'), before=await readFile(file,'utf8');
-    if(before.split('this.timeLeft = 600').length!==2)throw Error('FPS match timer anchor changed');
-    await writeFile(file,before.replace('this.timeLeft = 600','this.timeLeft = 120'));changes.push({file:'src/game.js',beforeSha256:sha256(before),afterSha256:sha256(await readFile(file)),purpose:'Bound the private test round to two simulated minutes; preserve kills and combat.'});
+    const importAnchor="import { buildMap } from './map.js';";
+    const mapAnchor='this.map = buildMap(this.renderer.scene, this.T, this.world);';
+    if(before.split('this.timeLeft = 600').length!==2||
+       before.split(importAnchor).length!==2||before.split(mapAnchor).length!==2)
+      throw Error('Pinned FPS scene selection anchor changed');
+    const patched=before
+      .replace(importAnchor,importAnchor+"\nimport { buildDepotMap } from './cf-depot-source.js';")
+      .replace(mapAnchor,"this.map = this.qs.get('arena') === 'depot' "+
+        "? buildDepotMap(this.renderer.scene, this.world) "+
+        ": buildMap(this.renderer.scene, this.T, this.world);\n    "+
+        "if (!this.map.id) this.map.id = 'ship';")
+      .replace('this.timeLeft = 600','this.timeLeft = 120');
+    await writeFile(file,patched);
+    changes.push({file:'src/game.js',beforeSha256:sha256(before),
+      afterSha256:sha256(await readFile(file)),
+      purpose:'Select original depot on explicit arena query; preserve native battle/physics and bounded test round.'});
   }
   await exec('npm',['ci','--omit=dev','--ignore-scripts','--no-audit','--no-fund'],{cwd:project,timeout:120000,maxBuffer:1024*1024});
   const {stdout:buildLog}=await exec(process.execPath,['build.mjs'],{cwd:project,timeout:60000,maxBuffer:1024*1024});
