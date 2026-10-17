@@ -188,6 +188,28 @@ export function installPhysicalShortcut(track,course){
       }));
       m.name='physical-shortcut-rails';group.add(m);
     }
+    // Give drivers a decision BEFORE they reach the split. The original
+    // beacons appeared only inside the fork, too late to choose a racing line.
+    // These tiny course-world markers are outside the physical guardrail:
+    // no HUD coach, collision, checkpoint, speed boost or route teleport.
+    const approach=new THREE.Group();approach.name='physical-shortcut-approach';
+    const markerMat=new THREE.MeshStandardMaterial({
+      color:0x5de9ef,emissive:0x1a6671,emissiveIntensity:.65,roughness:.4
+    });
+    for(const distanceBefore of [98,52]){
+      const at=track.sample(start-distanceBefore,{}),arrow=new THREE.Group();
+      arrow.name='physical-shortcut-direction';
+      arrow.position.set(at.x+at.rx*entrySide*(track.halfW+4.2),at.y,at.z+at.rz*entrySide*(track.halfW+4.2));
+      arrow.rotation.y=at.hd;
+      const post=new THREE.Mesh(new THREE.BoxGeometry(.95,5.4,.95),markerMat);
+      post.position.y=2.7;arrow.add(post);
+      const point=new THREE.Mesh(new THREE.ConeGeometry(1.7,2.8,3),markerMat);
+      // Local +X faces opposite the native Track.sample() right vector;
+      // invert the chevron so its tip points to the real entry-side opening.
+      point.position.y=6.2;point.rotation.z=entrySide>0?Math.PI/2:-Math.PI/2;
+      arrow.add(point);approach.add(arrow);
+    }
+    group.add(approach);
     // Two low-cost beacons flank the actual entrance. They communicate an
     // optional physical route without text pop-ups or free teleport arrows.
     for(const progress of [20,length-21]){

@@ -21,7 +21,9 @@ const fresh = () => ({
   objectiveLosses: 0, didNotFinish: 0, closeRankLosses: 0,
   replayAfterLoss: 0, replayAfterWin: 0,
   rewardedRequests: 0, rewardedCompletedSignals: 0,
-  rewardedNoCredit: 0, recent: []
+  rewardedNoCredit: 0,
+  shortcutEntries:0, shortcutCompletions:0, shortcutAborts:0,
+  geometricShortcutMeters:0, recent: []
 });
 
 /** Rank gaps in *native finish times*, never progress meters after finishing.
@@ -61,7 +63,11 @@ function read(storage) {
         rankGapSeconds: safeSeconds(item.rankGapSeconds),
         crashes: safeCount(item.crashes),
         gainedPositions: safeCount(item.gainedPositions),
-        lostPositions: safeCount(item.lostPositions)
+        lostPositions: safeCount(item.lostPositions),
+        shortcutEntries: safeCount(item.shortcutEntries),
+        shortcutCompletions: safeCount(item.shortcutCompletions),
+        shortcutAborts: safeCount(item.shortcutAborts),
+        geometricShortcutMeters: safeCount(item.geometricShortcutMeters)
       }];
     });
     return output;
@@ -93,7 +99,7 @@ export class RaceTrialMetrics {
     this.persist();
     return true;
   }
-  finish(stage, result, stars, raceSeconds, duel = {}) {
+  finish(stage, result, stars, raceSeconds, duel = {}, shortcut = {}) {
     if (!safeCourse(stage?.course) || this.activeCourse !== stage.course ||
         result?.finished !== true && result?.finished !== false ||
         !Number.isInteger(result.place) || result.place < 1 || result.place > 6 ||
@@ -108,13 +114,24 @@ export class RaceTrialMetrics {
       outcome === 'rank' ? 'rankLosses' : 'objectiveLosses']++;
     if (outcome === 'rank' && rankGapSeconds !== null && rankGapSeconds <= 3)
       this.data.closeRankLosses++;
+    const entries=safeCount(shortcut.entries), completed=Math.min(entries,safeCount(shortcut.completed)),
+      aborted=Math.min(entries-completed,safeCount(shortcut.aborted));
+    const lengthSaved=completed>0 ? safeCount(shortcut.geometricSavingMeters) : 0;
+    this.data.shortcutEntries+=entries;
+    this.data.shortcutCompletions+=completed;
+    this.data.shortcutAborts+=aborted;
+    this.data.geometricShortcutMeters+=lengthSaved;
     this.data.recent.push({
       stage: stage.course, outcome, place: result.place,
       raceSeconds: safeSeconds(raceSeconds),
       rankGapSeconds,
       crashes: safeCount(result.stats?.crash),
       gainedPositions: safeCount(duel.gainedPositions),
-      lostPositions: safeCount(duel.lostPositions)
+      lostPositions: safeCount(duel.lostPositions),
+      shortcutEntries: entries,
+      shortcutCompletions: completed,
+      shortcutAborts: aborted,
+      geometricShortcutMeters: lengthSaved
     });
     if (this.data.recent.length > MAX_RECENT)
       this.data.recent.splice(0, this.data.recent.length - MAX_RECENT);
@@ -133,7 +150,7 @@ export class RaceTrialMetrics {
    * full gameplay trace or claimed ad revenue. A snapshot can include QA runs. */
   exportJSON() {
     return JSON.stringify({
-      schemaVersion:1,game:'racing-h5',build:'V6.1',
+      schemaVersion:1,game:'racing-h5',build:'V6.2',
       verifiedHumanPlay:false,containsPersonalIdentifiers:false,
       generatedOnDevice:true,
       explanation:'本地试玩摘要（可能包含自动化 QA）；广告完成信号不是结算收入',
@@ -149,7 +166,7 @@ export class RaceTrialMetrics {
       passRate: counts.finishes > 0
         ? +(counts.wins / counts.finishes).toFixed(3) : null,
       recent: recent.map(entry => ({ ...entry })),
-      notes: '本机运行记录，可能包含自动化测试；不得冒充真人留存或广告收入'
+      notes: '本机运行记录，可能包含自动化测试；近道节省仅指几何路程，非净节省秒数、真人留存或广告收入'
     };
   }
 }

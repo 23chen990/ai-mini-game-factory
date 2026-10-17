@@ -132,8 +132,22 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
       course+' '+minMidCorridorClearance.toFixed(1)+'m');
   const mesh=fork.buildMesh(THREE,()=>0);
   if(!mesh.getObjectByName('physical-shortcut-road') ||
-     !mesh.getObjectByName('physical-shortcut-rails'))
-    throw Error('Shortcut missing genuine road geometry or collision guardrails: '+course);
+     !mesh.getObjectByName('physical-shortcut-rails') ||
+     mesh.getObjectByName('physical-shortcut-approach')?.children?.length!==2)
+    throw Error('Shortcut missing physical fork road, side rails or pre-entry markers: '+course);
+  const approach=mesh.getObjectByName('physical-shortcut-approach');
+  // World-space signs must point TOWARD the real open fork. A reversed local
+  // axis would send players into the opposite rail despite a passing build.
+  for(const [index,back] of [98,52].entries()){
+    const at=track.sample(fork.start-back,{});
+    const sign=approach.children[index],tip=sign.children[1];
+    const lateral=(sign.position.x-at.x)*at.rx+(sign.position.z-at.z)*at.rz;
+    const vector=new THREE.Vector3(0,1,0).applyEuler(tip.rotation).applyEuler(sign.rotation);
+    const toward=(vector.x*at.rx+vector.z*at.rz)*Math.sign(lateral);
+    if(sign.name!=='physical-shortcut-direction'||!Number.isFinite(toward)||
+       toward<.90 || Math.abs(lateral)-track.halfW<3.5)
+      throw Error('Shortcut approach sign points away from actual opening: '+course);
+  }
   shortcutAudit[course]={scene:CAREER_COURSE_MAPS[+course.slice(-2)-1],
     branchLengthM:+fork.length.toFixed(1),mainSegmentM:fork.end-fork.start,
     physicalSavingM:+fork.gain.toFixed(1),widthM:fork.width,neckWidthM:fork.neckWidth,

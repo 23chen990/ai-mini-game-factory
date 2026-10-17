@@ -198,8 +198,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V6.1'||
-     worldIdentity.uiRevision!=='racing-v61-rebuilt-routes')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V6.2'||
+     worldIdentity.uiRevision!=='racing-v62-route-decisions')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -303,8 +303,8 @@ try {
   await page.locator('#race-export').tap();
   const firstFile=await firstDownload;
   const initialExport=JSON.parse(await readFile(await firstFile.path(),'utf8'));
-  if(firstFile.suggestedFilename()!=='racing-v61-local-playtest.json'||
-     initialExport.build!=='V6.1'||initialExport.verifiedHumanPlay!==false||
+  if(firstFile.suggestedFilename()!=='racing-v62-local-playtest.json'||
+     initialExport.build!=='V6.2'||initialExport.verifiedHumanPlay!==false||
      initialExport.metrics.starts!==0||initialExport.metrics.finishes!==0)
     fail('Menu export must start empty and explicitly reject human-play claims: '+JSON.stringify(initialExport));
   report.initialExport={filename:firstFile.suggestedFilename(),starts:0,private:true};
@@ -611,10 +611,11 @@ try {
     alternateRoad:!!window.game?.track?.__RACE_SHORTCUT__,
     alternateMesh:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
     alternateRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
+    approach:!!window.game?.level?.getObjectByName('physical-shortcut-approach'),
     physicalSavingMeters:window.game?.track?.__RACE_SHORTCUT__?.gain ?? 0
   }));
   if(late.stage!=='race-30'||late.native!=='race-30'||late.width!==17||
-     late.laps!==3||late.field?.length<2||Math.max(...late.field)<2.12||!late.visual||!late.alternateRoad||!late.alternateMesh||!late.alternateRails||late.physicalSavingMeters<25)
+     late.laps!==3||late.field?.length<2||Math.max(...late.field)<2.12||!late.visual||!late.alternateRoad||!late.alternateMesh||!late.alternateRails||!late.approach||late.physicalSavingMeters<25)
     fail('Final boss must have a unique, physical hard race-30 track and native opponent: '+JSON.stringify(late));
   report.finalCourse={qaSeeded:true,physicalWorld:true,...late};
 

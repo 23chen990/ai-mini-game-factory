@@ -4,6 +4,8 @@ import { RacingJoystick } from './joystick.mjs';
 import { careerCourseDetails } from './track-design.mjs';
 import { raceSpeedHUD } from './speed-hud.mjs';
 import { RaceDuelTracker } from './duel-loop.mjs';
+import { ShortcutDecisionTracker } from './shortcut-decisions.mjs';
+import { SHORTCUT_PLANS } from './shortcut-network.mjs';
 import { RaceTrialMetrics, rankFinishGapSeconds } from './trial-metrics.mjs';
 import { careerCourseSvg, compactRaceObjective } from './presentation.mjs';
 import { RacingCareer } from './runtime.mjs';
@@ -28,6 +30,7 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
 document.body.append(root);
 const $ = id => root.querySelector('#race-' + id);
 const duel = new RaceDuelTracker();
+const shortcutDecisions = new ShortcutDecisionTracker();
 const joystick = new RacingJoystick(), actions = new TouchActions(),
   driver = new ManualRaceDriver(actions), quality = new QualityMonitor();
 const SENS_STORE = 'h5-qq-mobile-20261013:steering-sensitivity:v1';
@@ -93,13 +96,14 @@ function renderLobby() {
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
-  root.dataset.previewRevision = 'racing-v61-rebuilt-routes';
+  root.dataset.previewRevision = 'racing-v62-route-decisions';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V6.1';
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V6.2';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
-  $('course-feel').textContent = courseInfo?.feel ?? '';
+  $('course-feel').textContent = (courseInfo?.feel ?? '') +
+    (SHORTCUT_PLANS[stage.course] ? ' · 可选择近道' : '');
   $('stage-goal').textContent = stage.goal + ' · ★ ' + careerStars(career.progress);
   $('skin').replaceChildren();
   for (let i = 0; i < SKIN_NAMES.length; i++) {
@@ -110,7 +114,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.1' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(), trial: trial.snapshot(), revision: 'V6.2' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -167,7 +171,7 @@ function start() {
     display('ready');fuelView();return;
   }
   releaseInput();result = null;events = [];lastRacePassed = false;
-  duel.reset();$('compact-goal').textContent = '';started = true;
+  duel.reset();shortcutDecisions.reset();$('compact-goal').textContent = '';started = true;
   try {
     career.configure(g);
     // Mobile camera / anti-jitter settings follow the actual touch mode.
@@ -189,7 +193,8 @@ function finish() {
   const beforeStars = careerStars(career.progress);
   const graded = career.finalize(g, result);
   const stars = graded?.stars ?? 0;
-  trial.finish(career.stage,result,stars,g.raceTime,duel.snapshot(g,career.stage));
+  const forkRun=shortcutDecisions.finish();
+  trial.finish(career.stage,result,stars,g.raceTime,duel.snapshot(g,career.stage),forkRun);
   lastRacePassed = stars > 0;
   justFinishedPassed = lastRacePassed;
   $('heading').textContent = result.finished ? '第 ' + result.place + ' 名' : '未完赛';
@@ -208,6 +213,8 @@ function finish() {
     : (result.finished ? '未达成目标 · ' : '未完赛 · ') + failure.reason +
       (() => { const gap = rankFinishGapSeconds(career.stage,result);
         return gap !== null ? ' · 距目标名次 ' + gap.toFixed(1) + ' 秒' : ''; })();
+  if (forkRun.entries > 0)
+    $('result-copy').textContent += ' · 近道 ' + forkRun.completed + '/' + forkRun.entries;
   $('result-stats').innerHTML = [['有效漂移', graded?.metric.cleanDrifts ?? 0], ['弯道超车', graded?.metric.cleanPasses ?? 0], ['拾取道具', graded?.metric.pickups ?? 0], ['小喷', result.stats.small]].map(([label, value]) => `<span><b>${value ?? 0}</b>${label}</span>`).join('');
   $('results').replaceChildren();
   for (const row of result.rows) {
@@ -244,7 +251,7 @@ $('export').addEventListener('click', () => {
     const blob=new Blob([content],{type:'application/json;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const anchor=document.createElement('a');
-    anchor.href=url;anchor.download='racing-v61-local-playtest.json';
+    anchor.href=url;anchor.download='racing-v62-local-playtest.json';
     document.body.append(anchor);anchor.click();anchor.remove();
     button.textContent='数据已准备';
     setTimeout(()=>{ URL.revokeObjectURL(url); button.textContent='导出数据 ↓'; },1500);
@@ -427,6 +434,7 @@ async function boot() {
       if (g.state === 'race') {
         const failure = career.frame(g);
         duel.frame(g); // Keep genuine native overtakes for test telemetry; no toast.
+        shortcutDecisions.frame(g); // Observe native Track.project; no speed or progress changes.
         career.drainNotices(); // Lifecycle notices are not a running commentary.
         const objective=compactRaceObjective(career.stage,career.metrics,g.raceTime);
         if ($('compact-goal').textContent!==objective) $('compact-goal').textContent=objective;

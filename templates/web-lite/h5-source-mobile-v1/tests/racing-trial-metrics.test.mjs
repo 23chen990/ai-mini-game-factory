@@ -61,7 +61,7 @@ test('opt-in local JSON export is parseable, anonymous and does not invent human
   t.finish(stage,fixture(),0,71.3,{gainedPositions:1,lostPositions:2});
   t.rewardedOutcome('completed');
   const raw=t.exportJSON(),data=JSON.parse(raw);
-  assert.deepEqual([data.schemaVersion,data.game,data.build],[1,'racing-h5','V6.1']);
+  assert.deepEqual([data.schemaVersion,data.game,data.build],[1,'racing-h5','V6.2']);
   assert.equal(data.generatedOnDevice,true);
   assert.equal(data.verifiedHumanPlay,false);
   assert.equal(data.containsPersonalIdentifiers,false);
@@ -70,4 +70,48 @@ test('opt-in local JSON export is parseable, anonymous and does not invent human
   assert.equal(data.metrics.recent[0].rankGapSeconds,2.1);
   for(const key of ['userId','userAgent','revenue','email','ipAddress','deviceId'])
     assert.equal(Object.hasOwn(data,key),false,'never leak PII or fake billing data');
+});
+
+test('route savings are real native geometry only; local ledger survives legacy storage',()=>{
+  const storage=store(),t=new RaceTrialMetrics(storage);
+  t.start(stage);
+  t.finish(stage,fixture(),0,71,{},{
+    entries:2,completed:1,aborted:1,geometricSavingMeters:46
+  });
+  const current=t.snapshot();
+  assert.deepEqual([current.shortcutEntries,current.shortcutCompletions,
+    current.shortcutAborts,current.geometricShortcutMeters],[2,1,1,46]);
+  assert.deepEqual([current.recent[0].shortcutEntries,current.recent[0].shortcutCompletions,
+    current.recent[0].shortcutAborts,current.recent[0].geometricShortcutMeters],[2,1,1,46]);
+  assert.match(JSON.parse(t.exportJSON()).metrics.notes,/几何路程/);
+  const restored=new RaceTrialMetrics(storage);
+  assert.equal(restored.snapshot().shortcutEntries,2);
+  assert.equal(restored.snapshot().recent[0].geometricShortcutMeters,46);
+  // Old V6.1 JSON includes none of these counters. It must still be readable.
+  const historical=JSON.parse(storage.obj[RACE_TRIAL_KEY]);
+  delete historical.shortcutEntries;
+  delete historical.shortcutCompletions;
+  delete historical.shortcutAborts;
+  delete historical.geometricShortcutMeters;
+  for(const key of ['shortcutEntries','shortcutCompletions','shortcutAborts',
+    'geometricShortcutMeters']) delete historical.recent[0][key];
+  storage.obj[RACE_TRIAL_KEY]=JSON.stringify(historical);
+  const old=new RaceTrialMetrics(storage).snapshot();
+  assert.equal(old.finishes,1);
+  assert.equal(old.shortcutEntries,0);
+  assert.equal(old.recent[0].shortcutCompletions,0);
+});
+test('corrupted fork metrics cannot create time savings or paid revenue',()=>{
+  const t=new RaceTrialMetrics(store());
+  t.start(stage);
+  t.finish(stage,fixture(),0,72,{},{
+    entries:1,completed:99,aborted:99,geometricSavingMeters:100
+  });
+  const x=t.snapshot();
+  assert.equal(x.shortcutEntries,1);
+  assert.equal(x.shortcutCompletions,1);
+  assert.equal(x.shortcutAborts,0);
+  const raw=t.exportJSON();
+  assert.equal(raw.includes('adRevenue'),false);
+  assert.equal(raw.includes('secondsSaved'),false);
 });
