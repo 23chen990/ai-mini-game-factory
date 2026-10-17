@@ -11,6 +11,8 @@ import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound
 import {requestRewardedVideo} from './reward-adapter.mjs';
 import {COAST_STYLES,newCollection,loadCollection,styleById,buyOrEquip,collectCoastResult} from './collection.mjs';
 import {newPlaytestMetrics,loadPlaytestMetrics,recordPlaytestEvent,exportPlaytestSummary} from './telemetry.mjs';
+import {endlessTier} from './endless.mjs';
+import {endlessRecordStory,reviveOpportunity} from './replay-value.mjs';
 
 // Source-facing UI + primitive hazards. Original coastline, rider, bike, IK and audio stay native.
 export function createCoastAdventure(api) {
@@ -95,7 +97,7 @@ export function createCoastAdventure(api) {
   for(const b of route.querySelectorAll('[data-level]'))b.addEventListener('click',()=>{selected=Number(b.dataset.level);routes();});
   route.querySelector('.selected')?.scrollIntoView({block:'nearest'});
  }
- function phase(p){if(p!=='running'){heldSteer=null;heldKeySteer=null;root.classList.remove('co-path-risk');}root.dataset.phase=p;$('modal').hidden=p==='running';$('resume').hidden=p!=='paused';$('start').hidden=p!=='ready';$('route').hidden=p!=='ready';$('collection').hidden=p!=='ready';$('progress').hidden=p!=='ready';$('exit').hidden=p!=='paused'||!run?.level.endless;$('rules').hidden=p!=='ready';$('replay').hidden=!['finished','paused'].includes(p);$('select').hidden=!['finished','paused'].includes(p);$('next').hidden=p!=='finished'||run?.reason!=='complete'||run.level.id>=5;$('ad').hidden=p!=='finished'||reviveOfferVisible(run);$('revive').hidden=p!=='finished'||!reviveOfferVisible(run);$('pause').disabled=!run||!['running','paused'].includes(p);$('pause').textContent=p==='paused'?'▶ 继续':'Ⅱ 暂停';if(p!=='running'){$('radar').classList.remove('active');$('radar-label').hidden=true;}$('notice').textContent='';}
+ function phase(p){if(p!=='running'){heldSteer=null;heldKeySteer=null;root.classList.remove('co-path-risk');}root.dataset.phase=p;$('modal').hidden=p==='running';$('resume').hidden=p!=='paused';$('start').hidden=p!=='ready';$('route').hidden=p!=='ready';$('collection').hidden=p!=='ready';$('progress').hidden=p!=='ready';$('exit').hidden=p!=='paused'||!run?.level.endless;$('rules').hidden=p!=='ready';$('replay').hidden=!['finished','paused'].includes(p);$('select').hidden=!['finished','paused'].includes(p);$('next').hidden=p!=='finished'||run?.reason!=='complete'||run.level.id>=5;$('ad').hidden=p!=='finished'||reviveOfferVisible(run);$('revive').hidden=p!=='finished'||!reviveOfferVisible(run)||(adsAvailable()&&!reviveOpportunity(run,run?.previousBest).eligible);$('pause').disabled=!run||!['running','paused'].includes(p);$('pause').textContent=p==='paused'?'▶ 继续':'Ⅱ 暂停';if(p!=='running'){$('radar').classList.remove('active');$('radar-label').hidden=true;}$('notice').textContent='';}
  function bankTerminal(){if(!run||run.phase!=='finished'||!settle(save,run))return false;
   run.coinsEarned=collectCoastResult(collection,run);
   round.score=run.rewardScore;finishRound(round,progress);
@@ -105,7 +107,7 @@ export function createCoastAdventure(api) {
   // A paused endless run is an earned journey, not disposable progress.
   if(run?.level.endless&&['running','paused'].includes(run.phase))retireRun(run);
   reviveController.invalidate();bankTerminal();
-  selected=id;run=newRun(id);lastEndlessMilestone=0;replayTarget=lastFailure.get(id)??null;replayTargetCleared=false;track('start');
+  selected=id;run=newRun(id);run.previousBest=id===6?collection.bestDistance:0;run.recordCelebrated=false;lastEndlessMilestone=0;replayTarget=lastFailure.get(id)??null;replayTargetCleared=false;track('start');
   $('replay').textContent='↻ 重开当前关卡';$('replay').classList.remove('primary');$('replay').classList.add('secondary');
   round=startRound(progress,run.level.seconds*1000);eventCursor=0;lastPhase='running';hudLast='';lastRadar='';settledAt=0;cameraReady=false;pausedBySystem=false;
   for(const g of hazards.values())g.visible=false;for(const f of fishes){f.mesh.visible=false;f.active=false;}fishSlots.clear();
@@ -121,15 +123,22 @@ export function createCoastAdventure(api) {
  function resume(){if(run?.phase!=='paused')return;input(run,'resume');S.paused=false;pausedBySystem=false;audio.mute(!sound);phase('running');}
  function choose(){if(run?.phase==='running')pause();if(run?.level.endless&&run.phase==='paused')retireRun(run);reviveController.invalidate();bankTerminal();run=null;round=null;S.paused=true;S.started=false;phase('ready');$('heading').innerHTML='鹈鹕<br>海岸冒险';$('title').textContent='鹈鹕海岸冒险';$('copy').textContent='挑战每关三星 · 追逐奖励金鱼，刷新个人纪录。';$('start').textContent='▶ 出发 · '+(selected===6?'无尽海岸':LEVELS[selected-1].name);routes();}
  function terminal(){
-  if(terminalDisposition(run,adsAvailable())==='settle'&&!bankTerminal())return;S.paused=true;settledAt=now;audio.mute(true);phase('finished');
+  const opportunity=reviveOpportunity(run,run?.previousBest);
+  if(opportunity.eligible&&!run.opportunityRecorded){
+   run.opportunityRecorded=true;track('revive_opportunity');
+   if(adsAvailable())track('revive_offer');
+  }
+  if(terminalDisposition(run,adsAvailable()&&opportunity.eligible)==='settle'&&!bankTerminal())return;S.paused=true;settledAt=now;audio.mute(true);phase('finished');
   if(['vehicle','barrier'].includes(run.reason)&&Number.isFinite(run.distance))lastFailure.set(run.level.id,run.distance);
   const recap=run.level.endless?null:run.reason==='complete'?null:failureSummary(run);
-  $('heading').textContent=run.level.endless?(run.reason==='retired'?'🏁 本次骑行结束':'💥 海岸挑战结束'):run.reason==='complete'?(run.stars===3?'🏆 三星达成！':run.stars===2?'★★ 二星通关！':'★ 成功抵达！'):recap.title;
+  const recordStory=run.level.endless?endlessRecordStory(run,run.previousBest):null;
+  $('heading').textContent=run.level.endless?(recordStory.kind==='broken'?recordStory.headline:run.reason==='retired'?'🏁 本次骑行结束':recordStory.kind==='close'?'💪 就差一点！':'💥 海岸挑战结束'):run.reason==='complete'?(run.stars===3?'🏆 三星达成！':run.stars===2?'★★ 二星通关！':'★ 成功抵达！'):recap.title;
   const earned=allStars(save),best=save.best?.[run.level.id-1];
   if(run.level.endless){
    $('copy').textContent=`骑行 ${Math.floor(run.distance)} 米 · 🐟 ${run.count} 条 · 🌟 ${run.gold} 金鱼
 🐚 本局真实获得 ${run.coinsEarned??0} 贝壳 · 累计 ${collection.coins} 贝壳
-🏆 历史最远 ${collection.bestDistance} 米 · 想更远，再来一局！`;
+🏆 个人纪录 ${collection.bestDistance} 米
+${recordStory.detail}${opportunity.eligible&&adsAvailable()?`\n${opportunity.message} · 可自愿看广告继续本局`:''}`;
   }else if(run.reason==='complete'){
    const icons='★'.repeat(run.stars);
    $('copy').textContent=[`${icons} · 🐟${run.count} · 🌟${run.gold} · ↟${run.jumpedBarriers}`,
@@ -254,9 +263,16 @@ export function createCoastAdventure(api) {
    }
   }
   if(run)advance(run,dt);syncRidePose(S,run);
-  if(run?.level.endless&&run.phase==='running'){const milestone=Math.floor(run.distance/500);if(milestone>lastEndlessMilestone){lastEndlessMilestone=milestone;track('endless_gate');notice('🌊 新海岸路段！',`已骑行 ${Math.floor(run.distance)} 米 · 前方难度仍有安全出口`,'combo');}}
+  if(run?.level.endless&&run.phase==='running'){
+   const record=run.previousBest;
+   if(!run.recordCelebrated&&((record>=200&&run.distance>record)||(record<200&&run.distance>=350))){
+    run.recordCelebrated=true;track('record_broken');
+    notice('🏆 刷新海岸纪录！',
+     record>=200?`突破原来 ${record} 米的纪录`:`已经骑到 ${Math.floor(run.distance)} 米！`,'combo');
+   }
+   const milestone=Math.floor(run.distance/500);if(milestone>lastEndlessMilestone){lastEndlessMilestone=milestone;track('endless_gate');notice('🌊 新海岸路段！',`已骑行 ${Math.floor(run.distance)} 米 · 前方难度仍有安全出口`,'combo');}}
   if(run){
-   while(eventCursor-(run.eventOffset??0)<run.events.length){const e=run.events[eventCursor-(run.eventOffset??0)];eventCursor++;if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',e.first&&run.level.id===1?'下一条鱼偏右，轻点 ▶ 或右拖微调':(e.bonus&&rewardExitWarning(run))||(run.level.endless?`已收集 ${e.count} 条鱼`:`${e.count} / ${run.level.goal.count} 条`), e.comboPoints?'combo':'catch');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','near-miss');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
+   while(eventCursor-(run.eventOffset??0)<run.events.length){const e=run.events[eventCursor-(run.eventOffset??0)];eventCursor++;if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',e.first&&run.level.id===1?'下一条鱼偏右，轻点 ▶ 或右拖微调':(e.bonus&&rewardExitWarning(run))||(run.level.endless?`已收集 ${e.count} 条鱼`:`${e.count} / ${run.level.goal.count} 条`), e.comboPoints?'combo':'catch');}if(e.type==='endless-tier'){track('endless_tier');notice('🌊 '+e.name+'！','速度逐步提升 · 小心下一段海岸','combo');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','near-miss');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
    if(run.phase==='running'&&!replayTargetCleared&&passedPreviousFailure(run.distance,replayTarget)){
     replayTargetCleared=true;notice('⚡ 超过上次失误点！',`已骑 ${Math.floor(run.distance)} 米 · 继续看前方空路`,'combo');
    }
@@ -326,7 +342,7 @@ export function createCoastAdventure(api) {
   jumpButton.classList.toggle('ready',!!barrier&&run.y===0&&!run.bufferedJump);
   jumpButton.classList.toggle('queued',!!run.bufferedJump);
   const m=masteryStatus(run),mark=v=>v?'done':'missed';
-  const mastery=run.level.endless?`<b>∞ 无尽挑战</b><span>🐟 ${run.count} 鱼</span><span>🌟 ${run.gold}</span><span>💨 ${run.nearMisses} 擦肩</span><span>🏁 ${Math.floor(run.distance)} 米</span>`:`<b>★★★</b><span data-goal="catch" class="${m.catch.done?'done':''}">🐟 ${m.catch.value}/${m.catch.target}</span><span data-goal="gold" class="${m.gold.done?'done':''}">🌟 ${m.gold.value}/${m.gold.target}</span><span data-goal="jump" class="${m.jump.done?'done':''}">↟ ${m.jump.value}/${m.jump.target}</span><span data-goal="no-hit" title="无碰撞" class="${mark(m.noHit.done)}">🛡${m.noHit.done?'✓':'×'}</span><span data-goal="streak" title="本局最高连续捕鱼" class="${mark(m.streak.done)}">⚡${m.streak.value}/${m.streak.target}</span>`;
+  const mastery=run.level.endless?`<b>∞ ${endlessTier(run.distance).name}</b><span>🐟${run.count}</span><span>⚡${run.speed.toFixed(1)}m/s</span><span>🏁${Math.floor(run.distance)}m</span><span>🏆${run.previousBest>0?(run.distance>run.previousBest?'超越 '+Math.floor(run.distance-run.previousBest)+'m':'差 '+Math.ceil(run.previousBest-run.distance)+'m'):'首局挑战'}</span>`:`<b>★★★</b><span data-goal="catch" class="${m.catch.done?'done':''}">🐟 ${m.catch.value}/${m.catch.target}</span><span data-goal="gold" class="${m.gold.done?'done':''}">🌟 ${m.gold.value}/${m.gold.target}</span><span data-goal="jump" class="${m.jump.done?'done':''}">↟ ${m.jump.value}/${m.jump.target}</span><span data-goal="no-hit" title="无碰撞" class="${mark(m.noHit.done)}">🛡${m.noHit.done?'✓':'×'}</span><span data-goal="streak" title="本局最高连续捕鱼" class="${mark(m.streak.done)}">⚡${m.streak.value}/${m.streak.target}</span>`;
   if($('mastery').innerHTML!==mastery)$('mastery').innerHTML=mastery;
  }
  let sampleAt=performance.now(),sampleFrames=0;
