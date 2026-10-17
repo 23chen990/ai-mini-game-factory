@@ -34,7 +34,9 @@ test('a chasing rival moves toward an available passing side only on a readable 
   const changed = applyRivalTactics(game, { diff: 1 });
   assert.equal(changed, 1);
   assert.ok(chaser.personal < base, 'player on right should invite a left-side attack');
-  assert.ok(Math.abs(chaser.personal - chaser.__RACE_TACTIC__.basePersonal) <= .42);
+  assert.ok(Math.abs(chaser.personal)<=.86,'native road-width-limited lane target');
+  assert.ok(Math.abs(chaser.personal)*(.8*(9-2.2))>=3.8,
+    'native 3.1m physical collision cylinder needs an actual clearing lane');
 });
 
 test('rival does not weave toward a pass through a sharp corner', () => {
@@ -189,4 +191,42 @@ test('V4.8 even the opening rounds must present multiple podium threats',()=>{
     assert.ok(rivals[0].skill>=1.16);
     assert.deepEqual(rivals.map(r=>r.progress),before,'no fake gaps');
   }
+});
+
+
+test('committed native overtake lane is held through a real progress crossing, then released',()=>{
+  const p={isPlayer:true,progress:130,lat:0,s:39};
+  const chaser=rival({name:'追风者',progress:90,dist:200,s:43,lat:0});
+  const blocker=rival({name:'卡位手',progress:120,dist:230,s:40,lat:3});
+  const g={state:'race',player:p,racers:[p,chaser,blocker],
+    track:{length:2100,halfW:9,curvAhead:()=>0}};
+  configureRivalTactics([chaser,blocker],{id:'11'});
+  const original={p:p.progress,c:chaser.progress,b:blocker.progress,s:chaser.s};
+  applyRivalTactics(g,{id:'11'});
+  const first=chaser.personal;
+  assert.ok(first<-.65,'away from the real blocker with actual space');
+  assert.equal(chaser.__RACE_TACTIC__.committedPass.blocker,blocker);
+  // Fast car is now slightly ahead, but still within contact range.
+  chaser.progress=125;blocker.progress=120;
+  applyRivalTactics(g,{id:'11'});
+  assert.equal(chaser.personal,first,'do not dive back into blocker at first crossing');
+  // Physical pass cleared by >16m: return to stable racing line.
+  chaser.progress=144;blocker.progress=120;
+  applyRivalTactics(g,{id:'11'});
+  assert.equal(chaser.__RACE_TACTIC__.committedPass,null);
+  assert.ok(Math.abs(chaser.personal)<.2);
+  assert.equal(p.progress,original.p,'AI tactics never move the player');
+  assert.equal(chaser.s,original.s,'AI tactics never apply fake acceleration');
+  assert.equal(blocker.progress,original.b,'AI tactics never teleport traffic');
+});
+test('AI never commits a contact-risky new pass into a sharp corner',()=>{
+  const p={isPlayer:true,progress:150,lat:3,s:40};
+  const r=rival({progress:120,dist:120,s:45,lat:0});
+  const g={state:'race',player:p,racers:[p,r],track:{
+    length:1900,halfW:9,curvAhead:()=>.031,
+  }};
+  configureRivalTactics([r],{id:'01'});
+  applyRivalTactics(g,{id:'01'});
+  assert.equal(r.__RACE_TACTIC__.committedPass,undefined);
+  assert.ok(Math.abs(r.personal)<.2);
 });
