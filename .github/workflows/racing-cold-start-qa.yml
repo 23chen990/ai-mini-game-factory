@@ -5,6 +5,7 @@ on:
       - 'templates/web-lite/h5-source-mobile-v1/racing/**'
       - 'tools/lean-pilot/racing-cold-start-qa.mjs'
       - 'tools/lean-pilot/racing-render-probe.mjs'
+      - 'tools/lean-pilot/racing-render-environment-qa.mjs'
       - '.github/workflows/racing-cold-start-qa.yml'
 permissions:
   contents: read
@@ -33,8 +34,8 @@ jobs:
           npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
           pnpm install --frozen-lockfile --ignore-scripts
           node --check tools/lean-pilot/racing-cold-start-qa.mjs
-          node --check tools/lean-pilot/racing-render-probe.mjs
-          pnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs tools/lean-pilot/racing-render-probe.mjs
+          node --check tools/lean-pilot/racing-render-environment-qa.mjs
+          pnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs tools/lean-pilot/racing-render-environment-qa.mjs
       - name: Same approved pinned native engine as primary racing CI
         shell: bash
         run: |
@@ -54,9 +55,9 @@ jobs:
       - name: Real CSS cascade and unseeded cold start
         if: matrix.mode != 'render-probe'
         run: node tools/lean-pilot/racing-cold-start-qa.mjs ${{ matrix.mode }}
-      - name: Diagnostic layer isolation - NOT a production pass
+      - name: Diagnostic presentation comparison - NOT a production pass
         if: matrix.mode == 'render-probe'
-        run: node tools/lean-pilot/racing-render-probe.mjs
+        run: xvfb-run -a node tools/lean-pilot/racing-render-environment-qa.mjs
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
