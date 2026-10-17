@@ -174,6 +174,26 @@ export function annotateDriftResult(source) {
   if (source.split(original).length !== 2) throw Error('Native driftEnd event anchor changed');
   return source.replace(original, annotated);
 }
+/** Reduce the input-to-physics lag, with faster opposite-lock recovery.
+ * The native model still integrates every physics step and honours collisions. */
+export function patchV8SteeringResponse(source) {
+  const original='this.steer = damp(this.steer, steerT, 12, dt);';
+  const fast='this.steer = damp(this.steer, steerT, (Math.abs(steerT) > .12 && Math.sign(this.steer) !== Math.sign(steerT)) ? 33 : 21, dt);';
+  if(source.includes(fast))return source;
+  if(source.split(original).length!==2)throw Error('V8 steering responsiveness anchor changed');
+  return source.replace(original,fast);
+}
+/** Tight camera yaw and pitch response so downslope/rapid opposite lock are visible. */
+export function patchV8CameraFeel(source) {
+  const original='this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 4.5 : 7, dt);';
+  const revised='this.camYaw = dampAngle(this.camYaw, yawT, P.drifting ? 9 : 12, dt);';
+  const heightOriginal='this.camPos.y = damp(this.camPos.y, want.y, 8, dt);';
+  const heightRevised='this.camPos.y = damp(this.camPos.y, want.y, 12, dt);';
+  if(source.includes(revised)&&source.includes(heightRevised))return source;
+  if(source.split(original).length!==2 || source.split(heightOriginal).length!==2)
+    throw Error('V8 mobile camera follow anchor changed');
+  return source.replace(original,revised).replace(heightOriginal,heightRevised);
+}
 /** Add continuous steering and normalized drift starts to generated native car. */
 export function patchAnalogSteer(source) {
   const changes = [
@@ -387,7 +407,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
       await readFile(path.join(owned,moduleName),'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
-  const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))));
+  const annotatedVehicle = patchV8SteeringResponse(patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle)))))));
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeAiPath = path.join(project,'src/ai.js');
   const originalAi = await readFile(nativeAiPath,'utf8');
@@ -408,7 +428,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchRacingSource(beforeMain)))))));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchV8CameraFeel(patchRacingSource(beforeMain))))))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
