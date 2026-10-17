@@ -59,6 +59,12 @@ const CHALLENGES = {
     {id:'precision',title:'狙击尝试',instructions:'90秒内用 AWM 击杀1名敌人。轻点开镜、瞄准后开火。',limitMs:90000,kind:'kills',target:1,weapon:'awm'},
     {id:'survive',title:'小队生存',instructions:'MP5起手，坚持45秒，累计移动20米，死亡不超过2次。',limitMs:45000,kind:'survive',target:2,minTravel:20,weapon:'mp5'},
     {id:'defense',title:'双点反击',instructions:'100秒内亲自坚守A、B两处真实据点，各5秒；敌军独占据点8秒即失守。最多阵亡2次。',limitMs:100000,kind:'defend',target:2,holdSeconds:5,breachSeconds:8,radius:5,maxDeaths:2,weapon:'m4a1'},
+    // Campaign 02: each mission requires a genuinely different native action.
+    // No unlock fees, phantom kills, injected hitpoints, or ad-only levels.
+    {id:'assault',title:'火线截击',instructions:'100秒：先真实推进12米，再亲手击杀2名敌人；最多阵亡2次。',limitMs:100000,kind:'assault',target:2,minTravel:12,maxDeaths:2,weapon:'m4a1'},
+    {id:'marksman',title:'移动狙杀',instructions:'110秒：用AWM亲手击杀2人，同时移动10米；最多阵亡2次。',limitMs:110000,kind:'kills',target:2,minTravel:10,maxDeaths:2,weapon:'awm'},
+    {id:'evac',title:'火线撤离',instructions:'70秒：移动35米、亲手击杀1人并坚持到倒计时结束；最多阵亡1次。',limitMs:70000,kind:'survive',target:1,minTravel:35,minKills:1,weapon:'mp5'},
+    {id:'counter',title:'逆线夺点',instructions:'100秒：先攻远端B，再返回近端A，各坚守5秒；敌军独占7秒则失败。最多阵亡1次。',limitMs:100000,kind:'defend',target:2,holdSeconds:5,breachSeconds:7,radius:5,maxDeaths:1,weapon:'m4a1',reverse:true},
   ],
 };
 /** Optional, earned CF replay contract. Native damage/kill rules stay untouched. */
@@ -71,6 +77,14 @@ export function cfEliteChallenge(base) {
     return {...base,elite:true,target:1,minTravel:30};
   if(base?.id==='defense'&&base.kind==='defend')
     return {...base,elite:true,limitMs:85000,maxDeaths:0,holdSeconds:7,breachSeconds:7,radius:4.2};
+  if(base?.id==='assault'&&base.kind==='assault')
+    return {...base,elite:true,limitMs:85000,maxDeaths:1,minTravel:18,target:3};
+  if(base?.id==='marksman'&&base.kind==='kills')
+    return {...base,elite:true,limitMs:95000,maxDeaths:1,minTravel:15,target:3};
+  if(base?.id==='evac'&&base.kind==='survive')
+    return {...base,elite:true,limitMs:80000,target:0,minTravel:50,minKills:2};
+  if(base?.id==='counter'&&base.kind==='defend')
+    return {...base,elite:true,limitMs:90000,maxDeaths:0,holdSeconds:7,breachSeconds:6,radius:4.2};
   throw Error('Unsupported CF elite challenge');
 }
 export function challengesFor(gameId) {
@@ -83,7 +97,7 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
   if(c.kind==='race') {value=m.finished?1:0;complete=!!m.finished&&(!c.place||m.place>0&&m.place<=c.place)&&(!c.drifts||(m.drifts||0)>=c.drifts);label=`🏁 ${m.place>0?'第'+m.place+'名':'等待发车'}`+(c.drifts?` · 漂移 ${m.drifts||0}/${c.drifts}`:'');}
   if(c.kind==='hits'||c.kind==='kills') {
     const budgetExceeded=Number.isInteger(c.maxDeaths)&&c.maxDeaths>=0 &&
-      Math.max(0,Number(m.deaths)||0)>c.maxDeaths;
+      Math.max(0,Number(m.deaths)||0)>c.maxDeaths+(c.bonusDeaths===1?1:0);
     failed=budgetExceeded;
     if(c.kind==='hits'&&c.drill==='reposition') {
       // Not just total shots: the final three hits must occur AFTER a genuine
@@ -98,9 +112,22 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
           '🎯 手动追击 '+follow+'/'+c.target;
     } else {
       value=c.kind==='kills'&&c.weapon==='awm'?(m.awmKills||0):(m[c.kind]||0);
-      complete=!failed&&value>=c.target;
-      label=`🎯 ${value}/${c.target}${c.kind==='hits'?'命中':c.weapon==='awm'?'AWM击杀':'击杀'}`;
+      const walked=Math.max(0,Number(m.travel)||0);
+      complete=!failed&&value>=c.target&&(!c.minTravel||walked>=c.minTravel);
+      label=`🎯 ${value}/${c.target}${c.kind==='hits'?'命中':c.weapon==='awm'?'AWM击杀':'击杀'}`+
+        (c.minTravel?' · ↗ '+Math.floor(walked)+'/'+c.minTravel+'米':'');
     }
+  }
+  if(c.kind==='assault') {
+    const deaths=Math.max(0,Number(m.deaths)||0);
+    const kills=Math.max(0,Math.floor(Number(m.assaultKills)||0));
+    const travel=Math.max(0,Number(m.assaultTravel)||0);
+    const budgetExceeded=Number.isInteger(c.maxDeaths)&&deaths>c.maxDeaths+(c.bonusDeaths===1?1:0);
+    value=Math.min(c.target,kills);
+    failed=budgetExceeded;
+    complete=!failed&&m.assaultStage===1&&travel>=c.minTravel&&kills>=c.target;
+    label=m.assaultStage===1?'🎯 换位后击杀 '+kills+'/'+c.target
+      :'↗ 先换位 '+Math.floor(travel)+'/'+c.minTravel+'米';
   }
   if(c.kind==='defend') {
     const deaths=Math.max(0,Number(m.deaths)||0);
@@ -108,23 +135,25 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
     const breach=m.defenseBreached===true;
     const valid=m.defenseSitesValid===true;
     value=Math.min(c.target,stages);
-    failed=breach||!valid||(Number.isInteger(c.maxDeaths)&&deaths>c.maxDeaths);
+    failed=breach||!valid||(Number.isInteger(c.maxDeaths)&&deaths>c.maxDeaths+(c.bonusDeaths===1?1:0));
     complete=!failed&&value===c.target&&m.defenseStage===c.target;
     label=breach?'✕ 据点失守':
       !valid?'✕ 据点路线不可用':
       '◆ 已守住 '+value+'/'+c.target+' 处';
   }
   if(c.kind==='survive') {
-    value=Math.min(c.target+1,m.deaths||0);
-    failed=value>c.target;
+    value=Math.min(c.target+2,Math.max(0,Number(m.deaths)||0));
+    failed=value>c.target+(c.bonusDeaths===1?1:0);
     const travel=Math.max(0,Math.floor(Number(m.travel)||0)),minTravel=c.minTravel||0;
     // Only a full-length survival counts. A native team deathmatch may finish
     // early; that must never masquerade as surviving the declared 45 seconds.
     // The null fallback retains compatibility with existing offline callers.
     const survivedFullClock=elapsedMs===null ? terminal :
       Number.isFinite(elapsedMs) && elapsedMs>=c.limitMs;
-    complete=terminal&&survivedFullClock&&!failed&&travel>=minTravel;
-    label=`❤ 死亡 ${value}/${c.target} · 移动 ${travel}/${minTravel}米`;
+    complete=terminal&&survivedFullClock&&!failed&&travel>=minTravel&&
+      (!c.minKills||Math.max(0,Number(m.kills)||0)>=c.minKills);
+    label=`❤ 死亡 ${value}/${c.target+(c.bonusDeaths===1?1:0)} · 移动 ${travel}/${minTravel}米`+
+      (c.minKills?' · 击杀 '+(Number(m.kills)||0)+'/'+c.minKills:'');
   }
   return {outcome:failed?'lost':complete?'won':terminal?'lost':'running',value,label,rewardScore:c.kind==='survive'?(complete?3:0):c.kind==='defend'?(complete?5:value):value};
 }
@@ -133,9 +162,12 @@ export function newChallengeProgress(gameId) {
   if(gameId==='cf-transport-ship')result.elite=false;
   return result;
 }
-export function recordChallenge(p,c,score,outcome) {
+export function recordChallenge(p,c,score,outcome,{assisted=false}={}) {
   const previous=p.records[c.id]??{best:0,attempts:0,wins:0};
-  const record={best:Math.max(previous.best,Math.max(0,Math.floor(score))),attempts:previous.attempts+1,wins:previous.wins+(outcome==='won'?1:0)};
+  const record={best:assisted?previous.best:Math.max(previous.best,Math.max(0,Math.floor(score))),
+    attempts:previous.attempts+1,wins:previous.wins+(outcome==='won'&&!assisted?1:0)};
+  if(assisted||previous.assistedWins!==undefined)
+    record.assistedWins=(previous.assistedWins||0)+(outcome==='won'&&assisted?1:0);
   if(p.gameId==='cf-transport-ship'&&(c.elite===true||previous.eliteWins!==undefined)) {
     record.eliteWins=(previous.eliteWins||0)+(c.elite===true&&outcome==='won'?1:0);
   }
@@ -151,6 +183,8 @@ export function loadChallengeProgress(raw,gameId) {
     for(const [id,r]of Object.entries(p.records)){
       if(!ids.includes(id)||!r||!['best','attempts','wins'].every(k=>Number.isInteger(r[k])&&r[k]>=0&&r[k]<=1000000)||r.wins>r.attempts)return null;
       if(r.eliteWins!==undefined&&(!Number.isInteger(r.eliteWins)||r.eliteWins<0||r.eliteWins>r.wins))return null;
+      if(r.assistedWins!==undefined&&(!Number.isInteger(r.assistedWins)||r.assistedWins<0||
+        r.assistedWins>r.attempts-r.wins))return null;
     }
     return p;
   }catch{return null;}
@@ -205,4 +239,44 @@ export function cfStepDefense(state,{gameTime,player,actors=[],team,holdSeconds=
     captured:won?state.captured+1:state.captured,
     held:won?0:held,
     enemyHeld:won?0:enemyHeld};
+}
+
+
+/** Player-made movement and original kill stats only. A long-distance
+ * teleport does not count as a reposition: it has to be accompanied by
+ * genuine walkedMeters and a net displacement from the spawn anchor. */
+export function cfAdvanceAssault(challenge,previous=null,native={}) {
+  if(challenge?.kind!=='assault')return null;
+  const kills=Number.isFinite(native.kills)?Math.max(0,Math.floor(native.kills)):0;
+  const travel=Number.isFinite(native.travel)?Math.max(0,native.travel):0;
+  const x=Number.isFinite(native.x)?native.x:null;
+  const z=Number.isFinite(native.z)?native.z:null;
+  const state=previous??{stage:0,anchorX:x,anchorZ:z,startTravel:travel,
+    killBaseline:kills,lastKills:kills,postKills:0};
+  const moved=Math.max(0,travel-state.startTravel);
+  const net=state.anchorX!==null&&state.anchorZ!==null&&x!==null&&z!==null
+    ?Math.hypot(x-state.anchorX,z-state.anchorZ):0;
+  const ready=state.stage===1||
+    (moved>=challenge.minTravel&&net>=challenge.minTravel*.75);
+  return {...state,stage:ready?1:0,lastKills:kills,
+    killBaseline:state.stage===0&&ready?kills:state.killBaseline,
+    travel:moved,net,postKills:ready?Math.max(0,kills-(state.stage===0?kills:state.killBaseline)):0};
+}
+
+/** Placement policy is intentionally stricter than an SDK availability flag:
+ * first session minute + first completed round are ad-free, reward is opt-in,
+ * never on native gunfire or the countdown itself. */
+export function cfCanOfferRevive({challenge,metrics,round,progress,
+  sinceStartupMs,config,used=false,declined=false}={}) {
+  if(used||declined||round?.phase!=='running'||progress?.rounds<1||
+    !Number.isFinite(sinceStartupMs)||sinceStartupMs<60000||
+    config?.status!==1||config.source!=='check_ads_status'||
+    !config.appId||config.screenOrientation!==1||typeof config.spaceId!=='string'||
+    !config.spaceId)return false;
+  if(challenge?.elite===true||challenge?.bonusDeaths||!metrics||
+    metrics.defenseBreached===true)return false;
+  const budget=challenge.kind==='survive'?challenge.target:challenge.maxDeaths;
+  if(!Number.isInteger(budget)||budget<0)return false;
+  const deaths=Number(metrics.deaths);
+  return Number.isInteger(deaths)&&deaths===budget+1;
 }
