@@ -13,6 +13,17 @@ export function cfArenaForLevel(index) {
 export const CF_CONTROL_DEFAULTS=Object.freeze({sensitivity:1,opacity:.85});
 const CF_IDS=new Set(['tags','precision','survive','defense','assault','marksman','evac','counter']);
 const GRADE_LABELS=['未完成','完成','优秀','完美'];
+/** Real drill progress as short combat status. Full rules live on ready UI. */
+export function cfRifleCombatStatus(challenge,metrics={}) {
+  if(challenge?.id!=='tags'||challenge?.drill!=='reposition')return null;
+  if(metrics.drillFirstHit!==true)return '◎ 前方交火 · 找准目标';
+  const travel=Math.max(0,Number(metrics.drillTravel)||0);
+  if(metrics.drillStage!==2)
+    return '↗ 掩体换位 '+Math.min(Math.floor(travel),challenge.minTravel)+
+      '/'+challenge.minTravel+'m';
+  const hits=Math.max(0,Math.floor(Number(metrics.drillFollowUpHits)||0));
+  return '✦ 追击命中 '+Math.min(hits,challenge.target)+'/'+challenge.target;
+}
 
 function snapped(value,fallback,min,max) {
   if(typeof value!=='number'||!Number.isFinite(value))return fallback;

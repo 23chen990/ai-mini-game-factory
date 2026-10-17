@@ -439,5 +439,6 @@ jobs:
             ${{ runner.temp }}/cf-v14-sha256.txt
             runs/h5-cf-challenges-20261013/cf-v14-native-qa.json
             runs/h5-cf-challenges-20261013/screenshots/cf-v14-*.png
+            runs/h5-cf-challenges-20261013/videos/*.webm
           retention-days: 7
           if-no-files-found: warn

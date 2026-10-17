@@ -610,6 +610,14 @@ export function cfRealCombatFeedback(previous,current) {
   return {kind:kills?'kill':hits?'hit':hpLoss?'damage':null,
     hpLoss,hits,kills};
 }
+/** Optional device haptics depend strictly on original native player events. */
+export function cfCombatHapticPattern(event) {
+  if(!event||!Number.isFinite(event.hpLoss))return null;
+  if(event.kind==='kill'&&event.kills>0)return [24,38,16];
+  if(event.kind==='hit'&&event.hits>0)return 12;
+  if(event.kind==='damage'&&event.hpLoss>=10)return 8;
+  return null;
+}
 export function cfHitCue(challenge, nativeHits, increase, drill = null) {
   if (!challenge || !Number.isFinite(nativeHits) || !Number.isFinite(increase) ||
       nativeHits < 1 || increase < 1) return '';
@@ -642,6 +650,9 @@ export function cfNearMissCue(challenge, metrics={}, elapsedMs=0) {
     if(kills>=1&&kills<goal)
       return '已经抵达真实进攻位，只差最后'+(goal-kills)+'次亲手击杀';
   }
+  if(challenge.kind==='kills'&&goal===1&&
+    count(metrics.awmKills)===0&&count(metrics.hits)>=1)
+    return 'AWM已经命中目标，补上关键一枪即可过关';
   if(challenge.kind==='kills'&&goal>1){
     const kills=count(metrics.awmKills);
     if(kills>=1&&kills<goal)
@@ -879,6 +890,31 @@ export function cfChooseDefenseSites({player,nav,world,actors=[]}) {
 
 /** Send existing native bots down real NavGrid paths, not through obstacles.
  * Native senses, ballistics, hitboxes and attack logic still take priority. */
+/** A single genuine bot may take a walkable side path toward its OWN recent
+ * last-seen enemy position. Never use a hidden live position or teleport. */
+export function cfObservedFlankPlan({actor,player,world,nav,now}={}) {
+  if(!actor?.alive||actor.isPlayer||actor.team===player?.team||
+    actor.visible===true||actor.target!==player||
+    !actor.pos||!actor.lastSeen||!Number.isFinite(now)||
+    !Number.isFinite(actor.lastSeenT)||now<actor.lastSeenT||
+    now-actor.lastSeenT>3.5||!world?.blocked||
+    !nav?.idx||!nav?.walkable||!nav?.findPath)return null;
+  const seen=actor.lastSeen;
+  const dx=seen.x-actor.pos.x,dz=seen.z-actor.pos.z;
+  const distance=Math.hypot(dx,dz);
+  if(!Number.isFinite(distance)||distance<7||distance>48)return null;
+  const fx=dx/distance,fz=dz/distance;
+  for(const side of [1,-1]){
+    const x=seen.x-fx*2-fz*side*5;
+    const z=seen.z-fz*2+fx*side*5;
+    if(world.blocked(x,.05,z,.55,1.8))continue;
+    const cell=nav.idx(x,z);
+    if(cell<0||!nav.walkable(cell))continue;
+    const path=nav.findPath(actor.pos.x,actor.pos.z,x,z);
+    if(Array.isArray(path)&&path.length>=2)return {goal:[x,z],path};
+  }
+  return null;
+}
 export function cfRouteDefenseBots(game,site) {
   if(!site||!game?.player||!game?.nav?.findPath)return 0;
   let routed=0;
@@ -1155,6 +1191,7 @@ export function createFpsMobileUx(game, root, doc) {
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
   let defense=null,nextDefenseRouteAt=0,assault=null,extraction=null;
+  let plannedObservedFlank=false;
   let perfWindowStart=0,perfFrames=0,perfFastWindows=0,perfLastAdjust=0;
 
   function recolorNativeAllies() {
@@ -1320,6 +1357,19 @@ export function createFpsMobileUx(game, root, doc) {
       actor.diff = {...profile,strafe:cfNoviceScoutStrafe(profile,stabilized),
         react:[...profile.react]};
       actor.recoilControl = profile.ctrl;
+      if(!plannedObservedFlank&&elapsed>=16&&
+        ['survive','assault','hits'].includes(activeChallenge?.kind)&&
+        activeChallenge?.elite!==true&&actor.team!==p.team&&!stabilized){
+        const plan=cfObservedFlankPlan({
+          actor,player:p,world:game.world,nav:game.nav,now:game.time});
+        if(plan){
+          actor.role='flank';actor.stage=1;actor.goal=plan.goal;
+          actor.path=plan.path;actor.pi=1;actor.huntFor=actor.lastSeenT;
+          plannedObservedFlank=true;
+          if(game.__mobileBalanceReview)
+            game.__mobileBalanceReview.observedFlankAt=+elapsed.toFixed(1);
+        }
+      }
     }
   }
 
@@ -1584,6 +1634,7 @@ export function createFpsMobileUx(game, root, doc) {
       originalEnemySpawns=null;trainingSpawnTeam=null;
       drill=cfAdvanceDrill(activeChallenge);
       defense=null;assault=null;extraction=null;nextDefenseRouteAt=0;defensePin.hidden=true;
+      plannedObservedFlank=false;
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
@@ -1854,6 +1905,12 @@ export function createFpsMobileUx(game, root, doc) {
         const combat={hits,kills:p.stats?.k||0,hp:p.hp,alive:p.alive===true};
         const diff=cfRealCombatFeedback(previousCombat,combat);
         previousCombat=combat;
+        const pattern=cfCombatHapticPattern(diff);
+        if(pattern!==null&&game.touchMode===true&&
+           typeof doc.defaultView?.navigator?.vibrate==='function'){
+          try{doc.defaultView.navigator.vibrate(pattern);}
+          catch{/* Browser or OS may deny optional haptics. */}
+        }
         if(diff.kind==='kill'||diff.kind==='hit'){
           const message=diff.kind==='kill'
             ? '★ 亲手击杀 +'+diff.kills

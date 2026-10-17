@@ -63,9 +63,11 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       phase:root?.dataset.phase,challenge:root?.dataset.challenge,
       gamePhase:g?.ended?'finished':g?.paused?'paused':g?.playing?'running':'ready',
       time:g?.time||0,player:p?{alive:p.alive,
-        x:p.pos.x,z:p.pos.z,yaw:p.yaw,pitch:p.pitch,
+        x:p.pos.x,y:p.pos.y,z:p.pos.z,vy:p.vel?.y,
+        yaw:p.yaw,pitch:p.pitch,
         shots:p.stats?.shots,hits:p.stats?.hits,kills:p.stats?.k,deaths:p.stats?.d,
-        weapon:p.weapon?.id,scoped:p.scoped,
+        weapon:p.weapon?.id,mag:p.weapon?.mag,
+        reloading:p.weapon?.reloading,scoped:p.scoped,
         input:{mx:p.touch?.mx,mz:p.touch?.mz,fire:p.touch?.fire,
           firePressed:p.touch?.firePressed,jump:p.touch?.jump,
           dx:p.touchLook?.x||0,dy:p.touchLook?.y||0}
@@ -159,7 +161,27 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     const afterFire=await inspect();
     check('original-bullets-fired-only-from-native-fire-button',
       afterFire.player.shots>beforeFire&&afterFire.player.input.fire===false,
-      {beforeFire,afterFire:afterFire.player});
+      {beforeFire,after:afterFire.player});
+    // Genuine fire+camera and reload/jump: normal CDP fingers only.
+    const beforeDrag=await inspect(),fc=center(fireRect);
+    await gesture(fc,{x:fc.x-25,y:fc.y-6},470,28);
+    const afterDrag=await inspect();
+    check('one-thumb-fire-drag-aim-and-real-bullets',
+      Math.abs(afterDrag.player.yaw-beforeDrag.player.yaw)>0.015&&
+      afterDrag.player.shots>beforeDrag.player.shots,
+      {before:beforeDrag.player,after:afterDrag.player});
+    const beforeReload=await inspect();
+    await button('#touch .btn[data-mk-action="reload"]',240,29);
+    const afterReload=await inspect();
+    check('touch-reload-starts-real-weapon-reload',
+      beforeReload.player.mag<30&&afterReload.player.reloading===true,
+      {before:beforeReload.player,after:afterReload.player});
+    const beforeJump=await inspect();
+    await button('#touch .btn[data-mk-action="jump"]',270,30);
+    const afterJump=await inspect();
+    check('touch-jump-changes-real-native-physics',
+      afterJump.player.y>beforeJump.player.y+.045||afterJump.player.vy>0.3,
+      {before:beforeJump.player,after:afterJump.player});
     // Two real CDP fingers: walk+fire at once, then OS-style touchcancel.
     const f0=center(fireRect);
     await event('touchStart',[{...p0,id:51}]);
