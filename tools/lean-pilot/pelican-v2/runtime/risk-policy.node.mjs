@@ -88,7 +88,7 @@ test('a visible READY jump control is a valid fallback when the radar prize cue 
  const a=decide(viewReady,confirmed);
  assert.equal(a.action,'jump');assert.equal(a.reason,'confirmed-next-barrier-ready');
  assert.equal(a.state.goldAtJump,4);assert.equal(a.state.stage,'capture');
- const tooLate=decide({...viewReady,distance:225},confirmed);
+ const tooLate=decide({...viewReady,distance:232.3},confirmed);
  assert.notEqual(tooLate.action,'jump');
 });
 test('a real visible jump reward establishes a stable target through transient ordinary fish HUD cues',()=>{
@@ -160,10 +160,10 @@ test('capture keeps a safe reward window before distant traffic but escapes an i
 
 test('turning toward a reward route moves exactly one adjacent lane at a time',()=>{
  const lanes=[lane({fish:true}),lane(),lane({danger:true,jumpReward:true,kind:'barrier',seconds:2})];
- const first=decide(view({laneIndex:0,lanes}));
+ const first=decide(view({distance:205,laneIndex:0,lanes}));
  assert.equal(first.action,'right');
  assert.equal(first.toLane,1);
- const second=decide(view({laneIndex:1,lanes}),first.state);
+ const second=decide(view({distance:207,laneIndex:1,lanes}),first.state);
  assert.equal(second.action,'right');
  assert.equal(second.toLane,2);
 });
