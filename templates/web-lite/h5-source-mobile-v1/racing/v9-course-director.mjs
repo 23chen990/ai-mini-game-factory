@@ -13,7 +13,7 @@
  * H5 system, not an attempt to reproduce third-party course layouts.
  */
 export const V9_STAGE_RHYTHMS = Object.freeze({
-  '01': {identity:'broad entry / one committed countersteer', beats:['sweep','chicane',null,'apex']},
+  '01': {identity:'hard urban pursuit / four decisive shifts and late countersteer', beats:['chicane','late','apex','chicane']},
   '02': {identity:'long accelerating crests / late desert brake', beats:[null,'late','apex']},
   '03': {identity:'fast divided flyovers / technical infield', beats:['sweep',null,'chicane']},
   '04': {identity:'coastal flow / downhill corner exit', beats:[null,'sweep','late']},
