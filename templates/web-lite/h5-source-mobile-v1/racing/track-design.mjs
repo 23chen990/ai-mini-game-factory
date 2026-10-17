@@ -439,6 +439,70 @@ export function buildV8CourseTerrain(THREE,track,course) {
   return group;
 }
 
+/**
+ * V9 environment is paced to the ACTUAL road, not randomly scattered decor.
+ * Terrain silhouettes respond to elevation/curvature and are grounded beyond
+ * the collision corridor. Only 5 paired low-poly groups per loaded stage.
+ * Complex tracks get retention cliffs; desert gets stone tiers, city gets
+ * district gates, snow gets ridge shelves. All identity meshes are original.
+ */
+export function buildV9RoadsideSectors(THREE,track,course) {
+  const root=new THREE.Group();root.name='v9-paced-roadside-'+course;
+  if(!track?.__V9_WIDTH_PROFILE__||!Number.isFinite(track.length))return root;
+  const id=Number(course.slice(5)),map=CAREER_COURSE_MAPS[id-1];
+  const stone=map==='egypt'?0xa97e50:map==='snow'?0x8ab1c4:
+    map==='aegean'?0x687782:0x4b6277;
+  const light=map==='egypt'?0xebc592:map==='snow'?0xdaf5f4:
+    map==='aegean'?0xd0b898:0xa2c5dc;
+  const baseMat=new THREE.MeshStandardMaterial({color:stone,roughness:.95});
+  const edgeMat=new THREE.MeshStandardMaterial({color:light,roughness:.82,metalness:.04});
+  const rockGeo=new THREE.DodecahedronGeometry(1,0);
+  const iceGeo=new THREE.OctahedronGeometry(1,0);
+  const tierGeo=new THREE.BoxGeometry(1,1,1);
+  for(let k=0;k<5;k++){
+    const frac=.13+k*.18+((id+k)%3)*.018;
+    const station=track.sample(track.length*frac,{});
+    const width=track.v9WidthAt?.(station.d)??track.halfW;
+    const turn=track.curv?.[station.i]??0;
+    const steep=Math.abs(track.slope?.[station.i]??0);
+    const h=11+(id+k*4)%13+Math.min(17,steep*120);
+    for(const side of [-1,1]){
+      const grp=new THREE.Group();
+      grp.name='v9-terrain-'+course+'-'+k+'-'+side;
+      const offset=width+16+((id+k*3)%7);
+      grp.position.set(station.x+station.rx*side*offset,
+        station.y-5,station.z+station.rz*side*offset);
+      // Local Y placement is clamped near the true road surface, helping
+      // players perceive downhill movement as landmarks step with elevation.
+      const add=(geo,mat,x,y,z,sx,sy,sz)=>{
+        const obj=new THREE.Mesh(geo,mat);
+        obj.position.set(x,y,z);obj.scale.set(sx,sy,sz);
+        obj.receiveShadow=true;grp.add(obj);
+      };
+      if(map==='city'){
+        // Understated split districts, unlike repeated universal neon pillars.
+        add(tierGeo,baseMat,0,h*.53,0,6,h,6);
+        add(tierGeo,edgeMat,0,h+1.8,0,8,1.8,8);
+        if(k%2===0)add(tierGeo,baseMat,9,h*.24,-4,4,h*.44,4);
+      }else if(map==='egypt'){
+        add(tierGeo,baseMat,0,3.5,0,16,7,10);
+        add(rockGeo,baseMat,0,9,0,9,h*.38,8);
+        add(tierGeo,edgeMat,-3,8,0,18,1.2,11);
+      }else if(map==='snow'){
+        add(tierGeo,baseMat,0,2.3,0,14,4.5,10);
+        add(iceGeo,edgeMat,0,h*.55,0,5.5,h*.65,5);
+        if(Math.abs(turn)>.008)add(iceGeo,baseMat,9,7,-3,3,8,3);
+      }else{
+        add(rockGeo,baseMat,0,h*.46,0,11,h*.6,9);
+        add(tierGeo,baseMat,side*3,2.4,0,17,5,14);
+        if(k%2===1)add(rockGeo,edgeMat,7,h*.82,1,5,h*.35,5);
+      }
+      root.add(grp);
+    }
+  }
+  return root;
+}
+
 export function buildRaceLandmarks(THREE,track,course) {
   const group=new THREE.Group();
   if(TRACK_RESHAPES[course])return group; // Pinned native pre-career demo.
@@ -510,6 +574,7 @@ export function buildRaceLandmarks(THREE,track,course) {
   }
   group.add(buildCourseIdentity(THREE,track,course,n));
   group.add(buildV8CourseTerrain(THREE,track,course));
+  if(track.__V9_WIDTH_PROFILE__)group.add(buildV9RoadsideSectors(THREE,track,course));
   if(n===7||n===22) {
     // A visible finish at the real one-way finish distance, not the loop seam.
     // No collider: native onLap handles the actual crossing and ranking.
