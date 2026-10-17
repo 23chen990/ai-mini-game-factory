@@ -60,6 +60,7 @@ try{
  await tap('#co-exit');
  r=await snap();
  check('voluntary-real-settlement',r.phase==='finished'&&r.reason==='retired'&&r.settled===true);
+  check('unavailable-ads-not-advertised-as-working-controls',await page.locator('#co-ad').isHidden()&&await page.locator('#co-revive').isHidden()&&(await page.locator('#co-storage').innerText()).includes('广告未接入'));
  check('earned-coin-award-is-real',r.collection.coins>=1&&r.collection.endlessRuns===1&&r.collection.bestDistance>=45);
  check('endless-did-not-cheat-career',r.save.unlocked===1&&r.save.stars.every(v=>v===0));
  check('local-event-funnel-counts-genuine-actions',r.metrics.start===1&&r.metrics.retire===1);

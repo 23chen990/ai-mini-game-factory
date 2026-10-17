@@ -40,9 +40,9 @@ try{
  await page.setViewportSize({width:390,height:844});await tap('#co-replay');
  await page.waitForSelector('#coast[data-phase="finished"]',{timeout:40000});await page.locator('#co-modal').waitFor({state:'visible'});
  r=await snap();check('actual-barrier-death-settles-once-without-ad',r.reason==='barrier'&&r.events.some(e=>e.type==='failed'&&e.objectId==='l1-o1')&&r.settled===true&&r.reward?.settled===true&&r.reward.rounds===1&&r.reward.bank===r.rewardScore,r);await shot('barrier-death-revive-unavailable');
- check('revive-visible-disabled-free-replay-enabled',await page.locator('#co-revive').isVisible()&&await page.locator('#co-revive').isDisabled()&&await page.locator('#co-replay').isEnabled(),{text:await page.locator('#co-revive').innerText()});
- const beforeDisabled=r,box=await page.locator('#co-revive').boundingBox();await page.touchscreen.tap(box.x+box.width/2,box.y+box.height/2);await page.waitForTimeout(300);r=await snap();
- check('disabled-revive-cannot-fake-ad-or-change-reward',r.revives===0&&r.phase==='finished'&&r.reward.bank===beforeDisabled.reward.bank&&r.reward.rounds===beforeDisabled.reward.rounds,r);
+ check('unavailable-ad-buttons-hidden-free-replay-enabled',await page.locator('#co-revive').isHidden()&&await page.locator('#co-ad').isHidden()&&await page.locator('#co-replay').isEnabled()&&(await page.locator('#co-storage').innerText()).includes('广告未接入'),{reviveHidden:await page.locator('#co-revive').isHidden(),adHidden:await page.locator('#co-ad').isHidden()});
+ const beforeDisabled=r;await page.waitForTimeout(300);r=await snap();
+ check('hidden-unavailable-ads-never-revive-or-change-reward',r.revives===0&&r.phase==='finished'&&r.reward.bank===beforeDisabled.reward.bank&&r.reward.rounds===beforeDisabled.reward.rounds,r);
  await tap('#co-replay');r=await snap();check('free-replay-keeps-accounting-with-new-run',r.phase==='running'&&r.revives===0&&r.reward.bank===beforeDisabled.reward.bank&&r.reward.rounds===1,r);
  const replayHud=await page.locator('#co-distance').innerText();
  check('fresh-replay-hud-resets-before-any-new-input',r.distance<3&&Number(replayHud.match(/^\d+/u)?.[0])===Math.floor(r.distance),
