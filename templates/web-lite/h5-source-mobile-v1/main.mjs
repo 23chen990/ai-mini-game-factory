@@ -270,6 +270,8 @@ async function boot() {
         }
         g.opts.primary = c.weapon;
         g.__mkAwmKills = 0;
+        g.__mkSoloPve=false;
+        g.__mkSoloStart=null;
         originalStart(c);
         // The pinned native engine's team-size property also creates
         // N-1 friendly bots; this truly removes them BEFORE any game update.
