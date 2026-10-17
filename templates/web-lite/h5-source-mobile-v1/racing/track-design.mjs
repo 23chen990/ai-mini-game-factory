@@ -1,5 +1,6 @@
 import { shapeV9RhythmSegments, V9_WIDTH_BANDS } from './v9-course-director.mjs';
 import { shapeV10SignatureSectors, V10_STAGE_SIGNATURES } from './v10-course-director.mjs';
+import { buildV10RoadRumble, buildV10CinematicWorld } from './v10-environment.mjs';
 import { EXPANSION_COURSES } from './career-expansion.mjs';
 import { applyV8CourseGeometry, V8_COURSES } from './v8-course-geometry.mjs';
 /** V3.5: Four distinct ORIGINAL racing rhythms inspired by kart-racer design principles.
@@ -613,6 +614,10 @@ export function buildRaceLandmarks(THREE,track,course) {
   group.add(buildCourseIdentity(THREE,track,course,n));
   group.add(buildV8CourseTerrain(THREE,track,course));
   if(track.__V9_WIDTH_PROFILE__)group.add(buildV9RoadsideSectors(THREE,track,course));
+  if(track.__V10_STAGE_IDENTITY__){
+    group.add(buildV10RoadRumble(THREE,track,course));
+    group.add(buildV10CinematicWorld(THREE,track,course));
+  }
   if(n===7||n===22) {
     // A visible finish at the real one-way finish distance, not the loop seam.
     // No collider: native onLap handles the actual crossing and ranking.
