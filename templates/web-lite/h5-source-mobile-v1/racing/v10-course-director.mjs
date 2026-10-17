@@ -1,3 +1,4 @@
+import { V9_STAGE_RHYTHMS } from './v9-course-director.mjs';
 /**
  * V10 bespoke native driving sequences. Each beat is mapped to an explicit
  * ORIGINAL sketch edge (not a randomly generated bend at a progress ratio).
@@ -77,7 +78,6 @@ export function shapeV10SignatureSectors(original,shaped,originalSectors,id,base
   if(!plan||!Array.isArray(original)||!Array.isArray(shaped)||
      !Array.isArray(originalSectors)||!number(baseScale)||baseScale<=0||
      !number(stretch)||stretch<=0)throw Error('Missing V10 road choreography '+id);
-  const { V9_STAGE_RHYTHMS } = globals;
   const oldPlan=V9_STAGE_RHYTHMS[id];
   if(!oldPlan||oldPlan.beats.length!==originalSectors.length)
     throw Error('Unmatched V9/V10 sector contract '+id);
@@ -103,13 +103,5 @@ export function shapeV10SignatureSectors(original,shaped,originalSectors,id,base
   }
   if(out.length>40)throw Error('V10 native control-point limit exceeded '+id);
   return {points:out,identity:plan.identity,events:plan.beats.length};
-}
-// Explicit dependency injection at module initialization; no magical native
-// runtime state, no circular imports and still pure/portable in tests.
-let globals={V9_STAGE_RHYTHMS:{}};
-export function linkV10V9Rhythms(rhythms){
-  if(!rhythms||Object.keys(rhythms).length!==30)
-    throw Error('Missing V9 baseline for V10 authored signatures');
-  globals={V9_STAGE_RHYTHMS:rhythms};
 }
 validateV10Signatures();
