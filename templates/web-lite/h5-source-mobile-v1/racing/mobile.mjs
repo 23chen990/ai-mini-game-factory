@@ -139,8 +139,12 @@ function display(next) {
   $('speed').hidden = next !== 'race'; $('compact-goal').hidden = next !== 'race' || !$('compact-goal').textContent;
   $('note').hidden = next !== 'ready'; // :empty CSS hides silence; critical loading errors remain visible.
   for (const button of root.querySelectorAll('[data-race-action]')) button.disabled = next !== 'race';
-  $('joystick').setAttribute('aria-disabled',String(next !== 'race'));
-  $('joystick').classList.toggle('disabled',next !== 'race');
+  // Players naturally rest their left thumb on the wheel during countdown.
+  // Capture it now, then the same held thumb can steer from the GO frame.
+  // Native ManualRaceDriver still rejects steering outside the race state.
+  const wheelActive = next === 'race' || next === 'countdown';
+  $('joystick').setAttribute('aria-disabled',String(!wheelActive));
+  $('joystick').classList.toggle('disabled',!wheelActive);
   root.dataset.itemMode = career.stage.mode === 'item' ? 'true' : 'false';
   if (next === 'paused') { $('heading').textContent = '暂停'; $('quality').value = g.settings.quality; $('sound').textContent = soundEnabled ? '声音：开' : '声音：关'; $('sound').setAttribute('aria-pressed', String(soundEnabled)); }
 }
@@ -319,7 +323,7 @@ const actionButtons = Object.fromEntries([...root.querySelectorAll('[data-race-a
 const recordStickEvent = () => { touchSerial++; lastStickEventAt = performance.now(); };
 joystickSurface.addEventListener('pointerdown', e => {
   e.preventDefault();
-  if (!g || phase !== 'race') return;
+  if (!g || (phase !== 'race' && phase !== 'countdown')) return;
   const r = joystickSurface.getBoundingClientRect();
   if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width / 2)) return;
   touchDriving = true; g.mobileMode = true; recordStickEvent();

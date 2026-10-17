@@ -94,6 +94,16 @@ async function raceStart(page, index, name) {
   }));
   if(before.disabled)fail('start button disabled for '+name);
   await page.click('#race-start');
+  const startControls = await page.evaluate(() => {
+    const game=window.game,wheel=document.querySelector('#race-joystick');
+    const computed=wheel&&document.defaultView.getComputedStyle(wheel);
+    return {nativeState:game?.state,phase:document.querySelector('#race-kit')?.dataset.phase,
+      wheelActive:wheel?.getAttribute('aria-disabled')==='false',
+      wheelCaptures:computed?.pointerEvents==='auto'};
+  });
+  if (startControls.nativeState !== 'countdown' || startControls.phase !== 'countdown' ||
+      !startControls.wheelActive || !startControls.wheelCaptures)
+    fail('Countdown must accept a resting left thumb before GO: '+JSON.stringify(startControls));
   try {
     // GitHub's software WebGL renderer advances fixed-step time at ~1/10 real speed.
     // This is a browser-start smoke, not a latency benchmark on production phones.
