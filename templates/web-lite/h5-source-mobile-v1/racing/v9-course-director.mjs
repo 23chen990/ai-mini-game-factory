@@ -14,12 +14,12 @@
  */
 export const V9_STAGE_RHYTHMS = Object.freeze({
   '01': {identity:'hard urban pursuit / four decisive shifts and late countersteer', beats:['chicane','late','apex','chicane']},
-  '02': {identity:'long accelerating crests / late desert brake', beats:[null,'late','apex']},
+  '02': {identity:'long accelerating crests / late desert brake', beats:['grandSweep','late','apex']},
   '03': {identity:'fast divided flyovers / technical infield', beats:['sweep',null,'chicane']},
   '04': {identity:'coastal flow / downhill corner exit', beats:[null,'sweep','late']},
   '05': {identity:'temple approach / one consequential hairpin', beats:['apex',null,'chicane']},
   '06': {identity:'urban expressway / district-change rhythm', beats:['sweep','late',null]},
-  '07': {identity:'cliff descent / focused switchback / long exit', beats:[null,'apex','chicane',null]},
+  '07': {identity:'cliff descent / focused switchback / long exit', beats:['grandSweep','apex','chicane',null]},
   '08': {identity:'open snow arc / technical ridge crossing', beats:['sweep',null,'late']},
   '09': {identity:'dune open sprint / isolated hard brake', beats:[null,'apex']},
   '10': {identity:'neon main-line attack / abrupt U-cut commitment', beats:['late',null,'chicane']},
@@ -29,28 +29,32 @@ export const V9_STAGE_RHYTHMS = Object.freeze({
   '14': {identity:'dual dune crests / speed versus braking', beats:['sweep',null,'apex']},
   '15': {identity:'polar three-lobe / linked countersteer', beats:['chicane','late',null,'apex']},
   '16': {identity:'cliff crown / tight final-risk corner', beats:[null,'sweep','late','chicane']},
-  '17': {identity:'city outer freeway / one dramatic return', beats:[null,'late','sweep']},
-  '18': {identity:'two dune ravines / precise inside entry', beats:['apex','sweep',null]},
-  '19': {identity:'tidal peninsula / edge-control transitions', beats:[null,'chicane','late']},
-  '20': {identity:'crystal summit / alternating short technicals', beats:['chicane',null,'apex']},
-  '21': {identity:'open highway / late single-bend showdown', beats:[null,'sweep',null,'late']},
-  '22': {identity:'canyon single-run descent / open risky exits', beats:[null,'late','apex',null]},
-  '23': {identity:'island crossing / one loaded midair entry', beats:['sweep',null,'chicane','apex']},
-  '24': {identity:'snow hook / narrow-turn approach after speed', beats:[null,'apex','late',null]},
-  '25': {identity:'urban stacked road / shortcut precision', beats:['late','sweep',null,'apex']},
-  '26': {identity:'stone ring / natural wide-turn breathing', beats:[null,'sweep','apex','late']},
-  '27': {identity:'cloud snake / countersteer race', beats:['chicane','apex',null,'late']},
-  '28': {identity:'aurora / alternating height and banking feel', beats:['sweep','chicane',null,'late']},
-  '29': {identity:'night overpass / long-run final chicane', beats:[null,'late','chicane','sweep']},
-  '30': {identity:'skyline finale / technical entry then long chase', beats:['late','chicane','apex',null]},
+  '17': {identity:'city outer freeway / one dramatic return', beats:['grandSweep','doubleApex','sweep']},
+  '18': {identity:'two dune ravines / precise inside entry', beats:['apex','grandSweep',null]},
+  '19': {identity:'tidal peninsula / edge-control transitions', beats:['grandSweep','chicane','late']},
+  '20': {identity:'crystal summit / alternating short technicals', beats:['chicane','doubleApex','apex']},
+  '21': {identity:'open highway / late single-bend showdown', beats:[null,'grandSweep',null,'late']},
+  '22': {identity:'canyon single-run descent / open risky exits', beats:['grandSweep','late','apex',null]},
+  '23': {identity:'island crossing / one loaded midair entry', beats:['sweep','doubleApex','chicane','apex']},
+  '24': {identity:'snow hook / narrow-turn approach after speed', beats:['grandSweep','apex','late',null]},
+  '25': {identity:'urban stacked road / shortcut precision', beats:['late','sweep',null,'doubleApex']},
+  '26': {identity:'stone ring / natural wide-turn breathing', beats:['grandSweep','sweep','apex','late']},
+  '27': {identity:'cloud snake / countersteer race', beats:['chicane','doubleApex',null,'late']},
+  '28': {identity:'aurora / alternating height and banking feel', beats:['grandSweep','chicane',null,'late']},
+  '29': {identity:'night overpass / long-run final chicane', beats:['grandSweep','late','chicane','sweep']},
+  '30': {identity:'skyline finale / technical entry then long chase', beats:['late','chicane','doubleApex',null]},
 });
 const STYLES=Object.freeze({
-  // offsets are a FRACTION of the stage-specific historical authored
-  // amplitude. Unlike the uniform old S these preserve different rhythms.
+  // Long arcs have enough longitudinal distance for sustained wheel rotation,
+  // not a decorative ±15m kink that can be ignored with automatic throttle.
   sweep:[[.23,.22],[.52,.78],[.79,.42]],
   apex:[[.24,.14],[.54,1],[.80,.28]],
   late:[[.27,.06],[.57,.35],[.78,.76]],
   chicane:[[.26,.74],[.54,-.73],[.79,.18]],
+  grandSweep:[[.13,.16],[.30,.82],[.49,1.30],[.68,1.04],[.87,.20]],
+  // Opposite sides of the original lane centreline force two deliberate
+  // wheel commitments. Still genuine spline points and native collisions.
+  doubleApex:[[.14,.18],[.34,1.02],[.51,.18],[.68,-.96],[.85,-.20]],
 });
 const finite=v=>typeof v==='number'&&Number.isFinite(v);
 export function validateV9Rhythms(){
@@ -139,8 +143,16 @@ validateV9Rhythms();
     // The 01/05/11/16 corner-duel chapters need authentic steering stakes:
     // retain four intentionally distinct beats while sharpening the apex
     // geometry instead of reducing the native steering challenge threshold.
-    const challengeAmplitude={ '01':1.07,'05':1.16,'11':1.04,'16':1.04 };
-    const maximum=amplitude*(challengeAmplitude[courseId]??.73)/scale;
+    const chapter=Number(courseId);
+    const baseline=chapter<=10?.73:chapter<=16?.87:chapter<=20?.96:
+      chapter<=24?1.05:chapter<=27?1.12:1.18;
+    // Long entries on 02/07/22 need sustained steering, not the old null rest.
+    // Keep known V9 technical fork geometry in the same safe general envelope.
+    const challengeAmplitude={
+      '01':1.07,'02':1.15,'05':1.16,'07':1.18,
+      '11':1.04,'16':1.04,'22':1.18
+    };
+    const maximum=amplitude*(challengeAmplitude[courseId]??baseline)/scale;
     const points=STYLES[style].map(([t,w])=>[
       +(a[0]+dx*t+normalX*side*maximum*w).toFixed(4),
       +(a[1]+dz*t+normalZ*side*maximum*w).toFixed(4),
