@@ -589,7 +589,7 @@ export function cfReleaseTouchFire(touch,cancelPending=false) {
 }
 export function cfFireDragLookDelta(dx,dy) {
   if(!Number.isFinite(dx)||!Number.isFinite(dy))return {x:0,y:0};
-  const clamp=v=>Math.max(-96,Math.min(96,v*1.6));
+  const clamp=v=>Math.max(-96,Math.min(96,v*2.9));
   return {x:clamp(dx),y:clamp(dy)};
 }
 export function cfVisibleAimCoach(x,y) {
@@ -1702,6 +1702,11 @@ export function createFpsMobileUx(game, root, doc) {
     },
     onStart(challenge) {
       activeChallenge = challenge || null;
+      if(activeChallenge?.lite===true && game?.opts){
+        // An authored narrow combat FOV enlarges target silhouettes on phones.
+        // Original camera follows opts.fov through Player.update().
+        game.opts.fov=70;
+      }
       if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
@@ -1712,7 +1717,9 @@ export function createFpsMobileUx(game, root, doc) {
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
       playerEngaged=false;resetAllTouches();
-      guide.textContent = activeChallenge?.elite===true
+      guide.textContent = activeChallenge?.lite===true
+        ? activeChallenge.encounter
+        :activeChallenge?.elite===true
         ? '⚡ 精英：自己瞄准开火'
         : activeChallenge?.kind === 'kills'
         ? '先观察，找到目标后开镜'
@@ -1933,7 +1940,8 @@ export function createFpsMobileUx(game, root, doc) {
           nextDefenseRouteAt=now+1700;
           cfRouteDefenseBots(game,{id:'E',...point});
         }
-      }else if(activeChallenge?.kind==='defend'&&defense){
+      }else if(activeChallenge?.kind==='defend'&&defense&&
+         !(activeChallenge.lite===true&&defense.stage>=activeChallenge.target)){
         const prevStage=defense.stage;
         defense=cfStepDefense(defense,{
           gameTime:Number(game.time),player:p,actors:game.actors,team:p.team,
