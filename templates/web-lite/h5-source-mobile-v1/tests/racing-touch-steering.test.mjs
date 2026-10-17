@@ -70,3 +70,14 @@ test('QQ-style uncluttered HUD never shows repeat coaching, player keeps full to
   assert.match(ui,/race-controls/);
   assert.match(css,/#hitflash/);
 });
+
+test('clean HUD cannot leave stale DOM lookups that crash the animation frame',async()=>{
+  const source=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  const created=new Set([...source.matchAll(/\bid="race-([^"]+)"/g)].map(match=>match[1]));
+  const queried=[...source.matchAll(/\$\(['"]([a-z0-9-]+)['"]\)/g)].map(match=>match[1]);
+  const dangling=[...new Set(queried.filter(id=>!created.has(id)))];
+  assert.deepEqual(dangling,[],
+    'every static helper lookup must have a real race-kit element; removed HUD prompts cannot crash requestAnimationFrame');
+  assert.doesNotMatch(source,/['"]live-goal['"]/);
+  assert.match(source,/requestAnimationFrame\(frame\)/);
+});
