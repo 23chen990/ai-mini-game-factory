@@ -234,7 +234,7 @@ async function boot() {
       $('fps-kicker').hidden=false;
       $('fps-kicker').textContent=phase==='finished'
         ? (root.dataset.outcome==='won' ? 'MISSION COMPLETE / 战绩结算' : 'MISSION FAILED / 复盘')
-        : phase==='paused' ? 'PAUSED / 已暂停' : 'FIELD OPS / 选择挑战';
+        : phase==='revive' ? 'REVIVE / 自愿广告' : phase==='paused' ? 'PAUSED / 已暂停' : 'FIELD OPS / 选择挑战';
       $('fps-brief').hidden=phase!=='ready';
       $('fps-results').hidden=phase!=='finished';
       $('fps-award').hidden=phase!=='finished';
@@ -283,6 +283,7 @@ async function boot() {
   $('assist').hidden = id !== 'pelican-bike';
   $('assist').addEventListener('click', () => { const bought = purchaseAssist(progress); persist(); $('notice').textContent = bought ? '已准备下局追鱼辅助' : '需要10补给，且一次只准备一个辅助'; });
   $('ad').addEventListener('click', async () => {
+    if(id==='cf-transport-ship')return;
     const current = round;
     if (!current || !adAllowed(current, progress, performance.now() - startedAt)) return;
     $('ad').disabled = true; $('notice').textContent = '广告加载中…';
@@ -291,6 +292,39 @@ async function boot() {
     const rewarded = rewardRound(current, progress, result.status === 'completed'); persist();
     $('notice').textContent = rewarded ? '补给已翻倍' : '没有发放额外奖励，仍可直接重开'; $('ad').disabled = false; $('ad').hidden = rewarded;
   });
+  if(id==='cf-transport-ship'){
+    $('revive-ad').addEventListener('click',async()=>{
+      if(!reviveOffered||reviveUsed||reviveDeclined||reviveBusy||
+        root.dataset.phase!=='revive'||!round)return;
+      reviveBusy=true;
+      const current=round;
+      $('revive-ad').disabled=true;$('notice').textContent='激励视频加载中…';
+      const response=await requestRewardedVideo({tap:window.tap,config});
+      if(current!==round||root.dataset.phase!=='revive')return;
+      reviveBusy=false;
+      $('revive-ad').disabled=false;
+      if(response.status!=='completed'){
+        $('notice').textContent='广告未完整观看或当前无广告，未发放复活；可以重新观看或直接结束本局。';
+        return;
+      }
+      // Native actor remains dead until the ORIGINAL game respawn timer
+      // elapses after unpausing. No health, positions or hit counters edited.
+      reviveUsed=true;
+      activeChallenge={...activeChallenge,bonusDeaths:1};
+      $('notice').textContent='';
+      resumeRound(round);native.resume();
+      last=performance.now();lastFpsNativeSec=native.simulatedSeconds?.()||0;
+      showPhase('running');persist();
+    });
+    $('revive-decline').addEventListener('click',()=>{
+      if(!reviveOffered||reviveBusy||root.dataset.phase!=='revive'||!round)return;
+      reviveDeclined=true;
+      $('notice').textContent='';
+      resumeRound(round);native.resume();
+      last=performance.now();lastFpsNativeSec=native.simulatedSeconds?.()||0;
+      showPhase('running');
+    });
+  }
   showPhase('ready');
   function frame(now) {
     const dt = Math.min(1000, Math.max(0, now - last)); last = now;
