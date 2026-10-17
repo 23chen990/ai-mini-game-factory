@@ -1,7 +1,7 @@
-/* global process,console,window,document */
+/* global process,console,window */
 import {chromium,webkit} from '@playwright/test';
 import assert from 'node:assert/strict';
-import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import {readFile,mkdir} from 'node:fs/promises';
 import path from 'node:path';
 import {URL} from 'node:url';
 import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
@@ -34,7 +34,7 @@ try{
  check('earned-cosmetic-items-visible',await page.locator('#co-collection [data-style]').count()===6);
  check('initial-wallet-is-zero',(await page.locator('.co-collection-total').innerText()).includes('0 贝壳'));
  await shot('v6-menu');
- await tap('[data-style="gold"]');
+ await tap('[data-style="sunset"]');
  check('cannot-purchase-with-empty-wallet',(await page.locator('#co-notice').innerText()).includes('还需'));
  await tap('[data-level="6"]');
  check('endless-selected',await page.locator('[data-level="6"]').getAttribute('class')==='selected');
@@ -62,7 +62,7 @@ try{
  await page.reload();await page.waitForSelector('#coast[data-loaded="true"]');
  const shop=await page.locator('.co-collection-total').innerText();
  check('real-page-reload-persists-wallet-and-record',shop.includes(String(r.collection.coins))&&shop.includes(String(r.collection.bestDistance)));
- check('offline-privacy-no-network-collection',await page.locator('#co-storage').innerText().then(t=>t.includes('仅存本机')));
+ check('local-only-playtest-disclosure-visible',await page.locator('#co-storage').innerText().then(t=>t.includes('仅存本机')));
  await shot('v6-persisted-after-reload');
 }catch(error){report.errors.push(error.stack??String(error));}
 finally{
