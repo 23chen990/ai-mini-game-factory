@@ -1,5 +1,5 @@
 import { EXPANSION_COURSES } from './career-expansion.mjs';
-import { applyV8CourseGeometry } from './v8-course-geometry.mjs';
+import { applyV8CourseGeometry, V8_COURSES } from './v8-course-geometry.mjs';
 /** V3.5: Four distinct ORIGINAL racing rhythms inspired by kart-racer design principles.
  * No competitor map coordinates, assets, branch shortcuts, checkpoint edits, speed buffs
  * or reduced career goals. Each cut is anchored to the exact pinned upstream layout.
@@ -383,6 +383,56 @@ function buildCourseIdentity(THREE, track, course, n) {
   return group;
 }
 
+/** Real roadside landforms anchored to V8 vertical road stations.
+ * Stage-specific footprint and height; cheap low-poly, outside colliders.
+ * No HUD pop-ups, source-game assets or fake surface/collision edits.
+ */
+export function buildV8CourseTerrain(THREE,track,course) {
+  const group=new THREE.Group(),id=course?.slice(5),cfg=V8_COURSES[id];
+  if(!cfg||!track?.sample||!Number.isFinite(track.length))return group;
+  group.name='v8-landform-'+course;
+  const n=Number(id),biome=CAREER_COURSE_MAPS[n-1];
+  const colors={city:0x40576d,egypt:0xa97842,aegean:0x526c81,snow:0x81abc2};
+  const base=new THREE.MeshStandardMaterial({color:colors[biome],roughness:.96});
+  const accent=new THREE.MeshStandardMaterial({
+    color:biome==='snow'?0xc8effb:biome==='egypt'?0xe8af61:0x79b3c2,
+    roughness:.73,emissiveIntensity:.06});
+  const shape=(root,geometry,material,x,y,z)=>{
+    const obj=new THREE.Mesh(geometry,material);
+    obj.position.set(x,y,z);root.add(obj);return obj;
+  };
+  const count=4+n%3;
+  for(let i=0;i<count;i++){
+    const f=.09+(i+.48)*( .82/count );
+    const at=track.sample(track.length*f,{});
+    const feature=new THREE.Group();feature.name='v8-landform-sector-'+course+'-'+i;
+    const side=((n+i)%2)?1:-1;
+    const offset=track.halfW+20+(n+i*7)%13;
+    feature.position.set(at.x+at.rx*side*offset,at.y-7,
+      at.z+at.rz*side*offset);
+    const h=14+((n*3+i*5)%19)+Math.max(0,at.y*.12);
+    if(biome==='city'){
+      shape(feature,new THREE.BoxGeometry(5,h,5),base,0,h*.5,0);
+      shape(feature,new THREE.BoxGeometry(8,1.2,8),accent,0,h+.8,0);
+      if(i%2===0)shape(feature,new THREE.BoxGeometry(3,h*.5,3),base,9,h*.25,0);
+    }else if(biome==='egypt'){
+      shape(feature,new THREE.CylinderGeometry(3.5,9,h,5),base,0,h*.5,0);
+      shape(feature,new THREE.ConeGeometry(5,9,5),accent,0,h+3,0);
+      shape(feature,new THREE.BoxGeometry(18,2,8),base,-7,1,0);
+    }else if(biome==='aegean'){
+      shape(feature,new THREE.CylinderGeometry(6,10,h,6),base,0,h*.5,0);
+      shape(feature,new THREE.DodecahedronGeometry(8,0),base,8,h*.6,0);
+      shape(feature,new THREE.BoxGeometry(14,2,11),accent,1,h*.23,0);
+    }else{
+      shape(feature,new THREE.CylinderGeometry(2.5,6,h,6),base,0,h*.5,0);
+      shape(feature,new THREE.OctahedronGeometry(5+(i%3),0),accent,1,h+.8,0);
+      shape(feature,new THREE.BoxGeometry(12,2.2,7),accent,-6,1.3,0);
+    }
+    group.add(feature);
+  }
+  return group;
+}
+
 export function buildRaceLandmarks(THREE,track,course) {
   const group=new THREE.Group();
   if(TRACK_RESHAPES[course])return group; // Pinned native pre-career demo.
@@ -453,6 +503,7 @@ export function buildRaceLandmarks(THREE,track,course) {
     }
   }
   group.add(buildCourseIdentity(THREE,track,course,n));
+  group.add(buildV8CourseTerrain(THREE,track,course));
   return group;
 }
 
