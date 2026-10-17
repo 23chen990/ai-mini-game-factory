@@ -88,7 +88,13 @@ test('CF V12 only real completed match can instantly restart its original 3D eng
 test('CF V12 restores native team spawn array before immediate restart of original match',()=>{
  const main=readFileSync(new URL('../main.mjs',import.meta.url),'utf8');
  const adapter=readFileSync(new URL('../fps-mobile-ux.mjs',import.meta.url),'utf8');
- assert.match(main,/fpsUx\?\.beforeNativeStart\?\.\(\); g\.opts\.primary/);
+ const reset=main.indexOf('fpsUx?.beforeNativeStart?.();');
+ const choose=main.indexOf('g.opts.primary = c.weapon;',reset);
+ const match=main.indexOf('originalStart(c);',choose);
+ assert.ok(reset>=0&&choose>reset&&match>choose,
+  'native team spawn restore must precede weapon selection and match restart');
+ assert.match(main,/if\(c\?\.lite===true\)\{/,
+  'lite optimization must remain explicitly scoped to CF');
  const anchor=adapter.indexOf('beforeNativeStart() {');
  const restore=adapter.indexOf('game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;',anchor);
  assert.ok(anchor>0&&restore>anchor,'restore map spawns before native start');
