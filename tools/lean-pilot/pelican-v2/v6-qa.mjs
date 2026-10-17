@@ -41,6 +41,9 @@ try{
  await tap('#co-start');
  let r=await snap();
  check('endless-running-native-h5',r.level===6&&r.phase==='running');
+ await page.waitForFunction(()=>document.querySelector('#co-mastery')?.textContent?.includes('海风热身'),null,{timeout:5000});
+ check('visible-endless-tier-and-actual-speed',
+  (await page.locator('#co-mastery').innerText()).includes('8.3m/s'));
  check('no-ads-and-no-fake-wallet-credit',r.collection.coins===0);
  await page.waitForFunction(()=>window.__coast.snapshot().count>=3||window.__coast.snapshot().phase==='finished',
   null,{timeout:35000});
@@ -66,6 +69,9 @@ try{
  await shot('v6-persisted-after-reload');
  // Pause-screen replay must bank this genuine run before beginning another one.
  await tap('[data-level="6"]');await tap('#co-start');
+ await page.waitForFunction(()=>document.querySelector('#co-mastery')?.textContent?.includes('差 '),null,{timeout:5000});
+ check('live-record-chase-is-grounded-in-persisted-personal-best',
+  (await page.locator('#co-mastery').innerText()).includes('差 '+r.collection.bestDistance+'m'));
  await page.waitForFunction(()=>window.__coast.snapshot().count>=3||window.__coast.snapshot().phase==='finished',null,{timeout:35000});
  const beforeRestart=await snap();
  check('second-real-run-has-earned-fish',beforeRestart.phase==='running'&&beforeRestart.count>=3);
