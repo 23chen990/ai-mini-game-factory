@@ -58,7 +58,7 @@ const CHALLENGES = {
     {id:'tags',title:'步枪突围',instructions:'60秒内先命中1次，再换位8米，手动追击命中3次；最多阵亡2次。',limitMs:60000,kind:'hits',target:3,weapon:'m4a1',drill:'reposition',openingHits:1,minTravel:8,maxDeaths:2},
     {id:'precision',title:'狙击尝试',instructions:'90秒内用 AWM 击杀1名敌人。轻点开镜、瞄准后开火。',limitMs:90000,kind:'kills',target:1,weapon:'awm'},
     {id:'survive',title:'小队生存',instructions:'MP5起手，坚持45秒，累计移动20米，死亡不超过2次。',limitMs:45000,kind:'survive',target:2,minTravel:20,weapon:'mp5'},
-    {id:'defense',title:'双点反击',instructions:'100秒内亲自坚守A、B两处真实据点，各5秒；敌军独占据点8秒即失守。最多阵亡2次。',limitMs:100000,kind:'defend',target:2,holdSeconds:5,breachSeconds:8,radius:4.2,maxDeaths:2,weapon:'m4a1'},
+    {id:'defense',title:'双点反击',instructions:'100秒内亲自坚守A、B两处真实据点，各5秒；敌军独占据点8秒即失守。最多阵亡2次。',limitMs:100000,kind:'defend',target:2,holdSeconds:5,breachSeconds:8,radius:5,maxDeaths:2,weapon:'m4a1'},
   ],
 };
 /** Optional, earned CF replay contract. Native damage/kill rules stay untouched. */
@@ -70,7 +70,7 @@ export function cfEliteChallenge(base) {
   if(base?.id==='survive'&&base.kind==='survive')
     return {...base,elite:true,target:1,minTravel:30};
   if(base?.id==='defense'&&base.kind==='defend')
-    return {...base,elite:true,limitMs:85000,maxDeaths:0,holdSeconds:7,breachSeconds:7};
+    return {...base,elite:true,limitMs:85000,maxDeaths:0,holdSeconds:7,breachSeconds:7,radius:4.2};
   throw Error('Unsupported CF elite challenge');
 }
 export function challengesFor(gameId) {
