@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { V9_STAGE_RHYTHMS, validateV9Rhythms, shapeV9RhythmSegments, V9_WIDTH_BANDS, v9RoadHalfWidthAt } from '../racing/v9-course-director.mjs';
-import { createCareerLayouts, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
+import { createCareerLayouts, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS } from '../racing/track-design.mjs';
 const bases=()=>Object.fromEntries(['city','egypt','aegean','snow'].map(map=>[map,{__racingV31:true,width:23,points:[[0,0,0]]}]));
 const length=points=>points.reduce((sum,a,i)=>{
   const b=points[(i+1)%points.length];
@@ -27,7 +27,7 @@ test('V8 native course construction uses authored V9 geometry; non-V8 compatibil
   let applied=0;
   for(let i=1;i<=30;i++){
     const id=String(i).padStart(2,'0'),key='race-'+id;
-    const before=legacy[key].points,after=current[key].points;
+    const after=current[key].points;
     assert.equal(CAREER_COURSE_MAPS[i-1]!==undefined,true);
     assert.notDeepEqual(after,safe[key].points,id+' V9 is not merely cosmetic');
     assert.ok(after.length>=COURSE_BLUEPRINTS[id][4].split(' ').length,id);
