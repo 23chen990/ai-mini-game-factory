@@ -129,6 +129,17 @@ export class RaceTrialMetrics {
     else this.data.rewardedNoCredit++;
     this.persist();
   }
+  /** Explicit player-initiated export. No upload, user ID, browser fingerprint,
+   * full gameplay trace or claimed ad revenue. A snapshot can include QA runs. */
+  exportJSON() {
+    return JSON.stringify({
+      schemaVersion:1,game:'racing-h5',build:'V5.3',
+      verifiedHumanPlay:false,containsPersonalIdentifiers:false,
+      generatedOnDevice:true,
+      explanation:'本地试玩摘要（可能包含自动化 QA）；广告完成信号不是结算收入',
+      metrics:this.snapshot()
+    },null,2)+'\\n';
+  }
   snapshot() {
     const { recent, ...counts } = this.data;
     return {
@@ -138,7 +149,7 @@ export class RaceTrialMetrics {
       passRate: counts.finishes > 0
         ? +(counts.wins / counts.finishes).toFixed(3) : null,
       recent: recent.map(entry => ({ ...entry })),
-      notes: '仅本机真实运行记录；非 D1/D7 留存、非跨用户统计、非广告计费证明'
+      notes: '本机运行记录，可能包含自动化测试；不得冒充真人留存或广告收入'
     };
   }
 }
