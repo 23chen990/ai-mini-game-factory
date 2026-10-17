@@ -135,7 +135,7 @@ export function chooseV9Shortcut(track,course){
   for(const candidate of options.slice(0,24)){
     const clearance=segmentClear(track,candidate.shape.samples,
       candidate.shape.length,candidate.cfg.neckWidth);
-    if(clearance>=.35)
+    if(clearance>=.60)
       return {...candidate.cfg,estimatedLength:round(candidate.shape.length),
         estimatedGain:round(candidate.shape.gain),clearance:round(clearance)};
   }
