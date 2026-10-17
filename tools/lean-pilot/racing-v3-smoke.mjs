@@ -298,6 +298,53 @@ try {
   const title=await page.locator('#race-stage').locator('option').count();
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
   await raceStart(page,0,'01-city-hard-ranked');
+  // Actual browser-computed hit targets, not hand-estimated circle positions.
+  // Temporarily expose the native item button so ALL four right-hand actions
+  // are checked even during an ordinary race; restore source state afterwards.
+  // Test 640x320 through 1024x600, including common notched phone landscapes.
+  report.thumbHitboxes=[];
+  for(const [width,height] of [[640,320],[667,375],[740,360],[812,375],[844,390],[932,430],[1024,600]]) {
+    await page.setViewportSize({width,height});
+    const boxes=await page.evaluate(()=>{
+      const root=document.querySelector('#race-kit');
+      const prior=root.dataset.itemMode;root.dataset.itemMode='true';
+      const selectors=['#race-joystick',
+        '[data-race-action="drift"]','[data-race-action="small"]',
+        '[data-race-action="nitro"]','[data-race-action="item"]'];
+      const target=selector=>{
+        const el=document.querySelector(selector),rect=el.getBoundingClientRect(),cs=getComputedStyle(el);
+        return {name:el.dataset.raceAction||'wheel',
+          left:rect.left,right:rect.right,top:rect.top,bottom:rect.bottom,
+          width:rect.width,height:rect.height,
+          visible:cs.display!=='none'&&cs.visibility!=='hidden'&&!el.hidden};
+      };
+      const targets=selectors.map(target);
+      root.dataset.itemMode=prior;
+      return targets;
+    });
+    const overlaps=(a,b)=>Math.min(a.right,b.right)>Math.max(a.left,b.left)+.01&&
+      Math.min(a.bottom,b.bottom)>Math.max(a.top,b.top)+.01;
+    const vGap=(a,b)=>Math.max(a.top-b.bottom,b.top-a.bottom,0);
+    const byName=Object.fromEntries(boxes.map(x=>[x.name,x]));
+    const sprayNitroGap=vGap(byName.small,byName.nitro);
+    const itemDriftGap=vGap(byName.item,byName.drift);
+    for(const [i,a] of boxes.entries()){
+      if(!a.visible||a.width<46||a.height<46||a.left<-.5||a.top<-.5||
+         a.right>width+.5||a.bottom>height+.5)
+        fail('Phone has a hidden, clipped or too-small manual touch target at '+
+          width+'x'+height+': '+JSON.stringify(a));
+      for(const b of boxes.slice(i+1))
+        if(overlaps(a,b))
+          fail('Native touch targets overlap at '+width+'x'+height+': '+
+            JSON.stringify({a:a.name,b:b.name,targets:boxes}));
+    }
+    if(sprayNitroGap<7.5||itemDriftGap<7.5)
+      fail('One-handed spray/nitro or item/drift targets lack accidental-tap clearance at '+
+        width+'x'+height+': '+JSON.stringify({sprayNitroGap,itemDriftGap,boxes}));
+    report.thumbHitboxes.push({width,height,sprayNitroGap:+sprayNitroGap.toFixed(1),
+      itemDriftGap:+itemDriftGap.toFixed(1),minTargetPx:Math.min(...boxes.map(x=>Math.min(x.width,x.height)))});
+  }
+  await page.setViewportSize({width:844,height:390});
   const nativeHudLayout=await page.evaluate(()=>{
     const rect=id=>document.querySelector(id)?.getBoundingClientRect();
     const overlaps=(a,b)=>!!a&&!!b&&a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
