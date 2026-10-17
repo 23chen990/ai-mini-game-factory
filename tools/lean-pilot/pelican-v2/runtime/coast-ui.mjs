@@ -102,6 +102,8 @@ export function createCoastAdventure(api) {
   track(run.reason==='complete'?'finish':run.reason==='retired'?'retire':'fail');
   return true;}
  function begin(id=selected){
+  // A paused endless run is an earned journey, not disposable progress.
+  if(run?.level.endless&&['running','paused'].includes(run.phase))retireRun(run);
   reviveController.invalidate();bankTerminal();
   selected=id;run=newRun(id);lastEndlessMilestone=0;replayTarget=lastFailure.get(id)??null;replayTargetCleared=false;track('start');
   $('replay').textContent='↻ 重开当前关卡';$('replay').classList.remove('primary');$('replay').classList.add('secondary');
@@ -115,7 +117,7 @@ export function createCoastAdventure(api) {
    const intro=run.level.weather==='rain'?'🌧 雨天转向稍慢，提前看路况':run.level.weather==='dusk'?'🌙 暮色金鱼更亮，提前留意危险车道':'按住左右可自由骑，连续捕鱼还有连击分！';
    notice(replayTarget==null?(id===1?'🐟 第一条鱼在前方':'🐟 本关挑战开始'):'⚡ 再试一次',replayTarget==null?intro:`上次在 ${Math.floor(replayTarget)} 米失误 · 这次试着超过它`,'tutorial');
  }
- function pause(system=false){if(run?.phase!=='running')return;input(run,'pause');S.paused=true;pausedBySystem=system;audio.mute(true);$('heading').textContent=system?'回来啦，继续出发':'沿途歇一歇';$('copy').textContent='已暂停，路程与倒计时都停住了。';phase('paused');persist();}
+ function pause(system=false){if(run?.phase!=='running')return;input(run,'pause');if(run.level.endless)$('replay').textContent='↻ 结算本局并重新开始';S.paused=true;pausedBySystem=system;audio.mute(true);$('heading').textContent=system?'回来啦，继续出发':'沿途歇一歇';$('copy').textContent='已暂停，路程与倒计时都停住了。';phase('paused');persist();}
  function resume(){if(run?.phase!=='paused')return;input(run,'resume');S.paused=false;pausedBySystem=false;audio.mute(!sound);phase('running');}
  function choose(){if(run?.phase==='running')pause();if(run?.level.endless&&run.phase==='paused')retireRun(run);reviveController.invalidate();bankTerminal();run=null;round=null;S.paused=true;S.started=false;phase('ready');$('heading').innerHTML='鹈鹕<br>海岸冒险';$('title').textContent='鹈鹕海岸冒险';$('copy').textContent='挑战每关三星 · 追逐奖励金鱼，刷新个人纪录。';$('start').textContent='▶ 出发 · '+(selected===6?'无尽海岸':LEVELS[selected-1].name);routes();}
  function terminal(){
