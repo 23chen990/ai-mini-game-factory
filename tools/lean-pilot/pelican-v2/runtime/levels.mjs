@@ -49,12 +49,14 @@ export const BOUNDS = {car:{x:1.5,z:.63},van:{x:1.8,z:.66},pedestrian:{x:.25,z:.
 // Conservative envelopes include approach motion, player body and pedestrian crossing.
 export function unsafeLanes(obstacles,x) { return unsafeFishLanes(obstacles,x); }
 // Distinct, deterministic reward routes; dangerous lanes always override fish placement.
-// A visible fish trail should lead into the *open* lane well before the
-// oncoming night-time twin-vehicle gates. 433m opens RIGHT, 475m opens
-// RIGHT, and 558m opens LEFT. These are real physical fish with no
-// magnetism, auto-pickup or score changes. The 83m last-gate gap leaves
-// time to change two lanes before either vehicle enters the red forecast.
-export const NIGHT_SAFE_FISH_TRAIL=Object.freeze({399:2,495:1,511:0,527:0});
+// A genuinely playable night route: after the earned 334m RIGHT jump and
+// its 343m fish, stay RIGHT before the 396m centre van and both 433/475m
+// left+centre traffic gates. The former 351-383m left-fish temptation
+// trapped first-time riders on the LEFT when both warning lanes turned red.
+// The 495m centre then 511/527m left fish make the next 558m left opening
+// a deliberate two-turn decision. All fish are physical, earned and safe;
+// no magnet, collision forgiveness or dynamic difficulty is introduced.
+export const NIGHT_SAFE_FISH_TRAIL=Object.freeze({351:2,367:2,383:2,399:2,415:2,431:2,447:2,463:2,479:2,495:1,511:0,527:0});
 const FISH_PATTERNS = [
  [1,2,0,1,2,0,2,1], // genuine left/right decisions after the first three tutorial fish
  [1,2,2,1,0,0,2,1], // alternating crossings

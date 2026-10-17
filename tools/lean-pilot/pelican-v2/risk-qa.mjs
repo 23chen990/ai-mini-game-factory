@@ -236,7 +236,11 @@ async function runLevel(level){
    if(decision.action==='left'||decision.action==='right'||decision.action==='jump'){
     const selector=`[data-action="${decision.action}"]`;
     const previous=level.targets[targetIndex-1];
-    const fastReaction=Boolean(previous&&target&&target.distance-previous.distance<=30&&
+    // Evidence readback after a real JUMP touch is not part of player control.
+    // Skip the extra two rendered frames and after-action RPC while a live
+    // collision is approaching. Trusted pointer events and the BEFORE
+    // snapshot remain mandatory; the video and target episode still prove it.
+    const fastReaction=decision.action==='jump'||Boolean(previous&&target&&target.distance-previous.distance<=30&&
      view.distance>=previous.distance+7&&view.distance<target.distance-4&&
      ['left','right'].includes(decision.action));
     const action=await tap(page,selector,{levelId:level.id,targetBarrierId:episode?.barrierId??null,fastReaction,decisionView:{distance:view.distance,laneIndex:view.laneIndex,lanes:view.lanes.map(lane=>({...lane}))},decision:{action:decision.action,toLane:decision.toLane,reason:decision.reason,countdown:decision.countdown}});

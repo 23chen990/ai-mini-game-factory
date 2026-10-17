@@ -16,6 +16,20 @@ test('five distinct safe courses: first-level traffic follows teaching; second l
  assert.ok(LEVELS[2].obstacles.some(o=>o.kind==='car')&&LEVELS[2].obstacles.some(o=>o.kind==='van'));
  assert.equal(LEVELS[3].weather,'rain');assert.ok(LEVELS[4].hour>=18);assert.ok(LEVELS[4].hour<18.5,'dusk road must stay readable');
 });
+test('night two-gate fish path visibly rewards right-side preparation then demands a left escape',()=>{
+ const night=LEVELS[4];
+ const planned=[[351,2],[367,2],[383,2],[399,2],[415,2],[431,2],[447,2],[463,2],[479,2],[495,1],[511,0],[527,0]];
+ for(const [x,lane] of planned){
+  const fish=night.fish.find(f=>f.x===x&&!f.bonus&&!f.shoal);
+  assert.ok(fish,`missing real authored route fish at ${x}m`);
+  assert.equal(fish.lane,lane,`fish at ${x}m must guide the known open lane`);
+  assert.equal(fish.z??LANES[fish.lane],LANES[lane],`fish at ${x}m is physically in its visible lane`);
+ }
+ const gates=[433,475,558].map(x=>night.obstacles.filter(o=>o.x===x&&['car','van'].includes(o.kind)));
+ assert.deepEqual(gates.map(group=>group.map(o=>o.lane).sort()),[[0,1],[0,1],[1,2]],
+  'safe 433/475m RIGHT then 558m LEFT exits are authored, not granted dynamically');
+ assert.deepEqual(validateLevel(makeLevel(5)),[],'the entire harder five-level course must remain physically fair');
+});
 test('fairness validator rejects all blocked roads, unsafe fish and insufficient reaction spacing',()=>{
  const l=makeLevel(3);l.obstacles=[0,1,2].map(lane=>({id:'x'+lane,kind:'car',x:90,lane,speed:3}));assert.ok(validateLevel(l).some(x=>x.includes('blocked')));
  const f=makeLevel(3);f.obstacles=[{id:'bad',kind:'car',x:f.fish[0].x,lane:f.fish[0].lane,speed:0}];assert.ok(validateLevel(f).some(x=>x.includes('fish')));
