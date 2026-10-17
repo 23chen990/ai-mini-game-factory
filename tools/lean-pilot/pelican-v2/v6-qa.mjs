@@ -32,7 +32,7 @@ try{
  await page.waitForSelector('#coast[data-loaded="true"]');
  check('endless-select-visible',await page.locator('[data-level="6"]').isVisible());
  check('earned-cosmetic-items-visible',await page.locator('#co-collection [data-style]').count()===6);
- check('expensive-style-does-not-mint-coins',await page.locator('#co-collection-total').count()===0);
+ check('initial-wallet-is-zero',(await page.locator('.co-collection-total').innerText()).includes('0 贝壳'));
  await shot('v6-menu');
  await tap('[data-style="gold"]');
  check('cannot-purchase-with-empty-wallet',(await page.locator('#co-notice').innerText()).includes('还需'));
