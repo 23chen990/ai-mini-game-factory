@@ -8,11 +8,11 @@ export const TARGET_WINDOW_LEAD_METERS = 48;
 export const TARGET_WINDOW_TRAIL_METERS = 10;
 
 export const RISK_LEVELS = Object.freeze([
- {id:1,name:'海岸出发',weather:'clear',targets:[['l1-o4',75],['l1-o1',140],['l1-o7',205],['l1-o3',225]]},
- {id:2,name:'行人出没',weather:'clear',targets:[['l2-o3',246],['l2-o5',356]]},
- {id:3,name:'危险公路',weather:'clear',targets:[['l3-o3',222],['l3-o5',360]]},
- {id:4,name:'雨中骑行',weather:'rain',targets:[['l4-o3',225],['l4-o5',350],['l4-o10',593]]},
- {id:5,name:'夜间赶海',weather:'dusk',targets:[['l5-o3',210],['l5-o5',334],['l5-o10',584]]},
+ {id:1,name:'海岸出发',weather:'clear',speed:7.5,targets:[['l1-o4',75],['l1-o1',140],['l1-o7',205],['l1-o3',225]]},
+ {id:2,name:'行人出没',weather:'clear',speed:8,targets:[['l2-o3',246],['l2-o5',356]]},
+ {id:3,name:'危险公路',weather:'clear',speed:8.8,targets:[['l3-o3',222],['l3-o5',360]]},
+ {id:4,name:'雨中骑行',weather:'rain',speed:9.2,targets:[['l4-o3',225],['l4-o5',350],['l4-o10',593]]},
+ {id:5,name:'夜间赶海',weather:'dusk',speed:9.6,targets:[['l5-o3',210],['l5-o5',334],['l5-o10',584]]},
 ].map(level=>Object.freeze({
  ...level,
  targets:Object.freeze(level.targets.map(([barrierId,distance])=>Object.freeze({barrierId,distance,goldFishId:`l${level.id}-jump-${barrierId}`}))),
@@ -28,6 +28,18 @@ const laneIsBlocked = (lane,{allowReward=false}={})=>{
  return lane?.danger===true&&(lane.kind==='barrier'||laneIsImminent(lane));
 };
 const laneIndex = n => Math.max(0,Math.min(2,Number.isInteger(n)?n:1));
+// A prize radar shows the nearest barrier on a lane, which may be a V5
+// pressure gate rather than the *intended* earned jump 20-25m farther out.
+// Honor only the actual player-visible seconds + HUD distance, with generous
+// time-rounding tolerance; never use a hidden obstacle ID to steer a bot.
+export function radarIsExpectedBarrier(view,lane,target,levelId){
+ if(!lane?.danger||lane?.kind!=='barrier'||!Number.isFinite(lane.seconds)||
+    !Number.isFinite(view?.distance)||!Number.isFinite(target?.distance))return false;
+ const level=RISK_LEVELS.find(item=>item.id===levelId);
+ if(!level)return false;
+ const forecastX=view.distance+lane.seconds*level.speed;
+ return Math.abs(forecastX-target.distance)<=level.speed+2.5;
+}
 const decision = (action,state,reason,toLane=null,countdown=null)=>({action,state,reason,toLane,countdown});
 
 export function visibleLaneFromHud({className='',text=''}={}){
@@ -110,14 +122,17 @@ export function decideRiskAction(view,state){
  const inTargetWindow=Number.isFinite(view.distance)
   &&view.distance>=target.distance-TARGET_WINDOW_LEAD_METERS
   &&view.distance<=target.distance+TARGET_WINDOW_TRAIL_METERS;
- const rewardLane=lanes.findIndex(lane=>lane?.jumpReward===true&&lane.kind==='barrier');
+ const rewardLane=lanes.findIndex(lane=>lane?.jumpReward===true&&
+   radarIsExpectedBarrier(view,lane,state.target,state.levelId));
  // Back-to-back barriers may leave a different reward icon on the radar while
  // the correctly lined-up next barrier is already ready to jump. The button
  // is public player-visible feedback from the actual physics, not QA state.
  // Give it priority over an unrelated fish/reward lane; never jump into a car.
  if(inTargetWindow&&!state.jumpIssued&&current===state.committedRewardLane&&
     view.jumpReady===true&&view.distance<target.distance-3.15&&
-    !laneIsVehicle(lanes[current])){
+    !laneIsVehicle(lanes[current])&&
+    !(lanes[current]?.danger&&lanes[current]?.kind==='barrier'&&
+      !radarIsExpectedBarrier(view,lanes[current],state.target,state.levelId))){
   nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;
   nextState.lastJumpCountdown=Number.isFinite(lanes[current]?.seconds)?lanes[current].seconds:null;
   nextState.goldAtJump=Number.isFinite(view.goldCounter)?view.goldCounter:null;
@@ -145,7 +160,9 @@ export function decideRiskAction(view,state){
   // The native button glows READY based on the real nearest low barrier.
   // Accept this player-visible signal even if the radar icon is momentarily
   // replaced by an ordinary fish. Never jump after the barrier is passed.
-  if(view.jumpReady===true&&Number.isFinite(view.distance)&&view.distance<target.distance-1){
+  if(view.jumpReady===true&&Number.isFinite(view.distance)&&view.distance<target.distance-3.15&&
+     !(lanes[current]?.danger&&lanes[current]?.kind==='barrier'&&
+       !radarIsExpectedBarrier(view,lanes[current],target,state.levelId))){
    nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;
    nextState.lastJumpCountdown=null;
    nextState.goldAtJump=Number.isFinite(view.goldCounter)?view.goldCounter:null;
