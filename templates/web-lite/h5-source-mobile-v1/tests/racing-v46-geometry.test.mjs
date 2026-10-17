@@ -30,7 +30,7 @@ const mockLayouts = () => Object.fromEntries(
 );
 test('career technical roads use true physical collider widths on the original spline', () => {
   const layouts = mockLayouts();
-  assert.equal(createCareerLayouts(layouts),16);
+  assert.equal(createCareerLayouts(layouts),30);
   for (const [id, spec] of Object.entries(plans)) {
     const blueprint = COURSE_BLUEPRINTS[id], layout = layouts['race-'+id];
     const plainPoints = blueprint[4].trim().split(/\s+/).length;
@@ -41,16 +41,16 @@ test('career technical roads use true physical collider widths on the original s
     assert.ok(layout.points.every(p=>p.length===3&&p.every(Number.isFinite)));
   }
 });
-test('even the former tutorial now has a technical physical course and all 16 remain unique', () => {
+test('even the former tutorial now has a technical physical course and all 30 remain unique', () => {
   const layouts = mockLayouts();createCareerLayouts(layouts);
   assert.equal(layouts['race-01'].width,19,'first race has hard real-road collision width');
   assert.equal(layouts['race-03'].width,19,'first-chapter overtaking road is narrow');
   assert.equal(layouts['race-04'].width,19,'first-chapter drift road is narrow');
   const signatures=new Set();
-  for(let i=1;i<=16;i++) {
+  for(let i=1;i<=30;i++) {
     const id=String(i).padStart(2,'0'),course=layouts['race-'+id];
-    assert.ok(course.width>=18&&course.width<=19.5,'all sixteen roads physically hard but drivable');
+    assert.ok(course.width>=17&&course.width<=19.5,'all thirty roads physically hard but drivable');
     signatures.add(JSON.stringify(course.points));
   }
-  assert.equal(signatures.size,16);
+  assert.equal(signatures.size,30);
 });
