@@ -172,7 +172,7 @@ try{
  while(Date.now()<safeEnd){
   const v=await page.evaluate(()=>({
    phase:document.querySelector('#coast').dataset.phase,
-   distance:Number(document.querySelector('#co-distance').textContent.match(/^\\d+/)?.[0]??0),
+   distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),
    lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(n=>n.classList.contains('on')),
    lanes:[...document.querySelectorAll('.co-lane')].map(n=>({
     text:n.textContent,danger:n.classList.contains('danger'),
@@ -182,7 +182,7 @@ try{
   if(v.distance>=238||v.phase==='finished')break;
   for(let i=0;i<3;i++){
    if(!v.lanes[i].danger)continue;
-   const seconds=Number(v.lanes[i].text.match(/(\\d+(?:\\.\\d+)?)\\s*s/)?.[1]);
+   const seconds=Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)\s*s/)?.[1]);
    // The first level rides at 7.5 m/s. Keep a 4m tail from the actual
    // player-visible countdown, including when the icon is replaced by fish.
    const forecastDistance=v.distance+(Number.isFinite(seconds)?Math.max(0,seconds)*7.5:0);
