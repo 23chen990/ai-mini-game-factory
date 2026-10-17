@@ -686,6 +686,52 @@ try {
   if(savedAudio!=='0') fail('Mute preference lost on reload');
   report.persistedAudioEnabled=false;
   if(jsErrors.length) fail('Browser errors: '+jsErrors.slice(0,4).join(' | '));
+  // Separate real desktop Chromium/WebGL launch, not a resized simulated phone.
+  // The same build must render keyboard gameplay without thumb UI or mobile zoom.
+  await context.close(); // release SwiftShader phone WebGL before desktop allocation
+  const desktopContext=await browser.newContext({
+    viewport:{width:1366,height:768},deviceScaleFactor:1,isMobile:false,hasTouch:false
+  });
+  try{
+    const desktop=await desktopContext.newPage();
+    desktop.on('pageerror',e=>jsErrors.push(e.message));
+    await desktop.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
+    await waitLoaded(desktop);
+    const ready=await desktop.evaluate(()=>({
+      platform:document.querySelector('#race-kit')?.dataset.platform,
+      computedPlatform:document.documentElement.dataset.racePlatform,
+      controls:window.getComputedStyle(document.querySelector('#race-controls')).display,
+      guide:document.querySelector('#race-guide')?.textContent
+    }));
+    if(ready.platform!=='desktop'||ready.computedPlatform!=='desktop'||
+       ready.controls!=='none'||!ready.guide.includes('Shift'))
+      fail('Real desktop must show keyboard presentation, not enlarged phone controls: '+JSON.stringify(ready));
+    await desktop.locator('#race-start').click();
+    await desktop.waitForFunction(()=>window.game?.state==='race'&&!!window.game?.player,null,{timeout:45000});
+    await desktop.keyboard.down('ArrowUp');
+    await desktop.keyboard.down('ArrowLeft');
+    await desktop.waitForFunction(()=>window.game?.player?.s>1,null,{timeout:18000});
+    const running=await desktop.evaluate(()=>{
+      const g=window.game,p=g.player;
+      return {
+        platform:document.querySelector('#race-kit')?.dataset.platform,
+        mobileCamera:g.mobileMode,
+        cameraMode:g.camMode,
+        velocity:p.s,
+        distance:Math.hypot(g.camera.position.x-p.x,g.camera.position.y-p.y,g.camera.position.z-p.z),
+        keyboardUp:g.input.down.has('ArrowUp'),
+        keyboardLeft:g.input.down.has('ArrowLeft')
+      };
+    });
+    if(running.platform!=='desktop'||running.mobileCamera||running.cameraMode!==1||
+       !running.keyboardUp||!running.keyboardLeft||running.velocity<=1||running.distance<=10.5)
+      fail('Desktop must retain original farther chase camera and actual keyboard steering: '+JSON.stringify(running));
+    await desktop.screenshot({path:path.join(dest,'90-desktop-keyboard-1366x768.png')});
+    await desktop.keyboard.up('ArrowLeft');
+    await desktop.keyboard.up('ArrowUp');
+    report.desktop={actualChromiumWebGL:true,keyboardNative:true,touchHUDHidden:true,originalChase:true,...running};
+  }finally{await desktopContext.close();}
+  if(jsErrors.length)fail('Browser errors after desktop launch: '+jsErrors.slice(-4).join(' | '));
   report.passed=true;report.smallView=small;
 } catch(e) {report.errors.push(String(e?.stack || e));process.exitCode=1;}
 finally {
