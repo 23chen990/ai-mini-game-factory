@@ -1,7 +1,7 @@
 import {makeLevel,LANES,BOUNDS} from './levels.mjs';
 import {springLane,riderFeel,cameraTarget} from './feel.mjs';
 import {fishPoints,fishRoadZ,normalizeBest,rateStars,updateBest} from './engagement.mjs';
-import {createEndlessLevel,extendEndless} from './endless.mjs';
+import {createEndlessLevel,extendEndless,endlessTier,endlessCruiseSpeed} from './endless.mjs';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 // Casual touch assist: early press arms only the next same-lane low barrier.
 // The actual jump is still integrated by the normal collision/physics loop.
@@ -12,7 +12,7 @@ export const TAP_STEER_DISTANCE=1.18;
 const nearestLane=z=>clamp(Math.round((z-LANES[0])/(LANES[1]-LANES[0])),0,2);
 const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500){r.events.shift();r.eventOffset=(r.eventOffset??0)+1;}};
 export function newRun(id,{seed=Math.floor(Date.now()/86400000)}={}) {const level=id===6?createEndlessLevel(seed):makeLevel(id);const run={phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],eventOffset:0,fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false,revives:0,reviveGrace:0};
- if(level.endless){run.endless={seed:level.seed,index:0,nextX:100};
+ if(level.endless){run.endless={seed:level.seed,index:0,nextX:100,tier:0};
   run.fishes.push(...[15,31,47].map((x,i)=>({id:`endless-warmup-${i}`,x,lane:1,golden:false,bonus:false,caught:false})));
   extendEndless(run);
  }
@@ -87,8 +87,13 @@ function step(r,dt){
  r.elapsed+=dt;
  if(r.reviveGrace>0)r.reviveGrace=Math.max(0,r.reviveGrace-dt);
  if(r.stun>0){r.stun=Math.max(0,r.stun-dt);r.speed=0;if(r.stun===0)event(r,'recovered');}
- else{r.speed=r.level.speed;r.distance=Math.min(r.level.distance,r.distance+r.speed*dt);}
- if(r.level.endless)extendEndless(r);
+ else{r.speed=r.level.endless?endlessCruiseSpeed(r.distance):r.level.speed;
+  r.distance=Math.min(r.level.distance,r.distance+r.speed*dt);}
+ if(r.level.endless){
+  const tier=endlessTier(r.distance);
+  if(tier.id>r.endless.tier){r.endless.tier=tier.id;event(r,'endless-tier',{tier:tier.id,name:tier.name});}
+  extendEndless(r);
+ }
  // Same continuous damped dynamics as the source, but with an actual analog
  // target. A 0.4m drag remains 0.4m; release never snaps back to lane centers.
  const previousV=r.laneV;
