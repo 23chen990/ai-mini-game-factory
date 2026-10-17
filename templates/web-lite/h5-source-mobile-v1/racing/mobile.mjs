@@ -4,6 +4,7 @@ import { RacingJoystick } from './joystick.mjs';
 import { careerCourseDetails } from './track-design.mjs';
 import { raceSpeedHUD } from './speed-hud.mjs';
 import { RaceDuelTracker } from './duel-loop.mjs';
+import { RaceTrialMetrics, rankFinishGapSeconds } from './trial-metrics.mjs';
 import { careerCourseSvg, compactRaceObjective } from './presentation.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
@@ -39,6 +40,7 @@ let g, phase = 'ready', started = false, result = null, loading = true, lastFram
 let nativeStartRace, policyReady = false, backgrounded = document.hidden;
 let events = [], best = {}, lastRacePassed = false;
 let replayTapCount = 0;
+let justFinishedPassed = null;
 let adNotice = '', adNoticeUntil = 0;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1'; // Preserve legacy save key across input migration.
 const QUALITY_STORE = 'h5-qq-mobile-20261013:graphics-quality:v1';
@@ -50,6 +52,7 @@ let storageRef;
 try { storageRef = localStorage; }
 catch { storageRef = { getItem() { throw Error('本地存储不可用'); }, setItem() { throw Error('本地存储不可用'); } }; }
 const career = new RacingCareer(storageRef, best);
+const trial = new RaceTrialMetrics(storageRef);
 function fuelView() {
   $('fuel-info').textContent = (!career.storageOK ? '本地存储不可用 · 不限油' : career.fuelEnabled ? career.fuelText() : '自由试玩 · 不限油') + (performance.now() < adNoticeUntil ? ' · ' + adNotice : '');
   const metered = career.fuelEnabled, empty = metered && !career.canStart();
@@ -82,10 +85,10 @@ function renderLobby() {
   $('stage').append(dailyOption);
   $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
-  root.dataset.previewRevision = 'racing-v51-touch-clearance';
+  root.dataset.previewRevision = 'racing-v52-trial-evidence';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
   $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
-    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V5.1';
+    ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V5.2';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = courseInfo?.feel ?? '';
@@ -99,7 +102,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, revision: 'V5.1' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V5.2' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
@@ -163,6 +166,7 @@ function start() {
     g.camMode = 1;g.mobileMode = touchDriving;nativeStartRace();
     if (g.state !== 'countdown') throw Error('原生比赛未进入倒计时');
     career.begin(g);
+    trial.start(career.stage);
     inputTime = performance.now();$('heading').textContent = career.stage.name;display('countdown');fuelView();
   } catch (error) {
     started = false;display('ready');renderLobby();
@@ -176,7 +180,9 @@ function finish() {
   const beforeStars = careerStars(career.progress);
   const graded = career.finalize(g, result);
   const stars = graded?.stars ?? 0;
+  trial.finish(career.stage,result,stars,g.raceTime,duel.snapshot(g,career.stage));
   lastRacePassed = stars > 0;
+  justFinishedPassed = lastRacePassed;
   $('heading').textContent = result.finished ? '第 ' + result.place + ' 名' : '未完赛';
   if (result.finished && (!best[result.map] || result.time < best[result.map])) {
     best[result.map] = result.time;try { localStorage.setItem(STORE, JSON.stringify(best)); } catch { /* Play remains available. */ }
@@ -190,7 +196,9 @@ function finish() {
         ' · 连续挑战 ' + career.progress.daily.streak + ' 天'
       : '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星' +
         (newSkin > 0 ? ' · 解锁车漆：' + SKIN_NAMES[newSkin] : ''))
-    : (result.finished ? '未达成目标 · ' : '未完赛 · ') + failure.reason;
+    : (result.finished ? '未达成目标 · ' : '未完赛 · ') + failure.reason +
+      (() => { const gap = rankFinishGapSeconds(career.stage,result);
+        return gap !== null ? ' · 距目标名次 ' + gap.toFixed(1) + ' 秒' : ''; })();
   $('result-stats').innerHTML = [['有效漂移', graded?.metric.cleanDrifts ?? 0], ['弯道超车', graded?.metric.cleanPasses ?? 0], ['拾取道具', graded?.metric.pickups ?? 0], ['小喷', result.stats.small]].map(([label, value]) => `<span><b>${value ?? 0}</b>${label}</span>`).join('');
   $('results').replaceChildren();
   for (const row of result.rows) {
@@ -224,7 +232,11 @@ $('pause').addEventListener('pointerdown', event => { event.preventDefault();pau
 $('replay').addEventListener('click', () => {
   // Count actual voluntary replays only after the native countdown starts.
   const wasFinished=phase==='finished';start();
-  if(wasFinished && phase==='countdown')replayTapCount++;
+  if(wasFinished && phase==='countdown'){
+    replayTapCount++;
+    trial.replay(career.stage,justFinishedPassed === true);
+    justFinishedPassed = null;
+  }
 });$('restart').addEventListener('click', start);
 $('lobby').addEventListener('click', () => {
   if (!g || loading) return;
@@ -249,6 +261,7 @@ $('fuel-ad').addEventListener('click', async () => {
   if (!['ready','finished'].includes(phase) || career.adBusy) return;
   $('fuel-ad').disabled = true;$('fuel-info').textContent = '广告加载中…';
   const out = await career.watchFuelAd();
+  trial.rewardedOutcome(out.status);
   adNotice = out.status === 'completed' ? '已加油 +2' :
     out.status === 'session-credit' ? '广告已完成但存档失败，本次不限油' :
     '广告未完成，油量不变';
