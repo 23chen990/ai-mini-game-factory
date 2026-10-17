@@ -198,8 +198,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V5.1'||
-     worldIdentity.uiRevision!=='racing-v51-touch-clearance')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V5.3'||
+     worldIdentity.uiRevision!=='racing-v53-core-loop')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
@@ -253,7 +253,7 @@ async function raceStart(page, index, name) {
 }
 try {
   browser=await chromium.launch({headless:true,args:['--enable-webgl','--enable-unsafe-swiftshader','--use-gl=angle','--use-angle=swiftshader','--disable-gpu-sandbox']});
-  const context=await browser.newContext({viewport:{width:844,height:390},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+  const context=await browser.newContext({viewport:{width:844,height:390},deviceScaleFactor:1,isMobile:true,hasTouch:true,acceptDownloads:true});
   const page=await context.newPage();
   page.on('pageerror',e=>jsErrors.push(e.message));page.on('console',m=>{if(m.type()==='error')jsErrors.push(m.text())});
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:45000});await waitLoaded(page);
@@ -297,6 +297,17 @@ try {
   await page.setViewportSize({width:844,height:390});
   const title=await page.locator('#race-stage').locator('option').count();
   if(title!==17)fail('Expected 16 campaign stages + daily, got '+title);
+  // Real user-triggered browser download, checked from bytes rather than just
+  // checking a button exists. It must be a local QA report, not a human claim.
+  const firstDownload=page.waitForEvent('download');
+  await page.locator('#race-export').tap();
+  const firstFile=await firstDownload;
+  const initialExport=JSON.parse(await readFile(await firstFile.path(),'utf8'));
+  if(firstFile.suggestedFilename()!=='racing-v53-local-playtest.json'||
+     initialExport.build!=='V5.3'||initialExport.verifiedHumanPlay!==false||
+     initialExport.metrics.starts!==0||initialExport.metrics.finishes!==0)
+    fail('Menu export must start empty and explicitly reject human-play claims: '+JSON.stringify(initialExport));
+  report.initialExport={filename:firstFile.suggestedFilename(),starts:0,private:true};
   await raceStart(page,0,'01-city-hard-ranked');
   // Actual browser-computed hit targets, not hand-estimated circle positions.
   // Temporarily expose the native item button so ALL four right-hand actions
@@ -370,6 +381,17 @@ try {
   const drift=await page.locator('[data-race-action="drift"]').boundingBox();
   if(!wheel||wheel.width<100||!drift||drift.width<75||wheel.x+wheel.width+24>drift.x)
     fail('Single joystick / drift hitboxes overlap or are too small: '+JSON.stringify({wheel,drift}));
+  // Read the exact player input frame consumed by native game simulation,
+  // not just the decorative wheel position or a mocked player trajectory.
+  await page.evaluate(()=>{
+    const g=window.game,nativeInput=g.input.frame.bind(g.input);
+    g.input.frame=()=>{
+      const pin=nativeInput();
+      g.__QA_LAST_CONTROL_PIN__={steerAxis:pin.steerAxis,
+        left:pin.left,right:pin.right,shift:pin.shift,up:pin.up};
+      return pin;
+    };
+  });
   const cdp=await context.newCDPSession(page);
   const leftThumb={x:wheel.x+wheel.width*.18,y:wheel.y+wheel.height*.5,id:101};
   const rightThumb={...leftThumb,x:wheel.x+wheel.width*.82};
@@ -380,14 +402,20 @@ try {
   await page.waitForFunction(()=>document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),null,{timeout:8000});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[rightThumb]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis<-.5,null,{timeout:8000});
+  await page.waitForFunction(()=>{
+    const pin=window.game?.__QA_LAST_CONTROL_PIN__;
+    return pin && pin.steerAxis<-.5 && pin.right===true &&
+      pin.left===false && pin.shift===true;
+  },null,{timeout:18000});
   const simultaneous=await page.evaluate(()=>({
     axis:window.__RACE_EVIDENCE__?.steerAxis,
+    nativePin:window.game?.__QA_LAST_CONTROL_PIN__,
     driftHeld:document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),
   }));
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[driftThumb]});
   await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis===0,null,{timeout:8000});
-  if(!(simultaneous.axis<-.5&&simultaneous.driftHeld))
+  if(!(simultaneous.axis<-.5&&simultaneous.driftHeld&&simultaneous.nativePin?.right===true&&simultaneous.nativePin?.shift===true))
     fail('Stick countersteer must remain responsive during independent drift thumb: '+JSON.stringify(simultaneous));
   const wheelRelease=await page.evaluate(()=>({
     axis:window.__RACE_EVIDENCE__.steerAxis,
@@ -542,6 +570,18 @@ try {
     return document.querySelector('#race-kit')?.dataset.phase==='ready' &&
       g?.state==='menu' && !g.player && g.map?.id==='snow';
   },null,{timeout:12000});
+  // Staged-DNF smoke runs should be exportable for developer comparison while
+  // visibly marked as UNVERIFIED HUMAN PLAY rather than real retention data.
+  const laterDownload=page.waitForEvent('download');
+  await page.locator('#race-export').tap();
+  const laterFile=await laterDownload;
+  const finalExport=JSON.parse(await readFile(await laterFile.path(),'utf8'));
+  if(finalExport.verifiedHumanPlay!==false||finalExport.metrics.finishes<1||
+     finalExport.metrics.starts<2||finalExport.metrics.didNotFinish<1||
+     !finalExport.metrics.notes.includes('自动化测试'))
+    fail('Export must preserve source-labeled QA DNF without fake human results: '+JSON.stringify(finalExport));
+  report.localExport={stagedDnfOnly:true,downloadVerified:true,
+    starts:finalExport.metrics.starts,finishes:finalExport.metrics.finishes};
   await page.selectOption('#race-stage','0');
   await page.waitForFunction(() => {
     const g=window.game;

@@ -54,3 +54,20 @@ test('bounded local records, malformed storage and disabled storage never block 
   assert.equal(ephemeral.snapshot().finishes,1);
   assert.equal(ephemeral.start({course:'race-99'}),false);
 });
+
+test('opt-in local JSON export is parseable, anonymous and does not invent humans or revenue',()=>{
+  const storage=store(),t=new RaceTrialMetrics(storage);
+  t.start(stage);
+  t.finish(stage,fixture(),0,71.3,{gainedPositions:1,lostPositions:2});
+  t.rewardedOutcome('completed');
+  const raw=t.exportJSON(),data=JSON.parse(raw);
+  assert.deepEqual([data.schemaVersion,data.game,data.build],[1,'racing-h5','V5.3']);
+  assert.equal(data.generatedOnDevice,true);
+  assert.equal(data.verifiedHumanPlay,false);
+  assert.equal(data.containsPersonalIdentifiers,false);
+  assert.equal(data.metrics.finishes,1);
+  assert.equal(data.metrics.rewardedCompletedSignals,1);
+  assert.equal(data.metrics.recent[0].rankGapSeconds,2.1);
+  for(const key of ['userId','userAgent','revenue','email','ipAddress','deviceId'])
+    assert.equal(Object.hasOwn(data,key),false,'never leak PII or fake billing data');
+});

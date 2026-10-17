@@ -307,3 +307,14 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit #race-guide {gap:9px;}
 #race-kit #race-guide p {font-size:11px;line-height:1.2;color:#cfe2ec;}
 #race-kit .race-guide-keys span {width:39px;height:39px;font-size:30px;}
+
+/* V5.3: private playtest export is a small menu utility, never a race HUD
+ * target or an additional row that would make narrow landscape scroll. */
+#race-kit #race-export {
+  position:absolute;top:9px;right:10px;z-index:2;
+  min-height:34px;min-width:82px;padding:5px 8px;
+  border:1px solid #7799b67d;border-radius:9px;
+  background:#0c2940d9;color:#bed6e5;
+  font:650 11px/1 -apple-system,BlinkMacSystemFont,system-ui;
+}
+#race-kit #race-export:active {background:#275270;}

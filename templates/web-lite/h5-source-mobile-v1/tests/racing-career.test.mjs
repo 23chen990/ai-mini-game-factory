@@ -449,3 +449,39 @@ test('V4.8 no easy rank gates remain across the sixteen stages',()=>{
       'fourth place is never a pass: '+stage.id);
   }
 });
+
+// V5.3 commercial UX: fuel should never softlock the very first honest loss.
+test('failed rank/objective earns exactly one free same-stage replay, even at zero fuel',()=>{
+  const c=new RacingCareer(memory()),g=game();
+  c.fuelEnabled=true;c.fuel.amount=1;
+  assert.equal(c.canStart(),true);
+  c.begin(g);
+  assert.equal(c.fuel.amount,0);
+  const loss=c.finalize(g,{finished:true,place:4,time:100,stats:{crash:1}});
+  assert.equal(loss.stars,0);
+  assert.equal(c.hasFreeReplay(),true);
+  assert.equal(c.canStart(),true,'last fuel spent; earned retry still starts');
+  c.begin(g);
+  assert.equal(c.fuel.amount,0,'free replay cannot debit fuel below zero');
+  assert.equal(c.hasFreeReplay(),false);
+  c.finalize(g,{finished:false,place:6,time:null,stats:{crash:3}});
+  assert.equal(c.hasFreeReplay(),false,'no infinite ticket farming on subsequent losses');
+  assert.equal(c.canStart(),false,'after the free retry, normal fuel limits apply');
+});
+test('stage/daily switch cannot transfer a free retry; wins never grant one',()=>{
+  const c=new RacingCareer(memory()),g=game();c.fuelEnabled=true;
+  c.begin(g);c.finalize(g,{finished:false,place:6,time:null,stats:{crash:1}});
+  assert.equal(c.hasFreeReplay(),true);
+  c.progress.stars['01']=1;
+  assert.equal(c.setStage(1),true);
+  assert.equal(c.hasFreeReplay(),false);
+  assert.equal(c.freeReplayStageId,null);
+  c.begin(g);c.finalize(g,{finished:true,place:1,time:60,stats:{crash:0}},0);
+  // Speed stage 02 requires a native gate goal. Above race is not a win.
+  c.metrics.gateSpeed=180;
+  c.begin(g);c.metrics.gateSpeed=205;
+  const result=c.finalize(g,{finished:true,place:1,time:65,stats:{crash:0}});
+  assert.ok(result.stars>0);
+  assert.equal(c.hasFreeReplay(),false);
+  assert.equal(c.setDaily(new Date(2026,9,17,12)),false,'daily still gated by stage 04');
+});
