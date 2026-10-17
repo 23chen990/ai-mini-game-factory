@@ -56,10 +56,10 @@ test('输入释放同时清除触屏、键盘、两个边沿集合', () => {
   const input = { down: new Set(['ArrowLeft']), pressed: new Set(['KeyW']), touchPressed: new Set(['TouchNitro']), touch: { up: true, left: true, shift: true } };
   clear(input);assert.equal(input.down.size + input.pressed.size + input.touchPressed.size, 0);assert.ok(Object.values(input.touch).every(v => !v));
 });
-test('手机镜头FOV有温和速度反馈且不超过78度', () => {
+test('手机镜头FOV温和跟速，不因氮气使车身过小', () => {
   const fov = need('raceCameraFov');
   assert.ok(fov(55, true, false) > fov(55, false, false));
-  assert.ok(fov(86, true, true) <= 78);assert.ok(fov(0, false, false) >= 66);
+  assert.ok(fov(86, true, true) <= 69);assert.ok(fov(0, false, false) >= 61);
 });
 test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数', () => {
   const tune = need('tuneRaceFx'), calls = [];
@@ -113,4 +113,20 @@ test('phone quality drops on sustained <46FPS rather than isolated delayed frame
   assert.equal(again,'low','can step down twice after separate slow windows');
   const manual=new Monitor();manual.manual=true;
   for(let i=0;i<200;i++)assert.equal(manual.frame(.05,'high'),null);
+});
+
+test('screen platform depends on input affordance, not CSS window width',()=>{
+ const profile=need('raceScreenProfile');
+ assert.equal(profile(844,390,{coarse:true,touchPoints:5}),'touch');
+ assert.equal(profile(390,844,{coarse:true,touchPoints:5}),'touch');
+ assert.equal(profile(844,390,{coarse:false,anyCoarse:false,touchPoints:0}),'desktop');
+ assert.equal(profile(1920,1080,{coarse:false,anyCoarse:true,touchPoints:10}),'desktop');
+});
+test('phone follows closer car yet looks ahead on V9 technical bends',()=>{
+ const camera=need('racePhoneCamera'),normal=camera(740,360),wide=camera(932,430);
+ for(const view of [normal,wide]){
+  assert.ok(view.dist>8.7&&view.dist<12.5);
+  assert.ok(view.look>7&&view.h>3);
+ }
+ assert.equal(camera(844,390),wide);
 });
