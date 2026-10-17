@@ -10,7 +10,7 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
-export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v9-course-director.mjs', 'v10-driving-feel.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v9-course-director.mjs', 'v10-driving-feel.mjs', 'v10-course-director.mjs', 'v10-rival-racecraft.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
 
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
@@ -83,7 +83,7 @@ export function patchV9NativeRoadWidth(source) {
   if(source.includes(imported)&&source.includes(marker))return source;
   const changes=[
     ["this.halfW = layout.width / 2;",
-      "this.halfW = layout.width / 2;\n    this.__V9_WIDTH_PROFILE__=layout.v9WidthProfile??null;\n    "+marker+"\n    this.v9HalfWidthAtIndex=i=>this.v9WidthAt(i*this.ds);"],
+      "this.halfW = layout.width / 2;\n    this.__V9_WIDTH_PROFILE__=layout.v9WidthProfile??null;\n    this.__V10_STAGE_IDENTITY__=layout.v10StageIdentity??null;\n    "+marker+"\n    this.v9HalfWidthAtIndex=i=>this.v9WidthAt(i*this.ds);"],
     ["const lat = s ? hw : -hw;",
       "const localHw=this.v9HalfWidthAtIndex(i);\n          const lat = s ? localHw : -localHw;"],
     ["const latIn = side * hw, latOut = side * (hw + th);",
@@ -124,6 +124,40 @@ export function patchV8NativeAi(source) {
     .replace(oldStep,newStep).replace(oldGrade,newGrade)
      .replace(originalPace,forkPace).replace(originalHalf,nativeHalf);
 }
+/**
+ * V10 rival cannot ignore the player's physical lane or take an apex for
+ * free. It selects a legal lateral line and uses a corner speed budget
+ * constrained by real road width and existing fixed-step native dynamics.
+ */
+export function patchV10NativeAi(source) {
+  const imported="import { v10AiCornerBudget, v10AiRacingLine, v10AiNitroAllowed } from './race-v10-rival-racecraft.mjs';";
+  const changes=[
+    ['const A = 16 + 30 * this.skill;',
+      'const A = v10AiCornerBudget(this.skill,tr,d);'],
+    ['const target = aiV8TargetLine(this,tr,clamp(inside + this.personal * hw * 0.8, -hw, hw),hw);',
+      'const target = aiV8TargetLine(this,tr,v10AiRacingLine(this,tr,clamp(inside + this.personal * hw * 0.8, -hw, hw),hw),hw);'],
+    ['if (active && this.nitroCd <= 0 && Math.abs(tr.curvAhead(d, 140)) < 0.006 && this.s > 35) {',
+      'if (active && this.nitroCd <= 0 && Math.abs(tr.curvAhead(d, 140)) < 0.006 && this.s > 35 && v10AiNitroAllowed(this,tr,d)) {']
+  ];
+  if(source.includes(imported)&&changes.every(([,b])=>source.includes(b)))return source;
+  if(source.includes(imported)||changes.some(([a])=>source.split(a).length!==2))
+    throw Error('V10 pinned native rival racing-line/pace anchor changed');
+  let out=imported+'\n'+source;
+  for(const [a,b]of changes)out=out.replace(a,b);
+  return out;
+}
+/** Rivals observe real nearby player position before their own normal step.
+ * A real AI lane change can now trigger a fair overtaking contest, but all
+ * lateral steering and corner braking still happen in the original update.
+ */
+export function patchV10NativeRacecraftWorld(source) {
+  const original='for (const r of this.racers) if (!r.isPlayer) r.update(DT, aiActive, this.raceTime, this.rubber(r));';
+  const updated='for (const r of this.racers) if (!r.isPlayer) { r.__V10_RIVAL_PLAYER__=P; r.update(DT, aiActive, this.raceTime, this.rubber(r)); }';
+  if(source.includes(updated))return source;
+  if(source.split(original).length!==2)throw Error('V10 native racecraft tick anchor changed');
+  return source.replace(original,updated);
+}
+
 export function patchShortcutNativeCar(source) {
   const expected='const lim = tr.halfW - 1.1;';
   const changed='const lim = (p.__RACE_SHORTCUT_ACTIVE ? p.__RACE_SHORTCUT_HALF_WIDTH : (tr.v9WidthAt?.(p.d) ?? tr.halfW)) - 1.1;';
@@ -356,10 +390,12 @@ export function patchItemModeNitro(source) {
 /** Strict, idempotent extensions to the GENERATED copy only, never the pinned source. */
 export function patchRaceLayouts(source) {
   const imported = "import { applyTrackDesign } from './race-track-design.mjs';";
-  const invoke = "applyTrackDesign(LAYOUTS, { v8: true, v9: true });";
+  const invoke = "applyTrackDesign(LAYOUTS, { v8: true, v9: true, v10: true });";
   if (source.includes(imported) && source.includes(invoke)) return source;
   // An existing V7 generated workspace is expected: migrate its exact old
   // call rather than appending a second track transform or rewriting sources.
+  const legacyV9 = 'applyTrackDesign(LAYOUTS, { v8: true, v9: true });';
+  if(source.includes(imported)&&source.split(legacyV9).length===2)return source.replace(legacyV9,invoke);
   const legacyV8 = 'applyTrackDesign(LAYOUTS, { v8: true });';
   if (source.includes(imported) && source.includes(legacyV8) &&
       source.split(legacyV8).length===2)return source.replace(legacyV8,invoke);
@@ -529,7 +565,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   // The generated native World imports the track adapter from its OWN src/;
   // copy the shared 17-30 course blueprints to that same directory rather
   // than resolving the adapter's relative import against the template tree.
-  for (const moduleName of ['career-expansion.mjs','v8-course-geometry.mjs','v9-course-director.mjs'])
+  for (const moduleName of ['career-expansion.mjs','v8-course-geometry.mjs','v9-course-director.mjs','v10-course-director.mjs'])
     await writeFile(path.join(project, 'src',moduleName),
       await readFile(path.join(owned,moduleName),'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
@@ -538,10 +574,12 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   if (annotatedVehicle !== originalVehicle) await writeFile(nativeVehiclePath, annotatedVehicle);
   const nativeAiPath = path.join(project,'src/ai.js');
   const originalAi = await readFile(nativeAiPath,'utf8');
-  const adaptedAi = patchV8NativeAi(originalAi);
+  const adaptedAi = patchV10NativeAi(patchV8NativeAi(originalAi));
   if(adaptedAi!==originalAi)await writeFile(nativeAiPath,adaptedAi);
   await writeFile(path.join(project,'src/race-v10-driving-feel.mjs'),
     await readFile(path.join(owned,'v10-driving-feel.mjs'),'utf8'));
+  await writeFile(path.join(project,'src/race-v10-rival-racecraft.mjs'),
+    await readFile(path.join(owned,'v10-rival-racecraft.mjs'),'utf8'));
   await writeFile(path.join(project,'src/race-v8-rival-ai.mjs'),
     await readFile(path.join(owned,'v8-rival-ai.mjs'),'utf8'));
   await writeFile(path.join(project,'src/race-v8-item-rules.mjs'),
@@ -559,7 +597,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   let adaptedMain = beforeMain;
   for(const patch of [patchRacingSource,patchV8CameraFeel,patchV10NativeCamera,patchV8PointToPoint,
-    patchManualNitroEdge,patchCareerRouteSource,patchShortcutNativeWorld,
+    patchManualNitroEdge,patchCareerRouteSource,patchV10NativeRacecraftWorld,patchShortcutNativeWorld,
     patchCourseSkyAndScenery,patchRaceDesertRelief])
     adaptedMain=patch(adaptedMain);
   await writeFile(path.join(project, 'src/main.js'), adaptedMain);
