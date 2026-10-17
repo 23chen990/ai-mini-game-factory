@@ -1,3 +1,4 @@
+import { shapeV9RhythmSegments } from './v9-course-director.mjs';
 import { EXPANSION_COURSES } from './career-expansion.mjs';
 import { applyV8CourseGeometry, V8_COURSES } from './v8-course-geometry.mjs';
 /** V3.5: Four distinct ORIGINAL racing rhythms inspired by kart-racer design principles.
@@ -201,7 +202,10 @@ export function createCareerLayouts(layouts, { v8 = false } = {}) {
     if(!base?.__racingV31||!blueprint||!Array.isArray(base.points))
       throw Error('V3.7 requires verified biome and independent course '+id);
     const [title,feel,english,scale,sketch]=blueprint;
-    const local=injectTechnicalSectors(parseLocalRoute(sketch),id,scale);
+    const sourceRoute=parseLocalRoute(sketch);
+    const local=v8
+      ? shapeV9RhythmSegments(sourceRoute,id,scale,COURSE_TECHNICAL_SECTORS[id]).points
+      : injectTechnicalSectors(sourceRoute,id,scale);
     const v8Geometry=v8 ? applyV8CourseGeometry(local,id,scale) : null;
     const authored=v8Geometry?.points ?? local;
     const planScale=v8Geometry?.scale ?? scale;
