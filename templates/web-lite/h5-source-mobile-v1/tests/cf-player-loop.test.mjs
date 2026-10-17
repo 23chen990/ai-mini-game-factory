@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {challengesFor,cfEliteChallenge} from '../engine.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,
   cfApplyControls,cfMissionMedal,cfNewMastery,cfMasteryKey,
-  cfRecordMastery,cfLoadMastery,cfSaveMastery,cfRecordLabel
+  cfRecordMastery,cfLoadMastery,cfSaveMastery,cfRecordLabel,cfNextMedalGoal
 } from '../cf-player-loop.mjs';
 
 const [rifle,sniper,survive]=challengesFor('cf-transport-ship');
@@ -54,6 +54,14 @@ test('CF medals require exact genuine engine success, not just source hit counte
  assert.equal(cfMissionMedal(sniper,sniperWin,'won',51000)?.stars,3);
  assert.equal(cfMissionMedal(sniper,{...sniperWin,awmKills:0},'won',51000),null);
  assert.equal(cfMissionMedal(survive,survivalWin,'won',45000)?.stars,2);
+ const earnedGold=cfMissionMedal(survive,{...survivalWin,travel:30},'won',45000);
+ assert.equal(earnedGold?.stars,3,
+   '45s survival must have a reachable three-star path after its required full clock');
+ assert.equal(cfNextMedalGoal(survive,cfMissionMedal(survive,survivalWin,'won',45000)),
+   '三星目标：零阵亡，真实移动至少30米');
+ assert.equal(cfNextMedalGoal(rifle,cfMissionMedal(rifle,rifleWin,'won',31900)),
+   '三星目标：零阵亡，在45秒内完成');
+ assert.equal(cfNextMedalGoal(survive,earnedGold),'');
  assert.equal(cfMissionMedal(survive,{...survivalWin,travel:0},'won',45000),null);
  assert.equal(cfMissionMedal(survive,survivalWin,'won',44900),null,
    'survival cannot earn a completion badge before 45 simulated seconds');
