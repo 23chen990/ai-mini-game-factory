@@ -64,6 +64,18 @@ try{
  check('real-page-reload-persists-wallet-and-record',shop.includes(String(r.collection.coins))&&shop.includes(String(r.collection.bestDistance)));
  check('local-only-playtest-disclosure-visible',await page.locator('#co-storage').innerText().then(t=>t.includes('仅存本机')));
  await shot('v6-persisted-after-reload');
+ // Pause-screen replay must bank this genuine run before beginning another one.
+ await tap('[data-level="6"]');await tap('#co-start');
+ await page.waitForFunction(()=>window.__coast.snapshot().count>=3||window.__coast.snapshot().phase==='finished',null,{timeout:35000});
+ const beforeRestart=await snap();
+ check('second-real-run-has-earned-fish',beforeRestart.phase==='running'&&beforeRestart.count>=3);
+ await tap('#co-pause');
+ check('endless-replay-explains-settlement',(await page.locator('#co-replay').innerText()).includes('结算本局'));
+ await tap('#co-replay');
+ const afterRestart=await snap();
+ check('paused-endless-replay-banks-once',
+  afterRestart.phase==='running'&&afterRestart.level===6&&afterRestart.collection.endlessRuns===2&&
+  afterRestart.collection.coins>r.collection.coins&&afterRestart.metrics.retire===2);
 }catch(error){report.errors.push(error.stack??String(error));}
 finally{
  if(page)await shot('v6-final').catch(()=>{});
