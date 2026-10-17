@@ -10,7 +10,7 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
-export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v9-course-director.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
 
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
@@ -75,20 +75,23 @@ export function patchShortcutNativeTrack(source) {
 }
 /** Apply truthful AI route-following only to generated native copy. */
 export function patchV8NativeAi(source) {
-  const imported="import { aiV8TargetLine, advanceAiV8Road } from './race-v8-rival-ai.mjs';";
+  const imported="import { aiV8TargetLine, advanceAiV8Road, aiV8ForkDesiredSpeed } from './race-v8-rival-ai.mjs';";
   const target="const target = clamp(inside + this.personal * hw * 0.8, -hw, hw);";
   const changedTarget="const target = aiV8TargetLine(this,tr,clamp(inside + this.personal * hw * 0.8, -hw, hw),hw);";
   const oldStep="this.dist += this.s * dt + this.pushD;\n    this.pushD = 0;\n    const s = tr.sample(this.dist, this.s2);";
   const newStep="const travel = this.s * dt + this.pushD;\n    this.dist += travel;\n    this.pushD = 0;\n    const s = advanceAiV8Road(this,tr,travel) || tr.sample(this.dist, this.s2);";
   const oldGrade="this.slope = tr.slope[s.i];";
   const newGrade="this.slope = s.__V8_FORK_AI__ ? s.grade : tr.slope[s.i];";
+  const originalPace='let vt = Math.min(vmaxBase, vCorner + (this.nitroTime > 0 ? 6 : 0));';
+  const forkPace='let vt = aiV8ForkDesiredSpeed(this,tr,Math.min(vmaxBase, vCorner + (this.nitroTime > 0 ? 6 : 0)));';
   if(source.includes(imported) && source.includes(changedTarget) &&
-     source.includes(newStep) && source.includes(newGrade))return source;
+     source.includes(newStep) && source.includes(newGrade) && source.includes(forkPace))return source;
   if(!source.includes('export class AICar') ||
-    [target,oldStep,oldGrade].some(a=>source.split(a).length!==2))
+    [target,oldStep,oldGrade,originalPace].some(a=>source.split(a).length!==2))
     throw Error('Pinned native AI anchors changed');
   return imported+'\n'+source.replace(target,changedTarget)
-    .replace(oldStep,newStep).replace(oldGrade,newGrade);
+    .replace(oldStep,newStep).replace(oldGrade,newGrade)
+     .replace(originalPace,forkPace);
 }
 export function patchShortcutNativeCar(source) {
   const expected='const lim = tr.halfW - 1.1;';
@@ -100,7 +103,7 @@ export function patchShortcutNativeCar(source) {
 }
 export function patchShortcutNativeWorld(source) {
   const imported="import { installPhysicalShortcut } from './race-shortcut-network.mjs';";
-  const marker='installPhysicalShortcut(track, requestedCourse, {v8:true});';
+  const marker='installPhysicalShortcut(track, requestedCourse, {v8:true,v9:true});';
   const themeImport="import { createRaceTrackTheme, buildRaceLandmarks } from './race-track-design.mjs';";
   const themeCall='createRaceTrackTheme(map.track,track,requestedCourse)';
   const landmarkCall='root.add(buildRaceLandmarks(THREE, track, requestedCourse));';
@@ -272,10 +275,13 @@ export function patchItemModeNitro(source) {
 /** Strict, idempotent extensions to the GENERATED copy only, never the pinned source. */
 export function patchRaceLayouts(source) {
   const imported = "import { applyTrackDesign } from './race-track-design.mjs';";
-  const invoke = "applyTrackDesign(LAYOUTS, { v8: true });";
+  const invoke = "applyTrackDesign(LAYOUTS, { v8: true, v9: true });";
   if (source.includes(imported) && source.includes(invoke)) return source;
   // An existing V7 generated workspace is expected: migrate its exact old
   // call rather than appending a second track transform or rewriting sources.
+  const legacyV8 = 'applyTrackDesign(LAYOUTS, { v8: true });';
+  if (source.includes(imported) && source.includes(legacyV8) &&
+      source.split(legacyV8).length===2)return source.replace(legacyV8,invoke);
   const legacy = 'applyTrackDesign(LAYOUTS);';
   if (source.includes(imported) && source.includes(legacy) &&
       source.split(legacy).length === 2) return source.replace(legacy, invoke);
@@ -413,7 +419,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   // The generated native World imports the track adapter from its OWN src/;
   // copy the shared 17-30 course blueprints to that same directory rather
   // than resolving the adapter's relative import against the template tree.
-  for (const moduleName of ['career-expansion.mjs','v8-course-geometry.mjs'])
+  for (const moduleName of ['career-expansion.mjs','v8-course-geometry.mjs','v9-course-director.mjs'])
     await writeFile(path.join(project, 'src',moduleName),
       await readFile(path.join(owned,moduleName),'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
