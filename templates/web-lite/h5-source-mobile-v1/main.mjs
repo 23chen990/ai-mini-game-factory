@@ -258,7 +258,20 @@ async function boot() {
         };
         g.__mkAwmKillHooked = true;
       }
-      native.start = c => { fpsUx?.beforeNativeStart?.(); g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
+      native.start = c => {
+        fpsUx?.beforeNativeStart?.();
+        if(c?.lite===true){
+          // Bounded native actor count for mobile WebGL. The original AI,
+          // world and ballistics remain real; there is no phantom damage.
+          g.opts.size=4;
+          // Ignore original team kill quota; campaign's own real condition
+          // or its visible countdown is the only victory/failure source.
+          g.opts.goal=300;
+        }
+        g.opts.primary = c.weapon;
+        g.__mkAwmKills = 0;
+        originalStart(c);
+      };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
         enemyShots:(g.actors||[]).reduce((n,a)=>
           !a?.isPlayer&&a.team!==g.player?.team&&Number.isFinite(a.stats?.shots)
