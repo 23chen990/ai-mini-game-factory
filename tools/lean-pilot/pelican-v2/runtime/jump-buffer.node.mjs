@@ -24,7 +24,7 @@ test('double tap cannot queue twice or inflate the exact barrier count',()=>{
  assert.equal(r.events.filter(e=>e.type==='jump').length,1);assert.equal(r.jumpedBarriers,1);
 });
 test('buffer stays short and vehicles remain unjumpable',()=>{
- assert.ok(JUMP_BUFFER_SECONDS>1&&JUMP_BUFFER_SECONDS<1.6);
+ assert.ok(JUMP_BUFFER_SECONDS>=2.2&&JUMP_BUFFER_SECONDS<=2.3,'visible early input is long enough to react');
  assert.ok(JUMP_TRIGGER_METERS>=2.8&&JUMP_TRIGGER_METERS<=3.2);
  const r=newRun(3),car=r.obstacles.find(o=>o.kind==='car');to(r,car.x-7);input(r,'jump');to(r,car.x+2);assert.equal(r.reason,'vehicle');
 });
