@@ -10,7 +10,7 @@ html[data-race-mobile] #topc { position:static; display:block; transform:none; }
 html[data-race-mobile] #bigrank { left:var(--race-left);top:var(--race-top);bottom:auto;line-height:1;display:flex;gap:3px;align-items:baseline;background:#07172db3;border:1px solid #ffffff26;border-radius:12px;padding:10px 12px;box-shadow:0 2px 9px #0002;text-shadow:none; }
 html[data-race-mobile] #bigrank .r { font:800 26px/1 system-ui;background:none;color:#ffe18a;-webkit-text-fill-color:#ffe18a; }
 html[data-race-mobile] #bigrank .of { font:600 13px/1 system-ui;color:#fff;opacity:.85; }
-html[data-race-mobile] #lapbox { position:absolute;left:calc(var(--race-left) + 98px);top:calc(var(--race-top) + 2px);width:auto;padding:6px 10px;background:#07172d85;border:1px solid #ffffff1c;border-radius:10px;box-shadow:none; }
+html[data-race-mobile] #lapbox { position:absolute;left:calc(var(--race-left) + 98px);top:calc(var(--race-top) + 2px);width:auto;padding:6px 10px;background:#07172da6;border:1px solid #ffffff1c;border-radius:10px;box-shadow:none; }
 html[data-race-mobile] #lapbox .l { font:700 17px/1 system-ui;color:white; }
 html[data-race-mobile] #lapbox .s { font:500 10px/1.2 system-ui;margin-top:3px;color:#d9e5f1; }
 html[data-race-mobile] #timebox { position:absolute;left:50%;top:calc(var(--race-top) + 4px);transform:translateX(-50%);width:auto;min-width:110px;padding:7px 12px;background:#07172da6;border:1px solid #ffffff1f;box-shadow:none; }
@@ -205,7 +205,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-action-pad button[data-race-action="small"] {right:clamp(88px,13vw,110px);bottom:0;}
 #race-action-pad button[data-race-action="nitro"] {right:clamp(88px,13vw,110px);bottom:clamp(76px,20vh,90px);background:#173b55de;}
 #race-action-pad button[data-race-action="item"] {right:0;bottom:clamp(100px,27vh,120px);}
-#race-kit[data-item-mode="false"] #race-action-pad button[data-race-action="item"] {display:none;}
+#race-kit[data-item-mode="false"] #race-controls #race-action-pad button[data-race-action="item"] {display:none;}
 #race-action-pad button.held {background:#a26a32;border-color:#fff0aa;transform:scale(.96);}
 #race-action-pad button.ready {border-color:#8af7dd;box-shadow:0 0 13px #35d7ae80;}
 #race-kit #race-controls {touch-action:none;}
