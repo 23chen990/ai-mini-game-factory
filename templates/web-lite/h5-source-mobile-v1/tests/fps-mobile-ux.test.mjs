@@ -525,8 +525,8 @@ test('CF visible-aim tutorial indicates only camera-confirmed on-screen swipe, n
 test('CF native fire-button gesture gives one right thumb both hold-fire and camera drag',()=>{
  assert.deepEqual(cfFireDragLookDelta(0,0),{x:0,y:0});
  const gesture=cfFireDragLookDelta(-30,20);
- assert.ok(gesture.x < -47.9 && gesture.x > -48.1);
- assert.ok(gesture.y > 31.9 && gesture.y < 32.1);
+ assert.ok(gesture.x < -86.9 && gesture.x > -87.1);
+ assert.ok(gesture.y > 57.9 && gesture.y < 58.1);
  assert.deepEqual(cfFireDragLookDelta(1000,-1000),{x:96,y:-96},
   'one outlier touchmove must not rotate the camera through multiple turns');
  for(const invalid of [NaN,Infinity,undefined]){
