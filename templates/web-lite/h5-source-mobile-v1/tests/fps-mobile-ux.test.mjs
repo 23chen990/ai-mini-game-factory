@@ -410,14 +410,14 @@ test('CF v7 retains genuine partial move across native respawns but never credit
 
 test('CF novice opening opponent returns fire from readable cover before a later real rush',()=>{
  const novice={kind:'hits',drill:'reposition',elite:false};
- assert.equal(cfScoutHoldSeconds(novice),65);
+ assert.equal(cfScoutHoldSeconds(novice),10);
  assert.equal(cfScoutHoldSeconds({kind:'hits',elite:false}),7);
- assert.equal(cfScoutHoldSeconds({kind:'kills'}),20);
+ assert.equal(cfScoutHoldSeconds({kind:'kills'}),15);
  assert.equal(cfScoutHoldSeconds({kind:'survive'}),7);
- assert.equal(cfScoutHoldSeconds({...novice,elite:true}),3);
- assert.equal(cfScoutHoldSeconds({kind:'kills',elite:true}),7);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},64.99),false);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},65),true);
+ assert.equal(cfScoutHoldSeconds({...novice,elite:true}),4);
+ assert.equal(cfScoutHoldSeconds({kind:'kills',elite:true}),6);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:10},9.99),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:10},10),true);
  assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:false,__mobileTrainingHoldUntil:18},22),false);
 });
 
@@ -468,13 +468,13 @@ test('CF follow-up fire gets limited aim friction only when the novice actively 
 });
 
 
-test('CF observed-cover training bot remains available but not invulnerable for the whole beginner clock',()=>{
+test('CF V14 temporary first-aim training ends before 12s, not at the match deadline',()=>{
  const c={kind:'hits',drill:'reposition',limitMs:60000,elite:false};
- assert.equal(cfScoutHoldSeconds(c),65);
- assert.equal(cfScoutHoldSeconds({...c,limitMs:45000}),50);
- assert.equal(cfScoutHoldSeconds({...c,elite:true}),3);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},60),false);
- assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:65},66),true);
+ assert.equal(cfScoutHoldSeconds(c),10);
+ assert.equal(cfScoutHoldSeconds({...c,limitMs:45000}),10);
+ assert.equal(cfScoutHoldSeconds({...c,elite:true}),4);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:10},9.9),false);
+ assert.equal(mobileScoutHoldExpired({__mobileTrainingScout:true,__mobileTrainingHoldUntil:10},12),true);
 });
 
 
