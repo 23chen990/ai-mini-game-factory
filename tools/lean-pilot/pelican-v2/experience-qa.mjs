@@ -196,7 +196,7 @@ try{
   // Every decision still uses the actual public three-lane radar only.
   const ttc=i=>{
    const text=v.lanes[i]?.text??'';
-   const parsed=Number(text.match(/(\\d+(?:\\.\\d+)?)\\s*s/u)?.[1]);
+   const parsed=Number(text.match(/(\d+(?:\.\d+)?)\s*s/u)?.[1]);
    return v.lanes[i]?.danger?(Number.isFinite(parsed)?parsed:0):Infinity;
   };
   const imminent=i=>ttc(i)<=2.0;
