@@ -9,6 +9,7 @@ import {browserOptions,qaDpr} from './browser-options.mjs';
 import {tapVisible} from './touch.mjs';
 import {campaignWallBudgetMs} from './runtime/qa-budget.mjs';
 import {capturePath} from './qa-capture-paths.mjs';
+import {RISK_LEVELS,TARGET_WINDOW_TRAIL_METERS,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const mode=process.argv[2]??'campaign',engine=process.env.QA_ENGINE??'webkit';
 const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'qa-'+mode+'-'+engine);await mkdir(qaDir,{recursive:true});
@@ -23,16 +24,38 @@ function segment(name){segments.push({name,checkStart,checkEnd:report.checks.len
 const ROAD_EDGE_FOR_QA=2.15;
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(JSON.stringify({name,passed,evidence}));};
 const shot=async name=>{const p=path.join(qaDir,capturePath(captureSection,name));await mkdir(path.dirname(p),{recursive:true});await page.screenshot({path:p});report.screenshots.push({path:path.relative(RUN,p),sha256:sha(await readFile(p))});};
-const tap=async selector=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance,level:before.level}};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
+const tap=async (selector,{fastReaction=false}={})=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance,level:before.level}};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const touchPoint=await tapVisible(page,selector);
+ // A real touch is mandatory. Do not wait through software-rendered frames
+ // before the next visible jump / lane decision.
+ if(!fastReaction)await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
+ const after=fastReaction?await page.evaluate(()=>({
+  phase:document.querySelector('#coast')?.dataset.phase,
+  distance:Number(document.querySelector('#co-distance')?.textContent?.match(/\d+/u)?.[0]??0),
+  level:before.level,
+ })):await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
 const snapshot=()=>page.evaluate(()=>window.__coast.snapshot());
 async function fresh(){context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir:qaDir,size:{width:390,height:844}}});page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('framenavigated',f=>{if(f===page.mainFrame())navs++;});
  await page.addInitScript(()=>{window.__qaFrames=[];let prev;const f=t=>{if(prev&&window.__qaFrames.length<100000)window.__qaFrames.push(t-prev);prev=t;requestAnimationFrame(f);};requestAnimationFrame(f);});await page.goto(base);await page.waitForSelector('#coast[data-loaded="true"]');}
-const view=()=>page.evaluate(()=>({phase:document.querySelector('#coast').dataset.phase,distance:Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0),lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(x=>x.classList.contains('on')),lanes:[...document.querySelectorAll('.co-lane')].map(n=>({text:n.textContent,danger:n.classList.contains('danger'),fish:n.classList.contains('fish')}))}));
+const view=async()=>{
+ const raw=await page.evaluate(()=>({
+  phase:document.querySelector('#coast').dataset.phase,
+  distance:Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0),
+  lane:[...document.querySelectorAll('.co-lane-indicator i')].findIndex(node=>node.classList.contains('on')),
+  lanes:[...document.querySelectorAll('.co-lane')].map(node=>({className:node.className,text:node.textContent.trim()})),
+  goldCounter:Number(document.querySelector('#co-mastery [data-goal="gold"]')?.textContent?.match(/\d+/u)?.[0]??NaN),
+  jumpReady:document.querySelector('[data-action="jump"]')?.classList.contains('ready')===true,
+  nowMs:performance.now(),
+ }));
+ return {...raw,laneIndex:raw.lane,lanes:raw.lanes.map(visibleLaneFromHud)};
+};
 async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={}){
  // Host software WebGL can run below real-time. Bound wall time by authored ride length;
  // never accelerate game simulation, inject scores or fabricate unlocks.
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  const wallStarted=Date.now(),budgetMs=campaignWallBudgetMs(stage,maxMs),end=wallStarted+budgetMs;let lastTap=0,nearShot=false;
+ const authored=Number.isInteger(stage)?RISK_LEVELS.find(level=>level.id===stage):null;
+ const rewardTargets=authored?.targets??[];let targetIndex=0;
+ let policyState=rewardTargets.length?createRiskPolicyState(stage,rewardTargets[0]):null;
  const finish=async status=>{
   const result=await snapshot();
   report.driveBudgets.push({stage,status,budgetMs,wallElapsedMs:Date.now()-wallStarted,gameElapsedSeconds:result.elapsed??null,
@@ -40,15 +63,37 @@ async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={})
   return result;
  };
  while(Date.now()<end){const v=await view();if(v.phase==='finished'||v.distance>=stopAtDistance)return finish(v.phase==='finished'?'settled':'distance-reached');if(v.phase==='paused'){await tap('#co-resume');continue;}
-  const imminent=i=>v.lanes[i].danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=4;
-  let want=v.lane;
-  if(imminent(v.lane)){const safe=[0,1,2].filter(i=>!imminent(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
-  else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!imminent(i));if(fish>=0)want=fish;}
-  if(avoidFish){const safe=[0,1,2].filter(i=>!imminent(i)&&!v.lanes[i].fish);if(safe.length)want=safe.includes(v.lane)?v.lane:safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0];}
-  // A player already in a safe lane declines a fish that requires crossing a red lane.
-  if(want!==v.lane&&!imminent(v.lane)&&imminent(v.lane+Math.sign(want-v.lane)))want=v.lane;
-  if(Date.now()-lastTap>180&&want!==v.lane){await tap(`[data-action="${want<v.lane?'left':'right'}"]`);lastTap=Date.now();}
-  if(!nearShot&&v.lanes.some(l=>l.danger&&Number(l.text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=3)){nearShot=true;await shot('level-'+stage+'-hazard');}
+  const imminent=i=>v.lanes[i]?.danger&&Number(v.lanes[i].text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=4;
+  let decision=null;
+  if(!avoidFish&&policyState){
+   // This independent unlock/save/replay runner previously NEVER pressed jump.
+   // Read public HUD + READY class; normal Playwright touchscreen input only.
+   while(targetIndex<rewardTargets.length-1&&
+    v.distance>rewardTargets[targetIndex].distance+TARGET_WINDOW_TRAIL_METERS&&
+    policyState.stage!=='capture'){
+    targetIndex++;policyState=createRiskPolicyState(stage,rewardTargets[targetIndex]);
+   }
+   decision=decideRiskAction(v,policyState);policyState=decision.state;
+   if(['left','right','jump'].includes(decision.action)){
+    await tap(`[data-action="${decision.action}"]`,{fastReaction:true});lastTap=Date.now();
+    if(decision.action==='left'||decision.action==='right')
+     await page.waitForFunction(expected=>[...document.querySelectorAll('.co-lane-indicator i')]
+      .findIndex(node=>node.classList.contains('on'))===expected,decision.toLane,{timeout:1800});
+   }
+  }else{
+   let want=v.lane;
+   if(imminent(v.lane)){const safe=[0,1,2].filter(i=>!imminent(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
+   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!imminent(i));if(fish>=0)want=fish;}
+   if(avoidFish){const safe=[0,1,2].filter(i=>!imminent(i)&&!v.lanes[i].fish);if(safe.length)want=safe.includes(v.lane)?v.lane:safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0];}
+   if(want!==v.lane&&!imminent(v.lane)&&imminent(v.lane+Math.sign(want-v.lane)))want=v.lane;
+   if(Date.now()-lastTap>180&&want!==v.lane){await tap(`[data-action="${want<v.lane?'left':'right'}"]`);lastTap=Date.now();}
+  }
+  // The separate risk QA records every true barrier prize. This screenshot
+  // should not block a timed input while the CURRENT player lane is at risk.
+  if(!nearShot&&v.lanes.some(l=>l.danger&&Number(l.text.match(/(\d+(?:\.\d+)?)s/)?.[1]??99)<=3)
+     &&(!decision||decision.action==='wait'&&!v.lanes[v.lane]?.danger)){
+   nearShot=true;await shot('level-'+stage+'-hazard');
+  }
   await page.waitForTimeout(90);
  }
  const result=await finish('runner-wall-budget-exhausted');
