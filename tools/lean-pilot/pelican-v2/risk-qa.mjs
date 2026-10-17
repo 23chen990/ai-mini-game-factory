@@ -110,7 +110,7 @@ async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,dec
  return action;
 }
 function makeEpisode(target){
- return {barrierId:target.barrierId,goldFishId:target.goldFishId,distance:target.distance,hudSeen:false,hudLane:null,hudSnapshotId:null,approachScreenshot:null,jump:null,holdComplete:false,holdDurationMs:null,holdSamples:[],barrierClearSnapshotId:null,bonusFishCatchSnapshotId:null,goldHud:null,screenshots:[]};
+ return {barrierId:target.barrierId,goldFishId:target.goldFishId,distance:target.distance,hudSeen:false,hudLane:null,hudSnapshotId:null,approachScreenshot:null,deferredApproachScreenshot:false,jump:null,holdComplete:false,holdDurationMs:null,holdSamples:[],barrierClearSnapshotId:null,bonusFishCatchSnapshotId:null,goldHud:null,screenshots:[]};
 }
 function eventFor(snapshot,type,objectId){return snapshot.events?.find(event=>event.type===type&&event.objectId===objectId)??null;}
 async function saveEvidenceShot(page,episode,kind){
@@ -222,7 +222,13 @@ async function runLevel(level){
      if(!evidenceEpisode.hudSeen&&view.distance>=evidenceTarget.distance-48&&view.distance<=evidenceTarget.distance+10&&targetLane>=0){
       evidenceEpisode.hudSeen=true;evidenceEpisode.hudLane=targetLane;
       const record=await recordSnapshot(page,'visible-jump-reward-radar',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.hudSnapshotId=record.id;
-      evidenceEpisode.approachScreenshot=(await saveEvidenceShot(page,evidenceEpisode,'reward-approach')).path;
+      // The 205m -> 233m pair leaves just seconds to move and buffer a jump.
+      // Take the public HUD snapshot now, but move expensive PNG work AFTER
+      // the trusted touch. Otherwise image encoding consumes the jump window.
+      const previousTarget=level.targets[targetIndex-1];
+      const shortFollowUp=previousTarget&&evidenceTarget.distance-previousTarget.distance<=30;
+      if(shortFollowUp)evidenceEpisode.deferredApproachScreenshot=true;
+      else evidenceEpisode.approachScreenshot=(await saveEvidenceShot(page,evidenceEpisode,'reward-approach')).path;
      }
      const barrierClear=eventFor(observed,'barrier-cleared',evidenceTarget.barrierId);
      if(barrierClear&&!evidenceEpisode.barrierClearSnapshotId){const record=await recordSnapshot(page,'exact-barrier-cleared-event',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.barrierClearSnapshotId=record.id;await saveEvidenceShot(page,evidenceEpisode,'barrier-cleared');}
@@ -258,6 +264,10 @@ async function runLevel(level){
      console.log('RISK_JUMP_ACTION '+JSON.stringify({engine,level:level.id,target:episode.barrierId,visibleDistance:view.distance,phase:proof.phase,reason:proof.reason,lane:proof.lane,laneTarget:proof.laneTarget,laneIndex:proof.laneIndex,bufferedJump:proof.bufferedJump,airY:proof.y,events:(proof.events??[]).filter(e=>['jump','jump-buffered','failed'].includes(e.type)).slice(-3),trustedTouch:action.trustedTouch}));
      const holdStartMs=await page.evaluate(()=>performance.now());state={...state,jumpAtMs:holdStartMs};
      episode.jump={at:action.at,completedAt:action.completedAt,nowMs:holdStartMs,distance:view.distance,laneIndex:view.laneIndex,goldCounter:view.goldCounter,jumpReady:view.jumpReady,countdown:decision.countdown,actionIndex:report.actions.indexOf(action)};
+     if(episode.deferredApproachScreenshot){
+      episode.approachScreenshot=(await saveEvidenceShot(page,episode,'reward-approach')).path;
+      episode.deferredApproachScreenshot=false;
+     }
      await saveEvidenceShot(page,episode,'jump-input');
     }
     if(decision.action==='left'||decision.action==='right'){
@@ -346,7 +356,7 @@ async function runLevel(level){
 
 function verifyEpisode(level,episode){
  const prefix=`level-${level.id}-${episode.barrierId}`;
- check(`${prefix}-visible-jump-reward-route`,episode.hudSeen,{lane:episode.hudLane,snapshotId:episode.hudSnapshotId,screenshot:episode.approachScreenshot,distance:episode.distance});
+ check(`${prefix}-visible-jump-reward-route`,episode.hudSeen&&Boolean(episode.hudSnapshotId)&&Boolean(episode.approachScreenshot),{lane:episode.hudLane,snapshotId:episode.hudSnapshotId,screenshot:episode.approachScreenshot,distance:episode.distance});
  check(`${prefix}-one-jump-at-decimal-window`,Boolean(episode.jump)&&(Number.isFinite(episode.jump.countdown)&&episode.jump.countdown<=JUMP_WINDOW_SECONDS&&episode.jump.countdown>=0||episode.jump.jumpReady===true&&episode.jump.distance<episode.distance),{jump:episode.jump});
  const jumpActions=report.actions.filter(action=>action.levelId===level.id&&action.targetBarrierId===episode.barrierId&&action.selector==='[data-action="jump"]');
  check(`${prefix}-no-repeat-jump`,jumpActions.length===1,{jumpActions:jumpActions.map(action=>({at:action.at,selector:action.selector}))});
