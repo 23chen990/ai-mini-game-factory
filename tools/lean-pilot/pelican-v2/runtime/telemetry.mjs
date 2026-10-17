@@ -1,7 +1,7 @@
 // Privacy-first, offline-only event counters for small human playtests.
 // Nothing is uploaded and there are no fingerprints, cookies or player IDs.
 const EVENTS=new Set(['start','finish','fail','retire','retry','endless_gate',
- 'shop_buy','shop_equip','revive_offer','revive_unavailable']);
+ 'shop_buy','shop_equip','revive_opportunity','revive_offer','revive_unavailable','record_broken','endless_tier']);
 const valid=n=>Number.isSafeInteger(n)&&n>=0&&n<=9999999;
 const validTimestamp=n=>Number.isSafeInteger(n)&&n>=0&&n<=9999999999999;
 export function newPlaytestMetrics(){return {version:1,counters:{},events:[]};}
