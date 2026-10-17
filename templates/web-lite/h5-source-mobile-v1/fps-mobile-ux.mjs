@@ -569,7 +569,7 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
       return 'AWM 真实击杀 ' + awmKills + ' 人'+
         (challenge.minTravel?'，同时移动'+travel+'米':'')+'。';
     return '累计真实移动 '+travel+' 米、被击倒 '+deaths+' 次'+
-      (challenge.minKills?'、亲手击杀'+actual(metrics.kills)+'人':'')+'。';
+      (challenge.minKills?'、亲手击杀'+actual(metrics.kills)+'人。':'。下次试试零死亡通关。');
   }
   if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths+(challenge.bonusDeaths===1?1:0))
     return '被击倒 ' + deaths + ' 次，本关最多允许 ' +
@@ -627,7 +627,9 @@ export function cfMissionFacts(challenge) {
     challenge.kind === 'kills' ? '击杀 '+challenge.target+' 人'+(challenge.minTravel?' · 行进'+challenge.minTravel+'米':'') :
     challenge.kind === 'assault' ? '行进'+challenge.minTravel+'米→杀'+challenge.target+'人' :
     challenge.kind === 'defend' ? '守 '+(challenge.reverse?'B → A':'A → B')+' · 各'+challenge.holdSeconds+'秒' :
-      '移动'+(challenge.minTravel||0)+'米'+(challenge.minKills?' · 击杀'+challenge.minKills:'');
+      challenge.minKills
+        ?'移动'+(challenge.minTravel||0)+'米 · 击杀'+challenge.minKills
+        :'移动 ' + (challenge.minTravel || 0) + ' m';
   return [
     { label:'装备',value:weapon },
     { label:'目标',value:target },
