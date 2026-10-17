@@ -208,7 +208,22 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       {beforeFire,after:afterFire.player});
     // Genuine fire+camera and reload/jump: normal CDP fingers only.
     const beforeDrag=await inspect(),fc=center(fireRect);
+    // Window touchmove must never see a FIRE-origin drag. The original
+    // upstream TouchControls would otherwise apply another 1.6x rotation.
+    await page.evaluate(()=>{
+      window.__cfWindowFireMoveCount=0;
+      window.__cfCountFireMove=()=>window.__cfWindowFireMoveCount++;
+      window.addEventListener('touchmove',window.__cfCountFireMove);
+    });
     await gesture(fc,{x:fc.x-25,y:fc.y-6},470,28);
+    const bubbledFireMoves=await page.evaluate(()=>{
+      const count=window.__cfWindowFireMoveCount;
+      window.removeEventListener('touchmove',window.__cfCountFireMove);
+      delete window.__cfCountFireMove;delete window.__cfWindowFireMoveCount;
+      return count;
+    });
+    check('fire-drag-never-double-counted-by-upstream-window-look',
+      bubbledFireMoves===0,{windowTouchmoves:bubbledFireMoves});
     const afterDrag=await inspect();
     check('one-thumb-fire-drag-aim-and-real-bullets',
       Math.abs(afterDrag.player.yaw-beforeDrag.player.yaw)>0.015&&
