@@ -1272,7 +1272,7 @@ export function createFpsMobileUx(game, root, doc) {
       const fire=fireDragTouches.get(t.identifier);
       if(fire){
         const delta=cfFireDragLookDelta(t.clientX-fire.x,t.clientY-fire.y,
-          aimFriction()*(cover.enabled?.72:1));
+          aimFriction()*(cover.enabled ? 0.72 : 1));
         fire.x=t.clientX;fire.y=t.clientY;
         if(p?.alive){
           if(p.touch&&!p.touch.fire)cfBeginTouchFire(p.touch);
@@ -1288,7 +1288,7 @@ export function createFpsMobileUx(game, root, doc) {
       const aim=aimTouchStarts.get(t.identifier);
       if(aim){
         const delta=cfFireDragLookDelta(t.clientX-aim.x,t.clientY-aim.y,
-          aimFriction()*(cover.enabled?.72:1));
+          aimFriction()*(cover.enabled ? 0.72 : 1));
         aim.x=t.clientX;aim.y=t.clientY;
         if(p?.alive){
           p.touchLook ||= {x:0,y:0};
