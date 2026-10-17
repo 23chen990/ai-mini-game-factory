@@ -2,7 +2,16 @@
 /** Small source-facing bridge, not a combat implementation. */
 export function createFpsAdapter(game, doc) {
   return {
-    start: (challenge) => { const size=challenge?.kind==='hits'?1:challenge?.kind==='defend'?2:challenge?.kind==='kills'?3:4; Object.assign(game.opts, { size, goal: 30, diff: 'easy', quality: 'low' }); game.hud.syncControls(); doc.getElementById('btnStart').click(); },
+    start: (challenge) => {
+      // The source adapter is the last writer before Game.startMatch():
+      // previously it overwrote the lite 4v4 and PVE kill quota back to 1v1/30.
+      const lite=challenge?.lite===true;
+      const size=lite?4:challenge?.kind==='hits'?1:
+        challenge?.kind==='defend'?2:challenge?.kind==='kills'?3:4;
+      Object.assign(game.opts,{size,goal:lite?300:30,diff:'easy',quality:'low'});
+      game.hud.syncControls();
+      doc.getElementById('btnStart').click();
+    },
     pause: () => { if (game.playing && !game.ended && !game.paused) game.pause(); },
     resume: () => game.resume(true),
     phase: () => game.ended ? 'finished' : game.paused ? 'paused' : game.playing ? 'running' : 'ready',
