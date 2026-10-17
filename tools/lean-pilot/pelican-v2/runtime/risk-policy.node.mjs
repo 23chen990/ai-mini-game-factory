@@ -49,7 +49,7 @@ test('a visible READY jump control is a valid fallback when the radar prize cue 
  const confirmed={...s,committedRewardLane:1};
  const viewReady=view({level:1,distance:217,laneIndex:1,jumpReady:true,goldCounter:4,lanes:[lane({fish:true}),lane(),lane()]});
  const a=decide(viewReady,confirmed);
- assert.equal(a.action,'jump');assert.equal(a.reason,'visible-jump-button-ready');
+ assert.equal(a.action,'jump');assert.equal(a.reason,'confirmed-next-barrier-ready');
  assert.equal(a.state.goldAtJump,4);assert.equal(a.state.stage,'capture');
  const tooLate=decide({...viewReady,distance:225},confirmed);
  assert.notEqual(tooLate.action,'jump');
