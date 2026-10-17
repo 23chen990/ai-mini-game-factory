@@ -98,5 +98,6 @@ test('V14 first30 analytics are strictly local, bounded, versioned and safe on b
 test('V14 local metrics run from existing registered CF-only runtime module',()=>{
   const main=readFileSync(new URL('../main.mjs',import.meta.url),'utf8');
   assert.equal(main.includes('cf-playtest-metrics.mjs'),false);
-  assert.equal(main.match(/^import /gm)?.length,4,'standalone H5 supports exactly four registered imports');
+  assert.equal(main.match(/^import /gm)?.length,5,'V20 adds one explicit registered cover module');
+  assert.match(main,/from '\.\/cf-cover-assault\.mjs'/);
 });
