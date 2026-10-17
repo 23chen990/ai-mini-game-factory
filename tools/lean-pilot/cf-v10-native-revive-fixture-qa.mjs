@@ -1,4 +1,4 @@
-/* global window,document,performance,process,console,setTimeout,localStorage */
+/* global window,document,process,console,setTimeout,localStorage,URL */
 import {chromium} from '@playwright/test';
 import {writeFile,mkdir} from 'node:fs/promises';
 import path from 'node:path';
