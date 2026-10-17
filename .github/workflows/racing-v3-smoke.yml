@@ -131,11 +131,11 @@ jobs:
   publish-qa-preview:
     name: Verified H5 phone preview (QA only)
     needs: racing-v3
-    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'chatgpt/racing-v70-iaa-short-session-20261017' || github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017') && github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'pull_request' && (github.event.pull_request.head.ref == 'chatgpt/racing-v70-iaa-short-session-20261017' || github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v91-wheel-hud-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017') && github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-24.04
     timeout-minutes: 9
     env:
-      RACE_QA_BRANCH: ${{ github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017' && 'preview/racing-v90-integrated-20261017' || (github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' && 'preview/racing-v80-integrated-20261017' || 'preview/racing-v70-iaa-short-session-20261017') }}
+      RACE_QA_BRANCH: ${{ github.event.pull_request.head.ref == 'chatgpt/racing-v91-wheel-hud-20261017' && 'preview/racing-v91-wheel-hud-20261017' || (github.event.pull_request.head.ref == 'chatgpt/racing-v9-course-craft-20261017' && 'preview/racing-v90-integrated-20261017') || (github.event.pull_request.head.ref == 'feat/racing-v8-full-experience-20261017' && 'preview/racing-v80-integrated-20261017' || 'preview/racing-v70-iaa-short-session-20261017') }}
     permissions:
       contents: write
       actions: read
