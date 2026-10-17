@@ -1,4 +1,5 @@
-import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, stageUnlocked, starGateStatus, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
+import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, stageUnlocked, starGateStatus, skinUnlocked, carUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
+import { grantCosmetic } from './cosmetics.mjs';
 import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemCleanup, awardCornerPass, removeEliminatedAi } from './items.mjs';
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
@@ -49,7 +50,24 @@ export class RacingCareer {
       this.retryOfferRound = -1;
     }
     this.index = index;this.dailySnapshot = null;return true; }
-  setSkin(index) { if (!skinUnlocked(this.progress, index)) return false;this.progress.skin = index;this.save();return true; }
+  /** Selecting an already-owned look must persist before it is shown as saved. */
+  setSkin(index) {
+    if (!skinUnlocked(this.progress,index) || this.adBusy || this.active) return false;
+    if (this.progress.skin === index) return true;
+    const updated={...this.progress,skin:index};
+    try { this.storage.setItem(CAREER_KEY,JSON.stringify(updated)); }
+    catch { this.storageOK=false;this.adReady=false;this.fuelEnabled=false;return false; }
+    this.progress=updated;return true;
+  }
+  /** A future GLB only becomes selectable after it is registered as a real car. */
+  setCar(id) {
+    if (!carUnlocked(this.progress,id) || this.adBusy || this.active) return false;
+    if (this.progress.car === id) return true;
+    const updated={...this.progress,car:id};
+    try { this.storage.setItem(CAREER_KEY,JSON.stringify(updated)); }
+    catch { this.storageOK=false;this.adReady=false;this.fuelEnabled=false;return false; }
+    this.progress=updated;return true;
+  }
   nextStage() { return !this.dailySnapshot && this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
   configure(game) {
     const s = this.stage;
@@ -64,6 +82,38 @@ export class RacingCareer {
     this.fuelEnabled=this.storageOK;
     return this.adReady;
   }
+  /** Only an installed official ad unit may offer a cosmetic reward; all ads
+   * share the existing session mutex with fuel, pass and retry rewards. */
+  canOfferCosmeticAd(kind,id) {
+    return this.storageOK && this.adReady && !this.adBusy && !this.active &&
+      grantCosmetic(this.progress,kind,id)!==null;
+  }
+  canOfferSkinAd(index) { return this.canOfferCosmeticAd('skin',index); }
+  canOfferCarAd(id) { return this.canOfferCosmeticAd('car',id); }
+  async watchCosmeticAd(kind,id) {
+    if (!this.canOfferCosmeticAd(kind,id)) return {status:'unavailable'};
+    const rounds=this.progress.rounds;
+    this.adBusy=true;
+    try {
+      const out=await this.rewardedProvider({tap:this.tap,config:this.config});
+      if(out?.status!=='completed')return {status:out?.status??'failed'};
+      if(this.active || this.progress.rounds!==rounds) return {status:'stale'};
+      const updated=grantCosmetic(this.progress,kind,id);
+      if(!updated)return {status:'stale'};
+      // The reward is permanent only if the existing save key accepts the write.
+      // Never award an unsaved entitlement, even when the video finished.
+      try { this.storage.setItem(CAREER_KEY,JSON.stringify(updated)); }
+      catch {
+        this.storageOK=false;this.adReady=false;this.fuelEnabled=false;
+        return {status:'save-failed'};
+      }
+      this.progress=updated;
+      return {status:'completed',kind,id};
+    } catch { return {status:'failed'}; }
+    finally { this.adBusy=false; }
+  }
+  watchSkinAd(index) { return this.watchCosmeticAd('skin',index); }
+  watchCarAd(id) { return this.watchCosmeticAd('car',id); }
   gateStatus(index) { return starGateStatus(this.progress,index); }
   canOfferGateAd(index) {
     const gate=this.gateStatus(index);
