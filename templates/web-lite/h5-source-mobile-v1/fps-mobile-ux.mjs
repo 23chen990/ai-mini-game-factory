@@ -506,6 +506,11 @@ export function cfJoystickVector(x,y,cx,cy,radius=60,deadzone=0.10) {
     dx:Math.max(-radius,Math.min(radius,dx)),
     dy:Math.max(-radius,Math.min(radius,dy))};
 }
+/** Native match restart reuses the existing renderer/world (no full page reload).
+ * Only the CF result panel opts into this path; other game adapters unchanged. */
+export function cfWarmRestartAllowed(gameId,phase) {
+  return gameId==='cf-transport-ship'&&phase==='finished';
+}
 export function cfBeginTouchFire(touch) {
   if(!touch)return false;
   if(touch.fire!==true)touch.firePressed=true;
