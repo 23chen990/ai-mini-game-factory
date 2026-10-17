@@ -332,6 +332,11 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await writeFile(path.join(project, 'src', adapterName),
       await readFile(path.join(owned, ownedName), 'utf8'));
   }
+  // The generated native World imports the track adapter from its OWN src/;
+  // copy the shared 17-30 course blueprints to that same directory rather
+  // than resolving the adapter's relative import against the template tree.
+  await writeFile(path.join(project, 'src/career-expansion.mjs'),
+    await readFile(path.join(owned, 'career-expansion.mjs'), 'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
   const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))));
