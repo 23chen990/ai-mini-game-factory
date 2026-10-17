@@ -319,7 +319,11 @@ async function boot() {
       $('notice').textContent='';
       resumeRound(round);native.resume();
       last=performance.now();lastFpsNativeSec=native.simulatedSeconds?.()||0;
-      showPhase('running');persist();
+      showPhase('running');
+      // The ad host can close while Safari/Android is still backgrounded or
+      // the phone is portrait. Never consume restored life/time offscreen.
+      if(document.hidden||portraitBlocked())pause();
+      persist();
     });
     $('revive-decline').addEventListener('click',()=>{
       if(!reviveOffered||reviveBusy||root.dataset.phase!=='revive'||!round)return;
@@ -328,6 +332,7 @@ async function boot() {
       resumeRound(round);native.resume();
       last=performance.now();lastFpsNativeSec=native.simulatedSeconds?.()||0;
       showPhase('running');
+      if(document.hidden||portraitBlocked())pause();
     });
   }
   showPhase('ready');
