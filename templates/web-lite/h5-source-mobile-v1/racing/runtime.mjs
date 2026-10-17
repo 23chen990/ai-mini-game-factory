@@ -68,7 +68,7 @@ export class RacingCareer {
   canOfferGateAd(index) {
     const gate=this.gateStatus(index);
     return this.storageOK && this.adReady && !this.adBusy && !this.active &&
-      !this.dailySnapshot && gate.starLocked && gate.required>0;
+      gate.starLocked && gate.required>0;
   }
   /** Official completion + synchronous durable local write are both required.
    * An ad cannot mint stars, unlock a skipped prior stage or grant race fuel.
