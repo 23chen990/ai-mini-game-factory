@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { V9_STAGE_RHYTHMS, validateV9Rhythms, shapeV9RhythmSegments } from '../racing/v9-course-director.mjs';
+import { V9_STAGE_RHYTHMS, validateV9Rhythms, shapeV9RhythmSegments, V9_WIDTH_BANDS, v9RoadHalfWidthAt } from '../racing/v9-course-director.mjs';
 import { createCareerLayouts, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
 const bases=()=>Object.fromEntries(['city','egypt','aegean','snow'].map(map=>[map,{__racingV31:true,width:23,points:[[0,0,0]]}]));
 const length=points=>points.reduce((sum,a,i)=>{
@@ -48,4 +48,25 @@ test('V9 original beats are pure, bounded, do not move track anchors and reject 
   assert.equal(correct.rest,1);
   assert.deepEqual(correct.points[0],[0,0,0]);
   assert.deepEqual(correct.points.at(-1),[820,0,0]);
+});
+
+test('V9 width variation changes actual safe driving width, not only line paint',()=>{
+  assert.equal(Object.keys(V9_WIDTH_BANDS).length,30);
+  const layouts=bases();
+  createCareerLayouts(layouts,{v8:true,v9:true});
+  for(let n=1;n<=30;n++){
+    const id=String(n).padStart(2,'0');
+    const profile=V9_WIDTH_BANDS[id],layout=layouts['race-'+id];
+    assert.deepEqual(layout.v9WidthProfile,profile,id);
+    const half=layout.width*.5,measured=[];
+    for(let i=0;i<=1000;i++) {
+      const value=v9RoadHalfWidthAt(half,profile,i/1000);
+      assert.ok(value>=half*.83&&value<=half*1.08,id);
+      measured.push(value);
+    }
+    assert.ok(Math.max(...measured)-Math.min(...measured)>half*.14,id);
+    assert.equal(v9RoadHalfWidthAt(half,null,.32),half);
+    assert.ok(Math.abs(v9RoadHalfWidthAt(half,profile,.13)-
+      v9RoadHalfWidthAt(half,profile,1.13))<1e-7,id);
+  }
 });
