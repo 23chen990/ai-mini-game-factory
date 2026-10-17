@@ -244,7 +244,7 @@ $('export').addEventListener('click', () => {
     const blob=new Blob([content],{type:'application/json;charset=utf-8'});
     const url=URL.createObjectURL(blob);
     const anchor=document.createElement('a');
-    anchor.href=url;anchor.download='racing-v53-local-playtest.json';
+    anchor.href=url;anchor.download='racing-v60-local-playtest.json';
     document.body.append(anchor);anchor.click();anchor.remove();
     button.textContent='数据已准备';
     setTimeout(()=>{ URL.revokeObjectURL(url); button.textContent='导出数据 ↓'; },1500);
