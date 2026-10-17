@@ -115,7 +115,12 @@ export function createCoastAdventure(api) {
   Object.assign(settings,{autopilot:false,cruise:run.level.speed,hour:run.level.hour,timeFlow:false,cloud:run.level.weather==='rain'?.78:.35,fog:run.level.weather==='rain'?1.08:.8,music:sound});
    duskSafetyLight.intensity=duskRoadAmbient(run.level);
   document.body.classList.add('started');root.classList.remove('crashing');rider.rotation.set(0,0,0);pelican.root.rotation.z=0;audio.mute(!sound);rainGroup.visible=run.level.weather==='rain'&&quality.tier>0;finishRoot.visible=!run.level.endless;$('crash').classList.remove('active');$('title').textContent=id+' · '+run.level.name;
-  phase('running');persist();
+  phase('running');
+  // The previous attempt's HUD can still show 139m while the replayed
+  // physics run has already reset to zero. Render the next run's public
+  // instruments immediately, before an input or QA can read stale data.
+  updateHud();
+  persist();
    const intro=run.level.weather==='rain'?'🌧 雨天转向稍慢，提前看路况':run.level.weather==='dusk'?'🌙 暮色金鱼更亮，提前留意危险车道':'按住左右可自由骑，连续捕鱼还有连击分！';
    notice(replayTarget==null?(id===1?'🐟 第一条鱼在前方':'🐟 本关挑战开始'):'⚡ 再试一次',replayTarget==null?intro:`上次在 ${Math.floor(replayTarget)} 米失误 · 这次试着超过它`,'tutorial');
  }
