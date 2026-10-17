@@ -460,9 +460,19 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         };
         openingAimTrace.push(aim);
         if(!aim.visible){
-          // Search by turning the real camera, not by reading enemy positions.
-          const origin={x:408,y:112},sign=n%8<6?1:-1;
-          await gesture(origin,{x:origin.x+sign*46,y:origin.y},100,93);
+          // A normal FPS user walks toward the gunfight when no opponent is
+          // visible. Sample the actual joystick and original collision:
+          // alternate short forward advances and real camera searching.
+          if(n%3===1){
+            const padBox=await rect('#touch .pad');
+            if(padBox){
+              const c=center(padBox);
+              await gesture(c,{x:c.x,y:c.y-49},500,98);
+            }
+          }else{
+            const origin={x:408,y:112},sign=n%8<6?1:-1;
+            await gesture(origin,{x:origin.x+sign*46,y:origin.y},100,93);
+          }
         }else if(aim.aligned||n%2===0) {
           // Single thumb triggers actual native weapon bursts. The cursor is
           // never moved programmatically; each shot is a genuine input.
