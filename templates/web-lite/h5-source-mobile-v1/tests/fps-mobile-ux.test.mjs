@@ -684,3 +684,22 @@ test('CF firing-only aim assist compares target with REAL native recoil-adjusted
  assert.equal('hits' in a,false);
  assert.equal('fire' in a,false);
 });
+
+test('CF V18 real swipe gain is symmetric and only slows under a real aligned target',()=>{
+ const free=cfFireDragLookDelta(25,-12);
+ const opposite=cfFireDragLookDelta(-25,12);
+ assert.deepEqual(free,{x:-opposite.x,y:-opposite.y});
+ assert.deepEqual(free,{x:72.5,y:-34.8});
+ const friction=cfFireDragLookDelta(25,-12,.65);
+ assert.ok(friction.x>0&&friction.x<free.x);
+ assert.ok(friction.y<0&&friction.y>free.y);
+ assert.deepEqual(cfFireDragLookDelta(25,0,0),{x:39.875,y:0},
+   'clamp prevents frozen aim even with accidental zero friction');
+ assert.deepEqual(cfFireDragLookDelta(25,0,Infinity),{x:72.5,y:0});
+ assert.deepEqual(cfFireDragLookDelta(0,0,.65),{x:0,y:0});
+ const lite={id:'tags',kind:'hits',lite:true,drill:'reposition',openingHits:1};
+ assert.equal(cfAutoFireEligible(lite,0),false);
+ assert.equal(cfAutoFireEligible(lite,20),false);
+ assert.match(cfTouchTutorial(lite),/按住开火/);
+ assert.doesNotMatch(mobileChallengeCopy({...lite,limitMs:75000,objective:'亲手击倒2名敌人'}),/换位/);
+});
