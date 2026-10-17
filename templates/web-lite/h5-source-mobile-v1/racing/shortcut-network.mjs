@@ -408,7 +408,7 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
       const sample=samples.find(p=>p.arc>=progress)??samples.at(-1);
       const half=widthAt(sample.arc)*.5;
       for(const side of [-1,1]){
-        const h=4.8;
+        const h=v9?6.2:4.8;
         const angular=['ice','sky'].includes(cfg.style);
         const gateGeo=!v9 ? new THREE.CylinderGeometry(.45,.6,h,6) :
           angular ? new THREE.OctahedronGeometry(1,0) :
@@ -417,7 +417,7 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false}={}){
         const beacon=new THREE.Mesh(gateGeo,v9?gateMat:
           new THREE.MeshStandardMaterial({color:palette.sign,emissive:0x125e63,
             emissiveIntensity:.6,roughness:.6}));
-        if(v9&&angular)beacon.scale.set(1.4,2.65,1.4);
+        if(v9&&angular)beacon.scale.set(1.4,h*.53,1.4);
         beacon.position.set(sample.x+sample.rx*side*(half+2.05),
           sample.y+h*.5,sample.z+sample.rz*side*(half+2.05));
         beacon.rotation.y=sample.hd;
