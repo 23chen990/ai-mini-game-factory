@@ -50,8 +50,10 @@ const STROKES=Object.freeze({
   apex:[[.28,.12,0],[.56,1,0],[.80,.34,0]],
   late:[[.28,.05,0],[.58,.40,0],[.80,1.05,0]],
   switch:[[.24,.70,0],[.50,-.84,0],[.79,.24,0]],
-  crest:[[.28,.22,.45],[.51,.70,3.2],[.78,.34,.6]],
+  crest:[[.28,.22,.7],[.51,.70,6],[.78,.34,1.2]],
 });
+/** Real road profile is gentler on icy stage 28, which already has steep elevation knots. */
+export const V10_CREST_METERS=Object.freeze({'02':6,'09':6,'14':6,'28':4.5});
 const number=v=>typeof v==='number'&&Number.isFinite(v);
 export function validateV10Signatures(){
   if(Object.keys(V10_STAGE_SIGNATURES).length!==30)throw Error('V10 must author 30 driving programs');
@@ -84,7 +86,7 @@ export function shapeV10SignatureSectors(original,shaped,originalSectors,id,base
   const expanded=(index)=>index+originalSectors.reduce((sum,[oldIndex],k)=>
     sum+(oldIndex<index&&oldPlan.beats[k]!==null?3:0),0);
   const segments=new Set(originalSectors.map(x=>x[0])),extras=new Set();
-  const out=shaped.map(p=>p.slice());
+  const out=shaped.map(p=>p.slice()),elevationOffsets=new Array(shaped.length).fill(0);
   for(const [index,style,amplitude]of [...plan.beats].sort((a,b)=>b[0]-a[0])) {
     if(index<1||index>=original.length-1||segments.has(index)||
        extras.has(index))throw Error('Overlapping V10/V9 real driving segment '+id);
@@ -94,14 +96,18 @@ export function shapeV10SignatureSectors(original,shaped,originalSectors,id,base
     if(length*baseScale<120)throw Error('V10 authored sector too short '+id+':'+index);
     const normalX=-dz/length,normalZ=dx/length,
       physical=amplitude/(baseScale*stretch);
-    const points=STROKES[style].map(([t,w,h])=>[
+    const points=STROKES[style].map(([t,w])=>[
       +(a[0]+dx*t+normalX*physical*w).toFixed(4),
       +(a[1]+dz*t+normalZ*physical*w).toFixed(4),
-      +(a[2]+(b[2]-a[2])*t+h/(baseScale*stretch)).toFixed(4),
+      +(a[2]+(b[2]-a[2])*t).toFixed(4),
     ]);
     out.splice(expanded(index)+1,0,...points);
+    // These rise metres are added by the actual V8 3D road build. Without
+    // this parallel array V8 would silently overwrite all authored bumps.
+    elevationOffsets.splice(expanded(index)+1,0,...STROKES[style].map(([,,rise])=>
+      +(rise*(V10_CREST_METERS[id]??6)/6).toFixed(3)));
   }
   if(out.length>40)throw Error('V10 native control-point limit exceeded '+id);
-  return {points:out,identity:plan.identity,events:plan.beats.length};
+  return {points:out,identity:plan.identity,events:plan.beats.length,elevationOffsets};
 }
 validateV10Signatures();
