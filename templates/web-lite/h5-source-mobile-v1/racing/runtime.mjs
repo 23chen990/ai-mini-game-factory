@@ -1,4 +1,4 @@
-import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, stageUnlocked, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
+import { CAREER_KEY, STAGES, newCareer, loadCareer, dailyStage, localDayKey, stageUnlocked, starGateStatus, skinUnlocked, recordStage, validDrift, fractionPassed } from './career.mjs';
 import { AutoItems, OvertakeTracker, ITEM_LABELS, thinItemBoxes, installItemCleanup, awardCornerPass, removeEliminatedAi } from './items.mjs';
 import { FUEL_KEY, FUEL_RULES, newFuelState, loadFuel, saveFuel, syncFuel, spendRaceFuel, fuelTimeLeft, fuelAdEligible, fuelPlatformReady, grantAdvertFuel } from '../fuel.mjs';
 import { requestRewardedVideo } from '../themes.mjs';
@@ -19,7 +19,7 @@ export class RacingCareer {
     this.index = this.index < 0 ? STAGES.length - 1 : Math.max(0, this.index - 1);
     this.dailySnapshot = null;
     this.auto = new AutoItems();this.passes = new OvertakeTracker();this.recovery = new WrongWayRecovery();this.pressure = new RivalPressure();
-    this.config = null;this.tap = null;this.fuelEnabled = false;this.adBusy = false;this.attempt = 0;
+    this.config = null;this.tap = null;this.fuelEnabled = false;this.adReady = false;this.adBusy = false;this.attempt = 0;
     // One earned free replay per stage/session after an actual failed result.
     // Never mutate native vehicle, rank or reward callbacks.
     this.freeReplayStageId = null;this.usedFreeReplays = new Set();
@@ -41,7 +41,7 @@ export class RacingCareer {
       this.storage.setItem(CAREER_KEY, JSON.stringify(this.progress));
       this.storage.setItem(FUEL_KEY, saveFuel(this.fuel));
       return true;
-    } catch { this.storageOK = false;this.fuelEnabled = false;return false; }
+    } catch { this.storageOK = false;this.fuelEnabled = false;this.adReady = false;return false; }
   }
   setStage(index) { if (!stageUnlocked(this.progress, index)) return false;
     if (this.stage.id !== STAGES[index].id) {
@@ -56,7 +56,48 @@ export class RacingCareer {
     Object.assign(game.settings, { map: s.map, course: s.course, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin });
     game.save();
   }
-  setupAd(config, tap) { this.config = config;this.tap = tap;this.fuelEnabled = this.storageOK && fuelPlatformReady(config, tap);return this.fuelEnabled; }
+  setupAd(config,tap) {
+    this.config=config;this.tap=tap;
+    this.adReady=this.storageOK&&fuelPlatformReady(config,tap);
+    // Fuel runs identically on mobile and desktop, even if the platform has
+    // NO rewarded ad adapter. SDK availability only controls ad buttons.
+    this.fuelEnabled=this.storageOK;
+    return this.adReady;
+  }
+  gateStatus(index) { return starGateStatus(this.progress,index); }
+  canOfferGateAd(index) {
+    const gate=this.gateStatus(index);
+    return this.storageOK && this.adReady && !this.adBusy && !this.active &&
+      gate.starLocked && gate.required>0;
+  }
+  /** Official completion + synchronous durable local write are both required.
+   * An ad cannot mint stars, unlock a skipped prior stage or grant race fuel.
+   */
+  async watchGateAd(index) {
+    if(!this.canOfferGateAd(index))return {status:'unavailable'};
+    const gate=this.gateStatus(index),currentId=this.stage.id,rounds=this.progress.rounds;
+    this.adBusy=true;
+    try{
+      const out=await this.rewardedProvider({tap:this.tap,config:this.config});
+      if(out?.status!=='completed')return {status:out?.status??'failed'};
+      if(this.stage.id!==currentId||this.progress.rounds!==rounds||
+        !this.gateStatus(index).starLocked) return {status:'stale'};
+      const updated={...this.progress,gatePasses:{
+        ...this.progress.gatePasses,[gate.stageId]:'ad'
+      }};
+      try{
+        this.storage.setItem(CAREER_KEY,JSON.stringify(updated));
+      }catch{
+        // A failing storage cannot claim a permanent rewarded unlock.
+        // Disable further ads so the player cannot waste another video.
+        this.storageOK=false;this.adReady=false;this.fuelEnabled=false;
+        return {status:'save-failed'};
+      }
+      this.progress=updated;
+      return {status:'completed',stageId:gate.stageId,required:gate.required};
+    }catch{return {status:'failed'};}
+    finally{this.adBusy=false;}
+  }
   canStart() {
     if (this.adBusy || (this.dailySnapshot ? !this.canDaily() : !stageUnlocked(this.progress, this.index))) return false;
     if (!this.fuelEnabled) return true;
@@ -312,7 +353,7 @@ export class RacingCareer {
    */
   canOfferRetryBoost() {
     const elapsed=Date.now()-this.startedAt;
-    return this.fuelEnabled && !this.adBusy &&
+    return this.fuelEnabled && this.adReady && !this.adBusy &&
       this.retryOfferRound === this.progress.rounds &&
       this.retryOfferRound > 0 && this.retryAdAttempts < 2 &&
       elapsed >= 60_000 && this.canStart() &&
@@ -336,17 +377,17 @@ export class RacingCareer {
   }
   fuelText() {
     if (!this.storageOK) return '本地存储不可用 · 试玩不限油，关卡进度可能不会保留';
-    if (!this.fuelEnabled) return '油量系统未开通 · 当前不限油试玩';
+    if (!this.fuelEnabled) return '本机存档不可用 · 当前不限油试玩';
     this.fuel = syncFuel(this.fuel);
     const left = fuelTimeLeft(this.fuel);
     const mm = left ? ' · 下次恢复 ' + Math.ceil(left / 60000) + ' 分钟' : '';
-    return '⛽ ' + this.fuel.amount + '/' + FUEL_RULES.max + ' · 每场 -1' + mm;
+    return '⛽ ' + this.fuel.amount + '/' + FUEL_RULES.max + ' · 每局 -5 · 每分钟 +1' + mm;
   }
   canOfferAd() {
     // With a hard first stage, do not softlock failed players out of voluntary
     // fuel recovery. fuelAdEligible itself requires a real recorded round,
     // session time, low balance and cooldown; ad never changes race outcomes.
-    return this.fuelEnabled && !this.adBusy && fuelAdEligible(this.fuel, {
+    return this.fuelEnabled && this.adReady && !this.adBusy && fuelAdEligible(this.fuel, {
       rounds: this.progress.rounds, sessionMs: Date.now() - this.startedAt, adReady: true,
     });
   }
@@ -355,7 +396,7 @@ export class RacingCareer {
     this.adBusy = true;
     const ticket = 'racing-ad-' + Date.now() + '-' + (++this.attempt);
     try {
-      const outcome = await requestRewardedVideo({ tap: this.tap, config: this.config });
+      const outcome = await this.rewardedProvider({ tap: this.tap, config: this.config });
       const granted = grantAdvertFuel(this.fuel, outcome.status, ticket);
       if (granted.ok) {
         this.fuel = granted.state;

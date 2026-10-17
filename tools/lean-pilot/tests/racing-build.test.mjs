@@ -240,6 +240,23 @@ test('V8 one-way finish hooks preserve native progress and onLap bookkeeping',()
     /one-way progress anchor changed/);
 });
 
+test('phone and desktop camera differences preserve native car/road physics',()=>{
+ assert.equal(typeof api.patchDualPlatformCamera,'function');
+ const before=[
+  "import { racePhoneCamera } from './race-session.mjs';",
+  'const m = modes[this.camMode];',
+  'const dist = m.dist + Math.abs(P.s) * 0.018 + boostPull;',
+  'const look = new THREE.Vector3(P.x + Math.sin(this.camYaw) * m.look, P.y + m.lookH, P.z + Math.cos(this.camYaw) * m.look);'
+ ].join('\n');
+ const after=api.patchDualPlatformCamera(before);
+ assert.ok(after.includes('this.mobileMode ? racePhoneCamera('));
+ assert.ok(after.includes('this.mobileMode ? 0.010 : 0.018'));
+ assert.ok(after.includes('this.mobileMode ? boostPull * .25 : boostPull'));
+ assert.ok(after.includes('racePhoneLookOffset(this.track,P,m.look)'));
+ assert.equal(api.patchDualPlatformCamera(after),after);
+ assert.throws(()=>api.patchDualPlatformCamera('const m = modes[this.camMode];'),/Missing racing phone camera import/);
+});
+
 test('native eight-item HUD matches V8 pickups and never crashes on a new item ID',()=>{
   const original=[
     "export const ITEM_INFO = {",
@@ -261,4 +278,28 @@ test('native eight-item HUD matches V8 pickups and never crashes on a new item I
     assert.ok(patched.includes("  "+id+":")&&patched.includes(name),id);
   assert.throws(()=>api.patchV8NativeHudItems('export const ITEM_INFO = {};'),/HUD item|pinned|anchor/iu);
   assert.throws(()=>api.patchV8NativeHudItems(original.replace("  magnet: { icon: '🧲', name: '磁铁' },","")),/HUD item|pinned|anchor/iu);
+});
+
+test('V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors',()=>{
+ const basic=[
+  "quality: IS_TOUCH ? 'mid' : 'high'",
+  "canvas: this.canvas, antialias: true, powerPreference: 'high-performance'"
+ ].join('\n');
+ const init=api.patchMobileInitialRendering(basic);
+ assert.ok(init.includes("quality: IS_TOUCH ? 'low' : 'high'"));
+ assert.ok(init.includes('antialias: !IS_TOUCH'));
+ assert.equal(api.patchMobileInitialRendering(init),init);
+ const mid=[
+  "q === 'mid' ? Math.min(dpr, 1.5) : 1",
+  "this.renderer.shadowMap.enabled = q !== 'low';",
+  "this.sun.castShadow = q !== 'low';",
+  "if (q === 'low') return;"
+ ].join('\n');
+ const slim=api.patchMobileMidRendering(mid);
+ assert.ok(slim.includes('Math.min(dpr, IS_TOUCH ? 1.2 : 1.5)'));
+ assert.ok(slim.includes('this.sun.castShadow = q !=='));
+ assert.ok(slim.includes("if (q === 'low' || (IS_TOUCH && q === 'mid')) return;"));
+ assert.equal(api.patchMobileMidRendering(slim),slim);
+ assert.throws(()=>api.patchMobileInitialRendering('unknown racing engine'),/anchor changed/);
+ assert.throws(()=>api.patchMobileMidRendering('unknown racing renderer'),/anchor changed/);
 });

@@ -56,10 +56,10 @@ test('输入释放同时清除触屏、键盘、两个边沿集合', () => {
   const input = { down: new Set(['ArrowLeft']), pressed: new Set(['KeyW']), touchPressed: new Set(['TouchNitro']), touch: { up: true, left: true, shift: true } };
   clear(input);assert.equal(input.down.size + input.pressed.size + input.touchPressed.size, 0);assert.ok(Object.values(input.touch).every(v => !v));
 });
-test('手机镜头FOV有温和速度反馈且不超过78度', () => {
+test('手机镜头FOV温和跟速，不因氮气使车身过小', () => {
   const fov = need('raceCameraFov');
   assert.ok(fov(55, true, false) > fov(55, false, false));
-  assert.ok(fov(86, true, true) <= 78);assert.ok(fov(0, false, false) >= 66);
+  assert.ok(fov(86, true, true) <= 69);assert.ok(fov(0, false, false) >= 61);
 });
 test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数', () => {
   const tune = need('tuneRaceFx'), calls = [];
@@ -113,4 +113,64 @@ test('phone quality drops on sustained <46FPS rather than isolated delayed frame
   assert.equal(again,'low','can step down twice after separate slow windows');
   const manual=new Monitor();manual.manual=true;
   for(let i=0;i<200;i++)assert.equal(manual.frame(.05,'high'),null);
+});
+
+test('screen platform depends on input affordance, not CSS window width',()=>{
+ const profile=need('raceScreenProfile');
+ assert.equal(profile(844,390,{coarse:true,touchPoints:5}),'touch');
+ assert.equal(profile(390,844,{coarse:true,touchPoints:5}),'touch');
+ assert.equal(profile(844,390,{coarse:false,anyCoarse:false,touchPoints:0}),'desktop');
+ assert.equal(profile(1920,1080,{coarse:false,anyCoarse:true,touchPoints:10}),'desktop');
+});
+test('phone follows closer car yet looks ahead on V9 technical bends',()=>{
+ const camera=need('racePhoneCamera'),normal=camera(740,360),wide=camera(932,430);
+ for(const view of [normal,wide]){
+  assert.ok(view.dist>8.7&&view.dist<12.5);
+  assert.ok(view.look>7&&view.h>3);
+ }
+ assert.equal(camera(844,390),wide);
+});
+
+test('first mobile frame uses safe rendering budget, saved user preference still wins',()=>{
+  const quality=need('initialRaceQuality');
+  assert.equal(quality(null,true),'low');
+  assert.equal(quality(undefined,false),'mid');
+  assert.equal(quality('high',true),'high');
+  assert.equal(quality('mid',true),'mid');
+  assert.equal(quality('low',false),'low');
+});
+test('phone downhill camera samples true road elevation, avoids airborne/fork guesses',()=>{
+  const offset=need('racePhoneLookOffset');
+  const road={halfW:10,sample(d){return {y:110-d*.12}}};
+  const car={y:104,proj:{d:50,lat:1},airborne:false};
+  assert.ok(offset(road,car,8)<0,'downhill road ahead lowers the look point');
+  assert.equal(offset(road,{...car,airborne:true},8),0);
+  assert.equal(offset(road,{...car,proj:{d:50,lat:1,__RACE_SHORTCUT_ACTIVE:true}},8),0,'fork height cannot be read from unrelated main-road centerline');
+  assert.equal(offset(road,{...car,proj:{d:50,lat:60}},8),0);
+  assert.equal(offset(null,car,8),0);
+  assert.equal(offset({sample(){return {y:Infinity}}},car,8),0);
+  const climb={halfW:9,sample(d){return {y:100+d*.6}}};
+  assert.ok(offset(climb,{y:100,proj:{d:50,lat:1}},8)>0);
+});
+test('manual graphics cannot become unsteerable at sustained 14 FPS',()=>{
+  const Monitor=need('QualityMonitor'),monitor=new Monitor();
+  monitor.manual=true;let downgraded=null;
+  for(let i=0;i<30;i++)downgraded=monitor.frame(.075,'high')??downgraded;
+  assert.equal(downgraded,'mid','emergency one-level transient downgrade');
+  assert.equal(monitor.manual,true,'do not rewrite stored preference');
+});
+
+test('input diagnostics are aggregate-only and do not claim display latency',()=>{
+ const Metric=need('RaceInputHealth'),m=new Metric();
+ m.touch(100,0,'press');m.touch(107,.8,'move');m.sample(114);
+ m.touch(122,-.8,'move');m.sample(131);
+ m.touch(140,0,'cancel');m.sample(144);
+ m.frame(.016);m.frame(.06);
+ const q=m.snapshot();
+ assert.equal(q.touchEvents,4);assert.equal(q.touchMoves,2);
+ assert.equal(q.touchCancels,1);assert.equal(q.directionReversals,1);
+ assert.ok(q.inputSampleMsP95>=9 && q.inputSampleMsP95<=15);
+ assert.equal(q.framesOver50ms,1);
+ assert.equal(q.timingScope,'pointer-event-to-native-input-sample-and-overlay-RAF-only');
+ assert.ok(!('coordinates' in q)&&!('pointerId' in q)&&!('userId' in q));
 });

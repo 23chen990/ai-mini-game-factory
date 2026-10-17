@@ -1,5 +1,6 @@
 /** Pure arcade presentation. Never mutates native driving, result or save state. */
-import { COURSE_BLUEPRINTS, injectTechnicalSectors } from './track-design.mjs';
+import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from './track-design.mjs';
+import { shapeV9RhythmSegments } from './v9-course-director.mjs';
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const finite = value => typeof value === 'number' && Number.isFinite(value);
@@ -11,9 +12,9 @@ export function careerCourseSvg(course) {
   if (!blueprint) return '';
   // Mirror the precise authored spline control points, not the old pre-S-turn
   // lobby outline. Real native Track Catmull-Rom remains authoritative on road.
-  const points = injectTechnicalSectors(
+  const points = shapeV9RhythmSegments(
     blueprint[4].split(' ').map(point => point.split(',').map(Number)),
-    id, blueprint[3]);
+    id, blueprint[3], COURSE_TECHNICAL_SECTORS[id]).points;
   if (points.length < 6 || !points.every(point => point.length === 3 && point.every(finite))) return '';
   const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
   const x0 = Math.min(...xs), y0 = Math.min(...ys), dx = Math.max(1, Math.max(...xs) - x0), dy = Math.max(1, Math.max(...ys) - y0);
