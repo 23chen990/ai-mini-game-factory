@@ -38,7 +38,7 @@ export async function standaloneHtml(gameRoot,theme='observatory',runId='standal
       imports++;return '';
     }).replace(/^export /gm,'');
     const expectedImports=name==='main.mjs'?(hasFpsUx?4:2)
-      :name==='cf-player-loop.mjs'?1:0;
+      :name==='cf-player-loop.mjs'||name==='fps-mobile-ux.mjs'?1:0;
     if(/^\s*(?:import|export)\s/m.test(bundled)||imports!==expectedImports)
       throw new Error(`Unsupported module syntax in ${name}`);
     scripts.push(`// ${name}\n${bundled}`);
