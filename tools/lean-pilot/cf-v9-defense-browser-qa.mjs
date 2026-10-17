@@ -104,6 +104,30 @@ export async function checkRealDefense(runId) {
    verify('no-scripted-auto-capture',start.goal===0&&start.player?.hits===0&&
      moved.goal<=10,{firstGoal:start.goal,goalAfterActualMove:moved.goal,
        note:'Only real presence in actual NavGrid zone increments held seconds'});
+   // Extra *non-gating* first-site natural attempt: continue following the
+   // visible A marker with the original joystick. If native enemies contest,
+   // that is genuine difficulty evidence, not an excuse to fake capture.
+   const approachCdp=await context.newCDPSession(page);
+   try{
+     await approachCdp.send('Input.dispatchTouchEvent',{
+       type:'touchStart',touchPoints:[{x:px,y:py,id:8}]});
+     await approachCdp.send('Input.dispatchTouchEvent',{
+       type:'touchMove',touchPoints:[{x:px,y:py-55,id:8}]});
+     await page.waitForTimeout(4200);
+     await approachCdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+   }finally{await approachCdp.detach();}
+   const nearA=await snapshot();
+   await page.waitForTimeout(5300);
+   const afterHold=await snapshot();
+   await page.screenshot({path:path.join(root,'screenshots/mobile-v9-defense-approach.png')});
+   const distanceToA=nearA.player&&sites[0]
+     ?Math.hypot(nearA.player.x-sites[0].x,nearA.player.z-sites[0].z):null;
+   checks.push({name:'cf-v9-first-site-natural-experiment',passed:true,
+     detail:{nonGatingObservation:true,physicalMetersToA:distanceToA,
+       arrivedInsideZone:distanceToA!==null&&distanceToA<=4.2,
+       capturedA:afterHold.goal>=5||/● B/.test(afterHold.pin||''),
+       initial: moved, afterWalk:nearA, afterWait:afterHold,
+       note:'Only original CDP joystick used. Human shooting tactics not simulated; not a full victory claim'}});
    await page.locator('#mk-pause').tap();
    const paused=await snapshot();
    verify('real-mobile-pause-keeps-ownership-frozen',paused.phase==='paused'&&paused.paused===true,
