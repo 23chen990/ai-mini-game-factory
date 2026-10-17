@@ -205,7 +205,7 @@ export const EXPANSION_COURSES = Object.freeze({
     "map": "egypt",
     "scale": 0.82,
     "width": 17.6,
-    "laps": 2,
+    "laps": 1,
     "kind": "speed",
     "mode": "speed",
     "rank": 2,
