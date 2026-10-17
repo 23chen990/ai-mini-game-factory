@@ -61,6 +61,7 @@ export class QualityMonitor {
     this.slow = 0; this.samples = 0; this.dropped = false; this.manual = false;
     this.windowTime = 0; this.currentQuality = null; this.averageDt = 1 / 60; this.fps = 60;
     this.consecutiveStalls = 0;
+    this.severeManualLag = 0;
   }
   frame(dt, quality) {
     if (!Number.isFinite(dt) || dt <= 0) return null;
@@ -68,7 +69,7 @@ export class QualityMonitor {
     // >=250ms *visible* frames are: don't leave very slow phones on high.
     if (dt > .25) {
       this.fps = Math.max(1, Math.round(1 / dt));
-      if (this.manual || quality === 'low') return null;
+      if (quality === 'low') return null;
       this.consecutiveStalls++;
       if (this.consecutiveStalls < 4) return null;
       this.consecutiveStalls = 0;
@@ -80,10 +81,24 @@ export class QualityMonitor {
     this.consecutiveStalls = 0;
     this.averageDt = this.averageDt * .9 + dt * .1;
     this.fps = Math.round(Math.min(120, Math.max(1, 1 / this.averageDt)));
-    if (this.manual || quality === 'low') return null;
+    if (quality === 'low') return null;
     if (this.currentQuality !== quality) {
       this.currentQuality = quality;
       this.slow = 0; this.samples = 0; this.windowTime = 0;
+      this.severeManualLag = 0;
+    }
+    // A deliberate graphics preference stays in force under normal pressure.
+    // But an actual 14 FPS phone cannot keep its own steering responsive.
+    // An emergency downgrade is temporary and never rewrites the saved setting.
+    if (this.manual) {
+      this.severeManualLag = dt > .06 ?
+        this.severeManualLag + Math.min(dt, .12) :
+        Math.max(0, this.severeManualLag - dt * 2);
+      if (this.severeManualLag < 1.3) return null;
+      this.severeManualLag = 0;
+      const lower = quality === 'high' ? 'mid' : 'low';
+      this.currentQuality = lower; this.dropped = true;
+      return lower;
     }
     this.samples++;
     this.windowTime += dt;

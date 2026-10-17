@@ -274,6 +274,15 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-kit[data-stage-kind="elimination"] #race-speed {
   top:calc(var(--race-top) + 164px);bottom:auto;
 }
+/* On short landscape screens the enlarged thumb zone starts around y=160.
+ * Place the speed readout alongside it, never on top of the moving thumb. */
+@media(max-height:375px) {
+  #race-kit #race-speed,
+  #race-kit[data-stage-kind="elimination"] #race-speed {
+    top:auto;bottom:calc(var(--race-bottom) + 54px);
+    left:calc(var(--race-left) + 195px);
+  }
+}
 
 /* Specificity matters: the shared race-controls rule otherwise overrides
  * button.ready and hides the very feedback players need to trust. */

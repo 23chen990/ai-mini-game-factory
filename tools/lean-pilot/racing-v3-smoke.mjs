@@ -332,7 +332,7 @@ try {
   report.thumbHitboxes=[];
   for(const [width,height] of [[640,320],[667,375],[740,360],[812,375],[844,390],[932,430],[1024,600]]) {
     await page.setViewportSize({width,height});
-    const boxes=await page.evaluate(()=>{
+    const {targets:boxes,speed}=await page.evaluate(()=>{
       const root=document.querySelector('#race-kit');
       const prior=root.dataset.itemMode;root.dataset.itemMode='true';
       const selectors=['#race-joystick',
@@ -349,12 +349,16 @@ try {
       };
       const targets=selectors.map(target);
       root.dataset.itemMode=prior;
-      return targets;
+      const r=document.querySelector('#race-speed')?.getBoundingClientRect();
+      return {targets,speed:r?{left:r.left,right:r.right,top:r.top,bottom:r.bottom}:null};
     });
     const overlaps=(a,b)=>Math.min(a.right,b.right)>Math.max(a.left,b.left)+.01&&
       Math.min(a.bottom,b.bottom)>Math.max(a.top,b.top)+.01;
     const vGap=(a,b)=>Math.max(a.top-b.bottom,b.top-a.bottom,0);
     const byName=Object.fromEntries(boxes.map(x=>[x.name,x]));
+    if(speed && overlaps(byName.wheel,speed))
+      fail('Speed readout visually overlaps the mobile thumb steering zone at '+
+        width+'x'+height+': '+JSON.stringify({speed,wheel:byName.wheel}));
     const sprayNitroGap=vGap(byName.small,byName.nitro);
     const itemDriftGap=vGap(byName.item,byName.drift);
     for(const [i,a] of boxes.entries()){

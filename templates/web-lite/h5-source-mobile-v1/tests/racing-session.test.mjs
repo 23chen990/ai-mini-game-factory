@@ -147,3 +147,22 @@ test('HUD redraw cadence is independent of native input and race simulation',asy
   assert.ok(mobileSource.slice(ui,bottom).includes('raceSpeedHUD(g.player)'));
   assert.ok(mobileSource.slice(ui,bottom).includes("actionButtons.nitro"));
 });
+
+test('player-chosen quality is respected unless the mobile game is almost unplayable',()=>{
+  const Monitor=need('QualityMonitor'), m=new Monitor();m.manual=true;
+  for(let i=0;i<150;i++) assert.equal(m.frame(.04,'high'),null,
+    '25 FPS does not silently override the selected tier');
+  let quality='high',steps=[];
+  for(let i=0;i<65;i++) {
+    const next=m.frame(.075,quality);
+    if(next){steps.push(next);quality=next;}
+  }
+  assert.deepEqual(steps,['mid','low'],
+    'sustained 13 FPS must fall back even after a saved manual preference');
+  assert.equal(m.frame(.075,'low'),null);
+  const spiky=new Monitor();spiky.manual=true;
+  assert.equal(spiky.frame(.4,'high'),null);
+  assert.equal(spiky.frame(.016,'high'),null,'a single tab resume frame does not lower quality');
+  for(let i=0;i<3;i++) assert.equal(spiky.frame(.4,'high'),null);
+  assert.equal(spiky.frame(.4,'high'),'mid','repeated very long frames trigger a rescue');
+});
