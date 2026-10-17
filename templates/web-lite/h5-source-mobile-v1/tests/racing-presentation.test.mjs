@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { careerCourseSvg, raceProgressPercent, compactRaceObjective } from '../racing/presentation.mjs';
 import { STAGES } from '../racing/career.mjs';
 import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
+import { shapeV9RhythmSegments } from '../racing/v9-course-director.mjs';
 
 test('all 30 authored tracks have unique rendered road shapes without remote assets', () => {
   const paths = new Set();
@@ -13,12 +14,15 @@ test('all 30 authored tracks have unique rendered road shapes without remote ass
     assert.equal(svg.includes('http'), false);
     const path = svg.match(/class="race-track-road" d="([^"]+)"/)?.[1];
     assert.ok(path && path.endsWith(' Z'));
-    // Every visible turn on the lobby course uses the SAME inserted physics
-    // vertices as the native track builder (not an old simplified preview).
-    const basePoints=COURSE_BLUEPRINTS[stage.id][4].trim().split(/\s+/).length;
-    assert.equal((path.match(/L/g)??[]).length+1,
-      basePoints+COURSE_TECHNICAL_SECTORS[stage.id].length*2,
-      'visible course must include genuine S-sector control points '+stage.id);
+    // Preview must be driven by the very same V9 physical turn sequence,
+    // including the new 5-knot long arcs, not legacy 2-point S kinks.
+    const bp=COURSE_BLUEPRINTS[stage.id];
+    const original=bp[4].trim().split(/\s+/).map(v=>v.split(',').map(Number));
+    const driven=shapeV9RhythmSegments(original,stage.id,bp[3],
+      COURSE_TECHNICAL_SECTORS[stage.id]);
+    assert.equal((path.match(/L/g)??[]).length+1,driven.points.length,
+      'lobby route must include all real corner control vertices '+stage.id);
+    assert.ok(driven.points.length>=original.length,stage.id);
     paths.add(path);
   }
   assert.equal(paths.size, 30);
