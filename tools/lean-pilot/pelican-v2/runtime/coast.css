@@ -82,3 +82,12 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 #coast[data-phase="ready"] .co-collection{flex-shrink:0}
 @media(orientation:landscape){#co-collection{padding:5px 7px;min-height:64px;margin-top:5px}.co-collection-total{margin-bottom:3px}.co-style-items button{min-width:80px!important;min-height:36px!important}#coast[data-phase="ready"] .co-route{grid-auto-rows:min-content}}
 @media(orientation:portrait) and (max-height:650px){#co-collection{min-height:62px;margin-top:4px;padding:5px}.co-collection-total small{display:none}#coast .co-style-items button{min-height:38px}}
+
+/* Portrait touch ergonomics: both steering directions belong under the
+   left thumb; JUMP has its own separated right-thumb target. No change
+   to input semantics, continuous drag steering, landscape, or physics. */
+@media(orientation:portrait){
+ #co-controls{display:grid;grid-template-columns:minmax(60px,72px) minmax(60px,72px) minmax(0,1fr) minmax(72px,88px);gap:8px}
+ #co-controls button{width:100%;max-width:none;min-width:0}
+ #co-controls button:last-child{grid-column:4}
+}

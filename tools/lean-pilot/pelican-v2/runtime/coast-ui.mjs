@@ -327,7 +327,10 @@ ${recordStory.detail}${opportunity.eligible&&adsAvailable()?`\n${opportunity.mes
    // hazard on another lane is drawing the player's eye. Early oncoming-vehicle
    // warnings make the correct countersteer possible without changing physics.
    const hazard=upcoming.find(h=>h.lanes.includes(lane));
-   if(hazard&&!earnedPrizePrecedesRisk(run,fish?.lane===lane?fish:null,hazard)){const kind=hazard.obstacle.kind,bonus=kind==='barrier'&&run.fishes.some(f=>f.bonus&&f.sourceObstacleId===hazard.obstacle.id&&!f.caught);return {kind:bonus?'danger jump-reward':'danger',icon:bonus?'↟🌟':kind==='barrier'?'↟':kind==='pedestrian'?'🚶':'🚗',seconds:kind==='barrier'&&hazard.seconds<1.5?Math.max(.1,hazard.seconds).toFixed(1):Math.max(1,Math.ceil(hazard.seconds)),label:kind};}
+   if(hazard&&!earnedPrizePrecedesRisk(run,fish?.lane===lane?fish:null,hazard)){const kind=hazard.obstacle.kind,bonus=kind==='barrier'&&run.fishes.some(f=>f.bonus&&f.sourceObstacleId===hazard.obstacle.id&&!f.caught);return {kind:bonus?'danger jump-reward':'danger',icon:bonus?'↟🌟':kind==='barrier'?'↟':kind==='pedestrian'?'🚶':'🚗',// A rounded-up whole-second jump cue hid the early 3.5s approach.
+     // Half-second precision shows the decision soon enough to steer twice,
+     // without 10Hz fractional DOM updates on slower phones.
+     seconds:bonus?Math.max(.1,Math.round(hazard.seconds*2)/2).toFixed(1):kind==='barrier'&&hazard.seconds<1.5?Math.max(.1,hazard.seconds).toFixed(1):Math.max(1,Math.ceil(hazard.seconds)),label:kind};}
    return fish?.lane===lane?{kind:'fish',icon:fish.golden?'🌟':'🐟',seconds:'',label:'fish'}:{kind:'',icon:'·',seconds:'',label:'clear'};
   });const rkey=JSON.stringify(lanes);if(rkey!==lastRadar){lastRadar=rkey;for(let i=0;i<3;i++){const n=root.querySelector(`[data-lane="${i}"]`),r=lanes[i];n.className='co-lane '+r.kind;n.innerHTML=r.icon+(r.seconds?`<small>${r.seconds}s</small>`:'');n.dataset.kind=r.label;}}
   $('radar').classList.toggle('active',!!next||!!fish);$('radar-label').hidden=!next&&!fish;

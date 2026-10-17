@@ -48,6 +48,19 @@ test('an already committed jump cannot be spent on a different closer barrier',(
  assert.equal(policy.radarIsExpectedBarrier(view({distance:320}),missingTime,target,2),false);
 });
 
+test('half-second visible early jump cue preserves the 75m left-route choice',()=>{
+ const reward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟3.5s'});
+ const target={barrierId:'l1-o4',distance:75};
+ const scene=view({level:1,distance:48,laneIndex:1,lanes:[reward,lane(),lane({fish:true})]});
+ assert.equal(reward.seconds,3.5);
+ assert.equal(policy.radarIsExpectedBarrier(scene,reward,target,1),true);
+ const turn=decide(scene,policy.createRiskPolicyState(1,target));
+ assert.equal(turn.action,'left','do not turn back to ordinary side fish as the two-lane jump approach opens');
+ assert.equal(turn.toLane,0);
+ const jump=decide({...scene,distance:59,laneIndex:0,jumpReady:true,
+  lanes:[{...reward,seconds:2},lane(),lane()]},turn.state);
+ assert.equal(jump.action,'jump','the ordinary physical 2.25s buffer is still required and remains available');
+});
 test('two full-lane changes from right fish to 75m left prize need 4 seconds public radar',()=>{
  const target={barrierId:'l1-o4',distance:75};
  const radar=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟4s'});
