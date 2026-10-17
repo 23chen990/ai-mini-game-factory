@@ -64,6 +64,10 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       gamePhase:g?.ended?'finished':g?.paused?'paused':g?.playing?'running':'ready',
       time:g?.time||0,player:p?{alive:p.alive,
         x:p.pos.x,y:p.pos.y,z:p.pos.z,vy:p.vel?.y,
+        onGround:p.onGround,jumpCD:p.jumpCD,
+        jumpHeadroom:typeof g?.world?.blocked==='function'
+          ?!g.world.blocked(p.pos.x,p.pos.y+0.12,p.pos.z,
+            p.radius*.93,p.height+.15):null,
         yaw:p.yaw,pitch:p.pitch,
         shots:p.stats?.shots,hits:p.stats?.hits,kills:p.stats?.k,deaths:p.stats?.d,
         weapon:p.weapon?.id,mag:p.weapon?.mag,
@@ -176,12 +180,34 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     check('touch-reload-starts-real-weapon-reload',
       beforeReload.player.mag<30&&afterReload.player.reloading===true,
       {before:beforeReload.player,after:afterReload.player});
-    const beforeJump=await inspect();
-    await button('#touch .btn[data-mk-action="jump"]',270,30);
+    // An original jump arc can be brief below a cargo overhang. Sample
+    // DURING the real physical finger hold rather than only after release.
+    // A click without genuine native vertical motion must still fail QA.
+    const beforeJump=await inspect(),jrect=await rect(
+      '#touch .btn[data-mk-action="jump"]');
+    if(!jrect)throw Error('Jump touch target missing from visible HUD');
+    const jc=center(jrect);
+    const hitTarget=await page.evaluate(pt=>
+      document.elementFromPoint(pt.x,pt.y)?.closest?.(
+        '.btn[data-mk-action="jump"]')!==null,jc);
+    check('jump-button-unobstructed-hit-target',hitTarget,{rect:jrect});
+    const jumpSamples=[];
+    await event('touchStart',[{...jc,id:30}]);
+    try{
+      for(let n=0;n<9;n++){
+        await sleep(95);
+        jumpSamples.push(await inspect());
+      }
+    }finally{await event('touchEnd',[]);}
     const afterJump=await inspect();
-    check('touch-jump-changes-real-native-physics',
-      afterJump.player.y>beforeJump.player.y+.045||afterJump.player.vy>0.3,
-      {before:beforeJump.player,after:afterJump.player});
+    const physical=jumpSamples.some(s=>s.player?.y>beforeJump.player.y+.045||
+      s.player?.vy>0.4);
+    check('touch-jump-changes-real-native-physics',physical,{
+      before:beforeJump.player,
+      samples:jumpSamples.map(s=>({t:s.time,y:s.player?.y,
+        vy:s.player?.vy,onGround:s.player?.onGround,
+        jumpCD:s.player?.jumpCD,input:s.player?.input?.jump})),
+      after:afterJump.player});
     // Two real CDP fingers: walk+fire at once, then OS-style touchcancel.
     const f0=center(fireRect);
     await event('touchStart',[{...p0,id:51}]);

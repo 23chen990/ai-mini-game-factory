@@ -521,6 +521,15 @@ export function cfResetMobileTouch(player,aimTouches,fireTouches) {
 }
 /** A circular, dead-zoned virtual stick. Coordinates are genuine finger
  * positions relative to the visible native pad; this does not move an actor. */
+/** A short genuine-input grace window for intermittent grounded frames.
+ * Only allows the ORIGINAL Player.update() to perform legal native jumps.
+ * It cannot change actor velocity, position or enemy state. */
+export function cfBufferedJumpAllowed({now,pressedAt,grounded,cooldown,alive}={}) {
+  return alive===true&&grounded===true&&
+    Number.isFinite(now)&&Number.isFinite(pressedAt)&&
+    now>=pressedAt&&now-pressedAt<=.25&&
+    Number.isFinite(cooldown)&&cooldown<=0;
+}
 export function cfJoystickVector(x,y,cx,cy,radius=60,deadzone=0.10) {
   if(![x,y,cx,cy,radius,deadzone].every(Number.isFinite)||
      radius<=0||deadzone<0||deadzone>=1)
@@ -960,6 +969,7 @@ export function createFpsMobileUx(game, root, doc) {
   const nativePads=[...(touchControls?.querySelectorAll('.pad')||[])];
   const pad=nativePads[0],stickKnob=nativePads[1];
   let moveFinger=null;
+  let queuedJumpAt=null;
   let lastTouchAt=-Infinity;
   const markTouch=()=>{lastTouchAt=performance.now();};
   const stickCenter=()=>{
@@ -971,7 +981,7 @@ export function createFpsMobileUx(game, root, doc) {
     if(stickKnob){stickKnob.style.left='70px';stickKnob.style.bottom='82px';}
   };
   const resetAllTouches=()=>{
-    moveFinger=null;
+    moveFinger=null;queuedJumpAt=null;
     resetKnob();
     return cfResetMobileTouch(game.player,aimTouchStarts,fireDragTouches);
   };
@@ -986,6 +996,13 @@ export function createFpsMobileUx(game, root, doc) {
       for(const t of e.changedTouches||[])
         fireDragTouches.set(t.identifier,{x:t.clientX,y:t.clientY});
       if(game.player?.alive)cfBeginTouchFire(game.player.touch);
+      return;
+    }
+    if(e.target?.closest?.('.btn[data-mk-action="jump"]')){
+      // Native touch.js owns the first press. Retain only its timestamp, so
+      // a momentary step/fall or a dropped mobile frame cannot eat the press.
+      // Actor.move() remains the sole source of actual jump physics.
+      queuedJumpAt=Number(game.time)||0;
       return;
     }
     if(controlledTarget(e))return; // Keep native jump, reload and scope actions.
@@ -1742,6 +1759,15 @@ export function createFpsMobileUx(game, root, doc) {
           perfLastAdjust=now;perfWindowStart=now;perfFrames=0;
         }
       }else{perfWindowStart=now;perfFrames=0;perfFastWindows=0;}
+      if(queuedJumpAt!==null){
+        const actor=game.player;
+        if(!active||!actor?.alive||Number(actor.jumpCD)>0.08||
+          Number(game.time)-queuedJumpAt>.25)queuedJumpAt=null;
+        else if(cfBufferedJumpAllowed({
+          now:game.time,pressedAt:queuedJumpAt,alive:actor.alive,
+          grounded:actor.onGround,cooldown:actor.jumpCD
+        })&&actor.touch)actor.touch.jump=true;
+      }
       html.dataset.fpsActive = String(active);
       if (!active || now >= cueExpiresAt) hitCue.hidden = true;
       if (!active || now >= damageExpiresAt)damageVignette.hidden=true;

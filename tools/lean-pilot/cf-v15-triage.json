@@ -21,7 +21,8 @@
       "real failed survival timeout",
       "pause/replay",
       "renderer/composer pixel-ratio agreement"
-    ]
+    ],
+    "latestFailure": "V15 50c3358 native QA 54/55: jump button after reload showed y=0 both before/after; initial QA only measured after 270ms release and missed in-flight window. Original jump requires native Actor.move onGround and unexpired jumpCD. New evidence captures actual in-flight displacement, button occlusion, roof headroom, grounded and jump cooldown."
   },
   "scope": [
     "CF mobile source, tests, CSS and native QA",
@@ -32,7 +33,8 @@
     "Original 45s simulation completes as written with genuine fail and free replay",
     "First 30s real native player hit is captured through normal touch, without injecting stats",
     "Native QA video/snapshots and independent CI on exact HEAD",
-    "No fake ad, entitlement, metrics, money or commercial rights"
+    "No fake ad, entitlement, metrics, money or commercial rights",
+    "Real touch on unobstructed jump button must create genuine native positive vertical motion during a sampled press, with no actor/physics state injection or check skipping"
   ],
   "evidenceGaps": [
     "real iPhone",

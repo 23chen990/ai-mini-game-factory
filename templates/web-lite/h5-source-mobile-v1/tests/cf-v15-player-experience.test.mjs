@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {cfRifleCombatStatus} from '../cf-player-loop.mjs';
-import {cfObservedFlankPlan,cfCombatHapticPattern,cfNearMissCue}
+import {cfObservedFlankPlan,cfCombatHapticPattern,cfNearMissCue,cfBufferedJumpAllowed}
   from '../fps-mobile-ux.mjs';
 import {cfCanOfferRevive,challengesFor} from '../engine.mjs';
 
@@ -50,4 +50,13 @@ test('CF V15 only genuine near-wins may offer an approved optional revive',()=>{
  const sniper=challengesFor('cf-transport-ship')[1];
  assert.ok(cfNearMissCue(sniper,{hits:1,awmKills:0},50000));
  assert.equal(cfNearMissCue(sniper,{hits:0,awmKills:0},50000),null);
+});
+
+test('CF V15 short touch jump buffer is never a physics or teleport shortcut',()=>{
+  const base={now:5.1,pressedAt:5,grounded:true,cooldown:-0.04,alive:true};
+  assert.equal(cfBufferedJumpAllowed(base),true);
+  for(const patch of [
+    {now:5.5},{now:4.9},{pressedAt:NaN},{cooldown:0.2},
+    {grounded:false},{alive:false},{now:Infinity}
+  ])assert.equal(cfBufferedJumpAllowed({...base,...patch}),false);
 });
