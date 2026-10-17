@@ -3,6 +3,18 @@
 import {cfStartDefense,cfStepDefense,cfAdvanceAssault,cfStartExtraction,cfStepExtraction} from './engine.mjs';
 /** CSS/UI stays at native resolution; only CF native WebGL render pixels change.
  * Adjust after sustained measured frame-rate intervals, not single spikes. */
+/** A lower WebGL drawing buffer alone does NOT resize Three.js EffectComposer
+ * render targets. Sync both before claiming any native pixel-work reduction.
+ * Invalid or unsupported renderers are left entirely unchanged. */
+export function cfApplyNativePixelRatio(native,ratio) {
+  const renderer=native?.renderer,composer=native?.composer;
+  if(!Number.isFinite(ratio)||ratio<.6||ratio>1||
+    typeof renderer?.setPixelRatio!=='function'||
+    typeof composer?.setPixelRatio!=='function')return false;
+  renderer.setPixelRatio(ratio);
+  composer.setPixelRatio(ratio);
+  return true;
+}
 export function cfAdaptivePixelRatio(current,fps,fastIntervals=0) {
   const ratio=Number.isFinite(current)&&current>=.6&&current<=1?current:1;
   if(!Number.isFinite(fps)||fps<=0)return ratio;
@@ -1674,7 +1686,8 @@ export function createFpsMobileUx(game, root, doc) {
           const renderer=game.renderer.renderer;
           const current=renderer.getPixelRatio();
           const target=cfAdaptivePixelRatio(current,fps,perfFastWindows);
-          if(Math.abs(target-current)>.001)renderer.setPixelRatio(target);
+          if(Math.abs(target-current)>.001)
+            cfApplyNativePixelRatio(game.renderer,target);
           perfLastAdjust=now;perfWindowStart=now;perfFrames=0;
         }
       }else{perfWindowStart=now;perfFrames=0;perfFastWindows=0;}

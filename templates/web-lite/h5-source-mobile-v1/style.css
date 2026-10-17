@@ -928,3 +928,52 @@ html[data-reference-game="cf-transport-ship"] #mk-cf-playtest textarea{
    animation:none;opacity:.45;
  }
 }
+
+/* V15: CF-only landscape thumb ergonomics. Center sight remains free of UI;
+ * keep physical iPhone safe-area padding and separate buttons for distinct
+ * actions. No desktop or other-game style can match these selectors. */
+@media(orientation:landscape){
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="fire"]{
+   right:max(22px,calc(16px + env(safe-area-inset-right,0px)))!important;
+   bottom:max(78px,calc(62px + env(safe-area-inset-bottom,0px)))!important;
+   width:84px!important;height:84px!important;
+   border-radius:50%!important;font-size:16px!important;
+   box-shadow:0 0 0 4px rgba(247,115,96,.13),
+     0 6px 15px rgba(0,0,0,.47)!important
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="jump"]{
+   right:max(119px,calc(109px + env(safe-area-inset-right,0px)))!important;
+   bottom:max(38px,calc(28px + env(safe-area-inset-bottom,0px)))!important;
+   width:57px!important;height:57px!important
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="reload"]{
+   right:max(26px,calc(20px + env(safe-area-inset-right,0px)))!important;
+   bottom:210px!important;width:54px!important;height:54px!important
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="scope"]{
+   right:max(121px,calc(110px + env(safe-area-inset-right,0px)))!important;
+   bottom:143px!important;width:56px!important;height:56px!important
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .pad:first-child{
+   border:2px solid rgba(184,232,248,.42)!important;
+   background:radial-gradient(circle,rgba(180,227,250,.03) 34%,rgba(160,206,240,.12) 100%)!important
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .pad:nth-child(2){
+   border:2px solid rgba(185,225,247,.55)!important;
+   background:rgba(174,213,245,.29)!important;pointer-events:none!important
+ }
+ html[data-reference-game="cf-transport-ship"] #mk-pause{
+   right:max(7px,env(safe-area-inset-right,0px))!important
+ }
+}
+@media(orientation:landscape) and (max-height:340px){
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="reload"]{
+   bottom:191px!important
+ }
+ html[data-reference-game="cf-transport-ship"] #touch .btn[data-mk-action="scope"]{
+   bottom:130px!important
+ }
+ html[data-reference-game="cf-transport-ship"] #mk-fps-guide{
+   max-width:44vw;top:18%;font-size:10px
+ }
+}

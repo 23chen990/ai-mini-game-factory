@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "target": {
+    "game": "cf-transport-ship",
+    "runId": "h5-cf-challenges-20261013",
+    "workspace": "runs/h5-cf-challenges-20261013/workspace/game",
+    "branchBase": "62e45f7138a42d6a133c678849230c3527cfe45c"
+  },
+  "classification": "LOW_FPS_WEBGL_POSTPROCESS_AND_CORE_LOOP_SETTLEMENT",
+  "reproduction": {
+    "sourceRun": 39023590113,
+    "observation": "Native 3D survived only ~42 seconds of a declared 45-second mission before 200-second wall timeout. Native game loop clamps dt at 0.1 seconds/frame. Existing adaptive WebGL resolution did not resize EffectComposer passes.",
+    "rendererMatrix": [
+      "667x375 mobile emulated Chromium with SwiftShader",
+      "physical iPhone Safari NOT_RUN",
+      "physical Android Chrome NOT_RUN"
+    ],
+    "branches": [
+      "native 3D combat",
+      "real failed survival timeout",
+      "pause/replay",
+      "renderer/composer pixel-ratio agreement"
+    ]
+  },
+  "scope": [
+    "CF mobile source, tests, CSS and native QA",
+    "no other game or generic factory gameplay"
+  ],
+  "acceptance": [
+    "Render-target resolution follows native render pixel ratio; low FPS is diagnosed, not disguised with mutated dt",
+    "Original 45s simulation completes as written with genuine fail and free replay",
+    "First 30s real native player hit is captured through normal touch, without injecting stats",
+    "Native QA video/snapshots and independent CI on exact HEAD",
+    "No fake ad, entitlement, metrics, money or commercial rights"
+  ],
+  "evidenceGaps": [
+    "real iPhone",
+    "real Android",
+    "human retry desire and D1 retention",
+    "TapTap licensed rewarded placements",
+    "full commercial rights to original source and assets"
+  ],
+  "releaseGate": "INTERNAL_ONLY_NOT_FOR_PUBLICATION"
+}

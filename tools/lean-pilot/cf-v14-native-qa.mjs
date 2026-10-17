@@ -20,9 +20,14 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     throw Error('Refuse cross-game or substituted engine');
   const hash=await buildHash(game);
   const server=await serveRun(base,RUN_ID,0);
+  // Genuine browser recording of the entire normal-input session.
+  // It is not physical-device footage or a claim of real-player engagement.
+  const videoDir=path.join(root,'videos');
+  await mkdir(videoDir,{recursive:true});
   const browser=await chromium.launch({headless:true,args:['--enable-unsafe-swiftshader']});
   const context=await browser.newContext({
-    viewport:{width:667,height:375},hasTouch:true,isMobile:true,deviceScaleFactor:1
+    viewport:{width:667,height:375},hasTouch:true,isMobile:true,deviceScaleFactor:1,
+    recordVideo:{dir:videoDir,size:{width:667,height:375}}
   });
   const page=await context.newPage(),cdp=await context.newCDPSession(page);
   const screenshots=[],checks=[],errors=[],samples=[];
@@ -83,6 +88,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         realShots:bot.stats?.shots||0}:null,
       renderer:g?.renderer?{quality:g.renderer.quality,
         pixelRatio:g.renderer.renderer?.getPixelRatio?.(),
+        composerRatio:g.renderer.composer?._pixelRatio,
         bloom:g.renderer.bloom!==undefined}:null,
       reviveVisible:document.getElementById('mk-revive-actions')?.hidden===false
     };
@@ -223,6 +229,9 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       return g?.playing===true&&g?.time>=deadline;
     },rookie.time+11,{timeout:75_000,polling:250});
     const afterRookieWindow=await inspect();
+    check('first30-genuine-native-player-hit',afterRookieWindow.player?.hits>=1,
+      {hits:afterRookieWindow.player?.hits,shots:afterRookieWindow.player?.shots,
+        nativeSeconds:afterRookieWindow.time-rookie.time});
     const wallSec=(performance.now()-wallStart)/1000;
     check('stationary-novice-target-released-by-real-11sec-native-clock',
       afterRookieWindow.time-rookie.time>=10.5&&
@@ -277,7 +286,8 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       const wallSec=+( (performance.now()-watchStart)/1000 ).toFixed(2);
       const clock={wallSec,nativeSec:state.time,
         phase:state.phase,nativePhase:state.gamePhase,
-        ratio:state.renderer?.pixelRatio,deaths:state.player?.deaths};
+        ratio:state.renderer?.pixelRatio,composerRatio:state.renderer?.composerRatio,
+        deaths:state.player?.deaths};
       clockSamples.push(clock);
       if(state.time>lastClock+.02){
         lastClock=state.time;lastAdvance=performance.now();

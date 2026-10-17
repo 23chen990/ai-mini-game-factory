@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {cfAdaptivePixelRatio} from '../fps-mobile-ux.mjs';
+import {cfAdaptivePixelRatio,cfApplyNativePixelRatio} from '../fps-mobile-ux.mjs';
 
 test('CF V15 lowers only its native 3D resolution when sustained frame rate is poor',()=>{
   assert.equal(cfAdaptivePixelRatio(1,9),.85);
@@ -21,4 +21,19 @@ test('CF V15 avoids resolution oscillation or invalid pixel ratios',()=>{
   assert.equal(cfAdaptivePixelRatio(.8,0,3),.8);
   assert.equal(cfAdaptivePixelRatio(Infinity,12),.85,'malformed prior scale resets safely');
   assert.equal(cfAdaptivePixelRatio(.8,31,3),.8);
+});
+
+test('CF V15 scales native renderer AND postprocess buffers, not only a facade',()=>{
+  const calls=[];
+  const native={
+    renderer:{setPixelRatio:n=>calls.push(['webgl',n])},
+    composer:{setPixelRatio:n=>calls.push(['compositor',n])}
+  };
+  assert.equal(cfApplyNativePixelRatio(native,.7),true);
+  assert.deepEqual(calls,[['webgl',.7],['compositor',.7]]);
+  calls.length=0;
+  assert.equal(cfApplyNativePixelRatio({...native,composer:null},.6),false);
+  assert.equal(cfApplyNativePixelRatio(native,.4),false);
+  assert.equal(cfApplyNativePixelRatio(native,NaN),false);
+  assert.deepEqual(calls,[],'no partial reallocation if composer is absent');
 });
