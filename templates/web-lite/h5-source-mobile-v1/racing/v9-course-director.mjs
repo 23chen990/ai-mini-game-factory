@@ -139,7 +139,7 @@ validateV9Rhythms();
     // The 01/05/11/16 corner-duel chapters need authentic steering stakes:
     // retain four intentionally distinct beats while sharpening the apex
     // geometry instead of reducing the native steering challenge threshold.
-    const challengeAmplitude={ '01':1.07,'05':1.04,'11':1.04,'16':1.04 };
+    const challengeAmplitude={ '01':1.07,'05':1.16,'11':1.04,'16':1.04 };
     const maximum=amplitude*(challengeAmplitude[courseId]??.73)/scale;
     const points=STYLES[style].map(([t,w])=>[
       +(a[0]+dx*t+normalX*side*maximum*w).toFixed(4),
