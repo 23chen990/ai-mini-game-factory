@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { URL } from 'node:url';
 import { STAGES, newCareer, loadCareer, localDayKey, dailyStage, careerStars, stageUnlocked, skinUnlocked, recordStage, gradeStage, stageFailureFeedback, validDrift, fractionPassed } from '../racing/career.mjs';
 import { thinItemBoxes, installItemCleanup, itemDecision, AutoItems, OvertakeTracker, awardCornerPass, removeEliminatedAi } from '../racing/items.mjs';
 import { RacingCareer } from '../racing/runtime.mjs';
