@@ -83,6 +83,32 @@ export function mobileScoutHoldExpired(actor, seconds) {
 /** A readable but genuinely dangerous encounter; the first target is never
  * frozen as a 60s target dummy. It can fire using its ORIGINAL gun, then its
  * ORIGINAL nav/targeting retakes control within the first 12s. */
+/** Original opening AI reacts to a legitimate native gunshot or its own
+ * registered damage. Retain 1.1s minimum response time after actual injury
+ * and 2.2s after sound: bullets/health/position/targeting are untouched. */
+export function cfReactToRealScoutThreat({actor,player,challenge,now}={}) {
+  if(challenge?.id!=='tags'||challenge?.drill!=='reposition'||
+    challenge.elite===true||actor?.__mobileTrainingScout!==true||
+    actor?.alive!==true||player?.alive!==true||
+    !actor.team||actor.team===player.team||
+    !Number.isFinite(now)||now<0||
+    !Number.isFinite(actor.readyAt)||
+    !Number.isFinite(actor.__mobileTrainingHoldUntil))return false;
+  const shot=Number.isFinite(player.stats?.shots)&&player.stats.shots>0;
+  const hit=actor.lastAttacker===player&&
+    Number.isFinite(actor.lastHurt)&&
+    now>=actor.lastHurt&&now-actor.lastHurt<=.65;
+  const desired=hit?2:shot?1:0;
+  const previous=Number.isInteger(actor.__mkIntroThreatStage)
+    ?actor.__mkIntroThreatStage:0;
+  if(desired<=previous)return false;
+  actor.readyAt=Math.min(actor.readyAt,now+(hit?1.1:2.2));
+  actor.__mobileTrainingHoldUntil=Math.min(
+    actor.__mobileTrainingHoldUntil,now+(hit?2.7:4.5));
+  actor.__mkIntroThreatStage=desired;
+  actor.__mkIntroReactionAt=now;
+  return true;
+}
 export function cfScoutHoldSeconds(challenge) {
   if(challenge?.elite===true)return challenge.kind==='kills'?6:4;
   if(challenge?.kind==='kills')return 15;
@@ -1591,6 +1617,11 @@ export function createFpsMobileUx(game, root, doc) {
         markers.set(actor, el);
       }
       el.hidden = false;
+      // Signal only a visible LOS-confirmed opponent already reacting to
+      // authentic combat; no through-wall pings or additional target assist.
+      el.classList.toggle('mk-fps-returnfire',
+        (actor.__mkIntroThreatStage||0)>0&&
+        Number(game.time)-Number(actor.__mkIntroReactionAt)<=2.5);
       el.dataset.visiblePart=visiblePart;
       el.textContent=visiblePart==='head'?'▼ 露头':'▼ 敌';
       el.style.left = ((projected.x + 1) * 50).toFixed(2) + '%';
@@ -1772,6 +1803,23 @@ export function createFpsMobileUx(game, root, doc) {
       if (!active || now >= cueExpiresAt) hitCue.hidden = true;
       if (!active || now >= damageExpiresAt)damageVignette.hidden=true;
       const p = game.player;
+      if(active&&p?.alive&&activeChallenge?.id==='tags'){
+        // Never wake hidden enemies from fabricated hit/health signals.
+        // A valid real shot is audible; a fresh real hit causes faster cover AI.
+        for(const actor of game.actors||[]){
+          if(cfReactToRealScoutThreat({
+            actor,player:p,challenge:activeChallenge,now:Number(game.time)})){
+            const review=game.__mobileBalanceReview;
+            if(review){
+              review.openingResponse=actor.__mkIntroThreatStage===2
+                ?'real-hit':'real-shot';
+              review.responseAtNativeSec=+Number(game.time).toFixed(2);
+              review.readyAtNativeSec=+actor.readyAt.toFixed(2);
+              review.holdUntilNativeSec=+actor.__mobileTrainingHoldUntil.toFixed(2);
+            }
+          }
+        }
+      }
       fadeNativeAllies(active);
       const scopeButton=buttons.find(b=>b.dataset.mkAction==='scope');
       if(scopeButton)scopeButton.textContent=sniperScopeLabel(p?.scoped||0);
