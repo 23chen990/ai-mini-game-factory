@@ -45,8 +45,11 @@ export function extendEndless(run,ahead=370){
   created++;
  }
  // Bound long-session memory; terminal obstacles and last ~90m remain available.
- const minX=run.distance-90;
- run.obstacles=run.obstacles.filter(o=>o.x>=minX);
- run.fishes=run.fishes.filter(f=>f.x>=minX);
+ if(!Number.isFinite(run.endless.pruneAt)||run.distance>=run.endless.pruneAt){
+  const minX=run.distance-90;
+  run.obstacles=run.obstacles.filter(o=>o.x>=minX);
+  run.fishes=run.fishes.filter(f=>f.x>=minX);
+  run.endless.pruneAt=run.distance+20;
+ }
  return created;
 }
