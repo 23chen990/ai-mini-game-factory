@@ -1,8 +1,10 @@
-/* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout, URL, URLSearchParams */
+/* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout, URL, URLSearchParams, navigator */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed } from './fps-mobile-ux.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel} from './cf-player-loop.mjs';
+import {cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,
+  cfFinishPlaytest,cfMarkReplay,cfExportPlaytest} from './cf-playtest-metrics.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -22,11 +24,14 @@ async function boot() {
   // CF mobile preferences and task medals live in their own versioned keys:
   // no changes to the existing games' local saves or engine contracts.
   const cfControlsKey='h5-cf:controls:v1', cfMedalsKey='h5-cf:mastery:v1';
+  const cfPlaytestKey='h5-cf:local-playtest:v1';
+  let cfPlaytestBook=cfNewPlaytest(),cfPlaytestSession=null;
   let cfControls={...CF_CONTROL_DEFAULTS},cfMastery=cfNewMastery(),cfOriginalSens=null;
   if(id==='cf-transport-ship') {
     try {
       cfControls=cfLoadControls(localStorage.getItem(cfControlsKey));
       cfMastery=cfLoadMastery(localStorage.getItem(cfMedalsKey));
+      cfPlaytestBook=cfLoadPlaytest(localStorage.getItem(cfPlaytestKey));
     } catch {storageAvailable=false;}
   }
   let selected = levels.find(c => c.id === challengeProgress.selected), activeChallenge;
@@ -60,6 +65,7 @@ async function boot() {
     <div class="mk-meter"><span id="mk-status">准备出发</span><span>积分 <b id="mk-score">0</b></span><span id="mk-time"></span><progress id="mk-goal" max="8" value="0"></progress></div>
     <div id="mk-panel"><div id="mk-fps-kicker" hidden>FIELD OPS / 任务选择</div><h2 id="mk-heading"></h2><p id="mk-copy"></p><div id="mk-fps-brief" hidden aria-label="当前任务参数"></div><div id="mk-fps-results" hidden role="group" aria-label="本局真实战绩"></div>
     <div id="mk-fps-award" hidden role="status" aria-live="polite"></div>
+    <details id="mk-cf-playtest" hidden><summary>试玩数据 · 仅保存在本机</summary><p>仅记录真实开火、命中、击杀和重试；不上传，也不代表真实留存或广告收入。</p><button id="mk-cf-playtest-copy" type="button">复制匿名试玩记录</button><textarea id="mk-cf-playtest-json" readonly hidden aria-label="可选复制试玩 JSON"></textarea><small id="mk-cf-playtest-note">仅在你主动复制并分享时导出</small></details>
     <div id="mk-fps-options" hidden>
       <button id="mk-fps-pref-toggle" type="button" aria-expanded="false">⚙ 操作设置</button>
       <div id="mk-fps-pref-form" hidden>
@@ -83,8 +89,30 @@ async function boot() {
     if(id==='cf-transport-ship'){
       localStorage.setItem(cfControlsKey,cfSaveControls(cfControls));
       localStorage.setItem(cfMedalsKey,cfSaveMastery(cfMastery));
+      localStorage.setItem(cfPlaytestKey,JSON.stringify(cfPlaytestBook));
     }
   } catch { storageAvailable = false; $('storage').textContent = '存储不可用，本次仍可游玩'; } };
+  const cfNativePlaytestSnapshot = metrics => ({
+    shots:metrics?.shots||0,hits:metrics?.hits||0,
+    k:metrics?.kills||0,d:metrics?.deaths||0,
+    travel:metrics?.travel||0
+  });
+  if(id==='cf-transport-ship'){
+    $('cf-playtest-copy').addEventListener('click',async()=>{
+      const report=cfExportPlaytest(cfPlaytestBook);
+      $('cf-playtest-json').hidden=false;
+      $('cf-playtest-json').value=report;
+      try {
+        if(typeof navigator.clipboard?.writeText!=='function')throw Error('manual');
+        await navigator.clipboard.writeText(report);
+        $('cf-playtest-note').textContent='已复制。是否分享由你决定；未自动上传。';
+      }catch{
+        $('cf-playtest-note').textContent='已展开原始 JSON，可选中后自行复制。';
+        $('cf-playtest-json').focus();
+        $('cf-playtest-json').select();
+      }
+    });
+  }
   const renderFpsPrefs = () => {
     if(id!=='cf-transport-ship')return;
     $('fps-pref-look').value=String(cfControls.sensitivity);
@@ -263,6 +291,11 @@ async function boot() {
       $('fps-brief').hidden=phase!=='ready';
       $('fps-results').hidden=phase!=='finished';
       $('fps-award').hidden=phase!=='finished';
+      $('cf-playtest').hidden=phase!=='finished';
+      if(phase!=='finished'){
+        $('cf-playtest').open=false;
+        $('cf-playtest-json').hidden=true;
+      }
       $('fps-options').hidden=!['ready','paused'].includes(phase);
       if(!['ready','paused'].includes(phase)) {
         $('fps-pref-form').hidden=true;
@@ -291,7 +324,10 @@ async function boot() {
       $('goal').max=activeChallenge.target*activeChallenge.holdSeconds;
     if(activeChallenge?.kind==='assault')
       $('goal').max=activeChallenge.minTravel+activeChallenge.target;
-    await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
+    await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge);
+    if(id==='cf-transport-ship')cfPlaytestSession=cfBeginPlaytest(
+      cfPlaytestBook,activeChallenge.id,cfNativePlaytestSnapshot(native.metrics()));
+    last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
@@ -299,6 +335,8 @@ async function boot() {
   // makes mobile FPS replays feel sluggish. Native startMatch() already resets
   // actors, player stats, projectiles, score and spawns on its ORIGINAL path.
   $('replay').addEventListener('click', () => {
+    if(id==='cf-transport-ship'&&cfMarkReplay(cfPlaytestBook,{
+      phase:root.dataset.phase,outcome:root.dataset.outcome}))persist();
     if(cfWarmRestartAllowed(id,root.dataset.phase))void start();
     else location.reload();
   });
@@ -386,6 +424,8 @@ async function boot() {
         tickRound(round, roundTickMs, native.score());
         if (assistActive && round.elapsedMs >= 15000) { window.__pelican.settings.autopilot = false; assistActive = false; }
         const metrics = native.metrics();
+        if(id==='cf-transport-ship')cfSamplePlaytest(
+          cfPlaytestSession,round.elapsedMs,cfNativePlaytestSnapshot(metrics));
         const result = challengeResult(activeChallenge, metrics, round.phase === 'finished' || phase === 'finished', round.elapsedMs);
         round.score = result.rewardScore;
         $('status').textContent = activeChallenge.kind==='defend'
@@ -449,7 +489,11 @@ async function boot() {
             $('notice').textContent='';
             showPhase('revive');
           }else{
-          finishRound(round, progress); native.pause(); clearInput(); persist();
+          finishRound(round, progress); native.pause(); clearInput();
+          if(id==='cf-transport-ship')cfFinishPlaytest(
+            cfPlaytestBook,cfPlaytestSession,round.elapsedMs,result.outcome,
+            cfNativePlaytestSnapshot(metrics));
+          persist();
           recordChallenge(challengeProgress, activeChallenge, round.score, result.outcome,
             {assisted:reviveUsed});
           const actualMetrics=reviveUsed?{...metrics,adRevived:true}:metrics;
