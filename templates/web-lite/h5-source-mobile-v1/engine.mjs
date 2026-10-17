@@ -199,7 +199,8 @@ export function loadChallengeProgress(raw,gameId) {
  */
 export function cfStartDefense(sites) {
   const valid=Array.isArray(sites)&&sites.length===2&&
-    sites.every((s,i)=>s?.id==='AB'[i]&&Number.isFinite(s.x)&&Number.isFinite(s.z))&&
+    sites.every(s=>['A','B'].includes(s?.id)&&Number.isFinite(s.x)&&Number.isFinite(s.z))&&
+    sites[0].id!==sites[1].id&&
     Math.hypot(sites[0].x-sites[1].x,sites[0].z-sites[1].z)>=8;
   return {valid:!!valid,sites:valid?sites.map(s=>({id:s.id,x:s.x,z:s.z})):[],
     stage:0,captured:0,held:0,enemyHeld:0,breached:false,
