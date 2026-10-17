@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { careerCourseSvg, raceProgressPercent, nearbyRival, raceEventMoment, raceMetricMoment } from '../racing/presentation.mjs';
+import { careerCourseSvg, raceProgressPercent, compactRaceObjective } from '../racing/presentation.mjs';
 import { STAGES } from '../racing/career.mjs';
 import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
 
@@ -32,37 +32,24 @@ test('progress display clamps to real native distance, not rank or synthetic tim
   assert.equal(raceProgressPercent({progress: -30},track,stage),0);
   assert.equal(raceProgressPercent({progress: NaN},track,stage),0);
 });
-test('rival gap uses real progress and does not change native race data', () => {
-  const player = {progress: 520}, first = {progress: 570, finished:false}, last = {progress: 440, finished:false};
-  const game = {player,standings:[first,player,last]};
-  const snapshot = JSON.stringify(game);
-  assert.deepEqual(nearbyRival(game),{label:'追击前车',metres:50,threat:false});
-  game.standings=[player,last,first];
-  assert.deepEqual(nearbyRival(game),{label:'守住领先',metres:80,threat:false});
-  assert.equal(nearbyRival({player,standings:[player]}),null);
-  assert.equal(nearbyRival({player,standings:[{progress:900},player]}),null);
-  assert.equal(JSON.stringify(game).includes('skill'),false);
-  assert.notEqual(JSON.stringify(game),snapshot);
+test('the only extra in-race text is a short factual counter on objective stages',()=>{
+  const cases=[
+    [{kind:'race',rank:3},{},31,''],
+    [{kind:'boss',rank:1},{},31,''],
+    [{kind:'elimination'},{survived:1},31,''],
+    [{kind:'drift',target:5},{cleanDrifts:2},31,'漂移 2/5'],
+    [{kind:'overtake',target:3},{cleanPasses:2},31,'超车 2/3'],
+    [{kind:'item',target:4},{pickups:6},31,'道具 4/4'],
+    [{kind:'speed',target:190},{gateSpeed:173},31,'测速 173/190'],
+    [{kind:'time'},{timeAllowance:105},30.4,'剩余 75s'],
+    [{kind:'relay'},{timeAllowance:90},92,'剩余 0s']
+  ];
+  for(const [stage,stats,raceTime,expected]of cases)
+    assert.equal(compactRaceObjective(stage,stats,raceTime),expected);
 });
-test('micro feedback requires native event; dirty drift and fake result yield nothing', () => {
-  assert.deepEqual(raceEventMoment({type:'driftEnd',data:{clean:true,time:0.7}}),{title:'漂亮过弯',kind:'skill'});
-  assert.equal(raceEventMoment({type:'driftEnd',data:{clean:false,time:1.2}}),null);
-  assert.equal(raceEventMoment({type:'driftEnd',data:{clean:true,time:0.1}}),null);
-  assert.deepEqual(raceEventMoment({type:'pad'}),{title:'加速带！',kind:'boost'});
-  assert.deepEqual(raceEventMoment({type:'nitro'}),{title:'氮气冲刺！',kind:'boost'});
-  assert.deepEqual(raceEventMoment({type:'smallBoost',data:{perfect:true}}),{title:'完美小喷！',kind:'boost'});
-  assert.deepEqual(raceEventMoment({type:'landBoost'}),{title:'落地喷！',kind:'boost'});
-  assert.deepEqual(raceEventMoment({type:'gaugeFull'}),{title:'氮气已就绪',kind:'ready'});
-  assert.equal(raceEventMoment({type:'itemGet'}),null,'native player events do not include pickups');
-  assert.equal(raceEventMoment({type:'fakeWin'}),null);
-});
-
-test('earned pickup and corner pass presentation follows the real career counters', () => {
-  assert.deepEqual(raceMetricMoment({ cleanPasses: 0, pickups: 0 },
-    { cleanPasses: 1, pickups: 0 }), { title:'弯道反超！', kind:'skill' });
-  assert.deepEqual(raceMetricMoment({ cleanPasses: 1, pickups: 0 },
-    { cleanPasses: 1, pickups: 1 }), { title:'道具到手！', kind:'item' });
-  assert.equal(raceMetricMoment({ cleanPasses: 1, pickups: 1 },
-    { cleanPasses: 1, pickups: 1 }),null);
-  assert.equal(raceMetricMoment(null,{ cleanPasses: 1, pickups: 1 }),null);
+test('compact HUD never invents a coach message or misstates corrupt telemetry',()=>{
+  assert.equal(compactRaceObjective(null,{}),'');
+  assert.equal(compactRaceObjective({kind:'drift',target:5},{cleanDrifts:-2}),'漂移 0/5');
+  assert.equal(compactRaceObjective({kind:'speed',target:190},{gateSpeed:NaN}),'测速 0/190');
+  assert.equal(compactRaceObjective({kind:'time'},{timeAllowance:20},Infinity),'剩余 20s');
 });
