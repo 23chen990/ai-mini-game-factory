@@ -817,7 +817,26 @@ html[data-reference-game="cf-transport-ship"] #mk-challenges {
   gap:5px;margin:4px 0 6px;
 }
 html[data-reference-game="cf-transport-ship"] #mk-challenges button {
-  margin:0;min-width:0;
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  margin:0;min-width:0;min-height:48px!important;
+  padding:5px 8px 5px 33px!important;
+  line-height:1.2;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button::before{
+  top:50%;left:7px;transform:translateY(-50%);
+  width:19px;height:21px;font-size:19px;line-height:21px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button b,
+html[data-reference-game="cf-transport-ship"] #mk-challenges button small{
+  display:block;position:static;flex:none;min-height:0;
+  max-width:100%;margin:0;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button b{
+  font-size:12px;line-height:17px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button small{
+  margin-top:2px;font-size:10px;line-height:13px;
 }
 html[data-reference-game="cf-transport-ship"] #mk-revive-actions{
   width:100%;box-sizing:border-box;
@@ -853,6 +872,6 @@ html[data-reference-game="cf-transport-ship"] #mobile-kit[data-phase="revive"] #
     min-height:26px!important;font-size:10px;padding:4px 3px
   }
   html[data-reference-game="cf-transport-ship"] #mk-challenges button{
-    min-height:38px!important;padding:4px 3px
+    min-height:48px!important;padding:5px 6px 5px 31px!important
   }
 }
