@@ -359,6 +359,19 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       rookie.openingBot.holdUntil<=12&&rookie.openingBot.holdUntil>=7,
       {bot:rookie.openingBot,route:rookie.route});
     const authenticRookieShots=rookie.player.shots;
+    // Do not certify a mobile shooter whose first viewport contains only
+    // container walls. Markers are already projected through the ORIGINAL
+    // camera and visibility-tested against the ORIGINAL world raycaster.
+    const initialVisible=await page.evaluate(()=>[...document.querySelectorAll(
+      '.mk-fps-enemy')].filter(el=>el.hidden===false&&
+        getComputedStyle(el).display!=='none').map(el=>({
+          left:el.style.left,top:el.style.top,
+          title:el.textContent?.trim()
+        })));
+    check('h5-lite-opening-actual-los-enemy-is-visible',
+      rookie.route?.openingVisibleLane===true&&initialVisible.length>0,
+      {route:rookie.route,markers:initialVisible,player:rookie.player});
+    await snap('v18-lite-opening-target');
     // V18 has no auto aim. Aim using ONLY the on-screen, LOS-verified visible
     // opponent marker and genuine right-thumb CDP swipes, never actor coords.
     const rookieLite=await page.locator('#mobile-kit')
