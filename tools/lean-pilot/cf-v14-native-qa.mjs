@@ -219,24 +219,50 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         vy:s.player?.vy,onGround:s.player?.onGround,
         jumpCD:s.player?.jumpCD,input:s.player?.input?.jump})),
       after:afterJump.player});
-    // Two real CDP fingers: walk+fire at once, then OS-style touchcancel.
-    const f0=center(fireRect);
-    await event('touchStart',[{...p0,id:51}]);
-    await event('touchStart',[{...p0,id:51},{...f0,id:52}]);
-    await event('touchMove',[{x:p0.x,y:p0.y-43,id:51},{x:f0.x-17,y:f0.y-9,id:52}]);
-    await sleep(340);
-    const combined=await inspect();
-    check('two-thumbs-simultaneous-input',Math.abs(combined.player.input.mz)>.25&&
-      combined.player.input.fire===true,
-      {combined:combined.player});
-    await event('touchCancel',[]);
-    await sleep(220);
-    const cancelled=await inspect();
+    // Two normal CDP fingers: walk + fire together, followed by OS-style
+    // touchcancel. The original Three.js fight can KILL the player mid-input;
+    // native death correctly clears movement. In that one causal branch,
+    // release all touches, await real 4s native respawn and repeat once.
+    // This never sets HP, state, position, stats, clock or the input assertion.
+    const f0=center(fireRect),multiTouchTraces=[];
+    let combined=null,cancelled=null,multiSuccess=false;
+    for(let attempt=1;attempt<=2;attempt++){
+      const current=await inspect();
+      if(!current.player?.alive){
+        await page.waitForFunction(()=>{
+          const g=window.__H5NativeGame;
+          return g?.playing===true&&!g?.paused&&
+            g?.player?.alive===true;
+        },null,{timeout:30000,polling:100});
+      }
+      await event('touchStart',[{...p0,id:51}]);
+      await event('touchStart',[{...p0,id:51},{...f0,id:52}]);
+      await event('touchMove',[
+        {x:p0.x,y:p0.y-43,id:51},{x:f0.x-17,y:f0.y-9,id:52}]);
+      await sleep(340);
+      combined=await inspect();
+      await event('touchCancel',[]);
+      await sleep(220);
+      cancelled=await inspect();
+      multiSuccess=combined.player?.alive===true&&
+        Math.abs(combined.player.input.mz)>.25&&
+        combined.player.input.fire===true;
+      multiTouchTraces.push({
+        attempt,aliveDuring:combined.player?.alive,
+        deaths:combined.player?.deaths,
+        walk:combined.player?.input.mz,
+        firing:combined.player?.input.fire,
+        cancelled:cancelled.player?.input
+      });
+      if(multiSuccess||combined.player?.alive===true)break;
+    }
+    check('two-thumbs-simultaneous-input',multiSuccess,
+      {combined:combined.player,attempts:multiTouchTraces});
     check('ios-style-cancel-releases-all-native-touches',
       cancelled.player.input.mx===0&&cancelled.player.input.mz===0&&
       cancelled.player.input.fire===false&&cancelled.player.input.firePressed===false&&
       cancelled.player.input.dx===0&&cancelled.player.input.dy===0,
-      {cancelled:cancelled.player});
+      {cancelled:cancelled.player,attempts:multiTouchTraces});
     await snap('v14-multitouch-cancel');
     await page.locator('#mk-pause').tap();
     await page.waitForSelector('#mobile-kit[data-phase="paused"]',{timeout:9000});
