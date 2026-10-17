@@ -303,8 +303,8 @@ try {
   await page.locator('#race-export').tap();
   const firstFile=await firstDownload;
   const initialExport=JSON.parse(await readFile(await firstFile.path(),'utf8'));
-  if(firstFile.suggestedFilename()!=='racing-v53-local-playtest.json'||
-     initialExport.build!=='V5.3'||initialExport.verifiedHumanPlay!==false||
+  if(firstFile.suggestedFilename()!=='racing-v60-local-playtest.json'||
+     initialExport.build!=='V6.0'||initialExport.verifiedHumanPlay!==false||
      initialExport.metrics.starts!==0||initialExport.metrics.finishes!==0)
     fail('Menu export must start empty and explicitly reject human-play claims: '+JSON.stringify(initialExport));
   report.initialExport={filename:firstFile.suggestedFilename(),starts:0,private:true};
