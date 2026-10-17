@@ -2,7 +2,7 @@
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap } from './fps-mobile-ux.mjs';
-import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus} from './cf-player-loop.mjs';
+import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus,cfMobileMission} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -156,11 +156,13 @@ async function boot() {
     $('elite').hidden = !available || root.dataset.phase !== 'ready';
     $('elite').setAttribute('aria-pressed', String(elite));
     $('elite').textContent = elite
-      ? '⚡ 精英模式已开启 · 点击返回普通'
-      : '⚡ 进阶复战 · 敌人更强，无自动辅助';
+      ? '⚡ 精英挑战已开启 · 点击返回普通'
+      : '⚡ 进阶挑战 · 更快、更强的敌人';
     $('heading').textContent = selected.title;
-    const displayChallenge = id==='cf-transport-ship'&&elite
+    const baseChallenge=id==='cf-transport-ship'&&elite
       ? cfEliteChallenge(selected) : {...selected,elite:false};
+    const displayChallenge=id==='cf-transport-ship'
+      ? cfMobileMission(baseChallenge):baseChallenge;
     $('copy').textContent = id === 'cf-transport-ship'
       ? mobileChallengeCopy(displayChallenge)
       : selected.instructions;
@@ -326,8 +328,8 @@ async function boot() {
     if(routeToArena(selected))return;
     reviveOffered=false;reviveUsed=false;reviveDeclined=false;reviveBusy=false;
     clearInput();
-    activeChallenge = id === 'cf-transport-ship' ? (elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
-    if(activeChallenge?.drill==='reposition')
+    activeChallenge = id === 'cf-transport-ship' ? cfMobileMission(elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
+    if(activeChallenge?.drill==='reposition'&&!activeChallenge.lite)
       $('goal').max=activeChallenge.openingHits+activeChallenge.minTravel+activeChallenge.target;
     if(activeChallenge?.kind==='defend')
       $('goal').max=activeChallenge.target*activeChallenge.holdSeconds;
@@ -454,7 +456,7 @@ async function boot() {
              metrics.evacExtracted===true?'◆ 撤离区已守住 · 等待结束':
                '◆ 撤离'+Math.floor(metrics.evacHeldSec||0)+'/'+activeChallenge.extractSeconds+
                '秒 · '+(metrics.evacContested?'敌军争夺中':'持续作战'))
-          : activeChallenge.drill==='reposition'
+          : activeChallenge.drill==='reposition'&&!activeChallenge.lite
           ? result.label
           : activeChallenge.kind === 'survive'
           ? '❤ 余' + Math.max(0, activeChallenge.target +
@@ -476,7 +478,7 @@ async function boot() {
           : activeChallenge.kind==='assault'
           ? Math.min(activeChallenge.minTravel,metrics.assaultTravel||0)+
             (metrics.assaultStage===1?Math.min(activeChallenge.target,metrics.assaultKills||0):0)
-          : activeChallenge.drill==='reposition'
+          : activeChallenge.drill==='reposition'&&!activeChallenge.lite
           ? (metrics.drillFirstHit?activeChallenge.openingHits:0) +
             Math.min(activeChallenge.minTravel,metrics.drillTravel||0) +
             Math.min(activeChallenge.target,metrics.drillFollowUpHits||0)
