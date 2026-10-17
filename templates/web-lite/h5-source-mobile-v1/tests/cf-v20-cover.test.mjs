@@ -34,7 +34,7 @@ test('Cover route uses native player-local movement, not setting x/z instantly',
 });
 
 test('Cover candidates demand walkable native nav path and intact native wall collision',()=>{
- const world={blocked:(x,y,z)=>x<0};
+ const world={blocked:(x,y,z)=>x<3};
  const nav={idx:()=>4,walkable:i=>i===4,
   findPath:(ax,az,bx,bz)=>[[ax,az],[bx,bz]]};
  const player={pos:{x:3,z:0},yaw:0};
