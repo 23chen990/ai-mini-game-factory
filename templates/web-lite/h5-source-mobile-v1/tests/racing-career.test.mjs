@@ -51,8 +51,8 @@ test('failure diagnosis distinguishes authentic rank, technique and boss losses 
   assert.match(stageFailureFeedback(STAGES[15],result(4),{beatBoss:false}).reason,/要求前1名.*未超过指定车神/);
 });
 
-test('16 staged challenges use four biome worlds and eight distinct objectives',()=>{
-  assert.equal(STAGES.length,16);assert.equal(new Set(STAGES.map(s=>s.map)).size,4);
+test('30 staged challenges use four biome worlds and eight distinct objectives',()=>{
+  assert.equal(STAGES.length,30);assert.equal(new Set(STAGES.map(s=>s.map)).size,4);
   assert.ok(new Set(STAGES.map(s=>s.kind)).size>=8);assert.ok(STAGES.filter(s=>s.laps>1).length>=12);
   assert.equal(STAGES[0].laps,2);
 });
@@ -439,8 +439,8 @@ test('V4.8 stage01 is NOT a tutorial pass: demands two full laps, rank and a tru
   assert.ok(g.racers[2].skill>=1.60);
   assert.deepEqual(g.racers.map(x=>({s:x.s,progress:x.progress,d:x.d})),snapshot);
 });
-test('V4.8 no easy rank gates remain across the sixteen stages',()=>{
-  assert.equal(STAGES.length,16);
+test('V6.0 no easy rank gates remain across the thirty stages',()=>{
+  assert.equal(STAGES.length,30);
   for(const stage of STAGES){
     assert.ok(stage.rank<=3,'hard rank on stage '+stage.id);
     assert.ok(stage.laps>=2,'no one-lap novice tutorial '+stage.id);

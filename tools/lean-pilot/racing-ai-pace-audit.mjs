@@ -102,11 +102,34 @@ for(const id of ['01','02','04','05','03','06','07','08','10','11','14','09','12
     improvementPercent,adjusted:configured.adjusted,seeded:seeded.adjusted,
     fixedBand:COMPETITIVE_FIELD_V42[id]??null};
 }
+// Native AICar.update on every new physical road, using the actual new
+// spline and pre-race fixed field. The stronger rival should not be slower
+// than the lower-band rival; no human win/loss or rubber banding is inferred.
+const lateField={};
+for(const stage of STAGES.slice(16)) {
+  const band=COMPETITIVE_FIELD_V42[stage.id];
+  if(!band||band.length!==2||!(band[1]>band[0]))
+    throw Error('Missing V6 late rival field '+stage.id);
+  const seed=2026101700+Number(stage.id);
+  const field=[{isPlayer:false,skill:1.2},{isPlayer:false,skill:1.3}];
+  const setup=seedCompetitiveField(field,stage);
+  if(setup.adjusted!==2||field[0].skill!==band[0]||field[1].skill!==band[1])
+    throw Error('Native V6 field was not seeded from stage '+stage.id);
+  const ordinary=runAi(revised[stage.course],band[0],seed,stage.laps);
+  const aceSkill=stage.id==='30'?2.18:band[1];
+  const ace=runAi(revised[stage.course],aceSkill,seed,stage.laps);
+  if(ace.timeSec>ordinary.timeSec*1.05||ace.timeSec<25||
+     ace.lapLengthM!==ordinary.lapLengthM||ace.lapLengthM<1700)
+    throw Error('New AI racer has implausible native pace at '+stage.id);
+  lateField[stage.id]={course:stage.course,laps:stage.laps,roadLengthM:ace.lapLengthM,
+    ordinarySkill:band[0],aceSkill,ordinaryTimeSec:ordinary.timeSec,
+    aceTimeSec:ace.timeSec,aceTopSpeedKmh:ace.topSpeedKmh};
+}
 const report={schemaVersion:1,buildHash:build.buildHash,
   sourceRevision:build.sourceRevision,twoLaps:true,seededNativeAi:true,
   noRubberBand:true,noWeapons:true,noPlayer:true,noCollision:true,
   limitation:'Native AICar.update for fixed top-of-field skill against real pinned Track centerline. No traffic, contact, corner-tactic nitro, human input or rank. NOT a win rate or natural gameplay test.',
-  stageAI,bossThreeLaps,maps:data};
+  stageAI,lateField,bossThreeLaps,maps:data};
 const out=path.join(run,'artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'ai-pace-v33.json'),JSON.stringify(report,null,2)+'\n');

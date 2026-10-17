@@ -1,3 +1,4 @@
+import { EXPANSION_COURSES } from './career-expansion.mjs';
 /** V3.5: Four distinct ORIGINAL racing rhythms inspired by kart-racer design principles.
  * No competitor map coordinates, assets, branch shortcuts, checkpoint edits, speed buffs
  * or reduced career goals. Each cut is anchored to the exact pinned upstream layout.
@@ -88,8 +89,10 @@ export const TRACK_RESHAPES = Object.freeze({
  * sixteen licensed or independently modelled environment packs.
  * No competitor coordinates, branded artwork or renamed copies.
  */
-export const CAREER_COURSE_MAPS = Object.freeze(
-  'city egypt city aegean egypt city aegean snow egypt city aegean snow city egypt snow aegean'.split(' '));
+export const CAREER_COURSE_MAPS = Object.freeze([
+  ...'city egypt city aegean egypt city aegean snow egypt city aegean snow city egypt snow aegean'.split(' '),
+  ...Object.values(EXPANSION_COURSES).map(c=>c.map),
+]);
 export const COURSE_BLUEPRINTS = Object.freeze({
   '01': ['新城攻防环','四段逆向弯·双圈前三','NEON CHALLENGE',1,'0,0,0 140,0,0 330,5,0 475,70,0 550,190,0 545,330,0 460,435,0 320,480,0 150,455,0 0,395,0 -85,280,0 -95,140,0'],
   '02': ['风蚀箭谷','高速跳台','DUNE SPRINT',1,'0,0,0 185,0,0 400,-10,0 565,15,7 650,120,13 660,270,4 610,360,1 490,370,0 420,300,0 370,205,0 290,200,0 230,300,0 120,420,0 -65,430,0 -195,345,0 -210,190,0 -145,70,0'],
@@ -107,6 +110,8 @@ export const COURSE_BLUEPRINTS = Object.freeze({
   '14': ['双丘三叉','双波峰测速','TRIDENT DUNES',0.84,'0,0,0 180,-10,0 365,10,0 500,90,0 505,230,0 430,280,0 360,365,0 420,460,5 550,485,11 625,585,7 550,690,2 405,680,0 300,565,0 245,460,0 145,495,0 30,620,0 -120,620,0 -230,500,0 -200,340,0 -100,260,0 -5,160,0 -100,65,0'],
   '15': ['极地三叶','三连发卡道具','POLAR TRILOBE',0.89,'0,0,0 175,-10,0 355,20,3 445,120,7 430,255,11 350,330,16 260,300,18 235,425,20 340,485,21 340,600,17 215,680,14 75,645,10 10,550,8 -85,615,6 -235,570,4 -290,415,3 -230,285,2 -110,275,1 -80,170,0 -155,65,0'],
   '16': ['悬崖王冠','王冠山岭决战','CLIFFSIDE CROWN',0.86,'0,0,0 185,-10,0 350,5,2 475,80,6 525,205,10 465,300,15 390,295,18 345,410,20 440,485,22 455,605,24 325,695,24 180,680,21 100,605,18 50,470,14 -60,510,12 -175,485,10 -270,360,8 -250,200,5 -145,105,3 -40,140,2 65,75,1'],
+  ...Object.fromEntries(Object.entries(EXPANSION_COURSES).map(([id,c])=>
+    [id,[c.title,c.feel,c.english,c.scale,c.sketch]])),
 });
 /** V3.8 technical rhythm: two-key-drivable S sectors inserted into 16
  * independent route blueprints. Values are [ORIGINAL segment, world-metres
@@ -134,6 +139,7 @@ export const COURSE_TECHNICAL_SECTORS=Object.freeze({
   '14':[[1,17,-1],[11,18,1],[15,17,-1]],
   '15':[[1,18,1],[9,16,-1],[10,17,-1],[14,17,1]],
   '16':[[1,18,-1],[9,17,1],[15,18,-1],[17,16,1]],
+  ...Object.fromEntries(Object.entries(EXPANSION_COURSES).map(([id,c])=>[id,c.technical])),
 });
 export function injectTechnicalSectors(local,courseId,scale) {
   const items=COURSE_TECHNICAL_SECTORS[courseId];
@@ -175,6 +181,7 @@ export const COURSE_ROAD_WIDTHS = Object.freeze({
   '14':18,
   '15':18,
   '16':18,
+  ...Object.fromEntries(Object.entries(EXPANSION_COURSES).map(([id,c])=>[id,c.width])),
   '01':19,
   '02':18.5,
   '03':19,
@@ -187,7 +194,7 @@ export const COURSE_ROAD_WIDTHS = Object.freeze({
 });
 export function createCareerLayouts(layouts) {
   const fingerprints=new Set(),titles=new Set();
-  for(let i=1;i<=16;i++){
+  for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
     const id=String(i).padStart(2,'0'),base=layouts[CAREER_COURSE_MAPS[i-1]],
       blueprint=COURSE_BLUEPRINTS[id];
     if(!base?.__racingV31||!blueprint||!Array.isArray(base.points))
@@ -212,7 +219,8 @@ export function createCareerLayouts(layouts) {
     fingerprints.add(signature);
     layouts['race-'+id]={width:COURSE_ROAD_WIDTHS[id]??base.width,points};
   }
-  if(fingerprints.size!==16||titles.size!==16)throw Error('Expected 16 distinct hand-authored courses');
+  if(fingerprints.size!==CAREER_COURSE_MAPS.length||titles.size!==CAREER_COURSE_MAPS.length)
+    throw Error('Expected '+CAREER_COURSE_MAPS.length+' distinct hand-authored courses');
   return fingerprints.size;
 }
 
@@ -280,6 +288,7 @@ const COURSE_ACCENTS = Object.freeze([
   0xffc65a,0xfa5f91,0x49b8ff,0x84ebff,
   0xeed067,0xee4edc,0x58e3c7,0xb4d8ff,
   0xf0bc55,0xff8f42,0x73d8ff,0xe4bcfa,
+  ...Object.values(EXPANSION_COURSES).map(c=>c.accent),
 ]);
 /** V4.2: large, readable WORLD features at real track stations.
  * These are non-colliding scenery, never fake road, reward, or rank data.
@@ -374,7 +383,7 @@ export function buildRaceLandmarks(THREE,track,course) {
   const group=new THREE.Group();
   if(TRACK_RESHAPES[course])return group; // Pinned native pre-career demo.
   const n=Number(course?.slice(5));
-  if(!Number.isInteger(n)||n<1||n>16||!track?.sample)
+  if(!Number.isInteger(n)||n<1||n>CAREER_COURSE_MAPS.length||!track?.sample)
     throw Error('Course-specific world landmarks require a native track');
   group.name='unique-course-landmarks-'+course;
   const material=new THREE.MeshStandardMaterial({
@@ -467,11 +476,12 @@ const COURSE_SKIES = Object.freeze([
   ['#866ec2','#f9bd96','#c39891'], // 14 dunes violet sunset
   ['#525b9b','#ccd6ff','#9cafe1'], // 15 polar dusk
   ['#37486e','#dfc5df','#9d9fb9'], // 16 cliff final hour
+  ...Object.values(EXPANSION_COURSES).map(c=>c.sky),
 ]);
 export function createRaceSky(sky,course) {
   if(TRACK_RESHAPES[course])return sky; // native demo
   const n=Number(course?.slice(5));
-  if(!Number.isInteger(n)||n<1||n>16||!sky)throw Error('Unknown stage sky');
+  if(!Number.isInteger(n)||n<1||n>CAREER_COURSE_MAPS.length||!sky)throw Error('Unknown stage sky');
   const [top,horizon,bottom]=COURSE_SKIES[n-1];
   return {...sky,top,horizon,bottom};
 }

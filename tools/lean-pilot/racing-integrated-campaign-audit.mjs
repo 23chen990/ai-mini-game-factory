@@ -1,5 +1,6 @@
 /* global process, console, URL, window, document, localStorage, getComputedStyle */
 import { chromium } from '@playwright/test';
+import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
 import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -31,7 +32,7 @@ const report={schemaVersion:1,buildHash:build.buildHash,sourceRevision:build.sou
   untouched:['PlayerCar.update','AICar.update','Game.step','collide','updateProgress','finish','rank','mission','item','save'],
   runs:[],errors:[],completedAll:false};
 const deadline=Date.now()+Math.max(30000,Math.min(800000,Number(process.env.RACE_SWEEP_MAX_WALL_MS||600000)));
-const maxStages=Math.max(1,Math.min(17,Number(process.env.RACE_SWEEP_STAGES||17)));
+const maxStages=Math.max(1,Math.min(STAGES.length+1,Number(process.env.RACE_SWEEP_STAGES||17)));
 async function save(){await writeFile(path.join(output,'report.json'),JSON.stringify({...report,checkedAt:new Date().toISOString()},null,2)+'\n');}
 let browser;
 try{
@@ -39,8 +40,8 @@ try{
   const ctx=await browser.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,deviceScaleFactor:1});
   await ctx.addInitScript(()=>{
     // Unlocked options are a TEST FIXTURE, NEVER earned progress.
-    const stars=Object.fromEntries(Array.from({length:16},(_,i)=>[String(i+1).padStart(2,'0'),1]));
-    localStorage.setItem('h5-mobile:qq-speed:career:v1',JSON.stringify({version:1,stars,times:{},skin:0,rounds:16}));
+    const stars=Object.fromEntries(Array.from({length:STAGES.length},(_,i)=>[String(i+1).padStart(2,'0'),1]));
+    localStorage.setItem('h5-mobile:qq-speed:career:v1',JSON.stringify({version:1,stars,times:{},skin:0,rounds:STAGES.length}));
     localStorage.setItem('h5-qq-mobile-20261013:graphics-quality:v1','low');
     localStorage.setItem('h5-qq-mobile-20261013:audio-enabled:v1','0');
   });
@@ -48,15 +49,15 @@ try{
   page.on('pageerror',err=>report.errors.push('Browser: '+err.message));
   await page.goto('http://127.0.0.1:'+server.address().port+'/',{waitUntil:'domcontentloaded',timeout:45000});
   await page.locator('#race-start:not([disabled])').waitFor({timeout:60000});
-  await page.addScriptTag({type:'module',content:"import {RaceDriver} from '/qa-source/driver.mjs';window.__SWEEP_DRIVER__=new RaceDriver();"});
+  await page.addScriptTag({type:'module',content:"import {ManualRaceDriver} from '/qa-source/driver.mjs';window.__SWEEP_DRIVER__=new ManualRaceDriver();"});
   await page.waitForFunction(()=>!!window.__SWEEP_DRIVER__,null,{timeout:10000});
   await page.screenshot({path:path.join(output,'real-webgl-startup.png')});
   await page.evaluate(()=>{window.game.render=()=>{};});
   for(let i=0;i<maxStages;i++){
     if(Date.now()>deadline-25000){report.errors.push('Time budget exceeded');break;}
-    const id=i===16?'daily':String(i+1).padStart(2,'0');
+    const id=i===STAGES.length?'daily':String(i+1).padStart(2,'0');
     try{
-      await page.locator('#race-stage').selectOption(i===16?'daily':String(i));
+      await page.locator('#race-stage').selectOption(i===STAGES.length?'daily':String(i));
       await page.waitForFunction(()=>window.game?.state==='menu'&&document.querySelector('#race-kit')?.dataset.phase==='ready'&&!document.querySelector('#race-start')?.disabled,null,{timeout:45000});
       const title=await page.locator('#race-stage option:checked').textContent();
       // Record what a genuine finger would hit. Synthetic campaign entry then
@@ -78,7 +79,7 @@ try{
       await page.locator('#race-start').tap();
       await page.waitForFunction(()=>window.game?.state==='countdown',null,{timeout:12000});
       await page.evaluate(()=>{
-        const g=window.game;g.render=()=>{};window.__SWEEP_DRIVER__.suspend();
+        const g=window.game;g.render=()=>{};window.__SWEEP_DRIVER__.actions.clear();
         for(let n=0;n<62&&g.state==='countdown';n++){g.time+=.05;g.step(.05,g.input.frame());}
       });
       await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:12000});
@@ -90,7 +91,9 @@ try{
             const p=g.player,ahead=t.sample(p.d+Math.max(6,Math.abs(p.s)*.35+12),{});
             const desired=ahead.hd+Math.atan2(.85*p.lat,Math.max(10,Math.abs(p.s)*.55));
             const error=Math.atan2(Math.sin(desired-p.h),Math.cos(desired-p.h));
-            const translated=driver.frame(.05,{left:error>.055,right:error<-.055},p,t,g.state,{canStep:true});
+            const axis=Math.max(-1,Math.min(1,error*2.8));
+            const translated=driver.frame({steerAxis:axis},p,g.state,
+              {canStep:true,itemMode:g.itemMode,track:t,now:g.raceTime});
             g.time+=.05;g.step(.05,translated);
           }
           const p=g.player;

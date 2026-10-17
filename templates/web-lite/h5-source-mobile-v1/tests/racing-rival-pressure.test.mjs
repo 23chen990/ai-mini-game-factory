@@ -96,17 +96,17 @@ test('V4.2 sends five genuine opponents into a fixed, varied contest; never touc
   assert.deepEqual(field.slice(1).map(x=>x.skill),again,'fixed setup must be idempotent');
 });
 
-test('all 16 stages including 01, 13 and 16 spawn strong fixed rivals',()=>{
-  const expected=Array.from({length:16},(_,i)=>String(i+1).padStart(2,'0'));
+test('all 30 stages including 01, 13, 16 and 30 spawn strong fixed rivals',()=>{
+  const expected=Array.from({length:30},(_,i)=>String(i+1).padStart(2,'0'));
   assert.deepEqual(Object.keys(COMPETITIVE_FIELD_V42).sort(),expected);
   for(const [id,band] of Object.entries(COMPETITIVE_FIELD_V42)){
-    assert.ok(band[0]>=1.16&&band[1]<=2&&band[0]<band[1],id);
+    assert.ok(band[0]>=1.16&&band[1]<=2.12&&band[0]<band[1],id);
     const seed=seedCompetitiveField(Array.from({length:5},()=>rival({skill:.85})),
       {id,course:'race-'+id});
     assert.equal(seed.adjusted,5);
     assert.equal(seed.maximum,band[1]);
   }
-  for(const id of ['01','13','16']){
+  for(const id of ['01','13','16','30']){
     const rivals=[rival({skill:1.29})];
     const report=seedCompetitiveField(rivals,{id,course:'race-'+id});
     assert.equal(report.adjusted,1,'even former protected stages are hard '+id);

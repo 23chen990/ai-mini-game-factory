@@ -61,7 +61,7 @@ const maps={};for(const name of Object.keys(original)){
 }
 const { Track: NativeTrack }=await import(pathToFileURL(path.join(src,'src/track.js')).href);
 const courses={}, fingerprints=new Set();
-for(let i=1;i<=16;i++){
+for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){ 
   const id=String(i).padStart(2,'0'),key='race-'+id,map=CAREER_COURSE_MAPS[i-1];
   const layout=modified[key];
   if(!layout || !Array.isArray(layout.points)) throw Error('Missing physical stage course '+id);
@@ -83,14 +83,15 @@ for(let i=1;i<=16;i++){
   // its peers. Native PlayerCar drivability is checked independently.
   if(geometry.sameLevelClosePairs>0 ||
       geometry.lengthM<1700 || geometry.lengthM>3300 ||
-      geometry.sharpPct>(Number(id)<=10?23:29))
+      geometry.sharpPct>(Number(id)<=10?23:Number(id)<=16?29:36))
     throw Error('Unsafe stage '+id+' physical geometry '+JSON.stringify({
       collisions:geometry.sameLevelClosePairs,sharpPct:geometry.sharpPct,length:geometry.lengthM}));
   courses[id]={scene:map,courseName:COURSE_BLUEPRINTS[id][0],
     physicalPads:courseTheme.boostPads.map(p=>({f:+p.f.toFixed(4),lat:p.lat})),
     ...geometry,maxPadAnchorOffsetM:0};
 }
-if(Object.keys(courses).length!==16)throw Error('All 16 stages must have distinct physical courses');
+if(Object.keys(courses).length!==CAREER_COURSE_MAPS.length)
+  throw Error('All '+CAREER_COURSE_MAPS.length+' stages must have distinct physical courses');
 // Actual pinned Three.js Track projection test, not a simulated race victory.
 const shortcutAudit={};
 for(const course of Object.keys(SHORTCUT_PLANS)){
@@ -147,7 +148,10 @@ const report={schemaVersion:2,buildHash:build.buildHash,upstream:build.sourceRev
 const out=path.join(root,'runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'geometry-v32.json'),JSON.stringify(report,null,2)+'\n');
-await writeFile(path.join(out,'geometry-career16.json'),JSON.stringify({buildHash:report.buildHash,courses,shortcuts:shortcutAudit},null,2)+'\n');
+await writeFile(path.join(out,'geometry-career30.json'),JSON.stringify({buildHash:report.buildHash,courses,shortcuts:shortcutAudit},null,2)+'\n');
+// Preserve the earlier artifact path for historical V5.3 external QA consumers.
+const original16=Object.fromEntries(Object.entries(courses).filter(([id])=>Number(id)<=16));
+await writeFile(path.join(out,'geometry-career16.json'),JSON.stringify({buildHash:report.buildHash,courses:original16,shortcuts:shortcutAudit},null,2)+'\n');
 let art='';
 for(const [i,name] of Object.keys(maps).entries()){
   const a=maps[name],all=[...a.old.line,...a.next.line],xs=all.map(x=>x[0]),zs=all.map(x=>x[1]);

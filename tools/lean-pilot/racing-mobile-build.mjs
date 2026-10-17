@@ -10,7 +10,7 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
-export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs']);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs']);
 
 export function patchRacingSource(source) {
   const fov = 'const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);';
@@ -332,6 +332,11 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await writeFile(path.join(project, 'src', adapterName),
       await readFile(path.join(owned, ownedName), 'utf8'));
   }
+  // The generated native World imports the track adapter from its OWN src/;
+  // copy the shared 17-30 course blueprints to that same directory rather
+  // than resolving the adapter's relative import against the template tree.
+  await writeFile(path.join(project, 'src/career-expansion.mjs'),
+    await readFile(path.join(owned, 'career-expansion.mjs'), 'utf8'));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
   const annotatedVehicle = patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle))))));

@@ -36,8 +36,8 @@ export const NaturalSchema = z.object({
 }).passthrough().superRefine((report, ctx) => {
   for (const [i, race] of report.races.entries()) if (race.status === 'PASS' && (!qualifiedVisibleFinish(race, race.earnedStars) || !(race.finishTime > 0) || !(race.progress > 0)))
     ctx.addIssue({ code: 'custom', path: ['races', i], message: 'PASS requires an actual qualified visible player finish, not old stars' });
-  if (report.passed && (report.errors.length || report.races.length !== 17 || new Set(report.races.map(r => r.stage)).size !== 17 || report.races.some(r => r.status !== 'PASS' || !r.actionsFit)))
-    ctx.addIssue({ code: 'custom', message: 'Full natural PASS requires16unique stages + daily and visible terminal actions' });
+  if (report.passed && (report.errors.length || report.races.length !== STAGES.length+1 || new Set(report.races.map(r => r.stage)).size !== STAGES.length+1 || report.races.some(r => r.status !== 'PASS' || !r.actionsFit)))
+    ctx.addIssue({ code: 'custom', message: 'Full natural PASS requires all '+STAGES.length+' unique stages + daily and visible terminal actions' });
 });
 const decodeJson = bytes => JSON.parse(bytes.toString('utf8'));
 export async function currentRacingInputHash() {

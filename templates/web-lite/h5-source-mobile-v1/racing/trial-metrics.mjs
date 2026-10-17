@@ -10,7 +10,7 @@ export const RACE_TRIAL_KEY = 'h5-mobile:qq-speed:playtest:v1';
 const MAX_RECENT = 40;
 const MAX_RAW_LENGTH = 16000;
 const safeCourse = value => typeof value === 'string' &&
-  /^race-(0[1-9]|1[0-6])$/.test(value);
+  /^race-(0[1-9]|[12][0-9]|30)$/.test(value);
 const safeCount = value => Number.isSafeInteger(value) && value >= 0
   ? Math.min(value, 1000000) : 0;
 const safeSeconds = value => typeof value === 'number' &&
@@ -133,7 +133,7 @@ export class RaceTrialMetrics {
    * full gameplay trace or claimed ad revenue. A snapshot can include QA runs. */
   exportJSON() {
     return JSON.stringify({
-      schemaVersion:1,game:'racing-h5',build:'V5.3',
+      schemaVersion:1,game:'racing-h5',build:'V6.0',
       verifiedHumanPlay:false,containsPersonalIdentifiers:false,
       generatedOnDevice:true,
       explanation:'本地试玩摘要（可能包含自动化 QA）；广告完成信号不是结算收入',

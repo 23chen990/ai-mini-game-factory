@@ -61,7 +61,7 @@ test('opt-in local JSON export is parseable, anonymous and does not invent human
   t.finish(stage,fixture(),0,71.3,{gainedPositions:1,lostPositions:2});
   t.rewardedOutcome('completed');
   const raw=t.exportJSON(),data=JSON.parse(raw);
-  assert.deepEqual([data.schemaVersion,data.game,data.build],[1,'racing-h5','V5.3']);
+  assert.deepEqual([data.schemaVersion,data.game,data.build],[1,'racing-h5','V6.0']);
   assert.equal(data.generatedOnDevice,true);
   assert.equal(data.verifiedHumanPlay,false);
   assert.equal(data.containsPersonalIdentifiers,false);

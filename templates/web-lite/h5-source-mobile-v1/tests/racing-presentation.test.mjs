@@ -4,7 +4,7 @@ import { careerCourseSvg, raceProgressPercent, compactRaceObjective } from '../r
 import { STAGES } from '../racing/career.mjs';
 import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
 
-test('all 16 authored tracks have unique rendered road shapes without remote assets', () => {
+test('all 30 authored tracks have unique rendered road shapes without remote assets', () => {
   const paths = new Set();
   for (const stage of STAGES) {
     const svg = careerCourseSvg(stage.course);
@@ -21,7 +21,7 @@ test('all 16 authored tracks have unique rendered road shapes without remote ass
       'visible course must include genuine S-sector control points '+stage.id);
     paths.add(path);
   }
-  assert.equal(paths.size, 16);
+  assert.equal(paths.size, 30);
   assert.equal(careerCourseSvg('race-99'), '');
 });
 test('progress display clamps to real native distance, not rank or synthetic timeline', () => {
