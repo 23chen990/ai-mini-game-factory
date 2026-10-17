@@ -52,7 +52,10 @@ test('Cover candidates demand walkable native nav path and intact native wall co
 test('Waist-high 3D cover has real bullet-blocking collider and no fake hp protection',()=>{
  const spec=cfCoverShieldSpec({x:0,z:0},-Math.PI/2);
  assert.ok(Math.abs(spec.x-1.06)<1e-9);
- assert.equal(spec.sy,1.06);
+ assert.equal(spec.sy,1.30);
+ assert.equal(spec.y,.65);
+ assert.ok(spec.y+spec.sy/2>1.05&&spec.y+spec.sy/2<1.62,
+  'original crouch eye must hide and original standing eye must clear steel');
  assert.equal(spec.mat,'metal');
  assert.equal(spec.solid,true);assert.equal(spec.sight,true);
  assert.equal(spec.bullet,'block');
