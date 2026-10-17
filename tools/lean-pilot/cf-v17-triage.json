@@ -66,7 +66,7 @@
     "approved live TapTap ad SDK callback",
     "upstream third-party source/assets full commercial license"
   ],
-  "status": "FIX_ATTEMPT_2_NATIVE_RETEST_PENDING",
+  "status": "FIX_ATTEMPT_3_NATIVE_RETEST_PENDING",
   "attempts": [
     {
       "attempt": 1,
@@ -87,19 +87,32 @@
     },
     {
       "attempt": 2,
-      "sha": "c9d85f2aef63b91ac80dd22064f4569d4aa00f23",
-      "ciRun": "PENDING",
-      "requirements": [
-        "Original rival fires real bullets when still alive and player never attacks",
-        "On idle exposed player, original enemy fire causes authentic HP loss or death, not only intent",
-        "Normal-input rapid kill branch still produces real native kill + visible cue; gameplay rules unchanged"
+      "sha": "12a3cf420169e73a40164ca46d799ccd3a8a4357",
+      "ciRun": 39033781524,
+      "passed": [
+        "normal touch first real native personal kill under 30s",
+        "all native smoke/terminal/free retry",
+        "no-attack real opening bot native fire 5 shots",
+        "no-attack genuine damage and native death at ~4.2sim",
+        "147 unit tests, HTTP browser"
       ],
-      "nonGoals": [
-        "fake enemy shots",
-        "injected player damage",
-        "unconditional enemy firing through death",
-        "skip 45s survival QA"
-      ]
+      "failed": [
+        "first30-kill-reward-rendered-from-real-player-counter"
+      ],
+      "cause": "Personal kill sometimes occurred on the INITIAL 380ms touch before the later kill sampling loop; UI cue existed but the loop began after 1100ms visibility had expired. Keep requirement, observe from before first touch."
+    },
+    {
+      "attempt": 3,
+      "sha": "4c04e629f759573b4eeb1ca2e37e67f0475d9fd1",
+      "ciRun": "PENDING",
+      "hypothesis": "Attach and retain read-only MutationObserver before first touch and sample its displayed first-kill event; only continue held firing when needed for actual kill.",
+      "acceptance": [
+        "Native player counter increments in <30sim",
+        "first kill cue visibly appears according to prearmed DOM mutation record",
+        "no-fire opponent genuinely injures player",
+        "full 45s natural terminal and retry remain unmodified"
+      ],
+      "noGameplayMutation": true
     }
   ]
 }
