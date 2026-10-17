@@ -37,7 +37,7 @@ export function createCoastAdventure(api) {
  let heldSteer=null,heldKeySteer=null,lastEndlessMilestone=0;
  let quality={tier:2,pr:Math.min(window.devicePixelRatio||1,1.5)},manualQuality='balanced',lowSeconds=0;
  const persist=()=>{try{localStorage.setItem(SAVE,JSON.stringify(save));localStorage.setItem(REWARD,saveProgress(progress,'pelican-bike'));localStorage.setItem(COLLECTION,JSON.stringify(collection));localStorage.setItem(METRICS,JSON.stringify(metrics));}catch{storage=false;}$('storage').textContent=storage?'本机保存关卡与外观 · 广告未接入 · 试玩数据仅存本机':'存储不可用，本次可玩，关卡和外观无法保存';};
- const track=event=>{recordPlaytestEvent(metrics,event,{level:run?.level.id??selected,distance:run?.distance??0});persist();};
+ const track=event=>{recordPlaytestEvent(metrics,event,{level:run?.level.id??selected,distance:run?.distance??0,elapsed:run?.elapsed??0});persist();};
  const applyStyle=()=>{const style=styleById(collection.equipped);pelican.materials.helmet.color.set(style.color);};
  function renderCollection(){
   $('collection').innerHTML=`<div class="co-collection-total"><b>🐚 ${collection.coins} 贝壳</b><small>无尽最好 ${collection.bestDistance} 米 · 真正捕鱼结算获得</small></div><div class="co-style-items">${COAST_STYLES.map(style=>{
