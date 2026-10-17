@@ -431,13 +431,13 @@ jobs:
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
-          name: cf-v14-original-depot-internal-${{ github.event.pull_request.head.sha }}
+          name: cf-v14-first30-internal-${{ github.event.pull_request.head.sha }}
           path: |
             ${{ runner.temp }}/cf-v14-first30.log
             ${{ runner.temp }}/cf-v14-export.json
             ${{ runner.temp }}/cf-v14-internal-playtest.zip
             ${{ runner.temp }}/cf-v14-sha256.txt
-            runs/h5-cf-challenges-20261013/cf-v14-first30-qa.json
+            runs/h5-cf-challenges-20261013/cf-v14-native-qa.json
             runs/h5-cf-challenges-20261013/screenshots/cf-v14-*.png
           retention-days: 7
           if-no-files-found: warn
