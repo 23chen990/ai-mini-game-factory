@@ -286,6 +286,41 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       firedRookie.openingBot?.holdUntil<=5.1,
       {before:rookie.openingBot,after:firedRookie.openingBot,
         playerShots:firedRookie.player.shots});
+    // Normal sustained single-thumb fire — do NOT set HP, aim, actor stats,
+    // spawn, game clock or outcome. This is an actual native FIRST KILL gate.
+    const firstKillTouch=center(await rect('#touch .btn[data-mk-action="fire"]'));
+    const killPressTrace=[];
+    let firstKillCueSeen=false;
+    await event('touchStart',[{...firstKillTouch,id:79}]);
+    try {
+      for(let n=0;n<28;n++){
+        await sleep(450);
+        const state=await inspect();
+        const cue=await page.evaluate(()=>{
+          const el=document.getElementById('mk-fps-hit-feedback');
+          return {text:el?.textContent||'',visible:el?.hidden===false};
+        });
+        killPressTrace.push({seconds:+(state.time-rookie.time).toFixed(2),
+          shots:state.player?.shots,hits:state.player?.hits,
+          kills:state.player?.kills,enemyShots:state.openingBot?.realShots,
+          cue:cue.visible?cue.text:null});
+        if(cue.visible&&/首杀/.test(cue.text))firstKillCueSeen=true;
+        if((state.player?.kills||0)>=1&&firstKillCueSeen)break;
+        if(state.time-rookie.time>29)break;
+      }
+    }finally{await event('touchEnd',[]);}
+    const killResult=await inspect();
+    samples.push({id:'tags',when:'first-personal-native-kill',
+      realTouch:true,trace:killPressTrace});
+    check('first30-real-personal-kill-from-normal-sustained-thumb',
+      killResult.player?.kills>=1&&
+      killResult.player.hits>=1&&
+      killResult.player.shots>=firedRookie.player.shots&&
+      killResult.time-rookie.time<30,
+      {nativeSec:killResult.time-rookie.time,player:killResult.player,
+        trace:killPressTrace});
+    check('first30-kill-reward-rendered-from-real-player-counter',
+      firstKillCueSeen,{trace:killPressTrace});
     // Software WebGL can render 6 seconds of native simulation in 11 wall
     // seconds. Always wait on the ORIGINAL GAME CLOCK, never force timers or
     // weaken the 10-second tactical release; capture the wall/sim gap as
