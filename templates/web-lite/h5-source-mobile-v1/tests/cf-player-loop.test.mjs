@@ -134,3 +134,17 @@ test('CF V18 lite awards actual native eliminations and complete extraction',asy
  assert.equal(challengeResult(evac,{kills:0,deaths:0,travel:0,
    evacSiteValid:true,evacExtracted:true},false,35000).outcome,'running');
 });
+
+test('CF V18 lite survival mastery rewards fighting instead of hidden walking quotas',()=>{
+ const lite=cfMobileMission(survive),elapsedMs=45000;
+ assert.equal(lite.minTravel,0);
+ const one={shots:7,hits:4,kills:1,deaths:0,travel:0};
+ const two={...one,kills:2};
+ assert.equal(cfMissionMedal(lite,one,'won',elapsedMs)?.stars,2,
+  'one real kill and zero deaths wins, but optional elite mastery needs two');
+ assert.equal(cfMissionMedal(lite,two,'won',elapsedMs)?.stars,3,
+  'two real native player kills and no deaths earn three stars');
+ const next=cfNextMedalGoal(lite,cfMissionMedal(lite,one,'won',elapsedMs));
+ assert.match(next,/亲手击倒至少2人/);
+ assert.doesNotMatch(next,/移动|行进|米/);
+});
