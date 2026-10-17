@@ -101,3 +101,16 @@ test('level two rewards staying on the earned last jump lane without granting th
  assert.equal(starRequirements(levelTwo).gold,17,'three-star demand is unchanged');
  assert.deepEqual(validateLevel(levelTwo),[]);
 });
+
+test('first-level late four-catch sprint is a physical optional safe-lane reward, not a free star',()=>{
+ const levelOne=LEVELS[0];
+ const caughtInPlace=[260,264,267].map(x=>levelOne.fish.find(f=>f.id===`l1-clean-exit-${x}`));
+ assert.equal(caughtInPlace.every(Boolean),true);
+ assert.equal(caughtInPlace.every(f=>f.lane===0&&!f.golden&&f.shoal),true);
+ assert.deepEqual(caughtInPlace.map(f=>f.x),[260,264,267]);
+ assert.equal(starRequirements(levelOne).streak,4,'mastery target is unchanged');
+ assert.equal(starRequirements(levelOne).gold,12,'fish mastery target is unchanged');
+ assert.equal(rateStars(levelOne,{reason:'complete',hits:0,count:20,gold:7,jumpedBarriers:4,bestStreak:3}),2,
+  'extra available fish never grants a star without a real streak');
+ assert.deepEqual(validateLevel(levelOne),[]);
+});
