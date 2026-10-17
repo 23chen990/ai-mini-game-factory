@@ -46,14 +46,29 @@ export function cfMissionMedal(challenge,metrics,outcome,elapsedMs) {
      elapsedMs>challenge.limitMs||!metrics||
      challengeResult(challenge,metrics,true,elapsedMs).outcome!=='won')return null;
   const deaths=Number(metrics.deaths)||0;
-  const stars=deaths===0 && elapsedMs<=challenge.limitMs*.75 ? 3
-    : deaths<=1 ? 2 : 1;
+  // Survival has a mandatory FULL-TIME requirement. A time-under-75%
+  // gold threshold would be impossible to earn; reward actual movement
+  // and zero deaths instead (native player travel, never fabricated).
+  const flawless=deaths===0 && (challenge.kind==='survive'
+    ? Number(metrics.travel)>=Math.max(0,Number(challenge.minTravel)||0)+10
+    : elapsedMs<=challenge.limitMs*.75);
+  const stars=flawless?3:deaths<=1?2:1;
   const timeMs=Math.max(1,Math.round(elapsedMs));
   const shots=Math.max(0,Math.floor(Number(metrics.shots)||0));
   const hits=Math.max(0,Math.floor(Number(metrics.hits)||0));
   // Lifetime local accuracy is illustrative, not a source of extra hits.
   const accuracy=shots>0?Math.round(Math.min(1,hits/shots)*100):null;
   return {stars,label:GRADE_LABELS[stars],timeMs,accuracy};
+}
+/** An actionable replay target, visible only after a real result screen.
+ * Do not add intrusive tactical text inside the real-time FPS view. */
+export function cfNextMedalGoal(challenge,medal) {
+  if(!medal||!challenge||medal.stars>=3)return '';
+  if(challenge.kind==='survive')
+    return '三星目标：零阵亡，真实移动至少'+
+      (Math.max(0,Number(challenge.minTravel)||0)+10)+'米';
+  return '三星目标：零阵亡，在'+
+    Math.ceil(challenge.limitMs*.75/1000)+'秒内完成';
 }
 export function cfNewMastery() {return {version:1,records:{}};}
 export function cfMasteryKey(challenge) {
