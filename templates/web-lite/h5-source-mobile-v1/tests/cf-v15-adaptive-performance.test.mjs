@@ -8,7 +8,7 @@ test('CF V15 lowers only its native 3D resolution when sustained frame rate is p
   assert.equal(cfAdaptivePixelRatio(.7,9),.6);
   assert.equal(cfAdaptivePixelRatio(.6,9),.6);
   assert.equal(cfAdaptivePixelRatio(1,23),.9);
-  assert.equal(cfAdaptivePixelRatio(.8,23),.75);
+  assert.equal(cfAdaptivePixelRatio(.8,23),.7);
   assert.equal(cfAdaptivePixelRatio(1,37),1);
 });
 
