@@ -48,6 +48,10 @@ jobs:
           pnpm run pilot:pelican:test
           pnpm exec eslint tools/lean-pilot/pelican-v2
           pnpm exec tsc --noEmit
+      # Deterministic physical no-input baselines are an engineering oracle,
+      # NOT a claim about first-time players, ad intent, or human fail rates.
+      - name: Measure hard-mode skill gap and no-input failure baseline
+        run: node tools/lean-pilot/pelican-v2/difficulty-audit.mjs
       - name: Fetch the immutable authorized source
         run: |
           mkdir -p "$RUNNER_TEMP/pelican-source"
