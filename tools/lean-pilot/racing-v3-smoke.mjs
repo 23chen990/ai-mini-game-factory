@@ -312,7 +312,7 @@ try {
         '[data-race-action="drift"]','[data-race-action="small"]',
         '[data-race-action="nitro"]','[data-race-action="item"]'];
       const target=selector=>{
-        const el=document.querySelector(selector),rect=el.getBoundingClientRect(),cs=getComputedStyle(el);
+        const el=document.querySelector(selector),rect=el.getBoundingClientRect(),cs=document.defaultView.getComputedStyle(el);
         return {name:el.dataset.raceAction||'wheel',
           left:rect.left,right:rect.right,top:rect.top,bottom:rect.bottom,
           width:rect.width,height:rect.height,
