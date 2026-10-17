@@ -552,6 +552,13 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
        wallSec:+wallSec.toFixed(2),
        browser:'SWIFTSHADER_CHROMIUM_NOT_A_REAL_PHONE'});
     await snap('v14-first30-live-pressure');
+    // Failing an H5 shooter with no native personal hit/kill in 30s is a P0
+    // gameplay blocker. Fail fast WITH the actual screenshots/trace instead
+    // of spending ~12min on downstream maps after the key gate has failed.
+    if(rookieLite&&(!killResult.player?.kills||
+       !afterRookieWindow.player?.hits||!firstKillCueSeen)){
+      throw Error('H5_NATIVE_FIRST30_NOT_PLAYABLE: inspect actual LOS, touch and shot traces');
+    }
 
     // Separate causal branch: player never presses fire or any other input.
     // A rival surviving its own native opening MUST return actual gunfire,
