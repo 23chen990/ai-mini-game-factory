@@ -132,8 +132,9 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
       course+' '+minMidCorridorClearance.toFixed(1)+'m');
   const mesh=fork.buildMesh(THREE,()=>0);
   if(!mesh.getObjectByName('physical-shortcut-road') ||
-     !mesh.getObjectByName('physical-shortcut-rails'))
-    throw Error('Shortcut missing genuine road geometry or collision guardrails: '+course);
+     !mesh.getObjectByName('physical-shortcut-rails') ||
+     mesh.getObjectByName('physical-shortcut-approach')?.children?.length!==2)
+    throw Error('Shortcut missing physical fork road, side rails or pre-entry markers: '+course);
   shortcutAudit[course]={scene:CAREER_COURSE_MAPS[+course.slice(-2)-1],
     branchLengthM:+fork.length.toFixed(1),mainSegmentM:fork.end-fork.start,
     physicalSavingM:+fork.gain.toFixed(1),widthM:fork.width,neckWidthM:fork.neckWidth,
