@@ -22,7 +22,8 @@ function repeat(state,start,end,options={}) {
 
 test('CF defense is a fourth truly distinct mode, without altering three legacy missions',()=>{
  const missions=challengesFor('cf-transport-ship');
- assert.deepEqual(missions.map(item=>item.id),['tags','precision','survive','defense']);
+ assert.deepEqual(missions.slice(0,4).map(item=>item.id),['tags','precision','survive','defense']);
+ assert.equal(missions.length,8,'V10 must add four more, not modify original four');
  assert.equal(c.kind,'defend');assert.equal(c.target,2);
  assert.equal(c.limitMs,100000);assert.equal(c.holdSeconds,5);
  assert.equal(c.breachSeconds,8);assert.equal(c.maxDeaths,2);
