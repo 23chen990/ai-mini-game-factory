@@ -9,16 +9,16 @@
 - Native Three.js original hitboxes, collision, ammunition, weapons, enemy AI and actual kill counter.
 - Mobile-specific manual-fire rules throughout: no automatic firing, no idle camera aiming, and no actor/HP/kill teleport for victories.
 - One short, visible goal per match. Genuine personal elimination, capture and extraction; no mandatory hidden walking-distance drill.
-- Progressive native actor budget: start with genuine **1v1** in mission 01, then 2v2–4v4; enemy difficulty profiles change native AI reaction/track/strafe, **not** bullets or damage.
+- True SOLO PvE: one human player, ZERO allied Bots in the authoritative native actor list, against 1–4 real enemy Bots. Starting level 01 is **one player vs one enemy**; later stages increase only enemy count. Enemy difficulty profiles change native AI reaction/track/strafe, **not** bullets or damage.
 - Saved challenge IDs, mastery, controls and anonymous local reports continue using the existing versioned keys. Other games untouched.
-- Eight missions, two optimized real collision maps. The first four share the authored ship, the final four use original depot geometry. They intentionally vary objectives/enemy pressure, **not** eight unique maps.
+- Eight solo missions, two optimized real collision maps. The first four share the authored ship, the final four use original depot geometry. They intentionally vary objectives/enemy pressure, **not** eight unique maps. See [V19 SOLO_PVE_DESIGN](CF_V19_SOLO_PVE_DESIGN.md) for the current gameplay contract.
 - Original team victory target is disabled for V18 lite matches; only actual goal completion, legitimate death budget and visible mission timeout settle the game.
 
 ## Mission matrix
 
 | ID | Display name | Human-readable objective | Distinguishing combat |
 | --- | --- | --- | --- |
-| tags | 01 · 货箱破门 | Own 2 authentic M4A1 kills | Immediate visible enemy, follow-up fight |
+| tags | 01 · 货箱破门 | Own 1 authentic M4A1 kill | Clear opening line of sight against one Bot |
 | precision | 02 · 远点狙击 | Own 1 authentic AWM kill | Scope and choose a clear line of sight |
 | survive | 03 · 围攻生存 | Survive full 45s, own 1 kill | Increasing flank pressure |
 | defense | 04 · 港口守点 | Hold A for 7s, uncontested | Enemy native NavGrid contest |
