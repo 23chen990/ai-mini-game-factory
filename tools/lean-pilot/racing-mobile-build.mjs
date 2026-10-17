@@ -372,6 +372,29 @@ export function patchV8NativeItems(source) {
     .replace(removeAnchor,removeAnchor+'\n        if (bn.__V8_BARRIER__) v8DisposeBarrier(bn.mesh);')
     .replace(resetAnchor,"    for (const b of this.bananas) { this.group.remove(b.mesh);if(b.__V8_BARRIER__)v8DisposeBarrier(b.mesh); }\n    this.v8Bolts=[];");
 }
+/** The original HUD shipped five item types; V8 added three real pickups.
+ * Patch ONLY the generated native HUD, not the original upstream package.
+ * Without the additions the first new item in a player's slot crashes
+ * ITEM_INFO[it].icon during native Game.updateRaceHUD. */
+export function patchV8NativeHudItems(source) {
+  const anchor="  magnet: { icon: '🧲', name: '磁铁' },";
+  const added=[
+    "  shockwave: { icon: '💥', name: '近身冲击波' },",
+    "  thunder: { icon: '🌩️', name: '雷电攻击' },",
+    "  barricade: { icon: '🚧', name: '后方路障' },",
+  ].join('\n');
+  const raw="const html = it ? `${ITEM_INFO[it].icon}<small>${ITEM_INFO[it].name}</small>` : '';";
+  const safe="const html = it ? `${ITEM_INFO[it]?.icon ?? '❔'}<small>${ITEM_INFO[it]?.name ?? '未知道具'}</small>` : '';";
+  if(typeof source!=='string'||!source.includes('export const ITEM_INFO = {'))
+    throw Error('Pinned native HUD item table changed');
+  if(source.includes(added) && source.includes(safe)) return source;
+  if(source.includes(added)||source.includes(safe)||
+     ['shockwave','thunder','barricade'].some(id=>source.includes('  '+id+':'))||
+     source.split(anchor).length!==2||source.split(raw).length!==2)
+    throw Error('Pinned native HUD item inventory anchor changed or partially patched');
+  return source.replace(anchor,anchor+'\n'+added).replace(raw,safe);
+}
+
 export function patchRaceItems(source) {
   const imported = "import { upgradeItemBoxes } from './race-item-visuals.mjs';";
   const hook = "this.applyMobileVisuals = () => upgradeItemBoxes(this, THREE);";
@@ -466,6 +489,12 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await writeFile(path.join(project, 'src', adapterName),
       await readFile(path.join(owned, ownedName), 'utf8'));
   }
+  // The actual native HUD reads ITEM_INFO[it].icon every frame. Upgrade its
+  // generated copy to recognize all eight V8 pickup types before bundling.
+  const nativeHudPath=path.join(project,'src/hud.js');
+  await writeFile(nativeHudPath,
+    patchV8NativeHudItems(await readFile(nativeHudPath,'utf8')));
+
   // The generated native World imports the track adapter from its OWN src/;
   // copy the shared 17-30 course blueprints to that same directory rather
   // than resolving the adapter's relative import against the template tree.
