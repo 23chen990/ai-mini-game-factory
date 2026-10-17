@@ -1,6 +1,6 @@
 /* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
-import {cfStartDefense,cfStepDefense,cfAdvanceAssault} from './engine.mjs';
+import {cfStartDefense,cfStepDefense,cfAdvanceAssault,cfStartExtraction,cfStepExtraction} from './engine.mjs';
 export function teamSide(ownTeam, actorTeam) {
   if (!['BL', 'GR'].includes(ownTeam) || !['BL', 'GR'].includes(actorTeam)) return 'unknown';
   return ownTeam === actorTeam ? 'ally' : 'enemy';
@@ -155,7 +155,8 @@ export function cfTouchTutorial(challenge) {
       ? (challenge.elite ? '精英手动首枪，横移后按住开火拖动瞄准' : '首枪自动开火；换位后按住开火拖动瞄准')
       : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
-  if (challenge?.kind === 'assault') return '先真实换位，再亲手击杀敌人';
+  if (challenge?.kind === 'assault') return '到达进攻位后，再亲手击杀敌人';
+  if (challenge?.extractSeconds) return '移动并击杀后，赶到撤离区守住位置';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
   if (challenge?.kind === 'defend') return '左手进据点，右手开火阻止敌军占点';
   return '点按或按住开火';
@@ -173,7 +174,7 @@ export function mobileChallengeCopy(challenge) {
       ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
       : '1v1入门：准星对准敌人自动开火，命中3次';
   if (challenge.kind === 'assault') return Math.ceil(challenge.limitMs/1000)+
-    '秒：先实际移动'+challenge.minTravel+'米，再亲自击杀'+challenge.target+
+    '秒：移动'+challenge.minTravel+'米并进入地图进攻位，再亲自击杀'+challenge.target+
     '名敌人；最多阵亡'+challenge.maxDeaths+'次';
   if (challenge.kind === 'kills') return challenge.minTravel
     ? Math.ceil(challenge.limitMs/1000)+'秒：AWM击杀'+challenge.target+
@@ -183,7 +184,8 @@ export function mobileChallengeCopy(challenge) {
       : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
   if (challenge.kind === 'survive') return challenge.minKills
     ? Math.ceil(challenge.limitMs/1000)+'秒：坚持存活，移动'+challenge.minTravel+
-      '米，亲手击杀'+challenge.minKills+'人，最多阵亡'+challenge.target+'次'
+      '米，亲手击杀'+challenge.minKills+'人，进入撤离区守'+challenge.extractSeconds+
+      '秒；最多阵亡'+challenge.target+'次'
     : challenge.elite===true
       ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
       : '坚持45秒，移动20米，最多被击倒2次';
@@ -547,7 +549,7 @@ export function cfNearMissCue(challenge, metrics={}, elapsedMs=0) {
   if(challenge.kind==='assault'&&metrics.assaultStage===1){
     const kills=count(metrics.assaultKills);
     if(kills>=1&&kills<goal)
-      return '换位已经完成，只差最后'+(goal-kills)+'次亲手击杀';
+      return '已经抵达真实进攻位，只差最后'+(goal-kills)+'次亲手击杀';
   }
   if(challenge.kind==='kills'&&goal>1){
     const kills=count(metrics.awmKills);
@@ -566,6 +568,10 @@ export function cfNearMissCue(challenge, metrics={}, elapsedMs=0) {
     Number(metrics.travel)>=Number(challenge.minTravel||0)*.8&&
     (!challenge.minKills||count(metrics.kills)>=challenge.minKills)){
     const left=Math.max(0,Math.ceil((challenge.limitMs-elapsedMs)/1000));
+    if(challenge.extractSeconds&&!metrics.evacExtracted){
+      if(metrics.evacSiteValid===true)return '移动和击杀已基本完成，但还没守住撤离区';
+      return null;
+    }
     if(left>0)return '坚持到最后阶段，还差'+left+'秒';
   }
   return null;
@@ -602,10 +608,13 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   }
   if (challenge.kind === 'assault') {
     const moved=actual(metrics.assaultTravel),killed=actual(metrics.assaultKills);
+    if(metrics.assaultSiteValid!==true)
+      return '进攻位路线不可用，此局不结算虚构胜利。';
     return outcome==='won'
-      ?'真实侧翼换位 '+moved+'米后，自己击杀 '+killed+' 人。'
-      :'换位 '+moved+'/'+challenge.minTravel+'米，换位后亲手击杀 '+
-        killed+'/'+challenge.target+'人；AI队友击杀不计入。';
+      ?'真实走到进攻位，移动 '+moved+'米后，亲手击杀 '+killed+' 人。'
+      :'移动 '+moved+'/'+challenge.minTravel+'米'+
+        (metrics.assaultStage===1?'、已进入进攻位':'、尚未进入地图上的进攻位')+
+        '；到位之后亲手击杀 '+killed+'/'+challenge.target+'人。';
   }
   if (outcome === 'won') {
     if (challenge.kind === 'hits'&&challenge.drill==='reposition')
@@ -618,7 +627,8 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
       return 'AWM 真实击杀 ' + awmKills + ' 人'+
         (challenge.minTravel?'，同时移动'+travel+'米':'')+'。';
     return '累计真实移动 '+travel+' 米、被击倒 '+deaths+' 次'+
-      (challenge.minKills?'、亲手击杀'+actual(metrics.kills)+'人。':'。下次试试零死亡通关。');
+      (challenge.minKills?'、亲手击杀'+actual(metrics.kills)+'人':'')+
+      (challenge.extractSeconds?'，已在原生地图撤离区完成守点。':'。下次试试零死亡通关。');
   }
   if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths+(challenge.bonusDeaths===1?1:0))
     return '被击倒 ' + deaths + ' 次，本关最多允许 ' +
@@ -662,6 +672,12 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
   if(challenge.minKills&&actual(metrics.kills)<challenge.minKills)
     return '已移动'+travel+'米，但自己的击杀为'+actual(metrics.kills)+'/'+
       challenge.minKills+'。队友击杀不计算。';
+  if(challenge.extractSeconds){
+    if(metrics.evacSiteValid!==true)return '没有合法撤离区，不能发放任务胜利。';
+    if(metrics.evacExtracted!==true)
+      return '本人必须抵达撤离点，赶走敌人并坚守满'+challenge.extractSeconds+
+        '秒；本局只守住 '+Math.floor(metrics.evacHeldSec||0)+' 秒。';
+  }
   return '移动和阵亡条件已达成，但未坚持到时限。借助掩体保持移动直到倒计时结束。';
 }
 
@@ -674,10 +690,11 @@ export function cfMissionFacts(challenge) {
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
     ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
     challenge.kind === 'kills' ? '击杀 '+challenge.target+' 人'+(challenge.minTravel?' · 行进'+challenge.minTravel+'米':'') :
-    challenge.kind === 'assault' ? '行进'+challenge.minTravel+'米→杀'+challenge.target+'人' :
+    challenge.kind === 'assault' ? '行进'+challenge.minTravel+'米→攻坚位→杀'+challenge.target+'人' :
     challenge.kind === 'defend' ? '守 '+(challenge.reverse?'B → A':'A → B')+' · 各'+challenge.holdSeconds+'秒' :
       challenge.minKills
-        ?'移动'+(challenge.minTravel||0)+'米 · 击杀'+challenge.minKills
+        ?'移动'+(challenge.minTravel||0)+'米 · 击杀'+challenge.minKills+
+          (challenge.extractSeconds?' · 撤离'+challenge.extractSeconds+'秒':'')
         :'移动 ' + (challenge.minTravel || 0) + ' m';
   return [
     { label:'装备',value:weapon },
@@ -708,7 +725,8 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     {label:'阵亡',value:String(deaths)}
   ];
   if (challenge.kind === 'assault') return [
-    {label:'换位',value:number(metrics.assaultTravel)+' / '+challenge.minTravel+' m'},
+    {label:'换位进攻位',value:metrics.assaultStage===1?'已到达':
+      number(metrics.assaultTravel)+' / '+challenge.minTravel+' m'},
     {label:'本人击杀',value:number(metrics.assaultKills)+' / '+challenge.target},
     {label:'阵亡',value:deaths+' / '+challenge.maxDeaths}
   ];
@@ -718,7 +736,11 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     {label:'阵亡',value:deaths+' / '+challenge.maxDeaths}
   ];
   return [
-    {label:'生存',value:Math.min(Math.floor(number(elapsedMs)/1000),Math.ceil(challenge.limitMs/1000)) + ' / ' + Math.ceil(challenge.limitMs/1000) + ' s'},
+    {label:challenge.extractSeconds?'撤离':'生存',value:challenge.extractSeconds
+      ?(metrics.evacExtracted===true?'已完成':
+          number(metrics.evacHeldSec)+' / '+challenge.extractSeconds+' s')
+      :Math.min(Math.floor(number(elapsedMs)/1000),Math.ceil(challenge.limitMs/1000)) +
+        ' / '+Math.ceil(challenge.limitMs/1000)+' s'},
     {label:'移动',value:number(metrics.travel) + ' / ' + challenge.minTravel + ' m'},
     {label:challenge.minKills?'亲手击杀':'阵亡',value:challenge.minKills
       ?number(metrics.kills)+' / '+challenge.minKills:deaths+' / '+challenge.target}
