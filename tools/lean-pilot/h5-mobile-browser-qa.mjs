@@ -339,6 +339,12 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await page.locator('#mk-resume').tap();
      check('mobile-pause-resume',pauseFrozen&&phaseDuringPause==='paused',
        {visiblePaused:phaseDuringPause,clockFrozen:pauseFrozen,checkedBeforeFastBeginnerWin:true});
+     // Verify one-thumb hold-fire+look before the bot can plausibly kill a
+     // novice, independently of whether the later hard 3-hit pursuit wins.
+     // This is an actual visible touch button press, native camera angle
+     // input and native shot counter, not direct player state injection.
+     if(await page.locator('#mobile-kit').getAttribute('data-phase')==='running')
+       fpsOneThumbAudit=await fireDragToward(30,0);
    }
    if(run.theme==='pelican-bike'){
      await hold('[data-code="ArrowLeft"]',1200);await hold('[data-code="ArrowRight"]',1200);
