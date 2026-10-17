@@ -25,6 +25,17 @@ export function failureSummary(run){
  const close=remaining>0&&percent>=75?'差一点就骑到终点了！':'';
  return {title,body:[progress,earned,close,advice].filter(Boolean).join('\n'),percent,remaining,avoided,retryLabel:'↻ 立即再试'};
 }
+// Describe the actual endless collision, not a fictional finish line.
+// A voluntary checkout is not a death and never needs an accident tip.
+export function endlessFailureCue(run){
+ if(!run?.level?.endless||!['vehicle','barrier'].includes(run.reason))return '';
+ const obstacle=run.obstacles?.find(o=>o.id===run.lastCollisionId);
+ const lane=Number.isInteger(obstacle?.lane)&&obstacle.lane>=0&&obstacle.lane<3
+  ?laneNames[obstacle.lane]+'侧':'前方';
+ return run.reason==='vehicle'
+  ?`🚗 这次撞上${lane}来车。汽车不能跳，下次看到红色预警提前转向空位。`
+  :`↟ 这次撞上${lane}路障。看准跳跃提示，或提前绕过障碍。`;
+}
 export function safeGateCue(lanes){
  if(!Array.isArray(lanes)||lanes.length!==3)return null;
  const danger=lanes.map(l=>Boolean(l?.kind?.startsWith('danger')));

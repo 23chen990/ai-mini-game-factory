@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {LEVELS,makeLevel,validateLevel,PRESSURE_GATES} from './levels.mjs';
-import {failureSummary,safeGateCue,passedPreviousFailure} from './retry-loop.mjs';
+import {failureSummary,endlessFailureCue,safeGateCue,passedPreviousFailure} from './retry-loop.mjs';
 
 test('authored high-pressure routes retain stable legacy obstacles and a physical escape at each double gate',()=>{
  const legacy={1:10,2:6,3:8,4:11,5:13};
@@ -61,4 +61,16 @@ test('a replay milestone is earned only after passing previous failure by five m
  assert.equal(passedPreviousFailure(105.1,100),true);
  assert.equal(passedPreviousFailure(120,null),false);
  assert.equal(passedPreviousFailure(120,0),false);
+});
+
+test('endless collision recap explains the actual blocked lane but never invents a finish',()=>{
+ const run={level:{id:6,endless:true,distance:100000000},reason:'vehicle',distance:735,
+  lastCollisionId:'hit-van',obstacles:[{id:'hit-van',lane:2,kind:'van'}]};
+ const vehicle=endlessFailureCue(run);
+ assert.match(vehicle,/右侧来车/);assert.match(vehicle,/提前转向空位/);
+ assert.doesNotMatch(vehicle,/100000000|终点|完成/);
+ assert.match(endlessFailureCue({...run,reason:'barrier',obstacles:[{id:'hit-van',lane:0,kind:'barrier'}]}),/左侧路障/);
+ assert.match(endlessFailureCue({...run,obstacles:[]}),/前方来车/);
+ assert.equal(endlessFailureCue({...run,reason:'retired'}),'');
+ assert.equal(endlessFailureCue({...run,level:{id:1,endless:false}}),'');
 });
