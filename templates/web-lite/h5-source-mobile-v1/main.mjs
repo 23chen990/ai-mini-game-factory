@@ -3,6 +3,7 @@ import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRoun
 import { requestRewardedVideo, createFpsAdapter, cfMobileActorBudget, cfRemoveNativeAllies, cfAssignSoloEnemyRoles } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap } from './fps-mobile-ux.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus,cfMobileMission} from './cf-player-loop.mjs';
+import {cfV20CoverEnabled} from './cf-cover-assault.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -164,7 +165,8 @@ async function boot() {
       ? cfMobileMission(baseChallenge):baseChallenge;
     $('heading').textContent=displayChallenge.title;
     $('copy').textContent = id === 'cf-transport-ship'
-      ? mobileChallengeCopy(displayChallenge)
+      ? mobileChallengeCopy(displayChallenge)+
+        (cfV20CoverEnabled(displayChallenge)?' · 右侧瞄准、左手探身射击，松手躲回掩体。点左右掩体换位。':'')
       : selected.instructions;
     if(id==='cf-transport-ship'){
       $('chapters').hidden=root.dataset.phase!=='ready';
