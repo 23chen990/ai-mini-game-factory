@@ -18,6 +18,8 @@ test('infinite coast is deterministic by seed and index, never by player lane',(
 });
 
 test('unending road has a smooth tutorial and bounded lookahead',()=>{
+ const level=createEndlessLevel(12345);
+ assert.equal(level.seed,12345);
  const r=newRun(6,{seed:12345});
  assert.equal(r.level.endless,true);
  assert.equal(r.level.id,6);
