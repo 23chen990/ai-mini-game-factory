@@ -202,17 +202,19 @@ report.courseAudit={independentCourseCount:Object.keys(report.courses).length,
  * CAN be beaten, not that a six-car online race was witnessed.
  */
 report.challengeGate={};
+const challengeFailures=[];
 for(const id of ['01','05','11','16']){
   const c=report.courses[id],f=report.fieldPace[id];
   if(c.guided.status!=='FINISHED'||c.late.status!=='FINISHED')
     throw Error('Guided and late wheel controllers must both physically finish '+id);
   const cornerCost=+(c.late.elapsedSec-c.guided.elapsedSec).toFixed(1);
-  if(cornerCost<4)throw Error('Physical native corner execution has too little consequence '+id+': '+cornerCost);
+  if(cornerCost<4)challengeFailures.push('Physical native corner execution has too little consequence '+id+': '+cornerCost);
   if(f.beatPrivilegedLate<2)
-    throw Error('At least two original native AI drivers must outrun late steering '+id);
+    challengeFailures.push('At least two original native AI drivers must outrun late steering '+id);
   report.challengeGate[id]={cornerLossSec:cornerCost,
     nativeBotsFasterThanLate:f.beatPrivilegedLate};
 }
+if(challengeFailures.length)throw Error(challengeFailures.join('; '));
 /** Native AICar actually MOVES into a strategic lane after personal targeting.
  * Regression against "fake lane AI": personality must change native lat,
  * leaving room inside the physical rails. No collision engine in this probe.
