@@ -24,7 +24,7 @@ export function createCoastAdventure(api) {
  <div class="co-goals"><div class="co-goal" id="co-distance-box"><span>🏁 海岸路程</span><b id="co-distance">0 / 300 m</b><progress id="co-distance-bar" value="0" max="300"></progress></div><div class="co-goal" id="co-fish-box"><span id="co-fish-label">🐟 捕鱼目标</span><b id="co-fish">0 / 6 条</b><progress id="co-fish-bar" value="0" max="6"></progress></div><div class="co-goal" id="co-time-box"><span>◷ 剩余</span><b id="co-time">55 秒</b></div></div>
  <div id="co-radar-label" hidden>前方路况 · 左、中、右路面区域；骑车可停在任意位置</div><div id="co-radar" aria-label="前方三车道路况"><div class="co-lane" data-lane="0"></div><div class="co-lane" data-lane="1"></div><div class="co-lane" data-lane="2"></div></div>
  <div id="co-feedback" role="status"><strong></strong><small></small></div><div id="co-crash"></div>
- <div id="co-modal"><div class="co-card"><span class="co-eyebrow">A LITTLE COASTAL ESCAPE</span><h1 id="co-heading">鹈鹕<br>海岸冒险</h1><p id="co-copy">骑着单车追鱼，沿着海岸去下一站。</p><div id="co-rules" class="co-rules"><span><b>◀ ▶</b>轻点微调，按住或拖动自由转向</span><span><b>🐟</b>靠近自动抓鱼</span><span><b>↟</b>点跳跃或上滑</span></div><p id="co-progress" class="co-progress"></p><div id="co-route" class="co-route"></div><div id="co-collection" class="co-collection" aria-label="鹈鹕外观收藏"></div><div class="co-actions"><button id="co-start" class="primary">▶ 出发 · 海岸出发</button><button id="co-resume" class="primary" hidden>▶ 继续骑行</button><button id="co-exit" class="secondary" hidden>🏁 结束本次无尽骑行并结算</button><button id="co-next" class="primary" hidden>下一关 →</button><button id="co-replay" class="secondary" hidden>↻ 重开当前关卡</button><button id="co-select" class="secondary" hidden>海岸路线 · 选择关卡</button><button id="co-revive" class="secondary" hidden disabled>观看完整广告复活一次（未接入）</button><button id="co-ad" class="secondary" hidden>自愿观看广告 · 额外补给（未接入）</button></div><div class="co-settings"><button id="co-quality">画质 · 均衡</button><button id="co-sound">声音 · 关</button><button id="co-export">复制试玩数据</button></div><div id="co-notice" role="status"></div><p id="co-storage" class="co-meta">本机保存关卡进度 · 广告未接入 · H5 开发试玩</p></div></div>
+ <div id="co-modal"><div class="co-card"><span class="co-eyebrow">A LITTLE COASTAL ESCAPE</span><h1 id="co-heading">鹈鹕<br>海岸冒险</h1><p id="co-copy">骑着单车追鱼，沿着海岸去下一站。</p><div id="co-rules" class="co-rules"><span><b>◀ ▶</b>轻点微调，按住或拖动自由转向</span><span><b>🐟</b>靠近自动抓鱼</span><span><b>↟</b>点跳跃或上滑</span></div><p id="co-progress" class="co-progress"></p><div id="co-route" class="co-route"></div><div id="co-collection" class="co-collection" aria-label="鹈鹕外观收藏"></div><div class="co-actions"><button id="co-start" class="primary">▶ 出发 · 海岸出发</button><button id="co-resume" class="primary" hidden>▶ 继续骑行</button><button id="co-exit" class="secondary" hidden>🏁 结束本次无尽骑行并结算</button><button id="co-next" class="primary" hidden>下一关 →</button><button id="co-replay" class="secondary" hidden>↻ 重开当前关卡</button><button id="co-select" class="secondary" hidden>海岸路线 · 选择关卡</button><button id="co-revive" class="secondary" hidden disabled>观看完整广告复活一次（未接入）</button><button id="co-ad" class="secondary" hidden>自愿观看广告 · 额外补给（未接入）</button></div><div class="co-settings"><button id="co-quality">画质 · 均衡</button><button id="co-sound">声音 · 关</button><button id="co-export">下载试玩数据</button></div><div id="co-notice" role="status"></div><p id="co-storage" class="co-meta">本机保存关卡进度 · 广告未接入 · H5 开发试玩</p></div></div>
  <div class="co-lane-indicator" aria-label="道路自由位置指示"><i></i><i class="on"></i><i></i></div><nav id="co-controls" aria-label="自由骑行操作"><button data-action="left" aria-label="向左转向，长按持续移动">◀<small>按住左转</small></button><button data-action="right" aria-label="向右转向，长按持续移动">▶<small>按住右转</small></button><button data-action="jump" aria-label="跳跃">↟<small>跳跃</small></button></nav>`;
  const mastery=document.createElement('div');mastery.id='co-mastery';mastery.setAttribute('aria-label','三星挑战进度');root.append(mastery);
  document.body.append(root);const $=id=>root.querySelector('#co-'+id);
@@ -151,7 +151,7 @@ ${recordStory.detail}${opportunity.eligible&&adsAvailable()?`\n${opportunity.mes
     `${run.stars===3?'本关满星，继续挑战捕鱼连击纪录':nextStarTip(run.level,run)} · 最长 ${best?.streak??run.bestStreak} 连`,
     `全海岸 ${earned}/15 星 · ${run.level.id<5?'下一站已解锁':'全部五关已解锁'}`].join('\n');
   }else $('copy').textContent=recap.body;
-  $('replay').textContent=run.level.endless?'↻ 再来一次无尽海岸':run.reason==='complete'?'↻ 再冲三星':recap.retryLabel;
+  $('replay').textContent=run.level.endless?'↻ 再来一次无尽海岸':run.reason==='complete'?(run.stars===3?'↻ 刷新个人纪录':'↻ 再冲三星'):recap.retryLabel;
   $('replay').classList.toggle('primary',run.reason!=='complete');
   $('replay').classList.toggle('secondary',run.reason==='complete');
   $('next').textContent=run.level.id<5?'下一关 · '+LEVELS[run.level.id].name+' →':'海岸已完成';
@@ -252,7 +252,22 @@ ${recordStory.detail}${opportunity.eligible&&adsAvailable()?`\n${opportunity.mes
   $('revive').disabled=!adsAvailable();$('notice').textContent='广告未完整观看，未消耗复活机会；可重试或免费重开。';
  });
  $('ad').addEventListener('click',async()=>{if(!round)return;if(platform.status!==1){$('notice').textContent='TapTap H5 广告尚未接入；当前不播放模拟广告，也不会发放广告奖励。';return;}if(!adAllowed(round,progress,performance.now()-loadedAt)){ $('notice').textContent='暂未满足奖励条件，可以直接重开。';return;}const current=round;$('ad').disabled=true;const result=await requestRewardedVideo({tap:window.tap,config:platform});if(round!==current)return;const rewarded=rewardRound(current,progress,result.status==='completed');persist();$('notice').textContent=rewarded?'额外补给已到账':'广告未完成或加载失败，可直接继续游戏';$('ad').disabled=false;});
- $('export').addEventListener('click',async()=>{const raw=JSON.stringify(exportPlaytestSummary(metrics,collection),null,2);try{if(!window.navigator.clipboard?.writeText)throw Error('unsupported');await window.navigator.clipboard.writeText(raw);$('notice').textContent='试玩数据已复制到剪贴板（仅本机统计）。';}catch{$('notice').textContent='复制不可用；换用 HTTPS/本地安全环境。';}});
+ // HTTP LAN phone playtests are not secure contexts; Clipboard.writeText is
+ // often unavailable there. A user-initiated Blob download works offline and
+ // exports only the existing anonymous on-device counters and earned wallet.
+ $('export').addEventListener('click',()=>{
+  const raw=JSON.stringify(exportPlaytestSummary(metrics,collection),null,2);
+  try{
+   const url=window.URL.createObjectURL(new window.Blob([raw],{type:'application/json;charset=utf-8'}));
+   const link=document.createElement('a');
+   link.download='pelican-coast-playtest.json';
+   link.href=url;link.style.display='none';document.body.append(link);
+   try{link.click();}finally{link.remove();window.setTimeout(()=>window.URL.revokeObjectURL(url),30_000);}
+   $('notice').textContent='已请求下载本机匿名试玩记录，请查看浏览器下载目录。';
+  }catch{
+   $('notice').textContent='此浏览器无法下载试玩记录；可在手机浏览器或电脑浏览器重新尝试。';
+  }
+ });
  applyStyle();
  const loadedAt=performance.now();S.paused=true;S.started=false;settings.autopilot=false;settings.timeFlow=false;settings.hour=14;settings.lookMouse=false;settings.showFps=false;settings.bloom=false;
  // An inspection-only surface: no set score, teleport, unlock, or finish helpers.

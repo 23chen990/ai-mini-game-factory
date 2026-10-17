@@ -30,7 +30,7 @@ export function safeGateCue(lanes){
  const danger=lanes.map(l=>Boolean(l?.kind?.startsWith('danger')));
  if(danger.filter(Boolean).length!==2)return null;
  const open=danger.indexOf(false);
- return open>=0?`⚠️ 两条路被挡住 · 走${laneNames[open]}侧空位`:null;
+ return open>=0?`⚠️ 前方双道封锁 · 提前走${laneNames[open]}侧空位`:null;
 }
 export function passedPreviousFailure(distance,previous){
  return Number.isFinite(distance)&&Number.isFinite(previous)&&previous>0&&distance>previous+5;

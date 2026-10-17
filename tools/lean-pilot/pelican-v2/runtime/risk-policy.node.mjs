@@ -79,6 +79,24 @@ test('two full-lane changes from right fish to 75m left prize need 4 seconds pub
  assert.equal(third.action,'jump');
  assert.equal(third.state.jumpIssued,true);
 });
+test('two-lane rain pressure gate permits early visible vehicle crossing, never a late suicidal turn',()=>{
+ const clear=lane(),van=s=>lane({danger:true,kind:'vehicle',seconds:s});
+ const target={barrierId:'l4-o10',distance:593};
+ const s=policy.createRiskPolicyState(4,target);
+ const ahead=view({level:4,distance:453,laneIndex:2,lanes:[clear,van(4.3),van(4.2)]});
+ const first=decide(ahead,s);
+ assert.equal(first.action,'left','the 499m rain choke must offer a physically possible early left exit');
+ assert.equal(first.toLane,1,'one tap may traverse only one painted lane');
+ assert.equal(first.reason,'visible-danger-or-fish-early-crossing');
+ const second=decide({...ahead,distance:456,laneIndex:1,lanes:[clear,van(3.9),van(3.8)]},first.state);
+ assert.equal(second.action,'left');assert.equal(second.toLane,0,'the next trusted tap completes the two-lane escape');
+ const late=decide({...ahead,distance:478,lanes:[clear,van(1.6),van(1.4)]},s);
+ assert.equal(late.action,'wait','never cross a vehicle that has already entered the collision window');
+ const lure=decide({...ahead,lanes:[lane({fish:true}),van(4.2),clear]},s);
+ assert.equal(lure.action,'wait','a safe current lane must never cross distant traffic just to collect fish');
+ const blockedDestination=decide({...ahead,lanes:[lane({danger:true,kind:'barrier',seconds:1.3}),van(4.3),van(4.2)]},s);
+ assert.notEqual(blockedDestination.action,'left','the destination must itself be publicly safe');
+});
 test('a reward route never enters the adjacent simultaneous fatal van lane',()=>{
  const visibleVan=policy.visibleLaneFromHud({className:'co-lane danger',text:'🚐 2.0s'});
  assert.equal(visibleVan.kind,'vehicle');

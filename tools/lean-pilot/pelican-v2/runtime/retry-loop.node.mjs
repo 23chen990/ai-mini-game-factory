@@ -33,6 +33,7 @@ test('two red zones explicitly point to the one open lane, never promise safety 
  assert.match(safeGateCue([danger,safe,danger]),/中侧空位/);
  assert.match(safeGateCue([safe,danger,danger]),/左侧空位/);
  assert.match(safeGateCue([danger,danger,safe]),/右侧空位/);
+ assert.match(safeGateCue([danger,danger,safe]),/提前/,'warn early while crossing remains physically possible');
  assert.equal(safeGateCue([danger,safe,safe]),null);
  assert.equal(safeGateCue([danger,danger,danger]),null);
  assert.equal(safeGateCue([]),null);

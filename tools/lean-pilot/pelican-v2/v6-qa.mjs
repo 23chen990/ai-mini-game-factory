@@ -66,6 +66,22 @@ try{
  const shop=await page.locator('.co-collection-total').innerText();
  check('real-page-reload-persists-wallet-and-record',shop.includes(String(r.collection.coins))&&shop.includes(String(r.collection.bestDistance)));
  check('local-only-playtest-disclosure-visible',await page.locator('#co-storage').innerText().then(t=>t.includes('仅存本机')));
+ // Real trusted menu tap requests a downloadable file even on HTTP. This
+ // checks actual browser download bytes, not clipboard mocks or injected saves.
+ const downloadPending=page.waitForEvent('download',{timeout:8000});
+ await tap('#co-export');
+ const downloaded=await downloadPending;
+ const exported=JSON.parse(await readFile(await downloaded.path(),'utf8'));
+ check('genuine-HTTP-mobile-playtest-JSON-download',
+  downloaded.suggestedFilename()==='pelican-coast-playtest.json'&&
+  exported.schema==='pelican-offline-playtest-v1'&&
+  exported.counters.start===1&&exported.counters.retire===1&&
+  exported.collection.coins===r.collection.coins&&
+  exported.collection.bestDistance===r.collection.bestDistance&&
+  exported.notice.includes('not official retention')&&
+  !('userId' in exported)&&!('deviceId' in exported),
+  {filename:downloaded.suggestedFilename(),counters:exported.counters,collection:exported.collection});
+
  await shot('v6-persisted-after-reload');
  // Pause-screen replay must bank this genuine run before beginning another one.
  await tap('[data-level="6"]');await tap('#co-start');

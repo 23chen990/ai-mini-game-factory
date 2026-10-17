@@ -284,6 +284,11 @@ async function runLevel(level){
   check(`level-${level.id}-natural-terminal-settlement`,terminalOkay,{phase:terminal.phase,reason:terminal.reason,level:terminal.level,count:terminal.count,gold:terminal.gold,elapsed:terminal.elapsed,save:terminal.save,hud:result.hudFinish});
   check(`level-${level.id}-save-earned-through-play`,terminalOkay&&terminal.save.completed[level.id-1]===true&&terminal.save.unlocked>=Math.min(5,level.id+1),terminal.save);
   check(`level-${level.id}-earned-three-stars`,terminalOkay&&terminal.save.stars[level.id-1]===3,{stars:terminal.save.stars[level.id-1],count:terminal.count,gold:terminal.gold,jumps:terminal.jumpedBarriers,bestStreak:terminal.bestStreak});
+  const replayCta=await page.locator('#co-replay').innerText();
+  check(`level-${level.id}-full-stars-replay-offers-record-not-stars`,
+   terminalOkay&&terminal.save.stars[level.id-1]===3&&replayCta.includes('纪录')&&!replayCta.includes('冲三星'),
+   {replayCta,stars:terminal.save.stars[level.id-1]});
+
   check(`level-${level.id}-exact-target-jump-count`,terminal.jumpedBarriers===level.targets.length,{expected:level.targets.length,jumpedBarriers:terminal.jumpedBarriers,targetBarrierIds:level.targets.map(target=>target.barrierId)});
   for(const episode of episodes)verifyEpisode(level,episode);
   const vehicleEntries=report.actions.filter(action=>action.levelId===level.id&&action.visibleDecisionView&&['left','right'].includes(action.policyDecision?.action)).filter(action=>{

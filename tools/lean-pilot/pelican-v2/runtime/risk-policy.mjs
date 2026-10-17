@@ -75,8 +75,19 @@ function moveOneLane(view,state,wantedLane,reason,allowRewardLane=null){
  const current=laneIndex(view.laneIndex);
  if(wantedLane===current)return decision('wait',state,reason,current);
  const next=current+Math.sign(wantedLane-current),allowReward=next===allowRewardLane;
- if(laneIsBlocked(view.lanes[next],{allowReward}))return decision('wait',state,reason+'-adjacent-lane-blocked',current);
- return decision(next<current?'left':'right',state,reason,next);
+ // If two future vehicles will close both the current and middle lanes,
+ // immediately CROSS the middle lane while their public countdown is still
+ // comfortably ahead. Otherwise "middle is red" prevents any two-lane escape
+ // and traps a legitimate rider in the closing outside lane (rain 499m gate).
+ // This is two ordinary adjacent taps, not teleportation or collision immunity.
+ const transitEarly= Math.abs(wantedLane-current)===2 &&
+  laneIsVehicle(view.lanes[current])&&laneIsVehicle(view.lanes[next])&&
+  Number.isFinite(view.lanes[current].seconds)&&view.lanes[current].seconds>=3.5&&
+  Number.isFinite(view.lanes[next].seconds)&&view.lanes[next].seconds>=3.5&&
+  !laneIsBlocked(view.lanes[wantedLane]);
+ if(laneIsBlocked(view.lanes[next],{allowReward})&&!transitEarly)
+  return decision('wait',state,reason+'-adjacent-lane-blocked',current);
+ return decision(next<current?'left':'right',state,transitEarly?reason+'-early-crossing':reason,next);
 }
 
 function chooseOrdinaryLane(view){
