@@ -1,4 +1,5 @@
 import { EXPANSION_COURSES } from './career-expansion.mjs';
+import { applyV8CourseGeometry } from './v8-course-geometry.mjs';
 /** V3.5: Four distinct ORIGINAL racing rhythms inspired by kart-racer design principles.
  * No competitor map coordinates, assets, branch shortcuts, checkpoint edits, speed buffs
  * or reduced career goals. Each cut is anchored to the exact pinned upstream layout.
@@ -192,7 +193,7 @@ export const COURSE_ROAD_WIDTHS = Object.freeze({
   '08':19,
   '09':19,
 });
-export function createCareerLayouts(layouts) {
+export function createCareerLayouts(layouts, { v8 = false } = {}) {
   const fingerprints=new Set(),titles=new Set();
   for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
     const id=String(i).padStart(2,'0'),base=layouts[CAREER_COURSE_MAPS[i-1]],
@@ -201,18 +202,21 @@ export function createCareerLayouts(layouts) {
       throw Error('V3.7 requires verified biome and independent course '+id);
     const [title,feel,english,scale,sketch]=blueprint;
     const local=injectTechnicalSectors(parseLocalRoute(sketch),id,scale);
+    const v8Geometry=v8 ? applyV8CourseGeometry(local,id,scale) : null;
+    const authored=v8Geometry?.points ?? local;
+    const planScale=v8Geometry?.scale ?? scale;
     if(!Number.isFinite(scale)||scale<.6||scale>1.2||local.length<12||
        local.length>40||titles.has(title)||!english||!feel||
        local[0].some(n=>n!==0))
       throw Error('Invalid authored course blueprint '+id);
     titles.add(title);
     const [ox,oz]=base.points[0],desert=CAREER_COURSE_MAPS[i-1]==='egypt';
-    const points=local.map(p=>{
-      if(p.length!==3||!p.every(Number.isFinite)||p[2]<0||p[2]>25)
+    const points=authored.map(p=>{
+      if(p.length!==3||!p.every(Number.isFinite)||p[2]<0||p[2]>(v8 ? 70 : 25))
         throw Error('Non-finite or unsafe V3.7 course point '+id);
       return desert ?
-        [ox-p[1]*scale,oz+p[0]*scale,p[2]] :
-        [ox+p[0]*scale,oz+p[1]*scale,p[2]];
+        [ox-p[1]*planScale,oz+p[0]*planScale,p[2]] :
+        [ox+p[0]*planScale,oz+p[1]*planScale,p[2]];
     });
     const signature=JSON.stringify(points);
     if(fingerprints.has(signature))throw Error('Duplicate authored course shape '+id);
@@ -487,7 +491,7 @@ export function createRaceSky(sky,course) {
 }
 
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
-export function applyTrackDesign(layouts) {
+export function applyTrackDesign(layouts, { v8 = false } = {}) {
   const report = {};
   for (const [key, plan] of Object.entries(TRACK_RESHAPES)) {
     const layout = layouts?.[key];
@@ -506,6 +510,6 @@ export function applyTrackDesign(layouts) {
     Object.defineProperty(layout,'__racingV31',{value:true,enumerable:false});
     report[key] = points.length;
   }
-  createCareerLayouts(layouts);
+  createCareerLayouts(layouts,{v8});
   return report;
 }
