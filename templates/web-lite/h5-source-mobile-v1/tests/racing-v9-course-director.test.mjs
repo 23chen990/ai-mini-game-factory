@@ -30,7 +30,7 @@ test('V8 native course construction uses authored V9 geometry; non-V8 compatibil
     const before=legacy[key].points,after=current[key].points;
     assert.equal(CAREER_COURSE_MAPS[i-1]!==undefined,true);
     assert.notDeepEqual(after,safe[key].points,id+' V9 is not merely cosmetic');
-    assert.ok(after.length>=before.length,id);
+    assert.ok(after.length>=COURSE_BLUEPRINTS[id][4].split(' ').length,id);
     assert.ok(after.every(x=>x.length===3&&x.every(Number.isFinite)),id);
     assert.ok(length(after)>1800,id+' not a tiny arena');
     assert.equal(COURSE_BLUEPRINTS[id][0].length>0,true);
