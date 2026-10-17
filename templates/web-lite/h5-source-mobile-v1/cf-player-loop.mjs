@@ -103,7 +103,9 @@ export function cfMissionMedal(challenge,metrics,outcome,elapsedMs) {
   // gold threshold would be impossible to earn; reward actual movement
   // and zero deaths instead (native player travel, never fabricated).
   const flawless=deaths===0 && (challenge.kind==='survive'
-    ? Number(metrics.travel)>=Math.max(0,Number(challenge.minTravel)||0)+10
+    ? challenge.lite===true
+      ? Number(metrics.kills)>=Math.max(2,(Number(challenge.minKills)||0)+1)
+      :Number(metrics.travel)>=Math.max(0,Number(challenge.minTravel)||0)+10
     : elapsedMs<=challenge.limitMs*.75);
   const stars=flawless?3:deaths<=1?2:1;
   const timeMs=Math.max(1,Math.round(elapsedMs));
@@ -117,6 +119,9 @@ export function cfMissionMedal(challenge,metrics,outcome,elapsedMs) {
  * Do not add intrusive tactical text inside the real-time FPS view. */
 export function cfNextMedalGoal(challenge,medal) {
   if(!medal||!challenge||medal.stars>=3)return '';
+  if(challenge.kind==='survive'&&challenge.lite===true)
+    return '三星目标：零阵亡，亲手击倒至少'+
+      Math.max(2,(Number(challenge.minKills)||0)+1)+'人';
   if(challenge.kind==='survive')
     return '三星目标：零阵亡，真实移动至少'+
       (Math.max(0,Number(challenge.minTravel)||0)+10)+'米'+
