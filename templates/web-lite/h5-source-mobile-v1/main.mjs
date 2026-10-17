@@ -1,7 +1,7 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
-import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts } from './fps-mobile-ux.mjs';
+import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus } from './fps-mobile-ux.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
@@ -210,6 +210,7 @@ async function boot() {
       native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
         kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,
+        alive:g.player?.alive===true,nativeRespawnSec:g.player?.respawnT||0,
         travel:fpsUx?.distanceMeters()||0,...fpsUx?.drillMetrics(),
         ...fpsUx?.assaultMetrics(),...fpsUx?.defenseMetrics()});
       native.simulatedSeconds = () => g.time;
@@ -366,6 +367,8 @@ async function boot() {
           : activeChallenge.maxDeaths!==undefined
             ? '☠ ' + (metrics.deaths||0) + '/' + activeChallenge.maxDeaths + ' · ' + result.label
             : result.label;
+        const rewardedRespawn=cfNativeReviveStatus(metrics,reviveUsed);
+        if(rewardedRespawn)$('status').textContent=rewardedRespawn;
         $('goal').value = activeChallenge.kind==='defend'
           ? Math.min(activeChallenge.target,(metrics.defenseCaptured||0))*activeChallenge.holdSeconds+
             Math.min(activeChallenge.holdSeconds,metrics.defenseHeld||0)
@@ -392,7 +395,9 @@ async function boot() {
             reviveOffered=true;
             pauseRound(round);native.pause();clearInput();
             $('heading').textContent='本局已达阵亡上限';
-            $('copy').textContent='本次失利可以直接结束并免费重试；也可以自愿完整观看一条激励视频，获得本局额外一次阵亡机会。';
+            const near=cfNearMissCue(activeChallenge,metrics,round.elapsedMs);
+            $('copy').textContent=(near?near+'。':'')+
+              '可直接结束并免费重试；或自愿完整观看激励视频，让本局增加一次可阵亡机会。';
             $('notice').textContent='';
             showPhase('revive');
           }else{
@@ -419,9 +424,14 @@ async function boot() {
                   ? ' · '+cfNextMedalGoal(activeChallenge,medal):'')
               : '本次未取得勋章 · 完成挑战可解锁个人最速与星级';
           }
+          const nearMiss=result.outcome==='lost'
+            ?cfNearMissCue(activeChallenge,metrics,round.elapsedMs):null;
           $('heading').textContent = result.outcome === 'won'
             ? (reviveUsed?'◆ 辅助续战成功！':activeChallenge.elite?'⚡ 精英复战成功！':'✓ '+activeChallenge.title+'完成！')
-            : (activeChallenge.elite?'精英复战失败':'本次挑战未完成');
+            : nearMiss?'就差一点 · '+activeChallenge.title
+              :(activeChallenge.elite?'精英复战失败':'本次挑战未完成');
+          if(id==='cf-transport-ship')
+            $('replay').textContent=nearMiss?'↻ 再试一次，完成最后一步':'↻ 重试本关';
           $('copy').textContent = id === 'cf-transport-ship'
             ? (reviveUsed?'本局额外获得一次阵亡机会。':'')+
               cfMissionDebrief(activeChallenge, metrics, result.outcome)
