@@ -977,3 +977,10 @@ html[data-reference-game="cf-transport-ship"] #mk-cf-playtest textarea{
    max-width:44vw;top:18%;font-size:10px
  }
 }
+
+/* CF V15: remove factory-global directional/jump controls from the very
+ * first loading frame. They belong to other games; CF only uses the native
+ * left stick and native jump/fire/reload/scope touch controls. */
+html[data-reference-game="cf-transport-ship"] #mk-controls{
+  display:none!important;
+}

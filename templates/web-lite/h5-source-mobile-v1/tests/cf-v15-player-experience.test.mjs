@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {cfRifleCombatStatus} from '../cf-player-loop.mjs';
 import {cfObservedFlankPlan,cfCombatHapticPattern,cfNearMissCue,cfBufferedJumpAllowed}
   from '../fps-mobile-ux.mjs';
@@ -59,4 +60,13 @@ test('CF V15 short touch jump buffer is never a physics or teleport shortcut',()
     {now:5.5},{now:4.9},{pressedAt:NaN},{cooldown:0.2},
     {grounded:false},{alive:false},{now:Infinity}
   ])assert.equal(cfBufferedJumpAllowed({...base,...patch}),false);
+});
+
+test('CF ready/loading screen cannot leak factory left/right/jump buttons',()=>{
+  const css=readFileSync(new URL('../style.css',import.meta.url),'utf8');
+  assert.match(css,
+    /html\[data-reference-game="cf-transport-ship"\]\s+#mk-controls\s*\{\s*display:none!important;\s*\}/,
+    'CF hides factory movement buttons even before H5 boot sets the hidden flag');
+  assert.match(css,/#mk-controls\{position:absolute/,
+    'shared factory CSS stays intact for other games');
 });

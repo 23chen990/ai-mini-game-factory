@@ -117,6 +117,16 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
   const enter=async(id)=>{
     await page.goto('http://127.0.0.1:'+server.address().port,{
       waitUntil:'domcontentloaded',timeout:45000});
+    if(id==='assault'){
+      // Verify while loading, before H5 sets [hidden] or native boot finishes.
+      // The factory's left/right/space buttons must never flash in this FPS.
+      await page.waitForSelector('#mobile-kit #mk-controls',{
+        state:'attached',timeout:50000});
+      const sharedControlDisplay=await page.evaluate(()=>
+        getComputedStyle(document.querySelector('#mobile-kit #mk-controls')).display);
+      check('cf-initial-loading-hides-factory-left-right-jump',
+        sharedControlDisplay==='none',{display:sharedControlDisplay});
+    }
     await page.waitForSelector('#mobile-kit[data-loaded="true"]',{timeout:50000});
     await page.locator('#mk-chapters button[data-chapter="'+(MISSIONS.indexOf(id)<4?0:1)+'"]').tap();
     await page.locator('#mk-challenges button[data-challenge-id="'+id+'"]').tap();
