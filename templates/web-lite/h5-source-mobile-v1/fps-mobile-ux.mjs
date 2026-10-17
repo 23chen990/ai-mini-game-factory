@@ -370,6 +370,17 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
 /** End/cancel a real mobile fire gesture without swallowing a short tap.
  * Ordinary touchend leaves native firePressed pending until Player.update().
  * OS cancellation, pause, restart and destroy discard that pending tap. */
+/** The original button listener can be skipped on some touch dispatch paths.
+ * Captured touches which actually START on the visible fire control may
+ * drive that SAME native Player.touch state. Never fabricate bullets or hits.
+ * A held touch must not repeatedly restart firePressed after Player.update.
+ */
+export function cfBeginTouchFire(touch) {
+  if(!touch)return false;
+  if(touch.fire!==true)touch.firePressed=true;
+  touch.fire=true;
+  return true;
+}
 export function cfReleaseTouchFire(touch,cancelPending=false) {
   if(!touch)return;
   touch.fire=false;
@@ -559,6 +570,9 @@ export function createFpsMobileUx(game, root, doc) {
       // camera listener cannot reuse this SAME right thumb for aiming.
       for(const t of e.changedTouches||[])
         fireDragTouches.set(t.identifier,{x:t.clientX,y:t.clientY});
+      // Document capture executes even when the original native fire-button
+      // listener stops bubbling. Keep the original gun/cooldown untouched.
+      if(game.player?.alive)cfBeginTouchFire(game.player.touch);
       return;
     }
     if(!cfAutoFireEligible(activeChallenge,game.player?.stats?.hits||0))return;
@@ -576,7 +590,11 @@ export function createFpsMobileUx(game, root, doc) {
       if(v){
         const delta=cfFireDragLookDelta(t.clientX-v.x,t.clientY-v.y);
         v.x=t.clientX;v.y=t.clientY;
-        if(p?.alive&&p.touch?.fire){
+        if(p?.alive){
+          // The actual fire-finger identity is stronger evidence than a
+          // momentary flag lost during native touch dispatch. A continuous
+          // press keeps BOTH the genuine native gun and camera responsive.
+          if(p.touch&&!p.touch.fire)cfBeginTouchFire(p.touch);
           p.touchLook ||= {x:0,y:0};
           p.touchLook.x+=delta.x;p.touchLook.y+=delta.y;
         }
