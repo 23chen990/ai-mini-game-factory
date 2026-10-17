@@ -10,8 +10,15 @@ export const SHORTCUT_PLANS=Object.freeze({
   'race-05':{start:915,end:1310,width:13,neckWidth:10,bend:25,label:'Temple inner U'},
   'race-10':{start:615,end:970,width:12,neckWidth:9,bend:30,label:'Neon inside hairpin'},
   'race-12':{start:1890,end:2270,width:13,neckWidth:10,bend:18,label:'Ice ridge choice'},
-  'race-13':{start:1965,end:2280,width:12,neckWidth:9,bend:16,label:'Crown apex lane'},
+  'race-13':{start:844,end:1248,width:12,neckWidth:9,bend:30,label:'Rebuilt crown inside switchback'},
   'race-16':{start:1565,end:1885,width:11.5,neckWidth:8.5,bend:25,label:'Cliffside technical cut'},
+  // Every later shortcut is a REAL guarded fork using native Track.project:
+  // do not credit laps or reward speed without physical road entry.
+  'race-18':{start:606,end:1027,width:12,neckWidth:9.3,bend:30,label:'Dune chicane inside choice'},
+  'race-22':{start:504,end:891,width:12,neckWidth:9.3,bend:24,label:'Ridge hairpin line'},
+  'race-25':{start:1354,end:1707,width:12,neckWidth:9.3,bend:24,label:'Quantum short exit'},
+  'race-27':{start:334,end:721,width:12,neckWidth:9.3,bend:30,label:'Cloud serpent crosscut'},
+  'race-30':{start:1728,end:2149,width:11.5,neckWidth:8.8,bend:24,label:'Skyline final-risk apex'},
 });
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const mod=(v,n)=>((v%n)+n)%n;
@@ -138,7 +145,7 @@ export function installPhysicalShortcut(track,course){
     const N=main.N+samples.length,
       px=new Float32Array(N),py=new Float32Array(N),pz=new Float32Array(N),bridge=new Uint8Array(N);
     px.set(main.px);py.set(main.py);pz.set(main.pz);bridge.set(main.bridge);
-    const elevated=course==='race-12'||course==='race-16';
+    const elevated=['race-12','race-16','race-27','race-30'].includes(course);
     for(let i=0;i<samples.length;i++){const p=samples[i],j=main.N+i;
       px[j]=p.x;pz[j]=p.z;py[j]=p.y;bridge[j]=elevated?1:0;
     }
