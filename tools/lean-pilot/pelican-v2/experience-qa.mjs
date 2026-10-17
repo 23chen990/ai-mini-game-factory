@@ -53,10 +53,10 @@ try{
  // earned with real tap input, but the screenshot must not consume the
  // 16m reaction window between the second and the first gold.
  await tap('[data-action="left"]');
- await shot('actual-offcentre-second-fish-caught');
  await page.waitForFunction(()=>Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0)>=49,
   null,{timeout:8000});
  await tap('[data-action="right"]');
+ await shot('actual-offcentre-second-fish-caught');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  let jumped=false,prizeFeedbackSeen=false,bonusShot=false,choiceShot=false,goldShot=false,leftWarning=false,rightWarning=false,earnedPrizeCue=false,jumpProgressBefore={gold:Infinity,jumps:Infinity};
