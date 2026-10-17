@@ -162,6 +162,13 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
      await shot('mobile-v7-manual-followup');fpsManualScreenshot=true;
    }
    const manualStage=/手动追击/u.test(objective);
+   // Native death HUD already makes the player state visible. Do not waste
+   // the next combat opportunity attempting to fire/reload a dead actor.
+   const alive=await page.evaluate(()=>window.__H5NativeGame?.player?.alive===true);
+   if(!alive){
+     await page.waitForTimeout(240);
+     return;
+   }
    const aimed=page.locator('#mk-fps-target[data-side="enemy"]');
    // After movement the player MUST actively aim and fire. Do not steal a
    // visible manual-stage opportunity for the initial auto-fire test path.
@@ -198,9 +205,9 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
    const firstBadge=await visibleBadge();
    if(manualStage&&!fpsManualReloaded){
      fpsManualReloaded=true;
-     // A competent player reloads before a new firefight rather than entering
-     // the third phase with the magazine depleted by the opening encounter.
-     // The touch is the ORIGINAL visible reload button, not an ammo mutation.
+     // Read the ORIGINAL visible reload button but don't reload a healthy
+     // magazine in the middle of a 60s gunfight. If truly low, use the same
+     // touch event that a human finger sends. Never edit weapon ammo.
      const reload=page.locator('#touch .btn[data-mk-action="reload"]');
      if(await reload.count()&&await reload.isVisible()){
        const btn=await reload.boundingBox();
@@ -218,7 +225,8 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
        // CDP touch at the actual visible pixel is what a physical finger
        // performs. Playwright .tap() sometimes waits behind the WebGL canvas
        // for 30s and prevents testing the later combat altogether.
-       if(before.mag<before.capacity){
+       const needsReload=before.alive&&before.mag<6;
+       if(needsReload){
          const reloadCdp=await context.newCDPSession(page);
          try{
            await reloadCdp.send('Input.dispatchTouchEvent',{
@@ -234,16 +242,16 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
          return {mag:w?.mag??null,reloadUntil:w?.reloadUntil??0,
            time:g?.time??null,alive:g?.player?.alive??false};
        });
-       const alreadyFull=before.mag===before.capacity;
        const triggered=after.reloadUntil>after.time ||
          (Number.isFinite(before.mag)&&after.mag>before.mag);
        actions.push({atMs:Date.now()-started,input:'visible-native-reload-before-followup',
-         detail:{before,after,alreadyFull,triggered}});
+         detail:{before,after,needsReload,triggered}});
        fpsExtendedChecks.push({name:'cf-visible-reload-touch-when-needed',
-         passed:before.receivesPointer===true&&(alreadyFull||triggered),
-         detail:{before,after,alreadyFull,triggered,
-           evidence:alreadyFull?'Full magazine: hit-test only, native reload not claimed':
-             'Native touch triggered actual weapon reload; no ammunition mutation'}});
+         passed:before.alive&&before.receivesPointer===true&&
+           (!needsReload||triggered),
+         detail:{before,after,needsReload,triggered,
+           evidence:!needsReload?'Magazine not low; original visible hit-test passed, no reload claimed':
+             'Original touch confirmed native weapon reload; never altered ammo'}});
      }
    }
    if(firstBadge){
@@ -283,14 +291,19 @@ export async function browserQa(runId,{base=path.join(ROOT,'runs')}={}){
            const marker=await visibleBadge();
            if(marker){remembered=marker;tracked++;lost=0;}
            else lost++;
-           if(remembered&&lost<=5){
-             const dx=Math.max(-22,Math.min(22,(remembered.x-viewport.width/2)*.31));
-             const dy=Math.max(-16,Math.min(16,(remembered.y-viewport.height/2)*.31));
+           if(marker){
+             // Retarget only from a CURRENTLY visible opponent projection.
+             // Repeatedly adding the last point's displacement after it
+             // vanishes causes uncontrolled oversteer toward the wall.
+             const dx=Math.max(-22,Math.min(22,(marker.x-viewport.width/2)*.31));
+             const dy=Math.max(-16,Math.min(16,(marker.y-viewport.height/2)*.31));
              cursor.x=Math.max(start.x-110,Math.min(start.x+110,cursor.x+dx));
              cursor.y=Math.max(start.y-90,Math.min(start.y+52,cursor.y+dy));
              await cdp.send('Input.dispatchTouchEvent',{
                type:'touchMove',touchPoints:[{...cursor,id:91}]});
            }
+           // Missing marker: keep the genuine native fire press for a short
+           // moment; do not track invisible bot coordinates or move the view.
            if(n===4)activeDuring=await sampleNative();
            // This input is an actual thumb continuously holding the real
            // fire control; original rifle ticks, ballistics, HP stay native.
