@@ -80,13 +80,22 @@ async function shot(page,name,{levelId=activeLevelId,targetBarrierId=null,kind='
  report.screenshots.push(item);return item;
 }
 async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,decisionView=null,decision:policyDecision=null,fastReaction=false}={}){
- const touchStart=await page.evaluate(()=>window.__riskTouchEvidence?.length??0);
- const before=await recordSnapshot(page,'before-touch-tap',{levelId,targetBarrierId});
- const action={at:new Date().toISOString(),type:'touch-tap',input:'Playwright public touchscreen.tap at visible button center',selector,levelId,targetBarrierId,normalInputOnly:true,stateInjection:false,fastReaction};
+ // A critical touch cannot afford a full game-state snapshot before the
+ // physical input. We already chose the action from public HUD; capture only
+ // the DOM phase and the trusted touch event offset. Full state snapshots
+ // remain on routine inputs and after each earned hazard for verification.
+ const urgent=fastReaction?await page.evaluate(()=>({
+  touchStart:window.__riskTouchEvidence?.length??0,
+  phase:document.querySelector('#coast')?.dataset.phase??'missing'
+ })):null;
+ const touchStart=urgent?.touchStart??await page.evaluate(()=>window.__riskTouchEvidence?.length??0);
+ const before=urgent?null:await recordSnapshot(page,'before-touch-tap',{levelId,targetBarrierId});
+ const action={at:new Date().toISOString(),type:'touch-tap',input:'Playwright public touchscreen.tap at visible button center',selector,levelId,targetBarrierId,normalInputOnly:true,stateInjection:false,fastReaction,
+  preTouchProof:urgent?{source:'read-only DOM phase + public HUD decision',phase:urgent.phase,visibleDecisionView:decisionView}:null};
  if(decisionView)action.visibleDecisionView=decisionView;
  if(policyDecision)action.policyDecision=policyDecision;
  report.actions.push(action);
- if(selector.startsWith('[data-action')&&before.value.phase!=='running')throw Error('Gameplay stopped: '+before.value.reason+' at '+before.value.distance+'m');
+ if(selector.startsWith('[data-action')&&(urgent?.phase??before.value.phase)!=='running')throw Error('Gameplay stopped before trusted touch at '+(decisionView?.distance??before?.value.distance)+'m');
  action.touchPoint=await tapVisible(page,selector);
  // A screenshot-like two-frame evidence wait after a lane change can consume
  // the whole consecutive-barrier window on software-rendered mobile emulation.
@@ -95,7 +104,7 @@ async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,dec
  if(!fastReaction)await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  const after=fastReaction?null:await recordSnapshot(page,'after-touch-tap',{levelId,targetBarrierId});
  const touches=await page.evaluate(start=>window.__riskTouchEvidence?.slice(start)??[],touchStart);
- action.completedAt=new Date().toISOString();action.beforeSnapshotId=before.id;action.afterSnapshotId=after?.id??null;action.nativeTouchEvidence=touches;
+ action.completedAt=new Date().toISOString();action.beforeSnapshotId=before?.id??null;action.afterSnapshotId=after?.id??null;action.nativeTouchEvidence=touches;
  action.trustedTouch=touches.some(event=>event.pointerType==='touch'&&event.isTrusted===true);
  if(!fastReaction)action.visibleViewAfter=await readVisibleView(page);
  return action;
