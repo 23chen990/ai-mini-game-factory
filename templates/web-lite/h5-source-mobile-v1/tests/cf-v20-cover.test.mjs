@@ -23,7 +23,7 @@ test('Cover route uses native player-local movement, not setting x/z instantly',
  const reverse=cfCoverSteering(player,{x:-4,z:0});
  assert.ok(reverse.mz<-.99);
  const side=cfCoverSteering(player,{x:0,z:4});
- assert.ok(side.mx<-.99&&Math.abs(side.mz)<1e-12);
+ assert.ok(side.mx>.99&&Math.abs(side.mz)<1e-12);
  assert.deepEqual(cfCoverSteering(player,{x:.08,z:0}),{
   mx:0,mz:0,arrived:true
  });
