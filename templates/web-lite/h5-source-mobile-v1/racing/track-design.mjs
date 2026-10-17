@@ -194,7 +194,8 @@ export const COURSE_ROAD_WIDTHS = Object.freeze({
   '08':19,
   '09':19,
 });
-export function createCareerLayouts(layouts, { v8 = false } = {}) {
+export function createCareerLayouts(layouts, { v8 = false, v9 = false } = {}) {
+  if(v9&&!v8)throw Error('V9 driving rhythms require native V8 3D geometry');
   const fingerprints=new Set(),titles=new Set();
   for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
     const id=String(i).padStart(2,'0'),base=layouts[CAREER_COURSE_MAPS[i-1]],
@@ -203,7 +204,7 @@ export function createCareerLayouts(layouts, { v8 = false } = {}) {
       throw Error('V3.7 requires verified biome and independent course '+id);
     const [title,feel,english,scale,sketch]=blueprint;
     const sourceRoute=parseLocalRoute(sketch);
-    const local=v8
+    const local=v9
       ? shapeV9RhythmSegments(sourceRoute,id,scale,COURSE_TECHNICAL_SECTORS[id]).points
       : injectTechnicalSectors(sourceRoute,id,scale);
     const v8Geometry=v8 ? applyV8CourseGeometry(local,id,scale) : null;
@@ -560,7 +561,7 @@ export function createRaceSky(sky,course) {
 }
 
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
-export function applyTrackDesign(layouts, { v8 = false } = {}) {
+export function applyTrackDesign(layouts, { v8 = false, v9 = false } = {}) {
   const report = {};
   for (const [key, plan] of Object.entries(TRACK_RESHAPES)) {
     const layout = layouts?.[key];
@@ -579,6 +580,6 @@ export function applyTrackDesign(layouts, { v8 = false } = {}) {
     Object.defineProperty(layout,'__racingV31',{value:true,enumerable:false});
     report[key] = points.length;
   }
-  createCareerLayouts(layouts,{v8});
+  createCareerLayouts(layouts,{v8,v9});
   return report;
 }
