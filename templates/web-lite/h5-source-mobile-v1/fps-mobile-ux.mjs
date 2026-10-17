@@ -870,6 +870,10 @@ export function createFpsMobileUx(game, root, doc) {
   guide.textContent = '◆ 蓝色队友 · ▼ 红色敌人';
   guide.hidden = true;
   root.append(guide);
+  const defensePin=doc.createElement('div');
+  defensePin.id='mk-fps-defense-pin';
+  defensePin.hidden=true;defensePin.setAttribute('aria-hidden','true');
+  root.append(defensePin);
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
@@ -879,6 +883,7 @@ export function createFpsMobileUx(game, root, doc) {
   let visibleAimCoach = '';
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
+  let defense=null,nextDefenseRouteAt=0;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -1258,13 +1263,24 @@ export function createFpsMobileUx(game, root, doc) {
       return drill?{drillStage:drill.stage,drillFirstHit:drill.firstHit,
         drillTravel:drill.distance,drillFollowUpHits:drill.follow}:{};
     },
-    onSelect(challenge) { updateTutorial(challenge); },
+    defenseMetrics() {
+      if(!defense)return {};
+      return {defenseSitesValid:defense.valid===true,
+        defenseCaptured:defense.captured,defenseStage:defense.stage,
+        defenseBreached:defense.breached===true,
+        defenseHeld:defense.held,defenseEnemyHeld:defense.enemyHeld,
+        defenseInside:defense.playerInside===true,
+        defenseContested:defense.contested===true,
+        defenseSite:defense.sites?.[defense.stage]?.id||null};
+    },
+    onSelect(challenge) { updateTutorial(challenge); defensePin.hidden=true; },
     onStart(challenge) {
       activeChallenge = challenge || null;
       if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
       drill=cfAdvanceDrill(activeChallenge);
+      defense=null;nextDefenseRouteAt=0;defensePin.hidden=true;
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
@@ -1276,6 +1292,8 @@ export function createFpsMobileUx(game, root, doc) {
         ? '先观察，找到目标后开镜'
         : activeChallenge?.kind === 'survive'
           ? '沿掩体移动，注意身后'
+          : activeChallenge?.kind === 'defend'
+          ? '先守A区，再守B区'
           : '前方有目标 · 右手瞄准';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
@@ -1299,7 +1317,15 @@ export function createFpsMobileUx(game, root, doc) {
       }
       game.__mobileBalanceReview = {startingLaneMeters: clear?.clearance ?? null,
         challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
-      const rendezvous=prepareFirstEncounter();
+      const rendezvous=activeChallenge?.kind==='defend'
+        ?{path:false,trainingScout:false} :prepareFirstEncounter();
+      if(activeChallenge?.kind==='defend') {
+        const sites=cfChooseDefenseSites({player:p,nav:game.nav,world:game.world,actors:game.actors});
+        defense=cfStartDefense(sites);
+        game.__mobileBalanceReview.defenseSitesValid=defense.valid;
+        game.__mobileBalanceReview.defenseSites=defense.sites;
+        if(defense.valid)cfRouteDefenseBots(game,defense.sites[0]);
+      }
       if(rendezvous.trainingScout&&Array.isArray(rendezvous.initialVisibleSpot))
         lastVisibleEnemy={x:rendezvous.initialVisibleSpot[0],
           z:rendezvous.initialVisibleSpot[1],at:game.time};
@@ -1327,7 +1353,7 @@ export function createFpsMobileUx(game, root, doc) {
         game.hud.el.cSmall.textContent = '即将自动复活';
       }
       tutorial.hidden = active && now - started > 6500;
-      if (!p) { target.hidden = true; guide.hidden = true; clearMarkers(); return; }
+      if (!p) { target.hidden = true; guide.hidden = true; defensePin.hidden=true; clearMarkers(); return; }
       html.dataset.fpsOwnTeam = p.team;
       if (active && p.alive) {
         if (previousPosition) {
@@ -1355,8 +1381,34 @@ export function createFpsMobileUx(game, root, doc) {
           releaseNativeFire(true);fireDragTouches.clear();
         }
         autoAimActor=null;autoFireActive=false;
-        target.hidden = true; guide.hidden = true; clearMarkers(); return;
+        target.hidden = true; guide.hidden = true; defensePin.hidden=true; clearMarkers(); return;
       }
+      if(activeChallenge?.kind==='defend'&&defense){
+        const prevStage=defense.stage;
+        defense=cfStepDefense(defense,{
+          gameTime:Number(game.time),player:p,actors:game.actors,team:p.team,
+          holdSeconds:activeChallenge.holdSeconds,
+          breachSeconds:activeChallenge.breachSeconds,
+          radius:activeChallenge.radius
+        });
+        if(defense.stage>prevStage){
+          hitCue.textContent='◆ 据点 '+('AB'[prevStage])+' 已守住';
+          hitCue.hidden=false;cueExpiresAt=now+1050;
+        }
+        const site=defense.sites?.[defense.stage];
+        if(site&&p.alive&&!defense.breached){
+          if(now>=nextDefenseRouteAt){
+            nextDefenseRouteAt=now+1350;
+            cfRouteDefenseBots(game,site);
+          }
+          const turn=routeArrow(p,[site.x,site.z],activeChallenge.radius*.75);
+          const pointText=defense.contested?'⚔ 双方争夺':defense.playerInside
+            ?'◆ 守点 '+Math.floor(defense.held)+'/'+activeChallenge.holdSeconds+'秒'
+            : (turn?turn.symbol+' '+turn.distance+'米':'已到据点');
+          defensePin.textContent='● '+site.id+' · '+pointText;
+          defensePin.hidden=false;
+        }else defensePin.hidden=true;
+      }else defensePin.hidden=true;
       const score = playerRelativeScore(game.score, p.team);
       const msg = score.ally + ':' + score.enemy;
       if (msg !== lastBoard) {
@@ -1373,7 +1425,9 @@ export function createFpsMobileUx(game, root, doc) {
       }
       if(now >= routeLastAt) {
         routeLastAt=now+900;
-        if(activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
+        if(activeChallenge?.kind==='defend'){
+          routePath=null;
+        }else if(activeChallenge?.drill==='reposition'&&drill?.stage===1&&p.alive){
           const deaths=p.stats?.d||0;
           if(!flankGoal||deaths!==flankDeaths){
             flankDeaths=deaths;
@@ -1408,7 +1462,9 @@ export function createFpsMobileUx(game, root, doc) {
         }
         lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
-        if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
+        if (activeChallenge?.kind==='defend') {
+          guide.textContent='';
+        }else if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
           const turn=routeArrow(p,routePath);
           guide.textContent=(turn?.symbol||'↔')+' 换位 '+
             Math.floor(drill.distance)+'/'+activeChallenge.minTravel+'m'+
@@ -1438,7 +1494,7 @@ export function createFpsMobileUx(game, root, doc) {
       }
       // Combat stays legible: hint only on opening, or briefly when the
       // player has not yet found a target. It never sits on the reticle.
-      guide.hidden = !p.alive ||
+      guide.hidden = !p.alive || activeChallenge?.kind==='defend' ||
         (activeChallenge?.drill==='reposition'&&drill?.stage>0
           ? drill.stage===2&&drill.follow>0&&elapsed-drillStageAt>7&&
             [...markers.values()].some(el=>!el.hidden)
@@ -1458,7 +1514,8 @@ export function createFpsMobileUx(game, root, doc) {
       aimTouchStarts.clear();fireDragTouches.clear();releaseNativeFire(true);
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
-      board.remove(); target.remove(); hitCue.remove(); guide.remove(); tutorial.remove();
+      board.remove(); target.remove(); hitCue.remove(); guide.remove(); defensePin.remove(); tutorial.remove();
+      defense=null;
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
         button.removeAttribute('aria-label');
