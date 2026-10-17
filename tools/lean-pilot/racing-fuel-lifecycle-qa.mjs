@@ -10,7 +10,7 @@ import { FUEL_KEY, newFuelState, saveFuel } from '../../templates/web-lite/h5-so
 
 // Engineering fixtures for the actual V3 module. No physical-device/LIVE/natural-victory claim.
 const platform = { status: 1, source: 'check_ads_status', appId: 'fixture-only', spaceId: 'fixture-only', screenOrientation: 1 };
-async function setup(t, { amount = 10, delay = 0, denied = false } = {}) {
+async function setup(t, { amount = 30, delay = 0, denied = false } = {}) {
   const root = path.resolve('templates/web-lite/h5-source-mobile-v1');
   const html = '<!doctype html><html data-race-mobile><head><meta name="viewport" content="width=device-width,initial-scale=1"><style>*{box-sizing:border-box}body{margin:0}</style><link rel="stylesheet" href="/racing/mobile.css"></head><body><button id="native-start">Native fixture start</button><span id="gaugelbl"></span><div id="lapbox"><span class="s"></span></div><span id="n2o0"></span><span id="n2o1"></span><div id="msgs"></div><script type="module" src="/racing/mobile.mjs"></script></body></html>';
   const server = createServer(async (req, res) => {
@@ -47,7 +47,7 @@ async function setup(t, { amount = 10, delay = 0, denied = false } = {}) {
   return page;
 }
 const amount = page => page.evaluate(key => JSON.parse(localStorage.getItem(key)).amount, FUEL_KEY);
-const ready = page => page.waitForFunction(() => document.querySelector('#race-fuel-info').textContent.includes('每场'));
+const ready = page => page.waitForFunction(() => document.querySelector('#race-fuel-info').textContent.includes('每局 -5 · 每分钟 +1'));
 
 test('V3 resolves fuel policy before accepting the first race', async t => {
   const page = await setup(t, { delay: 1200 });
@@ -60,36 +60,36 @@ test('V3 native entry cannot bypass zero fuel', async t => {
   assert.equal(await page.evaluate(() => window.game.starts), 0);
   assert.equal(await amount(page), 0);
 });
-test('V3 zero fuel has a visual gauge and disables the primary action', async t => {
+test('V3 zero fuel disables the primary action even with a 30-unit tank', async t => {
   const page = await setup(t, { amount: 0 }); await ready(page);
   assert.equal(await page.locator('#race-start').isDisabled(), true);
   assert.equal(await page.getByRole('meter').getAttribute('aria-valuenow'), '0');
 });
-test('V3 late native entry while countdown is active cannot charge another race', async t => {
+test('V3 countdown double-start never spends the five-unit entry twice', async t => {
   const page = await setup(t); await ready(page); await page.locator('#race-start').tap();
   await page.locator('#native-start').click();
   assert.equal(await page.evaluate(() => window.game.starts), 1);
-  assert.equal(await amount(page), 9);
+  assert.equal(await amount(page), 25);
 });
 test('V3 ignores background starts and requires explicit foreground input', async t => {
   const page = await setup(t); await ready(page);
   await page.evaluate(() => window.dispatchEvent(new Event('blur'))); // engineering lifecycle fixture
   await page.locator('#race-start').tap();
   assert.equal(await page.evaluate(() => window.game.starts), 0);
-  assert.equal(await amount(page), 10);
+  assert.equal(await amount(page), 30);
   await page.evaluate(() => window.dispatchEvent(new Event('focus')));
-  await page.locator('#race-start').tap(); assert.equal(await amount(page), 9);
+  await page.locator('#race-start').tap(); assert.equal(await amount(page), 25);
 });
 test('V3 failed native start preserves fuel and retry remains usable', async t => {
   const page = await setup(t); await ready(page);
   await page.evaluate(() => { window.game.loading = true; }); // engineering ignored-start fixture
-  await page.locator('#native-start').click(); assert.equal(await amount(page), 10);
+  await page.locator('#native-start').click(); assert.equal(await amount(page), 30);
   await page.evaluate(() => { window.game.loading = false; });
-  await page.locator('#race-start').tap(); assert.equal(await amount(page), 9);
+  await page.locator('#race-start').tap(); assert.equal(await amount(page), 25);
 });
 test('V3 write denial keeps session free and exposes a visible storage warning', async t => {
   const page = await setup(t, { denied: true }); await ready(page); await page.locator('#race-start').tap();
-  assert.equal(await amount(page), 10);
+  assert.equal(await amount(page), 30);
   assert.match(await page.locator('#race-fuel-info').textContent(), /存储.*不限油/);
   assert.equal(await page.getByRole('status').filter({ hasText: /存储|保存/ }).isVisible(), true);
 });
