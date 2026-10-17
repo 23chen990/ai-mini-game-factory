@@ -45,7 +45,7 @@ test('V9 original beats are pure, bounded, do not move track anchors and reject 
   assert.equal(JSON.stringify(control),frozen);
   const correct=shapeV9RhythmSegments([[0,0,0],[120,0,0],[280,0,3],[500,0,4],[650,0,0],[820,0,0]],'01',1,[[1,19,1],[2,19,-1],[3,17,1],[4,18,-1]]);
   assert.ok(correct.applied>=2);
-  assert.equal(correct.rest,1);
+  assert.equal(correct.rest,0,'stage 01 is intentionally a full four-beat challenge');
   assert.deepEqual(correct.points[0],[0,0,0]);
   assert.deepEqual(correct.points.at(-1),[820,0,0]);
 });
