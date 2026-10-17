@@ -126,6 +126,7 @@ export function cfScoutHoldSeconds(challenge) {
 export function cfScoutReadyDelaySeconds(challenge) {
   if(challenge?.elite===true)return challenge.kind==='kills'?3.5:2.5;
   if(challenge?.kind==='kills')return 6.5;
+  if(cfV20CoverEnabled(challenge)&&challenge.id==='tags')return 5.3;
   return challenge?.kind==='hits'&&challenge.drill==='reposition'?
     (challenge?.lite===true?3.5:4.5):5;
 }
