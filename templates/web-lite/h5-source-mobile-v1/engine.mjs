@@ -166,11 +166,18 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
     complete=(terminal||(c.finishOnExtract===true&&m.evacExtracted===true))&&
       survivedFullClock&&!failed&&travel>=minTravel&&
       (!c.minKills||Math.max(0,Number(m.kills)||0)>=c.minKills)&&extractionComplete;
-    label=`❤ 死亡 ${value}/${c.target+(c.bonusDeaths===1?1:0)} · 移动 ${travel}/${minTravel}米`+
-      (c.minKills?' · 击杀 '+(Number(m.kills)||0)+'/'+c.minKills:'')+
-      (c.extractSeconds?(!extractionLegal?' · 撤离点不可达':
-       m.evacExtracted===true?' · 撤离已准备就绪':
-       ' · 撤离 '+Math.floor(Math.max(0,Number(m.evacHeldSec)||0))+'/'+c.extractSeconds+'秒'):'');
+    label=c.lite===true
+      ? '❤ 阵亡 '+value+'/'+(c.target+(c.bonusDeaths===1?1:0))+
+        (c.minKills?' · 击倒 '+(Number(m.kills)||0)+'/'+c.minKills:'')+
+        (c.extractSeconds?(!extractionLegal?' · 撤离点不可达':
+          m.evacExtracted===true?' · 撤离完成':
+          ' · 撤离坚守 '+Math.floor(Math.max(0,Number(m.evacHeldSec)||0))+'/'+
+          c.extractSeconds+'秒'):'')
+      : `❤ 死亡 ${value}/${c.target+(c.bonusDeaths===1?1:0)} · 移动 ${travel}/${minTravel}米`+
+        (c.minKills?' · 击杀 '+(Number(m.kills)||0)+'/'+c.minKills:'')+
+        (c.extractSeconds?(!extractionLegal?' · 撤离点不可达':
+          m.evacExtracted===true?' · 撤离已准备就绪':
+          ' · 撤离 '+Math.floor(Math.max(0,Number(m.evacHeldSec)||0))+'/'+c.extractSeconds+'秒'):'');
   }
   return {outcome:failed?'lost':complete?'won':terminal?'lost':'running',value,label,rewardScore:c.kind==='survive'?(complete?3:0):c.kind==='defend'?(complete?5:value):value};
 }
