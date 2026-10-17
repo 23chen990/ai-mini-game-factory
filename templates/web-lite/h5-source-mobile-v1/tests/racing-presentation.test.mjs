@@ -2,7 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { careerCourseSvg, raceProgressPercent, compactRaceObjective } from '../racing/presentation.mjs';
 import { STAGES } from '../racing/career.mjs';
-import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
+import { COURSE_BLUEPRINTS } from '../racing/track-design.mjs';
+import { V9_STAGE_RHYTHMS } from '../racing/v9-course-director.mjs';
+import { V10_STAGE_SIGNATURES } from '../racing/v10-course-director.mjs';
 
 test('all 30 authored tracks have unique rendered road shapes without remote assets', () => {
   const paths = new Set();
@@ -16,9 +18,11 @@ test('all 30 authored tracks have unique rendered road shapes without remote ass
     // Every visible turn on the lobby course uses the SAME inserted physics
     // vertices as the native track builder (not an old simplified preview).
     const basePoints=COURSE_BLUEPRINTS[stage.id][4].trim().split(/\s+/).length;
+    const v9Beats=V9_STAGE_RHYTHMS[stage.id].beats.filter(Boolean).length;
+    const v10Beats=V10_STAGE_SIGNATURES[stage.id].beats.length;
     assert.equal((path.match(/L/g)??[]).length+1,
-      basePoints+COURSE_TECHNICAL_SECTORS[stage.id].length*2,
-      'visible course must include genuine S-sector control points '+stage.id);
+      basePoints+(v9Beats+v10Beats)*3,
+      'visible course must match native V9 + V10 authored physical road '+stage.id);
     paths.add(path);
   }
   assert.equal(paths.size, 30);
