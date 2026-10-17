@@ -12,10 +12,15 @@ import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
-import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud } from './session.mjs';
+import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud, raceScreenProfile } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
-const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
+const pointerCapabilities=()=>({
+  coarse:window.matchMedia('(pointer:coarse)').matches,
+  anyCoarse:window.matchMedia('(any-pointer:coarse)').matches,
+  touchPoints:navigator.maxTouchPoints||0
+});
+let mobile=raceScreenProfile(window.innerWidth,window.innerHeight,pointerCapabilities())==='touch';
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
 root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button><div id="race-speed" hidden aria-label="当前速度"><strong id="race-speed-value">0</strong><span>KM/H</span></div>
   <div id="race-compact-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="按住方向盘圆环旋转，松手回正"><div class="race-stick-track"><i id="race-stick-knob"><span class="race-wheel-hub"></span><span class="race-wheel-spoke spoke-top"></span><span class="race-wheel-spoke spoke-left"></span><span class="race-wheel-spoke spoke-right"></span></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
@@ -28,6 +33,8 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
     <p id="race-note"></p>
   </div><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>请使用横屏</b><span>横屏后继续比赛</span></aside>`;
 document.body.append(root);
+root.dataset.platform=mobile?'touch':'desktop';
+document.documentElement.dataset.racePlatform=root.dataset.platform;
 const $ = id => root.querySelector('#race-' + id);
 const duel = new RaceDuelTracker();
 const shortcutDecisions = new ShortcutDecisionTracker();
@@ -116,8 +123,20 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'wheel' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(),fpsEstimate:quality.fps,touchToInputSampleMs:lastTouchSampleAgeMs, trial: trial.snapshot(), revision: 'V9.1' }) });
-const portrait = () => window.innerHeight > window.innerWidth;
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'wheel' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(),fpsEstimate:quality.fps,touchToInputSampleMs:lastTouchSampleAgeMs, trial: trial.snapshot(), revision: 'V9.1', platform: mobile?'touch':'desktop', cameraFov: g?.camera?.fov??null }) });
+const portrait=()=>mobile&&window.innerHeight>window.innerWidth;
+function syncScreenPresentation(){
+  const next=raceScreenProfile(window.innerWidth,window.innerHeight,pointerCapabilities())==='touch';
+  if(next!==mobile){releaseInput();mobile=next;touchDriving=next;}
+  root.dataset.platform=mobile?'touch':'desktop';
+  document.documentElement.dataset.racePlatform=root.dataset.platform;
+  const guide=$('guide').querySelector('p');
+  const text=mobile?'左手转动方向盘 · 右手漂移 / 小喷 / 氮气':'方向键驾驶 · Shift 漂移 · W 小喷 · Ctrl 氮气 / 道具';
+  if(guide.textContent!==text)guide.textContent=text;
+  const symbol=$('guide').querySelector('.race-guide-keys span');
+  symbol.textContent=mobile?'◎':'⌨';
+  if(g)g.mobileMode=touchDriving;
+}
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `rotate(${joystick.visualDegrees.toFixed(1)}deg)`;
   $('joystick').style.setProperty('--turn-strength',Math.abs(joystick.snapshot()).toFixed(3));
@@ -403,7 +422,7 @@ const background = () => { backgrounded = true;pause(); };
 window.addEventListener('blur', background);
 window.addEventListener('focus', () => { backgrounded = false; });
 document.addEventListener('visibilitychange', () => { if (document.hidden) background();else backgrounded = false; });
-const orient = () => { $('rotate').hidden = !portrait();if (portrait()) pause(); };
+const orient = () => { syncScreenPresentation();$('rotate').hidden = !portrait();if (portrait()) pause(); };
 window.addEventListener('resize', orient);window.addEventListener('orientationchange', orient);orient();
 window.addEventListener('keydown', e => {
   if (!mobile && ['ArrowUp', 'ArrowDown', 'ShiftLeft', 'ShiftRight', 'ControlLeft', 'ControlRight', 'KeyW'].includes(e.code)) { touchDriving = false;if (g) g.mobileMode = false; }
