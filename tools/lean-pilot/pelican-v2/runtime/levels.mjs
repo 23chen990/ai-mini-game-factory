@@ -96,6 +96,16 @@ export const LEVELS=definitions.map(d=>{
   if(!unsafeLanes(obstacles,x).has(lane))
    fish.push({id:'l2-prize-trail-372',x,lane,golden:false,shoal:true});
  }
+ // A late first-level four-fish sprint can only be earned by taking the
+ // LEFT clear exit after the optional 233m jump. It preserves the real
+ // 4-catch mastery rule while rewarding holding a chosen lane instead of
+ // a lottery of software-rendered reaction frames.
+ if(d.id===1){
+  for(const x of [260,264,267]){
+   if(!unsafeLanes(obstacles,x).has(0))
+    fish.push({id:`l1-clean-exit-${x}`,x,lane:0,golden:false,shoal:true});
+  }
+ }
  // V5 high-risk coast: short fish trains reward riders who commit to an
  // actual safe collecting route. The repeated catches are physical objects,
  // not free score or changes to the three-star requirement.
