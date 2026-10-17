@@ -105,6 +105,7 @@ export function createCfCoverAssault(game,root,doc) {
   let enabled=false,challenge=null,route=null;
   let barriers=[],paths={left:null,right:null},sites={left:null,right:null};
   let lastStatus='',lastUi=0,stuckAt=0,lastProgress=null,failedRoutes=0;
+  let observeUntil=0;
   const clearInputs=()=>{
     route=null;
     const p=game.player;
@@ -171,6 +172,7 @@ export function createCfCoverAssault(game,root,doc) {
     panel.hidden=!enabled;
     route=null;sites={left:null,right:null};
     paths={left:null,right:null};failedRoutes=0;lastUi=0;lastStatus='';
+    observeUntil=0;
     clearInputs();
     if(!enabled){game.__mkCoverV20=null;return {enabled:false};}
     const p=game.player;
@@ -199,7 +201,11 @@ export function createCfCoverAssault(game,root,doc) {
       const path=point&&cfCoverPath(game.nav,here,point);
       if(path){sites[side]=point;paths[side]=path;}
     }
-    if(p.touch){p.touch.crouch=true;p.touch.mx=0;p.touch.mz=0;}
+    // H5 first screen must show the genuine opponent BEFORE we duck behind
+    // a real steel shield. The novice gets 1.6 native seconds to look;
+    // this is NOT invulnerability or automatic fire.
+    observeUntil=(Number(game.time)||0)+1.6;
+    if(p.touch){p.touch.crouch=false;p.touch.mx=0;p.touch.mz=0;}
     refreshUi(true);
     game.__mkCoverV20={enabled:true,mode:'cover-to-cover',
       barriers:created,available:Object.keys(sites).filter(x=>sites[x]).length,
@@ -207,7 +213,7 @@ export function createCfCoverAssault(game,root,doc) {
     return game.__mkCoverV20;
   }
   function choose(side) {
-    if(!enabled||!sites[side]||!game.player?.alive||
+    if(!enabled||!sites[side]||route?.length||!game.player?.alive||
       !game.playing||game.paused||game.ended)return false;
     const p=game.player;
     if(p.touch?.fire||p.mouse?.l)return false;
@@ -246,7 +252,9 @@ export function createCfCoverAssault(game,root,doc) {
     }
     const status=route?'↔ 沿真实路径换位中':
       p?.touch?.fire?'◎ 探身射击 · 松手藏回掩体':
-      !p?.alive?'等待原生复活':'▣ 掩体后 · 按住开火，松手躲避';
+      !p?.alive?'等待原生复活':
+      (Number(game.time)||0)<observeUntil?'◎ 前方真实敌人 · 按住开火':
+      '▣ 掩体后 · 按住开火，松手躲避';
     if(lastStatus!==status){$('status').textContent=status;lastStatus=status;}
   }
   function update(running){
@@ -279,7 +287,8 @@ export function createCfCoverAssault(game,root,doc) {
       if(route?.length===0)route=null;
       if(!route){p.touch.mx=0;p.touch.mz=0;p.touch.crouch=true;}
     } else {
-      p.touch.mx=0;p.touch.mz=0;p.touch.crouch=true;
+      p.touch.mx=0;p.touch.mz=0;
+      p.touch.crouch=(Number(game.time)||0)>=observeUntil;
     }
     // Native weaponUpdate consumes KeyR and handles the actual reload timer,
     // ammo reserve, sound and visual animation; no instant refill.
