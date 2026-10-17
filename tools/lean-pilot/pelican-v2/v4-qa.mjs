@@ -52,7 +52,15 @@ try{
  await distance(115);await tap('[data-action="left"]');await distance(145);await tap('[data-action="right"]');
  await page.waitForSelector('#coast[data-phase="finished"]',{timeout:15000});await page.locator('#co-modal').waitFor({state:'visible'});r=await snap();
  check('actual-new-vehicle-death-settles-once',r.reason==='vehicle'&&r.events.some(e=>e.type==='failed'&&e.objectId==='l1-o6')&&r.settled&&r.reward.settled&&r.reward.rounds===2&&r.reward.bank===beforeDisabled.reward.bank+r.rewardScore,r);await shot('new-v4-vehicle-death');
- const bank=r.reward.bank;await tap('#co-select');await page.reload();await page.waitForSelector('#coast[data-loaded="true"]');await tap('#co-start');r=await snap();
+ // Export the outcome of a real vehicle collision, not injected game state.
+  const exportedFailurePending=page.waitForEvent('download',{timeout:10000});
+  await tap('#co-export');
+  const exportedFailure=JSON.parse(await readFile(await (await exportedFailurePending).path(),'utf8'));
+  check('anonymous-playtest-export-identifies-actual-vehicle-death',
+   exportedFailure.lastEvents.some(e=>e.event==='fail'&&e.reason==='vehicle'&&e.level===1&&e.distance>=115)&&
+   !('userId' in exportedFailure)&&!('deviceId' in exportedFailure),
+   exportedFailure.lastEvents.filter(e=>e.event==='fail'));
+  const bank=r.reward.bank;await tap('#co-select');await page.reload();await page.waitForSelector('#coast[data-loaded="true"]');await tap('#co-start');r=await snap();
  check('route-refresh-retains-exact-earned-accounting',r.reward.rounds===2&&r.reward.bank===bank&&r.save.unlocked===1&&r.save.completed.every(v=>!v),r);await shot('free-restart-after-refresh');
  report.frames=await page.evaluate(()=>window.__v4Frames??[]);
 }catch(error){report.errors.push(error.stack);report.failureSnapshot=await snap().catch(()=>null);await shot('failure').catch(()=>{});}

@@ -91,3 +91,7 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
  #co-controls button{width:100%;max-width:none;min-width:0}
  #co-controls button:last-child{grid-column:4}
 }
+
+/* First-play route scan: hide detailed star requirements for other levels.
+   Switching the selected route reveals that route's true requirements. */
+#coast[data-phase="ready"] .co-route button:not(.selected) .co-master{display:none}

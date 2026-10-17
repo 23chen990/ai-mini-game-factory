@@ -33,11 +33,17 @@ try{
  check('endless-select-visible',await page.locator('[data-level="6"]').isVisible());
  check('earned-cosmetic-items-visible',await page.locator('#co-collection [data-style]').count()===6);
  check('initial-wallet-is-zero',(await page.locator('.co-collection-total').innerText()).includes('0 贝壳'));
+  check('unselected-route-details-hidden-until-asked',
+   await page.locator('[data-level="1"] .co-master').isVisible()&&
+   !(await page.locator('[data-level="2"] .co-master').isVisible()));
  await shot('v6-menu');
  await tap('[data-style="sunset"]');
  check('cannot-purchase-with-empty-wallet',(await page.locator('#co-notice').innerText()).includes('还需'));
  await tap('[data-level="6"]');
  check('endless-selected',await page.locator('[data-level="6"]').getAttribute('class')==='selected');
+  check('switching-selected-route-reveals-real-challenge',
+   await page.locator('[data-level="6"] .co-master').isVisible()&&
+   !(await page.locator('[data-level="1"] .co-master').isVisible()));
  await tap('#co-start');
  let r=await snap();
  check('endless-running-native-h5',r.level===6&&r.phase==='running');

@@ -6,7 +6,7 @@ import {createReviveController,reviveAvailable,reviveOfferVisible,terminalDispos
 import {upcomingHazards,pathRiskAtPosition,rewardExitWarning} from './safety.mjs';
 import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient,heldSteerDistance} from './feel.mjs';
 import {selectFishCue,fishRoadZ,earnedPrizePrecedesRisk,allStars,nextStarTip,starRequirements,masteryStatus,coastBeat} from './engagement.mjs';
-import {failureSummary,safeGateCue,passedPreviousFailure} from './retry-loop.mjs';
+import {failureSummary,endlessFailureCue,safeGateCue,passedPreviousFailure} from './retry-loop.mjs';
 import {newProgress,loadProgress,saveProgress,startRound,finishRound,rewardRound,adAllowed} from './reward-engine.mjs';
 import {requestRewardedVideo} from './reward-adapter.mjs';
 import {COAST_STYLES,newCollection,loadCollection,styleById,buyOrEquip,collectCoastResult} from './collection.mjs';
@@ -37,7 +37,7 @@ export function createCoastAdventure(api) {
  let heldSteer=null,heldKeySteer=null,lastEndlessMilestone=0;
  let quality={tier:2,pr:Math.min(window.devicePixelRatio||1,1.5)},manualQuality='balanced',lowSeconds=0;
  const persist=()=>{try{localStorage.setItem(SAVE,JSON.stringify(save));localStorage.setItem(REWARD,saveProgress(progress,'pelican-bike'));localStorage.setItem(COLLECTION,JSON.stringify(collection));localStorage.setItem(METRICS,JSON.stringify(metrics));}catch{storage=false;}$('storage').textContent=storage?'本机保存关卡与外观 · 广告未接入 · 试玩数据仅存本机':'存储不可用，本次可玩，关卡和外观无法保存';};
- const track=event=>{recordPlaytestEvent(metrics,event,{level:run?.level.id??selected,distance:run?.distance??0,elapsed:run?.elapsed??0});persist();};
+ const track=event=>{recordPlaytestEvent(metrics,event,{level:run?.level.id??selected,distance:run?.distance??0,elapsed:run?.elapsed??0,reason:event==='fail'?run?.reason:null});persist();};
  const applyStyle=()=>{const style=styleById(collection.equipped);pelican.materials.helmet.color.set(style.color);};
  function renderCollection(){
   $('collection').innerHTML=`<div class="co-collection-total"><b>🐚 ${collection.coins} 贝壳</b><small>无尽最好 ${collection.bestDistance} 米 · 真正捕鱼结算获得</small></div><div class="co-style-items">${COAST_STYLES.map(style=>{
@@ -137,13 +137,14 @@ export function createCoastAdventure(api) {
   if(['vehicle','barrier'].includes(run.reason)&&Number.isFinite(run.distance))lastFailure.set(run.level.id,run.distance);
   const recap=run.level.endless?null:run.reason==='complete'?null:failureSummary(run);
   const recordStory=run.level.endless?endlessRecordStory(run,run.previousBest):null;
-  $('heading').textContent=run.level.endless?(recordStory.kind==='broken'?recordStory.headline:run.reason==='retired'?'🏁 本次骑行结束':recordStory.kind==='close'?'💪 就差一点！':'💥 海岸挑战结束'):run.reason==='complete'?(run.stars===3?'🏆 三星达成！':run.stars===2?'★★ 二星通关！':'★ 成功抵达！'):recap.title;
+   const endlessCause=run.level.endless?endlessFailureCue(run):'';
+  $('heading').textContent=run.level.endless?(recordStory.kind==='broken'?recordStory.headline:run.reason==='retired'?'🏁 本次骑行结束':recordStory.kind==='close'?'💪 就差一点！':run.reason==='vehicle'?'🚗 撞上来车！':run.reason==='barrier'?'💥 撞上路障！':'💥 海岸挑战结束'):run.reason==='complete'?(run.stars===3?'🏆 三星达成！':run.stars===2?'★★ 二星通关！':'★ 成功抵达！'):recap.title;
   const earned=allStars(save),best=save.best?.[run.level.id-1];
   if(run.level.endless){
    $('copy').textContent=`骑行 ${Math.floor(run.distance)} 米 · 🐟 ${run.count} 条 · 🌟 ${run.gold} 金鱼
 🐚 本局真实获得 ${run.coinsEarned??0} 贝壳 · 累计 ${collection.coins} 贝壳
 🏆 个人纪录 ${collection.bestDistance} 米
-${recordStory.detail}${opportunity.eligible&&adsAvailable()?`\n${opportunity.message} · 可自愿看广告继续本局`:''}`;
+${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&&adsAvailable()?`\n${opportunity.message} · 可自愿看广告继续本局`:''}`;
   }else if(run.reason==='complete'){
    const icons='★'.repeat(run.stars);
    $('copy').textContent=[`${icons} · 🐟${run.count} · 🌟${run.gold} · ↟${run.jumpedBarriers}`,
