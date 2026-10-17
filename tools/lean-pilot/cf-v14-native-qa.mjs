@@ -364,6 +364,19 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       cancelled.player.input.dx===0&&cancelled.player.input.dy===0,
       {cancelled:cancelled.player,attempts:multiTouchTraces});
     await snap('v14-multitouch-cancel');
+    const stressed=await inspect();
+    samples.push({id:'assault',when:'after-real-touch-and-enemy-pressure',
+      ...stressed});
+    // A lone hero can genuinely lose (or win) during the many seconds of
+    // stress testing move/fire/reload/jump. Pause/orientation must be tested
+    // from a FRESH native solo encounter, not a settled match whose pause
+    // button is rightly hidden. Never resurrect player HP or change clocks.
+    const pauseTrial=await enter('assault');
+    check('solo-pause-trial-is-fresh-native-combat',
+      pauseTrial.gamePhase==='running'&&pauseTrial.solo?.players===1&&
+      pauseTrial.solo?.friends===0&&pauseTrial.solo?.enemies===3,
+      {previous:stressed.phase,new:pauseTrial.gamePhase,
+        solo:pauseTrial.solo});
     await page.locator('#mk-pause').tap();
     await page.waitForSelector('#mobile-kit[data-phase="paused"]',{timeout:9000});
     const paused=await inspect();
