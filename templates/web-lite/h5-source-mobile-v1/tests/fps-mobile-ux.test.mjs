@@ -804,7 +804,8 @@ test('V20 actual H5 crosshair rejects a blank close wall even if UI tags are vis
  assert.equal(wide.viewQuality,3);
  assert.ok(wide.spawn.x>0,'player may only advance from authored spawn before game begins');
  assert.equal(cfChooseVisibleOpeningLane({
-   spawns:[{x:0,z:0,yaw:-Math.PI/2}],world:centerWall,nav,
+   spawns:[{x:0,z:0,yaw:-Math.PI/2}],
+   world:{...open,raycast:()=>({t:1.5})},nav,
    actors:[],team:'BL',h5WideView:true,distances:[7.4,6.6,5.8]
  }),null,'never accept a reticle that points into an actual steel wall');
 });
