@@ -4,7 +4,7 @@ import * as core from '../engine.mjs';
 
 test('CF now has a distinct defensible-mode challenge while original source modes stay intact',()=>{
   for(const id of ['pelican-bike','qq-speed','cf-transport-ship']) {
-    const expected=id==='cf-transport-ship'?4:3;
+    const expected=id==='cf-transport-ship'?8:3;
     const list=core.challengesFor(id);assert.equal(list.length,expected);assert.equal(new Set(list.map(c=>c.id)).size,expected);
     for(const c of list)assert.ok(c.title&&c.instructions&&c.limitMs>0);
   }

@@ -6,7 +6,7 @@
 import {challengeResult} from './engine.mjs';
 
 export const CF_CONTROL_DEFAULTS=Object.freeze({sensitivity:1,opacity:.85});
-const CF_IDS=new Set(['tags','precision','survive','defense']);
+const CF_IDS=new Set(['tags','precision','survive','defense','assault','marksman','evac','counter']);
 const GRADE_LABELS=['未完成','完成','优秀','完美'];
 
 function snapped(value,fallback,min,max) {
@@ -43,7 +43,8 @@ export function cfApplyControls(game,controls,originalSensitivity) {
 export function cfMissionMedal(challenge,metrics,outcome,elapsedMs) {
   if(!CF_IDS.has(challenge?.id)||outcome!=='won'||
      !Number.isFinite(elapsedMs)||elapsedMs<=0||
-     elapsedMs>challenge.limitMs||!metrics||
+     elapsedMs>challenge.limitMs||!metrics||challenge?.bonusDeaths===1||
+     metrics.adRevived===true||
      challengeResult(challenge,metrics,true,elapsedMs).outcome!=='won')return null;
   const deaths=Number(metrics.deaths)||0;
   // Survival has a mandatory FULL-TIME requirement. A time-under-75%
@@ -66,7 +67,8 @@ export function cfNextMedalGoal(challenge,medal) {
   if(!medal||!challenge||medal.stars>=3)return '';
   if(challenge.kind==='survive')
     return '三星目标：零阵亡，真实移动至少'+
-      (Math.max(0,Number(challenge.minTravel)||0)+10)+'米';
+      (Math.max(0,Number(challenge.minTravel)||0)+10)+'米'+
+      (challenge.minKills?'，真实击杀至少'+challenge.minKills+'人':'');
   return '三星目标：零阵亡，在'+
     Math.ceil(challenge.limitMs*.75/1000)+'秒内完成';
 }

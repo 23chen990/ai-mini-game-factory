@@ -1,6 +1,6 @@
 /* global performance */
 /* FPS-only, original mobile UX overlay. Does not alter hit detection, team rules or AI. */
-import {cfStartDefense,cfStepDefense} from './engine.mjs';
+import {cfStartDefense,cfStepDefense,cfAdvanceAssault} from './engine.mjs';
 export function teamSide(ownTeam, actorTeam) {
   if (!['BL', 'GR'].includes(ownTeam) || !['BL', 'GR'].includes(actorTeam)) return 'unknown';
   return ownTeam === actorTeam ? 'ally' : 'enemy';
@@ -155,6 +155,7 @@ export function cfTouchTutorial(challenge) {
       ? (challenge.elite ? '精英手动首枪，横移后按住开火拖动瞄准' : '首枪自动开火；换位后按住开火拖动瞄准')
       : cfAutoFireEligible(challenge) ? '准星对准敌人，自动开火' : '跟准目标，手动按开火';
   if (challenge?.kind === 'kills') return '先开镜，再点按开火';
+  if (challenge?.kind === 'assault') return '先真实换位，再亲手击杀敌人';
   if (challenge?.kind === 'survive') return '边移动边观察、开火';
   if (challenge?.kind === 'defend') return '左手进据点，右手开火阻止敌军占点';
   return '点按或按住开火';
@@ -171,15 +172,27 @@ export function mobileChallengeCopy(challenge) {
     : challenge.elite===true
       ? '精英步枪：45秒内自己瞄准并按开火，命中3次，最多倒下1次'
       : '1v1入门：准星对准敌人自动开火，命中3次';
-  if (challenge.kind === 'kills') return challenge.elite===true
-    ? '精英狙击：75秒内 AWM 击杀1人，最多阵亡1次'
-    : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
-  if (challenge.kind === 'survive') return challenge.elite===true
-    ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
-    : '坚持45秒，移动20米，最多被击倒2次';
-  if (challenge.kind === 'defend') return challenge.elite===true
-    ? '85秒精英反击：先守A再守B，各坚持7秒；零阵亡，敌军也会抢点'
-    : '100秒双点反击：亲自守住A和B，各5秒；敌军独占8秒就失守';
+  if (challenge.kind === 'assault') return Math.ceil(challenge.limitMs/1000)+
+    '秒：先实际移动'+challenge.minTravel+'米，再亲自击杀'+challenge.target+
+    '名敌人；最多阵亡'+challenge.maxDeaths+'次';
+  if (challenge.kind === 'kills') return challenge.minTravel
+    ? Math.ceil(challenge.limitMs/1000)+'秒：AWM击杀'+challenge.target+
+      '人并移动'+challenge.minTravel+'米；最多阵亡'+challenge.maxDeaths+'次'
+    : challenge.elite===true
+      ? '精英狙击：75秒内 AWM 击杀1人，最多阵亡1次'
+      : '90秒狙击：先找红色敌人，开镜瞄准后击杀1人';
+  if (challenge.kind === 'survive') return challenge.minKills
+    ? Math.ceil(challenge.limitMs/1000)+'秒：坚持存活，移动'+challenge.minTravel+
+      '米，亲手击杀'+challenge.minKills+'人，最多阵亡'+challenge.target+'次'
+    : challenge.elite===true
+      ? '精英生存：坚持45秒，移动30米，最多阵亡1次'
+      : '坚持45秒，移动20米，最多被击倒2次';
+  if (challenge.kind === 'defend') return challenge.reverse
+    ? Math.ceil(challenge.limitMs/1000)+'秒逆向争夺：远端B点→近端A点各守'+
+      challenge.holdSeconds+'秒；敌人独占'+challenge.breachSeconds+'秒即失守'
+    : challenge.elite===true
+      ? '85秒精英反击：先守A再守B，各坚持7秒；零阵亡，敌军也会抢点'
+      : '100秒双点反击：亲自守住A和B，各5秒；敌军独占8秒就失守';
   return challenge.instructions || '';
 }
 
@@ -517,25 +530,82 @@ export function cfHitCue(challenge, nativeHits, increase, drill = null) {
   return '✓ 有效命中 +' + delta;
 }
 
+/** Near-win feedback is shown only AFTER a real result, never as clutter
+ * on the combat HUD and never from AI team scores. Advertisements remain
+ * completely optional regardless of the outcome. */
+export function cfNearMissCue(challenge, metrics={}, elapsedMs=0) {
+  if(!challenge||!metrics)return null;
+  const count=n=>Number.isFinite(n)?Math.max(0,Math.floor(n)):0;
+  const goal=count(challenge.target);
+  if(challenge.kind==='defend'&&metrics.defenseSitesValid===true){
+    const cap=count(metrics.defenseCaptured);
+    if(cap>=1&&cap<goal)
+      return '已守住第一处据点，第二处还没拿下';
+    if(cap===0&&Number(metrics.defenseHeld)>=Number(challenge.holdSeconds)*.65)
+      return '第一处据点已经守住大半时间';
+  }
+  if(challenge.kind==='assault'&&metrics.assaultStage===1){
+    const kills=count(metrics.assaultKills);
+    if(kills>=1&&kills<goal)
+      return '换位已经完成，只差最后'+(goal-kills)+'次亲手击杀';
+  }
+  if(challenge.kind==='kills'&&goal>1){
+    const kills=count(metrics.awmKills);
+    if(kills>=1&&kills<goal)
+      return 'AWM已击杀'+kills+'人，再击杀'+(goal-kills)+'人并完成移动';
+  }
+  if(challenge.kind==='hits'&&challenge.drill==='reposition'&&
+    metrics.drillStage===2){
+    const hits=count(metrics.drillFollowUpHits);
+    if(hits>=1&&hits<goal)
+      return '换位已完成，追击还差'+(goal-hits)+'次有效命中';
+  }
+  if(challenge.kind==='survive'&&Number.isFinite(elapsedMs)&&
+    Number.isFinite(challenge.limitMs)&&
+    elapsedMs>=challenge.limitMs*.7&&
+    Number(metrics.travel)>=Number(challenge.minTravel||0)*.8&&
+    (!challenge.minKills||count(metrics.kills)>=challenge.minKills)){
+    const left=Math.max(0,Math.ceil((challenge.limitMs-elapsedMs)/1000));
+    if(left>0)return '坚持到最后阶段，还差'+left+'秒';
+  }
+  return null;
+}
+
+/** Rewarded video never raises HP directly: the actual native engine owns
+ * its 4-second death/respawn cycle. The UI mirrors its remaining time. */
+export function cfNativeReviveStatus(metrics={},rewarded=false) {
+  const sec=Number(metrics.nativeRespawnSec);
+  return rewarded===true&&metrics.alive===false&&
+    Number.isFinite(sec)&&sec>0 ?'✚ 续战已生效 · '+Math.ceil(sec)+'秒后复活':null;
+}
+
 /** End-of-round teaching based on observed player stats, never simulated rewards. */
 export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
-  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return '';
+  if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return '';
   const actual = v => Number.isFinite(v) ? Math.max(0,Math.floor(v)) : 0;
   const hits = actual(metrics.hits), awmKills = actual(metrics.awmKills);
   const deaths = actual(metrics.deaths), travel = actual(metrics.travel);
   const goal = actual(challenge.target);
   if (challenge.kind === 'defend') {
-    const captured=actual(metrics.defenseCaptured),site='AB'[Math.min(1,captured)];
+    const captured=actual(metrics.defenseCaptured),site=(challenge.reverse?'BA':'AB')[Math.min(1,captured)];
     if(outcome==='won')
-      return 'A、B双点防守成功！下次尝试零阵亡，缩短真实占点耗时。';
+      return (challenge.reverse?'B→A逆向占领':'A→B双点防守')+
+        '成功！下次尝试零阵亡，缩短真实占点耗时。';
     if(metrics.defenseSitesValid!==true)
       return '据点路线不可用，本局没有虚构奖励。请重试或切换支持 WebGL 的设备。';
     if(metrics.defenseBreached===true)
       return '敌军在'+site+'点独占过久。下次提前到位，或在敌方接近时迎击。';
-    if(deaths>challenge.maxDeaths)
-      return '阵亡'+deaths+'次，超过本关'+challenge.maxDeaths+'次限制。下次试试沿掩体侧路回点。';
+    if(deaths>challenge.maxDeaths+(challenge.bonusDeaths===1?1:0))
+      return '阵亡'+deaths+'次，超过本关允许的阵亡限制。下次试试沿掩体侧路回点。';
     return '真实守住 '+captured+'/'+goal+' 处。前往'+site+
       '点：只有玩家亲自站在圈内、活着的敌人离开圈外，进度才会增加。';
+  }
+  if (challenge.kind === 'assault') {
+    const moved=actual(metrics.assaultTravel),killed=actual(metrics.assaultKills);
+    return outcome==='won'
+      ?'真实侧翼换位 '+moved+'米后，自己击杀 '+killed+' 人。'
+      :'换位 '+moved+'/'+challenge.minTravel+'米，换位后亲手击杀 '+
+        killed+'/'+challenge.target+'人；AI队友击杀不计入。';
   }
   if (outcome === 'won') {
     if (challenge.kind === 'hits'&&challenge.drill==='reposition')
@@ -545,10 +615,12 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
     if (challenge.kind === 'hits')
       return '亲自命中 ' + hits + ' 次。下一关要使用 AWM 取得真正的击杀。';
     if (challenge.kind === 'kills')
-      return 'AWM 真实击杀 ' + awmKills + ' 人。接下来试试移动与生存的配合。';
-    return '累计移动 ' + travel + ' 米、被击倒 ' + deaths + ' 次。下次试试零死亡通关。';
+      return 'AWM 真实击杀 ' + awmKills + ' 人'+
+        (challenge.minTravel?'，同时移动'+travel+'米':'')+'。';
+    return '累计真实移动 '+travel+' 米、被击倒 '+deaths+' 次'+
+      (challenge.minKills?'、亲手击杀'+actual(metrics.kills)+'人。':'。下次试试零死亡通关。');
   }
-  if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths)
+  if (Number.isInteger(challenge.maxDeaths) && deaths > challenge.maxDeaths+(challenge.bonusDeaths===1?1:0))
     return '被击倒 ' + deaths + ' 次，本关最多允许 ' +
       challenge.maxDeaths + ' 次。下次借掩体换位，先避开敌方火力。';
   if (challenge.kind === 'hits'&&challenge.drill==='reposition') {
@@ -571,33 +643,42 @@ export function cfMissionDebrief(challenge, metrics = {}, outcome = 'lost') {
       Math.max(0,goal-hits) + ' 次。下次继续跟住目标，直到出现命中确认。';
   }
   if (challenge.kind === 'kills') {
+    if(challenge.minTravel&&travel<challenge.minTravel)
+      return '击杀 '+awmKills+'/'+challenge.target+'人，移动'+travel+'/'+
+        challenge.minTravel+'米；两个条件都要完成。';
     if (awmKills === 0 && hits > 0)
       return '命中 ' + hits + ' 次，但 AWM 击杀仍为 0/' + goal +
         '。命中不等于击杀，下次开镜锁定目标再补枪。';
     return 'AWM 击杀 ' + awmKills + '/' + goal +
       '。先找红色目标，开镜瞄准胸部，再按开火。';
   }
-  if (deaths > goal)
-    return '被击倒 ' + deaths + ' 次，超过最多 ' + goal +
-      ' 次的限制。下次沿集装箱掩体换位，减少正面暴露。';
+  if (deaths > goal+(challenge.bonusDeaths===1?1:0))
+    return '被击倒 ' + deaths + ' 次，超过最多 ' +
+      (goal+(challenge.bonusDeaths===1?1:0)) + ' 次的限制。';
   const min = actual(challenge.minTravel);
   if (travel < min)
     return '只移动 ' + travel + '/' + min + ' 米，还差 ' +
       (min-travel) + ' 米。下次用左手摇杆沿掩体移动，不要原地停留。';
+  if(challenge.minKills&&actual(metrics.kills)<challenge.minKills)
+    return '已移动'+travel+'米，但自己的击杀为'+actual(metrics.kills)+'/'+
+      challenge.minKills+'。队友击杀不计算。';
   return '移动和阵亡条件已达成，但未坚持到时限。借助掩体保持移动直到倒计时结束。';
 }
 
 
 /** Short, accurate mission facts for the start screen. All values are authored rules. */
 export function cfMissionFacts(challenge) {
-  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return [];
+  if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return [];
   const weapon = challenge.weapon === 'awm' ? 'AWM' :
     challenge.weapon === 'mp5' ? 'MP5' : 'M4A1';
   const target = challenge.kind === 'hits' ? challenge.drill==='reposition'
     ? '1枪→'+challenge.minTravel+'m→'+challenge.target+'枪' : '命中 ' + challenge.target + ' 次' :
-    challenge.kind === 'kills' ? '击杀 ' + challenge.target + ' 人' :
-    challenge.kind === 'defend' ? '守 A → B · 各'+challenge.holdSeconds+'秒' :
-      '移动 ' + (challenge.minTravel || 0) + ' m';
+    challenge.kind === 'kills' ? '击杀 '+challenge.target+' 人'+(challenge.minTravel?' · 行进'+challenge.minTravel+'米':'') :
+    challenge.kind === 'assault' ? '行进'+challenge.minTravel+'米→杀'+challenge.target+'人' :
+    challenge.kind === 'defend' ? '守 '+(challenge.reverse?'B → A':'A → B')+' · 各'+challenge.holdSeconds+'秒' :
+      challenge.minKills
+        ?'移动'+(challenge.minTravel||0)+'米 · 击杀'+challenge.minKills
+        :'移动 ' + (challenge.minTravel || 0) + ' m';
   return [
     { label:'装备',value:weapon },
     { label:'目标',value:target },
@@ -607,7 +688,7 @@ export function cfMissionFacts(challenge) {
 
 /** Stat chips are derived from native player measurements, never team kills. */
 export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
-  if (!challenge || !['hits','kills','survive','defend'].includes(challenge.kind)) return [];
+  if (!challenge || !['hits','kills','survive','defend','assault'].includes(challenge.kind)) return [];
   const number = value => Number.isFinite(value) ? Math.max(0,Math.floor(value)) : 0;
   const deaths = number(metrics.deaths);
   if (challenge.kind === 'hits') return challenge.drill==='reposition'
@@ -622,8 +703,14 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
     ];
   if (challenge.kind === 'kills') return [
     {label:'狙杀',value:number(metrics.awmKills) + ' / ' + challenge.target},
-    {label:'命中',value:String(number(metrics.hits))},
+    {label:challenge.minTravel?'移动':'命中',value:challenge.minTravel
+      ? number(metrics.travel)+' / '+challenge.minTravel+' m':String(number(metrics.hits))},
     {label:'阵亡',value:String(deaths)}
+  ];
+  if (challenge.kind === 'assault') return [
+    {label:'换位',value:number(metrics.assaultTravel)+' / '+challenge.minTravel+' m'},
+    {label:'本人击杀',value:number(metrics.assaultKills)+' / '+challenge.target},
+    {label:'阵亡',value:deaths+' / '+challenge.maxDeaths}
   ];
   if (challenge.kind === 'defend') return [
     {label:'据点',value:number(metrics.defenseCaptured)+' / '+challenge.target},
@@ -633,7 +720,8 @@ export function cfResultFacts(challenge, metrics = {}, elapsedMs = 0) {
   return [
     {label:'生存',value:Math.min(Math.floor(number(elapsedMs)/1000),Math.ceil(challenge.limitMs/1000)) + ' / ' + Math.ceil(challenge.limitMs/1000) + ' s'},
     {label:'移动',value:number(metrics.travel) + ' / ' + challenge.minTravel + ' m'},
-    {label:'阵亡',value:deaths + ' / ' + challenge.target}
+    {label:challenge.minKills?'亲手击杀':'阵亡',value:challenge.minKills
+      ?number(metrics.kills)+' / '+challenge.minKills:deaths+' / '+challenge.target}
   ];
 }
 
@@ -883,7 +971,7 @@ export function createFpsMobileUx(game, root, doc) {
   let visibleAimCoach = '';
   let originalEnemySpawns=null, trainingSpawnTeam=null;
   let walkedMeters = 0, previousPosition = null, startedGameSeconds = 0;
-  let defense=null,nextDefenseRouteAt=0;
+  let defense=null,nextDefenseRouteAt=0,assault=null;
 
   function recolorNativeAllies() {
     // Original source colors friend name tags by faction (BL = orange!). Repaint by relation.
@@ -1263,6 +1351,10 @@ export function createFpsMobileUx(game, root, doc) {
       return drill?{drillStage:drill.stage,drillFirstHit:drill.firstHit,
         drillTravel:drill.distance,drillFollowUpHits:drill.follow}:{};
     },
+    assaultMetrics() {
+      return assault?{assaultStage:assault.stage,assaultTravel:assault.travel,
+        assaultKills:assault.postKills,assaultNet:assault.net}:{};
+    },
     defenseMetrics() {
       if(!defense)return {};
       return {defenseSitesValid:defense.valid===true,
@@ -1280,7 +1372,7 @@ export function createFpsMobileUx(game, root, doc) {
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
       drill=cfAdvanceDrill(activeChallenge);
-      defense=null;nextDefenseRouteAt=0;defensePin.hidden=true;
+      defense=null;assault=null;nextDefenseRouteAt=0;defensePin.hidden=true;
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
@@ -1292,8 +1384,10 @@ export function createFpsMobileUx(game, root, doc) {
         ? '先观察，找到目标后开镜'
         : activeChallenge?.kind === 'survive'
           ? '沿掩体移动，注意身后'
+          : activeChallenge?.kind === 'assault'
+          ? '先侧移到新射击位，再亲手击杀'
           : activeChallenge?.kind === 'defend'
-          ? '先守A区，再守B区'
+          ? (activeChallenge.reverse?'先攻B区，再回防A区':'先守A区，再守B区')
           : '前方有目标 · 右手瞄准';
       started = performance.now();
       startedGameSeconds = Number(game.time) || 0;
@@ -1319,8 +1413,16 @@ export function createFpsMobileUx(game, root, doc) {
         challenge: activeChallenge?.id,autoFireActivations:0,playerEngaged:false};
       const rendezvous=activeChallenge?.kind==='defend'
         ?{path:false,trainingScout:false} :prepareFirstEncounter();
+      if(activeChallenge?.kind==='assault')
+        assault=cfAdvanceAssault(activeChallenge,null,{
+          kills:p?.stats?.k||0,travel:0,x:p?.pos?.x,z:p?.pos?.z});
       if(activeChallenge?.kind==='defend') {
-        const sites=cfChooseDefenseSites({player:p,nav:game.nav,world:game.world,actors:game.actors});
+        let sites=cfChooseDefenseSites({player:p,nav:game.nav,world:game.world,actors:game.actors});
+        if(sites&&activeChallenge.reverse){
+          const far=sites[1];
+          const path=game.nav?.findPath?.(p.pos.x,p.pos.z,far.x,far.z);
+          sites=Array.isArray(path)&&path.length>=2?[far,sites[0]]:null;
+        }
         defense=cfStartDefense(sites);
         game.__mobileBalanceReview.defenseSitesValid=defense.valid;
         game.__mobileBalanceReview.defenseSites=defense.sites;
@@ -1375,6 +1477,9 @@ export function createFpsMobileUx(game, root, doc) {
         }
         drill=updated;
       }
+      if(active&&activeChallenge?.kind==='assault')
+        assault=cfAdvanceAssault(activeChallenge,assault,{
+          kills:p.stats?.k||0,travel:walkedMeters,x:p.pos.x,z:p.pos.z});
       if (!active) {
         if (activeChallenge?.kind==='hits') p.mouse.l=false;
         if(fireDragTouches.size>0) {
@@ -1392,7 +1497,7 @@ export function createFpsMobileUx(game, root, doc) {
           radius:activeChallenge.radius
         });
         if(defense.stage>prevStage){
-          hitCue.textContent='◆ 据点 '+('AB'[prevStage])+' 已守住';
+          hitCue.textContent='◆ 据点 '+defense.sites[prevStage].id+' 已守住';
           hitCue.hidden=false;cueExpiresAt=now+1050;
         }
         const site=defense.sites?.[defense.stage];
@@ -1462,7 +1567,7 @@ export function createFpsMobileUx(game, root, doc) {
         }
         lastHits = hits;
         const seen = [...markers.values()].some(el => !el.hidden);
-        if (activeChallenge?.kind==='defend') {
+        if (activeChallenge?.kind==='defend'||activeChallenge?.kind==='assault') {
           guide.textContent='';
         }else if (activeChallenge?.drill==='reposition'&&drill?.stage===1) {
           const turn=routeArrow(p,routePath);
@@ -1494,7 +1599,8 @@ export function createFpsMobileUx(game, root, doc) {
       }
       // Combat stays legible: hint only on opening, or briefly when the
       // player has not yet found a target. It never sits on the reticle.
-      guide.hidden = !p.alive || activeChallenge?.kind==='defend' ||
+      guide.hidden = !p.alive ||
+        ['defend','assault'].includes(activeChallenge?.kind) ||
         (activeChallenge?.drill==='reposition'&&drill?.stage>0
           ? drill.stage===2&&drill.follow>0&&elapsed-drillStageAt>7&&
             [...markers.values()].some(el=>!el.hidden)
@@ -1515,7 +1621,7 @@ export function createFpsMobileUx(game, root, doc) {
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); defensePin.remove(); tutorial.remove();
-      defense=null;
+      defense=null;assault=null;
       for (const button of buttons) {
         button.removeAttribute('data-mk-action');
         button.removeAttribute('aria-label');

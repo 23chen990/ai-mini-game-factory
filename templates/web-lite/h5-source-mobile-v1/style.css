@@ -790,3 +790,88 @@ html[data-reference-game="cf-transport-ship"] #mk-challenges button[data-challen
    padding:5px 3px;
  }
 }
+
+
+/* CF V10 | Eight mission campaign: chapter paging keeps exactly four
+ * large, tappable mission cards in a short 667x375 landscape viewport.
+ * No advertisement buttons in live gun HUD. */
+html[data-reference-game="cf-transport-ship"] #mk-chapters {
+  display:flex;align-items:center;justify-content:center;
+  gap:5px;margin:2px 0 4px;
+  pointer-events:auto;
+}
+html[data-reference-game="cf-transport-ship"] #mk-chapters button {
+  flex:1;min-width:0;min-height:29px!important;
+  width:auto;margin:0;padding:4px 5px;
+  border:1px solid rgba(142,192,214,.33);
+  border-radius:8px;background:rgba(14,41,59,.89);
+  color:#d6eafa;font-size:11px;line-height:1.1;
+  box-shadow:none;white-space:nowrap;
+}
+html[data-reference-game="cf-transport-ship"] #mk-chapters button[aria-pressed="true"] {
+  background:rgba(221,180,94,.23);
+  color:#ffe7aa;border-color:#efd087;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:5px;margin:4px 0 6px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button {
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+  margin:0;min-width:0;min-height:48px!important;
+  padding:5px 8px 5px 33px!important;
+  line-height:1.2;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button::before{
+  top:50%;left:7px;transform:translateY(-50%);
+  width:19px;height:21px;font-size:19px;line-height:21px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button b,
+html[data-reference-game="cf-transport-ship"] #mk-challenges button small{
+  display:block;position:static;flex:none;min-height:0;
+  max-width:100%;margin:0;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button b{
+  font-size:12px;line-height:17px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-challenges button small{
+  margin-top:2px;font-size:10px;line-height:13px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-revive-actions{
+  width:100%;box-sizing:border-box;
+  padding:4px 0;text-align:center;
+  pointer-events:auto;
+}
+html[data-reference-game="cf-transport-ship"] #mk-revive-actions p{
+  margin:4px 0 9px;color:#e0ebf0;
+  font-size:12px;line-height:1.45;
+}
+html[data-reference-game="cf-transport-ship"] #mk-revive-ad{
+  border-color:#efcb77;background:#e3ba67!important;
+  color:#172c38!important;font-weight:800;
+  min-height:48px;
+}
+html[data-reference-game="cf-transport-ship"] #mk-revive-decline{
+  background:rgba(22,45,61,.87)!important;
+  border-color:rgba(190,218,232,.43);
+  color:#e3f4fc;
+  min-height:48px;
+}
+html[data-reference-game="cf-transport-ship"] #mobile-kit[data-phase="revive"] #mk-panel{
+  max-width:370px;overflow:visible;
+  border:1px solid #e3ca88;
+}
+html[data-reference-game="cf-transport-ship"] #mobile-kit[data-phase="revive"] #mk-notice{
+  max-width:100%;min-height:0;
+  font-size:11px;line-height:1.4;
+}
+@media(max-height:375px){
+  html[data-reference-game="cf-transport-ship"] #mk-chapters{margin:2px 0;gap:4px}
+  html[data-reference-game="cf-transport-ship"] #mk-chapters button{
+    min-height:26px!important;font-size:10px;padding:4px 3px
+  }
+  html[data-reference-game="cf-transport-ship"] #mk-challenges button{
+    min-height:48px!important;padding:5px 6px 5px 31px!important
+  }
+}
