@@ -136,6 +136,8 @@ async function boot() {
     }).join('');
     $('goal').max = id === 'cf-transport-ship' && displayChallenge.drill==='reposition'
       ? displayChallenge.openingHits + displayChallenge.minTravel + displayChallenge.target
+      : id==='cf-transport-ship'&&selected.kind==='assault'
+        ?displayChallenge.minTravel+displayChallenge.target
       : id === 'cf-transport-ship' && selected.kind === 'defend'
         ? displayChallenge.target*displayChallenge.holdSeconds
       : id === 'cf-transport-ship' && selected.kind === 'survive' ? selected.limitMs / 1000 : selected.target;
@@ -260,6 +262,8 @@ async function boot() {
       $('goal').max=activeChallenge.openingHits+activeChallenge.minTravel+activeChallenge.target;
     if(activeChallenge?.kind==='defend')
       $('goal').max=activeChallenge.target*activeChallenge.holdSeconds;
+    if(activeChallenge?.kind==='assault')
+      $('goal').max=activeChallenge.minTravel+activeChallenge.target;
     await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge); last = performance.now(); lastFpsNativeSec = native.simulatedSeconds?.() || 0; showPhase('running'); persist(); if (portraitBlocked()) pause(); } catch (error) { $('copy').textContent = '准备失败：' + error.message; showPhase('ready'); } finally { $('start').disabled = false; } };
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
@@ -348,17 +352,26 @@ async function boot() {
              (metrics.defenseContested?' · 争夺中':
               (metrics.defenseEnemyHeld||0)>=2
                 ? ' · 敌'+Math.floor(metrics.defenseEnemyHeld)+'/'+activeChallenge.breachSeconds+'秒':''))
+          : activeChallenge.kind==='assault'
+          ? (metrics.assaultStage===1
+            ? '◆ 换位完成 · 亲手击杀'+(metrics.assaultKills||0)+'/'+activeChallenge.target
+            : '↗ 换位'+Math.floor(metrics.assaultTravel||0)+'/'+activeChallenge.minTravel+'米')
           : activeChallenge.drill==='reposition'
           ? result.label
           : activeChallenge.kind === 'survive'
-          ? '❤ 余' + Math.max(0, activeChallenge.target - (metrics.deaths || 0)) + '次 · ↗ ' +
-            Math.floor(metrics.travel || 0) + '/' + (activeChallenge.minTravel || 0) + 'm'
+          ? '❤ 余' + Math.max(0, activeChallenge.target +
+              (activeChallenge.bonusDeaths===1?1:0) - (metrics.deaths || 0)) + '次 · ↗ ' +
+            Math.floor(metrics.travel || 0) + '/' + (activeChallenge.minTravel || 0) + 'm'+
+            (activeChallenge.minKills?' · 击杀'+(metrics.kills||0)+'/'+activeChallenge.minKills:'')
           : activeChallenge.maxDeaths!==undefined
             ? '☠ ' + (metrics.deaths||0) + '/' + activeChallenge.maxDeaths + ' · ' + result.label
             : result.label;
         $('goal').value = activeChallenge.kind==='defend'
           ? Math.min(activeChallenge.target,(metrics.defenseCaptured||0))*activeChallenge.holdSeconds+
             Math.min(activeChallenge.holdSeconds,metrics.defenseHeld||0)
+          : activeChallenge.kind==='assault'
+          ? Math.min(activeChallenge.minTravel,metrics.assaultTravel||0)+
+            (metrics.assaultStage===1?Math.min(activeChallenge.target,metrics.assaultKills||0):0)
           : activeChallenge.drill==='reposition'
           ? (metrics.drillFirstHit?activeChallenge.openingHits:0) +
             Math.min(activeChallenge.minTravel,metrics.drillTravel||0) +
@@ -398,7 +411,8 @@ async function boot() {
               :result.outcome==='won'?(activeChallenge.elite?'⚡ 精英通关':'✓ 已完成'):'可重试';
           $('best').textContent = progress.best; showPhase('finished');
           // The placement is wired but hidden until the actual H5 account's check_ads_status is verified.
-          $('ad').hidden = config.status !== 1 || !adAllowed(round, progress, now - startedAt);
+          $('ad').hidden = id==='cf-transport-ship'||config.status !== 1 ||
+            !adAllowed(round, progress, now - startedAt);
         }
       }
       $('score').textContent = round.score;
