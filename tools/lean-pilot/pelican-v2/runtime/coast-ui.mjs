@@ -293,6 +293,8 @@ export function createCoastAdventure(api) {
  function updateHud(){const remaining=Math.max(0,Math.ceil(run.level.seconds-run.elapsed));
    const beat=coastBeat(run);root.dataset.beat=beat.id;
    const beatLabel=beat.icon+' '+beat.label,label=$('distance-box').querySelector('span');
+   $('time-box').querySelector('span').textContent=run.level.endless?'◷ 已骑':'◷ 剩余';
+   $('mastery').setAttribute('aria-label',run.level.endless?'无尽骑行纪录':'三星挑战进度');
    if(label.textContent!==beatLabel)label.textContent=beatLabel;
    root.style.setProperty('--co-position',((run.lane+FREE_ROAD_EDGE)/(FREE_ROAD_EDGE*2)*100).toFixed(1)+'%');
    const signature=[Math.floor(run.distance),remaining,run.count,run.gold,run.laneIndex,run.phase].join(':');
