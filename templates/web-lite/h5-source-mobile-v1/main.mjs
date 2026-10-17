@@ -2,9 +2,7 @@
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
 import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts } from './fps-mobile-ux.mjs';
-import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,
-  cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,
-  cfRecordMastery,cfRecordLabel} from './cf-player-loop.mjs';
+import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
