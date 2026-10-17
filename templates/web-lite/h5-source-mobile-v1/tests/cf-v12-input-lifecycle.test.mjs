@@ -83,3 +83,12 @@ test('CF V12 only real completed match can instantly restart its original 3D eng
  assert.match(main,/cfWarmRestartAllowed\(id,root\.dataset\.phase\)/);
  assert.match(main,/void start\(\)/);
 });
+
+test('CF V12 restores native team spawn array before immediate restart of original match',()=>{
+ const main=readFileSync(new URL('../main.mjs',import.meta.url),'utf8');
+ const adapter=readFileSync(new URL('../fps-mobile-ux.mjs',import.meta.url),'utf8');
+ assert.match(main,/fpsUx\?\.beforeNativeStart\?\.\(\); g\.opts\.primary/);
+ const anchor=adapter.indexOf('beforeNativeStart() {');
+ const restore=adapter.indexOf('game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;',anchor);
+ assert.ok(anchor>0&&restore>anchor,'restore map spawns before native start');
+});
