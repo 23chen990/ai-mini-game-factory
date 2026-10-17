@@ -131,3 +131,37 @@ test('CF V18 final native adapter honors lite actor budget and PVE quota',async(
  assert.equal(game.opts.goal,30);
  assert.equal(launches,10);
 });
+
+test('CF solo PvE removes AI comrades from the native 3D lifecycle, not just HUD',async()=>{
+ const {cfRemoveNativeAllies}=await import('../themes.mjs');
+ const player={isPlayer:true,team:'BL'};
+ const friendA={team:'BL',soldier:{root:{id:'friend-1'}}};
+ const friendB={team:'BL',soldier:{root:{id:'friend-2'}}};
+ const enemyA={team:'GR',soldier:{root:{id:'enemy-1'}}};
+ const enemyB={team:'GR',soldier:{root:{id:'enemy-2'}}};
+ const removed=[],disposed=[];
+ const aTag={actor:friendA,sprite:{id:'tag-friend',
+   material:{map:{dispose(){disposed.push('map')}},dispose(){disposed.push('material')}}}};
+ const enemyTag={actor:enemyA,sprite:{id:'tag-enemy'}};
+ const game={
+   player,actors:[player,friendA,enemyA,friendB,enemyB],
+   tags:[aTag,enemyTag],
+   renderer:{scene:{remove(node){removed.push(node.id)}}}
+ };
+ const record=cfRemoveNativeAllies(game,{id:'counter',lite:true});
+ assert.deepEqual(record,{applied:true,removed:2,playerCount:1,enemyCount:2});
+ assert.deepEqual(game.actors,[player,enemyA,enemyB]);
+ assert.deepEqual(game.tags,[enemyTag]);
+ assert.deepEqual(removed,['friend-1','friend-2','tag-friend']);
+ assert.deepEqual(disposed,['map','material']);
+ assert.equal(game.__mkSoloPve,true);
+ assert.equal(cfRemoveNativeAllies(game,{id:'counter',lite:true}).removed,0,
+  'native warm replays remain idempotent');
+ const fallback={
+   player,actors:[player,friendA,enemyA],tags:[aTag],
+   renderer:{scene:{remove(node){removed.push(node.id)}}}
+ };
+ assert.equal(cfRemoveNativeAllies(fallback,{lite:false}).applied,false);
+ assert.deepEqual(fallback.actors,[player,friendA,enemyA]);
+ assert.equal(fallback.__mkSoloPve,undefined);
+});
