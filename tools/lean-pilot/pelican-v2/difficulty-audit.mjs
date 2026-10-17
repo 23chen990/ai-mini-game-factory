@@ -1,3 +1,4 @@
+/* global console */
 // Deterministic engineering audit, NOT a simulated human or advertisement study.
 // Uses real authored collisions, steering and jumps. Never changes run state,
 // course data, hazard positions, stars, rewards or timers.
