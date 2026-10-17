@@ -36,6 +36,7 @@ test('touch wheel has shorter throw but preserves neutral/no tremor and counters
   assert.ok(j.snapshot()>0&&j.snapshot()<1);
   j.update(90,153);
   assert.equal(j.snapshot(),1,'firm thumb displacement reaches full lock');
+  assert.ok(j.knobX > 35,'visual steering knob reaches full throw as car input saturates');
   j.update(90,247);
   assert.equal(j.snapshot(),-1,'no artificial intermediate direction lock on countersteer');
   j.release(90);

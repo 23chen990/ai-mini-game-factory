@@ -111,7 +111,7 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), fpsEstimate: quality.fps, touchToInputSampleMs: lastTouchSampleAgeMs, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), nativeSteer: g?.player?.steer ?? null, playerYaw: g?.player?.h ?? null, cameraYaw: g?.camYaw ?? null, drifting: !!g?.player?.drifting, fpsEstimate: quality.fps, touchToInputSampleMs: lastTouchSampleAgeMs, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
