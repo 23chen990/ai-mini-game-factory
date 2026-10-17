@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {cfResetMobileTouch} from '../fps-mobile-ux.mjs';
+import {cfResetMobileTouch,cfJoystickVector} from '../fps-mobile-ux.mjs';
 
 test('CF V12 interrupted multitouch releases native fire, joystick and unconsumed tap',()=>{
   const player={
@@ -42,4 +42,33 @@ test('CF V12 game-only touch suppression does not disable scrolling in ready dia
     'avoid browser panning/zooming while the native joystick and fire fingers are held');
   assert.equal(css.includes('html[data-reference-game="cf-transport-ship"] #mk-panel{touch-action:none'),
     false,'ready/revive/finished panels must retain normal scrolling');
+});
+
+test('CF V12 circular pad has proportional precision, radial clamp and release center',()=>{
+  assert.deepEqual(cfJoystickVector(98,265,98,265),{mx:0,mz:0,dx:0,dy:0});
+  assert.deepEqual(cfJoystickVector(102,263,98,265),{mx:0,mz:0,dx:0,dy:0});
+  const forward=cfJoystickVector(98,205,98,265);
+  assert.equal(forward.mx,0);
+  assert.equal(forward.mz,1);
+  assert.equal(forward.dy,-60);
+  const rear=cfJoystickVector(98,325,98,265);
+  assert.equal(rear.mz,-1);
+  const lateral=cfJoystickVector(158,265,98,265);
+  assert.equal(lateral.mx,1);
+  const diagonal=cfJoystickVector(158,205,98,265);
+  assert.ok(Math.hypot(diagonal.mx,diagonal.mz)<=1.001);
+  assert.ok(diagonal.mx>0&&diagonal.mz>0);
+  const subtle=cfJoystickVector(117,255,98,265);
+  assert.ok(subtle.mx>0&&subtle.mx<.5);
+  assert.ok(subtle.mz>0&&subtle.mz<.5);
+  assert.equal(cfJoystickVector(NaN,265,98,265).mz,0);
+  assert.equal(cfJoystickVector(98,205,98,265,0).mz,0);
+  assert.equal(cfJoystickVector(98,205,98,265,60,1).mz,0);
+});
+
+test('CF V12 pause reset releases an old crouch toggle but not native combat stats',()=>{
+  const player={touch:{fire:false,firePressed:false,jump:false,crouch:true,mx:0,mz:0},stats:{k:4,shots:32}};
+  assert.equal(cfResetMobileTouch(player),true);
+  assert.equal(player.touch.crouch,false);
+  assert.deepEqual(player.stats,{k:4,shots:32});
 });
