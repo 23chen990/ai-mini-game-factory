@@ -12,7 +12,7 @@ import {softwareQualityActions,riskCaptureProfile} from './experience-policy.mjs
 import {campaignWallBudgetMs} from './runtime/qa-budget.mjs';
 import {readCompactPresentation,portraitMasteryClear} from './qa-presentation.mjs';
 import {LEVELS} from './runtime/levels.mjs';
-import {CAPTURE_HOLD_MS,JUMP_WINDOW_SECONDS,TARGET_WINDOW_TRAIL_METERS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
+import {CAPTURE_HOLD_MS,JUMP_WINDOW_SECONDS,TARGET_WINDOW_TRAIL_METERS,RISK_LEVELS,authoredGoldenFishByBarrier,createRiskPolicyState,decideRiskAction,visibleLaneFromHud,radarIsExpectedBarrier} from './runtime/risk-policy.mjs';
 
 const engine=process.env.QA_ENGINE??'webkit';
 const profile=riskCaptureProfile(process.env),selectedLevels=profile.firstOnly?RISK_LEVELS.slice(0,1):RISK_LEVELS;
@@ -205,7 +205,7 @@ async function runLevel(level){
    if(inEvidenceRange||evidenceEpisode?.jump){
     const observed=await readSnapshot(page);
     if(evidenceEpisode){
-     const targetLane=view.lanes.findIndex(lane=>lane.jumpReward&&lane.kind==='barrier');
+     const targetLane=view.lanes.findIndex(lane=>lane.jumpReward&&radarIsExpectedBarrier(view,lane,evidenceTarget,level.id));
      if(!evidenceEpisode.hudSeen&&view.distance>=evidenceTarget.distance-48&&view.distance<=evidenceTarget.distance+10&&targetLane>=0){
       evidenceEpisode.hudSeen=true;evidenceEpisode.hudLane=targetLane;
       const record=await recordSnapshot(page,'visible-jump-reward-radar',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.hudSnapshotId=record.id;
