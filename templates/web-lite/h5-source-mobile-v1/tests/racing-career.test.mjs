@@ -94,10 +94,16 @@ test('special race types still use native timed and elimination gameplay; podium
   assert.equal(gradeStage(stage,{...result(3),finished:false},{beatBoss:true,survived:2}),0);
  }
 });
-test('career persistence and skins depend only on earned stars',()=>{
-  const c=newCareer();c.stars={'01':3,'02':3};c.rounds=2;c.skin=2;
-  const saved=loadCareer(JSON.stringify(c));assert.equal(saved.skin,2);assert.equal(careerStars(saved),6);
-  assert.equal(skinUnlocked(saved,3),false);assert.equal(loadCareer('{').rounds,0);
+test('new car paints require permanent ownership; old star-era saves keep earned paints',()=>{
+  const c=newCareer();c.stars={'01':3,'02':3};c.rounds=2;
+  const saved=loadCareer(JSON.stringify(c));assert.equal(saved.skin,0);assert.equal(careerStars(saved),6);
+  assert.equal(skinUnlocked(saved,1),false,'winning stars no longer grants new paints');
+  const old={...c,skin:2};delete old.ownedSkins;
+  const migrated=loadCareer(JSON.stringify(old));
+  assert.equal(migrated.skin,2);
+  assert.deepEqual(migrated.ownedSkins,[0,1,2],'old previously available paints are grandfathered');
+  assert.equal(skinUnlocked(migrated,3),false);
+  assert.equal(loadCareer('{').rounds,0);
   assert.equal(loadCareer(JSON.stringify({...c,stars:{'01':8}})).stars['01'],undefined);
 });
 test('checkpoints only activate when crossing real multi-lap progress',()=>{

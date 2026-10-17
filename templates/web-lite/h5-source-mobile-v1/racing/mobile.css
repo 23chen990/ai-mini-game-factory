@@ -68,7 +68,9 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 /* Career is configured in the lobby; never add new touch targets to the driving HUD. */
 #race-kit #race-ready { flex-wrap:wrap;gap:5px 8px;margin-bottom:7px; }
 #race-kit #race-stage { max-width:235px;min-width:160px;flex:1; }
-#race-kit #race-skin { min-width:78px;max-width:118px; }
+#race-kit #race-skin { min-width:78px;max-width:175px; }
+#race-kit #race-skin-ad { min-height:36px;padding:6px 10px;border:1px solid #f4bd66;border-radius:9px;background:#80521e;color:#fff4da;font:750 12px/1.25 system-ui; }
+#race-kit #race-skin-ad[hidden] {display:none!important;}
 #race-kit #race-map[hidden] { display:none!important; }
 #race-kit #race-stage-goal { font-size:12px;color:#f6d995;margin:0 0 5px;line-height:1.35; }
 #race-kit #race-fuel-box { display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px;font-size:11px;color:#b9d6e8; }

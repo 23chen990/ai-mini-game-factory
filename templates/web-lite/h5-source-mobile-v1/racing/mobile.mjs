@@ -12,7 +12,7 @@ import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
 import { syncFuel, FUEL_RULES } from '../fuel.mjs';
-import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
+import { STAGES, SKIN_NAMES, careerStars, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
 import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud, raceScreenProfile, initialRaceQuality, RaceInputHealth } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
@@ -27,11 +27,11 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
   <div id="race-compact-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="按住方向盘圆环旋转，松手回正"><div class="race-stick-track"><i id="race-stick-knob"><span class="race-wheel-hub"></span><span class="race-wheel-spoke spoke-top"></span><span class="race-wheel-spoke spoke-left"></span><span class="race-wheel-spoke spoke-right"></span></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING / CAREER</div><h1 id="race-heading">极速飞驰</h1><button id="race-export" type="button" aria-label="导出本机试玩数据JSON">导出数据 ↓</button>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手转动方向盘 · 右手漂移 / 小喷 / 氮气</p></div>
-    <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="30" aria-valuenow="30" hidden>${'<span></span>'.repeat(6)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +10</button></div>
+    <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车漆</label><select id="race-skin" aria-label="选择车漆（部分需要广告永久解锁）"></select><button id="race-skin-ad" type="button" hidden>看广告永久解锁车漆</button></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="30" aria-valuenow="30" hidden>${'<span></span>'.repeat(6)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +10</button></div>
     <div id="race-result-stars" hidden aria-label="本场与历史星级"></div><p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
     <div id="race-settings" hidden><label for="race-steering-sens">转向</label><select id="race-steering-sens" aria-label="方向盘转向灵敏度"><option value="calm">柔和</option><option value="normal">标准</option><option value="sharp">灵敏</option></select><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">优先流畅，暂停时可调整画质</small></div>
     <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-star-ad" class="race-secondary" hidden type="button">看广告永久解锁本关</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-retry-ad" class="race-secondary" hidden>看广告 · 下局额外氮气</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-lobby" class="race-secondary" hidden>返回选关</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
-    <p id="race-note"></p>
+    <p id="race-note" aria-live="polite"></p>
   </div><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>请使用横屏</b><span>横屏后继续比赛</span></aside>`;
 document.body.append(root);
 root.dataset.platform=mobile?'touch':'desktop';
@@ -56,6 +56,7 @@ let wheelCaptureFallback=false;
 let justFinishedPassed = null;
 let adNotice = '', adNoticeUntil = 0;
 let gateSelectionIndex = null; // Gate shown only when a player explicitly chooses that locked stage.
+let pendingSkinIndex = null; // Preview selection only; never equips an unowned paint.
 const STORE = 'h5-qq-mobile-20261013:two-button:v1'; // Preserve legacy save key across input migration.
 const QUALITY_STORE = 'h5-qq-mobile-20261013:graphics-quality:v1';
 const SOUND_STORE = 'h5-qq-mobile-20261013:audio-enabled:v1';
@@ -90,6 +91,8 @@ function fuelView() {
   $('fuel-ad').hidden=!career.canOfferAd();
   $('fuel-ad').disabled=career.adBusy;
   $('star-ad').disabled=loading||!policyReady||!career.canOfferGateAd(gateSelectionIndex);
+  $('skin-ad').disabled=loading||!policyReady||!career.canOfferSkinAd(pendingSkinIndex);
+  $('skin').disabled=career.adBusy;
 }
 function renderLobby() {
   if(gateSelectionIndex!==null && !career.gateStatus(gateSelectionIndex).starLocked)
@@ -139,11 +142,21 @@ function renderLobby() {
   root.dataset.starLocked=locked?'true':'false';
   $('skin').replaceChildren();
   for (let i = 0; i < SKIN_NAMES.length; i++) {
-    const opt = document.createElement('option');opt.value = String(i);opt.disabled = !skinUnlocked(career.progress, i);
-    opt.textContent = SKIN_NAMES[i] + (opt.disabled ? ' · 需 ' + SKIN_STARS[i] + ' 星' : '');$('skin').append(opt);
+    const opt = document.createElement('option');
+    opt.value = String(i);
+    const owned=skinUnlocked(career.progress,i);
+    opt.textContent = (owned ? '✓ ' : '🔒 ') + SKIN_NAMES[i] +
+      (owned ? (i===0?' · 默认':' · 已永久拥有') : ' · 看广告永久解锁');
+    $('skin').append(opt);
   }
-  $('skin').value = String(career.progress.skin);
-  if (phase === 'ready') $('note').textContent = '';
+  if(pendingSkinIndex!==null && skinUnlocked(career.progress,pendingSkinIndex))
+    pendingSkinIndex=null;
+  $('skin').value = String(pendingSkinIndex ?? career.progress.skin);
+  $('skin-ad').hidden=phase!=='ready'||pendingSkinIndex===null||
+    !career.canOfferSkinAd(pendingSkinIndex);
+  if(pendingSkinIndex!==null)
+    $('skin-ad').textContent='看广告永久解锁 · '+SKIN_NAMES[pendingSkinIndex];
+  if (phase === 'ready' && pendingSkinIndex===null) $('note').textContent = '';
   fuelView();
 }
 Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'wheel' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(),fpsEstimate:quality.fps,touchToInputSampleMs:lastTouchSampleAgeMs, phoneInput:touchHealth.snapshot(), nativeSteer:g?.player?.steer??null, cameraYaw:g?.camYaw??null, renderPixelRatio:g?.renderer?.getPixelRatio()??null, composerActive:!!g?.composer, shadowsActive:!!g?.renderer?.shadowMap?.enabled, trial: trial.snapshot(), revision: 'V9.1', platform: mobile?'touch':'desktop', cameraFov: g?.camera?.fov??null }) });
@@ -177,6 +190,7 @@ function display(next) {
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
   $('start').hidden = next !== 'ready' || gateSelectionIndex!==null;
   $('star-ad').hidden = next !== 'ready' || gateSelectionIndex===null || !career.canOfferGateAd(gateSelectionIndex);
+  $('skin-ad').hidden = next !== 'ready' || pendingSkinIndex===null || !career.canOfferSkinAd(pendingSkinIndex);
   $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
   const canAdvance = lastRacePassed && career.nextStage() !== career.index;
   $('replay').hidden = next !== 'finished'; $('retry-ad').hidden = next !== 'finished' || !career.canOfferRetryBoost(); $('next').hidden = next !== 'finished' || !canAdvance; $('lobby').hidden = next !== 'finished';
@@ -237,7 +251,6 @@ function finish() {
   if (result) return;
   if (!g.resultShown) g.showResults();
   result = settleNative(g);releaseInput();
-  const beforeStars = careerStars(career.progress);
   const previousBest=career.dailySnapshot ?
     (career.progress.daily.date===career.stage.id.slice(6)?career.progress.daily.stars:0) :
     (career.progress.stars[career.stage.id]??0);
@@ -265,15 +278,13 @@ function finish() {
   if (result.finished && (!best[result.map] || result.time < best[result.map])) {
     best[result.map] = result.time;try { localStorage.setItem(STORE, JSON.stringify(best)); } catch { /* Play remains available. */ }
   }
-  const newSkin = SKIN_STARS.findIndex((required,i) => i > 0 && beforeStars < required && graded?.total >= required);
   const failure = stars ? null : stageFailureFeedback(career.stage, result, graded?.metric ?? {});
   $('replay').textContent = career.hasFreeReplay() ? '免费再来一局 ↻' : '再来一局 ↻';
   $('result-copy').textContent = stars
     ? (career.dailySnapshot
       ? '每日挑战成功 · 第 ' + result.place + ' 名 · ' + time(result.time) + ' · 当日最佳 ' + time(graded.best) +
         ' · 连续挑战 ' + career.progress.daily.streak + ' 天'
-      : '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星' +
-        (newSkin > 0 ? ' · 解锁车漆：' + SKIN_NAMES[newSkin] : ''))
+      : '第 ' + result.place + ' 名 · ' + time(result.time) + ' · 最佳 ' + time(graded.best) + ' · 累计 ' + graded.total + ' 星')
     : (result.finished ? '本次未进前三 · ' : '未完赛 · ') + failure.reason +
       (() => { const gap = rankFinishGapSeconds(career.stage,result);
         return gap !== null ? ' · 距目标名次 ' + gap.toFixed(1) + ' 秒' : ''; })();
@@ -382,9 +393,41 @@ $('star-ad').addEventListener('click',async()=>{
   fuelView();
 });
 $('skin').addEventListener('change', () => {
-  if (!career.setSkin(Number($('skin').value))) {renderLobby();return;}
+  const index=Number($('skin').value);
+  if(!skinUnlocked(career.progress,index)){
+    pendingSkinIndex=index;renderLobby();
+    $('note').textContent=career.adReady
+      ? '该车漆尚未获得，观看一次完整广告即可永久解锁；当前仍使用已拥有的车漆'
+      : '当前平台尚未接入可用的激励广告，暂不能获得该车漆；仍可免费比赛';
+    return;
+  }
+  pendingSkinIndex=null;
+  if (!career.setSkin(index)) {
+    renderLobby();$('note').textContent='切换车漆未能保存，请检查本地存储';return;
+  }
   if (g && !loading && phase === 'ready') {career.configure(g);g.startDemo();}
   renderLobby();
+});
+$('skin-ad').addEventListener('click',async()=>{
+  const index=pendingSkinIndex;
+  if(phase!=='ready'||index===null||!career.canOfferSkinAd(index))return;
+  $('skin-ad').disabled=true;$('skin-ad').textContent='广告加载中…';
+  const out=await career.watchSkinAd(index);
+  trial.rewardedOutcome(out.status);
+  if(out.status==='completed'){
+    pendingSkinIndex=null;
+    if(career.setSkin(index) && g && !loading){career.configure(g);g.startDemo();}
+    renderLobby();
+    $('note').textContent='已永久解锁 '+SKIN_NAMES[index]+'，下次进入无需再次看广告';
+  }else{
+    renderLobby();
+    $('note').textContent=out.status==='save-failed'
+      ?'广告已完成但存档失败，不能发放永久车漆；请检查本地存储'
+      :out.status==='stale'
+      ?'广告完成时关卡状态已变化，没有发放车漆'
+      :'广告未完整观看，车漆保持锁定；不会扣油或扣星';
+  }
+  fuelView();
 });
 $('fuel-ad').addEventListener('click', async () => {
   if (!['ready','finished'].includes(phase) || career.adBusy) return;

@@ -1,4 +1,5 @@
 import { EXTRA_STAGES } from './career-expansion.mjs';
+import { PAINT_NAMES, LEGACY_PAINT_STARS, freshCosmetics, restoreCosmetics, skinOwned, carOwned } from './cosmetics.mjs';
 export const CAREER_KEY = 'h5-mobile:qq-speed:career:v1';
 /** Only genuine finished podium placement determines the three visible medals. */
 export const PODIUM_GOAL='前三名通关 · 第1名三星 / 第2名二星 / 第3名一星';
@@ -51,10 +52,11 @@ export function starGateStatus(career,index) {
     starLocked:!!stage && previousCleared && !gateSatisfied,
   };
 }
-export const SKIN_STARS = Object.freeze([0, 3, 6, 10, 14, 19, 25, 34]);
-export const SKIN_NAMES = Object.freeze(['烈焰红', '冰蓝', '紫电', '黄金', '珍珠白', '樱粉', '翡翠', '暗夜']);
+// Historical thresholds remain ONLY for one-time save migration, never new unlocks.
+export const SKIN_STARS = LEGACY_PAINT_STARS;
+export const SKIN_NAMES = PAINT_NAMES;
 export const newCareer = () => ({ version: 1, stars: {}, times: {}, gatePasses: {}, skin: 0, rounds: 0,
-  daily: { date: '', best: 0, stars: 0, streak: 0, lastWonDate: '' } });
+  ...freshCosmetics(), daily: { date: '', best: 0, stars: 0, streak: 0, lastWonDate: '' } });
 export function localDayKey(date = new Date()) {
   return [date.getFullYear(), String(date.getMonth()+1).padStart(2,'0'), String(date.getDate()).padStart(2,'0')].join('-');
 }
@@ -69,7 +71,8 @@ export const careerStars = career => STAGES.reduce((n, stage) => n + (career?.st
 export function stageUnlocked(career,index) {
   return starGateStatus(career,index).unlocked;
 }
-export const skinUnlocked = (career, skinIndex) => Number.isInteger(skinIndex) && skinIndex >= 0 && skinIndex < SKIN_STARS.length && careerStars(career) >= SKIN_STARS[skinIndex];
+export const skinUnlocked = skinOwned;
+export const carUnlocked = carOwned;
 export function loadCareer(raw, legacyBest) {
   try {
     if (!raw) {
@@ -105,6 +108,9 @@ export function loadCareer(raw, legacyBest) {
       }
     }
     state.rounds = Number.isSafeInteger(v.rounds) && v.rounds >= 0 ? Math.min(v.rounds, 1_000_000) : 0;
+    // Preserve colors already earned by older star-only saves, then freeze ownership.
+    // Winning more stars after this migration does not grant additional paints.
+    Object.assign(state, restoreCosmetics(v, careerStars(state)));
     state.skin = skinUnlocked(state, v.skin) ? v.skin : 0;
     const d = v.daily;
     const day = x => typeof x === 'string' && /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(x) ? x : '';
