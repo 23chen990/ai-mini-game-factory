@@ -72,3 +72,14 @@ test('PR10 source cache reuse rejects a wrong game or changed baseline before cl
  assert.throws(()=>assertPr10Baseline('qq-speed',id,hash),/baseline/i);
  assert.throws(()=>assertPr10Baseline('pelican-bike',id,'0'.repeat(64)),/baseline/i);
 });
+
+test('CF mobile default WebGL quality is selected before original Game.init(), preserving platform query',async()=>{
+ const {buildSourceMobile}=await import('../h5-mobile-build.mjs');
+ assert.equal(typeof buildSourceMobile,'function');
+ const src=await readFile(fileURLToPath(new URL('../h5-mobile-build.mjs',import.meta.url)),'utf8');
+ assert.match(src,/gameId==='cf-transport-ship'/);
+ assert.match(src,/!p\.has\('q'\)\)p\.set\('q','low'\)/);
+ assert.match(src,/!p\.has\('touch'\)\)p\.set\('touch','1'\)/);
+ assert.match(src,/!p\.has\('nolock'\)\)p\.set\('nolock','1'\)/);
+ assert.match(src,/location\.hash/);
+});

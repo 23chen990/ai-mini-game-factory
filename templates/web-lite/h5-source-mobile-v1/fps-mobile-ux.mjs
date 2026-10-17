@@ -462,6 +462,55 @@ export function chooseMobileSniperLane({player,spawns,world,nav,actors=[],distan
  * drive that SAME native Player.touch state. Never fabricate bullets or hits.
  * A held touch must not repeatedly restart firePressed after Player.update.
  */
+/** Cancel orphaned mobile fingers when WebKit/Chrome interrupts an input sequence.
+ * Only input state is affected; bullets, health, movement position and stats remain native. */
+export function cfResetMobileTouch(player,aimTouches,fireTouches) {
+  let changed=false;
+  for(const map of [aimTouches,fireTouches]){
+    if(map?.size){map.clear();changed=true;}
+  }
+  if(!player)return changed;
+  const t=player.touch;
+  if(t){
+    for(const key of ['fire','firePressed','jump','crouch']){
+      if(key==='crouch'&&!(key in t))continue;
+      if(t[key]!==false){t[key]=false;changed=true;}
+    }
+    for(const key of ['mx','mz']){
+      if(t[key]!==0){t[key]=0;changed=true;}
+    }
+  }
+  if(player.touchLook){
+    for(const key of ['x','y']){
+      if(player.touchLook[key]!==0){player.touchLook[key]=0;changed=true;}
+    }
+  }
+  if(player.mouse){
+    for(const key of ['l','r','lp','rp']){
+      if(player.mouse[key]!==false){player.mouse[key]=false;changed=true;}
+    }
+  }
+  return changed;
+}
+/** A circular, dead-zoned virtual stick. Coordinates are genuine finger
+ * positions relative to the visible native pad; this does not move an actor. */
+export function cfJoystickVector(x,y,cx,cy,radius=60,deadzone=0.10) {
+  if(![x,y,cx,cy,radius,deadzone].every(Number.isFinite)||
+     radius<=0||deadzone<0||deadzone>=1)
+    return {mx:0,mz:0,dx:0,dy:0};
+  const dx=x-cx,dy=y-cy,len=Math.hypot(dx,dy);
+  if(len<=radius*deadzone)return {mx:0,mz:0,dx:0,dy:0};
+  const t=Math.min(1,len/radius),power=(t-deadzone)/(1-deadzone);
+  return {mx:+((dx/len)*power).toFixed(4),
+    mz:+((-dy/len)*power).toFixed(4),
+    dx:Math.max(-radius,Math.min(radius,dx)),
+    dy:Math.max(-radius,Math.min(radius,dy))};
+}
+/** Native match restart reuses the existing renderer/world (no full page reload).
+ * Only the CF result panel opts into this path; other game adapters unchanged. */
+export function cfWarmRestartAllowed(gameId,phase) {
+  return gameId==='cf-transport-ship'&&phase==='finished';
+}
 export function cfBeginTouchFire(touch) {
   if(!touch)return false;
   if(touch.fire!==true)touch.firePressed=true;
@@ -830,50 +879,101 @@ export function createFpsMobileUx(game, root, doc) {
   let playerEngaged=false;
   const aimTouchStarts=new Map();
   const fireDragTouches=new Map();
+  const nativePads=[...(touchControls?.querySelectorAll('.pad')||[])];
+  const pad=nativePads[0],stickKnob=nativePads[1];
+  let moveFinger=null;
   let lastTouchAt=-Infinity;
   const markTouch=()=>{lastTouchAt=performance.now();};
+  const stickCenter=()=>{
+    const rect=pad?.getBoundingClientRect();
+    return rect&&rect.width>0&&rect.height>0
+      ?{x:rect.left+rect.width/2,y:rect.top+rect.height/2}:null;
+  };
+  const resetKnob=()=>{
+    if(stickKnob){stickKnob.style.left='70px';stickKnob.style.bottom='82px';}
+  };
+  const resetAllTouches=()=>{
+    moveFinger=null;
+    resetKnob();
+    return cfResetMobileTouch(game.player,aimTouchStarts,fireDragTouches);
+  };
+  const controlledTarget=e=>!!e.target?.closest?.(
+    '.btn,button,input,textarea,select,a,#mk-panel');
   const onTouchStart=e=>{
     markTouch();
     if(!game.playing||game.paused||game.ended)return;
     if(e.target?.closest?.('.btn[data-mk-action="fire"]')){
-      // Native fire-button touchstart stops bubbling, so the upstream window
-      // camera listener cannot reuse this SAME right thumb for aiming.
+      // Fire button still belongs to the native gun; camera movement from
+      // THIS thumb is routed separately since native buttons stop bubbling.
       for(const t of e.changedTouches||[])
         fireDragTouches.set(t.identifier,{x:t.clientX,y:t.clientY});
-      // Document capture executes even when the original native fire-button
-      // listener stops bubbling. Keep the original gun/cooldown untouched.
       if(game.player?.alive)cfBeginTouchFire(game.player.touch);
       return;
     }
-    if(!cfAutoFireEligible(activeChallenge,game.player?.stats?.hits||0))return;
-    if(e.target?.closest?.('.btn,.pad'))return;
-    const limit=(doc.defaultView?.innerWidth||844)*0.44;
-    for(const t of e.changedTouches||[])if(t.clientX>limit)
-      aimTouchStarts.set(t.identifier,{x:t.clientX,y:t.clientY});
+    if(controlledTarget(e))return; // Keep native jump, reload and scope actions.
+    // Native upstream TouchControls captures left/right IDs in window bubble
+    // handlers, which are not reset on pagehide. Take ownership of ONLY the
+    // neutral look/stick surface here, before their window listeners fire.
+    e.stopPropagation();
+    const center=stickCenter(),W=doc.defaultView?.innerWidth||844;
+    for(const t of e.changedTouches||[]){
+      const nearPad=center&&Math.hypot(t.clientX-center.x,t.clientY-center.y)<=110;
+      if(moveFinger===null&&nearPad&&t.clientX<W*.40){
+        moveFinger=t.identifier;
+        const move=cfJoystickVector(t.clientX,t.clientY,center.x,center.y);
+        if(game.player?.touch){
+          game.player.touch.mx=move.mx;game.player.touch.mz=move.mz;
+        }
+      }else if(t.clientX>W*.38&&aimTouchStarts.size===0){
+        aimTouchStarts.set(t.identifier,{x:t.clientX,y:t.clientY,
+          originX:t.clientX,originY:t.clientY});
+      }
+    }
   };
   const onTouchMove=e=>{
     markTouch();
     if(!game.playing||game.paused||game.ended)return;
+    if(!controlledTarget(e))e.stopPropagation();
     const p=game.player;
     for(const t of e.changedTouches||[]){
-      const v=fireDragTouches.get(t.identifier);
-      if(v){
-        const delta=cfFireDragLookDelta(t.clientX-v.x,t.clientY-v.y);
-        v.x=t.clientX;v.y=t.clientY;
-        if(p?.alive){
-          // The actual fire-finger identity is stronger evidence than a
-          // momentary flag lost during native touch dispatch. A continuous
-          // press keeps BOTH the genuine native gun and camera responsive.
-          if(p.touch&&!p.touch.fire)cfBeginTouchFire(p.touch);
-          p.touchLook ||= {x:0,y:0};
-          p.touchLook.x+=delta.x;p.touchLook.y+=delta.y;
+      if(t.identifier===moveFinger){
+        const center=stickCenter();
+        if(!center)continue;
+        const move=cfJoystickVector(t.clientX,t.clientY,center.x,center.y);
+        if(p?.alive&&p.touch){
+          p.touch.mx=move.mx;p.touch.mz=move.mz;
+        }
+        if(stickKnob){
+          stickKnob.style.left=(70+move.dx)+'px';
+          stickKnob.style.bottom=(82-move.dy)+'px';
         }
         continue;
       }
-      if(cfAutoFireEligible(activeChallenge,p?.stats?.hits||0)){
-        const aim=aimTouchStarts.get(t.identifier);
-        if(aim&&Math.hypot(t.clientX-aim.x,t.clientY-aim.y)>12)
-          playerEngaged=true;
+      const fire=fireDragTouches.get(t.identifier);
+      if(fire){
+        const delta=cfFireDragLookDelta(t.clientX-fire.x,t.clientY-fire.y);
+        fire.x=t.clientX;fire.y=t.clientY;
+        if(p?.alive){
+          if(p.touch&&!p.touch.fire)cfBeginTouchFire(p.touch);
+          p.touchLook ||= {x:0,y:0};
+          // One active camera thumb at a time: when independent free-look is
+          // held, avoid accumulating two gestures into doubled sensitivity.
+          if(aimTouchStarts.size===0){
+            p.touchLook.x+=delta.x;p.touchLook.y+=delta.y;
+          }
+        }
+        continue;
+      }
+      const aim=aimTouchStarts.get(t.identifier);
+      if(aim){
+        const delta=cfFireDragLookDelta(t.clientX-aim.x,t.clientY-aim.y);
+        aim.x=t.clientX;aim.y=t.clientY;
+        if(p?.alive){
+          p.touchLook ||= {x:0,y:0};
+          p.touchLook.x+=delta.x;p.touchLook.y+=delta.y;
+          if(Math.hypot(t.clientX-aim.originX,t.clientY-aim.originY)>12)
+            playerEngaged=true;
+        }
       }
     }
   };
@@ -882,17 +982,28 @@ export function createFpsMobileUx(game, root, doc) {
   };
   const onTouchEnd=e=>{
     markTouch();
+    if(!controlledTarget(e))e.stopPropagation();
+    if(e.type==='touchcancel'){
+      // iOS can cancel one finger while others remain down. Fail closed:
+      // release every held native action; no synthetic shots or movement.
+      resetAllTouches();
+      return;
+    }
     const hadFireFinger=fireDragTouches.size>0;
     for(const t of e.changedTouches||[]){
+      if(t.identifier===moveFinger){
+        moveFinger=null;resetKnob();
+        if(game.player?.touch){
+          game.player.touch.mx=0;game.player.touch.mz=0;
+        }
+      }
       aimTouchStarts.delete(t.identifier);
       fireDragTouches.delete(t.identifier);
     }
-    // The upstream button listens to touchend, not touchcancel.
-    // Clear the native fire flag on either ending path, even after a dragged
-    // thumb leaves the button or the operating system interrupts the gesture.
-    if(hadFireFinger&&fireDragTouches.size===0)
-      releaseNativeFire(e.type==='touchcancel');
+    if(hadFireFinger&&fireDragTouches.size===0)releaseNativeFire();
   };
+  const onLifecycleInterrupt=()=>resetAllTouches();
+  const onVisibilityInterrupt=()=>{if(doc.hidden)resetAllTouches();};
   // The pinned desktop Player.bind() fires a bullet on canvas mousedown.
   // Browsers synthesize mousedown after short touch-aim gestures unless this
   // compatibility event is stopped at document CAPTURE. Preserve clicks for
@@ -910,6 +1021,9 @@ export function createFpsMobileUx(game, root, doc) {
   doc.addEventListener('touchmove',onTouchMove,{capture:true,passive:true});
   doc.addEventListener('touchend',onTouchEnd,{capture:true,passive:true});
   doc.addEventListener('touchcancel',onTouchEnd,{capture:true,passive:true});
+  doc.defaultView?.addEventListener('blur',onLifecycleInterrupt);
+  doc.defaultView?.addEventListener('pagehide',onLifecycleInterrupt);
+  doc.addEventListener('visibilitychange',onVisibilityInterrupt);
   const buttons = touchControls ? [...touchControls.querySelectorAll('.btn')] : [];
   for (const [index, button] of buttons.entries()) {
     const action = mobileTouchAction(index);
@@ -1398,6 +1512,15 @@ export function createFpsMobileUx(game, root, doc) {
         defenseSite:defense.sites?.[defense.stage]?.id||null};
     },
     onSelect(challenge) { updateTutorial(challenge); defensePin.hidden=true; },
+    beforeNativeStart() {
+      // A previous beginner scout may have authored short-term team spawns.
+      // Restore them BEFORE original Game.startMatch() chooses new positions,
+      // not afterward (that is too late for a real warm replay).
+      if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
+        game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
+      originalEnemySpawns=null;trainingSpawnTeam=null;
+      resetAllTouches();
+    },
     onStart(challenge) {
       activeChallenge = challenge || null;
       if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
@@ -1408,8 +1531,7 @@ export function createFpsMobileUx(game, root, doc) {
       drillStageAt=0;flankGoal=null;flankDeaths=-1;
       updateTutorial(activeChallenge);
       autoAimActor=null;autoAimSince=0;autoFireActive=false;
-      playerEngaged=false;aimTouchStarts.clear();fireDragTouches.clear();
-      releaseNativeFire(true);
+      playerEngaged=false;resetAllTouches();
       guide.textContent = activeChallenge?.elite===true
         ? '⚡ 精英：自己瞄准开火'
         : activeChallenge?.kind === 'kills'
@@ -1553,9 +1675,7 @@ export function createFpsMobileUx(game, root, doc) {
       }
       if (!active) {
         if (activeChallenge?.kind==='hits') p.mouse.l=false;
-        if(fireDragTouches.size>0) {
-          releaseNativeFire(true);fireDragTouches.clear();
-        }
+        resetAllTouches();
         autoAimActor=null;autoFireActive=false;
         target.hidden = true; guide.hidden = true; defensePin.hidden=true; clearMarkers(); return;
       }
@@ -1714,9 +1834,12 @@ export function createFpsMobileUx(game, root, doc) {
       doc.removeEventListener('touchmove',onTouchMove,true);
       doc.removeEventListener('touchend',onTouchEnd,true);
       doc.removeEventListener('touchcancel',onTouchEnd,true);
+      doc.defaultView?.removeEventListener('blur',onLifecycleInterrupt);
+      doc.defaultView?.removeEventListener('pagehide',onLifecycleInterrupt);
+      doc.removeEventListener('visibilitychange',onVisibilityInterrupt);
       doc.removeEventListener('mousedown',stopCompatibilityMouse,true);
       doc.removeEventListener('mouseup',stopCompatibilityMouse,true);
-      aimTouchStarts.clear();fireDragTouches.clear();releaseNativeFire(true);
+      resetAllTouches();
       html.removeAttribute('data-fps-active');
       html.removeAttribute('data-fps-own-team');
       board.remove(); target.remove(); hitCue.remove(); guide.remove(); defensePin.remove(); tutorial.remove();

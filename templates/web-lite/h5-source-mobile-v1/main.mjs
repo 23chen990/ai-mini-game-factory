@@ -1,7 +1,7 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
-import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus } from './fps-mobile-ux.mjs';
+import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed } from './fps-mobile-ux.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal} from './cf-player-loop.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
@@ -207,7 +207,7 @@ async function boot() {
         };
         g.__mkAwmKillHooked = true;
       }
-      native.start = c => { g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
+      native.start = c => { fpsUx?.beforeNativeStart?.(); g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
         kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,
         alive:g.player?.alive===true,nativeRespawnSec:g.player?.respawnT||0,
@@ -257,8 +257,11 @@ async function boot() {
     $('pause').textContent = phase === 'paused' ? '▶ 继续' : '⏸ 暂停';
   };
   const portraitBlocked = () => id !== 'pelican-bike' && window.innerHeight > window.innerWidth;
-  const start = async () => { if (portraitBlocked() || root.dataset.phase !== 'ready') return;
+  const start = async () => { if (portraitBlocked() ||
+      (root.dataset.phase !== 'ready' &&
+       !cfWarmRestartAllowed(id,root.dataset.phase))) return;
     reviveOffered=false;reviveUsed=false;reviveDeclined=false;reviveBusy=false;
+    clearInput();
     activeChallenge = id === 'cf-transport-ship' ? (elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
     if(activeChallenge?.drill==='reposition')
       $('goal').max=activeChallenge.openingHits+activeChallenge.minTravel+activeChallenge.target;
@@ -270,7 +273,13 @@ async function boot() {
   const pause = () => { if (round?.phase !== 'running') return; pauseRound(round); native.pause(); clearInput(); $('heading').textContent = '已暂停'; $('copy').textContent = '点击继续，从当前画面接着玩。'; showPhase('paused'); persist(); };
   const resume = () => { if (portraitBlocked() || round?.phase !== 'paused') return; resumeRound(round); native.resume(); last = performance.now(); showPhase('running'); };
   $('start').addEventListener('click', start); $('pause').addEventListener('click', () => round?.phase === 'paused' ? resume() : pause()); $('resume').addEventListener('click', resume);
-  $('replay').addEventListener('click', () => location.reload());
+  // Rebuilding 3D textures, nav and shader passes on every failed attempt
+  // makes mobile FPS replays feel sluggish. Native startMatch() already resets
+  // actors, player stats, projectiles, score and spawns on its ORIGINAL path.
+  $('replay').addEventListener('click', () => {
+    if(cfWarmRestartAllowed(id,root.dataset.phase))void start();
+    else location.reload();
+  });
   $('next').addEventListener('click', () => {
     if (id !== 'cf-transport-ship' || root.dataset.phase !== 'finished' ||
         root.dataset.outcome !== 'won') return;
@@ -279,8 +288,11 @@ async function boot() {
     if(!next)return;
     challengeProgress.selected=next.id;
     challengeProgress.elite=false;
+    selected=next;
+    elite=false;
     persist();
-    location.reload();
+    renderSelection();
+    void start();
   });
   window.addEventListener('blur', pause); document.addEventListener('visibilitychange', () => { if (document.hidden) pause(); });
   const orientation = () => { const blocked = portraitBlocked(); $('rotate').hidden = !blocked; if (blocked) pause(); };
