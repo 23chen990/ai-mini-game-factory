@@ -273,6 +273,24 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       rookie.openingBot.holdUntil<=12&&rookie.openingBot.holdUntil>=7,
       {bot:rookie.openingBot,route:rookie.route});
     const authenticRookieShots=rookie.player.shots;
+    // Install a READ-ONLY DOM observer BEFORE the first real finger press:
+    // the native target may die in <380ms, and a later screenshot/poll is too
+    // late for the brief first-kill cue. This never edits game state/UI.
+    await page.evaluate(()=>{
+      const el=document.getElementById('mk-fps-hit-feedback');
+      window.__cfKillCueObservations=[];
+      const read=()=>{
+        if(el?.hidden===false&&/首杀/.test(el.textContent||''))
+          window.__cfKillCueObservations.push({
+            text:el.textContent,
+            displayed:getComputedStyle(el).display!=='none'
+          });
+      };
+      const observer=new MutationObserver(read);
+      observer.observe(el,{attributes:true,attributeFilter:['hidden'],
+        subtree:true,childList:true,characterData:true});
+      read();
+    });
     await button('#touch .btn[data-mk-action="fire"]',380,70);
     const firedRookie=await inspect();
     check('first30-fire-requires-native-player-shot',
@@ -290,9 +308,20 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // spawn, game clock or outcome. This is an actual native FIRST KILL gate.
     const firstKillTouch=center(await rect('#touch .btn[data-mk-action="fire"]'));
     const killPressTrace=[];
-    let firstKillCueSeen=false;
-    await event('touchStart',[{...firstKillTouch,id:79}]);
-    try {
+    const cueObserved=async()=>page.evaluate(()=>{
+      return (window.__cfKillCueObservations||[]).some(e=>
+        e.displayed===true&&/首杀/.test(e.text));
+    });
+    let firstKillCueSeen=await cueObserved();
+    killPressTrace.push({seconds:+(firedRookie.time-rookie.time).toFixed(2),
+      shots:firedRookie.player.shots,hits:firedRookie.player.hits,
+      kills:firedRookie.player.kills,
+      enemyShots:firedRookie.openingBot?.realShots,
+      cueObserved:firstKillCueSeen});
+    if(firstKillCueSeen)await snap('v17-first-native-kill-visible');
+    if(!firstKillCueSeen || !firedRookie.player.kills){
+      await event('touchStart',[{...firstKillTouch,id:79}]);
+      try {
       for(let n=0;n<28;n++){
         await sleep(450);
         const state=await inspect();
@@ -304,14 +333,15 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
           shots:state.player?.shots,hits:state.player?.hits,
           kills:state.player?.kills,enemyShots:state.openingBot?.realShots,
           cue:cue.visible?cue.text:null});
-        if(cue.visible&&/首杀/.test(cue.text)&&!firstKillCueSeen){
+        if(!firstKillCueSeen&&await cueObserved()){
           firstKillCueSeen=true;
           await snap('v17-first-native-kill-visible');
         }
         if((state.player?.kills||0)>=1&&firstKillCueSeen)break;
         if(state.time-rookie.time>29)break;
       }
-    }finally{await event('touchEnd',[]);}
+      }finally{await event('touchEnd',[]);}
+    }
     const killResult=await inspect();
     samples.push({id:'tags',when:'first-personal-native-kill',
       realTouch:true,trace:killPressTrace});
@@ -322,8 +352,11 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       killResult.time-rookie.time<30,
       {nativeSec:killResult.time-rookie.time,player:killResult.player,
         trace:killPressTrace});
+    const observedCues=await page.evaluate(()=>
+      window.__cfKillCueObservations||[]);
     check('first30-kill-reward-rendered-from-real-player-counter',
-      firstKillCueSeen,{trace:killPressTrace});
+      firstKillCueSeen&&observedCues.some(e=>e.displayed),
+      {trace:killPressTrace,observedCues});
     // Software WebGL can render 6 seconds of native simulation in 11 wall
     // seconds. Always wait on the ORIGINAL GAME CLOCK, never force timers or
     // weaken the 10-second tactical release; capture the wall/sim gap as
