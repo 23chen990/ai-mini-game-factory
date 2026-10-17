@@ -299,6 +299,41 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       rookie.openingBot.holdUntil<=12&&rookie.openingBot.holdUntil>=7,
       {bot:rookie.openingBot,route:rookie.route});
     const authenticRookieShots=rookie.player.shots;
+    // V18 has no auto aim. Aim using ONLY the on-screen, LOS-verified visible
+    // opponent marker and genuine right-thumb CDP swipes, never actor coords.
+    const rookieLite=await page.locator('#mobile-kit')
+      .getAttribute('data-fps-lite')==='true';
+    const visibleAim=async heldFire=>{
+      const aim=await page.evaluate(()=>{
+        const el=[...document.querySelectorAll('.mk-fps-enemy')].find(e=>
+          !e.hidden&&getComputedStyle(e).display!=='none');
+        if(!el)return null;
+        const x=parseFloat(el.style.left),y=parseFloat(el.style.top);
+        return Number.isFinite(x)&&Number.isFinite(y)?{
+          x:x*innerWidth/100,y:y*innerHeight/100,
+          cx:innerWidth/2,cy:innerHeight/2,
+          w:innerWidth,h:innerHeight
+        }:null;
+      });
+      if(!aim)return {visible:false,aligned:false};
+      const dx=aim.x-aim.cx,dy=aim.y-aim.cy;
+      if(Math.hypot(dx,dy)<12)return {visible:true,aligned:true,dx,dy};
+      const from={x:Math.round(aim.w*.61),y:Math.round(aim.h*.31),id:92};
+      const mx=Math.max(-65,Math.min(65,dx*.55));
+      const my=Math.max(-45,Math.min(45,dy*.55));
+      const dest={x:from.x+mx,y:from.y+my,id:92};
+      const fire=heldFire||null;
+      await event('touchStart',fire?[fire,from]:[from]);
+      await event('touchMove',fire?[fire,dest]:[dest]);
+      await event('touchEnd',fire?[fire]:[]);
+      return {visible:true,aligned:false,dx,dy};
+    };
+    const openingAimTrace=[];
+    if(rookieLite)for(let n=0;n<7;n++){
+      const result=await visibleAim(null);openingAimTrace.push(result);
+      if(!result.visible||result.aligned)break;
+      await sleep(95);
+    }
     // Install a READ-ONLY DOM observer BEFORE the first real finger press:
     // the native target may die in <380ms, and a later screenshot/poll is too
     // late for the brief first-kill cue. This never edits game state/UI.
@@ -351,6 +386,8 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       try {
       for(let n=0;n<28;n++){
         await sleep(450);
+        if(rookieLite&&n%3===0)openingAimTrace.push(
+          await visibleAim({...firstKillTouch,id:79}));
         const state=await inspect();
         const cue=await page.evaluate(()=>{
           const el=document.getElementById('mk-fps-hit-feedback');
@@ -371,7 +408,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     }
     const killResult=await inspect();
     samples.push({id:'tags',when:'first-personal-native-kill',
-      realTouch:true,trace:killPressTrace});
+      realTouch:true,aimInputOnly:true,openingAimTrace,trace:killPressTrace});
     check('first30-real-personal-kill-from-normal-sustained-thumb',
       killResult.player?.kills>=1&&
       killResult.player.hits>=1&&
