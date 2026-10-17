@@ -126,8 +126,8 @@ try {
   await page.goto('http://127.0.0.1:' + server.address().port + '/');
   await page.locator('#race-start:not([disabled])').waitFor({ timeout: 45000 });
   await page.screenshot({ path: path.join(out, 'startup.png') });
-  const limit = Number(process.env.RACE_QA_STAGES ?? 16);
-  const count = limit + (limit === 16 ? 1 : 0);
+  const limit = Number(process.env.RACE_QA_STAGES ?? 30);
+  const count = limit + (limit === 30 ? 1 : 0);
   if (resumeReport) {
     const actualSaved = await page.evaluate(() => localStorage.getItem('h5-mobile:qq-speed:career:v1'));
     if (actualSaved !== resumeReport.races.at(-1).saved) throw Error('Browser did not restore the exact earned campaign');
@@ -136,9 +136,9 @@ try {
     await writeFile(path.join(out, 'resume-provenance.json'), JSON.stringify({ buildHash: build.buildHash, report: process.env.RACE_QA_RESUME_REPORT, reportSha256: createHash('sha256').update(await readFile(process.env.RACE_QA_RESUME_REPORT)).digest('hex'), storage: process.env.RACE_QA_RESUME_STORAGE, storageSha256: createHash('sha256').update(await readFile(process.env.RACE_QA_RESUME_STORAGE)).digest('hex'), origin: resumeOrigin, startIndex, injectedProgress: false }, null, 2));
   }
   for (let index = startIndex; index < count; index++) {
-    const name = index === 16 ? 'daily' : String(index + 1).padStart(2, '0');
+    const name = index === 30 ? 'daily' : String(index + 1).padStart(2, '0');
     if (index) {
-      await page.locator('#race-stage').selectOption(index === 16 ? 'daily' : String(index));
+      await page.locator('#race-stage').selectOption(index === 30 ? 'daily' : String(index));
       await page.waitForFunction(() => !document.querySelector('#race-start').disabled, null, { timeout: 45000 });
     }
     const entry = await page.locator('#race-stage option:checked').textContent();
@@ -243,7 +243,7 @@ finally {
     driverPolicy: z.string(), races: z.array(z.any()), errors: z.array(z.string()), passed: z.boolean(), checkedAt: z.string() });
   const report = Schema.parse({ schemaVersion: 1, gameId: 'qq-speed', buildHash: build.buildHash, viewport,
     naturalInputsOnly: true, seededCampaign: false, driverPolicy: 'visible minimap, cyan cube pixels and visible wrong-way warning; native state read only for assertions',
-    races, errors, passed: races.length === Number(process.env.RACE_QA_STAGES ?? 16) + (Number(process.env.RACE_QA_STAGES ?? 16) === 16 ? 1 : 0) && races.every(r => r.status === 'PASS' && r.actionsFit) && !errors.length, checkedAt: new Date().toISOString() });
+    races, errors, passed: races.length === Number(process.env.RACE_QA_STAGES ?? 30) + (Number(process.env.RACE_QA_STAGES ?? 30) === 30 ? 1 : 0) && races.every(r => r.status === 'PASS' && r.actionsFit) && !errors.length, checkedAt: new Date().toISOString() });
   report.recordingTimebase = { beforePageMs: recordingBeforePageMs, afterPageMs: recordingAfterPageMs, uncertainty: 'Recorder starts during page creation; use visible clock and keep context around trimmed evidence' };
   await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
   const video = page.video(); await context.close(); if (video) await video.saveAs(path.join(out, 'natural-career.webm'));
