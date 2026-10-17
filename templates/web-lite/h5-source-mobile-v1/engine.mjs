@@ -99,7 +99,14 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
     const budgetExceeded=Number.isInteger(c.maxDeaths)&&c.maxDeaths>=0 &&
       Math.max(0,Number(m.deaths)||0)>c.maxDeaths+(c.bonusDeaths===1?1:0);
     failed=budgetExceeded;
-    if(c.kind==='hits'&&c.drill==='reposition') {
+    if(c.lite===true&&c.id==='tags') {
+      // V18 keeps the native introductory opponent and real weapon physics,
+      // but a mobile campaign victory depends on visible personal eliminations,
+      // not a hidden first-hit -> metre count -> follow-up state machine.
+      value=Math.max(0,Math.floor(Number(m.kills)||0));
+      complete=!failed&&value>=c.target;
+      label='✦ 亲手击倒 '+Math.min(value,c.target)+'/'+c.target;
+    } else if(c.kind==='hits'&&c.drill==='reposition') {
       // Not just total shots: the final three hits must occur AFTER a genuine
       // first hit AND 12m of actual movement; zero-AFK and no hidden stat credit.
       const follow=Math.max(0,Math.floor(Number(m.drillFollowUpHits)||0));
@@ -129,7 +136,7 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
     complete=!failed&&m.assaultStage===1&&travel>=c.minTravel&&kills>=c.target;
     label=!legalSite?'✕ 进攻位寻路不可用':
       m.assaultStage===1?'🎯 进攻位已到达 · 本人击杀 '+kills+'/'+c.target
-      :'↗ 前往进攻位 · 行进 '+Math.floor(travel)+'/'+c.minTravel+'米';
+      :c.lite===true?'↗ 前往进攻位 · 进入标记区域':'↗ 前往进攻位 · 行进 '+Math.floor(travel)+'/'+c.minTravel+'米';
   }
   if(c.kind==='defend') {
     const deaths=Math.max(0,Number(m.deaths)||0);
@@ -150,12 +157,14 @@ export function challengeResult(c,m={},terminal=false,elapsedMs=null) {
     // Only a full-length survival counts. A native team deathmatch may finish
     // early; that must never masquerade as surviving the declared 45 seconds.
     // The null fallback retains compatibility with existing offline callers.
-    const survivedFullClock=elapsedMs===null ? terminal :
+    const survivedFullClock=c.finishOnExtract===true&&m.evacExtracted===true ? true :
+      elapsedMs===null ? terminal :
       Number.isFinite(elapsedMs) && elapsedMs>=c.limitMs;
     const extractionLegal=!c.extractSeconds||m.evacSiteValid===true;
     const extractionComplete=!c.extractSeconds||m.evacExtracted===true;
     failed=failed||!extractionLegal;
-    complete=terminal&&survivedFullClock&&!failed&&travel>=minTravel&&
+    complete=(terminal||(c.finishOnExtract===true&&m.evacExtracted===true))&&
+      survivedFullClock&&!failed&&travel>=minTravel&&
       (!c.minKills||Math.max(0,Number(m.kills)||0)>=c.minKills)&&extractionComplete;
     label=`❤ 死亡 ${value}/${c.target+(c.bonusDeaths===1?1:0)} · 移动 ${travel}/${minTravel}米`+
       (c.minKills?' · 击杀 '+(Number(m.kills)||0)+'/'+c.minKills:'')+
