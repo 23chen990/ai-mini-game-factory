@@ -201,14 +201,22 @@ try{
   };
   const imminent=i=>ttc(i)<=2.0;
   const dangerVisible=v.lanes.some(l=>l.danger);
+  const dangerCount=v.lanes.filter(l=>l.danger).length;
   let want=v.lane;
-  if(imminent(want)){
+  // If TWO separate lanes already show red within the public 4.5s forecast,
+  // commit to the single open lane early. Waiting for each separate 2.0s
+  // deadline is too late to cross a red middle lane on a small phone.
+  if(dangerCount===2){
+   const free=[0,1,2].find(i=>!v.lanes[i].danger&&v.distance>=visibleHazardClearance[i]);
+   if(free!==undefined)want=free;
+  }
+  if(want===v.lane&&imminent(want)){
    const safe=[0,1,2].filter(i=>i!==want&&ttc(i)>2.35);
    safe.sort((a,b)=>
     Number(v.distance>=visibleHazardClearance[b])-Number(v.distance>=visibleHazardClearance[a])||
     Math.abs(a-v.lane)-Math.abs(b-v.lane));
    want=safe[0]??want;
-  }else if(!dangerVisible){
+  }else if(want===v.lane&&!dangerVisible){
    // Only chase optional fish on a genuinely clear approach, not between
    // a near barrier and the following oncoming van.
    const fish=v.lanes.findIndex((l,i)=>l.fish&&v.distance>=visibleHazardClearance[i]);
