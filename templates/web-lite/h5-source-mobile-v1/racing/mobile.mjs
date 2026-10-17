@@ -12,7 +12,7 @@ import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
 import { syncFuel, FUEL_RULES } from '../fuel.mjs';
-import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
+import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
 import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud, raceScreenProfile, initialRaceQuality, RaceInputHealth } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
@@ -377,7 +377,7 @@ $('star-ad').addEventListener('click',async()=>{
   }else{
     renderLobby();
     $('note').textContent=out.status==='save-failed'
-      ?'存档失败，未发放永久通行证；本次无需重复观看'
+      ?'存档失败，未发放永久通行证；请检查浏览器存储'
       :'广告未完成，本关仍需满足累计星数';
   }
   fuelView();
