@@ -138,7 +138,7 @@ export class RaceTrialMetrics {
       generatedOnDevice:true,
       explanation:'本地试玩摘要（可能包含自动化 QA）；广告完成信号不是结算收入',
       metrics:this.snapshot()
-    },null,2)+'\\n';
+    },null,2);
   }
   snapshot() {
     const { recent, ...counts } = this.data;
