@@ -63,7 +63,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          node tools/lean-pilot/cf-v11-native-revive-fixture-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-v11-native-revive.log"
+          node tools/lean-pilot/cf-v10-native-revive-fixture-qa.mjs "$RUN_ID" 2>&1 | tee "$RUNNER_TEMP/cf-v11-native-revive.log"
       - name: Export H5 and pinned original asset attribution - internal only
         if: always()
         shell: bash
