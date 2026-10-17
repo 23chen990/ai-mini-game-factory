@@ -99,3 +99,22 @@ test('CF V12 restores native team spawn array before immediate restart of origin
  const restore=adapter.indexOf('game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;',anchor);
  assert.ok(anchor>0&&restore>anchor,'restore map spawns before native start');
 });
+
+test('CF V18 final native adapter honors lite actor budget and PVE quota',async()=>{
+ const {createFpsAdapter}=await import('../themes.mjs');
+ const game={opts:{size:6,goal:50},hud:{syncControls(){}}};
+ let launches=0;
+ const doc={getElementById(id){
+   assert.equal(id,'btnStart');
+   return {click(){launches++;}};
+ }};
+ const native=createFpsAdapter(game,doc);
+ native.start({id:'tags',kind:'hits',lite:true});
+ assert.equal(game.opts.size,4,'CF V18 must not fall back to 1v1');
+ assert.equal(game.opts.goal,300,'native team score cannot preempt PVE goal');
+ assert.equal(launches,1);
+ native.start({id:'tags',kind:'hits',lite:false});
+ assert.equal(game.opts.size,1,'legacy original behavior stays isolated');
+ assert.equal(game.opts.goal,30);
+ assert.equal(launches,2);
+});
