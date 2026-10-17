@@ -51,7 +51,7 @@ export function collectCoastResult(collection,run){
  collection.earnedTotal=Math.min(maximum,collection.earnedTotal+earned);
  if(run.level?.endless){
   collection.endlessRuns=Math.min(maximum,collection.endlessRuns+1);
-  collection.bestDistance=Math.max(collection.bestDistance,Math.floor(run.distance));
+  collection.bestDistance=Math.max(collection.bestDistance,Math.min(maximum,Math.floor(run.distance)));
  }else collection.careerRuns=Math.min(maximum,collection.careerRuns+1);
  return earned;
 }
