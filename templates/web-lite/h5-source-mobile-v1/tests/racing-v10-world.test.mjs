@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createCareerLayouts, COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
-import { V10_STAGE_SIGNATURES, validateV10Signatures } from '../racing/v10-course-director.mjs';
+import { V10_STAGE_SIGNATURES, V10_CREST_METERS, shapeV10SignatureSectors, validateV10Signatures } from '../racing/v10-course-director.mjs';
+import { shapeV9RhythmSegments } from '../racing/v9-course-director.mjs';
+import { V8_COURSES, applyV8CourseGeometry } from '../racing/v8-course-geometry.mjs';
 import { V10_SCENE_SIGNATURES,validateV10Environment,buildV10RoadRumble,buildV10CinematicWorld } from '../racing/v10-environment.mjs';
 
 const seed=()=>Object.fromEntries(['city','egypt','aegean','snow'].map(n=>[n,{__racingV31:true,width:22,points:[[0,0,0]]}]));
@@ -28,6 +30,28 @@ test('30 individually choreographed V10 courses use physical extra sectors, pres
   assert.ok(V10_STAGE_SIGNATURES['07'].beats.length>=3,'a giant downhill needs multiple decisions');
   assert.ok(V10_STAGE_SIGNATURES['22'].beats.length>=3,'canyon must not be a 4.8km straight');
   assert.equal(old['race-07'].v10StageIdentity,undefined,'do not silently change V9');
+});
+test('authored dune and ice crests alter the REAL native road height instead of being overwritten',()=>{
+  assert.deepEqual(Object.keys(V10_CREST_METERS).sort(),['02','09','14','28']);
+  for(const [id,height]of Object.entries(V10_CREST_METERS)){
+    const bp=COURSE_BLUEPRINTS[id];
+    const original=bp[4].split(' ').map(p=>p.split(',').map(Number));
+    const baseline=shapeV9RhythmSegments(original,id,bp[3],COURSE_TECHNICAL_SECTORS[id]).points;
+    const shaped=shapeV10SignatureSectors(original,baseline,
+      COURSE_TECHNICAL_SECTORS[id],id,bp[3],V8_COURSES[id].stretch);
+    const raised=applyV8CourseGeometry(shaped.points,id,bp[3],
+      {elevationOffsets:shaped.elevationOffsets});
+    const flat=applyV8CourseGeometry(shaped.points,id,bp[3]);
+    const rises=shaped.elevationOffsets.filter(x=>x>0);
+    assert.equal(rises.length,3,id+' must have three real crest vertices');
+    assert.ok(Math.max(...rises)===height,id+' crest height must be authored');
+    for(let i=0;i<shaped.points.length;i++)
+      assert.ok(Math.abs(raised.points[i][2]-flat.points[i][2]-
+        shaped.elevationOffsets[i])<=.00011,'Actual native elevation changed '+id+' at '+i);
+    assert.ok(raised.maxSegmentGrade<=.21,id+' native road grade must remain safe');
+  }
+  assert.throws(()=>applyV8CourseGeometry([[1,2,3]],'02',1,
+    {elevationOffsets:[2]}),/Invalid V8 course/);
 });
 class Obj {
   constructor(geometry=null,material=null){
