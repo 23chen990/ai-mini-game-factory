@@ -1485,11 +1485,12 @@ export function createFpsMobileUx(game, root, doc) {
     if(!p || !destination || !game.nav?.findPath) return {path:false,trainingScout:false};
     const enemies=(game.actors||[]).filter(a=>
       a && !a.isPlayer && a.team!==p.team && a.alive && a.primary!=='awm');
-    if((activeChallenge?.kind==='hits' || activeChallenge?.kind==='kills') && enemies.length) {
+    if((activeChallenge?.kind==='hits'||activeChallenge?.kind==='kills'||
+      cfV20CoverEnabled(activeChallenge))&&enemies.length) {
       const sniper=activeChallenge.kind==='kills';
       // First seconds of a lightweight H5 match must show a real target.
       // Rotate only the authored starting camera, NEVER auto-track mid-match.
-      const lane=activeChallenge?.lite===true&&activeChallenge?.id==='tags'
+      const lane=cfV20CoverEnabled(activeChallenge)
         ?cfChooseVisibleOpeningLane({
           spawns:game.map?.spawns?.[p.team],world:game.world,
           nav:game.nav,actors:game.actors,team:p.team,eyeH:p.eyeH
@@ -2013,6 +2014,12 @@ export function createFpsMobileUx(game, root, doc) {
       applyBalance(0);
       recolorNativeAllies();
       cover.begin(activeChallenge);
+      const fireButton=buttons.find(b=>b.dataset.mkAction==='fire');
+      if(fireButton){
+        fireButton.textContent=cover.enabled?'探身开火':'开火';
+        fireButton.setAttribute('aria-label',cover.enabled?
+          '按住探身射击，松开原生下蹲躲避':'按住开火并拖动瞄准');
+      }
       if(game.__mobileBalanceReview)
         game.__mobileBalanceReview.coverV20=game.__mkCoverV20||null;
     },
