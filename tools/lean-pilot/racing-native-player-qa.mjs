@@ -196,6 +196,47 @@ report.courseAudit={independentCourseCount:Object.keys(report.courses).length,
   methodology:'Privileged guided/late controllers vs native unmodified AICar with fixed pre-race seed on actual courses; no collisions, race tactics, or adaptive rubber; never a human win-rate or full campaign',
   noRankTampering:true,packProbeCount:Object.keys(report.fieldPace).length};
 
+/** V4.9 regression: real native physics must reward planned steering.
+ * Not a human performance test; guided/late read private Track geometry.
+ * The same-spline solo AI field only establishes that a careless controller
+ * CAN be beaten, not that a six-car online race was witnessed.
+ */
+report.challengeGate={};
+for(const id of ['01','05','11','16']){
+  const c=report.courses[id],f=report.fieldPace[id];
+  if(c.guided.status!=='FINISHED'||c.late.status!=='FINISHED')
+    throw Error('Guided and late wheel controllers must both physically finish '+id);
+  const cornerCost=+(c.late.elapsedSec-c.guided.elapsedSec).toFixed(1);
+  if(cornerCost<4)throw Error('Physical native corner execution has too little consequence '+id+': '+cornerCost);
+  if(f.beatPrivilegedLate<2)
+    throw Error('At least two original native AI drivers must outrun late steering '+id);
+  report.challengeGate[id]={cornerLossSec:cornerCost,
+    nativeBotsFasterThanLate:f.beatPrivilegedLate};
+}
+/** Native AICar actually MOVES into a strategic lane after personal targeting.
+ * Regression against "fake lane AI": personality must change native lat,
+ * leaving room inside the physical rails. No collision engine in this probe.
+ */
+report.nativeLanePhysics={};
+for(const id of ['01','05','11','16']){
+  const tr=new Track(revised['race-'+id]);
+  const a=new AICar(tr,null,'native line A',1.55,mulberry32(20261001));
+  const b=new AICar(tr,null,'native line B',1.55,mulberry32(20261001));
+  a.reset(-25,0);b.reset(-25,0);
+  a.personal=0;b.personal=-.76;
+  let maxSeparationM=0,insideRails=true;
+  for(let i=0;i<720;i++){
+    a.update(STEP,true,i*STEP,1);b.update(STEP,true,i*STEP,1);
+    maxSeparationM=Math.max(maxSeparationM,Math.abs(a.lat-b.lat));
+    if(Math.abs(a.lat)>tr.halfW-2.0||Math.abs(b.lat)>tr.halfW-2.0)
+      insideRails=false;
+  }
+  if(!insideRails||maxSeparationM<2.8)
+    throw Error('Native AI lane decision is invisible or not physically safe '+id+
+      ': '+maxSeparationM.toFixed(2)+'m');
+  report.nativeLanePhysics[id]={maxLateralSeparationM:+maxSeparationM.toFixed(2),
+    insideNativeRails:insideRails,simulationOnly:true};
+}
 const out=path.join(run,'artifacts/racing-v3-smoke');
 await mkdir(out,{recursive:true});
 await writeFile(path.join(out,'native-player-pace-v34.json'),JSON.stringify(report,null,2)+'\n');
@@ -207,6 +248,7 @@ console.log(JSON.stringify({buildHash:report.buildHash,physics:'pinned PlayerCar
   fieldPace:Object.fromEntries(Object.entries(report.fieldPace).map(([id,v])=>
     [id,{soloSkills:v.entrants.map(x=>x.skill),soloFinishTimes:v.entrants.map(x=>x.elapsedSec),
       beatPrivilegedLate:v.beatPrivilegedLate}])),
+  challengeGate:report.challengeGate,nativeLanePhysics:report.nativeLanePhysics,
   stagePace:Object.fromEntries(Object.entries(report.courses).map(([id,c])=>[id,{
     guided:c.guided.status==='FINISHED'?c.guided.elapsedSec:c.guided.status,
     late:c.late.status==='FINISHED'?c.late.elapsedSec:c.late.status,
