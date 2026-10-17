@@ -148,6 +148,7 @@ async function raceStart(page, index, name) {
     shortcutCurb:!!window.game?.level?.getObjectByName('physical-shortcut-curb'),
     shortcutFascia:!!window.game?.level?.getObjectByName('physical-shortcut-bridge-fascia'),
     shortcutPaint:!!window.game?.level?.getObjectByName('physical-shortcut-centre-dashes'),
+    shortcutPortal:!!window.game?.level?.getObjectByName('physical-shortcut-portal'),
     shortcutAdvanceSigns:window.game?.level?.getObjectByName('physical-shortcut-approach')?.children?.length ?? 0,
     shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
     shortcutRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
@@ -231,7 +232,7 @@ async function raceStart(page, index, name) {
   if(index===4 && (!early.shortcut || early.shortcutGain<25 || early.shortcutGain>82 ||
      early.shortcutLength<75 || early.shortcutLength>210 ||
      early.shortcutStyle!=='temple' || !early.shortcutRoad || !early.shortcutRails ||
-     !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint ||
+     !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint || !early.shortcutPortal ||
      early.shortcutAdvanceSigns!==2))
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
   if(index===0 && early.shortcut)
@@ -527,6 +528,8 @@ try {
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
     if (index===4) {
+      // Reset the native follow camera after teleporting a QA-only car; otherwise
+      // the captured frame shows terrain midway across the map, not the fork.
       // QA-only actual WebGL screenshots at a physical V9 fork. These are
       // deliberately labelled STAGED and are NEVER used as human clear proof.
       const v9Fork=await page.evaluate(()=>{
@@ -534,6 +537,7 @@ try {
         if(!shortcut?.v9)return null;
         const d=shortcut.start-32;
         p.reset(d,0);p.lastD=d;p.progress=d;p.lapsDone=0;
+        if(typeof game.snapCamera==='function')game.snapCamera();
         return {start:shortcut.start,len:shortcut.length,gain:shortcut.gain,style:shortcut.style};
       });
       if(!v9Fork || v9Fork.len>210 || v9Fork.gain<25)
@@ -547,6 +551,7 @@ try {
         p.d=d;p.lastD=d;p.progress=d;p.h=fork.hd;p.m=fork.hd;
         p.proj.__RACE_SHORTCUT_ACTIVE=true;p.proj.__RACE_SHORTCUT_HALF_WIDTH=s.widthAt(fork.arc)*.5;
         p.proj.__RACE_SHORTCUT_ARC=fork.arc;
+        if(typeof g.snapCamera==='function')g.snapCamera();
       });
       await page.waitForTimeout(1500);
       await page.screenshot({path:path.join(dest,'05-v9-short-road-qa-staged.png')});
