@@ -110,11 +110,24 @@ test('CF V18 final native adapter honors lite actor budget and PVE quota',async(
  }};
  const native=createFpsAdapter(game,doc);
  native.start({id:'tags',kind:'hits',lite:true});
- assert.equal(game.opts.size,4,'CF V18 must not fall back to 1v1');
+ assert.equal(game.opts.size,1,'first H5 fight intentionally uses genuine 1v1');
  assert.equal(game.opts.goal,300,'native team score cannot preempt PVE goal');
  assert.equal(launches,1);
+ const {cfMobileActorBudget}=await import('../themes.mjs');
+ const sizes={tags:1,precision:2,survive:3,defense:3,
+   assault:3,marksman:2,evac:3,counter:4};
+ for(const [id,size] of Object.entries(sizes)){
+   const mission={id,kind:id==='precision'?'kills':'hits',lite:true};
+   assert.equal(cfMobileActorBudget(mission),size,id);
+   native.start(mission);
+   assert.equal(game.opts.size,size,id+' actual native team size');
+   assert.equal(game.opts.goal,300,id+' PVE overrides native score');
+ }
+ assert.equal(cfMobileActorBudget({id:'tags',lite:true,elite:true}),2);
+ assert.equal(cfMobileActorBudget({id:'counter',lite:true,elite:true}),4);
+ assert.equal(cfMobileActorBudget({id:'tags',lite:false}),null);
  native.start({id:'tags',kind:'hits',lite:false});
  assert.equal(game.opts.size,1,'legacy original behavior stays isolated');
  assert.equal(game.opts.goal,30);
- assert.equal(launches,2);
+ assert.equal(launches,10);
 });
