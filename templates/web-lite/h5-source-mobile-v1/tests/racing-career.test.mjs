@@ -34,9 +34,9 @@ test('failure diagnosis distinguishes authentic rank, technique and boss losses 
   const cases=[
     [STAGES[2],result(6),{cleanPasses:0},/第6名，要求前3名/],
     [STAGES[6],{...result(6),time:97.3},{},/第6名，要求前3名/],
-    [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前2名/],
-    [STAGES[15],result(2),{beatBoss:false},/未超过指定车神/],
-    [STAGES[14],result(4),{pickups:1},/第4名，要求前2名/],
+    [STAGES[10],result(6),{cleanPasses:2},/第6名，要求前三名/],
+    [STAGES[15],result(4),{beatBoss:false},/第4名，要求前三名/],
+    [STAGES[14],result(4),{pickups:1},/第4名，要求前三名/],
   ];
   for(const [stage,r,stats,expected] of cases){
     const before=JSON.stringify({r,stats});
@@ -48,7 +48,7 @@ test('failure diagnosis distinguishes authentic rank, technique and boss losses 
   }
   assert.match(stageFailureFeedback(STAGES[11],result(6),{eliminated:true}).reason,/淘汰点/);
   assert.match(stageFailureFeedback(STAGES[6],{finished:false,completion:.4},{}).reason,/40%/);
-  assert.match(stageFailureFeedback(STAGES[15],result(4),{beatBoss:false}).reason,/要求前1名.*未超过指定车神/);
+  assert.match(stageFailureFeedback(STAGES[15],result(4),{beatBoss:false}).reason,/要求前三名/);
 });
 
 test('30 staged challenges use four biome worlds and eight distinct objectives',()=>{
@@ -56,18 +56,27 @@ test('30 staged challenges use four biome worlds and eight distinct objectives',
   assert.ok(new Set(STAGES.map(s=>s.kind)).size>=8);assert.ok(STAGES.filter(s=>s.laps>1).length>=12);
   assert.equal(STAGES[0].laps,2);
 });
-test('V8 ranks decide advancement; genuine corner passes earn third-star mastery',()=>{
-  assert.match(STAGES[2].goal,/弯道超车 2 次挑战三星/);
-  assert.match(STAGES[10].goal,/弯道超车 3 次挑战三星/);
-  assert.equal(gradeStage(STAGES[2],result(1),{cleanPasses:0}),2);
-  assert.equal(gradeStage(STAGES[10],result(1),{cleanPasses:1}),2);
+test('all thirty stages are rank-only: first 3 stars, second 2, third 1',()=>{
+  assert.equal(STAGES.length,30);
+  for(const stage of STAGES){
+    assert.equal(stage.rank,3,stage.id);
+    assert.match(stage.goal,/前三名通关/);
+    assert.ok(stage.mission.length>3,stage.id);
+    for(const place of [1,2,3,4,5,6]){
+      assert.equal(gradeStage(stage,result(place),{beatBoss:false,cleanDrifts:0,pickups:0,gateSpeed:0}),
+        place<=3?4-place:0,stage.id+' #'+place);
+    }
+    assert.equal(gradeStage(stage,{...result(1),finished:false},{}),0);
+  }
 });
-test('unlock is linear, real rank controls ordinary racing advancement',()=>{
-  let c=newCareer();assert.equal(stageUnlocked(c,1),false);
-  c=recordStage(c,STAGES[0],result(),{}).career;
-  assert.equal(stageUnlocked(c,1),true);assert.equal(stageUnlocked(c,2),false);
-  assert.equal(gradeStage(STAGES[2],result(),{cleanPasses:0}),2);
-  assert.ok(gradeStage(STAGES[2],result(),{cleanPasses:2}));
+test('an actual bronze finish immediately unlocks the next challenge',()=>{
+ let c=newCareer();assert.equal(stageUnlocked(c,1),false);
+ const out=recordStage(c,STAGES[0],result(3),{});
+ assert.equal(out.stars,1);assert.equal(out.bestStars,1);
+ c=out.career;
+ assert.equal(stageUnlocked(c,1),true);
+ assert.equal(stageUnlocked(c,2),false);
+ assert.equal(gradeStage(STAGES[2],result(1),{cleanPasses:0}),3);
 });
 test('valid drift counts real driftEnd above .22 seconds',()=>{
   assert.equal(validDrift({type:'driftStart',data:{time:5}}),false);
@@ -76,15 +85,13 @@ test('valid drift counts real driftEnd above .22 seconds',()=>{
   assert.equal(validDrift({type:'driftEnd',data:{time:.4}}),false);
   assert.equal(validDrift({type:'driftEnd',data:{time:.4,clean:true}}),true);
 });
-test('time / relay / boss / elimination gates never auto-pass',()=>{
-  assert.ok(gradeStage(STAGES[6],result(),{}));
-  assert.equal(gradeStage(STAGES[6],{...result(),time:180},{}),0);
-  assert.equal(gradeStage(STAGES[8],result(),{padCount:0}),0);
-  assert.ok(gradeStage(STAGES[8],result(),{padCount:1}));
-  assert.equal(gradeStage(STAGES[11],result(),{survived:1}),0);
-  assert.ok(gradeStage(STAGES[11],result(),{survived:2}));
-  assert.equal(gradeStage(STAGES[12],result(),{beatBoss:false}),0);
-  assert.ok(gradeStage(STAGES[12],result(),{beatBoss:true}));
+test('special race types still use native timed and elimination gameplay; podium stars depend on finish place',()=>{
+ for(const index of [6,8,11,12,15,21,23,29]){
+  const stage=STAGES[index];
+  for(let place=1;place<=3;place++)
+   assert.equal(gradeStage(stage,result(place),{beatBoss:false,survived:0,padCount:0}),4-place);
+  assert.equal(gradeStage(stage,{...result(3),finished:false},{beatBoss:true,survived:2}),0);
+ }
 });
 test('career persistence and skins depend only on earned stars',()=>{
   const c=newCareer();c.stars={'01':3,'02':3};c.rounds=2;c.skin=2;
@@ -160,7 +167,7 @@ test('invalid drift endings, including wall collisions, cannot unlock the drift 
   c.onEvent({type:'driftEnd',data:{time:.4,clean:true}},g);
   assert.equal(c.metrics.cleanDrifts,1);
   assert.match(c.objectiveLabel(g),/1\/5/);
-  assert.equal(gradeStage(c.stage,result(),c.metrics),0);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),3,'clean drift counter still tracks technique, not medal gating');
 });
 test('career UI objectives reflect real progress, not dummy counters',()=>{
   const c=new RacingCareer(memory()),g=game();
@@ -168,7 +175,7 @@ test('career UI objectives reflect real progress, not dummy counters',()=>{
   c.setStage(2);c.begin(g);
   assert.match(c.objectiveLabel(g),/0\/2/);
   c.metrics.cleanPasses=1;assert.match(c.objectiveLabel(g),/1\/2/);
-  assert.equal(gradeStage(c.stage,result(),c.metrics),2);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),3);
   c.metrics.cleanPasses=2;
   assert.ok(gradeStage(c.stage,result(),c.metrics));
 });
@@ -214,10 +221,10 @@ test('corner-pass gift cannot counterfeit a required physical item-box pickup',(
   assert.equal(c.setStage(4),true);c.begin(g);
   c.onItemGet('nitro','overtake');
   assert.equal(c.metrics.bonusItems,1);assert.equal(c.metrics.pickups,0);
-  assert.equal(gradeStage(c.stage,result(),c.metrics),2);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),3);
   c.onItemGet('shield','box');
   assert.equal(c.metrics.pickups,1);
-  assert.equal(gradeStage(c.stage,result(),c.metrics),2);
+  assert.equal(gradeStage(c.stage,result(),c.metrics),3);
   c.onItemGet('nitro','box');
   assert.equal(c.metrics.pickups,2);
   assert.ok(gradeStage(c.stage,result(),c.metrics)>0);
@@ -368,7 +375,7 @@ test('自动救援只影响完美三星，不额外扣油，不会误判为过�
   const normal=gradeStage(s,{finished:true,place:1,time:70,stats:{crash:0}},{rescues:0});
   const rescued=gradeStage(s,{finished:true,place:1,time:70,stats:{crash:0}},{rescues:1});
   assert.equal(normal,3);
-  assert.equal(rescued,2);
+  assert.equal(rescued,3,'rescue cannot secretly downgrade a real first place finish');
   const c=new RacingCareer(memory()),g=game();
   let count=0;
   g.player.h=Math.PI;g.player.wrongWay=3;g.track.sample=()=>({hd:0});
@@ -392,25 +399,24 @@ test('双键道具：背包只剩一件没有目标的护盾，超过18秒自动
 });
 
 test('boss goals disclose rank + opponent gates; beating rival at sixth is not victory',()=>{
-  assert.match(STAGES[12].goal,/前二名/);
-  assert.match(STAGES[15].goal,/第一名/);
+  assert.match(STAGES[12].goal,/前三名通关/);
+  assert.match(STAGES[15].goal,/第1名三星/);
   assert.equal(gradeStage(STAGES[15],{finished:true,place:6,time:130,stats:{crash:1}},{beatBoss:true}),0);
   const c=new RacingCareer(memory()),g=game();c.index=15;c.begin(g);
-  assert.match(c.objectiveLabel(g),/须前1名/);
+  assert.match(c.objectiveLabel(g),/须前3名/);
   assert.match(c.objectiveLabel(g),/未超越/);
   g.standings=[g.player,g.racers[1],g.racers[2]];
   assert.match(c.objectiveLabel(g),/已超越/);
 });
 
-test('V4.8 hard time/drift gates reject previous relaxed objectives',()=>{
-  assert.equal(STAGES[6].target,158);
-  const ok={finished:true,place:3,time:104,stats:{crash:1}};
-  assert.ok(gradeStage(STAGES[6],ok,{}));
-  assert.equal(gradeStage(STAGES[6],{...ok,time:160},{}),0);
-  assert.equal(STAGES[3].target,5,'opening chapter demands proper technical drifting');
-  const drive={finished:true,place:1,time:95,stats:{crash:0}};
-  assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:5}),2);
-  assert.equal(gradeStage(STAGES[3],drive,{cleanDrifts:6}),3);
+test('special objective counters remain real but do not modify stars after a completed race',()=>{
+ assert.equal(STAGES[6].target,158);
+ const win={finished:true,place:1,time:104,stats:{crash:1}};
+ assert.equal(gradeStage(STAGES[6],win,{}),3);
+ assert.equal(gradeStage(STAGES[6],{...win,time:160},{}),3);
+ assert.equal(STAGES[3].target,5);
+ assert.equal(gradeStage(STAGES[3],win,{cleanDrifts:0}),3);
+ assert.equal(gradeStage(STAGES[3],win,{cleanDrifts:6}),3);
 });
 test('V4.8 final boss and podium become significantly harder without touching race results',()=>{
   const career=new RacingCareer(memory()),g=game();
@@ -421,8 +427,8 @@ test('V4.8 final boss and podium become significantly harder without touching ra
   assert.equal(career.boss.skill,2.10);
   assert.equal(g.racers[2].skill,1.52);
   assert.deepEqual(g.racers.map(x=>({progress:x.progress,s:x.s,d:x.d})),original);
-  assert.equal(STAGES[15].rank,1);
-  assert.equal(gradeStage(STAGES[15],{finished:true,place:2,time:130,stats:{crash:2}},{beatBoss:false}),0);
+  assert.equal(STAGES[15].rank,3);
+  assert.equal(gradeStage(STAGES[15],{finished:true,place:2,time:130,stats:{crash:2}},{beatBoss:false}),2);
   assert.ok(gradeStage(STAGES[15],{finished:true,place:1,time:130,stats:{crash:2}},{beatBoss:true})>0);
 });
 
@@ -442,7 +448,7 @@ test('V4.8 stage01 is NOT a tutorial pass: demands two full laps, rank and a tru
 test('V6.0 no easy rank gates remain across the thirty stages',()=>{
   assert.equal(STAGES.length,30);
   for(const stage of STAGES){
-    assert.ok(stage.rank<=3,'hard rank on stage '+stage.id);
+    assert.equal(stage.rank,3,'every chapter uses the same podium threshold '+stage.id);
     assert.ok(stage.laps>=2||(['07','22'].includes(stage.id)&&stage.laps===1),'single-lap only for authored long-distance descents '+stage.id);
     assert.equal(gradeStage(stage,{finished:true,place:4,time:1,stats:{crash:0}},
       {gateSpeed:300,cleanDrifts:100,cleanPasses:100,pickups:100,survived:2,beatBoss:true,padCount:10}),0,
@@ -477,7 +483,7 @@ test('stage/daily switch cannot transfer a free retry; wins never grant one',()=
   assert.equal(c.hasFreeReplay(),false);
   assert.equal(c.freeReplayStageId,null);
   c.begin(g);c.finalize(g,{finished:true,place:1,time:60,stats:{crash:0}},0);
-  // Speed stage 02 requires a native gate goal. Above race is not a win.
+  // Gate-speed objective remains available, but podium finish is already a win.
   c.metrics.gateSpeed=180;
   c.begin(g);c.metrics.gateSpeed=205;
   const result=c.finalize(g,{finished:true,place:1,time:65,stats:{crash:0}});
@@ -559,4 +565,45 @@ test('late ad callback after another stage or run cannot credit a different resu
   c.begin(g);
   assert.equal(g.player.nitroCount,1);
   assert.equal(c.bonusNitroStageId,null);
+});
+
+test('bronze -> silver -> gold upgrades the saved medal and never decreases it',()=>{
+ let c=newCareer();
+ const bronze=recordStage(c,STAGES[0],result(3),{});
+ assert.equal(bronze.stars,1);assert.equal(bronze.previousStars,0);
+ assert.equal(bronze.bestStars,1);assert.equal(bronze.improvement,1);
+ c=loadCareer(JSON.stringify(bronze.career));
+ const silver=recordStage(c,STAGES[0],result(2),{});
+ assert.equal(silver.stars,2);assert.equal(silver.previousStars,1);
+ assert.equal(silver.bestStars,2);assert.equal(silver.improvement,1);
+ const replay=recordStage(silver.career,STAGES[0],result(3),{});
+ assert.equal(replay.stars,1);assert.equal(replay.bestStars,2);
+ assert.equal(replay.improvement,0);assert.equal(replay.career.stars['01'],2);
+ const loss=recordStage(replay.career,STAGES[0],result(4),{});
+ assert.equal(loss.stars,0);assert.equal(loss.bestStars,2);
+ assert.equal(stageUnlocked(loss.career,1),true);
+ const gold=recordStage(loss.career,STAGES[0],result(1),{});
+ assert.equal(gold.stars,3);assert.equal(gold.previousStars,2);
+ assert.equal(gold.bestStars,3);assert.equal(gold.improvement,1);
+ assert.equal(gold.career.stars['01'],3);assert.equal(gold.total,3);
+ const repeat=recordStage(gold.career,STAGES[0],result(1),{});
+ assert.equal(repeat.improvement,0);assert.equal(repeat.total,3);
+});
+test('best medal records remain stage-specific and first three ranks are integers',()=>{
+ let c=newCareer();
+ c=recordStage(c,STAGES[0],result(2),{}).career;
+ c=recordStage(c,STAGES[1],result(3),{}).career;
+ assert.deepEqual([c.stars['01'],c.stars['02']],[2,1]);
+ assert.equal(careerStars(c),3);
+ assert.equal(gradeStage(STAGES[1],{finished:true,place:3.5,time:91},{}),0);
+});
+test('stage menu and results show retained medals without mutating native input',async()=>{
+ const {readFile}=await import('node:fs/promises');
+ const ui=await readFile(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+ const css=await readFile(new URL('../racing/mobile.css',import.meta.url),'utf8');
+ assert.match(ui,/id="race-result-stars"/);
+ assert.match(ui,/new纪录|新纪录/u);
+ assert.match(ui,/bestStars > 0/);
+ assert.match(ui,/starView\.replaceChildren\(\)/);
+ assert.match(css,/#race-result-stars span\.earned/);
 });
