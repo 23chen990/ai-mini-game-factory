@@ -1,6 +1,6 @@
 /* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout, fetch, Blob, URL */
 import { ManualRaceDriver, TouchActions } from './driver.mjs';
-import { RacingJoystick } from './joystick.mjs';
+import { RaceWheelSteering } from './wheel-steering.mjs';
 import { careerCourseDetails } from './track-design.mjs';
 import { raceSpeedHUD } from './speed-hud.mjs';
 import { RaceDuelTracker } from './duel-loop.mjs';
@@ -18,9 +18,9 @@ const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(sec
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
 root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button><div id="race-speed" hidden aria-label="当前速度"><strong id="race-speed-value">0</strong><span>KM/H</span></div>
-  <div id="race-compact-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="左右拖动方向轮盘，松手回正"><div class="race-stick-track"><span aria-hidden="true" class="race-stick-left">‹</span><span aria-hidden="true" class="race-stick-right">›</span><i id="race-stick-knob"></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
+  <div id="race-compact-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="按住方向盘圆环旋转，松手回正"><div class="race-stick-track"><i id="race-stick-knob"><span class="race-wheel-hub"></span><span class="race-wheel-spoke spoke-top"></span><span class="race-wheel-spoke spoke-left"></span><span class="race-wheel-spoke spoke-right"></span></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING / CAREER</div><h1 id="race-heading">极速飞驰</h1><button id="race-export" type="button" aria-label="导出本机试玩数据JSON">导出数据 ↓</button>
-    <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手轮盘 · 右手漂移 / 小喷 / 氮气</p></div>
+    <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手转动方向盘 · 右手漂移 / 小喷 / 氮气</p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10" hidden>${'<span></span>'.repeat(10)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
     <p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
     <div id="race-settings" hidden><label for="race-steering-sens">转向</label><select id="race-steering-sens" aria-label="轮盘转向灵敏度"><option value="calm">柔和</option><option value="normal">标准</option><option value="sharp">灵敏</option></select><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">均衡画质，性能不足时自动调低</small></div>
@@ -31,7 +31,7 @@ document.body.append(root);
 const $ = id => root.querySelector('#race-' + id);
 const duel = new RaceDuelTracker();
 const shortcutDecisions = new ShortcutDecisionTracker();
-const joystick = new RacingJoystick(), actions = new TouchActions(),
+const joystick = new RaceWheelSteering(), actions = new TouchActions(),
   driver = new ManualRaceDriver(actions), quality = new QualityMonitor();
 const SENS_STORE = 'h5-qq-mobile-20261013:steering-sensitivity:v1';
 try { joystick.setSensitivity(localStorage.getItem(SENS_STORE)); } catch { /* Default safe sensitivity. */ }
@@ -44,6 +44,7 @@ let nativeStartRace, policyReady = false, backgrounded = document.hidden;
 let events = [], best = {}, lastRacePassed = false;
 let replayTapCount = 0;
 let touchSerial=0,consumedTouchSerial=-1,lastStickEventAt=0,lastTouchSampleAgeMs=null;
+let wheelCaptureFallback=false;
 let justFinishedPassed = null;
 let adNotice = '', adNoticeUntil = 0;
 const STORE = 'h5-qq-mobile-20261013:two-button:v1'; // Preserve legacy save key across input migration.
@@ -115,14 +116,15 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(),fpsEstimate:quality.fps,touchToInputSampleMs:lastTouchSampleAgeMs, trial: trial.snapshot(), revision: 'V9.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'wheel' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, shortcut:shortcutDecisions.snapshot(),fpsEstimate:quality.fps,touchToInputSampleMs:lastTouchSampleAgeMs, trial: trial.snapshot(), revision: 'V9.1' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
-  $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
+  $('stick-knob').style.transform = `rotate(${joystick.visualDegrees.toFixed(1)}deg)`;
+  $('joystick').style.setProperty('--turn-strength',Math.abs(joystick.snapshot()).toFixed(3));
   $('joystick').classList.toggle('held',joystick.active);
 }
 function releaseInput() {
-  joystick.clear(); actions.clear();
+  joystick.clear(); actions.clear(); wheelCaptureFallback=false;
   if (g) clearNativeInput(g.input);
   syncJoystickVisual();
   for (const button of root.querySelectorAll('[data-race-action]')) button.classList.remove('held');
@@ -333,40 +335,69 @@ $('quality').addEventListener('change', () => {
   $('quality-note').textContent = '已保存画质偏好，下次打开继续生效';
 });
 const joystickSurface = $('joystick');
+const actionButtons=Object.fromEntries([...root.querySelectorAll('[data-race-action]')].map(button=>[button.dataset.raceAction,button]));
 const recordStickEvent=()=>{touchSerial++;lastStickEventAt=performance.now();};
 joystickSurface.addEventListener('pointerdown', e => {
-  e.preventDefault();
+  if (e.cancelable) e.preventDefault();
   if (!g || phase !== 'race') return;
-  const r = joystickSurface.getBoundingClientRect();
-  if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width / 2)) return;
-  touchDriving = true; g.mobileMode = true;recordStickEvent();
-  joystickSurface.setPointerCapture(e.pointerId); syncJoystickVisual();
+  const r=joystickSurface.getBoundingClientRect();
+  if (!joystick.press(e.pointerId,e.clientX,e.clientY,r.left+r.width/2,r.top+r.height/2,r.width/2)) return;
+  touchDriving=true;g.mobileMode=true;recordStickEvent();
+  try {joystickSurface.setPointerCapture(e.pointerId);wheelCaptureFallback=false;}
+  catch {wheelCaptureFallback=true;}
+  syncJoystickVisual();
 });
 joystickSurface.addEventListener('pointermove', e => {
-  if (joystick.update(e.pointerId, e.clientX)) {
-    recordStickEvent();
-    if (e.cancelable) e.preventDefault();
-    syncJoystickVisual();
+  if(joystick.update(e.pointerId,e.clientX,e.clientY)){
+    if(e.cancelable)e.preventDefault();
+    recordStickEvent();syncJoystickVisual();
   }
 });
-joystickSurface.addEventListener('pointerup', e => {
-  if (joystick.release(e.pointerId)) {e.preventDefault();recordStickEvent(); syncJoystickVisual();}
-});
-const endStick = e => {
-  if (joystick.release(e.pointerId)) {if (e.cancelable) e.preventDefault();recordStickEvent(); syncJoystickVisual();}
+const endStick=(e)=>{
+  if(joystick.release(e.pointerId)){
+    if(e.cancelable)e.preventDefault();
+    wheelCaptureFallback=false;recordStickEvent();syncJoystickVisual();
+  }
 };
-joystickSurface.addEventListener('pointercancel', endStick);
-joystickSurface.addEventListener('lostpointercapture', endStick);
-for (const button of root.querySelectorAll('[data-race-action]')) {
-  const action = button.dataset.raceAction;
-  button.addEventListener('pointerdown',e=>{
-    e.preventDefault(); if (phase !== 'race') return;
-    touchDriving = true; if (g) g.mobileMode = true;
-    button.setPointerCapture(e.pointerId); actions.press(e.pointerId,action,g?.raceTime ?? 0);button.classList.add('held');
+joystickSurface.addEventListener('pointerup',endStick);
+joystickSurface.addEventListener('pointercancel',endStick);
+joystickSurface.addEventListener('lostpointercapture',endStick);
+window.addEventListener('pointermove', e => {
+  if(!wheelCaptureFallback||joystick.pointerId!==e.pointerId||joystickSurface.contains(e.target))return;
+  if(joystick.update(e.pointerId,e.clientX,e.clientY)){
+    if(e.cancelable)e.preventDefault();
+    recordStickEvent();syncJoystickVisual();
+  }
+});
+for (const kind of ['pointerup','pointercancel']){
+  window.addEventListener(kind,e=>{
+    endStick(e);
+    const action=actions.pointers.get(e.pointerId);
+    if(action){
+      if(kind==='pointerup')actions.release(e.pointerId);else actions.cancel(e.pointerId);
+      actionButtons[action]?.classList.toggle('held',actions.isHeld(action));
+    }
   });
-  button.addEventListener('pointerup',e=>{ e.preventDefault();actions.release(e.pointerId);button.classList.toggle('held',actions.isHeld(action)); });
-  const cancel=e=>{ if(e.cancelable)e.preventDefault(); actions.cancel(e.pointerId);button.classList.toggle('held',actions.isHeld(action)); };
-  button.addEventListener('pointercancel',cancel);button.addEventListener('lostpointercapture',cancel);
+}
+for(const button of root.querySelectorAll('[data-race-action]')){
+  const action=button.dataset.raceAction;
+  button.addEventListener('pointerdown',e=>{
+    if(e.cancelable)e.preventDefault();
+    if(phase!=='race')return;
+    touchDriving=true;if(g)g.mobileMode=true;
+    try{button.setPointerCapture(e.pointerId);}catch{/* Window release fallback. */}
+    actions.press(e.pointerId,action,g?.raceTime??0);button.classList.add('held');
+  });
+  button.addEventListener('pointerup',e=>{
+    if(e.cancelable)e.preventDefault();
+    actions.release(e.pointerId);button.classList.toggle('held',actions.isHeld(action));
+  });
+  const cancel=e=>{
+    if(e.cancelable)e.preventDefault();
+    actions.cancel(e.pointerId);button.classList.toggle('held',actions.isHeld(action));
+  };
+  button.addEventListener('pointercancel',cancel);
+  button.addEventListener('lostpointercapture',cancel);
 }
 const background = () => { backgrounded = true;pause(); };
 window.addEventListener('blur', background);
@@ -481,7 +512,7 @@ async function boot() {
           if (nitroBtn) {
             nitroBtn.classList.toggle('ready',g.player.nitroCount > 0);
             const label = g.player.nitroCount > 0 ? '氮气 ×' + g.player.nitroCount : '氮气';
-            if (nitroBtn.textContent !== label) nitroBtn.textContent = label;
+            nitroBtn.dataset.label=label;
           }
           const smallBtn = root.querySelector('[data-race-action="small"]');
           if (smallBtn) smallBtn.classList.toggle('ready',g.player.smallWindow > 0);
@@ -490,7 +521,7 @@ async function boot() {
           const held = g.player.items?.[0];
           if (itemBtn) {
             const icon=held ? (ITEM_ICONS[held] ?? '❔') : '道具';
-            if(itemBtn.textContent!==icon)itemBtn.textContent=icon;
+            itemBtn.dataset.label=icon;
             itemBtn.setAttribute('aria-label',held?'使用'+(ITEM_LABELS[held]??'道具'):'使用道具');
           }
         }
