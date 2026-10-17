@@ -501,6 +501,32 @@ export function chooseFirstEncounterSpot({player, world, nav, actors = [], dista
 }
 
 
+/** A visible red arrow above a doorway is not enough. The original gun
+ * fires native physical rays, so the initial target needs an exposed torso
+ * and space to either side rather than one head-height gap through metal. */
+export function cfOpeningBodyLaneClear(world,spawn,spot){
+  if(!world?.raycast||!world?.blocked||
+    ![spawn?.x,spawn?.z,spot?.x,spot?.z].every(Number.isFinite))
+    return false;
+  const fx=spot.x-spawn.x,fz=spot.z-spawn.z;
+  const forward=Math.hypot(fx,fz);
+  if(!(forward>=5))return false;
+  const sideX=-fz/forward,sideZ=fx/forward;
+  for(const side of [-.55,0,.55]){
+    const x=spot.x+sideX*side,z=spot.z+sideZ*side;
+    if(world.blocked(x,.05,z,.22,1.55))return false;
+    for(const targetY of [1.0,1.48]){
+      const dx=x-spawn.x,dz=z-spawn.z,dy=targetY-1.55;
+      const distance=Math.hypot(dx,dy,dz);
+      const hit=world.raycast(spawn.x,1.55,spawn.z,
+        dx/distance,dy/distance,dz/distance,
+        Math.max(0,distance-.35),'sight');
+      if(hit&&Number(hit.t)<distance-.3)return false;
+    }
+  }
+  return true;
+}
+
 /** A short H5 level must start with a REAL enemy visible in a real firing
  * corridor, not with a hero staring into a container wall. This selects an
  * existing map spawn and an authored camera bearing BEFORE the match starts.
@@ -544,6 +570,7 @@ export function cfChooseVisibleOpeningLane({
         if(blocker&&Number(blocker.t)<distance+backstop-.1)continue;
         const path=nav.findPath(spawn.x,spawn.z,spot.x,spot.z);
         if(!Array.isArray(path)||path.length<2)continue;
+        if(!cfOpeningBodyLaneClear(world,spawn,spot))continue;
         // Prefer closer, centered, broad lanes. Never favor a hidden actor.
         const score=distance-.95*Math.abs(turn)+backstop*.8-
           .2*Math.max(0,path.length-2);
