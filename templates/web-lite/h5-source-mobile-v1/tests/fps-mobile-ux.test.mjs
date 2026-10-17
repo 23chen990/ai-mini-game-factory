@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfBeginTouchFire, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfNoviceScoutStrafe, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
+import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfBeginTouchFire, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, cfSeenLaneSight, cfReacquireLane, cfNativeShotAimError, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfNoviceScoutStrafe, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
@@ -625,4 +625,62 @@ test('CF one-thumb firing stays native through lost button events without invent
  cfBeginTouchFire(interrupted);
  cfReleaseTouchFire(interrupted,true);
  assert.deepEqual(interrupted,{fire:false,firePressed:false});
+});
+
+
+test('CF flank prioritizes an authentic sightline over the nearer blocked side',()=>{
+ const player={pos:{x:0,y:0,z:0},yaw:0,eyeH:1.6};
+ const world={
+   blocked:()=>false,
+   raycast:(x)=>x>0?{t:2}:null
+ };
+ const nav={idx:()=>1,walkable:()=>true,lineFree:()=>true,
+   findPath:()=>{throw Error('direct nav route should work');}};
+ const lastSeen={x:0,z:-11,at:3};
+ const goal=cfFlankWaypoint({player,world,nav,minDistance:8,lastSeen});
+ assert.ok(goal,'an accessible flank must be found');
+ assert.equal(goal.side,-1,'choose the genuinely exposed firing-side lane');
+ assert.equal(goal.sightClear,true);
+ assert.ok(goal.pathLength>=8);
+ assert.equal(cfSeenLaneSight(world,{x:-8,z:0},lastSeen,1.6),true);
+ assert.equal(cfSeenLaneSight(world,{x:8,z:0},lastSeen,1.6),false);
+ assert.equal(cfSeenLaneSight(world,{x:0,z:0},null,1.6),null);
+});
+
+test('CF post-flank sight recovery stops at nearest visible legal lane rather than undoing 8m',()=>{
+ const player={pos:{x:0,y:0,z:12},yaw:-Math.PI/2,eyeH:1.6};
+ const firstHitSpot={x:0,z:0},lastSeen={x:10,z:0,at:5};
+ const nav={idx:(x,z)=>Math.abs(x)<20&&Math.abs(z)<20?0:-1,
+   walkable:id=>id>=0,lineFree:()=>true,
+   findPath:()=>{throw Error('free direct route should bypass A-star');}};
+ const world={blocked:()=>false,raycast:(x,y,z)=>z>5?{t:2}:null};
+ const lane=cfReacquireLane({player,firstHitSpot,lastSeen,world,nav});
+ assert.ok(lane,'nearby legal LOS lane must exist');
+ assert.ok(lane.z>0&&lane.z<5,'recover a shorter shooting lane, not first-shot origin');
+ assert.ok(lane.travel<12,'the player need not run all the way back');
+ assert.equal(lane.seenOnly,true);
+ assert.equal(cfReacquireLane({player,firstHitSpot,lastSeen,
+   world:{...world,raycast:()=>null},nav}),null,
+   'a clear new position needs only camera reacquisition, not navigation');
+ const longPath={...nav,lineFree:()=>false,
+   findPath:(x,z,tx,tz)=>[[x,z],[90,90],[tx,tz]]};
+ assert.equal(cfReacquireLane({player,firstHitSpot,lastSeen,world,nav:longPath}),null,
+   'a target across an unreasonable map detour must not be advertised as safe');
+ assert.equal(cfReacquireLane({player,firstHitSpot,lastSeen:null,world,nav}),null);
+});
+
+test('CF firing-only aim assist compares target with REAL native recoil-adjusted bullet angle',()=>{
+ const a=cfNativeShotAimError({targetYaw:-Math.PI/2,targetPitch:-.015,
+   playerYaw:-Math.PI/2,playerPitch:0,recoilYaw:.026,recoilPitch:.055});
+ assert.ok(Math.abs(a.yawError+.026)<1e-8);
+ assert.ok(Math.abs(a.pitchError+.070)<1e-8);
+ // Native Actor.forward() shoots at pitch + punchP; the model must not
+ // accidentally align the camera while bullets keep climbing off target.
+ const centered=cfNativeShotAimError({targetYaw:2.5,targetPitch:.1,
+   playerYaw:2.5,playerPitch:.1});
+ assert.deepEqual(centered,{yawError:0,pitchError:0});
+ assert.equal(cfNativeShotAimError({targetYaw:Infinity,targetPitch:0,
+   playerYaw:0,playerPitch:0}),null);
+ assert.equal('hits' in a,false);
+ assert.equal('fire' in a,false);
 });
