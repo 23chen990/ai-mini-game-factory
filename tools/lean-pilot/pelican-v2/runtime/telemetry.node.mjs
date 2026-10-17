@@ -9,7 +9,9 @@ test('only specified anonymous local events are persisted, with bounded evidence
  for(let i=0;i<130;i++)assert.equal(recordPlaytestEvent(m,'retry',{level:6,distance:i}),true);
  assert.equal(m.counters.retry,130);
  assert.equal(m.events.length,80);
- assert.deepEqual(Object.keys(m.events[0]).sort(),['at','distance','event','level']);
+ assert.deepEqual(Object.keys(m.events[0]).sort(),['at','distance','elapsedSec','event','level']);
+ recordPlaytestEvent(m,'fail',{level:6,distance:421,elapsed:49.8});
+ assert.equal(m.events.at(-1).elapsedSec,49);
  const saved=loadPlaytestMetrics(JSON.stringify(m));
  assert.equal(saved.counters.retry,130);
  assert.equal(saved.events.length,80);
