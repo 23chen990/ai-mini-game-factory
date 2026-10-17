@@ -604,7 +604,8 @@ test('stage menu and results show retained medals without mutating native input'
  const css=await readFile(new URL('../racing/mobile.css',import.meta.url),'utf8');
  assert.match(ui,/id="race-result-stars"/);
  assert.match(ui,/new纪录|新纪录/u);
- assert.match(ui,/bestStars > 0/);
+ assert.match(ui,/lastRacePassed = stars > 0/,'last finish is determined by current race, not a historic saved podium');
+ assert.match(ui,/const bestStars=/);
  assert.match(ui,/starView\.replaceChildren\(\)/);
  assert.match(css,/#race-result-stars span\.earned/);
 });
