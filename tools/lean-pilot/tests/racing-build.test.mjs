@@ -83,7 +83,7 @@ test('actual esbuild script injection keeps valid $& tokens and exactly one clos
 test('V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes',()=>{
   const layouts = "export const LAYOUTS = { city: {}, egypt: {}, snow: {}, aegean: {} };";
   const patchedLayouts = api.patchRaceLayouts(layouts);
-  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS\)/);
+  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS, \{ v8: true \}\)/);
   assert.equal(api.patchRaceLayouts(patchedLayouts),patchedLayouts);
   assert.throws(()=>api.patchRaceLayouts('const X = {};'), /Pinned track/);
   const src = "import * as THREE from 'three';\nexport class ItemSystem {\n  constructor() {\n    this.foo=1;\n  }\n\n  reset() {}\n}";
@@ -160,7 +160,7 @@ test('native fork adapters are exact, idempotent and preserve original accelerat
     'P.update(DT, first ? pin : noEdge, active, this.itemMode);',
   ].join('\n');
   const patched=api.patchShortcutNativeWorld(world);
-  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse\)/);
+  assert.match(patched,/installPhysicalShortcut\(track, requestedCourse, \{v8:true\}\)/);
   assert.match(patched,/terrainProxy\(track\)/);
   assert.match(patched,/physical|buildMesh\(THREE, ground.heightAt\)/);
   assert.match(patched,/__RACE_SHORTCUT__\?\.recover\(P\)/);
@@ -194,4 +194,21 @@ test('fixed desert monument safety keeps pyramid models away from new racing sur
   assert.match(out,/buildPyramid\(\)/,'original sculpture remains when safe');
   assert.equal(api.patchFixedDesertLandmarks(out),out);
   assert.throws(()=>api.patchFixedDesertLandmarks('unexpected native geometry'),/landmark placement changed/);
+});
+
+test('V8 native AI hook is strict and avoids checkpoint/progress surgery',()=>{
+  const src=[
+    "import { TUNE } from './vehicle.js';",
+    "export class AICar {",
+    "const target = clamp(inside + this.personal * hw * 0.8, -hw, hw);",
+    "this.dist += this.s * dt + this.pushD;\n    this.pushD = 0;\n    const s = tr.sample(this.dist, this.s2);",
+    "this.slope = tr.slope[s.i];",
+    "}"
+  ].join('\n');
+  const adapted=api.patchV8NativeAi(src);
+  assert.match(adapted,/advanceAiV8Road\(this,tr,travel\)/);
+  assert.match(adapted,/aiV8TargetLine\(this,tr/);
+  assert.ok(adapted.includes('const travel = this.s * dt + this.pushD;'));
+  assert.equal(api.patchV8NativeAi(adapted),adapted);
+  assert.throws(()=>api.patchV8NativeAi('class NonRacing {}'),/AI anchors changed/);
 });
