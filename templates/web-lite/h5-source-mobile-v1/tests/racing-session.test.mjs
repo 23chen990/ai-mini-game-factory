@@ -166,3 +166,25 @@ test('player-chosen quality is respected unless the mobile game is almost unplay
   for(let i=0;i<3;i++) assert.equal(spiky.frame(.4,'high'),null);
   assert.equal(spiky.frame(.4,'high'),'mid','repeated very long frames trigger a rescue');
 });
+
+test('phone-only sample and RAF frame diagnostics stay bounded, private and distinguish dropped frames',()=>{
+  const H=need('RaceInputHealth'), h=new H();
+  assert.equal(h.sample(99),null);
+  h.touch(100,0,'press');
+  assert.equal(h.sample(106),6);
+  assert.equal(h.sample(110),null,'unchanged touch is not repeatedly sampled');
+  h.touch(120,.7,'move');
+  h.touch(124,-.7,'move');
+  assert.equal(h.snapshot().directionReversals,1,'actual reversal recognised');
+  h.touch(128,0,'cancel');
+  assert.equal(h.snapshot().touchCancels,1);
+  h.sample(133);
+  for(let i=0;i<150;i++)h.frame(i%10===0?.061:.016);
+  const s=h.snapshot();
+  assert.equal(s.frameCount,120);
+  assert.ok(s.frameMsP95>=60,'janky frame p95 remains visible');
+  assert.ok(s.framesOver50ms>0);
+  assert.equal(s.inputSampleMsP95,6);
+  assert.equal(s.timingScope,'pointer-event-to-native-input-sample-and-overlay-RAF-only');
+  assert.ok(!JSON.stringify(s).includes('clientX'));
+});
