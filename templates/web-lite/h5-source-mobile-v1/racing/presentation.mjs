@@ -1,5 +1,8 @@
 /** Pure arcade presentation. Never mutates native driving, result or save state. */
-import { COURSE_BLUEPRINTS, injectTechnicalSectors } from './track-design.mjs';
+import { COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from './track-design.mjs';
+import { shapeV9RhythmSegments } from './v9-course-director.mjs';
+import { shapeV10SignatureSectors } from './v10-course-director.mjs';
+import { V8_COURSES } from './v8-course-geometry.mjs';
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const finite = value => typeof value === 'number' && Number.isFinite(value);
@@ -9,11 +12,14 @@ export function careerCourseSvg(course) {
   const id = typeof course === 'string' ? course.replace(/^race-/, '') : '';
   const blueprint = COURSE_BLUEPRINTS[id];
   if (!blueprint) return '';
-  // Mirror the precise authored spline control points, not the old pre-S-turn
-  // lobby outline. Real native Track Catmull-Rom remains authoritative on road.
-  const points = injectTechnicalSectors(
-    blueprint[4].split(' ').map(point => point.split(',').map(Number)),
-    id, blueprint[3]);
+  // The lobby map and real V10 native Track MUST share identical horizontal
+  // control points. No V3 old S-outline that differs from the actual race.
+  const original=blueprint[4].split(' ').map(point=>point.split(',').map(Number));
+  const baseline=shapeV9RhythmSegments(original,id,blueprint[3],
+    COURSE_TECHNICAL_SECTORS[id]).points;
+  const points=shapeV10SignatureSectors(original,baseline,
+    COURSE_TECHNICAL_SECTORS[id],id,blueprint[3],
+    V8_COURSES[id].stretch).points;
   if (points.length < 6 || !points.every(point => point.length === 3 && point.every(finite))) return '';
   const xs = points.map(p => p[0]), ys = points.map(p => p[1]);
   const x0 = Math.min(...xs), y0 = Math.min(...ys), dx = Math.max(1, Math.max(...xs) - x0), dy = Math.max(1, Math.max(...ys) - y0);
