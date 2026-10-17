@@ -165,6 +165,7 @@ export function cfNewPlaytest() {
 function validEntry(e) {
   if(!e||!VALID.has(e.mission)||!['won','lost'].includes(e.result)||
      !nonnegative(e.durationSec)||e.durationSec>2000)return false;
+  if(e.assisted!==undefined&&typeof e.assisted!=='boolean')return false;
   for(const key of COUNTS)if(!nonnegative(e[key])||e[key]>100_000)return false;
   for(const key of TIMES)if(e[key]!==null&&
     (!nonnegative(e[key])||e[key]>30000))return false;
@@ -183,6 +184,7 @@ export function cfLoadPlaytest(raw){
     return {version:1,starts:v.starts,finishes:v.finishes,
       retriesAfterLoss:v.retriesAfterLoss,recent:v.recent.map(e=>({
         mission:e.mission,result:e.result,durationSec:e.durationSec,
+        assisted:e.assisted===true,
         ...Object.fromEntries(TIMES.map(k=>[k,e[k]])),
         ...Object.fromEntries(COUNTS.map(k=>[k,e[k]]))
       }))};
@@ -213,7 +215,7 @@ export function cfSamplePlaytest(session,elapsedMs,native={}) {
     native.travel>=1.25)session.firstMoveMs=rounded(time);
   return true;
 }
-export function cfFinishPlaytest(book,session,elapsedMs,outcome,native={}) {
+export function cfFinishPlaytest(book,session,elapsedMs,outcome,native={},options={}) {
   if(!session||!book||!VALID.has(session.mission)||
     !['won','lost'].includes(outcome)||!Number.isFinite(elapsedMs)||
     elapsedMs<0)return null;
@@ -224,6 +226,7 @@ export function cfFinishPlaytest(book,session,elapsedMs,outcome,native={}) {
   const entry={
     mission:session.mission,
     result:outcome,
+    assisted:options?.adAssisted===true,
     durationSec:Math.min(2000,Math.round(elapsedMs/1000)),
     ...Object.fromEntries(TIMES.map(k=>[k,session[k]])),
     ...Object.fromEntries(COUNTS.map(k=>[
@@ -247,7 +250,7 @@ export function cfExportPlaytest(book) {
   return JSON.stringify({
     scope:'only-local-voluntary-export',
     notRetentionOrRevenueProof:true,
-    note:'Manual self-export. Rounded play time and real native stats only; no network, IDs, device or location data.',
+    note:'Manual export of native counters and rounded play time; assisted means a verified rewarded-ad revive. No ad views, revenue, IDs, device, location, or network data.',
     ...data
   },null,2);
 }
