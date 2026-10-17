@@ -66,6 +66,10 @@ export function holdOpeningTeammateFire(actors,ownTeam,now) {
   }
   return held;
 }
+/** Keep native combat controls inert while dead; pause/revive overlays still work. */
+export function cfIgnoreDeadCombatTouch({alive,nativeControl}={}) {
+  return alive!==true&&nativeControl===true;
+}
 /** Touch-generated mouse compatibility events must never fire the native PC rifle. */
 export function blockMobileTouchMouse({touchMode,fromTouch,msSinceTouch}) {
   return touchMode===true && (fromTouch===true ||
@@ -1099,7 +1103,8 @@ export function createFpsMobileUx(game, root, doc) {
     // Native button handlers would queue a jump/fire even when the player is
     // dead; that stale input could trigger immediately on respawn. Block ONLY
     // the in-game control layer, never the pause/revive or browser UI.
-    if(game.player?.alive!==true&&e.target?.closest?.('#touch')){
+    if(cfIgnoreDeadCombatTouch({alive:game.player?.alive,
+      nativeControl:!!e.target?.closest?.('#touch')})){
       e.stopPropagation();return;
     }
     if(e.target?.closest?.('.btn[data-mk-action="fire"]')){
