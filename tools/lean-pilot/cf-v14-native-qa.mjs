@@ -86,6 +86,13 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         panels.top>=-1&&panels.bottom<=innerHeight+1:false,
       status:document.getElementById('mk-status')?.textContent||'',
       route:g?.__mobileBalanceReview||null,
+      solo:g?.__mkSoloPve===true?{
+        friends:(g.actors||[]).filter(a=>!a.isPlayer&&a.team===p?.team).length,
+        enemies:(g.actors||[]).filter(a=>!a.isPlayer&&a.team!==p?.team).length,
+        players:(g.actors||[]).filter(a=>a.isPlayer).length,
+        tags:g.tags?.length||0,
+        removed:g.__mkSoloStart?.removed??null
+      }:null,
       openingBot:bot?{alive:bot.alive===true,
         readyIn:bot.readyAt-(g?.time||0),
         holdUntil:bot.__mobileTrainingHoldUntil-(g?.time||0),
@@ -149,6 +156,11 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       Array.isArray(initial.route?.assaultSite?[
         initial.route.assaultSite.x,initial.route.assaultSite.z
       ]:null)&&initial.route?.assaultSiteValid===true,{route:initial.route});
+    check('solo-assault-real-native-only-one-hero-no-ai-allies',
+      initial.solo?.players===1&&initial.solo?.friends===0&&
+      initial.solo?.enemies===3&&initial.solo?.tags===0&&
+      initial.solo?.removed===2,
+      {solo:initial.solo,route:initial.route});
     check('original-mobile-webgl-truly-started-at-low-quality',
       initial.renderer?.quality==='low'&&initial.renderer?.bloom===false&&
       initial.renderer?.pixelRatio<=1.01,{renderer:initial.renderer});
@@ -631,6 +643,12 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // This is NOT an eight-mission victory or full skill-curve claim.
     for(const id of MISSIONS){
       const before=await enter(id);
+      const enemiesExpected={tags:1,precision:2,survive:3,defense:3,
+        assault:3,marksman:2,evac:3,counter:4}[id];
+      check(id+'-solo-hero-vs-real-native-enemies',
+        before.solo?.players===1&&before.solo?.friends===0&&
+        before.solo?.enemies===enemiesExpected&&before.solo?.tags===0,
+        {id,solo:before.solo,expected:enemiesExpected});
       check(id+'-native-world-and-weapon',before.ready&&
         before.gamePhase==='running'&&before.player?.alive===true&&
         (typeof before.player.weapon==='string')&&
