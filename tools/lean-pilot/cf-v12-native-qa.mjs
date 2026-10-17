@@ -73,6 +73,9 @@ export async function reviewCfV12({base=path.join(ROOT,'runs')}={}){
         panels.top>=-1&&panels.bottom<=innerHeight+1:false,
       status:document.getElementById('mk-status')?.textContent||'',
       route:g?.__mobileBalanceReview||null,
+      renderer:g?.renderer?{quality:g.renderer.quality,
+        pixelRatio:g.renderer.renderer?.getPixelRatio?.(),
+        bloom:g.renderer.bloom!==undefined}:null,
       reviveVisible:document.getElementById('mk-revive-actions')?.hidden===false
     };
   });
@@ -115,6 +118,9 @@ export async function reviewCfV12({base=path.join(ROOT,'runs')}={}){
       Array.isArray(initial.route?.assaultSite?[
         initial.route.assaultSite.x,initial.route.assaultSite.z
       ]:null)&&initial.route?.assaultSiteValid===true,{route:initial.route});
+    check('original-mobile-webgl-truly-started-at-low-quality',
+      initial.renderer?.quality==='low'&&initial.renderer?.bloom===false&&
+      initial.renderer?.pixelRatio<=1.01,{renderer:initial.renderer});
     check('landscape-control-no-browser-pan',initial.stick.touchAction==='none'&&
       initial.fire.touchAction==='none');
     await snap('v12-assault-667-start');
