@@ -137,13 +137,23 @@ export function createCfCoverAssault(game,root,doc) {
   function installBarrier(pos,yaw) {
     const spec=cfCoverShieldSpec(pos,yaw);
     if(!cfCoverCanPlace(game.world,spec,pos))return false;
-    const THREE=game.T;
-    if(!THREE?.BoxGeometry||!THREE?.MeshStandardMaterial||!THREE?.Mesh)return false;
-    const geometry=new THREE.BoxGeometry(spec.sx,spec.sy,spec.sz);
-    const material=new THREE.MeshStandardMaterial({
-      color:0x52616b,metalness:.58,roughness:.67
+    // Original game.T is a texture atlas, NOT the Three.js module. Clone
+    // an existing authored BoxGeometry mesh instead of loading a second
+    // Three.js copy via an unsupported bare-module import in the H5 overlay.
+    let donor=null;
+    game.renderer?.scene?.traverse?.(object=>{
+      if(!donor&&object.isMesh&&
+        object.geometry?.type==='BoxGeometry'&&
+        !Array.isArray(object.material)&&object.material?.clone)donor=object;
     });
-    const mesh=new THREE.Mesh(geometry,material);
+    if(!donor)return false;
+    const mesh=donor.clone();
+    mesh.geometry=new donor.geometry.constructor(spec.sx,spec.sy,spec.sz);
+    mesh.material=donor.material.clone();
+    if(mesh.material.color?.setHex)mesh.material.color.setHex(0x52616b);
+    if('metalness' in mesh.material)mesh.material.metalness=.58;
+    if('roughness' in mesh.material)mesh.material.roughness=.67;
+    mesh.name='cf-v20-real-collision-cover';
     mesh.position.set(spec.x,spec.y,spec.z);
     mesh.rotation.y=spec.yaw;
     mesh.castShadow=false;mesh.receiveShadow=true;
@@ -224,7 +234,8 @@ export function createCfCoverAssault(game,root,doc) {
     const p=game.player;
     for(const side of ['left','right']){
       const b=buttons[side];
-      b.disabled=!sites[side]||!p?.alive||!!route;
+      b.disabled=!sites[side]||!p?.alive||!!route||
+        (p?.pos&&distance(sites[side],p.pos)<1.35);
     }
     const status=route?'↔ 沿真实路径换位中':
       p?.touch?.fire?'◎ 探身射击 · 松手藏回掩体':
@@ -258,18 +269,7 @@ export function createCfCoverAssault(game,root,doc) {
         failedRoutes++;route=null;
         if(game.__mkCoverV20)game.__mkCoverV20.failedRoutes=failedRoutes;
       }
-      if(route?.length===0){
-        route=null;
-        const target=sites[aimSide];
-        if(target&&distance(target,p.pos)<1.35){
-          // Replan cover hops around CURRENT legal player location.
-          const next=cfCoverCandidates({world:game.world,nav:game.nav,player:p});
-          for(const side of ['left','right']){
-            if(next[side]&&cfCoverPath(game.nav,p.pos,next[side]))sites[side]=next[side];
-            else sites[side]=null;
-          }
-        }
-      }
+      if(route?.length===0)route=null;
       if(!route){p.touch.mx=0;p.touch.mz=0;p.touch.crouch=true;}
     } else {
       p.touch.mx=0;p.touch.mz=0;p.touch.crouch=true;
