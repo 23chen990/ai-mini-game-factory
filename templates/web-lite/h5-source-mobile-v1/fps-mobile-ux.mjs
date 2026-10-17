@@ -552,6 +552,10 @@ export function cfChooseVisibleOpeningLane({
           spot,turn:+turn.toFixed(2),distance:+distance.toFixed(2),
           score:+score.toFixed(2),backstop
         };
+        // H5 devices must not run hundreds of expensive nav/ray queries
+        // when a near-centered, broad and walkable opening is already found.
+        if(backstop>=2.2&&distance>=8.8&&Math.abs(turn)<=.42&&
+          path.length<=5)return best;
       }
     }
     if(best)return best;
