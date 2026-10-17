@@ -168,7 +168,7 @@ export function patchShortcutNativeCar(source) {
 }
 export function patchShortcutNativeWorld(source) {
   const imported="import { installPhysicalShortcut } from './race-shortcut-network.mjs';";
-  const marker='installPhysicalShortcut(track, requestedCourse, {v8:true,v9:true});';
+  const marker='installPhysicalShortcut(track, requestedCourse, {v8:true,v9:true,v10:true});';
   const themeImport="import { createRaceTrackTheme, buildRaceLandmarks } from './race-track-design.mjs';";
   const themeCall='createRaceTrackTheme(map.track,track,requestedCourse)';
   const landmarkCall='root.add(buildRaceLandmarks(THREE, track, requestedCourse));';
