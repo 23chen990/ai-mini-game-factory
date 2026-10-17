@@ -9,7 +9,7 @@ export const STAGES = Object.freeze([
   make('04', 1, '海湾高压连漂', 'aegean', 2, 0, 'drift', 'speed', 3, '完成 5 次有效漂移', {'target':5}),
   make('05', 2, '神殿道具争夺', 'egypt', 2, 0, 'item', 'item', 3, '争取前三名，拾取 2 个道具挑战三星', {'target':2}),
   make('06', 2, '城市道具混战', 'city', 2, 1, 'item', 'item', 3, '争取前三名，拾取 3 个道具挑战三星', {'target':3}),
-  make('07', 2, '海崖极限限时', 'aegean', 2, 1, 'time', 'speed', 3, '在 158 秒内完成并进入前三', {'target':158}),
+  make('07', 2, '海崖极限限时', 'aegean', 1, 1, 'time', 'speed', 3, '在 158 秒内完成并进入前三', {'target':158}),
   make('08', 2, '雪地决胜', 'snow', 2, 1, 'race', 'speed', 2, '进入前二名'),
   make('09', 3, '沙丘极限补时', 'egypt', 2, 1, 'relay', 'speed', 3, '抢加速带补时并冲进前三', {'baseTime':115,'bonus':14,'maxTime':240}),
   make('10', 3, '城市逆转争冠', 'city', 3, 1, 'item', 'item', 2, '争取前二名，拾取 3 个道具挑战三星', {'target':3}),
