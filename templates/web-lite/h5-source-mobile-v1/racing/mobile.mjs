@@ -92,11 +92,14 @@ function fuelView() {
   $('star-ad').disabled=loading||!policyReady||!career.canOfferGateAd(gateSelectionIndex);
 }
 function renderLobby() {
-  const stage = career.stage;
+  if(gateSelectionIndex!==null && !career.gateStatus(gateSelectionIndex).starLocked)
+    gateSelectionIndex=null;
+  const locked=gateSelectionIndex!==null ? career.gateStatus(gateSelectionIndex) : null;
+  const stage=locked ? STAGES[gateSelectionIndex] : career.stage;
   $('stage').replaceChildren();
   let chapterGroup = null, activeChapter = -1;
   for (let index = 0; index < STAGES.length; index++) {
-    const s = STAGES[index], open = stageUnlocked(career.progress, index);
+    const s=STAGES[index], gate=career.gateStatus(index), open=gate.unlocked;
     if (s.chapter !== activeChapter) {
       activeChapter = s.chapter;
       chapterGroup = document.createElement('optgroup');
@@ -104,9 +107,11 @@ function renderLobby() {
       $('stage').append(chapterGroup);
     }
     const option = document.createElement('option');
-    option.value = String(index);option.disabled = !open;
+    option.value = String(index);option.disabled = !open && !gate.starLocked;
     const stars = career.progress.stars[s.id] ?? 0;
-    option.textContent = open ? (s.id + ' · ' + s.name + ' ' + '★'.repeat(stars)+'☆'.repeat(3-stars)) : ('🔒 ' + s.id + ' · ' + s.name);
+    option.textContent = open ? (s.id + ' · ' + s.name + ' ' + '★'.repeat(stars)+'☆'.repeat(3-stars)) :
+      gate.starLocked ? ('🔒 ' + s.id + ' · ' + s.name + ' · ' + gate.earned+'/'+gate.required+'★') :
+      ('🔒 ' + s.id + ' · ' + s.name);
     chapterGroup.append(option);
   }
   const dailyOption = document.createElement('option');
@@ -115,17 +120,23 @@ function renderLobby() {
   const earnedToday = career.progress.daily.date === today ? career.progress.daily.stars : 0;
   dailyOption.textContent = career.canDaily() ? '📅 每日挑战 ' + '★'.repeat(earnedToday) : '🔒 每日挑战（通过第4关解锁）';
   $('stage').append(dailyOption);
-  $('stage').value = career.dailySnapshot ? 'daily' : String(career.index);
+  $('stage').value = locked ? String(gateSelectionIndex) : career.dailySnapshot ? 'daily' : String(career.index);
   root.dataset.courseId = stage.course;
   root.dataset.previewRevision = 'racing-v91-wheel-hud';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
-  $('stage-tag').textContent = (career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
+  $('stage-tag').textContent = (!locked && career.dailySnapshot ? '每日挑战' : '第 ' + stage.chapter + ' 章') +
     ' · ' + stage.laps + ' 圈 · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V9.1';
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.title ?? stage.name;
   $('course-feel').textContent = (courseInfo?.feel ?? '') +
     (SHORTCUT_PLANS[stage.course] ? ' · 可选择近道' : '');
-  $('stage-goal').textContent = stage.goal + ' · ★ ' + careerStars(career.progress);
+  $('stage-goal').textContent = locked ?
+    ('第 '+stage.id+' 关 · 累计 '+locked.earned+'/'+locked.required+'★') :
+    stage.goal+' · 累计 '+careerStars(career.progress)+'/90★';
+  $('star-ad').hidden=phase!=='ready'||!locked||!career.canOfferGateAd(gateSelectionIndex);
+  $('star-ad').textContent=locked?'看广告永久解锁第 '+stage.id+' 关':'看广告永久解锁本关';
+  $('start').hidden=phase!=='ready'||!!locked;
+  root.dataset.starLocked=locked?'true':'false';
   $('skin').replaceChildren();
   for (let i = 0; i < SKIN_NAMES.length; i++) {
     const opt = document.createElement('option');opt.value = String(i);opt.disabled = !skinUnlocked(career.progress, i);
@@ -164,7 +175,9 @@ function display(next) {
   phase = next; root.dataset.phase = next; root.dataset.stageKind = career.stage.kind;
   const racing = next === 'race' || next === 'countdown';
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
-  $('start').hidden = next !== 'ready'; $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
+  $('start').hidden = next !== 'ready' || gateSelectionIndex!==null;
+  $('star-ad').hidden = next !== 'ready' || gateSelectionIndex===null || !career.canOfferGateAd(gateSelectionIndex);
+  $('resume').hidden = next !== 'paused'; $('restart').hidden = next !== 'paused';
   const canAdvance = lastRacePassed && career.nextStage() !== career.index;
   $('replay').hidden = next !== 'finished'; $('retry-ad').hidden = next !== 'finished' || !career.canOfferRetryBoost(); $('next').hidden = next !== 'finished' || !canAdvance; $('lobby').hidden = next !== 'finished';
   $('replay').classList.toggle('race-secondary', next === 'finished' && canAdvance);
@@ -352,7 +365,7 @@ $('fuel-ad').addEventListener('click', async () => {
   $('fuel-ad').disabled = true;$('fuel-info').textContent = '广告加载中…';
   const out = await career.watchFuelAd();
   trial.rewardedOutcome(out.status);
-  adNotice = out.status === 'completed' ? '已加油 +2' :
+  adNotice = out.status === 'completed' ? '已加油 +10' :
     out.status === 'session-credit' ? '广告已完成但存档失败，本次不限油' :
     '广告未完成，油量不变';
   adNoticeUntil = performance.now() + 7000;
