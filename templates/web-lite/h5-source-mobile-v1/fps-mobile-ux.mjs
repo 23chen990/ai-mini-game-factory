@@ -58,16 +58,21 @@ export function mobileScoutHoldExpired(actor, seconds) {
     Number.isFinite(actor?.__mobileTrainingHoldUntil) && Number.isFinite(seconds) &&
     seconds >= actor.__mobileTrainingHoldUntil;
 }
-/** Keep a novice opponent in an honest mid-range firefight before it rushes;
-    its gun remains enabled at the real readyAt, not an invulnerable dummy. */
+/** A readable but genuinely dangerous encounter; the first target is never
+ * frozen as a 60s target dummy. It can fire using its ORIGINAL gun, then its
+ * ORIGINAL nav/targeting retakes control within the first 12s. */
 export function cfScoutHoldSeconds(challenge) {
-  if(challenge?.elite===true)return challenge.kind==='kills'?7:3;
-  if(challenge?.kind==='kills')return 20;
-  // Beginner learn-to-flank scenario: one normal, shooting bot remains at
-  // original visible cover until the actual 60s challenge expires. It is
-  // NOT invulnerable, no input/hit is forged, and elite still rushes.
-  return challenge?.kind==='hits'&&challenge.drill==='reposition'
-    ? Math.ceil((challenge.limitMs||60000)/1000)+5 : 7;
+  if(challenge?.elite===true)return challenge.kind==='kills'?6:4;
+  if(challenge?.kind==='kills')return 15;
+  if(challenge?.kind==='hits'&&challenge.drill==='reposition')return 10;
+  return 7;
+}
+/** Time before the native bot may open fire (not invulnerability).
+ * Sniper gets a longer scope-learning window, with the same native physics. */
+export function cfScoutReadyDelaySeconds(challenge) {
+  if(challenge?.elite===true)return challenge.kind==='kills'?3.5:2.5;
+  if(challenge?.kind==='kills')return 6.5;
+  return challenge?.kind==='hits'&&challenge.drill==='reposition'?4.5:5;
 }
 /** Original Bot instances use native death/rebirth and gun physics.
  * Only this beginner drill authors a nearby, walkable team respawn lane.
@@ -568,6 +573,21 @@ export function mobileSimpleFireAllowed({kind,weapon,side,alive,distance,blocked
 
 
 /** Only actual native hit-counter increments create a brief onscreen confirmation. */
+/** UI-only differential of the ACTUAL native player. A new match/respawn or
+ * missing field never creates a hit, kill or phantom damage animation. */
+export function cfRealCombatFeedback(previous,current) {
+  const none={kind:null,hpLoss:0,hits:0,kills:0};
+  if(!previous||!current||previous.alive!==true||current.alive!==true||
+    !['hits','kills','hp'].every(k=>Number.isFinite(previous[k])&&
+      Number.isFinite(current[k]))||
+    current.hits<previous.hits||current.kills<previous.kills||
+    current.hp>previous.hp)return none;
+  const hits=Math.max(0,Math.floor(current.hits-previous.hits));
+  const kills=Math.max(0,Math.floor(current.kills-previous.kills));
+  const hpLoss=Math.max(0,Math.round(previous.hp-current.hp));
+  return {kind:kills?'kill':hits?'hit':hpLoss?'damage':null,
+    hpLoss,hits,kills};
+}
 export function cfHitCue(challenge, nativeHits, increase, drill = null) {
   if (!challenge || !Number.isFinite(nativeHits) || !Number.isFinite(increase) ||
       nativeHits < 1 || increase < 1) return '';
@@ -1089,6 +1109,10 @@ export function createFpsMobileUx(game, root, doc) {
   hitCue.hidden = true;
   hitCue.setAttribute('aria-live', 'off');
   root.append(hitCue);
+  const damageVignette = doc.createElement('div');
+  damageVignette.id = 'mk-fps-damage-vignette';
+  damageVignette.setAttribute('aria-hidden','true');
+  damageVignette.hidden=true;root.append(damageVignette);
   const guide = doc.createElement('div');
   guide.id = 'mk-fps-guide';
   guide.textContent = '◆ 蓝色队友 · ▼ 红色敌人';
@@ -1101,6 +1125,7 @@ export function createFpsMobileUx(game, root, doc) {
   const markers = new Map();
   let started = 0, nextUpdate = 0, lastBoard = '', lastTarget = '';
   let activeChallenge = null, nextBalanceAt = 0, lastHits = 0, cueExpiresAt = 0;
+  let previousCombat=null,damageExpiresAt=0;
   let drill = null, drillStageAt = 0, flankGoal = null, flankDeaths = -1;
   let autoAimActor = null, autoAimSince = 0, autoFireActive = false;
   let routePath = null, routeLastAt = 0, lastVisibleEnemy = null, firstHitSpot = null;
@@ -1193,7 +1218,8 @@ export function createFpsMobileUx(game, root, doc) {
         scout.protectT=0;
         // Allow new players several *simulation seconds* to recognize, aim
         // and shoot. Afterward the standard Bot can shoot normally.
-        scout.readyAt=Math.max(scout.readyAt,game.time+(activeChallenge?.elite===true?4:13));
+        scout.readyAt=Math.max(scout.readyAt,game.time+
+          cfScoutReadyDelaySeconds(activeChallenge));
         scout.__mobileTrainingScout=!sniper;
         scout.__mobileSniperScout=sniper;
         if(sniper) holdOpeningTeammateFire(game.actors,p.team,game.time);
@@ -1254,6 +1280,13 @@ export function createFpsMobileUx(game, root, doc) {
       if(mobileScoutHoldExpired(actor,game.time)) {
         actor.__mobileTrainingScout=false;
         actor.__mobileSniperScout=false;
+        // End temporary opponent spawn-camping when the intro ends.
+        // No current actor gets teleported; only future native respawns use
+        // the legitimate authored spawn pool again.
+        if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns){
+          game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
+          originalEnemySpawns=null;trainingSpawnTeam=null;
+        }
         actor.role='rush';
         actor.pickGoal?.();
       } else {
@@ -1551,8 +1584,11 @@ export function createFpsMobileUx(game, root, doc) {
       nextUpdate = 0;
       nextBalanceAt = 0;
       lastHits = game.player?.stats?.hits || 0;
-      cueExpiresAt = 0;
-      hitCue.hidden = true;
+      previousCombat=game.player?{
+        hits:game.player.stats?.hits||0,kills:game.player.stats?.k||0,
+        hp:game.player.hp,alive:game.player.alive===true}:null;
+      cueExpiresAt = 0;damageExpiresAt=0;
+      hitCue.hidden = true;damageVignette.hidden=true;
       walkedMeters = 0;
       previousPosition = null;
       lastBoard = '';
@@ -1616,6 +1652,7 @@ export function createFpsMobileUx(game, root, doc) {
       const active = !!(running && game.playing && !game.paused && !game.ended);
       html.dataset.fpsActive = String(active);
       if (!active || now >= cueExpiresAt) hitCue.hidden = true;
+      if (!active || now >= damageExpiresAt)damageVignette.hidden=true;
       const p = game.player;
       fadeNativeAllies(active);
       const scopeButton=buttons.find(b=>b.dataset.mkAction==='scope');
@@ -1772,17 +1809,23 @@ export function createFpsMobileUx(game, root, doc) {
         recolorNativeAllies();
         updateEnemyMarkers();
         nudgeAim();
-        const hits = p.stats?.hits || 0;
-        if (hits > lastHits) {
-          // This is driven solely by native player.stats.hits, not aiming or shooting.
-          const text = cfHitCue(activeChallenge, hits, hits-lastHits, drill);
-          if (text) {
-            hitCue.textContent = text;
-            hitCue.hidden = false;
-            cueExpiresAt = now + 680;
+        const hits=p.stats?.hits||0;
+        const combat={hits,kills:p.stats?.k||0,hp:p.hp,alive:p.alive===true};
+        const diff=cfRealCombatFeedback(previousCombat,combat);
+        previousCombat=combat;
+        if(diff.kind==='kill'||diff.kind==='hit'){
+          const message=diff.kind==='kill'
+            ? '★ 亲手击杀 +'+diff.kills
+            : cfHitCue(activeChallenge,hits,diff.hits,drill);
+          if(message){
+            hitCue.textContent=message;hitCue.dataset.kind=diff.kind;
+            hitCue.hidden=false;cueExpiresAt=now+(diff.kind==='kill'?950:630);
           }
         }
-        lastHits = hits;
+        if(diff.hpLoss>0){
+          damageVignette.hidden=false;damageExpiresAt=now+410;
+        }
+        lastHits=hits;
         const seen = [...markers.values()].some(el => !el.hidden);
         if (activeChallenge?.kind==='defend'||activeChallenge?.kind==='assault'||
           activeChallenge?.extractSeconds) {
@@ -1830,6 +1873,7 @@ export function createFpsMobileUx(game, root, doc) {
         game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
       originalEnemySpawns=null;trainingSpawnTeam=null;
       if(activeChallenge?.kind==='hits'&&game.player)game.player.mouse.l=false;
+      damageVignette.remove();
       doc.removeEventListener('touchstart',onTouchStart,true);
       doc.removeEventListener('touchmove',onTouchMove,true);
       doc.removeEventListener('touchend',onTouchEnd,true);
