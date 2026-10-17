@@ -67,16 +67,18 @@ jobs:
       # diagnostic feedback; all campaign and risk gates still run afterwards.
       - name: Real touch swipes, cancel, jump choice and first-minute feedback
         run: xvfb-run -a node tools/lean-pilot/pelican-v2/experience-qa.mjs
-      # Risk/true-reward integrity is the next first-class product gate; run it
-      # before the long campaign so genuinely unfair jumps fail early.
+      # Execute the post-pedestrian normal-input crash path before the long
+      # five-level run; do not omit it or skip any earned unlock prerequisite.
+      - name: Legacy collision and jump regressions with legitimate V4 detours
+        run: xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs collisions
+      # Risk/true-reward integrity remains a first-class product gate and
+      # still runs before the independent full five-level default campaign.
       - name: Five earned three-star routes and every exact jump reward including new V4 barriers
         run: xvfb-run -a node tools/lean-pilot/pelican-v2/risk-qa.mjs
       - name: Real default-speed touch campaign, five earned unlocks and replay
         run: xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs campaign
       - name: Real V4 deaths, unavailable revive, free replay, pause and save accounting
         run: xvfb-run -a node tools/lean-pilot/pelican-v2/v4-qa.mjs
-      - name: Legacy collision and jump regressions with legitimate V4 detours
-        run: xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs collisions
       # Deliver the exact already-tested Chromium H5 for internal phone review.
       # A browser-only build is not a public release or a real device sign-off.
       - name: Package verified internal-playtest H5
