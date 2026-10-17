@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { RaceWheelSteering } from '../racing/wheel-steering.mjs';
 import { ManualRaceDriver, TouchActions } from '../racing/driver.mjs';
 import { readFile } from 'node:fs/promises';
+import { URL } from 'node:url';
 
 test('rotary wheel gives genuine signed, analogue steering after angular movement',()=>{
  const w=new RaceWheelSteering();assert.equal(w.press(1,100,45,100,100,70),true);
