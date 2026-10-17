@@ -8,7 +8,7 @@ export const TARGET_WINDOW_LEAD_METERS = 48;
 export const TARGET_WINDOW_TRAIL_METERS = 10;
 
 export const RISK_LEVELS = Object.freeze([
- {id:1,name:'海岸出发',weather:'clear',speed:7.5,targets:[['l1-o4',75],['l1-o1',140],['l1-o7',205],['l1-o3',225]]},
+ {id:1,name:'海岸出发',weather:'clear',speed:7.5,targets:[['l1-o4',75],['l1-o1',140],['l1-o7',205],['l1-o3',233]]},
  {id:2,name:'行人出没',weather:'clear',speed:8,targets:[['l2-o3',246],['l2-o5',356]]},
  {id:3,name:'危险公路',weather:'clear',speed:8.8,targets:[['l3-o3',222],['l3-o5',360]]},
  {id:4,name:'雨中骑行',weather:'rain',speed:9.2,targets:[['l4-o3',225],['l4-o5',350],['l4-o10',593]]},
