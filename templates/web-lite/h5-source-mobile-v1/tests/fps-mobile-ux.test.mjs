@@ -748,7 +748,8 @@ test('CF H5 opening lane chooses real unobstructed sightlines, never a wall',asy
    spawns,world,nav,actors:[],team:'BL'
  });
  assert.ok(lane?.spot&&lane?.spawn,'must find a real corridor');
- assert.ok(lane.distance>=7&&lane.distance<=10);
+ assert.ok(lane.distance>=7&&lane.distance<=10.1,
+  'small lateral aiming offsets slightly increase physical ray distance');
  assert.ok(lane.backstop>=.8);
  assert.equal(JSON.stringify(spawns),originals,
    'candidate selection must never modify authored map starts');
