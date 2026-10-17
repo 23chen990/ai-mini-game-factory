@@ -287,6 +287,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
           });
       };
       const observer=new MutationObserver(read);
+      window.__cfKillCueObserver=observer;
       observer.observe(el,{attributes:true,attributeFilter:['hidden'],
         subtree:true,childList:true,characterData:true});
       read();
