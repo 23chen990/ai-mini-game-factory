@@ -5,7 +5,7 @@ import {createEndlessLevel,extendEndless} from './endless.mjs';
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
 // Casual touch assist: early press arms only the next same-lane low barrier.
 // The actual jump is still integrated by the normal collision/physics loop.
-export const JUMP_BUFFER_SECONDS=1.45;
+export const JUMP_BUFFER_SECONDS=2.25;
 export const JUMP_TRIGGER_METERS=3.0;
 export const FREE_ROAD_EDGE=2.15;
 export const TAP_STEER_DISTANCE=1.18;
