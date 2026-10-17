@@ -151,6 +151,8 @@ async function raceStart(page, index, name) {
     shortcutCurb:!!window.game?.level?.getObjectByName('physical-shortcut-curb'),
     shortcutFascia:!!window.game?.level?.getObjectByName('physical-shortcut-bridge-fascia'),
     shortcutPaint:!!window.game?.level?.getObjectByName('physical-shortcut-centre-dashes'),
+    shortcutApproachPaint:window.game?.level?.getObjectByName('physical-shortcut-approach-paint')?.geometry?.attributes?.position?.count??0,
+    shortcutNeckPaint:window.game?.level?.getObjectByName('physical-shortcut-neck-paint')?.geometry?.attributes?.position?.count??0,
     shortcutPortal:!!window.game?.level?.getObjectByName('physical-shortcut-portal'),
     shortcutAdvanceSigns:window.game?.level?.getObjectByName('physical-shortcut-approach')?.children?.length ?? 0,
     shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
@@ -272,6 +274,7 @@ async function raceStart(page, index, name) {
      early.shortcutStyle!=='temple' || early.v10ShortcutSkill!=='temple late-apex precision' ||
      !(early.v10ShortcutNeck>=7&&early.v10ShortcutNeck<=8.3) || !early.shortcutRoad || !early.shortcutRails ||
      !early.shortcutCurb || !early.shortcutFascia || !early.shortcutPaint || !early.shortcutPortal ||
+     early.shortcutApproachPaint!==9 || early.shortcutNeckPaint!==24 ||
      early.shortcutAdvanceSigns!==2))
     fail(name+': shortcut must be a real physical mesh, with rails and genuine distance gain: '+JSON.stringify(early));
   if(index===0 && early.shortcut)

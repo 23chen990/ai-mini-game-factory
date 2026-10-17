@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {SHORTCUT_PLANS,installPhysicalShortcut} from '../racing/shortcut-network.mjs';
+import {SHORTCUT_PLANS,installPhysicalShortcut,forkDecisionPaint} from '../racing/shortcut-network.mjs';
 
 function mockTrack(){
   const L=2600,N=1733,ds=L/N;
@@ -80,4 +80,35 @@ test('stuck shortcut recovery stays on fork instead of teleporting to credited m
   assert.equal(player.lastD,player.d);
   assert.equal(player.s,12);
   assert.equal(route.recover({proj:{__RACE_SHORTCUT_ACTIVE:false}}),false);
+});
+
+test('real fork-side paint signals entry early and narrows within the physical road',()=>{
+  const track=mockTrack(),route=installPhysicalShortcut(track,'race-13');
+  const paint=forkDecisionPaint(track,route);
+  assert.equal(paint.approach.length,3*9,'three real approach triangles');
+  assert.equal(paint.neck.length,4*2*9,'four two-triangle risk bands');
+  assert.ok([...paint.approach,...paint.neck].every(Number.isFinite));
+  assert.throws(()=>forkDecisionPaint(track,{...route,entrySide:0}),/physical main and branch/);
+  // Its polygons are painted on top of the real road elevation, not on the
+  // wrong end of the map or on huge floating advertising gates.
+  for(let i=1;i<route.samples.length;i++)
+    assert.ok(route.samples[i].arc>=route.samples[i-1].arc);
+  for(const y of [paint.approach[1],paint.neck[1]])
+    assert.ok(y>=0&&y<.5,'paint follows physical road height');
+});
+test('stale shortcut projection releases after a real off-road or vertical miss',()=>{
+  const track=mockTrack(),route=installPhysicalShortcut(track,'race-13');
+  const s=route.samples[Math.floor(route.samples.length*.55)],out={__RACE_SHORTCUT_ACTIVE:true};
+  const safe=route.widthAt(s.arc)*.5+2.0;
+  track.project(s.x+s.rx*safe,s.y,s.z+s.rz*safe,-1,out);
+  assert.equal(out.__RACE_SHORTCUT_ACTIVE,true,
+    'rail contact should remain a physical branch mistake, not silently switch roads');
+  const beyond=route.widthAt(s.arc)*.5+11;
+  track.project(s.x+s.rx*beyond,s.y,s.z+s.rz*beyond,-1,out);
+  assert.equal(out.__RACE_SHORTCUT_ACTIVE,false,
+    'a stale fork latch must not pull a distant crashed car back onto the shortcut');
+  out.__RACE_SHORTCUT_ACTIVE=true;
+  track.project(s.x,s.y+9,s.z,-1,out);
+  assert.equal(out.__RACE_SHORTCUT_ACTIVE,false,
+    'crossing a higher/lower bridge level cannot inherit an old active fork');
 });

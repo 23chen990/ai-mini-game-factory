@@ -193,6 +193,49 @@ function nearest(samples,x,z){
   }
   return best;
 }
+/** Native road-space paint geometry only: three early decision arrows plus
+ * four neck warnings. No fake speed pickups, steer help or render-only road.
+ * Positions derive from the SAME physical main/branch splines and remain
+ * strictly inside both drivable road envelopes.
+ */
+export function forkDecisionPaint(track,fork) {
+  if(typeof track?.sample!=='function'||!Number.isFinite(track.halfW)||
+     !fork?.samples?.length||!Number.isFinite(fork.start)||
+     !Number.isFinite(fork.length)||typeof fork.widthAt!=='function'||
+     ![-1,1].includes(fork.entrySide))
+    throw Error('Fork paint needs a physical main and branch');
+  const approach=[],neck=[];
+  const position=(sample,lateral)=>[
+    sample.x+sample.rx*lateral,sample.y+.19,sample.z+sample.rz*lateral
+  ];
+  const tri=(dest,a,b,c)=>dest.push(...a,...b,...c);
+  const side=fork.entrySide;
+  // All approach arrows lie inside the main racing surface, unlike the
+  // existing two distant roadside posts. Readable at speed without a popup.
+  for(const before of [104,70,36]) {
+    const back=track.sample(fork.start-before-3,{}),
+      front=track.sample(fork.start-before+5,{});
+    const outer=Math.min(3.6,track.halfW*.40);
+    tri(approach,position(back,side*.8),position(back,side*outer),
+      position(front,side*outer));
+  }
+  const sampleAt=distance=>{
+    for(let i=1;i<fork.samples.length;i++)
+      if(fork.samples[i].arc>=distance)return fork.samples[i];
+    return fork.samples.at(-1);
+  };
+  // Paint makes the real mid-branch narrowing visible BEFORE the driver
+  // touches the guardrail. These are polygons, never collision geometry.
+  for(const fraction of [.35,.46,.57,.68]){
+    const a=sampleAt(fork.length*fraction),b=sampleAt(fork.length*fraction+2.1);
+    const half=Math.min(fork.widthAt(a.arc),fork.widthAt(b.arc))*.5-.9;
+    if(half<=1.5)throw Error('Physical fork lacks legal paint corridor');
+    const left=position(a,-half),right=position(a,half),
+      nextLeft=position(b,-half),nextRight=position(b,half);
+    tri(neck,left,right,nextLeft);tri(neck,right,nextRight,nextLeft);
+  }
+  return {approach,neck};
+}
 export function installPhysicalShortcut(track,course,{v8=false,v9=false,v10=false}={}){
   if(v10&&!v9)throw Error('V10 skill shortcut requires actual V9 physical road');
   const original=SHORTCUT_PLANS[course];if(!original)return null;
@@ -229,7 +272,13 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false,v10=fals
       relative(onMain.d,start,track.length)>=-12&&
       relative(onMain.d,start,track.length)<=88&&
       other.dist<=widthAt(other.arc)*.5-1.3&&Math.abs(y-other.y)<5.5;
-    if(!(was||(atEntrance&&mainDist>other.dist+1.8))){
+    // Native Track.project reuses its output object. A stale ACTIVE flag
+    // must never magnetically glue a crashed car to a remote fork, especially
+    // when a high bridge crosses a normal lane. Keep a generous 4.5m
+    // guardrail-recovery margin; beyond it, restore honest native projection.
+    const canCarry=was&&other.dist<=widthAt(other.arc)*.5+4.5&&
+      Math.abs(y-other.y)<5.5;
+    if(!(canCarry||(atEntrance&&mainDist>other.dist+1.8))){
       onMain.__RACE_SHORTCUT_ACTIVE=false;return onMain;
     }
     // At both joining gates the ordinary surface resumes continuity.
@@ -292,6 +341,23 @@ export function installPhysicalShortcut(track,course,{v8=false,v9=false,v10=fals
     };
     const palette=v9 ? palettes[cfg.style]??palettes.cliff :
       {road:0x536b7c,curb:0x4bdbea,shoulder:0x536b7c,rail:0x4bdbea,sign:0x5de9ef};
+    if(v9){
+      const painted=forkDecisionPaint(track,{start,length,samples,widthAt,entrySide});
+      // At most two additional small draw calls regardless of track length.
+      // World-surface geometry provides the hint, not a text HUD overlay.
+      for(const [name,positions,color] of [
+        ['physical-shortcut-approach-paint',painted.approach,palette.sign],
+        ['physical-shortcut-neck-paint',painted.neck,palette.curb],
+      ]){
+        const g=new THREE.BufferGeometry();
+        g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+        g.computeVertexNormals();
+        const m=new THREE.Mesh(g,new THREE.MeshStandardMaterial({
+          color,roughness:.89,side:THREE.DoubleSide,depthWrite:false,
+        }));
+        m.name=name;group.add(m);
+      }
+    }
     const surfaceMaterial=(color,emissiveIntensity=0)=>new THREE.MeshStandardMaterial({
       color,roughness:.91,metalness:.06,side:THREE.DoubleSide,
       emissive:emissiveIntensity?color:0x000000,emissiveIntensity,
