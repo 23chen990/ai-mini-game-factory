@@ -104,6 +104,11 @@ test('rain pedestrian then dual vehicles permits early visible two-tap escape, n
  // the van and car close centre/right. A skilled rider uses the 4s HUD.
  const state=policy.createRiskPolicyState(4,{barrierId:'l4-o10',distance:593});
  const early=view({level:4,distance:450,laneIndex:2,lanes:[clear,van(4),ped(3)]});
+ const earliest=decide({...early,distance:446,lanes:[clear,van(4),ped(4)]},state);
+ assert.equal(earliest.action,'left','player may reposition on the first visible 4s pedestrian warning');
+ assert.equal(earliest.toLane,1);
+ const far=decide({...early,distance:420,lanes:[clear,van(4),ped(5)]},state);
+ assert.equal(far.action,'wait','no premature lane crossing outside public pedestrian warning');
  const first=decide(early,state);
  assert.equal(first.action,'left');
  assert.equal(first.toLane,1,'first of exactly two actual lane taps');

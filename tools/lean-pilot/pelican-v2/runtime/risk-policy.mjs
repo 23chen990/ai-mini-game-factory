@@ -87,8 +87,9 @@ function moveOneLane(view,state,wantedLane,reason,allowRewardLane=null){
  const currentVehicleEarly=laneIsVehicle(view.lanes[current])&&
   Number.isFinite(view.lanes[current].seconds)&&view.lanes[current].seconds>=3.5;
  const pedestrianEarlyExit=view.lanes[current]?.kind==='pedestrian'&&
-  laneIsImminent(view.lanes[current])&&
-  Number.isFinite(view.lanes[current].seconds)&&view.lanes[current].seconds>=1.5;
+  view.lanes[current]?.danger===true&&
+  Number.isFinite(view.lanes[current].seconds)&&view.lanes[current].seconds>=1.5&&
+  view.lanes[current].seconds<=4;
  const transitEarly=Math.abs(wantedLane-current)===2&&
   (currentVehicleEarly||pedestrianEarlyExit)&&laneIsVehicle(view.lanes[next])&&
   Number.isFinite(view.lanes[next].seconds)&&view.lanes[next].seconds>=3.5&&
@@ -101,6 +102,16 @@ function moveOneLane(view,state,wantedLane,reason,allowRewardLane=null){
 function chooseOrdinaryLane(view){
  const current=laneIndex(view.laneIndex),lanes=view.lanes;
  const safe=index=>!laneIsBlocked(lanes[index]);
+ // During the 4-second public pedestrian warning, pre-stage a genuine
+ // two-touch exit across a still-distant vehicle. At 3s it may already be
+ // too late for normal touch/RPC latency, even though physics is unchanged.
+ const opposite=2-current;
+ const stageEarly=(current===0||current===2)&&lanes[current]?.danger===true&&
+  lanes[current]?.kind==='pedestrian'&&Number.isFinite(lanes[current].seconds)&&
+  lanes[current].seconds>=1.5&&lanes[current].seconds<=4&&
+  laneIsVehicle(lanes[1])&&Number.isFinite(lanes[1].seconds)&&
+  lanes[1].seconds>=3.5&&safe(opposite);
+ if(stageEarly)return opposite;
  const safeFish=lanes.map((entry,index)=>entry?.fish===true&&safe(index)?index:-1).filter(index=>index>=0);
  if(laneIsBlocked(lanes[current])){
   return [
