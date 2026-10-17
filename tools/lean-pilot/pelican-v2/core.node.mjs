@@ -12,7 +12,12 @@ test('five distinct safe courses: first-level traffic follows teaching; second l
  assert.ok(openingTraffic.length>=3,'V4 retains alternating vehicle decisions');
  assert.ok(openingTraffic.every(o=>o.x>=100),'early steering/fishing teaching precedes lethal traffic');
  assert.ok(LEVELS[0].obstacles.some(o=>o.kind==='barrier'&&o.x<openingTraffic[0].x),'jump-or-detour teaching precedes cars');
- assert.ok(!LEVELS[1].obstacles.some(o=>['car','van'].includes(o.kind)));
+ // Level 2 is pedestrian/barrier-dominant, but its last visible choke
+ // introduces ONE vehicle before level 3 so repeated jump spam cannot clear.
+ const lateVehicles=LEVELS[1].obstacles.filter(o=>['car','van'].includes(o.kind));
+ assert.equal(lateVehicles.length,1);
+ assert.ok(lateVehicles[0].x>=380,'late fair vehicle remains telegraphed, not a surprise first-second death');
+ assert.ok(LEVELS[1].obstacles.filter(o=>o.x<lateVehicles[0].x).every(o=>!['car','van'].includes(o.kind)));
  assert.ok(LEVELS[2].obstacles.some(o=>o.kind==='car')&&LEVELS[2].obstacles.some(o=>o.kind==='van'));
  assert.equal(LEVELS[3].weather,'rain');assert.ok(LEVELS[4].hour>=18);assert.ok(LEVELS[4].hour<18.5,'dusk road must stay readable');
 });

@@ -42,6 +42,15 @@ const rows=LEVELS.map(level=>{
   mastery:{fish:mastery.gold,gold:mastery.goldFish,jumps:mastery.jumps,streak:mastery.streak},
   baselines};
 });
+// The second level used to be beatable by staying in the middle and blindly
+// jumping every two seconds. Its final public vehicle gate now requires a
+// real steering decision; missing it must fail, without trapping all lanes.
+const blindSecond=rows[1].baselines.find(b=>b.strategy==='blind-jump');
+assert.equal(blindSecond.reason,'vehicle',
+ 'level 2 cannot be completed by centre-lane button mashing');
+assert.ok(blindSecond.progressPct>=70&&blindSecond.progressPct<100,
+ 'failure belongs to a visible late gate, not a surprise early punishment');
+
 console.log('PELICAN_DIFFICULTY_BASELINES '+JSON.stringify({
  build:'checked-in-authoritative-physics',
  notice:'Synthetic fixed input strategies only; these are NOT human failure rates, learnability or ad intent.',

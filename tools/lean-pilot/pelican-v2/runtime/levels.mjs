@@ -24,7 +24,7 @@ export const PRESSURE_GATES=Object.freeze({
   [198,'barrier',1],[198,'barrier',2], // left gap
   [282,'barrier',0],[282,'barrier',1], // right gap
   [331,'barrier',0],[331,'barrier',2], // centre gap
-  [390,'barrier',1],[390,'barrier',2], // left gap, final approach
+  [390,'car',1],[390,'barrier',2], // visible late vehicle: blind centre jumping fails, LEFT gap remains
  ]),
  3:Object.freeze([
   [270,'car',0],[270,'van',1], // right gap after 222m legacy choke
