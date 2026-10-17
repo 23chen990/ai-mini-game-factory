@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        mode: [desktop, touch]
+        mode: [desktop, touch, desktop-no-msaa]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -55,6 +55,9 @@ jobs:
         if: always()
         with:
           name: racing-cold-${{ matrix.mode }}-${{ github.event.pull_request.head.sha }}
-          path: runs/h5-qq-mobile-20261013/artifacts/cold-start-${{ matrix.mode }}/*
+          path: |
+            runs/h5-qq-mobile-20261013/artifacts/cold-start-${{ matrix.mode }}/*
+            tools/lean-pilot/racing-mobile-build.mjs
+            tools/lean-pilot/tests/racing-build.test.mjs
           retention-days: 7
           if-no-files-found: warn
