@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createEndlessLevel,endlessSegment,extendEndless,endlessTier,endlessCruiseSpeed,ENDLESS_TIERS} from './endless.mjs';
-import {newRun,retireRun,settle,newSave,advance,input} from './adventure.mjs';
+import {newRun,retireRun,settle,newSave,advance,input,steerTo} from './adventure.mjs';
 
 test('infinite coast is deterministic by seed and index, never by player lane',()=>{
  const sequences=[...Array(120)].map((_,i)=>endlessSegment(20261017,i));
@@ -118,4 +118,29 @@ test('thousands of seeded challenge gates retain a true open route and adequate 
  assert.ok(r.obstacles.length>0);
  assert.ok(r.obstacles.every(o=>o.x>=r.distance-90));
  assert.ok(r.obstacles.some(o=>o.id.startsWith('endless-o-')));
+});
+
+// Engineering oracle, not a claim that human players can see future world state.
+test('physical steering can survive every difficulty tier via actual open road',()=>{
+ const route=[-1.7,0,1.7];
+ for(const [seed,target] of [[13,3600],[20261017,1900]]){
+  const r=newRun(6,{seed});
+  for(let frames=0;frames<4500&&r.phase==='running'&&r.distance<target;frames++){
+   // Choose a genuinely open physical lane for the nearest active encounter.
+   // Hold it until both staggered obstacles have *actually* passed.
+   const upcoming=r.obstacles.filter(o=>!o.passed&&!o.hit&&o.x-r.distance>-3).sort((a,b)=>a.x-b.x);
+   const nearest=upcoming[0];
+   if(nearest){
+    const encounter=nearest.id.split('-')[2];
+    const blocked=new Set(r.obstacles.filter(o=>o.id.split('-')[2]===encounter).map(o=>o.lane));
+    const safe=[0,1,2].find(lane=>!blocked.has(lane));
+    assert.ok(safe!==undefined,'an authored gap must remain open');
+    steerTo(r,route[safe]);
+   }
+   advance(r,.14);
+  }
+  assert.equal(r.phase,'running',`seed ${seed} must not generate a physically unavoidable collision at ${r.distance.toFixed(1)}m`);
+  assert.ok(r.distance>=target,`seed ${seed}: physically reached ${r.distance.toFixed(1)}m of ${target}m`);
+  assert.equal(r.hits,0);
+ }
 });
