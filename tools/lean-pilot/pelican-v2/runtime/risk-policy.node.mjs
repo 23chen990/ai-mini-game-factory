@@ -66,6 +66,20 @@ test('a real visible jump reward establishes a stable target through transient o
  const unsafe=decide(view({level:1,distance:59,laneIndex:1,lanes:[lane({danger:true,kind:'vehicle',seconds:1}),lane(),lane({fish:true})]}),initial.state);
  assert.equal(unsafe.action,'wait','never run into a visible vehicle despite the earlier reward commitment');
 });
+test('two barriers 20m apart: real READY takes priority over another reward lane',()=>{
+ const target={barrierId:'l1-o3',distance:225};
+ const s={...policy.createRiskPolicyState(1,target),committedRewardLane:1};
+ const otherReward=lane({danger:true,jumpReward:true,kind:'barrier',seconds:1.4});
+ const ready=view({level:1,distance:217,laneIndex:1,nowMs:1900,jumpReady:true,goldCounter:4,
+  lanes:[otherReward,lane({danger:true,kind:'barrier',seconds:1.1}),lane()]});
+ const step=decide(ready,s);
+ assert.equal(step.action,'jump');assert.equal(step.toLane,1);
+ assert.equal(step.reason,'confirmed-next-barrier-ready');
+ assert.equal(step.state.goldAtJump,4);
+ assert.notEqual(decide({...ready,lanes:[otherReward,lane({danger:true,kind:'vehicle',seconds:1}),lane()]},s).action,'jump','do not jump through visible oncoming vehicle');
+ assert.notEqual(decide({...ready,distance:224.3},s).action,'jump','never send a late queued jump inside the hitbox');
+});
+
 test('the policy acts in the early buffered jump window',()=>{
  const s=newState(),earlyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.3s'});
  const lanes=[lane(),earlyReward,lane()];
