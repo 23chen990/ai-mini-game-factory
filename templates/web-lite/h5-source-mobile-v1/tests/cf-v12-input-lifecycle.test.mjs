@@ -165,3 +165,29 @@ test('CF solo PvE removes AI comrades from the native 3D lifecycle, not just HUD
  assert.deepEqual(fallback.actors,[player,friendA,enemyA]);
  assert.equal(fallback.__mkSoloPve,undefined);
 });
+
+test('CF solo missions direct authentic native Bot tactics without changing gun or stats',async()=>{
+ const {cfSoloEncounterRoles,cfAssignSoloEnemyRoles}=await import('../themes.mjs');
+ const ids=['tags','precision','survive','defense',
+  'assault','marksman','evac','counter'];
+ const expected=[1,2,3,3,3,2,3,4];
+ for(let index=0;index<ids.length;index++){
+   const id=ids[index],N=expected[index];
+   const player={isPlayer:true,team:'BL'};
+   const enemies=Array.from({length:N},(_,i)=>({
+     team:'GR',role:'random',stage:9,
+     path:[[0,0]],pi:3,primary:i?'ak47':'m4a1',
+     stats:{shots:2,k:0},
+     pickGoal(){this.picked=(this.picked||0)+1}
+   }));
+   const g={player,actors:[player,...enemies],__mkSoloPve:true};
+   assert.equal(cfAssignSoloEnemyRoles(g,{id,lite:true}),N);
+   assert.deepEqual(enemies.map(x=>x.role),cfSoloEncounterRoles(id));
+   assert.ok(enemies.every(x=>x.picked===1&&x.pi===0&&x.path===null));
+   assert.ok(enemies.every(x=>x.stats.shots===2&&x.primary),
+    'no fake shots/damage/HP or weapon edits');
+   assert.deepEqual(g.actors,[player,...enemies]);
+   assert.equal(cfAssignSoloEnemyRoles(g,{id,lite:false}),0);
+ }
+ assert.equal(cfAssignSoloEnemyRoles({}, {id:'tags',lite:true}),0);
+});
