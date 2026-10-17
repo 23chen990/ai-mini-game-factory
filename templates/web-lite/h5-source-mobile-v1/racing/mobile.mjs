@@ -234,7 +234,7 @@ function finish() {
   starView.setAttribute('aria-label',starLabel.textContent);
   const forkRun=shortcutDecisions.finish();
   trial.finish(career.stage,result,stars,g.raceTime,duel.snapshot(g,career.stage),forkRun);
-  lastRacePassed = bestStars > 0;
+  lastRacePassed = stars > 0; // This run did not win just because an earlier run earned a medal.
   justFinishedPassed = lastRacePassed;
   $('heading').textContent = result.finished ? '第 ' + result.place + ' 名' : '未完赛';
   if (result.finished && (!best[result.map] || result.time < best[result.map])) {
