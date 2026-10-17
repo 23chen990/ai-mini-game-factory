@@ -226,6 +226,11 @@ export function patchRaceLayouts(source) {
   const imported = "import { applyTrackDesign } from './race-track-design.mjs';";
   const invoke = "applyTrackDesign(LAYOUTS, { v8: true });";
   if (source.includes(imported) && source.includes(invoke)) return source;
+  // An existing V7 generated workspace is expected: migrate its exact old
+  // call rather than appending a second track transform or rewriting sources.
+  const legacy = 'applyTrackDesign(LAYOUTS);';
+  if (source.includes(imported) && source.includes(legacy) &&
+      source.split(legacy).length === 2) return source.replace(legacy, invoke);
   if (!source.includes('export const LAYOUTS = {')) throw Error('Pinned track layout export changed');
   if (source.includes(imported) || source.includes(invoke)) throw Error('Partial track patch');
   return imported+'\n'+source+'\n'+invoke+'\n';
