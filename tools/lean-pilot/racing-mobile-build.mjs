@@ -194,6 +194,17 @@ export function patchV8CameraFeel(source) {
     throw Error('V8 mobile camera follow anchor changed');
   return source.replace(original,revised).replace(heightOriginal,heightRevised);
 }
+/** Single-run finish is a real physical road location for long downhill stages.
+ * Original progress tracking and finish bookkeeping remain authoritative.
+ * Every racer must actually reach the fraction of the native measured road.
+ */
+export function patchV8PointToPoint(source) {
+  const anchor="      r.progress = r.dist;\n    }\n  }\n\n  onLap(r) {";
+  const replacement="      r.progress = r.dist;\n    }\n    const finishAt = this.settings.course === 'race-07' ? .82 :\n      this.settings.course === 'race-22' ? .84 : null;\n    if(!init && finishAt !== null && !r.finished &&\n       (this.state === 'race' || this.state === 'finish') &&\n       r.progress >= L * finishAt) {\n      r.lapsDone = 1;\n      this.onLap(r);\n    }\n  }\n\n  onLap(r) {";
+  if(source.includes(replacement))return source;
+  if(source.split(anchor).length!==2)throw Error('Native one-way progress anchor changed');
+  return source.replace(anchor,replacement);
+}
 /** Add continuous steering and normalized drift starts to generated native car. */
 export function patchAnalogSteer(source) {
   const changes = [
@@ -428,7 +439,12 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchV8CameraFeel(patchRacingSource(beforeMain))))))));
+  let adaptedMain = beforeMain;
+  for(const patch of [patchRacingSource,patchV8CameraFeel,patchV8PointToPoint,
+    patchManualNitroEdge,patchCareerRouteSource,patchShortcutNativeWorld,
+    patchCourseSkyAndScenery,patchRaceDesertRelief])
+    adaptedMain=patch(adaptedMain);
+  await writeFile(path.join(project, 'src/main.js'), adaptedMain);
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);
