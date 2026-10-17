@@ -1,6 +1,7 @@
 /* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout, fetch, Blob, URL */
 import { ManualRaceDriver, TouchActions } from './driver.mjs';
 import { RacingJoystick } from './joystick.mjs';
+import { selectInternalRaceController, createInternalRaceController, INTERNAL_RACE_CONTROL_LABELS } from './control-lab.mjs';
 import { careerCourseDetails } from './track-design.mjs';
 import { raceSpeedHUD } from './speed-hud.mjs';
 import { RaceDuelTracker } from './duel-loop.mjs';
@@ -28,11 +29,26 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
 document.body.append(root);
 const $ = id => root.querySelector('#race-' + id);
 const duel = new RaceDuelTracker();
-const joystick = new RacingJoystick({ floating: true, rimTap: true, deadzone: .055, fullThrow: .58 }), actions = new TouchActions(),
+// QA mode is URL-only on local/internal preview hosts. The regular player
+// build has no additional choices, and the default wheel is untouched.
+const qaControlMode = selectInternalRaceController(window.location);
+if (qaControlMode) {
+  root.dataset.qaControl = qaControlMode;
+  const marker=document.createElement('small');
+  marker.id='race-qa-control-tag';
+  marker.textContent='内部操控对照 · '+INTERNAL_RACE_CONTROL_LABELS[qaControlMode];
+  root.append(marker);
+}
+const joystick = qaControlMode ? createInternalRaceController(qaControlMode) :
+  new RacingJoystick({ floating: true, rimTap: true, deadzone: .055, fullThrow: .58 }), actions = new TouchActions(),
   driver = new ManualRaceDriver(actions), quality = new QualityMonitor();
 const SENS_STORE = 'h5-qq-mobile-20261013:steering-sensitivity:v1';
-try { joystick.setSensitivity(localStorage.getItem(SENS_STORE)); } catch { /* Default safe sensitivity. */ }
+if (!qaControlMode) {
+  try { joystick.setSensitivity(localStorage.getItem(SENS_STORE)); }
+  catch { /* Default safe sensitivity. */ }
+}
 $('steering-sens').value = joystick.sensitivity;
+if (qaControlMode) $('steering-sens').disabled = true; // Fair A/B: locked default tuning.
 // Mobile always uses the joystick. Desktop can still use original keyboard input
 // for development accessibility, but no two-key steering mode exists.
 let touchDriving = mobile;
@@ -113,11 +129,12 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), nativeSteer: g?.player?.steer ?? null, playerYaw: g?.player?.h ?? null, cameraYaw: g?.camYaw ?? null, drifting: !!g?.player?.drifting, fpsEstimate: quality.fps, renderPixelRatio: g?.renderer?.getPixelRatio() ?? null, composerActive: !!g?.composer, shadowsActive: !!g?.renderer?.shadowMap?.enabled, floatingWheel: joystick.floating, wheelAnchorPx: Math.round(joystick.anchorX), touchToInputSampleMs: lastTouchSampleAgeMs, phoneInput: touchHealth.snapshot(), rimPress: joystick.rimPressed, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), nativeSteer: g?.player?.steer ?? null, playerYaw: g?.player?.h ?? null, cameraYaw: g?.camYaw ?? null, drifting: !!g?.player?.drifting, fpsEstimate: quality.fps, renderPixelRatio: g?.renderer?.getPixelRatio() ?? null, composerActive: !!g?.composer, shadowsActive: !!g?.renderer?.shadowMap?.enabled, floatingWheel: joystick.floating, wheelAnchorPx: Math.round(joystick.anchorX), touchToInputSampleMs: lastTouchSampleAgeMs, phoneInput: touchHealth.snapshot(), rimPress: joystick.rimPressed, qaControlMode: qaControlMode || null, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
   $('joystick').style.setProperty('--race-stick-anchor', joystick.anchorX.toFixed(1) + 'px');
+  $('joystick').style.setProperty('--race-qa-wheel-turn', (joystick.visualDegrees || 0).toFixed(1) + 'deg');
   $('joystick').classList.toggle('held',joystick.active);
 }
 function releaseInput() {
@@ -251,6 +268,7 @@ $('export').addEventListener('click', () => {
     // Aggregate-only timings; no touch coordinates, pointer IDs or user data.
     const content=JSON.stringify({
       ...JSON.parse(trial.exportJSON()),
+      ...(qaControlMode ? {qaControlLab:{mode:qaControlMode,label:INTERNAL_RACE_CONTROL_LABELS[qaControlMode],source:'URL-selected internal QA only'}} : {}),
       phoneInput:touchHealth.snapshot(),
       phoneInputNotes:'Native frame input latency and UI frame times; NOT touch-to-visible-pixel latency or a human success-rate measurement'
     },null,2);
@@ -333,14 +351,15 @@ joystickSurface.addEventListener('pointerdown', e => {
   e.preventDefault();
   if (!g || (phase !== 'race' && phase !== 'countdown')) return;
   const r = joystickSurface.getBoundingClientRect();
-  if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width * .36)) return;
+  if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width * .36,
+      e.clientY, r.top + r.height / 2)) return;
   touchDriving = true; g.mobileMode = true; recordStickEvent('press');
   try { joystickSurface.setPointerCapture(e.pointerId); wheelCaptureFallback = false; }
   catch { wheelCaptureFallback = true; } // Older Safari / interrupted capture.
   syncJoystickVisual();
 });
 joystickSurface.addEventListener('pointermove', e => {
-  if (joystick.update(e.pointerId, e.clientX)) {
+  if (joystick.update(e.pointerId, e.clientX, e.clientY)) {
     recordStickEvent('move');
     if (e.cancelable) e.preventDefault();
     syncJoystickVisual();
@@ -361,7 +380,7 @@ joystickSurface.addEventListener('lostpointercapture', endStick);
 window.addEventListener('pointermove', e => {
   if (!wheelCaptureFallback || joystick.pointerId !== e.pointerId ||
       joystickSurface.contains(e.target)) return;
-  if (joystick.update(e.pointerId,e.clientX)) {
+  if (joystick.update(e.pointerId,e.clientX,e.clientY)) {
     if (e.cancelable) e.preventDefault();
     recordStickEvent('move');syncJoystickVisual();
   }
