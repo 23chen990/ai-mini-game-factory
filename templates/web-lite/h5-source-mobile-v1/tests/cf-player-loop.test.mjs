@@ -113,8 +113,8 @@ test('CF V18 lite keeps immutable campaign IDs while using transparent goals',()
  assert.deepEqual(now.map(x=>x.id),old.map(x=>x.id));
  assert.deepEqual(old[0].minTravel,8);
  assert.equal(now[0].lite,true);
- assert.equal(now[0].target,2);
- assert.match(now[0].objective,/击倒2名/);
+ assert.equal(now[0].target,1);
+ assert.match(now[0].objective,/击倒1名/);
  assert.equal(now[0].minTravel,8,'historical map data is not rewritten');
  assert.equal(now[6].minTravel,0);
  assert.equal(now[6].finishOnExtract,true);
@@ -126,8 +126,8 @@ test('CF V18 lite keeps immutable campaign IDs while using transparent goals',()
 test('CF V18 lite awards actual native eliminations and complete extraction',async()=>{
  const {challengeResult}=await import('../engine.mjs');
  const [rifle,,,,,,evac]=challengesFor('cf-transport-ship').map(cfMobileMission);
- assert.equal(challengeResult(rifle,{kills:1,deaths:0},false).outcome,'running');
- assert.equal(challengeResult(rifle,{kills:2,deaths:0},false).outcome,'won');
+ assert.equal(challengeResult(rifle,{kills:0,deaths:0},false).outcome,'running');
+ assert.equal(challengeResult(rifle,{kills:1,deaths:0},false).outcome,'won');
  assert.equal(challengeResult(rifle,{hits:90,kills:0,deaths:0},true).outcome,'lost');
  assert.equal(challengeResult(evac,{kills:1,deaths:0,travel:0,
    evacSiteValid:true,evacExtracted:true},false,35000).outcome,'won');
