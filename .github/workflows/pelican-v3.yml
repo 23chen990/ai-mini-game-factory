@@ -77,6 +77,16 @@ jobs:
         run: xvfb-run -a node tools/lean-pilot/pelican-v2/v4-qa.mjs
       - name: Legacy collision and jump regressions with legitimate V4 detours
         run: xvfb-run -a node tools/lean-pilot/pelican-v2/qa.mjs collisions
+      # Deliver the exact already-tested Chromium H5 for internal phone review.
+      # A browser-only build is not a public release or a real device sign-off.
+      - name: Package verified internal-playtest H5
+        if: ${{ success() && matrix.engine == 'chromium' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pelican-v6-playtest-${{ github.event.pull_request.head.sha }}
+          path: runs/pelican-coast-v2-20261014/workspace/game/index.html
+          retention-days: 14
+          if-no-files-found: error
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
