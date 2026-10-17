@@ -140,7 +140,7 @@ export function decideRiskAction(view,state){
  }
  if(inTargetWindow&&!state.jumpIssued&&rewardLane>=0&&!laneIsVehicle(lanes[rewardLane])&&
   (current===rewardLane||Number.isFinite(lanes[rewardLane].seconds)&&
-   lanes[rewardLane].seconds<=(Math.abs(current-rewardLane)===2?3.65:2.7))){
+   lanes[rewardLane].seconds<=(Math.abs(current-rewardLane)===2||lanes[current]?.fish!==true?3.65:2.7))){
   const targetLane=laneIndex(rewardLane),countdown=lanes[targetLane].seconds;
   // The visible jump reward may disappear behind another short-lived cue.
   // Keep the already-seen route rather than oscillating back toward safe fish.
