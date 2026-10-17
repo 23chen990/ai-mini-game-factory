@@ -112,7 +112,7 @@ export function cfReactToRealScoutThreat({actor,player,challenge,now}={}) {
 export function cfScoutHoldSeconds(challenge) {
   if(challenge?.elite===true)return challenge.kind==='kills'?6:4;
   if(challenge?.kind==='kills')return 15;
-  if(challenge?.kind==='hits'&&challenge.drill==='reposition')return challenge?.lite===true?7:10;
+  if(challenge?.kind==='hits'&&challenge.drill==='reposition')return challenge?.lite===true?9:10;
   return 7;
 }
 /** Time before the native bot may open fire (not invulnerability).
@@ -1503,7 +1503,7 @@ export function createFpsMobileUx(game, root, doc) {
   }
 
   function nudgeAim(forceFiring = false) {
-    if(activeChallenge?.elite===true||activeChallenge?.lite===true)return;
+    if(activeChallenge?.elite===true)return;
     const p = game.player, cam = game.renderer?.camera;
     // After the tutorial hit we stop automatic shooting and idle aim snaps.
     // A small native sight correction remains ONLY while the user holds fire,
@@ -1549,7 +1549,8 @@ export function createFpsMobileUx(game, root, doc) {
           ...angles,distance,visible:true,
           firing:!!(forceFiring||p.touch?.fire||(simple&&playerEngaged)),
           sniperReady:ready,
-          training:activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true
+          training:activeChallenge?.lite!==true&&
+            activeChallenge?.drill==='reposition'&&activeChallenge.elite!==true
         });
         if(!aim.yaw&&!aim.pitch)continue;
         const score=Math.abs(angles.yawError)+Math.abs(angles.pitchError)+
