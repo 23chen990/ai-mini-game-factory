@@ -29,6 +29,17 @@
 
 Elite objectives may be higher; retained as optional earned replay.
 
+## H5 microgame constraints (not a desktop FPS)
+
+- **One HTTPS link, one START tap, no install, no account**. Landscape web only.
+- **First 3 seconds must show an LOS-confirmed real enemy** in a real map lane; a container wall is a test failure. The opening camera only chooses an authored safe bearing once before combat; it never auto-locks or tracks mid-match.
+- **Real first kill within 30 seconds**, using only physical-look/press/touch-like input and original bullets. Short failure → instant free retry.
+- **Bite-size matches:** normal missions use 45-85 second limits (survival remains a full 45 seconds). The mission needs one visible win condition and immediately exits on actual completion, not a mandatory idle timer.
+- Minimal 4-button handheld loop: left stick, look on right, FIRE-drag, contextual jump/reload. No PC menus, keyboard hints, scoreboards or mandatory tactics popups.
+- **Web budget is a release test, not an assumption:** measure first playable frame over throttled mobile data, WebGL device loss recovery, phone thermal/FPS and memory. Don't claim a byte budget, 60fps, instant replay or phone compatibility without evidence.
+- First live frame should reserve clear forward geometry; opening lane is picked using bounded native wall-ray and walkability tests, with an early return for a safe camera-facing lane.
+- Before shipping to TapTap or a commercial host, check source and asset redistribution permissions, platform ad API proof, Safari/WebKit and Android Chrome touch behavior.
+
 ## Critical verification gates
 
 1. Node unit/regression suite, lint, types, browser integration and actual original Three.js build.
