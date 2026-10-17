@@ -10,7 +10,7 @@ import {chromium} from '@playwright/test';
 const run=path.resolve('runs/h5-qq-mobile-20261013'),game=path.join(run,'workspace/game');
 const out=path.join(run,'artifacts/cold-start-render-probe');await mkdir(out,{recursive:true});
 const build=JSON.parse(await readFile(path.join(run,'artifacts/build-racing.json'),'utf8'));
-const report={buildHash:build.buildHash,productionGate:false,scope:'Same unmodified H5; browser presentation diagnostics only',variants:[]};
+const report={node:process.version,buildHash:build.buildHash,productionGate:false,scope:'Same unmodified H5; browser presentation diagnostics only',variants:[]};
 const server=createServer(async(req,res)=>{
   try{
     const clean=(req.url??'/').split('?')[0];const file=path.resolve(game,'.'+(clean==='/'?'/index.html':clean));
