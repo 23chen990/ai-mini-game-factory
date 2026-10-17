@@ -473,6 +473,7 @@ export function cfResetMobileTouch(player,aimTouches,fireTouches) {
   const t=player.touch;
   if(t){
     for(const key of ['fire','firePressed','jump','crouch']){
+      if(key==='crouch'&&!(key in t))continue;
       if(t[key]!==false){t[key]=false;changed=true;}
     }
     for(const key of ['mx','mz']){
