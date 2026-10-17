@@ -64,7 +64,7 @@ export class RaceWheelSteering {
   sync() {
     // Tiny thumb tremors should not keep the car turning after real centring.
     const target = Math.abs(this.turn) < 2 * DEG ? 0 : this.turn;
-    this.axis = clamp(-target / this.maxTurn * SENSITIVITY[this.sensitivity], -1, 1);
+    this.axis = target === 0 ? 0 : clamp(-target / this.maxTurn * SENSITIVITY[this.sensitivity], -1, 1);
     this.visualDegrees = this.turn / DEG;
   }
 
