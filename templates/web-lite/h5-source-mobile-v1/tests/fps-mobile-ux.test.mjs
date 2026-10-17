@@ -728,3 +728,33 @@ test('CF V18 opponent pressure is native-difficulty only and mode-dependent',asy
  assert.strictEqual(cfLiteEnemyProfile(base,{id:'counter',lite:false},50),base);
  assert.strictEqual(cfLiteEnemyProfile(null,{id:'counter',lite:true},50),null);
 });
+
+test('CF H5 opening lane chooses real unobstructed sightlines, never a wall',async()=>{
+ const {cfChooseVisibleOpeningLane}=await import('../fps-mobile-ux.mjs');
+ const spawns=[{x:-30,z:0,yaw:-Math.PI/2},{x:-30,z:6,yaw:-Math.PI/2}];
+ const originals=JSON.stringify(spawns);
+ const world={
+   blocked:()=>false,
+   raycast:(x,y,z,dx,dy,dz,maxDistance)=>{
+     // The first corridor ends at an opaque container 8m away.
+     if(Math.abs(z)<.2&&Math.abs(dz)<.01&&dx>.9&&maxDistance>8)
+       return {t:8};
+     return null;
+   }
+ };
+ const nav={idx:()=>1,walkable:()=>true,
+   findPath:(sx,sz,dx,dz)=>[[sx,sz],[dx,dz]]};
+ const lane=cfChooseVisibleOpeningLane({
+   spawns,world,nav,actors:[],team:'BL'
+ });
+ assert.ok(lane?.spot&&lane?.spawn,'must find a real corridor');
+ assert.ok(lane.distance>=7&&lane.distance<=10);
+ assert.ok(lane.backstop>=.8);
+ assert.equal(JSON.stringify(spawns),originals,
+   'candidate selection must never modify authored map starts');
+ assert.ok(lane.spawn.yaw!==undefined);
+ assert.equal(cfChooseVisibleOpeningLane({
+   spawns,world:{...world,raycast:()=>({t:.5})},nav,actors:[],team:'BL'
+ }),null,'opaque walls make a target ineligible');
+ assert.equal(cfChooseVisibleOpeningLane({spawns:[],world,nav}),null);
+});
