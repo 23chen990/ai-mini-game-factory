@@ -3,8 +3,7 @@ import { ManualRaceDriver, TouchActions } from './driver.mjs';
 import { RacingJoystick } from './joystick.mjs';
 import { careerCourseDetails } from './track-design.mjs';
 import { raceSpeedHUD } from './speed-hud.mjs';
-import { roadHint } from './road-coach.mjs';
-import { RaceDuelTracker, replayCue, readRaceAttempt, saveRaceAttempt } from './duel-loop.mjs';
+import { RaceDuelTracker, cornerEntryCue, replayCue, readRaceAttempt, saveRaceAttempt } from './duel-loop.mjs';
 import { careerCourseSvg, raceProgressPercent, nearbyRival, raceEventMoment, raceMetricMoment } from './presentation.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
@@ -16,7 +15,7 @@ const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(sec
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
 const root = document.createElement('section'); root.id = 'race-kit'; root.dataset.phase = 'ready';
 root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span aria-hidden="true">Ⅱ</span></button><div id="race-speed" hidden aria-label="当前速度"><strong id="race-speed-value">0</strong><span>KM/H</span><small id="race-speed-state"></small></div>
-  <div id="race-live-goal" hidden></div><div id="race-moment" aria-live="off" hidden></div><div id="race-chase" hidden></div><div id="race-corner-cue" aria-live="off" hidden></div><div id="race-progress" hidden><span id="race-progress-label">赛程 0%</span><span class="race-progress-bar"><i id="race-progress-fill"></i></span></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-held-item" hidden aria-live="off"></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="左右拖动方向轮盘，松手回正"><div class="race-stick-track"><span aria-hidden="true" class="race-stick-left">‹</span><span aria-hidden="true" class="race-stick-right">›</span><i id="race-stick-knob"></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
+  <div id="race-live-goal" hidden></div><div id="race-moment" aria-live="off" hidden></div><div id="race-chase" hidden></div><div id="race-progress" hidden><span id="race-progress-label">赛程 0%</span><span class="race-progress-bar"><i id="race-progress-fill"></i></span></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-held-item" hidden aria-live="off"></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="左右拖动方向轮盘，松手回正"><div class="race-stick-track"><span aria-hidden="true" class="race-stick-left">‹</span><span aria-hidden="true" class="race-stick-right">›</span><i id="race-stick-knob"></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING / CAREER</div><h1 id="race-heading">极速飞驰</h1>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手轮盘滑动转向，松手回正<br><small>右手按漂移，拉回车头后点小喷。</small></p></div>
     <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="10" aria-valuenow="10" hidden>${'<span></span>'.repeat(10)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +2</button></div>
@@ -135,7 +134,6 @@ function display(next) {
   $('guide').hidden = next !== 'ready' || career.progress.rounds > 0; $('ready').hidden = next !== 'ready'; $('settings').hidden = next !== 'paused';
   for (const id of ['result-copy', 'result-stats', 'results']) $(id).hidden = next !== 'finished';
   $('retry-plan').hidden = next !== 'finished' || !$('retry-plan').textContent;
-  $('corner-cue').hidden = next !== 'race';
   if (next !== 'race') $('knockout').hidden = true;
   $('speed').hidden = next !== 'race'; $('progress').hidden = next !== 'race'; $('chase').hidden = next !== 'race' || !$('chase').textContent; $('moment').hidden = next !== 'race' || performance.now() >= momentUntil;
   $('note').hidden = next === 'finished';$('live-goal').hidden = !(next === 'race' && !!career.objectiveLabel(g));$('held-item').hidden = !racing || career.stage.mode !== 'item';
@@ -421,16 +419,12 @@ async function boot() {
         $('chase').textContent = rival ? rival.label + ' · ' + rival.metres + 'm' : '';
         $('chase').dataset.threat = String(!!rival?.threat);
         $('chase').hidden = !rival;
-        // The original native curvAhead supplies a readable early warning;
-        // no brake button is invented in the one-wheel auto-throttle scheme.
-        const approach=roadHint(g);
-        const bendCue=g.player.s>=26 && approach.includes('弯') ? approach : '';
-        if($('corner-cue').textContent!==bendCue)$('corner-cue').textContent=bendCue;
-        $('corner-cue').hidden=!bendCue;
         if (momentUntil && now >= momentUntil) $('moment').hidden = true;
         const speedView = raceSpeedHUD(g.player);
         if ($('speed-value').textContent !== speedView.value) $('speed-value').textContent = speedView.value;
-        const controlCue = g.player.spin > .1 ? '打滑中' : g.player.wrongWay > .35 ? '逆行 · 反打方向' : speedView.label;
+        const controlCue = g.player.spin > .1 ? '打滑中' :
+          g.player.wrongWay > .35 ? '逆行 · 反打方向' :
+          cornerEntryCue(g) || speedView.label;
         if ($('speed-state').textContent !== controlCue) $('speed-state').textContent = controlCue;
         $('speed').dataset.boost = String(speedView.boost);
         $('speed').dataset.slow = String(speedView.slow);
