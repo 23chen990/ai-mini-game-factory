@@ -29,7 +29,7 @@ test('mobile composition and saved quality survive the pacing repair', () => {
 });
 test('pacing repair owns original early/mid-course nodes, not finish-return nodes', () => {
   assert.ok(director.V91_PACING_SECTORS, 'authored pacing sectors are missing');
-  assert.deepEqual(Object.keys(director.V91_PACING_SECTORS).sort(),['07','22']);
+  assert.deepEqual(Object.keys(director.V91_PACING_SECTORS).sort(),['03','07','22']);
   for (const [id, entries] of Object.entries(director.V91_PACING_SECTORS)) {
     assert.ok(entries.some(x=>x.index===0),id+' has an early decision');
     assert.ok(entries.every(x=>x.index<=(id==='07'?14:11)),id+' must not add bends beyond the single-run finish');

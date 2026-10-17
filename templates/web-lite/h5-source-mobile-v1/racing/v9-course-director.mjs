@@ -61,6 +61,9 @@ const STYLES=Object.freeze({
  * Offsets use the same pre-V8-stretch metre convention as the authored beats.
  * The first node, return road, near-fork entry and all car physics are intact. */
 export const V91_PACING_SECTORS = Object.freeze({
+  '03': Object.freeze([
+    Object.freeze({index:0, amplitude:12, side:1, shape:'entry'})
+  ]),
   '07': Object.freeze([
     Object.freeze({index:0, amplitude:12, side:1, shape:'entry'}),
     Object.freeze({index:14, amplitude:12, side:-1, shape:'release'})

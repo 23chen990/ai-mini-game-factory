@@ -39,7 +39,7 @@ export async function runNativePacingAudit(root='.') {
     assert.deepEqual(reconstruct(true).points,layout.points,'Audit must match built geometry '+stage.id);
     const before=measureCourseActivity(new Track(reconstruct(false)),stage);
     const tr=new Track(layout),after=measureCourseActivity(tr,stage);
-    if(!['07','22'].includes(stage.id)) assert.deepEqual(before,after,'Non-target track changed '+stage.id);
+    if(!['03','07','22'].includes(stage.id)) assert.deepEqual(before,after,'Non-target track changed '+stage.id);
     const maxFraction=RACE_FINISH_FRACTIONS[stage.course]??1;
     const theme=createRaceTrackTheme({boostPads:PAD_LANES[stage.map]??[],tunnels:[]},tr,stage.course);
     const potentialPads=theme.boostPads.filter(p=>p.f<maxFraction).map(p=>({atM:Math.round(p.f*tr.length),lateralM:p.lat}));
@@ -50,7 +50,9 @@ export async function runNativePacingAudit(root='.') {
       potentialPads,featureScope:'road opportunities only; inventory, traffic and actual player choices NOT MEASURED'});
   }
   assert.equal(courses.length,30);
-  const c07=rows.find(x=>x.id==='07'),c22=rows.find(x=>x.id==='22');
+  const c03=rows.find(x=>x.id==='03'),c07=rows.find(x=>x.id==='07'),c22=rows.find(x=>x.id==='22');
+  assert.ok(c03.beforeLowTurnM>450,'Reproduce stage03 lap-line automatic cruise');
+  assert.ok(c03.afterLowTurnM<280&&c03.firstAboveLowCurvatureM<150,'Stage03 needs an early real driving decision');
   assert.ok(c22.beforeLowTurnM>800,'Reproduce the reported middle-sector gap');
   assert.ok(c22.afterLowTurnM<400&&c22.afterLowTurnM<c22.beforeLowTurnM*.5,'Repair the actual race, not its closing road');
   assert.ok(c07.afterLowTurnM<300&&c07.afterLowTurnM<c07.beforeLowTurnM,'Shorten the verified 07 intervals');
