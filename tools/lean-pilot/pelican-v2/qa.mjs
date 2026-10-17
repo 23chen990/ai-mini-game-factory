@@ -173,10 +173,23 @@ try{
   const n=navs;await tap('#co-replay');await page.waitForTimeout(700);check('failure-replay-without-navigation',navs===n&&(await snapshot()).phase==='running',{navigationCount:navs});await tap('#co-pause');await tap('#co-select');await tap('[data-level="1"]');await tap('#co-start');
   // Exact crossing position: two right nudges from neutral reach the outer
   // road, rather than assuming a fractional 1.18m nudge is a lane centre.
-  await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();await shot('pedestrian-fall');await page.waitForTimeout(1300);const waiting=await snapshot();await shot('pedestrian-wait');check('pedestrian-stops-but-countdown-runs',waiting.distance===ped.distance&&waiting.elapsed>ped.elapsed+1.1&&waiting.stun>1,{ped,waiting});await page.waitForTimeout(1000);await shot('pedestrian-rising');await page.waitForTimeout(1200);const recovered=await snapshot();await shot('pedestrian-recovery');check('pedestrian-recovers-once',recovered.phase==='running'&&recovered.distance>waiting.distance&&recovered.events.filter(e=>e.type==='pedestrian-hit').length===1,recovered);
+  await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();await shot('pedestrian-fall');await page.waitForTimeout(1300);const waiting=await snapshot();await shot('pedestrian-wait');check('pedestrian-stops-but-countdown-runs',waiting.distance===ped.distance&&waiting.elapsed>ped.elapsed+1.1&&waiting.stun>1,{ped,waiting});await page.waitForTimeout(1000);await shot('pedestrian-rising');// Do not idle 1.2 seconds on a moving roadway after recovery: the next
+   // physical obstacle is close. Observe actual recovery, make a trusted
+   // pause touch immediately, then do slow screenshot/acceptance work safely.
+   await page.waitForFunction(()=>{const r=window.__coast.snapshot();return r.phase==='running'&&r.stun===0&&r.distance>waiting.distance},null,{timeout:7000});
+   const recovered=await snapshot();await tap('#co-pause');const pausedAfterRecovery=await snapshot();
+   await shot('pedestrian-recovery');
+   check('pedestrian-recovers-once',recovered.phase==='running'&&recovered.distance>waiting.distance&&
+    recovered.events.filter(e=>e.type==='pedestrian-hit').length===1&&pausedAfterRecovery.phase==='paused',
+    {recovered,pausedAfterRecovery});
+   await page.waitForTimeout(240);const stillPaused=await snapshot();
+   check('recovered-rider-pauses-without-extra-vehicle-impact',
+    stillPaused.phase==='paused'&&stillPaused.distance===pausedAfterRecovery.distance&&
+    stillPaused.elapsed===pausedAfterRecovery.elapsed&&stillPaused.events.filter(e=>e.type==='failed').length===0,
+    {pausedAfterRecovery,stillPaused});
   // V4 route keeps every new hazard. Detour around 140, pass the new centre
   // car on its right, then return only after the 205m left barrier.
-  await tap('#co-pause');await tap('#co-replay');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
+  await tap('#co-replay');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
   // Its real +9m prize is caught around 241m, not at 237m. Only accept
   // visible, physically earned events after those distances.
   await waitDistance(231);await shot('barrier-jump');await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');await waitDistance(245);
