@@ -528,6 +528,26 @@ export function cfOpeningBodyLaneClear(world,spawn,spot){
   return true;
 }
 
+/** Unlike a centered HUD marker, this physically checks the camera's
+ * horizontal shooting view. A candidate with a huge cargo wall directly
+ * under the reticle is unsuitable for a quick first-person H5 first fight.
+ * Rays are the original native WORLD BULLET rays, not UI projections.
+ */
+export function cfOpeningCameraQuality(world,pose,yaw,depth=3.8) {
+  if(!world?.raycast||!pose||![pose.x,pose.z,yaw].every(Number.isFinite))
+    return 0;
+  let clear=0;
+  for(const angle of [0,-.31,.31]){
+    const a=yaw+angle;
+    const dx=-Math.sin(a),dz=-Math.cos(a);
+    const hit=world.raycast(pose.x,1.54,pose.z,
+      dx,0,dz,depth,'bullet');
+    if(!hit||!Number.isFinite(hit.t)||hit.t>=depth-.15)clear++;
+    else if(angle===0)return 0; // Actual crosshair faces a physical wall.
+  }
+  return clear;
+}
+
 /** A short H5 level must start with a REAL enemy visible in a real firing
  * corridor, not with a hero staring into a container wall. This selects an
  * existing map spawn and an authored camera bearing BEFORE the match starts.
@@ -537,7 +557,8 @@ export function cfOpeningBodyLaneClear(world,spawn,spot){
  * a navigable path and free head-height space BEHIND the enemy, so its badge
  * and hitbox cannot be swallowed by a container face. */
 export function cfChooseVisibleOpeningLane({
-  spawns, world, nav, actors=[], team, eyeH=1.6
+  spawns, world, nav, actors=[], team, eyeH=1.6,
+  distances=[10,9,8,7],h5WideView=false
 }={}) {
   if(!Array.isArray(spawns)||!spawns.length||
     !world?.raycast||!world?.blocked||!nav?.idx||
@@ -545,22 +566,36 @@ export function cfChooseVisibleOpeningLane({
   const others=actors.filter(a=>a?.alive&&a.team===team&&
     !a.isPlayer&&a.pos);
   let best=null;
-  const turns=[0,-.42,.42,-.82,.82,-1.18,1.18];
-  // Try a 2.2m backstop first. Relax it only when this genuine map geometry
-  // makes no wider corridor possible; even fallback cannot go through walls.
+  // Existing team spawns are frequently against a visually dominant cargo
+  // wall. For V20 only, preposition the initial player a few real NavGrid
+  // metres forward from an authored spawn. This occurs BEFORE play begins
+  // and never changes in-flight player coordinates or hit/kill state.
+  const poses=[];
+  for(const start of spawns) {
+    if(![start?.x,start?.z,start?.yaw].every(Number.isFinite))continue;
+    const fx=-Math.sin(start.yaw),fz=-Math.cos(start.yaw);
+    for(const step of h5WideView?[4.2,2.4,0]:[0]){
+      const point={x:start.x+fx*step,z:start.z+fz*step,yaw:start.yaw};
+      if(world.blocked(point.x,.05,point.z,.38,1.9))continue;
+      const cell=nav.idx(point.x,point.z);
+      if(cell<0||!nav.walkable(cell))continue;
+      if(step>0){
+        const walk=nav.findPath(start.x,start.z,point.x,point.z);
+        if(!Array.isArray(walk)||walk.length<2)continue;
+      }
+      poses.push(point);
+    }
+  }
+  const turns=h5WideView?[0,-.3,.3,-.6,.6]:[0,-.42,.42,-.82,.82,-1.18,1.18];
   for(const backstop of [2.2,.8]) {
-    for(const spawn of spawns) {
-      if(![spawn?.x,spawn?.z,spawn?.yaw].every(Number.isFinite)||
-        world.blocked(spawn.x,.05,spawn.z,.38,1.9))continue;
-      const startCell=nav.idx(spawn.x,spawn.z);
-      if(startCell<0||!nav.walkable(startCell))continue;
+    for(const spawn of poses) {
       if(others.some(a=>Math.hypot(a.pos.x-spawn.x,a.pos.z-spawn.z)<2))continue;
       for(const turn of turns){
         const yaw=spawn.yaw+turn;
         const probe={pos:{x:spawn.x,y:.02,z:spawn.z},yaw,eyeH};
         const spot=chooseFirstEncounterSpot({
           player:probe,world,nav,actors,
-          distances:[10,9,8,7],laterals:[0,.45,-.45]
+          distances,laterals:[0,.45,-.45]
         });
         if(!spot)continue;
         const dx=spot.x-spawn.x,dz=spot.z-spawn.z;
@@ -572,18 +607,25 @@ export function cfChooseVisibleOpeningLane({
         const path=nav.findPath(spawn.x,spawn.z,spot.x,spot.z);
         if(!Array.isArray(path)||path.length<2)continue;
         if(!cfOpeningBodyLaneClear(world,spawn,spot))continue;
-        // Prefer closer, centered, broad lanes. Never favor a hidden actor.
-        const score=distance-.95*Math.abs(turn)+backstop*.8-
-          .2*Math.max(0,path.length-2);
+        const aimYaw=Math.atan2(-(spot.x-spawn.x),-(spot.z-spawn.z));
+        const viewQuality=h5WideView
+          ?cfOpeningCameraQuality(world,spawn,aimYaw,3.8):3;
+        if(h5WideView&&viewQuality<2)continue;
+        // H5 rewards a large, actually hittable opponent in a broad viewport.
+        const score=h5WideView
+          ?viewQuality*3+(10-distance)*.7-.7*Math.abs(turn)-
+            .2*Math.max(0,path.length-2)
+          :distance-.95*Math.abs(turn)+backstop*.8-
+            .2*Math.max(0,path.length-2);
         if(!best||score>best.score)best={
-          spawn:{x:spawn.x,z:spawn.z,yaw},
+          spawn:{x:spawn.x,z:spawn.z,yaw:aimYaw},
           spot,turn:+turn.toFixed(2),distance:+distance.toFixed(2),
-          score:+score.toFixed(2),backstop
+          score:+score.toFixed(2),backstop,viewQuality
         };
-        // H5 devices must not run hundreds of expensive nav/ray queries
-        // when a near-centered, broad and walkable opening is already found.
-        if(backstop>=2.2&&distance>=8.8&&Math.abs(turn)<=.42&&
-          path.length<=5)return best;
+        if(h5WideView&&backstop>=2.2&&viewQuality===3&&
+          distance>=6.4&&distance<=7.7&&path.length<=4)return best;
+        if(!h5WideView&&backstop>=2.2&&distance>=8.8&&
+          Math.abs(turn)<=.42&&path.length<=5)return best;
       }
     }
     if(best)return best;
@@ -1500,7 +1542,8 @@ export function createFpsMobileUx(game, root, doc) {
       const lane=cfV20CoverEnabled(activeChallenge)
         ?cfChooseVisibleOpeningLane({
           spawns:game.map?.spawns?.[p.team],world:game.world,
-          nav:game.nav,actors:game.actors,team:p.team,eyeH:p.eyeH
+          nav:game.nav,actors:game.actors,team:p.team,eyeH:p.eyeH,
+          h5WideView:true,distances:[7.4,6.6,5.8]
         }):null;
       if(lane) {
         p.pos.set(lane.spawn.x,.02,lane.spawn.z);
