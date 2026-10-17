@@ -212,3 +212,28 @@ test('V8 native AI hook is strict and avoids checkpoint/progress surgery',()=>{
   assert.equal(api.patchV8NativeAi(adapted),adapted);
   assert.throws(()=>api.patchV8NativeAi('class NonRacing {}'),/AI anchors changed/);
 });
+
+test('V8 one-way finish hooks preserve native progress and onLap bookkeeping',()=>{
+  const native=[
+    'export class NativeWorld {',
+    '  updateProgress(r,init=false) {',
+    '    const L=this.track.length;',
+    '    if(r.isPlayer){r.progress=r.d}else {',
+    '      r.progress = r.dist;',
+    '    }',
+    '  }',
+    '',
+    '  onLap(r) {',
+    '    if(r.lapsDone>=this.settings.laps) r.finished=true;',
+    '  }',
+    '}'
+  ].join('\n');
+  const patched=api.patchV8PointToPoint(native);
+  assert.ok(patched.includes("this.settings.course === 'race-07' ? .82"));
+  assert.ok(patched.includes("this.settings.course === 'race-22' ? .84"));
+  assert.ok(patched.includes('r.progress >= L * finishAt'));
+  assert.ok(patched.includes('this.onLap(r);'));
+  assert.equal(api.patchV8PointToPoint(patched),patched);
+  assert.throws(()=>api.patchV8PointToPoint('class AnotherGame {}'),
+    /one-way progress anchor changed/);
+});
