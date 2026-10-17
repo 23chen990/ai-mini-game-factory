@@ -26,6 +26,16 @@ test('画质偏好：首次使用均衡，用户选流畅后刷新仍优先流�
   for(const value of ['low','mid','high']) assert.equal(normalize(value),value);
   for(const value of [null,undefined,'','ultra','manual',{},0]) assert.equal(normalize(value),'mid');
 });
+test('first mobile race starts performance-first; desktop and explicit choices are preserved',()=>{
+  const fn=need('initialRaceQuality');
+  assert.equal(fn(null,true),'low');
+  assert.equal(fn(undefined,true),'low');
+  assert.equal(fn('garbage',true),'low');
+  assert.equal(fn(null,false),'mid');
+  assert.equal(fn('mid',true),'mid');
+  assert.equal(fn('high',true),'high');
+  assert.equal(fn('low',false),'low');
+});
 test('暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复',()=>{
   const mute=need('setRaceSound');
   assert.equal(mute(null,false),false);

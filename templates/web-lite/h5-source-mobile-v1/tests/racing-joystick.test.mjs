@@ -187,3 +187,43 @@ test('a held drift cannot automatically re-enter after countersteer exit or wall
   assert.match(adapted,/this\.__RACE_DRIFT_REARMED__ !== false/);
   assert.equal(patchAnalogSteer(adapted),adapted);
 });
+
+test('shipped floating phone thumb starts neutral anywhere and reacts quickly to short movement',()=>{
+  const j = new RacingJoystick({floating:true,deadzone:.055,fullThrow:.58});
+  assert.equal(j.press(19,248,300,60),true);
+  assert.equal(j.snapshot(),0,'placing a thumb off-centre is not a steering command');
+  assert.ok(j.anchorX<0,'wheel visual centre follows the actual resting thumb');
+  j.update(19,246);
+  assert.equal(j.snapshot(),0,'two-pixel tremor is neutral');
+  j.update(19,234);
+  assert.ok(j.snapshot()>.30,'a 14px real thumb drag yields decisive steering');
+  assert.ok(j.snapshot()<1,'near-centre still supports precise corrections');
+  j.release(19);
+  assert.equal(j.snapshot(),0);
+  assert.equal(j.anchorX,0,'release restores neutral visual ring');
+});
+test('over-pulled floating wheel can reverse with one short counter-motion',()=>{
+  const j=new RacingJoystick({floating:true,deadzone:.055,fullThrow:.58});
+  j.press(20,300,300,60);
+  j.update(20,205);
+  assert.equal(j.snapshot(),1,'overshoot is full left without a broken controller');
+  assert.ok(j.centreX<300,'the centre follows a finger over-pull');
+  j.update(20,247);
+  assert.ok(j.snapshot()<0,'a 42px right correction reverses steering despite a 95px over-pull');
+  j.update(20,280);
+  assert.equal(j.snapshot(),-1);
+  j.release(20);
+  assert.equal(j.snapshot(),0);
+});
+test('floating wheel rejects unrelated pointers and retains the chosen sensitivity',()=>{
+  const j=new RacingJoystick({floating:true,deadzone:.055,fullThrow:.58});
+  j.press(21,190,250,60);
+  j.update(21,210);const normal=Math.abs(j.snapshot());
+  j.setSensitivity('calm');const calm=Math.abs(j.snapshot());
+  j.setSensitivity('sharp');const sharp=Math.abs(j.snapshot());
+  assert.ok(calm<normal && normal<sharp);
+  assert.equal(j.press(22,220,250,60),false);
+  assert.equal(j.release(22),false);
+  assert.ok(j.snapshot()<0,'positive finger movement turns right');
+  j.clear();assert.equal(j.snapshot(),0);
+});

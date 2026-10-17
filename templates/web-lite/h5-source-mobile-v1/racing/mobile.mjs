@@ -10,7 +10,7 @@ import { RacingCareer } from './runtime.mjs';
 import { ITEM_LABELS, ITEM_ICONS } from './items.mjs';
 import { installCornerSigns, disposeCornerSigns } from './corner-signs.mjs';
 import { STAGES, SKIN_NAMES, SKIN_STARS, careerStars, stageUnlocked, skinUnlocked, localDayKey, stageFailureFeedback } from './career.mjs';
-import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud } from './session.mjs';
+import { clearNativeInput, settleNative, QualityMonitor, normalizeRaceQuality, initialRaceQuality, setRaceSound, raceReady, stageTrackReady, tuneRaceFx, shouldRefreshRaceHud } from './session.mjs';
 const MAPS = [{ id: 'city', name: '城市巡回' }, { id: 'aegean', name: '海滨山城' }, { id: 'egypt', name: '沙漠冲刺' }, { id: 'snow', name: '雪地探险' }];
 const time = seconds => seconds == null ? '未完成' : `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
 const mobile = navigator.maxTouchPoints > 0 || window.matchMedia('(pointer:coarse)').matches;
@@ -28,7 +28,7 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
 document.body.append(root);
 const $ = id => root.querySelector('#race-' + id);
 const duel = new RaceDuelTracker();
-const joystick = new RacingJoystick(), actions = new TouchActions(),
+const joystick = new RacingJoystick({ floating: true, deadzone: .055, fullThrow: .58 }), actions = new TouchActions(),
   driver = new ManualRaceDriver(actions), quality = new QualityMonitor();
 const SENS_STORE = 'h5-qq-mobile-20261013:steering-sensitivity:v1';
 try { joystick.setSensitivity(localStorage.getItem(SENS_STORE)); } catch { /* Default safe sensitivity. */ }
@@ -111,10 +111,11 @@ function renderLobby() {
   if (phase === 'ready') $('note').textContent = '';
   fuelView();
 }
-Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), nativeSteer: g?.player?.steer ?? null, playerYaw: g?.player?.h ?? null, cameraYaw: g?.camYaw ?? null, drifting: !!g?.player?.drifting, fpsEstimate: quality.fps, touchToInputSampleMs: lastTouchSampleAgeMs, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
+Object.defineProperty(window, '__RACE_EVIDENCE__', { get: () => ({ events: events.map(e => ({ ...e })), phase, mode: touchDriving ? 'joystick' : 'keyboard', quality: g?.settings.quality, requestedCourse: career.stage.course, actualCourse: g?.track?.__RACE_COURSE_ID ?? null, actualTrackLength: Number.isFinite(g?.track?.length) ? Math.round(g.track.length) : null, steerAxis: Number(joystick.snapshot().toFixed(3)), nativeSteer: g?.player?.steer ?? null, playerYaw: g?.player?.h ?? null, cameraYaw: g?.camYaw ?? null, drifting: !!g?.player?.drifting, fpsEstimate: quality.fps, renderPixelRatio: g?.renderer?.getPixelRatio() ?? null, composerActive: !!g?.composer, shadowsActive: !!g?.renderer?.shadowMap?.enabled, floatingWheel: joystick.floating, wheelAnchorPx: Math.round(joystick.anchorX), touchToInputSampleMs: lastTouchSampleAgeMs, duel: g ? duel.snapshot(g,career.stage) : null, replayTapCount, trial: trial.snapshot(), revision: 'V6.0' }) });
 const portrait = () => window.innerHeight > window.innerWidth;
 function syncJoystickVisual() {
   $('stick-knob').style.transform = `translate(calc(-50% + ${joystick.knobX.toFixed(1)}px), -50%)`;
+  $('joystick').style.setProperty('--race-stick-anchor', joystick.anchorX.toFixed(1) + 'px');
   $('joystick').classList.toggle('held',joystick.active);
 }
 function releaseInput() {
@@ -325,7 +326,7 @@ joystickSurface.addEventListener('pointerdown', e => {
   e.preventDefault();
   if (!g || (phase !== 'race' && phase !== 'countdown')) return;
   const r = joystickSurface.getBoundingClientRect();
-  if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width / 2)) return;
+  if (!joystick.press(e.pointerId, e.clientX, r.left + r.width / 2, r.width * .36)) return;
   touchDriving = true; g.mobileMode = true; recordStickEvent();
   joystickSurface.setPointerCapture(e.pointerId); syncJoystickVisual();
 });
@@ -383,8 +384,9 @@ async function boot() {
   setRaceSound(g.audio,soundEnabled);
   let rememberedQuality;
   try {rememberedQuality = localStorage.getItem(QUALITY_STORE);} catch {rememberedQuality = null;}
-  g.mobileMode = mobile;g.camMode = 1;g.settings.quality = normalizeRaceQuality(rememberedQuality);
+  g.mobileMode = mobile;g.camMode = 1;g.settings.quality = initialRaceQuality(rememberedQuality, mobile);
   quality.manual = rememberedQuality === 'low' || rememberedQuality === 'mid' || rememberedQuality === 'high';
+  if (!quality.manual && mobile) $('quality-note').textContent = '默认流畅画质，优先保证操作跟手';
   career.configure(g);g.setupQuality();
   career.patchNative(g);
   const meta = window.__PLATFORM_META__ ?? await fetch('platform.json').then(r => r.ok ? r.json() : null).catch(() => null);

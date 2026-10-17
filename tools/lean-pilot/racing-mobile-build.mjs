@@ -41,6 +41,50 @@ export function patchRacingSource(source) {
   return output;
 }
 
+/** Mobile GPU budget: don't allocate native multisample anti-aliasing,
+ * shadows and half-float post-processing before the racing overlay boots.
+ * The player may still explicitly select balanced/clear after startup.
+ * Fail closed against a new unreviewed upstream Three.js constructor. */
+export function patchMobileInitialRendering(source) {
+  const changes = [
+    ["quality: IS_TOUCH ? 'mid' : 'high'", "quality: IS_TOUCH ? 'low' : 'high'"],
+    ["canvas: this.canvas, antialias: true, powerPreference: 'high-performance'",
+     "canvas: this.canvas, antialias: !IS_TOUCH, powerPreference: 'high-performance'"],
+  ];
+  if (changes.every(([,next])=>source.includes(next))) return source;
+  if (changes.some(([,next])=>source.includes(next))) throw Error('Partial native phone render patch');
+  for (const [original] of changes) {
+    if (source.split(original).length !== 2) throw Error('Pinned mobile render anchor changed');
+  }
+  let out=source;
+  for (const [from,to] of changes) out=out.replace(from,to);
+  return out;
+}
+
+/** Mobile mid tier should not run expensive half-float post processing and
+ * dynamic shadows. Keep the original THREE pipeline for desktop and for an
+ * explicit high-quality choice, while offering an inexpensive 1.2x mid tier. */
+export function patchMobileMidRendering(source) {
+  const changes = [
+    ["q === 'mid' ? Math.min(dpr, 1.5) : 1",
+     "q === 'mid' ? Math.min(dpr, IS_TOUCH ? 1.2 : 1.5) : 1"],
+    ["this.renderer.shadowMap.enabled = q !== 'low';",
+     "this.renderer.shadowMap.enabled = q !== 'low' && !(IS_TOUCH && q === 'mid');"],
+    ["this.sun.castShadow = q !== 'low';",
+     "this.sun.castShadow = q !== 'low' && !(IS_TOUCH && q === 'mid');"],
+    ["if (q === 'low') return;",
+     "if (q === 'low' || (IS_TOUCH && q === 'mid')) return;"],
+  ];
+  if (changes.every(([,next])=>source.includes(next))) return source;
+  if (changes.some(([,next])=>source.includes(next))) throw Error('Partial native medium render patch');
+  for (const [old] of changes) {
+    if (source.split(old).length !== 2) throw Error('Pinned medium render anchor changed');
+  }
+  let out=source;
+  for (const [from,to] of changes) out=out.replace(from,to);
+  return out;
+}
+
 /** Speed up only the touch camera, not the desktop camera or vehicle motion.
  * A slow chase camera can look like steering latency even at 60 FPS. */
 export function patchMobileCameraFollow(source) {
@@ -395,7 +439,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     "this.emit('driftEnd', { time: this.driftTime });",
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
-  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchMobileCameraFollow(patchRacingSource(beforeMain))))))));
+  await writeFile(path.join(project, 'src/main.js'), patchRaceDesertRelief(patchCourseSkyAndScenery(patchShortcutNativeWorld(patchCareerRouteSource(patchManualNitroEdge(patchMobileMidRendering(patchMobileInitialRendering(patchMobileCameraFollow(patchRacingSource(beforeMain))))))))));
   await writeFile(path.join(project, 'src/race-session.mjs'), inputFiles[1]);
   const { stdout } = await exec(process.execPath, ['build.mjs'], { cwd: project, timeout: 60000, maxBuffer: 2 * 1024 * 1024 });
   const esbuild = await import(pathToFileURL(path.join(project, 'node_modules/esbuild/lib/main.js')).href);

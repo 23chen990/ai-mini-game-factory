@@ -238,3 +238,35 @@ test('real touch countersteer regains lateral grip without changing keyboard dri
   assert.ok(counter>3.5 && counter<5.2,'touch must countersteer faster but not snap instantly');
   assert.throws(()=>api.patchMobileDriftCounterGrip('unexpected source'),/anchor changed/);
 });
+
+test('mobile cold start does not allocate full postprocessing/shadow workload or renderer MSAA',()=>{
+  const source = [
+    "quality: IS_TOUCH ? 'mid' : 'high'",
+    "canvas: this.canvas, antialias: true, powerPreference: 'high-performance'",
+    "this.renderer.shadowMap.enabled = q !== 'low';",
+    "if (q === 'low') return;"
+  ].join('\n');
+  const patched=api.patchMobileInitialRendering(source);
+  assert.match(patched,/quality: IS_TOUCH \? 'low' : 'high'/);
+  assert.match(patched,/canvas: this\.canvas, antialias: !IS_TOUCH/);
+  assert.match(patched,/if \(q === 'low'\) return;/);
+  assert.equal(api.patchMobileInitialRendering(patched),patched);
+  assert.throws(()=>api.patchMobileInitialRendering('unknown source'),/anchor changed/);
+  assert.throws(()=>api.patchMobileInitialRendering(source.replace("antialias: true","antialias: false")),/anchor changed/);
+});
+
+test('mobile balanced quality avoids bloom, half-float composer and shadows; desktop remains original',()=>{
+  const original=[
+    "this.renderer.setPixelRatio(q === 'high' ? Math.min(dpr, 2) : q === 'mid' ? Math.min(dpr, 1.5) : 1);",
+    "this.renderer.shadowMap.enabled = q !== 'low';",
+    "this.sun.castShadow = q !== 'low';",
+    "if (q === 'low') return;"
+  ].join('\n');
+  const patched=api.patchMobileMidRendering(original);
+  assert.match(patched,/IS_TOUCH \? 1\.2 : 1\.5/);
+  assert.match(patched,/shadowMap\.enabled = q !== 'low' && !\(IS_TOUCH && q === 'mid'\)/);
+  assert.match(patched,/this\.sun\.castShadow = q !== 'low' && !\(IS_TOUCH && q === 'mid'\)/);
+  assert.match(patched,/if \(q === 'low' \|\| \(IS_TOUCH && q === 'mid'\)\) return/);
+  assert.equal(api.patchMobileMidRendering(patched),patched);
+  assert.throws(()=>api.patchMobileMidRendering('unknown'),/anchor changed/);
+});

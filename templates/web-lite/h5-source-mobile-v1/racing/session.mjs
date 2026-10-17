@@ -8,6 +8,10 @@ export function setRaceSound(audio, enabled) {
   return true;
 }
 export const normalizeRaceQuality = value => ['low', 'mid', 'high'].includes(value) ? value : 'mid';
+/** An untested handset must start with low GPU work, not full-screen bloom
+ * and shadows. A deliberate existing user graphics preference still wins. */
+export const initialRaceQuality = (stored, isTouch) =>
+  ['low','mid','high'].includes(stored) ? stored : isTouch ? 'low' : 'mid';
 export const raceReady = game => !!(game?.track && game.input && !game.loading);
 /** Never begin or charge fuel for a stage if its physical track failed to load. */
 export const stageTrackReady = (game, stage) => !!(game?.track && !game.loading && game.map?.id === stage?.map && stage?.course && game.track.__RACE_COURSE_ID === stage.course && game.settings?.course === stage.course);
