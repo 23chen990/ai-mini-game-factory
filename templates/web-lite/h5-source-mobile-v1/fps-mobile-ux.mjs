@@ -1329,7 +1329,7 @@ export function createFpsMobileUx(game, root, doc) {
             ? (visibleAimCoach||'◎ 对准红色目标按开火')+
               ' · '+drill.follow+'/'+activeChallenge.target
             : turn
-              ? '🚶'+turn.symbol+' 左摇杆移动回首枪射击位 · '+drill.follow+'/'+activeChallenge.target
+              ? '🚶'+turn.symbol+' 绕到可射击的侧翼 · '+drill.follow+'/'+activeChallenge.target
               : reAim
                 ? reAim+' · '+drill.follow+'/'+activeChallenge.target
                 : '↔ 探身寻找敌人 · '+drill.follow+'/'+activeChallenge.target;
