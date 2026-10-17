@@ -31,9 +31,10 @@ export function settleNative(game) {
   clearNativeInput(game.input ?? { down: new Set(), pressed: new Set(), touchPressed: new Set(), touch: {} });
   return result;
 }
-export const raceCameraFov = (speed, nitro, small) => Math.min(78, 66 + Math.abs(speed) * .055 + (nitro ? 4 : 0) + (small ? 2 : 0));
+import { v10MobileFov } from './v10-driving-feel.mjs';
+export const raceCameraFov = v10MobileFov;
 // Keep scene luminance stable across the frequent automatic boost cycles.
-export const raceBloomStrength = () => .3;
+export const raceBloomStrength = nitro => nitro ? .46 : .32;
 const tunedFx = new WeakSet();
 export function tuneRaceFx(game) {
   if (!game.fx || tunedFx.has(game.fx)) return;
