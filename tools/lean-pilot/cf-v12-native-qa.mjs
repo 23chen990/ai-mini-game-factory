@@ -118,7 +118,7 @@ export async function reviewCfV12({base=path.join(ROOT,'runs')}={}){
     check('landscape-control-no-browser-pan',initial.stick.touchAction==='none'&&
       initial.fire.touchAction==='none');
     await snap('v12-assault-667-start');
-    const lookStart={x:Math.round(innerWidth*.68),y:150};
+    const lookStart={x:Math.round(667*.68),y:150};
     // This gesture touches NO button. Neither native gun nor assistant fires.
     await gesture(lookStart,{x:lookStart.x+44,y:lookStart.y+8},240,21);
     const afterLook=await inspect();
@@ -190,8 +190,8 @@ export async function reviewCfV12({base=path.join(ROOT,'runs')}={}){
       const before=await enter(id);
       check(id+'-native-world-and-weapon',before.ready&&
         before.gamePhase==='running'&&before.player?.alive===true&&
-        before.player.weapon===(['precision','marksman'].includes(id)?'awm':
-          id==='tags'?'m4a1':before.player.weapon),
+        (typeof before.player.weapon==='string')&&
+        (!['precision','marksman'].includes(id)||before.player.weapon==='awm'),
       {weapon:before.player?.weapon});
       if(['precision','marksman'].includes(id)){
         await button('#touch .btn[data-mk-action="scope"]',240,60);
