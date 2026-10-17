@@ -1512,6 +1512,15 @@ export function createFpsMobileUx(game, root, doc) {
         defenseSite:defense.sites?.[defense.stage]?.id||null};
     },
     onSelect(challenge) { updateTutorial(challenge); defensePin.hidden=true; },
+    beforeNativeStart() {
+      // A previous beginner scout may have authored short-term team spawns.
+      // Restore them BEFORE original Game.startMatch() chooses new positions,
+      // not afterward (that is too late for a real warm replay).
+      if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
+        game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;
+      originalEnemySpawns=null;trainingSpawnTeam=null;
+      resetAllTouches();
+    },
     onStart(challenge) {
       activeChallenge = challenge || null;
       if(originalEnemySpawns&&trainingSpawnTeam&&game.map?.spawns)
