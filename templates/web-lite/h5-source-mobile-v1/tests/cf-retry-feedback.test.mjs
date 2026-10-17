@@ -21,7 +21,7 @@ test('player-only near miss for a genuine first point; no fabricated B success',
 test('near-miss narrative never counts team kills, early hits or almost walking',()=>{
  const assault=mission('assault');
  assert.equal(cfNearMissCue(assault,{assaultStage:1,assaultKills:1},88000),
-   '换位已经完成，只差最后1次亲手击杀');
+   '已经抵达真实进攻位，只差最后1次亲手击杀');
  assert.equal(cfNearMissCue(assault,{assaultStage:0,kills:90},88000),null);
  assert.equal(cfNearMissCue(assault,{assaultStage:1,assaultKills:0},88000),null);
  const sniper=mission('marksman');
@@ -35,10 +35,13 @@ test('near-miss narrative never counts team kills, early hits or almost walking'
 
 test('survival near misses reflect full native elapsed and actual personal kills',()=>{
  const c=mission('evac');
- const enough={travel:29,kills:1,deaths:1};
+ const enough={travel:29,kills:1,deaths:1,evacSiteValid:true,
+   evacExtracted:true,evacHeldSec:6};
  assert.equal(cfNearMissCue(c,enough,60000),'坚持到最后阶段，还差10秒');
  assert.equal(cfNearMissCue(c,{...enough,kills:0},60000),null);
  assert.equal(cfNearMissCue(c,{...enough,travel:5},60000),null);
+ assert.match(cfNearMissCue(c,{...enough,evacExtracted:false},60000),/撤离区/);
+ assert.equal(cfNearMissCue(c,{...enough,evacSiteValid:false,evacExtracted:false},60000),null);
  assert.equal(cfNearMissCue(c,enough,20000),null);
  assert.equal(cfNearMissCue(c,enough,70000),null);
  assert.equal(cfNearMissCue(null,enough,60000),null);

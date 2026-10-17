@@ -212,7 +212,8 @@ async function boot() {
         kills:g.player?.stats?.k||0,awmKills:g.__mkAwmKills||0,deaths:g.player?.stats?.d||0,
         alive:g.player?.alive===true,nativeRespawnSec:g.player?.respawnT||0,
         travel:fpsUx?.distanceMeters()||0,...fpsUx?.drillMetrics(),
-        ...fpsUx?.assaultMetrics(),...fpsUx?.defenseMetrics()});
+        ...fpsUx?.assaultMetrics(),...fpsUx?.extractionMetrics(),
+        ...fpsUx?.defenseMetrics()});
       native.simulatedSeconds = () => g.time;
       fpsUx = createFpsMobileUx(g, root, document);
       renderFpsPrefs();break; }
@@ -359,9 +360,15 @@ async function boot() {
               (metrics.defenseEnemyHeld||0)>=2
                 ? ' · 敌'+Math.floor(metrics.defenseEnemyHeld)+'/'+activeChallenge.breachSeconds+'秒':''))
           : activeChallenge.kind==='assault'
-          ? (metrics.assaultStage===1
-            ? '◆ 换位完成 · 亲手击杀'+(metrics.assaultKills||0)+'/'+activeChallenge.target
-            : '↗ 换位'+Math.floor(metrics.assaultTravel||0)+'/'+activeChallenge.minTravel+'米')
+          ? (metrics.assaultSiteValid!==true?'✕ 进攻位不可达':
+             metrics.assaultStage===1
+               ? '◆ 进攻位已达 · 击杀'+(metrics.assaultKills||0)+'/'+activeChallenge.target
+               : '↗ 进攻位 · 移动'+Math.floor(metrics.assaultTravel||0)+'/'+activeChallenge.minTravel+'米')
+          : activeChallenge.extractSeconds
+          ? (metrics.evacSiteValid!==true?'✕ 撤离区不可达':
+             metrics.evacExtracted===true?'◆ 撤离区已守住 · 等待结束':
+               '◆ 撤离'+Math.floor(metrics.evacHeldSec||0)+'/'+activeChallenge.extractSeconds+
+               '秒 · '+(metrics.evacContested?'敌军争夺中':'持续作战'))
           : activeChallenge.drill==='reposition'
           ? result.label
           : activeChallenge.kind === 'survive'

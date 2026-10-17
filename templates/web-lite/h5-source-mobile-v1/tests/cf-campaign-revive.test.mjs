@@ -35,28 +35,31 @@ test('two readable groups, exactly eight unique unlocked base challenges, no pay
 test('flanking requires authentic walked meters AND net displacement before native player kills count',()=>{
  const c=by('assault');
  assert.equal(c.minTravel,12);
- let state=cfAdvanceAssault(c,null,{kills:0,travel:0,x:-32,z:-6});
+ let state=cfAdvanceAssault(c,null,{kills:0,travel:0,x:-32,z:-6,alive:true,
+   checkpoint:{x:-21,z:-6}});
+ assert.equal(state.checkpointValid,true);
  assert.equal(state.stage,0);
- state=cfAdvanceAssault(c,state,{kills:3,travel:12.1,x:-30,z:-6});
+ state=cfAdvanceAssault(c,state,{kills:3,travel:12.1,x:-30,z:-6,alive:true});
  assert.equal(state.stage,0,'Walking in place cannot unlock kill scoring');
  assert.equal(state.postKills,0);
- state=cfAdvanceAssault(c,state,{kills:4,travel:14,x:-21,z:-6});
+ state=cfAdvanceAssault(c,state,{kills:4,travel:14,x:-21,z:-6,alive:true});
  assert.equal(state.stage,1);
  assert.equal(state.killBaseline,4,'Native early kills cannot count as post-flank');
  assert.equal(state.postKills,0);
- state=cfAdvanceAssault(c,state,{kills:5,travel:14.8,x:-20,z:-6});
+ state=cfAdvanceAssault(c,state,{kills:5,travel:14.8,x:-20,z:-6,alive:true});
  assert.equal(state.postKills,1);
  assert.equal(challengeResult(c,{assaultStage:state.stage,
-  assaultTravel:state.travel,assaultKills:state.postKills,deaths:0},false).outcome,'running');
- state=cfAdvanceAssault(c,state,{kills:6,travel:17.2,x:-18,z:-7});
+  assaultTravel:state.travel,assaultKills:state.postKills,deaths:0,
+  assaultSiteValid:true},false).outcome,'running');
+ state=cfAdvanceAssault(c,state,{kills:6,travel:17.2,x:-18,z:-7,alive:true});
  const native={assaultStage:state.stage,assaultTravel:state.travel,
-  assaultKills:state.postKills,deaths:1};
+  assaultKills:state.postKills,deaths:1,assaultSiteValid:true};
  assert.equal(challengeResult(c,native,false).outcome,'won');
  assert.equal(challengeResult(c,{...native,deaths:3},false).outcome,'lost');
  assert.equal(challengeResult(c,{...native,assaultTravel:2},true).outcome,'lost');
  assert.equal(challengeResult(c,{...native,assaultStage:0},true).outcome,'lost');
  assert.equal(challengeResult(c,{hits:500,kills:90,deaths:0},true).outcome,'lost');
- assert.match(cfMissionDebrief(c,native,'won'),/自己击杀/);
+ assert.match(cfMissionDebrief(c,native,'won'),/亲手击杀/);
  const elite=cfEliteChallenge(c);
  assert.equal(elite.target,3);assert.equal(elite.minTravel,18);
  assert.equal(elite.maxDeaths,1);
@@ -81,18 +84,23 @@ test('two-player-verified sniper kills AND genuine walking are both required',()
 test('evac cannot be won from idling or teammate kills, or early normal game termination',()=>{
  const c=by('evac');
  assert.equal(c.kind,'survive');assert.equal(c.minKills,1);
- const full={kills:1,deaths:1,travel:35};
+ const full={kills:1,deaths:1,travel:35,
+   evacSiteValid:true,evacExtracted:true,evacHeldSec:6};
  assert.equal(challengeResult(c,full,true,70000).outcome,'won');
  assert.equal(challengeResult(c,{...full,kills:0},true,70000).outcome,'lost');
  assert.equal(challengeResult(c,{...full,travel:34.9},true,70000).outcome,'lost');
+ assert.equal(challengeResult(c,{...full,evacExtracted:false},true,70000).outcome,'lost');
+ assert.equal(challengeResult(c,{...full,evacSiteValid:false},false,20000).outcome,'lost');
  assert.equal(challengeResult(c,full,true,69999).outcome,'lost');
  assert.equal(challengeResult(c,full,false,70000).outcome,'running');
  assert.equal(challengeResult(c,{...full,deaths:2},true,70000).outcome,'lost');
  const elite=cfEliteChallenge(c);
  assert.equal(elite.target,0);
  assert.equal(elite.minTravel,50);assert.equal(elite.minKills,2);
- assert.equal(challengeResult(elite,{kills:2,deaths:0,travel:50},true,80000).outcome,'won');
- assert.equal(challengeResult(elite,{kills:1,deaths:0,travel:50},true,80000).outcome,'lost');
+ assert.equal(challengeResult(elite,{kills:2,deaths:0,travel:50,
+   evacSiteValid:true,evacExtracted:true,evacHeldSec:8},true,80000).outcome,'won');
+ assert.equal(challengeResult(elite,{kills:1,deaths:0,travel:50,
+   evacSiteValid:true,evacExtracted:true,evacHeldSec:8},true,80000).outcome,'lost');
  assert.match(cfResultFacts(c,full)[2].value,/1/);
  assert.match(cfMissionDebrief(c,{...full,kills:0},'lost'),/队友击杀不计算/);
 });
@@ -183,5 +191,5 @@ test('normal first four missions and historical saves keep exactly their origina
  assert.equal(loadChallengeProgress(old,'cf-transport-ship').selected,'precision');
  for(const id of list.slice(4).map(x=>x.id))
    assert.match(cfMasteryKey(by(id)),new RegExp('^'+id+':normal$'));
- assert.equal(cfTouchTutorial(by('assault')),'先真实换位，再亲手击杀敌人');
+ assert.equal(cfTouchTutorial(by('assault')),'到达进攻位后，再亲手击杀敌人');
 });

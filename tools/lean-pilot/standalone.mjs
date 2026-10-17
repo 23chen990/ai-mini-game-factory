@@ -33,7 +33,7 @@ export async function standaloneHtml(gameRoot,theme='observatory',runId='standal
       const isCf=name==='cf-player-loop.mjs'&&
         /^import \{challengeResult\} from '\.\/engine\.mjs';\r?\n$/.test(line);
       const isDefense=name==='fps-mobile-ux.mjs'&&
-        /^import \{cfStartDefense,cfStepDefense,cfAdvanceAssault\} from '\.\/engine\.mjs';\r?\n$/.test(line);
+        /^import \{cfStartDefense,cfStepDefense,cfAdvanceAssault,cfStartExtraction,cfStepExtraction\} from '\.\/engine\.mjs';\r?\n$/.test(line);
       if(!isMain&&!isCf&&!isDefense)throw new Error(`Unsupported import in ${name}`);
       imports++;return '';
     }).replace(/^export /gm,'');
