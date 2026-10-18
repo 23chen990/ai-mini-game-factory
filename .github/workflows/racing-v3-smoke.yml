@@ -7,6 +7,11 @@ on:
       - 'tools/lean-pilot/racing-car-*.mjs'
       - 'tools/lean-pilot/racing-wheel-qa-input.mjs'
       - 'tools/lean-pilot/tests/racing-car-*.mjs'
+      - 'tools/lean-pilot/tests/racing-user-car-*.mjs'
+      - 'tools/lean-pilot/racing-build-fingerprint-check.mjs'
+      - 'tools/lean-pilot/policy.mjs'
+      - 'tools/lean-pilot/runner.mjs'
+      - 'tools/lean-pilot/tests/racing-large-build-hash.node.mjs'
       - 'tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs'
       - 'tools/lean-pilot/tests/racing-home-presentation.node.mjs'
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
@@ -43,7 +48,9 @@ jobs:
   racing-v3:
     if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-') || startsWith(github.event.pull_request.head.ref, 'feat/racing-') || startsWith(github.event.pull_request.head.ref, 'codex/hunyuan-racer-')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 26
+    # Allow the additional six-car browser suite plus the existing 10-minute
+    # non-gating campaign audit; individual gameplay waits stay unchanged.
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
@@ -61,11 +68,15 @@ jobs:
           node --test --test-isolation=none tools/lean-pilot/tests/racing-build.test.mjs
           node --test --test-isolation=none tools/lean-pilot/tests/racing-ai-pace-audit.test.mjs
           node --test --test-isolation=none tools/lean-pilot/tests/racing-car-build.node.mjs tools/lean-pilot/tests/racing-car-prepare.node.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-user-car-build.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-car-qa-instrumentation.node.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-large-build-hash.node.mjs
           node --test --test-isolation=none tools/lean-pilot/tests/racing-shortcut-cost.test.mjs
           node --test --test-isolation=none tools/lean-pilot/tests/racing-visible-policy.test.mjs
           node --test --test-isolation=none tools/lean-pilot/racing-delivery-verify.test.mjs
           pnpm exec eslint tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
           pnpm exec eslint tools/lean-pilot/racing-car-*.mjs tools/lean-pilot/racing-wheel-qa-input.mjs tools/lean-pilot/racing-native-player-v11-qa.mjs tools/lean-pilot/racing-next-stage-ad-browser-qa.mjs tools/lean-pilot/tests/racing-car-*.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
+          pnpm exec eslint tools/lean-pilot/tests/racing-user-car-*.mjs tools/lean-pilot/racing-build-fingerprint-check.mjs tools/lean-pilot/racing-delivery-verify.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash
@@ -83,7 +94,7 @@ jobs:
           H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/racing-source
         run: node tools/lean-pilot/racing-mobile-build.mjs
       - name: Verify real Three car materials, shared resources and independent pivots
-        run: RACE_THREE_MODULE="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/build/three.module.js" node --test --test-isolation=none tools/lean-pilot/tests/racing-car-model-runtime.mjs
+        run: RACE_THREE_MODULE="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/build/three.module.js" node --test --test-isolation=none tools/lean-pilot/tests/racing-car-model-runtime.mjs tools/lean-pilot/tests/racing-user-car-runtime.mjs
       - name: Verify physical AI laps and real entrance-wall recovery
         run: RACE_NATIVE_PROJECT="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed" node --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/racing-v11-physical-ai.test.mjs
       - name: Verify actual H5 build includes every racing runtime source
@@ -96,6 +107,8 @@ jobs:
         run: node tools/lean-pilot/racing-native-player-qa.mjs
       - name: Install matching Chromium browser
         run: pnpm exec playwright install --with-deps chromium
+      - name: Verify six actual garage models and native start/result identity
+        run: node tools/lean-pilot/racing-car-garage-qa.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/car-garage-ci
       - name: Launch actual bundled WebGL racing in complete Chromium
         run: |
           node --test --test-isolation=none tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
@@ -146,6 +159,7 @@ jobs:
             runs/h5-qq-mobile-20261013/artifacts/racing-v3-delivery/*
             runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/*
             runs/h5-qq-mobile-20261013/artifacts/next-stage-ad-browser/*
+            runs/h5-qq-mobile-20261013/artifacts/car-garage-ci/*
             runs/h5-qq-mobile-20261013/artifacts/racing-v115-native-player/*
             runs/h5-qq-mobile-20261013/evidence/v32-natural-ci/*
           retention-days: 7

@@ -211,11 +211,17 @@ async function sourceSnapshot(src, root) {
   return Object.fromEntries(await Promise.all(files.map(async ([name, file]) => [name, sha256(await readFile(file))])));
 }
 
+export function assertNativeAiBuildMetadata(build) {
+  // V11.6 adds the garage while retaining this exact native physical-AI mode.
+  // Hash, inheritance, world-accounting and finish gates below remain required.
+  if (build.aiMode !== 'native-playercar-physics' || !['V11.5', 'V11.6'].includes(build.version))
+    throw Error('Build a supported V11.5 or V11.6 physical-AI project before running this audit');
+}
+
 async function loadNative(root) {
   const run = path.join(root, 'runs', RUN), src = path.join(run, 'workspace/source/qq-speed/src');
   const build = JSON.parse(await readFile(path.join(run, 'artifacts/build-racing.json'), 'utf8'));
-  if (build.aiMode !== 'native-playercar-physics' || build.version !== 'V11.5')
-    throw Error('Build the V11.5 physical-AI project before running this audit');
+  assertNativeAiBuildMetadata(build);
   if (build.buildHash !== await buildHash(path.join(run, 'workspace/game')))
     throw Error('Stale build-racing.json: generated game hash differs');
   const hashes = await sourceSnapshot(src, root);

@@ -19,8 +19,12 @@ async function setup(t, { amount = 30, delay = 0, denied = false } = {}) {
     catch { res.writeHead(404); res.end('missing'); }
   });
   server.listen(0, '127.0.0.1'); await once(server, 'listening');
-  t.after(() => new Promise(resolve => server.close(resolve)));
-  const browser = await chromium.launch({ headless: true }); t.after(() => browser.close());
+  let browser;
+  t.after(async () => {
+    try { await browser?.close(); }
+    finally { await new Promise(resolve => server.close(resolve)); }
+  });
+  browser = await chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: 844, height: 390 }, isMobile: true, hasTouch: true });
   page.setDefaultTimeout(10000);
   page.setDefaultNavigationTimeout(15000);
@@ -29,11 +33,30 @@ async function setup(t, { amount = 30, delay = 0, denied = false } = {}) {
     localStorage.setItem(key, value);
     const gain = { value: 0, setValueAtTime() {} };
     const g = window.game = { state: 'menu', loading: false, track: {}, map: { id: 'city' }, starts: 0,
+      carPreviewEpoch: 0, preparedFixtureCar: null, previewedFixtureCar: null,
       settings: { quality: 'low' }, input: { down: new Set(), pressed: new Set(), touchPressed: new Set(), touch: {}, frame() { return {}; } },
       hud: { message() {}, countdown() {}, drawSpeedo() {} },
       audio: { init() {}, enabled: true, master: { gain }, ctx: { currentTime: 0 } },
       save() {}, setupQuality() {}, checkRaceEnd() {}, handleEvents() {}, onItemGet() {},
-      async loadMap(id) { this.map = { id }; this.track = { length:2500, __RACE_COURSE_ID:this.settings.course }; }, startDemo() { this.state = 'menu'; this.player = null; },
+      // Fuel-only native contract: the starter is a stub, not a decoded or rendered GLB.
+      cancelCarPreview() { this.carPreviewEpoch++; },
+      async prepareCar(id) {
+        if (id !== 'starter') throw Error('Fuel fixture only prepares the starter');
+        this.preparedFixtureCar = id;
+        return { status: 'ready', carId: id, fixtureOnly: true };
+      },
+      carIsReady(id) { return id === 'starter' && this.preparedFixtureCar === id; },
+      async previewCar(id) {
+        this.cancelCarPreview();
+        const epoch = this.carPreviewEpoch;
+        if (this.state !== 'menu' || this.loading) return { status: 'blocked', carId: id };
+        const prepared = await this.prepareCar(id);
+        if (epoch !== this.carPreviewEpoch || this.state !== 'menu' || this.loading) return { status: 'stale', carId: id };
+        this.previewedFixtureCar = id;
+        return prepared;
+      },
+      async loadMap(id) { this.map = { id }; this.track = { length:2500, __RACE_COURSE_ID:this.settings.course }; },
+      startDemo() { this.cancelCarPreview(); this.state = 'menu'; this.player = null; this.previewedFixtureCar = this.settings.car; },
       togglePause() { if (this.state === 'paused') this.state = this.pausedFrom; else { this.pausedFrom = this.state; this.state = 'paused'; } },
       startRace() { if (this.loading) return; this.starts++; this.state = 'countdown'; this.player = { isPlayer: true, stats: {}, events: [], finished: false }; this.racers = [this.player]; this.standings = [this.player]; },
     };
@@ -47,7 +70,9 @@ async function setup(t, { amount = 30, delay = 0, denied = false } = {}) {
   return page;
 }
 const amount = page => page.evaluate(key => JSON.parse(localStorage.getItem(key)).amount, FUEL_KEY);
-const ready = page => page.waitForFunction(() => document.querySelector('#race-fuel-info').textContent.includes('每局 -5 · 每分钟 +1'));
+// Policy text can appear before the asynchronous native preview/track boot finishes.
+const ready = page => page.waitForFunction(() => document.querySelector('#race-kit').dataset.loaded === 'true' &&
+  document.querySelector('#race-fuel-info').textContent.includes('每局 -5 · 每分钟 +1'));
 
 test('V3 resolves fuel policy before accepting the first race', async t => {
   const page = await setup(t, { delay: 1200 });

@@ -1,5 +1,13 @@
 export const DEFAULT_CAR_ID = 'starter';
-export const CAR_MODELS = Object.freeze([Object.freeze({ id: DEFAULT_CAR_ID, name: '初始赛车', native: true, free: true })]);
+// Appearance and entitlement metadata only. Every model uses the same native
+// vehicle physics; custom GLBs keep their supplied materials and saved paint.
+export const CAR_MODELS = Object.freeze([
+ Object.freeze({ id: DEFAULT_CAR_ID, name: '初始赛车', native: true, free: true, paintable: true }),
+ ...['银紫超跑','荧光跑车','黄金方程式','赤焰超跑','蓝白拉力'].map((name,index)=>{
+  const number=String(index+1).padStart(2,'0');
+  return Object.freeze({id:'custom-'+number,name,native:false,free:false,paintable:false});
+ }),
+]);
 export const PAINT_NAMES = Object.freeze(['烈焰红','冰蓝','紫电','黄金','珍珠白','樱粉','翡翠','暗夜']);
 export const LEGACY_PAINT_STARS = Object.freeze([0,3,6,10,14,19,25,34]);
 const validPaint=i=>Number.isInteger(i)&&i>=0&&i<PAINT_NAMES.length;

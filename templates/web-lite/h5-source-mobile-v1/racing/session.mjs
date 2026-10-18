@@ -209,33 +209,90 @@ export class RaceInputHealth {
 
 /** Pre-race rendering must not depend on reaching race state to recover.
  * The native loop caps simulation dt; measure real render intervals instead.
- * Only the existing severe-stall policy applies here, preserving ordinary
- * manual preferences. Do not save, alter physics, or skip the countdown.
+ * At low quality, persistent severe lag can also reduce drawing-buffer pixels.
+ * This is a session-only rendering budget, not a viewport or simulation change.
+ * Keep the native context, full scene, saved preference and countdown intact.
  */
 const countdownQualityInstalled = new WeakSet();
-export function installCountdownQualitySafety(game, {now = () => globalThis.performance.now()} = {}) {
+const LOW_RENDER_PIXEL_RATIOS = Object.freeze([.75,.5,.35]);
+export function installCountdownQualitySafety(game, {
+  now = () => globalThis.performance.now(), document: visibilityDocument = globalThis.document
+} = {}) {
   if (!game || typeof game.render !== 'function' ||
       typeof game.setupQuality !== 'function' || !game.settings ||
       typeof now !== 'function' || countdownQualityInstalled.has(game)) return false;
   const monitor = new QualityMonitor();
   monitor.manual = true; // Same severe-only exception used for saved preferences.
-  let previous = null;
+  let previous = null, previousState = null, previousQuality = null;
+  let lowStalls = 0, lowSlowSeconds = 0, pixelRatioLimit = 1;
+  const resetMeasurements = () => {
+    previous = null;previousState = null;previousQuality = null;
+    monitor.consecutiveStalls = 0;monitor.severeManualLag = 0;
+    lowStalls = 0;lowSlowSeconds = 0;
+  };
+  const renderer = game.renderer;
+  const hasPixelBudget = typeof renderer?.getPixelRatio === 'function' &&
+    typeof renderer?.setPixelRatio === 'function';
+  if (hasPixelBudget) {
+    const nativeSetPixelRatio = renderer.setPixelRatio;
+    // Native setupQuality/resize retain ownership of renderer sizing. Clamp
+    // their low-quality requests so either path cannot undo an earned budget.
+    // An explicit higher-quality choice still takes effect normally.
+    renderer.setPixelRatio = function(value) {
+      const owned = this === renderer && game.renderer === renderer;
+      const effective = owned && pixelRatioLimit < 1 && game.settings.quality === 'low' && Number.isFinite(value) && value > 0 ?
+        Math.min(value,pixelRatioLimit) : value;
+      const result = nativeSetPixelRatio.call(this,effective);
+      if (owned) resetMeasurements();
+      return result;
+    };
+  }
+  // Hidden documents may receive no RAF callbacks at all. Discard the old
+  // sample on visibility changes, including a hide/resume between two frames.
+  visibilityDocument?.addEventListener?.('visibilitychange',resetMeasurements);
   const nativeRender = game.render;
   game.render = function(...args) {
-    const active = this.state === 'countdown' && !globalThis.document?.hidden;
+    const active = (this.state === 'countdown' || this.state === 'race') && !visibilityDocument?.hidden;
     const time = now();
     if (!active || !Number.isFinite(time)) {
-      previous = null;
-      monitor.consecutiveStalls = 0;
-      monitor.severeManualLag = 0;
+      resetMeasurements();
     } else {
-      const elapsed = previous === null ? 0 : (time - previous) / 1000;
-      previous = time;
-      if (elapsed > 0) {
+      const continuous = previous !== null && previousState === this.state && previousQuality === this.settings.quality;
+      const elapsed = continuous ? (time - previous) / 1000 : 0;
+      if (!continuous) resetMeasurements();
+      if (continuous && (!Number.isFinite(elapsed) || elapsed <= 0)) {
+        resetMeasurements();
+        return nativeRender.apply(this,args);
+      }
+      previous = time;previousState = this.state;previousQuality = this.settings.quality;
+      if (elapsed > 0 && this.state === 'countdown' && this.settings.quality !== 'low') {
         const lower = monitor.frame(elapsed, this.settings.quality);
         if (lower) {
           this.settings.quality = lower;
           this.setupQuality();
+        }
+      } else if (elapsed > 0 && this.settings.quality === 'low' && hasPixelBudget && this.renderer === renderer) {
+        // Match the existing severe-only exception: four consecutive >250ms
+        // stalls, or sustained near-14-FPS rendering. One load spike is not enough.
+        if (elapsed > .25) {
+          lowStalls++;lowSlowSeconds = 0;
+        } else {
+          lowStalls = 0;
+          lowSlowSeconds = elapsed > .06 ? lowSlowSeconds + Math.min(elapsed,.12) :
+            Math.max(0,lowSlowSeconds - elapsed*2);
+        }
+        if (lowStalls >= 4 || lowSlowSeconds >= 1.3) {
+          lowStalls = 0;lowSlowSeconds = 0;
+          const current = renderer.getPixelRatio();
+          const next = Number.isFinite(current) && current > 0 ?
+            LOW_RENDER_PIXEL_RATIOS.find(ratio => ratio < Math.min(current,pixelRatioLimit)) : undefined;
+          if (next !== undefined) {
+            pixelRatioLimit = next;
+            renderer.setPixelRatio(current);
+            // Native resize refreshes particle/composer scales for the same CSS
+            // viewport; it does not change the chase view or the selected course.
+            if (typeof this.resize === 'function') this.resize();
+          }
         }
       }
     }

@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   cold-start:
-    if: github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.head.ref == 'chatgpt/racing-v91-playable-pacing-20261017'
+    if: github.event.pull_request.head.repo.full_name == github.repository && (github.event.pull_request.head.ref == 'chatgpt/racing-v91-playable-pacing-20261017' || github.event.pull_request.head.ref == 'chatgpt/racing-unified-20261018')
     runs-on: ubuntu-24.04
     timeout-minutes: 8
     strategy:

@@ -670,6 +670,64 @@ html[data-race-platform="touch"] #race-joystick{max-height:43vh}
   min-height:44px;white-space:normal;
 }
 #race-kit #race-next-ad[hidden] {display:none!important;}
+
+/* The home garage previews the actual model, with permanent ownership on cards. */
+#race-garage {
+  position:absolute;z-index:31;left:46%;right:var(--race-right);top:var(--race-top);
+  max-width:720px;padding:10px 12px;pointer-events:auto;
+  border:1px solid #86bad53d;border-radius:16px;
+  background:linear-gradient(145deg,#061625ec,#102b40d9);box-shadow:0 9px 24px #00102040;
+}
+.race-garage-title {display:flex;align-items:center;gap:9px;min-height:20px;margin-bottom:7px;white-space:nowrap;}
+.race-garage-title>span {color:#a2bdcd;font-size:10px;letter-spacing:2px;}
+#race-car-name {font-size:14px;color:#effaff;overflow:hidden;text-overflow:ellipsis;}
+#race-car-status {margin-left:auto;color:#f0d38d;font-size:10px;}
+#race-car-choices {display:grid;grid-template-columns:repeat(6,minmax(44px,1fr));gap:6px;}
+#race-kit #race-car-choices button {
+  position:relative;min-width:44px;min-height:64px;padding:3px 2px 5px;overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  border:1px solid #a1c6db45;border-radius:9px;background:#0a2034;color:#d7e8f1;
+  box-shadow:inset 0 1px 0 #ffffff09;
+}
+#race-kit #race-car-choices button[aria-pressed="true"] {
+  border-color:#ffde91;background:#244153;box-shadow:0 0 0 1px #ecca7559;
+}
+#race-kit #race-car-choices button:disabled {opacity:.65;cursor:wait;}
+.race-car-thumb {display:grid;place-items:center;width:100%;height:35px;overflow:hidden;color:#c4e9f5;font:italic 800 25px/1 system-ui;}
+.race-car-thumb img {width:100%;height:100%;object-fit:contain;}
+.race-car-label {display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;line-height:1.2;}
+.race-car-lock {position:absolute;right:4px;top:2px;font-size:9px;line-height:1.4;filter:drop-shadow(0 1px 2px #000);}
+#race-car-choices button[data-owned="true"] .race-car-lock {color:#9cf6d3;}
+.race-garage-actions {display:flex;gap:7px;align-items:stretch;}
+#race-kit .race-garage-actions button {
+  min-height:44px;margin-top:8px;padding:8px 12px;border:1px solid #f6d08bc4;
+  border-radius:10px;background:#eed699;color:#173247;font-size:12px;
+}
+#race-kit #race-car-ad {flex:1;}
+#race-kit #race-car-owned {border-color:#80b0c66b;background:#133147;color:#d4e8f2;font-size:11px;}
+#race-kit .race-garage-actions button:disabled {opacity:.5;cursor:wait;}
+#race-car-note {margin:6px 1px 0;color:#f3dda6;font-size:10px;line-height:1.4;}
+@media (min-width:1000px) and (min-height:500px) {
+  #race-garage {left:48%;top:clamp(18px,4vh,40px);right:clamp(20px,3vw,56px);padding:14px 16px;}
+  .race-garage-title {margin-bottom:10px;}
+  #race-car-name {font-size:18px;}
+  #race-kit #race-car-choices button {min-height:85px;}
+  .race-car-thumb {height:52px;}
+  .race-car-label {font-size:12px;}
+}
+@media (max-height:450px) and (orientation:landscape) {
+  #race-garage {padding:7px 8px;border-radius:12px;}
+  .race-garage-title {min-height:16px;margin-bottom:5px;gap:6px;}
+  #race-car-name {font-size:12px;}
+  #race-car-status {font-size:9px;}
+  #race-car-choices {gap:4px;}
+  #race-kit #race-car-choices button {min-height:54px;padding:2px 1px 4px;gap:2px;}
+  .race-car-thumb {height:29px;}
+  .race-car-label {font-size:9px;}
+  #race-kit .race-garage-actions button {margin-top:6px;padding:7px 9px;font-size:11px;}
+  #race-kit #race-car-owned {font-size:10px;}
+  #race-car-note {margin-top:5px;font-size:9px;}
+}
 #race-kit[data-phase="finished"] #race-note {
   color:#f4d99d;font-size:11px;line-height:1.35;margin:7px 0 0;
 }

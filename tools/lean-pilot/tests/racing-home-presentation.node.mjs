@@ -11,9 +11,10 @@ const mobileCss = readFileSync(fileURLToPath(new URL('../../../templates/web-lit
 test('single home keeps the existing 30 stages and places their rail outside the menu panel', () => {
   assert.equal(STAGES.length, 30);
   assert.match(mobileSource, /for \(let index = 0; index < STAGES\.length; index\+\+\)/);
-  const panelEnd = mobileSource.indexOf('</div><nav id="race-stage-rail"');
+  const panelEnd = mobileSource.indexOf('</div><section id="race-garage"');
+  const garageEnd = mobileSource.indexOf('</section><nav id="race-stage-rail"');
   const railStart = mobileSource.indexOf('<nav id="race-stage-rail"');
-  assert.ok(panelEnd >= 0 && railStart > panelEnd);
+  assert.ok(panelEnd >= 0 && garageEnd > panelEnd && railStart > garageEnd);
   assert.match(mobileSource, /<nav id="race-stage-rail"[^>]*aria-label="主线关卡"/);
   assert.match(mobileSource, /id="race-stage"[^>]*class="race-native-stage-select"/);
   assert.doesNotMatch(mobileSource.match(/<select id="race-stage"[^>]*>/)[0], /\shidden(?:\s|>)/);

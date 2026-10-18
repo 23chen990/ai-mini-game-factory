@@ -1,6 +1,27 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { nativeWorldMethods, simulateNativeRace, auditStatus } from '../racing-ai-pace-audit.mjs';
+import { nativeWorldMethods, simulateNativeRace, auditStatus, assertNativeAiBuildMetadata } from '../racing-ai-pace-audit.mjs';
+
+for (const version of ['V11.5', 'V11.6']) {
+  test(version + ' metadata supports the explicitly shared native PlayerCar AI mode', () => {
+    const receipt = Object.freeze({ version, aiMode: 'native-playercar-physics',
+      buildHash: 'a'.repeat(64), generatedVehicleSha256: 'b'.repeat(64) });
+    assert.doesNotThrow(() => assertNativeAiBuildMetadata(receipt));
+    assert.equal(receipt.version, version, 'validation cannot relabel the build');
+  });
+}
+
+test('recognized versions still reject every wrong or missing native AI mode', () => {
+  for (const version of ['V11.5', 'V11.6']) {
+    for (const aiMode of [undefined, null, '', 'spline', 'native-playercar-physics-legacy'])
+      assert.throws(() => assertNativeAiBuildMetadata({ version, aiMode }), /physical-AI/u);
+  }
+});
+
+test('native AI mode never permits unrecognized or missing build versions', () => {
+  for (const version of [undefined, null, '', 'V11.4', 'V11.7', 'V12.0', 'V11.6-dev', '11.6'])
+    assert.throws(() => assertNativeAiBuildMetadata({ version, aiMode: 'native-playercar-physics' }), /physical-AI/u);
+});
 
 // A small pinned-World contract fixture. These tests exercise the audit's
 // accounting, not vehicle handling or natural player completion.

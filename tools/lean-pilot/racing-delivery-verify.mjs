@@ -7,7 +7,7 @@ import { promisify } from 'node:util';
 import path from 'node:path';
 import { z } from 'zod';
 import { buildHash } from './runner.mjs';
-import { RACING_OWNED_NAMES } from './racing-mobile-build.mjs';
+import { RACING_OWNED_NAMES, racingCarAssetHashes } from './racing-mobile-build.mjs';
 import { STAGES, gradeStage } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
 import { qualifiedVisibleFinish } from './racing-visible-policy.mjs';
 
@@ -45,7 +45,7 @@ export async function currentRacingInputHash() {
   const inputs = await Promise.all(RACING_OWNED_NAMES.map(name => readFile(path.join(owned, 'racing', name), 'utf8')));
   inputs.push(...await Promise.all(['fuel.mjs', 'themes.mjs'].map(name => readFile(path.join(owned, name), 'utf8'))));
   inputs.push(await readFile('tools/lean-pilot/racing-mobile-build.mjs', 'utf8'));
-  inputs.push(hash(await readFile(path.join(owned, 'racing/assets/original-racer.glb'))));
+  inputs.push(...await racingCarAssetHashes(path.join(owned, 'racing')));
   return hash(inputs.join('\n'));
 }
 export async function verifyDelivery(manifestPath) {
@@ -65,7 +65,9 @@ export async function verifyDelivery(manifestPath) {
   if (!zip || !standalone || standalone.sha256 !== build.trialSha256) throw Error('Latest H5 ZIP/standalone pair missing or stale');
   const exec = promisify(execFile);
   for (const name of ['index.html', 'style.css', 'platform.json', 'LICENSE.three.txt']) {
-    const { stdout } = await exec('unzip', ['-p', path.resolve(zip.path), name], { encoding: 'buffer', maxBuffer: 4 * 1024 * 1024 });
+    // Six embedded car binaries make the actual offline HTML larger than the
+    // original one-car 4 MiB extraction ceiling; hashes below remain exact.
+    const { stdout } = await exec('unzip', ['-p', path.resolve(zip.path), name], { encoding: 'buffer', maxBuffer: 32 * 1024 * 1024 });
     if (hash(stdout) !== hash(await readFile(path.join(game, name)))) throw Error('ZIP payload differs from tested current H5: ' + name);
   }
   const bytes = await readFile(manifest.naturalReport);

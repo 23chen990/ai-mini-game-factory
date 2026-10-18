@@ -64,7 +64,7 @@ export class RacingCareer {
     catch { this.storageOK=false;this.adReady=false;this.fuelEnabled=false;return false; }
     this.progress=updated;return true;
   }
-  /** A future GLB only becomes selectable after it is registered as a real car. */
+  /** Only a registered, permanently owned model can become the saved car. */
   setCar(id) {
     if (!carUnlocked(this.progress,id) || this.adBusy || this.active) return false;
     if (this.progress.car === id) return true;
@@ -75,9 +75,11 @@ export class RacingCareer {
   }
   nextStage() { return !this.dailySnapshot && this.index + 1 < STAGES.length && stageUnlocked(this.progress, this.index + 1) ? this.index + 1 : this.index; }
   configure(game) {
+    if (!carUnlocked(this.progress,this.progress.car)) return false;
     const s = this.stage;
-    Object.assign(game.settings, { map: s.map, course: s.course, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin });
+    Object.assign(game.settings, { map: s.map, course: s.course, mode: s.mode, laps: s.laps, diff: s.diff, skin: this.progress.skin, car: this.progress.car });
     game.save();
+    return true;
   }
   setupAd(config,tap) {
     this.config=config;this.tap=tap;
@@ -97,12 +99,15 @@ export class RacingCareer {
   canOfferCarAd(id) { return this.canOfferCosmeticAd('car',id); }
   async watchCosmeticAd(kind,id) {
     if (!this.canOfferCosmeticAd(kind,id)) return {status:'unavailable'};
-    const rounds=this.progress.rounds;
+    const rounds=this.progress.rounds,epoch=this.stageAdEpoch;
     this.adBusy=true;
     try {
       const out=await this.rewardedProvider({tap:this.tap,config:this.config});
       if(out?.status!=='completed')return {status:out?.status??'failed'};
-      if(this.active || this.progress.rounds!==rounds) return {status:'stale'};
+      // A race may begin and return to the lobby without settling a round.
+      // Its old video must not grant a reward after that lifecycle change.
+      if(this.active || !this.storageOK || !this.adReady || this.stageAdEpoch!==epoch ||
+        this.progress.rounds!==rounds) return {status:'stale'};
       const updated=grantCosmetic(this.progress,kind,id);
       if(!updated)return {status:'stale'};
       // The reward is permanent only if the existing save key accepts the write.
@@ -186,7 +191,8 @@ export class RacingCareer {
     finally{this.adBusy=false;}
   }
   canStart() {
-    if (this.adBusy || (this.dailySnapshot ? !this.canDaily() : !stageUnlocked(this.progress, this.index))) return false;
+    if (this.adBusy || !carUnlocked(this.progress,this.progress.car) ||
+      (this.dailySnapshot ? !this.canDaily() : !stageUnlocked(this.progress, this.index))) return false;
     if (!this.fuelEnabled) return true;
     this.fuel = syncFuel(this.fuel);
     return this.freeReplayStageId === this.stage.id || this.fuel.amount >= FUEL_RULES.raceCost;

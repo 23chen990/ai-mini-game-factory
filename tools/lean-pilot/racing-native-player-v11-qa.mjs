@@ -42,7 +42,7 @@ export async function runV11NativePlayerQa({
   const loopBody=worldSource.split('  loop() {')[1]?.split('\n  step(dt, inp) {')[0]?.trim().replace(/\}$/, '');
   assert.ok(loopBody?.includes("this.state !== 'paused'"),'native loop pause gate must be present');
   const makeNativeLoop=new Function('performance','requestAnimationFrame','return function(){'+loopBody+'}');
-  const report={schemaVersion:1,version:'V11.5',buildHash:build.buildHash,
+  const report={schemaVersion:1,version:build.version,buildHash:build.buildHash,
     pinnedRevision:build.sourceRevision,artifact,sourceHashes,timestepsPerSecond:120,
     simulatedController:true,naturalInputsOnly:false,rendered:false,checks:[],
     limitations:[

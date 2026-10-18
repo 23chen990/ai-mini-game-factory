@@ -39,6 +39,28 @@ const report = { stage:'BUILT_H5_CHROMIUM_ENTRY_SMOKE', assertion:'source-level/
 let browser;
 const jsErrors=[];
 const fail = reason => {report.errors.push(String(reason));throw Error(reason);};
+async function desktopSnapshot(page) {
+  // Read-only native evidence. The overlay FPS estimate is not updated during
+  // countdown, so do not misreport it as countdown/render performance.
+  return page.evaluate(()=>{
+    const game=window.game,renderer=game?.renderer,canvas=renderer?.domElement;
+    const context=renderer?.getContext?.(),rect=canvas?.getBoundingClientRect();
+    return {
+      observedAtMs:window.performance.now(),state:game?.state,
+      phase:document.querySelector('#race-kit')?.dataset.phase,
+      cdT:game?.cdT,raceTime:game?.raceTime,lastNativeFrameAtMs:game?.last,
+      hasPlayer:!!game?.player,playerSpeed:game?.player?.s,playerProgress:game?.player?.progress,
+      hidden:document.hidden,visibility:document.visibilityState,focused:document.hasFocus(),
+      quality:game?.settings?.quality,pixelRatio:renderer?.getPixelRatio?.(),
+      drawingBuffer:canvas?{width:canvas.width,height:canvas.height}:null,
+      cssCanvas:rect?{width:rect.width,height:rect.height}:null,
+      viewport:{width:innerWidth,height:innerHeight},
+      contextLost:context?.isContextLost?.(),antialias:context?.getContextAttributes?.()?.antialias,
+      composerActive:!!game?.composer,shadowsActive:!!renderer?.shadowMap?.enabled,
+      renderInfo:renderer?.info?.render?{...renderer.info.render}:null
+    };
+  }).catch(error=>({snapshotError:String(error)}));
+}
 async function waitLoaded(page) {
   try {
     await page.waitForFunction(() => {
@@ -244,8 +266,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V11.5'||
-     worldIdentity.uiRevision!=='racing-v115-unified')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V11.6'||
+     worldIdentity.uiRevision!=='racing-v116-garage')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   // V10 stage-05's black generic sector arch previously occupied the real
   // short fork between 1488-1693m. It must be ACTUALLY RELOCATED IN WEBGL.
@@ -822,8 +844,9 @@ try {
   const desktopContext=await browser.newContext({
     viewport:{width:1366,height:768},deviceScaleFactor:1,isMobile:false,hasTouch:false
   });
+  let desktop,desktopCheckpoint='loading',desktopBeforeStart=null;
   try{
-    const desktop=await desktopContext.newPage();
+    desktop=await desktopContext.newPage();
     desktop.on('pageerror',e=>jsErrors.push(e.message));
     await desktop.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
     await waitLoaded(desktop);
@@ -836,8 +859,11 @@ try {
     if(ready.platform!=='desktop'||ready.computedPlatform!=='desktop'||
        ready.controls!=='none'||!ready.guide.includes('Shift'))
       fail('Real desktop must show keyboard presentation, not enlarged phone controls: '+JSON.stringify(ready));
+    desktopBeforeStart=await desktopSnapshot(desktop);
+    desktopCheckpoint='native-countdown';
     await desktop.locator('#race-start').click();
     await desktop.waitForFunction(()=>window.game?.state==='race'&&!!window.game?.player,null,{timeout:45000});
+    desktopCheckpoint='native-keyboard-motion';
     await desktop.keyboard.down('ArrowUp');
     await desktop.keyboard.down('ArrowLeft');
     await desktop.waitForFunction(()=>window.game?.player?.s>1,null,{timeout:18000});
@@ -860,6 +886,13 @@ try {
     await desktop.keyboard.up('ArrowLeft');
     await desktop.keyboard.up('ArrowUp');
     report.desktop={actualChromiumWebGL:true,keyboardNative:true,touchHUDHidden:true,originalChase:true,...running};
+    report.desktopRendering={beforeStart:desktopBeforeStart,afterKeyboard:await desktopSnapshot(desktop)};
+  }catch(error){
+    report.desktopFailure={checkpoint:desktopCheckpoint,beforeStart:desktopBeforeStart,
+      observed:desktop?await desktopSnapshot(desktop):null,jsErrors:jsErrors.slice(-10)};
+    if(desktop)await desktop.screenshot({path:path.join(dest,'91-desktop-failure-1366x768.png'),timeout:5000})
+      .catch(screenshotError=>{report.desktopFailure.screenshotError=String(screenshotError);});
+    throw error;
   }finally{await desktopContext.close();}
   if(jsErrors.length)fail('Browser errors after desktop launch: '+jsErrors.slice(-4).join(' | '));
   report.passed=true;report.smallView=small;
