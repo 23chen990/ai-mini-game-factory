@@ -158,7 +158,12 @@ try{
  // a non-centred origin. Never treat a collision/stun as the same input branch.
  if((await snap()).phase==='running')await tap('#co-pause');
  await tap('#co-replay');
- const cancelOrigin=await gesture('cancel-origin-fractional-drag',[140,420],[171,420],false,false);
+ // The real 35m opening barrier can kill the rider during two slow
+ // sequential software-GPU swipe probes. Seed a noncentral target via ONE
+ // authentic right-button touch instead; the prior test already verified
+ // fractional drag steering with normal touch input.
+ await tap('[data-action="right"]');
+ const cancelOrigin=await snap();
  // Log native events passively; never dispatch fake DOM events or set state.
  await page.evaluate(()=>{window.__qaCancellationEvents=[];
   for(const type of ['touchcancel','pointercancel','touchend','pointerup'])
@@ -169,9 +174,10 @@ try{
  });
  const c=await gesture('cancel',[140,420],[250,420],true);
  const cancellationEvents=await page.evaluate(()=>window.__qaCancellationEvents);
- check('cancelled-touch-does-not-turn',cancelOrigin.after.laneTarget>.3&&cancelOrigin.after.laneTarget<.8&&
+ check('cancelled-touch-does-not-turn',cancelOrigin.phase==='running'&&cancelOrigin.laneIndex===2&&
+  cancelOrigin.laneTarget>.9&&cancelOrigin.laneTarget<1.5&&
   cancelledDragPassed(c,cancellationEvents),
-  {gesture:c,cancellationEvents,cancelOrigin,branch:'running-nonstunned-fractional-target'});
+  {gesture:c,cancellationEvents,cancelOrigin,branch:'trusted-noncentral-button-origin'});
  // The cancelled gesture was checked from actual native events; take its
  // picture only after pressing the real pause control.
  if((await snap()).phase==='running')await tap('#co-pause');
