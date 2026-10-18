@@ -65,7 +65,7 @@ jobs:
           node --test --test-isolation=none tools/lean-pilot/tests/racing-visible-policy.test.mjs
           node --test --test-isolation=none tools/lean-pilot/racing-delivery-verify.test.mjs
           pnpm exec eslint tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
-          pnpm exec eslint tools/lean-pilot/racing-car-*.mjs tools/lean-pilot/racing-wheel-qa-input.mjs tools/lean-pilot/tests/racing-car-*.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
+          pnpm exec eslint tools/lean-pilot/racing-car-*.mjs tools/lean-pilot/racing-wheel-qa-input.mjs tools/lean-pilot/racing-native-player-v11-qa.mjs tools/lean-pilot/racing-next-stage-ad-browser-qa.mjs tools/lean-pilot/tests/racing-car-*.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash

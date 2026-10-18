@@ -13,7 +13,7 @@ import path from 'node:path';
 import {chromium} from '@playwright/test';
 import {buildHash} from './runner.mjs';
 import {CAREER_KEY,newCareer} from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
-import {FUEL_KEY} from '../../templates/web-lite/h5-source-mobile-v1/fuel.mjs';
+import {FUEL_KEY,newFuelState} from '../../templates/web-lite/h5-source-mobile-v1/fuel.mjs';
 import {V11_COURSES} from '../../templates/web-lite/h5-source-mobile-v1/racing/v11-course-director.mjs';
 
 const run=path.resolve('runs/h5-qq-mobile-20261013');
@@ -27,7 +27,7 @@ const htmlSha256=createHash('sha256').update(await readFile(path.join(gameRoot,'
 const report={schemaVersion:1,buildHash:initialHash,htmlSha256,version:build.version,
   scope:'Full built H5 in real Chromium with simulated SDK and injected DNF settlement; engineering wiring only',
   liveAdSdk:'NOT_RUN',humanPhoneQA:'NOT_RUN',naturalRaceOutcome:'NOT_RUN',
-  injections:['Seed a prior stage-01 medal/time in isolated browser storage',
+  injections:['Seed a prior stage-01 medal/time and a full existing fuel ledger in isolated browser storage',
     'Call the native showResults() while the actual started player remains unfinished',
     'Install test-only __PLATFORM_META__ and window.tap callbacks, or omit the SDK',
     'Replay close callbacks and stale DOM events to check duplicate and cross-stage guards'],
@@ -150,9 +150,10 @@ async function runCase(name,hasSdk,execute){
   const page=await context.newPage();page.setDefaultTimeout(20000);
   page.on('pageerror',error=>row.errors.push(error.message));
   try{
-    await page.addInitScript(({careerKey,career,hasSdk,meta})=>{
+    await page.addInitScript(({careerKey,fuelKey,career,fuel,hasSdk,meta})=>{
       if(!localStorage.getItem('next-stage-ad-browser-qa:seeded')){
         localStorage.setItem(careerKey,JSON.stringify(career));
+        localStorage.setItem(fuelKey,JSON.stringify({...fuel,updatedAt:Date.now()}));
         localStorage.setItem('h5-qq-mobile-20261013:graphics-quality:v1','low');
         localStorage.setItem('h5-qq-mobile-20261013:audio-enabled:v1','0');
         localStorage.setItem('next-stage-ad-browser-qa:seeded','true');
@@ -179,7 +180,7 @@ async function runCase(name,hasSdk,execute){
           show(){ledger.shows++;ledger.active=true;ledger.events.push({kind:'show'});return Promise.resolve();},
         };
       }};
-    },{careerKey:CAREER_KEY,career:seededCareer,hasSdk,meta});
+    },{careerKey:CAREER_KEY,fuelKey:FUEL_KEY,career:seededCareer,fuel:newFuelState(),hasSdk,meta});
     await page.goto(baseUrl,{waitUntil:'domcontentloaded',timeout:45000});
     await execute(page,row);
     row.last=await snapshot(page);
