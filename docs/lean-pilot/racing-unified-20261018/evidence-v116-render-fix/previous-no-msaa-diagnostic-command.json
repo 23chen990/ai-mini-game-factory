@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scope": "DIAGNOSTIC ONLY, existing desktop-no-msaa mode; not a production QA acceptance",
+  "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+  "argv": [
+    "node",
+    "--import",
+    "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs",
+    "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-cold-start-qa.mjs",
+    "desktop-no-msaa"
+  ],
+  "cwd": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa",
+  "environmentOverrides": {
+    "PLAYWRIGHT_BROWSERS_PATH": "/workspace/scratch/29547c23d820/recovery/playwright-browsers",
+    "FONTCONFIG_FILE": "/workspace/scratch/29547c23d820/recovery/fonts.conf"
+  },
+  "startedAt": "2026-10-18T16:43:56.142803Z",
+  "finishedAt": "2026-10-18T16:44:30.022326Z",
+  "exitCode": 0,
+  "log": "/workspace/scratch/29547c23d820/recovery/cold-render-no-msaa-diagnostic.log",
+  "logBytes": 15392,
+  "logSha256": "cfe8e1eba580f74fb0c866106324ce3b3741ba787a8cd3e696e3caa8da4aca2c"
+}

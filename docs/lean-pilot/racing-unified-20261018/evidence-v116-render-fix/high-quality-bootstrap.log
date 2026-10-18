@@ -1,0 +1,70 @@
+RACING_QA_BROWSER=complete-chromium; game-state-and-timing-unchanged
+HIGH_QUALITY_STAGE={"name":"launch-full-chromium","at":"2026-10-18T16:57:54.005Z"}
+{
+  "schemaVersion": 1,
+  "type": "HIGH_QUALITY_RUNTIME_QA",
+  "buildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+  "htmlPath": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/racing-two-button-3a1bd6000047.html",
+  "htmlSha256": "6e5d09159c71f34517177d6eacbfaa281337b90717309051e3b6f6803041f6d1",
+  "startedAt": "2026-10-18T16:57:53.950Z",
+  "finishedAt": "2026-10-18T16:57:56.251Z",
+  "passed": false,
+  "scope": "One normal UI start, pause and high-quality selection in full desktop Chromium software WebGL. This is not a natural race completion, a 45/18-second cold-start acceptance test, a physical handset test, or proof of underlying GPU sample allocation.",
+  "browser": {
+    "executablePath": "/workspace/scratch/29547c23d820/recovery/playwright-browsers/chromium-1234/chrome-linux64/chrome",
+    "flags": [
+      "--disable-dev-shm-usage",
+      "--use-gl=angle",
+      "--use-angle=swiftshader",
+      "--enable-unsafe-swiftshader"
+    ],
+    "viewport": {
+      "width": 1366,
+      "height": 768
+    },
+    "deviceScaleFactor": 1,
+    "isMobile": false,
+    "hasTouch": false,
+    "version": "151.0.7922.34"
+  },
+  "constants": {
+    "threeRevision": "169",
+    "HalfFloatType": 1016
+  },
+  "actions": [
+    {
+      "name": "launch-full-chromium",
+      "at": "2026-10-18T16:57:54.005Z"
+    }
+  ],
+  "snapshots": [],
+  "checks": [
+    {
+      "name": "exact-attempt13-build",
+      "passed": true
+    },
+    {
+      "name": "exact-parent-requested-standalone-html",
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "consoleWarnings": [],
+  "requestFailures": [],
+  "errors": [
+    "response.body: Protocol error (Network.getResponseBody): Request content was evicted from inspector cache\nResponse body is not available for a response that was navigated away from. Read response.body() before triggering any navigation.\n    at /workspace/scratch/29547c23d820/recovery/cold-render-msaa-high-quality-probe.mjs:94:51"
+  ],
+  "sampleInterpretation": "renderTarget.samples records the actual runtime requested sample count. MAX_SAMPLES records device capability. No underlying renderbuffer allocation was inspected.",
+  "screenshot": null,
+  "cleanup": {
+    "browserLaunched": true,
+    "browserClosed": true,
+    "serverClosed": true
+  },
+  "zodValidated": true,
+  "inputEvidence": {
+    "buildReceiptSha256": "c70471b656c3f6e16e6e2c69c475aa7dad13aa795391b12801f27ee0fdfbcd40",
+    "htmlBytes": 13339105
+  }
+}

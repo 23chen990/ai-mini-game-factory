@@ -1,0 +1,161 @@
+✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (1.837514ms)
+✔ 未知源版本不能静默套用补丁 (0.401899ms)
+✔ registered build includes live career, items, runtime and fuel dependencies (5.49017ms)
+✔ race text labels remove known third-party signboards in build output (0.182948ms)
+✔ instrument clean native drift without changing dynamics, and reject unknown source (0.232581ms)
+✔ recognizable character balloons are replaced with generic scene assets (0.110973ms)
+✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.187294ms)
+✔ V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes (0.353147ms)
+✔ V3.1 model and spline modules are hashed into H5 build and kept scoped to racing (1.039203ms)
+✔ desert dune relief edits only the original generated sand base, never native physics (0.328853ms)
+✔ native stage-specific course selection is strict, idempotent and does not rewrite driving physics (0.250067ms)
+✔ native fork adapters are exact, idempotent and preserve original acceleration/AI (0.348971ms)
+✔ stage-scenery pipeline changes only sky/props, never native car or track physics (0.197129ms)
+✔ fixed desert monument safety keeps pyramid models away from new racing surfaces (0.158212ms)
+✔ V8 native AI hook is strict and avoids checkpoint/progress surgery (0.184721ms)
+✔ V11 build adapter preserves AI names and instantiates the native PlayerCar subclass (2.466286ms)
+✔ V11 world adapter projects physical rivals and applies real impulses without taking player ownership (0.623084ms)
+✔ V8 one-way finish hooks preserve native progress and onLap bookkeeping (0.137913ms)
+✔ phone and desktop camera differences preserve native car/road physics (0.216678ms)
+✔ native eight-item HUD matches V8 pickups and never crashes on a new item ID (0.471101ms)
+✖ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (4.525585ms)
+✖ V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality (1.170015ms)
+✖ V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering (0.778722ms)
+✖ V11.6 mid keeps desktop offscreen zero samples and the existing touch budget (0.509598ms)
+✖ V11.6 initial render adapter rejects partial and changed native constructor anchors (0.281663ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 20
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 69.127291
+
+✖ failing tests:
+
+test at tools/lean-pilot/tests/racing-build.test.mjs:370:1
+✖ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (4.525585ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(init.includes('antialias: false'))
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:377:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at tools/lean-pilot/tests/racing-build.test.mjs:476:1
+✖ V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality (1.170015ms)
+  AssertionError [ERR_ASSERTION]: only the two reviewed constructor defaults may change
+  + actual - expected
+  
+    'class NativeGraphics {\n' +
+      '  constructor(canvas, saved, scene, camera) {\n' +
+      "    this.settings = Object.assign({ quality: IS_TOUCH ? 'low' : 'high' }, saved);\n" +
+      '    this.canvas = canvas;\n' +
+  +   "    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: !IS_TOUCH, powerPreference: 'high-performance' });\n" +
+  -   "    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: false, powerPreference: 'high-performance' });\n" +
+      '    this.scene = scene;\n' +
+      '    this.camera = camera;\n' +
+      '    this.setupQuality();\n' +
+      '  }\n' +
+      '  setupQuality() {\n' +
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:478:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: "class NativeGraphics {\n  constructor(canvas, saved, scene, camera) {\n    this.settings = Object.assign({ quality: IS_TOUCH ? 'low' : 'high' }, saved);\n    this.canvas = canvas;\n    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: !IS_TOUCH, powerPreference: 'high-performance' });\n    this.scene = scene;\n    this.camera = camera;\n    this.setupQuality();\n  }\n  setupQuality() {\n...",
+    expected: "class NativeGraphics {\n  constructor(canvas, saved, scene, camera) {\n    this.settings = Object.assign({ quality: IS_TOUCH ? 'low' : 'high' }, saved);\n    this.canvas = canvas;\n    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: false, powerPreference: 'high-performance' });\n    this.scene = scene;\n    this.camera = camera;\n    this.setupQuality();\n  }\n  setupQuality() {\n...",
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tools/lean-pilot/tests/racing-build.test.mjs:493:1
+✖ V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering (0.778722ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:498:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tools/lean-pilot/tests/racing-build.test.mjs:531:1
+✖ V11.6 mid keeps desktop offscreen zero samples and the existing touch budget (0.509598ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:534:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tools/lean-pilot/tests/racing-build.test.mjs:548:1
+✖ V11.6 initial render adapter rejects partial and changed native constructor anchors (0.281663ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Partial native phone render patch/. Input:
+  
+  'Error: Pinned mobile render anchor changed'
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:555:41)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Pinned mobile render anchor changed
+        at Module.patchMobileInitialRendering (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-mobile-build.mjs:348:52)
+        at file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:555:58
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:555:41)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: /Partial native phone render patch/,
+    operator: 'throws',
+    diff: 'simple'
+  }

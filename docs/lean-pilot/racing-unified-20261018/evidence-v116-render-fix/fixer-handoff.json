@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "issueId": "V116-COLD-DESKTOP-DEFAULT-FRAMEBUFFER-MSAA",
+  "route": "formal-fixer",
+  "role": "FixerAgent",
+  "status": "SOURCE_READY_FOR_ROOT_REBUILD_AND_QA",
+  "createdAt": "2026-10-18T16:50:20.453Z",
+  "target": {
+    "repo": "/workspace/scratch/29547c23d820/racing-unified",
+    "gameId": "qq-speed",
+    "runId": "h5-qq-mobile-20261013",
+    "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/game",
+    "parentCommit": "4746f395815ea8986d438e2dee6437b81fa76fa9",
+    "baselineBuildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+    "baselineAttempt": 12,
+    "nextBuildAttemptOwnedByRoot": 13
+  },
+  "authorization": {
+    "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-fixer-task.json",
+    "sha256": "6db2c52252035bbe12ff273c3265787429ed4cb044bbe291ab174bbb6d5202ee"
+  },
+  "diagnosis": {
+    "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-render-rca.json",
+    "sha256": "0864ef536398b788502112e47702d45441e50b72b916a7572257633531d8f2c4",
+    "conclusion": "Default framebuffer MSAA is retained at desktop low quality. Existing same-build no-MSAA diagnostic supports constructor policy; independent high-tier offscreen MSAA is preserved.",
+    "productionAcceptance": false
+  },
+  "changes": {
+    "files": [
+      {
+        "path": "tools/lean-pilot/racing-mobile-build.mjs",
+        "beforeSha256": "0c6a66fd1868e241a6b2ba7ce3d96e2a84b2960e45f66cd31cfde804a30bcb80",
+        "afterSha256": "5eba23cd03246b83dd6e78faded2ba1a5584e9acb90c7c67273039f3ac6d4586",
+        "beforeBytes": 79241,
+        "afterBytes": 79330
+      },
+      {
+        "path": "tools/lean-pilot/tests/racing-build.test.mjs",
+        "beforeSha256": "1ccdab778449c8b3dce32fb309ec909592c61fca44a2547d71351e7d5b913de8",
+        "afterSha256": "68a19a830c56dadcc9715b56ab6a5c186425bc6ec56dd9deebf93db7ec53945e",
+        "beforeBytes": 21861,
+        "afterBytes": 30979
+      }
+    ],
+    "sourceScope": "Only patchMobileInitialRendering target constructor argument antialias:!IS_TOUCH -> antialias:false and its explanatory comment. Its fail-closed/idempotence algorithm and all other builder functions are unchanged.",
+    "intentionalExistingTestDelta": "Exactly one existing assertion: init.includes('antialias: !IS_TOUCH') -> init.includes('antialias: false'). All remaining original test-file bytes are retained as its prefix.",
+    "addedTests": [
+      "Desktop and touch constructor behavior, canvas/power preference and saved quality",
+      "High HalfFloat four-sample target, three postprocessing passes, disposal on low and full-scene direct rendering",
+      "Desktop mid zero-sample target and existing touch mid budget",
+      "Partial, legacy partial, changed/duplicate original anchors and final-form idempotence"
+    ],
+    "addedTestCount": 4,
+    "behavior": "Every device creates one default framebuffer without MSAA. Saved/native quality decisions, high offscreen requested four samples, mid and low render paths, camera/scene and existing countdown recovery are unchanged."
+  },
+  "scopeAudit": {
+    "head": "4746f395815ea8986d438e2dee6437b81fa76fa9",
+    "changedPaths": [
+      "tools/lean-pilot/racing-mobile-build.mjs",
+      "tools/lean-pilot/tests/racing-build.test.mjs"
+    ],
+    "beforeAfter": [
+      {
+        "path": "tools/lean-pilot/racing-mobile-build.mjs",
+        "beforeSha256": "0c6a66fd1868e241a6b2ba7ce3d96e2a84b2960e45f66cd31cfde804a30bcb80",
+        "afterSha256": "5eba23cd03246b83dd6e78faded2ba1a5584e9acb90c7c67273039f3ac6d4586",
+        "beforeBytes": 79241,
+        "afterBytes": 79330
+      },
+      {
+        "path": "tools/lean-pilot/tests/racing-build.test.mjs",
+        "beforeSha256": "1ccdab778449c8b3dce32fb309ec909592c61fca44a2547d71351e7d5b913de8",
+        "afterSha256": "68a19a830c56dadcc9715b56ab6a5c186425bc6ec56dd9deebf93db7ec53945e",
+        "beforeBytes": 21861,
+        "afterBytes": 30979
+      }
+    ],
+    "builderOnlyAuthorizedParameterAndComment": true,
+    "priorTestPrefixPreservedExceptAuthorizedExpectation": true,
+    "originalBuildTestCount": 21,
+    "finalBuildTestCount": 25,
+    "addedBuildTestCount": 4,
+    "protectedFiles": [
+      {
+        "path": "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+        "sha256": "f56c9f10951d26eeb90825aa1376802501736f4081ae4182984cbe0f9d9ee866",
+        "unchangedFromHead": true
+      },
+      {
+        "path": "templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+        "sha256": "b4717e9d343fe93310341759d4463f36063d10d8d5729ceacc32f4f215440189",
+        "unchangedFromHead": true
+      },
+      {
+        "path": "templates/web-lite/h5-source-mobile-v1/tests/racing-session.test.mjs",
+        "sha256": "897580c7cdb2fc76fefbcdf9147f488ffda7667a7b7c1182df7f8b4f8f6a0dff",
+        "unchangedFromHead": true
+      },
+      {
+        "path": "tools/lean-pilot/racing-cold-start-qa.mjs",
+        "sha256": "c2a8ff62cac8bae7f45abae22dbfba2bb4793b95fc29c81e3ddfa23c8e3724ad",
+        "unchangedFromHead": true
+      },
+      {
+        "path": "tools/lean-pilot/racing-real-browser-preload.mjs",
+        "sha256": "3a163584a251b3cc0286677bc354bfae1a0af0a7db1103eea87be42fdc0b69c9",
+        "unchangedFromHead": true
+      },
+      {
+        "path": "tools/lean-pilot/racing-context-isolation.mjs",
+        "sha256": "7f0dfb1eed55ce2f71215b8218750266c9a9c49f0df330cd68ca5d6eb0875a53",
+        "unchangedFromHead": true
+      }
+    ],
+    "generatedNativeMain": {
+      "path": "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/main.js",
+      "sha256": "c4c10c3ccabd3c2ff9ce157d60773ad0a071c971ecc64cc92af1c72f22aeaff8",
+      "unchangedDuringTask": true
+    },
+    "diffCheck": true,
+    "numstat": "5\t4\ttools/lean-pilot/racing-mobile-build.mjs\n172\t1\ttools/lean-pilot/tests/racing-build.test.mjs\n"
+  },
+  "validation": {
+    "nodeVersion": "v24.19.0",
+    "testFirst": {
+      "sourceBeforeSha256": "0c6a66fd1868e241a6b2ba7ce3d96e2a84b2960e45f66cd31cfde804a30bcb80",
+      "testSha256": "68a19a830c56dadcc9715b56ab6a5c186425bc6ec56dd9deebf93db7ec53945e",
+      "tests": 25,
+      "passed": 20,
+      "failed": 5,
+      "expectedFailure": "Updated graphics expectation and four new regressions fail against old desktop MSAA constructor policy."
+    },
+    "finalTests": {
+      "tests": 71,
+      "passed": 71,
+      "failed": 0,
+      "skipped": 0,
+      "breakdown": {
+        "buildContracts": 25,
+        "countdown": 27,
+        "session": 19
+      }
+    },
+    "lint": {
+      "passed": true,
+      "scope": [
+        "tools/lean-pilot/racing-mobile-build.mjs",
+        "tools/lean-pilot/tests/racing-build.test.mjs"
+      ]
+    },
+    "syntax": {
+      "passed": true,
+      "scope": [
+        "tools/lean-pilot/racing-mobile-build.mjs",
+        "tools/lean-pilot/tests/racing-build.test.mjs"
+      ]
+    },
+    "typecheck": {
+      "status": "NOT_APPLICABLE",
+      "reason": "The authorized files are untyped .mjs; both were parsed with node --check. No TypeScript source or type signatures changed."
+    },
+    "rawLogs": [
+      {
+        "key": "msaaRedRun",
+        "argv": [
+          "node",
+          "--test",
+          "--test-isolation=none",
+          "--test-reporter=spec",
+          "tools/lean-pilot/tests/racing-build.test.mjs"
+        ],
+        "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+        "startedAt": "2026-10-18T16:48:58.364Z",
+        "finishedAt": "2026-10-18T16:48:58.588Z",
+        "exitCode": 1,
+        "stdout": "✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (1.837514ms)\n✔ 未知源版本不能静默套用补丁 (0.401899ms)\n✔ registered build includes live career, items, runtime and fuel dependencies (5.49017ms)\n✔ race text labels remove known third-party signboards in build output (0.182948ms)\n✔ instrument clean native drift without changing dynamics, and reject unknown source (0.232581ms)\n✔ recognizable character balloons are replaced with generic scene assets (0.110973ms)\n✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.187294ms)\n✔ V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes (0.353147ms)\n✔ V3.1 model and spline modules are hashed into H5 build and kept scoped to racing (1.039203ms)\n✔ desert dune relief edits only the original generated sand base, never native physics (0.328853ms)\n✔ native stage-specific course selection is strict, idempotent and does not rewrite driving physics (0.250067ms)\n✔ native fork adapters are exact, idempotent and preserve original acceleration/AI (0.348971ms)\n✔ stage-scenery pipeline changes only sky/props, never native car or track physics (0.197129ms)\n✔ fixed desert monument safety keeps pyramid models away from new racing surfaces (0.158212ms)\n✔ V8 native AI hook is strict and avoids checkpoint/progress surgery (0.184721ms)\n✔ V11 build adapter preserves AI names and instantiates the native PlayerCar subclass (2.466286ms)\n✔ V11 world adapter projects physical rivals and applies real impulses without taking player ownership (0.623084ms)\n✔ V8 one-way finish hooks preserve native progress and onLap bookkeeping (0.137913ms)\n✔ phone and desktop camera differences preserve native car/road physics (0.216678ms)\n✔ native eight-item HUD matches V8 pickups and never crashes on a new item ID (0.471101ms)\n✖ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (4.525585ms)\n✖ V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality (1.170015ms)\n✖ V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering (0.778722ms)\n✖ V11.6 mid keeps desktop offscreen zero samples and the existing touch budget (0.509598ms)\n✖ V11.6 initial render adapter rejects partial and changed native constructor anchors (0.281663ms)\nℹ tests 25\nℹ suites 0\nℹ pass 20\nℹ fail 5\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 69.127291\n\n✖ failing tests:\n\ntest at tools/lean-pilot/tests/racing-build.test.mjs:370:1\n✖ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (4.525585ms)\n  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n  \n    assert.ok(init.includes('antialias: false'))\n  \n      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:377:9)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: false,\n    expected: true,\n    operator: '==',\n    diff: 'simple'\n  }\n\ntest at tools/lean-pilot/tests/racing-build.test.mjs:476:1\n✖ V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality (1.170015ms)\n  AssertionError [ERR_ASSERTION]: only the two reviewed constructor defaults may change\n  + actual - expected\n  \n    'class NativeGraphics {\\n' +\n      '  constructor(canvas, saved, scene, camera) {\\n' +\n      \"    this.settings = Object.assign({ quality: IS_TOUCH ? 'low' : 'high' }, saved);\\n\" +\n      '    this.canvas = canvas;\\n' +\n  +   \"    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: !IS_TOUCH, powerPreference: 'high-performance' });\\n\" +\n  -   \"    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: false, powerPreference: 'high-performance' });\\n\" +\n      '    this.scene = scene;\\n' +\n      '    this.camera = camera;\\n' +\n      '    this.setupQuality();\\n' +\n      '  }\\n' +\n      '  setupQuality() {\\n' +\n  \n      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:478:10)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: \"class NativeGraphics {\\n  constructor(canvas, saved, scene, camera) {\\n    this.settings = Object.assign({ quality: IS_TOUCH ? 'low' : 'high' }, saved);\\n    this.canvas = canvas;\\n    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: !IS_TOUCH, powerPreference: 'high-performance' });\\n    this.scene = scene;\\n    this.camera = camera;\\n    this.setupQuality();\\n  }\\n  setupQuality() {\\n...\",\n    expected: \"class NativeGraphics {\\n  constructor(canvas, saved, scene, camera) {\\n    this.settings = Object.assign({ quality: IS_TOUCH ? 'low' : 'high' }, saved);\\n    this.canvas = canvas;\\n    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: false, powerPreference: 'high-performance' });\\n    this.scene = scene;\\n    this.camera = camera;\\n    this.setupQuality();\\n  }\\n  setupQuality() {\\n...\",\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at tools/lean-pilot/tests/racing-build.test.mjs:493:1\n✖ V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering (0.778722ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  true !== false\n  \n      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:498:12)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: true,\n    expected: false,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at tools/lean-pilot/tests/racing-build.test.mjs:531:1\n✖ V11.6 mid keeps desktop offscreen zero samples and the existing touch budget (0.509598ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  true !== false\n  \n      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:534:12)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: true,\n    expected: false,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at tools/lean-pilot/tests/racing-build.test.mjs:548:1\n✖ V11.6 initial render adapter rejects partial and changed native constructor anchors (0.281663ms)\n  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Partial native phone render patch/. Input:\n  \n  'Error: Pinned mobile render anchor changed'\n  \n      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:555:41)\n      at Test.runInAsyncScope (node:async_hooks:227:14)\n      at Test.run (node:internal/test_runner/test:1382:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n      at Test.postRun (node:internal/test_runner/test:1522:19)\n      at Test.run (node:internal/test_runner/test:1447:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: Error: Pinned mobile render anchor changed\n        at Module.patchMobileInitialRendering (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-mobile-build.mjs:348:52)\n        at file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:555:58\n        at getActual (node:assert:611:5)\n        at strict.throws (node:assert:759:24)\n        at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs:555:41)\n        at Test.runInAsyncScope (node:async_hooks:227:14)\n        at Test.run (node:internal/test_runner/test:1382:25)\n        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)\n        at Test.postRun (node:internal/test_runner/test:1522:19)\n        at Test.run (node:internal/test_runner/test:1447:12),\n    expected: /Partial native phone render patch/,\n    operator: 'throws',\n    diff: 'simple'\n  }\n",
+        "stdoutBytes": 9793,
+        "stdoutSha256": "080044671a3ba40aeb41174ac7c12a38c4031ca1a77ae8301ff51a231e41c22a",
+        "toolChunkId": "f3cd92",
+        "toolWallTimeSeconds": 0.000027391
+      },
+      {
+        "key": "msaaGreenRun",
+        "argv": [
+          "node",
+          "--test",
+          "--test-isolation=none",
+          "--test-reporter=spec",
+          "tools/lean-pilot/tests/racing-build.test.mjs",
+          "templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+          "templates/web-lite/h5-source-mobile-v1/tests/racing-session.test.mjs"
+        ],
+        "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+        "startedAt": "2026-10-18T16:49:19.327Z",
+        "finishedAt": "2026-10-18T16:49:19.585Z",
+        "exitCode": 0,
+        "stdout": "✔ repeated long render stalls can lower graphics before the race begins (2.59943ms)\n✔ countdown protection retains the native renderer and does not advance the game (1.284503ms)\n✔ normal frame cadence and an isolated stall leave selected graphics unchanged (0.424112ms)\n✔ pause and return do not combine unrelated stalls into a downgrade (0.162528ms)\n✔ race/menu/finished states keep the existing quality owner (0.245319ms)\n✔ installation is idempotent and invalid rendering interfaces are ignored (0.154316ms)\n✔ severe continuous low FPS can step high to mid to low without changing preference (0.274011ms)\n✔ actual runtime FX setup installs the countdown guard even when no particle pools exist (0.32749ms)\n✔ persistent foreground lag at low quality reduces drawing pixels within a bounded budget (0.656292ms)\n✔ ordinary cadence and one expensive frame keep full low-quality resolution (0.372296ms)\n✔ native renderer method behavior is unchanged until a budget is earned and installation stays idempotent (0.428849ms)\n✔ sustained near-12-FPS low-quality rendering also has a bounded fallback (0.288262ms)\n✔ render-budget fallback preserves native render, game state, camera, viewport and storage (0.268804ms)\n✔ a hidden interval without animation frames discards earlier low-quality stall samples (0.293641ms)\n✔ paused frames and resuming a race cannot combine unrelated stall intervals (0.220292ms)\n✔ invalid or backwards elapsed time resets low-quality samples (0.319589ms)\n✔ native resize and low-quality setup retain a required effective pixel budget (0.180074ms)\n✔ explicit higher quality remains authoritative and later low setup retains the safe budget (0.203398ms)\n✔ actual race rendering can degrade low pixels without taking over other quality settings (0.147085ms)\n✔ CI multi-second stalls earn the emergency budget on the same mid-to-low render (0.323544ms)\n✔ four consecutive multi-second countdown stalls can take existing low quality directly to the floor (0.228835ms)\n✔ sub-second stalls and sustained moderate slow frames retain gradual pixel reductions (0.167445ms)\n✔ one multi-second spike followed by ordinary frames cannot pre-earn an emergency budget (0.258208ms)\n✔ lifecycle, sizing, quality and clock discontinuities discard old multi-second evidence (0.251679ms)\n✔ emergency pixels retain high-to-mid-to-low ownership and explicit later quality choices (0.184291ms)\n✔ the multi-second shortcut is confined to countdown and retains the race pixel policy (0.113206ms)\n✔ native setSize-only resize resets countdown evidence and preserves its receiver, arguments and result (0.336533ms)\n✔ 原生大厅只有AI演示赛车时即可启动，不等待尚未创建的玩家 (0.141598ms)\n✔ 切关加载失败或仍处于旧赛道时，禁止用错误赛道开新关并扣燃油 (0.181757ms)\n✔ 画质偏好：首次使用均衡，用户选流畅后刷新仍优先流畅 (0.149038ms)\n✔ 暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复 (0.249025ms)\n✔ 成绩读取真实玩家，不将AI冲线计为玩家完赛 (0.322192ms)\n✔ single-run settlement uses the actual 07/22 finish distance and does not mark a loss as finished (0.522726ms)\n✔ 结算冻结原生模拟，重复调用不会从结算恢复模拟 (0.221915ms)\n✔ 输入释放同时清除触屏、键盘、两个边沿集合 (0.160996ms)\n✔ V10手机镜头FOV有可感知的速度反馈且不超过88度 (0.182518ms)\n✔ 手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数 (0.291497ms)\n✔ 自适应只在持续低帧率后降一档；手选画质保留 (0.433516ms)\n✔ UI refresh at 30 Hz cannot throttle 120Hz physics or misread a backwards clock (0.242776ms)\n✔ phone quality drops on sustained <46FPS rather than isolated delayed frames (0.553381ms)\n✔ screen platform depends on input affordance, not CSS window width (0.252731ms)\n✔ phone follows closer car yet looks ahead on V9 technical bends (0.141757ms)\n✔ first mobile frame uses safe rendering budget, saved user preference still wins (0.152553ms)\n✔ phone downhill camera samples true road elevation, avoids airborne/fork guesses (0.414377ms)\n✔ manual graphics cannot become unsteerable at sustained 14 FPS (0.120336ms)\n✔ input diagnostics are aggregate-only and do not claim display latency (0.360709ms)\n✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (1.259326ms)\n✔ 未知源版本不能静默套用补丁 (0.35511ms)\n✔ registered build includes live career, items, runtime and fuel dependencies (2.65447ms)\n✔ race text labels remove known third-party signboards in build output (0.192593ms)\n✔ instrument clean native drift without changing dynamics, and reject unknown source (0.256696ms)\n✔ recognizable character balloons are replaced with generic scene assets (0.138493ms)\n✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.229797ms)\n✔ V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes (0.458572ms)\n✔ V3.1 model and spline modules are hashed into H5 build and kept scoped to racing (2.342093ms)\n✔ desert dune relief edits only the original generated sand base, never native physics (0.160575ms)\n✔ native stage-specific course selection is strict, idempotent and does not rewrite driving physics (0.176439ms)\n✔ native fork adapters are exact, idempotent and preserve original acceleration/AI (0.34764ms)\n✔ stage-scenery pipeline changes only sky/props, never native car or track physics (0.269075ms)\n✔ fixed desert monument safety keeps pyramid models away from new racing surfaces (0.160285ms)\n✔ V8 native AI hook is strict and avoids checkpoint/progress surgery (0.234974ms)\n✔ V11 build adapter preserves AI names and instantiates the native PlayerCar subclass (1.836282ms)\n✔ V11 world adapter projects physical rivals and applies real impulses without taking player ownership (0.632096ms)\n✔ V8 one-way finish hooks preserve native progress and onLap bookkeeping (0.155959ms)\n✔ phone and desktop camera differences preserve native car/road physics (0.227824ms)\n✔ native eight-item HUD matches V8 pickups and never crashes on a new item ID (0.563666ms)\n✔ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (0.490964ms)\n✔ V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality (1.567137ms)\n✔ V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering (0.685164ms)\n✔ V11.6 mid keeps desktop offscreen zero samples and the existing touch budget (0.363163ms)\n✔ V11.6 initial render adapter rejects partial and changed native constructor anchors (0.288303ms)\nℹ tests 71\nℹ suites 0\nℹ pass 71\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 83.69296\n",
+        "stdoutBytes": 6963,
+        "stdoutSha256": "f1ce63d416181522ad515b2ed938f4b719eab434efa2111d1b0d572064e74e6a",
+        "toolChunkId": "4045fb",
+        "toolWallTimeSeconds": 0.045481509
+      },
+      {
+        "key": "msaaLintRun",
+        "argv": [
+          "node",
+          "node_modules/eslint/bin/eslint.js",
+          "tools/lean-pilot/racing-mobile-build.mjs",
+          "tools/lean-pilot/tests/racing-build.test.mjs"
+        ],
+        "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+        "startedAt": "2026-10-18T16:49:19.327Z",
+        "finishedAt": "2026-10-18T16:49:20.651Z",
+        "exitCode": 0,
+        "stdout": "",
+        "stdoutBytes": 0,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "toolChunkId": "39ee9e",
+        "toolWallTimeSeconds": 1.091943427
+      },
+      {
+        "key": "msaaSyntaxBuildRun",
+        "argv": [
+          "node",
+          "--check",
+          "tools/lean-pilot/racing-mobile-build.mjs"
+        ],
+        "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+        "startedAt": "2026-10-18T16:49:19.327Z",
+        "finishedAt": "2026-10-18T16:49:19.501Z",
+        "exitCode": 0,
+        "stdout": "",
+        "stdoutBytes": 0,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "toolChunkId": "b48dcd",
+        "toolWallTimeSeconds": 0.000017316
+      },
+      {
+        "key": "msaaSyntaxTestRun",
+        "argv": [
+          "node",
+          "--check",
+          "tools/lean-pilot/tests/racing-build.test.mjs"
+        ],
+        "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+        "startedAt": "2026-10-18T16:49:19.327Z",
+        "finishedAt": "2026-10-18T16:49:19.501Z",
+        "exitCode": 0,
+        "stdout": "",
+        "stdoutBytes": 0,
+        "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "toolChunkId": "185e42",
+        "toolWallTimeSeconds": 0.000019358
+      }
+    ],
+    "zod": {
+      "schema": "cold-render-msaa-fixer-handoff/v1",
+      "passed": true
+    }
+  },
+  "preserved": [
+    "Original 45 second race entry and 18 second keyboard assertions and browser flags",
+    "Native full scene, camera, viewport, car assets and all simulation clocks/physics/progress",
+    "Existing emergency countdown budget and native resize measurement resets",
+    "High-quality HalfFloat offscreen target requests samples:4, native shadows/bloom/OutputPass",
+    "Saved quality values, touch defaults, explicit high-quality choices, one original renderer/context",
+    "Pinned upstream inputs, generated native main and build outputs were not modified by Fixer"
+  ],
+  "notRunByFixer": [
+    "Product rebuild",
+    "Browser or remote QA",
+    "Remote writes",
+    "Staging or commit"
+  ],
+  "remainingEvidenceGaps": [
+    "Fixture regressions record requested Three constructor/target options; they do not certify actual driver support, image quality or runtime frame cost.",
+    "Existing desktop-no-msaa run is productionGate:false diagnostic evidence only.",
+    "Root must rebuild once as attempt13, capture new source/input/build hashes and obtain independent original production desktop and touch cold gate results.",
+    "Check explicit high retains its existing offscreen sample request and normal full-scene rendering after rebuild; current production artifact still contains old constructor."
+  ],
+  "contextIntentionallyOmitted": [
+    "Unrelated Lean runs and other games",
+    "Unrelated asset or release work",
+    "No new geometry/batching/clock changes: those are separate hypotheses if the targeted production retest fails"
+  ]
+}

@@ -1,0 +1,1735 @@
+﻿2026-10-18T16:39:22.7858189Z Current runner version: '2.337.0'
+2026-10-18T16:39:22.7884545Z ##[group]Runner Image Provisioner
+2026-10-18T16:39:22.7885434Z Hosted Compute Agent
+2026-10-18T16:39:22.7886234Z Version: 20261012.601
+2026-10-18T16:39:22.7886994Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-18T16:39:22.7887765Z Build Date: 2026-10-12T17:48:21Z
+2026-10-18T16:39:22.7888472Z Worker ID: {fccfbfde-ba46-4041-824b-78bf24edfb44}
+2026-10-18T16:39:22.7889447Z Region: northcentralus
+2026-10-18T16:39:22.7890100Z Cloud: Azure
+2026-10-18T16:39:22.7890671Z ##[endgroup]
+2026-10-18T16:39:22.7892119Z ##[group]Operating System
+2026-10-18T16:39:22.7892866Z Ubuntu
+2026-10-18T16:39:22.7893470Z 24.04.5
+2026-10-18T16:39:22.7894076Z LTS
+2026-10-18T16:39:22.7894666Z ##[endgroup]
+2026-10-18T16:39:22.7895228Z ##[group]Runner Image
+2026-10-18T16:39:22.7895889Z Image: ubuntu-24.04
+2026-10-18T16:39:22.7896503Z Version: 20261012.334.1
+2026-10-18T16:39:22.7897851Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-18T16:39:22.7899898Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-18T16:39:22.7901010Z ##[endgroup]
+2026-10-18T16:39:22.7902165Z ##[group]GITHUB_TOKEN Permissions
+2026-10-18T16:39:22.7904469Z Contents: read
+2026-10-18T16:39:22.7905096Z Metadata: read
+2026-10-18T16:39:22.7905742Z ##[endgroup]
+2026-10-18T16:39:22.7907871Z Secret source: Actions
+2026-10-18T16:39:22.7909212Z Cache mode: write
+2026-10-18T16:39:22.7910372Z Prepare workflow directory
+2026-10-18T16:39:22.8249775Z Prepare all required actions
+2026-10-18T16:39:22.8297743Z Getting action download info
+2026-10-18T16:39:23.0872954Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-18T16:39:23.2091256Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-18T16:39:23.3024070Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-18T16:39:23.5067077Z Complete job name: racing-v3
+2026-10-18T16:39:23.5929443Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-18T16:39:23.5930579Z with:
+2026-10-18T16:39:23.5931053Z   persist-credentials: false
+2026-10-18T16:39:23.5931640Z   repository: 23chen990/ai-mini-game-factory
+2026-10-18T16:39:23.5935722Z   token: ***
+2026-10-18T16:39:23.5936179Z   ssh-strict: true
+2026-10-18T16:39:23.5936697Z   ssh-user: git
+2026-10-18T16:39:23.5937170Z   clean: true
+2026-10-18T16:39:23.5937629Z   sparse-checkout-cone-mode: true
+2026-10-18T16:39:23.5938168Z   fetch-depth: 1
+2026-10-18T16:39:23.5938626Z   fetch-tags: false
+2026-10-18T16:39:23.5939275Z   show-progress: true
+2026-10-18T16:39:23.5939752Z   lfs: false
+2026-10-18T16:39:23.5940176Z   submodules: false
+2026-10-18T16:39:23.5940647Z   set-safe-directory: true
+2026-10-18T16:39:23.5941439Z ##[endgroup]
+2026-10-18T16:39:23.6987283Z Syncing repository: 23chen990/ai-mini-game-factory
+2026-10-18T16:39:23.7079844Z ##[group]Getting Git version info
+2026-10-18T16:39:23.7081505Z Working directory is '/home/runner/work/ai-mini-game-factory/ai-mini-game-factory'
+2026-10-18T16:39:23.7083374Z [command]/usr/bin/git version
+2026-10-18T16:39:23.7084161Z git version 2.55.0
+2026-10-18T16:39:23.7086600Z ##[endgroup]
+2026-10-18T16:39:23.7097182Z Temporarily overriding HOME='/home/runner/work/_temp/1a9faaf9-4eda-457c-b3cc-b612c6ebd01d' before making global git config changes
+2026-10-18T16:39:23.7099686Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-18T16:39:23.7101790Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:39:23.7140015Z Deleting the contents of '/home/runner/work/ai-mini-game-factory/ai-mini-game-factory'
+2026-10-18T16:39:23.7143203Z ##[group]Initializing the repository
+2026-10-18T16:39:23.7148493Z [command]/usr/bin/git init /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:39:23.7270519Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-18T16:39:23.7272158Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-18T16:39:23.7273728Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-18T16:39:23.7275014Z hint: call:
+2026-10-18T16:39:23.7275640Z hint:
+2026-10-18T16:39:23.7276772Z hint: 	git config --global init.defaultBranch <name>
+2026-10-18T16:39:23.7277778Z hint:
+2026-10-18T16:39:23.7278687Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-18T16:39:23.7280674Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-18T16:39:23.7281920Z hint:
+2026-10-18T16:39:23.7282610Z hint: 	git branch -m <name>
+2026-10-18T16:39:23.7283358Z hint:
+2026-10-18T16:39:23.7284347Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-18T16:39:23.7286290Z Initialized empty Git repository in /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/.git/
+2026-10-18T16:39:23.7289511Z [command]/usr/bin/git remote add origin https://github.com/23chen990/ai-mini-game-factory
+2026-10-18T16:39:23.7337511Z ##[endgroup]
+2026-10-18T16:39:23.7339201Z ##[group]Disabling automatic garbage collection
+2026-10-18T16:39:23.7341521Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-18T16:39:23.7376017Z ##[endgroup]
+2026-10-18T16:39:23.7377126Z ##[group]Setting up auth
+2026-10-18T16:39:23.7382488Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:39:23.7416472Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:39:23.7818663Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:39:23.7859412Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:39:23.8122682Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-18T16:39:23.8183659Z ##[endgroup]
+2026-10-18T16:39:23.8184491Z ##[group]Fetching the repository
+2026-10-18T16:39:23.8199076Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +c8dab21e9e999be63cad03b991b030c51c7f415a:refs/remotes/pull/68/merge
+2026-10-18T16:39:26.7035351Z From https://github.com/23chen990/ai-mini-game-factory
+2026-10-18T16:39:26.7037457Z  * [new ref]         c8dab21e9e999be63cad03b991b030c51c7f415a -> pull/68/merge
+2026-10-18T16:39:26.7040947Z ##[endgroup]
+2026-10-18T16:39:26.7041892Z ##[group]Determining the checkout info
+2026-10-18T16:39:26.7043364Z ##[endgroup]
+2026-10-18T16:39:26.7050240Z [command]/usr/bin/git sparse-checkout disable
+2026-10-18T16:39:26.7109602Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-18T16:39:26.7147077Z ##[group]Checking out the ref
+2026-10-18T16:39:26.7151637Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/68/merge
+2026-10-18T16:39:27.0761591Z Note: switching to 'refs/remotes/pull/68/merge'.
+2026-10-18T16:39:27.0762677Z 
+2026-10-18T16:39:27.0763347Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-18T16:39:27.0764957Z changes and commit them, and you can discard any commits you make in this
+2026-10-18T16:39:27.0766572Z state without impacting any branches by switching back to a branch.
+2026-10-18T16:39:27.0767496Z 
+2026-10-18T16:39:27.0768159Z If you want to create a new branch to retain commits you create, you may
+2026-10-18T16:39:27.0770111Z do so (now or later) by using -c with the switch command. Example:
+2026-10-18T16:39:27.0771401Z 
+2026-10-18T16:39:27.0771816Z   git switch -c <new-branch-name>
+2026-10-18T16:39:27.0772484Z 
+2026-10-18T16:39:27.0772892Z Or undo this operation with:
+2026-10-18T16:39:27.0773505Z 
+2026-10-18T16:39:27.0773864Z   git switch -
+2026-10-18T16:39:27.0774368Z 
+2026-10-18T16:39:27.0775236Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-18T16:39:27.0776474Z 
+2026-10-18T16:39:27.0777736Z HEAD is now at c8dab21 Merge 4746f395815ea8986d438e2dee6437b81fa76fa9 into c099cfa17a52a59bb6e494cfab8d686e920425de
+2026-10-18T16:39:27.0789649Z ##[endgroup]
+2026-10-18T16:39:27.0842380Z [command]/usr/bin/git log -1 --format=%H
+2026-10-18T16:39:27.0869856Z c8dab21e9e999be63cad03b991b030c51c7f415a
+2026-10-18T16:39:27.0881037Z ##[group]Removing auth
+2026-10-18T16:39:27.0885833Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:39:27.0924505Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:39:27.1152567Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:39:27.1182352Z http.https://github.com/.extraheader
+2026-10-18T16:39:27.1190073Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-18T16:39:27.1226344Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:39:27.1445130Z ##[endgroup]
+2026-10-18T16:39:27.1888627Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+2026-10-18T16:39:27.1890562Z with:
+2026-10-18T16:39:27.1891432Z   node-version: 24.x
+2026-10-18T16:39:27.1892421Z   always-auth: false
+2026-10-18T16:39:27.1893417Z   check-latest: false
+2026-10-18T16:39:27.1904318Z   token: ***
+2026-10-18T16:39:27.1905256Z ##[endgroup]
+2026-10-18T16:39:27.3360784Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-10-18T16:39:27.3365585Z (node:2400) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-18T16:39:27.3368402Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-18T16:39:27.3371440Z ##[group]Environment details
+2026-10-18T16:39:27.7205287Z node: v24.21.0
+2026-10-18T16:39:27.7206112Z npm: 11.19.0
+2026-10-18T16:39:27.7206527Z yarn: 1.22.22
+2026-10-18T16:39:27.7207392Z ##[endgroup]
+2026-10-18T16:39:27.7352074Z ##[group]Run npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+2026-10-18T16:39:27.7352829Z [36;1mnpm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund[0m
+2026-10-18T16:39:27.7353380Z [36;1mpnpm install --frozen-lockfile --ignore-scripts[0m
+2026-10-18T16:39:27.7617817Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:39:27.7618206Z ##[endgroup]
+2026-10-18T16:39:29.5515882Z 
+2026-10-18T16:39:29.5525828Z added 1 package in 2s
+2026-10-18T16:39:30.2656921Z ? Verifying lockfile against supply-chain policies (232 entries)...
+2026-10-18T16:39:30.2791708Z Lockfile is up to date, resolution step is skipped
+2026-10-18T16:39:30.3860603Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-18T16:39:30.4249238Z Packages: +176
+2026-10-18T16:39:30.4270515Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-18T16:39:31.4054837Z Progress: resolved 176, reused 0, downloaded 58, added 0
+2026-10-18T16:39:31.4584350Z Packages are hard linked from the content-addressable store to the virtual store.
+2026-10-18T16:39:31.4585865Z   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+2026-10-18T16:39:31.4586725Z   Virtual store is at:             node_modules/.pnpm
+2026-10-18T16:39:32.4010892Z Progress: resolved 176, reused 0, downloaded 173, added 104
+2026-10-18T16:39:33.4064869Z Progress: resolved 176, reused 0, downloaded 175, added 175
+2026-10-18T16:39:33.8305551Z ✓ Lockfile passes supply-chain policies (232 entries in 3.5s)
+2026-10-18T16:39:34.7670199Z Progress: resolved 176, reused 0, downloaded 176, added 175
+2026-10-18T16:39:34.7692598Z Progress: resolved 176, reused 0, downloaded 176, added 176, done
+2026-10-18T16:39:34.9118704Z 
+2026-10-18T16:39:34.9120329Z dependencies:
+2026-10-18T16:39:34.9120764Z + @openai/agents 0.17.0
+2026-10-18T16:39:34.9121123Z + @openai/codex-sdk 0.151.0
+2026-10-18T16:39:34.9121465Z + openai 7.8.0
+2026-10-18T16:39:34.9121712Z + phaser 3.90.0
+2026-10-18T16:39:34.9121984Z + yaml 2.9.0
+2026-10-18T16:39:34.9122228Z + zod 4.4.3
+2026-10-18T16:39:34.9122362Z 
+2026-10-18T16:39:34.9122475Z devDependencies:
+2026-10-18T16:39:34.9122736Z + @eslint/js 9.39.5
+2026-10-18T16:39:34.9122998Z + @playwright/test 1.62.1
+2026-10-18T16:39:34.9123308Z + @types/node 24.13.3
+2026-10-18T16:39:34.9123615Z + eslint 9.39.5
+2026-10-18T16:39:34.9123855Z + tsx 4.23.12
+2026-10-18T16:39:34.9124108Z + typescript 5.9.3
+2026-10-18T16:39:34.9124403Z + typescript-eslint 8.68.0
+2026-10-18T16:39:34.9124719Z + vite 8.2.2
+2026-10-18T16:39:34.9124950Z + vitest 4.1.11
+2026-10-18T16:39:34.9125095Z 
+2026-10-18T16:39:34.9601200Z Done in 5.3s using pnpm v11.19.0
+2026-10-18T16:39:35.0247132Z ##[group]Run node --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
+2026-10-18T16:39:35.0247916Z [36;1mnode --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs[0m
+2026-10-18T16:39:35.0248566Z [36;1mnode --test --test-isolation=none tools/lean-pilot/tests/racing-build.test.mjs[0m
+2026-10-18T16:39:35.0249523Z [36;1mnode --test --test-isolation=none tools/lean-pilot/tests/racing-ai-pace-audit.test.mjs[0m
+2026-10-18T16:39:35.0250734Z [36;1mnode --test --test-isolation=none tools/lean-pilot/tests/racing-car-build.node.mjs tools/lean-pilot/tests/racing-car-prepare.node.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs[0m
+2026-10-18T16:39:35.0251952Z [36;1mnode --test --test-isolation=none tools/lean-pilot/tests/racing-user-car-build.node.mjs[0m
+2026-10-18T16:39:35.0252654Z [36;1mnode --test --test-isolation=none tools/lean-pilot/tests/racing-car-qa-instrumentation.node.mjs[0m
+2026-10-18T16:39:35.0253339Z [36;1mnode --test --test-isolation=none tools/lean-pilot/tests/racing-large-build-hash.node.mjs[0m
+2026-10-18T16:39:35.0253977Z [36;1mnode --test --test-isolation=none tools/lean-pilot/tests/racing-shortcut-cost.test.mjs[0m
+2026-10-18T16:39:35.0254600Z [36;1mnode --test --test-isolation=none tools/lean-pilot/tests/racing-visible-policy.test.mjs[0m
+2026-10-18T16:39:35.0255207Z [36;1mnode --test --test-isolation=none tools/lean-pilot/racing-delivery-verify.test.mjs[0m
+2026-10-18T16:39:35.0257825Z [36;1mpnpm exec eslint tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs[0m
+2026-10-18T16:39:35.0261585Z [36;1mpnpm exec eslint tools/lean-pilot/racing-car-*.mjs tools/lean-pilot/racing-wheel-qa-input.mjs tools/lean-pilot/racing-native-player-v11-qa.mjs tools/lean-pilot/racing-next-stage-ad-browser-qa.mjs tools/lean-pilot/tests/racing-car-*.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs[0m
+2026-10-18T16:39:35.0263395Z [36;1mpnpm exec eslint tools/lean-pilot/tests/racing-user-car-*.mjs tools/lean-pilot/racing-build-fingerprint-check.mjs tools/lean-pilot/racing-delivery-verify.mjs[0m
+2026-10-18T16:39:35.0264290Z [36;1mpnpm typecheck[0m
+2026-10-18T16:39:35.0330804Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:39:35.0331064Z ##[endgroup]
+2026-10-18T16:39:35.1992581Z ✔ unverified H5 permission never creates an ad instance (6.650701ms)
+2026-10-18T16:39:35.2001093Z ✔ isEnded true completes exactly once and removes handlers (0.620077ms)
+2026-10-18T16:39:35.2005570Z ✔ cancel followed by a stale complete callback remains cancelled (0.254996ms)
+2026-10-18T16:39:35.2010947Z ✔ load or show failure restores play without a reward (0.438078ms)
+2026-10-18T16:39:35.2122341Z ✔ missing close is bounded and late completion is ignored (10.836112ms)
+2026-10-18T16:39:35.2331836Z ✔ double tap cannot start two concurrent ad shows (20.664522ms)
+2026-10-18T16:39:35.2335936Z ✔ the pinned race uses finish, and countdown remains part of the playable round (0.270255ms)
+2026-10-18T16:39:35.2345139Z ✔ FPS bridge reads actual actor stats and releases every held movement/fire input (0.652017ms)
+2026-10-18T16:39:35.2352399Z ✔ clock has a complete start, pause, resume, terminal and replay lifecycle (0.52541ms)
+2026-10-18T16:39:35.2359219Z ✔ earned supplies buy one concrete next-round fish-following assist, not an empty currency counter (0.401089ms)
+2026-10-18T16:39:35.2363308Z ✔ source terminal can settle early and cancellation never doubles supplies (0.293789ms)
+2026-10-18T16:39:35.2377645Z ✔ progress is versioned, per-game, robust to corrupt storage and preserves reward idempotency (1.342785ms)
+2026-10-18T16:39:35.2381229Z ✔ no ad on first round, first sixty seconds, mid-action or after reward (0.234558ms)
+2026-10-18T16:39:35.2384159Z ✔ racing fuel changes to 30 capacity, five per race and one per minute (0.187469ms)
+2026-10-18T16:39:35.2389416Z ✔ 30 fuel gives exactly six races, seventh waits for 5 recovered points (0.404385ms)
+2026-10-18T16:39:35.2393214Z ✔ partial 1 minute recharge does not restart on another race (0.279171ms)
+2026-10-18T16:39:35.2396174Z ✔ regeneration after offline recovery is capped and backward-clock exploit is rejected (0.17677ms)
+2026-10-18T16:39:35.2400754Z ✔ ad reward clock rollback keeps cooldown and recharge anchor (0.294569ms)
+2026-10-18T16:39:35.2404205Z ✔ cancelled, timed out, duplicated and already-full ad do not grant fuel (0.264574ms)
+2026-10-18T16:39:35.2407375Z ✔ partial ad top-up preserves next-minute recharge progress (0.206135ms)
+2026-10-18T16:39:35.2412393Z ✔ fuel advertisements never auto-appear without real round, session and adapter (0.354171ms)
+2026-10-18T16:39:35.2417533Z ✔ persisted V2 survives reload, old V1 tank migrates without losing saved fuel (0.393474ms)
+2026-10-18T16:39:35.2420583Z ✔ rolled-back clock cannot move full tank recharge origin into the past (0.180807ms)
+2026-10-18T16:39:35.2424931Z ✔ advert cooldown persists across repeated clock rollback and races (0.209141ms)
+2026-10-18T16:39:35.2426885Z ✔ next single fuel point countdown never becomes a five-minute wait (0.168064ms)
+2026-10-18T16:39:35.2436237Z ✔ full Chromium changes only QA executable channel, never GPU flags or timeout (0.229218ms)
+2026-10-18T16:39:35.2437658Z ✔ explicit executables, channels and headed choices remain authoritative (0.171881ms)
+2026-10-18T16:39:35.2439305Z ✔ new-headless QA configuration is idempotent without clock/frame-rate switches (0.208438ms)
+2026-10-18T16:39:35.2468961Z ✔ 淘汰可视提示显示真实赛段进度、末位危险；过点和换关清除，不改动比赛 (3.053257ms)
+2026-10-18T16:39:35.2478210Z ✔ failure diagnosis distinguishes authentic rank, technique and boss losses without awarding a pass (0.775919ms)
+2026-10-18T16:39:35.2481569Z ✔ 30 staged challenges use four biome worlds and eight distinct objectives (0.265044ms)
+2026-10-18T16:39:35.2488421Z ✔ all thirty stages are rank-only: first 3 stars, second 2, third 1 (0.577438ms)
+2026-10-18T16:39:35.2493921Z ✔ an actual bronze finish immediately unlocks the next challenge (0.424792ms)
+2026-10-18T16:39:35.2497551Z ✔ valid drift counts real driftEnd above .22 seconds (0.261999ms)
+2026-10-18T16:39:35.2502300Z ✔ special race types still use native timed and elimination gameplay; podium stars depend on finish place (0.307143ms)
+2026-10-18T16:39:35.2515298Z ✔ new car paints require permanent ownership; old star-era saves keep earned paints (1.181454ms)
+2026-10-18T16:39:35.2517744Z ✔ checkpoints only activate when crossing real multi-lap progress (0.172692ms)
+2026-10-18T16:39:35.2522997Z ✔ item box thinning creates real lateral steering choices (0.427397ms)
+2026-10-18T16:39:35.2528988Z ✔ automatic item use waits for relevant player context and cooldown (0.48231ms)
+2026-10-18T16:39:35.2534620Z ✔ real corner overtakes need rank gains and curvature, cannot award repeated rewards (0.473173ms)
+2026-10-18T16:39:35.2537351Z ✔ elimination removes AI model and stands but never removes the player (0.228477ms)
+2026-10-18T16:39:35.2544602Z ✔ career still deducts five fuel even when there is no rewarded ad SDK (0.64338ms)
+2026-10-18T16:39:35.2549221Z ✔ AI reaching finish first does not end a two-lap race after 10 seconds (0.380169ms)
+2026-10-18T16:39:35.2554003Z ✔ relay pads are counted only when spaced and give real clock extension (0.410707ms)
+2026-10-18T16:39:35.2559543Z ✔ each race clears telemetry; a loss does not unlock another stage (0.467502ms)
+2026-10-18T16:39:35.2565187Z ✔ invalid drift endings, including wall collisions, cannot unlock the drift challenge (0.463415ms)
+2026-10-18T16:39:35.2568635Z ✔ career UI objectives reflect real progress, not dummy counters (0.317822ms)
+2026-10-18T16:39:35.2572827Z ✔ high-pressure stage01 failures do not block voluntary low-fuel ad recovery (0.298858ms)
+2026-10-18T16:39:35.2575880Z ✔ a full item queue eventually resolves instead of blocking future pickups (0.264634ms)
+2026-10-18T16:39:35.2578909Z ✔ real corner-exit pass is accepted but late straight or AI ranking changes are rejected (0.225551ms)
+2026-10-18T16:39:35.2583266Z ✔ corner-pass gift cannot counterfeit a required physical item-box pickup (0.373447ms)
+2026-10-18T16:39:35.2590538Z ✔ offline daily stage rotates by local date and stays locked until chapter one is complete (0.606682ms)
+2026-10-18T16:39:35.2599158Z ✔ daily wins update best and streak once per day but never grant story stars or skins (0.736865ms)
+2026-10-18T16:39:35.2609686Z ✔ 雪地末位淘汰：正常赛道进度触发一次预警，末位淘汰不会悄悄发生 (1.009754ms)
+2026-10-18T16:39:35.2616936Z ✔ 完整奖励视频后发生存档故障：临时补油但不虚报永久保存，玩家本次可自由参赛 (0.607164ms)
+2026-10-18T16:39:35.2622319Z ✔ replaying item mode disposes unique item GPUs exactly once without double-disposing shared materials (0.42339ms)
+2026-10-18T16:39:35.2626087Z ✔ thinned native item routes dispose deleted box geometries, leave shared skins intact (0.315489ms)
+2026-10-18T16:39:35.2631530Z ✔ V4.6 native item rivals hold the fixed pre-race pace band without faking progress (0.467743ms)
+2026-10-18T16:39:35.2635339Z ✔ V4.6 overtaking rivals form a varied field with a contesting ace (0.327081ms)
+2026-10-18T16:39:35.2639446Z ✔ career retains the submitted expert field speeds while boss and middle field still escalate (0.326519ms)
+2026-10-18T16:39:35.2645201Z ✔ V4.6 expert opponent remains a physical ace with no progress edits (0.497589ms)
+2026-10-18T16:39:35.2651685Z ✔ 自动救援只影响完美三星，不额外扣油，不会误判为过弯超车 (0.572959ms)
+2026-10-18T16:39:35.2655129Z ✔ 双键道具：背包只剩一件没有目标的护盾，超过18秒自动使用而非一直闲置 (0.252963ms)
+2026-10-18T16:39:35.2659428Z ✔ boss goals disclose rank + opponent gates; beating rival at sixth is not victory (0.310109ms)
+2026-10-18T16:39:35.2662068Z ✔ special objective counters remain real but do not modify stars after a completed race (0.190967ms)
+2026-10-18T16:39:35.2667001Z ✔ V4.8 final boss and podium become significantly harder without touching race results (0.379649ms)
+2026-10-18T16:39:35.2671353Z ✔ V4.8 stage01 is NOT a tutorial pass: demands two full laps, rank and a true strong AI (0.371092ms)
+2026-10-18T16:39:35.2674368Z ✔ V6.0 no easy rank gates remain across the thirty stages (0.247391ms)
+2026-10-18T16:39:35.2678851Z ✔ failed rank/objective earns exactly one free same-stage replay, even at zero fuel (0.366594ms)
+2026-10-18T16:39:35.2683644Z ✔ stage/daily switch cannot transfer a free retry; wins never grant one (0.402471ms)
+2026-10-18T16:39:35.2690607Z ✔ short IAA session: one real loss may voluntarily earn a single *manual* race nitro (0.579701ms)
+2026-10-18T16:39:35.2695934Z ✔ ads are unavailable in offline/free mode, on wins, before 60s, and after cancellation (0.467292ms)
+2026-10-18T16:39:35.2700719Z ✔ late ad callback after another stage or run cannot credit a different result (0.413331ms)
+2026-10-18T16:39:35.2704256Z ✔ bronze -> silver -> gold upgrades the saved medal and never decreases it (0.2894ms)
+2026-10-18T16:39:35.2706873Z ✔ best medal records remain stage-specific and first three ranks are integers (0.191297ms)
+2026-10-18T16:39:35.2719015Z ✔ stage menu and results show retained medals without mutating native input (1.114991ms)
+2026-10-18T16:39:35.2724547Z ✔ six authored career checkpoints demand cumulative medal record, not any specific old level (0.46087ms)
+2026-10-18T16:39:35.2728337Z ✔ old saved unlocked chapter must not get relocked by the rollout (0.333873ms)
+2026-10-18T16:39:35.2736815Z ✔ completed rewarded gate ad unlocks only the selected checkpoint and never gives stars or fuel (0.660783ms)
+2026-10-18T16:39:35.2741463Z ✔ cancelled, failed and incomplete gate videos never unlock or mint stars (0.421346ms)
+2026-10-18T16:39:35.2747708Z ✔ late ad result, double-tap and failed disk write cannot claim permanent stage access (0.523998ms)
+2026-10-18T16:39:35.2751332Z ✔ checkpoints with no official reward SDK remain playable through earned star medals (0.303587ms)
+2026-10-18T16:39:35.2755158Z ✔ single joystick thumb controls both signs without two binary direction buttons (0.298407ms)
+2026-10-18T16:39:35.2760737Z ✔ drift hold and small spray do not share input; short taps survive release (0.45529ms)
+2026-10-18T16:39:35.2765645Z ✔ race and item boosts are separate edges, cancel and pause clear touch (0.344613ms)
+2026-10-18T16:39:35.2773063Z ✔ native patch rejects unknown pinned vehicle, preserves physical yaw and does not duplicate transforms (0.655463ms)
+2026-10-18T16:39:35.2775799Z ✔ item mode special nitro edge is consumed only by first native physics step (0.185917ms)
+2026-10-18T16:39:35.2779948Z ✔ straight and wide bends retain normal touch auto-throttle (0.368909ms)
+2026-10-18T16:39:35.2783309Z ✔ dangerous bends select native brake then coast without any player mutation (0.224549ms)
+2026-10-18T16:39:35.2785308Z ✔ greater curvature leads to lower target speed, never automatic reverse (0.140472ms)
+2026-10-18T16:39:35.2788391Z ✔ brake intent never overrides rescue, spin, drift, collision recovery or airborne state (0.185406ms)
+2026-10-18T16:39:35.2790840Z ✔ missing or invalid native geometry cannot invent a brake command (0.154989ms)
+2026-10-18T16:39:35.2794284Z ✔ joystick-only driving never invokes deprecated automatic curvature braking (0.239968ms)
+2026-10-18T16:39:35.2797976Z ✔ starter is free and five registered user models start locked without changing the eight paint policy (0.28915ms)
+2026-10-18T16:39:35.2801749Z ✔ old 6-star owner keeps previously earned colors but new stars never grant extras (0.320017ms)
+2026-10-18T16:39:35.2809434Z ✔ completed official ad unlocks one color permanently, without minting stars/fuel (0.688866ms)
+2026-10-18T16:39:35.2813203Z ✔ cancellation and failures never earn a permanent color (0.324816ms)
+2026-10-18T16:39:35.2817289Z ✔ ad busy blocks replay, selection and duplicate ad; successful reward cannot be duplicated (0.320337ms)
+2026-10-18T16:39:35.2821453Z ✔ a completed video with failing persistence must not grant cosmetics (0.365502ms)
+2026-10-18T16:39:35.2824282Z ✔ an absent official ad SDK never unlocks paint (0.227725ms)
+2026-10-18T16:39:35.2829847Z ✔ car save migration keeps known permanent models, removes unknown IDs and rejects unowned equipment (0.380219ms)
+2026-10-18T16:39:35.2841677Z ✔ custom-01 completed ad grants permanent ownership, then explicit equipment survives refresh (1.049658ms)
+2026-10-18T16:39:35.2848748Z ✔ custom-02 completed ad grants permanent ownership, then explicit equipment survives refresh (0.616691ms)
+2026-10-18T16:39:35.2855410Z ✔ custom-03 completed ad grants permanent ownership, then explicit equipment survives refresh (0.607725ms)
+2026-10-18T16:39:35.2862539Z ✔ custom-04 completed ad grants permanent ownership, then explicit equipment survives refresh (0.617362ms)
+2026-10-18T16:39:35.2869574Z ✔ custom-05 completed ad grants permanent ownership, then explicit equipment survives refresh (0.593428ms)
+2026-10-18T16:39:35.2874230Z ✔ locked or unknown selected cars cannot configure or start a race (0.449659ms)
+2026-10-18T16:39:35.2897597Z ✔ car cancellation, failure, timeout, missing completion and provider exceptions never persist ownership (2.230262ms)
+2026-10-18T16:39:35.2902202Z ✔ missing SDK and unknown cars cannot request a rewarded video (0.437786ms)
+2026-10-18T16:39:35.2907182Z ✔ pending car video shares the paint mutex and cannot equip, start or duplicate the named reward (0.402551ms)
+2026-10-18T16:39:35.2912675Z ✔ late car completion after begin and return without a settled round is stale (0.502618ms)
+2026-10-18T16:39:35.2919611Z ✔ active race, stage changes, settled rounds and invalidated storage reject late car completions (0.592846ms)
+2026-10-18T16:39:35.2929431Z ✔ car entitlement or equipment write failure keeps the prior durable ownership and selection (0.912262ms)
+2026-10-18T16:39:35.2939490Z ✔ every equipped model uses the same configuration, five fuel cost and actual rank settlement (0.907574ms)
+2026-10-18T16:39:35.2947245Z ✔ repeated long render stalls can lower graphics before the race begins (0.78227ms)
+2026-10-18T16:39:35.2951591Z ✔ countdown protection retains the native renderer and does not advance the game (0.333182ms)
+2026-10-18T16:39:35.2957249Z ✔ normal frame cadence and an isolated stall leave selected graphics unchanged (0.50363ms)
+2026-10-18T16:39:35.2959632Z ✔ pause and return do not combine unrelated stalls into a downgrade (0.19284ms)
+2026-10-18T16:39:35.2993063Z ✔ race/menu/finished states keep the existing quality owner (0.47157ms)
+2026-10-18T16:39:35.2994521Z ✔ installation is idempotent and invalid rendering interfaces are ignored (0.199883ms)
+2026-10-18T16:39:35.3010424Z ✔ severe continuous low FPS can step high to mid to low without changing preference (0.33204ms)
+2026-10-18T16:39:35.3011320Z ✔ actual runtime FX setup installs the countdown guard even when no particle pools exist (0.205073ms)
+2026-10-18T16:39:35.3012298Z ✔ persistent foreground lag at low quality reduces drawing pixels within a bounded budget (0.751332ms)
+2026-10-18T16:39:35.3013342Z ✔ ordinary cadence and one expensive frame keep full low-quality resolution (0.299779ms)
+2026-10-18T16:39:35.3014252Z ✔ native renderer method behavior is unchanged until a budget is earned and installation stays idempotent (0.397612ms)
+2026-10-18T16:39:35.3019492Z ✔ sustained near-12-FPS low-quality rendering also has a bounded fallback (2.761693ms)
+2026-10-18T16:39:35.3024062Z ✔ render-budget fallback preserves native render, game state, camera, viewport and storage (0.363157ms)
+2026-10-18T16:39:35.3026226Z ✔ a hidden interval without animation frames discards earlier low-quality stall samples (0.185366ms)
+2026-10-18T16:39:35.3029376Z ✔ paused frames and resuming a race cannot combine unrelated stall intervals (0.201196ms)
+2026-10-18T16:39:35.3033580Z ✔ invalid or backwards elapsed time resets low-quality samples (0.41281ms)
+2026-10-18T16:39:35.3036603Z ✔ native resize and low-quality setup retain a required effective pixel budget (0.239407ms)
+2026-10-18T16:39:35.3040005Z ✔ explicit higher quality remains authoritative and later low setup retains the safe budget (0.26807ms)
+2026-10-18T16:39:35.3042584Z ✔ actual race rendering can degrade low pixels without taking over other quality settings (0.180758ms)
+2026-10-18T16:39:35.3046809Z ✔ CI multi-second stalls earn the emergency budget on the same mid-to-low render (0.291494ms)
+2026-10-18T16:39:35.3049932Z ✔ four consecutive multi-second countdown stalls can take existing low quality directly to the floor (0.23565ms)
+2026-10-18T16:39:35.3052513Z ✔ sub-second stalls and sustained moderate slow frames retain gradual pixel reductions (0.217345ms)
+2026-10-18T16:39:35.3055609Z ✔ one multi-second spike followed by ordinary frames cannot pre-earn an emergency budget (0.236441ms)
+2026-10-18T16:39:35.3059418Z ✔ lifecycle, sizing, quality and clock discontinuities discard old multi-second evidence (0.294098ms)
+2026-10-18T16:39:35.3062191Z ✔ emergency pixels retain high-to-mid-to-low ownership and explicit later quality choices (0.227174ms)
+2026-10-18T16:39:35.3063820Z ✔ the multi-second shortcut is confined to countdown and retains the race pixel policy (0.121727ms)
+2026-10-18T16:39:35.3067813Z ✔ native setSize-only resize resets countdown evidence and preserves its receiver, arguments and result (0.291584ms)
+2026-10-18T16:39:35.3096320Z ✔ single-run audit cannot sample the invisible closing road (2.780389ms)
+2026-10-18T16:39:35.3109891Z ✔ one-way end/start cannot be joined into a fictitious continuous straight (1.268356ms)
+2026-10-18T16:39:35.3122337Z ✔ a curve still requires steering; do not call it no-input time (1.192676ms)
+2026-10-18T16:39:35.3134656Z ✔ screening seconds are assumptions, not measured race duration (1.144166ms)
+2026-10-18T16:39:35.3138172Z ✔ invalid distances and malformed native samples fail closed (0.277929ms)
+2026-10-18T16:39:35.3144125Z ✔ only explicit player drift press starts drift; automatic throttle continues (0.474055ms)
+2026-10-18T16:39:35.3146589Z ✔ joystick value is preserved as continuous native steering across immediate countersteer (0.185085ms)
+2026-10-18T16:39:35.3151669Z ✔ pause, countdown and finished state cannot propel the player or replay old actions (0.176199ms)
+2026-10-18T16:39:35.3153783Z ✔ automatic starting acceleration edge happens once per car and only with a physics step (0.35932ms)
+2026-10-18T16:39:35.3156128Z ✔ tap survives a frame without physics, is consumed once and cannot repeat (0.162313ms)
+2026-10-18T16:39:35.3159801Z ✔ item race has manual item and independent earned nitro edges, never auto-items (0.258042ms)
+2026-10-18T16:39:35.3162233Z ✔ abort pointer cancels pending spray or nitro; blur-style clear removes every hold (0.200645ms)
+2026-10-18T16:39:35.3165296Z ✔ pre-exit spray buffer is bounded, no free small boost outside a real native window (0.206595ms)
+2026-10-18T16:39:35.3168409Z ✔ wrong-way full speed uses native slowdown, without steering for the player (0.328603ms)
+2026-10-18T16:39:35.3172223Z ✔ input layer exports no old automatic steering class or binary key controller (0.243263ms)
+2026-10-18T16:39:35.3181046Z ✔ opponent physically crosses the player by meters before a reversal is counted (0.774145ms)
+2026-10-18T16:39:35.3183886Z ✔ non-race, negative progress reset, and near ties cannot fabricate an overtake (0.207968ms)
+2026-10-18T16:39:35.3186653Z ✔ approach/corner/exit gives real native speed loss and crash evidence (0.215001ms)
+2026-10-18T16:39:35.3191190Z ✔ replay shows near miss only from measured native race position, never false seconds (0.362126ms)
+2026-10-18T16:39:35.3193724Z ✔ replay cues prioritize actual mission deficit and rank pressure (0.184774ms)
+2026-10-18T16:39:35.3198297Z ✔ anonymous replay snapshot is local, per actual race, bounded and crash-safe (0.376993ms)
+2026-10-18T16:39:35.3201834Z ✔ hard-corner advice is signed native geometry, compact and only inside existing HUD (0.276907ms)
+2026-10-18T16:39:35.3209145Z ✔ locked real-model previews never grant, equip, or permit a race (0.66978ms)
+2026-10-18T16:39:35.3216231Z ✔ completed ad grants exactly the previewed car and equips it durably without a second ad (0.617211ms)
+2026-10-18T16:39:35.3220078Z ✔ cancelled ads preserve the locked preview and let the player return to the free car (0.318144ms)
+2026-10-18T16:39:35.3224563Z ✔ only the latest async model selection can persist or enable racing (0.369179ms)
+2026-10-18T16:39:35.3228323Z ✔ leaving the garage invalidates a pending preview without changing permanent selection (0.291243ms)
+2026-10-18T16:39:35.3232798Z ✔ failed model loading cannot sell or equip the missing appearance and can be retried (0.390048ms)
+2026-10-18T16:39:35.3237910Z ✔ an equipment write failure restores the previously equipped native preview (0.399676ms)
+2026-10-18T16:39:35.3252122Z ✔ ad mutex blocks changing the preview, and unavailable SDK never offers a model reward (0.724392ms)
+2026-10-18T16:39:35.3266106Z ✔ only a ready native result for the exact car may enable equipment or rewarded previews (1.836036ms)
+2026-10-18T16:39:35.3280640Z ✔ restore after a failed equipment write also requires exact native ready identity (0.68589ms)
+2026-10-18T16:39:35.3283143Z ✔ home, active race and ad availability apply to snapshot gates and new selections (0.440652ms)
+2026-10-18T16:39:35.3288112Z ✔ lifecycle changes during a pending preview become stale without saving or compensating preview (0.799842ms)
+2026-10-18T16:39:35.3293032Z ✔ leaving home during the restore await cannot mark the old native car as displayed (0.451292ms)
+2026-10-18T16:39:35.3299908Z ✔ completed ad plus failed model decoding keeps the permanent reward without equipment or another ad (0.581175ms)
+2026-10-18T16:39:35.3306927Z ✔ completed ad plus failed equipment persistence keeps reward and restores prior equipment (0.640125ms)
+2026-10-18T16:39:35.3313707Z ✔ leaving home during post-ad equipment loading preserves the completed grant without stale equipment (0.567549ms)
+2026-10-18T16:39:35.3319700Z ✔ real question sprite renders above opaque 3D item diamond (0.522575ms)
+2026-10-18T16:39:35.3322580Z ✔ item sprite source texture is recreated per race, upgrade stays idempotent (0.252301ms)
+2026-10-18T16:39:35.3325331Z ✔ fixed wheel: real analogue angle, small corrections, direction reversal and centre release (0.188933ms)
+2026-10-18T16:39:35.3327319Z ✔ second finger cannot steal joystick; unrelated pointercancel cannot clear control (0.152034ms)
+2026-10-18T16:39:35.3330009Z ✔ wheel sensitivity adjustment changes partial turn but not neutral; ignores vertical motion (0.171521ms)
+2026-10-18T16:39:35.3333049Z ✔ manual driver passes real analogue steering and uses native wrong-way brake at speed (0.235119ms)
+2026-10-18T16:39:35.3337376Z ✔ generated native engine consumes analogue fraction and normalizes drift direction (0.309528ms)
+2026-10-18T16:39:35.3340530Z ✔ countersteer yaw is actually negative against held left drift, and centre does not keep drift key held (0.268131ms)
+2026-10-18T16:39:35.3343232Z ✔ earned boost and item remain independent in item races; first physics step is the only edge (0.20372ms)
+2026-10-18T16:39:35.3370524Z ✔ build fingerprints joystick and UI binds captured pointer without retaining it across pauses (2.563483ms)
+2026-10-18T16:39:35.3373556Z ✔ manual small-spray tap survives a brief pre-exit drift frame and never repeats (0.229568ms)
+2026-10-18T16:39:35.3375401Z ✔ very early small-spray tap expires and does not create a bonus after drift (0.144961ms)
+2026-10-18T16:39:35.3378513Z ✔ a held drift cannot automatically re-enter after countersteer exit or wall contact (0.219059ms)
+2026-10-18T16:39:35.3381228Z ✔ a sub-frame drift tap is never swallowed when iPhone render/physics cadence differs (0.197749ms)
+2026-10-18T16:39:35.3386424Z ✔ next-stage reward needs a real failed result and a usable completed-ad provider (0.466531ms)
+2026-10-18T16:39:35.3393400Z ✔ completed reward opens only the adjacent level and preserves real medals, times and fuel (0.601222ms)
+2026-10-18T16:39:35.3397961Z ✔ a second completed view cannot consume another ad or open another stage (0.398965ms)
+2026-10-18T16:39:35.3402634Z ✔ cancelled reward never opens the next level (0.428079ms)
+2026-10-18T16:39:35.3405433Z ✔ failed reward never opens the next level (0.233175ms)
+2026-10-18T16:39:35.3408171Z ✔ timed-out reward never opens the next level (0.21958ms)
+2026-10-18T16:39:35.3411115Z ✔ busy reward never opens the next level (0.239728ms)
+2026-10-18T16:39:35.3414612Z ✔ unavailable reward never opens the next level (0.216664ms)
+2026-10-18T16:39:35.3419108Z ✔ storage failure keeps the level locked and prevents another wasted ad (0.356054ms)
+2026-10-18T16:39:35.3423240Z ✔ parallel views and late callbacks after a new attempt cannot grant a level (0.363208ms)
+2026-10-18T16:39:35.3426531Z ✔ leave-and-return to the same level invalidates a pending reward ticket (0.27862ms)
+2026-10-18T16:39:35.3434585Z ✔ sequential ad-opened stages can continue without fabricating passed stages or star-gate medals (0.705877ms)
+2026-10-18T16:39:35.3439257Z ✔ last stage and a successful podium never offer failure-based next-stage rewards (0.367676ms)
+2026-10-18T16:39:35.3442056Z ✔ stage-pass persistence whitelists the existing numbered career and rejects invented passes (0.221454ms)
+2026-10-18T16:39:35.3446619Z ✔ one-way results use the real finish, not the invisible return road (0.39131ms)
+2026-10-18T16:39:35.3448465Z ✔ normal lap progress, result rank and finish flag are not fabricated (0.153046ms)
+2026-10-18T16:39:35.3452074Z ✔ mobile composition and saved quality survive the pacing repair (0.271276ms)
+2026-10-18T16:39:35.3455097Z ✔ pacing repair owns original early/mid-course nodes, not finish-return nodes (0.227715ms)
+2026-10-18T16:39:35.3465787Z ✔ authored insertions are pure, finite and can be compared to the unmodified baseline (0.977104ms)
+2026-10-18T16:39:35.3612850Z ✔ all 30 authored tracks have unique rendered road shapes without remote assets (14.587352ms)
+2026-10-18T16:39:35.3617392Z ✔ 07 and 22 thumbnails finish at real planar arclength, not a vertex-count fraction (0.38558ms)
+2026-10-18T16:39:35.3619391Z ✔ rewarded next-stage status distinguishes cancellation, failure, timeout, stale and save failure (0.166902ms)
+2026-10-18T16:39:35.3621299Z ✔ home rail centers the selected numbered stage and clamps at both ends (0.204292ms)
+2026-10-18T16:39:35.3623861Z ✔ progress display clamps to real native distance, not rank or synthetic timeline (0.193201ms)
+2026-10-18T16:39:35.3627026Z ✔ podium-only progression shows only real time limits, never obsolete medal tasks (0.237663ms)
+2026-10-18T16:39:35.3628761Z ✔ compact HUD never invents a coach message or misstates corrupt telemetry (0.124041ms)
+2026-10-18T16:39:35.3698410Z ✔ actual next-stage UI keeps free retry and loss visible after every unsuccessful provider outcome (6.797074ms)
+2026-10-18T16:39:35.3709090Z ✔ actual completed UI selects only the confirmed adjacent level and returns home without starting a race (0.9807ms)
+2026-10-18T16:39:35.3726915Z ✔ late and mismatched next-stage UI callbacks cannot reopen a result or jump multiple levels (1.714799ms)
+2026-10-18T16:39:35.3731159Z ✔ rivals receive distinct stable personalities without changing native physics fields (0.366544ms)
+2026-10-18T16:39:35.3734108Z ✔ a chasing rival moves toward an available passing side only on a readable straight (0.232023ms)
+2026-10-18T16:39:35.3735968Z ✔ rival does not weave toward a pass through a sharp corner (0.160369ms)
+2026-10-18T16:39:35.3739172Z ✔ an ahead rival gets only a light inside-line defense, not a speed or progress change (0.19278ms)
+2026-10-18T16:39:35.3742555Z ✔ pace tuning remains bounded and never touches bosses or final item race (0.292666ms)
+2026-10-18T16:39:35.3746581Z ✔ V4.2 sends five genuine opponents into a fixed, varied contest; never touches player state (0.320659ms)
+2026-10-18T16:39:35.3753102Z ✔ all 30 stages including 01, 13, 16 and 30 spawn strong fixed rivals (0.602965ms)
+2026-10-18T16:39:35.3756027Z ✔ daily racing strength follows underlying course; original native menu rubber stays separate (0.203259ms)
+2026-10-18T16:39:35.3758478Z ✔ rivals look for a safe pass around an ACTUAL other-AI blocker, not just the player (0.188331ms)
+2026-10-18T16:39:35.3762623Z ✔ actual RacingCareer bridge removes leader slowdown but restores native behavior outside races (0.332892ms)
+2026-10-18T16:39:35.3766466Z ✔ V4.7 middle and late game contest the podium with three strong native racers (0.338401ms)
+2026-10-18T16:39:35.3769935Z ✔ V4.8 even the opening rounds must present multiple podium threats (0.287366ms)
+2026-10-18T16:39:35.3774065Z ✔ committed native overtake lane is held through a real progress crossing, then released (0.275774ms)
+2026-10-18T16:39:35.3775842Z ✔ AI never commits a contact-risky new pass into a sharp corner (0.166541ms)
+2026-10-18T16:39:35.3778049Z ✔ 原生大厅只有AI演示赛车时即可启动，不等待尚未创建的玩家 (0.152445ms)
+2026-10-18T16:39:35.3780912Z ✔ 切关加载失败或仍处于旧赛道时，禁止用错误赛道开新关并扣燃油 (0.206906ms)
+2026-10-18T16:39:35.3783317Z ✔ 画质偏好：首次使用均衡，用户选流畅后刷新仍优先流畅 (0.152305ms)
+2026-10-18T16:39:35.3786355Z ✔ 暂停静音复用原生 WebAudio 总音量，支持启动前后调用与恢复 (0.232975ms)
+2026-10-18T16:39:35.3789336Z ✔ 成绩读取真实玩家，不将AI冲线计为玩家完赛 (0.23576ms)
+2026-10-18T16:39:35.3793732Z ✔ single-run settlement uses the actual 07/22 finish distance and does not mark a loss as finished (0.315689ms)
+2026-10-18T16:39:35.3796482Z ✔ 结算冻结原生模拟，重复调用不会从结算恢复模拟 (0.261328ms)
+2026-10-18T16:39:35.3798733Z ✔ 输入释放同时清除触屏、键盘、两个边沿集合 (0.16056ms)
+2026-10-18T16:39:35.3801091Z ✔ V10手机镜头FOV有可感知的速度反馈且不超过88度 (0.169416ms)
+2026-10-18T16:39:35.3805084Z ✔ 手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数 (0.314998ms)
+2026-10-18T16:39:35.3810201Z ✔ 自适应只在持续低帧率后降一档；手选画质保留 (0.429632ms)
+2026-10-18T16:39:35.3813386Z ✔ UI refresh at 30 Hz cannot throttle 120Hz physics or misread a backwards clock (0.216283ms)
+2026-10-18T16:39:35.3818582Z ✔ phone quality drops on sustained <46FPS rather than isolated delayed frames (0.394325ms)
+2026-10-18T16:39:35.3820355Z ✔ screen platform depends on input affordance, not CSS window width (0.169316ms)
+2026-10-18T16:39:35.3822233Z ✔ phone follows closer car yet looks ahead on V9 technical bends (0.128019ms)
+2026-10-18T16:39:35.3825156Z ✔ first mobile frame uses safe rendering budget, saved user preference still wins (0.12321ms)
+2026-10-18T16:39:35.3828296Z ✔ phone downhill camera samples true road elevation, avoids airborne/fork guesses (0.283058ms)
+2026-10-18T16:39:35.3830188Z ✔ manual graphics cannot become unsteerable at sustained 14 FPS (0.129051ms)
+2026-10-18T16:39:35.3835026Z ✔ input diagnostics are aggregate-only and do not claim display latency (0.372816ms)
+2026-10-18T16:39:35.3843790Z ✔ only real native Track.project activation can count a physical shortcut choice (0.67508ms)
+2026-10-18T16:39:35.3847982Z ✔ incomplete or wrong-way exit never earns route saving; pause never ends route (0.417259ms)
+2026-10-18T16:39:35.3851553Z ✔ fake progress, malformed projections, spectator frames and changing courses fail closed (0.285653ms)
+2026-10-18T16:39:35.3859932Z ✔ shortcut registry has only permitted physical stage roads; default stages stay on long route (0.764086ms)
+2026-10-18T16:39:35.3969575Z ✔ physical shortcut generates visible road, real optional projection and shorter distance (10.815222ms)
+2026-10-18T16:39:35.3983821Z ✔ stuck shortcut recovery stays on fork instead of teleporting to credited main distance (1.326205ms)
+2026-10-18T16:39:35.3993582Z ✔ real fork-side paint signals entry early and narrows within the physical road (0.928473ms)
+2026-10-18T16:39:35.3999696Z ✔ stale shortcut projection releases after a real off-road or vertical miss (0.540047ms)
+2026-10-18T16:39:35.4003098Z ✔ real displayed km/h uses native measured speed only (0.309127ms)
+2026-10-18T16:39:35.4005469Z ✔ boost and slowing are visible without changing car physics (0.207898ms)
+2026-10-18T16:39:35.4026834Z ✔ actual mobile HUD tracks race phases, current native km/h and fits below goal (1.314563ms)
+2026-10-18T16:39:35.4028724Z ✔ stage03 has one real early steering choice, not a long automatic start (0.187509ms)
+2026-10-18T16:39:35.4032774Z ✔ stage03 keeps its flyover skeleton and final return; only one entry sector is inserted (0.781779ms)
+2026-10-18T16:39:35.4036276Z ✔ one analogue steering thumb can immediately countersteer without second key (0.218488ms)
+2026-10-18T16:39:35.4037688Z ✔ unrelated second finger never overrides current steering (0.182691ms)
+2026-10-18T16:39:35.4039583Z ✔ pointercancel or lost capture clears stick instead of producing stale turn (0.149499ms)
+2026-10-18T16:39:35.4041912Z ✔ repeated alternating turns and sensitivity changes keep a single control (0.232594ms)
+2026-10-18T16:39:35.4050430Z ✔ race mobile HUD isolates three-lap elimination warning from the live speed badge (0.74477ms)
+2026-10-18T16:39:35.4061796Z ✔ QQ-style uncluttered HUD never shows repeat coaching, player keeps full touch controls (1.01832ms)
+2026-10-18T16:39:35.4070282Z ✔ clean HUD cannot leave stale DOM lookups that crash the animation frame (0.789814ms)
+2026-10-18T16:39:35.4075160Z ✔ native finish gap needs real finished ranking times (0.41254ms)
+2026-10-18T16:39:35.4084769Z ✔ starts, native grades, voluntary replays and ad callbacks are disjoint (0.871637ms)
+2026-10-18T16:39:35.4111020Z ✔ bounded local records, malformed storage and disabled storage never block racing (2.442849ms)
+2026-10-18T16:39:35.4114296Z ✔ opt-in local JSON export is parseable, anonymous and does not invent humans or revenue (0.366694ms)
+2026-10-18T16:39:35.4118611Z ✔ route savings are real native geometry only; local ledger survives legacy storage (0.378897ms)
+2026-10-18T16:39:35.4121259Z ✔ corrupted fork metrics cannot create time savings or paid revenue (0.214841ms)
+2026-10-18T16:39:35.4124073Z ✔ opposite wheel input commands faster actual wheel reversal without auto steering (0.202888ms)
+2026-10-18T16:39:35.4126804Z ✔ countersteering REALLY reverses drift yaw in both symmetric directions (0.219299ms)
+2026-10-18T16:39:35.4129839Z ✔ phone camera enlarges car, looks into upcoming bends, and tilts only subtly (0.234949ms)
+2026-10-18T16:39:35.4132394Z ✔ high-speed and N2O speed perception is strong while static and low speed stay calm (0.177211ms)
+2026-10-18T16:39:35.4135277Z ✔ apex lookahead comes only from physical native path, never an assisted steering command (0.213558ms)
+2026-10-18T16:39:35.4137795Z ✔ fair AI skill means real native cornering budget, with narrower roads requiring braking (0.190676ms)
+2026-10-18T16:39:35.4141225Z ✔ rival physically changes available side near a player, not standings or longitudinal progress (0.274592ms)
+2026-10-18T16:39:35.4143068Z ✔ AI conserves own earned nitro during risky branch, but has no global handicap (0.157794ms)
+2026-10-18T16:39:35.4294104Z ✔ 30 individually choreographed V10 courses use physical extra sectors, preserve all source blueprints and V9 rollback (14.962291ms)
+2026-10-18T16:39:35.4307815Z ✔ authored dune and ice crests alter the REAL native road height instead of being overwritten (1.31856ms)
+2026-10-18T16:39:35.4318064Z ✔ native road speed marks are one batched drawcall, follow real width and 3D elevation (0.952477ms)
+2026-10-18T16:39:35.4326357Z ✔ unique stage silhouettes use actual native altitude and never occupy the main collision zone (0.754047ms)
+2026-10-18T16:39:35.4329898Z ✔ restored V11 route catalog exactly preserves all 30 original bundle designs (0.267981ms)
+2026-10-18T16:39:35.4399293Z ✔ restored geometry preserves original road controls, elevation, width profiles and identity (6.829485ms)
+2026-10-18T16:39:35.4404311Z ✔ course consumers cannot mutate cached geometry used by another race or preview (0.488171ms)
+2026-10-18T16:39:35.4405997Z ✔ point-to-point presentation excludes the return connector on stages 07 and 22 (0.132427ms)
+2026-10-18T16:39:35.4500610Z ✔ native V11 layout adapter matches the original bundle without duplicate shaping or scaling (9.315553ms)
+2026-10-18T16:39:35.4598342Z ✔ V11 requires integrated support while explicit V9 updates and the c099 V10 baseline remain separate (9.698338ms)
+2026-10-18T16:39:35.4602726Z ✔ invalid road geometry fails explicitly before entering the native renderer (0.409825ms)
+2026-10-18T16:39:35.4690665Z ✔ a committed shortcut survives recoverable contact after crossing its nominal start (6.802645ms)
+2026-10-18T16:39:35.4694107Z ✔ route choice is stable per lap and fully missed entrances do not steer across a closed side wall (2.115598ms)
+2026-10-18T16:39:35.4697854Z ✔ native physical entry is followed even when a collision put a cautious rival on the fork (0.404385ms)
+2026-10-18T16:39:35.4702711Z ✔ controller never grants speed, nitro, position or race progress and only emits legal native controls (0.335015ms)
+2026-10-18T16:39:35.4710424Z ✔ physical AI delegates movement to PlayerCar and exposes measured projection for native lap accounting (0.708262ms)
+2026-10-18T16:39:35.4712305Z ﹣ native V11 05: two complete race laps physically enter and leave the actual fork (0.113391ms) # SKIP
+2026-10-18T16:39:35.4714113Z ﹣ native V11 05: real entrance-wall impact costs time and preserves a reachable fork commitment (0.07511ms) # SKIP
+2026-10-18T16:39:35.4716036Z ﹣ native V11 05: contact after crossing the entrance can still recover through the actual portal (0.067516ms) # SKIP
+2026-10-18T16:39:35.4718205Z ﹣ native V11 10: two complete race laps physically enter and leave the actual fork (0.065311ms) # SKIP
+2026-10-18T16:39:35.4720294Z ﹣ native V11 10: real entrance-wall impact costs time and preserves a reachable fork commitment (0.066895ms) # SKIP
+2026-10-18T16:39:35.4722195Z ﹣ native V11 10: contact after crossing the entrance can still recover through the actual portal (0.066965ms) # SKIP
+2026-10-18T16:39:35.4723933Z ﹣ native V11 12: two complete race laps physically enter and leave the actual fork (0.065242ms) # SKIP
+2026-10-18T16:39:35.4725689Z ﹣ native V11 12: real entrance-wall impact costs time and preserves a reachable fork commitment (0.06473ms) # SKIP
+2026-10-18T16:39:35.4727602Z ﹣ native V11 12: contact after crossing the entrance can still recover through the actual portal (0.062688ms) # SKIP
+2026-10-18T16:39:35.4729599Z ﹣ native V11 13: two complete race laps physically enter and leave the actual fork (0.061565ms) # SKIP
+2026-10-18T16:39:35.4731415Z ﹣ native V11 13: real entrance-wall impact costs time and preserves a reachable fork commitment (0.060924ms) # SKIP
+2026-10-18T16:39:35.4733254Z ﹣ native V11 13: contact after crossing the entrance can still recover through the actual portal (0.061215ms) # SKIP
+2026-10-18T16:39:35.4734979Z ﹣ native V11 16: two complete race laps physically enter and leave the actual fork (0.059501ms) # SKIP
+2026-10-18T16:39:35.4736797Z ﹣ native V11 16: real entrance-wall impact costs time and preserves a reachable fork commitment (0.067035ms) # SKIP
+2026-10-18T16:39:35.4738670Z ﹣ native V11 16: contact after crossing the entrance can still recover through the actual portal (0.058249ms) # SKIP
+2026-10-18T16:39:35.4740674Z ﹣ native V11 18: two complete race laps physically enter and leave the actual fork (0.089427ms) # SKIP
+2026-10-18T16:39:35.4742491Z ﹣ native V11 18: real entrance-wall impact costs time and preserves a reachable fork commitment (0.062387ms) # SKIP
+2026-10-18T16:39:35.4744383Z ﹣ native V11 18: contact after crossing the entrance can still recover through the actual portal (0.064831ms) # SKIP
+2026-10-18T16:39:35.4746152Z ﹣ native V11 22: actual single-run finish plus two diagnostic loop traversals (0.060172ms) # SKIP
+2026-10-18T16:39:35.4747891Z ﹣ native V11 22: real entrance-wall impact costs time and preserves a reachable fork commitment (0.060502ms) # SKIP
+2026-10-18T16:39:35.4750063Z ﹣ native V11 22: contact after crossing the entrance can still recover through the actual portal (0.084728ms) # SKIP
+2026-10-18T16:39:35.4751790Z ﹣ native V11 25: two complete race laps physically enter and leave the actual fork (0.067376ms) # SKIP
+2026-10-18T16:39:35.4753541Z ﹣ native V11 25: real entrance-wall impact costs time and preserves a reachable fork commitment (0.060243ms) # SKIP
+2026-10-18T16:39:35.4755384Z ﹣ native V11 25: contact after crossing the entrance can still recover through the actual portal (0.066333ms) # SKIP
+2026-10-18T16:39:35.4757431Z ﹣ native V11 27: two complete race laps physically enter and leave the actual fork (0.062637ms) # SKIP
+2026-10-18T16:39:35.4759355Z ﹣ native V11 27: real entrance-wall impact costs time and preserves a reachable fork commitment (0.05894ms) # SKIP
+2026-10-18T16:39:35.4761129Z ﹣ native V11 27: contact after crossing the entrance can still recover through the actual portal (0.057307ms) # SKIP
+2026-10-18T16:39:35.4762762Z ﹣ native V11 30: two complete race laps physically enter and leave the actual fork (0.057387ms) # SKIP
+2026-10-18T16:39:35.4764422Z ﹣ native V11 30: real entrance-wall impact costs time and preserves a reachable fork commitment (0.056997ms) # SKIP
+2026-10-18T16:39:35.4766163Z ﹣ native V11 30: contact after crossing the entrance can still recover through the actual portal (0.060203ms) # SKIP
+2026-10-18T16:39:35.4790025Z ✔ 四图用固定源码控制点重新生成S弯，保留四种场景且不新增分支导航 (4.097526ms)
+2026-10-18T16:39:35.4805669Z ✔ desert technical pass adds two independently anchored chicanes without touching original jump heights (1.447621ms)
+2026-10-18T16:39:35.4821745Z ✔ V3.5 four distinctive track families preserve pinned tunnel and bridge anchors (1.567234ms)
+2026-10-18T16:39:35.4825788Z ✔ 源码坐标变动不能悄悄应用到别人的地图 (0.382665ms)
+2026-10-18T16:39:35.4830511Z ✔ V3.3 uses nonoverlapping descending native index cuts, preserves all four original anchors (0.280272ms)
+2026-10-18T16:39:35.4832889Z ✔ 方向错误超过阈值自动回正，不增加任何按钮、不移动赛道进度 (0.314687ms)
+2026-10-18T16:39:35.4835738Z ✔ 完全停住但车头反向也能自动救援，不误判正常停住 (0.244246ms)
+2026-10-18T16:39:35.4837800Z ✔ 空中、暂停、结束和没有原生复位接口时均不复位 (0.153887ms)
+2026-10-18T16:39:35.4849900Z ✔ 地形导向只在真正要过弯时提示左右，不占用驾驶按钮 (1.127614ms)
+2026-10-18T16:39:35.4853409Z ✔ 道具路线提醒只说左右车道，不伪称随机道具已确定 (0.301853ms)
+2026-10-18T16:39:35.4858075Z ✔ 道具车道提示使用真实仍可拾取的原生盒子坐标，不看随机道具内容 (0.404535ms)
+2026-10-18T16:39:35.4865302Z ✔ 四图原生加速带不增加数量，偏移到合法左右车道形成真实路线抉择 (0.664671ms)
+2026-10-18T16:39:35.4867938Z ✔ 左右加速带提示依照原生横向坐标，避免把右边说成左边 (0.222816ms)
+2026-10-18T16:39:35.4870582Z ✔ 双键贴护栏持续无进展：先警告、6秒后原生脱困，不瞬移或改圈数 (0.210943ms)
+2026-10-18T16:39:35.4873065Z ✔ 正常通过慢弯或恢复前进时，不得错误判定被困 (0.200214ms)
+2026-10-18T16:39:35.4878123Z ✔ 四张地图的路边转向标识采用曲率热点，每圈不超过7个且互不扎堆 (0.442536ms)
+2026-10-18T16:39:35.4889605Z ✔ 弯道牌只建轻量 Sprite，换图时会释放图标材质/贴图而不修改物理 (1.021356ms)
+2026-10-18T16:39:35.4929092Z ✔ V6.0 gives all 30 career stages an independent drivable spline identity (3.912591ms)
+2026-10-18T16:39:35.4960447Z ✔ V6.0 keeps thirty FULL hand-authored outlines, not 4 routes with a few point edits (3.008604ms)
+2026-10-18T16:39:35.4980100Z ✔ V3.7 source-themed pickup placement follows REAL route, and native four-scene demo remains usable (1.886761ms)
+2026-10-18T16:39:35.4998688Z ✔ V4.2 numbered physical course gates and biome-specific tall props exist in actual 3D scene (1.83812ms)
+2026-10-18T16:39:35.5003921Z ✔ V3.7 every career track has a distinct sky palette without changing demo scene config (0.475447ms)
+2026-10-18T16:39:35.5026488Z ✔ V3.8 each independent career course contains authored two-key S-bend sectors (2.194696ms)
+2026-10-18T16:39:35.5032253Z ✔ native AI earns an opportunity only after a physically clean corner exit (0.523407ms)
+2026-10-18T16:39:35.5035059Z ✔ the same real corner produces the SAME AI capability whether player leads or trails (0.217836ms)
+2026-10-18T16:39:35.5038319Z ✔ clean native corner boost works in every speed race, including former tutorial and bosses (0.261318ms)
+2026-10-18T16:39:35.5041007Z ✔ all four biomes support clean corner-line decisions, but spins prevent rewards (0.188371ms)
+2026-10-18T16:39:35.5043400Z ✔ sharp real corner warning beats speed reward; pad direction follows actual native lateral position (0.178353ms)
+2026-10-18T16:39:35.5045399Z ✔ signed successive curves produce map-specific S warnings without any new driving controls (0.146133ms)
+2026-10-18T16:39:35.5049041Z ✔ random item cannot be announced as known; jump/bridge hints require actual native geometry (0.2678ms)
+2026-10-18T16:39:35.5050449Z ✔ hints are disabled when not racing, airborne or wrong way (0.123701ms)
+2026-10-18T16:39:35.5057757Z ✔ V3.9 AI is one measured notch stronger in early real races, without an overpowered field (0.62703ms)
+2026-10-18T16:39:35.5062770Z ✔ V3.9 boosts selected regular rivals but protects fragile goals, experts and bosses (0.419783ms)
+2026-10-18T16:39:35.5065381Z ✔ Daily challenge uses the original course difficulty, never an arbitrary harder daily ID (0.216975ms)
+2026-10-18T16:39:35.5067351Z ✔ skill-based exit decision cannot be triggered by a stationary enemy or by a straight-only map (0.151182ms)
+2026-10-18T16:39:35.5081708Z ✔ career technical roads use true physical collider widths on the original spline (1.3238ms)
+2026-10-18T16:39:35.5096905Z ✔ even the former tutorial now has a technical physical course and all 30 remain unique (1.421713ms)
+2026-10-18T16:39:35.5113320Z ✔ 30 separate physical spline identities and 14 distinct advanced course blueprints (1.587192ms)
+2026-10-18T16:39:35.5193291Z ✔ advanced circuits stay separated at road width and have meaningfully different silhouettes (7.917034ms)
+2026-10-18T16:39:35.5196823Z ✔ chapters 5-8 increase rank, corner and race duration demand without fake winner data (0.318294ms)
+2026-10-18T16:39:35.5201022Z ✔ old saves and paid reward bookkeeping survive expansion; stage 17 unlocks only via stage 16 (0.334244ms)
+2026-10-18T16:39:35.5218398Z ✔ AI uses an actual fork road rather than a rank or time warp (1.695714ms)
+2026-10-18T16:39:35.5224171Z ✔ cautious AI can choose the main track and malformed data fails closed (0.512757ms)
+2026-10-18T16:39:35.5233438Z ✔ V9 shortcut AI brakes according to genuine physical turn before and inside the fork (0.85225ms)
+2026-10-18T16:39:35.5235639Z ✔ eight ranked item types have visible unique identities and balanced weights (0.210313ms)
+2026-10-18T16:39:35.5242429Z ✔ shockwave only hits real nearby rivals on the same vertical layer (0.578269ms)
+2026-10-18T16:39:35.5246232Z ✔ thunder warns first then strikes only when real target stays in range (0.325849ms)
+2026-10-18T16:39:35.5252740Z ✔ barricade creates a real in-world obstacle in native collision queue (0.595361ms)
+2026-10-18T16:39:35.5265854Z ✔ V8 defines thirty distinct finite loop-safe altitude signatures (1.247989ms)
+2026-10-18T16:39:35.5302056Z ✔ V8 opt-in creates physically longer, terrain-diverse 30 stages without touching old baselines (3.517644ms)
+2026-10-18T16:39:35.5305484Z ✔ V8 geometry rejects accidental steep, nonfinite or degenerate roads (0.30006ms)
+2026-10-18T16:39:35.5307830Z ✔ v8 authored cliff grade materially differs from flat stage 01 (0.213689ms)
+2026-10-18T16:39:35.5313248Z ✔ V9 corner markers must remain small, outside playable road and not overlap fork decisions (0.415195ms)
+2026-10-18T16:39:35.5315867Z ✔ V9 quiet sign changes are opt-in; legacy V8 placement and dimensions unchanged (0.251049ms)
+2026-10-18T16:39:35.5318436Z ✔ V9 can retain emergency corner cue if every technical bend is beside a fork (0.200554ms)
+2026-10-18T16:39:35.5322569Z ✔ all 30 courses use distinct original driving-beat sequences, including recovery sectors (0.303397ms)
+2026-10-18T16:39:35.5401106Z ✔ V8 native course construction uses authored V9 geometry; non-V8 compatibility preserved (7.720007ms)
+2026-10-18T16:39:35.5405223Z ✔ V9 original beats are pure, bounded, do not move track anchors and reject bad sectors (0.391561ms)
+2026-10-18T16:39:35.5518282Z ✔ V9 width variation changes actual safe driving width, not only line paint (11.195532ms)
+2026-10-18T16:39:35.5521387Z ✔ formerly passive stages 02/07 add early long steering arcs; stage22 preserves its near-apex real shortcut (0.249796ms)
+2026-10-18T16:39:35.5524289Z ✔ every late campaign map has a long sustained arc or linked countersteer sector (0.22508ms)
+2026-10-18T16:39:35.5530100Z ✔ authored long sweep bends use native centerline metres, with genuine two-sided steering complexity (0.484485ms)
+2026-10-18T16:39:35.5533037Z ✔ V9 terrain-themed numbered arch moves away from actual physical shortcut junction (0.255657ms)
+2026-10-18T16:39:35.5550437Z ✔ rotary wheel gives genuine signed, analogue steering after angular movement (0.450751ms)
+2026-10-18T16:39:35.5552452Z ✔ wheel ignores hub crossing and angular wrap has no 360 degree jump (0.244025ms)
+2026-10-18T16:39:35.5554504Z ✔ second thumb and cancellation do not steal wheel, even with other actions held (0.174336ms)
+2026-10-18T16:39:35.5556207Z ✔ partial rotary steering passes to unchanged real native driver intents (0.198801ms)
+2026-10-18T16:39:35.5570178Z ✔ production UI exposes one wheel and no QA mode selector (2.25078ms)
+2026-10-18T16:39:35.5576555Z ✔ rotary wheel accepts held countdown input and exports only timing aggregates (0.601712ms)
+2026-10-18T16:39:35.5581923Z ✔ countdown pre-grip is not misreported as slow input processing (0.466631ms)
+2026-10-18T16:39:35.5612995Z ✔ actual race adapter credits the player, independently of the AI leader (2.948793ms)
+2026-10-18T16:39:35.5636384Z ✔ race settlement pauses the native finish loop and preserves the player outcome (2.227947ms)
+2026-10-18T16:39:35.5646091Z ℹ tests 407
+2026-10-18T16:39:35.5646672Z ℹ suites 0
+2026-10-18T16:39:35.5647069Z ℹ pass 377
+2026-10-18T16:39:35.5647455Z ℹ fail 0
+2026-10-18T16:39:35.5647871Z ℹ cancelled 0
+2026-10-18T16:39:35.5648290Z ℹ skipped 30
+2026-10-18T16:39:35.5648684Z ℹ todo 0
+2026-10-18T16:39:35.5649399Z ℹ duration_ms 492.521253
+2026-10-18T16:39:35.6657976Z ✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (2.06883ms)
+2026-10-18T16:39:35.6665046Z ✔ 未知源版本不能静默套用补丁 (0.533215ms)
+2026-10-18T16:39:35.6683809Z ✔ registered build includes live career, items, runtime and fuel dependencies (1.621396ms)
+2026-10-18T16:39:35.6687958Z ✔ race text labels remove known third-party signboards in build output (0.268481ms)
+2026-10-18T16:39:35.6693720Z ✔ instrument clean native drift without changing dynamics, and reject unknown source (0.374469ms)
+2026-10-18T16:39:35.6722199Z ✔ recognizable character balloons are replaced with generic scene assets (0.202348ms)
+2026-10-18T16:39:35.6727617Z ✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.232574ms)
+2026-10-18T16:39:35.6733580Z ✔ V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes (0.438749ms)
+2026-10-18T16:39:35.6751037Z ✔ V3.1 model and spline modules are hashed into H5 build and kept scoped to racing (2.4172ms)
+2026-10-18T16:39:35.6752777Z ✔ desert dune relief edits only the original generated sand base, never native physics (0.416187ms)
+2026-10-18T16:39:35.6754693Z ✔ native stage-specific course selection is strict, idempotent and does not rewrite driving physics (0.31618ms)
+2026-10-18T16:39:35.6756619Z ✔ native fork adapters are exact, idempotent and preserve original acceleration/AI (0.457855ms)
+2026-10-18T16:39:35.6758410Z ✔ stage-scenery pipeline changes only sky/props, never native car or track physics (0.326239ms)
+2026-10-18T16:39:35.6760478Z ✔ fixed desert monument safety keeps pyramid models away from new racing surfaces (0.212677ms)
+2026-10-18T16:39:35.6762097Z ✔ V8 native AI hook is strict and avoids checkpoint/progress surgery (0.269704ms)
+2026-10-18T16:39:35.6790728Z ✔ V11 build adapter preserves AI names and instantiates the native PlayerCar subclass (2.534139ms)
+2026-10-18T16:39:35.6810998Z ✔ V11 world adapter projects physical rivals and applies real impulses without taking player ownership (0.931999ms)
+2026-10-18T16:39:35.6812808Z ✔ V8 one-way finish hooks preserve native progress and onLap bookkeeping (0.190676ms)
+2026-10-18T16:39:35.6814371Z ✔ phone and desktop camera differences preserve native car/road physics (0.335577ms)
+2026-10-18T16:39:35.6815973Z ✔ native eight-item HUD matches V8 pickups and never crashes on a new item ID (0.45578ms)
+2026-10-18T16:39:35.6817776Z ✔ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (0.485063ms)
+2026-10-18T16:39:35.6819561Z ℹ tests 21
+2026-10-18T16:39:35.6820121Z ℹ suites 0
+2026-10-18T16:39:35.6842599Z ℹ pass 21
+2026-10-18T16:39:35.6843344Z ℹ fail 0
+2026-10-18T16:39:35.6843789Z ℹ cancelled 0
+2026-10-18T16:39:35.6844247Z ℹ skipped 0
+2026-10-18T16:39:35.6844652Z ℹ todo 0
+2026-10-18T16:39:35.6845075Z ℹ duration_ms 70.955859
+2026-10-18T16:39:35.8009256Z ✔ V11.5 metadata supports the explicitly shared native PlayerCar AI mode (1.150677ms)
+2026-10-18T16:39:35.8011398Z ✔ V11.6 metadata supports the explicitly shared native PlayerCar AI mode (0.13367ms)
+2026-10-18T16:39:35.8012794Z ✔ recognized versions still reject every wrong or missing native AI mode (0.620748ms)
+2026-10-18T16:39:35.8014156Z ✔ native AI mode never permits unrecognized or missing build versions (0.242833ms)
+2026-10-18T16:39:35.8015547Z ✔ audit refuses legacy on-rail World accounting instead of silently using it (0.680921ms)
+2026-10-18T16:39:35.8017186Z ✔ read-only physical position and dist finish through actual half-lap/onLap accounting (9.735277ms)
+2026-10-18T16:39:35.8018744Z ✔ stage 07 stops at the actual fractional finish before a complete loop (3.475265ms)
+2026-10-18T16:39:35.8020391Z ✔ stage 22 stops at the actual fractional finish before a complete loop (5.877539ms)
+2026-10-18T16:39:35.8021955Z ✔ an unfinished or motionless car is preserved as DNF, never advanced to satisfy the gate (1.233842ms)
+2026-10-18T16:39:35.8023766Z ✔ collision observers call the native handlers and distinguish repeated impulses from contact episodes (4.006296ms)
+2026-10-18T16:39:35.8025338Z ✔ a successful subset cannot claim that all thirty stages passed (0.849956ms)
+2026-10-18T16:39:35.8026200Z ℹ tests 11
+2026-10-18T16:39:35.8026592Z ℹ suites 0
+2026-10-18T16:39:35.8026976Z ℹ pass 11
+2026-10-18T16:39:35.8027361Z ℹ fail 0
+2026-10-18T16:39:35.8027843Z ℹ cancelled 0
+2026-10-18T16:39:35.8028277Z ℹ skipped 0
+2026-10-18T16:39:35.8028684Z ℹ todo 0
+2026-10-18T16:39:35.8036333Z ℹ duration_ms 81.164681
+2026-10-18T16:39:35.9050150Z ✔ generated car replaces every procedural body/wheel path while preserving native effects and skins (4.029439ms)
+2026-10-18T16:39:35.9055727Z ✔ all native map startups await the cached GLB before racers can be built (0.413221ms)
+2026-10-18T16:39:35.9060141Z ✔ embedded original GLB is byte-exact, shared and standalone; no network or legacy fallback (0.296864ms)
+2026-10-18T16:39:35.9063598Z ✔ car identity survives native userData and is an integrity input, not homepage-only decoration (0.220401ms)
+2026-10-18T16:39:35.9075842Z ✔ racer PR CI actually selects the new branch and exercises compiled car and asset checks (0.93819ms)
+2026-10-18T16:39:35.9106322Z ✔ build rejects raw-heavy or unrigged GLBs rather than loading them as a mobile car (2.878271ms)
+2026-10-18T16:39:35.9113005Z ✔ home and settlement frame the selected true native car without replacing gameplay cameras (0.552341ms)
+2026-10-18T16:39:35.9118741Z ✔ classifies original tire and rim triangles inside the observed wheel cylinders (0.469426ms)
+2026-10-18T16:39:35.9123365Z ✔ keeps pale source faces outside the tire rubber on the chassis while bright inner wheel faces stay rim (0.281486ms)
+2026-10-18T16:39:35.9128280Z ✔ separates glass, colored lamps, lower aero trim and recolorable body shell (0.376904ms)
+2026-10-18T16:39:35.9132628Z ✔ keeps pale hood, door and bumper texels on the paint mask without recoloring dark glass, trim or lamps (0.314226ms)
+2026-10-18T16:39:35.9142120Z ✔ bakes source coordinates to +Y-up and keeps the axle pivot flat at the root (0.87369ms)
+2026-10-18T16:39:35.9173121Z ✔ authors a circular 48-segment rounded tire with a 10-spoke rim and central hub around the X axle (2.979049ms)
+2026-10-18T16:39:35.9175007Z ﹣ writes an optimized GLB with its geometry and texture resources in the binary (0.097462ms) # SKIP
+2026-10-18T16:39:35.9178870Z ✔ single home keeps the existing 30 stages and places their rail outside the menu panel (0.290983ms)
+2026-10-18T16:39:35.9183256Z ✔ rail mirrors the existing select options and lock gate instead of creating stage progression (0.3322ms)
+2026-10-18T16:39:35.9186497Z ✔ stage rail clicks dispatch the existing select change and are ready-only (0.262791ms)
+2026-10-18T16:39:35.9192869Z ✔ responsive home keeps 55 percent clear for the car and a touch-scrollable 44px stage rail (0.553523ms)
+2026-10-18T16:39:35.9197306Z ✔ native stage select remains visually hidden but accessible, and portrait retains rotation guidance (0.365482ms)
+2026-10-18T16:39:35.9202342Z ✔ daily challenge is a separate visible rail choice mirroring its native option (0.43942ms)
+2026-10-18T16:39:35.9204794Z ✔ home repair resets the old briefing grid and outranks desktop panel width (0.151703ms)
+2026-10-18T16:39:35.9212743Z ✔ 740x360 sidebar keeps selectors on one row and removes only decorative briefing text (0.721306ms)
+2026-10-18T16:39:35.9218269Z ✔ wheel touch starts at top, then moves along the rim to create steering rotation (0.475748ms)
+2026-10-18T16:39:35.9223306Z ✔ wheel direction reverses by rotating around the rim instead of crossing the hub (0.429371ms)
+2026-10-18T16:39:35.9226439Z ✔ neutral release ends only the wheel finger and preserves other active action fingers (0.245408ms)
+2026-10-18T16:39:35.9230838Z ✔ wheel start and rotation preserve visible drift, small, nitro, and item touch ids (0.32123ms)
+2026-10-18T16:39:35.9244573Z ✔ fresh career driver uses the visible rotary wheel, not removed left/right controls (1.297581ms)
+2026-10-18T16:39:35.9251961Z ✔ natural trace records exact native car identity for the observed settlement and replay branch (0.510453ms)
+2026-10-18T16:39:35.9256831Z ✔ natural observer reads the current visible compact objective, not removed coaching DOM (0.396379ms)
+2026-10-18T16:39:35.9262411Z ✔ one-stage loss captures normal replay evidence without promoting a failed campaign result (0.453847ms)
+2026-10-18T16:39:35.9267032Z ℹ tests 30
+2026-10-18T16:39:35.9267610Z ℹ suites 0
+2026-10-18T16:39:35.9268468Z ℹ pass 29
+2026-10-18T16:39:35.9268857Z ℹ fail 0
+2026-10-18T16:39:35.9269449Z ℹ cancelled 0
+2026-10-18T16:39:35.9269702Z ℹ skipped 1
+2026-10-18T16:39:35.9269916Z ℹ todo 0
+2026-10-18T16:39:35.9289889Z ℹ duration_ms 80.732484
+2026-10-18T16:39:36.0144703Z ✔ six-car loader embeds exact bytes but decodes only requested assets with no remote dependency (1.611978ms)
+2026-10-18T16:39:36.0153248Z ✔ native car construction uses stable model identity and preserves original effects (0.69629ms)
+2026-10-18T16:39:36.0160986Z ✔ native home/race model selection loads settings.car and does not change any driving methods (0.595401ms)
+2026-10-18T16:39:36.0173519Z ✔ bootstrap ignores untrusted native car unknown-removed-model while retaining all other settings (1.071119ms)
+2026-10-18T16:39:36.0179130Z ✔ bootstrap ignores untrusted native car custom-05 while retaining all other settings (0.384517ms)
+2026-10-18T16:39:36.0182886Z ✔ all new model modules, thumbnails and exact GLB hashes are fingerprinted (0.265165ms)
+2026-10-18T16:39:36.0189262Z ✔ prepared user models have a separate strict contract from the articulated starter (0.527945ms)
+2026-10-18T16:39:36.0207520Z ✔ single mesh textured GLB validates without invented starter rig, and explicit budgets are actually enforced (1.586781ms)
+2026-10-18T16:39:36.0223468Z ✔ user GLB integrity rejects external images, animated rigs, missing UVs, decoder dependencies and stale manifest hashes (1.406515ms)
+2026-10-18T16:39:36.0243167Z ✔ CI exercises the actual garage before legacy entry smoke and keeps publication dependent on the complete job (1.796934ms)
+2026-10-18T16:39:36.0248994Z ℹ tests 10
+2026-10-18T16:39:36.0249395Z ℹ suites 0
+2026-10-18T16:39:36.0249980Z ℹ pass 10
+2026-10-18T16:39:36.0250329Z ℹ fail 0
+2026-10-18T16:39:36.0250674Z ℹ cancelled 0
+2026-10-18T16:39:36.0251032Z ℹ skipped 0
+2026-10-18T16:39:36.0251370Z ℹ todo 0
+2026-10-18T16:39:36.0251764Z ℹ duration_ms 60.323469
+2026-10-18T16:39:36.1000306Z ✔ render material animation does not change comparable probe physics (15.818969ms)
+2026-10-18T16:39:36.1280908Z ✔ every native boost-pad physics field still changes the comparison (27.629099ms)
+2026-10-18T16:39:36.1648701Z ✔ a failed exact comparison retains the full current trace and native evidence row (36.610531ms)
+2026-10-18T16:39:36.1663222Z ✔ portrait QA waits for real visibility after resize within the existing UI timeout (1.408328ms)
+2026-10-18T16:39:36.1674074Z ✔ smoke accepts the actual V11.6 revision and garage UI pair with exact observed geometry (1.016697ms)
+2026-10-18T16:39:36.1712012Z ✔ smoke rejects old artifacts and mismatched runtime/UI revision pairs (3.581854ms)
+2026-10-18T16:39:36.1791680Z ✔ current smoke metadata cannot excuse wrong course geometry or track length (5.91637ms)
+2026-10-18T16:39:36.1816041Z ✔ native player QA reports the exact loaded build version and hash (4.208236ms)
+2026-10-18T16:39:36.1824128Z ℹ tests 8
+2026-10-18T16:39:36.1824825Z ℹ suites 0
+2026-10-18T16:39:36.1825255Z ℹ pass 8
+2026-10-18T16:39:36.1825791Z ℹ fail 0
+2026-10-18T16:39:36.1826241Z ℹ cancelled 0
+2026-10-18T16:39:36.1826692Z ℹ skipped 0
+2026-10-18T16:39:36.1827119Z ℹ todo 0
+2026-10-18T16:39:36.1827631Z ℹ duration_ms 120.425699
+2026-10-18T16:39:36.2775274Z ✔ small QQ-speed build keeps the exact old ordered filename/fileSHA JSON fingerprint (17.286879ms)
+2026-10-18T16:39:36.3278233Z ✔ 13,284,478-byte compiled index hashes every byte with the identical build schema (49.976752ms)
+2026-10-18T16:39:36.4090994Z ✔ a same-size byte mutation beyond the old 4 MiB boundary changes the build hash (81.099338ms)
+2026-10-18T16:39:36.4618507Z ✔ large build hashing uses bounded chunk reads and never a large FileHandle.readFile allocation (52.416646ms)
+2026-10-18T16:39:36.4730719Z ✔ safeRead retains its 4 MiB configuration/evidence budget and explicit smaller limit (10.999403ms)
+2026-10-18T16:39:36.4781919Z ✔ streaming SHA preserves traversal, root/leaf/directory symlink and regular-file protections (4.892925ms)
+2026-10-18T16:39:36.4825804Z ✔ buildHash still rejects a symlinked actual runtime file (4.270765ms)
+2026-10-18T16:39:36.5193206Z ✔ a file that changes size during streaming is rejected: append (36.443614ms)
+2026-10-18T16:39:36.5343646Z ✔ a file that changes size during streaming is rejected: truncate (14.85851ms)
+2026-10-18T16:39:36.6420327Z ✔ allowlisted large HTML preview GET returns every byte with the existing security headers (107.372979ms)
+2026-10-18T16:39:36.6567155Z ✔ allowlisted large HTML preview HEAD succeeds without reading or returning the body (14.583717ms)
+2026-10-18T16:39:36.6824659Z ✔ large preview retains method, Host, allowlist, traversal and symlink rejection (25.635287ms)
+2026-10-18T16:39:36.6830634Z ℹ tests 12
+2026-10-18T16:39:36.6831083Z ℹ suites 0
+2026-10-18T16:39:36.6831586Z ℹ pass 12
+2026-10-18T16:39:36.6831885Z ℹ fail 0
+2026-10-18T16:39:36.6832133Z ℹ cancelled 0
+2026-10-18T16:39:36.6832388Z ℹ skipped 0
+2026-10-18T16:39:36.6832636Z ℹ todo 0
+2026-10-18T16:39:36.6832956Z ℹ duration_ms 461.39317
+2026-10-18T16:39:36.7412458Z ✔ benchmarks actual arc, braking and equal-skill road alternatives, never just saved metres (3.183838ms)
+2026-10-18T16:39:36.7413415Z ✔ a sharper short-cut can forfeit an apparent distance advantage (1.798534ms)
+2026-10-18T16:39:36.7414452Z ✔ non-native forks and nonmonotone physical samples never masquerade as verified reward (0.900459ms)
+2026-10-18T16:39:36.7420253Z ℹ tests 3
+2026-10-18T16:39:36.7421080Z ℹ suites 0
+2026-10-18T16:39:36.7421548Z ℹ pass 3
+2026-10-18T16:39:36.7422417Z ℹ fail 0
+2026-10-18T16:39:36.7422815Z ℹ cancelled 0
+2026-10-18T16:39:36.7423299Z ℹ skipped 0
+2026-10-18T16:39:36.7439997Z ℹ todo 0
+2026-10-18T16:39:36.7440497Z ℹ duration_ms 19.333555
+2026-10-18T16:39:36.8181023Z ✔ sparse blue window frames with detached white details are not a solid question cube (4.748185ms)
+2026-10-18T16:39:36.8182849Z ✔ visible cube lane changes tolerate modest road angle while sharp corners and recovery retain priority (0.205363ms)
+2026-10-18T16:39:36.8184472Z ✔ box pursuit stops at the visible objective count without reading hidden pickup state (0.287116ms)
+2026-10-18T16:39:36.8186016Z ✔ visible cyan cube chooses an ordinary steering direction; sky and HUD are excluded (2.694445ms)
+2026-10-18T16:39:36.8187357Z ✔ long blue rails and the car boost behind the player cannot act as boxes (1.909541ms)
+2026-10-18T16:39:36.8188714Z ✔ the shaded blue cube color remains visible without mistaking pale sky for an item (2.656714ms)
+2026-10-18T16:39:36.8190588Z ✔ blue windows or car panels without the actual white question hook and dot do not steer toward scenery (2.027011ms)
+2026-10-18T16:39:36.8192210Z ✔ resume binds the earned report to its exact origin and rejects invented progress (0.669278ms)
+2026-10-18T16:39:36.8194104Z ✔ wrong-way recovery ignores the text retained after the native warning becomes hidden (0.340525ms)
+2026-10-18T16:39:36.8195875Z ✔ visible sudden arrow rotation keeps the pre-spin route and does not flip it again during a lingering warning (1.218182ms)
+2026-10-18T16:39:36.8197796Z ✔ ordinary corner rotation is followed normally and opposite-heading jitter does not alternate recovery keys (0.264062ms)
+2026-10-18T16:39:36.8199859Z ✔ current V11.5 first, second and third place titles require a real matching podium result and save (0.523115ms)
+2026-10-18T16:39:36.8200750Z ✔ a genuine podium replay may retain a better historical medal and best time (0.203629ms)
+2026-10-18T16:39:36.8201645Z ✔ old saved medals do not turn an unfinished player, fourth place or an active race into a victory (0.194453ms)
+2026-10-18T16:39:36.8202594Z ✔ a current-looking title cannot pass with zero medals or inconsistent persisted medals (0.194813ms)
+2026-10-18T16:39:36.8203382Z ✔ old or mismatched result text is not a current native podium settlement (0.236221ms)
+2026-10-18T16:39:36.8204081Z ✔ another stage save or same-biome course cannot qualify the current race (0.172993ms)
+2026-10-18T16:39:36.8204782Z ✔ missing or malformed save evidence and unknown stages remain unqualified (0.216674ms)
+2026-10-18T16:39:36.8205647Z ✔ daily podium evidence binds the played date, actual course and daily save independently of campaign stars (0.97045ms)
+2026-10-18T16:39:36.8206600Z ✔ daily start dates come from the bounded start interval and actual course on either side of midnight (0.385419ms)
+2026-10-18T16:39:36.8207487Z ✔ a month boundary with the same daily course on both dates is ambiguous and must remain blocked (0.143658ms)
+2026-10-18T16:39:36.8208440Z ✔ daily date evidence rejects wide intervals, clock jumps, changed documents or timezones and unmatched courses (0.159578ms)
+2026-10-18T16:39:36.8210206Z ✔ a reversed arrow turns into the visible road rather than the outside barrier (0.35394ms)
+2026-10-18T16:39:36.8211661Z ✔ a late visible wrong-way warning overrides a stale backward route after an unseen spin (0.131655ms)
+2026-10-18T16:39:36.8213212Z ✔ if a recovery turn cannot leave the visible outside rail, normal input can try the opposite key (0.186288ms)
+2026-10-18T16:39:36.8213751Z ℹ tests 25
+2026-10-18T16:39:36.8215478Z ℹ suites 0
+2026-10-18T16:39:36.8215842Z ℹ pass 25
+2026-10-18T16:39:36.8216177Z ℹ fail 0
+2026-10-18T16:39:36.8216473Z ℹ cancelled 0
+2026-10-18T16:39:36.8216695Z ℹ skipped 0
+2026-10-18T16:39:36.8216896Z ℹ todo 0
+2026-10-18T16:39:36.8217124Z ℹ duration_ms 40.226548
+2026-10-18T16:39:36.9704597Z ✔ delivery evidence rejects seeded victories, old saved stars and forbidden state writes (6.64952ms)
+2026-10-18T16:39:36.9717833Z ✔ a visible PASS still requires a real positive finish time/progress and a known career stage (1.175623ms)
+2026-10-18T16:39:36.9745384Z ✔ H5 delivery cannot claim physical, LIVE, commercial or publication approval (2.64889ms)
+2026-10-18T16:39:37.2728279Z ▶ real verifyDelivery follows native rank awards instead of historical mission counters
+2026-10-18T16:39:37.2730289Z   ✔ 05 item: native first place earns three stars with unmet old counters (297.634691ms)
+2026-10-18T16:39:37.5270957Z   ✔ 03 overtake: native first place earns three stars with unmet old counters (253.922695ms)
+2026-10-18T16:39:37.7967037Z   ✔ 04 drift: native first place earns three stars with unmet old counters (269.274305ms)
+2026-10-18T16:39:38.0548122Z   ✔ 07 time: native first place earns three stars with unmet old counters (257.858055ms)
+2026-10-18T16:39:38.3186618Z   ✔ 02 speed: native first place earns three stars with unmet old counters (263.500704ms)
+2026-10-18T16:39:38.5725516Z   ✔ 12 elimination: native first place earns three stars with unmet old counters (253.558574ms)
+2026-10-18T16:39:38.5728318Z ✔ real verifyDelivery follows native rank awards instead of historical mission counters (1598.044735ms)
+2026-10-18T16:39:38.8357882Z ✔ real verifyDelivery accepts the native third-place one-star threshold (262.684955ms)
+2026-10-18T16:39:39.5035656Z ✔ real verifyDelivery requires bounded daily start identity as well as that date's course and save (667.579269ms)
+2026-10-18T16:39:39.7117308Z ▶ real verifyDelivery keeps native outcome, saved stage and evidence integrity gates
+2026-10-18T16:39:39.7117949Z   ✔ unfinished (207.698847ms)
+2026-10-18T16:39:39.9178868Z   ✔ fourth despite old stars (205.920843ms)
+2026-10-18T16:39:40.1250393Z   ✔ zero stars (206.880414ms)
+2026-10-18T16:39:40.3367725Z   ✔ old result (211.463291ms)
+2026-10-18T16:39:40.5505644Z   ✔ wrong course (213.438472ms)
+2026-10-18T16:39:40.7612464Z   ✔ wrong saved stage (210.346972ms)
+2026-10-18T16:39:40.9566113Z   ✔ artifact mismatch (195.03711ms)
+2026-10-18T16:39:41.1202674Z   ✔ build mismatch (163.414464ms)
+2026-10-18T16:39:41.3170181Z   ✔ input mismatch (196.478691ms)
+2026-10-18T16:39:41.3171543Z ✔ real verifyDelivery keeps native outcome, saved stage and evidence integrity gates (1813.601945ms)
+2026-10-18T16:39:42.0890518Z ✔ real verifyDelivery preserves both script bodies with a 14 MiB inline asset payload (771.543373ms)
+2026-10-18T16:39:42.2937127Z ▶ real verifyDelivery enforces HTML script attributes and uppercase entry counts
+2026-10-18T16:39:42.2938169Z   ✔ spaced src assignment (204.159649ms)
+2026-10-18T16:39:42.4972366Z   ✔ uppercase SRC attribute (203.375294ms)
+2026-10-18T16:39:42.6999373Z   ✔ extra uppercase external script (202.414686ms)
+2026-10-18T16:39:42.9195064Z   ✔ extra uppercase inline script (219.324453ms)
+2026-10-18T16:39:42.9196224Z ✔ real verifyDelivery enforces HTML script attributes and uppercase entry counts (830.542282ms)
+2026-10-18T16:39:43.1703538Z ✔ real verifyDelivery preserves bodies with mixed-case HTML script tags (250.577872ms)
+2026-10-18T16:39:43.1717154Z ℹ tests 29
+2026-10-18T16:39:43.1717737Z ℹ suites 0
+2026-10-18T16:39:43.1718596Z ℹ pass 29
+2026-10-18T16:39:43.1719626Z ℹ fail 0
+2026-10-18T16:39:43.1720289Z ℹ cancelled 0
+2026-10-18T16:39:43.1720961Z ℹ skipped 0
+2026-10-18T16:39:43.1721598Z ℹ todo 0
+2026-10-18T16:39:43.1722339Z ℹ duration_ms 6312.078528
+2026-10-18T16:39:50.1279606Z $ tsc --noEmit
+2026-10-18T16:39:58.2767254Z ##[group]Run set -euo pipefail
+2026-10-18T16:39:58.2778287Z [36;1mset -euo pipefail[0m
+2026-10-18T16:39:58.2778638Z [36;1mmkdir -p "$RUNNER_TEMP/racing-source"[0m
+2026-10-18T16:39:58.2779315Z [36;1mgit -C "$RUNNER_TEMP/racing-source" init -q[0m
+2026-10-18T16:39:58.2779924Z [36;1mgit -C "$RUNNER_TEMP/racing-source" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git[0m
+2026-10-18T16:39:58.2780702Z [36;1mgit -C "$RUNNER_TEMP/racing-source" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8[0m
+2026-10-18T16:39:58.2781331Z [36;1mgit -C "$RUNNER_TEMP/racing-source" checkout -q FETCH_HEAD[0m
+2026-10-18T16:39:58.2781915Z [36;1mtest "$(git -C "$RUNNER_TEMP/racing-source" rev-parse HEAD)" = '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8'[0m
+2026-10-18T16:39:58.2782777Z [36;1mgit -C "$RUNNER_TEMP/racing-source" diff --exit-code[0m
+2026-10-18T16:39:58.2847236Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-18T16:39:58.2847619Z ##[endgroup]
+2026-10-18T16:39:58.6033460Z From https://github.com/riba2534/claude-opus-5-5-demo
+2026-10-18T16:39:58.6034550Z  * branch            54adc1fb64155f9dd7c1c90ecae7b8185ac540b8 -> FETCH_HEAD
+2026-10-18T16:39:58.6296707Z ##[group]Run node tools/lean-pilot/racing-mobile-build.mjs
+2026-10-18T16:39:58.6297160Z [36;1mnode tools/lean-pilot/racing-mobile-build.mjs[0m
+2026-10-18T16:39:58.6361434Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:39:58.6361700Z env:
+2026-10-18T16:39:58.6361980Z   H5_PINNED_SOURCE_ROOT: /home/runner/work/_temp/racing-source
+2026-10-18T16:39:58.6362336Z ##[endgroup]
+2026-10-18T16:40:01.2083530Z {
+2026-10-18T16:40:01.2084099Z   "schemaVersion": 1,
+2026-10-18T16:40:01.2084439Z   "runId": "h5-qq-mobile-20261013",
+2026-10-18T16:40:01.2084772Z   "gameId": "qq-speed",
+2026-10-18T16:40:01.2085030Z   "route": "formal-fixer",
+2026-10-18T16:40:01.2085290Z   "version": "V11.6",
+2026-10-18T16:40:01.2085569Z   "uiRevision": "racing-v116-garage",
+2026-10-18T16:40:01.2085906Z   "aiMode": "native-playercar-physics",
+2026-10-18T16:40:01.2086195Z   "attempt": 3,
+2026-10-18T16:40:01.2086619Z   "inputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10",
+2026-10-18T16:40:01.2087139Z   "generatedCar": {
+2026-10-18T16:40:01.2087395Z     "id": "original-racer-v1",
+2026-10-18T16:40:01.2087653Z     "carId": "starter",
+2026-10-18T16:40:01.2088070Z     "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+2026-10-18T16:40:01.2088556Z     "provider": "Tencent-Hunyuan-3.1-web",
+2026-10-18T16:40:01.2088851Z     "bytes": 1270084,
+2026-10-18T16:40:01.2089673Z     "triangles": 17473,
+2026-10-18T16:40:01.2090042Z     "materials": [
+2026-10-18T16:40:01.2092951Z       "BodyPaint",
+2026-10-18T16:40:01.2093202Z       "Glass",
+2026-10-18T16:40:01.2093410Z       "Tire",
+2026-10-18T16:40:01.2093615Z       "Rim",
+2026-10-18T16:40:01.2093852Z       "Headlight",
+2026-10-18T16:40:01.2094093Z       "Taillight",
+2026-10-18T16:40:01.2094330Z       "Trim"
+2026-10-18T16:40:01.2094544Z     ]
+2026-10-18T16:40:01.2094730Z   },
+2026-10-18T16:40:01.2094915Z   "models": [
+2026-10-18T16:40:01.2095116Z     {
+2026-10-18T16:40:01.2095383Z       "id": "original-racer-v1",
+2026-10-18T16:40:01.2095704Z       "carId": "starter",
+2026-10-18T16:40:01.2096176Z       "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+2026-10-18T16:40:01.2096717Z       "provider": "Tencent-Hunyuan-3.1-web",
+2026-10-18T16:40:01.2097079Z       "file": "original-racer.glb",
+2026-10-18T16:40:01.2097356Z       "bytes": 1270084,
+2026-10-18T16:40:01.2097577Z       "triangles": 17473,
+2026-10-18T16:40:01.2097827Z       "materials": [
+2026-10-18T16:40:01.2098077Z         "BodyPaint",
+2026-10-18T16:40:01.2098297Z         "Glass",
+2026-10-18T16:40:01.2098488Z         "Tire",
+2026-10-18T16:40:01.2098707Z         "Rim",
+2026-10-18T16:40:01.2099261Z         "Headlight",
+2026-10-18T16:40:01.2099495Z         "Taillight",
+2026-10-18T16:40:01.2099692Z         "Trim"
+2026-10-18T16:40:01.2099872Z       ],
+2026-10-18T16:40:01.2100062Z       "paintable": true,
+2026-10-18T16:40:01.2100355Z       "wheelMode": "articulated"
+2026-10-18T16:40:01.2100625Z     },
+2026-10-18T16:40:01.2100799Z     {
+2026-10-18T16:40:01.2100990Z       "id": "custom-01",
+2026-10-18T16:40:01.2101212Z       "carId": "custom-01",
+2026-10-18T16:40:01.2101759Z       "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+2026-10-18T16:40:01.2102524Z       "provider": "user-provided",
+2026-10-18T16:40:01.2102970Z       "file": "custom-racer-01.glb",
+2026-10-18T16:40:01.2103356Z       "bytes": 2700636,
+2026-10-18T16:40:01.2103690Z       "triangles": 63998,
+2026-10-18T16:40:01.2104021Z       "textures": [
+2026-10-18T16:40:01.2104313Z         {
+2026-10-18T16:40:01.2104942Z           "width": 1024,
+2026-10-18T16:40:01.2105310Z           "height": 1024,
+2026-10-18T16:40:01.2105737Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2106131Z         },
+2026-10-18T16:40:01.2106407Z         {
+2026-10-18T16:40:01.2106706Z           "width": 1024,
+2026-10-18T16:40:01.2107053Z           "height": 1024,
+2026-10-18T16:40:01.2107450Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2107833Z         },
+2026-10-18T16:40:01.2108186Z         {
+2026-10-18T16:40:01.2108762Z           "width": 1024,
+2026-10-18T16:40:01.2109610Z           "height": 1024,
+2026-10-18T16:40:01.2110029Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2110497Z         }
+2026-10-18T16:40:01.2110790Z       ],
+2026-10-18T16:40:01.2111093Z       "limits": {
+2026-10-18T16:40:01.2111475Z         "maxTriangles": 64000,
+2026-10-18T16:40:01.2111874Z         "maxBytes": 3670016,
+2026-10-18T16:40:01.2112343Z         "maxTextureSize": 1024
+2026-10-18T16:40:01.2112757Z       },
+2026-10-18T16:40:01.2113043Z       "paintable": false,
+2026-10-18T16:40:01.2113449Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:40:01.2113821Z       "bounds": {
+2026-10-18T16:40:01.2114104Z         "min": [
+2026-10-18T16:40:01.2114409Z           -1.2987256050109863,
+2026-10-18T16:40:01.2114743Z           0,
+2026-10-18T16:40:01.2115017Z           -2.4000000953674316
+2026-10-18T16:40:01.2115342Z         ],
+2026-10-18T16:40:01.2115587Z         "max": [
+2026-10-18T16:40:01.2115864Z           1.2987256050109863,
+2026-10-18T16:40:01.2116170Z           1.2871825695037842,
+2026-10-18T16:40:01.2116476Z           2.4000000953674316
+2026-10-18T16:40:01.2116786Z         ]
+2026-10-18T16:40:01.2117030Z       },
+2026-10-18T16:40:01.2117334Z       "normalization": {
+2026-10-18T16:40:01.2117744Z         "up": "+Y",
+2026-10-18T16:40:01.2118105Z         "forward": "+Z",
+2026-10-18T16:40:01.2118453Z         "groundY": 0,
+2026-10-18T16:40:01.2118783Z         "centerXZ": [
+2026-10-18T16:40:01.2119335Z           0,
+2026-10-18T16:40:01.2119672Z           0
+2026-10-18T16:40:01.2119965Z         ],
+2026-10-18T16:40:01.2120307Z         "lengthM": 4.8,
+2026-10-18T16:40:01.2120677Z         "runtimeScale": 1
+2026-10-18T16:40:01.2121091Z       }
+2026-10-18T16:40:01.2121404Z     },
+2026-10-18T16:40:01.2121737Z     {
+2026-10-18T16:40:01.2122075Z       "id": "custom-02",
+2026-10-18T16:40:01.2122484Z       "carId": "custom-02",
+2026-10-18T16:40:01.2123274Z       "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+2026-10-18T16:40:01.2124063Z       "provider": "user-provided",
+2026-10-18T16:40:01.2124595Z       "file": "custom-racer-02.glb",
+2026-10-18T16:40:01.2125051Z       "bytes": 1381344,
+2026-10-18T16:40:01.2125442Z       "triangles": 18000,
+2026-10-18T16:40:01.2125838Z       "textures": [
+2026-10-18T16:40:01.2126192Z         {
+2026-10-18T16:40:01.2126475Z           "width": 1024,
+2026-10-18T16:40:01.2126823Z           "height": 1024,
+2026-10-18T16:40:01.2127220Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2127592Z         },
+2026-10-18T16:40:01.2127865Z         {
+2026-10-18T16:40:01.2128203Z           "width": 1024,
+2026-10-18T16:40:01.2128568Z           "height": 1024,
+2026-10-18T16:40:01.2129198Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2129603Z         },
+2026-10-18T16:40:01.2129893Z         {
+2026-10-18T16:40:01.2130193Z           "width": 1024,
+2026-10-18T16:40:01.2130555Z           "height": 1024,
+2026-10-18T16:40:01.2130971Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2131360Z         }
+2026-10-18T16:40:01.2131645Z       ],
+2026-10-18T16:40:01.2131989Z       "limits": {
+2026-10-18T16:40:01.2132351Z         "maxTriangles": 18000,
+2026-10-18T16:40:01.2132716Z         "maxBytes": 1572864,
+2026-10-18T16:40:01.2133151Z         "maxTextureSize": 1024
+2026-10-18T16:40:01.2133529Z       },
+2026-10-18T16:40:01.2133850Z       "paintable": false,
+2026-10-18T16:40:01.2134301Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:40:01.2134812Z       "bounds": {
+2026-10-18T16:40:01.2135173Z         "min": [
+2026-10-18T16:40:01.2135734Z           -1.251115083694458,
+2026-10-18T16:40:01.2136147Z           0,
+2026-10-18T16:40:01.2136472Z           -2.4000000953674316
+2026-10-18T16:40:01.2136834Z         ],
+2026-10-18T16:40:01.2137129Z         "max": [
+2026-10-18T16:40:01.2137453Z           1.251115083694458,
+2026-10-18T16:40:01.2137818Z           1.3380991220474243,
+2026-10-18T16:40:01.2138161Z           2.4000000953674316
+2026-10-18T16:40:01.2138482Z         ]
+2026-10-18T16:40:01.2139157Z       },
+2026-10-18T16:40:01.2139473Z       "normalization": {
+2026-10-18T16:40:01.2139867Z         "up": "+Y",
+2026-10-18T16:40:01.2140220Z         "forward": "+Z",
+2026-10-18T16:40:01.2140585Z         "groundY": 0,
+2026-10-18T16:40:01.2140933Z         "centerXZ": [
+2026-10-18T16:40:01.2141274Z           0,
+2026-10-18T16:40:01.2141571Z           0
+2026-10-18T16:40:01.2141867Z         ],
+2026-10-18T16:40:01.2142184Z         "lengthM": 4.8,
+2026-10-18T16:40:01.2142551Z         "runtimeScale": 1
+2026-10-18T16:40:01.2142946Z       }
+2026-10-18T16:40:01.2143219Z     },
+2026-10-18T16:40:01.2143525Z     {
+2026-10-18T16:40:01.2143841Z       "id": "custom-03",
+2026-10-18T16:40:01.2144215Z       "carId": "custom-03",
+2026-10-18T16:40:01.2144934Z       "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+2026-10-18T16:40:01.2145749Z       "provider": "user-provided",
+2026-10-18T16:40:01.2146266Z       "file": "custom-racer-03.glb",
+2026-10-18T16:40:01.2146776Z       "bytes": 1173568,
+2026-10-18T16:40:01.2147178Z       "triangles": 18000,
+2026-10-18T16:40:01.2147574Z       "textures": [
+2026-10-18T16:40:01.2147922Z         {
+2026-10-18T16:40:01.2148260Z           "width": 1024,
+2026-10-18T16:40:01.2148657Z           "height": 1024,
+2026-10-18T16:40:01.2149389Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2149850Z         },
+2026-10-18T16:40:01.2150137Z         {
+2026-10-18T16:40:01.2150469Z           "width": 1024,
+2026-10-18T16:40:01.2150872Z           "height": 1024,
+2026-10-18T16:40:01.2151320Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2151758Z         },
+2026-10-18T16:40:01.2152076Z         {
+2026-10-18T16:40:01.2152404Z           "width": 1024,
+2026-10-18T16:40:01.2152791Z           "height": 1024,
+2026-10-18T16:40:01.2153231Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2153627Z         }
+2026-10-18T16:40:01.2153943Z       ],
+2026-10-18T16:40:01.2154265Z       "limits": {
+2026-10-18T16:40:01.2154668Z         "maxTriangles": 18000,
+2026-10-18T16:40:01.2155104Z         "maxBytes": 1572864,
+2026-10-18T16:40:01.2155559Z         "maxTextureSize": 1024
+2026-10-18T16:40:01.2155973Z       },
+2026-10-18T16:40:01.2156279Z       "paintable": false,
+2026-10-18T16:40:01.2156775Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:40:01.2157261Z       "bounds": {
+2026-10-18T16:40:01.2157611Z         "min": [
+2026-10-18T16:40:01.2157971Z           -1.310964584350586,
+2026-10-18T16:40:01.2158407Z           0,
+2026-10-18T16:40:01.2158841Z           -2.4000000953674316
+2026-10-18T16:40:01.2160065Z         ],
+2026-10-18T16:40:01.2160496Z         "max": [
+2026-10-18T16:40:01.2160960Z           1.310964584350586,
+2026-10-18T16:40:01.2161474Z           1.4491381645202637,
+2026-10-18T16:40:01.2161988Z           2.4000000953674316
+2026-10-18T16:40:01.2162476Z         ]
+2026-10-18T16:40:01.2162882Z       },
+2026-10-18T16:40:01.2163317Z       "normalization": {
+2026-10-18T16:40:01.2163830Z         "up": "+Y",
+2026-10-18T16:40:01.2164268Z         "forward": "+Z",
+2026-10-18T16:40:01.2164754Z         "groundY": 0,
+2026-10-18T16:40:01.2165259Z         "centerXZ": [
+2026-10-18T16:40:01.2165716Z           0,
+2026-10-18T16:40:01.2166115Z           0
+2026-10-18T16:40:01.2166527Z         ],
+2026-10-18T16:40:01.2166940Z         "lengthM": 4.8,
+2026-10-18T16:40:01.2167450Z         "runtimeScale": 1
+2026-10-18T16:40:01.2167927Z       }
+2026-10-18T16:40:01.2168339Z     },
+2026-10-18T16:40:01.2168716Z     {
+2026-10-18T16:40:01.2169370Z       "id": "custom-04",
+2026-10-18T16:40:01.2169883Z       "carId": "custom-04",
+2026-10-18T16:40:01.2171225Z       "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+2026-10-18T16:40:01.2172263Z       "provider": "user-provided",
+2026-10-18T16:40:01.2172930Z       "file": "custom-racer-04.glb",
+2026-10-18T16:40:01.2173494Z       "bytes": 1129904,
+2026-10-18T16:40:01.2173981Z       "triangles": 18000,
+2026-10-18T16:40:01.2174466Z       "textures": [
+2026-10-18T16:40:01.2174901Z         {
+2026-10-18T16:40:01.2175325Z           "width": 1024,
+2026-10-18T16:40:01.2176076Z           "height": 1024,
+2026-10-18T16:40:01.2176677Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2177230Z         },
+2026-10-18T16:40:01.2177635Z         {
+2026-10-18T16:40:01.2178033Z           "width": 1024,
+2026-10-18T16:40:01.2178516Z           "height": 1024,
+2026-10-18T16:40:01.2179525Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2180092Z         },
+2026-10-18T16:40:01.2180486Z         {
+2026-10-18T16:40:01.2180905Z           "width": 1024,
+2026-10-18T16:40:01.2181388Z           "height": 1024,
+2026-10-18T16:40:01.2181998Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2182532Z         }
+2026-10-18T16:40:01.2182936Z       ],
+2026-10-18T16:40:01.2183356Z       "limits": {
+2026-10-18T16:40:01.2183889Z         "maxTriangles": 18000,
+2026-10-18T16:40:01.2184435Z         "maxBytes": 1572864,
+2026-10-18T16:40:01.2185001Z         "maxTextureSize": 1024
+2026-10-18T16:40:01.2185495Z       },
+2026-10-18T16:40:01.2185926Z       "paintable": false,
+2026-10-18T16:40:01.2186488Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:40:01.2186970Z       "bounds": {
+2026-10-18T16:40:01.2187327Z         "min": [
+2026-10-18T16:40:01.2187718Z           -1.3331763744354248,
+2026-10-18T16:40:01.2188117Z           0,
+2026-10-18T16:40:01.2188470Z           -2.4000000953674316
+2026-10-18T16:40:01.2188868Z         ],
+2026-10-18T16:40:01.2189433Z         "max": [
+2026-10-18T16:40:01.2189765Z           1.3331763744354248,
+2026-10-18T16:40:01.2190186Z           1.3121647834777832,
+2026-10-18T16:40:01.2190659Z           2.4000000953674316
+2026-10-18T16:40:01.2191058Z         ]
+2026-10-18T16:40:01.2191378Z       },
+2026-10-18T16:40:01.2191724Z       "normalization": {
+2026-10-18T16:40:01.2192137Z         "up": "+Y",
+2026-10-18T16:40:01.2192513Z         "forward": "+Z",
+2026-10-18T16:40:01.2192900Z         "groundY": 0,
+2026-10-18T16:40:01.2193278Z         "centerXZ": [
+2026-10-18T16:40:01.2193607Z           0,
+2026-10-18T16:40:01.2193932Z           0
+2026-10-18T16:40:01.2194254Z         ],
+2026-10-18T16:40:01.2194657Z         "lengthM": 4.8,
+2026-10-18T16:40:01.2195142Z         "runtimeScale": 1
+2026-10-18T16:40:01.2195645Z       }
+2026-10-18T16:40:01.2196022Z     },
+2026-10-18T16:40:01.2196423Z     {
+2026-10-18T16:40:01.2196843Z       "id": "custom-05",
+2026-10-18T16:40:01.2197368Z       "carId": "custom-05",
+2026-10-18T16:40:01.2198305Z       "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+2026-10-18T16:40:01.2199544Z       "provider": "user-provided",
+2026-10-18T16:40:01.2200248Z       "file": "custom-racer-05.glb",
+2026-10-18T16:40:01.2200825Z       "bytes": 1407812,
+2026-10-18T16:40:01.2201318Z       "triangles": 18000,
+2026-10-18T16:40:01.2201824Z       "textures": [
+2026-10-18T16:40:01.2202297Z         {
+2026-10-18T16:40:01.2202724Z           "width": 1024,
+2026-10-18T16:40:01.2203205Z           "height": 1024,
+2026-10-18T16:40:01.2203782Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2204333Z         },
+2026-10-18T16:40:01.2204766Z         {
+2026-10-18T16:40:01.2205193Z           "width": 1024,
+2026-10-18T16:40:01.2205709Z           "height": 1024,
+2026-10-18T16:40:01.2206280Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2206819Z         },
+2026-10-18T16:40:01.2207240Z         {
+2026-10-18T16:40:01.2207665Z           "width": 1024,
+2026-10-18T16:40:01.2208176Z           "height": 1024,
+2026-10-18T16:40:01.2208740Z           "mimeType": "image/jpeg"
+2026-10-18T16:40:01.2209489Z         }
+2026-10-18T16:40:01.2209879Z       ],
+2026-10-18T16:40:01.2210296Z       "limits": {
+2026-10-18T16:40:01.2211100Z         "maxTriangles": 18000,
+2026-10-18T16:40:01.2211674Z         "maxBytes": 1572864,
+2026-10-18T16:40:01.2212254Z         "maxTextureSize": 1024
+2026-10-18T16:40:01.2212753Z       },
+2026-10-18T16:40:01.2213183Z       "paintable": false,
+2026-10-18T16:40:01.2213804Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:40:01.2214397Z       "bounds": {
+2026-10-18T16:40:01.2214871Z         "min": [
+2026-10-18T16:40:01.2215615Z           -1.2511299848556519,
+2026-10-18T16:40:01.2216140Z           0,
+2026-10-18T16:40:01.2216573Z           -2.4000000953674316
+2026-10-18T16:40:01.2217069Z         ],
+2026-10-18T16:40:01.2217486Z         "max": [
+2026-10-18T16:40:01.2217952Z           1.2511299848556519,
+2026-10-18T16:40:01.2218485Z           1.7879513502120972,
+2026-10-18T16:40:01.2219187Z           2.4000000953674316
+2026-10-18T16:40:01.2219645Z         ]
+2026-10-18T16:40:01.2219943Z       },
+2026-10-18T16:40:01.2220286Z       "normalization": {
+2026-10-18T16:40:01.2220706Z         "up": "+Y",
+2026-10-18T16:40:01.2221089Z         "forward": "+Z",
+2026-10-18T16:40:01.2221493Z         "groundY": 0,
+2026-10-18T16:40:01.2221872Z         "centerXZ": [
+2026-10-18T16:40:01.2222242Z           0,
+2026-10-18T16:40:01.2222566Z           0
+2026-10-18T16:40:01.2222891Z         ],
+2026-10-18T16:40:01.2223235Z         "lengthM": 4.8,
+2026-10-18T16:40:01.2223634Z         "runtimeScale": 1
+2026-10-18T16:40:01.2224021Z       }
+2026-10-18T16:40:01.2224353Z     }
+2026-10-18T16:40:01.2224674Z   ],
+2026-10-18T16:40:01.2225466Z   "userCarManifestSha256": "17f63f08818e0a7e7decdccc7f08fb79326c50fd06d61fc49e2fccf7b8f3c558",
+2026-10-18T16:40:01.2226680Z   "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+2026-10-18T16:40:01.2227631Z   "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+2026-10-18T16:40:01.2228718Z   "originalPhysicsSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+2026-10-18T16:40:01.2230198Z   "driftEventVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+2026-10-18T16:40:01.2231470Z   "originalAiSha256": "2a399dad5831ec9ac8c22b76d837b908ed171f66e7510e5ef80679ef19b78f7e",
+2026-10-18T16:40:01.2232697Z   "generatedAiSha256": "47377c07688e4023d57a8db1167eb3e70fced3b896b5786aca7f86f5ceb805c7",
+2026-10-18T16:40:01.2233956Z   "generatedVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+2026-10-18T16:40:01.2235269Z   "generatedTrackSha256": "336c734656afaf5df0c33ec132743d1e8a3023bfee348db528ab050de31f85de",
+2026-10-18T16:40:01.2236216Z   "genuinePhysicalShortcutStages": [
+2026-10-18T16:40:01.2236685Z     "05",
+2026-10-18T16:40:01.2237018Z     "10",
+2026-10-18T16:40:01.2237305Z     "12",
+2026-10-18T16:40:01.2237622Z     "13",
+2026-10-18T16:40:01.2237936Z     "16",
+2026-10-18T16:40:01.2238240Z     "18",
+2026-10-18T16:40:01.2238522Z     "22",
+2026-10-18T16:40:01.2238841Z     "25",
+2026-10-18T16:40:01.2239322Z     "27",
+2026-10-18T16:40:01.2239601Z     "30"
+2026-10-18T16:40:01.2239890Z   ],
+2026-10-18T16:40:01.2240579Z   "trackGeometrySha256": "307e0ecf8a30214b98049576ac445abe1f7b15a81435d34916bf7afaf1ceb421",
+2026-10-18T16:40:01.2241809Z   "itemVisualSourceSha256": "5c0dd3178540d61a58938fb8e9c67f39481c2e0a4fceb6eb51b3a057799e471e",
+2026-10-18T16:40:01.2242750Z   "buildLog": "dist/index.html 12801 KB",
+2026-10-18T16:40:01.2243298Z   "runtimeEntrypoints": [
+2026-10-18T16:40:01.2243924Z     "workspace/source/qq-speed/src/main.js (Three.js racing)",
+2026-10-18T16:40:01.2244974Z     "workspace/source/qq-speed/src/carModel.js (selected model + preserved native effects)",
+2026-10-18T16:40:01.2246279Z     "workspace/source/qq-speed/src/race-car-loader.mjs (six embedded GLBs, lazy serialized decoding)",
+2026-10-18T16:40:01.2247656Z     "workspace/source/qq-speed/src/race-generated-car.mjs (starter materials and wheel pivots)",
+2026-10-18T16:40:01.2248800Z     "workspace/source/qq-speed/src/race-user-car.mjs (baked user models)",
+2026-10-18T16:40:01.2250367Z     "workspace/source/qq-speed/src/race-car-asset-cache.mjs (bounded shared resources and instance disposal)",
+2026-10-18T16:40:01.2251812Z     "workspace/source/qq-speed/src/ai.js (physical PlayerCar rivals)",
+2026-10-18T16:40:01.2252688Z     "workspace/source/qq-speed/src/race-v11-physical-ai.mjs",
+2026-10-18T16:40:01.2253496Z     "workspace/source/qq-speed/src/v11-course-director.mjs",
+2026-10-18T16:40:01.2254313Z     "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+2026-10-18T16:40:01.2255345Z     "templates/web-lite/h5-source-mobile-v1/racing/garage.mjs",
+2026-10-18T16:40:01.2256241Z     "templates/web-lite/h5-source-mobile-v1/racing/car-thumbnails.mjs",
+2026-10-18T16:40:01.2257172Z     "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+2026-10-18T16:40:01.2258086Z     "templates/web-lite/h5-source-mobile-v1/racing/wheel-steering.mjs",
+2026-10-18T16:40:01.2259302Z     "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+2026-10-18T16:40:01.2260217Z     "templates/web-lite/h5-source-mobile-v1/racing/career.mjs",
+2026-10-18T16:40:01.2261032Z     "templates/web-lite/h5-source-mobile-v1/racing/cosmetics.mjs",
+2026-10-18T16:40:01.2261871Z     "templates/web-lite/h5-source-mobile-v1/racing/items.mjs",
+2026-10-18T16:40:01.2262679Z     "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs",
+2026-10-18T16:40:01.2263470Z     "templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs",
+2026-10-18T16:40:01.2264328Z     "templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs",
+2026-10-18T16:40:01.2265199Z     "templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs",
+2026-10-18T16:40:01.2266095Z     "templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs",
+2026-10-18T16:40:01.2267142Z     "templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs",
+2026-10-18T16:40:01.2268178Z     "templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs",
+2026-10-18T16:40:01.2269270Z     "templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs",
+2026-10-18T16:40:01.2270112Z     "templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs",
+2026-10-18T16:40:01.2270982Z     "templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs",
+2026-10-18T16:40:01.2271867Z     "templates/web-lite/h5-source-mobile-v1/racing/shortcut-decisions.mjs",
+2026-10-18T16:40:01.2272632Z     "templates/web-lite/h5-source-mobile-v1/fuel.mjs",
+2026-10-18T16:40:01.2273324Z     "templates/web-lite/h5-source-mobile-v1/racing/mobile.css"
+2026-10-18T16:40:01.2273863Z   ],
+2026-10-18T16:40:01.2274183Z   "compatibilityOnly": [
+2026-10-18T16:40:01.2274747Z     "templates/web-lite/h5-source-mobile-v1/racing/joystick.mjs",
+2026-10-18T16:40:01.2275591Z     "workspace/source/qq-speed/src/race-v8-rival-ai.mjs (old on-rail AI adapter)",
+2026-10-18T16:40:01.2276338Z     "workspace/game/main.mjs",
+2026-10-18T16:40:01.2276778Z     "workspace/game/engine.mjs",
+2026-10-18T16:40:01.2277489Z     "workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)"
+2026-10-18T16:40:01.2278141Z   ],
+2026-10-18T16:40:01.2278566Z   "trialName": "racing-two-button-893226cc0792.html",
+2026-10-18T16:40:01.2279658Z   "trialSha256": "cfffc0ca59989d6dd21325c8dd6168b4861cc6965a65dcfc9ede44d3722d9329",
+2026-10-18T16:40:01.2280412Z   "builtAt": "2026-10-18T16:40:01.207Z",
+2026-10-18T16:40:01.2280835Z   "publishable": false
+2026-10-18T16:40:01.2281171Z }
+2026-10-18T16:40:01.2381624Z ##[group]Run RACE_THREE_MODULE="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/build/three.module.js" node --test --test-isolation=none tools/lean-pilot/tests/racing-car-model-runtime.mjs tools/lean-pilot/tests/racing-user-car-runtime.mjs
+2026-10-18T16:40:01.2383533Z [36;1mRACE_THREE_MODULE="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/build/three.module.js" node --test --test-isolation=none tools/lean-pilot/tests/racing-car-model-runtime.mjs tools/lean-pilot/tests/racing-user-car-runtime.mjs[0m
+2026-10-18T16:40:01.2447135Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:40:01.2447400Z ##[endgroup]
+2026-10-18T16:40:01.4046282Z ✔ factory exposes the native loader contract as instantiate(skin) (5.50112ms)
+2026-10-18T16:40:01.4047981Z ✔ all eight skins recolor only body paint and rims, preserving glass, tires and lights (12.211036ms)
+2026-10-18T16:40:01.4050038Z ✔ instances share source geometry and textures but own one deduplicated cloned material set (2.822355ms)
+2026-10-18T16:40:01.4051945Z ✔ four wheel pivots retain car-space axle positions with independent steering and spin axes (3.27038ms)
+2026-10-18T16:40:01.4053643Z ✔ each car carries two independent exhaust vectors and the configured asset identity (1.583173ms)
+2026-10-18T16:40:01.4054794Z ✔ template hierarchy, transforms and source materials stay unchanged after instantiation (1.58718ms)
+2026-10-18T16:40:01.4056112Z ✔ a missing named GLB material fails at instantiation instead of silently leaving it unadapted (1.175573ms)
+2026-10-18T16:40:01.4057263Z ✔ missing processed exhaust metadata fails instead of synthesizing outlet defaults (1.044108ms)
+2026-10-18T16:40:01.4058430Z ✔ body paint masks the original atlas per texel while retaining the native skin color uniform (1.086407ms)
+2026-10-18T16:40:01.4059700Z ✔ body paint shader has an explicit material-program cache key (1.525285ms)
+2026-10-18T16:40:01.4060903Z ✔ real Three clone retains each baked material and shared texture, with honest static wheels and exact identity (2.398264ms)
+2026-10-18T16:40:01.4061981Z ✔ wrong normalization and animated/skinned user meshes fail instead of silently rescaling or pretending wheel rigs (0.797657ms)
+2026-10-18T16:40:01.4063070Z ✔ cache is lazy, deduplicates a request, serializes decode, skips cancelled queued models, and has no unknown fallback (2.267178ms)
+2026-10-18T16:40:01.4064041Z ✔ decode failure rejects accurately, leaves no ready factory, and permits one later real retry (0.517025ms)
+2026-10-18T16:40:01.4064960Z ✔ an in-flight cancelled preview cannot evict the owned model being prepared for native map startup (1.780611ms)
+2026-10-18T16:40:01.4066071Z ✔ bounded cache preserves active cars and starter; removal frees private materials once but not shared assets or native cached textures (3.888333ms)
+2026-10-18T16:40:01.4169672Z ✔ native preview swaps only the home model, is last-request-wins and never mutates selected car or racer physics (44.853129ms)
+2026-10-18T16:40:01.4982761Z ✔ all six actual GLB geometries/material links parse through pinned GLTFLoader and match their identity/normalization (81.099766ms)
+2026-10-18T16:40:01.4992448Z ℹ {"scope":"Actual GLB geometry/material topology; browser bitmap decoding stubbed","models":[{"carId":"starter","sha256":"d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083","triangles":17473,"wheels":4},{"carId":"custom-01","sha256":"14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1","triangles":63998,"wheels":0},{"carId":"custom-02","sha256":"7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69","triangles":18000,"wheels":0},{"carId":"custom-03","sha256":"db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8","triangles":18000,"wheels":0},{"carId":"custom-04","sha256":"475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911","triangles":18000,"wheels":0},{"carId":"custom-05","sha256":"bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323","triangles":18000,"wheels":0}]}
+2026-10-18T16:40:01.5021425Z ℹ tests 18
+2026-10-18T16:40:01.5021797Z ℹ suites 0
+2026-10-18T16:40:01.5022191Z ℹ pass 18
+2026-10-18T16:40:01.5022549Z ℹ fail 0
+2026-10-18T16:40:01.5022892Z ℹ cancelled 0
+2026-10-18T16:40:01.5023236Z ℹ skipped 0
+2026-10-18T16:40:01.5023543Z ℹ todo 0
+2026-10-18T16:40:01.5024014Z ℹ duration_ms 215.361689
+2026-10-18T16:40:01.5151079Z ##[group]Run RACE_NATIVE_PROJECT="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed" node --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/racing-v11-physical-ai.test.mjs
+2026-10-18T16:40:01.5152536Z [36;1mRACE_NATIVE_PROJECT="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed" node --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/racing-v11-physical-ai.test.mjs[0m
+2026-10-18T16:40:01.5215201Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:40:01.5215456Z ##[endgroup]
+2026-10-18T16:40:01.6576919Z ✔ a committed shortcut survives recoverable contact after crossing its nominal start (10.861358ms)
+2026-10-18T16:40:01.6595815Z ✔ route choice is stable per lap and fully missed entrances do not steer across a closed side wall (1.696685ms)
+2026-10-18T16:40:01.6601260Z ✔ native physical entry is followed even when a collision put a cautious rival on the fork (0.396339ms)
+2026-10-18T16:40:01.6612482Z ✔ controller never grants speed, nitro, position or race progress and only emits legal native controls (0.973566ms)
+2026-10-18T16:40:01.6623891Z ✔ physical AI delegates movement to PlayerCar and exposes measured projection for native lap accounting (0.962165ms)
+2026-10-18T16:40:01.9910657Z ✔ native V11 05: two complete race laps physically enter and leave the actual fork (328.371061ms)
+2026-10-18T16:40:02.0391114Z ✔ native V11 05: real entrance-wall impact costs time and preserves a reachable fork commitment (46.137956ms)
+2026-10-18T16:40:02.0720339Z ✔ native V11 05: contact after crossing the entrance can still recover through the actual portal (34.292242ms)
+2026-10-18T16:40:02.3822057Z ✔ native V11 10: two complete race laps physically enter and leave the actual fork (309.510793ms)
+2026-10-18T16:40:02.4141431Z ✔ native V11 10: real entrance-wall impact costs time and preserves a reachable fork commitment (32.1471ms)
+2026-10-18T16:40:02.4341117Z ✔ native V11 10: contact after crossing the entrance can still recover through the actual portal (19.757411ms)
+2026-10-18T16:40:02.6776542Z ✔ native V11 12: two complete race laps physically enter and leave the actual fork (243.313334ms)
+2026-10-18T16:40:02.7024945Z ✔ native V11 12: real entrance-wall impact costs time and preserves a reachable fork commitment (24.772926ms)
+2026-10-18T16:40:02.7206903Z ✔ native V11 12: contact after crossing the entrance can still recover through the actual portal (18.064223ms)
+2026-10-18T16:40:02.9601096Z ✔ native V11 13: two complete race laps physically enter and leave the actual fork (239.249353ms)
+2026-10-18T16:40:02.9851352Z ✔ native V11 13: real entrance-wall impact costs time and preserves a reachable fork commitment (24.125769ms)
+2026-10-18T16:40:03.0039507Z ✔ native V11 13: contact after crossing the entrance can still recover through the actual portal (19.42457ms)
+2026-10-18T16:40:03.2202849Z ✔ native V11 16: two complete race laps physically enter and leave the actual fork (216.111397ms)
+2026-10-18T16:40:03.2414190Z ✔ native V11 16: real entrance-wall impact costs time and preserves a reachable fork commitment (21.077142ms)
+2026-10-18T16:40:03.2579996Z ✔ native V11 16: contact after crossing the entrance can still recover through the actual portal (16.430576ms)
+2026-10-18T16:40:03.4869391Z ✔ native V11 18: two complete race laps physically enter and leave the actual fork (228.42724ms)
+2026-10-18T16:40:03.5069321Z ✔ native V11 18: real entrance-wall impact costs time and preserves a reachable fork commitment (20.162737ms)
+2026-10-18T16:40:03.5204287Z ✔ native V11 18: contact after crossing the entrance can still recover through the actual portal (13.408763ms)
+2026-10-18T16:40:03.9692018Z ✔ native V11 22: actual single-run finish plus two diagnostic loop traversals (448.517056ms)
+2026-10-18T16:40:03.9964237Z ✔ native V11 22: real entrance-wall impact costs time and preserves a reachable fork commitment (27.095768ms)
+2026-10-18T16:40:04.0162530Z ✔ native V11 22: contact after crossing the entrance can still recover through the actual portal (19.728347ms)
+2026-10-18T16:40:04.2418794Z ✔ native V11 25: two complete race laps physically enter and leave the actual fork (225.318532ms)
+2026-10-18T16:40:04.2608370Z ✔ native V11 25: real entrance-wall impact costs time and preserves a reachable fork commitment (18.956938ms)
+2026-10-18T16:40:04.2744050Z ✔ native V11 25: contact after crossing the entrance can still recover through the actual portal (13.463972ms)
+2026-10-18T16:40:04.5068847Z ✔ native V11 27: two complete race laps physically enter and leave the actual fork (232.226496ms)
+2026-10-18T16:40:04.5301891Z ✔ native V11 27: real entrance-wall impact costs time and preserves a reachable fork commitment (23.194622ms)
+2026-10-18T16:40:04.5467636Z ✔ native V11 27: contact after crossing the entrance can still recover through the actual portal (16.445819ms)
+2026-10-18T16:40:04.8068407Z ✔ native V11 30: two complete race laps physically enter and leave the actual fork (259.928516ms)
+2026-10-18T16:40:04.8293086Z ✔ native V11 30: real entrance-wall impact costs time and preserves a reachable fork commitment (22.402265ms)
+2026-10-18T16:40:04.8444380Z ✔ native V11 30: contact after crossing the entrance can still recover through the actual portal (15.04407ms)
+2026-10-18T16:40:04.8460992Z ℹ tests 35
+2026-10-18T16:40:04.8461505Z ℹ suites 0
+2026-10-18T16:40:04.8462006Z ℹ pass 35
+2026-10-18T16:40:04.8462476Z ℹ fail 0
+2026-10-18T16:40:04.8462848Z ℹ cancelled 0
+2026-10-18T16:40:04.8463164Z ℹ skipped 0
+2026-10-18T16:40:04.8463451Z ℹ todo 0
+2026-10-18T16:40:04.8463788Z ℹ duration_ms 3284.860263
+2026-10-18T16:40:04.8619146Z ##[group]Run node --test --test-isolation=none tools/lean-pilot/racing-build-fingerprint-check.mjs
+2026-10-18T16:40:04.8620061Z [36;1mnode --test --test-isolation=none tools/lean-pilot/racing-build-fingerprint-check.mjs[0m
+2026-10-18T16:40:04.8682390Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:40:04.8682646Z ##[endgroup]
+2026-10-18T16:40:05.0415965Z ✔ actual built H5 fingerprint covers all ordered racing runtime sources (35.970282ms)
+2026-10-18T16:40:05.5530205Z RACING_PACING_NATIVE_RESULT={"routeVersion":"v11","engineeringPassed":true,"checks":[{"id":"historical-stage03-cruise","passed":true,"observedM":461.77,"required":">450"},{"id":"stage03-early-decision","passed":true,"observedM":251.92,"firstAboveLowCurvatureM":143.95,"required":"<280; first turn <150"},{"id":"historical-stage22-gap","passed":true,"observedM":1079.93,"required":">800"},{"id":"stage22-race-interval","passed":true,"observedM":221.86,"historicalM":1079.93,"required":"<400 and <50% of historical interval"},{"id":"stage07-race-interval","passed":true,"observedM":275.95,"historicalM":347.96,"required":"<300 and shorter than historical interval"}],"rows":[{"id":"01","beforeLowTurnM":197.98,"afterLowTurnM":281.9,"actualRaceDistanceM":6363.71,"firstAboveLowCurvatureM":185.93,"warning":null},{"id":"02","beforeLowTurnM":189,"afterLowTurnM":287.97,"actualRaceDistanceM":6602.41,"firstAboveLowCurvatureM":191.98,"warning":null},{"id":"03","beforeLowTurnM":461.77,"afterLowTurnM":251.92,"actualRaceDistanceM":6795.71,"firstAboveLowCurvatureM":143.95,"warning":null},{"id":"04","beforeLowTurnM":305.9,"afterLowTurnM":260.97,"actualRaceDistanceM":6776.17,"firstAboveLowCurvatureM":158.98,"warning":null},{"id":"05","beforeLowTurnM":293.9,"afterLowTurnM":284.94,"actualRaceDistanceM":6823.53,"firstAboveLowCurvatureM":149.97,"warning":null},{"id":"06","beforeLowTurnM":128.96,"afterLowTurnM":230.97,"actualRaceDistanceM":6203.17,"firstAboveLowCurvatureM":143.98,"warning":null},{"id":"07","beforeLowTurnM":347.96,"afterLowTurnM":275.95,"actualRaceDistanceM":4112.27,"firstAboveLowCurvatureM":170.97,"warning":null},{"id":"08","beforeLowTurnM":212.91,"afterLowTurnM":209.93,"actualRaceDistanceM":7338.48,"firstAboveLowCurvatureM":137.95,"warning":null},{"id":"09","beforeLowTurnM":215.9,"afterLowTurnM":278.98,"actualRaceDistanceM":6545.44,"firstAboveLowCurvatureM":158.99,"warning":null},{"id":"10","beforeLowTurnM":338.93,"afterLowTurnM":251.94,"actualRaceDistanceM":10557.31,"firstAboveLowCurvatureM":146.96,"warning":null},{"id":"11","beforeLowTurnM":119.99,"afterLowTurnM":212.93,"actualRaceDistanceM":6747.76,"firstAboveLowCurvatureM":152.95,"warning":null},{"id":"12","beforeLowTurnM":296.99,"afterLowTurnM":251.97,"actualRaceDistanceM":7073.18,"firstAboveLowCurvatureM":131.98,"warning":null},{"id":"13","beforeLowTurnM":218.95,"afterLowTurnM":236.99,"actualRaceDistanceM":9893.56,"firstAboveLowCurvatureM":176.99,"warning":null},{"id":"14","beforeLowTurnM":158.99,"afterLowTurnM":272.91,"actualRaceDistanceM":6903.79,"firstAboveLowCurvatureM":167.95,"warning":null},{"id":"15","beforeLowTurnM":245.92,"afterLowTurnM":272.95,"actualRaceDistanceM":10636.01,"firstAboveLowCurvatureM":167.97,"warning":null},{"id":"16","beforeLowTurnM":242.99,"afterLowTurnM":248.94,"actualRaceDistanceM":10776.26,"firstAboveLowCurvatureM":149.96,"warning":null},{"id":"17","beforeLowTurnM":338.91,"afterLowTurnM":228,"actualRaceDistanceM":6764.94,"firstAboveLowCurvatureM":141,"warning":null},{"id":"18","beforeLowTurnM":161.95,"afterLowTurnM":248.97,"actualRaceDistanceM":7076.16,"firstAboveLowCurvatureM":164.98,"warning":null},{"id":"19","beforeLowTurnM":104.99,"afterLowTurnM":236.97,"actualRaceDistanceM":6884.11,"firstAboveLowCurvatureM":143.98,"warning":null},{"id":"20","beforeLowTurnM":131.97,"afterLowTurnM":266.93,"actualRaceDistanceM":7210.16,"firstAboveLowCurvatureM":146.96,"warning":null},{"id":"21","beforeLowTurnM":155.95,"afterLowTurnM":182.99,"actualRaceDistanceM":10850.6,"firstAboveLowCurvatureM":152.99,"warning":null},{"id":"22","beforeLowTurnM":1079.93,"afterLowTurnM":221.86,"actualRaceDistanceM":4272.32,"firstAboveLowCurvatureM":134.92,"warning":null},{"id":"23","beforeLowTurnM":218.96,"afterLowTurnM":207,"actualRaceDistanceM":9518.92,"firstAboveLowCurvatureM":138,"warning":null},{"id":"24","beforeLowTurnM":113.95,"afterLowTurnM":242.96,"actualRaceDistanceM":6940.77,"firstAboveLowCurvatureM":146.97,"warning":null},{"id":"25","beforeLowTurnM":263.97,"afterLowTurnM":269.97,"actualRaceDistanceM":10930.99,"firstAboveLowCurvatureM":170.98,"warning":null},{"id":"26","beforeLowTurnM":158.96,"afterLowTurnM":284.96,"actualRaceDistanceM":10519.59,"firstAboveLowCurvatureM":152.98,"warning":null},{"id":"27","beforeLowTurnM":146.96,"afterLowTurnM":173.96,"actualRaceDistanceM":11022.33,"firstAboveLowCurvatureM":92.98,"warning":null},{"id":"28","beforeLowTurnM":191.99,"afterLowTurnM":293.97,"actualRaceDistanceM":10666.91,"firstAboveLowCurvatureM":155.98,"warning":null},{"id":"29","beforeLowTurnM":242.93,"afterLowTurnM":278.97,"actualRaceDistanceM":11032.67,"firstAboveLowCurvatureM":140.98,"warning":null},{"id":"30","beforeLowTurnM":131.96,"afterLowTurnM":236.96,"actualRaceDistanceM":10882.03,"firstAboveLowCurvatureM":149.97,"warning":null}],"humanPhoneQA":"NOT_RUN"}
+2026-10-18T16:40:05.5558442Z ✔ all 30 actual V11 courses have finish-bounded activity reports against an explicit historical V9 baseline (507.778129ms)
+2026-10-18T16:40:05.5559666Z ℹ tests 2
+2026-10-18T16:40:05.5560018Z ℹ suites 0
+2026-10-18T16:40:05.5560358Z ℹ pass 2
+2026-10-18T16:40:05.5560739Z ℹ fail 0
+2026-10-18T16:40:05.5561158Z ℹ cancelled 0
+2026-10-18T16:40:05.5561582Z ℹ skipped 0
+2026-10-18T16:40:05.5561964Z ℹ todo 0
+2026-10-18T16:40:05.5562405Z ℹ duration_ms 644.069709
+2026-10-18T16:40:05.5708368Z ##[group]Run node tools/lean-pilot/racing-geometry-audit.mjs
+2026-10-18T16:40:05.5708839Z [36;1mnode tools/lean-pilot/racing-geometry-audit.mjs[0m
+2026-10-18T16:40:05.5771246Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:40:05.5771554Z ##[endgroup]
+2026-10-18T16:40:06.2915852Z {"shortcutAudit":{"race-05":{"scene":"egypt","branchLengthM":146.3,"mainSegmentM":175,"physicalSavingM":28.7,"widthM":11.5,"neckWidthM":8.25,"playerProjectionPoints":36,"minMidCorridorClearanceM":2,"physicalTimeProxy":{"mainMeters":175,"branchMeters":146.3,"physicalSavingMeters":28.7,"widthRatio":0.458,"skilled":{"mainSeconds":4.21,"branchSeconds":3.4,"estimatedGainSeconds":0.81,"mainApexCurvature":0.0401,"branchApexCurvature":0.0187,"branchCornerMinMps":43},"novice":{"mainSeconds":4.93,"branchSeconds":3.86,"estimatedGainSeconds":1.07,"branchCornerMinMps":36.5},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-10":{"scene":"city","branchLengthM":175.3,"mainSegmentM":220,"physicalSavingM":44.7,"widthM":11.5,"neckWidthM":8.05,"playerProjectionPoints":44,"minMidCorridorClearanceM":1.7,"physicalTimeProxy":{"mainMeters":220,"branchMeters":175.3,"physicalSavingMeters":44.7,"widthRatio":0.435,"skilled":{"mainSeconds":5.26,"branchSeconds":4.08,"estimatedGainSeconds":1.18,"mainApexCurvature":0.0339,"branchApexCurvature":0.0189,"branchCornerMinMps":43},"novice":{"mainSeconds":6.16,"branchSeconds":4.63,"estimatedGainSeconds":1.53,"branchCornerMinMps":36.4},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-12":{"scene":"snow","branchLengthM":202.8,"mainSegmentM":235,"physicalSavingM":32.2,"widthM":11.5,"neckWidthM":7.95,"playerProjectionPoints":52,"minMidCorridorClearanceM":3.1,"physicalTimeProxy":{"mainMeters":235,"branchMeters":202.8,"physicalSavingMeters":32.2,"widthRatio":0.43,"skilled":{"mainSeconds":5.56,"branchSeconds":4.72,"estimatedGainSeconds":0.84,"mainApexCurvature":0.0354,"branchApexCurvature":0.0129,"branchCornerMinMps":43},"novice":{"mainSeconds":6.43,"branchSeconds":5.34,"estimatedGainSeconds":1.09,"branchCornerMinMps":38},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-13":{"scene":"city","branchLengthM":143.9,"mainSegmentM":175,"physicalSavingM":31.1,"widthM":11.5,"neckWidthM":7.7,"playerProjectionPoints":36,"minMidCorridorClearanceM":1.1,"physicalTimeProxy":{"mainMeters":175,"branchMeters":143.9,"physicalSavingMeters":31.1,"widthRatio":0.416,"skilled":{"mainSeconds":4.18,"branchSeconds":3.35,"estimatedGainSeconds":0.83,"mainApexCurvature":0.0368,"branchApexCurvature":0.0231,"branchCornerMinMps":43},"novice":{"mainSeconds":4.88,"branchSeconds":3.86,"estimatedGainSeconds":1.02,"branchCornerMinMps":32.9},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-16":{"scene":"aegean","branchLengthM":168.1,"mainSegmentM":235,"physicalSavingM":66.9,"widthM":11.5,"neckWidthM":7.65,"playerProjectionPoints":41,"minMidCorridorClearanceM":5.9,"physicalTimeProxy":{"mainMeters":235,"branchMeters":168.1,"physicalSavingMeters":66.9,"widthRatio":0.425,"skilled":{"mainSeconds":5.65,"branchSeconds":3.92,"estimatedGainSeconds":1.73,"mainApexCurvature":0.0355,"branchApexCurvature":0.0248,"branchCornerMinMps":41.6},"novice":{"mainSeconds":6.64,"branchSeconds":4.53,"estimatedGainSeconds":2.11,"branchCornerMinMps":31.7},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-18":{"scene":"egypt","branchLengthM":166,"mainSegmentM":235,"physicalSavingM":69,"widthM":11.5,"neckWidthM":7.5,"playerProjectionPoints":40,"minMidCorridorClearanceM":5.7,"physicalTimeProxy":{"mainMeters":235,"branchMeters":166,"physicalSavingMeters":69,"widthRatio":0.417,"skilled":{"mainSeconds":5.66,"branchSeconds":3.9,"estimatedGainSeconds":1.76,"mainApexCurvature":0.0356,"branchApexCurvature":0.0285,"branchCornerMinMps":38.8},"novice":{"mainSeconds":6.65,"branchSeconds":4.53,"estimatedGainSeconds":2.12,"branchCornerMinMps":29.6},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-22":{"scene":"egypt","branchLengthM":157.4,"mainSegmentM":235,"physicalSavingM":77.6,"widthM":11.5,"neckWidthM":7.35,"playerProjectionPoints":35,"minMidCorridorClearanceM":18.9,"physicalTimeProxy":{"mainMeters":235,"branchMeters":157.4,"physicalSavingMeters":77.6,"widthRatio":0.418,"skilled":{"mainSeconds":5.58,"branchSeconds":4.04,"estimatedGainSeconds":1.54,"mainApexCurvature":0.0343,"branchApexCurvature":0.0557,"branchCornerMinMps":27.8},"novice":{"mainSeconds":6.57,"branchSeconds":4.87,"estimatedGainSeconds":1.7,"branchCornerMinMps":21.2},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-25":{"scene":"city","branchLengthM":156.6,"mainSegmentM":190,"physicalSavingM":33.4,"widthM":11.5,"neckWidthM":7.35,"playerProjectionPoints":40,"minMidCorridorClearanceM":3.2,"physicalTimeProxy":{"mainMeters":190,"branchMeters":156.6,"physicalSavingMeters":33.4,"widthRatio":0.425,"skilled":{"mainSeconds":4.56,"branchSeconds":3.64,"estimatedGainSeconds":0.92,"mainApexCurvature":0.0403,"branchApexCurvature":0.0179,"branchCornerMinMps":43},"novice":{"mainSeconds":5.32,"branchSeconds":4.13,"estimatedGainSeconds":1.19,"branchCornerMinMps":37.4},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-27":{"scene":"aegean","branchLengthM":167.3,"mainSegmentM":235,"physicalSavingM":67.7,"widthM":11.5,"neckWidthM":7.2,"playerProjectionPoints":38,"minMidCorridorClearanceM":13.7,"physicalTimeProxy":{"mainMeters":235,"branchMeters":167.3,"physicalSavingMeters":67.7,"widthRatio":0.419,"skilled":{"mainSeconds":5.58,"branchSeconds":4.19,"estimatedGainSeconds":1.39,"mainApexCurvature":0.0356,"branchApexCurvature":0.0427,"branchCornerMinMps":31.6},"novice":{"mainSeconds":6.56,"branchSeconds":5.03,"estimatedGainSeconds":1.53,"branchCornerMinMps":24.1},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}},"race-30":{"scene":"aegean","branchLengthM":170.4,"mainSegmentM":205,"physicalSavingM":34.6,"widthM":11.5,"neckWidthM":7.05,"playerProjectionPoints":46,"minMidCorridorClearanceM":4.2,"physicalTimeProxy":{"mainMeters":205,"branchMeters":170.4,"physicalSavingMeters":34.6,"widthRatio":0.415,"skilled":{"mainSeconds":4.96,"branchSeconds":4,"estimatedGainSeconds":0.96,"mainApexCurvature":0.0414,"branchApexCurvature":0.0294,"branchCornerMinMps":38.2},"novice":{"mainSeconds":5.84,"branchSeconds":4.66,"estimatedGainSeconds":1.18,"branchCornerMinMps":29.2},"model":"Native physical centerline curvature + speed limit + finite braking/acceleration; NOT timed PlayerCar/AI and NOT evidence of natural human success"}}},"careerCourseCount":30,"courseWidths":{"10":{"scene":"city","lengthM":3522,"turns":7,"sharpPct":13},"11":{"scene":"aegean","lengthM":3376,"turns":9,"sharpPct":11},"12":{"scene":"snow","lengthM":3541,"turns":9,"sharpPct":12},"13":{"scene":"city","lengthM":3302,"turns":11,"sharpPct":18},"14":{"scene":"egypt","lengthM":3458,"turns":11,"sharpPct":12},"15":{"scene":"snow","lengthM":3549,"turns":9,"sharpPct":14},"16":{"scene":"aegean","lengthM":3595,"turns":9,"sharpPct":12},"17":{"scene":"city","lengthM":3385,"turns":9,"sharpPct":15},"18":{"scene":"egypt","lengthM":3542,"turns":9,"sharpPct":13},"19":{"scene":"aegean","lengthM":3446,"turns":11,"sharpPct":13},"20":{"scene":"snow","lengthM":3610,"turns":11,"sharpPct":14},"21":{"scene":"city","lengthM":3617,"turns":9,"sharpPct":12},"22":{"scene":"egypt","lengthM":5089,"turns":11,"sharpPct":11},"23":{"scene":"aegean","lengthM":3180,"turns":11,"sharpPct":15},"24":{"scene":"snow","lengthM":3471,"turns":7,"sharpPct":12},"25":{"scene":"city","lengthM":3647,"turns":11,"sharpPct":14},"26":{"scene":"egypt","lengthM":3511,"turns":9,"sharpPct":11},"27":{"scene":"aegean","lengthM":3684,"turns":9,"sharpPct":14},"28":{"scene":"snow","lengthM":3564,"turns":9,"sharpPct":12},"29":{"scene":"city","lengthM":3681,"turns":11,"sharpPct":15},"30":{"scene":"aegean","lengthM":3633,"turns":11,"sharpPct":14},"01":{"scene":"city","lengthM":3182,"turns":9,"sharpPct":13},"02":{"scene":"egypt","lengthM":3306,"turns":9,"sharpPct":12},"03":{"scene":"city","lengthM":3402,"turns":9,"sharpPct":14},"04":{"scene":"aegean","lengthM":3391,"turns":9,"sharpPct":11},"05":{"scene":"egypt","lengthM":3414,"turns":7,"sharpPct":13},"06":{"scene":"city","lengthM":3105,"turns":11,"sharpPct":17},"07":{"scene":"aegean","lengthM":5020,"turns":10,"sharpPct":9},"08":{"scene":"snow","lengthM":3672,"turns":5,"sharpPct":10},"09":{"scene":"egypt","lengthM":3276,"turns":11,"sharpPct":14}},"buildHash":"893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d","maps":{"city":{"old":{"length":2356,"turns":10,"sharp":6},"next":{"length":2440,"turns":16,"sharp":18,"closePairs":0}},"aegean":{"old":{"length":2499,"turns":2,"sharp":4},"next":{"length":2649,"turns":12,"sharp":13,"closePairs":0}},"egypt":{"old":{"length":2431,"turns":6,"sharp":5},"next":{"length":2498,"turns":10,"sharp":13,"closePairs":0}},"snow":{"old":{"length":2151,"turns":2,"sharp":2},"next":{"length":2283,"turns":7,"sharp":11,"closePairs":0}}}}
+2026-10-18T16:40:06.3031127Z ##[group]Run node tools/lean-pilot/racing-ai-pace-audit.mjs
+2026-10-18T16:40:06.3031582Z [36;1mnode tools/lean-pilot/racing-ai-pace-audit.mjs[0m
+2026-10-18T16:40:06.3095926Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:40:06.3096179Z ##[endgroup]
+2026-10-18T16:40:07.3195542Z {"stage":"01","status":"PASS","finished":5,"racers":5,"timeSec":137.917,"wallCrashes":0,"trafficImpulseEvents":9213}
+2026-10-18T16:40:08.1461554Z {"stage":"02","status":"PASS","finished":5,"racers":5,"timeSec":138.167,"wallCrashes":0,"trafficImpulseEvents":48281}
+2026-10-18T16:40:08.9575499Z {"stage":"03","status":"PASS","finished":5,"racers":5,"timeSec":144.633,"wallCrashes":0,"trafficImpulseEvents":26074}
+2026-10-18T16:40:09.7870511Z {"stage":"04","status":"PASS","finished":5,"racers":5,"timeSec":141.875,"wallCrashes":0,"trafficImpulseEvents":43789}
+2026-10-18T16:40:11.4718553Z {"stage":"05","status":"PASS","finished":5,"racers":5,"timeSec":147.442,"wallCrashes":0,"trafficImpulseEvents":15335}
+2026-10-18T16:40:12.4364069Z {"stage":"06","status":"PASS","finished":5,"racers":5,"timeSec":136.917,"wallCrashes":0,"trafficImpulseEvents":11904}
+2026-10-18T16:40:13.0783279Z {"stage":"07","status":"PASS","finished":5,"racers":5,"timeSec":85.358,"wallCrashes":0,"trafficImpulseEvents":32815}
+2026-10-18T16:40:14.2011514Z {"stage":"08","status":"PASS","finished":5,"racers":5,"timeSec":152.142,"wallCrashes":0,"trafficImpulseEvents":52241}
+2026-10-18T16:40:15.1882198Z {"stage":"09","status":"PASS","finished":5,"racers":5,"timeSec":136.858,"wallCrashes":0,"trafficImpulseEvents":31424}
+2026-10-18T16:40:17.5251206Z {"stage":"10","status":"PASS","finished":5,"racers":5,"timeSec":217.183,"wallCrashes":0,"trafficImpulseEvents":31298}
+2026-10-18T16:40:18.5251934Z {"stage":"11","status":"PASS","finished":5,"racers":5,"timeSec":139.967,"wallCrashes":0,"trafficImpulseEvents":23032}
+2026-10-18T16:40:20.0915366Z {"stage":"12","status":"PASS","finished":5,"racers":5,"timeSec":146.283,"wallCrashes":0,"trafficImpulseEvents":22185}
+2026-10-18T16:40:22.2919756Z {"stage":"13","status":"PASS","finished":5,"racers":5,"timeSec":214.45,"wallCrashes":0,"trafficImpulseEvents":19059}
+2026-10-18T16:40:23.3498086Z {"stage":"14","status":"PASS","finished":5,"racers":5,"timeSec":141.117,"wallCrashes":0,"trafficImpulseEvents":43319}
+2026-10-18T16:40:24.8844147Z {"stage":"15","status":"PASS","finished":5,"racers":5,"timeSec":222.492,"wallCrashes":0,"trafficImpulseEvents":17703}
+2026-10-18T16:40:27.0121287Z {"stage":"16","status":"PASS","finished":5,"racers":5,"timeSec":220.267,"wallCrashes":0,"trafficImpulseEvents":12913}
+2026-10-18T16:40:28.0340284Z {"stage":"17","status":"PASS","finished":5,"racers":5,"timeSec":143.475,"wallCrashes":0,"trafficImpulseEvents":26159}
+2026-10-18T16:40:29.5220222Z {"stage":"18","status":"PASS","finished":5,"racers":5,"timeSec":145.208,"wallCrashes":0,"trafficImpulseEvents":19626}
+2026-10-18T16:40:30.5197751Z {"stage":"19","status":"PASS","finished":5,"racers":5,"timeSec":145.575,"wallCrashes":0,"trafficImpulseEvents":5984}
+2026-10-18T16:40:31.5685999Z {"stage":"20","status":"PASS","finished":5,"racers":5,"timeSec":150.283,"wallCrashes":0,"trafficImpulseEvents":17314}
+2026-10-18T16:40:33.1886942Z {"stage":"21","status":"PASS","finished":5,"racers":5,"timeSec":223.042,"wallCrashes":0,"trafficImpulseEvents":58710}
+2026-10-18T16:40:34.0905256Z {"stage":"22","status":"PASS","finished":5,"racers":5,"timeSec":88.433,"wallCrashes":0,"trafficImpulseEvents":4487}
+2026-10-18T16:40:35.5240250Z {"stage":"23","status":"PASS","finished":5,"racers":5,"timeSec":201.617,"wallCrashes":0,"trafficImpulseEvents":25552}
+2026-10-18T16:40:36.5269961Z {"stage":"24","status":"PASS","finished":5,"racers":5,"timeSec":144.9,"wallCrashes":0,"trafficImpulseEvents":7908}
+2026-10-18T16:40:38.7800752Z {"stage":"25","status":"PASS","finished":5,"racers":5,"timeSec":226.392,"wallCrashes":0,"trafficImpulseEvents":23071}
+2026-10-18T16:40:40.2867394Z {"stage":"26","status":"PASS","finished":5,"racers":5,"timeSec":216.183,"wallCrashes":0,"trafficImpulseEvents":11090}
+2026-10-18T16:40:42.5568332Z {"stage":"27","status":"PASS","finished":5,"racers":5,"timeSec":228.583,"wallCrashes":0,"trafficImpulseEvents":20674}
+2026-10-18T16:40:44.0533856Z {"stage":"28","status":"PASS","finished":5,"racers":5,"timeSec":220.075,"wallCrashes":0,"trafficImpulseEvents":4662}
+2026-10-18T16:40:45.6405208Z {"stage":"29","status":"PASS","finished":5,"racers":5,"timeSec":231.617,"wallCrashes":0,"trafficImpulseEvents":6520}
+2026-10-18T16:40:48.1073192Z {"stage":"30","status":"PASS","finished":5,"racers":5,"timeSec":224.975,"wallCrashes":0,"trafficImpulseEvents":22885}
+2026-10-18T16:40:48.1551354Z {"status":"PASS","checkedStages":30,"finishedRacers":150,"totalRacers":150,"failedStages":[],"sourceUnchanged":true,"buildHash":"893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d","file":"/home/runner/work/ai-mini-game-factory/ai-mini-game-factory/runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/ai-pace-v115-893226cc0792.json"}
+2026-10-18T16:40:48.1759479Z ##[group]Run node tools/lean-pilot/racing-native-player-qa.mjs
+2026-10-18T16:40:48.1760004Z [36;1mnode tools/lean-pilot/racing-native-player-qa.mjs[0m
+2026-10-18T16:40:48.1822193Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:40:48.1822461Z ##[endgroup]
+2026-10-18T16:40:48.5019284Z {"status":"PASS","buildHash":"893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d","checks":12,"failed":[],"artifact":"/home/runner/work/ai-mini-game-factory/ai-mini-game-factory/runs/h5-qq-mobile-20261013/artifacts/racing-v115-native-player/native-player-physics.json","naturalInputsOnly":false}
+2026-10-18T16:40:48.5195296Z ##[group]Run pnpm exec playwright install --with-deps chromium
+2026-10-18T16:40:48.5195807Z [36;1mpnpm exec playwright install --with-deps chromium[0m
+2026-10-18T16:40:48.5258571Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:40:48.5259241Z ##[endgroup]
+2026-10-18T16:40:49.4769965Z Installing dependencies...
+2026-10-18T16:40:49.4851905Z Switching to root user to install dependencies...
+2026-10-18T16:40:49.5680451Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-18T16:40:49.6033303Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-18T16:40:49.6041436Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-18T16:40:49.6043984Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-18T16:40:49.6105105Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-18T16:40:49.6159266Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-18T16:40:49.7303531Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [557 kB]
+2026-10-18T16:40:49.7451129Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+2026-10-18T16:40:49.7500287Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [618 kB]
+2026-10-18T16:40:49.7813379Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1397 kB]
+2026-10-18T16:40:49.7920616Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [308 kB]
+2026-10-18T16:40:49.7950403Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1704 kB]
+2026-10-18T16:40:49.8008709Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+2026-10-18T16:40:49.8040460Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+2026-10-18T16:40:49.8160515Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+2026-10-18T16:40:49.8925771Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1144 kB]
+2026-10-18T16:40:49.8995193Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-18T16:40:49.9017108Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+2026-10-18T16:40:49.9090050Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-10-18T16:40:49.9545381Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+2026-10-18T16:40:49.9654434Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+2026-10-18T16:40:52.9192272Z Fetched 12.5 MB in 1s (9993 kB/s)
+2026-10-18T16:40:53.8335275Z Reading package lists...
+2026-10-18T16:40:53.8575772Z Reading package lists...
+2026-10-18T16:40:54.0545433Z Building dependency tree...
+2026-10-18T16:40:54.0553325Z Reading state information...
+2026-10-18T16:40:54.2005985Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+2026-10-18T16:40:54.2007364Z libasound2t64 set to manually installed.
+2026-10-18T16:40:54.2008516Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:40:54.2009782Z libatk-bridge2.0-0t64 set to manually installed.
+2026-10-18T16:40:54.2010630Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:40:54.2011321Z libatk1.0-0t64 set to manually installed.
+2026-10-18T16:40:54.2012017Z libatspi2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:40:54.2012674Z libatspi2.0-0t64 set to manually installed.
+2026-10-18T16:40:54.2013102Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-18T16:40:54.2013523Z libcairo2 set to manually installed.
+2026-10-18T16:40:54.2013949Z libcups2t64 is already the newest version (2.4.7-1.2ubuntu7.14).
+2026-10-18T16:40:54.2014769Z libcups2t64 set to manually installed.
+2026-10-18T16:40:54.2015464Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-18T16:40:54.2015872Z libdbus-1-3 set to manually installed.
+2026-10-18T16:40:54.2016286Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+2026-10-18T16:40:54.2016684Z libdrm2 set to manually installed.
+2026-10-18T16:40:54.2017073Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+2026-10-18T16:40:54.2017636Z libgbm1 set to manually installed.
+2026-10-18T16:40:54.2018041Z libglib2.0-0t64 is already the newest version (2.80.0-6ubuntu3.9).
+2026-10-18T16:40:54.2018448Z libglib2.0-0t64 set to manually installed.
+2026-10-18T16:40:54.2018855Z libnspr4 is already the newest version (2:4.35-1.1build1).
+2026-10-18T16:40:54.2019748Z libnspr4 set to manually installed.
+2026-10-18T16:40:54.2020416Z libnss3 is already the newest version (2:3.98-1ubuntu0.2).
+2026-10-18T16:40:54.2021093Z libnss3 set to manually installed.
+2026-10-18T16:40:54.2021805Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-18T16:40:54.2022460Z libpango-1.0-0 set to manually installed.
+2026-10-18T16:40:54.2022885Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-18T16:40:54.2023270Z libx11-6 set to manually installed.
+2026-10-18T16:40:54.2023638Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2026-10-18T16:40:54.2024013Z libxcb1 set to manually installed.
+2026-10-18T16:40:54.2024793Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2026-10-18T16:40:54.2025550Z libxcomposite1 set to manually installed.
+2026-10-18T16:40:54.2026243Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2026-10-18T16:40:54.2026653Z libxdamage1 set to manually installed.
+2026-10-18T16:40:54.2027051Z libxext6 is already the newest version (2:1.3.4-1build2).
+2026-10-18T16:40:54.2027411Z libxext6 set to manually installed.
+2026-10-18T16:40:54.2027790Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2026-10-18T16:40:54.2028508Z libxfixes3 set to manually installed.
+2026-10-18T16:40:54.2029881Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2026-10-18T16:40:54.2030819Z libxkbcommon0 set to manually installed.
+2026-10-18T16:40:54.2031597Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2026-10-18T16:40:54.2032294Z libxrandr2 set to manually installed.
+2026-10-18T16:40:54.2032982Z xvfb is already the newest version (2:21.1.12-1ubuntu1.8).
+2026-10-18T16:40:54.2033982Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-18T16:40:54.2034982Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-18T16:40:54.2035719Z libfontconfig1 set to manually installed.
+2026-10-18T16:40:54.2036518Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-10-18T16:40:54.2037266Z libfreetype6 set to manually installed.
+2026-10-18T16:40:54.2037990Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-18T16:40:54.2038723Z fonts-liberation set to manually installed.
+2026-10-18T16:40:54.2039625Z The following additional packages will be installed:
+2026-10-18T16:40:54.2040260Z   xfonts-encodings xfonts-utils
+2026-10-18T16:40:54.2040731Z Recommended packages:
+2026-10-18T16:40:54.2041205Z   fonts-ipafont-mincho fonts-tlwg-loma
+2026-10-18T16:40:54.2192930Z The following NEW packages will be installed:
+2026-10-18T16:40:54.2193866Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-18T16:40:54.2199256Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-10-18T16:40:54.2200154Z   xfonts-utils
+2026-10-18T16:40:54.2368700Z 0 upgraded, 9 newly installed, 0 to remove and 44 not upgraded.
+2026-10-18T16:40:54.2369688Z Need to get 21.1 MB of archives.
+2026-10-18T16:40:54.2370453Z After this operation, 79.5 MB of additional disk space will be used.
+2026-10-18T16:40:54.2371319Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-18T16:40:54.2767698Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-18T16:40:54.3675380Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-10-18T16:40:54.4918158Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-18T16:40:54.5170014Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-10-18T16:40:54.6304650Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-18T16:40:54.8459178Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+2026-10-18T16:40:54.8964987Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-utils amd64 1:7.7+6build3 [94.4 kB]
+2026-10-18T16:40:54.9265182Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 xfonts-cyrillic all 1:1.0.5+nmu1 [384 kB]
+2026-10-18T16:40:54.9876501Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-scalable all 1:1.0.3-1.3 [304 kB]
+2026-10-18T16:40:55.3310480Z Fetched 21.1 MB in 1s (24.6 MB/s)
+2026-10-18T16:40:55.3528592Z Selecting previously unselected package fonts-ipafont-gothic.
+2026-10-18T16:40:55.3827090Z (Reading database ... 
+2026-10-18T16:40:55.3827722Z (Reading database ... 5%
+2026-10-18T16:40:55.3828022Z (Reading database ... 10%
+2026-10-18T16:40:55.3828291Z (Reading database ... 15%
+2026-10-18T16:40:55.3828544Z (Reading database ... 20%
+2026-10-18T16:40:55.3828795Z (Reading database ... 25%
+2026-10-18T16:40:55.3829441Z (Reading database ... 30%
+2026-10-18T16:40:55.3829977Z (Reading database ... 35%
+2026-10-18T16:40:55.3830389Z (Reading database ... 40%
+2026-10-18T16:40:55.3830648Z (Reading database ... 45%
+2026-10-18T16:40:55.3830900Z (Reading database ... 50%
+2026-10-18T16:40:55.3861939Z (Reading database ... 55%
+2026-10-18T16:40:55.4885786Z (Reading database ... 60%
+2026-10-18T16:40:55.6989354Z (Reading database ... 65%
+2026-10-18T16:40:55.8871923Z (Reading database ... 70%
+2026-10-18T16:40:56.0890969Z (Reading database ... 75%
+2026-10-18T16:40:56.2869190Z (Reading database ... 80%
+2026-10-18T16:40:56.4365508Z (Reading database ... 85%
+2026-10-18T16:40:56.6109462Z (Reading database ... 90%
+2026-10-18T16:40:56.7865569Z (Reading database ... 95%
+2026-10-18T16:40:56.7865984Z (Reading database ... 100%
+2026-10-18T16:40:56.7866533Z (Reading database ... 203540 files and directories currently installed.)
+2026-10-18T16:40:56.7909355Z Preparing to unpack .../0-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+2026-10-18T16:40:56.8004792Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-18T16:40:57.0286922Z Selecting previously unselected package fonts-freefont-ttf.
+2026-10-18T16:40:57.0411642Z Preparing to unpack .../1-fonts-freefont-ttf_20211204+svn4273-2_all.deb ...
+2026-10-18T16:40:57.0418456Z Unpacking fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-18T16:40:57.1189814Z Selecting previously unselected package fonts-tlwg-loma-otf.
+2026-10-18T16:40:57.1318657Z Preparing to unpack .../2-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+2026-10-18T16:40:57.1325244Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-18T16:40:57.1522710Z Selecting previously unselected package fonts-unifont.
+2026-10-18T16:40:57.1648317Z Preparing to unpack .../3-fonts-unifont_1%3a15.1.01-1build1_all.deb ...
+2026-10-18T16:40:57.1654841Z Unpacking fonts-unifont (1:15.1.01-1build1) ...
+2026-10-18T16:40:57.2672898Z Selecting previously unselected package fonts-wqy-zenhei.
+2026-10-18T16:40:57.2798213Z Preparing to unpack .../4-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+2026-10-18T16:40:57.2897592Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-18T16:40:57.7426054Z Selecting previously unselected package xfonts-encodings.
+2026-10-18T16:40:57.7552517Z Preparing to unpack .../5-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+2026-10-18T16:40:57.7559528Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-18T16:40:57.7839826Z Selecting previously unselected package xfonts-utils.
+2026-10-18T16:40:57.7967993Z Preparing to unpack .../6-xfonts-utils_1%3a7.7+6build3_amd64.deb ...
+2026-10-18T16:40:57.7975070Z Unpacking xfonts-utils (1:7.7+6build3) ...
+2026-10-18T16:40:57.8317555Z Selecting previously unselected package xfonts-cyrillic.
+2026-10-18T16:40:57.8446889Z Preparing to unpack .../7-xfonts-cyrillic_1%3a1.0.5+nmu1_all.deb ...
+2026-10-18T16:40:57.8453882Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-18T16:40:57.8800201Z Selecting previously unselected package xfonts-scalable.
+2026-10-18T16:40:57.8925220Z Preparing to unpack .../8-xfonts-scalable_1%3a1.0.3-1.3_all.deb ...
+2026-10-18T16:40:57.8931450Z Unpacking xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-18T16:40:57.9341341Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-18T16:40:57.9455482Z Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-18T16:40:57.9474075Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-18T16:40:57.9491516Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-18T16:40:57.9508517Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-18T16:40:57.9575134Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+2026-10-18T16:40:57.9589740Z Setting up fonts-unifont (1:15.1.01-1build1) ...
+2026-10-18T16:40:57.9607791Z Setting up xfonts-utils (1:7.7+6build3) ...
+2026-10-18T16:40:57.9646789Z Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-18T16:40:57.9936371Z Setting up xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-18T16:40:58.0209170Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-10-18T16:40:58.0229217Z Not building database; man-db/auto-update is not 'true'.
+2026-10-18T16:40:58.0244428Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-10-18T16:40:58.7249562Z 
+2026-10-18T16:40:58.7250479Z Running kernel seems to be up-to-date.
+2026-10-18T16:40:58.7250876Z 
+2026-10-18T16:40:58.7251166Z No services need to be restarted.
+2026-10-18T16:40:58.7251852Z 
+2026-10-18T16:40:58.7252114Z No containers need to be restarted.
+2026-10-18T16:40:58.7252433Z 
+2026-10-18T16:40:58.7252744Z No user sessions are running outdated binaries.
+2026-10-18T16:40:58.7253101Z 
+2026-10-18T16:40:58.7253577Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-18T16:40:59.6258524Z Downloading Chrome for Testing 151.0.7922.34 (playwright chromium v1234) from https://cdn.playwright.dev/builds/cft/151.0.7922.34/linux64/chrome-linux64.zip
+2026-10-18T16:41:00.6448067Z |                                                                                |   0% of 184.3 MiB
+2026-10-18T16:41:00.8158758Z |■■■■■■■■                                                                        |  10% of 184.3 MiB
+2026-10-18T16:41:00.9089518Z |■■■■■■■■■■■■■■■■                                                                |  20% of 184.3 MiB
+2026-10-18T16:41:01.0142526Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 184.3 MiB
+2026-10-18T16:41:01.1104042Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 184.3 MiB
+2026-10-18T16:41:01.2090889Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 184.3 MiB
+2026-10-18T16:41:01.3084820Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 184.3 MiB
+2026-10-18T16:41:01.4280321Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 184.3 MiB
+2026-10-18T16:41:01.5219399Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 184.3 MiB
+2026-10-18T16:41:01.6394394Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 184.3 MiB
+2026-10-18T16:41:01.8220767Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 184.3 MiB
+2026-10-18T16:41:04.9577204Z Chrome for Testing 151.0.7922.34 (playwright chromium v1234) downloaded to /home/runner/.cache/ms-playwright/chromium-1234
+2026-10-18T16:41:04.9582023Z Downloading FFmpeg (playwright ffmpeg v1011) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip
+2026-10-18T16:41:05.9128103Z |                                                                                |   0% of 2.3 MiB
+2026-10-18T16:41:05.9163844Z |■■■■■■■■                                                                        |  10% of 2.3 MiB
+2026-10-18T16:41:05.9193281Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.3 MiB
+2026-10-18T16:41:05.9204623Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.3 MiB
+2026-10-18T16:41:05.9222615Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.3 MiB
+2026-10-18T16:41:05.9231373Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.3 MiB
+2026-10-18T16:41:05.9248310Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.3 MiB
+2026-10-18T16:41:05.9260069Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.3 MiB
+2026-10-18T16:41:05.9276834Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.3 MiB
+2026-10-18T16:41:05.9292544Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.3 MiB
+2026-10-18T16:41:05.9301632Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.3 MiB
+2026-10-18T16:41:05.9925541Z FFmpeg (playwright ffmpeg v1011) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1011
+2026-10-18T16:41:05.9929797Z Downloading Chrome Headless Shell 151.0.7922.34 (playwright chromium-headless-shell v1234) from https://cdn.playwright.dev/builds/cft/151.0.7922.34/linux64/chrome-headless-shell-linux64.zip
+2026-10-18T16:41:07.0885330Z |                                                                                |   0% of 114.7 MiB
+2026-10-18T16:41:07.2217131Z |■■■■■■■■                                                                        |  10% of 114.7 MiB
+2026-10-18T16:41:07.3478405Z |■■■■■■■■■■■■■■■■                                                                |  20% of 114.7 MiB
+2026-10-18T16:41:07.4516186Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 114.7 MiB
+2026-10-18T16:41:07.5677469Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 114.7 MiB
+2026-10-18T16:41:07.7074727Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 114.7 MiB
+2026-10-18T16:41:07.8327192Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 114.7 MiB
+2026-10-18T16:41:07.9440765Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 114.7 MiB
+2026-10-18T16:41:08.1317013Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 114.7 MiB
+2026-10-18T16:41:08.3998192Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 114.7 MiB
+2026-10-18T16:41:08.8366955Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 114.7 MiB
+2026-10-18T16:41:11.1259652Z Chrome Headless Shell 151.0.7922.34 (playwright chromium-headless-shell v1234) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1234
+2026-10-18T16:41:11.1623220Z ##[group]Run node tools/lean-pilot/racing-car-garage-qa.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/car-garage-ci
+2026-10-18T16:41:11.1624508Z [36;1mnode tools/lean-pilot/racing-car-garage-qa.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/car-garage-ci[0m
+2026-10-18T16:41:11.1687680Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:41:11.1688104Z ##[endgroup]
+2026-10-18T16:41:11.9731267Z RACING_CAR_CASE_BEGIN=five-cars-and-permanent-rewards
+2026-10-18T16:45:26.8960957Z RACING_CAR_CASE_END={"name":"five-cars-and-permanent-rewards","passed":true,"errors":[]}
+2026-10-18T16:45:26.9020192Z RACING_CAR_CASE_BEGIN=fresh-home-without-sdk
+2026-10-18T16:45:56.0836324Z RACING_CAR_CASE_END={"name":"fresh-home-without-sdk","passed":true,"errors":[]}
+2026-10-18T16:45:56.0859700Z RACING_CAR_CASE_BEGIN=save-failure-never-awards
+2026-10-18T16:46:21.9157306Z RACING_CAR_CASE_END={"name":"save-failure-never-awards","passed":true,"errors":[]}
+2026-10-18T16:46:21.9281041Z RACING_CAR_CASE_BEGIN=desktop-car-preview
+2026-10-18T16:47:25.2110913Z RACING_CAR_CASE_END={"name":"desktop-car-preview","passed":true,"errors":[]}
+2026-10-18T16:47:25.2111954Z RACING_CAR_CASE_BEGIN=stale-native-selection-and-old-paint
+2026-10-18T16:47:42.0472542Z RACING_CAR_CASE_END={"name":"stale-native-selection-and-old-paint","passed":true,"errors":[]}
+2026-10-18T16:47:42.0506819Z RACING_CAR_CASE_BEGIN=standalone-restores-earned-model
+2026-10-18T16:48:08.5910793Z RACING_CAR_CASE_END={"name":"standalone-restores-earned-model","passed":true,"errors":[]}
+2026-10-18T16:48:09.2647996Z {"passed":true,"output":"/home/runner/work/ai-mini-game-factory/ai-mini-game-factory/runs/h5-qq-mobile-20261013/artifacts/car-garage-ci","cases":[{"name":"five-cars-and-permanent-rewards","passed":true},{"name":"fresh-home-without-sdk","passed":true},{"name":"save-failure-never-awards","passed":true},{"name":"desktop-car-preview","passed":true},{"name":"stale-native-selection-and-old-paint","passed":true},{"name":"standalone-restores-earned-model","passed":true}],"errors":[]}
+2026-10-18T16:48:09.2901575Z ##[group]Run node --test --test-isolation=none tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
+2026-10-18T16:48:09.2902774Z [36;1mnode --test --test-isolation=none tools/lean-pilot/racing-fuel-lifecycle-qa.mjs[0m
+2026-10-18T16:48:09.2904627Z [36;1mnode --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke[0m
+2026-10-18T16:48:09.2984011Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:48:09.2984279Z ##[endgroup]
+2026-10-18T16:48:11.2862204Z ✔ V3 resolves fuel policy before accepting the first race (1580.219474ms)
+2026-10-18T16:48:11.6977851Z ✔ V3 native entry cannot bypass zero fuel (411.37468ms)
+2026-10-18T16:48:12.0851743Z ✔ V3 zero fuel disables the primary action even with a 30-unit tank (387.186642ms)
+2026-10-18T16:48:12.5278516Z ✔ V3 countdown double-start never spends the five-unit entry twice (442.463646ms)
+2026-10-18T16:48:12.9978457Z ✔ V3 ignores background starts and requires explicit foreground input (469.806778ms)
+2026-10-18T16:48:13.4431119Z ✔ V3 failed native start preserves fuel and retry remains usable (445.123821ms)
+2026-10-18T16:48:13.8581637Z ✔ V3 write denial keeps session free and exposes a visible storage warning (414.812356ms)
+2026-10-18T16:48:14.2172510Z ✔ V3 settlement actions fit both landscape sizes without requiring a panel scroll (358.862571ms)
+2026-10-18T16:48:14.6255375Z ✔ V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre (408.130425ms)
+2026-10-18T16:48:14.9770834Z ✔ V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge (351.266387ms)
+2026-10-18T16:48:14.9775381Z ℹ tests 10
+2026-10-18T16:48:14.9775765Z ℹ suites 0
+2026-10-18T16:48:14.9776102Z ℹ pass 10
+2026-10-18T16:48:14.9776451Z ℹ fail 0
+2026-10-18T16:48:14.9776833Z ℹ cancelled 0
+2026-10-18T16:48:14.9777339Z ℹ skipped 0
+2026-10-18T16:48:14.9783001Z ℹ todo 0
+2026-10-18T16:48:14.9783746Z ℹ duration_ms 5640.889134
+2026-10-18T16:48:15.3622385Z RACING_QA_BROWSER=complete-chromium; game-state-and-timing-unchanged
+2026-10-18T16:55:37.4850532Z {
+2026-10-18T16:55:37.4851247Z   "passed": false,
+2026-10-18T16:55:37.4851773Z   "views": [
+2026-10-18T16:55:37.4852127Z     "lobby-844x390",
+2026-10-18T16:55:37.4852514Z     "lobby-740x360",
+2026-10-18T16:55:37.4852912Z     "01-city-hard-ranked",
+2026-10-18T16:55:37.4853346Z     "02-egypt-speed",
+2026-10-18T16:55:37.4853726Z     "04-aegean-drift",
+2026-10-18T16:55:37.4854080Z     "05-egypt-items",
+2026-10-18T16:55:37.4854445Z     "07-cliff-technical",
+2026-10-18T16:55:37.4854739Z     "11-serpent-technical",
+2026-10-18T16:55:37.4854984Z     "08-snow-rank",
+2026-10-18T16:55:37.4855251Z     "30-skyline-real-native-final"
+2026-10-18T16:55:37.4855501Z   ],
+2026-10-18T16:55:37.4855680Z   "errors": [
+2026-10-18T16:55:37.4856441Z     "page.waitForFunction: Timeout 45000ms exceeded.\n    at /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/tools/lean-pilot/racing-v3-smoke.mjs:865:19"
+2026-10-18T16:55:37.4857118Z   ]
+2026-10-18T16:55:37.4857287Z }
+2026-10-18T16:55:37.4983515Z ##[error]Process completed with exit code 1.
+2026-10-18T16:55:37.5050606Z ##[group]Run set -euo pipefail
+2026-10-18T16:55:37.5050935Z [36;1mset -euo pipefail[0m
+2026-10-18T16:55:37.5051197Z [36;1mdir=runs/h5-qq-mobile-20261013[0m
+2026-10-18T16:55:37.5051532Z [36;1mmkdir -p "$dir/artifacts/racing-v3-delivery"[0m
+2026-10-18T16:55:37.5051925Z [36;1mif test -f "$dir/workspace/game/index.html"; then[0m
+2026-10-18T16:55:37.5052229Z [36;1m  ([0m
+2026-10-18T16:55:37.5052427Z [36;1m    cd "$dir/workspace/game"[0m
+2026-10-18T16:55:37.5052835Z [36;1m    zip -q -r "$OLDPWD/$dir/artifacts/racing-v3-delivery/qq-speed-v3-h5.zip" ./[0m
+2026-10-18T16:55:37.5053245Z [36;1m  )[0m
+2026-10-18T16:55:37.5053717Z [36;1m  sha256sum "$dir/artifacts/racing-v3-delivery/qq-speed-v3-h5.zip" > "$dir/artifacts/racing-v3-delivery/SHA256SUMS.txt"[0m
+2026-10-18T16:55:37.5054246Z [36;1mfi[0m
+2026-10-18T16:55:37.5054500Z [36;1mif test -f "$dir/artifacts/build-racing.json"; then[0m
+2026-10-18T16:55:37.5055049Z [36;1m  cp "$dir/artifacts/build-racing.json" "$dir/artifacts/racing-v3-delivery/build-racing.json"[0m
+2026-10-18T16:55:37.5055503Z [36;1mfi[0m
+2026-10-18T16:55:37.5118060Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-18T16:55:37.5118398Z ##[endgroup]
+2026-10-18T16:55:38.0690844Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-18T16:55:38.0691278Z with:
+2026-10-18T16:55:38.0691548Z   name: racing-v3-h5-4746f395815ea8986d438e2dee6437b81fa76fa9
+2026-10-18T16:55:38.0692990Z   path: runs/h5-qq-mobile-20261013/artifacts/racing-v3-delivery/*
+runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/*
+runs/h5-qq-mobile-20261013/artifacts/next-stage-ad-browser/*
+runs/h5-qq-mobile-20261013/artifacts/car-garage-ci/*
+runs/h5-qq-mobile-20261013/artifacts/racing-v115-native-player/*
+runs/h5-qq-mobile-20261013/evidence/v32-natural-ci/*
+
+2026-10-18T16:55:38.0694328Z   retention-days: 7
+2026-10-18T16:55:38.0694541Z   if-no-files-found: warn
+2026-10-18T16:55:38.0694770Z   compression-level: 6
+2026-10-18T16:55:38.0694978Z   overwrite: false
+2026-10-18T16:55:38.0695191Z   include-hidden-files: false
+2026-10-18T16:55:38.0695423Z ##[endgroup]
+2026-10-18T16:55:38.2450020Z (node:5234) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-18T16:55:38.2451886Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-18T16:55:38.2726649Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-18T16:55:38.2731879Z The least common ancestor is /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/runs/h5-qq-mobile-20261013. This will be the root directory of the artifact
+2026-10-18T16:55:38.2733597Z With the provided path, there will be 71 files uploaded
+2026-10-18T16:55:38.2734869Z Artifact name is valid!
+2026-10-18T16:55:38.2735529Z Root directory input is valid!
+2026-10-18T16:55:38.5292175Z Beginning upload of artifact content to blob storage
+2026-10-18T16:55:38.8130889Z (node:5234) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-18T16:55:39.2063108Z Uploaded bytes 8388608
+2026-10-18T16:55:39.6170707Z Uploaded bytes 16777216
+2026-10-18T16:55:39.6178002Z Uploaded bytes 25165824
+2026-10-18T16:55:39.7684443Z Uploaded bytes 28866650
+2026-10-18T16:55:39.8083547Z Finished uploading artifact content to blob storage!
+2026-10-18T16:55:39.8084556Z SHA256 digest of uploaded artifact zip is f8544243eace3bf9bea56dd54ab1719540794cf7de0a83ad290d8438efb8fd0b
+2026-10-18T16:55:39.8086200Z Finalizing artifact upload
+2026-10-18T16:55:40.0148127Z Artifact racing-v3-h5-4746f395815ea8986d438e2dee6437b81fa76fa9.zip successfully finalized. Artifact ID 12144155657
+2026-10-18T16:55:40.0149945Z Artifact racing-v3-h5-4746f395815ea8986d438e2dee6437b81fa76fa9 has been successfully uploaded! Final size is 28866650 bytes. Artifact ID is 12144155657
+2026-10-18T16:55:40.0154315Z Artifact download URL: https://github.com/23chen990/ai-mini-game-factory/actions/runs/39145984688/artifacts/12144155657
+2026-10-18T16:55:40.0393933Z Post job cleanup.
+2026-10-18T16:55:40.1271370Z [command]/usr/bin/git version
+2026-10-18T16:55:40.1314792Z git version 2.55.0
+2026-10-18T16:55:40.1357145Z Temporarily overriding HOME='/home/runner/work/_temp/61f50d21-3a5c-4df6-a67a-517f846dfcf2' before making global git config changes
+2026-10-18T16:55:40.1358875Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-18T16:55:40.1364089Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:55:40.1403716Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:55:40.1442355Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:55:40.1700669Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:55:40.1736324Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:55:40.2176304Z Cleaning up orphan processes
+2026-10-18T16:55:40.2486778Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

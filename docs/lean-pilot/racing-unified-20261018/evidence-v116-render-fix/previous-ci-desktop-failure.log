@@ -1,0 +1,2161 @@
+﻿2026-10-18T16:39:22.4885159Z Current runner version: '2.337.0'
+2026-10-18T16:39:22.4910495Z ##[group]Runner Image Provisioner
+2026-10-18T16:39:22.4911410Z Hosted Compute Agent
+2026-10-18T16:39:22.4911983Z Version: 20261012.601
+2026-10-18T16:39:22.4912732Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+2026-10-18T16:39:22.4913802Z Build Date: 2026-10-12T17:48:21Z
+2026-10-18T16:39:22.4914676Z Worker ID: {a9bbe76a-b82d-4324-b71d-a4de08d7d2d4}
+2026-10-18T16:39:22.4915423Z Region: eastus
+2026-10-18T16:39:22.4915967Z Cloud: Azure
+2026-10-18T16:39:22.4916553Z ##[endgroup]
+2026-10-18T16:39:22.4918107Z ##[group]Operating System
+2026-10-18T16:39:22.4918865Z Ubuntu
+2026-10-18T16:39:22.4919692Z 24.04.5
+2026-10-18T16:39:22.4920194Z LTS
+2026-10-18T16:39:22.4920814Z ##[endgroup]
+2026-10-18T16:39:22.4921377Z ##[group]Runner Image
+2026-10-18T16:39:22.4922013Z Image: ubuntu-24.04
+2026-10-18T16:39:22.4922586Z Version: 20261012.334.1
+2026-10-18T16:39:22.4923880Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-18T16:39:22.4925455Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-18T16:39:22.4926453Z ##[endgroup]
+2026-10-18T16:39:22.4927564Z ##[group]GITHUB_TOKEN Permissions
+2026-10-18T16:39:22.4929819Z Contents: read
+2026-10-18T16:39:22.4930490Z Metadata: read
+2026-10-18T16:39:22.4931032Z ##[endgroup]
+2026-10-18T16:39:22.4933376Z Secret source: Actions
+2026-10-18T16:39:22.4934348Z Cache mode: write
+2026-10-18T16:39:22.4935190Z Prepare workflow directory
+2026-10-18T16:39:22.5273326Z Prepare all required actions
+2026-10-18T16:39:22.5322069Z Getting action download info
+2026-10-18T16:39:22.7597614Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-18T16:39:22.8640494Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-18T16:39:22.9479531Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-18T16:39:23.1634164Z Complete job name: cold-start (desktop)
+2026-10-18T16:39:23.2454988Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-18T16:39:23.2456072Z with:
+2026-10-18T16:39:23.2456543Z   ref: 4746f395815ea8986d438e2dee6437b81fa76fa9
+2026-10-18T16:39:23.2457138Z   persist-credentials: false
+2026-10-18T16:39:23.2457681Z   repository: 23chen990/ai-mini-game-factory
+2026-10-18T16:39:23.2462066Z   token: ***
+2026-10-18T16:39:23.2462497Z   ssh-strict: true
+2026-10-18T16:39:23.2462925Z   ssh-user: git
+2026-10-18T16:39:23.2463334Z   clean: true
+2026-10-18T16:39:23.2463775Z   sparse-checkout-cone-mode: true
+2026-10-18T16:39:23.2464293Z   fetch-depth: 1
+2026-10-18T16:39:23.2464712Z   fetch-tags: false
+2026-10-18T16:39:23.2465148Z   show-progress: true
+2026-10-18T16:39:23.2465602Z   lfs: false
+2026-10-18T16:39:23.2466001Z   submodules: false
+2026-10-18T16:39:23.2466469Z   set-safe-directory: true
+2026-10-18T16:39:23.2467584Z ##[endgroup]
+2026-10-18T16:39:23.3538578Z Syncing repository: 23chen990/ai-mini-game-factory
+2026-10-18T16:39:23.3541040Z ##[group]Getting Git version info
+2026-10-18T16:39:23.3541947Z Working directory is '/home/runner/work/ai-mini-game-factory/ai-mini-game-factory'
+2026-10-18T16:39:23.3543087Z [command]/usr/bin/git version
+2026-10-18T16:39:23.3654341Z git version 2.55.0
+2026-10-18T16:39:23.3677896Z ##[endgroup]
+2026-10-18T16:39:23.3693419Z Temporarily overriding HOME='/home/runner/work/_temp/82323366-9466-4c1c-a528-5dd0c638a3a0' before making global git config changes
+2026-10-18T16:39:23.3695795Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-18T16:39:23.3699577Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:39:23.3757035Z Deleting the contents of '/home/runner/work/ai-mini-game-factory/ai-mini-game-factory'
+2026-10-18T16:39:23.3760872Z ##[group]Initializing the repository
+2026-10-18T16:39:23.3765714Z [command]/usr/bin/git init /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:39:23.3900854Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-18T16:39:23.3902960Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-18T16:39:23.3906380Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-18T16:39:23.3907997Z hint: call:
+2026-10-18T16:39:23.3909534Z hint:
+2026-10-18T16:39:23.3910644Z hint: 	git config --global init.defaultBranch <name>
+2026-10-18T16:39:23.3911862Z hint:
+2026-10-18T16:39:23.3913085Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-18T16:39:23.3914859Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-18T16:39:23.3916415Z hint:
+2026-10-18T16:39:23.3917337Z hint: 	git branch -m <name>
+2026-10-18T16:39:23.3918343Z hint:
+2026-10-18T16:39:23.3919804Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-18T16:39:23.3922177Z Initialized empty Git repository in /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/.git/
+2026-10-18T16:39:23.3926275Z [command]/usr/bin/git remote add origin https://github.com/23chen990/ai-mini-game-factory
+2026-10-18T16:39:23.4007103Z ##[endgroup]
+2026-10-18T16:39:23.4008542Z ##[group]Disabling automatic garbage collection
+2026-10-18T16:39:23.4012177Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-18T16:39:23.4048646Z ##[endgroup]
+2026-10-18T16:39:23.4050367Z ##[group]Setting up auth
+2026-10-18T16:39:23.4057813Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:39:23.4096072Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:39:23.4521257Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:39:23.4567299Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:39:23.4806515Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-18T16:39:23.4853552Z ##[endgroup]
+2026-10-18T16:39:23.4855334Z ##[group]Fetching the repository
+2026-10-18T16:39:23.4865371Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 4746f395815ea8986d438e2dee6437b81fa76fa9
+2026-10-18T16:39:26.1556458Z From https://github.com/23chen990/ai-mini-game-factory
+2026-10-18T16:39:26.1558536Z  * branch            4746f395815ea8986d438e2dee6437b81fa76fa9 -> FETCH_HEAD
+2026-10-18T16:39:26.1601306Z ##[endgroup]
+2026-10-18T16:39:26.1602887Z ##[group]Determining the checkout info
+2026-10-18T16:39:26.1604250Z ##[endgroup]
+2026-10-18T16:39:26.1604824Z [command]/usr/bin/git sparse-checkout disable
+2026-10-18T16:39:26.1636686Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-18T16:39:26.1675705Z ##[group]Checking out the ref
+2026-10-18T16:39:26.1690663Z [command]/usr/bin/git checkout --progress --force 4746f395815ea8986d438e2dee6437b81fa76fa9
+2026-10-18T16:39:26.5333165Z Note: switching to '4746f395815ea8986d438e2dee6437b81fa76fa9'.
+2026-10-18T16:39:26.5333764Z 
+2026-10-18T16:39:26.5334173Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-18T16:39:26.5334954Z changes and commit them, and you can discard any commits you make in this
+2026-10-18T16:39:26.5335754Z state without impacting any branches by switching back to a branch.
+2026-10-18T16:39:26.5336232Z 
+2026-10-18T16:39:26.5336584Z If you want to create a new branch to retain commits you create, you may
+2026-10-18T16:39:26.5337748Z do so (now or later) by using -c with the switch command. Example:
+2026-10-18T16:39:26.5338130Z 
+2026-10-18T16:39:26.5338308Z   git switch -c <new-branch-name>
+2026-10-18T16:39:26.5338593Z 
+2026-10-18T16:39:26.5338786Z Or undo this operation with:
+2026-10-18T16:39:26.5339039Z 
+2026-10-18T16:39:26.5339440Z   git switch -
+2026-10-18T16:39:26.5339697Z 
+2026-10-18T16:39:26.5340032Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-18T16:39:26.5340493Z 
+2026-10-18T16:39:26.5364390Z HEAD is now at 4746f39 docs(racing): archive attempt-12 cold-start repair and unchanged-gate browser evidence
+2026-10-18T16:39:26.5409131Z ##[endgroup]
+2026-10-18T16:39:26.5482128Z [command]/usr/bin/git log -1 --format=%H
+2026-10-18T16:39:26.5496668Z 4746f395815ea8986d438e2dee6437b81fa76fa9
+2026-10-18T16:39:26.5499080Z ##[group]Removing auth
+2026-10-18T16:39:26.5500209Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:39:26.5502765Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:39:26.5717535Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:39:26.5748477Z http.https://github.com/.extraheader
+2026-10-18T16:39:26.5757133Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-18T16:39:26.5795348Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:39:26.6017519Z ##[endgroup]
+2026-10-18T16:39:26.6288355Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+2026-10-18T16:39:26.6288935Z with:
+2026-10-18T16:39:26.6289410Z   node-version: 24.x
+2026-10-18T16:39:26.6289753Z   always-auth: false
+2026-10-18T16:39:26.6290088Z   check-latest: false
+2026-10-18T16:39:26.6293315Z   token: ***
+2026-10-18T16:39:26.6293615Z ##[endgroup]
+2026-10-18T16:39:26.7752473Z Found in cache @ /opt/hostedtoolcache/node/24.21.0/x64
+2026-10-18T16:39:26.7756854Z (node:2325) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-18T16:39:26.7757926Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-18T16:39:26.7759734Z ##[group]Environment details
+2026-10-18T16:39:27.2067753Z node: v24.21.0
+2026-10-18T16:39:27.2068584Z npm: 11.19.0
+2026-10-18T16:39:27.2069125Z yarn: 1.22.22
+2026-10-18T16:39:27.2070783Z ##[endgroup]
+2026-10-18T16:39:27.2236132Z ##[group]Run npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+2026-10-18T16:39:27.2236933Z [36;1mnpm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund[0m
+2026-10-18T16:39:27.2237507Z [36;1mpnpm install --frozen-lockfile --ignore-scripts[0m
+2026-10-18T16:39:27.2238169Z [36;1mnode --test templates/web-lite/h5-source-mobile-v1/tests/racing-browser-config.test.mjs[0m
+2026-10-18T16:39:27.2239699Z [36;1mpnpm exec eslint tools/lean-pilot/racing-cold-start-qa.mjs tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-context-isolation.mjs[0m
+2026-10-18T16:39:27.2541973Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:39:27.2542446Z ##[endgroup]
+2026-10-18T16:39:29.0786493Z 
+2026-10-18T16:39:29.0798569Z added 1 package in 2s
+2026-10-18T16:39:29.7832656Z ? Verifying lockfile against supply-chain policies (232 entries)...
+2026-10-18T16:39:29.7925086Z Lockfile is up to date, resolution step is skipped
+2026-10-18T16:39:29.8997689Z Progress: resolved 1, reused 0, downloaded 0, added 0
+2026-10-18T16:39:29.9347025Z Packages: +176
+2026-10-18T16:39:29.9350583Z ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+2026-10-18T16:39:30.8701439Z Packages are hard linked from the content-addressable store to the virtual store.
+2026-10-18T16:39:30.8712262Z   Content-addressable store is at: /home/runner/.local/share/pnpm/store/v11
+2026-10-18T16:39:30.8713725Z   Virtual store is at:             node_modules/.pnpm
+2026-10-18T16:39:30.9015619Z Progress: resolved 176, reused 0, downloaded 61, added 4
+2026-10-18T16:39:31.9033385Z Progress: resolved 176, reused 0, downloaded 173, added 66
+2026-10-18T16:39:32.9162147Z Progress: resolved 176, reused 0, downloaded 174, added 174
+2026-10-18T16:39:33.4122150Z ✓ Lockfile passes supply-chain policies (232 entries in 3.6s)
+2026-10-18T16:39:33.9163046Z Progress: resolved 176, reused 0, downloaded 175, added 175
+2026-10-18T16:39:34.0729758Z Progress: resolved 176, reused 0, downloaded 176, added 176, done
+2026-10-18T16:39:34.2125132Z 
+2026-10-18T16:39:34.2125745Z dependencies:
+2026-10-18T16:39:34.2126336Z + @openai/agents 0.17.0
+2026-10-18T16:39:34.2126833Z + @openai/codex-sdk 0.151.0
+2026-10-18T16:39:34.2127292Z + openai 7.8.0
+2026-10-18T16:39:34.2127958Z + phaser 3.90.0
+2026-10-18T16:39:34.2137633Z + yaml 2.9.0
+2026-10-18T16:39:34.2138154Z + zod 4.4.3
+2026-10-18T16:39:34.2138367Z 
+2026-10-18T16:39:34.2138552Z devDependencies:
+2026-10-18T16:39:34.2138983Z + @eslint/js 9.39.5
+2026-10-18T16:39:34.2139607Z + @playwright/test 1.62.1
+2026-10-18T16:39:34.2140061Z + @types/node 24.13.3
+2026-10-18T16:39:34.2140487Z + eslint 9.39.5
+2026-10-18T16:39:34.2140846Z + tsx 4.23.12
+2026-10-18T16:39:34.2141212Z + typescript 5.9.3
+2026-10-18T16:39:34.2141647Z + typescript-eslint 8.68.0
+2026-10-18T16:39:34.2142008Z + vite 8.2.2
+2026-10-18T16:39:34.2142223Z + vitest 4.1.11
+2026-10-18T16:39:34.2142348Z 
+2026-10-18T16:39:34.2430099Z Done in 5s using pnpm v11.19.0
+2026-10-18T16:39:34.4046471Z ✔ full Chromium changes only QA executable channel, never GPU flags or timeout (1.523889ms)
+2026-10-18T16:39:34.4051635Z ✔ explicit executables, channels and headed choices remain authoritative (0.167914ms)
+2026-10-18T16:39:34.4053868Z ✔ new-headless QA configuration is idempotent without clock/frame-rate switches (0.16607ms)
+2026-10-18T16:39:34.4148758Z ℹ tests 3
+2026-10-18T16:39:34.4149224Z ℹ suites 0
+2026-10-18T16:39:34.4149788Z ℹ pass 3
+2026-10-18T16:39:34.4150255Z ℹ fail 0
+2026-10-18T16:39:34.4152891Z ℹ cancelled 0
+2026-10-18T16:39:34.4153151Z ℹ skipped 0
+2026-10-18T16:39:34.4153387Z ℹ todo 0
+2026-10-18T16:39:34.4153647Z ℹ duration_ms 65.094571
+2026-10-18T16:39:36.0321583Z ##[group]Run set -euo pipefail
+2026-10-18T16:39:36.0321926Z [36;1mset -euo pipefail[0m
+2026-10-18T16:39:36.0322217Z [36;1mmkdir -p "$RUNNER_TEMP/racing-source"[0m
+2026-10-18T16:39:36.0322566Z [36;1mgit -C "$RUNNER_TEMP/racing-source" init -q[0m
+2026-10-18T16:39:36.0323154Z [36;1mgit -C "$RUNNER_TEMP/racing-source" remote add origin https://github.com/riba2534/claude-opus-5-5-demo.git[0m
+2026-10-18T16:39:36.0323970Z [36;1mgit -C "$RUNNER_TEMP/racing-source" fetch --no-tags --depth=1 origin 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8[0m
+2026-10-18T16:39:36.0324577Z [36;1mgit -C "$RUNNER_TEMP/racing-source" checkout -q FETCH_HEAD[0m
+2026-10-18T16:39:36.0325179Z [36;1mtest "$(git -C "$RUNNER_TEMP/racing-source" rev-parse HEAD)" = '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8'[0m
+2026-10-18T16:39:36.0395399Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-18T16:39:36.0395761Z ##[endgroup]
+2026-10-18T16:39:36.2932765Z From https://github.com/riba2534/claude-opus-5-5-demo
+2026-10-18T16:39:36.2933773Z  * branch            54adc1fb64155f9dd7c1c90ecae7b8185ac540b8 -> FETCH_HEAD
+2026-10-18T16:39:36.3148600Z ##[group]Run node tools/lean-pilot/racing-mobile-build.mjs
+2026-10-18T16:39:36.3149062Z [36;1mnode tools/lean-pilot/racing-mobile-build.mjs[0m
+2026-10-18T16:39:36.3215595Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:39:36.3215847Z env:
+2026-10-18T16:39:36.3216124Z   H5_PINNED_SOURCE_ROOT: /home/runner/work/_temp/racing-source
+2026-10-18T16:39:36.3216479Z ##[endgroup]
+2026-10-18T16:39:38.9321220Z {
+2026-10-18T16:39:38.9321789Z   "schemaVersion": 1,
+2026-10-18T16:39:38.9322340Z   "runId": "h5-qq-mobile-20261013",
+2026-10-18T16:39:38.9323185Z   "gameId": "qq-speed",
+2026-10-18T16:39:38.9323608Z   "route": "formal-fixer",
+2026-10-18T16:39:38.9324039Z   "version": "V11.6",
+2026-10-18T16:39:38.9324509Z   "uiRevision": "racing-v116-garage",
+2026-10-18T16:39:38.9325092Z   "aiMode": "native-playercar-physics",
+2026-10-18T16:39:38.9325604Z   "attempt": 3,
+2026-10-18T16:39:38.9326304Z   "inputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10",
+2026-10-18T16:39:38.9327212Z   "generatedCar": {
+2026-10-18T16:39:38.9327677Z     "id": "original-racer-v1",
+2026-10-18T16:39:38.9328199Z     "carId": "starter",
+2026-10-18T16:39:38.9329012Z     "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+2026-10-18T16:39:38.9330221Z     "provider": "Tencent-Hunyuan-3.1-web",
+2026-10-18T16:39:38.9330826Z     "bytes": 1270084,
+2026-10-18T16:39:38.9331395Z     "triangles": 17473,
+2026-10-18T16:39:38.9331883Z     "materials": [
+2026-10-18T16:39:38.9332301Z       "BodyPaint",
+2026-10-18T16:39:38.9332690Z       "Glass",
+2026-10-18T16:39:38.9333032Z       "Tire",
+2026-10-18T16:39:38.9333419Z       "Rim",
+2026-10-18T16:39:38.9333813Z       "Headlight",
+2026-10-18T16:39:38.9334173Z       "Taillight",
+2026-10-18T16:39:38.9334568Z       "Trim"
+2026-10-18T16:39:38.9334891Z     ]
+2026-10-18T16:39:38.9335196Z   },
+2026-10-18T16:39:38.9335512Z   "models": [
+2026-10-18T16:39:38.9335839Z     {
+2026-10-18T16:39:38.9336228Z       "id": "original-racer-v1",
+2026-10-18T16:39:38.9336694Z       "carId": "starter",
+2026-10-18T16:39:38.9337511Z       "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+2026-10-18T16:39:38.9338387Z       "provider": "Tencent-Hunyuan-3.1-web",
+2026-10-18T16:39:38.9338961Z       "file": "original-racer.glb",
+2026-10-18T16:39:38.9339736Z       "bytes": 1270084,
+2026-10-18T16:39:38.9340264Z       "triangles": 17473,
+2026-10-18T16:39:38.9340735Z       "materials": [
+2026-10-18T16:39:38.9341131Z         "BodyPaint",
+2026-10-18T16:39:38.9341506Z         "Glass",
+2026-10-18T16:39:38.9341851Z         "Tire",
+2026-10-18T16:39:38.9342218Z         "Rim",
+2026-10-18T16:39:38.9342624Z         "Headlight",
+2026-10-18T16:39:38.9342973Z         "Taillight",
+2026-10-18T16:39:38.9343307Z         "Trim"
+2026-10-18T16:39:38.9343636Z       ],
+2026-10-18T16:39:38.9343987Z       "paintable": true,
+2026-10-18T16:39:38.9344551Z       "wheelMode": "articulated"
+2026-10-18T16:39:38.9344999Z     },
+2026-10-18T16:39:38.9345293Z     {
+2026-10-18T16:39:38.9345645Z       "id": "custom-01",
+2026-10-18T16:39:38.9346053Z       "carId": "custom-01",
+2026-10-18T16:39:38.9346831Z       "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+2026-10-18T16:39:38.9347668Z       "provider": "user-provided",
+2026-10-18T16:39:38.9348210Z       "file": "custom-racer-01.glb",
+2026-10-18T16:39:38.9348677Z       "bytes": 2700636,
+2026-10-18T16:39:38.9349125Z       "triangles": 63998,
+2026-10-18T16:39:38.9349830Z       "textures": [
+2026-10-18T16:39:38.9350200Z         {
+2026-10-18T16:39:38.9350568Z           "width": 1024,
+2026-10-18T16:39:38.9351033Z           "height": 1024,
+2026-10-18T16:39:38.9351593Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9352084Z         },
+2026-10-18T16:39:38.9352476Z         {
+2026-10-18T16:39:38.9352879Z           "width": 1024,
+2026-10-18T16:39:38.9353375Z           "height": 1024,
+2026-10-18T16:39:38.9353938Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9354540Z         },
+2026-10-18T16:39:38.9354936Z         {
+2026-10-18T16:39:38.9355661Z           "width": 1024,
+2026-10-18T16:39:38.9356223Z           "height": 1024,
+2026-10-18T16:39:38.9356771Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9357252Z         }
+2026-10-18T16:39:38.9357594Z       ],
+2026-10-18T16:39:38.9357945Z       "limits": {
+2026-10-18T16:39:38.9358391Z         "maxTriangles": 64000,
+2026-10-18T16:39:38.9358858Z         "maxBytes": 3670016,
+2026-10-18T16:39:38.9359695Z         "maxTextureSize": 1024
+2026-10-18T16:39:38.9360146Z       },
+2026-10-18T16:39:38.9360512Z       "paintable": false,
+2026-10-18T16:39:38.9361457Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:39:38.9362045Z       "bounds": {
+2026-10-18T16:39:38.9362427Z         "min": [
+2026-10-18T16:39:38.9362854Z           -1.2987256050109863,
+2026-10-18T16:39:38.9363306Z           0,
+2026-10-18T16:39:38.9363726Z           -2.4000000953674316
+2026-10-18T16:39:38.9364144Z         ],
+2026-10-18T16:39:38.9364465Z         "max": [
+2026-10-18T16:39:38.9364897Z           1.2987256050109863,
+2026-10-18T16:39:38.9365370Z           1.2871825695037842,
+2026-10-18T16:39:38.9365793Z           2.4000000953674316
+2026-10-18T16:39:38.9366180Z         ]
+2026-10-18T16:39:38.9366491Z       },
+2026-10-18T16:39:38.9366896Z       "normalization": {
+2026-10-18T16:39:38.9367360Z         "up": "+Y",
+2026-10-18T16:39:38.9367806Z         "forward": "+Z",
+2026-10-18T16:39:38.9368273Z         "groundY": 0,
+2026-10-18T16:39:38.9368703Z         "centerXZ": [
+2026-10-18T16:39:38.9369189Z           0,
+2026-10-18T16:39:38.9369789Z           0
+2026-10-18T16:39:38.9370188Z         ],
+2026-10-18T16:39:38.9370592Z         "lengthM": 4.8,
+2026-10-18T16:39:38.9371066Z         "runtimeScale": 1
+2026-10-18T16:39:38.9371482Z       }
+2026-10-18T16:39:38.9371846Z     },
+2026-10-18T16:39:38.9372188Z     {
+2026-10-18T16:39:38.9372579Z       "id": "custom-02",
+2026-10-18T16:39:38.9373049Z       "carId": "custom-02",
+2026-10-18T16:39:38.9373981Z       "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+2026-10-18T16:39:38.9375108Z       "provider": "user-provided",
+2026-10-18T16:39:38.9375908Z       "file": "custom-racer-02.glb",
+2026-10-18T16:39:38.9376650Z       "bytes": 1381344,
+2026-10-18T16:39:38.9377223Z       "triangles": 18000,
+2026-10-18T16:39:38.9377804Z       "textures": [
+2026-10-18T16:39:38.9378379Z         {
+2026-10-18T16:39:38.9378886Z           "width": 1024,
+2026-10-18T16:39:38.9379726Z           "height": 1024,
+2026-10-18T16:39:38.9380430Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9381071Z         },
+2026-10-18T16:39:38.9381566Z         {
+2026-10-18T16:39:38.9382066Z           "width": 1024,
+2026-10-18T16:39:38.9382656Z           "height": 1024,
+2026-10-18T16:39:38.9383324Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9383967Z         },
+2026-10-18T16:39:38.9384439Z         {
+2026-10-18T16:39:38.9384944Z           "width": 1024,
+2026-10-18T16:39:38.9385556Z           "height": 1024,
+2026-10-18T16:39:38.9386253Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9386917Z         }
+2026-10-18T16:39:38.9387396Z       ],
+2026-10-18T16:39:38.9419098Z       "limits": {
+2026-10-18T16:39:38.9419948Z         "maxTriangles": 18000,
+2026-10-18T16:39:38.9420609Z         "maxBytes": 1572864,
+2026-10-18T16:39:38.9421311Z         "maxTextureSize": 1024
+2026-10-18T16:39:38.9421967Z       },
+2026-10-18T16:39:38.9422523Z       "paintable": false,
+2026-10-18T16:39:38.9423286Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:39:38.9424054Z       "bounds": {
+2026-10-18T16:39:38.9424598Z         "min": [
+2026-10-18T16:39:38.9425134Z           -1.251115083694458,
+2026-10-18T16:39:38.9425755Z           0,
+2026-10-18T16:39:38.9426302Z           -2.4000000953674316
+2026-10-18T16:39:38.9426847Z         ],
+2026-10-18T16:39:38.9427330Z         "max": [
+2026-10-18T16:39:38.9427828Z           1.251115083694458,
+2026-10-18T16:39:38.9428350Z           1.3380991220474243,
+2026-10-18T16:39:38.9428610Z           2.4000000953674316
+2026-10-18T16:39:38.9428852Z         ]
+2026-10-18T16:39:38.9429560Z       },
+2026-10-18T16:39:38.9429808Z       "normalization": {
+2026-10-18T16:39:38.9430046Z         "up": "+Y",
+2026-10-18T16:39:38.9430258Z         "forward": "+Z",
+2026-10-18T16:39:38.9430477Z         "groundY": 0,
+2026-10-18T16:39:38.9430695Z         "centerXZ": [
+2026-10-18T16:39:38.9430895Z           0,
+2026-10-18T16:39:38.9431075Z           0
+2026-10-18T16:39:38.9431253Z         ],
+2026-10-18T16:39:38.9431437Z         "lengthM": 4.8,
+2026-10-18T16:39:38.9431656Z         "runtimeScale": 1
+2026-10-18T16:39:38.9431869Z       }
+2026-10-18T16:39:38.9432249Z     },
+2026-10-18T16:39:38.9432444Z     {
+2026-10-18T16:39:38.9432651Z       "id": "custom-03",
+2026-10-18T16:39:38.9432900Z       "carId": "custom-03",
+2026-10-18T16:39:38.9433353Z       "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+2026-10-18T16:39:38.9433855Z       "provider": "user-provided",
+2026-10-18T16:39:38.9434182Z       "file": "custom-racer-03.glb",
+2026-10-18T16:39:38.9434467Z       "bytes": 1173568,
+2026-10-18T16:39:38.9434717Z       "triangles": 18000,
+2026-10-18T16:39:38.9434967Z       "textures": [
+2026-10-18T16:39:38.9435163Z         {
+2026-10-18T16:39:38.9435372Z           "width": 1024,
+2026-10-18T16:39:38.9435613Z           "height": 1024,
+2026-10-18T16:39:38.9435893Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9436155Z         },
+2026-10-18T16:39:38.9436338Z         {
+2026-10-18T16:39:38.9436543Z           "width": 1024,
+2026-10-18T16:39:38.9436783Z           "height": 1024,
+2026-10-18T16:39:38.9437054Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9437320Z         },
+2026-10-18T16:39:38.9437511Z         {
+2026-10-18T16:39:38.9437694Z           "width": 1024,
+2026-10-18T16:39:38.9437935Z           "height": 1024,
+2026-10-18T16:39:38.9438207Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9438465Z         }
+2026-10-18T16:39:38.9438664Z       ],
+2026-10-18T16:39:38.9438846Z       "limits": {
+2026-10-18T16:39:38.9439099Z         "maxTriangles": 18000,
+2026-10-18T16:39:38.9439620Z         "maxBytes": 1572864,
+2026-10-18T16:39:38.9439913Z         "maxTextureSize": 1024
+2026-10-18T16:39:38.9440156Z       },
+2026-10-18T16:39:38.9440368Z       "paintable": false,
+2026-10-18T16:39:38.9440662Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:39:38.9440955Z       "bounds": {
+2026-10-18T16:39:38.9441190Z         "min": [
+2026-10-18T16:39:38.9441414Z           -1.310964584350586,
+2026-10-18T16:39:38.9441658Z           0,
+2026-10-18T16:39:38.9441867Z           -2.4000000953674316
+2026-10-18T16:39:38.9442106Z         ],
+2026-10-18T16:39:38.9442292Z         "max": [
+2026-10-18T16:39:38.9442515Z           1.310964584350586,
+2026-10-18T16:39:38.9442756Z           1.4491381645202637,
+2026-10-18T16:39:38.9442992Z           2.4000000953674316
+2026-10-18T16:39:38.9443224Z         ]
+2026-10-18T16:39:38.9443398Z       },
+2026-10-18T16:39:38.9443605Z       "normalization": {
+2026-10-18T16:39:38.9443848Z         "up": "+Y",
+2026-10-18T16:39:38.9444080Z         "forward": "+Z",
+2026-10-18T16:39:38.9444324Z         "groundY": 0,
+2026-10-18T16:39:38.9444556Z         "centerXZ": [
+2026-10-18T16:39:38.9444760Z           0,
+2026-10-18T16:39:38.9444961Z           0
+2026-10-18T16:39:38.9445156Z         ],
+2026-10-18T16:39:38.9445368Z         "lengthM": 4.8,
+2026-10-18T16:39:38.9445588Z         "runtimeScale": 1
+2026-10-18T16:39:38.9445824Z       }
+2026-10-18T16:39:38.9446018Z     },
+2026-10-18T16:39:38.9446193Z     {
+2026-10-18T16:39:38.9446403Z       "id": "custom-04",
+2026-10-18T16:39:38.9446626Z       "carId": "custom-04",
+2026-10-18T16:39:38.9447096Z       "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+2026-10-18T16:39:38.9447591Z       "provider": "user-provided",
+2026-10-18T16:39:38.9447898Z       "file": "custom-racer-04.glb",
+2026-10-18T16:39:38.9448182Z       "bytes": 1129904,
+2026-10-18T16:39:38.9448424Z       "triangles": 18000,
+2026-10-18T16:39:38.9448662Z       "textures": [
+2026-10-18T16:39:38.9448880Z         {
+2026-10-18T16:39:38.9449081Z           "width": 1024,
+2026-10-18T16:39:38.9449746Z           "height": 1024,
+2026-10-18T16:39:38.9450048Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9450309Z         },
+2026-10-18T16:39:38.9450482Z         {
+2026-10-18T16:39:38.9450699Z           "width": 1024,
+2026-10-18T16:39:38.9450933Z           "height": 1024,
+2026-10-18T16:39:38.9451213Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9451474Z         },
+2026-10-18T16:39:38.9451645Z         {
+2026-10-18T16:39:38.9451884Z           "width": 1024,
+2026-10-18T16:39:38.9452128Z           "height": 1024,
+2026-10-18T16:39:38.9452592Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9452822Z         }
+2026-10-18T16:39:38.9452994Z       ],
+2026-10-18T16:39:38.9453174Z       "limits": {
+2026-10-18T16:39:38.9453397Z         "maxTriangles": 18000,
+2026-10-18T16:39:38.9453660Z         "maxBytes": 1572864,
+2026-10-18T16:39:38.9453924Z         "maxTextureSize": 1024
+2026-10-18T16:39:38.9454163Z       },
+2026-10-18T16:39:38.9454351Z       "paintable": false,
+2026-10-18T16:39:38.9454619Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:39:38.9454887Z       "bounds": {
+2026-10-18T16:39:38.9455078Z         "min": [
+2026-10-18T16:39:38.9455322Z           -1.3331763744354248,
+2026-10-18T16:39:38.9455539Z           0,
+2026-10-18T16:39:38.9455749Z           -2.4000000953674316
+2026-10-18T16:39:38.9455968Z         ],
+2026-10-18T16:39:38.9456149Z         "max": [
+2026-10-18T16:39:38.9456414Z           1.3331763744354248,
+2026-10-18T16:39:38.9456808Z           1.3121647834777832,
+2026-10-18T16:39:38.9457214Z           2.4000000953674316
+2026-10-18T16:39:38.9457667Z         ]
+2026-10-18T16:39:38.9457996Z       },
+2026-10-18T16:39:38.9458283Z       "normalization": {
+2026-10-18T16:39:38.9458554Z         "up": "+Y",
+2026-10-18T16:39:38.9458779Z         "forward": "+Z",
+2026-10-18T16:39:38.9459166Z         "groundY": 0,
+2026-10-18T16:39:38.9459681Z         "centerXZ": [
+2026-10-18T16:39:38.9459892Z           0,
+2026-10-18T16:39:38.9460078Z           0
+2026-10-18T16:39:38.9460263Z         ],
+2026-10-18T16:39:38.9460577Z         "lengthM": 4.8,
+2026-10-18T16:39:38.9460810Z         "runtimeScale": 1
+2026-10-18T16:39:38.9461025Z       }
+2026-10-18T16:39:38.9461197Z     },
+2026-10-18T16:39:38.9461371Z     {
+2026-10-18T16:39:38.9461556Z       "id": "custom-05",
+2026-10-18T16:39:38.9461778Z       "carId": "custom-05",
+2026-10-18T16:39:38.9462211Z       "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+2026-10-18T16:39:38.9462664Z       "provider": "user-provided",
+2026-10-18T16:39:38.9462955Z       "file": "custom-racer-05.glb",
+2026-10-18T16:39:38.9463213Z       "bytes": 1407812,
+2026-10-18T16:39:38.9463427Z       "triangles": 18000,
+2026-10-18T16:39:38.9463642Z       "textures": [
+2026-10-18T16:39:38.9463836Z         {
+2026-10-18T16:39:38.9464021Z           "width": 1024,
+2026-10-18T16:39:38.9464234Z           "height": 1024,
+2026-10-18T16:39:38.9464479Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9464718Z         },
+2026-10-18T16:39:38.9464898Z         {
+2026-10-18T16:39:38.9465079Z           "width": 1024,
+2026-10-18T16:39:38.9465290Z           "height": 1024,
+2026-10-18T16:39:38.9465534Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9465767Z         },
+2026-10-18T16:39:38.9465942Z         {
+2026-10-18T16:39:38.9466128Z           "width": 1024,
+2026-10-18T16:39:38.9466340Z           "height": 1024,
+2026-10-18T16:39:38.9466581Z           "mimeType": "image/jpeg"
+2026-10-18T16:39:38.9466814Z         }
+2026-10-18T16:39:38.9466985Z       ],
+2026-10-18T16:39:38.9467168Z       "limits": {
+2026-10-18T16:39:38.9467403Z         "maxTriangles": 18000,
+2026-10-18T16:39:38.9467639Z         "maxBytes": 1572864,
+2026-10-18T16:39:38.9467893Z         "maxTextureSize": 1024
+2026-10-18T16:39:38.9468114Z       },
+2026-10-18T16:39:38.9468296Z       "paintable": false,
+2026-10-18T16:39:38.9468554Z       "wheelMode": "static-source-mesh",
+2026-10-18T16:39:38.9468822Z       "bounds": {
+2026-10-18T16:39:38.9469010Z         "min": [
+2026-10-18T16:39:38.9469680Z           -1.2511299848556519,
+2026-10-18T16:39:38.9469953Z           0,
+2026-10-18T16:39:38.9470153Z           -2.4000000953674316
+2026-10-18T16:39:38.9470372Z         ],
+2026-10-18T16:39:38.9470546Z         "max": [
+2026-10-18T16:39:38.9470748Z           1.2511299848556519,
+2026-10-18T16:39:38.9470962Z           1.7879513502120972,
+2026-10-18T16:39:38.9471179Z           2.4000000953674316
+2026-10-18T16:39:38.9471385Z         ]
+2026-10-18T16:39:38.9471559Z       },
+2026-10-18T16:39:38.9471745Z       "normalization": {
+2026-10-18T16:39:38.9471973Z         "up": "+Y",
+2026-10-18T16:39:38.9472312Z         "forward": "+Z",
+2026-10-18T16:39:38.9472525Z         "groundY": 0,
+2026-10-18T16:39:38.9472733Z         "centerXZ": [
+2026-10-18T16:39:38.9472929Z           0,
+2026-10-18T16:39:38.9473105Z           0
+2026-10-18T16:39:38.9473288Z         ],
+2026-10-18T16:39:38.9473474Z         "lengthM": 4.8,
+2026-10-18T16:39:38.9473690Z         "runtimeScale": 1
+2026-10-18T16:39:38.9473903Z       }
+2026-10-18T16:39:38.9474078Z     }
+2026-10-18T16:39:38.9474251Z   ],
+2026-10-18T16:39:38.9474692Z   "userCarManifestSha256": "17f63f08818e0a7e7decdccc7f08fb79326c50fd06d61fc49e2fccf7b8f3c558",
+2026-10-18T16:39:38.9475361Z   "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+2026-10-18T16:39:38.9475890Z   "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+2026-10-18T16:39:38.9477027Z   "originalPhysicsSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+2026-10-18T16:39:38.9478049Z   "driftEventVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+2026-10-18T16:39:38.9479496Z   "originalAiSha256": "2a399dad5831ec9ac8c22b76d837b908ed171f66e7510e5ef80679ef19b78f7e",
+2026-10-18T16:39:38.9480704Z   "generatedAiSha256": "47377c07688e4023d57a8db1167eb3e70fced3b896b5786aca7f86f5ceb805c7",
+2026-10-18T16:39:38.9481957Z   "generatedVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+2026-10-18T16:39:38.9483226Z   "generatedTrackSha256": "336c734656afaf5df0c33ec132743d1e8a3023bfee348db528ab050de31f85de",
+2026-10-18T16:39:38.9484125Z   "genuinePhysicalShortcutStages": [
+2026-10-18T16:39:38.9484586Z     "05",
+2026-10-18T16:39:38.9484876Z     "10",
+2026-10-18T16:39:38.9485159Z     "12",
+2026-10-18T16:39:38.9485443Z     "13",
+2026-10-18T16:39:38.9485725Z     "16",
+2026-10-18T16:39:38.9486006Z     "18",
+2026-10-18T16:39:38.9486281Z     "22",
+2026-10-18T16:39:38.9486564Z     "25",
+2026-10-18T16:39:38.9486844Z     "27",
+2026-10-18T16:39:38.9487123Z     "30"
+2026-10-18T16:39:38.9487414Z   ],
+2026-10-18T16:39:38.9488150Z   "trackGeometrySha256": "307e0ecf8a30214b98049576ac445abe1f7b15a81435d34916bf7afaf1ceb421",
+2026-10-18T16:39:38.9489582Z   "itemVisualSourceSha256": "5c0dd3178540d61a58938fb8e9c67f39481c2e0a4fceb6eb51b3a057799e471e",
+2026-10-18T16:39:38.9490481Z   "buildLog": "dist/index.html 12801 KB",
+2026-10-18T16:39:38.9490962Z   "runtimeEntrypoints": [
+2026-10-18T16:39:38.9491572Z     "workspace/source/qq-speed/src/main.js (Three.js racing)",
+2026-10-18T16:39:38.9492551Z     "workspace/source/qq-speed/src/carModel.js (selected model + preserved native effects)",
+2026-10-18T16:39:38.9493805Z     "workspace/source/qq-speed/src/race-car-loader.mjs (six embedded GLBs, lazy serialized decoding)",
+2026-10-18T16:39:38.9495168Z     "workspace/source/qq-speed/src/race-generated-car.mjs (starter materials and wheel pivots)",
+2026-10-18T16:39:38.9496237Z     "workspace/source/qq-speed/src/race-user-car.mjs (baked user models)",
+2026-10-18T16:39:38.9497454Z     "workspace/source/qq-speed/src/race-car-asset-cache.mjs (bounded shared resources and instance disposal)",
+2026-10-18T16:39:38.9498609Z     "workspace/source/qq-speed/src/ai.js (physical PlayerCar rivals)",
+2026-10-18T16:39:38.9499598Z     "workspace/source/qq-speed/src/race-v11-physical-ai.mjs",
+2026-10-18T16:39:38.9500314Z     "workspace/source/qq-speed/src/v11-course-director.mjs",
+2026-10-18T16:39:38.9501024Z     "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+2026-10-18T16:39:38.9501967Z     "templates/web-lite/h5-source-mobile-v1/racing/garage.mjs",
+2026-10-18T16:39:38.9502781Z     "templates/web-lite/h5-source-mobile-v1/racing/car-thumbnails.mjs",
+2026-10-18T16:39:38.9503603Z     "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+2026-10-18T16:39:38.9504410Z     "templates/web-lite/h5-source-mobile-v1/racing/wheel-steering.mjs",
+2026-10-18T16:39:38.9505226Z     "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+2026-10-18T16:39:38.9505978Z     "templates/web-lite/h5-source-mobile-v1/racing/career.mjs",
+2026-10-18T16:39:38.9506893Z     "templates/web-lite/h5-source-mobile-v1/racing/cosmetics.mjs",
+2026-10-18T16:39:38.9507659Z     "templates/web-lite/h5-source-mobile-v1/racing/items.mjs",
+2026-10-18T16:39:38.9508394Z     "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs",
+2026-10-18T16:39:38.9509159Z     "templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs",
+2026-10-18T16:39:38.9510114Z     "templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs",
+2026-10-18T16:39:38.9510931Z     "templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs",
+2026-10-18T16:39:38.9511741Z     "templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs",
+2026-10-18T16:39:38.9512549Z     "templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs",
+2026-10-18T16:39:38.9513350Z     "templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs",
+2026-10-18T16:39:38.9514199Z     "templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs",
+2026-10-18T16:39:38.9515046Z     "templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs",
+2026-10-18T16:39:38.9515939Z     "templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs",
+2026-10-18T16:39:38.9516887Z     "templates/web-lite/h5-source-mobile-v1/racing/shortcut-decisions.mjs",
+2026-10-18T16:39:38.9517697Z     "templates/web-lite/h5-source-mobile-v1/fuel.mjs",
+2026-10-18T16:39:38.9518410Z     "templates/web-lite/h5-source-mobile-v1/racing/mobile.css"
+2026-10-18T16:39:38.9518959Z   ],
+2026-10-18T16:39:38.9519471Z   "compatibilityOnly": [
+2026-10-18T16:39:38.9520081Z     "templates/web-lite/h5-source-mobile-v1/racing/joystick.mjs",
+2026-10-18T16:39:38.9521009Z     "workspace/source/qq-speed/src/race-v8-rival-ai.mjs (old on-rail AI adapter)",
+2026-10-18T16:39:38.9521761Z     "workspace/game/main.mjs",
+2026-10-18T16:39:38.9522218Z     "workspace/game/engine.mjs",
+2026-10-18T16:39:38.9522974Z     "workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)"
+2026-10-18T16:39:38.9523663Z   ],
+2026-10-18T16:39:38.9524105Z   "trialName": "racing-two-button-893226cc0792.html",
+2026-10-18T16:39:38.9524999Z   "trialSha256": "cfffc0ca59989d6dd21325c8dd6168b4861cc6965a65dcfc9ede44d3722d9329",
+2026-10-18T16:39:38.9525802Z   "builtAt": "2026-10-18T16:39:38.931Z",
+2026-10-18T16:39:38.9526250Z   "publishable": false
+2026-10-18T16:39:38.9526611Z }
+2026-10-18T16:39:38.9578409Z ##[group]Run pnpm exec playwright install --with-deps chromium
+2026-10-18T16:39:38.9578893Z [36;1mpnpm exec playwright install --with-deps chromium[0m
+2026-10-18T16:39:38.9644026Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:39:38.9644288Z ##[endgroup]
+2026-10-18T16:39:39.9417370Z Installing dependencies...
+2026-10-18T16:39:39.9501757Z Switching to root user to install dependencies...
+2026-10-18T16:39:40.0480921Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-18T16:39:40.0719485Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-10-18T16:39:40.0977485Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-10-18T16:39:40.0992917Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-10-18T16:39:40.1045461Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+2026-10-18T16:39:40.1082422Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-10-18T16:39:40.1505467Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [557 kB]
+2026-10-18T16:39:40.1686577Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [618 kB]
+2026-10-18T16:39:40.1763752Z Get:9 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.4 kB]
+2026-10-18T16:39:40.2714851Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1397 kB]
+2026-10-18T16:39:40.2798161Z Get:11 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [308 kB]
+2026-10-18T16:39:40.2831320Z Get:12 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1704 kB]
+2026-10-18T16:39:40.2910344Z Get:13 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [342 kB]
+2026-10-18T16:39:40.2980709Z Get:14 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1805 kB]
+2026-10-18T16:39:40.3049815Z Get:15 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [411 kB]
+2026-10-18T16:39:40.3800015Z Get:16 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1144 kB]
+2026-10-18T16:39:40.3858233Z Get:17 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [231 kB]
+2026-10-18T16:39:40.3881825Z Get:18 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1222 kB]
+2026-10-18T16:39:40.3942253Z Get:19 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [246 kB]
+2026-10-18T16:39:40.4437506Z Get:20 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1713 kB]
+2026-10-18T16:39:40.4517803Z Get:21 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [392 kB]
+2026-10-18T16:39:43.4893303Z Fetched 12.5 MB in 1s (9752 kB/s)
+2026-10-18T16:39:44.4306190Z Reading package lists...
+2026-10-18T16:39:44.4547774Z Reading package lists...
+2026-10-18T16:39:44.6766444Z Building dependency tree...
+2026-10-18T16:39:44.6774152Z Reading state information...
+2026-10-18T16:39:44.8228523Z libasound2t64 is already the newest version (1.2.11-1ubuntu0.3).
+2026-10-18T16:39:44.8229635Z libasound2t64 set to manually installed.
+2026-10-18T16:39:44.8230520Z libatk-bridge2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:39:44.8231417Z libatk-bridge2.0-0t64 set to manually installed.
+2026-10-18T16:39:44.8232170Z libatk1.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:39:44.8232827Z libatk1.0-0t64 set to manually installed.
+2026-10-18T16:39:44.8233519Z libatspi2.0-0t64 is already the newest version (2.52.0-1build1).
+2026-10-18T16:39:44.8233999Z libatspi2.0-0t64 set to manually installed.
+2026-10-18T16:39:44.8234577Z libcairo2 is already the newest version (1.18.0-3build1).
+2026-10-18T16:39:44.8234977Z libcairo2 set to manually installed.
+2026-10-18T16:39:44.8235405Z libcups2t64 is already the newest version (2.4.7-1.2ubuntu7.14).
+2026-10-18T16:39:44.8236322Z libcups2t64 set to manually installed.
+2026-10-18T16:39:44.8237146Z libdbus-1-3 is already the newest version (1.14.10-4ubuntu4.1).
+2026-10-18T16:39:44.8237634Z libdbus-1-3 set to manually installed.
+2026-10-18T16:39:44.8238062Z libdrm2 is already the newest version (2.4.125-1ubuntu0.1~24.04.2).
+2026-10-18T16:39:44.8238472Z libdrm2 set to manually installed.
+2026-10-18T16:39:44.8238875Z libgbm1 is already the newest version (25.2.8-0ubuntu0.24.04.4).
+2026-10-18T16:39:44.8239535Z libgbm1 set to manually installed.
+2026-10-18T16:39:44.8239967Z libglib2.0-0t64 is already the newest version (2.80.0-6ubuntu3.9).
+2026-10-18T16:39:44.8240427Z libglib2.0-0t64 set to manually installed.
+2026-10-18T16:39:44.8240855Z libnspr4 is already the newest version (2:4.35-1.1build1).
+2026-10-18T16:39:44.8241256Z libnspr4 set to manually installed.
+2026-10-18T16:39:44.8241781Z libnss3 is already the newest version (2:3.98-1ubuntu0.2).
+2026-10-18T16:39:44.8242318Z libnss3 set to manually installed.
+2026-10-18T16:39:44.8242750Z libpango-1.0-0 is already the newest version (1.52.1+ds-1build1).
+2026-10-18T16:39:44.8243170Z libpango-1.0-0 set to manually installed.
+2026-10-18T16:39:44.8243581Z libx11-6 is already the newest version (2:1.8.7-1ubuntu0.1).
+2026-10-18T16:39:44.8243956Z libx11-6 set to manually installed.
+2026-10-18T16:39:44.8244315Z libxcb1 is already the newest version (1.15-1ubuntu2).
+2026-10-18T16:39:44.8244939Z libxcb1 set to manually installed.
+2026-10-18T16:39:44.8245655Z libxcomposite1 is already the newest version (1:0.4.5-1build3).
+2026-10-18T16:39:44.8246406Z libxcomposite1 set to manually installed.
+2026-10-18T16:39:44.8247154Z libxdamage1 is already the newest version (1:1.1.6-1build1).
+2026-10-18T16:39:44.8247806Z libxdamage1 set to manually installed.
+2026-10-18T16:39:44.8248409Z libxext6 is already the newest version (2:1.3.4-1build2).
+2026-10-18T16:39:44.8248779Z libxext6 set to manually installed.
+2026-10-18T16:39:44.8249169Z libxfixes3 is already the newest version (1:6.0.0-2build1).
+2026-10-18T16:39:44.8249878Z libxfixes3 set to manually installed.
+2026-10-18T16:39:44.8250298Z libxkbcommon0 is already the newest version (1.6.0-1build1).
+2026-10-18T16:39:44.8250699Z libxkbcommon0 set to manually installed.
+2026-10-18T16:39:44.8251112Z libxrandr2 is already the newest version (2:1.5.2-2build1).
+2026-10-18T16:39:44.8251493Z libxrandr2 set to manually installed.
+2026-10-18T16:39:44.8252076Z xvfb is already the newest version (2:21.1.12-1ubuntu1.8).
+2026-10-18T16:39:44.8253116Z fonts-noto-color-emoji is already the newest version (2.047-0ubuntu0.24.04.1).
+2026-10-18T16:39:44.8254138Z libfontconfig1 is already the newest version (2.15.0-1.1ubuntu2).
+2026-10-18T16:39:44.8254583Z libfontconfig1 set to manually installed.
+2026-10-18T16:39:44.8255047Z libfreetype6 is already the newest version (2.13.2+dfsg-1ubuntu0.2).
+2026-10-18T16:39:44.8255480Z libfreetype6 set to manually installed.
+2026-10-18T16:39:44.8255892Z fonts-liberation is already the newest version (1:2.1.5-3).
+2026-10-18T16:39:44.8256306Z fonts-liberation set to manually installed.
+2026-10-18T16:39:44.8257125Z The following additional packages will be installed:
+2026-10-18T16:39:44.8257847Z   xfonts-encodings xfonts-utils
+2026-10-18T16:39:44.8258367Z Recommended packages:
+2026-10-18T16:39:44.8258882Z   fonts-ipafont-mincho fonts-tlwg-loma
+2026-10-18T16:39:44.8415922Z The following NEW packages will be installed:
+2026-10-18T16:39:44.8416914Z   fonts-freefont-ttf fonts-ipafont-gothic fonts-tlwg-loma-otf fonts-unifont
+2026-10-18T16:39:44.8422498Z   fonts-wqy-zenhei xfonts-cyrillic xfonts-encodings xfonts-scalable
+2026-10-18T16:39:44.8423189Z   xfonts-utils
+2026-10-18T16:39:44.8594102Z 0 upgraded, 9 newly installed, 0 to remove and 44 not upgraded.
+2026-10-18T16:39:44.8594803Z Need to get 21.1 MB of archives.
+2026-10-18T16:39:44.8595484Z After this operation, 79.5 MB of additional disk space will be used.
+2026-10-18T16:39:44.8596266Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-18T16:39:45.0892692Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-ipafont-gothic all 00303-21ubuntu1 [3513 kB]
+2026-10-18T16:39:46.0789600Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 fonts-freefont-ttf all 20211204+svn4273-2 [5641 kB]
+2026-10-18T16:39:46.3452169Z Get:4 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-tlwg-loma-otf all 1:0.7.3-1 [107 kB]
+2026-10-18T16:39:46.4527818Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-unifont all 1:15.1.01-1build1 [2993 kB]
+2026-10-18T16:39:46.5942401Z Get:6 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 fonts-wqy-zenhei all 0.9.45-8 [7472 kB]
+2026-10-18T16:39:46.9270864Z Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-encodings all 1:1.0.5-0ubuntu2 [578 kB]
+2026-10-18T16:39:47.0401522Z Get:8 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-utils amd64 1:7.7+6build3 [94.4 kB]
+2026-10-18T16:39:47.1482420Z Get:9 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 xfonts-cyrillic all 1:1.0.5+nmu1 [384 kB]
+2026-10-18T16:39:47.2586486Z Get:10 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 xfonts-scalable all 1:1.0.3-1.3 [304 kB]
+2026-10-18T16:39:47.5123974Z Fetched 21.1 MB in 2s (8740 kB/s)
+2026-10-18T16:39:47.5358049Z Selecting previously unselected package fonts-ipafont-gothic.
+2026-10-18T16:39:47.5638316Z (Reading database ... 
+2026-10-18T16:39:47.5638799Z (Reading database ... 5%
+2026-10-18T16:39:47.5639140Z (Reading database ... 10%
+2026-10-18T16:39:47.5639923Z (Reading database ... 15%
+2026-10-18T16:39:47.5640599Z (Reading database ... 20%
+2026-10-18T16:39:47.5641052Z (Reading database ... 25%
+2026-10-18T16:39:47.5641490Z (Reading database ... 30%
+2026-10-18T16:39:47.5641902Z (Reading database ... 35%
+2026-10-18T16:39:47.5642611Z (Reading database ... 40%
+2026-10-18T16:39:47.5642876Z (Reading database ... 45%
+2026-10-18T16:39:47.5643242Z (Reading database ... 50%
+2026-10-18T16:39:47.5672749Z (Reading database ... 55%
+2026-10-18T16:39:47.6875376Z (Reading database ... 60%
+2026-10-18T16:39:47.8942079Z (Reading database ... 65%
+2026-10-18T16:39:48.0854522Z (Reading database ... 70%
+2026-10-18T16:39:48.2859370Z (Reading database ... 75%
+2026-10-18T16:39:48.4469859Z (Reading database ... 80%
+2026-10-18T16:39:48.6338453Z (Reading database ... 85%
+2026-10-18T16:39:48.8146225Z (Reading database ... 90%
+2026-10-18T16:39:48.9877823Z (Reading database ... 95%
+2026-10-18T16:39:48.9878482Z (Reading database ... 100%
+2026-10-18T16:39:48.9880273Z (Reading database ... 203540 files and directories currently installed.)
+2026-10-18T16:39:48.9922492Z Preparing to unpack .../0-fonts-ipafont-gothic_00303-21ubuntu1_all.deb ...
+2026-10-18T16:39:49.0018975Z Unpacking fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-18T16:39:49.2339713Z Selecting previously unselected package fonts-freefont-ttf.
+2026-10-18T16:39:49.2470010Z Preparing to unpack .../1-fonts-freefont-ttf_20211204+svn4273-2_all.deb ...
+2026-10-18T16:39:49.2484474Z Unpacking fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-18T16:39:49.3267987Z Selecting previously unselected package fonts-tlwg-loma-otf.
+2026-10-18T16:39:49.3396940Z Preparing to unpack .../2-fonts-tlwg-loma-otf_1%3a0.7.3-1_all.deb ...
+2026-10-18T16:39:49.3403716Z Unpacking fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-18T16:39:49.3602358Z Selecting previously unselected package fonts-unifont.
+2026-10-18T16:39:49.3730577Z Preparing to unpack .../3-fonts-unifont_1%3a15.1.01-1build1_all.deb ...
+2026-10-18T16:39:49.3737851Z Unpacking fonts-unifont (1:15.1.01-1build1) ...
+2026-10-18T16:39:49.4786884Z Selecting previously unselected package fonts-wqy-zenhei.
+2026-10-18T16:39:49.4914441Z Preparing to unpack .../4-fonts-wqy-zenhei_0.9.45-8_all.deb ...
+2026-10-18T16:39:49.5014382Z Unpacking fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-18T16:39:49.9729510Z Selecting previously unselected package xfonts-encodings.
+2026-10-18T16:39:49.9857202Z Preparing to unpack .../5-xfonts-encodings_1%3a1.0.5-0ubuntu2_all.deb ...
+2026-10-18T16:39:49.9863507Z Unpacking xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-18T16:39:50.0144673Z Selecting previously unselected package xfonts-utils.
+2026-10-18T16:39:50.0273587Z Preparing to unpack .../6-xfonts-utils_1%3a7.7+6build3_amd64.deb ...
+2026-10-18T16:39:50.0281657Z Unpacking xfonts-utils (1:7.7+6build3) ...
+2026-10-18T16:39:50.0628002Z Selecting previously unselected package xfonts-cyrillic.
+2026-10-18T16:39:50.0755389Z Preparing to unpack .../7-xfonts-cyrillic_1%3a1.0.5+nmu1_all.deb ...
+2026-10-18T16:39:50.0764226Z Unpacking xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-18T16:39:50.1094399Z Selecting previously unselected package xfonts-scalable.
+2026-10-18T16:39:50.1223755Z Preparing to unpack .../8-xfonts-scalable_1%3a1.0.3-1.3_all.deb ...
+2026-10-18T16:39:50.1231089Z Unpacking xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-18T16:39:50.1675696Z Setting up fonts-wqy-zenhei (0.9.45-8) ...
+2026-10-18T16:39:50.1790610Z Setting up fonts-freefont-ttf (20211204+svn4273-2) ...
+2026-10-18T16:39:50.1807421Z Setting up fonts-tlwg-loma-otf (1:0.7.3-1) ...
+2026-10-18T16:39:50.1826048Z Setting up xfonts-encodings (1:1.0.5-0ubuntu2) ...
+2026-10-18T16:39:50.1843184Z Setting up fonts-ipafont-gothic (00303-21ubuntu1) ...
+2026-10-18T16:39:50.1908180Z update-alternatives: using /usr/share/fonts/opentype/ipafont-gothic/ipag.ttf to provide /usr/share/fonts/truetype/fonts-japanese-gothic.ttf (fonts-japanese-gothic.ttf) in auto mode
+2026-10-18T16:39:50.1922727Z Setting up fonts-unifont (1:15.1.01-1build1) ...
+2026-10-18T16:39:50.1940648Z Setting up xfonts-utils (1:7.7+6build3) ...
+2026-10-18T16:39:50.1979892Z Setting up xfonts-cyrillic (1:1.0.5+nmu1) ...
+2026-10-18T16:39:50.2276018Z Setting up xfonts-scalable (1:1.0.3-1.3) ...
+2026-10-18T16:39:50.2559935Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-10-18T16:39:50.2582079Z Not building database; man-db/auto-update is not 'true'.
+2026-10-18T16:39:50.2598847Z Processing triggers for fontconfig (2.15.0-1.1ubuntu2) ...
+2026-10-18T16:39:50.9843592Z 
+2026-10-18T16:39:50.9844336Z Running kernel seems to be up-to-date.
+2026-10-18T16:39:50.9844775Z 
+2026-10-18T16:39:50.9845091Z No services need to be restarted.
+2026-10-18T16:39:50.9845404Z 
+2026-10-18T16:39:50.9845674Z No containers need to be restarted.
+2026-10-18T16:39:50.9845981Z 
+2026-10-18T16:39:50.9846302Z No user sessions are running outdated binaries.
+2026-10-18T16:39:50.9846680Z 
+2026-10-18T16:39:50.9847179Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-18T16:39:51.9252995Z Downloading Chrome for Testing 151.0.7922.34 (playwright chromium v1234) from https://cdn.playwright.dev/builds/cft/151.0.7922.34/linux64/chrome-linux64.zip
+2026-10-18T16:39:52.9282328Z |                                                                                |   0% of 184.3 MiB
+2026-10-18T16:39:53.2946903Z |■■■■■■■■                                                                        |  10% of 184.3 MiB
+2026-10-18T16:39:53.4171055Z |■■■■■■■■■■■■■■■■                                                                |  20% of 184.3 MiB
+2026-10-18T16:39:53.5134034Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 184.3 MiB
+2026-10-18T16:39:53.6063550Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 184.3 MiB
+2026-10-18T16:39:53.6884414Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 184.3 MiB
+2026-10-18T16:39:53.7692019Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 184.3 MiB
+2026-10-18T16:39:53.8506405Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 184.3 MiB
+2026-10-18T16:39:53.9153015Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 184.3 MiB
+2026-10-18T16:39:54.0218001Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 184.3 MiB
+2026-10-18T16:39:54.1192669Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 184.3 MiB
+2026-10-18T16:39:57.3618209Z Chrome for Testing 151.0.7922.34 (playwright chromium v1234) downloaded to /home/runner/.cache/ms-playwright/chromium-1234
+2026-10-18T16:39:57.3622767Z Downloading FFmpeg (playwright ffmpeg v1011) from https://cdn.playwright.dev/dbazure/download/playwright/builds/ffmpeg/1011/ffmpeg-linux.zip
+2026-10-18T16:39:58.3221598Z |                                                                                |   0% of 2.3 MiB
+2026-10-18T16:39:58.3254881Z |■■■■■■■■                                                                        |  10% of 2.3 MiB
+2026-10-18T16:39:58.3285120Z |■■■■■■■■■■■■■■■■                                                                |  20% of 2.3 MiB
+2026-10-18T16:39:58.3306325Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 2.3 MiB
+2026-10-18T16:39:58.3323278Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 2.3 MiB
+2026-10-18T16:39:58.3336924Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 2.3 MiB
+2026-10-18T16:39:58.3349376Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 2.3 MiB
+2026-10-18T16:39:58.3405212Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 2.3 MiB
+2026-10-18T16:39:58.3420555Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 2.3 MiB
+2026-10-18T16:39:58.3436097Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 2.3 MiB
+2026-10-18T16:39:58.3446140Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 2.3 MiB
+2026-10-18T16:39:58.4056322Z FFmpeg (playwright ffmpeg v1011) downloaded to /home/runner/.cache/ms-playwright/ffmpeg-1011
+2026-10-18T16:39:58.4058697Z Downloading Chrome Headless Shell 151.0.7922.34 (playwright chromium-headless-shell v1234) from https://cdn.playwright.dev/builds/cft/151.0.7922.34/linux64/chrome-headless-shell-linux64.zip
+2026-10-18T16:39:59.3899131Z |                                                                                |   0% of 114.7 MiB
+2026-10-18T16:39:59.5887569Z |■■■■■■■■                                                                        |  10% of 114.7 MiB
+2026-10-18T16:39:59.7240056Z |■■■■■■■■■■■■■■■■                                                                |  20% of 114.7 MiB
+2026-10-18T16:39:59.7882616Z |■■■■■■■■■■■■■■■■■■■■■■■■                                                        |  30% of 114.7 MiB
+2026-10-18T16:39:59.8391324Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                                |  40% of 114.7 MiB
+2026-10-18T16:39:59.8961274Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                        |  50% of 114.7 MiB
+2026-10-18T16:39:59.9504860Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                                |  60% of 114.7 MiB
+2026-10-18T16:39:59.9907493Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                        |  70% of 114.7 MiB
+2026-10-18T16:40:00.0484762Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■                |  80% of 114.7 MiB
+2026-10-18T16:40:00.0886612Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■        |  90% of 114.7 MiB
+2026-10-18T16:40:00.1228631Z |■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■| 100% of 114.7 MiB
+2026-10-18T16:40:02.4214667Z Chrome Headless Shell 151.0.7922.34 (playwright chromium-headless-shell v1234) downloaded to /home/runner/.cache/ms-playwright/chromium_headless_shell-1234
+2026-10-18T16:40:02.4618358Z ##[group]Run node --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-cold-start-qa.mjs desktop
+2026-10-18T16:40:02.4619898Z [36;1mnode --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-cold-start-qa.mjs desktop[0m
+2026-10-18T16:40:02.4685425Z shell: /usr/bin/bash -e {0}
+2026-10-18T16:40:02.4685691Z ##[endgroup]
+2026-10-18T16:40:02.8585546Z RACING_QA_BROWSER=complete-chromium; game-state-and-timing-unchanged
+2026-10-18T16:41:24.3895000Z {
+2026-10-18T16:41:24.3895490Z   "mode": "desktop",
+2026-10-18T16:41:24.3895957Z   "productionGate": true,
+2026-10-18T16:41:24.3896402Z   "experiment": null,
+2026-10-18T16:41:24.3896862Z   "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+2026-10-18T16:41:24.3897640Z   "scope": "Chromium software WebGL; not physical handset or human QA",
+2026-10-18T16:41:24.3898268Z   "styles": [
+2026-10-18T16:41:24.3898573Z     {
+2026-10-18T16:41:24.3902036Z       "width": 667,
+2026-10-18T16:41:24.3902505Z       "height": 320,
+2026-10-18T16:41:24.3902876Z       "platform": "touch",
+2026-10-18T16:41:24.3903274Z       "itemMode": false,
+2026-10-18T16:41:24.3903671Z       "visible": false
+2026-10-18T16:41:24.3903993Z     },
+2026-10-18T16:41:24.3904262Z     {
+2026-10-18T16:41:24.3904532Z       "width": 667,
+2026-10-18T16:41:24.3904853Z       "height": 320,
+2026-10-18T16:41:24.3905183Z       "platform": "touch",
+2026-10-18T16:41:24.3905499Z       "itemMode": true,
+2026-10-18T16:41:24.3905805Z       "visible": true
+2026-10-18T16:41:24.3906079Z     },
+2026-10-18T16:41:24.3906342Z     {
+2026-10-18T16:41:24.3906592Z       "width": 667,
+2026-10-18T16:41:24.3906866Z       "height": 320,
+2026-10-18T16:41:24.3907160Z       "platform": "desktop",
+2026-10-18T16:41:24.3907514Z       "itemMode": false,
+2026-10-18T16:41:24.3907935Z       "visible": false
+2026-10-18T16:41:24.3908258Z     },
+2026-10-18T16:41:24.3908571Z     {
+2026-10-18T16:41:24.3908887Z       "width": 667,
+2026-10-18T16:41:24.3909558Z       "height": 320,
+2026-10-18T16:41:24.3909986Z       "platform": "desktop",
+2026-10-18T16:41:24.3910591Z       "itemMode": true,
+2026-10-18T16:41:24.3910928Z       "visible": false
+2026-10-18T16:41:24.3911233Z     },
+2026-10-18T16:41:24.3911489Z     {
+2026-10-18T16:41:24.3911755Z       "width": 844,
+2026-10-18T16:41:24.3912082Z       "height": 390,
+2026-10-18T16:41:24.3912462Z       "platform": "touch",
+2026-10-18T16:41:24.3912928Z       "itemMode": false,
+2026-10-18T16:41:24.3913343Z       "visible": false
+2026-10-18T16:41:24.3913739Z     },
+2026-10-18T16:41:24.3914020Z     {
+2026-10-18T16:41:24.3914366Z       "width": 844,
+2026-10-18T16:41:24.3914729Z       "height": 390,
+2026-10-18T16:41:24.3915106Z       "platform": "touch",
+2026-10-18T16:41:24.3915477Z       "itemMode": true,
+2026-10-18T16:41:24.3915862Z       "visible": true
+2026-10-18T16:41:24.3916217Z     },
+2026-10-18T16:41:24.3916484Z     {
+2026-10-18T16:41:24.3916795Z       "width": 844,
+2026-10-18T16:41:24.3917117Z       "height": 390,
+2026-10-18T16:41:24.3917496Z       "platform": "desktop",
+2026-10-18T16:41:24.3917899Z       "itemMode": false,
+2026-10-18T16:41:24.3918253Z       "visible": false
+2026-10-18T16:41:24.3918620Z     },
+2026-10-18T16:41:24.3918880Z     {
+2026-10-18T16:41:24.3919431Z       "width": 844,
+2026-10-18T16:41:24.3919767Z       "height": 390,
+2026-10-18T16:41:24.3920146Z       "platform": "desktop",
+2026-10-18T16:41:24.3920537Z       "itemMode": true,
+2026-10-18T16:41:24.3920931Z       "visible": false
+2026-10-18T16:41:24.3921283Z     },
+2026-10-18T16:41:24.3921571Z     {
+2026-10-18T16:41:24.3921898Z       "width": 1366,
+2026-10-18T16:41:24.3922256Z       "height": 768,
+2026-10-18T16:41:24.3922634Z       "platform": "touch",
+2026-10-18T16:41:24.3923037Z       "itemMode": false,
+2026-10-18T16:41:24.3923383Z       "visible": false
+2026-10-18T16:41:24.3923748Z     },
+2026-10-18T16:41:24.3924024Z     {
+2026-10-18T16:41:24.3924343Z       "width": 1366,
+2026-10-18T16:41:24.3924699Z       "height": 768,
+2026-10-18T16:41:24.3925413Z       "platform": "touch",
+2026-10-18T16:41:24.3925853Z       "itemMode": true,
+2026-10-18T16:41:24.3926205Z       "visible": true
+2026-10-18T16:41:24.3926742Z     },
+2026-10-18T16:41:24.3927012Z     {
+2026-10-18T16:41:24.3927288Z       "width": 1366,
+2026-10-18T16:41:24.3927594Z       "height": 768,
+2026-10-18T16:41:24.3927990Z       "platform": "desktop",
+2026-10-18T16:41:24.3928363Z       "itemMode": false,
+2026-10-18T16:41:24.3928748Z       "visible": false
+2026-10-18T16:41:24.3929103Z     },
+2026-10-18T16:41:24.3934219Z     {
+2026-10-18T16:41:24.3934549Z       "width": 1366,
+2026-10-18T16:41:24.3934893Z       "height": 768,
+2026-10-18T16:41:24.3935249Z       "platform": "desktop",
+2026-10-18T16:41:24.3935699Z       "itemMode": true,
+2026-10-18T16:41:24.3936070Z       "visible": false
+2026-10-18T16:41:24.3936406Z     }
+2026-10-18T16:41:24.3936690Z   ],
+2026-10-18T16:41:24.3936986Z   "snapshots": [
+2026-10-18T16:41:24.3937340Z     {
+2026-10-18T16:41:24.3937624Z       "when": "ready",
+2026-10-18T16:41:24.3938070Z       "at": 23196.400000000023,
+2026-10-18T16:41:24.3938477Z       "state": "menu",
+2026-10-18T16:41:24.3938832Z       "phase": "ready",
+2026-10-18T16:41:24.3939519Z       "hasPlayer": false,
+2026-10-18T16:41:24.3940046Z       "raceTime": 0.05,
+2026-10-18T16:41:24.3940604Z       "gameTime": 0.13870000000001165,
+2026-10-18T16:41:24.3941169Z       "quality": "mid",
+2026-10-18T16:41:24.3941678Z       "pixelRatio": 1,
+2026-10-18T16:41:24.3942148Z       "composer": true,
+2026-10-18T16:41:24.3942625Z       "antialias": true,
+2026-10-18T16:41:24.3943149Z       "drawingBuffer": [
+2026-10-18T16:41:24.3943663Z         1366,
+2026-10-18T16:41:24.3944059Z         768
+2026-10-18T16:41:24.3944470Z       ],
+2026-10-18T16:41:24.3944959Z       "visibility": "visible",
+2026-10-18T16:41:24.3945495Z       "focus": true,
+2026-10-18T16:41:24.3945990Z       "platform": "desktop",
+2026-10-18T16:41:24.3946480Z       "note": "",
+2026-10-18T16:41:24.3946927Z       "disabled": false,
+2026-10-18T16:41:24.3947390Z       "countdown": "",
+2026-10-18T16:41:24.3947759Z       "life": [
+2026-10-18T16:41:24.3948063Z         {
+2026-10-18T16:41:24.3948406Z           "type": "pageshow",
+2026-10-18T16:41:24.3948876Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.3949585Z           "visibility": "visible",
+2026-10-18T16:41:24.3950035Z           "focus": true
+2026-10-18T16:41:24.3950409Z         }
+2026-10-18T16:41:24.3950718Z       ]
+2026-10-18T16:41:24.3951000Z     },
+2026-10-18T16:41:24.3951317Z     {
+2026-10-18T16:41:24.3951654Z       "when": "after-click",
+2026-10-18T16:41:24.3952099Z       "at": 26909.100000000006,
+2026-10-18T16:41:24.3952516Z       "state": "countdown",
+2026-10-18T16:41:24.3952928Z       "phase": "countdown",
+2026-10-18T16:41:24.3953335Z       "hasPlayer": true,
+2026-10-18T16:41:24.3953724Z       "cdT": 0,
+2026-10-18T16:41:24.3954083Z       "raceTime": 0,
+2026-10-18T16:41:24.3954539Z       "gameTime": 0.3211000000000349,
+2026-10-18T16:41:24.3955005Z       "quality": "mid",
+2026-10-18T16:41:24.3955403Z       "pixelRatio": 1,
+2026-10-18T16:41:24.3955791Z       "composer": true,
+2026-10-18T16:41:24.3956180Z       "antialias": true,
+2026-10-18T16:41:24.3956586Z       "drawingBuffer": [
+2026-10-18T16:41:24.3956964Z         1366,
+2026-10-18T16:41:24.3957254Z         768
+2026-10-18T16:41:24.3957585Z       ],
+2026-10-18T16:41:24.3957952Z       "visibility": "visible",
+2026-10-18T16:41:24.3958365Z       "focus": true,
+2026-10-18T16:41:24.3958735Z       "platform": "desktop",
+2026-10-18T16:41:24.3959112Z       "note": "",
+2026-10-18T16:41:24.3959805Z       "disabled": true,
+2026-10-18T16:41:24.3960200Z       "countdown": "",
+2026-10-18T16:41:24.3960562Z       "life": [
+2026-10-18T16:41:24.3960858Z         {
+2026-10-18T16:41:24.3961196Z           "type": "pageshow",
+2026-10-18T16:41:24.3961645Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.3962124Z           "visibility": "visible",
+2026-10-18T16:41:24.3962560Z           "focus": true
+2026-10-18T16:41:24.3962925Z         }
+2026-10-18T16:41:24.3963204Z       ],
+2026-10-18T16:41:24.3963815Z       "speed": 0,
+2026-10-18T16:41:24.3964196Z       "steer": 0
+2026-10-18T16:41:24.3964518Z     },
+2026-10-18T16:41:24.3965025Z     {
+2026-10-18T16:41:24.3965376Z       "when": "after-click",
+2026-10-18T16:41:24.3965820Z       "at": 27915.400000000023,
+2026-10-18T16:41:24.3966239Z       "state": "countdown",
+2026-10-18T16:41:24.3966651Z       "phase": "countdown",
+2026-10-18T16:41:24.3967057Z       "hasPlayer": true,
+2026-10-18T16:41:24.3967438Z       "cdT": 0,
+2026-10-18T16:41:24.3967793Z       "raceTime": 0,
+2026-10-18T16:41:24.3968212Z       "gameTime": 0.3211000000000349,
+2026-10-18T16:41:24.3968659Z       "quality": "mid",
+2026-10-18T16:41:24.3969042Z       "pixelRatio": 1,
+2026-10-18T16:41:24.3969593Z       "composer": true,
+2026-10-18T16:41:24.3969986Z       "antialias": true,
+2026-10-18T16:41:24.3970401Z       "drawingBuffer": [
+2026-10-18T16:41:24.3970787Z         1366,
+2026-10-18T16:41:24.3971112Z         768
+2026-10-18T16:41:24.3971464Z       ],
+2026-10-18T16:41:24.3971958Z       "visibility": "visible",
+2026-10-18T16:41:24.3972493Z       "focus": true,
+2026-10-18T16:41:24.3972968Z       "platform": "desktop",
+2026-10-18T16:41:24.3973500Z       "note": "",
+2026-10-18T16:41:24.3973942Z       "disabled": true,
+2026-10-18T16:41:24.3974436Z       "countdown": "",
+2026-10-18T16:41:24.3974893Z       "life": [
+2026-10-18T16:41:24.3975288Z         {
+2026-10-18T16:41:24.3975660Z           "type": "pageshow",
+2026-10-18T16:41:24.3976121Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.3976617Z           "visibility": "visible",
+2026-10-18T16:41:24.3977059Z           "focus": true
+2026-10-18T16:41:24.3977435Z         }
+2026-10-18T16:41:24.3977823Z       ],
+2026-10-18T16:41:24.3978116Z       "speed": 0,
+2026-10-18T16:41:24.3978479Z       "steer": 0
+2026-10-18T16:41:24.3978817Z     },
+2026-10-18T16:41:24.3979119Z     {
+2026-10-18T16:41:24.3979625Z       "when": "after-click",
+2026-10-18T16:41:24.3980081Z       "at": 28919.900000000023,
+2026-10-18T16:41:24.3980510Z       "state": "countdown",
+2026-10-18T16:41:24.3980918Z       "phase": "countdown",
+2026-10-18T16:41:24.3981333Z       "hasPlayer": true,
+2026-10-18T16:41:24.3981720Z       "cdT": 0,
+2026-10-18T16:41:24.3982045Z       "raceTime": 0,
+2026-10-18T16:41:24.3982469Z       "gameTime": 0.3211000000000349,
+2026-10-18T16:41:24.3982919Z       "quality": "mid",
+2026-10-18T16:41:24.3983309Z       "pixelRatio": 1,
+2026-10-18T16:41:24.3983699Z       "composer": true,
+2026-10-18T16:41:24.3984098Z       "antialias": true,
+2026-10-18T16:41:24.3984492Z       "drawingBuffer": [
+2026-10-18T16:41:24.3984872Z         1366,
+2026-10-18T16:41:24.3985174Z         768
+2026-10-18T16:41:24.3985495Z       ],
+2026-10-18T16:41:24.3985878Z       "visibility": "visible",
+2026-10-18T16:41:24.3986298Z       "focus": true,
+2026-10-18T16:41:24.3986684Z       "platform": "desktop",
+2026-10-18T16:41:24.3987096Z       "note": "",
+2026-10-18T16:41:24.3987446Z       "disabled": true,
+2026-10-18T16:41:24.3987799Z       "countdown": "",
+2026-10-18T16:41:24.3988183Z       "life": [
+2026-10-18T16:41:24.3988521Z         {
+2026-10-18T16:41:24.3988830Z           "type": "pageshow",
+2026-10-18T16:41:24.3989469Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.3989974Z           "visibility": "visible",
+2026-10-18T16:41:24.3990422Z           "focus": true
+2026-10-18T16:41:24.3990788Z         }
+2026-10-18T16:41:24.3991110Z       ],
+2026-10-18T16:41:24.3991427Z       "speed": 0,
+2026-10-18T16:41:24.3991745Z       "steer": 0
+2026-10-18T16:41:24.3992086Z     },
+2026-10-18T16:41:24.3992391Z     {
+2026-10-18T16:41:24.3992727Z       "when": "after-click",
+2026-10-18T16:41:24.3993186Z       "at": 37954.70000000001,
+2026-10-18T16:41:24.3993610Z       "state": "countdown",
+2026-10-18T16:41:24.3994025Z       "phase": "countdown",
+2026-10-18T16:41:24.3994441Z       "hasPlayer": true,
+2026-10-18T16:41:24.3994808Z       "cdT": 0.05,
+2026-10-18T16:41:24.3995166Z       "raceTime": 0,
+2026-10-18T16:41:24.3995588Z       "gameTime": 0.3711000000000349,
+2026-10-18T16:41:24.3996290Z       "quality": "mid",
+2026-10-18T16:41:24.3996712Z       "pixelRatio": 1,
+2026-10-18T16:41:24.3997078Z       "composer": true,
+2026-10-18T16:41:24.3997690Z       "antialias": true,
+2026-10-18T16:41:24.3998099Z       "drawingBuffer": [
+2026-10-18T16:41:24.3998505Z         1366,
+2026-10-18T16:41:24.3998849Z         768
+2026-10-18T16:41:24.3999170Z       ],
+2026-10-18T16:41:24.3999752Z       "visibility": "visible",
+2026-10-18T16:41:24.4000188Z       "focus": true,
+2026-10-18T16:41:24.4000545Z       "platform": "desktop",
+2026-10-18T16:41:24.4000954Z       "note": "",
+2026-10-18T16:41:24.4001318Z       "disabled": true,
+2026-10-18T16:41:24.4001707Z       "countdown": "3",
+2026-10-18T16:41:24.4002079Z       "life": [
+2026-10-18T16:41:24.4002411Z         {
+2026-10-18T16:41:24.4002728Z           "type": "pageshow",
+2026-10-18T16:41:24.4003190Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4003716Z           "visibility": "visible",
+2026-10-18T16:41:24.4004128Z           "focus": true
+2026-10-18T16:41:24.4004502Z         }
+2026-10-18T16:41:24.4004814Z       ],
+2026-10-18T16:41:24.4005281Z       "speed": 0,
+2026-10-18T16:41:24.4005603Z       "steer": 0
+2026-10-18T16:41:24.4005956Z     },
+2026-10-18T16:41:24.4006270Z     {
+2026-10-18T16:41:24.4006574Z       "when": "after-click",
+2026-10-18T16:41:24.4007028Z       "at": 38961.600000000006,
+2026-10-18T16:41:24.4007451Z       "state": "countdown",
+2026-10-18T16:41:24.4007862Z       "phase": "countdown",
+2026-10-18T16:41:24.4008272Z       "hasPlayer": true,
+2026-10-18T16:41:24.4008710Z       "cdT": 0.11329999999998837,
+2026-10-18T16:41:24.4009136Z       "raceTime": 0,
+2026-10-18T16:41:24.4009773Z       "gameTime": 0.43440000000002327,
+2026-10-18T16:41:24.4010230Z       "quality": "mid",
+2026-10-18T16:41:24.4010596Z       "pixelRatio": 1,
+2026-10-18T16:41:24.4010994Z       "composer": true,
+2026-10-18T16:41:24.4011393Z       "antialias": true,
+2026-10-18T16:41:24.4011793Z       "drawingBuffer": [
+2026-10-18T16:41:24.4012140Z         1366,
+2026-10-18T16:41:24.4012478Z         768
+2026-10-18T16:41:24.4012789Z       ],
+2026-10-18T16:41:24.4013132Z       "visibility": "visible",
+2026-10-18T16:41:24.4013549Z       "focus": true,
+2026-10-18T16:41:24.4013947Z       "platform": "desktop",
+2026-10-18T16:41:24.4014355Z       "note": "",
+2026-10-18T16:41:24.4014684Z       "disabled": true,
+2026-10-18T16:41:24.4015090Z       "countdown": "3",
+2026-10-18T16:41:24.4015473Z       "life": [
+2026-10-18T16:41:24.4015813Z         {
+2026-10-18T16:41:24.4016169Z           "type": "pageshow",
+2026-10-18T16:41:24.4016609Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4017131Z           "visibility": "visible",
+2026-10-18T16:41:24.4017547Z           "focus": true
+2026-10-18T16:41:24.4017917Z         }
+2026-10-18T16:41:24.4018238Z       ],
+2026-10-18T16:41:24.4018576Z       "speed": 0,
+2026-10-18T16:41:24.4018897Z       "steer": 0
+2026-10-18T16:41:24.4019416Z     },
+2026-10-18T16:41:24.4019744Z     {
+2026-10-18T16:41:24.4020089Z       "when": "after-click",
+2026-10-18T16:41:24.4020553Z       "at": 39965.100000000006,
+2026-10-18T16:41:24.4020985Z       "state": "countdown",
+2026-10-18T16:41:24.4021384Z       "phase": "countdown",
+2026-10-18T16:41:24.4021817Z       "hasPlayer": true,
+2026-10-18T16:41:24.4022267Z       "cdT": 0.16329999999998837,
+2026-10-18T16:41:24.4022700Z       "raceTime": 0,
+2026-10-18T16:41:24.4023138Z       "gameTime": 0.48440000000002326,
+2026-10-18T16:41:24.4023632Z       "quality": "mid",
+2026-10-18T16:41:24.4024031Z       "pixelRatio": 1,
+2026-10-18T16:41:24.4024397Z       "composer": true,
+2026-10-18T16:41:24.4024794Z       "antialias": true,
+2026-10-18T16:41:24.4025205Z       "drawingBuffer": [
+2026-10-18T16:41:24.4025596Z         1366,
+2026-10-18T16:41:24.4025925Z         768
+2026-10-18T16:41:24.4026247Z       ],
+2026-10-18T16:41:24.4026596Z       "visibility": "visible",
+2026-10-18T16:41:24.4027020Z       "focus": true,
+2026-10-18T16:41:24.4027413Z       "platform": "desktop",
+2026-10-18T16:41:24.4027832Z       "note": "",
+2026-10-18T16:41:24.4028436Z       "disabled": true,
+2026-10-18T16:41:24.4028858Z       "countdown": "3",
+2026-10-18T16:41:24.4029390Z       "life": [
+2026-10-18T16:41:24.4029744Z         {
+2026-10-18T16:41:24.4030526Z           "type": "pageshow",
+2026-10-18T16:41:24.4031003Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4031507Z           "visibility": "visible",
+2026-10-18T16:41:24.4031960Z           "focus": true
+2026-10-18T16:41:24.4032346Z         }
+2026-10-18T16:41:24.4032664Z       ],
+2026-10-18T16:41:24.4032972Z       "speed": 0,
+2026-10-18T16:41:24.4033336Z       "steer": 0
+2026-10-18T16:41:24.4033673Z     },
+2026-10-18T16:41:24.4033982Z     {
+2026-10-18T16:41:24.4034314Z       "when": "after-click",
+2026-10-18T16:41:24.4034731Z       "at": 40971,
+2026-10-18T16:41:24.4035106Z       "state": "countdown",
+2026-10-18T16:41:24.4035528Z       "phase": "countdown",
+2026-10-18T16:41:24.4035943Z       "hasPlayer": true,
+2026-10-18T16:41:24.4036383Z       "cdT": 0.16329999999998837,
+2026-10-18T16:41:24.4036826Z       "raceTime": 0,
+2026-10-18T16:41:24.4037266Z       "gameTime": 0.48440000000002326,
+2026-10-18T16:41:24.4037732Z       "quality": "mid",
+2026-10-18T16:41:24.4038134Z       "pixelRatio": 1,
+2026-10-18T16:41:24.4038540Z       "composer": true,
+2026-10-18T16:41:24.4038942Z       "antialias": true,
+2026-10-18T16:41:24.4039543Z       "drawingBuffer": [
+2026-10-18T16:41:24.4039953Z         1366,
+2026-10-18T16:41:24.4040288Z         768
+2026-10-18T16:41:24.4040580Z       ],
+2026-10-18T16:41:24.4040962Z       "visibility": "visible",
+2026-10-18T16:41:24.4041382Z       "focus": true,
+2026-10-18T16:41:24.4041766Z       "platform": "desktop",
+2026-10-18T16:41:24.4042189Z       "note": "",
+2026-10-18T16:41:24.4042551Z       "disabled": true,
+2026-10-18T16:41:24.4042906Z       "countdown": "3",
+2026-10-18T16:41:24.4043280Z       "life": [
+2026-10-18T16:41:24.4043626Z         {
+2026-10-18T16:41:24.4043967Z           "type": "pageshow",
+2026-10-18T16:41:24.4044441Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4044944Z           "visibility": "visible",
+2026-10-18T16:41:24.4045405Z           "focus": true
+2026-10-18T16:41:24.4045781Z         }
+2026-10-18T16:41:24.4046098Z       ],
+2026-10-18T16:41:24.4046405Z       "speed": 0,
+2026-10-18T16:41:24.4046767Z       "steer": 0
+2026-10-18T16:41:24.4047122Z     },
+2026-10-18T16:41:24.4047435Z     {
+2026-10-18T16:41:24.4047781Z       "when": "after-click",
+2026-10-18T16:41:24.4048205Z       "at": 41977,
+2026-10-18T16:41:24.4048576Z       "state": "countdown",
+2026-10-18T16:41:24.4049012Z       "phase": "countdown",
+2026-10-18T16:41:24.4049626Z       "hasPlayer": true,
+2026-10-18T16:41:24.4050079Z       "cdT": 0.2132999999999884,
+2026-10-18T16:41:24.4050485Z       "raceTime": 0,
+2026-10-18T16:41:24.4050955Z       "gameTime": 0.5344000000000233,
+2026-10-18T16:41:24.4051421Z       "quality": "mid",
+2026-10-18T16:41:24.4051820Z       "pixelRatio": 1,
+2026-10-18T16:41:24.4052232Z       "composer": true,
+2026-10-18T16:41:24.4052631Z       "antialias": true,
+2026-10-18T16:41:24.4053052Z       "drawingBuffer": [
+2026-10-18T16:41:24.4053454Z         1366,
+2026-10-18T16:41:24.4053757Z         768
+2026-10-18T16:41:24.4054082Z       ],
+2026-10-18T16:41:24.4054468Z       "visibility": "visible",
+2026-10-18T16:41:24.4054907Z       "focus": true,
+2026-10-18T16:41:24.4055292Z       "platform": "desktop",
+2026-10-18T16:41:24.4055716Z       "note": "",
+2026-10-18T16:41:24.4056086Z       "disabled": true,
+2026-10-18T16:41:24.4056480Z       "countdown": "3",
+2026-10-18T16:41:24.4056834Z       "life": [
+2026-10-18T16:41:24.4057185Z         {
+2026-10-18T16:41:24.4057537Z           "type": "pageshow",
+2026-10-18T16:41:24.4058009Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4058504Z           "visibility": "visible",
+2026-10-18T16:41:24.4058915Z           "focus": true
+2026-10-18T16:41:24.4059470Z         }
+2026-10-18T16:41:24.4059817Z       ],
+2026-10-18T16:41:24.4060149Z       "speed": 0,
+2026-10-18T16:41:24.4060510Z       "steer": 0
+2026-10-18T16:41:24.4060821Z     },
+2026-10-18T16:41:24.4061111Z     {
+2026-10-18T16:41:24.4061682Z       "when": "after-click",
+2026-10-18T16:41:24.4062129Z       "at": 42983,
+2026-10-18T16:41:24.4062520Z       "state": "countdown",
+2026-10-18T16:41:24.4063146Z       "phase": "countdown",
+2026-10-18T16:41:24.4063613Z       "hasPlayer": true,
+2026-10-18T16:41:24.4064064Z       "cdT": 0.2132999999999884,
+2026-10-18T16:41:24.4064488Z       "raceTime": 0,
+2026-10-18T16:41:24.4064924Z       "gameTime": 0.5344000000000233,
+2026-10-18T16:41:24.4065400Z       "quality": "mid",
+2026-10-18T16:41:24.4065797Z       "pixelRatio": 1,
+2026-10-18T16:41:24.4066188Z       "composer": true,
+2026-10-18T16:41:24.4066589Z       "antialias": true,
+2026-10-18T16:41:24.4067000Z       "drawingBuffer": [
+2026-10-18T16:41:24.4067385Z         1366,
+2026-10-18T16:41:24.4067695Z         768
+2026-10-18T16:41:24.4068019Z       ],
+2026-10-18T16:41:24.4068396Z       "visibility": "visible",
+2026-10-18T16:41:24.4068821Z       "focus": true,
+2026-10-18T16:41:24.4069398Z       "platform": "desktop",
+2026-10-18T16:41:24.4069839Z       "note": "",
+2026-10-18T16:41:24.4070205Z       "disabled": true,
+2026-10-18T16:41:24.4070583Z       "countdown": "3",
+2026-10-18T16:41:24.4071000Z       "life": [
+2026-10-18T16:41:24.4071321Z         {
+2026-10-18T16:41:24.4071671Z           "type": "pageshow",
+2026-10-18T16:41:24.4072149Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4072643Z           "visibility": "visible",
+2026-10-18T16:41:24.4073106Z           "focus": true
+2026-10-18T16:41:24.4073524Z         }
+2026-10-18T16:41:24.4073855Z       ],
+2026-10-18T16:41:24.4074236Z       "speed": 0,
+2026-10-18T16:41:24.4074591Z       "steer": 0
+2026-10-18T16:41:24.4074886Z     },
+2026-10-18T16:41:24.4075180Z     {
+2026-10-18T16:41:24.4075501Z       "when": "after-click",
+2026-10-18T16:41:24.4075968Z       "at": 43988.600000000006,
+2026-10-18T16:41:24.4076366Z       "state": "countdown",
+2026-10-18T16:41:24.4076736Z       "phase": "countdown",
+2026-10-18T16:41:24.4077151Z       "hasPlayer": true,
+2026-10-18T16:41:24.4077656Z       "cdT": 0.2632999999999884,
+2026-10-18T16:41:24.4078126Z       "raceTime": 0,
+2026-10-18T16:41:24.4080768Z       "gameTime": 0.5844000000000233,
+2026-10-18T16:41:24.4081325Z       "quality": "mid",
+2026-10-18T16:41:24.4081748Z       "pixelRatio": 1,
+2026-10-18T16:41:24.4082090Z       "composer": true,
+2026-10-18T16:41:24.4082435Z       "antialias": true,
+2026-10-18T16:41:24.4082797Z       "drawingBuffer": [
+2026-10-18T16:41:24.4083138Z         1366,
+2026-10-18T16:41:24.4083419Z         768
+2026-10-18T16:41:24.4083692Z       ],
+2026-10-18T16:41:24.4084022Z       "visibility": "visible",
+2026-10-18T16:41:24.4084390Z       "focus": true,
+2026-10-18T16:41:24.4084739Z       "platform": "desktop",
+2026-10-18T16:41:24.4085102Z       "note": "",
+2026-10-18T16:41:24.4085418Z       "disabled": true,
+2026-10-18T16:41:24.4085762Z       "countdown": "3",
+2026-10-18T16:41:24.4086085Z       "life": [
+2026-10-18T16:41:24.4086376Z         {
+2026-10-18T16:41:24.4086670Z           "type": "pageshow",
+2026-10-18T16:41:24.4087099Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4087536Z           "visibility": "visible",
+2026-10-18T16:41:24.4087924Z           "focus": true
+2026-10-18T16:41:24.4088240Z         }
+2026-10-18T16:41:24.4088505Z       ],
+2026-10-18T16:41:24.4088781Z       "speed": 0,
+2026-10-18T16:41:24.4089092Z       "steer": 0
+2026-10-18T16:41:24.4090145Z     },
+2026-10-18T16:41:24.4090387Z     {
+2026-10-18T16:41:24.4090627Z       "when": "after-click",
+2026-10-18T16:41:24.4090959Z       "at": 44993.100000000006,
+2026-10-18T16:41:24.4091256Z       "state": "countdown",
+2026-10-18T16:41:24.4091550Z       "phase": "countdown",
+2026-10-18T16:41:24.4091829Z       "hasPlayer": true,
+2026-10-18T16:41:24.4092129Z       "cdT": 0.2632999999999884,
+2026-10-18T16:41:24.4092416Z       "raceTime": 0,
+2026-10-18T16:41:24.4092702Z       "gameTime": 0.5844000000000233,
+2026-10-18T16:41:24.4093005Z       "quality": "mid",
+2026-10-18T16:41:24.4093277Z       "pixelRatio": 1,
+2026-10-18T16:41:24.4093532Z       "composer": true,
+2026-10-18T16:41:24.4094017Z       "antialias": true,
+2026-10-18T16:41:24.4094291Z       "drawingBuffer": [
+2026-10-18T16:41:24.4094550Z         1366,
+2026-10-18T16:41:24.4094913Z         768
+2026-10-18T16:41:24.4095124Z       ],
+2026-10-18T16:41:24.4095381Z       "visibility": "visible",
+2026-10-18T16:41:24.4095666Z       "focus": true,
+2026-10-18T16:41:24.4095921Z       "platform": "desktop",
+2026-10-18T16:41:24.4096193Z       "note": "",
+2026-10-18T16:41:24.4096428Z       "disabled": true,
+2026-10-18T16:41:24.4096680Z       "countdown": "3",
+2026-10-18T16:41:24.4096931Z       "life": [
+2026-10-18T16:41:24.4097149Z         {
+2026-10-18T16:41:24.4097373Z           "type": "pageshow",
+2026-10-18T16:41:24.4097676Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4098003Z           "visibility": "visible",
+2026-10-18T16:41:24.4098298Z           "focus": true
+2026-10-18T16:41:24.4098539Z         }
+2026-10-18T16:41:24.4098793Z       ],
+2026-10-18T16:41:24.4099120Z       "speed": 0,
+2026-10-18T16:41:24.4099759Z       "steer": 0
+2026-10-18T16:41:24.4099998Z     },
+2026-10-18T16:41:24.4100206Z     {
+2026-10-18T16:41:24.4100446Z       "when": "after-click",
+2026-10-18T16:41:24.4100759Z       "at": 50525.30000000002,
+2026-10-18T16:41:24.4101031Z       "state": "countdown",
+2026-10-18T16:41:24.4101303Z       "phase": "countdown",
+2026-10-18T16:41:24.4101572Z       "hasPlayer": true,
+2026-10-18T16:41:24.4101858Z       "cdT": 0.31329999999998837,
+2026-10-18T16:41:24.4102135Z       "raceTime": 0,
+2026-10-18T16:41:24.4102415Z       "gameTime": 0.6344000000000234,
+2026-10-18T16:41:24.4102710Z       "quality": "low",
+2026-10-18T16:41:24.4102970Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4103234Z       "composer": false,
+2026-10-18T16:41:24.4103498Z       "antialias": true,
+2026-10-18T16:41:24.4103756Z       "drawingBuffer": [
+2026-10-18T16:41:24.4104018Z         478,
+2026-10-18T16:41:24.4104213Z         268
+2026-10-18T16:41:24.4104387Z       ],
+2026-10-18T16:41:24.4104593Z       "visibility": "visible",
+2026-10-18T16:41:24.4104827Z       "focus": true,
+2026-10-18T16:41:24.4105036Z       "platform": "desktop",
+2026-10-18T16:41:24.4105256Z       "note": "",
+2026-10-18T16:41:24.4105459Z       "disabled": true,
+2026-10-18T16:41:24.4105671Z       "countdown": "3",
+2026-10-18T16:41:24.4105869Z       "life": [
+2026-10-18T16:41:24.4106052Z         {
+2026-10-18T16:41:24.4106239Z           "type": "pageshow",
+2026-10-18T16:41:24.4106492Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4106764Z           "visibility": "visible",
+2026-10-18T16:41:24.4107004Z           "focus": true
+2026-10-18T16:41:24.4107219Z         }
+2026-10-18T16:41:24.4107390Z       ],
+2026-10-18T16:41:24.4107567Z       "speed": 0,
+2026-10-18T16:41:24.4107759Z       "steer": 0
+2026-10-18T16:41:24.4107957Z     },
+2026-10-18T16:41:24.4108131Z     {
+2026-10-18T16:41:24.4108325Z       "when": "after-click",
+2026-10-18T16:41:24.4108577Z       "at": 51531.90000000002,
+2026-10-18T16:41:24.4108803Z       "state": "countdown",
+2026-10-18T16:41:24.4109038Z       "phase": "countdown",
+2026-10-18T16:41:24.4109579Z       "hasPlayer": true,
+2026-10-18T16:41:24.4109987Z       "cdT": 0.37170000000001163,
+2026-10-18T16:41:24.4110328Z       "raceTime": 0,
+2026-10-18T16:41:24.4110813Z       "gameTime": 0.6928000000000467,
+2026-10-18T16:41:24.4111172Z       "quality": "low",
+2026-10-18T16:41:24.4111583Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4126602Z       "composer": false,
+2026-10-18T16:41:24.4127006Z       "antialias": true,
+2026-10-18T16:41:24.4127322Z       "drawingBuffer": [
+2026-10-18T16:41:24.4127560Z         478,
+2026-10-18T16:41:24.4127750Z         268
+2026-10-18T16:41:24.4127926Z       ],
+2026-10-18T16:41:24.4128149Z       "visibility": "visible",
+2026-10-18T16:41:24.4128397Z       "focus": true,
+2026-10-18T16:41:24.4128616Z       "platform": "desktop",
+2026-10-18T16:41:24.4128848Z       "note": "",
+2026-10-18T16:41:24.4129048Z       "disabled": true,
+2026-10-18T16:41:24.4129789Z       "countdown": "3",
+2026-10-18T16:41:24.4130088Z       "life": [
+2026-10-18T16:41:24.4130491Z         {
+2026-10-18T16:41:24.4130709Z           "type": "pageshow",
+2026-10-18T16:41:24.4130988Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4131406Z           "visibility": "visible",
+2026-10-18T16:41:24.4131657Z           "focus": true
+2026-10-18T16:41:24.4131861Z         }
+2026-10-18T16:41:24.4132036Z       ],
+2026-10-18T16:41:24.4132215Z       "speed": 0,
+2026-10-18T16:41:24.4132407Z       "steer": 0
+2026-10-18T16:41:24.4132600Z     },
+2026-10-18T16:41:24.4132772Z     {
+2026-10-18T16:41:24.4132960Z       "when": "after-click",
+2026-10-18T16:41:24.4133215Z       "at": 52536.20000000001,
+2026-10-18T16:41:24.4133450Z       "state": "countdown",
+2026-10-18T16:41:24.4133682Z       "phase": "countdown",
+2026-10-18T16:41:24.4133912Z       "hasPlayer": true,
+2026-10-18T16:41:24.4134150Z       "cdT": 0.4217000000000116,
+2026-10-18T16:41:24.4134380Z       "raceTime": 0,
+2026-10-18T16:41:24.4134607Z       "gameTime": 0.7428000000000468,
+2026-10-18T16:41:24.4134855Z       "quality": "low",
+2026-10-18T16:41:24.4135075Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4135303Z       "composer": false,
+2026-10-18T16:41:24.4135518Z       "antialias": true,
+2026-10-18T16:41:24.4135746Z       "drawingBuffer": [
+2026-10-18T16:41:24.4135955Z         478,
+2026-10-18T16:41:24.4136133Z         268
+2026-10-18T16:41:24.4136303Z       ],
+2026-10-18T16:41:24.4136508Z       "visibility": "visible",
+2026-10-18T16:41:24.4136745Z       "focus": true,
+2026-10-18T16:41:24.4136955Z       "platform": "desktop",
+2026-10-18T16:41:24.4137174Z       "note": "",
+2026-10-18T16:41:24.4137370Z       "disabled": true,
+2026-10-18T16:41:24.4137578Z       "countdown": "3",
+2026-10-18T16:41:24.4137783Z       "life": [
+2026-10-18T16:41:24.4137967Z         {
+2026-10-18T16:41:24.4138156Z           "type": "pageshow",
+2026-10-18T16:41:24.4138431Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4138703Z           "visibility": "visible",
+2026-10-18T16:41:24.4138941Z           "focus": true
+2026-10-18T16:41:24.4139135Z         }
+2026-10-18T16:41:24.4139589Z       ],
+2026-10-18T16:41:24.4139775Z       "speed": 0,
+2026-10-18T16:41:24.4139969Z       "steer": 0
+2026-10-18T16:41:24.4140163Z     },
+2026-10-18T16:41:24.4140455Z     {
+2026-10-18T16:41:24.4140649Z       "when": "after-click",
+2026-10-18T16:41:24.4140903Z       "at": 53541.90000000002,
+2026-10-18T16:41:24.4141130Z       "state": "countdown",
+2026-10-18T16:41:24.4141358Z       "phase": "countdown",
+2026-10-18T16:41:24.4141582Z       "hasPlayer": true,
+2026-10-18T16:41:24.4141818Z       "cdT": 0.4717000000000116,
+2026-10-18T16:41:24.4142045Z       "raceTime": 0,
+2026-10-18T16:41:24.4142281Z       "gameTime": 0.7928000000000468,
+2026-10-18T16:41:24.4142528Z       "quality": "low",
+2026-10-18T16:41:24.4142744Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4143003Z       "composer": false,
+2026-10-18T16:41:24.4143378Z       "antialias": true,
+2026-10-18T16:41:24.4143985Z       "drawingBuffer": [
+2026-10-18T16:41:24.4144365Z         478,
+2026-10-18T16:41:24.4144654Z         268
+2026-10-18T16:41:24.4144945Z       ],
+2026-10-18T16:41:24.4145308Z       "visibility": "visible",
+2026-10-18T16:41:24.4145713Z       "focus": true,
+2026-10-18T16:41:24.4145994Z       "platform": "desktop",
+2026-10-18T16:41:24.4146234Z       "note": "",
+2026-10-18T16:41:24.4146437Z       "disabled": true,
+2026-10-18T16:41:24.4146649Z       "countdown": "3",
+2026-10-18T16:41:24.4146850Z       "life": [
+2026-10-18T16:41:24.4147032Z         {
+2026-10-18T16:41:24.4147224Z           "type": "pageshow",
+2026-10-18T16:41:24.4147489Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4147764Z           "visibility": "visible",
+2026-10-18T16:41:24.4148008Z           "focus": true
+2026-10-18T16:41:24.4148208Z         }
+2026-10-18T16:41:24.4148377Z       ],
+2026-10-18T16:41:24.4148554Z       "speed": 0,
+2026-10-18T16:41:24.4148745Z       "steer": 0
+2026-10-18T16:41:24.4148935Z     },
+2026-10-18T16:41:24.4149100Z     {
+2026-10-18T16:41:24.4149597Z       "when": "after-click",
+2026-10-18T16:41:24.4149835Z       "at": 54548,
+2026-10-18T16:41:24.4150211Z       "state": "countdown",
+2026-10-18T16:41:24.4150451Z       "phase": "countdown",
+2026-10-18T16:41:24.4150680Z       "hasPlayer": true,
+2026-10-18T16:41:24.4151038Z       "cdT": 0.5217000000000116,
+2026-10-18T16:41:24.4151262Z       "raceTime": 0,
+2026-10-18T16:41:24.4151490Z       "gameTime": 0.8428000000000468,
+2026-10-18T16:41:24.4151735Z       "quality": "low",
+2026-10-18T16:41:24.4151942Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4152163Z       "composer": false,
+2026-10-18T16:41:24.4152378Z       "antialias": true,
+2026-10-18T16:41:24.4152594Z       "drawingBuffer": [
+2026-10-18T16:41:24.4152804Z         478,
+2026-10-18T16:41:24.4152983Z         268
+2026-10-18T16:41:24.4153158Z       ],
+2026-10-18T16:41:24.4153366Z       "visibility": "visible",
+2026-10-18T16:41:24.4153613Z       "focus": true,
+2026-10-18T16:41:24.4153827Z       "platform": "desktop",
+2026-10-18T16:41:24.4154052Z       "note": "",
+2026-10-18T16:41:24.4154254Z       "disabled": true,
+2026-10-18T16:41:24.4154476Z       "countdown": "3",
+2026-10-18T16:41:24.4154680Z       "life": [
+2026-10-18T16:41:24.4154869Z         {
+2026-10-18T16:41:24.4155066Z           "type": "pageshow",
+2026-10-18T16:41:24.4155329Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4155608Z           "visibility": "visible",
+2026-10-18T16:41:24.4155855Z           "focus": true
+2026-10-18T16:41:24.4156088Z         }
+2026-10-18T16:41:24.4156262Z       ],
+2026-10-18T16:41:24.4156437Z       "speed": 0,
+2026-10-18T16:41:24.4156628Z       "steer": 0
+2026-10-18T16:41:24.4156811Z     },
+2026-10-18T16:41:24.4156978Z     {
+2026-10-18T16:41:24.4157164Z       "when": "after-click",
+2026-10-18T16:41:24.4157390Z       "at": 55552.5,
+2026-10-18T16:41:24.4157598Z       "state": "countdown",
+2026-10-18T16:41:24.4157819Z       "phase": "countdown",
+2026-10-18T16:41:24.4158043Z       "hasPlayer": true,
+2026-10-18T16:41:24.4158278Z       "cdT": 0.5717000000000116,
+2026-10-18T16:41:24.4158507Z       "raceTime": 0,
+2026-10-18T16:41:24.4158741Z       "gameTime": 0.8928000000000469,
+2026-10-18T16:41:24.4158992Z       "quality": "low",
+2026-10-18T16:41:24.4159446Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4159700Z       "composer": false,
+2026-10-18T16:41:24.4159921Z       "antialias": true,
+2026-10-18T16:41:24.4160140Z       "drawingBuffer": [
+2026-10-18T16:41:24.4160347Z         478,
+2026-10-18T16:41:24.4160541Z         268
+2026-10-18T16:41:24.4160714Z       ],
+2026-10-18T16:41:24.4160921Z       "visibility": "visible",
+2026-10-18T16:41:24.4161151Z       "focus": true,
+2026-10-18T16:41:24.4161358Z       "platform": "desktop",
+2026-10-18T16:41:24.4161581Z       "note": "",
+2026-10-18T16:41:24.4161777Z       "disabled": true,
+2026-10-18T16:41:24.4161992Z       "countdown": "3",
+2026-10-18T16:41:24.4162194Z       "life": [
+2026-10-18T16:41:24.4162376Z         {
+2026-10-18T16:41:24.4162564Z           "type": "pageshow",
+2026-10-18T16:41:24.4162815Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4163083Z           "visibility": "visible",
+2026-10-18T16:41:24.4163339Z           "focus": true
+2026-10-18T16:41:24.4163535Z         }
+2026-10-18T16:41:24.4163711Z       ],
+2026-10-18T16:41:24.4163885Z       "speed": 0,
+2026-10-18T16:41:24.4164079Z       "steer": 0
+2026-10-18T16:41:24.4164261Z     },
+2026-10-18T16:41:24.4164432Z     {
+2026-10-18T16:41:24.4164618Z       "when": "after-click",
+2026-10-18T16:41:24.4164862Z       "at": 56557.100000000006,
+2026-10-18T16:41:24.4165093Z       "state": "countdown",
+2026-10-18T16:41:24.4165320Z       "phase": "countdown",
+2026-10-18T16:41:24.4165546Z       "hasPlayer": true,
+2026-10-18T16:41:24.4165779Z       "cdT": 0.6217000000000117,
+2026-10-18T16:41:24.4166013Z       "raceTime": 0,
+2026-10-18T16:41:24.4166239Z       "gameTime": 0.9428000000000469,
+2026-10-18T16:41:24.4166484Z       "quality": "low",
+2026-10-18T16:41:24.4166698Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4166918Z       "composer": false,
+2026-10-18T16:41:24.4167131Z       "antialias": true,
+2026-10-18T16:41:24.4167350Z       "drawingBuffer": [
+2026-10-18T16:41:24.4167694Z         478,
+2026-10-18T16:41:24.4167881Z         268
+2026-10-18T16:41:24.4168055Z       ],
+2026-10-18T16:41:24.4168255Z       "visibility": "visible",
+2026-10-18T16:41:24.4168600Z       "focus": true,
+2026-10-18T16:41:24.4168810Z       "platform": "desktop",
+2026-10-18T16:41:24.4169032Z       "note": "",
+2026-10-18T16:41:24.4169458Z       "disabled": true,
+2026-10-18T16:41:24.4169762Z       "countdown": "3",
+2026-10-18T16:41:24.4169970Z       "life": [
+2026-10-18T16:41:24.4170154Z         {
+2026-10-18T16:41:24.4170345Z           "type": "pageshow",
+2026-10-18T16:41:24.4170605Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4170876Z           "visibility": "visible",
+2026-10-18T16:41:24.4171119Z           "focus": true
+2026-10-18T16:41:24.4171314Z         }
+2026-10-18T16:41:24.4171483Z       ],
+2026-10-18T16:41:24.4171656Z       "speed": 0,
+2026-10-18T16:41:24.4171849Z       "steer": 0
+2026-10-18T16:41:24.4172032Z     },
+2026-10-18T16:41:24.4172200Z     {
+2026-10-18T16:41:24.4172391Z       "when": "after-click",
+2026-10-18T16:41:24.4172635Z       "at": 57564.20000000001,
+2026-10-18T16:41:24.4172859Z       "state": "countdown",
+2026-10-18T16:41:24.4173093Z       "phase": "countdown",
+2026-10-18T16:41:24.4173315Z       "hasPlayer": true,
+2026-10-18T16:41:24.4173551Z       "cdT": 0.6717000000000117,
+2026-10-18T16:41:24.4173784Z       "raceTime": 0,
+2026-10-18T16:41:24.4174012Z       "gameTime": 0.992800000000047,
+2026-10-18T16:41:24.4174257Z       "quality": "low",
+2026-10-18T16:41:24.4174478Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4174699Z       "composer": false,
+2026-10-18T16:41:24.4174911Z       "antialias": true,
+2026-10-18T16:41:24.4175126Z       "drawingBuffer": [
+2026-10-18T16:41:24.4175331Z         478,
+2026-10-18T16:41:24.4175509Z         268
+2026-10-18T16:41:24.4175682Z       ],
+2026-10-18T16:41:24.4175892Z       "visibility": "visible",
+2026-10-18T16:41:24.4176118Z       "focus": true,
+2026-10-18T16:41:24.4176325Z       "platform": "desktop",
+2026-10-18T16:41:24.4176550Z       "note": "",
+2026-10-18T16:41:24.4176747Z       "disabled": true,
+2026-10-18T16:41:24.4176954Z       "countdown": "3",
+2026-10-18T16:41:24.4177163Z       "life": [
+2026-10-18T16:41:24.4177345Z         {
+2026-10-18T16:41:24.4177535Z           "type": "pageshow",
+2026-10-18T16:41:24.4177784Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4178046Z           "visibility": "visible",
+2026-10-18T16:41:24.4178287Z           "focus": true
+2026-10-18T16:41:24.4178488Z         }
+2026-10-18T16:41:24.4178655Z       ],
+2026-10-18T16:41:24.4178831Z       "speed": 0,
+2026-10-18T16:41:24.4179021Z       "steer": 0
+2026-10-18T16:41:24.4179528Z     },
+2026-10-18T16:41:24.4179705Z     {
+2026-10-18T16:41:24.4179892Z       "when": "after-click",
+2026-10-18T16:41:24.4180143Z       "at": 58568.100000000006,
+2026-10-18T16:41:24.4180374Z       "state": "countdown",
+2026-10-18T16:41:24.4180598Z       "phase": "countdown",
+2026-10-18T16:41:24.4180819Z       "hasPlayer": true,
+2026-10-18T16:41:24.4181057Z       "cdT": 0.7217000000000118,
+2026-10-18T16:41:24.4181285Z       "raceTime": 0,
+2026-10-18T16:41:24.4181521Z       "gameTime": 1.042800000000047,
+2026-10-18T16:41:24.4181766Z       "quality": "low",
+2026-10-18T16:41:24.4181977Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4182196Z       "composer": false,
+2026-10-18T16:41:24.4182408Z       "antialias": true,
+2026-10-18T16:41:24.4182623Z       "drawingBuffer": [
+2026-10-18T16:41:24.4182834Z         478,
+2026-10-18T16:41:24.4183012Z         268
+2026-10-18T16:41:24.4183186Z       ],
+2026-10-18T16:41:24.4183388Z       "visibility": "visible",
+2026-10-18T16:41:24.4183613Z       "focus": true,
+2026-10-18T16:41:24.4183821Z       "platform": "desktop",
+2026-10-18T16:41:24.4184048Z       "note": "",
+2026-10-18T16:41:24.4184241Z       "disabled": true,
+2026-10-18T16:41:24.4184448Z       "countdown": "3",
+2026-10-18T16:41:24.4184649Z       "life": [
+2026-10-18T16:41:24.4184831Z         {
+2026-10-18T16:41:24.4185016Z           "type": "pageshow",
+2026-10-18T16:41:24.4185406Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4185685Z           "visibility": "visible",
+2026-10-18T16:41:24.4185922Z           "focus": true
+2026-10-18T16:41:24.4186233Z         }
+2026-10-18T16:41:24.4186400Z       ],
+2026-10-18T16:41:24.4186573Z       "speed": 0,
+2026-10-18T16:41:24.4186761Z       "steer": 0
+2026-10-18T16:41:24.4186953Z     },
+2026-10-18T16:41:24.4187124Z     {
+2026-10-18T16:41:24.4187314Z       "when": "after-click",
+2026-10-18T16:41:24.4187564Z       "at": 59572.100000000006,
+2026-10-18T16:41:24.4187795Z       "state": "countdown",
+2026-10-18T16:41:24.4188021Z       "phase": "countdown",
+2026-10-18T16:41:24.4188250Z       "hasPlayer": true,
+2026-10-18T16:41:24.4188483Z       "cdT": 0.8217000000000119,
+2026-10-18T16:41:24.4188711Z       "raceTime": 0,
+2026-10-18T16:41:24.4188938Z       "gameTime": 1.1428000000000471,
+2026-10-18T16:41:24.4189461Z       "quality": "low",
+2026-10-18T16:41:24.4189708Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4189936Z       "composer": false,
+2026-10-18T16:41:24.4190166Z       "antialias": true,
+2026-10-18T16:41:24.4190381Z       "drawingBuffer": [
+2026-10-18T16:41:24.4190589Z         478,
+2026-10-18T16:41:24.4190769Z         268
+2026-10-18T16:41:24.4190941Z       ],
+2026-10-18T16:41:24.4191142Z       "visibility": "visible",
+2026-10-18T16:41:24.4191372Z       "focus": true,
+2026-10-18T16:41:24.4191580Z       "platform": "desktop",
+2026-10-18T16:41:24.4191804Z       "note": "",
+2026-10-18T16:41:24.4192000Z       "disabled": true,
+2026-10-18T16:41:24.4192209Z       "countdown": "3",
+2026-10-18T16:41:24.4192413Z       "life": [
+2026-10-18T16:41:24.4192599Z         {
+2026-10-18T16:41:24.4192787Z           "type": "pageshow",
+2026-10-18T16:41:24.4193042Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4193319Z           "visibility": "visible",
+2026-10-18T16:41:24.4193563Z           "focus": true
+2026-10-18T16:41:24.4193760Z         }
+2026-10-18T16:41:24.4193932Z       ],
+2026-10-18T16:41:24.4194114Z       "speed": 0,
+2026-10-18T16:41:24.4194309Z       "steer": 0
+2026-10-18T16:41:24.4194495Z     },
+2026-10-18T16:41:24.4194664Z     {
+2026-10-18T16:41:24.4194849Z       "when": "after-click",
+2026-10-18T16:41:24.4195098Z       "at": 60576.40000000002,
+2026-10-18T16:41:24.4195338Z       "state": "countdown",
+2026-10-18T16:41:24.4195568Z       "phase": "countdown",
+2026-10-18T16:41:24.4195793Z       "hasPlayer": true,
+2026-10-18T16:41:24.4196039Z       "cdT": 0.8717000000000119,
+2026-10-18T16:41:24.4196266Z       "raceTime": 0,
+2026-10-18T16:41:24.4196493Z       "gameTime": 1.1928000000000472,
+2026-10-18T16:41:24.4196744Z       "quality": "low",
+2026-10-18T16:41:24.4196956Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4197177Z       "composer": false,
+2026-10-18T16:41:24.4197393Z       "antialias": true,
+2026-10-18T16:41:24.4197611Z       "drawingBuffer": [
+2026-10-18T16:41:24.4197818Z         478,
+2026-10-18T16:41:24.4198007Z         268
+2026-10-18T16:41:24.4198182Z       ],
+2026-10-18T16:41:24.4198383Z       "visibility": "visible",
+2026-10-18T16:41:24.4198614Z       "focus": true,
+2026-10-18T16:41:24.4198822Z       "platform": "desktop",
+2026-10-18T16:41:24.4199043Z       "note": "",
+2026-10-18T16:41:24.4199447Z       "disabled": true,
+2026-10-18T16:41:24.4199676Z       "countdown": "3",
+2026-10-18T16:41:24.4199877Z       "life": [
+2026-10-18T16:41:24.4200059Z         {
+2026-10-18T16:41:24.4200246Z           "type": "pageshow",
+2026-10-18T16:41:24.4200497Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4200767Z           "visibility": "visible",
+2026-10-18T16:41:24.4201014Z           "focus": true
+2026-10-18T16:41:24.4201210Z         }
+2026-10-18T16:41:24.4201378Z       ],
+2026-10-18T16:41:24.4201554Z       "speed": 0,
+2026-10-18T16:41:24.4201744Z       "steer": 0
+2026-10-18T16:41:24.4201928Z     },
+2026-10-18T16:41:24.4202095Z     {
+2026-10-18T16:41:24.4202286Z       "when": "after-click",
+2026-10-18T16:41:24.4202528Z       "at": 61580.30000000002,
+2026-10-18T16:41:24.4202754Z       "state": "countdown",
+2026-10-18T16:41:24.4203119Z       "phase": "countdown",
+2026-10-18T16:41:24.4203351Z       "hasPlayer": true,
+2026-10-18T16:41:24.4203583Z       "cdT": 0.921700000000012,
+2026-10-18T16:41:24.4203933Z       "raceTime": 0,
+2026-10-18T16:41:24.4204169Z       "gameTime": 1.2428000000000472,
+2026-10-18T16:41:24.4204415Z       "quality": "low",
+2026-10-18T16:41:24.4204631Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4204854Z       "composer": false,
+2026-10-18T16:41:24.4205070Z       "antialias": true,
+2026-10-18T16:41:24.4205290Z       "drawingBuffer": [
+2026-10-18T16:41:24.4205498Z         478,
+2026-10-18T16:41:24.4205674Z         268
+2026-10-18T16:41:24.4205847Z       ],
+2026-10-18T16:41:24.4206053Z       "visibility": "visible",
+2026-10-18T16:41:24.4206281Z       "focus": true,
+2026-10-18T16:41:24.4206494Z       "platform": "desktop",
+2026-10-18T16:41:24.4206719Z       "note": "",
+2026-10-18T16:41:24.4206918Z       "disabled": true,
+2026-10-18T16:41:24.4207128Z       "countdown": "3",
+2026-10-18T16:41:24.4207327Z       "life": [
+2026-10-18T16:41:24.4207513Z         {
+2026-10-18T16:41:24.4207700Z           "type": "pageshow",
+2026-10-18T16:41:24.4207957Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4208226Z           "visibility": "visible",
+2026-10-18T16:41:24.4208466Z           "focus": true
+2026-10-18T16:41:24.4208662Z         }
+2026-10-18T16:41:24.4208832Z       ],
+2026-10-18T16:41:24.4209008Z       "speed": 0,
+2026-10-18T16:41:24.4209414Z       "steer": 0
+2026-10-18T16:41:24.4209675Z     },
+2026-10-18T16:41:24.4209850Z     {
+2026-10-18T16:41:24.4210038Z       "when": "after-click",
+2026-10-18T16:41:24.4210289Z       "at": 62585.90000000002,
+2026-10-18T16:41:24.4210526Z       "state": "countdown",
+2026-10-18T16:41:24.4210762Z       "phase": "countdown",
+2026-10-18T16:41:24.4210990Z       "hasPlayer": true,
+2026-10-18T16:41:24.4211227Z       "cdT": 0.971700000000012,
+2026-10-18T16:41:24.4211453Z       "raceTime": 0,
+2026-10-18T16:41:24.4211684Z       "gameTime": 1.2928000000000472,
+2026-10-18T16:41:24.4211931Z       "quality": "low",
+2026-10-18T16:41:24.4212154Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4212383Z       "composer": false,
+2026-10-18T16:41:24.4212597Z       "antialias": true,
+2026-10-18T16:41:24.4212817Z       "drawingBuffer": [
+2026-10-18T16:41:24.4213024Z         478,
+2026-10-18T16:41:24.4213200Z         268
+2026-10-18T16:41:24.4213375Z       ],
+2026-10-18T16:41:24.4213592Z       "visibility": "visible",
+2026-10-18T16:41:24.4213820Z       "focus": true,
+2026-10-18T16:41:24.4214032Z       "platform": "desktop",
+2026-10-18T16:41:24.4214254Z       "note": "",
+2026-10-18T16:41:24.4214452Z       "disabled": true,
+2026-10-18T16:41:24.4214663Z       "countdown": "3",
+2026-10-18T16:41:24.4214868Z       "life": [
+2026-10-18T16:41:24.4215050Z         {
+2026-10-18T16:41:24.4215236Z           "type": "pageshow",
+2026-10-18T16:41:24.4215484Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4215749Z           "visibility": "visible",
+2026-10-18T16:41:24.4215988Z           "focus": true
+2026-10-18T16:41:24.4216188Z         }
+2026-10-18T16:41:24.4216358Z       ],
+2026-10-18T16:41:24.4216532Z       "speed": 0,
+2026-10-18T16:41:24.4216720Z       "steer": 0
+2026-10-18T16:41:24.4216905Z     },
+2026-10-18T16:41:24.4217073Z     {
+2026-10-18T16:41:24.4217258Z       "when": "after-click",
+2026-10-18T16:41:24.4217504Z       "at": 63590.40000000002,
+2026-10-18T16:41:24.4217728Z       "state": "countdown",
+2026-10-18T16:41:24.4217953Z       "phase": "countdown",
+2026-10-18T16:41:24.4218177Z       "hasPlayer": true,
+2026-10-18T16:41:24.4218411Z       "cdT": 1.021700000000012,
+2026-10-18T16:41:24.4218634Z       "raceTime": 0,
+2026-10-18T16:41:24.4218869Z       "gameTime": 1.3428000000000473,
+2026-10-18T16:41:24.4219114Z       "quality": "low",
+2026-10-18T16:41:24.4219582Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4220002Z       "composer": false,
+2026-10-18T16:41:24.4220230Z       "antialias": true,
+2026-10-18T16:41:24.4220449Z       "drawingBuffer": [
+2026-10-18T16:41:24.4220659Z         478,
+2026-10-18T16:41:24.4220836Z         268
+2026-10-18T16:41:24.4221154Z       ],
+2026-10-18T16:41:24.4221376Z       "visibility": "visible",
+2026-10-18T16:41:24.4221606Z       "focus": true,
+2026-10-18T16:41:24.4221927Z       "platform": "desktop",
+2026-10-18T16:41:24.4222149Z       "note": "",
+2026-10-18T16:41:24.4222352Z       "disabled": true,
+2026-10-18T16:41:24.4222564Z       "countdown": "2",
+2026-10-18T16:41:24.4222767Z       "life": [
+2026-10-18T16:41:24.4222950Z         {
+2026-10-18T16:41:24.4223138Z           "type": "pageshow",
+2026-10-18T16:41:24.4223389Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4223667Z           "visibility": "visible",
+2026-10-18T16:41:24.4223912Z           "focus": true
+2026-10-18T16:41:24.4224113Z         }
+2026-10-18T16:41:24.4224283Z       ],
+2026-10-18T16:41:24.4224458Z       "speed": 0,
+2026-10-18T16:41:24.4224647Z       "steer": 0
+2026-10-18T16:41:24.4224829Z     },
+2026-10-18T16:41:24.4225008Z     {
+2026-10-18T16:41:24.4225191Z       "when": "after-click",
+2026-10-18T16:41:24.4225412Z       "at": 64595,
+2026-10-18T16:41:24.4225615Z       "state": "countdown",
+2026-10-18T16:41:24.4225839Z       "phase": "countdown",
+2026-10-18T16:41:24.4226063Z       "hasPlayer": true,
+2026-10-18T16:41:24.4226310Z       "cdT": 1.1217000000000121,
+2026-10-18T16:41:24.4226536Z       "raceTime": 0,
+2026-10-18T16:41:24.4226764Z       "gameTime": 1.4428000000000474,
+2026-10-18T16:41:24.4227010Z       "quality": "low",
+2026-10-18T16:41:24.4227225Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4227447Z       "composer": false,
+2026-10-18T16:41:24.4227665Z       "antialias": true,
+2026-10-18T16:41:24.4227880Z       "drawingBuffer": [
+2026-10-18T16:41:24.4228085Z         478,
+2026-10-18T16:41:24.4228263Z         268
+2026-10-18T16:41:24.4228434Z       ],
+2026-10-18T16:41:24.4228636Z       "visibility": "visible",
+2026-10-18T16:41:24.4228868Z       "focus": true,
+2026-10-18T16:41:24.4229074Z       "platform": "desktop",
+2026-10-18T16:41:24.4229565Z       "note": "",
+2026-10-18T16:41:24.4229776Z       "disabled": true,
+2026-10-18T16:41:24.4229994Z       "countdown": "2",
+2026-10-18T16:41:24.4230198Z       "life": [
+2026-10-18T16:41:24.4230380Z         {
+2026-10-18T16:41:24.4230573Z           "type": "pageshow",
+2026-10-18T16:41:24.4230829Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4231095Z           "visibility": "visible",
+2026-10-18T16:41:24.4231332Z           "focus": true
+2026-10-18T16:41:24.4231527Z         }
+2026-10-18T16:41:24.4231695Z       ],
+2026-10-18T16:41:24.4231880Z       "speed": 0,
+2026-10-18T16:41:24.4232069Z       "steer": 0
+2026-10-18T16:41:24.4232257Z     },
+2026-10-18T16:41:24.4232425Z     {
+2026-10-18T16:41:24.4232608Z       "when": "after-click",
+2026-10-18T16:41:24.4232850Z       "at": 65598.40000000002,
+2026-10-18T16:41:24.4233079Z       "state": "countdown",
+2026-10-18T16:41:24.4233302Z       "phase": "countdown",
+2026-10-18T16:41:24.4233522Z       "hasPlayer": true,
+2026-10-18T16:41:24.4233758Z       "cdT": 1.1717000000000122,
+2026-10-18T16:41:24.4233987Z       "raceTime": 0,
+2026-10-18T16:41:24.4234213Z       "gameTime": 1.4928000000000474,
+2026-10-18T16:41:24.4234462Z       "quality": "low",
+2026-10-18T16:41:24.4234680Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4234905Z       "composer": false,
+2026-10-18T16:41:24.4235124Z       "antialias": true,
+2026-10-18T16:41:24.4235341Z       "drawingBuffer": [
+2026-10-18T16:41:24.4235550Z         478,
+2026-10-18T16:41:24.4235726Z         268
+2026-10-18T16:41:24.4235902Z       ],
+2026-10-18T16:41:24.4236010Z       "visibility": "visible",
+2026-10-18T16:41:24.4236098Z       "focus": true,
+2026-10-18T16:41:24.4236188Z       "platform": "desktop",
+2026-10-18T16:41:24.4236271Z       "note": "",
+2026-10-18T16:41:24.4236359Z       "disabled": true,
+2026-10-18T16:41:24.4236443Z       "countdown": "2",
+2026-10-18T16:41:24.4236526Z       "life": [
+2026-10-18T16:41:24.4236604Z         {
+2026-10-18T16:41:24.4236695Z           "type": "pageshow",
+2026-10-18T16:41:24.4236806Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4236922Z           "visibility": "visible",
+2026-10-18T16:41:24.4237136Z           "focus": true
+2026-10-18T16:41:24.4237220Z         }
+2026-10-18T16:41:24.4237294Z       ],
+2026-10-18T16:41:24.4237538Z       "speed": 0,
+2026-10-18T16:41:24.4237623Z       "steer": 0
+2026-10-18T16:41:24.4237696Z     },
+2026-10-18T16:41:24.4237774Z     {
+2026-10-18T16:41:24.4237868Z       "when": "after-click",
+2026-10-18T16:41:24.4237948Z       "at": 66602.1,
+2026-10-18T16:41:24.4238042Z       "state": "countdown",
+2026-10-18T16:41:24.4238129Z       "phase": "countdown",
+2026-10-18T16:41:24.4238220Z       "hasPlayer": true,
+2026-10-18T16:41:24.4238327Z       "cdT": 1.2217000000000122,
+2026-10-18T16:41:24.4238408Z       "raceTime": 0,
+2026-10-18T16:41:24.4238522Z       "gameTime": 1.5428000000000475,
+2026-10-18T16:41:24.4238613Z       "quality": "low",
+2026-10-18T16:41:24.4238702Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4238791Z       "composer": false,
+2026-10-18T16:41:24.4238875Z       "antialias": true,
+2026-10-18T16:41:24.4238967Z       "drawingBuffer": [
+2026-10-18T16:41:24.4239053Z         478,
+2026-10-18T16:41:24.4239130Z         268
+2026-10-18T16:41:24.4239334Z       ],
+2026-10-18T16:41:24.4239449Z       "visibility": "visible",
+2026-10-18T16:41:24.4239535Z       "focus": true,
+2026-10-18T16:41:24.4239630Z       "platform": "desktop",
+2026-10-18T16:41:24.4239710Z       "note": "",
+2026-10-18T16:41:24.4239800Z       "disabled": true,
+2026-10-18T16:41:24.4239889Z       "countdown": "2",
+2026-10-18T16:41:24.4239966Z       "life": [
+2026-10-18T16:41:24.4240050Z         {
+2026-10-18T16:41:24.4240144Z           "type": "pageshow",
+2026-10-18T16:41:24.4240248Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4240365Z           "visibility": "visible",
+2026-10-18T16:41:24.4240452Z           "focus": true
+2026-10-18T16:41:24.4240525Z         }
+2026-10-18T16:41:24.4240603Z       ],
+2026-10-18T16:41:24.4240682Z       "speed": 0,
+2026-10-18T16:41:24.4240767Z       "steer": 0
+2026-10-18T16:41:24.4240845Z     },
+2026-10-18T16:41:24.4240917Z     {
+2026-10-18T16:41:24.4241015Z       "when": "after-click",
+2026-10-18T16:41:24.4241098Z       "at": 67605.5,
+2026-10-18T16:41:24.4241184Z       "state": "countdown",
+2026-10-18T16:41:24.4241278Z       "phase": "countdown",
+2026-10-18T16:41:24.4241364Z       "hasPlayer": true,
+2026-10-18T16:41:24.4241471Z       "cdT": 1.2717000000000123,
+2026-10-18T16:41:24.4241556Z       "raceTime": 0,
+2026-10-18T16:41:24.4241667Z       "gameTime": 1.5928000000000475,
+2026-10-18T16:41:24.4241756Z       "quality": "low",
+2026-10-18T16:41:24.4241848Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4241934Z       "composer": false,
+2026-10-18T16:41:24.4242024Z       "antialias": true,
+2026-10-18T16:41:24.4242111Z       "drawingBuffer": [
+2026-10-18T16:41:24.4242192Z         478,
+2026-10-18T16:41:24.4242272Z         268
+2026-10-18T16:41:24.4242345Z       ],
+2026-10-18T16:41:24.4242457Z       "visibility": "visible",
+2026-10-18T16:41:24.4242543Z       "focus": true,
+2026-10-18T16:41:24.4242634Z       "platform": "desktop",
+2026-10-18T16:41:24.4242721Z       "note": "",
+2026-10-18T16:41:24.4242811Z       "disabled": true,
+2026-10-18T16:41:24.4242897Z       "countdown": "2",
+2026-10-18T16:41:24.4242979Z       "life": [
+2026-10-18T16:41:24.4243057Z         {
+2026-10-18T16:41:24.4243152Z           "type": "pageshow",
+2026-10-18T16:41:24.4243261Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4243371Z           "visibility": "visible",
+2026-10-18T16:41:24.4243458Z           "focus": true
+2026-10-18T16:41:24.4243536Z         }
+2026-10-18T16:41:24.4243609Z       ],
+2026-10-18T16:41:24.4243694Z       "speed": 0,
+2026-10-18T16:41:24.4243772Z       "steer": 0
+2026-10-18T16:41:24.4243850Z     },
+2026-10-18T16:41:24.4243928Z     {
+2026-10-18T16:41:24.4244017Z       "when": "after-click",
+2026-10-18T16:41:24.4244101Z       "at": 68610.1,
+2026-10-18T16:41:24.4244192Z       "state": "countdown",
+2026-10-18T16:41:24.4244280Z       "phase": "countdown",
+2026-10-18T16:41:24.4244371Z       "hasPlayer": true,
+2026-10-18T16:41:24.4244472Z       "cdT": 1.3717000000000124,
+2026-10-18T16:41:24.4244681Z       "raceTime": 0,
+2026-10-18T16:41:24.4244803Z       "gameTime": 1.6928000000000476,
+2026-10-18T16:41:24.4244888Z       "quality": "low",
+2026-10-18T16:41:24.4245096Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4245188Z       "composer": false,
+2026-10-18T16:41:24.4245273Z       "antialias": true,
+2026-10-18T16:41:24.4245366Z       "drawingBuffer": [
+2026-10-18T16:41:24.4245448Z         478,
+2026-10-18T16:41:24.4245525Z         268
+2026-10-18T16:41:24.4245605Z       ],
+2026-10-18T16:41:24.4245712Z       "visibility": "visible",
+2026-10-18T16:41:24.4245799Z       "focus": true,
+2026-10-18T16:41:24.4245890Z       "platform": "desktop",
+2026-10-18T16:41:24.4245968Z       "note": "",
+2026-10-18T16:41:24.4246056Z       "disabled": true,
+2026-10-18T16:41:24.4246144Z       "countdown": "2",
+2026-10-18T16:41:24.4246221Z       "life": [
+2026-10-18T16:41:24.4246302Z         {
+2026-10-18T16:41:24.4246390Z           "type": "pageshow",
+2026-10-18T16:41:24.4246505Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4246622Z           "visibility": "visible",
+2026-10-18T16:41:24.4246706Z           "focus": true
+2026-10-18T16:41:24.4246788Z         }
+2026-10-18T16:41:24.4246867Z       ],
+2026-10-18T16:41:24.4246946Z       "speed": 0,
+2026-10-18T16:41:24.4247028Z       "steer": 0
+2026-10-18T16:41:24.4247102Z     },
+2026-10-18T16:41:24.4247183Z     {
+2026-10-18T16:41:24.4247277Z       "when": "after-click",
+2026-10-18T16:41:24.4247357Z       "at": 69614.1,
+2026-10-18T16:41:24.4247447Z       "state": "countdown",
+2026-10-18T16:41:24.4247539Z       "phase": "countdown",
+2026-10-18T16:41:24.4247625Z       "hasPlayer": true,
+2026-10-18T16:41:24.4247732Z       "cdT": 1.4217000000000124,
+2026-10-18T16:41:24.4247813Z       "raceTime": 0,
+2026-10-18T16:41:24.4247926Z       "gameTime": 1.7428000000000476,
+2026-10-18T16:41:24.4248014Z       "quality": "low",
+2026-10-18T16:41:24.4248101Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4248192Z       "composer": false,
+2026-10-18T16:41:24.4248284Z       "antialias": true,
+2026-10-18T16:41:24.4248371Z       "drawingBuffer": [
+2026-10-18T16:41:24.4248453Z         478,
+2026-10-18T16:41:24.4248533Z         268
+2026-10-18T16:41:24.4248611Z       ],
+2026-10-18T16:41:24.4248722Z       "visibility": "visible",
+2026-10-18T16:41:24.4248804Z       "focus": true,
+2026-10-18T16:41:24.4248901Z       "platform": "desktop",
+2026-10-18T16:41:24.4248985Z       "note": "",
+2026-10-18T16:41:24.4249069Z       "disabled": true,
+2026-10-18T16:41:24.4249158Z       "countdown": "2",
+2026-10-18T16:41:24.4249485Z       "life": [
+2026-10-18T16:41:24.4249565Z         {
+2026-10-18T16:41:24.4249662Z           "type": "pageshow",
+2026-10-18T16:41:24.4249768Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4249884Z           "visibility": "visible",
+2026-10-18T16:41:24.4249973Z           "focus": true
+2026-10-18T16:41:24.4250048Z         }
+2026-10-18T16:41:24.4250126Z       ],
+2026-10-18T16:41:24.4250217Z       "speed": 0,
+2026-10-18T16:41:24.4250294Z       "steer": 0
+2026-10-18T16:41:24.4250377Z     },
+2026-10-18T16:41:24.4250449Z     {
+2026-10-18T16:41:24.4250545Z       "when": "after-click",
+2026-10-18T16:41:24.4250653Z       "at": 70619.40000000002,
+2026-10-18T16:41:24.4250743Z       "state": "countdown",
+2026-10-18T16:41:24.4250836Z       "phase": "countdown",
+2026-10-18T16:41:24.4250928Z       "hasPlayer": true,
+2026-10-18T16:41:24.4251031Z       "cdT": 1.4717000000000124,
+2026-10-18T16:41:24.4251120Z       "raceTime": 0,
+2026-10-18T16:41:24.4251237Z       "gameTime": 1.7928000000000477,
+2026-10-18T16:41:24.4251320Z       "quality": "low",
+2026-10-18T16:41:24.4251413Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4251498Z       "composer": false,
+2026-10-18T16:41:24.4251587Z       "antialias": true,
+2026-10-18T16:41:24.4251680Z       "drawingBuffer": [
+2026-10-18T16:41:24.4251755Z         478,
+2026-10-18T16:41:24.4251835Z         268
+2026-10-18T16:41:24.4251913Z       ],
+2026-10-18T16:41:24.4252019Z       "visibility": "visible",
+2026-10-18T16:41:24.4252107Z       "focus": true,
+2026-10-18T16:41:24.4252335Z       "platform": "desktop",
+2026-10-18T16:41:24.4252427Z       "note": "",
+2026-10-18T16:41:24.4252516Z       "disabled": true,
+2026-10-18T16:41:24.4252706Z       "countdown": "2",
+2026-10-18T16:41:24.4252788Z       "life": [
+2026-10-18T16:41:24.4252867Z         {
+2026-10-18T16:41:24.4252956Z           "type": "pageshow",
+2026-10-18T16:41:24.4253066Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4253175Z           "visibility": "visible",
+2026-10-18T16:41:24.4253262Z           "focus": true
+2026-10-18T16:41:24.4253339Z         }
+2026-10-18T16:41:24.4253413Z       ],
+2026-10-18T16:41:24.4253499Z       "speed": 0,
+2026-10-18T16:41:24.4253580Z       "steer": 0
+2026-10-18T16:41:24.4253653Z     },
+2026-10-18T16:41:24.4253730Z     {
+2026-10-18T16:41:24.4253818Z       "when": "after-click",
+2026-10-18T16:41:24.4253914Z       "at": 71623.6,
+2026-10-18T16:41:24.4254006Z       "state": "countdown",
+2026-10-18T16:41:24.4254093Z       "phase": "countdown",
+2026-10-18T16:41:24.4254186Z       "hasPlayer": true,
+2026-10-18T16:41:24.4254295Z       "cdT": 1.5217000000000125,
+2026-10-18T16:41:24.4254380Z       "raceTime": 0,
+2026-10-18T16:41:24.4254499Z       "gameTime": 1.8428000000000477,
+2026-10-18T16:41:24.4254589Z       "quality": "low",
+2026-10-18T16:41:24.4254676Z       "pixelRatio": 0.35,
+2026-10-18T16:41:24.4254766Z       "composer": false,
+2026-10-18T16:41:24.4254850Z       "antialias": true,
+2026-10-18T16:41:24.4254940Z       "drawingBuffer": [
+2026-10-18T16:41:24.4255022Z         478,
+2026-10-18T16:41:24.4255096Z         268
+2026-10-18T16:41:24.4255176Z       ],
+2026-10-18T16:41:24.4255287Z       "visibility": "visible",
+2026-10-18T16:41:24.4255367Z       "focus": true,
+2026-10-18T16:41:24.4255461Z       "platform": "desktop",
+2026-10-18T16:41:24.4255540Z       "note": "",
+2026-10-18T16:41:24.4255630Z       "disabled": true,
+2026-10-18T16:41:24.4255717Z       "countdown": "2",
+2026-10-18T16:41:24.4255794Z       "life": [
+2026-10-18T16:41:24.4255906Z         {
+2026-10-18T16:41:24.4256005Z           "type": "pageshow",
+2026-10-18T16:41:24.4256109Z           "at": 3409.7000000000116,
+2026-10-18T16:41:24.4256228Z           "visibility": "visible",
+2026-10-18T16:41:24.4256314Z           "focus": true
+2026-10-18T16:41:24.4256395Z         }
+2026-10-18T16:41:24.4256473Z       ],
+2026-10-18T16:41:24.4256554Z       "speed": 0,
+2026-10-18T16:41:24.4256638Z       "steer": 0
+2026-10-18T16:41:24.4256717Z     }
+2026-10-18T16:41:24.4256790Z   ],
+2026-10-18T16:41:24.4256874Z   "errors": [
+2026-10-18T16:41:24.4259508Z     "AssertionError [ERR_ASSERTION]: Fresh desktop did not enter race: {\"when\":\"after-click\",\"at\":71623.6,\"state\":\"countdown\",\"phase\":\"countdown\",\"hasPlayer\":true,\"cdT\":1.5217000000000125,\"raceTime\":0,\"gameTime\":1.8428000000000477,\"quality\":\"low\",\"pixelRatio\":0.35,\"composer\":false,\"antialias\":true,\"drawingBuffer\":[478,268],\"visibility\":\"visible\",\"focus\":true,\"platform\":\"desktop\",\"note\":\"\",\"disabled\":true,\"countdown\":\"2\",\"life\":[{\"type\":\"pageshow\",\"at\":3409.7000000000116,\"visibility\":\"visible\",\"focus\":true}],\"speed\":0,\"steer\":0}\n    at file:///home/runner/work/ai-mini-game-factory/ai-mini-game-factory/tools/lean-pilot/racing-cold-start-qa.mjs:84:10"
+2026-10-18T16:41:24.4259596Z   ],
+2026-10-18T16:41:24.4259684Z   "passed": false,
+2026-10-18T16:41:24.4259766Z   "last": {
+2026-10-18T16:41:24.4259855Z     "at": 75915.70000000001,
+2026-10-18T16:41:24.4259942Z     "state": "countdown",
+2026-10-18T16:41:24.4260034Z     "phase": "countdown",
+2026-10-18T16:41:24.4260121Z     "hasPlayer": true,
+2026-10-18T16:41:24.4260227Z     "cdT": 1.7859000000000242,
+2026-10-18T16:41:24.4260319Z     "raceTime": 0,
+2026-10-18T16:41:24.4260426Z     "gameTime": 2.1070000000000593,
+2026-10-18T16:41:24.4260515Z     "quality": "low",
+2026-10-18T16:41:24.4260607Z     "pixelRatio": 0.35,
+2026-10-18T16:41:24.4260692Z     "composer": false,
+2026-10-18T16:41:24.4260781Z     "antialias": true,
+2026-10-18T16:41:24.4260866Z     "drawingBuffer": [
+2026-10-18T16:41:24.4261062Z       478,
+2026-10-18T16:41:24.4261147Z       268
+2026-10-18T16:41:24.4261223Z     ],
+2026-10-18T16:41:24.4261320Z     "visibility": "visible",
+2026-10-18T16:41:24.4261518Z     "focus": true,
+2026-10-18T16:41:24.4261610Z     "platform": "desktop",
+2026-10-18T16:41:24.4261694Z     "note": "",
+2026-10-18T16:41:24.4261778Z     "disabled": true,
+2026-10-18T16:41:24.4261866Z     "countdown": "2",
+2026-10-18T16:41:24.4261948Z     "life": [
+2026-10-18T16:41:24.4262023Z       {
+2026-10-18T16:41:24.4262118Z         "type": "pageshow",
+2026-10-18T16:41:24.4262227Z         "at": 3409.7000000000116,
+2026-10-18T16:41:24.4262337Z         "visibility": "visible",
+2026-10-18T16:41:24.4262425Z         "focus": true
+2026-10-18T16:41:24.4262504Z       }
+2026-10-18T16:41:24.4262576Z     ],
+2026-10-18T16:41:24.4262663Z     "speed": 0,
+2026-10-18T16:41:24.4262742Z     "steer": 0
+2026-10-18T16:41:24.4262822Z   }
+2026-10-18T16:41:24.4262907Z }
+2026-10-18T16:41:24.4274156Z ##[error]Process completed with exit code 1.
+2026-10-18T16:41:24.4380644Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-18T16:41:24.4380750Z with:
+2026-10-18T16:41:24.4380966Z   name: racing-cold-desktop-4746f395815ea8986d438e2dee6437b81fa76fa9
+2026-10-18T16:41:24.4381349Z   path: runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/*
+runs/h5-qq-mobile-20261013/artifacts/build-racing.json
+
+2026-10-18T16:41:24.4381441Z   retention-days: 7
+2026-10-18T16:41:24.4381529Z   if-no-files-found: warn
+2026-10-18T16:41:24.4381621Z   compression-level: 6
+2026-10-18T16:41:24.4381698Z   overwrite: false
+2026-10-18T16:41:24.4381795Z   include-hidden-files: false
+2026-10-18T16:41:24.4381877Z ##[endgroup]
+2026-10-18T16:41:24.6117427Z (node:3959) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-18T16:41:24.6117799Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-18T16:41:24.6203283Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-18T16:41:24.6207578Z The least common ancestor is /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/runs/h5-qq-mobile-20261013/artifacts. This will be the root directory of the artifact
+2026-10-18T16:41:24.6209431Z With the provided path, there will be 4 files uploaded
+2026-10-18T16:41:24.6213252Z Artifact name is valid!
+2026-10-18T16:41:24.6214068Z Root directory input is valid!
+2026-10-18T16:41:24.8422524Z Beginning upload of artifact content to blob storage
+2026-10-18T16:41:24.9226976Z (node:3959) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-18T16:41:25.0236895Z Uploaded bytes 1754722
+2026-10-18T16:41:25.0434236Z Finished uploading artifact content to blob storage!
+2026-10-18T16:41:25.0436162Z SHA256 digest of uploaded artifact zip is e7f7b98c8fecd43f58ac89807b85c224e46d8ffbf9181c52c9d4f27fe97bbe96
+2026-10-18T16:41:25.0437533Z Finalizing artifact upload
+2026-10-18T16:41:25.2545647Z Artifact racing-cold-desktop-4746f395815ea8986d438e2dee6437b81fa76fa9.zip successfully finalized. Artifact ID 12143118638
+2026-10-18T16:41:25.2547753Z Artifact racing-cold-desktop-4746f395815ea8986d438e2dee6437b81fa76fa9 has been successfully uploaded! Final size is 1754722 bytes. Artifact ID is 12143118638
+2026-10-18T16:41:25.2551865Z Artifact download URL: https://github.com/23chen990/ai-mini-game-factory/actions/runs/39145984695/artifacts/12143118638
+2026-10-18T16:41:25.2753573Z Post job cleanup.
+2026-10-18T16:41:25.3653093Z [command]/usr/bin/git version
+2026-10-18T16:41:25.3700518Z git version 2.55.0
+2026-10-18T16:41:25.3742062Z Temporarily overriding HOME='/home/runner/work/_temp/814695ce-0e48-48c5-8ff4-fe17e3d10bf9' before making global git config changes
+2026-10-18T16:41:25.3744061Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-18T16:41:25.3748465Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ai-mini-game-factory/ai-mini-game-factory
+2026-10-18T16:41:25.3792744Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-18T16:41:25.3846329Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-18T16:41:25.4116391Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-18T16:41:25.4156793Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-18T16:41:25.4605263Z Cleaning up orphan processes
+2026-10-18T16:41:25.4950939Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

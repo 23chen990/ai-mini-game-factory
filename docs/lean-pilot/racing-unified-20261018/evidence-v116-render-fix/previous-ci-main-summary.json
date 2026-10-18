@@ -1,0 +1,518 @@
+{
+  "schemaVersion": 1,
+  "type": "READ_ONLY_REMOTE_MAIN_CI_TERMINAL_REVIEW",
+  "createdAt": "2026-10-18T17:01:06.475Z",
+  "reviewer": "/root/car_source_review",
+  "target": {
+    "gameId": "qq-speed",
+    "gameRunId": "h5-qq-mobile-20261013",
+    "repository": "23chen990/ai-mini-game-factory",
+    "commit": "4746f395815ea8986d438e2dee6437b81fa76fa9",
+    "workflowRunId": 39145984688,
+    "mainJobId": 117729804335,
+    "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+    "inputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10",
+    "remoteBuildReceiptAttempt": 3,
+    "sameBytesAsLocalAttempt": 12
+  },
+  "conclusion": "FAILED_ORIGINAL_DESKTOP_COUNTDOWN_GATE",
+  "workflow": {
+    "name": "Racing V3 H5 build and Chromium entry smoke",
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39145984688",
+    "status": "completed",
+    "conclusion": "failure",
+    "startedAt": "2026-10-18T16:39:19Z",
+    "completedAt": "2026-10-18T16:55:42Z",
+    "mainStartedAt": "2026-10-18T16:39:21Z",
+    "mainCompletedAt": "2026-10-18T16:55:41Z"
+  },
+  "steps": [
+    {
+      "name": "Set up job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 1,
+      "started_at": "2026-10-18T16:39:22Z",
+      "completed_at": "2026-10-18T16:39:23Z"
+    },
+    {
+      "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 2,
+      "started_at": "2026-10-18T16:39:23Z",
+      "completed_at": "2026-10-18T16:39:27Z"
+    },
+    {
+      "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 3,
+      "started_at": "2026-10-18T16:39:27Z",
+      "completed_at": "2026-10-18T16:39:27Z"
+    },
+    {
+      "name": "Locked factory dependencies only",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 4,
+      "started_at": "2026-10-18T16:39:27Z",
+      "completed_at": "2026-10-18T16:39:35Z"
+    },
+    {
+      "name": "Locked racing code tests and TypeScript/lint",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 5,
+      "started_at": "2026-10-18T16:39:35Z",
+      "completed_at": "2026-10-18T16:39:58Z"
+    },
+    {
+      "name": "Obtain the exact pinned public racing reference",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 6,
+      "started_at": "2026-10-18T16:39:58Z",
+      "completed_at": "2026-10-18T16:39:58Z"
+    },
+    {
+      "name": "Build unified racing actual standalone and H5",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 7,
+      "started_at": "2026-10-18T16:39:58Z",
+      "completed_at": "2026-10-18T16:40:01Z"
+    },
+    {
+      "name": "Verify real Three car materials, shared resources and independent pivots",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 8,
+      "started_at": "2026-10-18T16:40:01Z",
+      "completed_at": "2026-10-18T16:40:01Z"
+    },
+    {
+      "name": "Verify physical AI laps and real entrance-wall recovery",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 9,
+      "started_at": "2026-10-18T16:40:01Z",
+      "completed_at": "2026-10-18T16:40:04Z"
+    },
+    {
+      "name": "Verify actual H5 build includes every racing runtime source",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 10,
+      "started_at": "2026-10-18T16:40:04Z",
+      "completed_at": "2026-10-18T16:40:05Z"
+    },
+    {
+      "name": "Audit all 30 V11 native courses and 10 physical forks",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 11,
+      "started_at": "2026-10-18T16:40:05Z",
+      "completed_at": "2026-10-18T16:40:06Z"
+    },
+    {
+      "name": "Drive all 30 courses with five physical AI rivals and native contact",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 12,
+      "started_at": "2026-10-18T16:40:06Z",
+      "completed_at": "2026-10-18T16:40:48Z"
+    },
+    {
+      "name": "Verify native player countersteer, drift, collision and pause contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 13,
+      "started_at": "2026-10-18T16:40:48Z",
+      "completed_at": "2026-10-18T16:40:48Z"
+    },
+    {
+      "name": "Install matching Chromium browser",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 14,
+      "started_at": "2026-10-18T16:40:48Z",
+      "completed_at": "2026-10-18T16:41:11Z"
+    },
+    {
+      "name": "Verify six actual garage models and native start/result identity",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 15,
+      "started_at": "2026-10-18T16:41:11Z",
+      "completed_at": "2026-10-18T16:48:09Z"
+    },
+    {
+      "name": "Launch actual bundled WebGL racing in complete Chromium",
+      "status": "completed",
+      "conclusion": "failure",
+      "number": 16,
+      "started_at": "2026-10-18T16:48:09Z",
+      "completed_at": "2026-10-18T16:55:37Z"
+    },
+    {
+      "name": "Verify adjacent-stage ad callbacks in the actual built H5",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 17,
+      "started_at": "2026-10-18T16:55:37Z",
+      "completed_at": "2026-10-18T16:55:37Z"
+    },
+    {
+      "name": "One-stage natural visible-touch diagnostic (non-gating)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 18,
+      "started_at": "2026-10-18T16:55:37Z",
+      "completed_at": "2026-10-18T16:55:37Z"
+    },
+    {
+      "name": "Native 30-stage + daily integrated simulation (synthetic, non-gating)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 19,
+      "started_at": "2026-10-18T16:55:37Z",
+      "completed_at": "2026-10-18T16:55:37Z"
+    },
+    {
+      "name": "Package playable H5 evidence, hashes and demo ZIP",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 20,
+      "started_at": "2026-10-18T16:55:37Z",
+      "completed_at": "2026-10-18T16:55:38Z"
+    },
+    {
+      "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 21,
+      "started_at": "2026-10-18T16:55:38Z",
+      "completed_at": "2026-10-18T16:55:40Z"
+    },
+    {
+      "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+      "status": "completed",
+      "conclusion": "skipped",
+      "number": 41,
+      "started_at": "2026-10-18T16:55:40Z",
+      "completed_at": "2026-10-18T16:55:40Z"
+    },
+    {
+      "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 42,
+      "started_at": "2026-10-18T16:55:40Z",
+      "completed_at": "2026-10-18T16:55:40Z"
+    },
+    {
+      "name": "Complete job",
+      "status": "completed",
+      "conclusion": "success",
+      "number": 43,
+      "started_at": "2026-10-18T16:55:40Z",
+      "completed_at": "2026-10-18T16:55:40Z"
+    }
+  ],
+  "smoke": {
+    "passed": false,
+    "sourceSha256": "af0cf03d27bf2f487692fe2c1b111b1b968aa179133fcaeb3f19b4659135f8fb",
+    "sourceBytesUnchangedFrom4746": true,
+    "testStart": "2026-10-18T16:48:15.377Z",
+    "testEnd": "2026-10-18T16:55:36.824Z",
+    "seededCampaign": true,
+    "assertion": "source-level/real browser, not human natural victory",
+    "checkpoint": "native-countdown",
+    "error": "page.waitForFunction: Timeout 45000ms exceeded.\n    at /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/tools/lean-pilot/racing-v3-smoke.mjs:865:19",
+    "originalCountdownTimeoutMs": 45000,
+    "originalKeyboardTimeoutMs": 18000,
+    "crossedOriginalCountdownGate": false,
+    "keyboardGate": "NOT_REACHED",
+    "beforeStart": {
+      "observedAtMs": 19632.5,
+      "state": "menu",
+      "phase": "ready",
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "drawingBuffer": {
+        "width": 1366,
+        "height": 768
+      },
+      "antialias": true,
+      "contextLost": false,
+      "raceTime": 0.115,
+      "lastNativeFrameAtMs": 19623.899999999907,
+      "hasPlayer": false,
+      "cssCanvas": {
+        "width": 1366,
+        "height": 768
+      },
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "composerActive": true,
+      "shadowsActive": true,
+      "renderInfo": {
+        "frame": 124,
+        "calls": 1,
+        "triangles": 1,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    "observed": {
+      "observedAtMs": 70002.5,
+      "state": "countdown",
+      "phase": "countdown",
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "quality": "low",
+      "pixelRatio": 0.35,
+      "drawingBuffer": {
+        "width": 478,
+        "height": 268
+      },
+      "antialias": true,
+      "contextLost": false,
+      "cdT": 1.7693000000000476,
+      "raceTime": 0,
+      "lastNativeFrameAtMs": 69258.29999999981,
+      "hasPlayer": true,
+      "playerSpeed": 0,
+      "playerProgress": -24.99999975963965,
+      "cssCanvas": {
+        "width": 1366,
+        "height": 768
+      },
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "composerActive": false,
+      "shadowsActive": false,
+      "renderInfo": {
+        "frame": 290,
+        "calls": 608,
+        "triangles": 447232,
+        "points": 3600,
+        "lines": 0
+      }
+    },
+    "jsErrors": [],
+    "cdTMeaning": "CUMULATIVE_NATIVE_COUNTDOWN_SECONDS_NOT_REMAINING",
+    "completedViewNames": [
+      "lobby-844x390",
+      "lobby-740x360",
+      "01-city-hard-ranked",
+      "02-egypt-speed",
+      "04-aegean-drift",
+      "05-egypt-items",
+      "07-cliff-technical",
+      "11-serpent-technical",
+      "08-snow-rank",
+      "30-skyline-real-native-final"
+    ],
+    "partialTouchChecks": {
+      "actualCDPTouch": true,
+      "rotaryWheelCountersteer": true,
+      "simultaneousDrift": true,
+      "releaseClears": true,
+      "paused": true,
+      "cleared": true,
+      "resumed": true,
+      "audioMuted": true
+    },
+    "stagedReplay": {
+      "stagedDnfOnly": true,
+      "factualScoreboard": true,
+      "noRetryEssay": true,
+      "sameNativeCourse": true,
+      "oneTapCountdown": true,
+      "clearCounters": true
+    },
+    "humanNaturalVictory": "NOT_PROVEN",
+    "screenshotReviewed": true,
+    "screenshotObservation": "1366x768 desktop failure image shows the native city starting grid, full cars/scenery, red start lights and an unset race timer. Touch controls are absent. The low-resolution 3D scene is coarse; this is not evidence that countdown completed.",
+    "wallTimingLimit": "Only beforeStart and post-timeout observations are present. Their 50.370-second separation includes click and snapshot overhead and is not an exact countdown gate duration. The original API timeout is 45,000 ms."
+  },
+  "evidenceCounts": {
+    "fuelLifecycle": {
+      "passed": 10,
+      "total": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "garage": {
+      "passed": true,
+      "caseCount": 6,
+      "cases": [
+        {
+          "name": "five-cars-and-permanent-rewards",
+          "passed": true
+        },
+        {
+          "name": "fresh-home-without-sdk",
+          "passed": true
+        },
+        {
+          "name": "save-failure-never-awards",
+          "passed": true
+        },
+        {
+          "name": "desktop-car-preview",
+          "passed": true
+        },
+        {
+          "name": "stale-native-selection-and-old-paint",
+          "passed": true
+        },
+        {
+          "name": "standalone-restores-earned-model",
+          "passed": true
+        }
+      ],
+      "scope": "Actual six-model default home and native start/result/replay identity, with named simulated SDK and early-DNF branches",
+      "liveAdSdk": "NOT_RUN",
+      "physicalPhones": "NOT_RUN",
+      "naturalTerminalReplay": "BLOCKED"
+    },
+    "geometryCourses": 30,
+    "physicalAi": {
+      "courses": 30,
+      "finished": 150,
+      "total": 150,
+      "sourceUnchanged": true,
+      "scope": "DETERMINISTIC_ENGINEERING_SIMULATION"
+    },
+    "nativePlayer": {
+      "passed": 12,
+      "total": 12,
+      "naturalInputsOnly": false,
+      "scope": "NATIVE_PHYSICS_CONTRACTS_WITH_DECLARED_INITIAL_STATES"
+    },
+    "countsNotSummed": true
+  },
+  "downstream": {
+    "ads": "SKIPPED",
+    "naturalVisibleTouch": "SKIPPED_NOT_RUN",
+    "syntheticThirtyPlusDaily": "SKIPPED_NOT_RUN",
+    "package": "SUCCESS_ARTIFACT_RETENTION_ONLY",
+    "artifactUpload": "SUCCESS_ARTIFACT_RETENTION_ONLY",
+    "preview": {
+      "jobId": 117733425920,
+      "status": "completed",
+      "conclusion": "skipped",
+      "steps": [],
+      "publishedByThisRun": false
+    }
+  },
+  "artifact": {
+    "id": 12144155657,
+    "name": "racing-v3-h5-4746f395815ea8986d438e2dee6437b81fa76fa9",
+    "bytes": 28866650,
+    "sha256": "f8544243eace3bf9bea56dd54ab1719540794cf7de0a83ad290d8438efb8fd0b",
+    "fileCount": 71,
+    "createdAt": "2026-10-18T16:55:39Z",
+    "expiresAt": "2026-10-25T16:55:38Z",
+    "githubUrl": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39145984688/artifacts/12144155657",
+    "zipBytesVerified": true,
+    "extractedFilesMatchArchiveBytes": true
+  },
+  "evidence": [
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-final-run-raw.json",
+      "bytes": 13978,
+      "sha256": "14f99312c86f89207b378e103bf1b44abc9a43ea5dd4148a49a2925867d40eae"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-final-jobs-raw.json",
+      "bytes": 6666,
+      "sha256": "5870cc092f75a8c52a28278e1e59318e240477613718fde65083107716f02bb6"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-final-artifacts-raw.json",
+      "bytes": 1084,
+      "sha256": "48c716d426658f371a1bc23ffd931bb7616e8505b738de93cfd63a5a7281d179"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-racing-v3.log",
+      "bytes": 180473,
+      "sha256": "04aa717d56d20e1a14ffb9467f98d22424a497028cff00226c1979fece353666"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-artifact.zip",
+      "bytes": 28866650,
+      "sha256": "f8544243eace3bf9bea56dd54ab1719540794cf7de0a83ad290d8438efb8fd0b"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-artifact-contents.json",
+      "bytes": 14463,
+      "sha256": "46b571d98f9601f066759611756d496cafb6087298df7b6c6916f29ce5dafa15"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-smoke.json",
+      "bytes": 23533,
+      "sha256": "95e635e0543bea80fc9aab56b859c64ca5163126421dc700ed02691d45528578"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-desktop-failure.png",
+      "bytes": 869805,
+      "sha256": "fff524c89f6055d7d9d2c3d77de1b05789300fa11c87eed0dd33498b0bb28f39"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-build-racing.json",
+      "bytes": 11464,
+      "sha256": "d8d5caafc83b1a59c694dd4077eaa2475f39d8f3c1afdfbf8f83472810e73c90"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-garage.json",
+      "bytes": 172273,
+      "sha256": "21af3a21f61423ebdb64a55b1fa4d2d98b27607a9b4be6b59c529ca4eeac92dc"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-ai-pace.json",
+      "bytes": 255058,
+      "sha256": "8d43cc5899b77116fa96f04107f061042f656de66a8b4bd8b136165e02cdf7af"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-geometry.json",
+      "bytes": 531477,
+      "sha256": "9f4e8fcbfc4a39c968ba891728b2b904ad662292e805eb34c827e58ea9dd0f25"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-native-player.json",
+      "bytes": 6970,
+      "sha256": "a21077c3fe5fb9f0d4afc8f3ee996edf9c1cac69f7b8cf6b8d3bab59b8f0c451"
+    }
+  ],
+  "limitations": [
+    "This is the terminal result for commit 4746 and build 893226 only, not a remote result for local attempt 13 build 3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5.",
+    "Main smoke uses a seeded campaign and staged terminal/replay checks. Partial touch assertions do not certify natural race completion.",
+    "Failure with antialias enabled, low quality and ratio 0.35 supports rendering-cost investigation but does not by itself prove MSAA as the sole cause.",
+    "The separate independent cold workflow has distinct desktop/touch results; this main run cannot overwrite those results.",
+    "Package/artifact success retains evidence after failure; it does not make the workflow, preview or release pass.",
+    "No live SDK, physical phone, full natural career, daily natural completion or release acceptance is established here."
+  ],
+  "publishable": false,
+  "operations": {
+    "readOnlyOnGitHub": true,
+    "browserStarted": false,
+    "ciCancelled": false,
+    "ciRerun": false,
+    "productFilesChanged": false,
+    "refsChanged": false,
+    "evidenceSavedOnlyUnderRecovery": true
+  },
+  "zodValidated": true
+}

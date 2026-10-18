@@ -1,0 +1,368 @@
+{
+  "sourceZip": "ci-remote-4746-main-artifact.zip",
+  "fileCount": 71,
+  "files": [
+    {
+      "archivePath": "artifacts/racing-v3-delivery/SHA256SUMS.txt",
+      "bytes": 141,
+      "sha256": "2f5d2caa145a45b06a620f89ccaf0e34d215a8da3718db2c7adfb8b4d79df22b"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-delivery/build-racing.json",
+      "bytes": 11464,
+      "sha256": "d8d5caafc83b1a59c694dd4077eaa2475f39d8f3c1afdfbf8f83472810e73c90",
+      "localPath": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-build-racing.json"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-delivery/qq-speed-v3-h5.zip",
+      "bytes": 8382878,
+      "sha256": "4f9501e112c0860658cc3d4ffacc5498ea2978834a82c36e299696fdf4587726"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/00-lobby-740x360.png",
+      "bytes": 312355,
+      "sha256": "6f76205b0ed9e9fe2f5f082b5c8db8754fdf6af43276b4c352fdd1de02d23640"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/00-lobby-844x390.png",
+      "bytes": 377523,
+      "sha256": "13ae94c71f8a017c10cdf81452fd2b2f0d072004043cb67f0bb819e39b19d4ab"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/01-city-hard-ranked.png",
+      "bytes": 320362,
+      "sha256": "070713c53c1d9f288cbaba622e0d63d5e8a63d0a38c1b464f6fc131e79629041"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/02-egypt-speed.png",
+      "bytes": 253931,
+      "sha256": "b703455c09da188bd414f2783326fb0d94fb7e0eff270970e55ba8ed2dc6d358"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/04-aegean-drift.png",
+      "bytes": 283641,
+      "sha256": "7bf6ba5a8da58d899927bce43aa236376d483bee6e91f8d740c8f0ab5077fbe7"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/05-egypt-items.png",
+      "bytes": 251026,
+      "sha256": "08937be2fe0acb2eada0f6950625b8bfb3e3b2e0eb9c6fbff2bad1f2b0518444"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/05-item-question-closeup-qa-staged.png",
+      "bytes": 237164,
+      "sha256": "b89e27eaff686c1d4891bf6cd200beb8e26db67a2ae640c77fe108139d809121"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/05-v9-junction-approach-qa-staged.png",
+      "bytes": 214339,
+      "sha256": "1818c3aaccb2b6a7567868e536316287e88ef3bf8df558cb08a43f837a2818ce"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/05-v9-short-road-qa-staged.png",
+      "bytes": 212115,
+      "sha256": "0642b610537b404c77bcb4d497c5687e7560202dd6139f91a8e910802aa54a80"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/07-cliff-technical.png",
+      "bytes": 290421,
+      "sha256": "95b968fba2f8b15221a4e2640caf0e985e43c964794aff84cad9df2fa9a9cef2"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/08-result-740x360-qa-staged.png",
+      "bytes": 246927,
+      "sha256": "648d458e748b5236a2590de12835b03a290a1bab6667b6d67dee2321a50daf69"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/08-snow-740x360.png",
+      "bytes": 256380,
+      "sha256": "7c62fa10fc649663108534c1b19be00292ff59c5d5a16006dafcce546d49e8dd"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/08-snow-rank.png",
+      "bytes": 298888,
+      "sha256": "fec83ab62df816bb6829ba6414ba127fb734facce5c7865a742dee27d856e18d"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/11-serpent-technical.png",
+      "bytes": 286517,
+      "sha256": "3b593f6dcfb9c456d87db875dee703aca279d76dc466240cdf4501dae1a20f91"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/30-skyline-real-native-final.png",
+      "bytes": 284794,
+      "sha256": "5dd4200ea8aaa64bba79cb8141cecb16a2e9f1af72baffc67534cbfea737b2c4"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/91-desktop-failure-1366x768.png",
+      "bytes": 869805,
+      "sha256": "fff524c89f6055d7d9d2c3d77de1b05789300fa11c87eed0dd33498b0bb28f39",
+      "localPath": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-desktop-failure.png"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/ai-pace-v115-893226cc0792.json",
+      "bytes": 255058,
+      "sha256": "8d43cc5899b77116fa96f04107f061042f656de66a8b4bd8b136165e02cdf7af"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/ai-pace-v115.json",
+      "bytes": 255058,
+      "sha256": "8d43cc5899b77116fa96f04107f061042f656de66a8b4bd8b136165e02cdf7af",
+      "localPath": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-ai-pace.json"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/course-activity.json",
+      "bytes": 738648,
+      "sha256": "ad8107273f668666b0eef8539b52388fcea9b679dfda3d8c6b87c86cddae17a5"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/geometry-career16.json",
+      "bytes": 283006,
+      "sha256": "7b6ca6b926092ae9370ab824d160392d6d7531bf1c249bc535f337346e1a64e3"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/geometry-career30.json",
+      "bytes": 531477,
+      "sha256": "9f4e8fcbfc4a39c968ba891728b2b904ad662292e805eb34c827e58ea9dd0f25",
+      "localPath": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-geometry.json"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/geometry-v32.json",
+      "bytes": 637160,
+      "sha256": "0dd192a7ab09f776e95af6d0299bfc7dcdf47157cd9868dd59a4821c205e53c7"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/geometry-v32.svg",
+      "bytes": 22899,
+      "sha256": "a2057fff4ec7a759c6652bf64e916fd409a2e493e645c66c55103f4a426e7331"
+    },
+    {
+      "archivePath": "artifacts/racing-v3-smoke/smoke.json",
+      "bytes": 23533,
+      "sha256": "95e635e0543bea80fc9aab56b859c64ca5163126421dc700ed02691d45528578",
+      "localPath": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-smoke.json"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/car-garage-qa.json",
+      "bytes": 172273,
+      "sha256": "21af3a21f61423ebdb64a55b1fa4d2d98b27607a9b4be6b59c529ca4eeac92dc",
+      "localPath": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-garage.json"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/car-save-failure.png",
+      "bytes": 378544,
+      "sha256": "11e34bdaf1611e7b55c6fd5bd8f93ec01c86658d08f15b820dab99ef485d85eb"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-01-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "19b771d04e96738b6e54edde742aedd871f8c6528c80d0e3c5744c4f3d096b24"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-01-locked.png",
+      "bytes": 375606,
+      "sha256": "646c82445574df7ef6d8f724bfcd2a318b1cc34a49455310c8a69973d8756d46"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-01-native-result.png",
+      "bytes": 366993,
+      "sha256": "311a69bb0090a48e0b0318d679d130b3abfd63f5f4ba5d8a7f11c0939c5b7b35"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-01-native-start.png",
+      "bytes": 410289,
+      "sha256": "f8a604617fd10c6e398b485982feeed6c21cdef30e5f771912b0823bc1764a9f"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-01-owned.png",
+      "bytes": 394057,
+      "sha256": "75b86580b52e912cddecbb83bbc3456aac195aea09eaf975029a593de14873e1"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-02-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "4dbc7b124f877e6d07607df8d9429aeb9a42c1f5b6d3bc2432fd6f94a2431b0b"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-02-locked.png",
+      "bytes": 358136,
+      "sha256": "915956d2f945f87b44f88e0c67619bca4d537f7a1b4ebf92cf6a91b614e8e481"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-02-native-result.png",
+      "bytes": 356741,
+      "sha256": "f0f2c4030f9de77db93c7824cbb4910c63b2458fc89fe6ebe35cdbc714f0e856"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-02-native-start.png",
+      "bytes": 404390,
+      "sha256": "551903c6ea48a228343995e1fc499a34d0261b4999006c750b2a8dc37e02cd3b"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-02-owned.png",
+      "bytes": 376112,
+      "sha256": "0f54e6d3867bd87309f2dd1da4b76628243191c6de71b7fd1a0e34e18d4c67b1"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-03-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "e6137d55f433ef62afceea71ee8c9c5edb730bd277c1b62725b73f03b7149143"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-03-locked.png",
+      "bytes": 364394,
+      "sha256": "01a41465c9c5c30c6298c97bdd2af8378223cd70e4fce0be368153c7bf50b978"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-03-native-result.png",
+      "bytes": 364984,
+      "sha256": "137bcbd57198e152ba9dd15e986966cf8817459269e39ddeb91fcf5f83695ff1"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-03-native-start.png",
+      "bytes": 395653,
+      "sha256": "9fba877ad6b20438e927510e8720ca38d03c565d6048c62e293115c099ddd1fa"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-03-owned.png",
+      "bytes": 378357,
+      "sha256": "0ddcc2f7cbc702873017a79d37f751cd1411058a5cbfbdc6c1eb0f10b34ec79e"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-04-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "e487dc0557ac3a62d8be1bd9a5afa4fc84af0971cffd4138be0b37ed8c7ac411"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-04-locked.png",
+      "bytes": 365373,
+      "sha256": "b327ab68568dac73e475bded39c0dcb001aa746489458f52019153a04aace8be"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-04-native-result.png",
+      "bytes": 363848,
+      "sha256": "e974a30c3158ee6fe0aa3cb554ba9dcf077e72760182c5fd4063726f143b1d19"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-04-native-start.png",
+      "bytes": 407092,
+      "sha256": "a4e3f759805a27e1f442d29bc06b3b70cdc4e7527dc45bc7e64ca42be021c06d"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-04-owned.png",
+      "bytes": 381569,
+      "sha256": "a2c181a978a823e5d0a656fd62e500193f16280ed2b4b341cb6d6bceba4c3fc6"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-05-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "e3659fbedcb32dfa35802727f6d6b5cf37fb12c78919fdc3d89c5442b8abd402"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-05-locked.png",
+      "bytes": 371969,
+      "sha256": "1e7e08de2bb83b8558689f4b32286be9ce9e2eedcf22db7c8606b709df635ce7"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-05-native-result.png",
+      "bytes": 353532,
+      "sha256": "86bfe764416523107b43287b86da8e2242f5e88aeed19c1d60bbfd7dcf9ba4a8"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-05-native-start.png",
+      "bytes": 408131,
+      "sha256": "80222a090d6a9b174e795049de4c00b9d49ddd1f81d96c52017e1472a9cdc0f3"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/custom-05-owned.png",
+      "bytes": 388856,
+      "sha256": "2ff85690e7c9695baa72a4f0b080ed8a3b0489a27ff5746ecefe090aac226214"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/desktop-blue-rally-preview.png",
+      "bytes": 1237356,
+      "sha256": "6c8a9170c8ae5ce23bc09c58e2590364ae2e826b0ba851ef4a6767e6f1907175"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/desktop-starter-home.png",
+      "bytes": 1173519,
+      "sha256": "f7d74cf741e95e2bcfa31a57e0664697de3c6803d5d32f59b21fd5e7da191c28"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/garage-all-owned-after-reload.png",
+      "bytes": 400971,
+      "sha256": "2bc4631673593307a8fc7651c582c26ae14ca85a57190ac438f1c53c84e6130d"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/garage-home-starter.png",
+      "bytes": 377572,
+      "sha256": "e23e1016a4a2e6b0110ae236ec05e6bd306f1f34c9679406629370edcc3e5df4"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/locked-home-650x360.png",
+      "bytes": 265096,
+      "sha256": "3adbe3ea86bede38f84f0a7be8c4ea21b696148384768fa13f15da62d8baf595"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/locked-home-667x375.png",
+      "bytes": 279040,
+      "sha256": "8c62010800827b296d3eab356083e740eee092c80374f94329880c3249815066"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/locked-home-740x360.png",
+      "bytes": 307589,
+      "sha256": "737825b0344daa38a7051dfdde690dc24572fc96b6376c005376587ea97450dd"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/locked-home-844x390.png",
+      "bytes": 365161,
+      "sha256": "f206f70d3ed8fcadf4a9ade1120f69c2db0579bffd143a4ca421061ad5ca9eaa"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/no-sdk-custom-preview.png",
+      "bytes": 376369,
+      "sha256": "a41a286efff7be4c6bfaa17c77226497e400271a18854d03c3eecef2774d770c"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/old-paint-safe-starter.png",
+      "bytes": 377419,
+      "sha256": "da1fdff3273cfc5e3ad5455af064d30f47a8fae5c4f3273854ca87ea14d8ed11"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/portrait-rotation.png",
+      "bytes": 82397,
+      "sha256": "9a1be110187391d3ceb63c5fa28a88f847b827a44c6210415020a75011996d2b"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/standalone-golden-formula.png",
+      "bytes": 387142,
+      "sha256": "a62476c5782e28cdcaaf7bcefde27333d1757aef414582d3bfbd855a72058427"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/standalone-native-start.png",
+      "bytes": 406044,
+      "sha256": "8d7eeeb9f780dd1c1d0dfb6df4994771b4dc3f337c3d23e0b92972c0103a945c"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/starter-isolated-physics.json",
+      "bytes": 187206,
+      "sha256": "850a31a2a6bf7712fa7cef74f4a1321d9acd53c78dee688fd6127251b7d43092"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/starter-native-result.png",
+      "bytes": 356582,
+      "sha256": "265a57883041cf8c037df016301529bccfc305f5bf10129b096db8e84c16e078"
+    },
+    {
+      "archivePath": "artifacts/car-garage-ci/starter-native-start.png",
+      "bytes": 406167,
+      "sha256": "4b6203049abd22f125c952997b3ee1df441f6c915d0cb0acc471eff168a26135"
+    },
+    {
+      "archivePath": "artifacts/racing-v115-native-player/native-player-physics.json",
+      "bytes": 6970,
+      "sha256": "a21077c3fe5fb9f0d4afc8f3ee996edf9c1cac69f7b8cf6b8d3bab59b8f0c451",
+      "localPath": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-main-native-player.json"
+    }
+  ]
+}

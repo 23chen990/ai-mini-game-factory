@@ -1,0 +1,88 @@
+{
+  "schemaVersion": 1,
+  "type": "independent-source-review",
+  "issueId": "V116-COLD-DESKTOP-DEFAULT-FRAMEBUFFER-MSAA",
+  "reviewer": "/root/car_source_review",
+  "route": "formal-fixer",
+  "status": "SOURCE_ACCEPTED_FOR_ROOT_BUILD",
+  "checkedAt": "2026-10-18T16:51:51.130Z",
+  "baselineCommit": "4746f395815ea8986d438e2dee6437b81fa76fa9",
+  "handoff": {
+    "path": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-fixer-handoff.json",
+    "sha256": "2260eedf4948b20731b314613fb275586fc9a5a0365aa4e1425adcc85e4ea982",
+    "bytes": 29123
+  },
+  "files": [
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-mobile-build.mjs",
+      "sha256": "5eba23cd03246b83dd6e78faded2ba1a5584e9acb90c7c67273039f3ac6d4586",
+      "bytes": 79330,
+      "baselineSha256": "0c6a66fd1868e241a6b2ba7ce3d96e2a84b2960e45f66cd31cfde804a30bcb80"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs",
+      "sha256": "68a19a830c56dadcc9715b56ab6a5c186425bc6ec56dd9deebf93db7ec53945e",
+      "bytes": 30979,
+      "baselineSha256": "1ccdab778449c8b3dce32fb309ec909592c61fca44a2547d71351e7d5b913de8"
+    }
+  ],
+  "checks": {
+    "exactlyTwoAllowedFiles": true,
+    "builderOnlyApprovedCommentAndAntialiasTarget": true,
+    "existingAdapterAlgorithmBytePreserved": true,
+    "originalTestPrefixExceptOneAuthorizedExpectationPreserved": true,
+    "protectedNineFilesByteIdentical": true,
+    "original45And18SecondGatesUnchanged": true,
+    "highOffscreenRequestedSamples4Preserved": true,
+    "normalAndSavedQualitySemanticsPreserved": true,
+    "fullSceneCameraClocksAndPhysicsPreserved": true,
+    "noTestOrBrowserSpecificProductBranch": true
+  },
+  "tests": {
+    "originalBuildTests": 21,
+    "finalBuildTests": 25,
+    "appendedTests": 4,
+    "red": {
+      "total": 25,
+      "passed": 20,
+      "failed": 5,
+      "sha256": "080044671a3ba40aeb41174ac7c12a38c4031ca1a77ae8301ff51a231e41c22a"
+    },
+    "green": {
+      "total": 71,
+      "passed": 71,
+      "failed": 0,
+      "build": 25,
+      "countdown": 27,
+      "session": 19,
+      "sha256": "f1ce63d416181522ad515b2ed938f4b719eab434efa2111d1b0d572064e74e6a"
+    },
+    "rawLogHashesVerified": true,
+    "lintAndSyntaxExitZero": true,
+    "reviewerReranTests": false
+  },
+  "reviewNotes": [
+    "Independent baseline comparisons proved all executable builder bytes unchanged except the approved antialias target string; only its explanatory comment also changed.",
+    "The original 21-test file remains an exact prefix after replacing only its antialias expectation; four tests are appended.",
+    "The native-shaped fixture retains high HalfFloat samples:4 and RenderPass/bloom/OutputPass, desktop mid samples:0, touch mid budget, low direct full-scene rendering, and disposal without replacing the renderer.",
+    "Existing partial/changed/duplicate-original anchor rejection and exact-final-form idempotence are covered without changing the adapter algorithm.",
+    "Current generated attempt12 still has the prior constructor until root rebuilds. Source acceptance is not runtime or remote CI acceptance."
+  ],
+  "remaining": [
+    "Root-owned attempt13 rebuild with a new source/input/build binding.",
+    "Original production desktop and touch cold-start gates plus desktop keyboard response on that exact build, with productionGate:true and experiment:null.",
+    "Actual antialias:false and explicit high offscreen sample request plus screenshot inspection; physical driver support and low edge quality are not certified by fixture tests.",
+    "Current-build remote original desktop result is still required; the earlier no-MSAA diagnostic and any main-CI success do not close the independent cold failure."
+  ],
+  "productFilesWritten": 0,
+  "browserRuns": 0,
+  "buildRuns": 0,
+  "blockingFindings": [],
+  "nextOwner": "/root",
+  "validation": {
+    "engine": "Zod",
+    "schemaId": "cold-render-msaa-source-review/v1",
+    "validatedBeforeWrite": true,
+    "validatedAfterReadBack": true
+  }
+}

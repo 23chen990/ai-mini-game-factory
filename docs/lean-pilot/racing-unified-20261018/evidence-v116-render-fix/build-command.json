@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "label": "build",
+  "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+  "argv": [
+    "node",
+    "tools/lean-pilot/racing-mobile-build.mjs"
+  ],
+  "environmentOverrides": {
+    "H5_PINNED_SOURCE_ROOT": "/workspace/scratch/29547c23d820/recovery/racing-upstream-54adc",
+    "RACE_REPAIR_HYPOTHESIS": "Use antialias:false uniformly at native default-framebuffer creation so low quality removes retained multisample cost; preserve native high-tier offscreen samples:4, all clocks, physics, full scene, and original 45-second race-entry and 18-second keyboard gates."
+  },
+  "startedAt": "2026-10-18T16:52:02.531571Z",
+  "finishedAt": "2026-10-18T16:52:03.840112Z",
+  "exitCode": 0,
+  "log": "/workspace/scratch/29547c23d820/recovery/cold-render-msaa-build.log",
+  "logBytes": 11465,
+  "logSha256": "c70471b656c3f6e16e6e2c69c475aa7dad13aa795391b12801f27ee0fdfbcd40"
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "beforeBuildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+  "afterBuildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+  "afterInputHash": "51c7e3422c5aee56309bc8f7b3c8579ad66d60cccd1ca5e0c7d3018506b93b8b",
+  "trialSha256": "6e5d09159c71f34517177d6eacbfaa281337b90717309051e3b6f6803041f6d1",
+  "trialBytes": 13339105,
+  "attempt": 13,
+  "checkedAt": "2026-10-18T16:52:20.580130Z",
+  "unchangedComponentChecks": {
+    "originalPhysicsSha256": true,
+    "driftEventVehicleSha256": true,
+    "originalAiSha256": true,
+    "generatedAiSha256": true,
+    "generatedVehicleSha256": true,
+    "generatedTrackSha256": true,
+    "trackGeometrySha256": true,
+    "itemVisualSourceSha256": true,
+    "userCarManifestSha256": true,
+    "models": true,
+    "genuinePhysicalShortcutStages": true
+  },
+  "actualGeneratedMain": {
+    "beforeSha256": "c4c10c3ccabd3c2ff9ce157d60773ad0a071c971ecc64cc92af1c72f22aeaff8",
+    "afterSha256": "940423d0e7d29e10aaacc4f51e80bc94b0884b9f983edeeba57eb9e540c9f851",
+    "onlyDifference": "antialias: !IS_TOUCH -> antialias: false",
+    "allOtherBytesIdentical": true,
+    "highOffscreenFourSampleRequestPreserved": true
+  },
+  "passed": true,
+  "scope": "Exact bytes and component hashes of actual new compiled source; these checks do not relabel older runtime reports as current execution."
+}

@@ -1,10 +1,10 @@
 # 极速飞驰 V11.6：地图、六车型与本次验证
 
-## 当前试玩：attempt 12 冷启动修复
+## 当前试玩：attempt 13 渲染开销修复
 
-最新构建为 `893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d`。新一轮桌面和触屏冷启动已在原门槛下通过；修复、当前验证范围及新证据见 [attempt 12 说明](cold-start-fix-v116.md)。远端完整结果以该提交的 PR Checks 为准。
+最新构建为 `3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5`。本地实际桌面和触屏冷启动已通过原生产门槛，桌面键盘响应也通过；修复、当前构建身份及证据见 [attempt 13 说明](render-cost-fix-v116.md)。归档时新提交的远端检查尚待执行，最终结果以该提交的 [PR Checks](https://github.com/23chen990/ai-mini-game-factory/pull/68/checks) 为准。
 
-以下保留 **attempt 11 / c606…** 的历史构建与实测记录，不能当作 attempt 12 的新执行结果。
+[attempt 12 的本地检查点](cold-start-fix-v116.md)和原证据保持不变；其提交 `4746…` 后续远端独立桌面冷启动仍未通过 45 秒门槛，原始失败已纳入本次修复说明。以下保留 **attempt 11 / c606…** 的历史构建与实测记录，不能当作 attempt 13 的新执行结果。
 
 目标游戏：`qq-speed / 极速飞驰`。运行工作区：`runs/h5-qq-mobile-20261013/workspace`。本页对应 2026-10-18 的 **attempt 11**。
 

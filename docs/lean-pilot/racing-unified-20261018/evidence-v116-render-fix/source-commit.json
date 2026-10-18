@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "b0dfe56f171930165cb04ef9cce8773ba339d31d",
+  "sourceTree": "270e584ad9234b37fd4fe15a684597ce89d2a63f",
+  "parentCommit": "4746f395815ea8986d438e2dee6437b81fa76fa9",
+  "buildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+  "status": "CREATED_UNREFERENCED",
+  "entries": [
+    {
+      "relativePath": "tools/lean-pilot/racing-mobile-build.mjs",
+      "remoteSha": "5d68408d55c224c8fdcf69685f1d19324c3e126b",
+      "sha256": "5eba23cd03246b83dd6e78faded2ba1a5584e9acb90c7c67273039f3ac6d4586",
+      "bytes": 79330
+    },
+    {
+      "relativePath": "tools/lean-pilot/tests/racing-build.test.mjs",
+      "remoteSha": "94bc9faee35c47b5565fec933882331817837d2c",
+      "sha256": "68a19a830c56dadcc9715b56ab6a5c186425bc6ec56dd9deebf93db7ec53945e",
+      "bytes": 30979
+    }
+  ]
+}

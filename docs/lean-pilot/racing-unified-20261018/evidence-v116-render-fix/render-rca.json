@@ -1,0 +1,418 @@
+{
+  "schemaVersion": 1,
+  "issueId": "V116-COLD-DESKTOP-DEFAULT-FRAMEBUFFER-MSAA",
+  "role": "ReadOnlyRCA",
+  "route": "formal-fixer",
+  "status": "RECOMMEND_PRODUCT_PATCH_PENDING_AUTHORIZATION",
+  "target": {
+    "gameId": "qq-speed",
+    "runId": "h5-qq-mobile-20261013",
+    "repo": "/workspace/scratch/29547c23d820/racing-unified",
+    "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/game",
+    "head": "4746f395815ea8986d438e2dee6437b81fa76fa9",
+    "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+    "localBuildAttempt": 12,
+    "inputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10"
+  },
+  "scope": {
+    "sourceChanges": [],
+    "commandsRun": [
+      "read-only source and report inspection",
+      "SHA-256 binding",
+      "Zod artifact validation"
+    ],
+    "browserRunByThisAgent": false,
+    "networkUsed": false,
+    "buildRunByThisAgent": false,
+    "gateChanged": false
+  },
+  "evidence": [
+    {
+      "id": "remoteDesktop",
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-desktop-report.json",
+      "sha256": "faf5c0c4a19de2e1e4e3ffbf1b09affb6100f47ae1041f5f1cf072ac645265a4"
+    },
+    {
+      "id": "remoteTouch",
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-touch-report.json",
+      "sha256": "ab3f0f92c6154549beb80ab176ca7d63d16d3d46e9cb6d9d0f8e66d973fdf604"
+    },
+    {
+      "id": "remoteContext",
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-context-report.json",
+      "sha256": "b1a64d87e3108bb9b6b74bfb3b2bed69bf3d1477291ae3b8b01d7d36831d3193"
+    },
+    {
+      "id": "remoteContextBuild",
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-4746-cold-context-build-racing.json",
+      "sha256": "6ea01ce92816b8b437653f999cc54958b06870ad6a10ced42b17b3c985525670"
+    },
+    {
+      "id": "localDesktop",
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/report.json",
+      "sha256": "36a07f72e6fc688bfbe143c25b8527844acaba96593de3f363ffe16888bf6090"
+    },
+    {
+      "id": "localNoMsaa",
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-emergency-qa/runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop-no-msaa/report.json",
+      "sha256": "043ae54c05cc8aaa1d525ced9097e04b40b96acc49f7a2a9af79491aabd34612"
+    },
+    {
+      "id": "localNoMsaaCommand",
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-no-msaa-diagnostic-command.json",
+      "sha256": "f5a6161143b4d2f125be23d335d59c7ca3ab9720a42e1e6f4d75a8675ec45121"
+    },
+    {
+      "id": "localNoMsaaLog",
+      "path": "/workspace/scratch/29547c23d820/recovery/cold-render-no-msaa-diagnostic.log",
+      "sha256": "cfe8e1eba580f74fb0c866106324ce3b3741ba787a8cd3e696e3caa8da4aca2c"
+    },
+    {
+      "id": "build",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+      "sha256": "d65df26b382346e57587450b4aa0136a5cb4227457985e7308a584b20fcd80d9"
+    },
+    {
+      "id": "buildSource",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-mobile-build.mjs",
+      "sha256": "0c6a66fd1868e241a6b2ba7ce3d96e2a84b2960e45f66cd31cfde804a30bcb80"
+    },
+    {
+      "id": "buildTests",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/tests/racing-build.test.mjs",
+      "sha256": "1ccdab778449c8b3dce32fb309ec909592c61fca44a2547d71351e7d5b913de8"
+    },
+    {
+      "id": "session",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+      "sha256": "f56c9f10951d26eeb90825aa1376802501736f4081ae4182984cbe0f9d9ee866"
+    },
+    {
+      "id": "nativeMain",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/main.js",
+      "sha256": "c4c10c3ccabd3c2ff9ce157d60773ad0a071c971ecc64cc92af1c72f22aeaff8"
+    },
+    {
+      "id": "nativeWorld",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/world.js",
+      "sha256": "d1db1dbb682e48e126f6b1b04f5c8720c19f4b56f1afd6b81c4a8b6be3db8090"
+    },
+    {
+      "id": "threeRenderer",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/src/renderers/WebGLRenderer.js",
+      "sha256": "5e1c9947765ee582907929a3af84831a998352b1c6522aaeac5095570e40d36f"
+    },
+    {
+      "id": "threeTextures",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/src/renderers/webgl/WebGLTextures.js",
+      "sha256": "b845d913597992f3341ee075b658e8c06883c856c7a6a93bf53117496b5497d4"
+    },
+    {
+      "id": "renderPass",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/examples/jsm/postprocessing/RenderPass.js",
+      "sha256": "6c9b8a539ea16e898f65e4760f14937ef9ea94043bd9842c141e0301f41903e8"
+    },
+    {
+      "id": "outputPass",
+      "path": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/examples/jsm/postprocessing/OutputPass.js",
+      "sha256": "32f879d2179087676631c799857a885586b3cdd13b9731bd3b13f06428bd58b7"
+    }
+  ],
+  "reproductionMatrix": [
+    {
+      "object": "stage01 player",
+      "lifecycle": "fresh countdown to race",
+      "renderer": "production full scene, default framebuffer antialias=true",
+      "device": "CI desktop 1366x768 DPR1",
+      "result": "FAIL at unchanged 45 second gate"
+    },
+    {
+      "object": "stage01 player",
+      "lifecycle": "fresh countdown to race",
+      "renderer": "production full scene, default framebuffer antialias=false",
+      "device": "CI touch 844x390 DPR1",
+      "result": "PASS sibling, does not close desktop failure"
+    },
+    {
+      "object": "stage01 player",
+      "lifecycle": "fresh countdown to race and keyboard input",
+      "renderer": "production full scene, default framebuffer antialias=true",
+      "device": "local desktop 1366x768 DPR1",
+      "result": "PASS, first observed race after 30317.8 ms"
+    },
+    {
+      "object": "stage01 player",
+      "lifecycle": "fresh countdown to race and keyboard input",
+      "renderer": "diagnostic full scene, default framebuffer antialias=false",
+      "device": "local desktop 1366x768 DPR1",
+      "result": "DIAGNOSTIC success, first observed race after 18029 ms; not production acceptance"
+    },
+    {
+      "object": "scene workload",
+      "lifecycle": "countdown then race",
+      "renderer": "sequential full/noHUD/empty/restored probes",
+      "device": "CI desktop 1366x768 DPR1",
+      "result": "DIAGNOSTIC ONLY; empty-scene transitions cannot count as gameplay acceptance"
+    }
+  ],
+  "metrics": [
+    {
+      "key": "remoteDesktop",
+      "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+      "mode": "desktop",
+      "productionGate": true,
+      "passed": false,
+      "firstFloorAfterClickMs": 23616.20000000001,
+      "firstRaceAfterClickMs": null,
+      "floorCdT": 0.31329999999998837,
+      "lastPollCdT": 1.5217000000000125,
+      "floorToLastPollMs": 21098.29999999999,
+      "lastState": "countdown",
+      "lastCdT": 1.7859000000000242,
+      "lastAntialias": true,
+      "lastDrawingBuffer": [
+        478,
+        268
+      ],
+      "errors": [
+        "AssertionError [ERR_ASSERTION]: Fresh desktop did not enter race: {\"when\":\"after-click\",\"at\":71623.6,\"state\":\"countdown\",\"phase\":\"countdown\",\"hasPlayer\":true,\"cdT\":1.5217000000000125,\"raceTime\":0,\"gameTime\":1.8428000000000477,\"quality\":\"low\",\"pixelRatio\":0.35,\"composer\":false,\"antialias\":true,\"drawingBuffer\":[478,268],\"visibility\":\"visible\",\"focus\":true,\"platform\":\"desktop\",\"note\":\"\",\"disabled\":true,\"countdown\":\"2\",\"life\":[{\"type\":\"pageshow\",\"at\":3409.7000000000116,\"visibility\":\"visible\",\"focus\":true}],\"speed\":0,\"steer\":0}\n    at file:///home/runner/work/ai-mini-game-factory/ai-mini-game-factory/tools/lean-pilot/racing-cold-start-qa.mjs:84:10"
+      ]
+    },
+    {
+      "key": "remoteTouch",
+      "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+      "mode": "touch",
+      "productionGate": true,
+      "passed": true,
+      "firstFloorAfterClickMs": 12577.799999999988,
+      "firstRaceAfterClickMs": 23085.699999999997,
+      "floorCdT": 0.8928000000000031,
+      "lastPollCdT": 3.0428000000000006,
+      "floorToLastPollMs": 10507.900000000009,
+      "lastState": "race",
+      "lastCdT": 3.0428000000000006,
+      "lastAntialias": false,
+      "lastDrawingBuffer": [
+        295,
+        136
+      ],
+      "errors": []
+    },
+    {
+      "key": "localDesktop",
+      "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+      "mode": "desktop",
+      "productionGate": true,
+      "passed": true,
+      "firstFloorAfterClickMs": 13228.600000000093,
+      "firstRaceAfterClickMs": 30317.799999999814,
+      "floorCdT": 0.5702000000001862,
+      "lastPollCdT": 3.0014999999999974,
+      "floorToLastPollMs": 17089.19999999972,
+      "lastState": "race",
+      "lastCdT": 3.0014999999999974,
+      "lastAntialias": true,
+      "lastDrawingBuffer": [
+        478,
+        268
+      ],
+      "errors": []
+    },
+    {
+      "key": "localNoMsaa",
+      "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+      "mode": "desktop-no-msaa",
+      "productionGate": false,
+      "passed": true,
+      "firstFloorAfterClickMs": 13998.400000000373,
+      "firstRaceAfterClickMs": 18029,
+      "floorCdT": 1.4511000000000938,
+      "lastPollCdT": 3.0068999999999044,
+      "floorToLastPollMs": 4030.5999999996275,
+      "lastState": "race",
+      "lastCdT": 3.0068999999999044,
+      "lastAntialias": false,
+      "lastDrawingBuffer": [
+        478,
+        268
+      ],
+      "errors": []
+    }
+  ],
+  "contextPhases": [
+    {
+      "phase": "original",
+      "frames": 1,
+      "meanMs": 1794.9999999999927,
+      "state": "countdown",
+      "quality": "mid",
+      "composer": true,
+      "calls": 1,
+      "triangles": 1
+    },
+    {
+      "phase": "no-hud",
+      "frames": 5,
+      "meanMs": 1155.2199999999953,
+      "state": "countdown",
+      "quality": "low",
+      "composer": false,
+      "calls": 595,
+      "triangles": 445938
+    },
+    {
+      "phase": "empty-after-finish",
+      "frames": 234,
+      "meanMs": 25.62179487179478,
+      "state": "race",
+      "quality": "low",
+      "composer": false,
+      "calls": 0,
+      "triangles": 0
+    },
+    {
+      "phase": "new-renderer-empty",
+      "frames": 362,
+      "meanMs": 16.579281767955774,
+      "state": "race",
+      "quality": "low",
+      "composer": false,
+      "calls": 0,
+      "triangles": 0
+    },
+    {
+      "phase": "restored",
+      "frames": 11,
+      "meanMs": 488.37272727272716,
+      "state": "race",
+      "quality": "low",
+      "composer": false,
+      "calls": 627,
+      "triangles": 471233
+    }
+  ],
+  "facts": [
+    {
+      "id": "default-framebuffer-msaa",
+      "status": "confirmed",
+      "claim": "Generated main.js:100 constructs the single native renderer with antialias:!IS_TOUCH. setupQuality:159-187 never changes this context attribute. Low removes composer/shadows but desktop direct scene rendering still targets an MSAA default framebuffer. Actual desktop reports confirm antialias=true even at low/.35.",
+      "refs": [
+        "nativeMain:100,159-187,1127-1128",
+        "remoteDesktop"
+      ]
+    },
+    {
+      "id": "high-offscreen-msaa-independent",
+      "status": "confirmed",
+      "claim": "High uses HalfFloat WebGLRenderTarget(samples:4); mid requests samples:0; low bypasses composer. Three 0.169.0 allocates render-target multisampling using renderTarget.samples and capabilities.maxSamples, independently of the default framebuffer antialias constructor option. High requests four samples subject to device support.",
+      "refs": [
+        "nativeMain:179-187",
+        "threeRenderer:64-76,228-251",
+        "threeTextures:1780-1800,2061-2071"
+      ]
+    },
+    {
+      "id": "high-geometry-aa-preservation",
+      "status": "confirmed",
+      "claim": "RenderPass directs scene geometry into the composer read buffer; OutputPass draws a fullscreen quad to the default framebuffer. Therefore setting only constructor antialias:false preserves the existing high-quality offscreen 4-sample scene pipeline. Do not alter HalfFloat, bloom, RenderPass, OutputPass or quality selection.",
+      "refs": [
+        "renderPass:62-73",
+        "outputPass:73-82",
+        "nativeMain:181-187"
+      ]
+    },
+    {
+      "id": "default-msaa-candidate-impact",
+      "status": "supported-inference",
+      "claim": "Same-build local production-AA=true first observed race is 30.3178s; existing no-MSAA diagnostic reaches race in 18.029s, a 12.2888s difference. The changed context option is isolated by the diagnostic script, same desktop viewport and full scene. This is substantial evidence for default-framebuffer MSAA cost but only one sequential local pair; it is not a CI guarantee or a universal speedup estimate.",
+      "refs": [
+        "localDesktop",
+        "localNoMsaa",
+        "localNoMsaaCommand"
+      ]
+    },
+    {
+      "id": "pixel-budget-insufficient-on-ci",
+      "status": "confirmed",
+      "claim": "CI desktop reaches low/.35 at +23.6162s; another 21.0983s only advances cdT .3133 to 1.5217. Emergency jump timing improved yet the full low renderer remains too slow in this run. cdT is capped simulation time, not a direct measured FPS counter.",
+      "refs": [
+        "remoteDesktop",
+        "nativeMain:515-542"
+      ]
+    },
+    {
+      "id": "desktop-touch-pixels-confound",
+      "status": "confirmed",
+      "claim": "At .35, desktop drawing buffer is 478x268=128104 pixels; touch is 295x136=40120 pixels, desktop about 3.193 times as many. The sibling touch pass alone cannot separate MSAA from pixel load; the same-desktop no-MSAA comparison is more specific.",
+      "refs": [
+        "remoteDesktop",
+        "remoteTouch",
+        "localNoMsaa"
+      ]
+    },
+    {
+      "id": "scene-work-remains",
+      "status": "confirmed",
+      "claim": "CI low/no-HUD phase reports 595 draws and 445938 triangles; restored low reports 627 draws and 471233 triangles. Same-context empty rendering averages 25.62ms while restored full scene averages 488.37ms. This supports substantial scene-dependent work, not a diagnosed permanently poisoned context.",
+      "refs": [
+        "remoteContext"
+      ]
+    },
+    {
+      "id": "scene-cost-not-decomposed",
+      "status": "unknown",
+      "claim": "Counters and sequential phases cannot partition JavaScript submission, vertex processing, fragment shaders, MSAA sample/resolve bandwidth, driver overhead, or warmup. No-HUD also changes quality over time, so the original versus no-HUD means do not isolate DOM cost. Composer original calls=1/triangles=1 describes a final fullscreen render due auto-reset, not the entire scene. Context probe does not record pixel ratio.",
+      "refs": [
+        "remoteContext",
+        "threeRenderer:1222"
+      ]
+    },
+    {
+      "id": "existing-batching-and-ground",
+      "status": "confirmed",
+      "claim": "Static Batch already groups by material, 260-unit tile and shadow flag. buildGround defaults to 320x320 subdivisions and main supplies no seg override, so it creates a 204800-triangle terrain mesh. Smaller framebuffer size does not reduce submitted geometry or draw count. Geometry/batching is a separate possible follow-up, not necessary scope for the first MSAA patch.",
+      "refs": [
+        "nativeWorld:21-46,107-108,149",
+        "nativeMain:315"
+      ]
+    },
+    {
+      "id": "context-alpha-correction",
+      "status": "confirmed",
+      "claim": "Three renderer constructor defaults alpha=false but internally requests WebGL alpha=true. The context diagnostic new renderer explicitly passing alpha:false matches the old constructor default; it does not establish an alpha-attribute causal difference. Its recorded attributes/info are still read from the original renderer.",
+      "refs": [
+        "threeRenderer:69,229",
+        "remoteContext"
+      ]
+    }
+  ],
+  "recommendation": {
+    "priority": "Apply universal production default-framebuffer antialias:false at native renderer construction; preserve high offscreen samples:4 and all other quality semantics.",
+    "proposedFiles": [
+      "tools/lean-pilot/racing-mobile-build.mjs",
+      "tools/lean-pilot/tests/racing-build.test.mjs"
+    ],
+    "implementation": "Adjust the fail-closed pinned native constructor adapter to output antialias:false for desktop and touch. Retain touch startup low/default desktop quality selection, high HalfFloat samples:4, mid samples:0, low direct full-scene rendering, powerPreference and existing renderer instance. Do not patch HTMLCanvasElement.getContext in production and do not branch on webdriver, CI, UA, WebGL vendor or diagnostic mode.",
+    "alternativeToAvoid": "Do not recreate context at countdown low transition; construction-time policy avoids canvas/resource churn. Do not reduce high render-target samples to disable default MSAA. Do not reduce viewport or floor below .35, suppress geometry, or change clocks/gates.",
+    "tests": [
+      "Update the existing V6.2 constructor expectation from antialias:!IS_TOUCH to antialias:false only as the intentional product behavior change; retain all other existing assertions.",
+      "Add fail-closed/idempotence cases for exact pinned source, already adapted final form, unknown constructor, duplicate anchors and mixed partial patch. Build restores verified upstream main.js before applying adapters; do not accept arbitrary source forms just to pass tests.",
+      "Use a native-shaped quality fixture to prove default framebuffer antialias:false while explicit high retains HalfFloat samples:4 and composer/RenderPass/bloom/OutputPass, desktop mid retains samples:0, and low has no composer/shadows.",
+      "Assert relevant original clock, scene.render, resize/camera, quality persistence and high-selection statements are unchanged by the constructor adapter. Preserve all countdown emergency tests without editing their implementation.",
+      "Run focused racing-build contracts, existing countdown/session regressions, syntax/type checks appropriate to .mjs and direct local ESLint; no extra dependencies or QA assertion changes."
+    ],
+    "runtimeAcceptance": [
+      "Root builds once as attempt13 from the changed product source and records new input/build hashes.",
+      "Independent original production desktop and touch modes use full scene, original viewport and unchanged 45 second startup / 18 second input assertions; productionGate must be true and experiment null.",
+      "Read runtime context antialias=false and verify desktop .35 framebuffer remains 478x268; preserve original game/camera/physics behavior and real keyboard response.",
+      "Check an explicit high-quality selection still produces the existing offscreen 4-sample target and postprocessing path, subject to hardware sample support; perform normal visual inspection for low edge quality.",
+      "A local diagnostic pass does not close the remote desktop failure; require remote current-build production result before accepting the fix."
+    ],
+    "fallbackIfStillFailing": "Profile actual low full-scene draw groups/materials and triangle workload before a distinct rendering optimization. Existing batching and 204800-triangle terrain are evidence-backed inspection targets; no scene-hiding or physics-height changes are authorized by this RCA."
+  },
+  "validation": {
+    "engine": "Zod",
+    "schema": "cold-desktop-render-rca/v1",
+    "passed": true
+  }
+}

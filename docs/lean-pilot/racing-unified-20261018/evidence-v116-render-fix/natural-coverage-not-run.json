@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "buildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+  "naturalInputsOnly": true,
+  "seededCampaign": false,
+  "races": [],
+  "errors": [],
+  "passed": false,
+  "executionStatus": "NOT_RUN",
+  "scope": "Coverage declaration only: no complete natural race executed on attempt13. Current cold-start QA is separate. Earlier first-stage DNF is not relabeled as a current-build race.",
+  "requiredCoverage": "30 unique main stages plus daily challenge with genuine visible qualified finishes",
+  "previousNaturalBuildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+  "previousNaturalReport": "docs/lean-pilot/racing-unified-20261018/evidence-v116/natural-journey.json"
+}

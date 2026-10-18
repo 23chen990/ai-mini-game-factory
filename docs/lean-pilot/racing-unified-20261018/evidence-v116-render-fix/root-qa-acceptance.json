@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_PRODUCT_QA_ACCEPTED_PENDING_REMOTE_CI",
+  "buildHash": "3a1bd6000047d8310718ca3ee39c7602b311a07eb5c2d2c08e950fee399cadf5",
+  "inputs": [
+    {
+      "name": "cold-render-msaa-independent-qa.json",
+      "bytes": 15691,
+      "sha256": "d9918d3fce687ba80bff2c7562270f09d09bed32dfa5d8cd24bc94c765b6605a"
+    },
+    {
+      "name": "cold-render-msaa-high-quality-qa.json",
+      "bytes": 16441,
+      "sha256": "20b5e46c84b85c1259b689ff1e6bea414811a51d5f06eab9e8460fc91f5ad190"
+    }
+  ],
+  "zodValidated": true,
+  "scope": "Cold-start production modes and separate actual high-quality UI. No natural/device/live-ad/commercial acceptance.",
+  "checkedAt": "2026-10-18T17:01:33.172Z"
+}

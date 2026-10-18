@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "issueId": "V116-COLD-DESKTOP-DEFAULT-FRAMEBUFFER-MSAA",
+  "status": "SOURCE_HANDOFF_ACCEPTED_PENDING_INDEPENDENT_REVIEW_AND_REAL_BUILD",
+  "handoffSha256": "2260eedf4948b20731b314613fb275586fc9a5a0365aa4e1425adcc85e4ea982",
+  "changedPaths": [
+    "tools/lean-pilot/racing-mobile-build.mjs",
+    "tools/lean-pilot/tests/racing-build.test.mjs"
+  ],
+  "rawLogs": [
+    {
+      "key": "msaaRedRun",
+      "bytes": 9793,
+      "sha256": "080044671a3ba40aeb41174ac7c12a38c4031ca1a77ae8301ff51a231e41c22a",
+      "exitCode": 1
+    },
+    {
+      "key": "msaaGreenRun",
+      "bytes": 6963,
+      "sha256": "f1ce63d416181522ad515b2ed938f4b719eab434efa2111d1b0d572064e74e6a",
+      "exitCode": 0
+    },
+    {
+      "key": "msaaLintRun",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "key": "msaaSyntaxBuildRun",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    },
+    {
+      "key": "msaaSyntaxTestRun",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "exitCode": 0
+    }
+  ],
+  "protectedFiles": [
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+      "sha256": "f56c9f10951d26eeb90825aa1376802501736f4081ae4182984cbe0f9d9ee866",
+      "unchanged": true
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "sha256": "b4717e9d343fe93310341759d4463f36063d10d8d5729ceacc32f4f215440189",
+      "unchanged": true
+    },
+    {
+      "path": "templates/web-lite/h5-source-mobile-v1/tests/racing-session.test.mjs",
+      "sha256": "897580c7cdb2fc76fefbcdf9147f488ffda7667a7b7c1182df7f8b4f8f6a0dff",
+      "unchanged": true
+    },
+    {
+      "path": "tools/lean-pilot/racing-cold-start-qa.mjs",
+      "sha256": "c2a8ff62cac8bae7f45abae22dbfba2bb4793b95fc29c81e3ddfa23c8e3724ad",
+      "unchanged": true
+    },
+    {
+      "path": "tools/lean-pilot/racing-real-browser-preload.mjs",
+      "sha256": "3a163584a251b3cc0286677bc354bfae1a0af0a7db1103eea87be42fdc0b69c9",
+      "unchanged": true
+    },
+    {
+      "path": "tools/lean-pilot/racing-context-isolation.mjs",
+      "sha256": "7f0dfb1eed55ce2f71215b8218750266c9a9c49f0df330cd68ca5d6eb0875a53",
+      "unchanged": true
+    }
+  ],
+  "originalTestPrefixPreservedExceptOneAuthorizedExpectation": true,
+  "fixtureTests": {
+    "tests": 71,
+    "passed": 71,
+    "failed": 0,
+    "skipped": 0,
+    "breakdown": {
+      "buildContracts": 25,
+      "countdown": 27,
+      "session": 19
+    }
+  },
+  "productionRuntimeAccepted": false,
+  "zodValidated": true,
+  "checkedAt": "2026-10-18T16:51:02.603Z"
+}
