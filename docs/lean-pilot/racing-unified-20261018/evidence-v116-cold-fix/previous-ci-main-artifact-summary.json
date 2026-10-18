@@ -1,0 +1,153 @@
+{
+  "schemaVersion": 1,
+  "type": "ci-main-artifact-check",
+  "status": "COMPLETE_OLD_FAILURE_PRESERVED",
+  "repository": "23chen990/ai-mini-game-factory",
+  "commit": "99af424cf3584adc4f13fa607a837d56c1028c65",
+  "runId": 39144127683,
+  "jobId": 117724389346,
+  "artifactId": 12143227171,
+  "artifactSourceEntry": "artifacts/racing-v3-smoke/smoke.json",
+  "artifactZipDigestMatchesCiLog": true,
+  "nativeCountdownCrossCheck": {
+    "oldCommitFilesMatchCurrentSource": true,
+    "files": [
+      {
+        "path": "tools/lean-pilot/racing-v3-smoke.mjs",
+        "sha256": "af0cf03d27bf2f487692fe2c1b111b1b968aa179133fcaeb3f19b4659135f8fb"
+      },
+      {
+        "path": "tools/lean-pilot/racing-cold-start-qa.mjs",
+        "sha256": "c2a8ff62cac8bae7f45abae22dbfba2bb4793b95fc29c81e3ddfa23c8e3724ad"
+      }
+    ],
+    "viewport": {
+      "width": 1366,
+      "height": 768
+    },
+    "action": "click #race-start",
+    "condition": "native game.state is race and game.player exists",
+    "timeoutMs": 45000,
+    "mainAssertionLine": 865,
+    "coldDeadlineLine": 76,
+    "coldFailureLine": 84,
+    "keyboardTimeoutMs": 18000,
+    "keyboardAssertionReached": false
+  },
+  "reportPassed": false,
+  "reportedErrors": [
+    "page.waitForFunction: Timeout 45000ms exceeded.\n    at /home/runner/work/ai-mini-game-factory/ai-mini-game-factory/tools/lean-pilot/racing-v3-smoke.mjs:865:19"
+  ],
+  "desktopFailure": {
+    "checkpoint": "native-countdown",
+    "beforeStart": {
+      "observedAtMs": 20032.5,
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 0.11209999999997672,
+      "hasPlayer": false,
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "contextLost": false,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "drawingBuffer": {
+        "width": 1366,
+        "height": 768
+      },
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "composerActive": true,
+      "lastNativeFrameAtMs": 20023.900000000023,
+      "cssCanvas": {
+        "width": 1366,
+        "height": 768
+      },
+      "antialias": true,
+      "shadowsActive": true,
+      "renderInfo": {
+        "frame": 124,
+        "calls": 1,
+        "triangles": 1,
+        "points": 0,
+        "lines": 0
+      }
+    },
+    "observed": {
+      "observedAtMs": 68333.80000000005,
+      "state": "countdown",
+      "phase": "countdown",
+      "raceTime": 0,
+      "hasPlayer": true,
+      "hidden": false,
+      "visibility": "visible",
+      "focused": true,
+      "contextLost": false,
+      "quality": "low",
+      "pixelRatio": 0.75,
+      "drawingBuffer": {
+        "width": 1024,
+        "height": 576
+      },
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "composerActive": false,
+      "cdT": 0.7896999999999537,
+      "lastNativeFrameAtMs": 67307.90000000002,
+      "playerSpeed": 0,
+      "playerProgress": -24.99999975963965,
+      "cssCanvas": {
+        "width": 1366,
+        "height": 768
+      },
+      "antialias": true,
+      "shadowsActive": false,
+      "renderInfo": {
+        "frame": 271,
+        "calls": 606,
+        "triangles": 446932,
+        "points": 3600,
+        "lines": 0
+      }
+    },
+    "jsErrors": [],
+    "screenshotError": "TimeoutError: page.screenshot: Timeout 5000ms exceeded.\nCall log:\n  - taking page screenshot\n  - waiting for fonts to load...\n  - fonts loaded\n"
+  },
+  "interpretation": {
+    "primaryFailure": "Native desktop countdown did not reach race within the existing 45000 ms gate.",
+    "concurrentBrowserErrorsObserved": 0,
+    "webglContextLost": false,
+    "secondaryDiagnosticFailure": "The screenshot requested only after the primary failure also timed out at its original 5000 ms limit. This was caught and stored as desktopFailure.screenshotError, and the original countdown error was rethrown.",
+    "downstreamCoverage": "Native keyboard gameplay and later workflow checks were not reached. This result cannot be used as a pass for them."
+  },
+  "evidenceFiles": [
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-99af-main-artifact.zip",
+      "sha256": "e376d714e6199ad7ea73eb4f55463e5674984b920e342303fa20318ce6b0fb1b",
+      "bytes": 28017525
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-99af-main-smoke.json",
+      "sha256": "3408032d8f0a97ff35040efe778e0d86d4fbef9aaf2f70b261560393d8d05265",
+      "bytes": 23738
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/recovery/ci-remote-99af-main-summary.json",
+      "sha256": "7a2501456a67bf407cd2e453ee367cbb017fd5207625425eabb3faee0e778b06",
+      "bytes": 9448
+    }
+  ],
+  "mutations": {
+    "source": false,
+    "index": false,
+    "remote": false,
+    "reruns": 0,
+    "cancellations": 0
+  },
+  "zodValidated": true
+}

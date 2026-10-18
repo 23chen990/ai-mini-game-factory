@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "commit": "99af424cf3584adc4f13fa607a837d56c1028c65",
+  "observedAt": "2026-10-18T16:32:43.241Z",
+  "run": {
+    "id": 39144127683,
+    "name": "Racing V3 H5 build and Chromium entry smoke",
+    "status": "completed",
+    "conclusion": "failure",
+    "run_number": 578,
+    "jobs_url": "https://api.github.com/repos/23chen990/ai-mini-game-factory/actions/runs/39144127683/jobs",
+    "logs_url": "https://api.github.com/repos/23chen990/ai-mini-game-factory/actions/runs/39144127683/logs",
+    "workflow_id": 384077216
+  },
+  "jobs": [
+    {
+      "id": 117724389346,
+      "name": "racing-v3",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_id": 39144127683,
+      "logs_url": null,
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Locked factory dependencies only",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Locked racing code tests and TypeScript/lint",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Obtain the exact pinned public racing reference",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Build unified racing actual standalone and H5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Verify real Three car materials, shared resources and independent pivots",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Verify physical AI laps and real entrance-wall recovery",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Verify actual H5 build includes every racing runtime source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Audit all 30 V11 native courses and 10 physical forks",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11
+        },
+        {
+          "name": "Drive all 30 courses with five physical AI rivals and native contact",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Verify native player countersteer, drift, collision and pause contracts",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13
+        },
+        {
+          "name": "Install matching Chromium browser",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14
+        },
+        {
+          "name": "Verify six actual garage models and native start/result identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15
+        },
+        {
+          "name": "Launch actual bundled WebGL racing in complete Chromium",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 16
+        },
+        {
+          "name": "Verify adjacent-stage ad callbacks in the actual built H5",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 17
+        },
+        {
+          "name": "One-stage natural visible-touch diagnostic (non-gating)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 18
+        },
+        {
+          "name": "Native 30-stage + daily integrated simulation (synthetic, non-gating)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 19
+        },
+        {
+          "name": "Package playable H5 evidence, hashes and demo ZIP",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20
+        },
+        {
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21
+        },
+        {
+          "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 41
+        },
+        {
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 42
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 43
+        }
+      ]
+    },
+    {
+      "id": 117728081157,
+      "name": "Verified H5 phone preview (QA only)",
+      "status": "completed",
+      "conclusion": "skipped",
+      "run_id": 39144127683,
+      "logs_url": null,
+      "steps": null
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "label": "build",
+  "cwd": "/workspace/scratch/29547c23d820/racing-unified",
+  "argv": [
+    "node",
+    "tools/lean-pilot/racing-mobile-build.mjs"
+  ],
+  "environmentOverrides": {
+    "H5_PINNED_SOURCE_ROOT": "/workspace/scratch/29547c23d820/recovery/racing-upstream-54adc",
+    "RACE_REPAIR_HYPOTHESIS": "After at least four consecutive visible countdown stalls averaging at least one second, apply the existing 0.35 pixel floor on the same confirmed low-quality render; retain native clocks, physics, full scene, and original QA gates."
+  },
+  "startedAt": "2026-10-18T16:28:51.613841Z",
+  "finishedAt": "2026-10-18T16:28:52.705643Z",
+  "exitCode": 0,
+  "log": "/workspace/scratch/29547c23d820/recovery/cold-emergency-build.log",
+  "logBytes": 11465,
+  "logSha256": "d65df26b382346e57587450b4aa0136a5cb4227457985e7308a584b20fcd80d9"
+}

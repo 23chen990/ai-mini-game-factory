@@ -1,0 +1,398 @@
+{
+  "schemaVersion": 1,
+  "runId": "h5-qq-mobile-20261013",
+  "gameId": "qq-speed",
+  "route": "formal-fixer",
+  "version": "V11.6",
+  "uiRevision": "racing-v116-garage",
+  "aiMode": "native-playercar-physics",
+  "attempt": 12,
+  "inputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10",
+  "generatedCar": {
+    "id": "original-racer-v1",
+    "carId": "starter",
+    "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+    "provider": "Tencent-Hunyuan-3.1-web",
+    "bytes": 1270084,
+    "triangles": 17473,
+    "materials": [
+      "BodyPaint",
+      "Glass",
+      "Tire",
+      "Rim",
+      "Headlight",
+      "Taillight",
+      "Trim"
+    ]
+  },
+  "models": [
+    {
+      "id": "original-racer-v1",
+      "carId": "starter",
+      "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+      "provider": "Tencent-Hunyuan-3.1-web",
+      "file": "original-racer.glb",
+      "bytes": 1270084,
+      "triangles": 17473,
+      "materials": [
+        "BodyPaint",
+        "Glass",
+        "Tire",
+        "Rim",
+        "Headlight",
+        "Taillight",
+        "Trim"
+      ],
+      "paintable": true,
+      "wheelMode": "articulated"
+    },
+    {
+      "id": "custom-01",
+      "carId": "custom-01",
+      "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+      "provider": "user-provided",
+      "file": "custom-racer-01.glb",
+      "bytes": 2700636,
+      "triangles": 63998,
+      "textures": [
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        }
+      ],
+      "limits": {
+        "maxTriangles": 64000,
+        "maxBytes": 3670016,
+        "maxTextureSize": 1024
+      },
+      "paintable": false,
+      "wheelMode": "static-source-mesh",
+      "bounds": {
+        "min": [
+          -1.2987256050109863,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.2987256050109863,
+          1.2871825695037842,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "up": "+Y",
+        "forward": "+Z",
+        "groundY": 0,
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8,
+        "runtimeScale": 1
+      }
+    },
+    {
+      "id": "custom-02",
+      "carId": "custom-02",
+      "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+      "provider": "user-provided",
+      "file": "custom-racer-02.glb",
+      "bytes": 1381344,
+      "triangles": 18000,
+      "textures": [
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        }
+      ],
+      "limits": {
+        "maxTriangles": 18000,
+        "maxBytes": 1572864,
+        "maxTextureSize": 1024
+      },
+      "paintable": false,
+      "wheelMode": "static-source-mesh",
+      "bounds": {
+        "min": [
+          -1.251115083694458,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.251115083694458,
+          1.3380991220474243,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "up": "+Y",
+        "forward": "+Z",
+        "groundY": 0,
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8,
+        "runtimeScale": 1
+      }
+    },
+    {
+      "id": "custom-03",
+      "carId": "custom-03",
+      "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+      "provider": "user-provided",
+      "file": "custom-racer-03.glb",
+      "bytes": 1173568,
+      "triangles": 18000,
+      "textures": [
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        }
+      ],
+      "limits": {
+        "maxTriangles": 18000,
+        "maxBytes": 1572864,
+        "maxTextureSize": 1024
+      },
+      "paintable": false,
+      "wheelMode": "static-source-mesh",
+      "bounds": {
+        "min": [
+          -1.310964584350586,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.310964584350586,
+          1.4491381645202637,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "up": "+Y",
+        "forward": "+Z",
+        "groundY": 0,
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8,
+        "runtimeScale": 1
+      }
+    },
+    {
+      "id": "custom-04",
+      "carId": "custom-04",
+      "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+      "provider": "user-provided",
+      "file": "custom-racer-04.glb",
+      "bytes": 1129904,
+      "triangles": 18000,
+      "textures": [
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        }
+      ],
+      "limits": {
+        "maxTriangles": 18000,
+        "maxBytes": 1572864,
+        "maxTextureSize": 1024
+      },
+      "paintable": false,
+      "wheelMode": "static-source-mesh",
+      "bounds": {
+        "min": [
+          -1.3331763744354248,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.3331763744354248,
+          1.3121647834777832,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "up": "+Y",
+        "forward": "+Z",
+        "groundY": 0,
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8,
+        "runtimeScale": 1
+      }
+    },
+    {
+      "id": "custom-05",
+      "carId": "custom-05",
+      "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+      "provider": "user-provided",
+      "file": "custom-racer-05.glb",
+      "bytes": 1407812,
+      "triangles": 18000,
+      "textures": [
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        },
+        {
+          "width": 1024,
+          "height": 1024,
+          "mimeType": "image/jpeg"
+        }
+      ],
+      "limits": {
+        "maxTriangles": 18000,
+        "maxBytes": 1572864,
+        "maxTextureSize": 1024
+      },
+      "paintable": false,
+      "wheelMode": "static-source-mesh",
+      "bounds": {
+        "min": [
+          -1.2511299848556519,
+          0,
+          -2.4000000953674316
+        ],
+        "max": [
+          1.2511299848556519,
+          1.7879513502120972,
+          2.4000000953674316
+        ]
+      },
+      "normalization": {
+        "up": "+Y",
+        "forward": "+Z",
+        "groundY": 0,
+        "centerXZ": [
+          0,
+          0
+        ],
+        "lengthM": 4.8,
+        "runtimeScale": 1
+      }
+    }
+  ],
+  "userCarManifestSha256": "17f63f08818e0a7e7decdccc7f08fb79326c50fd06d61fc49e2fccf7b8f3c558",
+  "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "originalPhysicsSha256": "667b7aae414b9c19822cef59021f2619fa83be837a00c3fd5ed98edb0e425104",
+  "driftEventVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+  "originalAiSha256": "2a399dad5831ec9ac8c22b76d837b908ed171f66e7510e5ef80679ef19b78f7e",
+  "generatedAiSha256": "47377c07688e4023d57a8db1167eb3e70fced3b896b5786aca7f86f5ceb805c7",
+  "generatedVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+  "generatedTrackSha256": "336c734656afaf5df0c33ec132743d1e8a3023bfee348db528ab050de31f85de",
+  "genuinePhysicalShortcutStages": [
+    "05",
+    "10",
+    "12",
+    "13",
+    "16",
+    "18",
+    "22",
+    "25",
+    "27",
+    "30"
+  ],
+  "trackGeometrySha256": "307e0ecf8a30214b98049576ac445abe1f7b15a81435d34916bf7afaf1ceb421",
+  "itemVisualSourceSha256": "5c0dd3178540d61a58938fb8e9c67f39481c2e0a4fceb6eb51b3a057799e471e",
+  "buildLog": "dist/index.html 12801 KB",
+  "runtimeEntrypoints": [
+    "workspace/source/qq-speed/src/main.js (Three.js racing)",
+    "workspace/source/qq-speed/src/carModel.js (selected model + preserved native effects)",
+    "workspace/source/qq-speed/src/race-car-loader.mjs (six embedded GLBs, lazy serialized decoding)",
+    "workspace/source/qq-speed/src/race-generated-car.mjs (starter materials and wheel pivots)",
+    "workspace/source/qq-speed/src/race-user-car.mjs (baked user models)",
+    "workspace/source/qq-speed/src/race-car-asset-cache.mjs (bounded shared resources and instance disposal)",
+    "workspace/source/qq-speed/src/ai.js (physical PlayerCar rivals)",
+    "workspace/source/qq-speed/src/race-v11-physical-ai.mjs",
+    "workspace/source/qq-speed/src/v11-course-director.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/garage.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/car-thumbnails.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/wheel-steering.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/career.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/cosmetics.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/items.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/shortcut-decisions.mjs",
+    "templates/web-lite/h5-source-mobile-v1/fuel.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.css"
+  ],
+  "compatibilityOnly": [
+    "templates/web-lite/h5-source-mobile-v1/racing/joystick.mjs",
+    "workspace/source/qq-speed/src/race-v8-rival-ai.mjs (old on-rail AI adapter)",
+    "workspace/game/main.mjs",
+    "workspace/game/engine.mjs",
+    "workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)"
+  ],
+  "trialName": "racing-two-button-893226cc0792.html",
+  "trialSha256": "cfffc0ca59989d6dd21325c8dd6168b4861cc6965a65dcfc9ede44d3722d9329",
+  "builtAt": "2026-10-18T16:28:52.689Z",
+  "publishable": false
+}

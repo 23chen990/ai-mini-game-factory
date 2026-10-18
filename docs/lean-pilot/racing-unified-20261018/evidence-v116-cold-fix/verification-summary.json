@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "version": "V11.6",
+  "attempt": 12,
+  "sourceCommit": "1c68aa89607875406995a896101214a283bccfb6",
+  "sourceTree": "93774f8a63f68d5816efb74ce258f5cb82c8c0ae",
+  "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+  "inputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10",
+  "trialSha256": "cfffc0ca59989d6dd21325c8dd6168b4861cc6965a65dcfc9ede44d3722d9329",
+  "checkedAt": "2026-10-18T16:36:17.078284Z",
+  "localColdQA": {
+    "desktop": {
+      "passed": true,
+      "firstAfterClickObservationToRaceSeconds": 30.317799999999814,
+      "readyToRaceSeconds": 30.820799999999814,
+      "styleChecks": 12,
+      "finalPixelRatio": 0.35,
+      "drawingBuffer": [
+        478,
+        268
+      ],
+      "antialias": true,
+      "scope": "Cold start + keyboard acceleration/steering + CSS"
+    },
+    "touch": {
+      "passed": true,
+      "firstAfterClickObservationToRaceSeconds": 10.176299999999813,
+      "readyToRaceSeconds": 10.990799999999814,
+      "styleChecks": 12,
+      "finalPixelRatio": 0.35,
+      "drawingBuffer": [
+        295,
+        136
+      ],
+      "antialias": false,
+      "scope": "Cold start + CSS; no touch steering journey in this original QA"
+    }
+  },
+  "focusedSourceTests": {
+    "passed": 67,
+    "failed": 0,
+    "skipped": 0
+  },
+  "actualBuildFingerprint": {
+    "passed": 2,
+    "failed": 0,
+    "skipped": 0
+  },
+  "componentInvariance": {
+    "schemaVersion": 1,
+    "beforeBuildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+    "afterBuildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+    "afterInputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10",
+    "trialSha256": "cfffc0ca59989d6dd21325c8dd6168b4861cc6965a65dcfc9ede44d3722d9329",
+    "attempt": 12,
+    "checkedAt": "2026-10-18T16:28:59.348980Z",
+    "unchangedComponentChecks": {
+      "originalPhysicsSha256": true,
+      "driftEventVehicleSha256": true,
+      "originalAiSha256": true,
+      "generatedAiSha256": true,
+      "generatedVehicleSha256": true,
+      "generatedTrackSha256": true,
+      "trackGeometrySha256": true,
+      "itemVisualSourceSha256": true,
+      "userCarManifestSha256": true,
+      "models": true,
+      "genuinePhysicalShortcutStages": true
+    },
+    "passed": true,
+    "scope": "Byte/hash equality of build-receipt components; this is not a new execution of earlier full runtime reports."
+  },
+  "fullRemoteCI": "PENDING_AT_ARCHIVE_TIME; see the PR Checks for this source ancestry",
+  "scope": "Local regression checkpoint for the two-file rendering fix; historical attempt11 reports remain tied to c606 and are not newly executed results.",
+  "natural": "BLOCKED",
+  "physicalAndroid": "NOT_RUN",
+  "physicalIphone": "NOT_RUN",
+  "liveAds": "NOT_RUN",
+  "publishable": false
+}

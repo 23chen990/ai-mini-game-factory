@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "version": "V11.6",
+  "attempt": 12,
+  "sourceCommit": "1c68aa89607875406995a896101214a283bccfb6",
+  "sourceTree": "93774f8a63f68d5816efb74ce258f5cb82c8c0ae",
+  "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+  "inputHash": "e62b6b6114767a01ec1bee5985801a657bbebc7ed89a94c2127e6af27fc7da10",
+  "trialSha256": "cfffc0ca59989d6dd21325c8dd6168b4861cc6965a65dcfc9ede44d3722d9329",
+  "trialBytes": 13339106,
+  "sourceBaseline": "99af424cf3584adc4f13fa607a837d56c1028c65",
+  "scope": "Immutable local cold-start repair checkpoint; new remote full CI was pending at archive time. Prior failed logs retain their original build and bytes.",
+  "fileCount": 37,
+  "files": [
+    {
+      "path": "build-command.json",
+      "bytes": 864,
+      "sha256": "dfc72effdf53edb9721915be2e4a45deef3f73f1a355570ec6ec65de36fffaf4"
+    },
+    {
+      "path": "build-receipt.json",
+      "bytes": 11465,
+      "sha256": "d65df26b382346e57587450b4aa0136a5cb4227457985e7308a584b20fcd80d9"
+    },
+    {
+      "path": "build.log",
+      "bytes": 11465,
+      "sha256": "d65df26b382346e57587450b4aa0136a5cb4227457985e7308a584b20fcd80d9"
+    },
+    {
+      "path": "component-invariance.json",
+      "bytes": 985,
+      "sha256": "66fb9ab4c85e817ab4895c93b1e583ee5ff026cf9b0cd36977843f2dbd423dca"
+    },
+    {
+      "path": "delivery-command.json",
+      "bytes": 759,
+      "sha256": "90212ea656fd1a7071a6013b94b1e5a8845bb3b13bb7f460aefcaf5db8f8eb02"
+    },
+    {
+      "path": "delivery-manifest.json",
+      "bytes": 10032,
+      "sha256": "dbae399ed6e62b65fa68992dc4a73c3935691c0a6f48968ec267db4ffae688e8"
+    },
+    {
+      "path": "delivery-result.json",
+      "bytes": 374,
+      "sha256": "a3b0c2f61834625c65338db9642d77362d5599b807b0998664c5ae11ec6e3597"
+    },
+    {
+      "path": "delivery-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "desktop-cold-start.png",
+      "bytes": 880069,
+      "sha256": "625fe331c2df6e7027ace863d8e50c5861342d8278a4cfb585c8e02f0ee1581b"
+    },
+    {
+      "path": "desktop-command.json",
+      "bytes": 876,
+      "sha256": "7ffb8302a704a258cd1d418d4684025e5b7e3bae312d60a65591fd357050b38e"
+    },
+    {
+      "path": "desktop-last-state.png",
+      "bytes": 889005,
+      "sha256": "4e380b1b673b670b33e434290bd1ba185e2d43c38e6d388e8f606bba8a2ff334"
+    },
+    {
+      "path": "desktop-report.json",
+      "bytes": 23539,
+      "sha256": "36a07f72e6fc688bfbe143c25b8527844acaba96593de3f363ffe16888bf6090"
+    },
+    {
+      "path": "desktop.log",
+      "bytes": 23608,
+      "sha256": "1080f29bea17497d72cd04c2d7f85e6ff008de24f7ccab4e448579705044c773"
+    },
+    {
+      "path": "final-scoped-eslint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fingerprint-2.tap",
+      "bytes": 5128,
+      "sha256": "c95715b9ac807922de8261ac78632d50648df4bdd8ed86f50cf1e99771f70c0e"
+    },
+    {
+      "path": "fixer-handoff.json",
+      "bytes": 19874,
+      "sha256": "0f539b8d67e234f977441bfff66c26b1f5b76cd94ee3e89ac8a3c2a79d3600e2"
+    },
+    {
+      "path": "independent-qa.json",
+      "bytes": 18316,
+      "sha256": "7de19c2566159c62a26959a04cd340289e8af30abbb898a8c4e02b96079c34a7"
+    },
+    {
+      "path": "natural-coverage-not-run.json",
+      "bytes": 762,
+      "sha256": "d1bea3e646222a448d3d3f5c63ca88073b5ca6ee7414b9cb475fcc5ea398bc11"
+    },
+    {
+      "path": "previous-ci-cold-analysis.json",
+      "bytes": 31139,
+      "sha256": "30e6dd7fcdc0fb7e9e9b17612694449c5f3f3fdede9a794aafc8ee357103ae51"
+    },
+    {
+      "path": "previous-ci-cold-summary.json",
+      "bytes": 9161,
+      "sha256": "28d9a192edb29be5f95595fbd3ec38114848965cad27c60633caff5354b103ec"
+    },
+    {
+      "path": "previous-ci-context-diagnostic.log",
+      "bytes": 69317,
+      "sha256": "eb97318de58bda25d9f068898d18e3a96c4d94454ffb4b3e963ca501fedc147b"
+    },
+    {
+      "path": "previous-ci-desktop-failure.log",
+      "bytes": 127594,
+      "sha256": "a0cc9857ee123ed0f9c4cd267409c1cb97ef188d71616efa6ccca0e8d549697a"
+    },
+    {
+      "path": "previous-ci-main-artifact-summary.json",
+      "bytes": 4797,
+      "sha256": "968761b75d8d118b3f56c76ad6f87f8f8d4723a97ab26051dd913e6257a6ff93"
+    },
+    {
+      "path": "previous-ci-main-failure.log",
+      "bytes": 179398,
+      "sha256": "e5434dae60d5902b0cf22bc89f55b2007da2450b8853869fa849177f280a3524"
+    },
+    {
+      "path": "previous-ci-main-raw-status.json",
+      "bytes": 5476,
+      "sha256": "25bcc958b78cf1d5ac77ead45230a86d1a0a721625b9284369e23698391848ee"
+    },
+    {
+      "path": "previous-ci-main-smoke.json",
+      "bytes": 23738,
+      "sha256": "3408032d8f0a97ff35040efe778e0d86d4fbef9aaf2f70b261560393d8d05265"
+    },
+    {
+      "path": "previous-ci-main-summary.json",
+      "bytes": 9448,
+      "sha256": "7a2501456a67bf407cd2e453ee367cbb017fd5207625425eabb3faee0e778b06"
+    },
+    {
+      "path": "previous-ci-touch.log",
+      "bytes": 111492,
+      "sha256": "42c740dc50a9f1c92c805226ba614136e1a7df032ab6cb470ff21fd5435598d2"
+    },
+    {
+      "path": "source-commit.json",
+      "bytes": 896,
+      "sha256": "d64f4f96f88764cf9c51ace4d1930a03fc881c9d7e9f9938a2b14eefcfee0c47"
+    },
+    {
+      "path": "source-contracts-67.log",
+      "bytes": 6551,
+      "sha256": "3d41b7541e3992fc50ff1a995830c39b5956dff476c33e8edf7f7e9a7e1ebe97"
+    },
+    {
+      "path": "source-freeze.json",
+      "bytes": 1252,
+      "sha256": "5e66bb6d93d60a93c769cf61318192f906c954568220254bb6e95c539618b080"
+    },
+    {
+      "path": "touch-cold-start.png",
+      "bytes": 321814,
+      "sha256": "4ae5e11d14aa24487a0df2a0c79f1fd1df4ea13a57c0cdc0cfcbf47507b038d8"
+    },
+    {
+      "path": "touch-command.json",
+      "bytes": 870,
+      "sha256": "4f2dbf95e8d774694a5883ff5a71d3b3dbc362909e431ff2ed1d164ee4f2c4b4"
+    },
+    {
+      "path": "touch-last-state.png",
+      "bytes": 323054,
+      "sha256": "740ed8c4d9401b1fcbf361623dfd4d5380cfe913c132c9306cbb9c7f39b6f988"
+    },
+    {
+      "path": "touch-report.json",
+      "bytes": 11499,
+      "sha256": "09b3e84be3c197597618237853d7eb0556066cf47d3add50fd8fec1ddada76a8"
+    },
+    {
+      "path": "touch.log",
+      "bytes": 11568,
+      "sha256": "40704c07f6c64508d34d658ff2276ca31e6d08585bdb5e13d14b2d23ff41e44a"
+    },
+    {
+      "path": "verification-summary.json",
+      "bytes": 2892,
+      "sha256": "4613d018b4dc50b2db964c4423621a2cc089a9d9feca9adecac6809418ee6640"
+    }
+  ],
+  "checkedAt": "2026-10-18T16:37:29.121931Z"
+}

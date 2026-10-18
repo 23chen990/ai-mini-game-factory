@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "parentCommit": "99af424cf3584adc4f13fa607a837d56c1028c65",
+  "baseTreeSha": "72fba9d6d0736b99060df82cba201222073fb62f",
+  "entries": [
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+      "relativePath": "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+      "bytes": 16428,
+      "sha256": "f56c9f10951d26eeb90825aa1376802501736f4081ae4182984cbe0f9d9ee866",
+      "gitBlobSha": "e00b551b4ca2737d651160cafa202ed03f98dd59",
+      "encoding": "utf-8"
+    },
+    {
+      "path": "/workspace/scratch/29547c23d820/racing-unified/templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "relativePath": "templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "bytes": 16814,
+      "sha256": "b4717e9d343fe93310341759d4463f36063d10d8d5729ceacc32f4f215440189",
+      "gitBlobSha": "0451f8763622d014cbe49e0f185d332734a7c879",
+      "encoding": "utf-8"
+    }
+  ],
+  "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+  "handoffSha256": "0f539b8d67e234f977441bfff66c26b1f5b76cd94ee3e89ac8a3c2a79d3600e2",
+  "frozenAt": "2026-10-18T16:29:33.795279Z"
+}

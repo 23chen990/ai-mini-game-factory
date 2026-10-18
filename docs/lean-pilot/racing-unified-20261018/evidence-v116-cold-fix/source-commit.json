@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "1c68aa89607875406995a896101214a283bccfb6",
+  "sourceTree": "93774f8a63f68d5816efb74ce258f5cb82c8c0ae",
+  "parentCommit": "99af424cf3584adc4f13fa607a837d56c1028c65",
+  "buildHash": "893226cc0792aaae4254b0a09fcdeb782d76efa5064f8703a810ca43eebe500d",
+  "status": "CREATED_UNREFERENCED",
+  "entries": [
+    {
+      "relativePath": "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+      "remoteSha": "e00b551b4ca2737d651160cafa202ed03f98dd59",
+      "sha256": "f56c9f10951d26eeb90825aa1376802501736f4081ae4182984cbe0f9d9ee866",
+      "bytes": 16428
+    },
+    {
+      "relativePath": "templates/web-lite/h5-source-mobile-v1/tests/racing-countdown-quality.test.mjs",
+      "remoteSha": "0451f8763622d014cbe49e0f185d332734a7c879",
+      "sha256": "b4717e9d343fe93310341759d4463f36063d10d8d5729ceacc32f4f215440189",
+      "bytes": 16814
+    }
+  ]
+}
