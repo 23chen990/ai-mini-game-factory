@@ -225,10 +225,12 @@ export function installCountdownQualitySafety(game, {
   monitor.manual = true; // Same severe-only exception used for saved preferences.
   let previous = null, previousState = null, previousQuality = null;
   let lowStalls = 0, lowSlowSeconds = 0, pixelRatioLimit = 1;
+  let multiSecondStalls = 0, multiSecondSeconds = 0;
   const resetMeasurements = () => {
     previous = null;previousState = null;previousQuality = null;
     monitor.consecutiveStalls = 0;monitor.severeManualLag = 0;
     lowStalls = 0;lowSlowSeconds = 0;
+    multiSecondStalls = 0;multiSecondSeconds = 0;
   };
   const renderer = game.renderer;
   const hasPixelBudget = typeof renderer?.getPixelRatio === 'function' &&
@@ -245,6 +247,14 @@ export function installCountdownQualitySafety(game, {
       const result = nativeSetPixelRatio.call(this,effective);
       if (owned) resetMeasurements();
       return result;
+    };
+  }
+  const nativeResize = game.resize;
+  if (typeof nativeResize === 'function') {
+    // Native viewport changes use setSize directly, not setPixelRatio.
+    game.resize = function(...args) {
+      if (this === game) resetMeasurements();
+      return nativeResize.apply(this,args);
     };
   }
   // Hidden documents may receive no RAF callbacks at all. Discard the old
@@ -265,11 +275,28 @@ export function installCountdownQualitySafety(game, {
         return nativeRender.apply(this,args);
       }
       previous = time;previousState = this.state;previousQuality = this.settings.quality;
+      if (this.state === 'countdown' && elapsed > .25) {
+        multiSecondStalls++;multiSecondSeconds += elapsed;
+      } else {
+        multiSecondStalls = 0;multiSecondSeconds = 0;
+      }
+      // Four confirmed stalls averaging at least a second cannot afford another
+      // four multi-second frames at every pixel step. Ordinary lag stays gradual.
+      const emergency = multiSecondStalls >= 4 && multiSecondSeconds >= 4 &&
+        multiSecondSeconds / multiSecondStalls >= 1;
       if (elapsed > 0 && this.state === 'countdown' && this.settings.quality !== 'low') {
         const lower = monitor.frame(elapsed, this.settings.quality);
         if (lower) {
+          const emergencyLow = lower === 'low' && emergency && hasPixelBudget && this.renderer === renderer;
+          // Set the cap before native setup so it never recreates full-size low
+          // buffers after multi-second countdown stalls have already been proved.
+          if (emergencyLow) pixelRatioLimit = Math.min(pixelRatioLimit,LOW_RENDER_PIXEL_RATIOS.at(-1));
           this.settings.quality = lower;
           this.setupQuality();
+          if (emergencyLow) {
+            renderer.setPixelRatio(renderer.getPixelRatio());
+            if (typeof this.resize === 'function') this.resize();
+          }
         }
       } else if (elapsed > 0 && this.settings.quality === 'low' && hasPixelBudget && this.renderer === renderer) {
         // Match the existing severe-only exception: four consecutive >250ms
@@ -284,8 +311,9 @@ export function installCountdownQualitySafety(game, {
         if (lowStalls >= 4 || lowSlowSeconds >= 1.3) {
           lowStalls = 0;lowSlowSeconds = 0;
           const current = renderer.getPixelRatio();
+          const budgets = emergency ? LOW_RENDER_PIXEL_RATIOS.slice(-1) : LOW_RENDER_PIXEL_RATIOS;
           const next = Number.isFinite(current) && current > 0 ?
-            LOW_RENDER_PIXEL_RATIOS.find(ratio => ratio < Math.min(current,pixelRatioLimit)) : undefined;
+            budgets.find(ratio => ratio < Math.min(current,pixelRatioLimit)) : undefined;
           if (next !== undefined) {
             pixelRatioLimit = next;
             renderer.setPixelRatio(current);
