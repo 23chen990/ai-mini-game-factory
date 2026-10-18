@@ -103,3 +103,32 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
  #coast[data-phase="ready"] #co-modal{padding-top:max(84px,calc(env(safe-area-inset-top,0px) + 74px));padding-bottom:max(10px,env(safe-area-inset-bottom,0px))}
  #coast[data-phase="ready"] .co-card{height:calc(100dvh - 104px);max-height:calc(100dvh - 104px)}
 }
+
+/* V7: make the FORWARD ROAD the primary instrument during a live run.
+   No gameplay control or collision changes. The previous three tall HUD
+   bands occluded oncoming vehicles on a 320x568 phone.
+   Menu and finish screens retain the full information density. */
+#coast[data-phase="running"] .co-top{
+ margin:4px 8px 0;padding:2px 8px 2px 10px;min-height:45px;
+ border-radius:12px
+}
+#coast[data-phase="running"] .co-top small{font-size:9px;line-height:1}
+#coast[data-phase="running"] .co-top b{font-size:14px;line-height:1.1}
+#coast[data-phase="running"] .co-goals{
+ gap:4px;margin:3px 8px;grid-template-columns:1.2fr 1fr .6fr
+}
+#coast[data-phase="running"] .co-goal{
+ padding:4px 6px;border-radius:9px
+}
+#coast[data-phase="running"] .co-goal span{font-size:10px}
+#coast[data-phase="running"] .co-goal b{font-size:15px;line-height:1.1}
+#coast[data-phase="running"] .co-goal progress{height:4px;margin-top:2px}
+#coast[data-phase="running"] #co-radar{
+ top:124px;min-height:48px
+}
+#coast[data-phase="running"] #co-radar-label{top:108px}
+@media(orientation:portrait) and (max-height:650px){
+ #coast[data-phase="running"] .co-goal b{font-size:14px}
+ #coast[data-phase="running"] #co-radar{top:120px}
+ #coast[data-phase="running"] #co-radar-label{top:104px}
+}
