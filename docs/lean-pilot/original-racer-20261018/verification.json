@@ -1,0 +1,322 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "极速飞驰",
+  "workspace": "runs/h5-qq-mobile-20261013/workspace",
+  "basePr": 60,
+  "baseSha": "6e3e12b5f845b06558d8928d7beca8c4aee3ef80",
+  "buildHash": "8b9c0eda6350fd7849ccb3708d4f87e25f8544aee9eba9622ce290df0e5bdbac",
+  "inputHash": "f240bc7ebbbf7602c726cbdbc23f5c300213bde7db19662ec8aa9cb920d5349b",
+  "repairAttempt": 7,
+  "asset": {
+    "id": "original-racer-v1",
+    "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+    "provider": "Tencent-Hunyuan-3.1-web",
+    "bytes": 1270084,
+    "triangles": 17473,
+    "materials": [
+      "BodyPaint",
+      "Glass",
+      "Tire",
+      "Rim",
+      "Headlight",
+      "Taillight",
+      "Trim"
+    ]
+  },
+  "html": {
+    "bytes": 2786629,
+    "gzipBytes": 1379370
+  },
+  "unchangedNative": {
+    "vehicleSha256": "e929b9a070ccd3826d9663772d116ae7cc3174a7e3c7ec9dc700d37957d06600",
+    "aiSha256": "aeaf093f2a54ba455e95a5f875560a867a251afc9a09d1a4a6310856f789e1df"
+  },
+  "engineeringSmoke": {
+    "passed": true,
+    "scope": "Seeded engineering, not natural30-stage progression",
+    "reportSha256": "910dbccc602ada5367b702452e02f97ebf386e23b21b9d9ede413670c3fdb9cd"
+  },
+  "browser": {
+    "passed": true,
+    "physicalPhone": false,
+    "errors": [],
+    "cases": [
+      {
+        "name": "desktop",
+        "homeLayout": {
+          "panel": {
+            "x": 43.1875,
+            "y": 206.0390625,
+            "width": 575,
+            "height": 391.015625,
+            "top": 206.0390625,
+            "right": 618.1875,
+            "bottom": 597.0546875,
+            "left": 43.1875
+          },
+          "start": {
+            "x": 68.1875,
+            "y": 532.0546875,
+            "width": 120.40625,
+            "height": 44,
+            "top": 532.0546875,
+            "right": 188.59375,
+            "bottom": 576.0546875,
+            "left": 68.1875
+          },
+          "height": 900,
+          "width": 1440
+        },
+        "oneCar": {
+          "trianglesIncludingNativeEffects": 18239,
+          "meshesIncludingNativeEffects": 19
+        },
+        "homePerformance": {
+          "medianFrameMs": 8.299999999999955,
+          "p95FrameMs": 9.099999999999909,
+          "textures": 56,
+          "geometries": 524,
+          "wholeFrame": {
+            "calls": 429,
+            "triangles": 393691
+          },
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "note": "Desktop GPU, phone viewport emulation is not physical phone performance; wholeFrame temporarily disables counter autoReset across all render passes."
+        },
+        "racePerformance": {
+          "medianFrameMs": 8.300000000001091,
+          "p95FrameMs": 9.200000000000728,
+          "textures": 65,
+          "geometries": 744,
+          "wholeFrame": {
+            "calls": 604,
+            "triangles": 485390
+          },
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "note": "Desktop GPU, phone viewport emulation is not physical phone performance; wholeFrame temporarily disables counter autoReset across all render passes."
+        }
+      },
+      {
+        "name": "phone-landscape",
+        "homeLayout": {
+          "panel": {
+            "x": 25.3125,
+            "y": 12.8828125,
+            "width": 337.59375,
+            "height": 266.234375,
+            "top": 12.8828125,
+            "right": 362.90625,
+            "bottom": 279.1171875,
+            "left": 25.3125
+          },
+          "start": {
+            "x": 39.3125,
+            "y": 225.1171875,
+            "width": 94.40625,
+            "height": 44,
+            "top": 225.1171875,
+            "right": 133.71875,
+            "bottom": 269.1171875,
+            "left": 39.3125
+          },
+          "height": 390,
+          "width": 844
+        },
+        "oneCar": {
+          "trianglesIncludingNativeEffects": 18239,
+          "meshesIncludingNativeEffects": 19
+        },
+        "homePerformance": {
+          "medianFrameMs": 8.300000000000182,
+          "p95FrameMs": 9.200000000000045,
+          "textures": 30,
+          "geometries": 578,
+          "wholeFrame": {
+            "calls": 380,
+            "triangles": 359951
+          },
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "note": "Desktop GPU, phone viewport emulation is not physical phone performance; wholeFrame temporarily disables counter autoReset across all render passes."
+        },
+        "racePerformance": {
+          "medianFrameMs": 8.300000000000182,
+          "p95FrameMs": 9.099999999999454,
+          "textures": 39,
+          "geometries": 749,
+          "wholeFrame": {
+            "calls": 564,
+            "triangles": 433851
+          },
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "note": "Desktop GPU, phone viewport emulation is not physical phone performance; wholeFrame temporarily disables counter autoReset across all render passes."
+        }
+      },
+      {
+        "name": "phone-portrait",
+        "homeLayout": {
+          "panel": {
+            "x": 28,
+            "y": 188.5,
+            "width": 334,
+            "height": 467,
+            "top": 188.5,
+            "right": 362,
+            "bottom": 655.5,
+            "left": 28
+          },
+          "start": {
+            "x": 134.796875,
+            "y": 588.5,
+            "width": 120.40625,
+            "height": 44,
+            "top": 588.5,
+            "right": 255.203125,
+            "bottom": 632.5,
+            "left": 134.796875
+          },
+          "height": 844,
+          "width": 390
+        },
+        "oneCar": {
+          "trianglesIncludingNativeEffects": 18239,
+          "meshesIncludingNativeEffects": 19
+        },
+        "homePerformance": {
+          "medianFrameMs": 8.300000000000068,
+          "p95FrameMs": 9.299999999999955,
+          "textures": 28,
+          "geometries": 333,
+          "wholeFrame": {
+            "calls": 169,
+            "triangles": 305721
+          },
+          "gpu": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+          "note": "Desktop GPU, phone viewport emulation is not physical phone performance; wholeFrame temporarily disables counter autoReset across all render passes."
+        }
+      }
+    ]
+  },
+  "natural": {
+    "passed": false,
+    "scope": "Fresh visible-touch minimap policy; no win/progress/time injection. Failed podium gate is not overridden by car visual checks.",
+    "buildHash": "8b9c0eda6350fd7849ccb3708d4f87e25f8544aee9eba9622ce290df0e5bdbac",
+    "reportSha256": "d04261937f03f6e318d7828a8fa7069be94ca8f30120438195308a59f49fcba5",
+    "races": [
+      {
+        "stage": "01",
+        "finished": true,
+        "finishTime": 98.35860000000211,
+        "place": 4,
+        "earnedStars": 0,
+        "status": "BLOCKED",
+        "result": "本次未进前三 · 第4名，要求前三名 · 距目标名次 2.2 秒",
+        "actionsFit": true,
+        "carIdentities": [
+          {
+            "id": "original-racer-v1",
+            "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+            "provider": "Tencent-Hunyuan-3.1-web"
+          },
+          {
+            "id": "original-racer-v1",
+            "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+            "provider": "Tencent-Hunyuan-3.1-web"
+          },
+          {
+            "id": "original-racer-v1",
+            "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+            "provider": "Tencent-Hunyuan-3.1-web"
+          },
+          {
+            "id": "original-racer-v1",
+            "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+            "provider": "Tencent-Hunyuan-3.1-web"
+          },
+          {
+            "id": "original-racer-v1",
+            "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+            "provider": "Tencent-Hunyuan-3.1-web"
+          },
+          {
+            "id": "original-racer-v1",
+            "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+            "provider": "Tencent-Hunyuan-3.1-web"
+          }
+        ]
+      }
+    ],
+    "errors": [],
+    "replay": {
+      "phase": "race",
+      "state": "race",
+      "carIdentities": [
+        {
+          "id": "original-racer-v1",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        },
+        {
+          "id": "original-racer-v1",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        },
+        {
+          "id": "original-racer-v1",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        },
+        {
+          "id": "original-racer-v1",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        },
+        {
+          "id": "original-racer-v1",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        },
+        {
+          "id": "original-racer-v1",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        }
+      ]
+    }
+  },
+  "imageHashes": {
+    "phone-home.png": "bc381be317c68a54644077fc37b6e16ce77bc3b240ac68498e17ccbaf05866f7",
+    "phone-race.png": "6cf90572d693206160f39f515898faf803ef147f3ad25b5c3d7b3158c98783a0",
+    "desktop-home.png": "c5c175101b835142b6e2f7df483e39d0de49fda72b62ac71238cf9ff89da834e",
+    "small-home.png": "f817e885024a9013e2de704900a9d7dea8c71bbb614d25c22371862d5bb0beb0",
+    "phone-settlement.png": "0dfc964b6b89812276f6f6eff8591eaab87b05efa0d79da6bdd721201d7f3e58",
+    "phone-replay.png": "6ee80036caee0b529fdfb194bf49ef1f777c8c4434aadadc8507809ff09f59a8"
+  },
+  "gate": "BLOCKED",
+  "remainingGaps": [
+    "Natural campaign podium gate BLOCKED (4th/0stars); no30-stage natural certification.",
+    "Natural desktop settlement/replay and real iPhone/Android performance/input are not certified.",
+    "Repository-wide Vitest remains red:48 node:test runner-mismatch files plus pre-existing unknown-waiver-binding assertion.",
+    "Five generated-tangent-space GLB warnings, no validator errors; Mini Game platform packages and commercial rights remain outside approval."
+  ],
+  "railTouch": {
+    "passed": true,
+    "input": "Trusted CDP touch swipes and disabled Daily tap; no state/storage injection",
+    "count": 30,
+    "scrollLeft": 2300,
+    "scrollWidth": 3112,
+    "clientWidth": 812,
+    "dailyDisabled": true,
+    "daily": {
+      "x": 716,
+      "y": 316,
+      "width": 112,
+      "height": 60,
+      "top": 316,
+      "right": 828,
+      "bottom": 376,
+      "left": 716
+    },
+    "nativeState": "menu",
+    "selection": "0"
+  }
+}

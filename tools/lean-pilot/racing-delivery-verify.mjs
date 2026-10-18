@@ -45,6 +45,7 @@ export async function currentRacingInputHash() {
   const inputs = await Promise.all(RACING_OWNED_NAMES.map(name => readFile(path.join(owned, 'racing', name), 'utf8')));
   inputs.push(...await Promise.all(['fuel.mjs', 'themes.mjs'].map(name => readFile(path.join(owned, name), 'utf8'))));
   inputs.push(await readFile('tools/lean-pilot/racing-mobile-build.mjs', 'utf8'));
+  inputs.push(hash(await readFile(path.join(owned, 'racing/assets/original-racer.glb'))));
   return hash(inputs.join('\n'));
 }
 export async function verifyDelivery(manifestPath) {

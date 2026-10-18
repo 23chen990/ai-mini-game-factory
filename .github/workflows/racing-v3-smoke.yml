@@ -4,6 +4,11 @@ on:
     paths:
       - 'templates/web-lite/h5-source-mobile-v1/**'
       - 'tools/lean-pilot/racing-mobile-build.mjs'
+      - 'tools/lean-pilot/racing-car-*.mjs'
+      - 'tools/lean-pilot/racing-wheel-qa-input.mjs'
+      - 'tools/lean-pilot/tests/racing-car-*.mjs'
+      - 'tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs'
+      - 'tools/lean-pilot/tests/racing-home-presentation.node.mjs'
       - 'tools/lean-pilot/racing-v3-smoke.mjs'
       - 'tools/lean-pilot/racing-geometry-audit.mjs'
       - 'tools/lean-pilot/racing-shortcut-cost.mjs'
@@ -32,7 +37,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   racing-v3:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/racing-career-items-iaa-20261014' || github.event.pull_request.head.ref == 'feat/racing-v31-tracks-items-recovery-20261014' || github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-rivals-map-verification-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-classic-countersteer-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-v46-challenge-20261017' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v5') || (startsWith(github.event.pull_request.head.ref, 'feat/racing-v60-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v61-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v62-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v70-') || startsWith(github.event.pull_request.head.ref, 'feat/racing-v8-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v91-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v9-'))))))
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'feat/racing-career-items-iaa-20261014' || github.event.pull_request.head.ref == 'feat/racing-v31-tracks-items-recovery-20261014' || github.event.pull_request.head.ref == 'chatgpt/racing-arcade-ux-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-rivals-map-verification-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-classic-countersteer-20261016' || github.event.pull_request.head.ref == 'chatgpt/racing-v46-challenge-20261017' || (github.event.pull_request.head.repo.full_name == github.repository && (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v5') || (startsWith(github.event.pull_request.head.ref, 'feat/racing-v60-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v61-') || (startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v62-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v70-') || startsWith(github.event.pull_request.head.ref, 'feat/racing-v8-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v91-') || startsWith(github.event.pull_request.head.ref, 'chatgpt/racing-v9-') || startsWith(github.event.pull_request.head.ref, 'codex/hunyuan-racer-'))))))
     runs-on: ubuntu-24.04
     timeout-minutes: 26
     steps:
@@ -50,10 +55,12 @@ jobs:
         run: |
           node --test templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs
           node --test tools/lean-pilot/tests/racing-build.test.mjs
+          node --test tools/lean-pilot/tests/racing-car-build.node.mjs tools/lean-pilot/tests/racing-car-prepare.node.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
           node --test tools/lean-pilot/tests/racing-shortcut-cost.test.mjs
           node --test tools/lean-pilot/tests/racing-visible-policy.test.mjs
           node --test tools/lean-pilot/racing-delivery-verify.test.mjs
           pnpm exec eslint tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          pnpm exec eslint tools/lean-pilot/racing-car-*.mjs tools/lean-pilot/racing-wheel-qa-input.mjs tools/lean-pilot/tests/racing-car-*.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
           pnpm typecheck
       - name: Obtain the exact pinned public racing reference
         shell: bash
@@ -70,6 +77,8 @@ jobs:
         env:
           H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/racing-source
         run: node tools/lean-pilot/racing-mobile-build.mjs
+      - name: Verify real Three car materials, shared resources and independent pivots
+        run: RACE_THREE_MODULE="$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed/node_modules/three/build/three.module.js" node --test tools/lean-pilot/tests/racing-car-model-runtime.mjs
       - name: Verify actual H5 build includes every racing runtime source
         run: node --test tools/lean-pilot/racing-build-fingerprint-check.mjs
       - name: Audit all four original/reshaped native centerlines

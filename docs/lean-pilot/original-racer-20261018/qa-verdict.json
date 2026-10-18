@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "role": "QA",
+  "status": "BLOCKED",
+  "findings": [
+    {
+      "topic": "Implemented original car and deterministic/browser gates",
+      "facts": [
+        "One Tencent Hunyuan3.1 WEB multiview generation; observed20→19 web quota. No TokenHub API success claimed.",
+        "FinalGLB1270084bytes17473triangles,3×1024maps,7materials,4independent locally-retopologized wheels. Bodypaint8skins, sharedmodel on home/race/actualsettlement/replay.",
+        "Finalcar browser pass on1440x900,844x390,390x844; seeded real-WebGL entry/regression smoke passes including740x360 anddesktopkeyboard; nativevehicle/AI SHA unchanged.",
+        "Finalsource is candidate formal-fixer attempt7, not a completed formalFIX/release stage."
+      ],
+      "evidence": [
+        "docs/lean-pilot/original-racer-20261018/verification.json",
+        "docs/lean-pilot/original-racer-20261018/phone-home.png",
+        "docs/lean-pilot/original-racer-20261018/phone-race.png",
+        "docs/lean-pilot/original-racer-20261018/phone-settlement.png",
+        "docs/lean-pilot/original-racer-20261018/phone-replay.png"
+      ],
+      "unknowns": [
+        "Physicalphone performance is not established by AppleM1Pro Chromium viewport tests."
+      ]
+    },
+    {
+      "topic": "Natural and release blockers preserved",
+      "facts": [
+        "Fresh natural-touch01 finished98.36seconds,4th,0stars; result and normalfree replay captured without injectingvictory. Existingnatural podiumgate remainsBLOCKED.",
+        "Repository-wide Vitest49failedfiles:48inherited runner-mismatch suites,oneexisting waiver-binding assertion;974of975tests pass. No unrelatedfixes or loosenedcriteria."
+      ],
+      "evidence": [
+        "docs/lean-pilot/original-racer-20261018/verification.json",
+        "runs/h5-qq-mobile-20261013/artifacts/hunyuan-car/final-checks/vitest.log"
+      ],
+      "unknowns": [
+        "Natural campaign podium gate BLOCKED (4th/0stars); no30-stage natural certification.",
+        "Natural desktop settlement/replay and real iPhone/Android performance/input are not certified.",
+        "Repository-wide Vitest remains red:48 node:test runner-mismatch files plus pre-existing unknown-waiver-binding assertion.",
+        "Five generated-tangent-space GLB warnings, no validator errors; Mini Game platform packages and commercial rights remain outside approval."
+      ]
+    }
+  ],
+  "filesChanged": [],
+  "checks": [
+    "pnpm lint PASS;pnpm typecheck PASS.",
+    "40targeted car/runtime tests:39PASS1offline-tooling integrationSKIP;actualsourcepreparer integration7/7PASS separately.",
+    "Node regression470tests466PASS4existingSKIP.",
+    "Fuel lifecycle10/10PASS;actualbuildfingerprintPASS;geometry/AIpace/nativephysics auditsPASS.",
+    "RealChromium Metalcar auditPASS;full seededSwiftShader entrysmokePASS;naturalpodiumBLOCKED."
+  ],
+  "remainingGaps": [
+    "Natural campaign podium gate BLOCKED (4th/0stars); no30-stage natural certification.",
+    "Natural desktop settlement/replay and real iPhone/Android performance/input are not certified.",
+    "Repository-wide Vitest remains red:48 node:test runner-mismatch files plus pre-existing unknown-waiver-binding assertion.",
+    "Five generated-tangent-space GLB warnings, no validator errors; Mini Game platform packages and commercial rights remain outside approval."
+  ]
+}

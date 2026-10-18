@@ -10,7 +10,105 @@ import { sha256 } from './policy.mjs';
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const RUN = 'h5-qq-mobile-20261013';
 const exec = promisify(execFile);
-export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'wheel-steering.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v9-course-director.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs']);
+export const RACING_OWNED_NAMES = Object.freeze(['driver.mjs', 'session.mjs', 'mobile.mjs', 'mobile.css', 'career.mjs', 'items.mjs', 'runtime.mjs', 'recovery.mjs', 'road-coach.mjs', 'rival-pressure.mjs', 'corner-speed.mjs', 'speed-hud.mjs', 'corner-signs.mjs', 'presentation.mjs', 'track-design.mjs', 'lane-design.mjs', 'item-visuals.mjs', 'shortcut-network.mjs', 'joystick.mjs', 'wheel-steering.mjs', 'trial-metrics.mjs', 'duel-loop.mjs', 'career-expansion.mjs', 'shortcut-decisions.mjs', 'v8-course-geometry.mjs', 'v9-course-director.mjs', 'v8-rival-ai.mjs', 'v8-item-rules.mjs', 'generated-car.mjs']);
+
+/** Pinned upstream source is an external build input: reject changed anchors,
+ * rather than silently shipping a procedural sibling or losing native VFX. */
+export function patchGeneratedCarModelSource(source) {
+  const marker = "import { instantiateGeneratedCar } from './race-car-loader.mjs';";
+  if (source.includes(marker)) return source;
+  const anchors = ['function profileShape(pts)', 'export function buildCar(', '  const G = geos();', '  const paint = new THREE.MeshPhysicalMaterial(', '  // 底盘光', '  // 车轮', '  // 氮气尾焰'];
+  for (const anchor of anchors) if (source.split(anchor).length !== 2) throw Error('Pinned car model anchor changed: ' + anchor);
+  let output = source.slice(0, source.indexOf(anchors[0])) + source.slice(source.indexOf(anchors[1]));
+  output = marker + '\n' + output.replace(anchors[2], '  const asset = instantiateGeneratedCar(skin);');
+  const body = output.indexOf(anchors[3]), glow = output.indexOf(anchors[4]);
+  output = output.slice(0, body) + '  root.add(asset.body);\n  const exhausts = asset.exhausts;\n  const tailM = asset.tailMaterial;\n\n' + output.slice(glow);
+  const wheels = output.indexOf(anchors[5]), flames = output.indexOf(anchors[6]);
+  return (output.slice(0, wheels) + '  const wheels = asset.wheels;\n  for (const wheel of wheels) car.add(wheel.steer);\n\n' + output.slice(flames))
+    .replace('car.userData = { root,', 'car.userData = { assetIdentity: asset.assetIdentity, root,');
+}
+
+export function patchGeneratedCarStartup(source) {
+  const marker = "import { carAssetReady } from './race-car-loader.mjs';";
+  if (source.includes(marker)) return source;
+  const anchor = '  async loadMap(id) {\n    this.loading = true;';
+  if (source.split(anchor).length !== 2) throw Error('Pinned car startup anchor changed');
+  return marker + '\n' + source.replace(anchor, anchor + '\n    await carAssetReady;');
+}
+
+/** One home, not a separate showroom: frame the selected native demo/finished
+ * racer to the right of the existing controls. Race chase cameras stay native. */
+export function patchGeneratedCarPresentation(source) {
+  const marker = '// Original racer presentation camera';
+  const menuStart = "    if (st === 'menu') {\n      this.demoT += dt;";
+  const menuEnd = '    if (!target) return;';
+  const orbitStart = "    if (st === 'menu' || (st === 'finish' && this.resultShown)) {";
+  const orbitEnd = '    const P = target;';
+  for (const anchor of [menuEnd, orbitStart])
+    if (source.split(anchor).length !== 2) throw Error('Pinned car presentation anchor changed');
+  let output = source;
+  if (!source.includes(marker)) {
+    if (source.split(menuStart).length !== 2) throw Error('Pinned car presentation menu anchor changed');
+    output = source.slice(0, source.indexOf(menuStart)) +
+      "    if (st === 'menu') target = this.racers[0];\n" + source.slice(source.indexOf(menuEnd));
+  }
+  const start = output.indexOf(orbitStart), end = output.indexOf(orbitEnd, start);
+  if (end < start) throw Error('Pinned car presentation camera end anchor changed');
+  output = output.slice(0, start) + `${orbitStart}
+      ${marker}
+      for (const r of this.racers) {
+        r.model.visible = r === target;
+        if (!r.isPlayer) r.model.userData.tag.visible = false;
+      }
+      const angle = target.h + 0.85 + Math.sin(this.time * 0.12) * 0.12;
+      const distance = 7.8, fov = 42;
+      const want = new THREE.Vector3(tx + Math.sin(angle) * distance, ty + 3.2, tz + Math.cos(angle) * distance);
+      const offset = 0.22 * 2 * distance * Math.tan(fov * Math.PI / 360) * cam.aspect;
+      this.camPos.copy(want);
+      this.camLook.set(tx - Math.cos(angle) * offset, ty + 0.8, tz + Math.sin(angle) * offset);
+      cam.position.copy(this.camPos);
+      cam.lookAt(this.camLook);
+      cam.fov = fov;
+      cam.updateProjectionMatrix();
+      return;
+    }
+` + output.slice(end);
+  return output;
+}
+
+/** One optimized binary, decoded once before the first home/demo. Embedding
+ * preserves the existing offline single-HTML/preview path without a CDN or 404. */
+export function renderEmbeddedCarModule(bytes, identity) {
+  return `import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { createGeneratedCarFactory } from './race-generated-car.mjs';
+const bytes = Uint8Array.from(atob('${bytes.toString('base64')}'), char => char.charCodeAt(0));
+let factory;
+export const carAssetReady = new GLTFLoader().parseAsync(bytes.buffer, '').then(({ scene }) => {
+  factory = createGeneratedCarFactory(THREE, scene, ${JSON.stringify(identity)});
+});
+export const instantiateGeneratedCar = skin => factory.instantiate(skin);
+`;
+}
+
+/** AI export is an external binary input: enforce the actual mesh budget and
+ * articulated/material contract before bundling, not only a producer report. */
+export function validatePreparedCar(bytes) {
+  if (bytes.length > 1_572_864) throw Error('Prepared car exceeds mobile transfer budget');
+  if (bytes.readUInt32LE(0) !== 0x46546c67 || bytes.readUInt32LE(4) !== 2 || bytes.readUInt32LE(16) !== 0x4e4f534a)
+    throw Error('Prepared car must be a binary glTF 2 JSON export');
+  const gltf = JSON.parse(bytes.subarray(20, 20 + bytes.readUInt32LE(12)).toString());
+  for (const name of ['Chassis', 'Wheel_FL', 'Wheel_FR', 'Wheel_RL', 'Wheel_RR'])
+    if (!gltf.nodes.some(node => node.name === name)) throw Error('Prepared car missing ' + name);
+  const primitives = gltf.meshes.flatMap(mesh => mesh.primitives);
+  const triangles = primitives.reduce((sum, primitive) => sum + gltf.accessors[primitive.indices].count / 3, 0);
+  if (triangles > 18000) throw Error('Prepared car exceeds mobile triangle budget');
+  const materials = gltf.materials.map(material => material.name);
+  for (const name of ['BodyPaint', 'Glass', 'Tire', 'Rim', 'Headlight', 'Taillight', 'Trim'])
+    if (!primitives.some(primitive => materials[primitive.material] === name)) throw Error('Prepared car missing material region ' + name);
+  if (gltf.buffers.some(buffer => buffer.uri) || gltf.images.some(image => image.uri)) throw Error('Car textures and geometry must be embedded');
+  return { bytes: bytes.length, triangles, materials };
+}
 
 /** Mobile GPU budget: don't allocate native multisample anti-aliasing,
  * shadows and half-float post-processing before the racing overlay boots.
@@ -502,7 +600,10 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const ownedNames = RACING_OWNED_NAMES;
   const inputFiles = await Promise.all(ownedNames.map(name => readFile(path.join(owned, name), 'utf8')));
   const sharedDeps = await Promise.all(['fuel.mjs', 'themes.mjs'].map(name => readFile(path.join(ROOT, 'templates/web-lite/h5-source-mobile-v1', name), 'utf8')));
-  const inputHash = sha256([...inputFiles, ...sharedDeps, await readFile(fileURLToPath(import.meta.url), 'utf8')].join('\n'));
+  const carBytes = await readFile(path.join(owned, 'assets/original-racer.glb'));
+  const carStats = validatePreparedCar(carBytes);
+  const carIdentity = { id: 'original-racer-v1', sha256: sha256(carBytes), provider: 'Tencent-Hunyuan-3.1-web' };
+  const inputHash = sha256([...inputFiles, ...sharedDeps, await readFile(fileURLToPath(import.meta.url), 'utf8'), carIdentity.sha256].join('\n'));
   let previous;
   try { previous = JSON.parse(await readFile(path.join(root, 'artifacts/build-racing.json'), 'utf8')); } catch { /* Initial build. */ }
   if (previous?.inputHash === inputHash && previous.buildHash === await buildHash(game)) return { ...previous, reused: true };
@@ -547,6 +648,11 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   for (const moduleName of ['career-expansion.mjs','v8-course-geometry.mjs','v9-course-director.mjs'])
     await writeFile(path.join(project, 'src',moduleName),
       await readFile(path.join(owned,moduleName),'utf8'));
+  // One true original car on every native makeRacers path, including home and results.
+  const carModelPath = path.join(project, 'src/carModel.js');
+  await writeFile(carModelPath, patchGeneratedCarModelSource(await readFile(carModelPath, 'utf8')));
+  await writeFile(path.join(project, 'src/race-generated-car.mjs'), await readFile(path.join(owned, 'generated-car.mjs'), 'utf8'));
+  await writeFile(path.join(project, 'src/race-car-loader.mjs'), renderEmbeddedCarModule(carBytes, carIdentity));
   const nativeVehiclePath = path.join(project, 'src/vehicle.js');
   const originalVehicle = await readFile(nativeVehiclePath, 'utf8');
   const annotatedVehicle = patchV8SteeringResponse(patchItemModeNitro(patchCounterSteer(patchAnalogSteer(patchDriftRearm(patchShortcutNativeCar(annotateDriftResult(originalVehicle)))))));
@@ -571,7 +677,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   );
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   let adaptedMain = beforeMain;
-  for(const patch of [patchMobileInitialRendering,patchMobileMidRendering,patchRacingSource,patchV8CameraFeel,patchDualPlatformCamera,patchV8PointToPoint,
+  for(const patch of [patchGeneratedCarStartup,patchGeneratedCarPresentation,patchMobileInitialRendering,patchMobileMidRendering,patchRacingSource,patchV8CameraFeel,patchDualPlatformCamera,patchV8PointToPoint,
     patchManualNitroEdge,patchCareerRouteSource,patchShortcutNativeWorld,
     patchCourseSkyAndScenery,patchRaceDesertRelief])
     adaptedMain=patch(adaptedMain);
@@ -595,7 +701,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   const standalone = html.replace('<link rel="stylesheet" href="style.css">', '<style>' + inputFiles[3] + '</style>');
   const trialName = 'racing-two-button-' + hash.slice(0, 12) + '.html';
   await writeFile(path.join(root, trialName), standalone);
-  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(originalAi), generatedAiSha256: sha256(adaptedAi), generatedVehicleSha256: sha256(annotatedVehicle), generatedTrackSha256: sha256(adaptedTrack), genuinePhysicalShortcutStages: ['05','10','12','13','16','18','22','25','27','30'], trackGeometrySha256: sha256(await readFile(path.join(project, 'src/layouts.js'))), itemVisualSourceSha256: sha256(await readFile(path.join(project, 'src/items.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/joystick.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/shortcut-decisions.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
+  const report = { schemaVersion: 1, runId: RUN, gameId: 'qq-speed', route: 'formal-fixer', attempt, inputHash, generatedCar: { ...carIdentity, ...carStats }, buildHash: hash, sourceRevision: '54adc1fb64155f9dd7c1c90ecae7b8185ac540b8', originalPhysicsSha256: sha256(canonicalVehicle), driftEventVehicleSha256: sha256(annotatedVehicle), originalAiSha256: sha256(originalAi), generatedAiSha256: sha256(adaptedAi), generatedVehicleSha256: sha256(annotatedVehicle), generatedTrackSha256: sha256(adaptedTrack), genuinePhysicalShortcutStages: ['05','10','12','13','16','18','22','25','27','30'], trackGeometrySha256: sha256(await readFile(path.join(project, 'src/layouts.js'))), itemVisualSourceSha256: sha256(await readFile(path.join(project, 'src/items.js'))), buildLog: stdout.trim(), runtimeEntrypoints: ['workspace/source/qq-speed/src/main.js (Three.js racing)', 'workspace/source/qq-speed/src/carModel.js (generated car + preserved native effects)', 'workspace/source/qq-speed/src/race-car-loader.mjs (one embedded GLB)', 'workspace/source/qq-speed/src/race-generated-car.mjs (materials and wheel pivots)', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/driver.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/joystick.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/session.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/career.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/items.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/shortcut-decisions.mjs', 'templates/web-lite/h5-source-mobile-v1/fuel.mjs', 'templates/web-lite/h5-source-mobile-v1/racing/mobile.css'], compatibilityOnly: ['workspace/game/main.mjs', 'workspace/game/engine.mjs', 'workspace/game/themes.mjs (PR10 copies; absent from the new default HTML entry)'], trialName, trialSha256: sha256(standalone), builtAt: new Date().toISOString(), publishable: false };
   history.attempts.at(-1).status = 'AWAITING_PLAYWRIGHT_QA';
   history.attempts.at(-1).buildHash = hash;
   await writeFile(path.join(root, 'artifacts/repair-history.json'), JSON.stringify(history, null, 2) + '\n');
