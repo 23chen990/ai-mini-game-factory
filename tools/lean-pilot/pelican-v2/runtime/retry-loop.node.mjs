@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {LEVELS,makeLevel,validateLevel,PRESSURE_GATES} from './levels.mjs';
+import {LEVELS,makeLevel,validateLevel,PRESSURE_GATES,V7_OPENING_WAVES} from './levels.mjs';
 import {failureSummary,endlessFailureCue,safeGateCue,passedPreviousFailure} from './retry-loop.mjs';
 
 test('authored high-pressure routes retain stable legacy obstacles and a physical escape at each double gate',()=>{
@@ -9,12 +9,12 @@ test('authored high-pressure routes retain stable legacy obstacles and a physica
  for(const level of LEVELS){
   assert.deepEqual(validateLevel(makeLevel(level.id)),[],`level ${level.id} requires an achievable lane route and safe fish`);
   for(let i=0;i<legacy[level.id];i++)assert.ok(level.obstacles.some(o=>o.id===`l${level.id}-o${i}`));
-  if(level.id===1){assert.equal(level.obstacles.length,10);continue;}
+  if(level.id===1){assert.equal(level.obstacles.length,10+V7_OPENING_WAVES[1].length);continue;}
   const authored=PRESSURE_GATES[level.id];
   const grouped=Map.groupBy(authored,([distance])=>distance);
   const gates=[...grouped.values()].filter(rows=>rows.length===2);
   assert.equal(gates.length,gateCounts[level.id]);
-  assert.equal(level.obstacles.length,legacy[level.id]+authored.length);
+  assert.equal(level.obstacles.length,legacy[level.id]+authored.length+V7_OPENING_WAVES[level.id].length);
   const escapes=[];
   for(const rows of gates){
    const occupied=new Set(rows.map(([, , lane])=>lane));

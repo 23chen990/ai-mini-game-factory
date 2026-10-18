@@ -51,7 +51,8 @@ test('opening fish teaches fractional steering without faking collection or puni
  tick(controlled,2.4);
  assert.equal(controlled.fishes.find(f=>f.id===second.id).caught,true);
  assert.ok(controlled.lane>.6&&controlled.lane<1.3,'real rider remains between lane centres');
- steerTo(controlled,.35,'finger-drag');tick(controlled,1.9);
+ // Steer back only once past the new real 35m centre barrier.
+ tick(controlled,.34);steerTo(controlled,.35,'finger-drag');tick(controlled,1.56);
  assert.equal(controlled.fishes.find(f=>f.id===third.id).caught,true);
  assert.equal(controlled.count,3);
  assert.equal(controlled.hits,0);
@@ -121,13 +122,19 @@ function masteryDrive(level,dt,jumpDistance){
    const seconds=o=>(o.x-r.distance)/(level.speed+(o.speed||0));
    const blocked=lane=>ahead.some(o=>o.kind!=='barrier'&&Math.abs(o.z-LANES[lane])<.8&&seconds(o)<3.4&&seconds(o)>-.3);
    const barrier=ahead.find(o=>o.kind==='barrier'&&o.x-r.distance<55&&o.x-r.distance>0&&!blocked(o.lane));
-   const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>2&&f.x-r.distance<31);
+   const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>2&&f.x-r.distance<31&&
+    (!f.bonus||r.obstacles.some(o=>o.id===f.sourceObstacleId&&o.jumped&&o.passed)));
+   // A future fish is not a valid reason to drive through a close barrier
+   // while crossing one or two real adjacent lanes.
+   const safeFishCross=to=>Array.from({length:Math.abs(to-r.laneIndex)+1},
+    (_,i)=>r.laneIndex+i*Math.sign(to-r.laneIndex)).every(l=>
+     !ahead.some(o=>o.kind==='barrier'&&o.lane===l&&seconds(o)<2.2&&seconds(o)>-.4));
    let want=r.laneIndex;
    if(blocked(want)||ahead.some(o=>o.kind==='barrier'&&o.lane===want&&seconds(o)<1.5&&seconds(o)>0&&!barrier)){
     const safe=[0,1,2].filter(l=>!blocked(l)&&!ahead.some(o=>o.kind==='barrier'&&o.lane===l&&seconds(o)<1.3));
     want=safe.sort((a,b)=>Math.abs(a-r.laneIndex)-Math.abs(b-r.laneIndex))[0]??want;
    }else if(barrier&&r.jumpedBarriers<level.mastery.jumps)want=barrier.lane;
-   else if(fish&&!blocked(fish.lane))want=fish.lane;
+   else if(fish&&!blocked(fish.lane)&&safeFishCross(fish.lane))want=fish.lane;
    if(want!==r.laneIndex)input(r,want<r.laneIndex?'left':'right');
    const b=ahead.find(o=>o.kind==='barrier'&&o.lane===r.laneIndex&&o.x-r.distance<jumpDistance+.6&&o.x-r.distance>jumpDistance-.6);
    if(b&&r.y===0)input(r,'jump');

@@ -132,6 +132,13 @@ export const LEVELS=definitions.map(d=>{
    fish.push({id:`l5-trail-${x}`,x:followed,lane:leader.lane,z:leader.z,golden:false,shoal:true});
   }
  }
+ // V7 extra catch on the real safe CENTRE approach before the 222m barrier.
+ // This ordinary fish requires manual riding and does not grant jump gold.
+ if(d.id===3){
+  const x=211,lane=1;
+  if(!unsafeLanes(obstacles,x).has(lane))
+   fish.push({id:'l3-v7-escape-trail-211',x,lane,golden:false,shoal:true});
+ }
  // Optional visible golden fish behind barriers; never required for one-star completion.
  fish.push(...makeBarrierPrizes(d.id,obstacles,d.distance));
  fish.sort((a,b)=>a.x-b.x);
