@@ -81,17 +81,17 @@ try{
   // A successful bonus can be followed by a rapidly approaching car.
   // The game now gives a *visible* escape warning. Respond through a normal
   // left/right button rather than staying in the reward lane until collision.
-  // Confirmed bonus pickup at ~148m is itself a legitimate visible escape
+  // Confirmed bonus pickup at ~119m is itself a legitimate visible escape
   // decision; do not wait until the 164m car is already inside the hitbox.
   const warnedVehicle=v.feedbackDetail.includes('前方来车')||v.radarLabel.includes('来车')||
    v.lanes[1]?.danger&&['car','van'].includes(v.lanes[1].kind);
-  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&(warnedVehicle||v.distance>=148)){
+  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&(warnedVehicle||v.distance>=119)){
    const safeSide=[0,2].filter(i=>!risky(i)&&!v.lanes[i].danger);
    if(safeSide.length){escapedBonus=true;escapeLane=safeSide[0];escapeUntil=v.distance+24;}
   }
   if(jumped&&!prizeFeedbackSeen&&!earnedPrizeCue&&v.lanes[1].kind==='fish'&&v.lanes[1].text.includes('🌟')){
    const observed=await snap();
-   if(observed.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o1'&&e.jumped)&&!observed.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o1')){
+   if(observed.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o13'&&e.jumped)&&!observed.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o13')){
     earnedPrizeCue=true;await shot('earned-jump-prize-cue');
    }
   }
@@ -100,7 +100,7 @@ try{
    want=safe[0]??v.lane;escapeLane=want;
   }
   else if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=125&&v.distance<140)){want=1;if(v.lane===1&&(v.jumpReady||seconds(1)<=1.4)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o1. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
+  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=90&&v.distance<110)){want=1;if(v.lane===1&&(v.jumpReady||seconds(1)<=1.4)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o13. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
@@ -111,9 +111,9 @@ try{
   await page.waitForTimeout(65);
  }
  await page.locator('#co-modal').waitFor({state:'visible'});const finished=await snap();await shot('earned-three-stars');
- console.log('EXPERIENCE_FIRST_RUN '+JSON.stringify({engine,reason:finished.reason,distance:finished.distance,count:finished.count,gold:finished.gold,jumpedBarriers:finished.jumpedBarriers,hits:finished.hits,stars:finished.save?.stars?.[0],bestStreak:finished.bestStreak,lastCollisionId:finished.lastCollisionId,recentTouches:report.actions.filter(a=>a.type==='tap'&&a.selector?.startsWith('[data-action')).slice(-14).map(a=>({selector:a.selector,beforeDistance:a.before?.distance,beforeLane:a.before?.lane,afterLane:a.after?.lane,afterPhase:a.after?.phase})),interestingEvents:finished.events.filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)&&(!e.objectId||e.objectId==='l1-o1'||e.objectId==='l1-jump-l1-o1'||e.type==='failed')).slice(-16)}));
+ console.log('EXPERIENCE_FIRST_RUN '+JSON.stringify({engine,reason:finished.reason,distance:finished.distance,count:finished.count,gold:finished.gold,jumpedBarriers:finished.jumpedBarriers,hits:finished.hits,stars:finished.save?.stars?.[0],bestStreak:finished.bestStreak,lastCollisionId:finished.lastCollisionId,recentTouches:report.actions.filter(a=>a.type==='tap'&&a.selector?.startsWith('[data-action')).slice(-14).map(a=>({selector:a.selector,beforeDistance:a.before?.distance,beforeLane:a.before?.lane,afterLane:a.after?.lane,afterPhase:a.after?.phase})),interestingEvents:finished.events.filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)&&(!e.objectId||e.objectId==='l1-o13'||e.objectId==='l1-jump-l1-o13'||e.type==='failed')).slice(-16)}));
  report.presentationSignals=await page.evaluate(()=>window.__qaExperienceSignals);
- earnedPrizeCue ||= earnedPrizeRouteSeen(report.presentationSignals,'l1-o1','l1-jump-l1-o1');
+ earnedPrizeCue ||= earnedPrizeRouteSeen(report.presentationSignals,'l1-o13','l1-jump-l1-o13');
  leftWarning ||= pedestrianWarningSeen(report.presentationSignals,2);
  rightWarning ||= pedestrianWarningSeen(report.presentationSignals,0);
  if(!report.checks.some(c=>c.name==='left-pedestrian-warns-right-at-least-two-seconds'))check('left-pedestrian-warns-right-at-least-two-seconds',leftWarning,{source:'continuous actual visible radar frames',signals:report.presentationSignals});
