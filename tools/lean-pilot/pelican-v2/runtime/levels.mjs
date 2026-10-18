@@ -52,7 +52,7 @@ export const PRESSURE_GATES=Object.freeze({
 // Alternative fish/jump lines are earned using the same authoritative physics.
 export const V7_OPENING_WAVES=Object.freeze({
  1:Object.freeze([[35,'barrier',1],[52,'car',0],[63,'car',2]]),
- 2:Object.freeze([[36,'barrier',1],[53,'car',2],[67,'car',0]]),
+ 2:Object.freeze([[35,'barrier',1],[53,'car',0],[67,'car',2]]),
  3:Object.freeze([[37,'barrier',1],[57,'car',2],[75,'car',0]]),
  4:Object.freeze([[38,'barrier',1],[57,'van',2],[77,'car',0]]),
  5:Object.freeze([[38,'barrier',1],[57,'van',2],[76,'car',0]]),

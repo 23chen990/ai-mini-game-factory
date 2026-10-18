@@ -13,6 +13,32 @@ concurrency:
   group: pelican-v3-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 jobs:
+  v7-model-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.x'
+      - name: Fast native physical model regression
+        run: |
+          node --test tools/lean-pilot/pelican-v2/core.node.mjs tools/lean-pilot/pelican-v2/runtime/*.node.mjs
+          node tools/lean-pilot/pelican-v2/difficulty-audit.mjs
+      - name: Export isolated source snapshot for V7 diagnostics
+        if: always()
+        run: |
+          tar -czf "$RUNNER_TEMP/pelican-v7-source.tgz" tools/lean-pilot/pelican-v2 package.json .github/workflows/pelican-v3.yml
+      - name: Keep exact-checkout model sources
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pelican-v7-sources-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/pelican-v7-source.tgz
+          retention-days: 2
+          if-no-files-found: error
   pelican-browser:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
