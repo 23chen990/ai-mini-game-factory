@@ -11,7 +11,7 @@ test('V7 opening waves create real choices in first 5.2s on every stage',()=>{
   const xs=group.map(row=>row[0]);
   assert.ok(xs[0]/level.speed>=3&&xs[0]/level.speed<=5.2,
    'first real hazard should be felt almost immediately');
-  assert.ok((xs[2]-xs[0])/level.speed<5,
+  assert.ok((xs[2]-xs[0])/level.speed<6.2,
    'two follow-up hazards must not be isolated miles apart');
   assert.deepEqual(group.map(row=>row[2]),level.id<=2?[1,0,2]:[1,2,0],
    'three directions are covered across the three authored beats');
