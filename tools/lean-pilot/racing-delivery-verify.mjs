@@ -87,10 +87,23 @@ export async function verifyDelivery(manifestPath) {
     if (!victories.some(r => r.map === map && r.laps >= 2) || !victories.some(r => r.map === map && r.diff === 2)) throw Error('Multi-lap/expert map coverage missing: ' + map);
   }
   const html = await readFile(path.join(game, 'index.html'), 'utf8');
-  const scripts = [...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gu)];
-  if (scripts.length !== 2 || /<script[^>]*src=/u.test(html) || !html.includes('Permission is hereby granted')) throw Error('Unexpected default runtime entry or missing Three.js notice');
+  // Match only opening tags: a whole-body Unicode regex can exhaust V8's
+  // regex stack on the localized H5 with its embedded multi-MiB car assets.
+  // This bounded scanner targets generated HTML, not HTML parser recovery,
+  // quoted '>' attribute values, or tag-like text in other HTML contexts.
+  const scripts = [], openingTag = /<script(?:\s[^>]*)?>/gi, closingTag = /<\/script\s*>/gi;
+  for (let match = openingTag.exec(html); match; match = openingTag.exec(html)) {
+    if (/\ssrc\s*=/i.test(match[0])) throw Error('Unexpected default runtime entry or missing Three.js notice');
+    const bodyStart = match.index + match[0].length;
+    closingTag.lastIndex = bodyStart;
+    const closing = closingTag.exec(html);
+    if (!closing) throw Error('Unexpected default runtime entry or missing Three.js notice');
+    scripts.push(html.slice(bodyStart, closing.index));
+    openingTag.lastIndex = closingTag.lastIndex;
+  }
+  if (scripts.length !== 2 || !html.includes('Permission is hereby granted')) throw Error('Unexpected default runtime entry or missing Three.js notice');
   const temp = path.join(run, 'artifacts/delivery-script-check'); await mkdir(temp, { recursive: true });
-  for (const [i, script] of scripts.entries()) { const file = path.join(temp, 'inline-' + i + '.js'); await writeFile(file, script[1]); await exec(process.execPath, ['--check', file]); }
+  for (const [i, script] of scripts.entries()) { const file = path.join(temp, 'inline-' + i + '.js'); await writeFile(file, script); await exec(process.execPath, ['--check', file]); }
   return { passed: true, buildHash: manifest.buildHash, artifacts: manifest.artifacts.length, naturalVictories: victories.length,
     all16AndDaily: natural.passed, scriptSyntax: '2/2', publishable: false, remaining: Object.entries(manifest.gates).filter(([, status]) => status !== 'PASS').map(([gate]) => gate) };
 }

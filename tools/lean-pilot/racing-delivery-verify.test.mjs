@@ -8,6 +8,7 @@ import process from 'node:process';
 import path from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import { createHash } from 'node:crypto';
+import { Buffer } from 'node:buffer';
 import { NaturalSchema, DeliverySchema, currentRacingInputHash } from './racing-delivery-verify.mjs';
 import { buildHash, GAME_FILES } from './runner.mjs';
 import { STAGES, newCareer, recordStage } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
@@ -56,7 +57,7 @@ const execute = promisify(execFile);
 const repository = fileURLToPath(new URL('../../', import.meta.url));
 const verifierURL = new URL('./racing-delivery-verify.mjs', import.meta.url).href;
 const digest = bytes => createHash('sha256').update(bytes).digest('hex');
-async function deliveryFixture(t, races, corrupt = null) {
+async function deliveryFixture(t, races, corrupt = null, inlineBodies = ['const fixtureA=1;', 'const fixtureB=2;'], transformHtml = html => html) {
   const base = await mkdtemp(path.join(tmpdir(), 'racing-delivery-contract-'));
   t.after(() => rm(base, { recursive: true, force: true }));
   const run = path.join(base, 'runs/h5-qq-mobile-20261013'), game = path.join(run, 'workspace/game');
@@ -65,7 +66,7 @@ async function deliveryFixture(t, races, corrupt = null) {
   for (const name of [...GAME_FILES, 'platform.json', 'LICENSE.three.txt'])
     await writeFile(path.join(game, name), name.endsWith('.json') ? '{}' : '/* synthetic contract fixture */');
   await writeFile(path.join(game, 'candidate.json'), JSON.stringify({ templateId: 'h5-source-mobile-v1' }));
-  const html = '<!doctype html><html><body>Permission is hereby granted<script>const fixtureA=1;</script><script>const fixtureB=2;</script></body></html>';
+  const html = transformHtml('<!doctype html><html><body>Permission is hereby granted' + inlineBodies.map(body => '<script>' + body + '</script>').join('') + '</body></html>');
   await writeFile(path.join(game, 'index.html'), html);
   const build = { buildHash: await buildHash(game), inputHash: await currentRacingInputHash(), trialSha256: digest(html) };
   const receipt = path.join(run, 'artifacts/build-racing.json');await writeFile(receipt, JSON.stringify(build));
@@ -91,7 +92,8 @@ async function deliveryFixture(t, races, corrupt = null) {
   const manifestPath = path.join(run, 'fixture-manifest.json');await writeFile(manifestPath, JSON.stringify(manifest));
   const code = `import {verifyDelivery} from ${JSON.stringify(verifierURL)};try{console.log(JSON.stringify(await verifyDelivery(process.argv[1])));}catch(error){console.error(error.message);process.exitCode=1;}`;
   const { stdout } = await execute(process.execPath, ['--input-type=module', '-e', code, manifestPath], { cwd: base });
-  return JSON.parse(stdout);
+  const checkedScripts = await Promise.all(inlineBodies.map((_, i) => readFile(path.join(run, 'artifacts/delivery-script-check', 'inline-' + i + '.js'), 'utf8')));
+  return { ...JSON.parse(stdout), checkedScripts };
 }
 function nativeRankFixture(id, time = 142.34, place = 1) {
   const stage = STAGES.find(item => item.id === id);
@@ -145,4 +147,34 @@ test('real verifyDelivery keeps native outcome, saved stage and evidence integri
   for (const [kind, pattern] of [['artifact', /Artifact integrity failed/u], ['build', /Current actual H5 build hash differs/u],
     ['input', /Playable does not match current owned source inputs/u]])
     await t.test(kind + ' mismatch', sub => assert.rejects(deliveryFixture(sub, [race], kind), pattern));
+});
+
+test('real verifyDelivery preserves both script bodies with a 14 MiB inline asset payload', async t => {
+  // Localized text reproduces the original whole-body regex stack overflow.
+  const inlineBytes = 14 * 1024 * 1024, prefix = '/* 离线赛车资源 fixture: ', suffix = ' */\nconst fixtureA=1;';
+  const inlineBodies = [prefix + 'x'.repeat(inlineBytes - Buffer.byteLength(prefix + suffix)) + suffix, 'const fixtureB=2;\n'];
+  const result = await deliveryFixture(t, [nativeRankFixture('05')], null, inlineBodies);
+  assert.equal(result.passed, true);
+  assert.equal(result.scriptSyntax, '2/2');
+  assert.deepEqual(result.checkedScripts, inlineBodies);
+  assert.equal(Buffer.byteLength(result.checkedScripts[0]), inlineBytes);
+});
+
+test('real verifyDelivery enforces HTML script attributes and uppercase entry counts', async t => {
+  for (const [name, transformHtml] of [
+    ['spaced src assignment', html => html.replace('<script>', '<script src = "external.js">')],
+    ['uppercase SRC attribute', html => html.replace('<script>', '<script SRC="external.js">')],
+    ['extra uppercase external script', html => html.replace('</body>', '<SCRIPT SRC="external.js"></SCRIPT></body>')],
+    ['extra uppercase inline script', html => html.replace('</body>', '<SCRIPT>const fixtureC=3;</SCRIPT></body>')],
+  ]) await t.test(name, sub => assert.rejects(deliveryFixture(sub, [nativeRankFixture('05')], null, undefined, transformHtml),
+    /Unexpected default runtime entry or missing Three\.js notice/u));
+});
+
+test('real verifyDelivery preserves bodies with mixed-case HTML script tags', async t => {
+  const inlineBodies = ['const label = "MiXeD 赛车";\r\n', '/* Original Case */\nconst value=2;\n'];
+  const transformHtml = html => html.replace(/<script>/gu, '<ScRiPt type="text/javascript">').replace(/<\/script>/gu, '</sCrIpT \t>');
+  const result = await deliveryFixture(t, [nativeRankFixture('05')], null, inlineBodies, transformHtml);
+  assert.equal(result.passed, true);
+  assert.equal(result.scriptSyntax, '2/2');
+  assert.deepEqual(result.checkedScripts, inlineBodies);
 });
