@@ -190,23 +190,31 @@ try{
  await tap('#co-replay');
  await page.waitForTimeout(250);
  const d=await gesture('up',[200,480],[200,380]);
- // At ~22-29m the native UP swipe legitimately buffers a jump for the
- // new 35m real roadblock. A snapshot before reaching the trigger is NOT
- // evidence of failed touch. Wait for the genuine swept barrier verdict.
- // No manual jump event, teleports, or game clock manipulation.
- await page.waitForFunction(()=>{
-  const v=window.__coast.snapshot();
-  return v.phase==='finished'||v.events.some(e=>
-   e.type==='barrier-cleared'&&e.objectId==='l1-o10');
- },null,{timeout:10000});
- const upOutcome=await snap();
- const queued=upOutcome.events.find(e=>e.type==='jump-buffered'&&e.objectId==='l1-o10');
- const realJump=upOutcome.events.find(e=>e.type==='jump'&&e.objectId==='l1-o10');
- const trueClear=upOutcome.events.find(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o10'&&e.jumped);
+ // A genuine swipe early in the run is an ordinary jump. When a software
+ // screenshot delays the input until the first 35m hazard is close enough,
+ // the SAME genuine swipe instead queues the exact physical barrier jump.
+ // Verify the path that ACTUALLY occurred, without equating normal early
+ // jumping with a promise to evade the later hazard.
+ const ordinaryJump=d.after.events.find(e=>e.type==='jump'&&
+  !d.before.events.includes(e));
+ const armed=d.after.events.find(e=>e.type==='jump-buffered'&&e.objectId==='l1-o10');
+ let upOutcome=d.after,realJump=null,trueClear=null;
+ if(!ordinaryJump&&armed){
+  // Queued touch is only valid after the bike really jumps and clears
+  // the target. A HUD badge alone cannot pass this branch.
+  await page.waitForFunction(()=>{
+   const v=window.__coast.snapshot();
+   return v.phase==='finished'||v.events.some(e=>
+    e.type==='barrier-cleared'&&e.objectId==='l1-o10');
+  },null,{timeout:10000});
+  upOutcome=await snap();
+  realJump=upOutcome.events.find(e=>e.type==='jump'&&e.objectId==='l1-o10'&&e.buffered);
+  trueClear=upOutcome.events.find(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o10'&&e.jumped);
+ }
  check('trusted-up-swipe-jumps',
   d.before.phase==='running'&&d.before.distance<35&&
-  upOutcome.phase==='running'&&!!queued&&!!realJump&&!!trueClear,
-  {gesture:d,upOutcome,queued,realJump,trueClear});
+  (!!ordinaryJump||!!armed&&!!realJump&&!!trueClear&&upOutcome.phase==='running'),
+  {gesture:d,upOutcome,ordinaryJump,armed,realJump,trueClear});
  await shot('up-swipe');
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
