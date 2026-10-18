@@ -1,0 +1,119 @@
+TAP version 13
+# Subtest: factory exposes the native loader contract as instantiate(skin)
+ok 1 - factory exposes the native loader contract as instantiate(skin)
+  ---
+  duration_ms: 6.065297
+  type: 'test'
+  ...
+# Subtest: all eight skins recolor only body paint and rims, preserving glass, tires and lights
+ok 2 - all eight skins recolor only body paint and rims, preserving glass, tires and lights
+  ---
+  duration_ms: 13.082451
+  type: 'test'
+  ...
+# Subtest: instances share source geometry and textures but own one deduplicated cloned material set
+ok 3 - instances share source geometry and textures but own one deduplicated cloned material set
+  ---
+  duration_ms: 2.776959
+  type: 'test'
+  ...
+# Subtest: four wheel pivots retain car-space axle positions with independent steering and spin axes
+ok 4 - four wheel pivots retain car-space axle positions with independent steering and spin axes
+  ---
+  duration_ms: 3.658618
+  type: 'test'
+  ...
+# Subtest: each car carries two independent exhaust vectors and the configured asset identity
+ok 5 - each car carries two independent exhaust vectors and the configured asset identity
+  ---
+  duration_ms: 1.694526
+  type: 'test'
+  ...
+# Subtest: template hierarchy, transforms and source materials stay unchanged after instantiation
+ok 6 - template hierarchy, transforms and source materials stay unchanged after instantiation
+  ---
+  duration_ms: 1.735968
+  type: 'test'
+  ...
+# Subtest: a missing named GLB material fails at instantiation instead of silently leaving it unadapted
+ok 7 - a missing named GLB material fails at instantiation instead of silently leaving it unadapted
+  ---
+  duration_ms: 1.393131
+  type: 'test'
+  ...
+# Subtest: missing processed exhaust metadata fails instead of synthesizing outlet defaults
+ok 8 - missing processed exhaust metadata fails instead of synthesizing outlet defaults
+  ---
+  duration_ms: 1.237987
+  type: 'test'
+  ...
+# Subtest: body paint masks the original atlas per texel while retaining the native skin color uniform
+ok 9 - body paint masks the original atlas per texel while retaining the native skin color uniform
+  ---
+  duration_ms: 1.397808
+  type: 'test'
+  ...
+# Subtest: body paint shader has an explicit material-program cache key
+ok 10 - body paint shader has an explicit material-program cache key
+  ---
+  duration_ms: 1.746874
+  type: 'test'
+  ...
+# Subtest: real Three clone retains each baked material and shared texture, with honest static wheels and exact identity
+ok 11 - real Three clone retains each baked material and shared texture, with honest static wheels and exact identity
+  ---
+  duration_ms: 2.819392
+  type: 'test'
+  ...
+# Subtest: wrong normalization and animated/skinned user meshes fail instead of silently rescaling or pretending wheel rigs
+ok 12 - wrong normalization and animated/skinned user meshes fail instead of silently rescaling or pretending wheel rigs
+  ---
+  duration_ms: 0.857733
+  type: 'test'
+  ...
+# Subtest: cache is lazy, deduplicates a request, serializes decode, skips cancelled queued models, and has no unknown fallback
+ok 13 - cache is lazy, deduplicates a request, serializes decode, skips cancelled queued models, and has no unknown fallback
+  ---
+  duration_ms: 2.528473
+  type: 'test'
+  ...
+# Subtest: decode failure rejects accurately, leaves no ready factory, and permits one later real retry
+ok 14 - decode failure rejects accurately, leaves no ready factory, and permits one later real retry
+  ---
+  duration_ms: 0.618803
+  type: 'test'
+  ...
+# Subtest: an in-flight cancelled preview cannot evict the owned model being prepared for native map startup
+ok 15 - an in-flight cancelled preview cannot evict the owned model being prepared for native map startup
+  ---
+  duration_ms: 1.944923
+  type: 'test'
+  ...
+# Subtest: bounded cache preserves active cars and starter; removal frees private materials once but not shared assets or native cached textures
+ok 16 - bounded cache preserves active cars and starter; removal frees private materials once but not shared assets or native cached textures
+  ---
+  duration_ms: 3.701112
+  type: 'test'
+  ...
+# Subtest: native preview swaps only the home model, is last-request-wins and never mutates selected car or racer physics
+ok 17 - native preview swaps only the home model, is last-request-wins and never mutates selected car or racer physics
+  ---
+  duration_ms: 45.759248
+  type: 'test'
+  ...
+# Subtest: all six actual GLB geometries/material links parse through pinned GLTFLoader and match their identity/normalization
+ok 18 - all six actual GLB geometries/material links parse through pinned GLTFLoader and match their identity/normalization
+  ---
+  duration_ms: 68.85238
+  type: 'test'
+  ...
+# {"scope":"Actual GLB geometry/material topology; browser bitmap decoding stubbed","models":[{"carId":"starter","sha256":"d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083","triangles":17473,"wheels":4},{"carId":"custom-01","sha256":"14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1","triangles":63998,"wheels":0},{"carId":"custom-02","sha256":"7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69","triangles":18000,"wheels":0},{"carId":"custom-03","sha256":"db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8","triangles":18000,"wheels":0},{"carId":"custom-04","sha256":"475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911","triangles":18000,"wheels":0},{"carId":"custom-05","sha256":"bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323","triangles":18000,"wheels":0}]}
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 213.582283

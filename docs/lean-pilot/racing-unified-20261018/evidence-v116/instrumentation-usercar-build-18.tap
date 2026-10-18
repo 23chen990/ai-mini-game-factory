@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: render material animation does not change comparable probe physics
+ok 1 - render material animation does not change comparable probe physics
+  ---
+  duration_ms: 15.403641
+  type: 'test'
+  ...
+# Subtest: every native boost-pad physics field still changes the comparison
+ok 2 - every native boost-pad physics field still changes the comparison
+  ---
+  duration_ms: 23.27378
+  type: 'test'
+  ...
+# Subtest: a failed exact comparison retains the full current trace and native evidence row
+ok 3 - a failed exact comparison retains the full current trace and native evidence row
+  ---
+  duration_ms: 30.820863
+  type: 'test'
+  ...
+# Subtest: portrait QA waits for real visibility after resize within the existing UI timeout
+ok 4 - portrait QA waits for real visibility after resize within the existing UI timeout
+  ---
+  duration_ms: 1.091476
+  type: 'test'
+  ...
+# Subtest: smoke accepts the actual V11.6 revision and garage UI pair with exact observed geometry
+ok 5 - smoke accepts the actual V11.6 revision and garage UI pair with exact observed geometry
+  ---
+  duration_ms: 0.643391
+  type: 'test'
+  ...
+# Subtest: smoke rejects old artifacts and mismatched runtime/UI revision pairs
+ok 6 - smoke rejects old artifacts and mismatched runtime/UI revision pairs
+  ---
+  duration_ms: 3.448921
+  type: 'test'
+  ...
+# Subtest: current smoke metadata cannot excuse wrong course geometry or track length
+ok 7 - current smoke metadata cannot excuse wrong course geometry or track length
+  ---
+  duration_ms: 3.88582
+  type: 'test'
+  ...
+# Subtest: native player QA reports the exact loaded build version and hash
+ok 8 - native player QA reports the exact loaded build version and hash
+  ---
+  duration_ms: 11.583099
+  type: 'test'
+  ...
+# Subtest: six-car loader embeds exact bytes but decodes only requested assets with no remote dependency
+ok 9 - six-car loader embeds exact bytes but decodes only requested assets with no remote dependency
+  ---
+  duration_ms: 0.707998
+  type: 'test'
+  ...
+# Subtest: native car construction uses stable model identity and preserves original effects
+ok 10 - native car construction uses stable model identity and preserves original effects
+  ---
+  duration_ms: 0.472913
+  type: 'test'
+  ...
+# Subtest: native home/race model selection loads settings.car and does not change any driving methods
+ok 11 - native home/race model selection loads settings.car and does not change any driving methods
+  ---
+  duration_ms: 0.403539
+  type: 'test'
+  ...
+# Subtest: bootstrap ignores untrusted native car unknown-removed-model while retaining all other settings
+ok 12 - bootstrap ignores untrusted native car unknown-removed-model while retaining all other settings
+  ---
+  duration_ms: 0.377239
+  type: 'test'
+  ...
+# Subtest: bootstrap ignores untrusted native car custom-05 while retaining all other settings
+ok 13 - bootstrap ignores untrusted native car custom-05 while retaining all other settings
+  ---
+  duration_ms: 0.143156
+  type: 'test'
+  ...
+# Subtest: all new model modules, thumbnails and exact GLB hashes are fingerprinted
+ok 14 - all new model modules, thumbnails and exact GLB hashes are fingerprinted
+  ---
+  duration_ms: 0.089425
+  type: 'test'
+  ...
+# Subtest: prepared user models have a separate strict contract from the articulated starter
+ok 15 - prepared user models have a separate strict contract from the articulated starter
+  ---
+  duration_ms: 0.42451
+  type: 'test'
+  ...
+# Subtest: single mesh textured GLB validates without invented starter rig, and explicit budgets are actually enforced
+ok 16 - single mesh textured GLB validates without invented starter rig, and explicit budgets are actually enforced
+  ---
+  duration_ms: 1.109233
+  type: 'test'
+  ...
+# Subtest: user GLB integrity rejects external images, animated rigs, missing UVs, decoder dependencies and stale manifest hashes
+ok 17 - user GLB integrity rejects external images, animated rigs, missing UVs, decoder dependencies and stale manifest hashes
+  ---
+  duration_ms: 0.78916
+  type: 'test'
+  ...
+# Subtest: CI exercises the actual garage before legacy entry smoke and keeps publication dependent on the complete job
+ok 18 - CI exercises the actual garage before legacy entry smoke and keeps publication dependent on the complete job
+  ---
+  duration_ms: 1.798943
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 144.706168

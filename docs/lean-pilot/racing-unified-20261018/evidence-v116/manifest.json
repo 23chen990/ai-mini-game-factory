@@ -1,0 +1,492 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "version": "V11.6",
+  "attempt": 11,
+  "sourceCommit": "7d2f484afc50617dffa66747c2406d7840b88227",
+  "sourceTree": "2e27824445593e79dd9dda61d02e2924a81698f5",
+  "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+  "inputHash": "9936cef6259c01abb7315dce82fd07a1bafa3e30e7dbdea862422c9a4e351855",
+  "status": "COMPLETE",
+  "fileCount": 54,
+  "files": [
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/ai-150.json",
+      "bytes": 255058,
+      "sha256": "b0183732bcd0768fdc9a0de9c2fba70a17893462edb06ef7ad47a63f62235f99",
+      "byteIdenticalSource": "recovery/native-final/audit-workspace/runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/ai-pace-v115.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/blue-rally-native-start.png",
+      "bytes": 410021,
+      "sha256": "fe6ae4f61f21ad3c172dddc3fda4dc4fb2290cf5a012aae790c71a6c496caec9",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/custom-05-native-start.png",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/build-contracts-26.tap",
+      "bytes": 2752,
+      "sha256": "de0480b16f257425b69c21700b1a150d79a17c9acd76428df2d5ef400f3d8562",
+      "byteIdenticalSource": "recovery/build-contracts-verified.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/build-receipt.json",
+      "bytes": 11441,
+      "sha256": "1aa43647c15d05c4fb2a079401372ef32fed17c157cae4a0d9510cbec96d0f87",
+      "byteIdenticalSource": "recovery/native-final/audit-workspace/runs/h5-qq-mobile-20261013/artifacts/build-racing.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/car-garage.json",
+      "bytes": 172273,
+      "sha256": "b5d844b558bd2b1fe00f4868284d11cf74ab825e6663ae9c15110baf3e382a0f",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/car-garage-qa.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/car-runtime-18.tap",
+      "bytes": 5667,
+      "sha256": "9666ec0473d9fa742bc974d2f883f0e6b060036f442eafa3a3644232f12c9278",
+      "byteIdenticalSource": "recovery/native-final/car-runtime.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/ci-node-89-pass-1-skip.tap",
+      "bytes": 21525,
+      "sha256": "fef05e346672b77116d6042555990d9f5cc1fa6e36c7b1babcb061114270589e",
+      "byteIdenticalSource": "recovery/ci-node-final.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/custom-01-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "19b771d04e96738b6e54edde742aedd871f8c6528c80d0e3c5744c4f3d096b24",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/custom-01-isolated-physics.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/custom-02-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "4dbc7b124f877e6d07607df8d9429aeb9a42c1f5b6d3bc2432fd6f94a2431b0b",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/custom-02-isolated-physics.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/custom-03-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "e6137d55f433ef62afceea71ee8c9c5edb730bd277c1b62725b73f03b7149143",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/custom-03-isolated-physics.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/custom-04-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "e487dc0557ac3a62d8be1bd9a5afa4fc84af0971cffd4138be0b37ed8c7ac411",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/custom-04-isolated-physics.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/custom-05-isolated-physics.json",
+      "bytes": 187210,
+      "sha256": "e3659fbedcb32dfa35802727f6d6b5cf37fb12c78919fdc3d89c5442b8abd402",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/custom-05-isolated-physics.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-attributes-fixer-handoff.json",
+      "bytes": 6661,
+      "sha256": "cec8b7ebb6c56966ff90a177a536f61a03303b0a40bf60810ba4a8971c75de78",
+      "byteIdenticalSource": "recovery/delivery-attributes-fixer-handoff.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-attributes-lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byteIdenticalSource": "recovery/delivery-attributes-lint.log",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-attributes-regression-red.tap",
+      "bytes": 5119,
+      "sha256": "83c177c7a39d53f0bfec8f1adff8e2004e73a01400aad4b6fe1b76116e66b886",
+      "byteIdenticalSource": "recovery/delivery-attributes-regression-red.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-contracts-22.tap",
+      "bytes": 4379,
+      "sha256": "29ad6aa51a1adb50f4e76f9cdff8144eb1641a294863738a679a3f77236c7995",
+      "byteIdenticalSource": "recovery/delivery-contracts-verified.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-contracts-23.tap",
+      "bytes": 4618,
+      "sha256": "4c00583b6bd01af3b973200984d7288e1ee7150df06c426d9b9beb3908173a5b",
+      "byteIdenticalSource": "recovery/delivery-inline-contracts-23.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-contracts-final.tap",
+      "bytes": 5662,
+      "sha256": "69ed6a7f63f5d2d868f298257ebf7a99007dec03345ce16c6476e3fb8f2485b0",
+      "byteIdenticalSource": "recovery/delivery-attributes-contracts-29.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-inline-ascii-diagnostic.tap",
+      "bytes": 218,
+      "sha256": "49d88a05f7de5397de3babef65201a4aac1eff467bb9fb58b75e9b51faefad6b",
+      "byteIdenticalSource": "recovery/delivery-inline-regression-red.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-inline-fixer-handoff.json",
+      "bytes": 5969,
+      "sha256": "0418695ce7b05074692c7729a8ca885f60a847b809c2397105525d9c60d65ea1",
+      "byteIdenticalSource": "recovery/delivery-inline-fixer-handoff.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-inline-lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byteIdenticalSource": "recovery/delivery-inline-lint.log",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-inline-regression-red-utf8.tap",
+      "bytes": 1831,
+      "sha256": "f71d918e74a6a1e9c1c50f1b6a7b301a0991ee4113052d314474009a94a45bc7",
+      "byteIdenticalSource": "recovery/delivery-inline-regression-red-utf8.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-inline-typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byteIdenticalSource": "recovery/delivery-inline-typecheck.log",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-large-inline-failure.json",
+      "bytes": 509,
+      "sha256": "f659d29c7703ed798c520c7aa5c59fb9a4b65a9147e1002c03fff5e90b9ffdb2",
+      "byteIdenticalSource": "recovery/delivery-v116-large-inline-failure.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-manifest.json",
+      "bytes": 14848,
+      "sha256": "51b0ae53ea1a1f44db5347181829dc774509d6703e6be55dfd2514d66755accf",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/delivery-v116/delivery-manifest.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-verification-command.json",
+      "bytes": 978,
+      "sha256": "1e03a2667cb19c860c5bde6130d3f1c8b32dfa695df5df82bb3e24a38526323c",
+      "byteIdenticalSource": "recovery/delivery-v116-final-command.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/delivery-verified.json",
+      "bytes": 355,
+      "sha256": "98d42d0d13e3bcd590a764a63aa23f2cd3963a796c0210815d26e2537999329c",
+      "byteIdenticalSource": "recovery/delivery-v116-final-result.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/desktop-cold-start.json",
+      "bytes": 25017,
+      "sha256": "18305684c8ca0e7ee139bab627cc000136fb7fd15839e12a76f0f829a8a96422",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/cold-start-desktop/report.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/desktop-keyboard.png",
+      "bytes": 874142,
+      "sha256": "502220f903633617a2854f1cbeb5889b650c35af1431c31510ded5adaac6ae2a",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke-v116-recheck1/90-desktop-keyboard-1366x768.png",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/fingerprint-2.tap",
+      "bytes": 5412,
+      "sha256": "a71bf131181d4c734f137c599adfe0431c9bba447ae65d16cd5532a55d0997b8",
+      "byteIdenticalSource": "recovery/native-final/fingerprint.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/formula-native-start.png",
+      "bytes": 406738,
+      "sha256": "3fdeb894d584f0e4eae37cdfe1d148868493832ca7884cbbaf50fe8cd32f13f4",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/custom-03-native-start.png",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/fuel-browser-unavailable-recheck1.tap",
+      "bytes": 17457,
+      "sha256": "af325752a4b44d3515a2e0a02c145ecc78c8280f4f17ee16814267cab7a14318",
+      "byteIdenticalSource": "recovery/fuel-lifecycle-recheck1.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/fuel-fixture-fixer-handoff.json",
+      "bytes": 5981,
+      "sha256": "dfd89344ec784782794e1aee9879c6e500937adac8e32ad5b0714d23c44e5f94",
+      "byteIdenticalSource": "recovery/fuel-fixture-fixer-handoff.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/fuel-fixture-missing-preview-failure.tap",
+      "bytes": 10612,
+      "sha256": "8b03bb936b032f2ab35e596e4c6525d1032d052b9e0b00e183261620016b694a",
+      "byteIdenticalSource": "recovery/fuel-lifecycle-final.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/fuel-lifecycle-10.tap",
+      "bytes": 2286,
+      "sha256": "1f341d76c7bfa774c94ef26031ad6ed84031862b4d2b23230db5bd1c58d85d81",
+      "byteIdenticalSource": "recovery/fuel-lifecycle-recheck3.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/fuel-teardown-blocked-recheck2.tap",
+      "bytes": 1904,
+      "sha256": "b8587a52fa21620fa007cf19b11370cba96b810221527d021b06b900e764f034",
+      "byteIdenticalSource": "recovery/fuel-lifecycle-recheck2.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/fuel-teardown-fixer-handoff.json",
+      "bytes": 2973,
+      "sha256": "19451acdb79376014743e584777b46587c223c66a8ff38867e51a5109480c34f",
+      "byteIdenticalSource": "recovery/fuel-teardown-fixer-handoff.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/full-smoke-stale-label-failure.json",
+      "bytes": 3036,
+      "sha256": "38209999d7206a78afd4ced4ea0220c48e79e72efcf5067f7e7b691ad45f1a91",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke-v116-final/smoke.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/garage-silver-purple.png",
+      "bytes": 391970,
+      "sha256": "3370a0f6bb8cfb2f503d24259e48c0d0f0c21b56b11f40ac5cf79f2be8ef66f0",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/custom-01-owned.png",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/geometry-30.json",
+      "bytes": 531477,
+      "sha256": "8508256e68ca6f28d8c0752c7e2e17ad465bcc833f7db522ed8723c3d7811b5b",
+      "byteIdenticalSource": "recovery/native-final/audit-workspace/runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/geometry-career30.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/instrumentation-usercar-build-18.tap",
+      "bytes": 4437,
+      "sha256": "62c04bab02bec3caf6c5e791163f0cebad85b5845d3c577c100cf35875916b2d",
+      "byteIdenticalSource": "recovery/final-instrumentation-build.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byteIdenticalSource": "recovery/lint-final.log",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/loss-replay.json",
+      "bytes": 6182,
+      "sha256": "111744cfce532c69f6aa59ffab85682914bcd3bfcd6b0bcf90ef4a799dab808a",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/evidence/v116-natural-final/loss-replay.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/natural-journey.json",
+      "bytes": 137563,
+      "sha256": "6e926e2e6b950fa1ea22e702c50f00f195f6a1c234fa8ff57c11ce55f7851bdf",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/evidence/v116-natural-final/report.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/natural-replay.png",
+      "bytes": 322844,
+      "sha256": "cb761e50d3e0afd9b88dcb5dcfb0b578e145c0b3aecf7e5b6859bd9c6ee9aea9",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/evidence/v116-natural-final/loss-replay.png",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/natural-terminal.png",
+      "bytes": 279523,
+      "sha256": "f20a79624f5dd3826104584c9ed743e5068c3a81e81fd7d25d126173b2e1018e",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/evidence/v116-natural-final/01-terminal.png",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/next-stage-ads.json",
+      "bytes": 51600,
+      "sha256": "17a2b2a73494f205d5898762e3acd1e08d106f3ddef6bf87380a28716a24f6b0",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/next-stage-ad-v116-final/report.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/pacing-30.json",
+      "bytes": 738648,
+      "sha256": "861840071c94f4eff51de4659c346a320a6c38edeb2b0c8f91973def73e93d69",
+      "byteIdenticalSource": "recovery/native-final/audit-workspace/runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke/course-activity.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/player-12.json",
+      "bytes": 6904,
+      "sha256": "f206d7194e621db105819889d2b65fa58b23629f35448bcaab4cc45667356635",
+      "byteIdenticalSource": "recovery/native-final/native-player-v116-final.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/smoke.json",
+      "bytes": 24085,
+      "sha256": "75d55293d00d058074cdff9cac2c7edfe6f93f59d4367855a6c68a1f11f47993",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke-v116-recheck1/smoke.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/source-399.tap",
+      "bytes": 91726,
+      "sha256": "5cf2ed2b05bfb13a8da60e93cda07f5ece629b974b529ae382cfbd6feae364aa",
+      "byteIdenticalSource": "recovery/source-final.tap",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/source-freeze.json",
+      "bytes": 10155,
+      "sha256": "e4c070d565232e3687c8bb450fd1947aa87b2467ce9cecb314e3f1e790d50a83",
+      "byteIdenticalSource": "recovery/final-code-freeze-final.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/starter-isolated-physics.json",
+      "bytes": 187206,
+      "sha256": "850a31a2a6bf7712fa7cef74f4a1321d9acd53c78dee688fd6127251b7d43092",
+      "byteIdenticalSource": "runs/h5-qq-mobile-20261013/artifacts/car-garage-v116-attempt11/starter-isolated-physics.json",
+      "originalBytesPreserved": true
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence-v116/typecheck.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "byteIdenticalSource": "recovery/typecheck-final.log",
+      "originalBytesPreserved": true
+    }
+  ],
+  "historicalFiles": [
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/ad-cancel.png",
+      "bytes": 291707,
+      "sha256": "0aca21e0eb9d295911082cf0ccf3355bcd885d6570ee1ea7cbdad075f2ae52e4"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/ad-complete.png",
+      "bytes": 364440,
+      "sha256": "d5f922ec4761268c9d1442c4419fde6e1b964f01cf03445f925f508df7e6c1c3"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/ad-no-sdk.png",
+      "bytes": 260895,
+      "sha256": "70cfa3bd3f4f305ace766ff4943b8eaf3f0b70201b71eaf0f2220ab8a7af1c45"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/ai-150.json",
+      "bytes": 254865,
+      "sha256": "015c92e8f9dbf73d3418fe30e59f3670275cb1d0ef4844183582b1663412945b"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/ai-35.json",
+      "bytes": 24102,
+      "sha256": "78014fb6c3b044112fa60c03a1e887148455adeae7eead5a5f75f9f24252a634"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/ai-35.tap",
+      "bytes": 8935,
+      "sha256": "9458a609e8f33bf4536eee6c483c097c0d70f85df98e62295d3c086439da59ac"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/build-receipt.json",
+      "bytes": 4154,
+      "sha256": "eb3432ab65cbf674eba28e6586d767167fd204c68a2b5450fe6c16738ffd331b"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/engineering-verification.json",
+      "bytes": 12507,
+      "sha256": "5187e1a9558312aaa1a57732cbdcfa69761a387c50b19f51120c8fce45853c91"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/gate-rebind.json",
+      "bytes": 1821,
+      "sha256": "380742785c98cdf703f3a5b0bdbdd3bdc1a700131001e410d40b9e95e18b9894"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/geometry-30.json",
+      "bytes": 531477,
+      "sha256": "0ef8b180187647cba8257d4a3b2d474de346b035a569dcff96ef5a857aa825df"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/lint.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/manifest.json",
+      "bytes": 14610,
+      "sha256": "071f3e17a851931fdf5ff54ba9dff092a909240c69ffad886bfaf49af25e1796"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/next-stage-ads.json",
+      "bytes": 51605,
+      "sha256": "72135499eac2b328653dbd6a3c6ca65c41f35e994d9674ff20e864ab4cdf0cea"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/pacing-30.json",
+      "bytes": 738648,
+      "sha256": "3e759d7e8814a8949269a9ab88fe7e78454463f7f4856120735166882c2aeda5"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/player-12.json",
+      "bytes": 6957,
+      "sha256": "3f2b0b113d374c37c40ed0d4cd21a752bf55d297294f8c79bf177989b398a28d"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/source-358.log",
+      "bytes": 34384,
+      "sha256": "70a76ffac04527b7a5fa07a091bb48ebd2e562c340979c3be095064e81bdfcbc"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/evidence/typecheck.log",
+      "bytes": 15,
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/README.zh-CN.md",
+      "bytes": 7670,
+      "sha256": "74af2af59261c55f239f0fd309716ea34351e03b172fa64c0f4a7e5820f198de"
+    },
+    {
+      "path": "docs/lean-pilot/racing-unified-20261018/verification-summary.json",
+      "bytes": 6172,
+      "sha256": "eada473c3048e4e8c0e962ed0fc53956bb6d78f349f9b29d5eb7eae5ab6a29de"
+    }
+  ],
+  "scope": "Hashes identify exact archived bytes. Passing engineering/integrity checks do not certify a qualified natural finish, physical phones, live ads, or commercial publishability.",
+  "historicalManifestDifference": "The old manifest references a README hash that differs from the unchanged baseline README. Preserve both originals; current hashes are recorded here.",
+  "exclusions": "This manifest does not hash itself or the current prose/summary, avoiding a circular hash dependency."
+}

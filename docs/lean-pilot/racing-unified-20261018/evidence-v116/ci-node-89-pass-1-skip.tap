@@ -1,0 +1,550 @@
+TAP version 13
+# Subtest: V11.5 metadata supports the explicitly shared native PlayerCar AI mode
+ok 1 - V11.5 metadata supports the explicitly shared native PlayerCar AI mode
+  ---
+  duration_ms: 1.560814
+  type: 'test'
+  ...
+# Subtest: V11.6 metadata supports the explicitly shared native PlayerCar AI mode
+ok 2 - V11.6 metadata supports the explicitly shared native PlayerCar AI mode
+  ---
+  duration_ms: 0.097847
+  type: 'test'
+  ...
+# Subtest: recognized versions still reject every wrong or missing native AI mode
+ok 3 - recognized versions still reject every wrong or missing native AI mode
+  ---
+  duration_ms: 0.540054
+  type: 'test'
+  ...
+# Subtest: native AI mode never permits unrecognized or missing build versions
+ok 4 - native AI mode never permits unrecognized or missing build versions
+  ---
+  duration_ms: 0.233241
+  type: 'test'
+  ...
+# Subtest: audit refuses legacy on-rail World accounting instead of silently using it
+ok 5 - audit refuses legacy on-rail World accounting instead of silently using it
+  ---
+  duration_ms: 0.553996
+  type: 'test'
+  ...
+# Subtest: read-only physical position and dist finish through actual half-lap/onLap accounting
+ok 6 - read-only physical position and dist finish through actual half-lap/onLap accounting
+  ---
+  duration_ms: 7.259188
+  type: 'test'
+  ...
+# Subtest: stage 07 stops at the actual fractional finish before a complete loop
+ok 7 - stage 07 stops at the actual fractional finish before a complete loop
+  ---
+  duration_ms: 2.243173
+  type: 'test'
+  ...
+# Subtest: stage 22 stops at the actual fractional finish before a complete loop
+ok 8 - stage 22 stops at the actual fractional finish before a complete loop
+  ---
+  duration_ms: 2.168771
+  type: 'test'
+  ...
+# Subtest: an unfinished or motionless car is preserved as DNF, never advanced to satisfy the gate
+ok 9 - an unfinished or motionless car is preserved as DNF, never advanced to satisfy the gate
+  ---
+  duration_ms: 1.445229
+  type: 'test'
+  ...
+# Subtest: collision observers call the native handlers and distinguish repeated impulses from contact episodes
+ok 10 - collision observers call the native handlers and distinguish repeated impulses from contact episodes
+  ---
+  duration_ms: 3.645859
+  type: 'test'
+  ...
+# Subtest: a successful subset cannot claim that all thirty stages passed
+ok 11 - a successful subset cannot claim that all thirty stages passed
+  ---
+  duration_ms: 0.298911
+  type: 'test'
+  ...
+# Subtest: 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染
+ok 12 - 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染
+  ---
+  duration_ms: 6.679804
+  type: 'test'
+  ...
+# Subtest: 未知源版本不能静默套用补丁
+ok 13 - 未知源版本不能静默套用补丁
+  ---
+  duration_ms: 0.210548
+  type: 'test'
+  ...
+# Subtest: registered build includes live career, items, runtime and fuel dependencies
+ok 14 - registered build includes live career, items, runtime and fuel dependencies
+  ---
+  duration_ms: 3.500369
+  type: 'test'
+  ...
+# Subtest: race text labels remove known third-party signboards in build output
+ok 15 - race text labels remove known third-party signboards in build output
+  ---
+  duration_ms: 0.17922
+  type: 'test'
+  ...
+# Subtest: instrument clean native drift without changing dynamics, and reject unknown source
+ok 16 - instrument clean native drift without changing dynamics, and reject unknown source
+  ---
+  duration_ms: 0.166001
+  type: 'test'
+  ...
+# Subtest: recognizable character balloons are replaced with generic scene assets
+ok 17 - recognizable character balloons are replaced with generic scene assets
+  ---
+  duration_ms: 0.069585
+  type: 'test'
+  ...
+# Subtest: actual esbuild script injection keeps valid $& tokens and exactly one closing body
+ok 18 - actual esbuild script injection keeps valid $& tokens and exactly one closing body
+  ---
+  duration_ms: 0.134482
+  type: 'test'
+  ...
+# Subtest: V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes
+ok 19 - V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes
+  ---
+  duration_ms: 0.293183
+  type: 'test'
+  ...
+# Subtest: V3.1 model and spline modules are hashed into H5 build and kept scoped to racing
+ok 20 - V3.1 model and spline modules are hashed into H5 build and kept scoped to racing
+  ---
+  duration_ms: 2.012535
+  type: 'test'
+  ...
+# Subtest: desert dune relief edits only the original generated sand base, never native physics
+ok 21 - desert dune relief edits only the original generated sand base, never native physics
+  ---
+  duration_ms: 0.22558
+  type: 'test'
+  ...
+# Subtest: native stage-specific course selection is strict, idempotent and does not rewrite driving physics
+ok 22 - native stage-specific course selection is strict, idempotent and does not rewrite driving physics
+  ---
+  duration_ms: 0.137067
+  type: 'test'
+  ...
+# Subtest: native fork adapters are exact, idempotent and preserve original acceleration/AI
+ok 23 - native fork adapters are exact, idempotent and preserve original acceleration/AI
+  ---
+  duration_ms: 0.352562
+  type: 'test'
+  ...
+# Subtest: stage-scenery pipeline changes only sky/props, never native car or track physics
+ok 24 - stage-scenery pipeline changes only sky/props, never native car or track physics
+  ---
+  duration_ms: 0.188164
+  type: 'test'
+  ...
+# Subtest: fixed desert monument safety keeps pyramid models away from new racing surfaces
+ok 25 - fixed desert monument safety keeps pyramid models away from new racing surfaces
+  ---
+  duration_ms: 0.147793
+  type: 'test'
+  ...
+# Subtest: V8 native AI hook is strict and avoids checkpoint/progress surgery
+ok 26 - V8 native AI hook is strict and avoids checkpoint/progress surgery
+  ---
+  duration_ms: 0.160933
+  type: 'test'
+  ...
+# Subtest: V11 build adapter preserves AI names and instantiates the native PlayerCar subclass
+ok 27 - V11 build adapter preserves AI names and instantiates the native PlayerCar subclass
+  ---
+  duration_ms: 2.171986
+  type: 'test'
+  ...
+# Subtest: V11 world adapter projects physical rivals and applies real impulses without taking player ownership
+ok 28 - V11 world adapter projects physical rivals and applies real impulses without taking player ownership
+  ---
+  duration_ms: 0.554065
+  type: 'test'
+  ...
+# Subtest: V8 one-way finish hooks preserve native progress and onLap bookkeeping
+ok 29 - V8 one-way finish hooks preserve native progress and onLap bookkeeping
+  ---
+  duration_ms: 0.142124
+  type: 'test'
+  ...
+# Subtest: phone and desktop camera differences preserve native car/road physics
+ok 30 - phone and desktop camera differences preserve native car/road physics
+  ---
+  duration_ms: 0.167213
+  type: 'test'
+  ...
+# Subtest: native eight-item HUD matches V8 pickups and never crashes on a new item ID
+ok 31 - native eight-item HUD matches V8 pickups and never crashes on a new item ID
+  ---
+  duration_ms: 0.736711
+  type: 'test'
+  ...
+# Subtest: V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors
+ok 32 - V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors
+  ---
+  duration_ms: 0.268915
+  type: 'test'
+  ...
+# Subtest: generated car replaces every procedural body/wheel path while preserving native effects and skins
+ok 33 - generated car replaces every procedural body/wheel path while preserving native effects and skins
+  ---
+  duration_ms: 0.427806
+  type: 'test'
+  ...
+# Subtest: all native map startups await the cached GLB before racers can be built
+ok 34 - all native map startups await the cached GLB before racers can be built
+  ---
+  duration_ms: 0.305781
+  type: 'test'
+  ...
+# Subtest: embedded original GLB is byte-exact, shared and standalone; no network or legacy fallback
+ok 35 - embedded original GLB is byte-exact, shared and standalone; no network or legacy fallback
+  ---
+  duration_ms: 0.202846
+  type: 'test'
+  ...
+# Subtest: car identity survives native userData and is an integrity input, not homepage-only decoration
+ok 36 - car identity survives native userData and is an integrity input, not homepage-only decoration
+  ---
+  duration_ms: 0.120632
+  type: 'test'
+  ...
+# Subtest: racer PR CI actually selects the new branch and exercises compiled car and asset checks
+ok 37 - racer PR CI actually selects the new branch and exercises compiled car and asset checks
+  ---
+  duration_ms: 2.549204
+  type: 'test'
+  ...
+# Subtest: build rejects raw-heavy or unrigged GLBs rather than loading them as a mobile car
+ok 38 - build rejects raw-heavy or unrigged GLBs rather than loading them as a mobile car
+  ---
+  duration_ms: 2.833223
+  type: 'test'
+  ...
+# Subtest: home and settlement frame the selected true native car without replacing gameplay cameras
+ok 39 - home and settlement frame the selected true native car without replacing gameplay cameras
+  ---
+  duration_ms: 0.370378
+  type: 'test'
+  ...
+# Subtest: classifies original tire and rim triangles inside the observed wheel cylinders
+ok 40 - classifies original tire and rim triangles inside the observed wheel cylinders
+  ---
+  duration_ms: 0.339312
+  type: 'test'
+  ...
+# Subtest: keeps pale source faces outside the tire rubber on the chassis while bright inner wheel faces stay rim
+ok 41 - keeps pale source faces outside the tire rubber on the chassis while bright inner wheel faces stay rim
+  ---
+  duration_ms: 0.094292
+  type: 'test'
+  ...
+# Subtest: separates glass, colored lamps, lower aero trim and recolorable body shell
+ok 42 - separates glass, colored lamps, lower aero trim and recolorable body shell
+  ---
+  duration_ms: 0.143827
+  type: 'test'
+  ...
+# Subtest: keeps pale hood, door and bumper texels on the paint mask without recoloring dark glass, trim or lamps
+ok 43 - keeps pale hood, door and bumper texels on the paint mask without recoloring dark glass, trim or lamps
+  ---
+  duration_ms: 0.128293
+  type: 'test'
+  ...
+# Subtest: bakes source coordinates to +Y-up and keeps the axle pivot flat at the root
+ok 44 - bakes source coordinates to +Y-up and keeps the axle pivot flat at the root
+  ---
+  duration_ms: 0.170827
+  type: 'test'
+  ...
+# Subtest: authors a circular 48-segment rounded tire with a 10-spoke rim and central hub around the X axle
+ok 45 - authors a circular 48-segment rounded tire with a 10-spoke rim and central hub around the X axle
+  ---
+  duration_ms: 3.077141
+  type: 'test'
+  ...
+# Subtest: writes an optimized GLB with its geometry and texture resources in the binary
+ok 46 - writes an optimized GLB with its geometry and texture resources in the binary # SKIP
+  ---
+  duration_ms: 0.055063
+  type: 'test'
+  ...
+# Subtest: single home keeps the existing 30 stages and places their rail outside the menu panel
+ok 47 - single home keeps the existing 30 stages and places their rail outside the menu panel
+  ---
+  duration_ms: 0.219932
+  type: 'test'
+  ...
+# Subtest: rail mirrors the existing select options and lock gate instead of creating stage progression
+ok 48 - rail mirrors the existing select options and lock gate instead of creating stage progression
+  ---
+  duration_ms: 0.203677
+  type: 'test'
+  ...
+# Subtest: stage rail clicks dispatch the existing select change and are ready-only
+ok 49 - stage rail clicks dispatch the existing select change and are ready-only
+  ---
+  duration_ms: 0.162836
+  type: 'test'
+  ...
+# Subtest: responsive home keeps 55 percent clear for the car and a touch-scrollable 44px stage rail
+ok 50 - responsive home keeps 55 percent clear for the car and a touch-scrollable 44px stage rail
+  ---
+  duration_ms: 0.454756
+  type: 'test'
+  ...
+# Subtest: native stage select remains visually hidden but accessible, and portrait retains rotation guidance
+ok 51 - native stage select remains visually hidden but accessible, and portrait retains rotation guidance
+  ---
+  duration_ms: 0.345982
+  type: 'test'
+  ...
+# Subtest: daily challenge is a separate visible rail choice mirroring its native option
+ok 52 - daily challenge is a separate visible rail choice mirroring its native option
+  ---
+  duration_ms: 0.300323
+  type: 'test'
+  ...
+# Subtest: home repair resets the old briefing grid and outranks desktop panel width
+ok 53 - home repair resets the old briefing grid and outranks desktop panel width
+  ---
+  duration_ms: 0.089385
+  type: 'test'
+  ...
+# Subtest: 740x360 sidebar keeps selectors on one row and removes only decorative briefing text
+ok 54 - 740x360 sidebar keeps selectors on one row and removes only decorative briefing text
+  ---
+  duration_ms: 0.482718
+  type: 'test'
+  ...
+# Subtest: benchmarks actual arc, braking and equal-skill road alternatives, never just saved metres
+ok 55 - benchmarks actual arc, braking and equal-skill road alternatives, never just saved metres
+  ---
+  duration_ms: 1.460552
+  type: 'test'
+  ...
+# Subtest: a sharper short-cut can forfeit an apparent distance advantage
+ok 56 - a sharper short-cut can forfeit an apparent distance advantage
+  ---
+  duration_ms: 1.268794
+  type: 'test'
+  ...
+# Subtest: non-native forks and nonmonotone physical samples never masquerade as verified reward
+ok 57 - non-native forks and nonmonotone physical samples never masquerade as verified reward
+  ---
+  duration_ms: 0.613305
+  type: 'test'
+  ...
+# Subtest: sparse blue window frames with detached white details are not a solid question cube
+ok 58 - sparse blue window frames with detached white details are not a solid question cube
+  ---
+  duration_ms: 2.636526
+  type: 'test'
+  ...
+# Subtest: visible cube lane changes tolerate modest road angle while sharp corners and recovery retain priority
+ok 59 - visible cube lane changes tolerate modest road angle while sharp corners and recovery retain priority
+  ---
+  duration_ms: 0.14549
+  type: 'test'
+  ...
+# Subtest: box pursuit stops at the visible objective count without reading hidden pickup state
+ok 60 - box pursuit stops at the visible objective count without reading hidden pickup state
+  ---
+  duration_ms: 0.234373
+  type: 'test'
+  ...
+# Subtest: visible cyan cube chooses an ordinary steering direction; sky and HUD are excluded
+ok 61 - visible cyan cube chooses an ordinary steering direction; sky and HUD are excluded
+  ---
+  duration_ms: 2.368683
+  type: 'test'
+  ...
+# Subtest: long blue rails and the car boost behind the player cannot act as boxes
+ok 62 - long blue rails and the car boost behind the player cannot act as boxes
+  ---
+  duration_ms: 1.456577
+  type: 'test'
+  ...
+# Subtest: the shaded blue cube color remains visible without mistaking pale sky for an item
+ok 63 - the shaded blue cube color remains visible without mistaking pale sky for an item
+  ---
+  duration_ms: 2.745
+  type: 'test'
+  ...
+# Subtest: blue windows or car panels without the actual white question hook and dot do not steer toward scenery
+ok 64 - blue windows or car panels without the actual white question hook and dot do not steer toward scenery
+  ---
+  duration_ms: 2.037743
+  type: 'test'
+  ...
+# Subtest: resume binds the earned report to its exact origin and rejects invented progress
+ok 65 - resume binds the earned report to its exact origin and rejects invented progress
+  ---
+  duration_ms: 0.401356
+  type: 'test'
+  ...
+# Subtest: wrong-way recovery ignores the text retained after the native warning becomes hidden
+ok 66 - wrong-way recovery ignores the text retained after the native warning becomes hidden
+  ---
+  duration_ms: 0.150707
+  type: 'test'
+  ...
+# Subtest: visible sudden arrow rotation keeps the pre-spin route and does not flip it again during a lingering warning
+ok 67 - visible sudden arrow rotation keeps the pre-spin route and does not flip it again during a lingering warning
+  ---
+  duration_ms: 0.31116
+  type: 'test'
+  ...
+# Subtest: ordinary corner rotation is followed normally and opposite-heading jitter does not alternate recovery keys
+ok 68 - ordinary corner rotation is followed normally and opposite-heading jitter does not alternate recovery keys
+  ---
+  duration_ms: 0.150888
+  type: 'test'
+  ...
+# Subtest: current V11.5 first, second and third place titles require a real matching podium result and save
+ok 69 - current V11.5 first, second and third place titles require a real matching podium result and save
+  ---
+  duration_ms: 0.427204
+  type: 'test'
+  ...
+# Subtest: a genuine podium replay may retain a better historical medal and best time
+ok 70 - a genuine podium replay may retain a better historical medal and best time
+  ---
+  duration_ms: 0.107812
+  type: 'test'
+  ...
+# Subtest: old saved medals do not turn an unfinished player, fourth place or an active race into a victory
+ok 71 - old saved medals do not turn an unfinished player, fourth place or an active race into a victory
+  ---
+  duration_ms: 0.098859
+  type: 'test'
+  ...
+# Subtest: a current-looking title cannot pass with zero medals or inconsistent persisted medals
+ok 72 - a current-looking title cannot pass with zero medals or inconsistent persisted medals
+  ---
+  duration_ms: 0.13917
+  type: 'test'
+  ...
+# Subtest: old or mismatched result text is not a current native podium settlement
+ok 73 - old or mismatched result text is not a current native podium settlement
+  ---
+  duration_ms: 0.143487
+  type: 'test'
+  ...
+# Subtest: another stage save or same-biome course cannot qualify the current race
+ok 74 - another stage save or same-biome course cannot qualify the current race
+  ---
+  duration_ms: 0.171659
+  type: 'test'
+  ...
+# Subtest: missing or malformed save evidence and unknown stages remain unqualified
+ok 75 - missing or malformed save evidence and unknown stages remain unqualified
+  ---
+  duration_ms: 0.209897
+  type: 'test'
+  ...
+# Subtest: daily podium evidence binds the played date, actual course and daily save independently of campaign stars
+ok 76 - daily podium evidence binds the played date, actual course and daily save independently of campaign stars
+  ---
+  duration_ms: 1.155282
+  type: 'test'
+  ...
+# Subtest: daily start dates come from the bounded start interval and actual course on either side of midnight
+ok 77 - daily start dates come from the bounded start interval and actual course on either side of midnight
+  ---
+  duration_ms: 0.26515
+  type: 'test'
+  ...
+# Subtest: a month boundary with the same daily course on both dates is ambiguous and must remain blocked
+ok 78 - a month boundary with the same daily course on both dates is ambiguous and must remain blocked
+  ---
+  duration_ms: 0.194553
+  type: 'test'
+  ...
+# Subtest: daily date evidence rejects wide intervals, clock jumps, changed documents or timezones and unmatched courses
+ok 79 - daily date evidence rejects wide intervals, clock jumps, changed documents or timezones and unmatched courses
+  ---
+  duration_ms: 0.155785
+  type: 'test'
+  ...
+# Subtest: a reversed arrow turns into the visible road rather than the outside barrier
+ok 80 - a reversed arrow turns into the visible road rather than the outside barrier
+  ---
+  duration_ms: 0.253192
+  type: 'test'
+  ...
+# Subtest: a late visible wrong-way warning overrides a stale backward route after an unseen spin
+ok 81 - a late visible wrong-way warning overrides a stale backward route after an unseen spin
+  ---
+  duration_ms: 0.111568
+  type: 'test'
+  ...
+# Subtest: if a recovery turn cannot leave the visible outside rail, normal input can try the opposite key
+ok 82 - if a recovery turn cannot leave the visible outside rail, normal input can try the opposite key
+  ---
+  duration_ms: 0.155335
+  type: 'test'
+  ...
+# Subtest: wheel touch starts at top, then moves along the rim to create steering rotation
+ok 83 - wheel touch starts at top, then moves along the rim to create steering rotation
+  ---
+  duration_ms: 0.471401
+  type: 'test'
+  ...
+# Subtest: wheel direction reverses by rotating around the rim instead of crossing the hub
+ok 84 - wheel direction reverses by rotating around the rim instead of crossing the hub
+  ---
+  duration_ms: 0.349417
+  type: 'test'
+  ...
+# Subtest: neutral release ends only the wheel finger and preserves other active action fingers
+ok 85 - neutral release ends only the wheel finger and preserves other active action fingers
+  ---
+  duration_ms: 0.18581
+  type: 'test'
+  ...
+# Subtest: wheel start and rotation preserve visible drift, small, nitro, and item touch ids
+ok 86 - wheel start and rotation preserve visible drift, small, nitro, and item touch ids
+  ---
+  duration_ms: 0.207142
+  type: 'test'
+  ...
+# Subtest: fresh career driver uses the visible rotary wheel, not removed left/right controls
+ok 87 - fresh career driver uses the visible rotary wheel, not removed left/right controls
+  ---
+  duration_ms: 17.476547
+  type: 'test'
+  ...
+# Subtest: natural trace records exact native car identity for the observed settlement and replay branch
+ok 88 - natural trace records exact native car identity for the observed settlement and replay branch
+  ---
+  duration_ms: 0.795019
+  type: 'test'
+  ...
+# Subtest: natural observer reads the current visible compact objective, not removed coaching DOM
+ok 89 - natural observer reads the current visible compact objective, not removed coaching DOM
+  ---
+  duration_ms: 0.609409
+  type: 'test'
+  ...
+# Subtest: one-stage loss captures normal replay evidence without promoting a failed campaign result
+ok 90 - one-stage loss captures normal replay evidence without promoting a failed campaign result
+  ---
+  duration_ms: 0.910633
+  type: 'test'
+  ...
+1..90
+# tests 90
+# suites 0
+# pass 89
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 171.966686

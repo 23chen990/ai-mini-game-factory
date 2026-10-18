@@ -1,0 +1,241 @@
+RACING_QA_BROWSER=complete-chromium; game-state-and-timing-unchanged
+TAP version 13
+# Subtest: V3 resolves fuel policy before accepting the first race
+not ok 1 - V3 resolves fuel policy before accepting the first race
+  ---
+  duration_ms: 19.248763
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:73:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:74:16)
+  ...
+# Subtest: V3 native entry cannot bypass zero fuel
+not ok 2 - V3 native entry cannot bypass zero fuel
+  ---
+  duration_ms: 3.099422
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:78:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:79:16)
+  ...
+# Subtest: V3 zero fuel disables the primary action even with a 30-unit tank
+not ok 3 - V3 zero fuel disables the primary action even with a 30-unit tank
+  ---
+  duration_ms: 1.476563
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:84:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:85:16)
+  ...
+# Subtest: V3 countdown double-start never spends the five-unit entry twice
+not ok 4 - V3 countdown double-start never spends the five-unit entry twice
+  ---
+  duration_ms: 1.532065
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:89:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:90:16)
+  ...
+# Subtest: V3 ignores background starts and requires explicit foreground input
+not ok 5 - V3 ignores background starts and requires explicit foreground input
+  ---
+  duration_ms: 1.531534
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:95:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:96:16)
+  ...
+# Subtest: V3 failed native start preserves fuel and retry remains usable
+not ok 6 - V3 failed native start preserves fuel and retry remains usable
+  ---
+  duration_ms: 1.364059
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:104:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:105:16)
+  ...
+# Subtest: V3 write denial keeps session free and exposes a visible storage warning
+not ok 7 - V3 write denial keeps session free and exposes a visible storage warning
+  ---
+  duration_ms: 1.266295
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:111:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:112:16)
+  ...
+# Subtest: V3 settlement actions fit both landscape sizes without requiring a panel scroll
+not ok 8 - V3 settlement actions fit both landscape sizes without requiring a panel scroll
+  ---
+  duration_ms: 1.316719
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:118:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:119:16)
+  ...
+# Subtest: V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre
+not ok 9 - V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre
+  ---
+  duration_ms: 1.514138
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:142:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:143:16)
+  ...
+# Subtest: V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge
+not ok 10 - V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge
+  ---
+  duration_ms: 1.430266
+  type: 'test'
+  location: '/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:155:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    browserType.launch: Executable doesn't exist at /workspace/scratch/74be31e29a0f/racing-test-browsers/chromium-1234/chrome-linux64/chrome
+    ╔════════════════════════════════════════════════════════════╗
+    ║ Looks like Playwright was just installed or updated.       ║
+    ║ Please run the following command to download new browsers: ║
+    ║                                                            ║
+    ║     npx playwright install                                 ║
+    ║                                                            ║
+    ║ <3 Playwright Team                                         ║
+    ╚════════════════════════════════════════════════════════════╝
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    chromium.launch (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-real-browser-preload.mjs:9:26)
+    setup (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:23:34)
+    async TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:156:16)
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 0
+# fail 10
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 336.277211

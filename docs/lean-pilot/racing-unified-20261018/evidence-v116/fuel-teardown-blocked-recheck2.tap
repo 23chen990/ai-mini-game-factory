@@ -1,0 +1,51 @@
+RACING_QA_BROWSER=complete-chromium; game-state-and-timing-unchanged
+TAP version 13
+# Subtest: V3 resolves fuel policy before accepting the first race
+ok 1 - V3 resolves fuel policy before accepting the first race
+  ---
+  duration_ms: 1767.372094
+  type: 'test'
+  ...
+# Subtest: V3 native entry cannot bypass zero fuel
+ok 2 - V3 native entry cannot bypass zero fuel
+  ---
+  duration_ms: 467.53697
+  type: 'test'
+  ...
+# Subtest: V3 zero fuel disables the primary action even with a 30-unit tank
+ok 3 - V3 zero fuel disables the primary action even with a 30-unit tank
+  ---
+  duration_ms: 440.188277
+  type: 'test'
+  ...
+# Subtest: V3 countdown double-start never spends the five-unit entry twice
+ok 4 - V3 countdown double-start never spends the five-unit entry twice
+  ---
+  duration_ms: 502.457678
+  type: 'test'
+  ...
+# Subtest: V3 ignores background starts and requires explicit foreground input
+ok 5 - V3 ignores background starts and requires explicit foreground input
+  ---
+  duration_ms: 543.62572
+  type: 'test'
+  ...
+# Subtest: V3 failed native start preserves fuel and retry remains usable
+ok 6 - V3 failed native start preserves fuel and retry remains usable
+  ---
+  duration_ms: 613.403838
+  type: 'test'
+  ...
+# Subtest: V3 write denial keeps session free and exposes a visible storage warning
+ok 7 - V3 write denial keeps session free and exposes a visible storage warning
+  ---
+  duration_ms: 480.965743
+  type: 'test'
+  ...
+# Subtest: V3 settlement actions fit both landscape sizes without requiring a panel scroll
+ok 8 - V3 settlement actions fit both landscape sizes without requiring a panel scroll
+  ---
+  duration_ms: 297248.584486
+  type: 'test'
+  ...
+# Interrupted while running: V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre at /workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:142:1

@@ -1,0 +1,71 @@
+RACING_QA_BROWSER=complete-chromium; game-state-and-timing-unchanged
+TAP version 13
+# Subtest: V3 resolves fuel policy before accepting the first race
+ok 1 - V3 resolves fuel policy before accepting the first race
+  ---
+  duration_ms: 1626.646435
+  type: 'test'
+  ...
+# Subtest: V3 native entry cannot bypass zero fuel
+ok 2 - V3 native entry cannot bypass zero fuel
+  ---
+  duration_ms: 484.645012
+  type: 'test'
+  ...
+# Subtest: V3 zero fuel disables the primary action even with a 30-unit tank
+ok 3 - V3 zero fuel disables the primary action even with a 30-unit tank
+  ---
+  duration_ms: 370.59968
+  type: 'test'
+  ...
+# Subtest: V3 countdown double-start never spends the five-unit entry twice
+ok 4 - V3 countdown double-start never spends the five-unit entry twice
+  ---
+  duration_ms: 493.617516
+  type: 'test'
+  ...
+# Subtest: V3 ignores background starts and requires explicit foreground input
+ok 5 - V3 ignores background starts and requires explicit foreground input
+  ---
+  duration_ms: 552.436748
+  type: 'test'
+  ...
+# Subtest: V3 failed native start preserves fuel and retry remains usable
+ok 6 - V3 failed native start preserves fuel and retry remains usable
+  ---
+  duration_ms: 527.538624
+  type: 'test'
+  ...
+# Subtest: V3 write denial keeps session free and exposes a visible storage warning
+ok 7 - V3 write denial keeps session free and exposes a visible storage warning
+  ---
+  duration_ms: 444.64411
+  type: 'test'
+  ...
+# Subtest: V3 settlement actions fit both landscape sizes without requiring a panel scroll
+ok 8 - V3 settlement actions fit both landscape sizes without requiring a panel scroll
+  ---
+  duration_ms: 362.480957
+  type: 'test'
+  ...
+# Subtest: V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre
+ok 9 - V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre
+  ---
+  duration_ms: 480.283665
+  type: 'test'
+  ...
+# Subtest: V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge
+ok 10 - V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge
+  ---
+  duration_ms: 406.688545
+  type: 'test'
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6068.648792

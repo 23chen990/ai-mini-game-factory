@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "type": "fixer-handoff",
+  "route": "formal-fixer",
+  "role": "FixerAgent",
+  "issueId": "V116-DELIVERY-SCRIPT-ATTRIBUTES",
+  "gameId": "qq-speed",
+  "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace",
+  "status": "SOURCE_READY_FOR_ROOT_QA",
+  "routeReason": "Independent QA confirmed an existing delivery-entry gate gap, so the narrow correction follows the formal Fixer to QA route.",
+  "taskSha256": "ddfda945d455a5c7d1d7acaf1345491815037427046cf183e85bdca9c54cb4d2",
+  "contextOmitted": [
+    "Unrelated game mechanics, vehicle assets, historical reports, browser state, and upload payloads."
+  ],
+  "files": [
+    {
+      "path": "tools/lean-pilot/racing-delivery-verify.mjs",
+      "beforeBytes": 8822,
+      "beforeSha256": "4fa0fe87d33b75d2e5a7e4eb57f9cc8fa0b21b92884dd115fad4f2d882f1eba6",
+      "bytes": 9112,
+      "sha256": "f37f364b3206286d2626913116970c5729c4e09471de519e4182ae97ae3920a8",
+      "gitBlobSha": "99c1b573c8b4b4a239ef06e28f831d8c6b49c080"
+    },
+    {
+      "path": "tools/lean-pilot/racing-delivery-verify.test.mjs",
+      "beforeBytes": 12868,
+      "beforeSha256": "4cea6f557c0dcab90bf64fc1c80444eb4a5b6a6c0f81b0635c9dbd6e5ce96b56",
+      "bytes": 14264,
+      "sha256": "1094d59bbc044a4ba519029afaf4955d425be865cdf2fe877a79aa50e5c430e3",
+      "gitBlobSha": "50dd35fda1eb07cf12e9259fca17bc9000da45d2"
+    }
+  ],
+  "changes": [
+    "Match opening and closing script tags case-insensitively, permit whitespace before a closing tag terminator, and keep exact source-body slices.",
+    "Check each matched opening tag for a case-insensitive src assignment with optional whitespace before equals; count uppercase scripts toward exactly two entries.",
+    "Keep all hash, ZIP, natural-stage, notice and child syntax checks intact; no large-body lazy regex or body case conversion."
+  ],
+  "regression": {
+    "preFix": {
+      "status": "EXPECTED_FAIL",
+      "exitCode": 1,
+      "tests": 6,
+      "pass": 0,
+      "fail": 6,
+      "skipped": 0,
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-attributes-regression-red.tap",
+        "bytes": 5119,
+        "sha256": "83c177c7a39d53f0bfec8f1adff8e2004e73a01400aad4b6fe1b76116e66b886"
+      }
+    },
+    "postFix": {
+      "status": "PASS",
+      "exitCode": 0,
+      "tests": 29,
+      "pass": 29,
+      "fail": 0,
+      "skipped": 0,
+      "command": [
+        "node",
+        "--test",
+        "--test-reporter=tap",
+        "tools/lean-pilot/racing-delivery-verify.test.mjs"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-attributes-contracts-29.tap",
+        "bytes": 5662,
+        "sha256": "69ed6a7f63f5d2d868f298257ebf7a99007dec03345ce16c6476e3fb8f2485b0"
+      }
+    },
+    "coveredCases": [
+      "<script src = \"external.js\"> is rejected.",
+      "<script SRC=\"external.js\"> is rejected.",
+      "An additional <SCRIPT SRC=\"external.js\"></SCRIPT> is rejected.",
+      "An additional uppercase inline SCRIPT is rejected by the two-script count.",
+      "Mixed-case opening/closing tags preserve Chinese text, case, CRLF and final newlines exactly.",
+      "The original 23 contracts, including the 14 MiB localized payload and all existing integrity/natural gates, remain unchanged and pass."
+    ]
+  },
+  "staticChecks": [
+    {
+      "name": "syntax-verifier",
+      "status": "PASS",
+      "exitCode": 0,
+      "command": [
+        "node",
+        "--check",
+        "tools/lean-pilot/racing-delivery-verify.mjs"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-attributes-syntax-verifier.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "syntax-contract",
+      "status": "PASS",
+      "exitCode": 0,
+      "command": [
+        "node",
+        "--check",
+        "tools/lean-pilot/racing-delivery-verify.test.mjs"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-attributes-syntax-contract.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "lint",
+      "status": "PASS",
+      "exitCode": 0,
+      "command": [
+        "node",
+        "node_modules/eslint/bin/eslint.js",
+        "tools/lean-pilot/racing-delivery-verify.mjs",
+        "tools/lean-pilot/racing-delivery-verify.test.mjs"
+      ],
+      "evidence": {
+        "path": "/workspace/scratch/29547c23d820/recovery/delivery-attributes-lint.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "invariants": {
+    "outsideScannerUnchanged": true,
+    "originalTestStatementsUnchanged": true,
+    "originalTopLevelTests": 8,
+    "newTopLevelTests": 10,
+    "addedTopLevelTests": 2,
+    "originalTestStatementsSha256": "41ade5e1e6909732022e1e5a2187c3d4d953512a25c23dedb26978fb4b9d1c99",
+    "retainedTestStatementsSha256": "41ade5e1e6909732022e1e5a2187c3d4d953512a25c23dedb26978fb4b9d1c99",
+    "indexBeforeSha256": "d0888253100eaeade12a17418f74b0b8adb4053632952c3c706f8f8bf5691863",
+    "indexAfterSha256": "d0888253100eaeade12a17418f74b0b8adb4053632952c3c706f8f8bf5691863"
+  },
+  "syntaxBoundary": {
+    "scope": "A bounded scanner for this generated standalone HTML; not a general HTML parser.",
+    "supported": "Whitespace-separated attributes with src assignment, case-insensitive SCRIPT tags, closing tags with optional whitespace, and exact raw script-body slicing.",
+    "unsupported": [
+      "Slash-separated or self-closing script start tags, slash-separated attributes, and valueless src are not covered by the entry predicate; this change does not establish rejection for those forms.",
+      "Opening tags with a quoted > value and attribute values containing src-like text are not parsed as full attribute tokens; they may be misclassified.",
+      "HTML comments, other raw-text elements, foreign-content contexts and malformed-markup recovery are not modeled."
+    ],
+    "consequence": "The passing gate verifies the generated package and named regressions. It must not be described as universally rejecting external scripts in arbitrary HTML."
+  },
+  "remainingEvidenceGaps": [
+    "Root must rerun the actual final delivery manifest using these final source bytes."
+  ],
+  "nextOwner": "root",
+  "mutations": {
+    "sourceFiles": 2,
+    "index": false,
+    "remote": false,
+    "buildOutput": false,
+    "existingEvidence": false
+  },
+  "zodValidated": true
+}

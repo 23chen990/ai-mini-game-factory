@@ -1,0 +1,509 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "gameTitle": "极速飞驰",
+  "runId": "h5-qq-mobile-20261013",
+  "workspace": "runs/h5-qq-mobile-20261013/workspace",
+  "date": "2026-10-18",
+  "version": "V11.6",
+  "uiRevision": "racing-v116-garage",
+  "attempt": 11,
+  "status": "DEVELOPMENT_TRIAL_WITH_OPEN_EXPERIENCE_GATES",
+  "publishable": false,
+  "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+  "inputHash": "9936cef6259c01abb7315dce82fd07a1bafa3e30e7dbdea862422c9a4e351855",
+  "standaloneName": "racing-two-button-c60652cca516.html",
+  "standaloneSha256": "d246537f3cdba7081350f1a5de3e4956e7a05c50be74659e40f003a5945f44ab",
+  "standaloneBytes": 13338723,
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "buildReceipt": "evidence-v116/build-receipt.json",
+  "content": {
+    "mainStages": 30,
+    "physicalShortcuts": 10,
+    "physicalShortcutStages": [
+      "05",
+      "10",
+      "12",
+      "13",
+      "16",
+      "18",
+      "22",
+      "25",
+      "27",
+      "30"
+    ],
+    "aiMode": "native-playercar-physics",
+    "cars": [
+      {
+        "carId": "starter",
+        "modelId": "original-racer-v1",
+        "name": "初始赛车",
+        "file": "original-racer.glb",
+        "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+        "bytes": 1270084,
+        "triangles": 17473,
+        "paintable": true,
+        "wheelMode": "articulated"
+      },
+      {
+        "carId": "custom-01",
+        "modelId": "custom-01",
+        "name": "银紫超跑",
+        "file": "custom-racer-01.glb",
+        "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+        "bytes": 2700636,
+        "triangles": 63998,
+        "paintable": false,
+        "wheelMode": "static-source-mesh"
+      },
+      {
+        "carId": "custom-02",
+        "modelId": "custom-02",
+        "name": "荧光跑车",
+        "file": "custom-racer-02.glb",
+        "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+        "bytes": 1381344,
+        "triangles": 18000,
+        "paintable": false,
+        "wheelMode": "static-source-mesh"
+      },
+      {
+        "carId": "custom-03",
+        "modelId": "custom-03",
+        "name": "黄金方程式",
+        "file": "custom-racer-03.glb",
+        "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+        "bytes": 1173568,
+        "triangles": 18000,
+        "paintable": false,
+        "wheelMode": "static-source-mesh"
+      },
+      {
+        "carId": "custom-04",
+        "modelId": "custom-04",
+        "name": "赤焰超跑",
+        "file": "custom-racer-04.glb",
+        "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+        "bytes": 1129904,
+        "triangles": 18000,
+        "paintable": false,
+        "wheelMode": "static-source-mesh"
+      },
+      {
+        "carId": "custom-05",
+        "modelId": "custom-05",
+        "name": "蓝白拉力",
+        "file": "custom-racer-05.glb",
+        "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+        "bytes": 1407812,
+        "triangles": 18000,
+        "paintable": false,
+        "wheelMode": "static-source-mesh"
+      }
+    ],
+    "importedCarCount": 5,
+    "importedWheelAnimation": "Static source surfaces; no separate wheel rotation or steering nodes.",
+    "playerPhysics": "All six models use the same native PlayerCar and driving parameters. Cars carry cosmetic and ownership metadata only."
+  },
+  "ownership": {
+    "persistence": "LOCAL_BROWSER_ORIGIN",
+    "careerStorageKey": "h5-mobile:qq-speed:career:v1",
+    "fields": [
+      "ownedCars",
+      "car"
+    ],
+    "starterOwnedByDefault": true,
+    "acquisition": "Confirmed completed rewarded video plus a successful local ownership write. Already owned cars do not require another ad.",
+    "invalidOrFailedRewardsGrantOwnership": false,
+    "ownershipWriteFailureGrantsOwnership": false,
+    "persistedOwnershipSurvivesLaterEquipFailure": true,
+    "changesFuelStarsBestTimesOrUnlockedStages": false,
+    "accountCloudSync": false,
+    "crossDeviceRecovery": false,
+    "defaultConfiguration": {
+      "appId": null,
+      "spaceId": null,
+      "screenOrientation": null,
+      "platformStatus": "PENDING",
+      "liveH5Test": "NOT_RUN",
+      "usableRewardedSdk": false,
+      "unavailableRewardButtonHidden": true,
+      "lockedModelsPreviewable": true
+    },
+    "scope": "Permanent ownership lasts in the same browser origin while its local data is retained. Simulated SDK and cross-origin storage-copy fixtures are engineering evidence."
+  },
+  "checks": {
+    "sourceRegression": {
+      "status": "PASS",
+      "passed": 399,
+      "total": 399,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "evidence-v116/source-399.tap",
+      "scope": "Includes generated native-project checks with RACE_NATIVE_PROJECT set. No skipped tests."
+    },
+    "initialBuildContracts": {
+      "status": "PASS",
+      "passed": 26,
+      "total": 26,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "evidence-v116/build-contracts-26.tap",
+      "scope": "Initial build contract run, including the four instrumentation regressions present at that time.",
+      "instrumentationTestsAtRun": 4
+    },
+    "latestInstrumentationAndUserCarBuild": {
+      "status": "PASS",
+      "passed": 18,
+      "total": 18,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "evidence-v116/instrumentation-usercar-build-18.tap",
+      "scope": "Final QA instrumentation and user-car build contracts after metadata repairs.",
+      "instrumentationTests": 8,
+      "userCarBuildTests": 10
+    },
+    "carRuntime": {
+      "status": "PASS",
+      "passed": 18,
+      "total": 18,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "evidence-v116/car-runtime-18.tap",
+      "scope": "Actual six-GLB parsing through the pinned GLTFLoader; loader/factory interfaces and exact model identity/normalization; starter paint, wheel and exhaust metadata; user-mesh cloning with static wheels; lazy serialized and cancelable decode caching; visible home-model preview switching; private-material disposal without freeing shared geometry or textures. Browser bitmap decoding is stubbed."
+    },
+    "geometry": {
+      "status": "PASS",
+      "courses": 30,
+      "physicalShortcuts": 10,
+      "evidence": "evidence-v116/geometry-30.json",
+      "pacingEvidence": "evidence-v116/pacing-30.json",
+      "scope": "Native final-build road geometry and physical shortcut audit."
+    },
+    "nativeAi": {
+      "status": "PASS",
+      "passedStages": 30,
+      "totalStages": 30,
+      "finishedRivals": 150,
+      "totalRivals": 150,
+      "sourceUnchanged": true,
+      "evidence": "evidence-v116/ai-150.json",
+      "scope": "Five native PlayerCar-physics rivals on each of 30 courses, including real contact and finish checks. Deterministic engineering driving, not human win-rate evidence."
+    },
+    "nativePlayer": {
+      "status": "PASS",
+      "passed": 12,
+      "total": 12,
+      "failed": 0,
+      "reportVersion": "V11.6",
+      "evidence": "evidence-v116/player-12.json",
+      "scope": "Native control, drift release, manual boost, collision and pause contracts. Report version follows the actual build."
+    },
+    "garage": {
+      "status": "PASS",
+      "passed": 6,
+      "total": 6,
+      "failed": 0,
+      "evidence": "evidence-v116/car-garage.json",
+      "actualModelCount": 6,
+      "caseNames": [
+        "five-cars-and-permanent-rewards",
+        "fresh-home-without-sdk",
+        "save-failure-never-awards",
+        "desktop-car-preview",
+        "stale-native-selection-and-old-paint",
+        "standalone-restores-earned-model"
+      ],
+      "simulatedSdk": true,
+      "scope": "Actual six-model default home and native start/result/replay identity, with named simulated SDK and early-DNF branches",
+      "fixtures": [
+        "Simulated rewarded-video SDK",
+        "Injected storage write failure",
+        "Seeded compatibility saves",
+        "Cross-origin storage copy for standalone restoration",
+        "Early native DNF/result branch"
+      ],
+      "naturalTerminalCertified": false
+    },
+    "sharedCarPhysics": {
+      "status": "PASS",
+      "models": 6,
+      "framesPerModel": 600,
+      "dtSeconds": 0.016666666666666666,
+      "exactTraceEquality": true,
+      "traceSha256": "edb7e2c1c066bea82c076d1bed05027a16dd510a79d2e4a910437bd4458ea324",
+      "synthetic": true,
+      "liveRaceStateUnchanged": true,
+      "evidence": "evidence-v116/car-garage.json",
+      "scope": "Isolated vehicles constructed from the actual running PlayerCar and selected model; identical controls and reset state, with complete trace comparison. Does not advance the real race or certify natural completion."
+    },
+    "nextStageAds": {
+      "status": "PASS",
+      "passed": 3,
+      "total": 3,
+      "failed": 0,
+      "evidence": "evidence-v116/next-stage-ads.json",
+      "simulatedSdk": true,
+      "injectedFailureResult": true,
+      "liveSdkCertified": false,
+      "scope": "Cancel, adjacent-stage reward plus reload, and no-SDK hiding. Does not certify live ads or a natural defeat."
+    },
+    "deliveryContracts": {
+      "status": "PASS",
+      "passed": 29,
+      "total": 29,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "evidence-v116/delivery-contracts-final.tap",
+      "scope": "Original 22 contracts retained, plus a 14 MiB localized inline-script regression and focused tag/attribute entry checks. No hash, ZIP, native-finish, or natural-coverage gate was weakened.",
+      "previousRuns": [
+        "evidence-v116/delivery-contracts-22.tap",
+        "evidence-v116/delivery-contracts-23.tap"
+      ],
+      "isActualDeliveryManifestApproval": false
+    },
+    "desktopColdStart": {
+      "status": "PASS",
+      "evidence": "evidence-v116/desktop-cold-start.json",
+      "environment": "Chromium software WebGL",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "readyToRaceSeconds": 36.6515,
+      "renderPixelRatio": 0.35,
+      "drawingBuffer": {
+        "width": 478,
+        "height": 268
+      },
+      "hudReadable": true,
+      "sceneBlurObserved": true,
+      "physicalPhone": false,
+      "scope": "Independent desktop startup and response check in the available software renderer. The reduced scene clarity remains a limitation."
+    },
+    "smoke": {
+      "status": "PASS",
+      "evidence": "evidence-v116/smoke.json",
+      "sourceReport": "runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke-v116-recheck1/smoke.json",
+      "testStart": "2026-10-18T15:09:15.109Z",
+      "testEnd": "2026-10-18T15:13:14.970Z",
+      "durationSeconds": 239.861,
+      "reportViews": 10,
+      "errors": [],
+      "desktopKeyboardNative": true,
+      "desktopOriginalChase": true,
+      "desktopVelocity": 20.66669878041998,
+      "desktopDistance": 14.23639544137547,
+      "unchangedDesktopThresholdsSeconds": [
+        45,
+        18
+      ],
+      "seededCampaign": true,
+      "naturalTerminalCertified": false,
+      "scope": "Complete built-H5 Chromium entry smoke. Includes staged world/result branches; does not certify natural victory. The first stale-metadata failure is preserved separately."
+    },
+    "naturalJourney": {
+      "status": "BLOCKED",
+      "evidence": "evidence-v116/natural-journey.json",
+      "replayEvidence": "evidence-v116/loss-replay.json",
+      "rawSourceReport": "runs/h5-qq-mobile-20261013/evidence/v116-natural-final/report.json",
+      "rawFileSha256": "6e926e2e6b950fa1ea22e702c50f00f195f6a1c234fa8ff57c11ce55f7851bdf",
+      "rawFileBytes": 137563,
+      "rawReplaySource": "runs/h5-qq-mobile-20261013/evidence/v116-natural-final/loss-replay.json",
+      "rawReplaySha256": "111744cfce532c69f6aa59ffab85682914bcd3bfcd6b0bcf90ef4a799dab808a",
+      "rawPassed": false,
+      "rawErrors": [],
+      "naturalInputsOnly": true,
+      "seededCampaign": false,
+      "nativeTerminalObserved": true,
+      "replayObserved": true,
+      "qualifiedVisibleFinishObserved": false,
+      "actionsFit": true,
+      "scopedOutcome": "FIRST_STAGE_NATIVE_DNF_AND_REPLAY_OBSERVED",
+      "stage": "01",
+      "course": "race-01",
+      "nativeRaceSeconds": 300.0239000000135,
+      "wallDurationMs": 518401,
+      "finished": false,
+      "finishTime": 0,
+      "visibleProgressPercent": 92,
+      "nativeProgress": 5885.877328304179,
+      "place": 6,
+      "earnedStars": 0,
+      "terminalHeading": "未完赛",
+      "terminalResult": "未完赛 · 尚未完成比赛（进度 92%）",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "terminalButtons": [
+        {
+          "id": "replay",
+          "top": 317,
+          "bottom": 361,
+          "height": 44
+        },
+        {
+          "id": "lobby",
+          "top": 317,
+          "bottom": 361,
+          "height": 44
+        }
+      ],
+      "replay": {
+        "phase": "race",
+        "state": "race",
+        "course": "race-01",
+        "raceTimeSeconds": 0.2,
+        "speedKmh": 90.52209626022196,
+        "finished": false,
+        "stats": {
+          "drift": 0,
+          "small": 0,
+          "nitro": 0,
+          "crash": 0
+        }
+      },
+      "fullCareer": {
+        "status": "BLOCKED",
+        "requiredMainStages": 30,
+        "requiredDailyChallenges": 1,
+        "observedMainStages": 1,
+        "qualifiedMainStageVictories": 0,
+        "dailyObserved": false
+      },
+      "reason": "Normal visible-pixel-controlled touch input reached the real first-stage native DNF and reopened the same race through the actual replay button. The player did not finish, earned zero stars, and no full 30-stage-plus-daily completion is established. Raw reports remain unchanged; errors:[] is not a victory or full-career PASS."
+    },
+    "physicalPhones": {
+      "status": "NOT_RUN",
+      "reason": "No completed real-handset handling, clarity or performance acceptance is recorded."
+    },
+    "liveRewardedSdk": {
+      "status": "NOT_RUN",
+      "reason": "Actual platform app/ad configuration and usable SDK are absent; simulated callbacks are not live-ad evidence."
+    },
+    "fuelLifecycle": {
+      "status": "PASS",
+      "passed": 10,
+      "total": 10,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "evidence-v116/fuel-lifecycle-10.tap",
+      "scope": "Original ten Chromium DOM/native-contract fixture assertions. Starter-only preview contract and ordered browser/server teardown are fixture maintenance; actual GLB rendering and natural settlement are verified separately.",
+      "originalTestBodiesUnchanged": true,
+      "actualGltfRenderedByFixture": false,
+      "independentRerun": true
+    },
+    "ciNodeSubset": {
+      "status": "PASS",
+      "passed": 89,
+      "total": 90,
+      "failed": 0,
+      "skipped": 1,
+      "evidence": "evidence-v116/ci-node-89-pass-1-skip.tap",
+      "scope": "Additional workflow Node suites. One optimized-source-GLB preparation test skipped because its optional source environment was absent; real prepared GLBs were verified independently. Suites overlap other counts."
+    },
+    "buildFingerprint": {
+      "status": "PASS",
+      "passed": 2,
+      "total": 2,
+      "failed": 0,
+      "skipped": 0,
+      "evidence": "evidence-v116/fingerprint-2.tap"
+    },
+    "actualDeliveryIntegrity": {
+      "status": "PASS",
+      "evidence": "evidence-v116/delivery-verified.json",
+      "manifest": "evidence-v116/delivery-manifest.json",
+      "commandReceipt": "evidence-v116/delivery-verification-command.json",
+      "manifestSha256": "51b0ae53ea1a1f44db5347181829dc774509d6703e6be55dfd2514d66755accf",
+      "sourceCommit": "7d2f484afc50617dffa66747c2406d7840b88227",
+      "verifiedArtifacts": 55,
+      "scriptSyntax": "2/2",
+      "qualifiedNaturalVictories": 0,
+      "publishable": false,
+      "scope": "Actual final standalone/ZIP, every declared file hash and owned build input passed the real verifyDelivery path. Remaining experience and release gates remain blocked."
+    }
+  },
+  "testCounting": "Suites overlap. Do not sum these rows into a single test total; the initial 26-test contract run contained four earlier instrumentation tests.",
+  "evidenceArchive": {
+    "status": "COMPLETE",
+    "directory": "evidence-v116/",
+    "manifest": "evidence-v116/manifest.json",
+    "manifestSha256": "396eca6583129d40e21e8e2bd557529b9e7b9ceb35f7074fa2fa79cf06610eee",
+    "fileCount": 54,
+    "files": [
+      "ai-150.json",
+      "blue-rally-native-start.png",
+      "build-contracts-26.tap",
+      "build-receipt.json",
+      "car-garage.json",
+      "car-runtime-18.tap",
+      "ci-node-89-pass-1-skip.tap",
+      "custom-01-isolated-physics.json",
+      "custom-02-isolated-physics.json",
+      "custom-03-isolated-physics.json",
+      "custom-04-isolated-physics.json",
+      "custom-05-isolated-physics.json",
+      "delivery-attributes-fixer-handoff.json",
+      "delivery-attributes-lint.log",
+      "delivery-attributes-regression-red.tap",
+      "delivery-contracts-22.tap",
+      "delivery-contracts-23.tap",
+      "delivery-contracts-final.tap",
+      "delivery-inline-ascii-diagnostic.tap",
+      "delivery-inline-fixer-handoff.json",
+      "delivery-inline-lint.log",
+      "delivery-inline-regression-red-utf8.tap",
+      "delivery-inline-typecheck.log",
+      "delivery-large-inline-failure.json",
+      "delivery-manifest.json",
+      "delivery-verification-command.json",
+      "delivery-verified.json",
+      "desktop-cold-start.json",
+      "desktop-keyboard.png",
+      "fingerprint-2.tap",
+      "formula-native-start.png",
+      "fuel-browser-unavailable-recheck1.tap",
+      "fuel-fixture-fixer-handoff.json",
+      "fuel-fixture-missing-preview-failure.tap",
+      "fuel-lifecycle-10.tap",
+      "fuel-teardown-blocked-recheck2.tap",
+      "fuel-teardown-fixer-handoff.json",
+      "full-smoke-stale-label-failure.json",
+      "garage-silver-purple.png",
+      "geometry-30.json",
+      "instrumentation-usercar-build-18.tap",
+      "lint.log",
+      "loss-replay.json",
+      "natural-journey.json",
+      "natural-replay.png",
+      "natural-terminal.png",
+      "next-stage-ads.json",
+      "pacing-30.json",
+      "player-12.json",
+      "smoke.json",
+      "source-399.tap",
+      "source-freeze.json",
+      "starter-isolated-physics.json",
+      "typecheck.log"
+    ],
+    "scope": "Exact-byte archive with original provenance, source commit/tree, independent integrity result, and preserved failure records. Manifest excludes itself."
+  },
+  "historicalEvidence": {
+    "readme": "README.zh-CN.md",
+    "summary": "verification-summary.json",
+    "directory": "evidence/",
+    "policy": "Historical V11.5 files remain byte-for-byte unchanged. Old natural-journey reports are not relabeled as V11.6.",
+    "preExistingManifestDifference": {
+      "status": "PRESERVED_AS_IS",
+      "detail": "The historical evidence manifest README SHA-256 differs from both the baseline and unchanged current historical README. No historical bytes were edited to reconcile this pre-existing mismatch. See the V11.6 evidence manifest for current file-byte hashes."
+    }
+  },
+  "remainingGates": [
+    "Complete and review qualified visible natural finishes across all 30 unique main stages plus the daily challenge. First-stage real DNF/result/replay has been observed, but full-career acceptance remains BLOCKED.",
+    "Run real-device and actual platform SDK acceptance before any commercial publishability claim."
+  ],
+  "sourceCommit": "7d2f484afc50617dffa66747c2406d7840b88227",
+  "sourceTree": "2e27824445593e79dd9dda61d02e2924a81698f5"
+}

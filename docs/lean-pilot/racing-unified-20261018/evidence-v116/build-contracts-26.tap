@@ -1,0 +1,34 @@
+✔ render material animation does not change comparable probe physics (13.746029ms)
+✔ every native boost-pad physics field still changes the comparison (24.013589ms)
+✔ a failed exact comparison retains the full current trace and native evidence row (36.671781ms)
+✔ portrait QA waits for real visibility after resize within the existing UI timeout (1.206009ms)
+✔ small QQ-speed build keeps the exact old ordered filename/fileSHA JSON fingerprint (20.070747ms)
+✔ 13,284,478-byte compiled index hashes every byte with the identical build schema (62.205379ms)
+✔ a same-size byte mutation beyond the old 4 MiB boundary changes the build hash (86.934833ms)
+✔ large build hashing uses bounded chunk reads and never a large FileHandle.readFile allocation (54.631266ms)
+✔ safeRead retains its 4 MiB configuration/evidence budget and explicit smaller limit (11.841748ms)
+✔ streaming SHA preserves traversal, root/leaf/directory symlink and regular-file protections (11.655626ms)
+✔ buildHash still rejects a symlinked actual runtime file (2.908447ms)
+✔ a file that changes size during streaming is rejected: append (23.241259ms)
+✔ a file that changes size during streaming is rejected: truncate (11.97245ms)
+✔ allowlisted large HTML preview GET returns every byte with the existing security headers (89.840188ms)
+✔ allowlisted large HTML preview HEAD succeeds without reading or returning the body (12.517647ms)
+✔ large preview retains method, Host, allowlist, traversal and symlink rejection (19.802974ms)
+✔ six-car loader embeds exact bytes but decodes only requested assets with no remote dependency (0.488217ms)
+✔ native car construction uses stable model identity and preserves original effects (0.339963ms)
+✔ native home/race model selection loads settings.car and does not change any driving methods (0.613735ms)
+✔ bootstrap ignores untrusted native car unknown-removed-model while retaining all other settings (0.580926ms)
+✔ bootstrap ignores untrusted native car custom-05 while retaining all other settings (0.150958ms)
+✔ all new model modules, thumbnails and exact GLB hashes are fingerprinted (0.108534ms)
+✔ prepared user models have a separate strict contract from the articulated starter (0.55684ms)
+✔ single mesh textured GLB validates without invented starter rig, and explicit budgets are actually enforced (1.489857ms)
+✔ user GLB integrity rejects external images, animated rigs, missing UVs, decoder dependencies and stale manifest hashes (1.070264ms)
+✔ CI exercises the actual garage before legacy entry smoke and keeps publication dependent on the complete job (0.566595ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 544.820121

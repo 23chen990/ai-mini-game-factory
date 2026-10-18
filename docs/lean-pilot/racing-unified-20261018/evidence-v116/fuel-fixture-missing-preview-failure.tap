@@ -1,0 +1,163 @@
+RACING_QA_BROWSER=complete-chromium; game-state-and-timing-unchanged
+✖ V3 resolves fuel policy before accepting the first race (1596.099515ms)
+✔ V3 native entry cannot bypass zero fuel (447.505159ms)
+✔ V3 zero fuel disables the primary action even with a 30-unit tank (407.292263ms)
+✖ V3 countdown double-start never spends the five-unit entry twice (10396.428718ms)
+✖ V3 ignores background starts and requires explicit foreground input (10367.977021ms)
+✖ V3 failed native start preserves fuel and retry remains usable (10400.793113ms)
+✖ V3 write denial keeps session free and exposes a visible storage warning (10444.200673ms)
+✔ V3 settlement actions fit both landscape sizes without requiring a panel scroll (427.276918ms)
+✖ V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre (10396.819946ms)
+✔ V3 boost tint cannot paint the full mobile frame and hit feedback stays on the edge (431.450358ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 4
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 55602.932349
+
+✖ failing tests:
+
+test at tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:52:1
+✖ V3 resolves fuel policy before accepting the first race (1596.099515ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:55:29)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:68:1
+✖ V3 countdown double-start never spends the five-unit entry twice (10396.428718ms)
+  locator.tap: Timeout 10000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#race-start')[22m
+  [2m    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>[22m
+  [2m  - attempting tap action[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m    - waiting 20ms[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m      - waiting 100ms[22m
+  [2m    19 × waiting for element to be visible, enabled and stable[22m
+  [2m       - element is not enabled[22m
+  [2m     - retrying tap action[22m
+  [2m       - waiting 500ms[22m
+  
+      at TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:69:85) {
+    log: [ "  - waiting for locator('#race-start')", '    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>', '  - attempting tap action', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '    - waiting 20ms', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '      - waiting 100ms', '    19 × waiting for element to be visible, enabled and stable', '       - element is not enabled', '     - retrying tap action', '       - waiting 500ms' ],
+    name: 'TimeoutError'
+  }
+
+test at tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:74:1
+✖ V3 ignores background starts and requires explicit foreground input (10367.977021ms)
+  locator.tap: Timeout 10000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#race-start')[22m
+  [2m    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>[22m
+  [2m  - attempting tap action[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m    - waiting 20ms[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m      - waiting 100ms[22m
+  [2m    19 × waiting for element to be visible, enabled and stable[22m
+  [2m       - element is not enabled[22m
+  [2m     - retrying tap action[22m
+  [2m       - waiting 500ms[22m
+  
+      at TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:77:37) {
+    log: [ "  - waiting for locator('#race-start')", '    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>', '  - attempting tap action', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '    - waiting 20ms', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '      - waiting 100ms', '    19 × waiting for element to be visible, enabled and stable', '       - element is not enabled', '     - retrying tap action', '       - waiting 500ms' ],
+    name: 'TimeoutError'
+  }
+
+test at tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:83:1
+✖ V3 failed native start preserves fuel and retry remains usable (10400.793113ms)
+  locator.tap: Timeout 10000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#race-start')[22m
+  [2m    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>[22m
+  [2m  - attempting tap action[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m    - waiting 20ms[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m      - waiting 100ms[22m
+  [2m    19 × waiting for element to be visible, enabled and stable[22m
+  [2m       - element is not enabled[22m
+  [2m     - retrying tap action[22m
+  [2m       - waiting 500ms[22m
+  
+      at TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:88:37) {
+    log: [ "  - waiting for locator('#race-start')", '    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>', '  - attempting tap action', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '    - waiting 20ms', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '      - waiting 100ms', '    19 × waiting for element to be visible, enabled and stable', '       - element is not enabled', '     - retrying tap action', '       - waiting 500ms' ],
+    name: 'TimeoutError'
+  }
+
+test at tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:90:1
+✖ V3 write denial keeps session free and exposes a visible storage warning (10444.200673ms)
+  locator.tap: Timeout 10000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#race-start')[22m
+  [2m    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>[22m
+  [2m  - attempting tap action[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m    - waiting 20ms[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m      - waiting 100ms[22m
+  [2m    19 × waiting for element to be visible, enabled and stable[22m
+  [2m       - element is not enabled[22m
+  [2m     - retrying tap action[22m
+  [2m       - waiting 500ms[22m
+  
+      at TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:91:103) {
+    log: [ "  - waiting for locator('#race-start')", '    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>', '  - attempting tap action', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '    - waiting 20ms', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '      - waiting 100ms', '    19 × waiting for element to be visible, enabled and stable', '       - element is not enabled', '     - retrying tap action', '       - waiting 500ms' ],
+    name: 'TimeoutError'
+  }
+
+test at tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:121:1
+✖ V4.4 analogue steering keeps large thumb targets at the edges with an unobstructed racing centre (10396.819946ms)
+  locator.tap: Timeout 10000ms exceeded.
+  Call log:
+  [2m  - waiting for locator('#race-start')[22m
+  [2m    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>[22m
+  [2m  - attempting tap action[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m    - waiting 20ms[22m
+  [2m    2 × waiting for element to be visible, enabled and stable[22m
+  [2m      - element is not enabled[22m
+  [2m    - retrying tap action[22m
+  [2m      - waiting 100ms[22m
+  [2m    19 × waiting for element to be visible, enabled and stable[22m
+  [2m       - element is not enabled[22m
+  [2m     - retrying tap action[22m
+  [2m       - waiting 500ms[22m
+  
+      at TestContext.<anonymous> (/workspace/scratch/29547c23d820/racing-unified/tools/lean-pilot/racing-fuel-lifecycle-qa.mjs:123:37) {
+    log: [ "  - waiting for locator('#race-start')", '    - locator resolved to <button disabled id="race-start">请选择已拥有赛车</button>', '  - attempting tap action', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '    - waiting 20ms', '    2 × waiting for element to be visible, enabled and stable', '      - element is not enabled', '    - retrying tap action', '      - waiting 100ms', '    19 × waiting for element to be visible, enabled and stable', '       - element is not enabled', '     - retrying tap action', '       - waiting 500ms' ],
+    name: 'TimeoutError'
+  }

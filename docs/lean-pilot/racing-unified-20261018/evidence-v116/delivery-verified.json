@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+  "artifacts": 55,
+  "naturalVictories": 0,
+  "all16AndDaily": false,
+  "scriptSyntax": "2/2",
+  "publishable": false,
+  "remaining": [
+    "natural",
+    "perceptual",
+    "physicalAndroid",
+    "physicalIphone",
+    "liveAds",
+    "commercial"
+  ]
+}

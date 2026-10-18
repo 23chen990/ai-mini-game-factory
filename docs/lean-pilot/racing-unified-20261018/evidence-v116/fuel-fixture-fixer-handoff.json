@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "route": "formal-fixer",
+  "role": "FixerAgent",
+  "gameId": "qq-speed",
+  "workspace": "/workspace/scratch/29547c23d820/racing-unified/runs/h5-qq-mobile-20261013/workspace",
+  "issueId": "V116-FUEL-FIXTURE-PREVIEW",
+  "status": "FIXTURE_PATCHED_PENDING_INDEPENDENT_CHROMIUM",
+  "task": {
+    "path": "/workspace/scratch/29547c23d820/recovery/V116-FUEL-FIXTURE-PREVIEW.json",
+    "sha256": "29f6d3a40971ddef63b8cf6b2b747cf65ec9cb70f38524b3f3b44122cd493255",
+    "zodValidated": true
+  },
+  "routeReason": "An already validated browser QA issue requires formal Fixer handoff and independent browser retest, although the repair is isolated to one engineering fixture.",
+  "contextIntentionallyOmitted": [
+    "Unrelated gameplay and asset changes",
+    "Historical V11.5 race outcomes",
+    "Other agents' source changes"
+  ],
+  "diagnosis": {
+    "classification": "STALE_ENGINEERING_NATIVE_FIXTURE",
+    "cause": "The DOM fuel fixture lacks cancelCarPreview, prepareCar, carIsReady and previewCar. Current mobile boot calls cancelCarPreview before loading the stage and preparing the selected model; this aborts fixture initialization and leaves the garage start gate disabled. The fuel-ready label can be rendered before asynchronous native startup is complete.",
+    "evidence": [
+      {
+        "path": "/workspace/scratch/29547c23d820/recovery/fuel-lifecycle-final.tap",
+        "sha256": "8b03bb936b032f2ab35e596e4c6525d1032d052b9e0b00e183261620016b694a",
+        "bytes": 10612,
+        "passed": 4,
+        "failed": 6,
+        "skipped": 0
+      },
+      {
+        "path": "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+        "observations": [
+          "loadTrack calls cancelCarPreview and prepareCar",
+          "start requires carIsReady for the equipped car",
+          "matching-course boot awaits garage.select",
+          "root.dataset.loaded is set only after native stage identity validation"
+        ]
+      },
+      {
+        "path": "templates/web-lite/h5-source-mobile-v1/racing/garage.mjs",
+        "observations": [
+          "Preview must return ready with the exact requested carId",
+          "Start requires an owned, equipped and displayed model"
+        ]
+      }
+    ],
+    "reproductionMatrix": [
+      {
+        "object": "Fuel policy and start controls",
+        "lifecycle": "Initial policy loading and first start",
+        "presentation": "Current mobile modules with explicit native-game DOM fixture; no GLB renderer",
+        "viewport": "844x390",
+        "evidence": "Original browser run: ready start assertion fails; start action cases wait 10000ms on the disabled garage gate"
+      },
+      {
+        "object": "Fuel lifecycle controls",
+        "lifecycle": "Double start, background/foreground, ignored native start and storage denial",
+        "presentation": "Same explicit native-game DOM fixture",
+        "viewport": "844x390",
+        "evidence": "All original assertions retained; independent retest pending"
+      }
+    ]
+  },
+  "changedFiles": [
+    {
+      "path": "tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+      "beforeSha256": "5adfe0c5b127db6d1a03a84651b2a71b6285fc09b0c704fff244a08ef2faa067",
+      "afterSha256": "236128250cbf4df309480f5c72465069403399416083ee71460917084f9ebd40",
+      "bytes": 11958
+    }
+  ],
+  "changes": [
+    "Add a starter-only fixture prepare/readiness contract. Unknown models are rejected; fixture responses are explicitly marked fixtureOnly.",
+    "Add cancelCarPreview and asynchronous previewCar with matching car identity, menu/loading checks and epoch invalidation. The fixture records the selected preview without constructing or pretending to render a GLB.",
+    "The demo fixture invalidates pending previews and records the configured starter identity.",
+    "The existing ready helper now requires both the original fuel-policy text and the actual product root.dataset.loaded marker. It never forces the start button enabled and does not increase any timeout."
+  ],
+  "preservation": {
+    "testCount": 10,
+    "testBodiesAndAssertionsUnchanged": true,
+    "testBlockSha256": "c3e49260a019afc4267dddf1e438a1a86d4434a7114ea98f41e9ce7416758dd6",
+    "defaultActionTimeoutMs": 10000,
+    "defaultNavigationTimeoutMs": 15000,
+    "timeLimitsUnchanged": true,
+    "originalFailedLogUnchanged": true,
+    "productFilesEdited": false,
+    "gameplayAndEconomyChanged": false,
+    "browserRunByFixer": false,
+    "buildRunByFixer": false,
+    "gitUsed": false,
+    "actualGlbValidationClaimed": false,
+    "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+    "inputHash": "9936cef6259c01abb7315dce82fd07a1bafa3e30e7dbdea862422c9a4e351855",
+    "inputAndActualBuildHashesUnchanged": true
+  },
+  "checks": [
+    {
+      "name": "Syntax",
+      "command": "node --check tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "Scoped ESLint",
+      "command": "node node_modules/eslint/bin/eslint.js tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+      "status": "PASS",
+      "exitCode": 0
+    },
+    {
+      "name": "Read-only preservation verification",
+      "command": "node --input-type=module (read-only SHA-256, test-block, timeout, currentRacingInputHash and buildHash verification)",
+      "status": "PASS",
+      "exitCode": 0
+    }
+  ],
+  "independentRetest": {
+    "status": "PENDING",
+    "owner": "root",
+    "script": "tools/lean-pilot/racing-fuel-lifecycle-qa.mjs",
+    "required": "Rerun the ten unchanged original Chromium lifecycle and presentation tests in the existing root browser configuration; retain the failed log and write a separate rerun log. No completion claim until this exact branch passes."
+  },
+  "remainingEvidenceGaps": [
+    "Independent browser retest of the corrected fixture is pending.",
+    "These DOM fixture checks do not certify GLB rendering, natural victory, real phones or live SDK behavior."
+  ]
+}

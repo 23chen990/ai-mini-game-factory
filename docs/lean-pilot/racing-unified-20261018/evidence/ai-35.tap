@@ -1,0 +1,220 @@
+TAP version 13
+# Subtest: a committed shortcut survives recoverable contact after crossing its nominal start
+ok 1 - a committed shortcut survives recoverable contact after crossing its nominal start
+  ---
+  duration_ms: 21.898546
+  type: 'test'
+  ...
+# Subtest: route choice is stable per lap and fully missed entrances do not steer across a closed side wall
+ok 2 - route choice is stable per lap and fully missed entrances do not steer across a closed side wall
+  ---
+  duration_ms: 2.10206
+  type: 'test'
+  ...
+# Subtest: native physical entry is followed even when a collision put a cautious rival on the fork
+ok 3 - native physical entry is followed even when a collision put a cautious rival on the fork
+  ---
+  duration_ms: 0.396028
+  type: 'test'
+  ...
+# Subtest: controller never grants speed, nitro, position or race progress and only emits legal native controls
+ok 4 - controller never grants speed, nitro, position or race progress and only emits legal native controls
+  ---
+  duration_ms: 0.420444
+  type: 'test'
+  ...
+# Subtest: physical AI delegates movement to PlayerCar and exposes measured projection for native lap accounting
+ok 5 - physical AI delegates movement to PlayerCar and exposes measured projection for native lap accounting
+  ---
+  duration_ms: 0.992727
+  type: 'test'
+  ...
+# Subtest: native V11 05: two complete race laps physically enter and leave the actual fork
+ok 6 - native V11 05: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 441.926151
+  type: 'test'
+  ...
+# Subtest: native V11 05: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 7 - native V11 05: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 36.982914
+  type: 'test'
+  ...
+# Subtest: native V11 05: contact after crossing the entrance can still recover through the actual portal
+ok 8 - native V11 05: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 27.57797
+  type: 'test'
+  ...
+# Subtest: native V11 10: two complete race laps physically enter and leave the actual fork
+ok 9 - native V11 10: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 234.169342
+  type: 'test'
+  ...
+# Subtest: native V11 10: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 10 - native V11 10: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 22.867656
+  type: 'test'
+  ...
+# Subtest: native V11 10: contact after crossing the entrance can still recover through the actual portal
+ok 11 - native V11 10: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 15.60865
+  type: 'test'
+  ...
+# Subtest: native V11 12: two complete race laps physically enter and leave the actual fork
+ok 12 - native V11 12: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 260.574543
+  type: 'test'
+  ...
+# Subtest: native V11 12: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 13 - native V11 12: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 23.410515
+  type: 'test'
+  ...
+# Subtest: native V11 12: contact after crossing the entrance can still recover through the actual portal
+ok 14 - native V11 12: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 17.275633
+  type: 'test'
+  ...
+# Subtest: native V11 13: two complete race laps physically enter and leave the actual fork
+ok 15 - native V11 13: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 223.821085
+  type: 'test'
+  ...
+# Subtest: native V11 13: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 16 - native V11 13: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 26.983684
+  type: 'test'
+  ...
+# Subtest: native V11 13: contact after crossing the entrance can still recover through the actual portal
+ok 17 - native V11 13: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 13.20156
+  type: 'test'
+  ...
+# Subtest: native V11 16: two complete race laps physically enter and leave the actual fork
+ok 18 - native V11 16: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 174.195505
+  type: 'test'
+  ...
+# Subtest: native V11 16: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 19 - native V11 16: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 18.574723
+  type: 'test'
+  ...
+# Subtest: native V11 16: contact after crossing the entrance can still recover through the actual portal
+ok 20 - native V11 16: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 12.480311
+  type: 'test'
+  ...
+# Subtest: native V11 18: two complete race laps physically enter and leave the actual fork
+ok 21 - native V11 18: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 183.806579
+  type: 'test'
+  ...
+# Subtest: native V11 18: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 22 - native V11 18: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 16.665964
+  type: 'test'
+  ...
+# Subtest: native V11 18: contact after crossing the entrance can still recover through the actual portal
+ok 23 - native V11 18: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 10.939868
+  type: 'test'
+  ...
+# Subtest: native V11 22: actual single-run finish plus two diagnostic loop traversals
+ok 24 - native V11 22: actual single-run finish plus two diagnostic loop traversals
+  ---
+  duration_ms: 417.012943
+  type: 'test'
+  ...
+# Subtest: native V11 22: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 25 - native V11 22: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 21.686966
+  type: 'test'
+  ...
+# Subtest: native V11 22: contact after crossing the entrance can still recover through the actual portal
+ok 26 - native V11 22: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 16.449457
+  type: 'test'
+  ...
+# Subtest: native V11 25: two complete race laps physically enter and leave the actual fork
+ok 27 - native V11 25: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 197.014593
+  type: 'test'
+  ...
+# Subtest: native V11 25: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 28 - native V11 25: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 16.924254
+  type: 'test'
+  ...
+# Subtest: native V11 25: contact after crossing the entrance can still recover through the actual portal
+ok 29 - native V11 25: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 11.012528
+  type: 'test'
+  ...
+# Subtest: native V11 27: two complete race laps physically enter and leave the actual fork
+ok 30 - native V11 27: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 202.891952
+  type: 'test'
+  ...
+# Subtest: native V11 27: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 31 - native V11 27: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 20.263429
+  type: 'test'
+  ...
+# Subtest: native V11 27: contact after crossing the entrance can still recover through the actual portal
+ok 32 - native V11 27: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 13.047237
+  type: 'test'
+  ...
+# Subtest: native V11 30: two complete race laps physically enter and leave the actual fork
+ok 33 - native V11 30: two complete race laps physically enter and leave the actual fork
+  ---
+  duration_ms: 227.510369
+  type: 'test'
+  ...
+# Subtest: native V11 30: real entrance-wall impact costs time and preserves a reachable fork commitment
+ok 34 - native V11 30: real entrance-wall impact costs time and preserves a reachable fork commitment
+  ---
+  duration_ms: 20.083118
+  type: 'test'
+  ...
+# Subtest: native V11 30: contact after crossing the entrance can still recover through the actual portal
+ok 35 - native V11 30: contact after crossing the entrance can still recover through the actual portal
+  ---
+  duration_ms: 14.084991
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3097.637148

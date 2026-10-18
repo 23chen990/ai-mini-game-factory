@@ -1,0 +1,5712 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "version": "V11.6",
+  "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+  "inputHash": "9936cef6259c01abb7315dce82fd07a1bafa3e30e7dbdea862422c9a4e351855",
+  "trialSha256": "d246537f3cdba7081350f1a5de3e4956e7a05c50be74659e40f003a5945f44ab",
+  "htmlSha256": "f7437a4c533d5c17b9fe3b167360aef87ec3864249c7871bdf53985ae804a601",
+  "scope": "Actual six-model default home and native start/result/replay identity, with named simulated SDK and early-DNF branches",
+  "liveAdSdk": "NOT_RUN",
+  "physicalPhones": "NOT_RUN",
+  "naturalTerminalReplay": "BLOCKED",
+  "cases": [
+    {
+      "name": "five-cars-and-permanent-rewards",
+      "passed": true,
+      "errors": [],
+      "simulatedSdk": true,
+      "before": {
+        "phase": "ready",
+        "garage": {
+          "id": "starter",
+          "model": {
+            "id": "starter",
+            "name": "初始赛车",
+            "native": true,
+            "free": true,
+            "paintable": true
+          },
+          "owned": true,
+          "busy": false,
+          "error": null,
+          "equipped": true,
+          "canRace": true,
+          "canWatch": false
+        },
+        "equipped": "starter",
+        "owned": [
+          "starter"
+        ],
+        "actual": "starter",
+        "identity": {
+          "id": "original-racer-v1",
+          "carId": "starter",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        },
+        "nativeState": "menu",
+        "settings": {
+          "car": "starter",
+          "skin": 0,
+          "course": "race-01",
+          "mode": "speed",
+          "laps": 2,
+          "diff": 1
+        },
+        "progress": null,
+        "fuel": null,
+        "fuelAmount": 30,
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "note": "",
+        "cards": [
+          {
+            "id": "starter",
+            "owned": "true",
+            "pressed": "true"
+          },
+          {
+            "id": "custom-01",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-02",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-03",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-04",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-05",
+            "owned": "false",
+            "pressed": "false"
+          }
+        ],
+        "models": [
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          }
+        ],
+        "sdk": {
+          "created": 0,
+          "shows": 0,
+          "active": false,
+          "listeners": 0
+        }
+      },
+      "cars": [
+        {
+          "id": "custom-01",
+          "preview": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-01",
+              "model": {
+                "id": "custom-01",
+                "name": "银紫超跑",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": false,
+              "busy": false,
+              "error": null,
+              "equipped": false,
+              "canRace": false,
+              "canWatch": true
+            },
+            "equipped": "starter",
+            "owned": [
+              "starter"
+            ],
+            "actual": "custom-01",
+            "identity": {
+              "id": "custom-01",
+              "carId": "custom-01",
+              "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "starter",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": null,
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": false,
+            "adDisabled": false,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "false",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-02",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-01",
+                "identity": {
+                  "id": "custom-01",
+                  "carId": "custom-01",
+                  "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 2,
+              "shows": 2,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "equipped": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-01",
+              "model": {
+                "id": "custom-01",
+                "name": "银紫超跑",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": true,
+              "canWatch": false
+            },
+            "equipped": "custom-01",
+            "owned": [
+              "starter",
+              "custom-01"
+            ],
+            "actual": "custom-01",
+            "identity": {
+              "id": "custom-01",
+              "carId": "custom-01",
+              "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-01",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01"
+              ],
+              "car": "custom-01",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": false,
+            "note": "已永久解锁并装备，下次进入可直接使用",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-02",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-01",
+                "identity": {
+                  "id": "custom-01",
+                  "carId": "custom-01",
+                  "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 3,
+              "shows": 3,
+              "active": false,
+              "listeners": 0
+            }
+          }
+        },
+        {
+          "id": "custom-02",
+          "preview": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-02",
+              "model": {
+                "id": "custom-02",
+                "name": "荧光跑车",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": false,
+              "busy": false,
+              "error": null,
+              "equipped": false,
+              "canRace": false,
+              "canWatch": true
+            },
+            "equipped": "custom-01",
+            "owned": [
+              "starter",
+              "custom-01"
+            ],
+            "actual": "custom-02",
+            "identity": {
+              "id": "custom-02",
+              "carId": "custom-02",
+              "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-01",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01"
+              ],
+              "car": "custom-01",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": false,
+            "adDisabled": false,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "false",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-03",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-02",
+                "identity": {
+                  "id": "custom-02",
+                  "carId": "custom-02",
+                  "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 3,
+              "shows": 3,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "equipped": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-02",
+              "model": {
+                "id": "custom-02",
+                "name": "荧光跑车",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": true,
+              "canWatch": false
+            },
+            "equipped": "custom-02",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02"
+            ],
+            "actual": "custom-02",
+            "identity": {
+              "id": "custom-02",
+              "carId": "custom-02",
+              "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-02",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02"
+              ],
+              "car": "custom-02",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": false,
+            "note": "已永久解锁并装备，下次进入可直接使用",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-03",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-02",
+                "identity": {
+                  "id": "custom-02",
+                  "carId": "custom-02",
+                  "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 4,
+              "shows": 4,
+              "active": false,
+              "listeners": 0
+            }
+          }
+        },
+        {
+          "id": "custom-03",
+          "preview": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-03",
+              "model": {
+                "id": "custom-03",
+                "name": "黄金方程式",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": false,
+              "busy": false,
+              "error": null,
+              "equipped": false,
+              "canRace": false,
+              "canWatch": true
+            },
+            "equipped": "custom-02",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02"
+            ],
+            "actual": "custom-03",
+            "identity": {
+              "id": "custom-03",
+              "carId": "custom-03",
+              "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-02",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02"
+              ],
+              "car": "custom-02",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": false,
+            "adDisabled": false,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "false",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-04",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-03",
+                "identity": {
+                  "id": "custom-03",
+                  "carId": "custom-03",
+                  "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 4,
+              "shows": 4,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "equipped": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-03",
+              "model": {
+                "id": "custom-03",
+                "name": "黄金方程式",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": true,
+              "canWatch": false
+            },
+            "equipped": "custom-03",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03"
+            ],
+            "actual": "custom-03",
+            "identity": {
+              "id": "custom-03",
+              "carId": "custom-03",
+              "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-03",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03"
+              ],
+              "car": "custom-03",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": false,
+            "note": "已永久解锁并装备，下次进入可直接使用",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-04",
+                "owned": "false",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-03",
+                "identity": {
+                  "id": "custom-03",
+                  "carId": "custom-03",
+                  "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 5,
+              "shows": 5,
+              "active": false,
+              "listeners": 0
+            }
+          }
+        },
+        {
+          "id": "custom-04",
+          "preview": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-04",
+              "model": {
+                "id": "custom-04",
+                "name": "赤焰超跑",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": false,
+              "busy": false,
+              "error": null,
+              "equipped": false,
+              "canRace": false,
+              "canWatch": true
+            },
+            "equipped": "custom-03",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03"
+            ],
+            "actual": "custom-04",
+            "identity": {
+              "id": "custom-04",
+              "carId": "custom-04",
+              "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-03",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03"
+              ],
+              "car": "custom-03",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": false,
+            "adDisabled": false,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "false",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-04",
+                "identity": {
+                  "id": "custom-04",
+                  "carId": "custom-04",
+                  "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 5,
+              "shows": 5,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "equipped": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-04",
+              "model": {
+                "id": "custom-04",
+                "name": "赤焰超跑",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": true,
+              "canWatch": false
+            },
+            "equipped": "custom-04",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04"
+            ],
+            "actual": "custom-04",
+            "identity": {
+              "id": "custom-04",
+              "carId": "custom-04",
+              "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-04",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04"
+              ],
+              "car": "custom-04",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": false,
+            "note": "已永久解锁并装备，下次进入可直接使用",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-04",
+                "identity": {
+                  "id": "custom-04",
+                  "carId": "custom-04",
+                  "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 6,
+              "shows": 6,
+              "active": false,
+              "listeners": 0
+            }
+          }
+        },
+        {
+          "id": "custom-05",
+          "preview": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-05",
+              "model": {
+                "id": "custom-05",
+                "name": "蓝白拉力",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": false,
+              "busy": false,
+              "error": null,
+              "equipped": false,
+              "canRace": false,
+              "canWatch": true
+            },
+            "equipped": "custom-04",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04"
+            ],
+            "actual": "custom-05",
+            "identity": {
+              "id": "custom-05",
+              "carId": "custom-05",
+              "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-04",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04"
+              ],
+              "car": "custom-04",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": false,
+            "adDisabled": false,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "false",
+                "pressed": "true"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-05",
+                "identity": {
+                  "id": "custom-05",
+                  "carId": "custom-05",
+                  "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 6,
+              "shows": 6,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "equipped": {
+            "phase": "ready",
+            "garage": {
+              "id": "custom-05",
+              "model": {
+                "id": "custom-05",
+                "name": "蓝白拉力",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": true,
+              "canWatch": false
+            },
+            "equipped": "custom-05",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04",
+              "custom-05"
+            ],
+            "actual": "custom-05",
+            "identity": {
+              "id": "custom-05",
+              "carId": "custom-05",
+              "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+              "provider": "user-provided"
+            },
+            "nativeState": "menu",
+            "settings": {
+              "car": "custom-05",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04",
+                "custom-05"
+              ],
+              "car": "custom-05",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": null,
+            "fuelAmount": 30,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": false,
+            "note": "已永久解锁并装备，下次进入可直接使用",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "true",
+                "pressed": "true"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "custom-05",
+                "identity": {
+                  "id": "custom-05",
+                  "carId": "custom-05",
+                  "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 7,
+              "shows": 7,
+              "active": false,
+              "listeners": 0
+            }
+          }
+        }
+      ],
+      "layouts": [
+        {
+          "viewport": {
+            "width": 740,
+            "height": 360
+          },
+          "panel": {
+            "x": 22.1875,
+            "y": 19.4296875,
+            "width": 296,
+            "height": 223.140625,
+            "top": 19.4296875,
+            "right": 318.1875,
+            "bottom": 242.5703125,
+            "left": 22.1875
+          },
+          "garage": {
+            "x": 340.390625,
+            "y": 8,
+            "width": 385.609375,
+            "height": 142.390625,
+            "top": 8,
+            "right": 726,
+            "bottom": 150.390625,
+            "left": 340.390625
+          },
+          "rail": {
+            "x": 14,
+            "y": 270,
+            "width": 712,
+            "height": 80,
+            "top": 270,
+            "right": 726,
+            "bottom": 350,
+            "left": 14
+          },
+          "start": {
+            "x": 36.1875,
+            "y": 190.5703125,
+            "width": 152.8125,
+            "height": 44,
+            "top": 190.5703125,
+            "right": 189,
+            "bottom": 234.5703125,
+            "left": 36.1875
+          },
+          "ad": {
+            "x": 349.390625,
+            "y": 98.390625,
+            "width": 290.609375,
+            "height": 44,
+            "top": 98.390625,
+            "right": 640,
+            "bottom": 142.390625,
+            "left": 349.390625
+          },
+          "adVisible": true,
+          "clientHeight": 221,
+          "scrollHeight": 221,
+          "cards": [
+            {
+              "x": 349.390625,
+              "y": 38.390625,
+              "width": 57.921875,
+              "height": 54,
+              "top": 38.390625,
+              "right": 407.3125,
+              "bottom": 92.390625,
+              "left": 349.390625
+            },
+            {
+              "x": 411.3125,
+              "y": 38.390625,
+              "width": 57.9375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 469.25,
+              "bottom": 92.390625,
+              "left": 411.3125
+            },
+            {
+              "x": 473.25,
+              "y": 38.390625,
+              "width": 57.9375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 531.1875,
+              "bottom": 92.390625,
+              "left": 473.25
+            },
+            {
+              "x": 535.1875,
+              "y": 38.390625,
+              "width": 57.9375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 593.125,
+              "bottom": 92.390625,
+              "left": 535.1875
+            },
+            {
+              "x": 597.125,
+              "y": 38.390625,
+              "width": 57.9375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 655.0625,
+              "bottom": 92.390625,
+              "left": 597.125
+            },
+            {
+              "x": 659.0625,
+              "y": 38.390625,
+              "width": 57.921875,
+              "height": 54,
+              "top": 38.390625,
+              "right": 716.984375,
+              "bottom": 92.390625,
+              "left": 659.0625
+            }
+          ],
+          "stages": 30,
+          "daily": 1,
+          "label": "locked-home-740x360"
+        },
+        {
+          "viewport": {
+            "width": 667,
+            "height": 375
+          },
+          "panel": {
+            "x": 20,
+            "y": 26.9296875,
+            "width": 266.796875,
+            "height": 223.140625,
+            "top": 26.9296875,
+            "right": 286.796875,
+            "bottom": 250.0703125,
+            "left": 20
+          },
+          "garage": {
+            "x": 306.8125,
+            "y": 8,
+            "width": 346.1875,
+            "height": 142.390625,
+            "top": 8,
+            "right": 653,
+            "bottom": 150.390625,
+            "left": 306.8125
+          },
+          "rail": {
+            "x": 14,
+            "y": 285,
+            "width": 639,
+            "height": 80,
+            "top": 285,
+            "right": 653,
+            "bottom": 365,
+            "left": 14
+          },
+          "start": {
+            "x": 34,
+            "y": 198.0703125,
+            "width": 152.8125,
+            "height": 44,
+            "top": 198.0703125,
+            "right": 186.8125,
+            "bottom": 242.0703125,
+            "left": 34
+          },
+          "ad": {
+            "x": 315.8125,
+            "y": 98.390625,
+            "width": 251.1875,
+            "height": 44,
+            "top": 98.390625,
+            "right": 567,
+            "bottom": 142.390625,
+            "left": 315.8125
+          },
+          "adVisible": true,
+          "clientHeight": 221,
+          "scrollHeight": 221,
+          "cards": [
+            {
+              "x": 315.8125,
+              "y": 38.390625,
+              "width": 51.359375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 367.171875,
+              "bottom": 92.390625,
+              "left": 315.8125
+            },
+            {
+              "x": 371.171875,
+              "y": 38.390625,
+              "width": 51.359375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 422.53125,
+              "bottom": 92.390625,
+              "left": 371.171875
+            },
+            {
+              "x": 426.53125,
+              "y": 38.390625,
+              "width": 51.359375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 477.890625,
+              "bottom": 92.390625,
+              "left": 426.53125
+            },
+            {
+              "x": 481.890625,
+              "y": 38.390625,
+              "width": 51.375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 533.265625,
+              "bottom": 92.390625,
+              "left": 481.890625
+            },
+            {
+              "x": 537.265625,
+              "y": 38.390625,
+              "width": 51.359375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 588.625,
+              "bottom": 92.390625,
+              "left": 537.265625
+            },
+            {
+              "x": 592.625,
+              "y": 38.390625,
+              "width": 51.359375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 643.984375,
+              "bottom": 92.390625,
+              "left": 592.625
+            }
+          ],
+          "stages": 30,
+          "daily": 1,
+          "label": "locked-home-667x375"
+        },
+        {
+          "viewport": {
+            "width": 650,
+            "height": 360
+          },
+          "panel": {
+            "x": 19.5,
+            "y": 19.4296875,
+            "width": 260,
+            "height": 223.140625,
+            "top": 19.4296875,
+            "right": 279.5,
+            "bottom": 242.5703125,
+            "left": 19.5
+          },
+          "garage": {
+            "x": 299,
+            "y": 8,
+            "width": 337,
+            "height": 142.390625,
+            "top": 8,
+            "right": 636,
+            "bottom": 150.390625,
+            "left": 299
+          },
+          "rail": {
+            "x": 14,
+            "y": 270,
+            "width": 622,
+            "height": 80,
+            "top": 270,
+            "right": 636,
+            "bottom": 350,
+            "left": 14
+          },
+          "start": {
+            "x": 33.5,
+            "y": 190.5703125,
+            "width": 152.8125,
+            "height": 44,
+            "top": 190.5703125,
+            "right": 186.3125,
+            "bottom": 234.5703125,
+            "left": 33.5
+          },
+          "ad": {
+            "x": 308,
+            "y": 98.390625,
+            "width": 242,
+            "height": 44,
+            "top": 98.390625,
+            "right": 550,
+            "bottom": 142.390625,
+            "left": 308
+          },
+          "adVisible": true,
+          "clientHeight": 221,
+          "scrollHeight": 221,
+          "cards": [
+            {
+              "x": 308,
+              "y": 38.390625,
+              "width": 49.828125,
+              "height": 54,
+              "top": 38.390625,
+              "right": 357.828125,
+              "bottom": 92.390625,
+              "left": 308
+            },
+            {
+              "x": 361.828125,
+              "y": 38.390625,
+              "width": 49.828125,
+              "height": 54,
+              "top": 38.390625,
+              "right": 411.65625,
+              "bottom": 92.390625,
+              "left": 361.828125
+            },
+            {
+              "x": 415.65625,
+              "y": 38.390625,
+              "width": 49.828125,
+              "height": 54,
+              "top": 38.390625,
+              "right": 465.484375,
+              "bottom": 92.390625,
+              "left": 415.65625
+            },
+            {
+              "x": 469.484375,
+              "y": 38.390625,
+              "width": 49.84375,
+              "height": 54,
+              "top": 38.390625,
+              "right": 519.328125,
+              "bottom": 92.390625,
+              "left": 469.484375
+            },
+            {
+              "x": 523.328125,
+              "y": 38.390625,
+              "width": 49.828125,
+              "height": 54,
+              "top": 38.390625,
+              "right": 573.15625,
+              "bottom": 92.390625,
+              "left": 523.328125
+            },
+            {
+              "x": 577.15625,
+              "y": 38.390625,
+              "width": 49.828125,
+              "height": 54,
+              "top": 38.390625,
+              "right": 626.984375,
+              "bottom": 92.390625,
+              "left": 577.15625
+            }
+          ],
+          "stages": 30,
+          "daily": 1,
+          "label": "locked-home-650x360"
+        },
+        {
+          "viewport": {
+            "width": 844,
+            "height": 390
+          },
+          "panel": {
+            "x": 25.3125,
+            "y": 23.6328125,
+            "width": 337.59375,
+            "height": 244.734375,
+            "top": 23.6328125,
+            "right": 362.90625,
+            "bottom": 268.3671875,
+            "left": 25.3125
+          },
+          "garage": {
+            "x": 388.234375,
+            "y": 8,
+            "width": 441.765625,
+            "height": 142.390625,
+            "top": 8,
+            "right": 830,
+            "bottom": 150.390625,
+            "left": 388.234375
+          },
+          "rail": {
+            "x": 14,
+            "y": 300,
+            "width": 816,
+            "height": 80,
+            "top": 300,
+            "right": 830,
+            "bottom": 380,
+            "left": 14
+          },
+          "start": {
+            "x": 39.3125,
+            "y": 214.3671875,
+            "width": 152.8125,
+            "height": 44,
+            "top": 214.3671875,
+            "right": 192.125,
+            "bottom": 258.3671875,
+            "left": 39.3125
+          },
+          "ad": {
+            "x": 397.234375,
+            "y": 98.390625,
+            "width": 346.765625,
+            "height": 44,
+            "top": 98.390625,
+            "right": 744,
+            "bottom": 142.390625,
+            "left": 397.234375
+          },
+          "adVisible": true,
+          "clientHeight": 243,
+          "scrollHeight": 243,
+          "cards": [
+            {
+              "x": 397.234375,
+              "y": 38.390625,
+              "width": 67.28125,
+              "height": 54,
+              "top": 38.390625,
+              "right": 464.515625,
+              "bottom": 92.390625,
+              "left": 397.234375
+            },
+            {
+              "x": 468.515625,
+              "y": 38.390625,
+              "width": 67.296875,
+              "height": 54,
+              "top": 38.390625,
+              "right": 535.8125,
+              "bottom": 92.390625,
+              "left": 468.515625
+            },
+            {
+              "x": 539.8125,
+              "y": 38.390625,
+              "width": 67.296875,
+              "height": 54,
+              "top": 38.390625,
+              "right": 607.109375,
+              "bottom": 92.390625,
+              "left": 539.8125
+            },
+            {
+              "x": 611.109375,
+              "y": 38.390625,
+              "width": 67.296875,
+              "height": 54,
+              "top": 38.390625,
+              "right": 678.40625,
+              "bottom": 92.390625,
+              "left": 611.109375
+            },
+            {
+              "x": 682.40625,
+              "y": 38.390625,
+              "width": 67.296875,
+              "height": 54,
+              "top": 38.390625,
+              "right": 749.703125,
+              "bottom": 92.390625,
+              "left": 682.40625
+            },
+            {
+              "x": 753.703125,
+              "y": 38.390625,
+              "width": 67.296875,
+              "height": 54,
+              "top": 38.390625,
+              "right": 821,
+              "bottom": 92.390625,
+              "left": 753.703125
+            }
+          ],
+          "stages": 30,
+          "daily": 1,
+          "label": "locked-home-844x390"
+        }
+      ],
+      "reloaded": {
+        "phase": "ready",
+        "garage": {
+          "id": "custom-05",
+          "model": {
+            "id": "custom-05",
+            "name": "蓝白拉力",
+            "native": false,
+            "free": false,
+            "paintable": false
+          },
+          "owned": true,
+          "busy": false,
+          "error": null,
+          "equipped": true,
+          "canRace": true,
+          "canWatch": false
+        },
+        "equipped": "custom-05",
+        "owned": [
+          "starter",
+          "custom-01",
+          "custom-02",
+          "custom-03",
+          "custom-04",
+          "custom-05"
+        ],
+        "actual": "custom-05",
+        "identity": {
+          "id": "custom-05",
+          "carId": "custom-05",
+          "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+          "provider": "user-provided"
+        },
+        "nativeState": "menu",
+        "settings": {
+          "car": "custom-05",
+          "skin": 0,
+          "course": "race-01",
+          "mode": "speed",
+          "laps": 2,
+          "diff": 1
+        },
+        "progress": {
+          "version": 1,
+          "stars": {},
+          "times": {},
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 0,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter",
+            "custom-01",
+            "custom-02",
+            "custom-03",
+            "custom-04",
+            "custom-05"
+          ],
+          "car": "custom-05",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": null,
+        "fuelAmount": 30,
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "note": "",
+        "cards": [
+          {
+            "id": "starter",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-01",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-02",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-03",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-04",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-05",
+            "owned": "true",
+            "pressed": "true"
+          }
+        ],
+        "models": [
+          {
+            "player": false,
+            "id": "custom-05",
+            "identity": {
+              "id": "custom-05",
+              "carId": "custom-05",
+              "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+              "provider": "user-provided"
+            },
+            "wheels": 0
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          }
+        ],
+        "sdk": {
+          "created": 0,
+          "shows": 0,
+          "active": false,
+          "listeners": 0
+        }
+      },
+      "native": [
+        {
+          "id": "starter",
+          "countdown": {
+            "phase": "countdown",
+            "garage": {
+              "id": "starter",
+              "model": {
+                "id": "starter",
+                "name": "初始赛车",
+                "native": true,
+                "free": true,
+                "paintable": true
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": false,
+              "canWatch": false
+            },
+            "equipped": "starter",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04",
+              "custom-05"
+            ],
+            "actual": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "nativeState": "countdown",
+            "settings": {
+              "car": "starter",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 0,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04",
+                "custom-05"
+              ],
+              "car": "starter",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": {
+              "version": 2,
+              "amount": 25,
+              "updatedAt": 1792335861664,
+              "lastAdAt": 0,
+              "lastAdId": ""
+            },
+            "fuelAmount": 25,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "true",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": true,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 0,
+              "shows": 0,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "physics": {
+            "synthetic": true,
+            "readOnlyVerified": true,
+            "protocol": {
+              "dt": 0.016666666666666666,
+              "frames": 600,
+              "reset": {
+                "distance": 0,
+                "lateral": 0
+              },
+              "active": true,
+              "itemMode": false,
+              "segments": [
+                {
+                  "name": "accelerate",
+                  "frames": 180,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "held-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": true,
+                    "right": false,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0.55
+                  }
+                },
+                {
+                  "name": "countersteer",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": true,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": -0.55
+                  }
+                },
+                {
+                  "name": "release-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "boost-input",
+                  "frames": 1,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": true,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "accelerate-again",
+                  "frames": 59,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "coast",
+                  "frames": 60,
+                  "input": {
+                    "up": false,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "brake-and-reverse",
+                  "frames": 120,
+                  "input": {
+                    "up": false,
+                    "down": true,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                }
+              ]
+            },
+            "traceSha256": "edb7e2c1c066bea82c076d1bed05027a16dd510a79d2e4a910437bd4458ea324",
+            "summary": {
+              "maxSpeed": 50.59130575667106,
+              "maxImpact": 26.2214496254415,
+              "crashes": 2,
+              "driftStarts": 1,
+              "driftEnds": 1
+            }
+          }
+        },
+        {
+          "id": "custom-01",
+          "countdown": {
+            "phase": "countdown",
+            "garage": {
+              "id": "custom-01",
+              "model": {
+                "id": "custom-01",
+                "name": "银紫超跑",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": false,
+              "canWatch": false
+            },
+            "equipped": "custom-01",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04",
+              "custom-05"
+            ],
+            "actual": "custom-01",
+            "identity": {
+              "id": "custom-01",
+              "carId": "custom-01",
+              "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+              "provider": "user-provided"
+            },
+            "nativeState": "countdown",
+            "settings": {
+              "car": "custom-01",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 1,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04",
+                "custom-05"
+              ],
+              "car": "custom-01",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": {
+              "version": 2,
+              "amount": 25,
+              "updatedAt": 1792335861664,
+              "lastAdAt": 0,
+              "lastAdId": ""
+            },
+            "fuelAmount": 25,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "true",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": true,
+                "id": "custom-01",
+                "identity": {
+                  "id": "custom-01",
+                  "carId": "custom-01",
+                  "sha256": "14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 0,
+              "shows": 0,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "physics": {
+            "synthetic": true,
+            "readOnlyVerified": true,
+            "protocol": {
+              "dt": 0.016666666666666666,
+              "frames": 600,
+              "reset": {
+                "distance": 0,
+                "lateral": 0
+              },
+              "active": true,
+              "itemMode": false,
+              "segments": [
+                {
+                  "name": "accelerate",
+                  "frames": 180,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "held-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": true,
+                    "right": false,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0.55
+                  }
+                },
+                {
+                  "name": "countersteer",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": true,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": -0.55
+                  }
+                },
+                {
+                  "name": "release-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "boost-input",
+                  "frames": 1,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": true,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "accelerate-again",
+                  "frames": 59,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "coast",
+                  "frames": 60,
+                  "input": {
+                    "up": false,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "brake-and-reverse",
+                  "frames": 120,
+                  "input": {
+                    "up": false,
+                    "down": true,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                }
+              ]
+            },
+            "traceSha256": "edb7e2c1c066bea82c076d1bed05027a16dd510a79d2e4a910437bd4458ea324",
+            "summary": {
+              "maxSpeed": 50.59130575667106,
+              "maxImpact": 26.2214496254415,
+              "crashes": 2,
+              "driftStarts": 1,
+              "driftEnds": 1
+            }
+          }
+        },
+        {
+          "id": "custom-02",
+          "countdown": {
+            "phase": "countdown",
+            "garage": {
+              "id": "custom-02",
+              "model": {
+                "id": "custom-02",
+                "name": "荧光跑车",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": false,
+              "canWatch": false
+            },
+            "equipped": "custom-02",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04",
+              "custom-05"
+            ],
+            "actual": "custom-02",
+            "identity": {
+              "id": "custom-02",
+              "carId": "custom-02",
+              "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+              "provider": "user-provided"
+            },
+            "nativeState": "countdown",
+            "settings": {
+              "car": "custom-02",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 2,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04",
+                "custom-05"
+              ],
+              "car": "custom-02",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": {
+              "version": 2,
+              "amount": 20,
+              "updatedAt": 1792335861664,
+              "lastAdAt": 0,
+              "lastAdId": ""
+            },
+            "fuelAmount": 20,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "true",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": true,
+                "id": "custom-02",
+                "identity": {
+                  "id": "custom-02",
+                  "carId": "custom-02",
+                  "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 0,
+              "shows": 0,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "physics": {
+            "synthetic": true,
+            "readOnlyVerified": true,
+            "protocol": {
+              "dt": 0.016666666666666666,
+              "frames": 600,
+              "reset": {
+                "distance": 0,
+                "lateral": 0
+              },
+              "active": true,
+              "itemMode": false,
+              "segments": [
+                {
+                  "name": "accelerate",
+                  "frames": 180,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "held-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": true,
+                    "right": false,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0.55
+                  }
+                },
+                {
+                  "name": "countersteer",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": true,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": -0.55
+                  }
+                },
+                {
+                  "name": "release-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "boost-input",
+                  "frames": 1,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": true,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "accelerate-again",
+                  "frames": 59,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "coast",
+                  "frames": 60,
+                  "input": {
+                    "up": false,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "brake-and-reverse",
+                  "frames": 120,
+                  "input": {
+                    "up": false,
+                    "down": true,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                }
+              ]
+            },
+            "traceSha256": "edb7e2c1c066bea82c076d1bed05027a16dd510a79d2e4a910437bd4458ea324",
+            "summary": {
+              "maxSpeed": 50.59130575667106,
+              "maxImpact": 26.2214496254415,
+              "crashes": 2,
+              "driftStarts": 1,
+              "driftEnds": 1
+            }
+          }
+        },
+        {
+          "id": "custom-03",
+          "countdown": {
+            "phase": "countdown",
+            "garage": {
+              "id": "custom-03",
+              "model": {
+                "id": "custom-03",
+                "name": "黄金方程式",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": false,
+              "canWatch": false
+            },
+            "equipped": "custom-03",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04",
+              "custom-05"
+            ],
+            "actual": "custom-03",
+            "identity": {
+              "id": "custom-03",
+              "carId": "custom-03",
+              "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+              "provider": "user-provided"
+            },
+            "nativeState": "countdown",
+            "settings": {
+              "car": "custom-03",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 3,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04",
+                "custom-05"
+              ],
+              "car": "custom-03",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": {
+              "version": 2,
+              "amount": 15,
+              "updatedAt": 1792335861664,
+              "lastAdAt": 0,
+              "lastAdId": ""
+            },
+            "fuelAmount": 15,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "true",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": true,
+                "id": "custom-03",
+                "identity": {
+                  "id": "custom-03",
+                  "carId": "custom-03",
+                  "sha256": "db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 0,
+              "shows": 0,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "physics": {
+            "synthetic": true,
+            "readOnlyVerified": true,
+            "protocol": {
+              "dt": 0.016666666666666666,
+              "frames": 600,
+              "reset": {
+                "distance": 0,
+                "lateral": 0
+              },
+              "active": true,
+              "itemMode": false,
+              "segments": [
+                {
+                  "name": "accelerate",
+                  "frames": 180,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "held-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": true,
+                    "right": false,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0.55
+                  }
+                },
+                {
+                  "name": "countersteer",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": true,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": -0.55
+                  }
+                },
+                {
+                  "name": "release-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "boost-input",
+                  "frames": 1,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": true,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "accelerate-again",
+                  "frames": 59,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "coast",
+                  "frames": 60,
+                  "input": {
+                    "up": false,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "brake-and-reverse",
+                  "frames": 120,
+                  "input": {
+                    "up": false,
+                    "down": true,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                }
+              ]
+            },
+            "traceSha256": "edb7e2c1c066bea82c076d1bed05027a16dd510a79d2e4a910437bd4458ea324",
+            "summary": {
+              "maxSpeed": 50.59130575667106,
+              "maxImpact": 26.2214496254415,
+              "crashes": 2,
+              "driftStarts": 1,
+              "driftEnds": 1
+            }
+          }
+        },
+        {
+          "id": "custom-04",
+          "countdown": {
+            "phase": "countdown",
+            "garage": {
+              "id": "custom-04",
+              "model": {
+                "id": "custom-04",
+                "name": "赤焰超跑",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": false,
+              "canWatch": false
+            },
+            "equipped": "custom-04",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04",
+              "custom-05"
+            ],
+            "actual": "custom-04",
+            "identity": {
+              "id": "custom-04",
+              "carId": "custom-04",
+              "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+              "provider": "user-provided"
+            },
+            "nativeState": "countdown",
+            "settings": {
+              "car": "custom-04",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 5,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04",
+                "custom-05"
+              ],
+              "car": "custom-04",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": {
+              "version": 2,
+              "amount": 5,
+              "updatedAt": 1792335861664,
+              "lastAdAt": 0,
+              "lastAdId": ""
+            },
+            "fuelAmount": 5,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "true"
+              },
+              {
+                "id": "custom-05",
+                "owned": "true",
+                "pressed": "false"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": true,
+                "id": "custom-04",
+                "identity": {
+                  "id": "custom-04",
+                  "carId": "custom-04",
+                  "sha256": "475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 0,
+              "shows": 0,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "physics": {
+            "synthetic": true,
+            "readOnlyVerified": true,
+            "protocol": {
+              "dt": 0.016666666666666666,
+              "frames": 600,
+              "reset": {
+                "distance": 0,
+                "lateral": 0
+              },
+              "active": true,
+              "itemMode": false,
+              "segments": [
+                {
+                  "name": "accelerate",
+                  "frames": 180,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "held-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": true,
+                    "right": false,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0.55
+                  }
+                },
+                {
+                  "name": "countersteer",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": true,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": -0.55
+                  }
+                },
+                {
+                  "name": "release-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "boost-input",
+                  "frames": 1,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": true,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "accelerate-again",
+                  "frames": 59,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "coast",
+                  "frames": 60,
+                  "input": {
+                    "up": false,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "brake-and-reverse",
+                  "frames": 120,
+                  "input": {
+                    "up": false,
+                    "down": true,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                }
+              ]
+            },
+            "traceSha256": "edb7e2c1c066bea82c076d1bed05027a16dd510a79d2e4a910437bd4458ea324",
+            "summary": {
+              "maxSpeed": 50.59130575667106,
+              "maxImpact": 26.2214496254415,
+              "crashes": 2,
+              "driftStarts": 1,
+              "driftEnds": 1
+            }
+          }
+        },
+        {
+          "id": "custom-05",
+          "countdown": {
+            "phase": "countdown",
+            "garage": {
+              "id": "custom-05",
+              "model": {
+                "id": "custom-05",
+                "name": "蓝白拉力",
+                "native": false,
+                "free": false,
+                "paintable": false
+              },
+              "owned": true,
+              "busy": false,
+              "error": null,
+              "equipped": true,
+              "canRace": false,
+              "canWatch": false
+            },
+            "equipped": "custom-05",
+            "owned": [
+              "starter",
+              "custom-01",
+              "custom-02",
+              "custom-03",
+              "custom-04",
+              "custom-05"
+            ],
+            "actual": "custom-05",
+            "identity": {
+              "id": "custom-05",
+              "carId": "custom-05",
+              "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+              "provider": "user-provided"
+            },
+            "nativeState": "countdown",
+            "settings": {
+              "car": "custom-05",
+              "skin": 0,
+              "course": "race-01",
+              "mode": "speed",
+              "laps": 2,
+              "diff": 1
+            },
+            "progress": {
+              "version": 1,
+              "stars": {},
+              "times": {},
+              "gatePasses": {},
+              "stagePasses": {},
+              "skin": 0,
+              "rounds": 6,
+              "ownedSkins": [
+                0
+              ],
+              "ownedCars": [
+                "starter",
+                "custom-01",
+                "custom-02",
+                "custom-03",
+                "custom-04",
+                "custom-05"
+              ],
+              "car": "custom-05",
+              "daily": {
+                "date": "",
+                "best": 0,
+                "stars": 0,
+                "streak": 0,
+                "lastWonDate": ""
+              }
+            },
+            "fuel": {
+              "version": 2,
+              "amount": 0,
+              "updatedAt": 1792335861664,
+              "lastAdAt": 0,
+              "lastAdId": ""
+            },
+            "fuelAmount": 0,
+            "adHidden": true,
+            "adDisabled": true,
+            "startDisabled": true,
+            "note": "",
+            "cards": [
+              {
+                "id": "starter",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-01",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-02",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-03",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-04",
+                "owned": "true",
+                "pressed": "false"
+              },
+              {
+                "id": "custom-05",
+                "owned": "true",
+                "pressed": "true"
+              }
+            ],
+            "models": [
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": true,
+                "id": "custom-05",
+                "identity": {
+                  "id": "custom-05",
+                  "carId": "custom-05",
+                  "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+                  "provider": "user-provided"
+                },
+                "wheels": 0
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              },
+              {
+                "player": false,
+                "id": "starter",
+                "identity": {
+                  "id": "original-racer-v1",
+                  "carId": "starter",
+                  "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+                  "provider": "Tencent-Hunyuan-3.1-web"
+                },
+                "wheels": 4
+              }
+            ],
+            "sdk": {
+              "created": 0,
+              "shows": 0,
+              "active": false,
+              "listeners": 0
+            }
+          },
+          "physics": {
+            "synthetic": true,
+            "readOnlyVerified": true,
+            "protocol": {
+              "dt": 0.016666666666666666,
+              "frames": 600,
+              "reset": {
+                "distance": 0,
+                "lateral": 0
+              },
+              "active": true,
+              "itemMode": false,
+              "segments": [
+                {
+                  "name": "accelerate",
+                  "frames": 180,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "held-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": true,
+                    "right": false,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0.55
+                  }
+                },
+                {
+                  "name": "countersteer",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": true,
+                    "shift": true,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": -0.55
+                  }
+                },
+                {
+                  "name": "release-drift",
+                  "frames": 60,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "boost-input",
+                  "frames": 1,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": true,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "accelerate-again",
+                  "frames": 59,
+                  "input": {
+                    "up": true,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "coast",
+                  "frames": 60,
+                  "input": {
+                    "up": false,
+                    "down": false,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                },
+                {
+                  "name": "brake-and-reverse",
+                  "frames": 120,
+                  "input": {
+                    "up": false,
+                    "down": true,
+                    "left": false,
+                    "right": false,
+                    "shift": false,
+                    "upPressed": false,
+                    "wPressed": false,
+                    "nitroPressed": false,
+                    "manualNitroPressed": false,
+                    "steerAxis": 0
+                  }
+                }
+              ]
+            },
+            "traceSha256": "edb7e2c1c066bea82c076d1bed05027a16dd510a79d2e4a910437bd4458ea324",
+            "summary": {
+              "maxSpeed": 50.59130575667106,
+              "maxImpact": 26.2214496254415,
+              "crashes": 2,
+              "driftStarts": 1,
+              "driftEnds": 1
+            }
+          }
+        }
+      ],
+      "injections": [
+        {
+          "kind": "native showResults() before natural finish",
+          "carId": "starter",
+          "before": {
+            "finished": false,
+            "state": "countdown"
+          }
+        },
+        {
+          "kind": "native showResults() before natural finish",
+          "carId": "custom-01",
+          "before": {
+            "finished": false,
+            "state": "countdown"
+          }
+        },
+        {
+          "kind": "native showResults() before natural finish",
+          "carId": "custom-02",
+          "before": {
+            "finished": false,
+            "state": "countdown"
+          }
+        },
+        {
+          "kind": "native showResults() before natural finish",
+          "carId": "custom-03",
+          "before": {
+            "finished": false,
+            "state": "countdown"
+          }
+        },
+        {
+          "kind": "native showResults() before natural finish",
+          "carId": "custom-03",
+          "before": {
+            "finished": false,
+            "state": "countdown"
+          }
+        },
+        {
+          "kind": "native showResults() before natural finish",
+          "carId": "custom-04",
+          "before": {
+            "finished": false,
+            "state": "countdown"
+          }
+        },
+        {
+          "kind": "native showResults() before natural finish",
+          "carId": "custom-05",
+          "before": {
+            "finished": false,
+            "state": "countdown"
+          }
+        }
+      ]
+    },
+    {
+      "name": "fresh-home-without-sdk",
+      "passed": true,
+      "errors": [],
+      "simulatedSdk": false,
+      "seededCareer": false,
+      "last": {
+        "phase": "ready",
+        "garage": {
+          "id": "starter",
+          "model": {
+            "id": "starter",
+            "name": "初始赛车",
+            "native": true,
+            "free": true,
+            "paintable": true
+          },
+          "owned": true,
+          "busy": false,
+          "error": null,
+          "equipped": true,
+          "canRace": true,
+          "canWatch": false
+        },
+        "equipped": "starter",
+        "owned": [
+          "starter"
+        ],
+        "actual": "starter",
+        "identity": {
+          "id": "original-racer-v1",
+          "carId": "starter",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        },
+        "nativeState": "menu",
+        "settings": {
+          "car": "starter",
+          "skin": 0,
+          "course": "race-01",
+          "mode": "speed",
+          "laps": 2,
+          "diff": 1
+        },
+        "progress": null,
+        "fuel": null,
+        "fuelAmount": 30,
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "note": "",
+        "cards": [
+          {
+            "id": "starter",
+            "owned": "true",
+            "pressed": "true"
+          },
+          {
+            "id": "custom-01",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-02",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-03",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-04",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-05",
+            "owned": "false",
+            "pressed": "false"
+          }
+        ],
+        "models": [
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          }
+        ],
+        "sdk": null
+      }
+    },
+    {
+      "name": "save-failure-never-awards",
+      "passed": true,
+      "errors": [],
+      "simulatedSdk": true,
+      "injectedStorageFailure": true,
+      "last": {
+        "phase": "ready",
+        "garage": {
+          "id": "custom-02",
+          "model": {
+            "id": "custom-02",
+            "name": "荧光跑车",
+            "native": false,
+            "free": false,
+            "paintable": false
+          },
+          "owned": false,
+          "busy": false,
+          "error": null,
+          "equipped": false,
+          "canRace": false,
+          "canWatch": false
+        },
+        "equipped": "starter",
+        "owned": [
+          "starter"
+        ],
+        "actual": "custom-02",
+        "identity": {
+          "id": "custom-02",
+          "carId": "custom-02",
+          "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+          "provider": "user-provided"
+        },
+        "nativeState": "menu",
+        "settings": {
+          "car": "starter",
+          "skin": 0,
+          "course": "race-01",
+          "mode": "speed",
+          "laps": 2,
+          "diff": 1
+        },
+        "progress": null,
+        "fuel": null,
+        "fuelAmount": 30,
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": true,
+        "note": "解锁未能保存，请检查浏览器存储后重试",
+        "cards": [
+          {
+            "id": "starter",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-01",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-02",
+            "owned": "false",
+            "pressed": "true"
+          },
+          {
+            "id": "custom-03",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-04",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-05",
+            "owned": "false",
+            "pressed": "false"
+          }
+        ],
+        "models": [
+          {
+            "player": false,
+            "id": "custom-02",
+            "identity": {
+              "id": "custom-02",
+              "carId": "custom-02",
+              "sha256": "7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69",
+              "provider": "user-provided"
+            },
+            "wheels": 0
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          }
+        ],
+        "sdk": {
+          "created": 1,
+          "shows": 1,
+          "active": false,
+          "listeners": 0
+        }
+      }
+    },
+    {
+      "name": "desktop-car-preview",
+      "passed": true,
+      "errors": [],
+      "simulatedSdk": false,
+      "seededCareer": false,
+      "layouts": [
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "panel": {
+            "x": 43.1875,
+            "y": 206.0390625,
+            "width": 575,
+            "height": 391.015625,
+            "top": 206.0390625,
+            "right": 618.1875,
+            "bottom": 597.0546875,
+            "left": 43.1875
+          },
+          "garage": {
+            "x": 691.1875,
+            "y": 36,
+            "width": 705.625,
+            "height": 151.09375,
+            "top": 36,
+            "right": 1396.8125,
+            "bottom": 187.09375,
+            "left": 691.1875
+          },
+          "rail": {
+            "x": 31.671875,
+            "y": 797.5,
+            "width": 1376.65625,
+            "height": 80,
+            "top": 797.5,
+            "right": 1408.328125,
+            "bottom": 877.5,
+            "left": 31.671875
+          },
+          "start": {
+            "x": 68.1875,
+            "y": 532.0546875,
+            "width": 120.40625,
+            "height": 44,
+            "top": 532.0546875,
+            "right": 188.59375,
+            "bottom": 576.0546875,
+            "left": 68.1875
+          },
+          "ad": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "adVisible": false,
+          "clientHeight": 389,
+          "scrollHeight": 389,
+          "cards": [
+            {
+              "x": 708.1875,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 815.125,
+              "bottom": 172.09375,
+              "left": 708.1875
+            },
+            {
+              "x": 821.125,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 928.0625,
+              "bottom": 172.09375,
+              "left": 821.125
+            },
+            {
+              "x": 934.0625,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 1041,
+              "bottom": 172.09375,
+              "left": 934.0625
+            },
+            {
+              "x": 1047,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 1153.9375,
+              "bottom": 172.09375,
+              "left": 1047
+            },
+            {
+              "x": 1159.9375,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 1266.875,
+              "bottom": 172.09375,
+              "left": 1159.9375
+            },
+            {
+              "x": 1272.875,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 1379.8125,
+              "bottom": 172.09375,
+              "left": 1272.875
+            }
+          ],
+          "stages": 30,
+          "daily": 1,
+          "label": "desktop-starter-home"
+        },
+        {
+          "viewport": {
+            "width": 1440,
+            "height": 900
+          },
+          "panel": {
+            "x": 43.1875,
+            "y": 216.0703125,
+            "width": 575,
+            "height": 370.953125,
+            "top": 216.0703125,
+            "right": 618.1875,
+            "bottom": 587.0234375,
+            "left": 43.1875
+          },
+          "garage": {
+            "x": 691.1875,
+            "y": 36,
+            "width": 705.625,
+            "height": 223.09375,
+            "top": 36,
+            "right": 1396.8125,
+            "bottom": 259.09375,
+            "left": 691.1875
+          },
+          "rail": {
+            "x": 31.671875,
+            "y": 797.5,
+            "width": 1376.65625,
+            "height": 80,
+            "top": 797.5,
+            "right": 1408.328125,
+            "bottom": 877.5,
+            "left": 31.671875
+          },
+          "start": {
+            "x": 68.1875,
+            "y": 522.0234375,
+            "width": 178.8125,
+            "height": 44,
+            "top": 522.0234375,
+            "right": 247,
+            "bottom": 566.0234375,
+            "left": 68.1875
+          },
+          "ad": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          },
+          "adVisible": false,
+          "clientHeight": 369,
+          "scrollHeight": 369,
+          "cards": [
+            {
+              "x": 708.1875,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 815.125,
+              "bottom": 172.09375,
+              "left": 708.1875
+            },
+            {
+              "x": 821.125,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 928.0625,
+              "bottom": 172.09375,
+              "left": 821.125
+            },
+            {
+              "x": 934.0625,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 1041,
+              "bottom": 172.09375,
+              "left": 934.0625
+            },
+            {
+              "x": 1047,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 1153.9375,
+              "bottom": 172.09375,
+              "left": 1047
+            },
+            {
+              "x": 1159.9375,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 1266.875,
+              "bottom": 172.09375,
+              "left": 1159.9375
+            },
+            {
+              "x": 1272.875,
+              "y": 87.09375,
+              "width": 106.9375,
+              "height": 85,
+              "top": 87.09375,
+              "right": 1379.8125,
+              "bottom": 172.09375,
+              "left": 1272.875
+            }
+          ],
+          "stages": 30,
+          "daily": 1,
+          "label": "desktop-blue-rally-preview"
+        }
+      ]
+    },
+    {
+      "name": "stale-native-selection-and-old-paint",
+      "passed": true,
+      "errors": [],
+      "simulatedSdk": false,
+      "storageFixture": "Unknown native setting and unowned canonical selection; legitimate previously owned gold paint",
+      "last": {
+        "phase": "ready",
+        "garage": {
+          "id": "starter",
+          "model": {
+            "id": "starter",
+            "name": "初始赛车",
+            "native": true,
+            "free": true,
+            "paintable": true
+          },
+          "owned": true,
+          "busy": false,
+          "error": null,
+          "equipped": true,
+          "canRace": true,
+          "canWatch": false
+        },
+        "equipped": "starter",
+        "owned": [
+          "starter"
+        ],
+        "actual": "starter",
+        "identity": {
+          "id": "original-racer-v1",
+          "carId": "starter",
+          "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+          "provider": "Tencent-Hunyuan-3.1-web"
+        },
+        "nativeState": "menu",
+        "settings": {
+          "car": "starter",
+          "skin": 3,
+          "course": "race-01",
+          "mode": "speed",
+          "laps": 2,
+          "diff": 1
+        },
+        "progress": {
+          "version": 1,
+          "stars": {},
+          "times": {},
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 3,
+          "rounds": 0,
+          "ownedSkins": [
+            0,
+            3
+          ],
+          "ownedCars": [
+            "starter",
+            "removed-unknown-car"
+          ],
+          "car": "custom-02",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": null,
+        "fuelAmount": 30,
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "note": "",
+        "cards": [
+          {
+            "id": "starter",
+            "owned": "true",
+            "pressed": "true"
+          },
+          {
+            "id": "custom-01",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-02",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-03",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-04",
+            "owned": "false",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-05",
+            "owned": "false",
+            "pressed": "false"
+          }
+        ],
+        "models": [
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          }
+        ],
+        "sdk": null
+      }
+    },
+    {
+      "name": "standalone-restores-earned-model",
+      "passed": true,
+      "errors": [],
+      "simulatedSdk": true,
+      "storageFixture": "Copy exact save earned by completed simulated SDK in the HTTP case to separate file origin",
+      "restored": {
+        "phase": "ready",
+        "garage": {
+          "id": "custom-05",
+          "model": {
+            "id": "custom-05",
+            "name": "蓝白拉力",
+            "native": false,
+            "free": false,
+            "paintable": false
+          },
+          "owned": true,
+          "busy": false,
+          "error": null,
+          "equipped": true,
+          "canRace": true,
+          "canWatch": false
+        },
+        "equipped": "custom-05",
+        "owned": [
+          "starter",
+          "custom-01",
+          "custom-02",
+          "custom-03",
+          "custom-04",
+          "custom-05"
+        ],
+        "actual": "custom-05",
+        "identity": {
+          "id": "custom-05",
+          "carId": "custom-05",
+          "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+          "provider": "user-provided"
+        },
+        "nativeState": "menu",
+        "settings": {
+          "car": "custom-05",
+          "skin": 0,
+          "course": "race-01",
+          "mode": "speed",
+          "laps": 2,
+          "diff": 1
+        },
+        "progress": {
+          "version": 1,
+          "stars": {},
+          "times": {},
+          "gatePasses": {},
+          "stagePasses": {},
+          "skin": 0,
+          "rounds": 0,
+          "ownedSkins": [
+            0
+          ],
+          "ownedCars": [
+            "starter",
+            "custom-01",
+            "custom-02",
+            "custom-03",
+            "custom-04",
+            "custom-05"
+          ],
+          "car": "custom-05",
+          "daily": {
+            "date": "",
+            "best": 0,
+            "stars": 0,
+            "streak": 0,
+            "lastWonDate": ""
+          }
+        },
+        "fuel": null,
+        "fuelAmount": 30,
+        "adHidden": true,
+        "adDisabled": true,
+        "startDisabled": false,
+        "note": "",
+        "cards": [
+          {
+            "id": "starter",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-01",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-02",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-03",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-04",
+            "owned": "true",
+            "pressed": "false"
+          },
+          {
+            "id": "custom-05",
+            "owned": "true",
+            "pressed": "true"
+          }
+        ],
+        "models": [
+          {
+            "player": false,
+            "id": "custom-05",
+            "identity": {
+              "id": "custom-05",
+              "carId": "custom-05",
+              "sha256": "bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323",
+              "provider": "user-provided"
+            },
+            "wheels": 0
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          },
+          {
+            "player": false,
+            "id": "starter",
+            "identity": {
+              "id": "original-racer-v1",
+              "carId": "starter",
+              "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+              "provider": "Tencent-Hunyuan-3.1-web"
+            },
+            "wheels": 4
+          }
+        ],
+        "sdk": {
+          "created": 0,
+          "shows": 0,
+          "active": false,
+          "listeners": 0
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "151.0.7922.34"
+}

@@ -1,0 +1,12 @@
+{
+  "passed": false,
+  "sourceCommit": "47fbd17d703b74203df47bbf02991c8f280a2c69",
+  "buildHash": "c60652cca51624b1efb8fbb4cc183e17a741c89e3e39c313113d7f9e74dab3f1",
+  "manifestSha256": "dffde185c5442d540120c81465efdf9ef7c82ef5410b0ff7715c364eeec37b04",
+  "error": "RangeError: Maximum call stack size exceeded",
+  "stack": [
+    "at RegExpStringIterator.next (<anonymous>)",
+    "at verifyDelivery (tools/lean-pilot/racing-delivery-verify.mjs:90:28)"
+  ],
+  "checkedAt": "2026-10-18T16:02:36.204211+00:00"
+}
