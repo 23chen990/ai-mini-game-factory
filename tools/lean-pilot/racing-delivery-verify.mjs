@@ -8,7 +8,7 @@ import path from 'node:path';
 import { z } from 'zod';
 import { buildHash } from './runner.mjs';
 import { RACING_OWNED_NAMES } from './racing-mobile-build.mjs';
-import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
+import { STAGES, gradeStage } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
 import { qualifiedVisibleFinish } from './racing-visible-policy.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -74,14 +74,12 @@ export async function verifyDelivery(manifestPath) {
   const victories = natural.races.filter(r => r.status === 'PASS');
   for (const race of victories.filter(r => r.stage !== 'daily')) {
     const stage = STAGES.find(s => s.id === race.stage);
-    if (!stage || stage.map !== race.map || stage.laps !== race.laps || stage.diff !== race.diff || stage.mode !== race.mode || race.place > stage.rank) throw Error('Career race configuration or rank gate differs: ' + race.stage);
-    const count = label => Number(race.resultStats.match(new RegExp('(\\d+)' + label, 'u'))?.[1] ?? 0);
-    if (stage.kind === 'item' && count('拾取道具') < stage.target) throw Error('Physical pickups missing: ' + stage.id);
-    if (stage.kind === 'overtake' && count('弯道超车') < stage.target) throw Error('Real corner passes missing: ' + stage.id);
-    if (stage.kind === 'drift' && count('有效漂移') < stage.target) throw Error('Clean drifts missing');
-    if (stage.kind === 'time' && race.finishTime > stage.target) throw Error('Time objective missed');
-    if (stage.kind === 'speed' && Number(race.goal.match(/测速 (\d+)\//u)?.[1] ?? 0) < stage.target) throw Error('Speed gate missed');
-    if (stage.kind === 'elimination' && !race.goal.includes('已存活 2/2')) throw Error('Elimination survival missing');
+    if (!stage || stage.course !== race.course || stage.map !== race.map || stage.laps !== race.laps ||
+        stage.diff !== race.diff || stage.mode !== race.mode || gradeStage(stage, race) <= 0)
+      throw Error('Career race configuration or native podium result differs: ' + race.stage);
+    // Current career stars come only from a genuine finishing podium rank.
+    // Historical mission counters remain in the report as observations; they
+    // cannot revoke that award or replace the independent native physics gates.
   }
   if (natural.passed) for (const map of ['city', 'egypt', 'aegean', 'snow']) {
     if (!victories.some(r => r.map === map && r.laps >= 2) || !victories.some(r => r.map === map && r.diff === 2)) throw Error('Multi-lap/expert map coverage missing: ' + map);

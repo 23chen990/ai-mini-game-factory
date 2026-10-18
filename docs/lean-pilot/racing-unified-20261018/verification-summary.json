@@ -26,10 +26,10 @@
     {
       "name": "Current visible-finish and delivery evidence contract",
       "status": "PASS",
-      "passed": 25,
-      "total": 25,
+      "passed": 47,
+      "total": 47,
       "skipped": 0,
-      "scope": "Accepts the current podium title only with native finish, correct stage/course, consistent visible result time and persisted medals/time. Rejects unfinished, non-podium, stale and mismatched evidence. The prior natural run remains BLOCKED."
+      "scope": "Focused QA contract tests, including the true verifyDelivery path for current podium awards and bounded daily start identity. Rejects unfinished, non-podium, stale, mismatched, ambiguous and tampered evidence. Synthetic contract fixtures are not natural driving; the prior natural run remains BLOCKED."
     },
     {
       "name": "Actual CJK home layout",
@@ -45,25 +45,30 @@
       "scope": "Fresh browser storage; normal viewport changes; 44px start target fully visible; unchanged 12px scroll tolerance; 30 ordered main stages plus the existing daily challenge."
     },
     {
+      "name": "Actual standalone file entry",
+      "status": "PASS",
+      "scope": "The exact delivered HTML was opened via file: URL with fresh storage and a trusted start tap. Native countdown and forward motion were observed. This is entry verification, not a complete natural race or physical phone test."
+    },
+    {
       "name": "Native course geometry",
       "status": "PASS",
       "courses": 30,
       "physicalShortcuts": 10,
-      "scope": "Engineering audit on prior 3d891 build; native track component is byte-identical in the final build."
+      "scope": "Engineering audit on the exact final 3a61 game in CI passed; previous raw evidence is also preserved with component identity."
     },
     {
       "name": "Native opponents with real contact",
       "status": "PASS",
       "finished": 150,
       "total": 150,
-      "scope": "30 courses with five physical AI rivals each; engineering driving, not a human win-rate test. The generated AI, vehicle and track components are byte-identical to the audited build."
+      "scope": "Final 3a61 CI audit: 30 courses with five physical AI rivals each, 150/150 finished with native wall and car contact. Engineering driving, not a human win-rate test."
     },
     {
       "name": "Native player controls",
       "status": "PASS",
       "passed": 12,
       "total": 12,
-      "scope": "Countersteer, drift release, manual boosts, collision penalty and pause contracts; engineering checks on byte-identical generated physics components."
+      "scope": "Countersteer, drift release, manual boosts, collision penalty and pause contracts. The final CI native-player gate passed; original detailed engineering evidence is preserved."
     },
     {
       "name": "Ad outcome wiring",
@@ -97,6 +102,14 @@
   "disclosure": "This file contains high-level verification outcomes. Detailed raw reports and route plots are delivered privately pending direct approval for public upload.",
   "sourceTestsCommand": "RACE_NATIVE_PROJECT=$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed node --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs",
   "latestCompletedCi": {
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39133881805",
+    "sourceCommit": "2dc23edb9d743db7be3cba9bdae3aaeda77a5edf",
+    "buildHash": "3a61a3a01339500fbb6bea312462c29476881662bfdb50cfcb2d055f087f45a0",
+    "status": "FAIL",
+    "scope": "Exact final game build; code, model, AI, fingerprint, geometry, 150-rival and native-player gates passed. Browser smoke failed because the separate desktop native countdown did not reach racing within the unchanged 45-second limit. The whole smoke remains failed; automatic preview publication was skipped. Final later QA-only changes preserve this game build."
+  },
+  "qaOnlyFinalFix": "Current podium verification reuses native gradeStage; daily start identity uses bounded read-only browser clock snapshots and unique native configuration. Game build, input and standalone hashes are unchanged.",
+  "previousCompletedCi": {
     "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39132641107",
     "sourceCommit": "2523cd409b49df984e1da076ee76da05c00594ef",
     "buildHash": "76d7e64fd400c6d23ed61e7922d40cbf4cd14601286b6de2e013d808f7f4ba7b",

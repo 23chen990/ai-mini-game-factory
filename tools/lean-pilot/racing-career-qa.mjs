@@ -9,7 +9,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { createRequire } from 'node:module';
-import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup, visibleItemSteer } from './racing-visible-policy.mjs';
+import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish, dailyRaceDayFromStart, needsVisibleItemPickup, visibleItemSteer } from './racing-visible-policy.mjs';
 import { actionTouchPoints, planWheelGesture } from './racing-wheel-qa-input.mjs';
 const require = createRequire(import.meta.url), testRequire = createRequire(require.resolve('@playwright/test'));
 const playwrightRequire = createRequire(testRequire.resolve('playwright'));
@@ -127,6 +127,13 @@ async function observed(full = false) {
       saved: localStorage.getItem('h5-mobile:qq-speed:career:v1') };
   }, full);
 }
+function dailyStartSnapshot() {
+  const wallMs = Date.now(), g = window.game;
+  return { wallMs, monotonicMs: window.performance.now(), timeOrigin: window.performance.timeOrigin,
+    timezoneOffsetMinutes: new Date(wallMs).getTimezoneOffset(), nativeState: g?.state,
+    course: g?.settings?.course, map: g?.map?.id, laps: g?.settings?.laps,
+    diff: g?.settings?.diff, mode: g?.settings?.mode };
+}
 try {
   await page.goto('http://127.0.0.1:' + server.address().port + '/');
   await page.locator('#race-start:not([disabled])').waitFor({ timeout: 45000 });
@@ -148,11 +155,8 @@ try {
     }
     const entry = await page.locator('#race-stage option:checked').textContent();
     await page.bringToFront();
+    const dailyStartBefore = name === 'daily' ? await page.evaluate(dailyStartSnapshot) : null;
     await page.locator('#race-start').tap(); // actual trusted UI touch, no stage manipulation
-    const raceDay = name === 'daily' ? await page.evaluate(() => {
-      const date = new Date();
-      return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
-    }) : null;
     try {
       // On Linux software WebGL, a native 3-second countdown can take >45s
       // wall clock even when the real native game started correctly.
@@ -174,6 +178,12 @@ try {
         JSON.stringify({snapshot,error:String(error)},null,2));
       await page.screenshot({path:path.join(out,name+'-start-timeout.png')});
       throw error;
+    }
+    const dailyStart = dailyStartBefore ? { before: dailyStartBefore, after: await page.evaluate(dailyStartSnapshot) } : null;
+    const raceDay = dailyStart ? dailyRaceDayFromStart(dailyStart) : null;
+    if (dailyStart) {
+      await writeFile(path.join(out, 'daily-start-identity.json'), JSON.stringify({ dailyStart, raceDay }, null, 2));
+      if (!raceDay) throw Error('Daily start identity is ambiguous or unverified');
     }
     wheelBounds = await page.locator('#race-joystick').boundingBox();
     actionBounds = await page.locator('[data-race-action]').evaluateAll(buttons => Object.fromEntries(buttons.map(button => {
@@ -221,7 +231,7 @@ try {
     }
     await steer(null);
     await page.screenshot({ path: path.join(out,name+(terminal?'-terminal.png':'-diagnostic.png')) });
-    const t = { ...(terminal ?? await observed()), stage: name, ...(raceDay ? { raceDay } : {}) };
+    const t = { ...(terminal ?? await observed()), stage: name, ...(dailyStart ? { raceDay, dailyStart } : {}) };
     const saved = JSON.parse(t.saved ?? '{}'), stars = name === 'daily' ? saved.daily?.stars ?? 0 : saved.stars?.[name] ?? 0;
     const terminalButtons = await page.evaluate(() => ['replay', 'next', 'lobby'].filter(id => !document.querySelector('#race-' + id).hidden).map(id => {
       const r = document.querySelector('#race-' + id).getBoundingClientRect();

@@ -19,6 +19,33 @@ export function earnedResumeOrigin(report, storage, buildHash) {
 export function warningVisible(element) {
   return !!element && !element.hidden && !element.classList.contains('hidden') && element.getClientRects().length > 0;
 }
+/** Resolve the daily start date from read-only browser clocks and native config. */
+export function dailyRaceDayFromStart(evidence) {
+  const { before, after } = evidence ?? {};
+  if (!before || !after || after.nativeState !== 'race') return null;
+  const validStamp = stamp => ['wallMs', 'monotonicMs', 'timeOrigin', 'timezoneOffsetMinutes']
+    .every(key => Number.isFinite(stamp[key])) && stamp.monotonicMs >= 0 &&
+    Number.isInteger(stamp.timezoneOffsetMinutes) && Math.abs(stamp.timezoneOffsetMinutes) <= 1440;
+  if (!validStamp(before) || !validStamp(after) || before.timeOrigin !== after.timeOrigin ||
+      before.timezoneOffsetMinutes !== after.timezoneOffsetMinutes) return null;
+  const wallElapsed = after.wallMs - before.wallMs, elapsed = after.monotonicMs - before.monotonicMs;
+  // This bounds evidence only; the runner's existing entry wait is unchanged.
+  // Compare both clocks so a forward wall-clock jump cannot invent another day.
+  if (wallElapsed < 0 || elapsed < 0 || wallElapsed > 180000 || elapsed > 180000 ||
+      Math.abs(wallElapsed - elapsed) > 100) return null;
+  const localTimes = [before, after].map(stamp => stamp.wallMs - stamp.timezoneOffsetMinutes * 60000);
+  if (localTimes.some(ms => !Number.isFinite(new Date(ms).getTime()))) return null;
+  const days = localTimes.map(ms => Math.floor(ms / 86400000));
+  if (days[1] < days[0] || days[1] - days[0] > 1) return null;
+  const candidates = [...new Set(localTimes.map(ms => new Date(ms).toISOString().slice(0, 10)))];
+  const matching = candidates.filter(day => {
+    if (!/^\d{4}-\d{2}-\d{2}$/u.test(day)) return false;
+    const stage = dailyStage(new Date(day + 'T12:00:00'));
+    return ['course', 'map', 'laps', 'diff', 'mode'].every(key => after[key] === stage[key]);
+  });
+  // A month boundary can assign the same course to both dates. Never guess.
+  return matching.length === 1 ? matching[0] : null;
+}
 export function qualifiedVisibleFinish(terminal, savedStars) {
   if (terminal?.phase !== 'finished' || terminal.finished !== true ||
       !Number.isInteger(terminal.place) || terminal.place < 1 || terminal.place > 3 ||
@@ -30,6 +57,9 @@ export function qualifiedVisibleFinish(terminal, savedStars) {
   const daily = terminal.stage === 'daily';
   let stage;
   if (daily) {
+    const startDay = dailyRaceDayFromStart(terminal.dailyStart);
+    if (!startDay || startDay !== terminal.raceDay || ['course', 'map', 'laps', 'diff', 'mode']
+      .some(key => terminal.dailyStart.after[key] !== terminal[key])) return false;
     if (!/^\d{4}-\d{2}-\d{2}$/u.test(terminal.raceDay ?? '')) return false;
     const date = new Date(terminal.raceDay + 'T12:00:00');
     if (!Number.isFinite(date.getTime()) || localDayKey(date) !== terminal.raceDay) return false;
