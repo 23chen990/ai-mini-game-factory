@@ -22,7 +22,7 @@ const snap=()=>page.evaluate(()=>window.__coast.snapshot());
 const shot=async name=>{const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({path:path.relative(RUN,file),sha256:sha(await readFile(file))});};
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(name+' '+passed);};
 const tap=async selector=>{const before=await snap();const action={at:new Date().toISOString(),type:'tap',selector,before};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');action.touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await snap();Object.assign(action,{completedAt:new Date().toISOString(),after,events:after.events?.slice(-2)});};
-async function gesture(name,from,to,cancel=false){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
+async function gesture(name,from,to,cancel=false,capture=true){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel&&capture)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
  await page.evaluate(observePreparedJump);
@@ -141,19 +141,24 @@ try{
  await shot('no-steer-negative-control');
  // Real gestures are separately tested after an ordinary free replay.
  await tap('#co-replay');await page.waitForTimeout(250);
- const a=await gesture('right',[140,420],[250,420]);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
- const b=await gesture('left',[250,420],[140,420]);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
- const fractional=await gesture('short-free-drag',[140,420],[171,420]);
+ const a=await gesture('right',[140,420],[250,420],false,false);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
+ const b=await gesture('left',[250,420],[140,420],false,false);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
+ const fractional=await gesture('short-free-drag',[140,420],[171,420],false,false);
  check('finger-drags-set-fractional-target-not-fixed-lanes',
   fractional.after.laneTarget>fractional.before.laneTarget+.3&&
   fractional.after.laneTarget<fractional.before.laneTarget+.8&&
   Math.abs(fractional.after.lane-fractional.after.laneTarget)<.12,fractional);
+ // Independent snapshots preserve each trusted swipe input without pausing.
+ // With V7's early real collision, per-swipe PNGs consumed the reaction
+ // window. Pause the simulation through the actual UI before taking evidence.
+ if((await snap()).phase==='running')await tap('#co-pause');
+ await shot('trusted-three-swipe-sequence-after-pause');
  // The software-rendered three preceding gestures can reach the first crossing
  // pedestrian. Test ordinary cancellation from an actual new replay, retaining
  // a non-centred origin. Never treat a collision/stun as the same input branch.
  if((await snap()).phase==='running')await tap('#co-pause');
  await tap('#co-replay');
- const cancelOrigin=await gesture('cancel-origin-fractional-drag',[140,420],[171,420]);
+ const cancelOrigin=await gesture('cancel-origin-fractional-drag',[140,420],[171,420],false,false);
  // Log native events passively; never dispatch fake DOM events or set state.
  await page.evaluate(()=>{window.__qaCancellationEvents=[];
   for(const type of ['touchcancel','pointercancel','touchend','pointerup'])
@@ -167,6 +172,10 @@ try{
  check('cancelled-touch-does-not-turn',cancelOrigin.after.laneTarget>.3&&cancelOrigin.after.laneTarget<.8&&
   cancelledDragPassed(c,cancellationEvents),
   {gesture:c,cancellationEvents,cancelOrigin,branch:'running-nonstunned-fractional-target'});
+ // The cancelled gesture was checked from actual native events; take its
+ // picture only after pressing the real pause control.
+ if((await snap()).phase==='running')await tap('#co-pause');
+ await shot('trusted-cancelled-touch-after-pause');
  // Independent legitimate replay. Extra precise steering gestures now consume
  // enough in-game time to reach the first solid barrier: a late arbitrary
  // up-swipe there is a REAL crash, not a touch-handler failure. Start again
