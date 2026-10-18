@@ -45,6 +45,18 @@ export const PRESSURE_GATES=Object.freeze({
   [558,'van',1],[558,'car',2], // left gap after 475m
  ]),
 });
+// V7 authored opening decision waves. Start a real physical risk in ~4-5s,
+// followed by two different hazards while the player is still recovering from
+// the first action. Keep old barrier IDs stable for saved QA target mapping.
+// NEVER spawn dynamically to punish a player, and never close all three lanes.
+// Alternative fish/jump lines are earned using the same authoritative physics.
+export const V7_OPENING_WAVES=Object.freeze({
+ 1:Object.freeze([[35,'barrier',1],[54,'car',2],[63,'car',0]]),
+ 2:Object.freeze([[36,'barrier',1],[53,'car',2],[67,'car',0]]),
+ 3:Object.freeze([[37,'barrier',1],[57,'car',2],[75,'car',0]]),
+ 4:Object.freeze([[38,'barrier',1],[57,'van',2],[77,'car',0]]),
+ 5:Object.freeze([[38,'barrier',1],[57,'van',2],[76,'car',0]]),
+});
 export const BOUNDS = {car:{x:1.5,z:.63},van:{x:1.8,z:.66},pedestrian:{x:.25,z:.25},barrier:{x:.24,z:.59}};
 // Conservative envelopes include approach motion, player body and pedestrian crossing.
 export function unsafeLanes(obstacles,x) { return unsafeFishLanes(obstacles,x); }
@@ -65,7 +77,7 @@ const FISH_PATTERNS = [
  [1,2,0,2,0,1,0,2], // dusk
 ];
 export const LEVELS=definitions.map(d=>{
- const obstacles=[...d.rows,...(PRESSURE_GATES[d.id]??[])].map(([x,kind,lane],i)=>({id:`l${d.id}-o${i}`,x,kind,lane,speed:kind==='car'?1.7:kind==='van'?1.25:0}));
+ const obstacles=[...d.rows,...(PRESSURE_GATES[d.id]??[]),...(V7_OPENING_WAVES[d.id]??[])].map(([x,kind,lane],i)=>({id:`l${d.id}-o${i}`,x,kind,lane,speed:kind==='car'?1.7:kind==='van'?1.25:0}));
  const fish=[];let lastLane=1;const pattern=FISH_PATTERNS[d.id-1];
  const crossesBlocked=(from,to,bad)=>Array.from({length:Math.abs(from-to)+1},(_,j)=>Math.min(from,to)+j).some(l=>bad.has(l));
  for(let x=15,i=0;x<d.distance-10;x+=16,i++){
