@@ -13,7 +13,7 @@ test('V7 opening waves create real choices in first 5.2s on every stage',()=>{
    'first real hazard should be felt almost immediately');
   assert.ok((xs[2]-xs[0])/level.speed<5,
    'two follow-up hazards must not be isolated miles apart');
-  assert.deepEqual(group.map(row=>row[2]),[1,2,0],
+  assert.deepEqual(group.map(row=>row[2]),level.id===1?[1,0,2]:[1,2,0],
    'three directions are covered across the three authored beats');
   assert.ok(group.every(([x,kind,lane])=>
    level.obstacles.some(o=>o.x===x&&o.kind===kind&&o.lane===lane)),

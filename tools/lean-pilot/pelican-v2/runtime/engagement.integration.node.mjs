@@ -69,7 +69,11 @@ function driver(dt,level){
  while(r.phase==='running'){
   if(decisions++%Math.round(.12/dt)===0){
    const close=r.obstacles.filter(o=>!o.hit&&!o.passed&&o.x-r.distance>-(BOUNDS[o.kind].x+.75)&&o.x-r.distance<65);
-   const blocked=lane=>close.some(o=>Math.abs(o.z-LANES[lane])<.8&&(o.x-r.distance)/(level.speed+(o.speed||0))<=3);
+   // A crossing rider must pre-commit before the next lane becomes fatal.
+    // Previously a 3s-only lookahead made this bot drag through the
+    // 112m centre barrier while still between lanes after a V7 early beat.
+    const blocked=lane=>close.some(o=>Math.abs(o.z-LANES[lane])<.8&&
+      (o.x-r.distance)/(level.speed+(o.speed||0))<=3.6);
    const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>1&&f.x-r.distance<35);
    let want=r.laneIndex;
    if(blocked(want)){const safe=[0,1,2].filter(l=>!blocked(l));want=(fish&&safe.includes(fish.lane)?fish.lane:safe.sort((a,b)=>Math.abs(a-r.laneIndex)-Math.abs(b-r.laneIndex))[0])??want;}
@@ -115,7 +119,7 @@ function masteryDrive(level,dt,jumpDistance){
    const ahead=r.obstacles.filter(o=>!o.hit&&!o.passed&&o.x-r.distance>-(BOUNDS[o.kind].x+.75)&&o.x-r.distance<65)
     .sort((a,b)=>(a.x-r.distance)/(level.speed+(a.speed||0))-(b.x-r.distance)/(level.speed+(b.speed||0)));
    const seconds=o=>(o.x-r.distance)/(level.speed+(o.speed||0));
-   const blocked=lane=>ahead.some(o=>o.kind!=='barrier'&&Math.abs(o.z-LANES[lane])<.8&&seconds(o)<2.8&&seconds(o)>-.3);
+   const blocked=lane=>ahead.some(o=>o.kind!=='barrier'&&Math.abs(o.z-LANES[lane])<.8&&seconds(o)<3.4&&seconds(o)>-.3);
    const barrier=ahead.find(o=>o.kind==='barrier'&&o.x-r.distance<55&&o.x-r.distance>0&&!blocked(o.lane));
    const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>2&&f.x-r.distance<31);
    let want=r.laneIndex;
