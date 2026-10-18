@@ -7,7 +7,7 @@ test('first crossing recovery leaves at least 1.5 seconds before a same-lane fat
  const r=newRun(1);
  // Verify the old genuine crossing/vehicle spacing independently of the
  // newly authored V7 opening wave (covered by separate physical tests).
- r.obstacles=r.obstacles.filter(o=>o.x>=75);steerTo(r,1.9);
+ r.obstacles=r.obstacles.filter(o=>!/^l1-o1[0-2]$/.test(o.id));steerTo(r,1.9);
  for(let i=0;i<2400&&r.phase==='running'&&r.stun===0;i++)advance(r,1/120);
  assert.ok(r.stun>0);assert.equal(r.events.at(-1).type,'pedestrian-hit');
  while(r.stun>0)advance(r,1/120);
