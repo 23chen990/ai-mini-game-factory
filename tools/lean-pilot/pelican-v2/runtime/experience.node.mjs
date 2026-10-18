@@ -22,7 +22,13 @@ test('every reward fish follows its exact barrier and has an ordinary safe detou
  assert.equal(new Set(LEVELS.map(l=>l.subtitle)).size,5);
 });
 test('first authored jump clears the exact barrier and catches its actual visible +7 prize',()=>{
- const r=newRun(1),b=r.obstacles.find(o=>o.kind==='barrier'),prize=r.fishes.find(f=>f.sourceObstacleId===b.id);while(r.distance<b.x-3)advance(r,1/120);input(r,'jump');while(r.distance<prize.x+2&&r.phase==='running')advance(r,1/120);assert.equal(r.phase,'running');assert.equal(r.hits,0);assert.equal(r.jumpedBarriers,1);assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.objectId===b.id&&e.jumped));assert.ok(r.events.some(e=>e.type==='fish-caught'&&e.objectId===prize.id&&e.golden&&e.bonus));assert.ok(Math.abs(r.lane-LANES[1])<.01);
+ const r=newRun(1),b=r.obstacles.find(o=>o.kind==='barrier'&&o.x===35),prize=r.fishes.find(f=>f.sourceObstacleId===b.id);
+ assert.ok(b&&prize,'V7 first physical obstacle has a genuine earned gold reward');
+ for(let n=0;n<1200&&r.phase==='running'&&r.distance<b.x-3;n++)advance(r,1/120);
+ assert.equal(r.phase,'running','must reach the real jump alive, never spin forever after death');
+ input(r,'jump');
+ for(let n=0;n<1200&&r.phase==='running'&&r.distance<prize.x+2;n++)advance(r,1/120);
+ assert.equal(r.phase,'running');assert.equal(r.hits,0);assert.equal(r.jumpedBarriers,1);assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.objectId===b.id&&e.jumped));assert.ok(r.events.some(e=>e.type==='fish-caught'&&e.objectId===prize.id&&e.golden&&e.bonus));assert.ok(Math.abs(r.lane-LANES[1])<.01);
 });
 test('ordinary catches and perfect safe detours do not counterfeit a three-star jump',()=>{
  for(const jumps of [0,1]){const r=newRun(1);r.phase='finished';r.reason='complete';r.count=18;r.gold=3;r.elapsed=40;r.jumpedBarriers=jumps;r.bestStreak=4;settle(newSave(),r);assert.equal(r.stars,jumps?3:2);}
