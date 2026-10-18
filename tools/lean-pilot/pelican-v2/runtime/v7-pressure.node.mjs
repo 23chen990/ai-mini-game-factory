@@ -22,6 +22,20 @@ test('V7 opening waves create real choices in first 5.2s on every stage',()=>{
    'fish path and visible safe lanes remain structurally possible');
  }
 });
+test('V7 tight opening has a real, readable left-then-centre escape at 30 and 60Hz',()=>{
+ for(const fps of [30,60]){
+  const r=newRun(1,{seed:20261017});
+  advance(r,.5);input(r,'left');
+  for(let n=0;n<1200&&r.phase==='running'&&r.distance<45;n++)advance(r,1/fps);
+  assert.equal(r.phase,'running','first real barrier must be avoidable');
+  input(r,'right');
+  for(let n=0;n<1200&&r.phase==='running'&&r.distance<96;n++)advance(r,1/fps);
+  assert.equal(r.phase,'running','returning after the real barrier must survive the left car and right car');
+  assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o10'&&!e.jumped));
+  assert.ok(r.events.some(e=>e.type==='obstacle-avoided'&&e.objectId==='l1-o11'));
+  assert.ok(r.events.some(e=>e.type==='obstacle-avoided'&&e.objectId==='l1-o12'));
+ }
+});
 test('V7 no-input player now really collides early, but not via a synthetic fail',()=>{
  for(const stage of LEVELS){
   const run=newRun(stage.id,{seed:123});
