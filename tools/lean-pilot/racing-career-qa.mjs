@@ -10,6 +10,7 @@ import { createHash } from 'node:crypto';
 import { z } from 'zod';
 import { createRequire } from 'node:module';
 import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish, needsVisibleItemPickup, visibleItemSteer } from './racing-visible-policy.mjs';
+import { actionTouchPoints, planWheelGesture } from './racing-wheel-qa-input.mjs';
 const require = createRequire(import.meta.url), testRequire = createRequire(require.resolve('@playwright/test'));
 const playwrightRequire = createRequire(testRequire.resolve('playwright'));
 const { PNG } = require(path.join(path.dirname(playwrightRequire.resolve('playwright-core/package.json')), 'lib/utilsBundle.js'));
@@ -53,12 +54,14 @@ const errors = [], races = [], controls = [];
 let startIndex = 0;
 page.on('pageerror', e => errors.push(e.message));
 page.on('dialog', dialog => dialog.accept());
-let touching = null, buttons;
+let touching = null, wheelBounds, actionBounds, wheelAngle = null;
+let activeActionNames = [];
 async function steer(direction) {
   if (direction === touching) return;
-  if (touching) await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-  if (direction) await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ ...buttons[direction], id: 1, radiusX: 7, radiusY: 7, force: 1 }] });
+  const plan = planWheelGesture(direction, wheelBounds, actionTouchPoints(activeActionNames, actionBounds), wheelAngle);
+  for (const event of plan.events) await cdp.send('Input.dispatchTouchEvent', event);
   touching = direction;
+  wheelAngle = plan.angle;
   controls.push({ at: Date.now(), direction });
 }
 function minimapPolicy(radius) {
@@ -110,10 +113,12 @@ async function observed(full = false) {
       place: g.standings.indexOf(p) + 1, speed: p?.speedKmh ?? 0, lat: p?.lat ?? 0,
       spinSec: p?.spin ?? 0, wrongWaySec: p?.wrongWay ?? 0, forwardHeadingDot: p ? Math.cos(p.h - p.proj.hd) : null,
       firstFinish: g.firstFinish, racers: g.racers.map(r => ({ name: r.name, isPlayer: r.isPlayer, skill: r.skill ?? null,
-        finished: !!r.finished, finishTime: r.finishTime, progress: r.progress })),
+        finished: !!r.finished, finishTime: r.finishTime, progress: r.progress,
+        assetIdentity: r.model.userData.assetIdentity,
+        wheelAngles: full ? r.model.userData.wheels.map(w => ({ front: w.front, spin: w.spin.rotation.x, steer: w.steer.rotation.y })) : undefined })),
       throttle: p?.throttle ?? null, stats: { ...p?.stats }, items: [...(p?.items ?? [])],
       roadHint: document.querySelector('#race-road-hint')?.textContent ?? '',
-      goal: document.querySelector('#race-live-goal').textContent,
+      goal: document.querySelector('#race-compact-goal').textContent,
       feedback: document.querySelector('#msgs').textContent,
       events: full ? window.__RACE_EVIDENCE__.events : window.__RACE_EVIDENCE__.events.filter(e => ['driftEnd', 'nitro', 'crash', 'pad', 'item'].includes(e.type)).slice(-8),
       heading: document.querySelector('#race-heading').textContent,
@@ -166,7 +171,11 @@ try {
       await page.screenshot({path:path.join(out,name+'-start-timeout.png')});
       throw error;
     }
-    buttons = await page.evaluate(() => Object.fromEntries(['left', 'right'].map(d => { const r = document.querySelector('#race-' + d).getBoundingClientRect(); return [d, { x: r.x + r.width / 2, y: r.y + r.height / 2 }]; })));
+    wheelBounds = await page.locator('#race-joystick').boundingBox();
+    actionBounds = await page.locator('[data-race-action]').evaluateAll(buttons => Object.fromEntries(buttons.map(button => {
+      const rect = button.getBoundingClientRect();
+      return [button.dataset.raceAction, { x: rect.x, y: rect.y, width: rect.width, height: rect.height }];
+    })));
     const trace = [], captures = new Set(); let terminal = null, lastLog = 0;
     const diagnosticSeconds = Math.max(0,Number(process.env.RACE_QA_DIAGNOSTIC_RACE_SECS ?? 0));
     let diagnosticStop = false;
@@ -178,7 +187,7 @@ try {
     console.log(JSON.stringify({ stage: index + 1, entry, status: 'DRIVING' }));
     while (Date.now() < deadline) {
       let policy = recoverVisibleHeading(await page.evaluate(minimapPolicy, visibleLookahead), visibleMemory, Date.now());
-      const seekBox = isItemRace && needsVisibleItemPickup(await page.locator('#race-live-goal').textContent());
+      const seekBox = isItemRace && needsVisibleItemPickup(await page.locator('#race-compact-goal').textContent());
       if (!seekBox) box = null;
       if (seekBox && Date.now() - lastBoxScan > 350) {
         lastBoxScan = Date.now();
@@ -223,7 +232,17 @@ try {
     await writeFile(path.join(out, 'checkpoint.json'), JSON.stringify({ buildHash: build.buildHash, races, errors }, null, 2));
     await context.storageState({ path: path.join(out, 'natural-earned-storage.json') });
     console.log(JSON.stringify({ stage: name, status: race.status, finished: t.finished, time: t.finishTime, place: t.place, stars, result: t.result, resultStats: t.resultStats }));
-    if (race.status !== 'PASS') break;
+    if (race.status !== 'PASS') {
+      if (terminal && count === 1) {
+        // Capture recovery from a real loss; campaign status stays BLOCKED.
+        await page.locator('#race-replay').tap();
+        await page.waitForFunction(() => window.game.state === 'race', null, { timeout: 45000 });
+        await page.screenshot({ path: path.join(out, 'loss-replay.png') });
+        await writeFile(path.join(out, 'loss-replay.json'), JSON.stringify(await observed(true), null, 2));
+        await page.locator('#race-pause').tap();
+      }
+      break;
+    }
     if (index === count - 1) {
       await page.locator('#race-replay').tap();
       await page.waitForFunction(() => window.game.state === 'race', null, { timeout: 45000 });

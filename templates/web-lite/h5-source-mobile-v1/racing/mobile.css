@@ -463,3 +463,180 @@ html[data-race-platform="touch"] #race-joystick{max-height:43vh}
   #race-kit #race-fuel-gauge{width:135px}
   #race-kit .race-actions #race-star-ad{padding:9px 12px;min-height:40px}
 }
+
+/* One-home campaign rail: preserve the native select for keyboard, assistive
+ * technology and automation while the visible snap row carries stage status. */
+.race-visually-hidden,
+.race-native-stage-select {
+  position:absolute!important;width:1px!important;height:1px!important;
+  margin:-1px!important;padding:0!important;overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;
+  white-space:nowrap!important;border:0!important;
+}
+#race-kit .race-native-stage-select:focus-visible {
+  position:fixed!important;left:var(--race-left)!important;top:var(--race-top)!important;
+  z-index:40;width:min(290px,calc(100vw - var(--race-left) - var(--race-right)))!important;
+  height:44px!important;margin:0!important;padding:4px 12px!important;
+  clip:auto!important;clip-path:none!important;outline:3px solid #ffd581!important;
+  border-radius:9px;
+}
+#race-stage-rail {
+  position:absolute;z-index:32;left:var(--race-left);right:var(--race-right);
+  bottom:var(--race-bottom);height:80px;display:grid;grid-template-rows:12px 1fr;
+  gap:4px;padding:0 2px 4px;pointer-events:auto;color:#eaf8ff;
+}
+.race-stage-rail-meta {
+  display:flex;justify-content:space-between;align-items:center;padding:0 5px;
+  color:#b5d3dd;font:800 9px/1 system-ui;letter-spacing:1.8px;
+}
+.race-stage-choices {
+  display:flex;min-width:0;gap:8px;overflow-x:auto;overflow-y:hidden;
+  overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-color:#8bd8dc72 #08203480;
+  scrollbar-width:thin;
+}
+#race-kit .race-stage-choice,
+#race-kit .race-daily-choice {
+  position:relative;flex:0 0 clamp(92px,10vw,120px);min-width:92px;min-height:56px;
+  display:grid;grid-template-columns:1fr auto;grid-template-rows:18px 16px 14px;
+  align-content:center;align-items:center;gap:0 5px;padding:4px 9px;
+  border:1px solid #9dc5d94a;border-radius:12px;scroll-snap-align:start;
+  background:linear-gradient(155deg,#102f47e8,#07192be8);color:#c4dce5;
+  box-shadow:0 4px 12px #0005;text-align:left;touch-action:pan-x;
+}
+#race-kit .race-daily-choice { flex-basis:clamp(112px,11vw,136px);min-width:112px; }
+#race-kit .race-stage-choice:before,
+#race-kit .race-daily-choice:before {
+  content:"";position:absolute;left:8px;right:8px;top:0;height:2px;
+  border-radius:0 0 2px 2px;background:#6dc2c473;
+}
+#race-kit .race-stage-choice .race-stage-number,
+#race-kit .race-daily-choice .race-stage-number {
+  grid-column:1;grid-row:1;color:#f5fbff;font:850 13px/1 system-ui;
+  font-variant-numeric:tabular-nums;
+}
+#race-kit .race-stage-choice .race-stage-name,
+#race-kit .race-daily-choice .race-stage-name {
+  grid-column:1 / -1;grid-row:2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  color:#bad1dc;font:650 10px/1.2 -apple-system,BlinkMacSystemFont,system-ui;
+}
+#race-kit .race-stage-choice .race-stage-state,
+#race-kit .race-daily-choice .race-stage-state {
+  grid-column:1 / -1;grid-row:3;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  color:#8fe6d5;font:750 9px/1 system-ui;letter-spacing:.25px;
+}
+#race-kit .race-stage-choice[aria-pressed="true"],
+#race-kit .race-daily-choice[aria-pressed="true"] {
+  border-color:#ffe094;background:linear-gradient(145deg,#24445a,#102739);
+  box-shadow:0 0 0 2px #ffd87842,0 5px 17px #0008;color:#fff;
+}
+#race-kit .race-stage-choice[aria-pressed="true"]:before,
+#race-kit .race-daily-choice[aria-pressed="true"]:before {background:#ffd878;}
+#race-kit .race-stage-choice[data-star-locked="true"] {border-color:#e7b96c70;}
+#race-kit .race-stage-choice[data-star-locked="true"] .race-stage-state {color:#ffd27c;}
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] {
+  border-color:#8295a13d;background:#0a1928d9;color:#788f9c;
+}
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-number,
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-name,
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-state {
+  color:#8095a0;
+}
+#race-kit .race-stage-choice:disabled {opacity:.8;cursor:default;}
+#race-kit .race-daily-choice:disabled {opacity:.58;cursor:default;}
+#race-kit .race-stage-choice:focus-visible,
+#race-kit .race-daily-choice:focus-visible {outline-color:#ffe094;outline-offset:2px;}
+
+/* Landscape home and settlement leave the right 57% unobstructed for the car. */
+@media (min-width:650px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-panel,
+  #race-kit[data-phase="finished"] #race-panel {
+    left:clamp(18px,3vw,44px);top:calc((100% - var(--race-bottom) - 96px + var(--race-top))/2);
+    transform:translateY(-50%);width:min(40vw,575px);
+    max-height:calc(100% - var(--race-top) - var(--race-bottom) - 96px);
+    padding:clamp(13px,1.8vw,26px);text-align:left;border-radius:21px;
+  }
+  #race-kit[data-phase="ready"] #race-guide {justify-content:flex-start;gap:10px;margin:0 0 10px;}
+  #race-kit[data-phase="ready"] #race-guide .race-guide-keys span {
+    width:34px;height:34px;border-radius:50%;font-size:26px;line-height:1;
+  }
+  #race-kit[data-phase="ready"] #race-guide p {font-size:12px;line-height:1.3;}
+  #race-kit[data-phase="ready"] #race-heading {margin:5px 0 9px;font-size:clamp(27px,4vh,38px);}
+  #race-kit[data-phase="ready"] #race-ready {justify-content:flex-start;gap:6px 9px;margin:0 0 8px;}
+  #race-kit[data-phase="ready"] #race-stage-tag {margin-right:auto;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #race-kit[data-phase="ready"] #race-course-card {justify-content:flex-start;min-height:64px;margin:0 0 7px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:12px;margin:4px 0 7px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {justify-content:flex-start;gap:8px;margin-bottom:8px;}
+  #race-kit[data-phase="ready"] .race-actions {justify-content:flex-start;flex-wrap:wrap;}
+  #race-kit[data-phase="ready"] .race-actions button {min-height:44px;}
+  #race-kit[data-phase="finished"] #race-heading {text-align:left;}
+  #race-kit[data-phase="finished"] #race-panel {
+    top:50%;max-height:calc(100% - var(--race-top) - var(--race-bottom) - 18px);
+  }
+  #race-kit[data-phase="finished"] #race-result-copy {text-align:left;}
+  #race-kit[data-phase="finished"] #race-result-stats {justify-content:flex-start;gap:clamp(12px,2vw,24px);}
+  #race-kit[data-phase="finished"] #race-results {max-height:130px;}
+}
+
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-panel {padding:10px 14px;}
+  #race-kit[data-phase="ready"] #race-heading {margin:2px 0 5px;font-size:clamp(21px,6vh,26px);}
+  #race-kit[data-phase="ready"] #race-guide {gap:8px;margin:0 0 6px;}
+  #race-kit[data-phase="ready"] #race-guide .race-guide-keys span {width:29px;height:29px;font-size:22px;}
+  #race-kit[data-phase="ready"] #race-guide p {font-size:10px;}
+  #race-kit[data-phase="ready"] #race-ready {gap:4px 7px;margin-bottom:4px;}
+  #race-kit[data-phase="ready"] #race-stage-tag {max-width:115px;font-size:10px;}
+  #race-kit[data-phase="ready"] #race-course-card {min-height:46px;margin-bottom:3px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:11px;margin:2px 0 4px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {gap:6px;margin-bottom:4px;font-size:10px;}
+  #race-kit[data-phase="ready"] .race-actions {gap:6px;}
+  #race-kit[data-phase="ready"] .race-actions button {min-height:44px;padding:9px 17px;}
+  #race-kit[data-phase="ready"] #race-note {margin-top:3px;}
+}
+
+@media (max-width:649px) and (orientation:landscape) {
+  #race-stage-rail {left:max(8px,env(safe-area-inset-left));right:max(8px,env(safe-area-inset-right));}
+}
+
+/* Exact Chromium attempt4 regression: the inherited phone briefing grid and
+ * platform-prefixed desktop width otherwise override the new single-home view. */
+@media (min-width:650px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel,
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #race-panel {
+    width:min(40vw,575px);padding:20px 24px;
+  }
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {
+    display:block;grid-template-columns:none;grid-template-areas:none;
+  }
+}
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {padding:9px 13px;}
+  #race-kit[data-phase="ready"] #race-panel>.race-eyebrow {font-size:8px;letter-spacing:1.5px;}
+  #race-kit[data-phase="ready"] #race-guide {display:none;}
+  #race-kit[data-phase="ready"] #race-course-map {flex:0 0 80px;min-width:80px;max-width:80px;}
+  #race-kit[data-phase="ready"] #race-course-card {min-height:44px;padding:4px 7px;gap:8px;}
+  #race-kit[data-phase="ready"] .race-track-diagram {height:42px;}
+  #race-kit[data-phase="ready"] .race-course-info strong {font-size:13px;}
+  #race-kit[data-phase="ready"] .race-course-info small {font-size:9px;}
+  #race-kit[data-phase="ready"] #race-ready {margin:3px 0 4px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {gap:4px;margin-bottom:5px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:10px;line-height:1.25;margin:3px 0;}
+}
+
+/* Settlement is the existing result, not a second race briefing. */
+#race-kit[data-phase="finished"] #race-course-card {display:none;}
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #race-panel {padding:10px 12px;}
+  #race-kit[data-phase="finished"] .race-actions {gap:6px;}
+  #race-kit[data-phase="finished"] .race-actions button {flex:1;min-width:0;min-height:44px;padding:8px 6px;font-size:12px;}
+}
+@media (min-width:650px) and (max-height:375px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {padding:7px 13px;}
+  #race-kit[data-phase="ready"] #race-heading {font-size:21px;margin:2px 0 3px;}
+  #race-kit[data-phase="ready"] .race-track-diagram {height:38px;}
+}
+@media (min-width:650px) and (max-height:375px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-stage-tag {max-width:80px;}
+  #race-kit[data-phase="ready"] #race-panel>.race-eyebrow {display:none;}
+  #race-kit[data-phase="ready"] #race-course-feel {display:none;}
+}

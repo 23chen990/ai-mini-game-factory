@@ -27,12 +27,12 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
   <div id="race-compact-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="按住方向盘圆环旋转，松手回正"><div class="race-stick-track"><i id="race-stick-knob"><span class="race-wheel-hub"></span><span class="race-wheel-spoke spoke-top"></span><span class="race-wheel-spoke spoke-left"></span><span class="race-wheel-spoke spoke-right"></span></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING / CAREER</div><h1 id="race-heading">极速飞驰</h1><button id="race-export" type="button" aria-label="导出本机试玩数据JSON">导出数据 ↓</button>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手转动方向盘 · 右手漂移 / 小喷 / 氮气</p></div>
-    <div id="race-ready"><label for="race-stage">关卡</label><select id="race-stage" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="30" aria-valuenow="30" hidden>${'<span></span>'.repeat(6)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +10</button></div>
+    <div id="race-ready"><label class="race-visually-hidden" for="race-stage">关卡</label><select id="race-stage" class="race-native-stage-select" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label for="race-skin">车身</label><select id="race-skin" aria-label="已解锁车身颜色"></select></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="30" aria-valuenow="30" hidden>${'<span></span>'.repeat(6)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +10</button></div>
     <div id="race-result-stars" hidden aria-label="本场与历史星级"></div><p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
     <div id="race-settings" hidden><label for="race-steering-sens">转向</label><select id="race-steering-sens" aria-label="方向盘转向灵敏度"><option value="calm">柔和</option><option value="normal">标准</option><option value="sharp">灵敏</option></select><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">优先流畅，暂停时可调整画质</small></div>
     <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-star-ad" class="race-secondary" hidden type="button">看广告永久解锁本关</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-retry-ad" class="race-secondary" hidden>看广告 · 下局额外氮气</button><button id="race-next" class="race-secondary" hidden>下一场 →</button><button id="race-lobby" class="race-secondary" hidden>返回选关</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
     <p id="race-note"></p>
-  </div><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>请使用横屏</b><span>横屏后继续比赛</span></aside>`;
+  </div><nav id="race-stage-rail" aria-label="主线关卡" hidden><div class="race-stage-rail-meta"><span>MAIN CAMPAIGN</span><span>01 — 30</span></div><div class="race-stage-choices" role="group" aria-label="选择主线关卡"></div></nav><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>请使用横屏</b><span>横屏后继续比赛</span></aside>`;
 document.body.append(root);
 root.dataset.platform=mobile?'touch':'desktop';
 document.documentElement.dataset.racePlatform=root.dataset.platform;
@@ -91,6 +91,58 @@ function fuelView() {
   $('fuel-ad').disabled=career.adBusy;
   $('star-ad').disabled=loading||!policyReady||!career.canOfferGateAd(gateSelectionIndex);
 }
+function renderStageRail() {
+  const choices = $('stage-rail').querySelector('.race-stage-choices');
+  choices.replaceChildren();
+  for (const option of [...$('stage').options].filter(option => option.value !== 'daily')) {
+    const index = Number(option.value), stage = STAGES[index], gate = career.gateStatus(index);
+    const selected = option.value === $('stage').value;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'race-stage-choice';
+    button.dataset.stageValue = option.value;
+    button.disabled = option.disabled;
+    button.dataset.locked = String(!gate.unlocked);
+    button.dataset.starLocked = String(gate.starLocked);
+    button.setAttribute('aria-label', option.textContent);
+    button.setAttribute('aria-pressed', String(selected));
+    button.classList.toggle('selected', selected);
+    const number = document.createElement('span');
+    number.className = 'race-stage-number';
+    number.textContent = stage.id;
+    const name = document.createElement('span');
+    name.className = 'race-stage-name';
+    name.textContent = stage.name;
+    const state = document.createElement('span');
+    state.className = 'race-stage-state';
+    const stars = career.progress.stars[stage.id] ?? 0;
+    state.textContent = gate.unlocked ? '★'.repeat(stars) + '☆'.repeat(3 - stars) :
+      gate.starLocked ? '🔒 ' + gate.earned + '/' + gate.required + '★' : '🔒 未解锁';
+    button.append(number, name, state);
+    choices.append(button);
+  }
+  const dailyOption = [...$('stage').options].find(option => option.value === 'daily');
+  const selected = dailyOption.value === $('stage').value;
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = 'race-daily-choice';
+  button.dataset.stageValue = dailyOption.value;
+  button.disabled = dailyOption.disabled;
+  button.setAttribute('aria-label', dailyOption.textContent);
+  button.setAttribute('aria-pressed', String(selected));
+  button.classList.toggle('selected', selected);
+  const number = document.createElement('span');
+  number.className = 'race-stage-number';
+  number.textContent = '📅';
+  const name = document.createElement('span');
+  name.className = 'race-stage-name';
+  name.textContent = '每日挑战';
+  const state = document.createElement('span');
+  state.className = 'race-stage-state';
+  state.textContent = dailyOption.textContent;
+  button.append(number, name, state);
+  choices.append(button);
+}
 function renderLobby() {
   if(gateSelectionIndex!==null && !career.gateStatus(gateSelectionIndex).starLocked)
     gateSelectionIndex=null;
@@ -121,6 +173,7 @@ function renderLobby() {
   dailyOption.textContent = career.canDaily() ? '📅 每日挑战 ' + '★'.repeat(earnedToday) : '🔒 每日挑战（通过第4关解锁）';
   $('stage').append(dailyOption);
   $('stage').value = locked ? String(gateSelectionIndex) : career.dailySnapshot ? 'daily' : String(career.index);
+  renderStageRail();
   root.dataset.courseId = stage.course;
   root.dataset.previewRevision = 'racing-v91-wheel-hud';
   const courseInfo=careerCourseDetails(stage.course.slice(-2));
@@ -173,6 +226,7 @@ function releaseInput() {
 }
 function display(next) {
   phase = next; root.dataset.phase = next; root.dataset.stageKind = career.stage.kind;
+  $('stage-rail').hidden = next !== 'ready';
   const racing = next === 'race' || next === 'countdown';
   $('panel').hidden = racing; $('controls').hidden = !racing; $('pause').hidden = !racing;
   $('start').hidden = next !== 'ready' || gateSelectionIndex!==null;
@@ -359,6 +413,12 @@ $('stage').addEventListener('change', () => {
   const selected=value==='daily'?career.setDaily():career.setStage(index);
   if(!selected){renderLobby();return;}
   renderLobby();loadTrack(career.stage.map,false);
+});
+$('stage-rail').addEventListener('click', event => {
+  const choice = event.target.closest('button[data-stage-value]');
+  if (!choice || choice.disabled || phase !== 'ready' || choice.dataset.stageValue === $('stage').value) return;
+  $('stage').value = choice.dataset.stageValue;
+  $('stage').dispatchEvent(new window.Event('change', { bubbles: true }));
 });
 $('star-ad').addEventListener('click',async()=>{
   const index=gateSelectionIndex;

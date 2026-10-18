@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "极速飞驰",
+  "assetComposition": {
+    "chassis": "Original Tencent Hunyuan v3.1 chassis geometry",
+    "wheelGeometry": "Locally hand-authored mechanical retopology",
+    "sourceWheelGeometryRetained": false
+  },
+  "source": {
+    "path": "runs/h5-qq-mobile-20261013/workspace/assets/original-racer/source/hunyuan-v31-source.glb",
+    "sha256": "8af8f5579f645017ba3d9120210579d2db20008c3f815de856cb44411e2a9171",
+    "triangles": 49938,
+    "vertices": 38925
+  },
+  "output": {
+    "path": "templates/web-lite/h5-source-mobile-v1/racing/assets/original-racer.glb",
+    "sha256": "d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083",
+    "bytes": 1270084,
+    "triangles": 17473,
+    "vertices": 17685,
+    "length": 4.8,
+    "uniformScale": 4.136739439144353,
+    "axes": "+Y-up/+Z-nose",
+    "groundY": 0
+  },
+  "toolchain": {
+    "gltfTransform": "4.5.1",
+    "meshoptimizer": "1.2.0",
+    "meshoptimizerLicense": "MIT",
+    "meshoptimizerPackageIntegrity": "sha512-davRZeIJbxJrE24cwQle7ZDsxjdk/OphNOV83oX+efQinyoHY9Jcyz3MHbaoG0qySZajldGztNZ1RN/T19PZsg==",
+    "meshoptimizerLicenseFileSha256": "f03037ca7bad1e3eb7f4a63fa6084a8baabd5ba30d3c239a9a7f35705d873e26",
+    "textureEncoder": "sharp 0.35.5"
+  },
+  "parameters": {
+    "simplifyRatio": 0.32,
+    "simplifyError": 0.02,
+    "textureSize": 1024,
+    "binaryLimit": 1572864,
+    "triangleLimit": 18000,
+    "wheelRegionRadius": 0.12,
+    "wheelRimRadius": 0.075,
+    "bodyPaintMinSourceTexelChannel": 170,
+    "bodyPaintMaxSourceTexelChroma": 55,
+    "wheelSeedReason": "Source inner wheel rings near y=.08 and front z=.345/rear z=-.34; lateral centers derive from the inner source ring extent, not the larger fender bounding box."
+  },
+  "wheelRetopology": {
+    "radialSegments": 48,
+    "tireProfileSegments": 10,
+    "tireMajorRadius": 0.33,
+    "tireMinorRadius": 0.07,
+    "tireWidth": 0.28,
+    "tireOuterRadius": 0.4,
+    "tireMaterial": {
+      "color": [
+        0.006,
+        0.008,
+        0.012,
+        1
+      ],
+      "metallic": 0,
+      "roughness": 0.85
+    },
+    "rimOuterRadius": 0.28,
+    "spokeCount": 10,
+    "hubRadius": 0.09,
+    "rimMaterial": {
+      "color": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallic": 0.85,
+      "roughness": 0.25
+    },
+    "wheelAxis": "X",
+    "sourceWheelGeometryRetained": false
+  },
+  "materials": [
+    {
+      "name": "BodyPaint",
+      "triangles": 7222,
+      "baseColorTexture": true,
+      "normalTexture": true,
+      "metallicRoughnessTexture": true,
+      "factor": {
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 1,
+        "roughness": 1
+      }
+    },
+    {
+      "name": "Glass",
+      "triangles": 929,
+      "baseColorTexture": true,
+      "normalTexture": true,
+      "metallicRoughnessTexture": true,
+      "factor": {
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 1,
+        "roughness": 1,
+        "doubleSided": true
+      }
+    },
+    {
+      "name": "Tire",
+      "triangles": 3840,
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "metallicRoughnessTexture": false,
+      "factor": {
+        "color": [
+          0.006,
+          0.008,
+          0.012,
+          1
+        ],
+        "metallic": 0,
+        "roughness": 0.85
+      }
+    },
+    {
+      "name": "Rim",
+      "triangles": 3168,
+      "baseColorTexture": false,
+      "normalTexture": false,
+      "metallicRoughnessTexture": false,
+      "factor": {
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 0.85,
+        "roughness": 0.25
+      }
+    },
+    {
+      "name": "Headlight",
+      "triangles": 53,
+      "baseColorTexture": true,
+      "normalTexture": true,
+      "metallicRoughnessTexture": true,
+      "factor": {
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 1,
+        "roughness": 1
+      }
+    },
+    {
+      "name": "Taillight",
+      "triangles": 8,
+      "baseColorTexture": true,
+      "normalTexture": true,
+      "metallicRoughnessTexture": true,
+      "factor": {
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 1,
+        "roughness": 1
+      }
+    },
+    {
+      "name": "Trim",
+      "triangles": 2253,
+      "baseColorTexture": true,
+      "normalTexture": true,
+      "metallicRoughnessTexture": true,
+      "factor": {
+        "color": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "metallic": 1,
+        "roughness": 1
+      }
+    }
+  ],
+  "triangleCounts": {
+    "Chassis": {
+      "BodyPaint": 7222,
+      "Glass": 929,
+      "Headlight": 53,
+      "Taillight": 8,
+      "Trim": 2253
+    },
+    "Wheel_FL": {
+      "Tire": 960,
+      "Rim": 792
+    },
+    "Wheel_FR": {
+      "Tire": 960,
+      "Rim": 792
+    },
+    "Wheel_RL": {
+      "Tire": 960,
+      "Rim": 792
+    },
+    "Wheel_RR": {
+      "Tire": 960,
+      "Rim": 792
+    }
+  },
+  "wheels": [
+    {
+      "name": "Wheel_FL",
+      "sourcePosition": [
+        -0.22538749873638153,
+        0.08,
+        0.345
+      ],
+      "rootPosition": [
+        -0.9058776859190256,
+        0.3309393481557319,
+        1.1730882346909635
+      ],
+      "sourceRegion": {
+        "seed": {
+          "y": 0.08,
+          "z": 0.345
+        },
+        "innerSamples": 1779,
+        "sourceTrianglesRemoved": 3880
+      },
+      "geometry": "hand-authored-mechanical",
+      "sourceTrianglesRetained": 0,
+      "componentMaterials": [
+        "Tire",
+        "Rim"
+      ]
+    },
+    {
+      "name": "Wheel_FR",
+      "sourcePosition": [
+        0.2199525088071823,
+        0.08,
+        0.345
+      ],
+      "rootPosition": [
+        0.9363778871152788,
+        0.3309393481557319,
+        1.1730882346909635
+      ],
+      "sourceRegion": {
+        "seed": {
+          "y": 0.08,
+          "z": 0.345
+        },
+        "innerSamples": 2069,
+        "sourceTrianglesRemoved": 4217
+      },
+      "geometry": "hand-authored-mechanical",
+      "sourceTrianglesRetained": 0,
+      "componentMaterials": [
+        "Tire",
+        "Rim"
+      ]
+    },
+    {
+      "name": "Wheel_RL",
+      "sourcePosition": [
+        -0.22464900463819504,
+        0.08,
+        -0.34
+      ],
+      "rootPosition": [
+        -0.9028227282574822,
+        0.3309393481557319,
+        -1.6605782811229184
+      ],
+      "sourceRegion": {
+        "seed": {
+          "y": 0.08,
+          "z": -0.34
+        },
+        "innerSamples": 2144,
+        "sourceTrianglesRemoved": 4130
+      },
+      "geometry": "hand-authored-mechanical",
+      "sourceTrianglesRetained": 0,
+      "componentMaterials": [
+        "Tire",
+        "Rim"
+      ]
+    },
+    {
+      "name": "Wheel_RR",
+      "sourcePosition": [
+        0.22087350487709045,
+        0.08,
+        -0.34
+      ],
+      "rootPosition": [
+        0.9401878078809647,
+        0.3309393481557319,
+        -1.6605782811229184
+      ],
+      "sourceRegion": {
+        "seed": {
+          "y": 0.08,
+          "z": -0.34
+        },
+        "innerSamples": 2621,
+        "sourceTrianglesRemoved": 4996
+      },
+      "geometry": "hand-authored-mechanical",
+      "sourceTrianglesRetained": 0,
+      "componentMaterials": [
+        "Tire",
+        "Rim"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "name": "BaseColor (1024)",
+      "width": 1024,
+      "height": 1024,
+      "mimeType": "image/jpeg",
+      "bytes": 209402
+    },
+    {
+      "name": "PBR Normal (1024)",
+      "width": 1024,
+      "height": 1024,
+      "mimeType": "image/jpeg",
+      "bytes": 141322
+    },
+    {
+      "name": "PBR Metallic-Roughness (1024)",
+      "width": 1024,
+      "height": 1024,
+      "mimeType": "image/jpeg",
+      "bytes": 235772
+    }
+  ],
+  "exhaustPositions": [
+    [
+      -0.3,
+      0.5,
+      -2.3
+    ],
+    [
+      0.3,
+      0.5,
+      -2.3
+    ]
+  ],
+  "limits": {
+    "triangleLimit": 18000,
+    "binaryLimitBytes": 1572864,
+    "textureLimit": 1024
+  },
+  "visualReview": {
+    "optimizedBrowserRender": "PASS: Metal Chromium, original chassis and circular local wheels",
+    "mobileRuntime": "PASS: Chromium phone viewport, physical phone NOT_RUN",
+    "paintColorSwitch": "PASS: all8 actual Three shader variants; native unlocks unchanged",
+    "wheelAnimation": "PASS: actual native player spin/steer and isolated wheel fixture"
+  },
+  "notes": [
+    "The chassis retains the resized source base-color, normal and metallic-roughness maps on its five semantic materials; Tire and Rim are texture-free, locally-authored mechanical materials.",
+    "Source albedo texels with all channels above 170 and chroma at most 55 are assigned BodyPaint before broad window/trim geometry rules; blue/red lamp checks precede this rule and dark glass/trim keeps its named regions.",
+    "All original source wheel-region triangles are removed from the output. Four locally authored 48-segment rounded tires, ten-spoke metal rims and central hubs replace them; pale source fender faces remain on the chassis.",
+    "Meshoptimizer is the pinned MIT simplifier used through the approved glTF Transform 4.5.1 simplify transform on chassis geometry only."
+  ]
+}
