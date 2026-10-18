@@ -123,12 +123,9 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 #coast[data-phase="running"] .co-goal span{font-size:10px}
 #coast[data-phase="running"] .co-goal b{font-size:15px;line-height:1.1}
 #coast[data-phase="running"] .co-goal progress{height:4px;margin-top:2px}
-#coast[data-phase="running"] #co-radar{
- top:124px;min-height:48px
-}
-#coast[data-phase="running"] #co-radar-label{top:108px}
+/* Preserve the tested vertical safety order: goals -> mastery -> lane gauge
+   -> warning LABEL -> radar. Compacting the upper HUD must never push a
+   danger preview over the mastery track on a 320x568 phone. */
 @media(orientation:portrait) and (max-height:650px){
  #coast[data-phase="running"] .co-goal b{font-size:14px}
- #coast[data-phase="running"] #co-radar{top:120px}
- #coast[data-phase="running"] #co-radar-label{top:104px}
 }

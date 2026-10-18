@@ -190,10 +190,23 @@ try{
  await tap('#co-replay');
  await page.waitForTimeout(250);
  const d=await gesture('up',[200,480],[200,380]);
+ // At ~22-29m the native UP swipe legitimately buffers a jump for the
+ // new 35m real roadblock. A snapshot before reaching the trigger is NOT
+ // evidence of failed touch. Wait for the genuine swept barrier verdict.
+ // No manual jump event, teleports, or game clock manipulation.
+ await page.waitForFunction(()=>{
+  const v=window.__coast.snapshot();
+  return v.phase==='finished'||v.events.some(e=>
+   e.type==='barrier-cleared'&&e.objectId==='l1-o10');
+ },null,{timeout:10000});
+ const upOutcome=await snap();
+ const queued=upOutcome.events.find(e=>e.type==='jump-buffered'&&e.objectId==='l1-o10');
+ const realJump=upOutcome.events.find(e=>e.type==='jump'&&e.objectId==='l1-o10');
+ const trueClear=upOutcome.events.find(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o10'&&e.jumped);
  check('trusted-up-swipe-jumps',
-  d.before.phase==='running'&&d.before.distance<40&&
-  d.after.events.filter(e=>e.type==='jump').length>d.before.events.filter(e=>e.type==='jump').length,
-  d);
+  d.before.phase==='running'&&d.before.distance<35&&
+  upOutcome.phase==='running'&&!!queued&&!!realJump&&!!trueClear,
+  {gesture:d,upOutcome,queued,realJump,trueClear});
  await shot('up-swipe');
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
