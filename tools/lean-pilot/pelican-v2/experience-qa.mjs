@@ -56,6 +56,10 @@ try{
  await page.waitForFunction(()=>Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0)>=49,
   null,{timeout:8000});
  await tap('[data-action="right"]');
+ // V7: the visible right-lane car is already approaching behind the
+ // collected fish. Countersteer immediately through a real public touch;
+ // capturing a software screenshot first would consume the escape window.
+ await tap('[data-action="left"]');
  await shot('actual-offcentre-second-fish-caught');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
