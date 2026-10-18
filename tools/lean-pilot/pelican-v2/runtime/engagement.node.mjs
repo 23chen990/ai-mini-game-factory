@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { makeBarrierPrizes, fishPoints, earnedPrizePrecedesRisk, starRequirements, rateStars, nextStarTip, normalizeBest, updateBest, allStars } from './engagement.mjs';
-import {LEVELS,validateLevel,NIGHT_SAFE_FISH_TRAIL,V7_OPENING_WAVES} from './levels.mjs';
+import {LEVELS,validateLevel,NIGHT_SAFE_FISH_TRAIL,V7_OPENING_WAVES,V7_MIDCOURSE_WAVES} from './levels.mjs';
 const level = { id: 1, distance: 300, seconds: 55, goal: {count: 8, gold: 0}, mastery: {jumps: 1}};
 const run = overrides => ({level,reason:'complete',hits:0,count:12,gold:2,jumpedBarriers:1,bestStreak:8,elapsed:40,score:20,rewardScore:35,...overrides});
 test('prize is real, visible and behind a jumpable obstacle, never at obstacle center',()=>{
@@ -86,7 +86,7 @@ test('personal best is monotone and only completed runs count',()=>{
 test('nightly fast paired-vehicle gates have an actual reachable public fish trail',()=>{
  const night=LEVELS[4];
  assert.equal(night.speed,9.6);
- assert.equal(night.obstacles.length,21+V7_OPENING_WAVES[5].length,'preserve all 13 legacy, 8 previous gates and exactly three new early hazards');
+ assert.equal(night.obstacles.length,21+V7_OPENING_WAVES[5].length+V7_MIDCOURSE_WAVES[5].length,'preserve all 13 legacy, 8 previous gates and exactly three new early hazards');
  assert.deepEqual([night.obstacles[8].x,night.obstacles[9].x],[475,475],
   'the 475m dual traffic gate preserves original l5-o8 and l5-o9 IDs');
  assert.deepEqual([night.obstacles[17].x,night.obstacles[18].x,night.obstacles[19].x,night.obstacles[20].x],

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {LEVELS,V7_OPENING_WAVES,validateLevel} from './levels.mjs';
+import {LEVELS,V7_OPENING_WAVES,V7_MIDCOURSE_WAVES,validateLevel} from './levels.mjs';
 import {newRun,advance} from './adventure.mjs';
 
 test('V7 opening waves create real choices in first 5.2s on every stage',()=>{
@@ -34,6 +34,20 @@ test('V7 tight opening has a real, readable left-then-centre escape at 30 and 60
   assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o10'&&!e.jumped));
   assert.ok(r.events.some(e=>e.type==='obstacle-avoided'&&e.objectId==='l1-o11'));
   assert.ok(r.events.some(e=>e.type==='obstacle-avoided'&&e.objectId==='l1-o12'));
+ }
+});
+test('V7 midcourse waves demand repeated real choices without long idle traffic stretches',()=>{
+ const expected=[2,2,3,4,5];
+ for(const level of LEVELS){
+  const waves=V7_MIDCOURSE_WAVES[level.id];
+  assert.equal(waves.length,expected[level.id-1]);
+  assert.ok(waves.every(([x,kind,lane])=>
+   level.obstacles.some(o=>o.x===x&&o.kind===kind&&o.lane===lane)));
+  const xs=[0,...new Set(level.obstacles.map(o=>o.x)),level.distance].sort((a,b)=>a-b);
+  const longest=xs.slice(1).reduce((max,x,i)=>Math.max(max,(x-xs[i])/level.speed),0);
+  assert.ok(longest<=5.75,
+   `stage ${level.id} has ${longest.toFixed(2)}s unbroken hazard-free riding`);
+  assert.deepEqual(validateLevel(level),[]);
  }
 });
 test('V7 no-input player now really collides early, but not via a synthetic fail',()=>{
