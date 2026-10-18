@@ -374,7 +374,7 @@ test('V6.2 graphics safety is re-integrated into native generated WebGL with fai
  ].join('\n');
  const init=api.patchMobileInitialRendering(basic);
  assert.ok(init.includes("quality: IS_TOUCH ? 'low' : 'high'"));
- assert.ok(init.includes('antialias: !IS_TOUCH'));
+ assert.ok(init.includes('antialias: false'));
  assert.equal(api.patchMobileInitialRendering(init),init);
  const mid=[
   "q === 'mid' ? Math.min(dpr, 1.5) : 1",
@@ -389,4 +389,175 @@ test('V6.2 graphics safety is re-integrated into native generated WebGL with fai
  assert.equal(api.patchMobileMidRendering(slim),slim);
  assert.throws(()=>api.patchMobileInitialRendering('unknown racing engine'),/anchor changed/);
  assert.throws(()=>api.patchMobileMidRendering('unknown racing renderer'),/anchor changed/);
+});
+
+// Native constructor/quality/render statements; Three objects below only record
+// the requested pipeline. Actual GPU support remains an independent browser gate.
+const nativeGraphicsFixture = `class NativeGraphics {
+  constructor(canvas, saved, scene, camera) {
+    this.settings = Object.assign({ quality: IS_TOUCH ? 'mid' : 'high' }, saved);
+    this.canvas = canvas;
+    this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, powerPreference: 'high-performance' });
+    this.scene = scene;
+    this.camera = camera;
+    this.setupQuality();
+  }
+  setupQuality() {
+    const q = this.settings.quality;
+    const dpr = window.devicePixelRatio || 1;
+    this.renderer.setPixelRatio(q === 'high' ? Math.min(dpr, 2) : q === 'mid' ? Math.min(dpr, 1.5) : 1);
+    this.renderer.shadowMap.enabled = q !== 'low';
+    if (this.sun) {
+      this.sun.castShadow = q !== 'low';
+      const ms = q === 'high' ? 2048 : 1024;
+      if (this.sun.shadow.mapSize.x !== ms) {
+        this.sun.shadow.mapSize.set(ms, ms);
+        if (this.sun.shadow.map) { this.sun.shadow.map.dispose(); this.sun.shadow.map = null; }
+      }
+    }
+    this.scene.traverse((o) => { if (o.material) o.material.needsUpdate = true; });
+    if (this.composer) {
+      this.composer.renderTarget1.dispose();
+      this.composer.renderTarget2.dispose();
+      this.composer = null;
+      this.bloom = null;
+    }
+    if (q === 'low') return;
+    const size = this.renderer.getDrawingBufferSize(new THREE.Vector2());
+    const rt = new THREE.WebGLRenderTarget(size.x, size.y, { type: THREE.HalfFloatType, samples: q === 'high' ? 4 : 0 });
+    this.composer = new EffectComposer(this.renderer, rt);
+    this.composer.addPass(new RenderPass(this.scene, this.camera));
+    this.bloom = new UnrealBloomPass(new THREE.Vector2(size.x / 2, size.y / 2), 0.7, 0.5, 1.0);
+    this.composer.addPass(this.bloom);
+    this.composer.addPass(new OutputPass());
+    this.resize();
+  }
+  resize() { this.resizeCalls = (this.resizeCalls || 0) + 1; }
+  render(dt) {
+    if (this.composer) this.composer.render(dt);
+    else this.renderer.render(this.scene, this.camera);
+  }
+}`;
+
+function graphicsFixture(isTouch, saved = {}) {
+  const renderers = [], draws = [], surface = { material: {} };
+  class Vector2 { constructor(x = 0, y = 0) { this.x = x; this.y = y; } }
+  class WebGLRenderer {
+    constructor(options) { this.options = options; this.shadowMap = {}; renderers.push(this); }
+    setPixelRatio(value) { this.pixelRatio = value; }
+    getDrawingBufferSize(size) { size.x = 1366 * this.pixelRatio; size.y = 768 * this.pixelRatio; return size; }
+    render(scene, camera) { draws.push({ scene, camera }); }
+  }
+  class WebGLRenderTarget {
+    constructor(width, height, options) { this.width = width; this.height = height; this.options = options; }
+    dispose() { this.disposed = true; }
+  }
+  class EffectComposer {
+    constructor(renderer, target) {
+      this.renderer = renderer; this.renderTarget1 = target;
+      this.renderTarget2 = new WebGLRenderTarget(target.width, target.height, target.options);
+      this.passes = [];
+    }
+    addPass(pass) { this.passes.push(pass); }
+    render(dt) { this.lastDelta = dt; }
+  }
+  class RenderPass { constructor(scene, camera) { this.scene = scene; this.camera = camera; } }
+  class UnrealBloomPass { constructor(size, strength, radius, threshold) { Object.assign(this, { size, strength, radius, threshold }); } }
+  class OutputPass {}
+  const THREE = { Vector2, WebGLRenderer, WebGLRenderTarget, HalfFloatType: 'HalfFloatType' };
+  const source = api.patchMobileMidRendering(api.patchMobileInitialRendering(nativeGraphicsFixture));
+  const NativeGraphics = new Function('IS_TOUCH', 'THREE', 'window', 'EffectComposer', 'RenderPass', 'UnrealBloomPass', 'OutputPass', source + ';return NativeGraphics;')(
+    isTouch, THREE, { devicePixelRatio: 2 }, EffectComposer, RenderPass, UnrealBloomPass, OutputPass);
+  const canvas = {}, scene = { traverse(visitor) { visitor(surface); } }, camera = {};
+  const game = new NativeGraphics(canvas, saved, scene, camera);
+  return { game, canvas, scene, camera, surface, renderers, draws, RenderPass, UnrealBloomPass, OutputPass };
+}
+
+test('V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality', () => {
+  const output = api.patchMobileInitialRendering(nativeGraphicsFixture);
+  assert.equal(output, nativeGraphicsFixture
+    .replace("quality: IS_TOUCH ? 'mid' : 'high'", "quality: IS_TOUCH ? 'low' : 'high'")
+    .replace('antialias: true', 'antialias: false'), 'only the two reviewed constructor defaults may change');
+  for (const isTouch of [false, true]) for (const quality of [undefined, 'low', 'mid', 'high']) {
+    const saved = quality ? { quality } : {}, before = { ...saved };
+    const { game, canvas, renderers } = graphicsFixture(isTouch, saved);
+    assert.equal(game.renderer.options.antialias, false);
+    assert.equal(game.renderer.options.canvas, canvas);
+    assert.equal(game.renderer.options.powerPreference, 'high-performance');
+    assert.equal(game.settings.quality, quality || (isTouch ? 'low' : 'high'));
+    assert.deepEqual(saved, before, 'native saved preferences remain untouched');
+    assert.equal(renderers.length, 1, 'quality setup must reuse the original renderer');
+  }
+});
+
+test('V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering', () => {
+  for (const isTouch of [false, true]) {
+    const fixture = graphicsFixture(isTouch, { quality: 'high' });
+    const { game, scene, camera, surface, renderers, draws, RenderPass, UnrealBloomPass, OutputPass } = fixture;
+    const renderer = game.renderer, composer = game.composer;
+    assert.equal(renderer.options.antialias, false);
+    assert.deepEqual(composer.renderTarget1.options, { type: 'HalfFloatType', samples: 4 });
+    assert.deepEqual([composer.renderTarget1.width, composer.renderTarget1.height], [2732, 1536]);
+    assert.equal(renderer.pixelRatio, 2);
+    assert.equal(renderer.shadowMap.enabled, true);
+    assert.equal(surface.material.needsUpdate, true);
+    assert.equal(composer.passes.length, 3);
+    assert.ok(composer.passes[0] instanceof RenderPass);
+    assert.equal(composer.passes[0].scene, scene);
+    assert.equal(composer.passes[0].camera, camera);
+    assert.ok(composer.passes[1] instanceof UnrealBloomPass);
+    assert.deepEqual([game.bloom.strength, game.bloom.radius, game.bloom.threshold], [0.7, 0.5, 1]);
+    assert.ok(composer.passes[2] instanceof OutputPass);
+    assert.equal(game.resizeCalls, 1);
+    game.render(0.017);
+    assert.equal(composer.lastDelta, 0.017);
+    assert.equal(draws.length, 0);
+    game.settings.quality = 'low';
+    game.setupQuality();
+    assert.equal(game.renderer, renderer);
+    assert.equal(renderers.length, 1);
+    assert.equal(renderer.options.antialias, false);
+    assert.equal(renderer.pixelRatio, 1);
+    assert.equal(renderer.shadowMap.enabled, false);
+    assert.equal(composer.renderTarget1.disposed, true);
+    assert.equal(composer.renderTarget2.disposed, true);
+    assert.equal(game.composer, null);
+    assert.equal(game.bloom, null);
+    game.render(0.018);
+    assert.deepEqual(draws, [{ scene, camera }], 'low still submits the complete native scene and camera');
+  }
+});
+
+test('V11.6 mid keeps desktop offscreen zero samples and the existing touch budget', () => {
+  for (const isTouch of [false, true]) {
+    const { game, scene, camera, draws } = graphicsFixture(isTouch, { quality: 'mid' });
+    assert.equal(game.renderer.options.antialias, false);
+    assert.equal(game.renderer.pixelRatio, isTouch ? 1.2 : 1.5);
+    assert.equal(game.renderer.shadowMap.enabled, !isTouch);
+    if (isTouch) {
+      assert.equal(game.composer, undefined);
+      game.render(0.016);
+      assert.deepEqual(draws, [{ scene, camera }]);
+    } else {
+      assert.deepEqual(game.composer.renderTarget1.options, { type: 'HalfFloatType', samples: 0 });
+      assert.equal(game.composer.passes.length, 3);
+    }
+  }
+});
+
+test('V11.6 initial render adapter rejects partial and changed native constructor anchors', () => {
+  const partials = [
+    nativeGraphicsFixture.replace("quality: IS_TOUCH ? 'mid' : 'high'", "quality: IS_TOUCH ? 'low' : 'high'"),
+    nativeGraphicsFixture.replace('antialias: true', 'antialias: false'),
+    nativeGraphicsFixture.replace("quality: IS_TOUCH ? 'mid' : 'high'", "quality: IS_TOUCH ? 'low' : 'high'")
+      .replace('antialias: true', 'antialias: !IS_TOUCH'),
+  ];
+  for (const source of partials) assert.throws(() => api.patchMobileInitialRendering(source), /Partial native phone render patch/);
+  for (const source of [
+    nativeGraphicsFixture.replace('antialias: true', 'antialias: rendererChoice'),
+    nativeGraphicsFixture.replace("powerPreference: 'high-performance'", "powerPreference: 'default'"),
+    nativeGraphicsFixture + nativeGraphicsFixture,
+  ]) assert.throws(() => api.patchMobileInitialRendering(source), /anchor changed/);
+  const patched = api.patchMobileInitialRendering(nativeGraphicsFixture);
+  assert.equal(api.patchMobileInitialRendering(patched), patched);
 });

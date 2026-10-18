@@ -332,15 +332,16 @@ export async function loadPreparedRacingCars(owned) {
   return { models, assetHashes, manifestSha256: assetHashes[6] };
 }
 
-/** Mobile GPU budget: don't allocate native multisample anti-aliasing,
- * shadows and half-float post-processing before the racing overlay boots.
- * The player may still explicitly select balanced/clear after startup.
+/** Keep the default framebuffer single-sampled on every device so low quality
+ * does not retain constructor-time MSAA. Explicit high quality keeps its
+ * native four-sample offscreen target and post-processing. Phones still start
+ * at low; saved preferences and explicit quality choices keep native behavior.
  * Fail closed against a new unreviewed upstream Three.js constructor. */
 export function patchMobileInitialRendering(source) {
   const changes = [
     ["quality: IS_TOUCH ? 'mid' : 'high'", "quality: IS_TOUCH ? 'low' : 'high'"],
     ["canvas: this.canvas, antialias: true, powerPreference: 'high-performance'",
-     "canvas: this.canvas, antialias: !IS_TOUCH, powerPreference: 'high-performance'"],
+     "canvas: this.canvas, antialias: false, powerPreference: 'high-performance'"],
   ];
   if (changes.every(([,next])=>source.includes(next))) return source;
   if (changes.some(([,next])=>source.includes(next))) throw Error('Partial native phone render patch');
