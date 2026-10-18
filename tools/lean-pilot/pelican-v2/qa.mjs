@@ -168,7 +168,22 @@ try{
   // Unlock exclusively through the same visible campaign. No save seeding.
   if(mode==='all'){await tap('[data-level="3"]');await tap('#co-start');}else{await tap('#co-start');for(let id=1;id<=2;id++){const r=await drive({stage:id});check('unlock-prerequisite-'+id,r.reason==='complete',r);if(r.reason!=='complete')throw Error('Unlock prerequisite failed');await tap('#co-next');}}
   // Center-lane first vehicle deliberately left unavoided with normal input.
-  await page.waitForTimeout(5000);await shot('vehicle-warning');await page.waitForFunction(()=>document.querySelector('#coast')?.classList.contains('crashing'),null,{polling:'raf',timeout:20000});await shot('vehicle-accident');const crash=await snapshot();await page.locator('#co-modal').waitFor({state:'visible'});const presentation=await page.evaluate(()=>window.__qaCrashFrames);const visibleFrames=presentation.filter(f=>f.crashing&&f.modalHidden),visibleSpanMs=(visibleFrames.at(-1)?.at??0)-(visibleFrames[0]?.at??0);check('accident-visible-before-settlement',visibleFrames.length>=4&&visibleSpanMs>=180,{phase:crash.phase,reason:crash.reason,settlementInitiallyHidden:visibleFrames.length>0,visibleSpanMs,frames:presentation,note:'Continuous read-only DOM frames verify the actual crash display; later RPC latency is not used as a visibility assertion.'});await shot('vehicle-impact');check('car-ends-round',crash.reason==='vehicle',crash);
+  // V7's genuine 37m centre barrier now blocks an idle rider before
+   // the original 100m vehicle. Use real lane controls to pass the
+   // opening, then return to centre and deliberately hit that car.
+   await tap('[data-action="left"]');
+   await page.waitForFunction(()=>{const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=45},null,{timeout:11000});
+   const opening=await snapshot();
+   check('vehicle-impact-test-survives-V7-opening',opening.phase==='running'&&opening.distance>=45&&
+    opening.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l3-o16'&&!e.jumped),
+    {phase:opening.phase,distance:opening.distance,events:opening.events.slice(-6)});
+   await tap('[data-action="right"]');
+   await shot('vehicle-warning');
+   // The read-only animation-frame observer was armed BEFORE the drive.
+   // Wait for terminal status, never for a fleeting CSS crash class
+   // after screenshot latency has already elapsed.
+   await page.waitForFunction(()=>document.querySelector('#coast')?.dataset.phase==='finished',null,{timeout:20000});
+   await shot('vehicle-accident');const crash=await snapshot();await page.locator('#co-modal').waitFor({state:'visible'});const presentation=await page.evaluate(()=>window.__qaCrashFrames);const visibleFrames=presentation.filter(f=>f.crashing&&f.modalHidden),visibleSpanMs=(visibleFrames.at(-1)?.at??0)-(visibleFrames[0]?.at??0);check('accident-visible-before-settlement',visibleFrames.length>=4&&visibleSpanMs>=180,{phase:crash.phase,reason:crash.reason,settlementInitiallyHidden:visibleFrames.length>0,visibleSpanMs,frames:presentation,note:'Continuous read-only DOM frames verify the actual crash display; later RPC latency is not used as a visibility assertion.'});await shot('vehicle-impact');check('car-ends-round',crash.reason==='vehicle',crash);
   await page.waitForTimeout(1200);const frozen=await snapshot();check('crash-freezes-score',frozen.count===crash.count&&frozen.distance===crash.distance,{crash,frozen});
   const n=navs;await tap('#co-replay');await page.waitForTimeout(700);check('failure-replay-without-navigation',navs===n&&(await snapshot()).phase==='running',{navigationCount:navs});await tap('#co-pause');await tap('#co-select');await tap('[data-level="1"]');await tap('#co-start');
   // Exact crossing position: two right nudges from neutral reach the outer
