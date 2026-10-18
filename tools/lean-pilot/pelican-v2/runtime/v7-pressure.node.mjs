@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {LEVELS,V7_OPENING_WAVES,V7_MIDCOURSE_WAVES,validateLevel} from './levels.mjs';
-import {newRun,advance} from './adventure.mjs';
+import {newRun,input,advance} from './adventure.mjs';
 
 test('V7 opening waves create real choices in first 5.2s on every stage',()=>{
  assert.equal(LEVELS.length,5);
