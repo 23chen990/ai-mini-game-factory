@@ -300,9 +300,9 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
   const v=window.__coast.snapshot();
   return v.phase==='finished'||v.distance>=47;
  },null,{timeout:10000});
- const cancelled=await snap(),armed=cancelled.events.find(e=>e.type==='jump-buffered');
+ const cancelled=await snap(),cancellationArmed=cancelled.events.find(e=>e.type==='jump-buffered');
  const cancellationTouches=await page.evaluate(()=>window.__qaCancellationTouches);
- check('safe-lane-change-cancels-buffer-without-fake-mastery',!!armed&&armed.objectId==='l1-o10'&&cancelled.distance>=46&&cancelled.bufferedJump===null&&cancelled.phase==='running'&&!cancelled.events.some(e=>e.type==='jump')&&cancelled.events.some(e=>e.type==='barrier-cleared'&&e.objectId===armed.objectId&&!e.jumped)&&cancelled.jumpedBarriers===0&&cancellationTouches.length===2&&cancellationTouches.every((e,i)=>e.isTrusted&&e.pointerType==='touch'&&e.action===['jump','right'][i]),{armed,cancelled,cancellationTouches});await shot('cancel-jump-safe-detour');await tap('#co-pause');await tap('#co-select');
+ check('safe-lane-change-cancels-buffer-without-fake-mastery',!!cancellationArmed&&cancellationArmed.objectId==='l1-o10'&&cancelled.distance>=46&&cancelled.bufferedJump===null&&cancelled.phase==='running'&&!cancelled.events.some(e=>e.type==='jump')&&cancelled.events.some(e=>e.type==='barrier-cleared'&&e.objectId===cancellationArmed.objectId&&!e.jumped)&&cancelled.jumpedBarriers===0&&cancellationTouches.length===2&&cancellationTouches.every((e,i)=>e.isTrusted&&e.pointerType==='touch'&&e.action===['jump','right'][i]),{cancellationArmed,cancelled,cancellationTouches});await shot('cancel-jump-safe-detour');await tap('#co-pause');await tap('#co-select');
  // Small-phone acceptance: only normal viewport resize and true taps, no state edits.
  await page.setViewportSize({width:320,height:568});await page.waitForTimeout(250);
  const menu=await page.evaluate(()=>{
