@@ -108,7 +108,7 @@ async function observed(full = false) {
   return page.evaluate(full => {
     const g = window.game, p = g.player;
     return { phase: document.querySelector('#race-kit').dataset.phase, state: g.state, raceTime: g.raceTime,
-      map: g.map.id, laps: g.settings.laps, diff: g.settings.diff, mode: g.settings.mode,
+      map: g.map.id, course: g.settings.course, laps: g.settings.laps, diff: g.settings.diff, mode: g.settings.mode,
       progress: p?.progress ?? 0, finished: !!p?.finished, finishTime: p?.finishTime ?? null,
       place: g.standings.indexOf(p) + 1, speed: p?.speedKmh ?? 0, lat: p?.lat ?? 0,
       spinSec: p?.spin ?? 0, wrongWaySec: p?.wrongWay ?? 0, forwardHeadingDot: p ? Math.cos(p.h - p.proj.hd) : null,
@@ -149,6 +149,10 @@ try {
     const entry = await page.locator('#race-stage option:checked').textContent();
     await page.bringToFront();
     await page.locator('#race-start').tap(); // actual trusted UI touch, no stage manipulation
+    const raceDay = name === 'daily' ? await page.evaluate(() => {
+      const date = new Date();
+      return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+    }) : null;
     try {
       // On Linux software WebGL, a native 3-second countdown can take >45s
       // wall clock even when the real native game started correctly.
@@ -217,7 +221,7 @@ try {
     }
     await steer(null);
     await page.screenshot({ path: path.join(out,name+(terminal?'-terminal.png':'-diagnostic.png')) });
-    const t = terminal ?? await observed();
+    const t = { ...(terminal ?? await observed()), stage: name, ...(raceDay ? { raceDay } : {}) };
     const saved = JSON.parse(t.saved ?? '{}'), stars = name === 'daily' ? saved.daily?.stars ?? 0 : saved.stars?.[name] ?? 0;
     const terminalButtons = await page.evaluate(() => ['replay', 'next', 'lobby'].filter(id => !document.querySelector('#race-' + id).hidden).map(id => {
       const r = document.querySelector('#race-' + id).getBoundingClientRect();

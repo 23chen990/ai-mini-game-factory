@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "gameId": "qq-speed",
+  "version": "V11.5",
+  "date": "2026-10-18",
+  "status": "DEVELOPMENT_TRIAL_WITH_OPEN_EXPERIENCE_GATES",
+  "buildHash": "3a61a3a01339500fbb6bea312462c29476881662bfdb50cfcb2d055f087f45a0",
+  "inputHash": "6787dd71318c8d1d24cd422823eb5ee133dbd94021c793257a26cb29f8860a19",
+  "standaloneSha256": "573bd75e889ae4894172b607fae25c07a848975fa13c5356884951ef97ba1b59",
+  "sourceRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+  "checks": [
+    {
+      "name": "Current source regression",
+      "status": "PASS",
+      "passed": 358,
+      "total": 358,
+      "skipped": 0,
+      "scope": "Includes 35 tests against the generated native physical AI; do not add that subset to the total."
+    },
+    {
+      "name": "Generated build fingerprint",
+      "status": "PASS",
+      "passed": 2,
+      "total": 2
+    },
+    {
+      "name": "Current visible-finish and delivery evidence contract",
+      "status": "PASS",
+      "passed": 25,
+      "total": 25,
+      "skipped": 0,
+      "scope": "Accepts the current podium title only with native finish, correct stage/course, consistent visible result time and persisted medals/time. Rejects unfinished, non-podium, stale and mismatched evidence. The prior natural run remains BLOCKED."
+    },
+    {
+      "name": "Actual CJK home layout",
+      "status": "PASS",
+      "passed": 4,
+      "total": 4,
+      "viewports": [
+        "740x360",
+        "667x375",
+        "650x360",
+        "844x390"
+      ],
+      "scope": "Fresh browser storage; normal viewport changes; 44px start target fully visible; unchanged 12px scroll tolerance; 30 ordered main stages plus the existing daily challenge."
+    },
+    {
+      "name": "Native course geometry",
+      "status": "PASS",
+      "courses": 30,
+      "physicalShortcuts": 10,
+      "scope": "Engineering audit on prior 3d891 build; native track component is byte-identical in the final build."
+    },
+    {
+      "name": "Native opponents with real contact",
+      "status": "PASS",
+      "finished": 150,
+      "total": 150,
+      "scope": "30 courses with five physical AI rivals each; engineering driving, not a human win-rate test. The generated AI, vehicle and track components are byte-identical to the audited build."
+    },
+    {
+      "name": "Native player controls",
+      "status": "PASS",
+      "passed": 12,
+      "total": 12,
+      "scope": "Countersteer, drift release, manual boosts, collision penalty and pause contracts; engineering checks on byte-identical generated physics components."
+    },
+    {
+      "name": "Ad outcome wiring",
+      "status": "PASS",
+      "passed": 3,
+      "total": 3,
+      "scope": "Actual final 3a61 build in Chromium using a simulated SDK and an injected unfinished-race result. Cancel, complete-and-reload, and missing-SDK paths passed. This is not live advertising or natural defeat evidence."
+    },
+    {
+      "name": "ESLint and TypeScript",
+      "status": "PASS",
+      "scope": "Repository lint and complete checked-out TypeScript dependencies."
+    },
+    {
+      "name": "Natural visible-input play to result and replay",
+      "status": "BLOCKED",
+      "scope": "The bounded software-WebGL run did not reach player completion or the actual DNF boundary. AI rivals finished naturally. Result and replay were not observed; no human-phone claim."
+    },
+    {
+      "name": "Desktop software-WebGL responsiveness",
+      "status": "BLOCKED",
+      "scope": "The actual game remains slow in the available software renderer. Diagnostic AA changes were not applied as a gate bypass."
+    },
+    {
+      "name": "Real phone handling and live rewarded-ad SDK",
+      "status": "NOT_RUN",
+      "scope": "Require the intended handset and platform environment."
+    }
+  ],
+  "gameChangedByLastFix": "Only the home paint selector flex basis was moved into the existing landscape max-height 450px rule; driving, clocks and thresholds are unchanged.",
+  "disclosure": "This file contains high-level verification outcomes. Detailed raw reports and route plots are delivered privately pending direct approval for public upload.",
+  "sourceTestsCommand": "RACE_NATIVE_PROJECT=$PWD/runs/h5-qq-mobile-20261013/workspace/source/qq-speed node --test --test-isolation=none templates/web-lite/h5-source-mobile-v1/tests/*.test.mjs",
+  "latestCompletedCi": {
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39132641107",
+    "sourceCommit": "2523cd409b49df984e1da076ee76da05c00594ef",
+    "buildHash": "76d7e64fd400c6d23ed61e7922d40cbf4cd14601286b6de2e013d808f7f4ba7b",
+    "status": "FAIL",
+    "scope": "Previous candidate; the phone portion completed, but the separate desktop native countdown did not reach racing within the unchanged 45-second limit. The entire smoke test is failed and automatic preview publication was skipped."
+  }
+}

@@ -1,3 +1,5 @@
+import { STAGES, dailyStage, localDayKey } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
+
 /** Only framebuffer colors/shape, never item coordinates or racer state. */
 export function needsVisibleItemPickup(goal) {
   const count = goal.match(/已拾取道具 (\d+)\/(\d+)/u);
@@ -18,7 +20,38 @@ export function warningVisible(element) {
   return !!element && !element.hidden && !element.classList.contains('hidden') && element.getClientRects().length > 0;
 }
 export function qualifiedVisibleFinish(terminal, savedStars) {
-  return terminal.finished === true && savedStars > 0 && terminal.heading.startsWith('挑战成功！');
+  if (terminal?.phase !== 'finished' || terminal.finished !== true ||
+      !Number.isInteger(terminal.place) || terminal.place < 1 || terminal.place > 3 ||
+      !Number.isFinite(terminal.finishTime) || terminal.finishTime <= 0 ||
+      !Number.isFinite(terminal.progress) || terminal.progress <= 0 ||
+      terminal.heading !== `第 ${terminal.place} 名` ||
+      !Number.isInteger(savedStars) || savedStars < 4 - terminal.place || savedStars > 3) return false;
+
+  const daily = terminal.stage === 'daily';
+  let stage;
+  if (daily) {
+    if (!/^\d{4}-\d{2}-\d{2}$/u.test(terminal.raceDay ?? '')) return false;
+    const date = new Date(terminal.raceDay + 'T12:00:00');
+    if (!Number.isFinite(date.getTime()) || localDayKey(date) !== terminal.raceDay) return false;
+    stage = dailyStage(date);
+  } else stage = STAGES.find(candidate => candidate.id === terminal.stage);
+  if (!stage || ['course', 'map', 'laps', 'diff', 'mode'].some(key => terminal[key] !== stage[key])) return false;
+
+  // The headline alone can be left over from another run. Bind the visible
+  // result's place/time to this native finish, then check its actual save key.
+  const seconds = terminal.finishTime;
+  const visibleTime = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
+  const resultPrefix = `${daily ? '每日挑战成功 · ' : ''}第 ${terminal.place} 名 · ${visibleTime} · `;
+  if (typeof terminal.result !== 'string' || !terminal.result.startsWith(resultPrefix)) return false;
+  let saved;
+  try { saved = JSON.parse(terminal.saved); } catch { return false; }
+  if (saved?.version !== 1 || !Number.isInteger(saved.rounds) || saved.rounds < 1) return false;
+  if (daily && (saved.daily?.date !== terminal.raceDay || saved.daily?.lastWonDate !== terminal.raceDay)) return false;
+  const storedStars = daily ? saved.daily?.stars : saved.stars?.[stage.id];
+  const bestTime = daily ? saved.daily?.best : saved.times?.[stage.id];
+  // Best medals/time persist across replays. A better historical record is
+  // legitimate, but it never substitutes for this run's native podium finish.
+  return storedStars === savedStars && Number.isFinite(bestTime) && bestTime > 0 && bestTime <= seconds;
 }
 /** Remember only the rendered arrow/road. No native car/track/item state is read. */
 export function recoverVisibleHeading(policy, memory, now) {
