@@ -1,4 +1,0 @@
-interface:
-  display_name: "小游戏循环设计与诊断"
-  short_description: "一个共用工作流，按动作、经营、剧情或解谜检查真实体验"
-  default_prompt: "使用 $gameplay-loop-review，先确认目标游戏和证据，选择主类型，找出最重要的循环断点，输出最小可开发规格与正反验收，不增加无关系统。"

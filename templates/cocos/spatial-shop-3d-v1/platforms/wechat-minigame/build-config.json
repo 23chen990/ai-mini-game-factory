@@ -1,7 +1,0 @@
-{
-  "schemaVersion": 1,
-  "platform": "wechatgame",
-  "orientation": "portrait",
-  "output": "build/wechat-minigame",
-  "status": "requires-platform-devtools-validation"
-}
