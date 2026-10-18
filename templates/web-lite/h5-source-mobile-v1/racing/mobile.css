@@ -639,6 +639,8 @@ html[data-race-platform="touch"] #race-joystick{max-height:43vh}
 }
 @media (min-width:650px) and (max-height:375px) and (orientation:landscape) {
   #race-kit[data-phase="ready"] #race-stage-tag {max-width:80px;}
+  /* Localized option text uses the space left on this row instead of forcing a second row. */
+  #race-kit[data-phase="ready"] #race-skin {flex:1 1 0%;}
   #race-kit[data-phase="ready"] #race-panel>.race-eyebrow {display:none;}
   #race-kit[data-phase="ready"] #race-course-feel {display:none;}
 }

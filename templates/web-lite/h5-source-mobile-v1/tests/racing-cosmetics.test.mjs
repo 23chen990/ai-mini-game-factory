@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {newCareer,loadCareer,skinUnlocked,CAREER_KEY} from '../racing/career.mjs';
 import {RacingCareer} from '../racing/runtime.mjs';
-import {CAR_MODELS,freshCosmetics,restoreCosmetics,grantCosmetic} from '../racing/cosmetics.mjs';
+import {CAR_MODELS,grantCosmetic} from '../racing/cosmetics.mjs';
 const store=()=>{const map=new Map();return {getItem:k=>map.get(k)??null,setItem:(k,v)=>map.set(k,v)};};
 const adConfig={status:1,source:'check_ads_status',appId:'test-app',spaceId:'test-unit',screenOrientation:1};
 const ready=storage=>{const c=new RacingCareer(storage);c.setupAd(adConfig,{createRewardedVideoAd(){}});return c;};
