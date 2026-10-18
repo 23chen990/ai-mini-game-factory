@@ -83,8 +83,17 @@ test('actual esbuild script injection keeps valid $& tokens and exactly one clos
 test('V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes',()=>{
   const layouts = "export const LAYOUTS = { city: {}, egypt: {}, snow: {}, aegean: {} };";
   const patchedLayouts = api.patchRaceLayouts(layouts);
-  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS, \{ v8: true, v9: true, v10: true \}\)/);
+  assert.match(patchedLayouts, /applyTrackDesign\(LAYOUTS, \{ v8: true, v9: true, v10: true, v11: true \}\)/);
   assert.equal(api.patchRaceLayouts(patchedLayouts),patchedLayouts);
+  for(const legacyCall of [
+    'applyTrackDesign(LAYOUTS);',
+    'applyTrackDesign(LAYOUTS, { v8: true });',
+    'applyTrackDesign(LAYOUTS, { v8: true, v9: true });',
+    'applyTrackDesign(LAYOUTS, { v8: true, v9: true, v10: true });',
+  ]) {
+    const older="import { applyTrackDesign } from './race-track-design.mjs';\n"+layouts+'\n'+legacyCall+'\n';
+    assert.equal(api.patchRaceLayouts(older),patchedLayouts,'migrate one existing invocation without applying geometry twice');
+  }
   assert.throws(()=>api.patchRaceLayouts('const X = {};'), /Pinned track/);
   const src = "import * as THREE from 'three';\nexport class ItemSystem {\n  constructor() {\n    this.foo=1;\n  }\n\n  reset() {}\n}";
   const maps="export const MAPS = [{ id: 'city' }];";
@@ -215,6 +224,84 @@ test('V8 native AI hook is strict and avoids checkpoint/progress surgery',()=>{
   assert.throws(()=>api.patchV8NativeAi('class NonRacing {}'),/AI anchors changed/);
 });
 
+test('V11 build adapter preserves AI names and instantiates the native PlayerCar subclass',async()=>{
+  const original="export const AI_NAMES = ['North','South'];\nexport class AICar { update(dt) { this.dist += 90 * dt; } }";
+  const patched=api.patchV11PhysicalAi(original);
+  assert.equal(api.patchV11PhysicalAi(patched),patched);
+  assert.ok(!patched.includes('this.dist += 90 * dt'),'the old on-rail movement is replaced');
+  const nativeUrl='data:text/javascript,'+encodeURIComponent('export class PlayerCar {} export const TUNE={steerRate:1.9};');
+  const moduleUrl=new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/v11-physical-ai.mjs',import.meta.url).href;
+  const executable=patched.replace("'./vehicle.js'",JSON.stringify(nativeUrl))
+    .replace("'./race-v11-physical-ai.mjs'",JSON.stringify(moduleUrl));
+  const built=await import('data:text/javascript,'+encodeURIComponent(executable));
+  const native=await import(nativeUrl);
+  assert.deepEqual(built.AI_NAMES,['North','South']);
+  assert.equal(Object.getPrototypeOf(built.AICar),native.PlayerCar,
+    'generated rivals inherit the actual native movement/collision class');
+  assert.throws(()=>api.patchV11PhysicalAi('export class AICar {}'),/constructor\/name interface changed/);
+  assert.throws(()=>api.patchV11PhysicalAi(original+"\nexport const AI_NAMES = ['Duplicate'];"),/constructor\/name interface changed/);
+});
+
+test('V11 world adapter projects physical rivals and applies real impulses without taking player ownership',()=>{
+  const original=`export class NativeWorld {
+  progress(r) {
+    if (r.isPlayer) {
+      const d = r.d;
+      return d;
+    }
+    return r.dist;
+  }
+  velocity(r) {
+    if (r.isPlayer) return [Math.sin(r.m) * r.s, Math.cos(r.m) * r.s];
+    return [r.legacyVx,r.legacyVz];
+  }
+  offset(r,px,pz) {
+    if (r.isPlayer) { r.x += px; r.z += pz; return; }
+    r.lat+=px; r.dist+=pz;
+  }
+  impulse(r,vx,vz) {
+    if (r.isPlayer) {
+      const cx = Math.sin(r.m) * r.s + vx,
+        cz = Math.cos(r.m) * r.s + vz;
+      r.m=Math.atan2(cx,cz); r.s=Math.hypot(cx,cz); return;
+    }
+    r.pushL+=vx; r.pushD+=vz;
+  }
+  tick(r) {
+    const P=this.player,DT=.05,aiActive=true;
+    r.__V10_RIVAL_PLAYER__=P; r.update(DT, aiActive, this.raceTime, this.rubber(r));
+  }
+  winner(r) { return r.isPlayer ? 'player-result' : 'rival-result'; }
+}`;
+  const patched=api.patchV11PhysicalRivalWorld(original);
+  assert.equal(api.patchV11PhysicalRivalWorld(patched),patched);
+  const World=new Function(patched.replace('export class','class')+';return NativeWorld;')();
+  const world=new World();
+  const physical={isPlayer:false,__V11_PHYSICAL_AI__:true,d:321,dist:9000,x:2,z:3,m:0,s:10};
+  assert.equal(world.progress(physical),321,'checkpoint distance comes from native road projection');
+  assert.deepEqual(world.velocity(physical),[0,10]);
+  world.offset(physical,4,6);
+  assert.deepEqual([physical.x,physical.z,physical.dist],[6,9,9000]);
+  world.impulse(physical,3,4);
+  const velocity=world.velocity(physical);
+  assert.ok(Math.abs(velocity[0]-3)<1e-12&&Math.abs(velocity[1]-14)<1e-12);
+  assert.equal(world.winner(physical),'rival-result','physical rivals do not own input, HUD or result effects');
+  const legacy={isPlayer:false,d:20,dist:50,lat:1,legacyVx:2,legacyVz:3,pushL:0,pushD:0};
+  assert.equal(world.progress(legacy),50);
+  assert.deepEqual(world.velocity(legacy),[2,3]);
+  world.offset(legacy,4,6);world.impulse(legacy,3,4);
+  assert.deepEqual([legacy.lat,legacy.dist,legacy.pushL,legacy.pushD],[5,56,3,4]);
+  world.player={isPlayer:true};world.itemMode=true;world.raceTime=15;world.rubber=()=>1.1;
+  physical.update=(...args)=>{physical.lastUpdate=args;};world.tick(physical);
+  assert.equal(physical.__V10_RIVAL_PLAYER__,world.player);
+  assert.equal(physical.__V11_ITEM_MODE__,true);
+  assert.deepEqual(physical.lastUpdate,[.05,true,15,1.1]);
+  assert.equal(world.winner(world.player),'player-result');
+  const partial=original.replace('const d = r.d;','const d = r.otherD;');
+  assert.throws(()=>api.patchV11PhysicalRivalWorld(partial),/branch changed or partly applied/);
+  assert.throws(()=>api.patchV11PhysicalRivalWorld('class Unknown {}'),/branch changed or partly applied/);
+});
+
 test('V8 one-way finish hooks preserve native progress and onLap bookkeeping',()=>{
   const native=[
     'export class NativeWorld {',
@@ -240,6 +327,23 @@ test('V8 one-way finish hooks preserve native progress and onLap bookkeeping',()
     /one-way progress anchor changed/);
 });
 
+test('phone and desktop camera differences preserve native car/road physics',()=>{
+ assert.equal(typeof api.patchDualPlatformCamera,'function');
+ const before=[
+  "import { racePhoneCamera } from './race-session.mjs';",
+  'const m = modes[this.camMode];',
+  'const dist = m.dist + Math.abs(P.s) * 0.018 + boostPull;',
+  'const look = new THREE.Vector3(P.x + Math.sin(this.camYaw) * m.look, P.y + m.lookH, P.z + Math.cos(this.camYaw) * m.look);'
+ ].join('\n');
+ const after=api.patchDualPlatformCamera(before);
+ assert.ok(after.includes('this.mobileMode ? racePhoneCamera('));
+ assert.ok(after.includes('this.mobileMode ? 0.010 : 0.018'));
+ assert.ok(after.includes('this.mobileMode ? boostPull * .25 : boostPull'));
+ assert.ok(after.includes('racePhoneLookOffset(this.track,P,m.look)'));
+ assert.equal(api.patchDualPlatformCamera(after),after);
+ assert.throws(()=>api.patchDualPlatformCamera('const m = modes[this.camMode];'),/Missing racing phone camera import/);
+});
+
 test('native eight-item HUD matches V8 pickups and never crashes on a new item ID',()=>{
   const original=[
     "export const ITEM_INFO = {",
@@ -261,4 +365,28 @@ test('native eight-item HUD matches V8 pickups and never crashes on a new item I
     assert.ok(patched.includes("  "+id+":")&&patched.includes(name),id);
   assert.throws(()=>api.patchV8NativeHudItems('export const ITEM_INFO = {};'),/HUD item|pinned|anchor/iu);
   assert.throws(()=>api.patchV8NativeHudItems(original.replace("  magnet: { icon: '🧲', name: '磁铁' },","")),/HUD item|pinned|anchor/iu);
+});
+
+test('V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors',()=>{
+ const basic=[
+  "quality: IS_TOUCH ? 'mid' : 'high'",
+  "canvas: this.canvas, antialias: true, powerPreference: 'high-performance'"
+ ].join('\n');
+ const init=api.patchMobileInitialRendering(basic);
+ assert.ok(init.includes("quality: IS_TOUCH ? 'low' : 'high'"));
+ assert.ok(init.includes('antialias: !IS_TOUCH'));
+ assert.equal(api.patchMobileInitialRendering(init),init);
+ const mid=[
+  "q === 'mid' ? Math.min(dpr, 1.5) : 1",
+  "this.renderer.shadowMap.enabled = q !== 'low';",
+  "this.sun.castShadow = q !== 'low';",
+  "if (q === 'low') return;"
+ ].join('\n');
+ const slim=api.patchMobileMidRendering(mid);
+ assert.ok(slim.includes('Math.min(dpr, IS_TOUCH ? 1.2 : 1.5)'));
+ assert.ok(slim.includes('this.sun.castShadow = q !=='));
+ assert.ok(slim.includes("if (q === 'low' || (IS_TOUCH && q === 'mid')) return;"));
+ assert.equal(api.patchMobileMidRendering(slim),slim);
+ assert.throws(()=>api.patchMobileInitialRendering('unknown racing engine'),/anchor changed/);
+ assert.throws(()=>api.patchMobileMidRendering('unknown racing renderer'),/anchor changed/);
 });

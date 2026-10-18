@@ -6,6 +6,7 @@ import path from 'node:path';
 import { once } from 'node:events';
 import { TRACK_RESHAPES, COURSE_ROAD_WIDTHS } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 import { STAGES } from '../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
+import { V11_COURSES } from '../../templates/web-lite/h5-source-mobile-v1/racing/v11-course-director.mjs';
 
 /**
  * Automated real Chromium/WebGL *entry smoke*, not manual/physical gameplay QA.
@@ -158,6 +159,9 @@ async function raceStart(page, index, name) {
     shortcutRoad:!!window.game?.level?.getObjectByName('physical-shortcut-road'),
     shortcutRails:!!window.game?.level?.getObjectByName('physical-shortcut-rails'),
     v10DrivingIdentity:window.game?.track?.__V10_STAGE_IDENTITY__??null,
+    v11CourseIdentity:window.game?.track?.__V11_COURSE_IDENTITY__??null,
+    nativeAiCount:window.game?.racers?.filter(r=>!r.isPlayer).length??0,
+    physicalAiCount:window.game?.racers?.filter(r=>!r.isPlayer&&r.__V11_PHYSICAL_AI__===true).length??0,
     v10RoadMarks:window.game?.level?.getObjectByName('v10-native-rumble-edge-marks')?.geometry?.attributes?.position?.count??0,
     v10WorldScenes:window.game?.level?.getObjectByName(
       'v10-roadside-identity-'+window.game?.track?.__RACE_COURSE_ID)?.children?.length??0,
@@ -240,8 +244,8 @@ async function raceStart(page, index, name) {
      worldIdentity.numberedMeshCount!==expectedGateMeshes||
      worldIdentity.actualCourse!==expectedCourse||
      worldIdentity.requestedCourse!==expectedCourse||
-     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V10.0'||
-     worldIdentity.uiRevision!=='racing-v100-integrated')
+     !(worldIdentity.actualTrackLength>1200)||worldIdentity.revision!=='V11.5'||
+     worldIdentity.uiRevision!=='racing-v115-unified')
     fail(name+': numbered features are not in the actual loaded 3D circuit: '+JSON.stringify(worldIdentity));
   // V10 stage-05's black generic sector arch previously occupied the real
   // short fork between 1488-1693m. It must be ACTUALLY RELOCATED IN WEBGL.
@@ -267,8 +271,10 @@ async function raceStart(page, index, name) {
   // Compare the actual rendered native geometry with the source-of-truth
   // designed width, not a stale number copied from an earlier track version.
   const expectedWidth=COURSE_ROAD_WIDTHS[expectedCourse.slice(5)]??TRACK_RESHAPES[expectedMap]?.width;
-  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600 || early.v9RoadBands!==2 || early.v9ActualNarrowing<.35 || !early.v10DrivingIdentity || early.v10RoadMarks<150 || early.v10WorldScenes!==2)
-    fail(name+': V3.1 real road geometry is missing: '+JSON.stringify(early));
+  if (!Number.isFinite(expectedWidth) || Math.abs(early.roadWidth-expectedWidth)>.01 || early.trackSamples<600 || early.v9RoadBands!==2 || early.v9ActualNarrowing<.35 || early.v11CourseIdentity!==V11_COURSES[expectedCourse.slice(5)]?.identity || early.v10RoadMarks<150 || early.v10WorldScenes!==2)
+    fail(name+': recovered V11 native road geometry is missing: '+JSON.stringify(early));
+  if(early.nativeAiCount<1 || early.physicalAiCount!==early.nativeAiCount)
+    fail(name+': native rivals are not using the V11 physical driver: '+JSON.stringify(early));
   if(index===4 && (!early.shortcut || early.shortcutGain<25 || early.shortcutGain>82 ||
      early.shortcutLength<75 || early.shortcutLength>210 ||
      early.shortcutStyle!=='temple' || early.v10ShortcutSkill!=='temple late-apex precision' ||
@@ -359,7 +365,7 @@ try {
     oneLineFirstGuide:document.querySelector('#race-guide')?.hidden===false &&
       !document.querySelector('#race-guide')?.textContent.includes('松手回正')
   }));
-  if(initialControls.mode!=='joystick'||!initialControls.wheel||
+  if(initialControls.mode!=='wheel'||!initialControls.wheel||
      initialControls.sensitivity!=='normal'||!initialControls.noSwitch||
      !initialControls.noArrows||!initialControls.noAutoGuide||!initialControls.oneLineFirstGuide||!initialControls.noPhantomAd)
     fail('Only joystick input is allowed, even after a stored old assist preference: '+JSON.stringify(initialControls));
@@ -376,6 +382,52 @@ try {
      !adSafety.boostDoesNotAppearWithoutSDK)
     fail('Unconfigured WebGL browser must remain ad-free: '+JSON.stringify(adSafety));
   report.adSafety=adSafety;
+  const fuelUI=await page.evaluate(()=>({
+    cap:document.querySelector('#race-fuel-gauge')?.getAttribute('aria-valuemax'),
+    segments:document.querySelectorAll('#race-fuel-gauge span').length,
+    label:document.querySelector('#race-fuel-info')?.textContent,
+    amount:document.querySelector('#race-fuel-gauge')?.getAttribute('aria-valuenow'),
+    adHidden:document.querySelector('#race-star-ad')?.hidden
+  }));
+  if(fuelUI.cap!=='30'||fuelUI.segments!==6||fuelUI.amount!=='30'||
+     !fuelUI.label.includes('每局 -5 · 每分钟 +1')||!fuelUI.adHidden)
+    fail('Mobile fuel and star gate must use real 30/5/1m economy, no synthetic ads: '+JSON.stringify(fuelUI));
+  report.fuelAtStart=fuelUI;
+  // Verify a locked checkpoint is visible only when explicitly chosen,
+  // never auto-populated into the player's view as an unsolicited prompt.
+  await page.evaluate(()=>localStorage.setItem('h5-mobile:qq-speed:career:v1',
+    JSON.stringify({version:1,stars:{'01':1,'02':1,'03':1,'04':1,'05':1},
+      gatePasses:{},times:{},skin:0,rounds:5})));
+  await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
+  const initiallyQuiet=await page.evaluate(()=>({
+    firstSelected:document.querySelector('#race-stage')?.value,
+    lockedOption:document.querySelector('#race-stage option[value="5"]')?.disabled,
+    adHidden:document.querySelector('#race-star-ad')?.hidden,
+    max:document.querySelector('#race-fuel-gauge')?.getAttribute('aria-valuemax')
+  }));
+  if(initiallyQuiet.firstSelected!=='4'||initiallyQuiet.lockedOption!==false||
+     !initiallyQuiet.adHidden||initiallyQuiet.max!=='30')
+    fail('Explicitly-selectable star gate must not interrupt the normal stage lobby: '+JSON.stringify(initiallyQuiet));
+  await page.selectOption('#race-stage','5');
+  const gateView=await page.evaluate(()=>{
+    const game=window.game,kit=document.querySelector('#race-kit');
+    return {
+      selected:kit.querySelector('#race-stage')?.value,
+      locked:kit.dataset.starLocked,
+      heading:kit.querySelector('#race-stage-goal')?.textContent,
+      raceStartHidden:kit.querySelector('#race-start')?.hidden,
+      adHidden:kit.querySelector('#race-star-ad')?.hidden,
+      nativeBefore:game?.state
+    };
+  });
+  await page.evaluate(()=>window.game?.startRace());
+  const postBypass=await page.evaluate(()=>window.game?.state);
+  if(gateView.selected!=='5'||gateView.locked!=='true'||!gateView.heading.includes('5/8')||
+     !gateView.raceStartHidden||!gateView.adHidden||postBypass==='countdown')
+    fail('Locked checkpoint must remain locked without real stars/ad, including native menu bypass: '+JSON.stringify({gateView,postBypass}));
+  report.starGate={quietUntilSelected:true,threshold:'5/8',nativeBypassBlocked:true,adsUnavailableInBrowser:true};
+  await page.evaluate(()=>localStorage.removeItem('h5-mobile:qq-speed:career:v1'));
+  await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
   // Genuine browser render of the default lobby at two landscape widths.
   // No seeded save, DOM mutation or mocked UI goes into these screenshots.
   for (const [width,height] of [[844,390],[740,360]]) {
@@ -494,14 +546,18 @@ try {
     };
   });
   const cdp=await context.newCDPSession(page);
-  const leftThumb={x:wheel.x+wheel.width*.18,y:wheel.y+wheel.height*.5,id:101};
-  const rightThumb={...leftThumb,x:wheel.x+wheel.width*.82};
+  // Rotate on the rim: stationary touches must NOT steer the new Wheel Touch controller.
+  const cx=wheel.x+wheel.width/2,cy=wheel.y+wheel.height/2,r=wheel.width*.37;
+  const leftThumb={x:cx,y:cy-r,id:101};
+  const leftTurn={...leftThumb,x:cx-r*.75,y:cy-r*.66};
+  const rightThumb={...leftThumb,x:cx+r*.75,y:cy-r*.66};
   const driftThumb={x:drift.x+drift.width/2,y:drift.y+drift.height/2,id:102};
   await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftThumb]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[leftTurn]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis>.5,null,{timeout:8000});
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[driftThumb]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[leftTurn,driftThumb]});
   await page.waitForFunction(()=>document.querySelector('[data-race-action="drift"]')?.classList.contains('held'),null,{timeout:8000});
-  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[rightThumb]});
+  await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[rightThumb,driftThumb]});
   await page.waitForFunction(()=>window.__RACE_EVIDENCE__?.steerAxis<-.5,null,{timeout:8000});
   await page.waitForFunction(()=>{
     const pin=window.game?.__QA_LAST_CONTROL_PIN__;
@@ -550,7 +606,7 @@ try {
     fail('Pause sound toggle did not mute and persist: '+JSON.stringify(audioMuted));
   await page.locator('#race-resume').tap();
   await page.waitForFunction(()=>window.game?.state==='race',null,{timeout:8000});
-  report.touch={actualCDPTouch:true,joystickCountersteer:true,simultaneousDrift:true,releaseClears:true,paused:true,cleared,resumed:true,audioMuted:true};
+  report.touch={actualCDPTouch:true,rotaryWheelCountersteer:true,simultaneousDrift:true,releaseClears:true,paused:true,cleared,resumed:true,audioMuted:true};
   // QA-only injected wrongWay status, NOT a natural 180-degree player turn.
   // On an already-forward-facing car, native physics may self-correct the
   // injected meter before the forced recovery threshold can fire. Both genuine
@@ -596,11 +652,13 @@ try {
   const cases=[[1,'02-egypt-speed'],[3,'04-aegean-drift'],[4,'05-egypt-items'],
     [6,'07-cliff-technical'],[10,'11-serpent-technical'],[7,'08-snow-rank']];
   for(const [index,name] of cases) {
+    // Synthetic QA seed ONLY for isolated 3D stage-entry smoke: do not
+    // confuse six-and-more forced starts with one real six-race fuel tank.
+    await page.evaluate(()=>localStorage.setItem('h5-mobile:qq-speed:fuel:v1',
+      JSON.stringify({version:2,amount:30,updatedAt:Date.now(),lastAdAt:0,lastAdId:''})));
     await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
     await raceStart(page,index,name);
     if (index===4) {
-      // Reset the native follow camera after teleporting a QA-only car; otherwise
-      // the captured frame shows terrain midway across the map, not the fork.
       // QA-only actual WebGL screenshots at a physical V9 fork. These are
       // deliberately labelled STAGED and are NEVER used as human clear proof.
       const v9Fork=await page.evaluate(()=>{
@@ -758,6 +816,52 @@ try {
   if(savedAudio!=='0') fail('Mute preference lost on reload');
   report.persistedAudioEnabled=false;
   if(jsErrors.length) fail('Browser errors: '+jsErrors.slice(0,4).join(' | '));
+  // Separate real desktop Chromium/WebGL launch, not a resized simulated phone.
+  // The same build must render keyboard gameplay without thumb UI or mobile zoom.
+  await context.close(); // release SwiftShader phone WebGL before desktop allocation
+  const desktopContext=await browser.newContext({
+    viewport:{width:1366,height:768},deviceScaleFactor:1,isMobile:false,hasTouch:false
+  });
+  try{
+    const desktop=await desktopContext.newPage();
+    desktop.on('pageerror',e=>jsErrors.push(e.message));
+    await desktop.goto(url,{waitUntil:'domcontentloaded',timeout:45000});
+    await waitLoaded(desktop);
+    const ready=await desktop.evaluate(()=>({
+      platform:document.querySelector('#race-kit')?.dataset.platform,
+      computedPlatform:document.documentElement.dataset.racePlatform,
+      controls:window.getComputedStyle(document.querySelector('#race-controls')).display,
+      guide:document.querySelector('#race-guide')?.textContent
+    }));
+    if(ready.platform!=='desktop'||ready.computedPlatform!=='desktop'||
+       ready.controls!=='none'||!ready.guide.includes('Shift'))
+      fail('Real desktop must show keyboard presentation, not enlarged phone controls: '+JSON.stringify(ready));
+    await desktop.locator('#race-start').click();
+    await desktop.waitForFunction(()=>window.game?.state==='race'&&!!window.game?.player,null,{timeout:45000});
+    await desktop.keyboard.down('ArrowUp');
+    await desktop.keyboard.down('ArrowLeft');
+    await desktop.waitForFunction(()=>window.game?.player?.s>1,null,{timeout:18000});
+    const running=await desktop.evaluate(()=>{
+      const g=window.game,p=g.player;
+      return {
+        platform:document.querySelector('#race-kit')?.dataset.platform,
+        mobileCamera:g.mobileMode,
+        cameraMode:g.camMode,
+        velocity:p.s,
+        distance:Math.hypot(g.camera.position.x-p.x,g.camera.position.y-p.y,g.camera.position.z-p.z),
+        keyboardUp:g.input.down.has('ArrowUp'),
+        keyboardLeft:g.input.down.has('ArrowLeft')
+      };
+    });
+    if(running.platform!=='desktop'||running.mobileCamera||running.cameraMode!==1||
+       !running.keyboardUp||!running.keyboardLeft||running.velocity<=1||running.distance<=10.5)
+      fail('Desktop must retain original farther chase camera and actual keyboard steering: '+JSON.stringify(running));
+    await desktop.screenshot({path:path.join(dest,'90-desktop-keyboard-1366x768.png')});
+    await desktop.keyboard.up('ArrowLeft');
+    await desktop.keyboard.up('ArrowUp');
+    report.desktop={actualChromiumWebGL:true,keyboardNative:true,touchHUDHidden:true,originalChase:true,...running};
+  }finally{await desktopContext.close();}
+  if(jsErrors.length)fail('Browser errors after desktop launch: '+jsErrors.slice(-4).join(' | '));
   report.passed=true;report.smallView=small;
 } catch(e) {report.errors.push(String(e?.stack || e));process.exitCode=1;}
 finally {

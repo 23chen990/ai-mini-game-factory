@@ -14,12 +14,12 @@
  */
 export const V9_STAGE_RHYTHMS = Object.freeze({
   '01': {identity:'hard urban pursuit / four decisive shifts and late countersteer', beats:['chicane','late','apex','chicane']},
-  '02': {identity:'long accelerating crests / late desert brake', beats:[null,'late','apex']},
+  '02': {identity:'long accelerating crests / late desert brake', beats:['grandSweep','late','apex']},
   '03': {identity:'fast divided flyovers / technical infield', beats:['sweep',null,'chicane']},
   '04': {identity:'coastal flow / downhill corner exit', beats:[null,'sweep','late']},
   '05': {identity:'temple approach / one consequential hairpin', beats:['apex',null,'chicane']},
   '06': {identity:'urban expressway / district-change rhythm', beats:['sweep','late',null]},
-  '07': {identity:'cliff descent / focused switchback / long exit', beats:[null,'apex','chicane',null]},
+  '07': {identity:'cliff descent / focused switchback / long exit', beats:['grandSweep','apex','chicane',null]},
   '08': {identity:'open snow arc / technical ridge crossing', beats:['sweep',null,'late']},
   '09': {identity:'dune open sprint / isolated hard brake', beats:[null,'apex']},
   '10': {identity:'neon main-line attack / abrupt U-cut commitment', beats:['late',null,'chicane']},
@@ -29,28 +29,73 @@ export const V9_STAGE_RHYTHMS = Object.freeze({
   '14': {identity:'dual dune crests / speed versus braking', beats:['sweep',null,'apex']},
   '15': {identity:'polar three-lobe / linked countersteer', beats:['chicane','late',null,'apex']},
   '16': {identity:'cliff crown / tight final-risk corner', beats:[null,'sweep','late','chicane']},
-  '17': {identity:'city outer freeway / one dramatic return', beats:[null,'late','sweep']},
-  '18': {identity:'two dune ravines / precise inside entry', beats:['apex','sweep',null]},
-  '19': {identity:'tidal peninsula / edge-control transitions', beats:[null,'chicane','late']},
-  '20': {identity:'crystal summit / alternating short technicals', beats:['chicane',null,'apex']},
-  '21': {identity:'open highway / late single-bend showdown', beats:[null,'sweep',null,'late']},
-  '22': {identity:'canyon single-run descent / open risky exits', beats:[null,'late','apex',null]},
-  '23': {identity:'island crossing / one loaded midair entry', beats:['sweep',null,'chicane','apex']},
-  '24': {identity:'snow hook / narrow-turn approach after speed', beats:[null,'apex','late',null]},
-  '25': {identity:'urban stacked road / shortcut precision', beats:['late','sweep',null,'apex']},
-  '26': {identity:'stone ring / natural wide-turn breathing', beats:[null,'sweep','apex','late']},
-  '27': {identity:'cloud snake / countersteer race', beats:['chicane','apex',null,'late']},
-  '28': {identity:'aurora / alternating height and banking feel', beats:['sweep','chicane',null,'late']},
-  '29': {identity:'night overpass / long-run final chicane', beats:[null,'late','chicane','sweep']},
-  '30': {identity:'skyline finale / technical entry then long chase', beats:['late','chicane','apex',null]},
+  '17': {identity:'city outer freeway / one dramatic return', beats:['grandSweep','doubleApex','sweep']},
+  '18': {identity:'two dune ravines / precise inside entry', beats:['apex','grandSweep',null]},
+  '19': {identity:'tidal peninsula / edge-control transitions', beats:['grandSweep','chicane','late']},
+  '20': {identity:'crystal summit / alternating short technicals', beats:['chicane','doubleApex','apex']},
+  '21': {identity:'open highway / late single-bend showdown', beats:[null,'grandSweep',null,'late']},
+  '22': {identity:'canyon single-run descent / early safe fork then decisive outer exit arc', beats:[null,'late','apex','grandSweep']},
+  '23': {identity:'island crossing / one loaded midair entry', beats:['sweep','doubleApex','chicane','apex']},
+  '24': {identity:'snow hook / narrow-turn approach after speed', beats:['grandSweep','apex','late',null]},
+  '25': {identity:'urban stacked road / shortcut precision', beats:['late','sweep',null,'doubleApex']},
+  '26': {identity:'stone ring / natural wide-turn breathing', beats:['grandSweep','sweep','apex','late']},
+  '27': {identity:'cloud snake / countersteer race', beats:['chicane','doubleApex',null,'late']},
+  '28': {identity:'aurora / alternating height and banking feel', beats:['grandSweep','chicane',null,'late']},
+  '29': {identity:'night overpass / long-run final chicane', beats:['grandSweep','late','chicane','sweep']},
+  '30': {identity:'skyline finale / technical entry then long chase', beats:['late','chicane','doubleApex',null]},
 });
+// The V10 sector director was authored against c099's three-point V9 beats.
+// Keep that explicit legacy baseline separate from the newer V9/V9.1 edits:
+// changing their insertion counts would move V10 corners to unrelated edges.
+const V10_BASELINE_BEATS=Object.freeze({
+  '02':[null,'late','apex'],'07':[null,'apex','chicane',null],
+  '17':[null,'late','sweep'],'18':['apex','sweep',null],
+  '19':[null,'chicane','late'],'20':['chicane',null,'apex'],
+  '21':[null,'sweep',null,'late'],'22':[null,'late','apex',null],
+  '23':['sweep',null,'chicane','apex'],'24':[null,'apex','late',null],
+  '25':['late','sweep',null,'apex'],'26':[null,'sweep','apex','late'],
+  '27':['chicane','apex',null,'late'],'28':['sweep','chicane',null,'late'],
+  '29':[null,'late','chicane','sweep'],'30':['late','chicane','apex',null],
+});
+export const V10_BASELINE_RHYTHMS=Object.freeze(Object.fromEntries(
+  Object.entries(V9_STAGE_RHYTHMS).map(([id,plan])=>[id,Object.freeze({
+    identity:id==='22'?'canyon single-run descent / open risky exits':plan.identity,
+    beats:Object.freeze([...(V10_BASELINE_BEATS[id]??plan.beats)]),
+  })])
+));
 const STYLES=Object.freeze({
-  // offsets are a FRACTION of the stage-specific historical authored
-  // amplitude. Unlike the uniform old S these preserve different rhythms.
+  // Long arcs have enough longitudinal distance for sustained wheel rotation,
+  // not a decorative ±15m kink that can be ignored with automatic throttle.
   sweep:[[.23,.22],[.52,.78],[.79,.42]],
   apex:[[.24,.14],[.54,1],[.80,.28]],
   late:[[.27,.06],[.57,.35],[.78,.76]],
   chicane:[[.26,.74],[.54,-.73],[.79,.18]],
+  grandSweep:[[.13,.16],[.30,.82],[.49,1.30],[.68,1.04],[.87,.20]],
+  // Opposite sides of the original lane centreline force two deliberate
+  // wheel commitments. Still genuine spline points and native collisions.
+  doubleApex:[[.14,.18],[.34,1.02],[.51,.18],[.68,-.96],[.85,-.20]],
+});
+/** V9.1 pacing correction is limited to measured low-turn intervals.
+ * Indices refer to ORIGINAL nodes, never indices shifted by previous inserts.
+ * Offsets use the same pre-V8-stretch metre convention as the authored beats.
+ * The first node, return road, near-fork entry and all car physics are intact. */
+export const V91_PACING_SECTORS = Object.freeze({
+  '03': Object.freeze([
+    Object.freeze({index:0, amplitude:12, side:1, shape:'entry'})
+  ]),
+  '07': Object.freeze([
+    Object.freeze({index:0, amplitude:12, side:1, shape:'entry'}),
+    Object.freeze({index:14, amplitude:12, side:-1, shape:'release'})
+  ]),
+  '22': Object.freeze([
+    Object.freeze({index:0, amplitude:10, side:-1, shape:'entry'}),
+    Object.freeze({index:9, amplitude:12, side:1, shape:'switch'})
+  ])
+});
+const PACING_SHAPES = Object.freeze({
+  entry:[[.30,0],[.58,1],[.82,.25]],
+  release:[[.23,.25],[.54,1],[.80,.35]],
+  switch:[[.26,.65],[.55,-.8],[.81,-.15]]
 });
 const finite=v=>typeof v==='number'&&Number.isFinite(v);
 export function validateV9Rhythms(){
@@ -81,9 +126,9 @@ export function validateV9Rhythms(){
  * wide-straight/narrow-S cadence. Width remains above the vehicle safety
  * margin on both mobile and desktop.
  */
-export const V9_WIDTH_BANDS=Object.freeze(Object.fromEntries(
-  Object.keys(V9_STAGE_RHYTHMS).map(id=>{
-    const n=Number(id),p=V9_STAGE_RHYTHMS[id],breather=p.beats.indexOf(null);
+const widthBands=rhythms=>Object.freeze(Object.fromEntries(
+  Object.keys(rhythms).map(id=>{
+    const n=Number(id),p=rhythms[id],breather=p.beats.indexOf(null);
     const narrowAt=+.12+((n*7)%53)/100;
     const wideAt=breather>=0
       ? .66+((n*3)%16)/100
@@ -94,6 +139,8 @@ export const V9_WIDTH_BANDS=Object.freeze(Object.fromEntries(
     ])];
   })
 ));
+export const V9_WIDTH_BANDS=widthBands(V9_STAGE_RHYTHMS);
+export const V10_BASELINE_WIDTH_BANDS=widthBands(V10_BASELINE_RHYTHMS);
 const smooth01=t=>{const x=Math.max(0,Math.min(1,t));return x*x*(3-2*x);};
 export function v9RoadHalfWidthAt(base,profile,fraction) {
   if(!Number.isFinite(base)||base<=0)throw Error('Invalid original road width');
@@ -114,17 +161,22 @@ export function v9RoadHalfWidthAt(base,profile,fraction) {
 }
 
 
-export function shapeV9RhythmSegments(local,courseId,scale,originalSectors){
+export function shapeV9RhythmSegments(local,courseId,scale,originalSectors,{legacyV10=false,pacing=!legacyV10}={}){
   
 validateV9Rhythms();
-  const plan=V9_STAGE_RHYTHMS[courseId];
+  if(legacyV10&&pacing)throw Error('Legacy V10 requires its original V9 sector indices');
+  const plan=(legacyV10?V10_BASELINE_RHYTHMS:V9_STAGE_RHYTHMS)[courseId];
   if(!plan||!Array.isArray(local)||!finite(scale)||scale<=0||
      !Array.isArray(originalSectors)||originalSectors.length!==plan.beats.length)
     throw Error('Missing authored rhythm contract '+courseId);
-  const out=local.map(v=>v.slice()),seen=new Set();
+  const out=local.map(v=>v.slice()),seen=new Set(),insertions=[];
   let applied=0;
   for(let k=originalSectors.length-1;k>=0;k--){
-    const [index,amplitude,side]=originalSectors[k],style=plan.beats[k];
+    const [authoredIndex,amplitude,side]=originalSectors[k],style=plan.beats[k];
+    // The old 22 grandSweep at node 15 was mainly beyond its 84% finish.
+    // Place the same authored corner at node 11, inside the actual race.
+    const index=pacing && courseId==='22' && authoredIndex===15 &&
+      style==='grandSweep' ? 11 : authoredIndex;
     if(!Number.isInteger(index)||index<1||index>=local.length-1||
        seen.has(index)||!finite(amplitude)||amplitude<10||amplitude>30||
        ![-1,1].includes(side))throw Error('Invalid authored rhythm segment '+courseId);
@@ -139,17 +191,47 @@ validateV9Rhythms();
     // The 01/05/11/16 corner-duel chapters need authentic steering stakes:
     // retain four intentionally distinct beats while sharpening the apex
     // geometry instead of reducing the native steering challenge threshold.
-    const challengeAmplitude={ '01':1.07,'05':1.16,'11':1.04,'16':1.04 };
-    const maximum=amplitude*(challengeAmplitude[courseId]??.73)/scale;
+    const chapter=Number(courseId);
+    const baseline=chapter<=10?.73:chapter<=16?.87:chapter<=20?.96:
+      chapter<=24?1.05:chapter<=27?1.12:1.18;
+    // Long entries on 02/07/22 need sustained steering, not the old null rest.
+    // Keep known V9 technical fork geometry in the same safe general envelope.
+    const challengeAmplitude={
+      '01':1.07,'02':1.15,'05':1.16,'07':1.18,
+      '11':1.04,'16':1.04,'22':.73
+    };
+    const legacyAmplitude={'01':1.07,'05':1.16,'11':1.04,'16':1.04};
+    const maximum=amplitude*(legacyV10
+      ? legacyAmplitude[courseId]??.73 : challengeAmplitude[courseId]??baseline)/scale;
     const points=STYLES[style].map(([t,w])=>[
       +(a[0]+dx*t+normalX*side*maximum*w).toFixed(4),
       +(a[1]+dz*t+normalZ*side*maximum*w).toFixed(4),
       +(a[2]+(b[2]-a[2])*t).toFixed(4),
     ]);
-    out.splice(index+1,0,...points);
+    insertions.push({index,points});
     applied++;
   }
+  let pacingApplied=0;
+  for(const entry of pacing ? V91_PACING_SECTORS[courseId]??[] : []) {
+    const {index,amplitude,side,shape}=entry;
+    if(!Number.isInteger(index)||index<0||index>=local.length-1||seen.has(index))
+      throw Error('Invalid pacing anchor '+courseId);
+    const a=local[index],b=local[index+1],dx=b[0]-a[0],dz=b[1]-a[1];
+    const span=Math.hypot(dx,dz),profile=PACING_SHAPES[shape];
+    if(!profile||!finite(span)||span*scale<100)
+      throw Error('Pacing sector too short '+courseId);
+    const offset=side*amplitude/scale;
+    const points=profile.map(([t,w])=>[
+      +(a[0]+dx*t-dz/span*offset*w).toFixed(4),
+      +(a[1]+dz*t+dx/span*offset*w).toFixed(4),
+      +(a[2]+(b[2]-a[2])*t).toFixed(4)
+    ]);
+    insertions.push({index,points});seen.add(index);pacingApplied++;
+  }
+  // Sort once so insertions can never reinterpret another sector's indices.
+  for(const {index,points} of insertions.sort((a,b)=>b.index-a.index))
+    out.splice(index+1,0,...points);
   if(!applied)throw Error('No real V9 geometry changes '+courseId);
-  return {points:out,identity:plan.identity,applied,rest:originalSectors.length-applied};
+  return {points:out,identity:plan.identity,applied,rest:originalSectors.length-applied,pacingApplied};
 }
 validateV9Rhythms();

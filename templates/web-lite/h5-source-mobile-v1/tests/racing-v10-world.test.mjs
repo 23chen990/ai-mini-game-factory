@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createCareerLayouts, COURSE_BLUEPRINTS, COURSE_TECHNICAL_SECTORS } from '../racing/track-design.mjs';
 import { V10_STAGE_SIGNATURES, V10_CREST_METERS, shapeV10SignatureSectors, validateV10Signatures } from '../racing/v10-course-director.mjs';
-import { shapeV9RhythmSegments } from '../racing/v9-course-director.mjs';
+import { shapeV9RhythmSegments, V10_BASELINE_RHYTHMS } from '../racing/v9-course-director.mjs';
 import { V8_COURSES, applyV8CourseGeometry } from '../racing/v8-course-geometry.mjs';
 import { V10_SCENE_SIGNATURES,validateV10Environment,buildV10RoadRumble,buildV10CinematicWorld } from '../racing/v10-environment.mjs';
 
@@ -18,7 +18,13 @@ test('30 individually choreographed V10 courses use physical extra sectors, pres
       plan=V10_STAGE_SIGNATURES[id];
     assert.ok(COURSE_BLUEPRINTS[id],id);
     assert.ok(plan.beats.length>=1,id);
-    assert.equal(out[key].points.length-old[key].points.length,plan.beats.length*3,id);
+    const original=COURSE_BLUEPRINTS[id][4].split(' ').map(p=>p.split(',').map(Number));
+    const legacy=shapeV9RhythmSegments(original,id,COURSE_BLUEPRINTS[id][3],
+      COURSE_TECHNICAL_SECTORS[id],{legacyV10:true});
+    assert.equal(legacy.pacingApplied,0,id+' legacy V10 keeps its authored original indices');
+    assert.equal(legacy.points.length-original.length,
+      V10_BASELINE_RHYTHMS[id].beats.filter(Boolean).length*3,id);
+    assert.equal(out[key].points.length-legacy.points.length,plan.beats.length*3,id);
     assert.ok(out[key].points.length<=40,id);
     assert.ok(out[key].points.every(p=>p.length===3&&p.every(Number.isFinite)),id);
     assert.equal(out[key].v10StageIdentity,plan.identity,id);
@@ -30,13 +36,20 @@ test('30 individually choreographed V10 courses use physical extra sectors, pres
   assert.ok(V10_STAGE_SIGNATURES['07'].beats.length>=3,'a giant downhill needs multiple decisions');
   assert.ok(V10_STAGE_SIGNATURES['22'].beats.length>=3,'canyon must not be a 4.8km straight');
   assert.equal(old['race-07'].v10StageIdentity,undefined,'do not silently change V9');
+  assert.throws(()=>shapeV9RhythmSegments([], '07',1,[],
+    {legacyV10:true,pacing:true}),/Legacy V10 requires its original V9 sector indices/);
+  const bp=COURSE_BLUEPRINTS['07'],local=bp[4].split(' ').map(p=>p.split(',').map(Number));
+  const latestV9=shapeV9RhythmSegments(local,'07',bp[3],COURSE_TECHNICAL_SECTORS['07']);
+  assert.throws(()=>shapeV10SignatureSectors(local,latestV9.points,
+    COURSE_TECHNICAL_SECTORS['07'],'07',bp[3],V8_COURSES['07'].stretch),
+    /V10 requires its original three-point V9 baseline/);
 });
 test('authored dune and ice crests alter the REAL native road height instead of being overwritten',()=>{
   assert.deepEqual(Object.keys(V10_CREST_METERS).sort(),['02','09','14','28']);
   for(const [id,height]of Object.entries(V10_CREST_METERS)){
     const bp=COURSE_BLUEPRINTS[id];
     const original=bp[4].split(' ').map(p=>p.split(',').map(Number));
-    const baseline=shapeV9RhythmSegments(original,id,bp[3],COURSE_TECHNICAL_SECTORS[id]).points;
+    const baseline=shapeV9RhythmSegments(original,id,bp[3],COURSE_TECHNICAL_SECTORS[id],{legacyV10:true}).points;
     const shaped=shapeV10SignatureSectors(original,baseline,
       COURSE_TECHNICAL_SECTORS[id],id,bp[3],V8_COURSES[id].stretch);
     const raised=applyV8CourseGeometry(shaped.points,id,bp[3],

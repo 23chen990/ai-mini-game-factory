@@ -58,6 +58,22 @@ try{
   await page.evaluate(()=>{window.game.render=()=>{};});
   for(let i=0;i<maxStages;i++){
     if(Date.now()>deadline-25000){report.errors.push('Time budget exceeded');break;}
+    // QA-ONLY synthetic campaign, not earned gameplay: the new 30-point
+    // fuel tank funds exactly six separate 5-point entries. This audit
+    // intentionally forces many stages in one session to check native
+    // geometry; provide a fresh test tank only after each six starts.
+    if(i>0&&i%6===0){
+      await page.evaluate(()=>localStorage.setItem('h5-mobile:qq-speed:fuel:v1',
+        JSON.stringify({version:2,amount:30,updatedAt:Date.now(),lastAdAt:0,lastAdId:''})));
+      await page.reload({waitUntil:'domcontentloaded'});
+      await page.locator('#race-start:not([disabled])').waitFor({timeout:60000});
+      await page.addScriptTag({type:'module',content:
+        "import {ManualRaceDriver} from '/qa-source/driver.mjs';window.__SWEEP_DRIVER__=new ManualRaceDriver();"});
+      await page.waitForFunction(()=>!!window.__SWEEP_DRIVER__,null,{timeout:10000});
+      await page.evaluate(()=>{window.game.render=()=>{};});
+      report.syntheticFuelResets??=[];
+      report.syntheticFuelResets.push({beforeStage:i+1,amount:30,reason:'six separate five-point QA starts'});
+    }
     const id=i===STAGES.length?'daily':String(i+1).padStart(2,'0');
     try{
       await page.locator('#race-stage').selectOption(i===STAGES.length?'daily':String(i));

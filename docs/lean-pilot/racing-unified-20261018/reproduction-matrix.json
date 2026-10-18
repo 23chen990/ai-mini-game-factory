@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "player",
+      "rival",
+      "level-unlock",
+      "car-model"
+    ],
+    "lifecycleStateBranches": [
+      "home",
+      "race",
+      "shortcut-entry",
+      "result",
+      "ad-pending",
+      "replay"
+    ],
+    "rendererPaths": [
+      "native-three",
+      "mobile-overlay",
+      "persistent-state"
+    ],
+    "viewports": [
+      {
+        "label": "small-landscape",
+        "width": 740,
+        "height": 360
+      },
+      {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "portrait-entry",
+        "width": 390,
+        "height": 844
+      },
+      {
+        "label": "desktop",
+        "width": 1440,
+        "height": 900
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "next-stage-ad-result",
+      "objectType": "level-unlock",
+      "lifecycleStateBranch": "result",
+      "rendererPath": "persistent-state",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "REPRODUCED",
+      "expected": "Completed ad opens the adjacent next stage after a real non-podium result.",
+      "observed": "Current starGateStatus still rejects next stage when previous stage has zero stars.",
+      "evidence": [
+        {
+          "path": "templates/web-lite/h5-source-mobile-v1/racing/career.mjs",
+          "sha256": "efdc95f47049707b79c11bbdfb78f3fec31a093573a67e2bb80eec4fd9959d1b",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        },
+        {
+          "path": "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs",
+          "sha256": "b866ec3f54339d952f61af89cad902f9fac2bb8ed28c0db4896b6abef47db888",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    },
+    {
+      "id": "ai-entry-collision",
+      "objectType": "rival",
+      "lifecycleStateBranch": "shortcut-entry",
+      "rendererPath": "native-three",
+      "viewport": {
+        "label": "phone-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "AI commits to an available branch and can recover from a grazing entrance collision.",
+      "observed": "Later physical-AI source was not recovered; V11.0 still uses the old sample-following adapter. Reimplementation requires new physics and browser evidence.",
+      "evidence": [
+        {
+          "path": "templates/web-lite/h5-source-mobile-v1/racing/v8-rival-ai.mjs",
+          "sha256": "5264b72db662817f46cde8d00593b9c44bb690890aec3ce89274afdd62205f48",
+          "kind": "factory-source",
+          "provenance": "repository-source"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Remote unified branch is absent at recovery start.",
+    "Existing rewarded gate only bypasses cumulative-star requirements and still requires a previous podium.",
+    "V11 route definitions exist in the saved playtest; recovered AI is the older sample-following implementation, so the last collision bug is not yet reproduced in the correct missing implementation."
+  ],
+  "remainingGaps": [
+    "Natural driving/perceptual checks on final generated code",
+    "Physical-phone and live rewarded-ad callbacks are not present in this executor"
+  ],
+  "createdAt": "2026-10-18T13:07:32.134675Z"
+}

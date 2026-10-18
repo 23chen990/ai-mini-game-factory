@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "researchId": "original-racer-gltf-infrastructure-20261017",
+  "targetGame": "极速飞驰",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-hunyuan-car/runs/h5-qq-mobile-20261013/workspace",
+  "researchedAt": "2026-10-17T15:45:01.917Z",
+  "candidates": [
+    {
+      "name": "Three.js 0.169.0",
+      "repositoryUrl": "https://github.com/mrdoob/three.js",
+      "immutableRevision": "37d6f280a5cd642e801469bb048f52300d31258e",
+      "version": "0.169.0",
+      "directLicenseEvidence": "https://github.com/mrdoob/three.js/blob/37d6f280a5cd642e801469bb048f52300d31258e/LICENSE",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "Browser ES module / WebGL renderer; fixed version already builds the pinned racing HTML byte-for-byte."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "Outside this user-authorized H5 pilot; no adapter or package tested."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "Outside this user-authorized H5 pilot; no adapter or package tested."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "H5 browser form only. Global tap is documented for H5 in official MCP 1.24.14; host injection and GPU behavior require the actual H5 development package."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "LOW",
+      "attributionDuties": [
+        "Retain full Three.js MIT copyright and license in vendor and standalone HTML.",
+        "Record npm tarball integrity and exact module SHA; do not pull a floating CDN version."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Reuse the already pinned Three.js 0.169.0 core, GLTFLoader/GLTFExporter addons and existing native renderer for this original generated car only; no third-party models, textures, expression or balancing."
+      ],
+      "rationale": "Direct MIT license verified at pinned revision. Expand previous primitive-only scope to the same-package GLTFLoader/Exporter after official documentation research; keep renderer and vehicle/AI state owners unchanged. No floating CDN and no extra runtime rendering engine."
+    },
+    {
+      "name": "Existing user-owned lean pilot runner and PR #7 gate",
+      "repositoryUrl": "https://github.com/23chen990/ai-mini-game-factory",
+      "immutableRevision": "0919f504a53d7665bcfe2806917cd453c4842a89",
+      "version": "PR8-baseline",
+      "directLicenseEvidence": "https://github.com/23chen990/ai-mini-game-factory/blob/0919f504a53d7665bcfe2806917cd453c4842a89/AGENTS.md",
+      "licenseSpdx": "LicenseRef-UserOwned-TaskAuthorization",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "Existing createRun/check/browser/serve/export and frozen evidence interfaces; reviewed in this checkout."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "No new platform work authorized by this H5 request."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "No new platform work authorized by this H5 request."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Development H5 only; no account, platform upload, advertising permission or publishing evidence."
+        }
+      },
+      "maintenanceRisk": "LOW",
+      "securityRisk": "LOW",
+      "attributionDuties": [
+        "User-owned infrastructure is reused under this task's authorization; this does not grant third parties an open-source license.",
+        "Preserve PR2/3/7/8 branch heads, frozen checks and failed evidence."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Register one original action candidate in the current runner; bind research, contract, tests and output hashes."
+      ],
+      "rationale": "Reuse the existing control layer and installed build tools. Do not create another factory, agent framework or backend."
+    },
+    {
+      "name": "Author-authorized three H5 implementations",
+      "repositoryUrl": "https://github.com/riba2534/claude-opus-5-5-demo",
+      "immutableRevision": "54adc1fb64155f9dd7c1c90ecae7b8185ac540b8",
+      "version": "54adc1f",
+      "directLicenseEvidence": "https://github.com/23chen990/ai-mini-game-factory/blob/codex/three-h5-iaa-pilot-20261013/docs/lean-pilot/three-h5-20261013/author-authorization.json",
+      "licenseSpdx": "LicenseRef-AuthorPermission-UserConfirmed",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "User confirms author permission and no copyright issues; task authorization sha256 638f1a47019523c768a1c92a71085f6bce974331f69710c0551c4bf6cd5502c9. This is a user-confirmed proprietary grant, not an independently verified OSS license."
+        },
+        "wechatMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "No adapter/package evidence; code and IP clearance missing."
+        },
+        "douyinMiniGame": {
+          "verdict": "REJECTED",
+          "evidence": "No adapter/package evidence; code and IP clearance missing."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "User-confirmed author permission; H5 account, platform review, actual SDK/ads and phone remain unverified."
+        }
+      },
+      "maintenanceRisk": "HIGH",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "Preserve Three.js and other third-party notices.",
+        "Archive original author grant and any attribution terms for platform review.",
+        "No formal release, paid review or deployment without the user confirmation required by this task."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Reuse the existing source for this user's mobile H5 adaptation and TapTap IAA test preparation."
+      ],
+      "rationale": "Original author grant now confirmed by the user. Continue source reuse for this task; platform eligibility and runtime QA remain separate."
+    },
+    {
+      "name": "glTF Transform 4.5.1 (offline authoring only)",
+      "repositoryUrl": "https://github.com/donmccurdy/glTF-Transform",
+      "immutableRevision": "4c33de4782052ff58a36727c50fdb6ce8c1b0121",
+      "version": "4.5.1",
+      "directLicenseEvidence": "https://github.com/donmccurdy/glTF-Transform/blob/4c33de4782052ff58a36727c50fdb6ce8c1b0121/LICENSE.md",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "APPROVED",
+          "evidence": "Offline GLB/PBR processing; no tool included in browser runtime. Preserve material groups and articulated nodes; do not flatten/join wheels."
+        },
+        "wechatMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Portable output only, actual loader/GPU/platform package untested."
+        },
+        "douyinMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Portable output only, actual loader/GPU/platform package untested."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "Portable output only, actual loader/GPU/platform package untested."
+        }
+      },
+      "maintenanceRisk": "LOW",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "Preserve MIT copyright/permission text for tooling.",
+        "Use exact 4.5.1 and lockfile; offline authoring only; review transitive codec dependencies separately if introduced."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Offline inspection, material/UV-preserving simplification, texture resize/compression and GLB export for the original generated vehicle; never ship the CLI in game runtime."
+      ],
+      "rationale": "Official CLI and simplify documentation reviewed; exact npm release integrity recorded in tool setup. Existing pinned Three SimplifyModifier rejected for this asset because it drops material groups."
+    },
+    {
+      "name": "meshoptimizer 1.2.0 (transitive dependency of @gltf-transform/cli)",
+      "repositoryUrl": "https://github.com/zeux/meshoptimizer",
+      "immutableRevision": "v1.2",
+      "version": "1.2.0 (npm package; lockfile integrity sha512-davRZeIJbxJrE24cwQle7ZDsxjdk/OphNOV83oX+efQinyoHY9Jcyz3MHbaoG0qySZajldGztNZ1RN/T19PZsg==)",
+      "directLicenseEvidence": "https://github.com/zeux/meshoptimizer/blob/v1.2/LICENSE.md",
+      "licenseSpdx": "MIT",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — Node/offline asset-preparation dependency under workspace/asset-tools only; do not bundle its node_modules in any client. Any meshopt-compressed GLB requires a separate target-loader/decoder compatibility review."
+        },
+        "wechatMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — Node/offline asset-preparation dependency under workspace/asset-tools only; do not bundle its node_modules in any client. Any meshopt-compressed GLB requires a separate target-loader/decoder compatibility review."
+        },
+        "douyinMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — Node/offline asset-preparation dependency under workspace/asset-tools only; do not bundle its node_modules in any client. Any meshopt-compressed GLB requires a separate target-loader/decoder compatibility review."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — Node/offline asset-preparation dependency under workspace/asset-tools only; do not bundle its node_modules in any client. Any meshopt-compressed GLB requires a separate target-loader/decoder compatibility review."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "MIT: retain the copyright notice and permission notice in all copies or substantial portions of the software.",
+        "Upstream JS README recommends user-facing documentation/credits attribution: “Uses meshoptimizer. Copyright (c) 2016-2026, Arseny Kapoulkine.”"
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Use only as an offline glTF optimization/processing dependency under runs/h5-qq-mobile-20261013/workspace/asset-tools; do not ship Node modules as client runtime dependencies."
+      ],
+      "rationale": "The asset-tools lock pins this MIT package as an actual transitive dependency of @gltf-transform/cli 4.5.1. Approve only offline processing; runtime decoder/extension support is outside this audit."
+    },
+    {
+      "name": "sharp 0.35.5 (transitive dependency of @gltf-transform/cli)",
+      "repositoryUrl": "https://github.com/lovell/sharp",
+      "immutableRevision": "v0.35.5",
+      "version": "0.35.5 (npm package; lockfile integrity sha512-Ywn4OnzGukp7CDMrp08RQ50YKmuwG47brZgIVPTvBaaAfQlRlygrRqSrxdCiL9M+LlzLBiJ68IR1QqvzHyjC7g==)",
+      "directLicenseEvidence": "https://github.com/lovell/sharp/blob/v0.35.5/LICENSE",
+      "licenseSpdx": "Apache-2.0",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — Node/native image-processing dependency for offline asset preparation under workspace/asset-tools only; not a Mini Game or browser runtime dependency."
+        },
+        "wechatMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — Node/native image-processing dependency for offline asset preparation under workspace/asset-tools only; not a Mini Game or browser runtime dependency."
+        },
+        "douyinMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — Node/native image-processing dependency for offline asset preparation under workspace/asset-tools only; not a Mini Game or browser runtime dependency."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — Node/native image-processing dependency for offline asset preparation under workspace/asset-tools only; not a Mini Game or browser runtime dependency."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "If redistributing sharp, provide a copy of Apache License 2.0, preserve applicable copyright/patent/trademark/attribution notices, mark modified files, and include applicable upstream NOTICE notices if present.",
+        "Suggested inventory label: “sharp 0.35.5 — Copyright 2013 Lovell Fuller and others — Apache-2.0.”"
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Use only for offline image/texture processing in runs/h5-qq-mobile-20261013/workspace/asset-tools; do not ship sharp or its native dependencies in any client runtime."
+      ],
+      "rationale": "The locked @gltf-transform/cli 4.5.1 dependency graph resolves sharp 0.35.5; installed package metadata and LICENSE identify Apache-2.0. Keep use build-time only."
+    },
+    {
+      "name": "@img/sharp-libvips-darwin-arm64 1.3.4 (bundles libvips 8.18.7 and third-party libraries)",
+      "repositoryUrl": "https://github.com/lovell/sharp-libvips",
+      "immutableRevision": "v1.3.4",
+      "version": "@img/sharp-libvips-darwin-arm64 1.3.4; bundled libvips 8.18.7 (versions.json)",
+      "directLicenseEvidence": "https://github.com/lovell/sharp-libvips/blob/v1.3.4/npm/darwin-arm64/package.json",
+      "licenseSpdx": "LGPL-3.0-or-later (package metadata; prebuilt bundle contains separately licensed third-party libraries)",
+      "targetPlatformFit": {
+        "webLite": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — platform-specific Node native binary used only by offline asset processing on the build host; do not bundle the prebuilt binary in any client runtime."
+        },
+        "wechatMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — platform-specific Node native binary used only by offline asset processing on the build host; do not bundle the prebuilt binary in any client runtime."
+        },
+        "douyinMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — platform-specific Node native binary used only by offline asset processing on the build host; do not bundle the prebuilt binary in any client runtime."
+        },
+        "tapTapMiniGame": {
+          "verdict": "CONDITIONAL",
+          "evidence": "CONDITIONAL — platform-specific Node native binary used only by offline asset processing on the build host; do not bundle the prebuilt binary in any client runtime."
+        }
+      },
+      "maintenanceRisk": "MEDIUM",
+      "securityRisk": "MEDIUM",
+      "attributionDuties": [
+        "If redistributing the prebuilt libvips binary, include the applicable LGPL license and follow the source/relinking/modification requirements for the distributed form; confirm the exact obligations before distribution.",
+        "Preserve and reproduce the package third-party license notices: its README lists LGPL and permissive/MPL components (including libvips, glib, fribidi, libexif, libheif, librsvg, pango, and others). Do not treat the single package SPDX field as covering every bundled component."
+      ],
+      "decision": "REUSE",
+      "approvedScope": [
+        "Use only as the host-specific offline sharp/libvips image-processing dependency in runs/h5-qq-mobile-20261013/workspace/asset-tools; do not redistribute the binary or bundled dependencies as part of game clients without a separate license-compliance review."
+      ],
+      "rationale": "The current installation contains the darwin-arm64 prebuilt package at 1.3.4 and its version manifest identifies libvips 8.18.7. It is tagged LGPL-3.0-or-later and ships a third-party license table, so approval is limited to build-host use."
+    }
+  ],
+  "conclusion": {
+    "approvedCandidateNames": [
+      "Three.js 0.169.0",
+      "Existing user-owned lean pilot runner and PR #7 gate",
+      "Author-authorized three H5 implementations",
+      "glTF Transform 4.5.1 (offline authoring only)",
+      "meshoptimizer 1.2.0 (transitive dependency of @gltf-transform/cli)",
+      "sharp 0.35.5 (transitive dependency of @gltf-transform/cli)",
+      "@img/sharp-libvips-darwin-arm64 1.3.4 (bundles libvips 8.18.7 and third-party libraries)"
+    ],
+    "rejectedCandidateNames": [],
+    "noSuitablePlatformAdapter": true,
+    "architectureDecision": "Existing infrastructure reviewed first. The already pinned Three.js0.169.0 loads one original embedded GLB; shared geometry/textures and per-instance materials supply independent paint and wheel pivots. glTF Transform4.5.1, meshoptimizer1.2.0 and sharp0.35.5/libvips are approved offline only with pinned license evidence; no native libraries or decoder extensions are bundled into clients. Browser evidence does not approve Mini Game adapters or commercial publishing."
+  }
+}

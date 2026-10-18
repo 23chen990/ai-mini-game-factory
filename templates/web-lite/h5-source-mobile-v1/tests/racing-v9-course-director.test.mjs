@@ -71,6 +71,37 @@ test('V9 width variation changes actual safe driving width, not only line paint'
   }
 });
 
+
+test('formerly passive stages 02/07 add early long steering arcs; stage22 preserves its near-apex real shortcut',()=>{
+ for(const id of ['02','07']){
+  assert.equal(V9_STAGE_RHYTHMS[id].beats[0],'grandSweep',id);
+  assert.ok(V9_STAGE_RHYTHMS[id].beats.some(x=>x==='apex'||x==='chicane'||x==='late'),id);
+ }
+ assert.equal(V9_STAGE_RHYTHMS['22'].beats[0],null);
+ assert.equal(V9_STAGE_RHYTHMS['22'].beats.at(-1),'grandSweep');
+});
+test('every late campaign map has a long sustained arc or linked countersteer sector',()=>{
+ for(let n=17;n<=30;n++){
+  const id=String(n).padStart(2,'0'),plan=V9_STAGE_RHYTHMS[id];
+  assert.ok(plan.beats.some(x=>x==='grandSweep'||x==='doubleApex'),
+    id+' must not become another straight with tiny identical S flicks');
+ }
+});
+test('authored long sweep bends use native centerline metres, with genuine two-sided steering complexity',()=>{
+ const straight=Array.from({length:18},(_,i)=>[i*170,0,0]);
+ const early=shapeV9RhythmSegments(straight,'02',1,[[1,20,-1],[3,17,1],[12,21,1]]);
+ const late=shapeV9RhythmSegments(straight,'29',1,[[1,17,-1],[3,17,1],[7,17,-1],[12,17,1]]);
+ const baseLength=length(straight);
+ assert.ok(early.points.length>straight.length+5);
+ assert.ok(early.points.some(p=>Math.abs(p[1])>26),
+   'desert first bend must go beyond the former ±15m decorative kink');
+ assert.ok(late.points.some(p=>p[1]>15) && late.points.some(p=>p[1]<-12),
+   'advanced linked corners must require held rotation and countersteer');
+ assert.ok(length(early.points)>baseLength,'only physical centreline points change');
+ assert.deepEqual(straight[0],[0,0,0],'never move the start/finish anchor');
+ assert.ok(early.applied>=3 && late.applied>=3);
+});
+
 test('V9 terrain-themed numbered arch moves away from actual physical shortcut junction',()=>{
   const track={length:3006,__V9_WIDTH_PROFILE__:[{at:.5,span:.1,factor:.86}],
     __RACE_SHORTCUT__:{start:1488,end:1693}};

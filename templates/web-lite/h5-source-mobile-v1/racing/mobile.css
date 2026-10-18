@@ -10,7 +10,7 @@ html[data-race-mobile] #topc { position:static; display:block; transform:none; }
 html[data-race-mobile] #bigrank { left:var(--race-left);top:var(--race-top);bottom:auto;line-height:1;display:flex;gap:3px;align-items:baseline;background:#07172db3;border:1px solid #ffffff26;border-radius:12px;padding:10px 12px;box-shadow:0 2px 9px #0002;text-shadow:none; }
 html[data-race-mobile] #bigrank .r { font:800 26px/1 system-ui;background:none;color:#ffe18a;-webkit-text-fill-color:#ffe18a; }
 html[data-race-mobile] #bigrank .of { font:600 13px/1 system-ui;color:#fff;opacity:.85; }
-html[data-race-mobile] #lapbox { position:absolute;left:calc(var(--race-left) + 98px);top:calc(var(--race-top) + 2px);width:auto;padding:6px 10px;background:#07172d85;border:1px solid #ffffff1c;border-radius:10px;box-shadow:none; }
+html[data-race-mobile] #lapbox { position:absolute;left:calc(var(--race-left) + 98px);top:calc(var(--race-top) + 2px);width:auto;padding:6px 10px;background:#07172da6;border:1px solid #ffffff1c;border-radius:10px;box-shadow:none; }
 html[data-race-mobile] #lapbox .l { font:700 17px/1 system-ui;color:white; }
 html[data-race-mobile] #lapbox .s { font:500 10px/1.2 system-ui;margin-top:3px;color:#d9e5f1; }
 html[data-race-mobile] #timebox { position:absolute;left:50%;top:calc(var(--race-top) + 4px);transform:translateX(-50%);width:auto;min-width:110px;padding:7px 12px;background:#07172da6;border:1px solid #ffffff1f;box-shadow:none; }
@@ -68,7 +68,9 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 /* Career is configured in the lobby; never add new touch targets to the driving HUD. */
 #race-kit #race-ready { flex-wrap:wrap;gap:5px 8px;margin-bottom:7px; }
 #race-kit #race-stage { max-width:235px;min-width:160px;flex:1; }
-#race-kit #race-skin { min-width:78px;max-width:118px; }
+#race-kit #race-skin { min-width:78px;max-width:175px; }
+#race-kit #race-skin-ad { min-height:36px;padding:6px 10px;border:1px solid #f4bd66;border-radius:9px;background:#80521e;color:#fff4da;font:750 12px/1.25 system-ui; }
+#race-kit #race-skin-ad[hidden] {display:none!important;}
 #race-kit #race-map[hidden] { display:none!important; }
 #race-kit #race-stage-goal { font-size:12px;color:#f6d995;margin:0 0 5px;line-height:1.35; }
 #race-kit #race-fuel-box { display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 8px;font-size:11px;color:#b9d6e8; }
@@ -205,7 +207,7 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 #race-action-pad button[data-race-action="small"] {right:clamp(88px,13vw,110px);bottom:0;}
 #race-action-pad button[data-race-action="nitro"] {right:clamp(88px,13vw,110px);bottom:clamp(76px,20vh,90px);background:#173b55de;}
 #race-action-pad button[data-race-action="item"] {right:0;bottom:clamp(100px,27vh,120px);}
-#race-kit[data-item-mode="false"] #race-action-pad button[data-race-action="item"] {display:none;}
+#race-kit[data-item-mode="false"] #race-controls #race-action-pad button[data-race-action="item"] {display:none;}
 #race-action-pad button.held {background:#a26a32;border-color:#fff0aa;transform:scale(.96);}
 #race-action-pad button.ready {border-color:#8af7dd;box-shadow:0 0 13px #35d7ae80;}
 #race-kit #race-controls {touch-action:none;}
@@ -319,6 +321,328 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
 }
 #race-kit #race-export:active {background:#275270;}
 
+
+/* V9.1 one production rotary wheel, consolidated landscape HUD and thumb hierarchy. */
+html[data-race-mobile] { --race-left:max(14px,env(safe-area-inset-left));--race-right:max(14px,env(safe-area-inset-right));--race-top:max(8px,env(safe-area-inset-top));--race-bottom:max(10px,env(safe-area-inset-bottom));}
+html[data-race-mobile] #bigrank,html[data-race-mobile] #lapbox,html[data-race-mobile] #timebox {background:#051322a3;border:1px solid #d8e8f42a;box-shadow:0 5px 16px #0003;backdrop-filter:blur(7px)}
+html[data-race-mobile] #bigrank{padding:7px 11px;border-radius:10px}
+html[data-race-mobile] #bigrank .r{font-size:27px}
+html[data-race-mobile] #lapbox{left:calc(var(--race-left) + 91px);padding:5px 9px}
+html[data-race-mobile] #timebox{padding:5px 14px}
+html[data-race-mobile] #minimap{width:clamp(68px,11vh,84px);height:clamp(68px,11vh,84px);right:calc(var(--race-right) + 52px);background:#061c2b80;border:1px solid #c9eaff2c}
+html[data-race-mobile] #gaugebox{height:23px;bottom:calc(var(--race-bottom) + 2px);background:#081625a8;border-color:#ffffff1d}
+#race-kit #race-speed,#race-kit[data-stage-kind="elimination"] #race-speed{top:auto;bottom:calc(var(--race-bottom) + clamp(152px,39vh,183px));left:calc(var(--race-left) + 24px);background:transparent;border:0;box-shadow:none;padding:2px}
+#race-kit #race-speed strong{font-size:clamp(21px,5.6vh,29px);text-shadow:0 2px 8px #000b}
+#race-kit #race-compact-goal{top:calc(var(--race-top) + 49px);max-width:155px;background:#081b2bc0;font-size:10px}
+#race-kit #race-knockout{top:calc(var(--race-top) + 91px);width:174px}
+#race-joystick{width:clamp(124px,41vh,166px);left:calc(var(--race-left) + 3px);bottom:var(--race-bottom);border-radius:50%;filter:drop-shadow(0 6px 12px #0006)}
+#race-joystick .race-stick-track{inset:0;border:6px solid #617d8dc7;background:radial-gradient(circle at 47% 42%,#244357bb,#091824ee 72%);box-shadow:inset 0 0 0 3px #c1e1f44f,inset 0 0 16px #000a,0 0 0 1px #e3f7ff69}
+#race-joystick .race-stick-track:after{content:"";position:absolute;inset:3px;border:2px solid #bcecf77a;border-radius:50%;box-shadow:0 0 calc(8px + 9px * var(--turn-strength,0)) #5cdff77a;pointer-events:none}
+#race-stick-knob{left:13%;top:13%;width:74%;height:74%;border:9px solid #b9cedbe8;background:radial-gradient(circle,#213e54 0 34%,#112b40 36% 100%);box-shadow:inset 0 0 0 3px #152b3f,inset 0 3px 6px #fff5,0 2px 9px #000b;transform:rotate(0deg);transition:transform .19s cubic-bezier(.22,.8,.2,1)}
+#race-joystick.held #race-stick-knob{transition:none;box-shadow:inset 0 0 0 3px #152b3f,0 0 12px #56ccee6b}
+.race-wheel-spoke{position:absolute;background:linear-gradient(90deg,#859cae,#deedf5 46%,#7c96a7);border-radius:5px;pointer-events:none}
+.race-wheel-spoke.spoke-top{width:15%;height:34%;top:0;left:42.5%}
+.race-wheel-spoke.spoke-left{width:36%;height:14%;top:46%;left:0;transform:rotate(17deg);transform-origin:right center}
+.race-wheel-spoke.spoke-right{width:36%;height:14%;top:46%;right:0;transform:rotate(-17deg);transform-origin:left center}
+.race-wheel-hub{position:absolute;z-index:2;width:33%;aspect-ratio:1;left:33.5%;top:33.5%;border-radius:50%;background:radial-gradient(circle at 38% 32%,#4c6f80,#0e263b 70%);border:2px solid #bbdbe6}
+#race-action-pad{width:clamp(198px,31vw,267px);height:clamp(135px,37vh,173px)}
+#race-kit #race-controls #race-action-pad button{width:clamp(58px,9.4vh,76px);height:clamp(58px,9.4vh,76px);display:flex;flex-direction:column;gap:0;align-items:center;justify-content:center;border:2px solid #c1dae38c;border-radius:50%;font:800 clamp(11px,2.8vh,14px)/1.1 system-ui;color:#edf8ff;background:linear-gradient(145deg,#284357ed,#091c2fe8);box-shadow:inset 0 2px 0 #ffffff24,0 5px 15px #0008}
+#race-kit #race-controls #race-action-pad button:before{content:"";display:block;font:900 clamp(19px,5vh,26px)/1 system-ui;margin-bottom:3px}
+#race-kit #race-controls #race-action-pad button[data-race-action="drift"]{width:clamp(87px,23vh,105px);height:clamp(87px,23vh,105px);right:0;bottom:0;color:#fff2cc;background:linear-gradient(145deg,#8e5730,#47271ae8);border:3px solid #ffcd73;box-shadow:inset 0 2px 0 #fff6,0 5px 20px #0009}
+#race-kit #race-controls #race-action-pad button[data-race-action="drift"]:before{content:"↷";font-size:28px}
+#race-kit #race-controls #race-action-pad button[data-race-action="small"]{right:clamp(100px,25vh,118px);bottom:0}
+#race-kit #race-controls #race-action-pad button[data-race-action="small"]:before{content:"»"}
+#race-kit #race-controls #race-action-pad button[data-race-action="nitro"]{right:clamp(100px,25vh,118px);bottom:clamp(69px,19vh,86px)}
+#race-kit #race-controls #race-action-pad button[data-race-action="nitro"]:before{content:"⚡"}
+#race-kit #race-controls #race-action-pad button[data-race-action="item"]{right:0;bottom:clamp(110px,29vh,131px)}
+#race-kit #race-controls #race-action-pad button[data-race-action="item"]:before{content:"✦"}
+#race-kit #race-controls #race-action-pad button[data-race-action="nitro"]:after,#race-kit #race-controls #race-action-pad button[data-race-action="item"]:after{content:attr(data-label);position:absolute;top:100%;font-size:9px;color:#cde6ec;white-space:nowrap}
+#race-kit #race-controls #race-action-pad button.ready{border-color:#95f9ea;background:linear-gradient(155deg,#20666e,#123d56);box-shadow:0 0 0 2px #8dfae53a,0 0 15px #3adfc780}
+#race-kit #race-controls #race-action-pad button.held{transform:scale(.94);background:linear-gradient(145deg,#b67d3c,#55351c);border-color:#fff5b3}
+#race-pause{width:40px;height:40px;border-radius:11px;background:#07192da8;border-color:#ffffff38}
+#race-kit #race-panel{border-color:#71bddb50;background:linear-gradient(145deg,#071728f7,#102c42f7);box-shadow:0 18px 60px #000b}
+@media(max-height:365px){
+  #race-joystick{width:clamp(116px,40vh,141px)}
+  #race-action-pad{transform:none}
+  #race-kit #race-speed,#race-kit[data-stage-kind="elimination"] #race-speed{bottom:calc(var(--race-bottom) + 136px)}
+  #race-kit #race-controls #race-action-pad button[data-race-action="drift"]{width:83px;height:83px}
+  #race-kit #race-controls #race-action-pad button[data-race-action="nitro"]{bottom:70px}
+  #race-kit #race-controls #race-action-pad button[data-race-action="item"]{bottom:101px}
+}
+@media(prefers-reduced-motion:reduce){#race-stick-knob{transition:none}}
+
+
+/* V9.1: separate desktop composition, never scale phone buttons across devices. */
+html[data-race-mobile][data-race-platform="desktop"] {
+  --race-left:clamp(22px,2.2vw,38px);
+  --race-right:clamp(22px,2.2vw,38px);
+  --race-top:clamp(18px,2.4vh,34px);
+  --race-bottom:clamp(18px,2.5vh,35px);
+}
+html[data-race-platform="desktop"] #race-controls{display:none!important}
+html[data-race-mobile][data-race-platform="desktop"] #bigrank{padding:10px 16px;border-radius:12px}
+html[data-race-mobile][data-race-platform="desktop"] #bigrank .r{font-size:clamp(28px,3.5vh,38px)}
+html[data-race-mobile][data-race-platform="desktop"] #bigrank .of{font-size:16px}
+html[data-race-mobile][data-race-platform="desktop"] #lapbox{
+  left:calc(var(--race-left) + 124px);top:calc(var(--race-top) + 3px);padding:9px 13px
+}
+html[data-race-mobile][data-race-platform="desktop"] #lapbox .l{font-size:22px}
+html[data-race-mobile][data-race-platform="desktop"] #timebox{padding:10px 20px;border-radius:13px;min-width:136px}
+html[data-race-mobile][data-race-platform="desktop"] #timebox .t{font-size:clamp(22px,3vh,29px)}
+html[data-race-mobile][data-race-platform="desktop"] #minimap{
+  width:clamp(102px,11vh,145px);height:clamp(102px,11vh,145px);
+  right:calc(var(--race-right) + 57px);top:var(--race-top);
+  border-radius:15px;background:#071929a3
+}
+html[data-race-mobile][data-race-platform="desktop"] #gaugebox{
+  width:clamp(220px,22vw,350px);height:29px;bottom:var(--race-bottom);padding:7px 12px
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-speed,
+html[data-race-mobile][data-race-platform="desktop"] #race-kit[data-stage-kind="elimination"] #race-speed{
+  left:var(--race-left);bottom:var(--race-bottom);top:auto;
+  background:#081c2acc;border:1px solid #dbeef229;border-radius:14px;
+  padding:9px 13px;min-width:128px;box-shadow:0 5px 18px #0004
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-speed strong{font-size:clamp(34px,4.4vh,49px)}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-speed span{font-size:11px}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-compact-goal{
+  left:var(--race-left);top:calc(var(--race-top) + 71px);font-size:13px;max-width:235px;padding:6px 10px
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-knockout{
+  left:var(--race-left);top:calc(var(--race-top) + 109px);width:200px
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-pause{width:43px;height:43px;border-radius:12px}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-panel{
+  width:min(760px,calc(100% - 64px));border-radius:23px;padding:25px 33px
+}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-heading{font-size:clamp(29px,4vh,42px)}
+html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-guide p{font-size:13px}
+@media(min-width:1500px){
+  html[data-race-mobile][data-race-platform="desktop"] #race-kit #race-panel{width:min(830px,calc(100% - 72px))}
+}
+html[data-race-platform="touch"] #race-joystick{max-height:43vh}
+
+/* Status text under the nitro/item button cannot catch the other thumb. */
+#race-kit #race-controls #race-action-pad button::after{pointer-events:none}
+
+/* On results only: a clear three-star podium and retained best record. */
+#race-kit #race-result-stars{display:flex;align-items:center;justify-content:center;gap:clamp(6px,1.6vw,12px);
+  margin:2px auto 5px;min-height:35px;font-variant-numeric:tabular-nums}
+#race-kit #race-result-stars[hidden]{display:none!important}
+#race-kit #race-result-stars span{font-size:clamp(24px,6vh,40px);line-height:1;text-shadow:0 2px 8px #0006}
+#race-kit #race-result-stars span.earned{color:#ffd675;text-shadow:0 0 13px #ffb44083}
+#race-kit #race-result-stars span.empty{color:#77909b;opacity:.62}
+#race-kit #race-result-stars small{font:700 clamp(10px,2.2vh,12px)/1.25 system-ui;
+  color:#d9edf3;margin-left:6px;white-space:normal;max-width:200px;text-align:left}
+@media(max-height:360px){
+ #race-kit #race-result-stars{margin:0 auto 2px;min-height:26px;gap:4px}
+ #race-kit #race-result-stars span{font-size:22px}
+ #race-kit #race-result-stars small{font-size:10px;max-width:165px}
+}
+
+/* Fuel V2: six readable blocks represent five units each (not 30 tiny ticks).
+ * Exact fuel remains visible in the text, and the DOM meter reports 0..30. */
+#race-kit #race-fuel-gauge{width:clamp(140px,21vw,182px);height:13px;gap:4px}
+#race-kit #race-fuel-gauge span{
+  border-radius:4px;border:1px solid #a6cddd65;
+  background:linear-gradient(90deg,#e6bf66 var(--fill,0%),#0a2034 var(--fill,0%));
+}
+#race-kit #race-fuel-gauge span.filled{border-color:#ffe3a2}
+#race-kit .race-actions #race-star-ad{
+  min-height:44px;padding:11px 20px;
+  background:linear-gradient(120deg,#e7bd6b,#cf9235);
+  border:1px solid #ffe1aa;color:#102838;
+  box-shadow:0 4px 17px #0005;
+}
+#race-kit[data-star-locked="true"] #race-stage-goal{
+  font-weight:800;color:#ffda81;letter-spacing:.2px;
+}
+#race-kit[data-star-locked="true"] #race-course-card{
+  border-color:#f7bf6a8c;
+}
+#race-kit #race-star-ad[hidden]{display:none!important}
+@media(max-height:375px){
+  #race-kit #race-fuel-gauge{width:135px}
+  #race-kit .race-actions #race-star-ad{padding:9px 12px;min-height:40px}
+}
+
+/* One-home campaign rail: preserve the native select for keyboard, assistive
+ * technology and automation while the visible snap row carries stage status. */
+.race-visually-hidden,
+.race-native-stage-select {
+  position:absolute!important;width:1px!important;height:1px!important;
+  margin:-1px!important;padding:0!important;overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;clip-path:inset(50%)!important;
+  white-space:nowrap!important;border:0!important;
+}
+#race-kit .race-native-stage-select:focus-visible {
+  position:fixed!important;left:var(--race-left)!important;top:var(--race-top)!important;
+  z-index:40;width:min(290px,calc(100vw - var(--race-left) - var(--race-right)))!important;
+  height:44px!important;margin:0!important;padding:4px 12px!important;
+  clip:auto!important;clip-path:none!important;outline:3px solid #ffd581!important;
+  border-radius:9px;
+}
+#race-stage-rail {
+  position:absolute;z-index:32;left:var(--race-left);right:var(--race-right);
+  bottom:var(--race-bottom);height:80px;display:grid;grid-template-rows:12px 1fr;
+  gap:4px;padding:0 2px 4px;pointer-events:auto;color:#eaf8ff;
+}
+.race-stage-rail-meta {
+  display:flex;justify-content:space-between;align-items:center;padding:0 5px;
+  color:#b5d3dd;font:800 9px/1 system-ui;letter-spacing:1.8px;
+}
+.race-stage-choices {
+  display:flex;min-width:0;gap:8px;overflow-x:auto;overflow-y:hidden;
+  overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;touch-action:pan-x;scrollbar-color:#8bd8dc72 #08203480;
+  scrollbar-width:thin;
+}
+#race-kit .race-stage-choice,
+#race-kit .race-daily-choice {
+  position:relative;flex:0 0 clamp(92px,10vw,120px);min-width:92px;min-height:56px;
+  display:grid;grid-template-columns:1fr auto;grid-template-rows:18px 16px 14px;
+  align-content:center;align-items:center;gap:0 5px;padding:4px 9px;
+  border:1px solid #9dc5d94a;border-radius:12px;scroll-snap-align:start;
+  background:linear-gradient(155deg,#102f47e8,#07192be8);color:#c4dce5;
+  box-shadow:0 4px 12px #0005;text-align:left;touch-action:pan-x;
+}
+#race-kit .race-daily-choice { flex-basis:clamp(112px,11vw,136px);min-width:112px; }
+#race-kit .race-stage-choice:before,
+#race-kit .race-daily-choice:before {
+  content:"";position:absolute;left:8px;right:8px;top:0;height:2px;
+  border-radius:0 0 2px 2px;background:#6dc2c473;
+}
+#race-kit .race-stage-choice .race-stage-number,
+#race-kit .race-daily-choice .race-stage-number {
+  grid-column:1;grid-row:1;color:#f5fbff;font:850 13px/1 system-ui;
+  font-variant-numeric:tabular-nums;
+}
+#race-kit .race-stage-choice .race-stage-name,
+#race-kit .race-daily-choice .race-stage-name {
+  grid-column:1 / -1;grid-row:2;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  color:#bad1dc;font:650 10px/1.2 -apple-system,BlinkMacSystemFont,system-ui;
+}
+#race-kit .race-stage-choice .race-stage-state,
+#race-kit .race-daily-choice .race-stage-state {
+  grid-column:1 / -1;grid-row:3;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  color:#8fe6d5;font:750 9px/1 system-ui;letter-spacing:.25px;
+}
+#race-kit .race-stage-choice[aria-pressed="true"],
+#race-kit .race-daily-choice[aria-pressed="true"] {
+  border-color:#ffe094;background:linear-gradient(145deg,#24445a,#102739);
+  box-shadow:0 0 0 2px #ffd87842,0 5px 17px #0008;color:#fff;
+}
+#race-kit .race-stage-choice[aria-pressed="true"]:before,
+#race-kit .race-daily-choice[aria-pressed="true"]:before {background:#ffd878;}
+#race-kit .race-stage-choice[data-star-locked="true"] {border-color:#e7b96c70;}
+#race-kit .race-stage-choice[data-star-locked="true"] .race-stage-state {color:#ffd27c;}
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] {
+  border-color:#8295a13d;background:#0a1928d9;color:#788f9c;
+}
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-number,
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-name,
+#race-kit .race-stage-choice[data-locked="true"][data-star-locked="false"] .race-stage-state {
+  color:#8095a0;
+}
+#race-kit .race-stage-choice:disabled {opacity:.8;cursor:default;}
+#race-kit .race-daily-choice:disabled {opacity:.58;cursor:default;}
+#race-kit .race-stage-choice:focus-visible,
+#race-kit .race-daily-choice:focus-visible {outline-color:#ffe094;outline-offset:2px;}
+
+/* Landscape home and settlement leave the right 57% unobstructed for the car. */
+@media (min-width:650px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-panel,
+  #race-kit[data-phase="finished"] #race-panel {
+    left:clamp(18px,3vw,44px);top:calc((100% - var(--race-bottom) - 96px + var(--race-top))/2);
+    transform:translateY(-50%);width:min(40vw,575px);
+    max-height:calc(100% - var(--race-top) - var(--race-bottom) - 96px);
+    padding:clamp(13px,1.8vw,26px);text-align:left;border-radius:21px;
+  }
+  #race-kit[data-phase="ready"] #race-guide {justify-content:flex-start;gap:10px;margin:0 0 10px;}
+  #race-kit[data-phase="ready"] #race-guide .race-guide-keys span {
+    width:34px;height:34px;border-radius:50%;font-size:26px;line-height:1;
+  }
+  #race-kit[data-phase="ready"] #race-guide p {font-size:12px;line-height:1.3;}
+  #race-kit[data-phase="ready"] #race-heading {margin:5px 0 9px;font-size:clamp(27px,4vh,38px);}
+  #race-kit[data-phase="ready"] #race-ready {justify-content:flex-start;gap:6px 9px;margin:0 0 8px;}
+  #race-kit[data-phase="ready"] #race-stage-tag {margin-right:auto;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #race-kit[data-phase="ready"] #race-course-card {justify-content:flex-start;min-height:64px;margin:0 0 7px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:12px;margin:4px 0 7px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {justify-content:flex-start;gap:8px;margin-bottom:8px;}
+  #race-kit[data-phase="ready"] .race-actions {justify-content:flex-start;flex-wrap:wrap;}
+  #race-kit[data-phase="ready"] .race-actions button {min-height:44px;}
+  #race-kit[data-phase="finished"] #race-heading {text-align:left;}
+  #race-kit[data-phase="finished"] #race-panel {
+    top:50%;max-height:calc(100% - var(--race-top) - var(--race-bottom) - 18px);
+  }
+  #race-kit[data-phase="finished"] #race-result-copy {text-align:left;}
+  #race-kit[data-phase="finished"] #race-result-stats {justify-content:flex-start;gap:clamp(12px,2vw,24px);}
+  #race-kit[data-phase="finished"] #race-results {max-height:130px;}
+}
+
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-panel {padding:10px 14px;}
+  #race-kit[data-phase="ready"] #race-heading {margin:2px 0 5px;font-size:clamp(21px,6vh,26px);}
+  #race-kit[data-phase="ready"] #race-guide {gap:8px;margin:0 0 6px;}
+  #race-kit[data-phase="ready"] #race-guide .race-guide-keys span {width:29px;height:29px;font-size:22px;}
+  #race-kit[data-phase="ready"] #race-guide p {font-size:10px;}
+  #race-kit[data-phase="ready"] #race-ready {gap:4px 7px;margin-bottom:4px;}
+  #race-kit[data-phase="ready"] #race-stage-tag {max-width:115px;font-size:10px;}
+  #race-kit[data-phase="ready"] #race-course-card {min-height:46px;margin-bottom:3px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:11px;margin:2px 0 4px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {gap:6px;margin-bottom:4px;font-size:10px;}
+  #race-kit[data-phase="ready"] .race-actions {gap:6px;}
+  #race-kit[data-phase="ready"] .race-actions button {min-height:44px;padding:9px 17px;}
+  #race-kit[data-phase="ready"] #race-note {margin-top:3px;}
+}
+
+@media (max-width:649px) and (orientation:landscape) {
+  #race-stage-rail {left:max(8px,env(safe-area-inset-left));right:max(8px,env(safe-area-inset-right));}
+}
+
+/* Exact Chromium attempt4 regression: the inherited phone briefing grid and
+ * platform-prefixed desktop width otherwise override the new single-home view. */
+@media (min-width:650px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel,
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #race-panel {
+    width:min(40vw,575px);padding:20px 24px;
+  }
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {
+    display:block;grid-template-columns:none;grid-template-areas:none;
+  }
+}
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {padding:9px 13px;}
+  #race-kit[data-phase="ready"] #race-panel>.race-eyebrow {font-size:8px;letter-spacing:1.5px;}
+  #race-kit[data-phase="ready"] #race-guide {display:none;}
+  #race-kit[data-phase="ready"] #race-course-map {flex:0 0 80px;min-width:80px;max-width:80px;}
+  #race-kit[data-phase="ready"] #race-course-card {min-height:44px;padding:4px 7px;gap:8px;}
+  #race-kit[data-phase="ready"] .race-track-diagram {height:42px;}
+  #race-kit[data-phase="ready"] .race-course-info strong {font-size:13px;}
+  #race-kit[data-phase="ready"] .race-course-info small {font-size:9px;}
+  #race-kit[data-phase="ready"] #race-ready {margin:3px 0 4px;}
+  #race-kit[data-phase="ready"] #race-fuel-box {gap:4px;margin-bottom:5px;}
+  #race-kit[data-phase="ready"] #race-stage-goal {font-size:10px;line-height:1.25;margin:3px 0;}
+}
+
+/* Settlement is the existing result, not a second race briefing. */
+#race-kit[data-phase="finished"] #race-course-card {display:none;}
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="finished"] #race-panel {padding:10px 12px;}
+  #race-kit[data-phase="finished"] .race-actions {gap:6px;}
+  #race-kit[data-phase="finished"] .race-actions button {flex:1;min-width:0;min-height:44px;padding:8px 6px;font-size:12px;}
+}
+@media (min-width:650px) and (max-height:375px) and (orientation:landscape) {
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {padding:7px 13px;}
+  #race-kit[data-phase="ready"] #race-heading {font-size:21px;margin:2px 0 3px;}
+  #race-kit[data-phase="ready"] .race-track-diagram {height:38px;}
+}
+@media (min-width:650px) and (max-height:375px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-stage-tag {max-width:80px;}
+  #race-kit[data-phase="ready"] #race-panel>.race-eyebrow {display:none;}
+  #race-kit[data-phase="ready"] #race-course-feel {display:none;}
+}
+
 /* V10 real corner-to-spray payoff. A restrained speedometer highlight
  * follows ONLY a native perfect small-spray/double-boost event. Never puts a
  * banner across approaching corners, nor modifies the touch hit boxes. */
@@ -334,4 +658,19 @@ html[data-race-mobile] #vignette.small { background:radial-gradient(ellipse at c
   #race-kit[data-phase="race"][data-v10-burst="true"] #race-speed {
     box-shadow:0 0 0 1px rgba(250,216,130,.7);
   }
+}
+
+/* A single-run route ends at a visible square; the return connector is omitted. */
+#race-kit .race-track-finish {fill:#fff4ce;stroke:#122c40;stroke-width:1.5px;}
+/* The optional next-level reward never replaces the ordinary same-level retry. */
+#race-kit .race-actions #race-next-ad {
+  border-color:#b3e5e9;color:#dcffff;background:#173f51;
+  min-height:44px;white-space:normal;
+}
+#race-kit #race-next-ad[hidden] {display:none!important;}
+#race-kit[data-phase="finished"] #race-note {
+  color:#f4d99d;font-size:11px;line-height:1.35;margin:7px 0 0;
+}
+@media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
+  #race-kit[data-phase="finished"] .race-actions #race-next-ad {flex:1 0 100%;}
 }

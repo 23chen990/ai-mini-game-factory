@@ -1,5 +1,6 @@
-import { shapeV9RhythmSegments, V9_WIDTH_BANDS } from './v9-course-director.mjs';
+import { shapeV9RhythmSegments, V9_WIDTH_BANDS, V10_BASELINE_WIDTH_BANDS } from './v9-course-director.mjs';
 import { shapeV10SignatureSectors, V10_STAGE_SIGNATURES } from './v10-course-director.mjs';
+import { createV11CourseGeometry } from './v11-course-director.mjs';
 import { buildV10RoadRumble, buildV10CinematicWorld } from './v10-environment.mjs';
 import { EXPANSION_COURSES } from './career-expansion.mjs';
 import { applyV8CourseGeometry, V8_COURSES } from './v8-course-geometry.mjs';
@@ -196,7 +197,8 @@ export const COURSE_ROAD_WIDTHS = Object.freeze({
   '08':19,
   '09':19,
 });
-export function createCareerLayouts(layouts, { v8 = false, v9 = false, v10 = false } = {}) {
+export function createCareerLayouts(layouts, { v8 = false, v9 = false, v10 = false, v11 = false } = {}) {
+  if(v11&&(!v10||!v9||!v8))throw Error('V11 routes require the integrated V10 driving engine');
   if(v10&&(!v9||!v8))throw Error('V10 full driving sequence requires native V9 world');
   if(v9&&!v8)throw Error('V9 driving rhythms require native V8 3D geometry');
   const fingerprints=new Set(),titles=new Set();
@@ -207,19 +209,23 @@ export function createCareerLayouts(layouts, { v8 = false, v9 = false, v10 = fal
       throw Error('V3.7 requires verified biome and independent course '+id);
     const [title,feel,english,scale,sketch]=blueprint;
     const sourceRoute=parseLocalRoute(sketch);
-    const baseline=v9
-      ? shapeV9RhythmSegments(sourceRoute,id,scale,COURSE_TECHNICAL_SECTORS[id]).points
+    // V11 supplies complete physical routes. The earlier sector insertions and
+    // stretch belong only to explicit legacy builds and must not run twice.
+    const v11Geometry=v11 ? createV11CourseGeometry(id) : null;
+    const baseline=v11Geometry ? v11Geometry.planPoints : v9
+      ? shapeV9RhythmSegments(sourceRoute,id,scale,COURSE_TECHNICAL_SECTORS[id],
+        {legacyV10:v10}).points
       : injectTechnicalSectors(sourceRoute,id,scale);
-    const v10Geometry=v10
+    const v10Geometry=v10&&!v11
       ? shapeV10SignatureSectors(sourceRoute,baseline,COURSE_TECHNICAL_SECTORS[id],
         id,scale,V8_COURSES[id].stretch) : null;
     const local=v10Geometry?.points ?? baseline;
-    const v8Geometry=v8 ? applyV8CourseGeometry(local,id,scale,
+    const v8Geometry=v8&&!v11 ? applyV8CourseGeometry(local,id,scale,
       {elevationOffsets:v10Geometry?.elevationOffsets??null}) : null;
-    const authored=v8Geometry?.points ?? local;
-    const planScale=v8Geometry?.scale ?? scale;
+    const authored=v11Geometry?.points ?? v8Geometry?.points ?? local;
+    const planScale=v11 ? 1 : v8Geometry?.scale ?? scale;
     if(!Number.isFinite(scale)||scale<.6||scale>1.2||local.length<12||
-       local.length>40||titles.has(title)||!english||!feel||
+       local.length>(v11?160:40)||titles.has(title)||!english||!feel||
        local[0].some(n=>n!==0))
       throw Error('Invalid authored course blueprint '+id);
     titles.add(title);
@@ -235,8 +241,10 @@ export function createCareerLayouts(layouts, { v8 = false, v9 = false, v10 = fal
     if(fingerprints.has(signature))throw Error('Duplicate authored course shape '+id);
     fingerprints.add(signature);
     layouts['race-'+id]={width:COURSE_ROAD_WIDTHS[id]??base.width,points,
-      ...(v9?{v9WidthProfile:V9_WIDTH_BANDS[id]}:{}),
-      ...(v10?{v10StageIdentity:V10_STAGE_SIGNATURES[id].identity}: {})};
+      ...(v9?{v9WidthProfile:v11Geometry?.widthProfile??
+        (v10?V10_BASELINE_WIDTH_BANDS[id]:V9_WIDTH_BANDS[id])}:{}),
+      ...(v10?{v10StageIdentity:V10_STAGE_SIGNATURES[id].identity}: {}),
+      ...(v11?{v11CourseIdentity:v11Geometry.identity}:{})};
   }
   if(fingerprints.size!==CAREER_COURSE_MAPS.length||titles.size!==CAREER_COURSE_MAPS.length)
     throw Error('Expected '+CAREER_COURSE_MAPS.length+' distinct hand-authored courses');
@@ -672,7 +680,7 @@ export function createRaceSky(sky,course) {
 }
 
 const same = (a,b) => Array.isArray(a) && Array.isArray(b) && a.length === 3 && a.every((v,i)=>v===b[i]);
-export function applyTrackDesign(layouts, { v8 = false, v9 = false, v10 = false } = {}) {
+export function applyTrackDesign(layouts, { v8 = false, v9 = false, v10 = false, v11 = false } = {}) {
   const report = {};
   for (const [key, plan] of Object.entries(TRACK_RESHAPES)) {
     const layout = layouts?.[key];
@@ -691,6 +699,6 @@ export function applyTrackDesign(layouts, { v8 = false, v9 = false, v10 = false 
     Object.defineProperty(layout,'__racingV31',{value:true,enumerable:false});
     report[key] = points.length;
   }
-  createCareerLayouts(layouts,{v8,v9,v10});
+  createCareerLayouts(layouts,{v8,v9,v10,v11});
   return report;
 }

@@ -1,6 +1,7 @@
 /* global process, console */
-// V9 native centerline and physical short-apex audit. Static geometry is NOT natural driving QA.
+// V11 native centerline and physical short-apex audit. Static geometry is NOT natural driving QA.
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
 import path from 'node:path';
 import { Buffer } from 'node:buffer';
 import { createRequire } from 'node:module';
@@ -9,17 +10,18 @@ import { SHORTCUT_PLANS, installPhysicalShortcut } from '../../templates/web-lit
 import { benchmarkV9Fork } from './racing-shortcut-cost.mjs';
 import { applyTrackDesign, CAREER_COURSE_MAPS, COURSE_BLUEPRINTS, createRaceTrackTheme } from '../../templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs';
 import { PAD_LANES } from '../../templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs';
+import { V11_COURSES, v11RaceFraction } from '../../templates/web-lite/h5-source-mobile-v1/racing/v11-course-director.mjs';
 
 const root=process.cwd(), src=path.join(root,'runs/h5-qq-mobile-20261013/workspace/source/qq-speed');
 const build=JSON.parse(await readFile(path.join(root,'runs/h5-qq-mobile-20261013/artifacts/build-racing.json')));
 const source=await readFile(path.join(src,'src/layouts.js'),'utf8');
 const prefix="import { applyTrackDesign } from './race-track-design.mjs';\n";
-const suffix='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true, v10: true });';
+const suffix='\napplyTrackDesign(LAYOUTS, { v8: true, v9: true, v10: true, v11: true });';
 if(!source.startsWith(prefix) || !source.trimEnd().endsWith(suffix))
   throw Error('Unrecognized pinned generated layouts.js');
 const originalSource=source.slice(prefix.length).trimEnd().slice(0,-suffix.length);
 const original=(await import('data:text/javascript;base64,'+Buffer.from(originalSource).toString('base64'))).LAYOUTS;
-const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified,{v8:true,v9:true,v10:true});
+const modified=JSON.parse(JSON.stringify(original));applyTrackDesign(modified,{v8:true,v9:true,v10:true,v11:true});
 const THREE=createRequire(path.join(src,'package.json'))('three');
 const wrap=x=>Math.atan2(Math.sin(x),Math.cos(x));
 function inspect(layout, key){
@@ -61,11 +63,13 @@ const maps={};for(const name of Object.keys(original)){
   if(maps[name].next.maxPadAnchorOffsetM>36) throw Error(name+': new centerline is too far from an existing boost pad anchor');
 }
 const { Track: NativeTrack }=await import(pathToFileURL(path.join(src,'src/track.js')).href);
+const { LAYOUTS: builtLayouts }=await import(pathToFileURL(path.join(src,'src/layouts.js')).href);
 const courses={}, fingerprints=new Set();
 for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){ 
   const id=String(i).padStart(2,'0'),key='race-'+id,map=CAREER_COURSE_MAPS[i-1];
   const layout=modified[key];
   if(!layout || !Array.isArray(layout.points)) throw Error('Missing physical stage course '+id);
+  assert.deepEqual(builtLayouts[key],layout,'Actual generated V11 layout differs from the current source: '+id);
   const fingerprint=JSON.stringify(layout.points);
   if(fingerprints.has(fingerprint)) throw Error('Duplicated physical stage course '+id);
   fingerprints.add(fingerprint);
@@ -73,6 +77,9 @@ for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
   // Original world-coordinate boost-pad anchors must not be used on an
   // entirely new route: the stage-specific theme uses actual track fractions.
   const tr=new NativeTrack(layout);
+  if(tr.__V11_COURSE_IDENTITY__!==V11_COURSES[id].identity ||
+      tr.__V11_COURSE_IDENTITY__!==layout.v11CourseIdentity)
+    throw Error('Native Track is not using the recovered V11 route: '+id);
   const padLanes=(PAD_LANES[map]??[]).map(p=>({lat:p.lat}));
   const courseTheme=createRaceTrackTheme({boostPads:padLanes,tunnels:map==='city'?[]:[{}]},tr,key);
   if(courseTheme.boostPads.length!==padLanes.length ||
@@ -88,6 +95,8 @@ for(let i=1;i<=CAREER_COURSE_MAPS.length;i++){
     throw Error('Unsafe stage '+id+' physical geometry '+JSON.stringify({
       collisions:geometry.sameLevelClosePairs,sharpPct:geometry.sharpPct,length:geometry.lengthM}));
   courses[id]={scene:map,courseName:COURSE_BLUEPRINTS[id][0],
+    v11CourseIdentity:tr.__V11_COURSE_IDENTITY__,
+    raceFraction:v11RaceFraction(id),nativeRaceLengthM:+(tr.length*v11RaceFraction(id)).toFixed(1),
     physicalPads:courseTheme.boostPads.map(p=>({f:+p.f.toFixed(4),lat:p.lat})),
     ...geometry,maxPadAnchorOffsetM:0};
 }
@@ -100,7 +109,8 @@ for(const course of Object.keys(SHORTCUT_PLANS)){
   if(!fork || !(fork.gain>=24&&fork.gain<=82) ||
      !(fork.length>=75&&fork.length<=210) ||
      !(fork.neckWidth>=7.0&&fork.neckWidth<=8.3) || !fork.v10 || !fork.skillAction ||
-     !(fork.width>=11&&fork.width<=14) || !Number.isFinite(fork.length))
+     !(fork.width>=11&&fork.width<=14) || !Number.isFinite(fork.length) ||
+     fork.end>=track.length*v11RaceFraction(course))
     throw Error('Shortcut is not an honest shorter physical road: '+course);
   const p={},details=[];
   for(let i=0;i<fork.samples.length;i+=2){
