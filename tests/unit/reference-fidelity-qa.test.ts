@@ -112,6 +112,25 @@ describe('reference fidelity QA gate', () => {
     expect((await verify(await pairedFixture())).passed).toBe(true);
   });
 
+  it.each(['reference', 'candidate'] as const)('does not silently discard an independent %s observation outside the contract', async (target) => {
+    const input = await pairedFixture();
+    const item = input.captures[target === 'reference' ? 0 : 1]!;
+    item.capture.observations.push({
+      ...item.capture.observations[0]!, checkId: 'unplanned-grouped-slicing',
+      objectType: 'target group', stateBranch: 'crossing-successive-cuts',
+      metric: 'independent-cut-units', unit: 'count', samples: [5, 5],
+    });
+    const body = JSON.stringify(item.capture);
+    await writeFile(path.join(input.runRoot, item.file.path), body);
+    item.file.sha256 = sha256Text(body);
+    const result = await verify(input);
+    expect(result.passed).toBe(false);
+    expect(result.differences).toContainEqual({
+      checkId: 'unplanned-grouped-slicing', route: target === 'reference' ? 'CONTRACT' : 'QA',
+      reason: target === 'reference' ? 'reference-observation-outside-contract' : 'candidate-observation-without-reference-check',
+    });
+  });
+
   it.each([
     ['candidate-drift', 'BUILDER'], ['reference-contradiction', 'RESEARCH'], ['inferred-rule', 'RESEARCH'],
     ['missing-plan', 'CONTRACT'], ['missing-samples', 'QA'], ['fixture-only', 'QA'],

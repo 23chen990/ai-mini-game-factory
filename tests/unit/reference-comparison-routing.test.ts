@@ -29,4 +29,15 @@ describe('reference discrepancy routing', () => {
     expect(task.instructions.join('\n')).toContain(instruction);
     expect(task.differences).toEqual([{ checkId: 'core', route, reason: 'test discrepancy' }]);
   });
+
+  it('asks existing QA to challenge the contract with reference-first causal observations', () => {
+    const task = comparison.buildReferenceComparisonTask({
+      workspace: '/runs/example/workspace/game', inputArtifacts: ['artifacts/reference-fidelity-contract.json'],
+      gate: { schemaVersion: 1, targetRunId: 'example', contractHash: 'a'.repeat(64), buildHash: 'b'.repeat(64),
+        passed: false, blockers: ['fidelity:review-missing'], requiredCheckIds: [], checkedIds: [], differences: [] },
+    });
+    expect(task.instructions.join('\n')).toContain('先观察参考');
+    expect(task.instructions.join('\n')).toContain('合同之外');
+    expect(task.instructions.join('\n')).toContain('相同操作意图');
+  });
 });

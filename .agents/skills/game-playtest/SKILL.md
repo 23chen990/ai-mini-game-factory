@@ -50,8 +50,19 @@ source, or pass a run based only on screenshots.
 
 ## Acceptance
 
-For a reference preview, use the exact `behaviorChecks` in `reference-fidelity-contract.json`. Review each object's
+For a reference preview, first observe one complete reference core slice independently of the candidate's expected
+results. Prioritize the relationships producing the loop: target grouping and spacing relative to movement/reach,
+reward continuity, and the order of pressure and recovery. Compare the same player intent (for example, cut the
+next group and land safely), not merely identical tap intervals. Preserve counterexamples; different art or layout
+alone is not a failure. Reuse existing source-bound research and check known gaps/deferrals against the current build;
+neither discard them nor promote stale evidence to a current defect.
+
+Then use the exact `behaviorChecks` in `reference-fidelity-contract.json`. Review each object's
 declared state at its declared viewport, including causal spatial relationships, feedback attachment and event order.
+Record consequential reference observations outside those checks in the existing comparison capture's `observations`
+with their own check ids, measured samples and screenshot bindings. They trigger contract review, not an automatic
+new gameplay requirement or permission to copy a level. Do not invent a numeric sample when a claim is unmeasured;
+retain that evidence gap. The comparison gate must not silently pass by ignoring an unplanned observation.
 Write `reference-fidelity-review.json` using `ReferenceFidelityReviewSchema` from `src/schemas/reference-fidelity.ts`.
 Record actual observations, the normalized contract hash, current build hash, trace and screenshot file hashes.
 Each natural trace uses `NaturalFlowEvidenceSchema`; its transition name identifies the corresponding check id.

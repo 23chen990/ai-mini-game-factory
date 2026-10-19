@@ -1,0 +1,218 @@
+{
+  "schemaVersion": 1,
+  "kind": "bounded-factory-diagnostic-receipt",
+  "observedDate": "2026-10-19",
+  "targetRunId": "mobile-slice-adaptation-20260830",
+  "scope": "shared-factory; read-only existing-game diagnostic; not a formal FIX or release approval",
+  "candidate": {
+    "workspace": "runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+    "observedBuild": "dist/index.html",
+    "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+    "observedBuildUnchanged": true,
+    "currentFileHashes": {
+      "dist/index.html": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+      "src/main.ts": "37cc78fe0bd1cde424cd1148f5348b9f9d4a4766acb94f4b6f4d282eac27415f",
+      "src/game-core.ts": "caa37fc414a5d9fbaab7851329d653f6eef4f60d7d7988c9fe47f7382b9a379f",
+      "src/game-levels.ts": "019ab2e5c607f53806c49ed9fd2bdfa9353fd2949d19f565d57aebce86a218f8",
+      "src/game-content.ts": "211a831824d47994721156f9584c8a63efb802376421f76ad8b5a24e961749f7",
+      "src/three-world-renderer.ts": "47352cc11e3465b6f39bbdb0afd670e9a6792805ee0fab70f0a4cf301aa241f2",
+      "src/three-cut-visuals.ts": "8e009bca2190b62d68a475a3ee322df94e153d95c6a4282961f0c8c569879f4e"
+    },
+    "gameSourceWrites": 0,
+    "gameBuilds": 0,
+    "sourceToBuildEquivalence": "selected literals only; no complete provenance manifest"
+  },
+  "reference": {
+    "url": "https://poki.com/zh/g/slice-master",
+    "recordingId": "user-recording-20260906-level01",
+    "recordingSha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "sourceProvenanceManifest": {
+      "path": "runs/mobile-slice-adaptation-20260830/reference-evidence/manifest.json",
+      "sha256": "b826775ab76f3d782c2b594c35d79441950d76ae7416f43b6032ae7269a36d7a"
+    },
+    "identityReview": "Existing recording entry revalidated; new live captures bound to run/workspace and reviewed by visible game plus opened URL.",
+    "mediaCommitted": false
+  },
+  "procedure": {
+    "playerInput": "fresh browser contexts, ordinary mouse clicks; read-only candidate getState/getRenderState",
+    "stateInjection": false,
+    "referenceViewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "referenceGameCanvas": {
+      "width": 836,
+      "height": 470
+    },
+    "candidateViewport": {
+      "width": 836,
+      "height": 470
+    },
+    "sessions": [
+      {
+        "target": "reference",
+        "startedAt": "2026-10-19T14:48:23.761Z",
+        "lastObservationAt": "2026-10-19T15:04:28.472Z",
+        "normalClicks": 47
+      },
+      {
+        "target": "candidate",
+        "startedAt": "2026-10-19T14:48:57.875Z",
+        "lastObservationAt": "2026-10-19T14:50:05.563Z",
+        "normalClicks": 3
+      },
+      {
+        "target": "candidate-goal",
+        "startedAt": "2026-10-19T14:51:32.656Z",
+        "lastObservationAt": "2026-10-19T15:04:28.670Z",
+        "normalClicks": 20
+      }
+    ],
+    "timingCaveat": "Sessions include long observation/thinking waits; neither wall-clock nor engine active elapsed is a matched gameplay-duration measurement."
+  },
+  "observations": {
+    "matrixCells": 8,
+    "referenceGroupedCutsObserved": true,
+    "candidateHasSomeGroups": true,
+    "candidateWin": true,
+    "candidateReplay": true,
+    "candidateCutUnits": 24,
+    "candidateCutUnitsCut": 6,
+    "candidateUncutTowerUnits": 3,
+    "candidateEveryTargetUnreachable": false,
+    "freshReferenceSuccessfulFinishAndReplayObserved": false,
+    "historicalRecordingFinishObserved": true,
+    "interpretation": "Group/support/path relations differ. Win-only evidence does not establish grouped interaction fidelity; 6/24 is not an acceptance threshold or proof bypassing is wrong."
+  },
+  "history": {
+    "knownGap": "GAP-LEVEL-GRAMMAR",
+    "earlierResearchAlreadyRecordedGap": true,
+    "oldGapBuild": "435ed539 (abbreviated; not the current observed build)",
+    "redesignApproval": "AWAITING_USER_CONFIRMATION",
+    "noAutomaticPromotionOfOldDefectOrDeferral": true,
+    "attribution": {
+      "path": "artifacts/reference-first-audit/slice-layout-attribution-verified.json",
+      "sha256": "a1c6cafe7e405dfdf55eec83cc9cc2a113c19596a98e5e32926012d4601f3f1d"
+    },
+    "integrityCorrection": "Final byte verification rejected an incorrect game-core.ts digest in the first static audit. The verified audit uses recomputed hashes; current source hashes are not proof of before/after source stability."
+  },
+  "sharedChanges": {
+    "newAgents": 0,
+    "newSchemas": 0,
+    "newProductionStages": 0,
+    "newDependencies": 0,
+    "referenceOffContractObservation": "CONTRACT -> REFERENCE_DEEP_RESEARCH waiting-handoff",
+    "candidateOnlyOffContractObservation": "QA waiting-handoff",
+    "automaticPixelAnalysis": false,
+    "automaticHistoricalGapClosure": false,
+    "automaticRepairExecuted": false
+  },
+  "verification": {
+    "testFirst": "3 failing regression cases before implementation",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "testFiles": 184,
+    "tests": 1131,
+    "logs": [
+      {
+        "path": "artifacts/reference-first-audit/slice-layout-red.log",
+        "sha256": "98ee14df1f049b410343b1918745a9425a608a3d600b7ae66fbbdfab7db13c4d"
+      },
+      {
+        "path": "artifacts/reference-first-audit/slice-layout-green.log",
+        "sha256": "c0395f8f823012f988caabc3574181b55e8a76b59908033490d232ca45fcc6ad"
+      },
+      {
+        "path": "artifacts/reference-first-audit/slice-layout-lint.log",
+        "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1"
+      },
+      {
+        "path": "artifacts/reference-first-audit/slice-layout-typecheck.log",
+        "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92"
+      },
+      {
+        "path": "artifacts/reference-first-audit/slice-layout-tests.log",
+        "sha256": "e27f9af76396c5ea8a1107c0b58b0eef45742f2bd6e895d67dfb09a2fbd59466"
+      }
+    ],
+    "syntheticRegressionNotGameExperience": true
+  },
+  "evidence": {
+    "root": "runs/mobile-slice-adaptation-20260830/factory-audit-20261019/layout-probe",
+    "localOnly": true,
+    "selected": [
+      {
+        "path": "factory-audit-20261019/layout-probe/triage.json",
+        "sha256": "a7809d32d936b914d56869a646044c3b8c978f49601bb8594935444ac7ca3848"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/reproduction-matrix.json",
+        "sha256": "9295b26c4c17e58aaa09ed41eea9ddb6f8ff79aa05b233756458578798bfdb4e"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/reference-sequence.json",
+        "sha256": "900063839bc1b060e78cb98c3ca53499c83127987e26aed205cf7adf70133d9b"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/evidence-provenance.json",
+        "sha256": "6f07dc8fa8a02d69a7055907039ab53f50a232876207479aafef3375c846968b"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/session-actions.json",
+        "sha256": "622ed7841ae252a17870895a45b73d9dbae786cc35270dbf5b10b822d3f8c272"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/integrity.json",
+        "sha256": "45c3168d34a7ab8866d820f0ed598dc4427b6e0b5900ca0c632a111fa4d64284"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/reference/018-gap-longer-flight.png",
+        "sha256": "a0c1222dd7bf952300ee3db2df69ecb577a512bddd417bc29d43268385d79299"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/reference/028-group-3-landing.png",
+        "sha256": "a3864a06aa07144b1d8abbb796e763020f547267e5027b1de1786ae5b810fa33"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/reference/040-hazard-crossing.png",
+        "sha256": "e2e64139e3c23a9525dae68b922cbfc37a3b19a9084454b53df0632c165fd4ac"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/reference/041-final-attempt.png",
+        "sha256": "08914ae02b5ce178a35c8fbb55fda069c4f74216ece3d71968602520ba80ba9b"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/candidate-goal/029-middle-after-release.png",
+        "sha256": "7345fb2b97b6a0bbbedb406e02f06ee71e4b6ad479d2ddcc0da1c2ad5cdc2aa2"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/candidate-goal/039-late-outcome.png",
+        "sha256": "1b7d42658e35d3c09aa15fa23d07cd717fbe93b716757f5233e6b47d253a1437"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/candidate-goal/state-late-outcome.json",
+        "sha256": "ea52dce25ad8aafb7821dbc609e6ebbe3ea95be7cbee550172124faa46488e85"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/candidate-goal/042-replay-after-win.png",
+        "sha256": "2e1a3443be39c4f7bc68cdeae9c52c624234b97a66327d1aff89766e1aca49e6"
+      },
+      {
+        "path": "factory-audit-20261019/layout-probe/candidate-goal/state-replay-after-win.json",
+        "sha256": "9b4e77c7a2fb1a1a3746cb40b9c54e92966c824aecddbf533fec973465cf115a"
+      }
+    ]
+  },
+  "outcomes": {
+    "importantDifferenceDetected": true,
+    "userSuppliedLayoutPriorityBeforeThisTrial": true,
+    "zeroInterventionIndependentDiscoveryProven": false,
+    "coreExperienceParity": "BLOCKED",
+    "humanFunAcceptance": "NOT_OBTAINED",
+    "mobileAndPlatformRelease": "NOT_VALIDATED",
+    "gameFixed": false,
+    "deliveryCycleSavings": "NOT_MEASURED",
+    "modelCost": "NOT_INSTRUMENTED",
+    "fullFactoryAutomation": "NOT_PROVEN"
+  }
+}
