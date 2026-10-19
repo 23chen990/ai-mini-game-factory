@@ -22,7 +22,7 @@ jobs:
       - name: Validate game evidence registry
         run: node tools/release-status/validate.mjs
       - name: Run evidence gate regression tests
-        run: node --test tools/release-status/validate.test.mjs
+        run: node --test tools/release-status/validate-checks.mjs
 
   factory-core:
     name: Factory lint, types and tests
