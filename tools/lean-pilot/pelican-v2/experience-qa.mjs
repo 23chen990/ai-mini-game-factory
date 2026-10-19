@@ -101,7 +101,7 @@ try{
    want=safe[0]??v.lane;escapeLane=want;
   }
   else if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=90&&v.distance<110)){want=1;if(v.lane===1&&(v.jumpReady||seconds(1)<=1.0)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o13. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
+  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=90&&v.distance<110)){want=1;if(v.lane===1&&v.distance>=103&&(v.jumpReady||seconds(1)<=1.0)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o13. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
@@ -296,7 +296,20 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
  const pair=await page.evaluate(()=>Object.fromEntries(['jump','right'].map(action=>{const n=document.querySelector(`[data-action="${action}"]`),r=n.getBoundingClientRect();return [action,{x:r.left+r.width/2,y:r.top+r.height/2}];})));
  const cancellationSession=await touchSession(page,engine);
  await page.evaluate(()=>{window.__qaCancellationTouches=[];document.querySelector('#coast').addEventListener('pointerdown',e=>{const action=e.target.closest?.('[data-action]')?.dataset.action;if(action)window.__qaCancellationTouches.push({action,isTrusted:e.isTrusted,pointerType:e.pointerType,at:performance.now()});},{capture:true});});
- await page.locator('[data-action="jump"].ready').waitFor({state:'visible',timeout:25000});
+ // Prepare the physical timing window before sending the two genuine
+ // touchscreen events. READY begins about 27m, but on software WebGL the
+ // locator wait plus protocol handoff can consume the whole ~0.7s window.
+ // Pause through the actual visible button at early READY, then resume and
+ // immediately send an ordered trusted jump->right sequence.
+ await page.waitForFunction(()=>{
+  const v=window.__coast.snapshot(),ready=document.querySelector('[data-action="jump"].ready');
+  return v.phase==='finished'||(v.distance>=27&&!!ready);
+ },null,{timeout:25000});
+ const beforeQueue=await snap();
+ if(beforeQueue.phase!=='running'||beforeQueue.distance>31.6)
+  throw Error('Cannot safely queue 35m jump after the physical trigger boundary');
+ await tap('#co-pause');
+ await tap('#co-resume');
  // Queue two ordered real taps without a browser-ACK roundtrip between them.
  // Screenshots/state reads follow; their actual event order still gates PASS.
  for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered Input.dispatchTouchEvent; points measured before queue',normalInputOnly:true});
