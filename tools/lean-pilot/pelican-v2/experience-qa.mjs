@@ -141,6 +141,10 @@ try{
   // 130m right-car / 140m centre-barrier opening. The authored left lane
   // stays unblocked through 152m: finish the real left-side manoeuvre
   // instead of making a fatal right tap near 139m.
+  // Preserve the real 118m jump-only gold while the successful rider is
+  // still centred. Neither a jump animation nor a HUD notification grants
+  // anything: wait for the actual physical fish-caught event before steering.
+  if(jumped&&!bonusShot&&v.distance>=108&&v.distance<122)want=1;
   if(jumped&&bonusShot&&v.distance>=119&&v.distance<145)want=0;
   // V7's centre car reaches its swept collision envelope near 164m.
   // The second real RIGHT touch must be committed by ~155m, not leave
