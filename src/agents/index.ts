@@ -15,6 +15,7 @@ import { discoverRuntimeWiredFiles, resolveRuntimeProductGate, RuntimeProductGat
 import { evaluateInteractionContinuity } from '../qa/interaction-continuity.js';
 import { InteractionContinuityContractSchema, InteractionContinuityObservationSchema, InteractionContinuityReportSchema, type InteractionContinuityReport, type InteractionContinuityContract } from '../schemas/interaction-continuity.js';
 import { verifyBuilderPreflight } from '../core/builder-preflight.js';
+import { assertSafeWorkspacePath } from '../core/workspace-path.js';
 import { buildDeterministicReferenceLevelLayout } from '../core/reference-level-layout.js';
 import { normalizeReferenceBehaviorAnalysis } from '../core/reference-evidence.js';
 import { assertReferenceLevelRuntimeDataWritePath, readReferenceLevelRuntimeData, runtimeForTemplate, verifyReferenceLevelRuntimeDataFile, verifyReferenceLevelLayoutFile } from '../core/reference-level-binding.js';
@@ -189,9 +190,16 @@ export class BuilderAgent {
     const runRoot = context?.runRoot ?? path.resolve(workspace, '../..');
     const referenceRuntimeData = await this.loadReferenceRuntimeData(runRoot, workspace, blueprint, template);
     if (referenceRuntimeData) await assertReferenceLevelRuntimeDataWritePath(workspace, referenceRuntimeData.production.runtime);
-    await this.runtime.createProject(workspace, template);
-    await this.runtime.applyBlueprint(workspace, blueprint, styleLock);
-    await this.runtime.importAssets(workspace, assets, assetSource);
+    // Retry in place: a prior model attempt or human may already have authored
+    // working code. Template initialization must never displace those bytes.
+    await assertSafeWorkspacePath(workspace);
+    await mkdir(workspace, { recursive: true });
+    const workspaceMode = (await readdir(workspace)).length === 0 ? 'initialized' : 'continued';
+    if (workspaceMode === 'initialized') {
+      await this.runtime.createProject(workspace, template);
+      await this.runtime.applyBlueprint(workspace, blueprint, styleLock);
+      await this.runtime.importAssets(workspace, assets, assetSource);
+    }
     if (approved3dAssets) {
       if (!this.runtime.importApproved3dAssets) throw new Error('The selected runtime cannot import approved 3D assets');
       await this.runtime.importApproved3dAssets(workspace, Hybrid3dAssetResearchArtifactSchema.parse(approved3dAssets.research), approved3dAssets.sourceRoot);
@@ -207,8 +215,8 @@ export class BuilderAgent {
       const stagedPath = path.join(workspace, referenceLevelRuntimeDataPath(referenceRuntimeData.production.runtime));
       await writeJsonAtomic(stagedPath, referenceRuntimeData);
     }
-    const codexResult = await this.provider.build({ workspace, blueprint, styleLock, assets, template, gameplayRevision: validatedGameplayRevision, interactionContinuityContract: validatedContinuity, context });
-    if (referenceRuntimeData && codexResult.metrics.provider === 'mock' && template === 'cut-stack-dodge-v1') {
+    const codexResult = await this.provider.build({ workspace, blueprint, styleLock, assets, assetSource, template, gameplayRevision: validatedGameplayRevision, interactionContinuityContract: validatedContinuity, context });
+    if (referenceRuntimeData && workspaceMode === 'initialized' && codexResult.metrics.provider === 'mock' && template === 'cut-stack-dodge-v1') {
       // The mock Builder has no model turn to author numeric layout values.
       // Keep this explicit preview-only fallback inside BuilderAgent so a
       // missing layout cannot be mistaken for a production build.
@@ -219,7 +227,9 @@ export class BuilderAgent {
       await verifyReferenceLevelRuntimeDataFile(workspace, referenceRuntimeData);
       await verifyReferenceLevelLayoutFile(workspace, referenceRuntimeData);
     }
-    return { ...await this.verifyAndReport(workspace, template, codexResult.threadId, codexResult.verificationMode), metrics: codexResult.metrics };
+    const result = await this.verifyAndReport(workspace, template, codexResult.threadId, codexResult.verificationMode);
+    result.report.verification.push(`workspace:${workspaceMode}`);
+    return { ...result, metrics: codexResult.metrics };
   }
   async verifyExisting(workspace: string, template: string, threadId: string, verificationMode: BuilderVerificationMode = 'full', context?: AgentExecutionContext) {
     if (context && !isChildPath(path.join(path.resolve(context.runRoot), 'workspace'), path.resolve(workspace))) throw new Error('Builder workspace must remain inside the current run workspace');

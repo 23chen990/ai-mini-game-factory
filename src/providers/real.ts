@@ -1,3 +1,4 @@
+import { BUILDER_CONTINUATION_INSTRUCTION } from '../core/builder-continuation.js';
 import { REFERENCE_COMPARISON_RESEARCH_INSTRUCTION } from '../core/reference-comparison.js';
 import { Agent, run } from '@openai/agents';
 import { ReferenceIntakeDraftSchema, type ReferenceIntakeEvidence } from '../schemas/reference-intake.js';
@@ -251,7 +252,7 @@ export class OpenAIImageProvider implements ImageProvider {
 
 export class OpenAICodexProvider implements CodexProvider {
   private readonly codex = new Codex();
-  async build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; template: string; gameplayRevision?: unknown; interactionContinuityContract?: unknown; context?: AgentExecutionContext }) {
+  async build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; assetSource?: string; template: string; gameplayRevision?: unknown; interactionContinuityContract?: unknown; context?: AgentExecutionContext }) {
     required(process.env.OPENAI_API_KEY, 'OPENAI_API_KEY');
     const execution = input.context ? safeExecutionContext({ ...input.context, stage: input.context.stage ?? 'FULL_BUILD', sandbox: input.context.sandbox ?? 'workspace-write' }) : undefined;
     const model = execution?.model?.trim() || process.env.CODEX_MODEL;
@@ -262,7 +263,7 @@ export class OpenAICodexProvider implements CodexProvider {
     const continuityInstruction = input.interactionContinuityContract
       ? 'For every declared interaction, emit machine-readable node facts (feedback visibility, actual action candidates, success successors, failure recovery and physical result) into the run artifact requested by the factory. Use fixed-step traces; never substitute geometry distance or a state label for an observed result.'
       : '';
-    await thread.run(`Modify only this generated game workspace. Implement the supplied validated blueprint/style/assets without broad rewrites. ${fidelityInstruction} ${continuityInstruction} ${builderUiAnimationInstruction()} Sanitized factory context:\n${JSON.stringify(execution?.contextPacket ?? {})}\nInputs:\n${JSON.stringify(builderInputWithUiAnimationStandard(input))}`);
+    await thread.run(`Modify only this generated game workspace. Implement the supplied validated blueprint/style/assets without broad rewrites. ${BUILDER_CONTINUATION_INSTRUCTION} ${fidelityInstruction} ${continuityInstruction} ${builderUiAnimationInstruction()} Sanitized factory context:\n${JSON.stringify(execution?.contextPacket ?? {})}\nInputs:\n${JSON.stringify(builderInputWithUiAnimationStandard(input))}`);
     return { threadId: thread.id ?? undefined, verificationMode: 'full' as const, metrics: { provider: 'openai-codex', model: model ?? 'account-default', calls: 1 } };
   }
   async fix(input: { workspace: string; threadId?: string; qaReport: QaReport; context?: AgentExecutionContext }) {
