@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#173c36">
+  <meta name="description" content="An original, quiet number-merging research prototype. No ads, accounts or uploads.">
+  <title>Lumen - a grid merge pilot</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="observatory">
+<main class="shell">
+  <section class="intro" aria-label="Game information">
+    <div class="topline"><span class="brand-mark" aria-hidden="true">L</span><span class="edition">PLAY LAB / 01</span><span class="pilot">PILOT</span></div>
+    <p id="eyebrow" class="eyebrow">A SMALL SPACE TO THINK</p>
+    <h1 id="title">Lumen</h1>
+    <p id="subtitle" class="subtitle">Small moves. Brighter ideas.</p>
+    <p class="instruction"><strong>Slide. Match. Make room.</strong><br>Equal numbers join. Reach 2048.</p>
+    <div class="scores" aria-label="Scores"><div><span>SCORE</span><strong id="score">0</strong><em id="gain" aria-hidden="true"></em></div><div><span>PERSONAL BEST</span><strong id="best">0</strong></div></div>
+    <div class="milestone"><div><span id="milestone-label">NEXT LIGHT</span><strong id="milestone-value">32</strong></div><progress id="progress" max="5" value="1" aria-label="Progress towards next tile"></progress><p id="milestone-note">A little more space. A bigger possibility.</p></div>
+  </section>
+  <section class="play" aria-label="Play area">
+    <div class="board-caption"><span id="board-state">YOUR NEXT MOVE</span><span id="moves">0 moves</span></div>
+    <div id="board" class="board" role="grid" aria-label="Number grid. Swipe or use arrow keys to merge equal tiles." tabindex="0"><div id="slots" class="slots" aria-hidden="true"></div><div id="tiles" class="tiles"></div></div>
+    <p id="feedback" role="status" aria-live="polite" aria-atomic="true">Swipe anywhere on the board to begin.</p>
+    <div class="controls"><button id="new-game" class="secondary">New game</button><div class="dpad" role="group" aria-label="Move tiles"><button data-direction="left" aria-label="Move left">&#8592;</button><button data-direction="up" aria-label="Move up">&#8593;</button><button data-direction="down" aria-label="Move down">&#8595;</button><button data-direction="right" aria-label="Move right">&#8594;</button></div></div>
+    <div class="options"><span>Try another mood</span><button class="theme-choice" data-theme-id="observatory" aria-pressed="true">Observatory</button><button class="theme-choice" data-theme-id="orchard" aria-pressed="false">Orchard</button></div>
+  </section>
+  <footer><span class="offline-dot" aria-hidden="true"></span>No ads. No account. Saved on this device.<span id="storage-warning" role="status"></span><small>Experimental mother template. Human playtest and commercial viability are not yet verified.</small></footer>
+</main>
+<dialog id="dialog" aria-labelledby="dialog-title" aria-describedby="dialog-copy"><div class="dialog-icon" aria-hidden="true">&#10022;</div><p class="eyebrow" id="dialog-eyebrow">A FRESH PERSPECTIVE</p><h2 id="dialog-title">Start a new game?</h2><p id="dialog-copy">This replaces your current board. Your best score stays.</p><div class="dialog-actions"><button id="dialog-primary" class="primary">Start fresh</button><button id="dialog-secondary" class="secondary">Keep this game</button></div></dialog>
+<noscript>This game needs JavaScript enabled. It makes no network or model requests.</noscript>
+<script type="module" src="main.mjs"></script>
+</body>
+</html>

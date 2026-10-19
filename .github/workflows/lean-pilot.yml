@@ -1,0 +1,101 @@
+name: Lean pilot verification
+on:
+  pull_request:
+    paths:
+      - 'tools/lean-pilot/**'
+      - 'templates/web-lite/grid-merge-v1/**'
+      - 'examples/lean-pilot/**'
+      - 'docs/lean-pilot/**'
+      - 'PILOT_START.md'
+      - '.github/workflows/lean-pilot.yml'
+      - 'package.json'
+permissions:
+  contents: read
+concurrency:
+  group: lean-pilot-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  offline-engineering:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22.16.0'
+      - name: Check narrowly approved change scope
+        run: npm run pilot:scope
+      - name: Native tests - no dependency installation or provider calls
+        shell: bash
+        run: npm run pilot:test | tee "$RUNNER_TEMP/lean-pilot-native.tap"
+      - name: Check browser and tooling syntax
+        run: |
+          for file in tools/lean-pilot/*.mjs templates/web-lite/grid-merge-v1/*.mjs; do
+            node --check "$file"
+          done
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: lean-native-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/lean-pilot-native.tap
+          retention-days: 7
+          if-no-files-found: warn
+  http-browser:
+    needs: offline-engineering
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '24.x'
+      - name: Install the repository package manager
+        run: npm install --global pnpm@11.19.0 --ignore-scripts --no-audit --no-fund
+      - name: Install existing locked dependencies without lifecycle scripts
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Record versions and typecheck candidate
+        run: |
+          node --version
+          pnpm --version
+          pnpm exec playwright --version
+          sha256sum pnpm-lock.yaml
+          npm run pilot:typecheck
+          pnpm exec eslint tools/lean-pilot templates/web-lite/grid-merge-v1
+      - name: Install Chromium for the locked Playwright version
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Initialize one isolated CI run and verify its copied core
+        run: |
+          npm run pilot -- init ci-pilot observatory
+          npm run pilot -- check ci-pilot
+      - name: Test actual HTTP loading, touch, storage, failure and replay
+        run: npm run pilot:browser -- ci-pilot
+      - name: Export replayable review files
+        run: |
+          npm run pilot -- export ci-pilot observatory
+          npm run pilot -- export ci-pilot orchard
+      - name: Write honest gate report even after failure
+        if: always()
+        shell: bash
+        run: |
+          if test -f runs/ci-pilot/run.json; then
+            node tools/lean-pilot/runner.mjs report ci-pilot > runs/ci-pilot/report.json
+            cat runs/ci-pilot/report.json
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: lean-browser-${{ github.event.pull_request.head.sha }}
+          path: |
+            runs/ci-pilot/engineering.json
+            runs/ci-pilot/engineering.tap
+            runs/ci-pilot/browser.json
+            runs/ci-pilot/report.json
+            runs/ci-pilot/screenshots/*.png
+            runs/ci-pilot/*.html
+          retention-days: 7
+          if-no-files-found: warn

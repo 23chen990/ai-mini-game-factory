@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.19.0",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "factory": "tsx src/cli/factory.ts",
     "board": "node tools/board.mjs",
@@ -16,7 +18,14 @@
     "verify": "pnpm lint && pnpm typecheck && pnpm test",
     "evidence:check": "tsx tools/verify-evidence-provenance.ts",
     "evidence:ingest": "tsx tools/ingest-reference-media.ts",
-    "evidence:review": "tsx tools/review-reference-media.ts"
+    "evidence:review": "tsx tools/review-reference-media.ts",
+    "pilot": "node tools/lean-pilot/runner.mjs",
+    "pilot:test": "node --test tools/lean-pilot/tests/*.test.mjs templates/web-lite/grid-merge-v1/tests/*.test.mjs",
+    "pilot:typecheck": "tsc -p templates/web-lite/grid-merge-v1/tsconfig.json",
+    "pilot:browser": "node tools/lean-pilot/browser-qa.mjs",
+    "pilot:offline-dom": "node tools/lean-pilot/offline-dom-qa.mjs",
+    "pilot:scope": "node tools/lean-pilot/scope-check.mjs",
+    "pilot:form": "node tools/lean-pilot/form-cli.mjs"
   },
   "dependencies": {
     "@openai/agents": "^0.17.0",

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "research-001",
+  "product": "game",
+  "target": {
+    "id": "REPLACE_WITH_EXACT_TARGET",
+    "version": "REPLACE_WITH_VERSION_OR_COMMIT",
+    "kind": "javascript-artifact",
+    "readableSource": false,
+    "subjectSha256": null
+  },
+  "permission": {
+    "basis": "unknown",
+    "reference": "NOT_APPROVED: record the actual permission basis before analysis."
+  },
+  "questions": [
+    {
+      "id": "client-boundary",
+      "kind": "client-structure",
+      "question": "Which client components separate preview from final submission?",
+      "decision": "Decide whether a separate local-preview state is worth implementing."
+    }
+  ],
+  "baseline": {
+    "status": "NOT_RUN",
+    "minutes": 0,
+    "cashCents": null,
+    "evidence": [],
+    "resolvedIds": []
+  },
+  "limits": {
+    "maxAdditionalMinutes": 30,
+    "maxAdditionalCashCents": 0,
+    "maxAttempts": 2
+  },
+  "allowedFiles": [
+    "templates/web-lite/grid-merge-v1/main.mjs"
+  ]
+}
