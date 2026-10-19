@@ -437,6 +437,49 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // opponent marker and genuine right-thumb CDP swipes, never actor coords.
     const rookieLite=await page.locator('#mobile-kit')
       .getAttribute('data-fps-lite')==='true';
+    const coverFirst30=rookieLite&&await page.evaluate(()=>
+      document.documentElement.dataset.fpsCover==='true');
+    // V20's cover gameplay specifically requires HOLD fire to expose, then
+    // AIM with the other thumb while exposed. A V19 aim-then-fire script
+    // points the camera from the crouched, physically blocked viewpoint.
+    // Send only trusted CDP touches to the real FIRE button and right screen.
+    const exposeFireAndAim=async(holdMs=720)=>{
+      const fire=await rect('#touch .btn[data-mk-action="fire"]');
+      if(!fire)throw Error('Cannot expose: genuine fire button is hidden');
+      const point={...center(fire),id:94};
+      const look={x:Math.round(667*.73),y:Math.round(375*.37),id:95};
+      let trace={mode:'simultaneous-native-touch',visible:false,aligned:false};
+      await event('touchStart',[point]);
+      try{
+        await event('touchStart',[point,look]);
+        await sleep(120);
+        const aim=await page.evaluate(()=>{
+          const el=[...document.querySelectorAll('.mk-fps-enemy')].find(e=>
+            !e.hidden&&getComputedStyle(e).display!=='none');
+          if(!el)return null;
+          const x=parseFloat(el.style.left),y=parseFloat(el.style.top);
+          return Number.isFinite(x)&&Number.isFinite(y)?
+            {x:x*innerWidth/100,y:y*innerHeight/100,
+             cx:innerWidth/2,cy:innerHeight/2}:null;
+        });
+        if(aim){
+          const dx=aim.x-aim.cx,dy=aim.y-aim.cy;
+          trace={...trace,visible:true,aligned:Math.hypot(dx,dy)<12,dx,dy};
+          const mx=Math.max(-64,Math.min(64,dx*.50));
+          const my=Math.max(-40,Math.min(40,dy*.50));
+          await event('touchMove',[point,{...look,x:look.x+mx*.5,y:look.y+my*.5}]);
+          await sleep(100);
+          await event('touchMove',[point,{...look,x:look.x+mx,y:look.y+my}]);
+        }
+        await sleep(holdMs);
+      }finally{
+        // Release in native touch order: first the looking thumb, then FIRE.
+        // No score, health, bot, timer or aimTarget mutation.
+        await event('touchEnd',[point]).catch(()=>{});
+        await event('touchEnd',[]).catch(()=>{});
+      }
+      return trace;
+    };
     const visibleAim=async()=>{
       const aim=await page.evaluate(()=>{
         const el=[...document.querySelectorAll('.mk-fps-enemy')].find(e=>
@@ -466,7 +509,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       return {visible:true,aligned:false,dx,dy};
     };
     const openingAimTrace=[];
-    if(rookieLite)for(let n=0;n<3;n++){
+    if(rookieLite&&!coverFirst30)for(let n=0;n<3;n++){
       const result=await visibleAim(null);openingAimTrace.push(result);
       if(!result.visible||result.aligned)break;
       await sleep(95);
@@ -491,7 +534,8 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       read();
     });
     await snap('v18-aim-before-first-shot');
-    await button('#touch .btn[data-mk-action="fire"]',780,70);
+    if(coverFirst30)openingAimTrace.push(await exposeFireAndAim(640));
+    else await button('#touch .btn[data-mk-action="fire"]',780,70);
     const firedRookie=await inspect();
     if(rookieLite)check('lite-first-shot-is-manual-not-native-auto-fire',
       firedRookie.route?.autoFireActivations===0&&
@@ -533,11 +577,14 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         if(!pre.player?.alive){
           await sleep(300);continue;
         }
-        const aim=rookieLite?await visibleAim():{
-          visible:true,aligned:true,dx:0,dy:0
-        };
+        const aim=coverFirst30
+          ?await exposeFireAndAim(520)
+          :rookieLite?await visibleAim():{visible:true,aligned:true,dx:0,dy:0};
         openingAimTrace.push(aim);
-        if(!aim.visible){
+        if(coverFirst30) {
+          // A real exposed dual-thumb firing burst was already performed.
+          // Do not add a blind V19 search gesture while hiding behind cover.
+        } else if(!aim.visible){
           // A normal FPS user walks toward the gunfight when no opponent is
           // visible. Sample the actual joystick and original collision:
           // alternate short forward advances and real camera searching.
@@ -581,7 +628,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       killResult.player.shots>=firedRookie.player.shots&&
       killResult.time-rookie.time<30,
       {nativeSec:killResult.time-rookie.time,player:killResult.player,
-        trace:killPressTrace});
+        coverFirst30,openingAimTrace:openingAimTrace.slice(-30),trace:killPressTrace});
     const observedCues=await page.evaluate(()=>
       window.__cfKillCueObservations||[]);
     check('first30-kill-reward-rendered-from-real-player-counter',
