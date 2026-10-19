@@ -219,7 +219,16 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       afterFire.player.shots>beforeFire&&afterFire.player.input.fire===false,
       {beforeFire,after:afterFire.player});
     // Genuine fire+camera and reload/jump: normal CDP fingers only.
-    const beforeDrag=await inspect(),fc=center(fireRect);
+    // Solo PvE has one-life encounters, not team-deathmatch auto-respawns.
+    // Test the native FIRE-drag input from a genuine fresh mission, reached
+    // through visible menu taps, without any HP/position/state injection.
+    const dragTrial=await enter('assault');
+    check('solo-drag-trial-starts-with-real-alive-player',
+      dragTrial.gamePhase==='running'&&dragTrial.player?.alive===true,
+      {phase:dragTrial.gamePhase,hp:dragTrial.player?.hp});
+    const dragFireRect=await rect('#touch .btn[data-mk-action="fire"]');
+    if(!dragFireRect)throw Error('Fresh solo mission has no visible fire button');
+    const beforeDrag=await inspect(),fc=center(dragFireRect);
     // Window touchmove must never see a FIRE-origin drag. The original
     // upstream TouchControls would otherwise apply another 1.6x rotation.
     await page.evaluate(()=>{
@@ -241,17 +250,15 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       Math.abs(afterDrag.player.yaw-beforeDrag.player.yaw)>0.015&&
       afterDrag.player.shots>beforeDrag.player.shots,
       {before:beforeDrag.player,after:afterDrag.player});
-    // The first real 1v1 is lethal. Reload is forbidden while dead:
-    // wait for a GENUINE native respawn, fire a real short burst when the
-    // new magazine is full, then press reload while still alive. Never edit
-    // ammo, health, timers or native weapon status to pass the test.
+    // Solo mission death is terminal. Each original reload probe uses a
+    // legitimate UI replay, native bullets and native weapon state; never
+    // inject ammunition, damage, HP, clocks or a fake respawn.
     let beforeReload=null,afterReload=null,realReload=false;
     const reloadAttempts=[];
     for(let attempt=1;attempt<=3;attempt++){
-      await page.waitForFunction(()=>{
-        const g=window.__H5NativeGame;
-        return g?.playing===true&&!g?.paused&&g.player?.alive===true;
-      },null,{timeout:32000,polling:80});
+      const fresh=await enter('assault');
+      if(fresh.gamePhase!=='running'||!fresh.player?.alive)
+        throw Error('Fresh solo reload test never entered live native gameplay');
       beforeReload=await inspect();
       if(beforeReload.player.mag===30){
         await button('#touch .btn[data-mk-action="fire"]',550,60+attempt);
@@ -288,13 +295,12 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     let beforeJump=null,afterJump=null,physical=false;
     const jumpSamples=[],jumpAttempts=[];
     for(let attempt=1;attempt<=3;attempt++){
-      // In 4v4 a real bot can kill the player during earlier touch tests.
-      // Wait for the ORIGINAL native respawn; a dead player cannot jump.
-      await page.waitForFunction(()=>{
-        const g=window.__H5NativeGame,p=g?.player;
-        return g?.playing===true&&!g?.paused&&p?.alive===true&&
-          p?.onGround===true;
-      },null,{timeout:32000,polling:80});
+      // No artificial native respawn exists in solo PvE. Use the real menu
+      // start and prove grounded alive input for each independent attempt.
+      const fresh=await enter('assault');
+      if(fresh.gamePhase!=='running'||!fresh.player?.alive||
+         fresh.player?.onGround!==true)
+        throw Error('Fresh solo jump test did not start grounded and alive');
       beforeJump=await inspect();
       const initial=jumpSamples.length;
       await event('touchStart',[{...jc,id:30+attempt}]);
@@ -319,22 +325,15 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         vy:v.player?.vy,onGround:v.player?.onGround,
         jumpCD:v.player?.jumpCD,input:v.player?.input?.jump})),
       after:afterJump?.player});
-    // Two normal CDP fingers: walk + fire together, followed by OS-style
-    // touchcancel. The original Three.js fight can KILL the player mid-input;
-    // native death correctly clears movement. In that one causal branch,
-    // release all touches, await real 4s native respawn and repeat once.
-    // This never sets HP, state, position, stats, clock or the input assertion.
+    // Two real CDP fingers: walk + fire followed by OS-style touchcancel.
+    // A solo death finishes the encounter; each attempt therefore uses a
+    // visible free replay, never a non-existent 4v4 automatic respawn.
     const f0=center(fireRect),multiTouchTraces=[];
     let combined=null,cancelled=null,multiSuccess=false;
     for(let attempt=1;attempt<=2;attempt++){
-      const current=await inspect();
-      if(!current.player?.alive){
-        await page.waitForFunction(()=>{
-          const g=window.__H5NativeGame;
-          return g?.playing===true&&!g?.paused&&
-            g?.player?.alive===true;
-        },null,{timeout:30000,polling:100});
-      }
+      const fresh=await enter('assault');
+      if(fresh.gamePhase!=='running'||!fresh.player?.alive)
+        throw Error('Fresh solo multitouch test never entered live gameplay');
       await event('touchStart',[{...p0,id:51}]);
       await event('touchStart',[{...p0,id:51},{...f0,id:52}]);
       await event('touchMove',[
