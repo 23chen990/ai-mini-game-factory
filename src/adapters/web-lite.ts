@@ -10,6 +10,7 @@ import { copyTree, exists, listFiles, writeJsonAtomic } from '../core/files.js';
  * styling. Strip terminal escapes before scanning accumulated output; scans
  * must work even when stdout splits mid-escape or mid-URL. */
 export function parseVitePreviewUrl(output: string): string | null {
+  // eslint-disable-next-line no-control-regex -- stripping ANSI CSI colors is intentional.
   const plain = output.replace(/\x1b\[[0-9;]*m/gu, '');
   return plain.match(/http:\/\/(?:127\.0\.0\.1|localhost):(\d+)\//u)?.[0] ?? null;
 }
