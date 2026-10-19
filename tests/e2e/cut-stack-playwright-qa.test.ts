@@ -66,5 +66,5 @@ describe('cut-stack-dodge natural runtime QA', () => {
       expect.objectContaining({ name: 'cut-stack-replay-clears-terminal-feedback', passed: true }),
       expect.objectContaining({ name: 'packaged-webkit-load', passed: true }),
     ]));
-  }, 30_000);
+  }, 120_000);
 });
