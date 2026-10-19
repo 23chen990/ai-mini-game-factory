@@ -1,6 +1,13 @@
 import { expect, it } from 'vitest';
 import { OpenAIAgentProvider } from '../../src/providers/real.js';
 import { ReferenceIntakeEvidenceSchema, ReferenceIntakeDraftSchema } from '../../src/schemas/reference-intake.js';
+import { REFERENCE_INTAKE_INSTRUCTION } from '../../src/core/reference-intake.js';
+
+it('asks Research for the same source-classified measurement protocol used by Builder and QA', () => {
+  for (const term of ['referenceArtifact', 'referenceRange', 'maxDelta', 'minimumSamples', 'source-derived', 'REA']) {
+    expect(REFERENCE_INTAKE_INSTRUCTION).toContain(term);
+  }
+});
 
 it('blocks visual intake on the text-only API provider without spending a model call', async () => {
   let calls = 0;

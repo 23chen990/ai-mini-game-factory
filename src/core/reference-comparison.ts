@@ -1,0 +1,101 @@
+import type { ReferenceFidelityContract, ReferenceFidelityGateSchema } from '../schemas/reference-fidelity.js';
+import type { ReferenceComparisonCapture, ReferenceDifference } from '../schemas/reference-comparison.js';
+import { ReferenceComparisonTaskSchema } from '../schemas/reference-comparison.js';
+
+export const REFERENCE_COMPARISON_RESEARCH_INSTRUCTION = 'Choose acquisition by the unmet claim: read complete readable source directly; use REA for packaged/minified/native artifacts or questions source inspection cannot answer, then corroborate behavior with actual normal-input observation. REA exit success is not mechanism accuracy. Each behaviorCheck must supply comparison with evidenceBasis (runtime-observed, source-derived, inferred, unknown), a source-bound referenceArtifact, exact condition and protocol, metric/unit, evidence-backed referenceRange, justified maxDelta and minimumSamples. These fields are the shared Builder/QA contract, not candidate-selected expectations. Never invent measurements or relax tolerance to fit the candidate; keep unsupported mechanisms explicitly unknown/BLOCKED. Perceptual quality and human acceptance remain separate from numeric comparison.';
+
+export function referenceComparisonNextStage(differences: ReferenceDifference[]) {
+  if (differences.some(({ route }) => route === 'RESEARCH' || route === 'CONTRACT')) return 'REFERENCE_DEEP_RESEARCH';
+  if (differences.some(({ route }) => route === 'QA')) return 'QA';
+  if (differences.some(({ route }) => route === 'BUILDER')) return 'FIX';
+  return 'QA'; // Other fidelity/perceptual blockers still belong to independent QA.
+}
+
+export function buildReferenceComparisonTask(input: {
+  workspace: string; inputArtifacts: string[]; gate: ReturnType<typeof ReferenceFidelityGateSchema.parse>;
+}) {
+  const differences = input.gate.differences ?? []; // Older gate artifacts predate discrepancy attribution.
+  const stage = referenceComparisonNextStage(differences);
+  const route = {
+    REFERENCE_DEEP_RESEARCH: { owner: 'ResearchAgent', instructions: [
+      '只围绕 differences 指定的机制补充研究；区分实际观察、源码/逆向证据、推断和未知。优先复用未失效的参考证据。',
+      '修正有证据支持的 comparison 测量协议、范围和容差；不得为候选放宽标准。更新来源绑定及合同版本，失效旧合同派生的实现/QA，重新交接 Builder 和独立 QA。',
+    ] },
+    FIX: { owner: 'FixerAgent', instructions: [
+      '按正式 QA → Fixer → QA 流程，将 differences 及其合同/双端证据转换为经过现有 QA schema 校验的问题；只修因果相关文件。',
+      '读取 codex-game-repair 技能，保留原 Builder 线程和累计尝试次数，每次独立假设修复后构建一次；禁止修改合同标准或参考测量来通过验收。修复后重新采集候选并由独立 QA 对照。',
+    ] },
+    QA: { owner: 'QAAgent', instructions: [
+      '由独立 QAAgent 或 HumanReviewer 执行；Builder/Fixer 不得自签。读取 game-playtest 技能，只读两端游戏，写本 run 的 QA 证据。',
+      '按 src/schemas/reference-comparison.ts 的 ReferenceComparisonCaptureSchema 分别生成参考/候选 capture JSON。绑定 targetRunId、contractHash；reference.artifactHash 绑定 comparison.referenceArtifact.sha256，candidate.artifactHash 绑定当前 buildHash。',
+      '两端都从 fresh reset 使用正常输入，记录 actions、durationMs、正常操作权限和真实截图 SHA-256；逐项记录精确对象/状态分支/视口及合同 condition/protocol/metric/unit 的实测样本。缺分支、样本不足或状态注入不能通过。',
+      '按 src/schemas/reference-fidelity.ts 的 ReferenceFidelityReviewSchema 写入 artifacts/reference-fidelity-review.json；comparison.reference 和 comparison.candidate 分别填写 capture 文件的 run-relative path 和实际 SHA-256。contractHash 是规范化合同 JSON 的 SHA-256。',
+      '独立检查玩家可见状态、空间关系、反馈绑定和事件顺序；cases 的截图与 NaturalFlowEvidenceSchema trace 必须真实存在并绑定当前 buildHash/视口，transitions.name 使用 checkId，包含结算及重玩。',
+      '不得复制预期值充当观察。保留缺失证据与未通过的感知结果；数字通过或文件哈希不能替代画面审查。',
+    ] },
+  }[stage];
+  return ReferenceComparisonTaskSchema.parse({
+    schemaVersion: 1, targetRunId: input.gate.targetRunId, workspace: input.workspace,
+    contractHash: input.gate.contractHash, buildHash: input.gate.buildHash,
+    stage, owner: route.owner, execution: 'waiting-handoff', inputArtifacts: input.inputArtifacts,
+    blockers: input.gate.blockers, differences, instructions: route.instructions,
+  });
+}
+
+/** Compare independently captured observations, never candidate-authored expectations. */
+export function compareReferenceCaptures(input: {
+  contract: ReferenceFidelityContract; contractHash: string; buildHash: string;
+  reference: ReferenceComparisonCapture; candidate: ReferenceComparisonCapture;
+}): ReferenceDifference[] {
+  const differences: ReferenceDifference[] = [];
+  const add = (checkId: string, route: ReferenceDifference['route'], reason: string) => differences.push({ checkId, route, reason });
+  for (const target of ['reference', 'candidate'] as const) {
+    const capture = input[target];
+    if (capture.target !== target || capture.targetRunId !== input.contract.targetRunId || capture.contractHash !== input.contractHash) {
+      add('*', 'QA', `${target}:identity-or-contract-mismatch`);
+    }
+    if (capture.authority !== 'normal-input' || !capture.startedFromReset || capture.forbiddenOperations.length || capture.actions.length === 0) {
+      add('*', 'QA', `${target}:natural-input-required`);
+    }
+  }
+  if (input.candidate.artifactHash !== input.buildHash) add('*', 'QA', 'candidate:build-mismatch');
+  if (differences.length) return differences;
+
+  for (const check of input.contract.behaviorChecks) {
+    const spec = check.comparison;
+    if (!spec) { add(check.id, 'CONTRACT', 'measurement-protocol-missing'); continue; }
+    if (spec.evidenceBasis === 'inferred' || spec.evidenceBasis === 'unknown') {
+      add(check.id, 'RESEARCH', 'mechanism-not-confirmed'); continue;
+    }
+    if (!input.contract.provenance.some((source) => source.path === spec.referenceArtifact.path && source.sha256 === spec.referenceArtifact.sha256)
+      || spec.referenceArtifact.sha256 !== input.reference.artifactHash) {
+      add(check.id, 'RESEARCH', 'reference-artifact-unbound'); continue;
+    }
+    const rows = [];
+    for (const target of ['reference', 'candidate'] as const) {
+      const row = input[target].observations.find((observation) => observation.checkId === check.id);
+      if (!row) { add(check.id, 'QA', `${target}:observation-missing`); continue; }
+      if (row.objectType !== check.objectType || row.stateBranch !== check.stateBranch
+        || row.viewport.width !== check.viewport.width || row.viewport.height !== check.viewport.height
+        || row.condition !== spec.condition || row.protocol !== spec.protocol || row.metric !== spec.metric || row.unit !== spec.unit) {
+        add(check.id, 'QA', `${target}:scenario-mismatch`); continue;
+      }
+      if (row.samples.length < spec.minimumSamples) { add(check.id, 'QA', `${target}:insufficient-samples`); continue; }
+      rows.push(row);
+    }
+    if (rows.length !== 2) continue;
+    const [reference, candidate] = rows;
+    // rows has exactly one reference and one candidate after the checks above.
+    const referenceSamples = reference!.samples;
+    const candidateSamples = candidate!.samples;
+    if (referenceSamples.some((value) => value < spec.referenceRange.min || value > spec.referenceRange.max)) {
+      add(check.id, 'RESEARCH', 'reference-observation-contradicts-contract'); continue;
+    }
+    const mean = (samples: number[]) => samples.reduce((sum, value) => sum + value, 0) / samples.length;
+    if (Math.abs(mean(referenceSamples) - mean(candidateSamples)) > spec.maxDelta
+      || candidateSamples.some((value) => value < spec.referenceRange.min - spec.maxDelta || value > spec.referenceRange.max + spec.maxDelta)) {
+      add(check.id, 'BUILDER', 'candidate-behavior-diverges');
+    }
+  }
+  return differences;
+}

@@ -179,7 +179,7 @@ describe('reference evidence pack', () => {
     expect(result.fidelity.coreLoopOrder).toEqual(reference.coreLoop);
     expect(result.fidelity.inputStateTransitions).toContain(pack.behaviorChecks[0]!.expectedStateChange);
     expect(result.fidelity.failureRecoveryRules.length).toBeGreaterThan(0);
-    expect(result.fidelity.feedbackTimingBands.immediateSeconds).toBe(1);
+    expect(result.fidelity.feedbackTimingBands).toMatchObject({immediateSeconds:1});
     await rm(root, { recursive: true, force: true });
   });
 

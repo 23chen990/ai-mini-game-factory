@@ -1,0 +1,414 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-19T09:52:50.508Z",
+  "scope": "shared-factory paired-comparison slice; not a completed automatic reconstruction pipeline",
+  "repository": "https://github.com/23chen990/ai-mini-game-factory",
+  "main": "cb0ea67d7ed9ec25a3deed7110cb4b685d598e7b",
+  "base": {
+    "pullRequest": 71,
+    "branch": "codex/reference-first-factory-upgrade",
+    "commit": "d269cbd94f9eb23bf24d01e8340748e025bf5eed",
+    "merged": false
+  },
+  "branch": "codex/reference-mechanism-chain",
+  "historicalBranchesMerged": [],
+  "generatedGamesCommitted": false,
+  "checks": {
+    "command": "pnpm_config_verify_deps_before_run=false pnpm verify",
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "testFiles": 183,
+    "testsPassed": 1113,
+    "testsFailed": 0,
+    "evidence": {
+      "path": "artifacts/reference-first-audit/reviewed-final-verify.log",
+      "sha256": "fe41e3db9f80ee2a0a0a49a19a03eb63698b61206c8f466e12cedd9fa8435d99"
+    },
+    "pilotStandaloneTypecheck": {
+      "command": "node_modules/.bin/tsc --noEmit --strict --noUncheckedIndexedAccess --target ES2022 --module NodeNext --skipLibCheck tools/reference-comparison-pilot.ts",
+      "status": "PASS",
+      "evidence": {
+        "path": "artifacts/reference-first-audit/pilot-typecheck.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "existingCandidateUnitTests": {
+      "passed": 14,
+      "evidence": {
+        "path": "runs/factory-comparison-2048-20261019/artifacts/builder-template-tests.log",
+        "sha256": "6bd1ca968e68d14a11cb7f9b66b0096084b4b9b2a2834c48a5e7616c82d5150d"
+      }
+    }
+  },
+  "tddEvidence": [
+    {
+      "path": "artifacts/reference-first-audit/red-candidate-only.log",
+      "sha256": "e58228c23f06a31ef134191976f59a61bad497f282c47db74444f57cf3ec9006"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-paired.log",
+      "sha256": "8b34491558cc89724149f271bf7084b03d52bfd444b6821e185518e9ebe35822"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-routing.log",
+      "sha256": "3cf9bed63df53bd0f11f24f1e04d305d6e341685fa690112b355a2daf18ef77c"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-research-instruction.log",
+      "sha256": "803a134d1be94b42adeb6efadeb59de06fb11894020a4726973d0a5aa4866870"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-merge-observation.log",
+      "sha256": "5498d2c5797744c67a08c4954ab1bf9915029eb007080469f1509ba4c02c7298"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-visible-reference.log",
+      "sha256": "4d276924126e9c050902f71f26203232261151566ee575d4d21ca1e6d0931969"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-unknown-timing.log",
+      "sha256": "b540fe8f28e21bbcc0118c057c599d6965a3a37e93ff2bb6faad39fc776e1ab7"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-review-handoff.log",
+      "sha256": "83a695024026fdc8c05d1557ca15f8ce4432653241ca6589373a8adf650abdae"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-research-handoff.log",
+      "sha256": "a5aeb944c8f6921c1c3f7fbbe4c58db68008641dc2ca0150e4b44e5d5877b25d"
+    }
+  ],
+  "review": {
+    "findings": 2,
+    "disposition": "Both fixed with RED regressions and the final passing full suite: explicit paired-capture QA requirements and owner/stage-matched structured handoffs.",
+    "evidence": {
+      "path": "artifacts/reference-first-audit/comparison-review.json",
+      "sha256": "5ea4c55eb59f45f3cde3206459be87c95c3b5fbd6b445233345642ba241aad60"
+    }
+  },
+  "pilot": {
+    "targetRunId": "factory-comparison-2048-20261019",
+    "referenceIdentity": {
+      "path": "runs/factory-comparison-2048-20261019/reference-evidence/reference-build.json",
+      "sha256": "a9ddc05070444a54fae5810746f9e284f5b1d3eaa46f0aeddf289d67d730bac5"
+    },
+    "licenseResearch": {
+      "path": "runs/factory-comparison-2048-20261019/artifacts/open-source-research.json",
+      "sha256": "81e3773d5d31b7174035b6e0db10a3d4a04507960bc6d1fb1ca0f2e434a5aacf"
+    },
+    "contract": {
+      "path": "runs/factory-comparison-2048-20261019/artifacts/reference-fidelity-contract.json",
+      "sha256": "85f9431cc581978eb5e4e9a43e77fefe4caebcb806e59cc90d28f47fbdc1b0ea"
+    },
+    "normalizedContractHash": "23e0ae2c96cc7710696e02f0e9670818f055268d20c37997ea1ee45277f58d56",
+    "contractStatus": "BLOCKED",
+    "contractBlockers": [
+      "pilot:timing-and-difficulty-not-measured"
+    ],
+    "originalCandidateHashUnchanged": "1b8413e19641ec82973aa8fa1811b81219e961ffa5f3156f604243974a98356c",
+    "sourceMethod": "complete readable source plus independent fresh-browser normal-input observations",
+    "reaExecuted": false,
+    "llmResearchOrBuilderExecuted": false,
+    "candidate": "Existing original PR #2 template; isolated score-error negative control is a QA sensitivity experiment, not product development.",
+    "gameRngOrStateInjected": false,
+    "fullGateWithoutIndependentReview": {
+      "schemaVersion": 1,
+      "targetRunId": "factory-comparison-2048-20261019",
+      "contractHash": "23e0ae2c96cc7710696e02f0e9670818f055268d20c37997ea1ee45277f58d56",
+      "buildHash": "1b8413e19641ec82973aa8fa1811b81219e961ffa5f3156f604243974a98356c",
+      "passed": false,
+      "blockers": [
+        "fidelity:contract-blocked",
+        "fidelity:review-missing"
+      ],
+      "requiredCheckIds": [
+        "move-spawn",
+        "single-merge",
+        "score-feedback",
+        "loss-pressure",
+        "retry-reset"
+      ],
+      "checkedIds": [],
+      "differences": [
+        {
+          "checkId": "*",
+          "route": "RESEARCH",
+          "reason": "contract-blocked:pilot:timing-and-difficulty-not-measured"
+        }
+      ]
+    },
+    "experiments": [
+      {
+        "session": "final-scoped",
+        "command": "node_modules/.bin/tsx tools/reference-comparison-pilot.ts runs/factory-comparison-2048-20261019 workspace/game final-scoped",
+        "report": {
+          "schemaVersion": 1,
+          "targetRunId": "factory-comparison-2048-20261019",
+          "contractHash": "23e0ae2c96cc7710696e02f0e9670818f055268d20c37997ea1ee45277f58d56",
+          "buildHash": "1b8413e19641ec82973aa8fa1811b81219e961ffa5f3156f604243974a98356c",
+          "contractStatus": "BLOCKED",
+          "contractBlockers": [
+            "pilot:timing-and-difficulty-not-measured"
+          ],
+          "steps": 510,
+          "measuredBehaviorPassed": true,
+          "differences": [],
+          "samples": {
+            "reference": {
+              "move-spawn": {
+                "count": 510,
+                "maxError": 0
+              },
+              "single-merge": {
+                "count": 269,
+                "maxError": 0
+              },
+              "score-feedback": {
+                "count": 269,
+                "maxError": 0
+              },
+              "loss-pressure": {
+                "count": 3,
+                "maxError": 0
+              },
+              "retry-reset": {
+                "count": 3,
+                "maxError": 0
+              }
+            },
+            "candidate": {
+              "move-spawn": {
+                "count": 510,
+                "maxError": 0
+              },
+              "single-merge": {
+                "count": 281,
+                "maxError": 0
+              },
+              "score-feedback": {
+                "count": 281,
+                "maxError": 0
+              },
+              "loss-pressure": {
+                "count": 4,
+                "maxError": 0
+              },
+              "retry-reset": {
+                "count": 4,
+                "maxError": 0
+              }
+            }
+          },
+          "perceptualPassed": false,
+          "humanAccepted": false,
+          "commercialReleaseReady": false,
+          "evidencePath": "logs/reference-comparison/final-scoped"
+        },
+        "reportFile": {
+          "path": "runs/factory-comparison-2048-20261019/artifacts/final-scoped-comparison.json",
+          "sha256": "1cb9c6fe106d1b3c773d8332dbe1119193f0d8032dde84af3adc179cc761c265"
+        },
+        "captures": [
+          {
+            "path": "runs/factory-comparison-2048-20261019/logs/reference-comparison/final-scoped/reference.json",
+            "sha256": "c78cf800bd8798b874bfd2c977a31b46504bb0be80fe41d7aba896f9db83d517",
+            "durationMs": 180094,
+            "observedAt": "2026-10-19T09:38:05.599Z"
+          },
+          {
+            "path": "runs/factory-comparison-2048-20261019/logs/reference-comparison/final-scoped/candidate.json",
+            "sha256": "b21ac0844dca6c0d53e9d16a658eea659445b677e36490e79ed740710e3f0de1",
+            "durationMs": 180100,
+            "observedAt": "2026-10-19T09:38:06.107Z"
+          }
+        ]
+      },
+      {
+        "session": "negative-final-scoped",
+        "command": "node_modules/.bin/tsx tools/reference-comparison-pilot.ts runs/factory-comparison-2048-20261019 workspace/negative-control negative-final-scoped",
+        "report": {
+          "schemaVersion": 1,
+          "targetRunId": "factory-comparison-2048-20261019",
+          "contractHash": "23e0ae2c96cc7710696e02f0e9670818f055268d20c37997ea1ee45277f58d56",
+          "buildHash": "d27515d6119d26a02a051bcf3f8f2f5f20a25c7f48522f682043ad4e9e8a0d9f",
+          "contractStatus": "BLOCKED",
+          "contractBlockers": [
+            "pilot:timing-and-difficulty-not-measured"
+          ],
+          "steps": 518,
+          "measuredBehaviorPassed": false,
+          "differences": [
+            {
+              "checkId": "score-feedback",
+              "route": "BUILDER",
+              "reason": "candidate-behavior-diverges"
+            }
+          ],
+          "samples": {
+            "reference": {
+              "move-spawn": {
+                "count": 518,
+                "maxError": 0
+              },
+              "single-merge": {
+                "count": 289,
+                "maxError": 0
+              },
+              "score-feedback": {
+                "count": 289,
+                "maxError": 0
+              },
+              "loss-pressure": {
+                "count": 2,
+                "maxError": 0
+              },
+              "retry-reset": {
+                "count": 2,
+                "maxError": 0
+              }
+            },
+            "candidate": {
+              "move-spawn": {
+                "count": 518,
+                "maxError": 0
+              },
+              "single-merge": {
+                "count": 269,
+                "maxError": 0
+              },
+              "score-feedback": {
+                "count": 269,
+                "maxError": 2
+              },
+              "loss-pressure": {
+                "count": 3,
+                "maxError": 0
+              },
+              "retry-reset": {
+                "count": 3,
+                "maxError": 0
+              }
+            }
+          },
+          "perceptualPassed": false,
+          "humanAccepted": false,
+          "commercialReleaseReady": false,
+          "evidencePath": "logs/reference-comparison/negative-final-scoped"
+        },
+        "reportFile": {
+          "path": "runs/factory-comparison-2048-20261019/artifacts/negative-final-scoped-comparison.json",
+          "sha256": "75281ec4746319d1ccdba5f83ae0ccec9670a0253ba7d595ad8f4b327e7b3e09"
+        },
+        "captures": [
+          {
+            "path": "runs/factory-comparison-2048-20261019/logs/reference-comparison/negative-final-scoped/reference.json",
+            "sha256": "d9533442abba77e52261329b5e8fe1907b02885ba8925ec94c0fe4761172dc95",
+            "durationMs": 180029,
+            "observedAt": "2026-10-19T09:48:23.480Z"
+          },
+          {
+            "path": "runs/factory-comparison-2048-20261019/logs/reference-comparison/negative-final-scoped/candidate.json",
+            "sha256": "45fb13edec6ff82fbfe01d95666fcf49c61c92c4257af0ab485752c658c0c2fd",
+            "durationMs": 180034,
+            "observedAt": "2026-10-19T09:48:23.975Z"
+          }
+        ]
+      }
+    ]
+  },
+  "acceptance": {
+    "measuredFiveRulesPassed": true,
+    "deliberateScoreErrorDetected": true,
+    "routeClassification": "BUILDER",
+    "automaticRepairExecuted": false,
+    "fullMechanismAccuracyConfirmed": false,
+    "perceptualComparisonPassed": false,
+    "humanAccepted": false,
+    "platformPackagesVerified": false,
+    "commercialReleaseReady": false,
+    "costReductionMeasured": false
+  },
+  "evidenceAvailability": "Raw captures, screenshots, reference copy, candidate directories and logs remain local under the listed run/audit paths; no third-party game payload is committed. Revision labels in pilot-scope are preparation claims; runtime identity is verified by file bytes and hashes.",
+  "verifiedSourceFiles": [
+    {
+      "path": "README.md",
+      "sha256": "cdc13ad4bb5c1ebcc8f19d37cf1a081296c9e76dc636b5e0ad640e56d8826a5d"
+    },
+    {
+      "path": "docs/upgrades/20261019/reference-chain-audit.md",
+      "sha256": "8213587e623071386e0bcf7c8542dd381afcef27d34057cb2a7f38fd81ca3905"
+    },
+    {
+      "path": "src/core/reference-comparison.ts",
+      "sha256": "0535c645b3ce4fd688c642a442f11913cbbfdac653a3d9db7a347a4ca51ceb4e"
+    },
+    {
+      "path": "src/core/reference-evidence.ts",
+      "sha256": "654eaabf2aee134cc30f91d4012ee622d66b18e2a91775f02d4304920a96432d"
+    },
+    {
+      "path": "src/core/reference-intake.ts",
+      "sha256": "0d2d2cc89eca97008f4dd11c9efdaac2d3356624a739b2d39dc819d530ae81f4"
+    },
+    {
+      "path": "src/factory.ts",
+      "sha256": "50eb022c081e077cd81feb6460b36c1c4d43e5d4e7d9666bc19f98e7ce58c798"
+    },
+    {
+      "path": "src/providers/codex-account.ts",
+      "sha256": "b4f5306977ff60a6c190223188be45ff2fcad15e979c092cf3d57296ecffaf72"
+    },
+    {
+      "path": "src/providers/real.ts",
+      "sha256": "10379d97ecec079b4db41aa65f0529cbf70f319ace0433eab630be9d5e8c45db"
+    },
+    {
+      "path": "src/qa/grid-comparison-adapter.ts",
+      "sha256": "160bc65b3696587142929d2fb7003ad72d0c07870d808cfecded0e05d1e7a9f9"
+    },
+    {
+      "path": "src/schemas/reference-comparison.ts",
+      "sha256": "a9ceb76acbf65cfb60a40251fd59f657709c9065b1556a1c2a6b722c8fe44f9a"
+    },
+    {
+      "path": "src/schemas/reference-fidelity.ts",
+      "sha256": "a05916f013cbbfeb049e4a8094d737bfa8d6ea1f53a3e3252505aac2c4532b14"
+    },
+    {
+      "path": "tests/fixtures/reference-comparison.ts",
+      "sha256": "8f2f946de806c427c6957f46291ea80a3e7267ef5a09a796898c8426d66147fe"
+    },
+    {
+      "path": "tests/integration/orchestrator.test.ts",
+      "sha256": "bca7bf48ab40cb828869f6034f204740bf8aa08b36dd1c7f138d10eedd872661"
+    },
+    {
+      "path": "tests/unit/grid-comparison-adapter.test.ts",
+      "sha256": "de0829bd6629789a7dbeb3cbbbb6c7aa244cdaa349a84f1d654c7f74983561e9"
+    },
+    {
+      "path": "tests/unit/reference-comparison-routing.test.ts",
+      "sha256": "83aaf53b998a83e63787c2b0384347e4b109873ac60182f0562a885d19dd5b47"
+    },
+    {
+      "path": "tests/unit/reference-evidence.test.ts",
+      "sha256": "4909291ec95120a1bf58590b2086efce5e912f7dcf0ceb7a8d815e0d79215c75"
+    },
+    {
+      "path": "tests/unit/reference-fidelity-qa.test.ts",
+      "sha256": "1ec65fd060c12998fa884e9a46dbd6c9925e2c90455a6cc74102a77e11c75445"
+    },
+    {
+      "path": "tests/unit/reference-intake-provider.test.ts",
+      "sha256": "d429605f32336ce959cfcf126e1772b903f441333d420a5a114420b84e435205"
+    },
+    {
+      "path": "tests/unit/reference-quality-audit.test.ts",
+      "sha256": "225e6792e98bd4f1d562be0077f3fdf9a0b072f4e067bd9dc478946397e4824d"
+    },
+    {
+      "path": "tools/reference-comparison-pilot.ts",
+      "sha256": "6a123adf126176f356f2f3c2d5773ba126d1946cb8b8ca9d888b863d9a12d2c3"
+    }
+  ]
+}

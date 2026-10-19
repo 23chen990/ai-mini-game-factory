@@ -14,6 +14,8 @@ import { evaluateReferenceLevelRuntimeTrace } from '../../src/core/reference-lev
 import { ReferenceLevelRuntimeTraceSchema, type ReferenceLevelRuntimeTrace } from '../../src/schemas/reference-recording.js';
 import { lockProductionLine } from '../../src/core/production-lines.js';
 import { RunArchiveManifestSchema } from '../../src/core/run-preservation.js';
+import { ReferenceBehaviorAnalysisSchema } from '../../src/schemas/reference-evidence.js';
+import { syntheticComparisonChecks, writeSyntheticComparison } from '../fixtures/reference-comparison.js';
 
 const roots: string[] = [];
 async function fixture() {
@@ -149,6 +151,11 @@ referenceMechanics:
       openSourceWasDurableBeforeBlueprint = false;
       override async generateCompetitorResearch(): Promise<never> { throw new Error('reference mode must not run competitor ideation'); }
       override async generateIdeas(): Promise<never> { throw new Error('reference mode must not generate ideas'); }
+      override async analyzeReferenceEvidence(...args: Parameters<MockAgentProvider['analyzeReferenceEvidence']>) {
+        const result = await super.analyzeReferenceEvidence(...args);
+        const analysis = ReferenceBehaviorAnalysisSchema.parse(result.value);
+        return {...result,value:{...analysis,behaviorChecks:syntheticComparisonChecks(analysis.behaviorChecks)}};
+      }
       override async generateBlueprint(...args: Parameters<MockAgentProvider['generateBlueprint']>) {
         const context = args[1];
         if (context) {
@@ -223,6 +230,11 @@ referenceMechanics:
     const reviewTask = await readFile(path.join(root, 'runs', runId, 'human/reference-fidelity-review-task.md'), 'utf8');
     expect(reviewTask).toContain(fidelityGate.buildHash);
     expect(reviewTask).toContain('reference-fidelity-review.json');
+    expect(reviewTask).toContain('ReferenceComparisonCaptureSchema');
+    expect(reviewTask).toContain('comparison.reference');
+    expect(reviewTask).toContain('comparison.candidate');
+    const comparisonTask = JSON.parse(await readFile(path.join(root, 'runs', runId, 'artifacts/reference-comparison-task.json'), 'utf8'));
+    expect(comparisonTask).toMatchObject({ stage: done.stage, owner: 'QAAgent', execution: 'waiting-handoff', buildHash: fidelityGate.buildHash });
     const coreSpec = JSON.parse(await readFile(path.join(root, 'runs', runId, 'artifacts/core-spec-lock.json'), 'utf8'));
     expect(coreSpec.acceptanceDimensions).toContain('reference:reference-spatial_relation');
     expect(done.stages.OPEN_SOURCE_RESEARCH).toBeUndefined();
@@ -255,6 +267,12 @@ referenceMechanics:
         passed: true, perceptualPassed: true, observedStateChange: 'synthetic observed state', observedFeedback: 'synthetic visible feedback', screenshots: [image], trace })),
     }));
     vi.spyOn(MockQAProvider.prototype, 'playtest').mockImplementation(async () => { throw new Error('review resume must preserve the existing evidence'); });
+    const candidateOnly = await factory.resume(runId);
+    expect(candidateOnly).toMatchObject({stage:'QA',status:'waiting'});
+    expect(JSON.parse(await readFile(artifact('reference-fidelity-gate.json'),'utf8')).blockers).toContain('fidelity:reference-comparison-missing');
+    expect(JSON.parse(await readFile(artifact('reference-comparison-task.json'), 'utf8')).inputArtifacts).toContain('artifacts/reference-fidelity-review.json');
+    const review = JSON.parse(await readFile(artifact('reference-fidelity-review.json'),'utf8'));
+    await writeFile(artifact('reference-fidelity-review.json'),JSON.stringify({...review,comparison:await writeSyntheticComparison(runRoot,contract,fidelityGate.buildHash,image)}));
     const awaitingCoreDemo = await factory.resume(runId);
     expect(awaitingCoreDemo).toMatchObject({ stage: 'WAITING_FOR_HUMAN_PLAYTEST', status: 'waiting' });
     await expect(readFile(path.join(runRoot, 'artifacts/content-expansion.json'), 'utf8')).rejects.toThrow();
