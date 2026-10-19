@@ -281,7 +281,7 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
   async buildTarget(workspace: string, target: string) { if (target !== 'web') throw new Error(`web-lite does not support target ${target}`); return this.buildWeb(workspace); }
   async startPreview(workspace: string) {
     const child = spawn(path.join(this.repositoryRoot, 'node_modules/.bin/vite'), ['preview', '--host', '127.0.0.1', '--port', '0'], { cwd: workspace, stdio: ['ignore', 'pipe', 'pipe'] });
-    const url = await new Promise<string>((resolve, reject) => { let output = ''; const onData = (data: Buffer) => { output += data.toString(); const match = output.match(/http:\/\/127\.0\.0\.1:(\d+)\//); if (match) resolve(match[0]); }; child.stdout.on('data', onData); child.stderr.on('data', onData); child.on('exit', (code) => reject(new Error(`preview exited early (${code}): ${output}`))); setTimeout(() => reject(new Error('preview start timeout')), 15_000); });
+    const url = await new Promise<string>((resolve, reject) => { let output = ''; const onData = (data: Buffer) => { output += data.toString(); const match = output.match(/http:\/\/127\.0\.0\.1:(\d+)\//); if (match) resolve(match[0]); }; child.stdout.on('data', onData); child.stderr.on('data', onData); child.on('exit', (code) => reject(new Error(`preview exited early (${code}): ${output}`))); setTimeout(() => { child.kill('SIGTERM'); reject(new Error(`preview start timeout after 45s: ${output.slice(-900)}`)); }, 45_000).unref(); });
     const stop = async () => { if (!child.killed) child.kill('SIGTERM'); }; this.preview = { stop }; return { url, stop };
   }
   async stopPreview() { await this.preview?.stop(); this.preview = undefined; }
