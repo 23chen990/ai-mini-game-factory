@@ -346,7 +346,16 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
  if(pauseProof.phase!=='paused'||pauseProof.distance>27.5)
   throw Error('Native pause must freeze the rider before READY starts');
  await tap('#co-resume');
- for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered native touchscreen session after genuine resume',normalInputOnly:true});
+ // V7 accepts a queued jump only within 1.1 seconds of the 35m barrier.
+ // With the old 24m pause, pressing instantly at 25.7m is an ordinary
+ // real jump, not a queued jump. Wait on publicly advancing distance, then
+ // issue the two pre-measured REAL trusted touches without an intervening
+ // screenshot or slow snapshot call. No collision/physics state is changed.
+ await page.waitForFunction(()=>{
+  const v=window.__coast.snapshot();
+  return v.phase==='finished'||v.distance>=27.0;
+ },null,{timeout:8000});
+ for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered native touchscreen session after genuine resume inside 1.1s physical queue window',normalInputOnly:true});
  await queueTapSequence(cancellationSession,engine,[pair.jump,pair.right]);
  // The V7 opening 35m barrier replaces the original 140m as this
  // buffer-cancellation scenario; waiting for 152m otherwise hangs after
