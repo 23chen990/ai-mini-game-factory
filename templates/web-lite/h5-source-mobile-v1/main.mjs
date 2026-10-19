@@ -1,7 +1,7 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout, URL, URLSearchParams, navigator */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
 import { requestRewardedVideo, createFpsAdapter, cfMobileActorBudget, cfRemoveNativeAllies, cfAssignSoloEnemyRoles } from './themes.mjs';
-import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap } from './fps-mobile-ux.mjs';
+import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap, cfFirstKillWinBanner } from './fps-mobile-ux.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus,cfMobileMission} from './cf-player-loop.mjs';
 import {cfV20CoverEnabled} from './cf-cover-assault.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
@@ -569,7 +569,9 @@ async function boot() {
           const nearMiss=result.outcome==='lost'
             ?cfNearMissCue(activeChallenge,metrics,round.elapsedMs):null;
           $('heading').textContent = result.outcome === 'won'
-            ? (reviveUsed?'◆ 辅助续战成功！':activeChallenge.elite?'⚡ 精英复战成功！':'✓ '+activeChallenge.title+'完成！')
+            ? (reviveUsed?'◆ 辅助续战成功！':activeChallenge.elite?'⚡ 精英复战成功！':
+              cfFirstKillWinBanner(activeChallenge,metrics,result.outcome)||
+              '✓ '+activeChallenge.title+'完成！')
             : nearMiss?'就差一点 · '+activeChallenge.title
               :(activeChallenge.elite?'精英复战失败':'本次挑战未完成');
           if(id==='cf-transport-ship')
