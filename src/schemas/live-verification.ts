@@ -19,6 +19,17 @@ export const LiveVerificationChecksSchema = z.object({
 export type LiveVerificationChecks = z.infer<typeof LiveVerificationChecksSchema>;
 export type LiveVerificationChecksInput = z.input<typeof LiveVerificationChecksSchema>;
 
+/** External command input; status and timestamps are derived by the recorder. */
+export const LiveVerificationInputSchema = z.object({
+  gameId: Text,
+  platform: DistributionPlatformSchema,
+  releaseHash: Sha256,
+  packageHash: Sha256.optional(),
+  checks: LiveVerificationChecksSchema,
+  evidence: z.array(Text),
+  verifier: Text.optional(),
+});
+
 export const LiveVerificationSchema = z.object({
   schemaVersion: z.literal(1),
   gameId: Text,
@@ -37,9 +48,6 @@ export const LiveVerificationSchema = z.object({
   }
   if (report.status === 'BLOCKED' && report.blockers.length === 0) {
     context.addIssue({ code: 'custom', path: ['blockers'], message: 'blocked live verification requires blockers' });
-  }
-  if (report.packageHash && report.packageHash !== report.releaseHash) {
-    context.addIssue({ code: 'custom', path: ['packageHash'], message: 'package hash must match the tested release hash' });
   }
 });
 export type LiveVerification = z.infer<typeof LiveVerificationSchema>;

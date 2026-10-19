@@ -1,12 +1,13 @@
 import { appendFile, copyFile, lstat, mkdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { parse } from 'yaml';
+import { parse, stringify } from 'yaml';
 import { exists, readJson, sha256File, sha256Text, writeJsonAtomic } from './files.js';
 import { redactValue } from './redaction.js';
 import { RunStateSchema, SeedSchema, type RunState, type Seed, type StageName, type StageRecord } from '../schemas/index.js';
 import { GameRunIdentityManifestSchema, type GameRunIdentityManifest } from '../schemas/game-identity.js';
-import { buildGameRunIdentityManifest, GAME_RUN_IDENTITY_ARTIFACT, validateGameRunIdentityImmutability } from './game-identity.js';
+import { canonicalGameIdFromTitle, buildGameRunIdentityManifest, GAME_RUN_IDENTITY_ARTIFACT, validateGameRunIdentityImmutability } from './game-identity.js';
 import { normalizeRunReadiness } from './run-readiness.js';
+import { ReferenceIntakeBriefSchema } from '../schemas/reference-intake.js';
 
 function assertSafeRunId(runId: string): void {
   if (typeof runId !== 'string' || runId.length === 0 || path.isAbsolute(runId) || path.win32.isAbsolute(runId) || runId === '.' || runId === '..' || runId.includes('/') || runId.includes('\\')) {
@@ -51,6 +52,29 @@ export class FileRunStore {
   runRoot(runId: string) { assertSafeRunId(runId); return path.join(this.runsRoot(), runId); }
   artifact(runId: string, name: string) { assertSafeArtifactName(name); return path.join(this.runRoot(runId), 'artifacts', name); }
   async readSeedFile(file: string): Promise<Seed> { return SeedSchema.parse(parse(await readFile(file, 'utf8'))); }
+  async createReferenceIntake(runId: string, briefValue: unknown, mode: RunState['providerMode']) {
+    const brief = ReferenceIntakeBriefSchema.parse(briefValue);
+    const root = this.runRoot(runId);
+    for (const name of ['input', 'artifacts', 'human', 'logs/handoffs', 'reference-evidence/incoming']) await mkdir(path.join(root, name), { recursive: true });
+    await writeJsonAtomic(path.join(root, 'input/reference-intake.json'), brief);
+    const now = new Date().toISOString();
+    const state = RunStateSchema.parse({ schemaVersion: 1, runId, runKind: 'reference-intake', canonicalGameId: canonicalGameIdFromTitle(brief.title), stage: 'CREATED', status: 'pending', createdAt: now, updatedAt: now, fixAttempts: 0, providerMode: mode, stages: {} });
+    await this.save(state);
+    await this.log(runId, 'reference-intake.created', { source: brief.source });
+    return state;
+  }
+  async activateReferenceIntake(state: RunState, seed: Seed) {
+    const root = this.runRoot(state.runId);
+    for (const name of ['art-review/previews', 'workspace/game', 'screenshots', 'release-candidate']) await mkdir(path.join(root, name), { recursive: true });
+    const seedFile = path.join(root, 'input/seed.yaml');
+    await writeJsonAtomic(seedFile, SeedSchema.parse(seed));
+    const identity = await this.writeImmutableGameRunIdentity(state.runId, buildGameRunIdentityManifest({ runId: state.runId, seed, seedSha256: await sha256File(seedFile), createdAt: state.createdAt }));
+    state.runKind = 'game';
+    state.canonicalGameId = identity.canonicalGameId;
+    state.identityManifestHash = sha256Text(JSON.stringify(identity));
+    await this.save(state);
+    await this.log(state.runId, 'reference-intake.activated', { seedHash: sha256Text(stringify(seed)), canonicalGameId: identity.canonicalGameId });
+  }
   async create(runId: string, seedFile: string, mode: 'mock' | 'live-art' | 'codex-account') {
     const root = this.runRoot(runId);
     for (const name of ['input', 'artifacts', 'art-review/previews', 'human', 'workspace/game', 'logs', 'logs/handoffs', 'screenshots', 'release-candidate']) await mkdir(path.join(root, name), { recursive: true });

@@ -1,4 +1,5 @@
-import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -9,7 +10,8 @@ import { buildArtifactMetadata } from '../../src/core/artifact-metadata.js';
 import { ArtifactMetadataSchema } from '../../src/schemas/artifact-metadata.js';
 import { sha256Text } from '../../src/core/files.js';
 import { createFactory } from '../../src/factory.js';
-import { promoteReleaseLifecycle } from '../../src/core/release-lifecycle.js';
+import { promoteReleaseLifecycleThrough } from '../../src/core/release-lifecycle.js';
+import { buildPlatformPackageSet, markPlatformPackageReady, verifyPlatformPackageArtifact } from '../../src/core/platform-packaging.js';
 
 const hash = (letter: string) => letter.repeat(64);
 
@@ -75,22 +77,75 @@ describe('factory control plane v6 contracts', () => {
     expect(parsed.dependsOn).toEqual([]);
   });
 
-  it('promotes a frozen release only after an explicit live-verification artifact', async () => {
+  async function liveFixture() {
     const root = await mkdtemp(path.join(tmpdir(), 'factory-live-verify-'));
     const seed = path.join(root, 'seed.yaml');
     await writeFile(seed, 'title: Live Verify\ntheme: spirits\ntemplate: idle-shop-v1\ndesignMode: prototype_tournament\n');
     const factory = createFactory({ root, mode: 'mock', qaMode: 'stub' });
     const runId = await factory.newRun(seed);
     const runRoot = path.join(root, 'runs', runId);
-    const releaseHash = hash('a');
-    await writeFile(path.join(runRoot, 'artifacts/release-candidate.json'), JSON.stringify({ coreHash: releaseHash }));
-    await writeFile(path.join(runRoot, 'artifacts/release-lifecycle.json'), JSON.stringify(promoteReleaseLifecycle(undefined, { gameId: 'live-verify', releaseHash, from: 'IMPLEMENTATION_READY', to: 'CANDIDATE_READY' })));
-    const result = await factory.recordLiveVerification(runId, {
-      schemaVersion: 1, gameId: 'live-verify', platform: 'douyin-minigame', releaseHash,
-      checks: { startup: true, coreLoop: true, terminalState: true, replay: true, adFallback: true, rewardIdempotency: true, saveRestore: true, telemetry: true, noConsoleErrors: true, packageHashMatch: true },
-      evidence: ['device://capture/1'], blockers: [], status: 'LIVE_VERIFIED', verifier: 'HumanReviewer', verifiedAt: new Date().toISOString(),
+    const contents = '<h1>First-party test build</h1>';
+    const releaseHash = sha256Text(`index.html:${sha256Text(contents)}`);
+    const childRoot = 'platform-builds/douyin-minigame';
+    for (const folder of ['workspace/game/dist', 'release-candidate/web', childRoot]) await mkdir(path.join(runRoot, folder), { recursive: true });
+    await writeFile(path.join(runRoot, 'workspace/game/dist/index.html'), contents);
+    await writeFile(path.join(runRoot, 'release-candidate/web/index.html'), contents);
+    await writeFile(path.join(runRoot, childRoot, 'game.js'), '// first-party native package fixture');
+    const native = await verifyPlatformPackageArtifact({ runRoot, platform: 'douyin-minigame', childRoot });
+    expect(native.passed).toBe(true);
+    assert(native.artifactHash);
+    const packageHash = native.artifactHash;
+    await writeFile(path.join(runRoot, 'artifacts/build-report.json'), JSON.stringify({ schemaVersion: 1, success: true, runtime: 'web-lite', template: 'idle-shop-v1', workspace: 'workspace/game', webBuild: 'workspace/game/dist', files: ['index.html'], verification: ['test:passed', 'typecheck:passed'], builtAt: new Date().toISOString() }));
+    await writeFile(path.join(runRoot, 'artifacts/release-candidate.json'), JSON.stringify({ schemaVersion: 1, gameId: 'live-verify', coreHash: releaseHash, acceptanceArtifact: 'reports/qa-report.json', testedAt: new Date().toISOString(), status: 'READY', files: [{ path: 'web/index.html', sha256: sha256Text(contents) }] }));
+    const packages = markPlatformPackageReady(buildPlatformPackageSet({ gameId: 'live-verify', coreHash: releaseHash, targets: ['douyin-minigame'] }), 'douyin-minigame', {
+      artifactHash: packageHash, childRoot,
+      device: { name: 'fixture device', width: 390, height: 844, os: 'fixture' },
+      evidence: ['device://test-fixture'], normalFlowEvidence: ['device://flow'], visualEvidence: ['device://visual'], runtimeEvidence: ['device://runtime'],
     });
+    await writeFile(path.join(runRoot, 'artifacts/platform-package-set.json'), JSON.stringify(packages));
+    await writeFile(path.join(runRoot, 'artifacts/release-lifecycle.json'), JSON.stringify(promoteReleaseLifecycleThrough(undefined, { gameId: 'live-verify', releaseHash, to: 'SUBMITTED' })));
+    const input = {
+      gameId: 'live-verify', platform: 'douyin-minigame', releaseHash, packageHash,
+      checks: { startup: true, coreLoop: true, terminalState: true, replay: true, adFallback: true, rewardIdempotency: true, saveRestore: true, telemetry: true, noConsoleErrors: true, packageHashMatch: true },
+      evidence: ['device://capture/1'], verifier: 'HumanReviewer',
+    };
+    return { factory, runId, runRoot, childRoot, input };
+  }
+
+  it('promotes only a submitted frozen release with the exact distinct native package hash', async () => {
+    const { factory, runId, runRoot, input } = await liveFixture();
+    expect(input.packageHash).not.toBe(input.releaseHash);
+    const result = await factory.recordLiveVerification(runId, input);
     expect(result.report.status).toBe('LIVE_VERIFIED');
     expect(JSON.parse(await readFile(path.join(runRoot, 'artifacts/release-lifecycle.json'), 'utf8')).status).toBe('LIVE_VERIFIED');
+  });
+
+  it('does not promote H5-only claims without a native package hash', async () => {
+    const { factory, runId, runRoot, input } = await liveFixture();
+    await expect(factory.recordLiveVerification(runId, { ...input, packageHash: undefined })).rejects.toThrow(/packageHash/);
+    expect(JSON.parse(await readFile(path.join(runRoot, 'artifacts/release-lifecycle.json'), 'utf8')).status).toBe('SUBMITTED');
+  });
+
+  it('rejects a claimed package hash that does not identify the platform child', async () => {
+    const { factory, runId, input } = await liveFixture();
+    await expect(factory.recordLiveVerification(runId, { ...input, packageHash: input.releaseHash })).rejects.toThrow(/package.*hash|packageHash/i);
+  });
+
+  it('rejects native package bytes changed after device QA', async () => {
+    const { factory, runId, runRoot, childRoot, input } = await liveFixture();
+    await writeFile(path.join(runRoot, childRoot, 'game.js'), '// changed after QA');
+    await expect(factory.recordLiveVerification(runId, input)).rejects.toThrow(/artifact-hash-mismatch/);
+  });
+
+  it('rejects a stale frozen candidate even if the report repeats its old hash', async () => {
+    const { factory, runId, runRoot, input } = await liveFixture();
+    await writeFile(path.join(runRoot, 'release-candidate/web/index.html'), 'changed after acceptance');
+    await expect(factory.recordLiveVerification(runId, input)).rejects.toThrow(/frozen|candidate/i);
+  });
+
+  it('cannot synthesize platform submission from a candidate-only lifecycle', async () => {
+    const { factory, runId, runRoot, input } = await liveFixture();
+    await writeFile(path.join(runRoot, 'artifacts/release-lifecycle.json'), JSON.stringify(promoteReleaseLifecycleThrough(undefined, { gameId: input.gameId, releaseHash: input.releaseHash, to: 'CANDIDATE_READY' })));
+    await expect(factory.recordLiveVerification(runId, input)).rejects.toThrow(/SUBMITTED/);
   });
 });

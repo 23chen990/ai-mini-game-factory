@@ -1,4 +1,6 @@
 import path from 'node:path';
+import { ReferenceIntakeDraftSchema, type ReferenceIntakeEvidence } from '../schemas/reference-intake.js';
+import { REFERENCE_INTAKE_INSTRUCTION } from '../core/reference-intake.js';
 import { z } from 'zod';
 import type { AgentExecutionContext, AgentProvider, AgentProviderResult, CodexProvider, FormalPrototypeBuildInput } from './interfaces.js';
 import type { CodexExecRequest, CodexExecResult } from './codex-cli.js';
@@ -118,6 +120,10 @@ export class CodexAccountProvider implements AgentProvider, CodexProvider {
     const isolation = context.role === 'research' ? await prepareResearchSandbox(context) : undefined;
     const result = await this.execute({ label: stage, prompt: `${prompt}\n\nValidated context packet:\n${JSON.stringify(safeContextPacket(context, stage))}`, cwd: isolation?.root ?? context.runRoot, runRoot: context.runRoot, sandbox: 'read-only', model, stage, role: context.role, ...(isolation ? { researchIsolation: isolation } : {}), outputSchema, outputPath: context.outputPath, logDir: context.logDir });
     return { value: result.output, metrics: { provider: 'codex-cli', model, calls: result.attempts, usage: result.usage } };
+  }
+
+  draftReference(_input: ReferenceIntakeEvidence, context?: AgentExecutionContext) {
+    return this.structured('REFERENCE_DEEP_RESEARCH', REFERENCE_INTAKE_INSTRUCTION, ReferenceIntakeDraftSchema, context);
   }
 
   analyzeReferenceEvidence(_pack: ReferenceEvidencePack, context?: AgentExecutionContext) {

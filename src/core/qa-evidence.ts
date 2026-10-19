@@ -2,13 +2,13 @@ import { QaEvidenceSchema, type QaEvidence } from '../schemas/factory-operating.
 import { NaturalFlowEvidenceSchema, type NaturalFlowEvidence, type NaturalFlowTransition } from '../schemas/natural-flow.js';
 import { evaluateNaturalFlowAgainstPolicy } from './natural-input-policy.js';
 
-export function bindQaEvidence(values: QaEvidence[] | undefined, provenance: { buildHash: string; runtime: string; device: { width: number; height: number; label: string }; seed: number | string; runner?: string }): QaEvidence[] {
-  return (values ?? []).map((item) => QaEvidenceSchema.parse({ ...item, buildHash: provenance.buildHash, runtime: provenance.runtime, device: provenance.device, seed: provenance.seed, runner: provenance.runner ?? 'trusted-qa-runner' }));
+export function bindQaEvidence(values: QaEvidence[] | undefined, provenance: { buildHash: string; runtime: string; device?: { width: number; height: number; label: string }; seed?: number | string; runner?: string }): QaEvidence[] {
+  return (values ?? []).map((item) => QaEvidenceSchema.parse({ ...item, buildHash: provenance.buildHash, runtime: provenance.runtime, device: item.device ?? provenance.device, seed: item.seed ?? provenance.seed, runner: provenance.runner ?? 'trusted-qa-runner' }));
 }
 
-export function bindNaturalFlowEvidence(value: NaturalFlowEvidence | undefined, provenance: { buildHash: string; runtime: string; device: { width: number; height: number; label: string }; seed: number | string; runner?: string }): NaturalFlowEvidence | undefined {
+export function bindNaturalFlowEvidence(value: NaturalFlowEvidence | undefined, provenance: { buildHash: string; runtime: string; device?: { width: number; height: number; label: string }; seed?: number | string; runner?: string }): NaturalFlowEvidence | undefined {
   if (value === undefined) return undefined;
-  return NaturalFlowEvidenceSchema.parse({ ...value, buildHash: provenance.buildHash, runtime: provenance.runtime, device: provenance.device, seed: provenance.seed, runner: provenance.runner ?? value.runner ?? 'trusted-qa-runner' });
+  return NaturalFlowEvidenceSchema.parse({ ...value, buildHash: provenance.buildHash, runtime: provenance.runtime, device: value.device ?? provenance.device, seed: value.seed ?? provenance.seed, runner: provenance.runner ?? value.runner ?? 'trusted-qa-runner' });
 }
 
 export type NaturalFlowEvaluationInput = {

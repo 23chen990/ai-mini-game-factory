@@ -1,4 +1,6 @@
 import { Agent, run } from '@openai/agents';
+import { ReferenceIntakeDraftSchema, type ReferenceIntakeEvidence } from '../schemas/reference-intake.js';
+import { blockedReferenceIntakeDraft, REFERENCE_INTAKE_INSTRUCTION } from '../core/reference-intake.js';
 import { Codex } from '@openai/codex-sdk';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -109,6 +111,13 @@ export class OpenAIAgentProvider implements AgentProvider {
       if (call < MAX_AGENT_CALLS) nextInput = { repair: true, originalInput: contextualInput, invalidOutput: response.rawResponse ?? response.output, validationError: validationErrors.at(-1) };
     }
     throw new ProviderOutputError(`${name} returned invalid structured output after ${MAX_AGENT_CALLS} calls`, { provider: 'openai-agents', model, calls: MAX_AGENT_CALLS, usage }, rawResponses, validationErrors);
+  }
+
+  async draftReference(input: ReferenceIntakeEvidence, context?: AgentExecutionContext) {
+    if (context?.mediaInputs?.length || input.sources.some((source) => /\.(?:png|jpe?g|webp|mp4|mov)$/iu.test(source.path))) {
+      return { value: blockedReferenceIntakeDraft(input, 'This text-only provider cannot inspect reference pixels; use codex-account with verified visual inputs.'), metrics: { provider: 'openai-agents', model: this.model, calls: 0 } };
+    }
+    return this.generate('ReferenceResearchAgent', REFERENCE_INTAKE_INSTRUCTION, input, ReferenceIntakeDraftSchema, context);
   }
 
   analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext) {

@@ -26,7 +26,7 @@ describe('unknown waiver binding', () => {
       owner: 'HumanReviewer', dueStage: 'OPEN_SOURCE_RESEARCH', status: 'WAIVED',
       waiver: { approvedBy: 'human', reason: 'documented exception', approvedAt: '2026-09-01T00:00:00.000Z', expiresAt: '2026-09-30T00:00:00.000Z', artifactHash: hash, scope: 'artifacts/open-source-research.json', signer: 'owner' },
     }] });
-    expect(evaluateUnknownRegister(register, { requireAllResolved: true, requireBoundWaivers: true, artifactHashes: { 'artifacts/open-source-research.json': 'b'.repeat(64) } })).toMatchObject({ passed: false, blocking: ['license-risk:waiver-artifact-hash-mismatch'] });
+    expect(evaluateUnknownRegister(register, { now: new Date('2026-09-02T00:00:00.000Z'), requireAllResolved: true, requireBoundWaivers: true, artifactHashes: { 'artifacts/open-source-research.json': 'b'.repeat(64) } })).toMatchObject({ passed: false, blocking: ['license-risk:waiver-artifact-hash-mismatch'] });
   });
 
   it('accepts a current, explicitly bounded waiver', () => {

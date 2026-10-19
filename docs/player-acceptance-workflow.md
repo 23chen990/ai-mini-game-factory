@@ -26,7 +26,7 @@
 
 工厂只验证“反馈 → 动作 → 成功/补救”的一致性、约束可测量、重复统计满足声明，不写死挂点、绳长、跳跃、卡牌或任何特定机制。若某个动作的反馈与实际候选不一致，或反馈成立却把玩家送入不可恢复状态，应阻止进入 RELEASE。
 
-建议 QA 顺序：先跑核心测试，再跑正常流程和视觉采样，随后做关卡差异比较，最后进行人工试玩。失败先定位最早出错的产物：研究遗漏回研究，规则或空间关系错误回设计，交接遗漏回交接，明确实现错误才进入 Builder/Fixer；已有正式 QA issue 必须保留其修复与复测义务。FIX 最多自动修复五轮，成本、时间、Token 或平台门禁可以更早暂停但不能延长上限。达到五轮后进入 `FAILED`/`BLOCKED`，不进入 RELEASE，除非新的人工复核流程明确授权继续。
+建议 QA 顺序：先跑核心测试，再跑正常流程和视觉采样，随后做关卡差异比较，最后进行人工试玩。失败先定位最早出错的产物：研究遗漏回研究，规则或空间关系错误回设计，交接遗漏回交接，明确实现错误才进入 Builder/Fixer；已有正式 QA issue 必须保留其修复与复测义务。FIX 没有默认固定轮数。明确配置的次数、成本、时间、Token 或平台上限仍生效；无新失败依据、构建未变、历史不一致或上一尝试中断时暂停，保留修复账本，不进入 RELEASE。
 
 参考玩法预览还必须通过 `reference-fidelity-gate.json`。研究角色在现有 `reference-evidence-pack.json` 中写入 `behaviorChecks`，逐项绑定来源、对象、状态、输入、空间关系、反馈位置/顺序与目标视口。Builder 使用同一契约；独立 QA/HumanReviewer 按 `ReferenceFidelityReviewSchema` 写入 `reference-fidelity-review.json`。普通通关、状态计数和截图文件存在不能代替逐项画面复核。缺少对比时工厂停在 QA，并生成 `human/reference-fidelity-review-task.md`；补交同一构建和契约的对比后恢复，不覆盖待审证据。
 
@@ -37,7 +37,7 @@
 3. `reference-level-implementation-contract.json` 只向 Builder 暴露语义对象、检查点和粗粒度摆放区间，不传递第三方原始坐标、素材、UI 表达、文案或调参值。
 4. 候选游戏只允许暴露 `getSnapshot` 与 `getNaturalInputTarget` 两个只读测试方法；QA 用真实鼠标/触控路径触发动作，不得通过探针推进、复位或注入状态。
 5. `reference-level-runtime-trace.json` 与 `reference-level-comparison-gate.json` 必须绑定同一实现契约哈希和 build hash，并逐项检查对象、生命周期、检查点、摆放区间、关系、动作目的检查点、镜头、失败/结算和重玩。
-6. 任一项失败会成为正式 QA issue，进入有五次上限的 Fixer → QA 重测；单元测试或 Fixer 自述不能关闭问题。
+6. 任一项失败会成为正式 QA issue，进入保留账本、受新假设与显式预算约束的 Fixer → QA 重测；单元测试或 Fixer 自述不能关闭问题。
 
 录屏级语义门证明候选的通用玩法因果结构与空间拓扑达到声明标准。逐项画面可读性、反馈是否清楚和整体手感仍由独立感知 QA 与真人核心试玩裁决。
 
