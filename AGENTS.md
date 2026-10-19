@@ -38,10 +38,12 @@
   stored thread/attempt count, modify only files causally connected to the validated issue, rebuild once per
   attempt, and require Playwright QA to verify the result. Never declare a fix successful from an agent response
   or unit tests alone.
-- Automatic FIX has no fixed repair-attempt ceiling. Preserve the QA and repair evidence after every failed retest,
-  increment the attempt exactly once, and continue only when the next attempt has a distinct evidence-backed repair
-  hypothesis. Stop on an explicit user or configured cost/time/token/platform ceiling, an external hard constraint,
-  or when no viable next hypothesis remains; never rebuild unchanged code repeatedly or weaken acceptance criteria.
+- Automatic FIX is bounded by the stricter of the configured per-run `budget.maxRepairLoops` (default: 2),
+  the factory-wide maximum of five automatic repair attempts, and applicable cost/time/token/platform limits.
+  Preserve QA and repair evidence after each failure and increment the attempt exactly once. An automatic retry
+  requires a distinct evidence-backed hypothesis; exhausting any ceiling enters FAILED/BLOCKED rather than RELEASE.
+  Further work needs an explicit new human-reviewed authorization/session. Never rebuild unchanged code repeatedly,
+  bypass a release gate, or weaken acceptance criteria to claim success.
 - BuilderAgent and FixerAgent must report which route was selected (`direct-builder` or `formal-fixer`), why it was
   selected, the context intentionally omitted, files changed, tests run, and remaining evidence gaps. A direct
   BuilderAgent repair must not be described as a completed formal FIX stage.
