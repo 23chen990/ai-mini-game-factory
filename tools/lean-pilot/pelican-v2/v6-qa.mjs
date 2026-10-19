@@ -23,6 +23,16 @@ function check(name,ok,detail=null){report.checks.push({name,passed:ok===true,de
 async function shot(name){const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({name,path:path.relative(RUN,file),sha256:sha(await readFile(file))});}
 const snap=()=>page.evaluate(()=>window.__coast.snapshot());
 const tap=async selector=>{await tapVisible(page,selector);};
+// A genuine native tap is needed to survive the new 38m centre barrier
+// while catching the 15/31/47m central fish. No hidden state change.
+async function earnThreeEndlessFish(){
+ await page.waitForFunction(()=>{const v=window.__coast.snapshot();
+  return v.distance>=29.2||v.phase==='finished';},null,{timeout:25000});
+ const approach=await snap();
+ if(approach.phase==='running')await tap('[data-action="jump"]');
+ await page.waitForFunction(()=>{const v=window.__coast.snapshot();
+  return v.count>=3||v.phase==='finished';},null,{timeout:35000});
+}
 try{
  browser=await(engine==='webkit'?webkit:chromium).launch(browserOptions(engine));
  context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,
@@ -51,8 +61,7 @@ try{
  check('visible-endless-tier-and-actual-speed',
   (await page.locator('#co-mastery').innerText()).includes('8.3m/s'));
  check('no-ads-and-no-fake-wallet-credit',r.collection.coins===0);
- await page.waitForFunction(()=>window.__coast.snapshot().count>=3||window.__coast.snapshot().phase==='finished',
-  null,{timeout:35000});
+ await earnThreeEndlessFish();
  r=await snap();check('three-fish-genuine-physics',r.phase==='running'&&r.count>=3&&r.events.filter(e=>e.type==='fish-caught').length>=3);
  await shot('v6-endless-real-fish');
  await tap('#co-pause');
@@ -98,7 +107,7 @@ try{
  check('live-record-chase-is-grounded-in-persisted-personal-best',
   Number.isFinite(displayedGap)&&Math.abs(displayedGap+Math.floor(liveRecord.distance)-r.collection.bestDistance)<=3,
   {displayedGap,liveDistance:liveRecord.distance,oldBest:r.collection.bestDistance});
- await page.waitForFunction(()=>window.__coast.snapshot().count>=3||window.__coast.snapshot().phase==='finished',null,{timeout:35000});
+ await earnThreeEndlessFish();
  const beforeRestart=await snap();
  check('second-real-run-has-earned-fish',beforeRestart.phase==='running'&&beforeRestart.count>=3);
  await tap('#co-pause');
