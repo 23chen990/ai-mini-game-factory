@@ -1,3 +1,4 @@
+/* global process,console,URL */
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
