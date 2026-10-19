@@ -6,6 +6,14 @@ import type { RuntimeAdapter } from './runtime.js';
 import type { AssetManifest, GameBlueprint, StyleLock } from '../schemas/index.js';
 import { copyTree, exists, listFiles, writeJsonAtomic } from '../core/files.js';
 
+/** Vite may wrap *parts* of its URL (including the port digits) in ANSI SGR
+ * styling. Strip terminal escapes before scanning accumulated output; scans
+ * must work even when stdout splits mid-escape or mid-URL. */
+export function parseVitePreviewUrl(output: string): string | null {
+  const plain = output.replace(/\x1b\[[0-9;]*m/gu, '');
+  return plain.match(/http:\/\/(?:127\.0\.0\.1|localhost):(\d+)\//u)?.[0] ?? null;
+}
+
 function command(bin: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const env = (() => {
@@ -298,8 +306,8 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
       };
       const onData = (data: Buffer) => {
         output += data.toString();
-        const match = output.match(/http:\/\/127\.0\.0\.1:(\d+)\//);
-        if (match) done(match[0]);
+        const url = parseVitePreviewUrl(output);
+        if (url) done(url);
       };
       const onExit = (code: number | null) => done(new Error(`preview exited early (${code}): ${output.slice(-900)}`));
       const onError = (error: Error) => done(new Error(`preview failed: ${error.message}`));
