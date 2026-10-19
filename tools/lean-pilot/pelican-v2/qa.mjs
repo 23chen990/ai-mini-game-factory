@@ -253,10 +253,15 @@ try{
    {gauge,actualLane:moved.lane,expectedGauge});
   await shot('fractional-road-position-before-traffic');
   // Fresh native replay restores the identical high-pressure detour at 115m.
-  await tap('#co-pause');await tap('#co-replay');await clearV7Opening(115);await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
+  await tap('#co-pause');await tap('#co-replay');await clearV7Opening(115);await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');// A V7 right-side oncoming car collides near 201m. Use a real left touch
+  // at 179m, after the centre car has passed. A 217m jump is now TOO EARLY
+  // for the genuine 1.1s jump buffer: touch again near 225m, without easing physics.
+  await waitDistance(179);await tap('[data-action="left"]',{fastReaction:true});
+  await waitDistance(225);await tap('[data-action="jump"]',{fastReaction:true});
+  // The 233m barrier clears only after crossing about 234m.
   // Its real +9m prize is caught around 241m, not at 237m. Only accept
   // visible, physically earned events after those distances.
-  await waitDistance(231);await shot('barrier-jump');await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');
+  await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-jump');await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');
   // Public touch nudges to fractional metres instead of forcing a road lane center.
 
   segment('collisions');

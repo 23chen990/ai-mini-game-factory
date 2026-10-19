@@ -141,8 +141,16 @@ try{
   // 130m right-car / 140m centre-barrier opening. The authored left lane
   // stays unblocked through 152m: finish the real left-side manoeuvre
   // instead of making a fatal right tap near 139m.
-  if(jumped&&v.distance>=115&&v.distance<152)want=0;
-  if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
+  if(jumped&&v.distance>=115&&v.distance<145)want=0;
+  // V7's centre car reaches its swept collision envelope near 164m.
+  // The second real RIGHT touch must be committed by ~155m, not leave
+  // the rider stranded in centre after the left-side 140m barrier.
+  if(jumped&&v.distance>=145&&v.distance<175)want=2;
+  const crossingNext=v.lane+Math.sign(want-v.lane);
+  const visibleTwoTapExit=jumped&&v.distance>=145&&v.distance<160&&
+   want===2&&v.lane<2&&v.lanes[1]?.kind==='car'&&seconds(1)>2.6&&
+   (!v.lanes[2]?.danger||seconds(2)>1.8);
+  if(want!==v.lane&&!risky(v.lane)&&risky(crossingNext)&&!visibleTwoTapExit)want=v.lane;
   if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
   if(!bonusShot&&(await snap()).events.some(e=>e.type==='fish-caught'&&e.bonus&&e.golden))bonusShot=true;
   if(!leftWarning&&v.lanes[2].kind==='pedestrian'&&seconds(2)>=2){leftWarning=true;check('left-pedestrian-warns-right-at-least-two-seconds',true,v);await shot('left-pedestrian-warning');}

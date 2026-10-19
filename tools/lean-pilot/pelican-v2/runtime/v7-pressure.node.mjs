@@ -71,3 +71,34 @@ test('new obstacles append after legacy V6 IDs; original earned-gold course rema
   for(const fish of bonus)assert.ok(stage.obstacles.find(o=>o.id===fish.sourceObstacleId));
  }
 });
+test('V7 post-gold two-tap overtake clears the real centre car on 30/60Hz',()=>{
+ for(const fps of [30,60]){
+  const r=newRun(1,{seed:20261017});
+  const approach=metres=>{for(let n=0;n<10000&&r.phase==='running'&&r.distance<metres;n++)advance(r,1/fps);};
+  const sequence=[[16,'right'],[39,'left'],[51,'right'],[54,'left'],
+   [103,'jump'],[116,'left'],[149,'right'],[152,'right'],
+   [175,'left'],[211,'left'],[271,'right'],[274,'right'],[285,'left']];
+  for(const [metres,action] of sequence){
+   approach(metres);assert.equal(r.phase,'running',`actual safe route reaches ${metres}m at ${fps}Hz`);input(r,action);
+  }
+  approach(300);
+  assert.equal(r.reason,'complete',`real three-action skill play reaches the finish at ${fps}Hz`);
+  assert.ok(r.count>=12&&r.gold>=1&&r.jumpedBarriers>=1&&r.bestStreak>=4);
+  assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o13'&&e.jumped));
+  assert.ok(r.events.some(e=>e.type==='jump'&&e.objectId==='l1-o13'&&e.buffered));
+ }
+});
+test('V7 narrow 233m jump buffer is still genuinely winnable, unlike 217m pre-jump',()=>{
+ for(const fps of [30,60]){
+  const r=newRun(1,{seed:20261017});
+  const approach=metres=>{for(let n=0;n<10000&&r.phase==='running'&&r.distance<metres;n++)advance(r,1/fps);};
+  for(const [metres,action] of [[20,'left'],[42,'right'],[94,'left'],[145,'right'],
+   [146,'right'],[179,'left'],[225,'jump']]){
+   approach(metres);assert.equal(r.phase,'running');input(r,action);
+  }
+  approach(245);assert.equal(r.phase,'running');
+  assert.ok(r.events.some(e=>e.type==='obstacle-avoided'&&e.objectId==='l1-o14'));
+  assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped));
+  assert.ok(r.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.golden));
+ }
+});
