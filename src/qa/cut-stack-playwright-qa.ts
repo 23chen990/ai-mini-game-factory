@@ -1,3 +1,4 @@
+import { z } from 'zod';
 import { chromium, webkit, type Browser, type Page } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -8,6 +9,7 @@ import { QaReportSchema, type QaReport } from '../schemas/index.js';
 
 type RuntimeEvent = { seq?: unknown; tick?: unknown; type?: unknown; objectId?: unknown };
 type RuntimeState = {
+  randomSeed?: unknown;
   phase?: unknown;
   cuts?: unknown;
   attempt?: unknown;
@@ -197,6 +199,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       forbiddenOperations,
       screenshots: screenshots.filter((item) => item.includes('/natural-')),
     });
+    naturalFlow = { ...naturalFlow, device: { width: 390, height: 844, label: 'chromium-mobile-emulation' }, seed: z.number().int().parse(initial.randomSeed) };
     checks.push(check('natural-flow-complete', naturalFlow.passed, { blockers: naturalFlow.blockers, actions: naturalFlow.actions, transitions: naturalFlow.transitions }));
 
     // Engineering truth is intentionally separate from the pointer journey.
@@ -270,6 +273,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       {
         schemaVersion: 1,
         mode: 'STATE_COVERAGE',
+        device: { width: 390, height: 844, label: 'chromium-mobile-emulation' }, seed: 42,
         actions: ['__GAME_TEST__.resetGame', '__GAME_TEST__.setRandomSeed', '__GAME_TEST__.tap', '__GAME_TEST__.advanceTicks'],
         artifacts: ['artifacts/qa-report.json', 'logs/console.log'],
         forbiddenOperations: ['resetGame', 'setRandomSeed', 'tap', 'advanceTicks'],
@@ -277,6 +281,7 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       {
         schemaVersion: 1,
         mode: 'NATURAL_E2E',
+        device: naturalFlow?.device, seed: naturalFlow?.seed,
         actions: naturalFlow?.actions ?? ['natural-flow:missing'],
         artifacts: naturalArtifacts.length > 0 ? naturalArtifacts : ['screenshots/cut-stack:natural-evidence-missing'],
         forbiddenOperations: naturalFlow?.forbiddenOperations ?? [],

@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { OpenSourceResearchSchema } from '../../src/schemas/index.js';
 import { createFactory } from '../../src/factory.js';
 import { MockAgentProvider } from '../../src/providers/mock.js';
 import { MockQAProvider } from '../../src/providers/runtime-qa.js';
@@ -151,8 +152,8 @@ referenceMechanics:
       override async generateBlueprint(...args: Parameters<MockAgentProvider['generateBlueprint']>) {
         const context = args[1];
         if (context) {
-          const artifact = JSON.parse(await readFile(path.join(context.runRoot, 'artifacts/open-source-research.json'), 'utf8')) as { unknowns?: string[] };
-          this.openSourceWasDurableBeforeBlueprint = Array.isArray(artifact.unknowns) && artifact.unknowns.length === 0;
+          const artifact = OpenSourceResearchSchema.parse(JSON.parse(await readFile(path.join(context.runRoot, 'artifacts/open-source-research.json'), 'utf8')));
+          this.openSourceWasDurableBeforeBlueprint = artifact.outcome === 'REUSE_APPROVED' && artifact.selectedCandidateIds.includes('vite') && artifact.selectedCandidateIds.includes('phaser');
         }
         return super.generateBlueprint(...args);
       }

@@ -30,7 +30,7 @@ export function defaultOperatingProfile(): FactoryOperatingProfile {
     autoAbandonOnCostCap: true,
     launchThresholds: { minimumUsers: 100, minimumObservedDays: 3, maxCrashRate: 0.05, minSessionCompletionRate: 0.25, minAdShowRate: 0.2, minEcpmCents: 1 },
     paidTraffic: { enabled: false, maxBudgetCents: 0 },
-    budget: { currency: 'CNY', maxTotalCents: 30_000, maxPaidTrafficCents: 10_000, maxAgentTokens: 500_000, maxHumanMinutes: 360, paybackWindowDays: 30, maxWallClockMinutes: 24 * 60, maxAssetBatches: 20, maxBuildAttempts: 2, maxRepairLoops: 2 },
+    budget: { currency: 'CNY', maxTotalCents: 30_000, maxPaidTrafficCents: 10_000, maxAgentTokens: 500_000, maxHumanMinutes: 360, paybackWindowDays: 30, maxWallClockMinutes: 24 * 60, maxAssetBatches: 20, maxBuildAttempts: 2 },
     humanApprovalSessions: ['GO_NO_GO', 'CORE_DEMO', 'FINAL_RELEASE'],
     deviceBaselines: [{ width: 360, height: 800, label: 'small-phone' }, { width: 390, height: 844, label: 'baseline-phone' }, { width: 430, height: 932, label: 'large-phone' }],
   });

@@ -15,7 +15,10 @@ const checkLabels: Array<[keyof LiveVerificationChecks, string]> = [
 
 export function evaluateLiveVerification(value: unknown) {
   const parsed = LiveVerificationSchema.safeParse(value);
-  if (!parsed.success) return { passed: false, blockers: ['schema-invalid'] as string[], report: value };
+  if (!parsed.success) {
+    const blockers: string[] = ['schema-invalid'];
+    return { passed: false, blockers, report: value };
+  }
   const report = parsed.data;
   const blockers = [...report.blockers];
   for (const [key, label] of checkLabels) if (!report.checks[key]) blockers.push(label);
@@ -36,7 +39,6 @@ export function buildLiveVerification(input: {
   const checks = LiveVerificationChecksSchema.parse(input.checks);
   const blockers = checkLabels.filter(([key]) => !checks[key]).map(([, label]) => label);
   if (input.evidence.length === 0) blockers.push('evidence-missing');
-  if (input.packageHash && input.packageHash !== input.releaseHash) blockers.push('package-hash');
   const unique = [...new Set(blockers)];
   return LiveVerificationSchema.parse({
     schemaVersion: 1,

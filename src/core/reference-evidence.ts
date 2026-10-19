@@ -18,7 +18,7 @@ import { buildEvidenceClaimSet } from './evidence-claims.js';
  * We walk every component, reject links/non-regular files, and verify the
  * final real path remains below the real run root before the caller reads it.
  */
-async function safeRunFile(runRoot: string, relative: string): Promise<string> {
+export async function safeRunFile(runRoot: string, relative: string): Promise<string> {
   const normalized = String(relative).replaceAll('\\', '/').trim();
   const root = path.resolve(runRoot);
   const resolved = path.resolve(root, normalized);

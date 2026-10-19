@@ -11,6 +11,13 @@ describe('factory operating profile', () => {
     expect(profile.optionalTargets).toContain('poki-web');
     expect(profile.platformPolicyRequired).toBe(false);
     expect(profile.budget.maxFixAttempts).toBeUndefined();
+    expect(profile.budget.maxRepairLoops).toBeUndefined();
+  });
+
+  it('preserves an explicitly configured repair ceiling', () => {
+    const defaults = defaultOperatingProfile();
+    const profile = mergeOperatingProfile({ budget: { ...defaults.budget, maxRepairLoops: 8, maxFixAttempts: 7 } });
+    expect(profile.budget).toMatchObject({ maxRepairLoops: 8, maxFixAttempts: 7 });
   });
 
   it('merges only validated overrides and never enables uncapped paid traffic', () => {

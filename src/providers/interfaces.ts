@@ -3,6 +3,7 @@ import type { GameplayIdea, IdeaGeneration, LowCostFilter, PlaytestTournament, P
 import type { ActionMechanicExperimentSpec, ActionPrototypeBuildReport } from '../schemas/action-mechanic-experiment.js';
 import type { FormalPrototypeFollowupConstraints, OpenSourceResearchArtifact } from '../schemas/index.js';
 import type { RuntimeAdapter } from '../adapters/runtime.js';
+import type { ReferenceIntakeEvidence } from '../schemas/reference-intake.js';
 
 export type TokenUsage = { inputTokens: number; outputTokens: number; totalTokens: number };
 export type AgentCallMetrics = { provider: string; model: string; calls: number; usage?: TokenUsage };
@@ -29,6 +30,7 @@ export type AgentExecutionContext = {
   enforceBoundary?: boolean;
 };
 export interface AgentProvider {
+  draftReference(input: ReferenceIntakeEvidence, context?: AgentExecutionContext): Promise<AgentProviderResult>;
   analyzeReferenceEvidence(pack: ReferenceEvidencePack, context?: AgentExecutionContext): Promise<AgentProviderResult>;
   generateCompetitorResearch(seed: Seed, context?: AgentExecutionContext): Promise<AgentProviderResult>;
   generateOpenSourceResearch(seed: Seed, gameplay: GameplayIdea | ReferenceMechanicSpec, context?: AgentExecutionContext): Promise<AgentProviderResult>;

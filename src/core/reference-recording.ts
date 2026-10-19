@@ -1,11 +1,12 @@
 import { execFile as execFileCallback } from 'node:child_process';
-import { lstat, readFile, realpath } from 'node:fs/promises';
+import { copyFile, lstat, mkdir, readFile, realpath } from 'node:fs/promises';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { clearDir, exists, sha256File, writeJsonAtomic } from './files.js';
 import { EvidenceProvenanceManifestSchema } from '../schemas/evidence-provenance.js';
 import { ReferenceFrameManifestSchema, type ReferenceFrameManifest } from '../schemas/reference-recording.js';
+import { ReferenceWebCaptureSchema, isReferenceWebCapturePath, type ReferenceWebCapture } from '../schemas/reference-web-capture.js';
 
 const execFile = promisify(execFileCallback);
 
@@ -18,7 +19,7 @@ export type NativeFrameExtraction = {
   failures?: Array<{ requestedMs: number; message: string }>;
 };
 
-export type ReferenceFrameExtractor = (input: { sourcePath: string; outputDir: string; fps: number; maxFrames: number }) => Promise<NativeFrameExtraction>;
+export type ReferenceFrameExtractor = (input: { sourcePath: string; outputDir: string; fps: number; maxFrames: number; runRoot: string }) => Promise<NativeFrameExtraction>;
 
 /**
  * Keep the full frame manifest as the source of truth while bounding the
@@ -84,6 +85,27 @@ async function manifestFilesMatch(runRoot: string, manifest: ReferenceFrameManif
   return true;
 }
 
+async function existingFrameSelection(artifactPath: string, targetRunId: string, expected: { targetGame: string; workspace: string }, candidateIds: string[]) {
+  if (!await exists(artifactPath)) return undefined;
+  // A saved source selection is external evidence: corruption must surface, not
+  // silently become a cache miss that asks the user to choose again.
+  const existing = ReferenceFrameManifestSchema.parse(JSON.parse(await readFile(artifactPath, 'utf8')));
+  if (existing.targetRunId !== targetRunId
+    || existing.targetGame !== expected.targetGame
+    || path.resolve(existing.workspace) !== path.resolve(expected.workspace)
+    || !candidateIds.includes(existing.source.evidenceId)) return undefined;
+  return existing.source.evidenceId;
+}
+
+async function captureFramesMatch(runRoot: string, capture: ReferenceWebCapture) {
+  for (const frame of capture.frames) {
+    if (!frame.path.startsWith(`reference-evidence/incoming/web-capture-${capture.captureId}/frames/`)) throw new Error(`reference web capture frame is outside its run-local incoming directory: ${frame.path}`);
+    const file = await verifyRunLocalFile(runRoot, frame.path);
+    if (await sha256File(file) !== frame.sha256) return false;
+  }
+  return true;
+}
+
 export async function runAvFoundationFrameExtractor(input: { sourcePath: string; outputDir: string; fps: number; maxFrames: number }): Promise<NativeFrameExtraction> {
   if (process.platform !== 'darwin') throw new Error(`AVFoundation reference frame extraction is unavailable on ${process.platform}`);
   const script = fileURLToPath(new URL('../../tools/extract-video-frames.swift', import.meta.url));
@@ -93,11 +115,41 @@ export async function runAvFoundationFrameExtractor(input: { sourcePath: string;
   return parsed;
 }
 
+export const runImageSequenceFrameExtractor = async (input: {
+  sourcePath: string;
+  outputDir: string;
+  maxFrames: number;
+  runRoot: string;
+  expected: { targetGame: string; workspace: string };
+}): Promise<NativeFrameExtraction> => {
+  const capture = ReferenceWebCaptureSchema.parse(JSON.parse(await readFile(input.sourcePath, 'utf8')));
+  if (capture.status !== 'READY') throw new Error(`web capture is not READY: ${capture.captureId}`);
+  if (capture.targetGame !== input.expected.targetGame || path.resolve(capture.workspace) !== path.resolve(input.expected.workspace)) throw new Error('reference web capture target mismatch');
+  await mkdir(input.outputDir, { recursive: true });
+  const frames: NativeFrameExtraction['frames'] = [];
+  const failures: NonNullable<NativeFrameExtraction['failures']> = [];
+  for (const frame of capture.frames.slice(0, input.maxFrames)) {
+    if (!frame.path.startsWith(`reference-evidence/incoming/web-capture-${capture.captureId}/frames/`)) throw new Error(`reference web capture frame is outside its run-local incoming directory: ${frame.path}`);
+    const file = await verifyRunLocalFile(input.runRoot, frame.path);
+    if (await sha256File(file) !== frame.sha256) {
+      failures.push({ requestedMs: frame.requestedMs, message: `capture frame hash mismatch: ${frame.path}` });
+      continue;
+    }
+    const fileName = `frame-${String(frame.index).padStart(5, '0')}.png`;
+    await copyFile(file, path.join(input.outputDir, fileName));
+    frames.push({ index: frames.length, requestedMs: frame.requestedMs, actualMs: frame.actualMs, fileName });
+  }
+  const frameSize = capture.clip ?? capture.viewport;
+  return { durationMs: capture.durationMs, width: frameSize.width, height: frameSize.height, frames, contactSheets: [], failures };
+};
+
 export async function extractReferenceRecordingFrames(input: {
   runRoot: string;
   targetRunId: string;
   expected: { targetGame: string; workspace: string };
   evidenceId?: string;
+  /** With several verified recordings, keep the one this run's frame manifest already selected. */
+  useExistingSelection?: boolean;
   fps?: number;
   maxFrames?: number;
   extractor?: ReferenceFrameExtractor;
@@ -108,24 +160,31 @@ export async function extractReferenceRecordingFrames(input: {
   if (provenance.targetGame !== input.expected.targetGame) throw new Error('reference recording target game mismatch');
   if (path.resolve(provenance.workspace) !== path.resolve(input.expected.workspace)) throw new Error('reference recording workspace mismatch');
   const candidates = provenance.entries.filter((entry) => entry.usableAsEvidence && entry.purpose === 'gameplay-reference');
-  if (!input.evidenceId && candidates.length > 1) throw new Error('multiple verified gameplay recordings require an explicit evidence id');
-  const selected = input.evidenceId ? candidates.find((entry) => entry.id === input.evidenceId) : candidates[0];
-  if (!selected) throw new Error(input.evidenceId ? `verified gameplay recording not found: ${input.evidenceId}` : 'no verified gameplay recording is available');
+  const artifactPath = path.join(runRoot, 'artifacts/reference-frame-manifest.json');
+  const evidenceId = input.evidenceId ?? (input.useExistingSelection && candidates.length > 1 ? await existingFrameSelection(artifactPath, input.targetRunId, input.expected, candidates.map((entry) => entry.id)) : undefined);
+  if (!evidenceId && candidates.length > 1) throw new Error('multiple verified gameplay recordings require an explicit evidence id (select one with extract-reference-frames --evidence-id)');
+  const selected = evidenceId ? candidates.find((entry) => entry.id === evidenceId) : candidates[0];
+  if (!selected) throw new Error(evidenceId ? `verified gameplay recording not found: ${evidenceId}` : 'no verified gameplay recording is available');
   if (selected.identityStatus !== 'VERIFIED_TARGET' || selected.reviewStatus !== 'VERIFIED' || !selected.usableAsEvidence || !selected.sha256) throw new Error(`recording evidence is not verified: ${selected.id}`);
   if (selected.targetGame !== input.expected.targetGame || path.resolve(selected.workspace) !== path.resolve(input.expected.workspace)) throw new Error(`recording evidence target mismatch: ${selected.id}`);
   if (!selected.storedPath) throw new Error(`recording evidence has no run-local stored path: ${selected.id}`);
-  if (!/\.(?:mp4|mov)$/iu.test(selected.storedPath)) throw new Error(`gameplay evidence is not a supported recording: ${selected.id}`);
+  const isWebCapture = isReferenceWebCapturePath(selected.storedPath);
+  if (!isWebCapture && !/\.(?:mp4|mov)$/iu.test(selected.storedPath)) throw new Error(`gameplay evidence is not a supported recording: ${selected.id}`);
   const sourcePath = await verifyRunLocalFile(runRoot, selected.storedPath);
   if (await sha256File(sourcePath) !== selected.sha256) throw new Error(`reference recording hash mismatch: ${selected.id}`);
 
-  const fps = input.fps ?? 8;
+  const webCapture = isWebCapture ? ReferenceWebCaptureSchema.parse(JSON.parse(await readFile(sourcePath, 'utf8'))) : undefined;
+  if (webCapture && (webCapture.targetGame !== input.expected.targetGame || path.resolve(webCapture.workspace) !== path.resolve(input.expected.workspace))) throw new Error('reference web capture target mismatch');
+  if (webCapture && webCapture.status !== 'READY') throw new Error(`web capture is not READY: ${webCapture.captureId}`);
+
+  const fps = webCapture?.samplingFps ?? input.fps ?? 8;
   const maxFrames = input.maxFrames ?? 900;
   if (!Number.isFinite(fps) || fps <= 0 || fps > 60) throw new Error('reference recording fps must be in (0, 60]');
   if (!Number.isInteger(maxFrames) || maxFrames < 2 || maxFrames > 3_600) throw new Error('reference recording maxFrames must be an integer from 2 to 3600');
-  const artifactPath = path.join(runRoot, 'artifacts/reference-frame-manifest.json');
+  const sourceFramesUnchanged = webCapture ? await captureFramesMatch(runRoot, webCapture) : true;
   if (await exists(artifactPath)) {
     const existing = ReferenceFrameManifestSchema.safeParse(JSON.parse(await readFile(artifactPath, 'utf8')));
-    if (existing.success
+    if (sourceFramesUnchanged && existing.success
       && existing.data.targetRunId === input.targetRunId
       && existing.data.targetGame === input.expected.targetGame
       && path.resolve(existing.data.workspace) === path.resolve(input.expected.workspace)
@@ -141,8 +200,9 @@ export async function extractReferenceRecordingFrames(input: {
   const outputDir = path.join(runRoot, outputRelative);
   if (!isWithin(path.join(runRoot, 'reference-evidence/derived'), outputDir)) throw new Error('derived frame output escaped its run directory');
   await clearDir(outputDir);
-  const extractor = input.extractor ?? runAvFoundationFrameExtractor;
-  const extracted = await extractor({ sourcePath, outputDir, fps, maxFrames });
+  const extracted = webCapture
+    ? await runImageSequenceFrameExtractor({ sourcePath, outputDir, maxFrames, runRoot, expected: input.expected })
+    : await (input.extractor ?? runAvFoundationFrameExtractor)({ sourcePath, outputDir, fps, maxFrames, runRoot });
   const failures = extracted.failures ?? [];
   const blockers = failures.map((failure) => `frame-extraction-failed:${failure.requestedMs}:${failure.message}`);
   if (!Number.isInteger(extracted.durationMs) || extracted.durationMs <= 0 || !Number.isInteger(extracted.width) || !Number.isInteger(extracted.height) || extracted.width <= 0 || extracted.height <= 0) throw new Error('frame extractor returned invalid source metadata');
@@ -182,12 +242,12 @@ export async function extractReferenceRecordingFrames(input: {
       evidenceId: selected.id,
       path: selected.storedPath,
       sha256: selected.sha256,
-      mediaType: path.extname(selected.storedPath).toLowerCase() === '.mov' ? 'video/quicktime' : 'video/mp4',
+      mediaType: isWebCapture ? 'image/png-sequence' : path.extname(selected.storedPath).toLowerCase() === '.mov' ? 'video/quicktime' : 'video/mp4',
       durationMs: extracted.durationMs,
       width: extracted.width,
       height: extracted.height,
     },
-    extraction: { version: 2, engine: input.extractor ? 'injected-test-extractor' : 'AVFoundation', samplingFps: fps, maxFrames, requestedFrameCount: extracted.frames.length + failures.length, extractedFrameCount: frames.length },
+    extraction: { version: 2, engine: isWebCapture ? 'playwright-screenshot' : input.extractor ? 'injected-test-extractor' : 'AVFoundation', samplingFps: fps, maxFrames, requestedFrameCount: extracted.frames.length + failures.length, extractedFrameCount: frames.length },
     frames,
     contactSheets,
     status: ready ? 'READY' : 'BLOCKED',

@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -240,7 +241,9 @@ async function collectNaturalIdleFlow(page: Page, runRoot: string): Promise<Natu
   const forbiddenOperations = [...forbiddenBeforeReplay, ...(await naturalApiCalls(page))];
   const completion = settled ? 'settlement' : terminal ? 'terminal' : transitions.some((item) => item.changed) ? 'automatic-progress' : 'none';
   const result = evaluateNaturalFlow({ line: 'idle-management', startedFromReset, actions, transitions, completion, replayObserved, forbiddenOperations, screenshots: ['screenshots/natural-start.png', 'screenshots/natural-flow.png'] });
-  return NaturalFlowEvidenceSchema.parse(result);
+  const viewport = page.viewportSize();
+  assert(viewport, 'QA creates a browser context with an explicit viewport');
+  return NaturalFlowEvidenceSchema.parse({ ...result, device: { ...viewport, label: 'chromium-natural-input' }, seed: numericState(initial, 'randomSeed') });
 }
 
 function isInsideViewport(box: BrowserBox, viewport: { width: number; height: number }, minimumSize = 0) {
@@ -536,6 +539,7 @@ export async function runPlaywrightQa(runtime: RuntimeAdapter, workspace: string
       {
         schemaVersion: 1 as const,
         mode: 'STATE_COVERAGE' as const,
+        device: { width: 1280, height: 900, label: 'chromium-desktop' }, seed: 42,
         actions: ['__GAME_TEST__.resetGame', '__GAME_TEST__.setRandomSeed', '__GAME_TEST__.spawnCustomer', '__GAME_TEST__.completeOrder', '__GAME_TEST__.upgradeStation'],
         artifacts: ['artifacts/qa-report.json', ...screenshots],
         forbiddenOperations: ['resetGame', 'setRandomSeed', 'spawnCustomer', 'completeOrder', 'grantCurrency', 'upgradeStation'],
@@ -543,6 +547,7 @@ export async function runPlaywrightQa(runtime: RuntimeAdapter, workspace: string
       {
         schemaVersion: 1 as const,
         mode: 'NATURAL_E2E' as const,
+        device: naturalFlow?.device, seed: naturalFlow?.seed,
         actions: naturalFlow?.actions.length ? naturalFlow.actions : ['page.goto', 'natural-flow:missing'],
         artifacts: naturalEvidence,
         forbiddenOperations: naturalFlow?.forbiddenOperations ?? [],

@@ -5,6 +5,7 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { extractReferenceRecordingFrames, selectReferenceResearchMedia } from '../../src/core/reference-recording.js';
 import { ReferenceFrameManifestSchema } from '../../src/schemas/reference-recording.js';
+import { ReferenceWebCaptureSchema } from '../../src/schemas/reference-web-capture.js';
 import { createFactory } from '../../src/factory.js';
 
 const roots: string[] = [];
@@ -154,5 +155,271 @@ describe('reference recording frame extraction', () => {
     const result = await factory.extractReferenceFrames(runId, { evidenceId: 'recording', fps: 2 });
     expect(result.manifest).toMatchObject({ targetRunId: runId, targetGame: 'historical-level', workspace, status: 'READY' });
     expect(await readFile(path.join(workspace, 'sentinel.txt'), 'utf8')).toBe('preserve me');
+  });
+
+  async function captureFixture(options: { clip?: { x: number; y: number; width: number; height: number } } = {}) {
+    const frameSize = options.clip ?? { width: 390, height: 844 };
+    const runRoot = await import('node:fs/promises').then(({ mkdtemp }) => mkdtemp(path.join(tmpdir(), 'reference-recording-capture-')));
+    roots.push(runRoot);
+    const workspace = path.join(runRoot, 'workspace/game');
+    const targetGame = 'slice-game';
+    const frameDir = path.join(runRoot, 'reference-evidence/incoming/web-capture-c1/frames');
+    await mkdir(frameDir, { recursive: true });
+    const frameBytes = ['frame zero', 'frame one'] as const;
+    const framePaths = [
+      'reference-evidence/incoming/web-capture-c1/frames/frame-00000.png',
+      'reference-evidence/incoming/web-capture-c1/frames/frame-00001.png',
+    ] as const;
+    await writeFile(path.join(runRoot, framePaths[0]), frameBytes[0]);
+    await writeFile(path.join(runRoot, framePaths[1]), frameBytes[1]);
+    const capture = ReferenceWebCaptureSchema.parse({
+      schemaVersion: 1,
+      artifactType: 'reference-web-capture',
+      captureId: 'c1',
+      captureInputHash: 'a'.repeat(64),
+      targetGame,
+      workspace,
+      requestedUrl: 'file:///tmp/game.html',
+      finalUrl: 'file:///tmp/game.html',
+      pageTitle: 'Game',
+      browser: { name: 'chromium', version: '1.2.3' },
+      viewport: { width: 390, height: 844, deviceScaleFactor: 1 },
+      ...(options.clip ? { clip: options.clip } : {}),
+      samplingFps: 4,
+      durationMs: 250,
+      frames: framePaths.map((framePath, index) => ({
+        index,
+        requestedMs: index * 250,
+        actualMs: index * 250,
+        path: framePath,
+        sha256: createHash('sha256').update(frameBytes[index]!).digest('hex'),
+        width: frameSize.width,
+        height: frameSize.height,
+      })),
+      interactions: [],
+      resources: [],
+      consoleErrors: [],
+      status: 'READY',
+      blockers: [],
+      capturedAt: '2026-09-29T00:00:00.000Z',
+    });
+    const storedPath = 'reference-evidence/incoming/reference-web-capture-aaaaaaaaaaaa.json';
+    const indexFile = path.join(runRoot, storedPath);
+    await mkdir(path.dirname(indexFile), { recursive: true });
+    const indexBytes = `${JSON.stringify(capture, null, 2)}\n`;
+    await writeFile(indexFile, indexBytes);
+    const sha256 = createHash('sha256').update(indexBytes).digest('hex');
+    await writeFile(path.join(runRoot, 'reference-evidence/manifest.json'), JSON.stringify({
+      schemaVersion: 1,
+      targetGame,
+      workspace,
+      entries: [{
+        id: 'web-capture-c1', sourcePath: indexFile, storedPath, purpose: 'gameplay-reference', sha256,
+        targetGame, workspace, identityStatus: 'VERIFIED_TARGET', reviewStatus: 'VERIFIED', usableAsEvidence: true,
+      }],
+    }));
+    return { runRoot, workspace, targetGame, sha256, storedPath, indexFile };
+  }
+
+  it('extracts a verified screenshot sequence without native video tooling and reuses its manifest', async () => {
+    const { runRoot, workspace, targetGame } = await captureFixture();
+    const first = await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    });
+    expect(first.manifest.status).toBe('READY');
+    expect(first.manifest.source.mediaType).toBe('image/png-sequence');
+    expect(first.manifest.extraction.engine).toBe('playwright-screenshot');
+    expect(first.manifest.extraction.samplingFps).toBe(4);
+    expect(first.manifest.frames).toHaveLength(2);
+    expect(first.manifest.contactSheets).toEqual([]);
+    expect(first.manifest.source.width).toBe(390);
+
+    const second = await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    });
+    expect(second.reused).toBe(true);
+  });
+
+  it('reports the clip size for a clipped screenshot sequence', async () => {
+    const { runRoot, workspace, targetGame } = await captureFixture({ clip: { x: 10, y: 20, width: 200, height: 100 } });
+    const result = await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    });
+    expect(result.manifest.source).toMatchObject({ width: 200, height: 100 });
+    expect(result.manifest.frames[0]).toMatchObject({ width: 200, height: 100 });
+  });
+
+  it('does not reuse cached extracted frames after a source screenshot changes', async () => {
+    const { runRoot, workspace, targetGame } = await captureFixture();
+    await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    });
+    await writeFile(path.join(runRoot, 'reference-evidence/incoming/web-capture-c1/frames/frame-00001.png'), 'tampered frame');
+
+    const second = await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    });
+    expect(second.reused).toBe(false);
+    expect(second.manifest.status).toBe('BLOCKED');
+    expect(second.manifest.blockers.join(' ')).toMatch(/hash mismatch/i);
+  });
+
+  it('rejects an internally mismatched capture target before using cached frames', async () => {
+    const { runRoot, workspace, targetGame, indexFile } = await captureFixture();
+    await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    });
+    const capture = JSON.parse(await readFile(indexFile, 'utf8'));
+    capture.targetGame = 'another-game';
+    const indexBytes = `${JSON.stringify(capture, null, 2)}\n`;
+    await writeFile(indexFile, indexBytes);
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries[0].sha256 = createHash('sha256').update(indexBytes).digest('hex');
+    await writeFile(manifestFile, JSON.stringify(provenance));
+
+    await expect(extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    })).rejects.toThrow(/capture target mismatch/i);
+  });
+
+  it('rejects an internally mismatched capture workspace before using cached frames', async () => {
+    const { runRoot, workspace, targetGame, indexFile } = await captureFixture();
+    await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    });
+    const capture = JSON.parse(await readFile(indexFile, 'utf8'));
+    capture.workspace = path.join(runRoot, 'workspace/another-game');
+    const indexBytes = `${JSON.stringify(capture, null, 2)}\n`;
+    await writeFile(indexFile, indexBytes);
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries[0].sha256 = createHash('sha256').update(indexBytes).digest('hex');
+    await writeFile(manifestFile, JSON.stringify(provenance));
+
+    await expect(extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    })).rejects.toThrow(/capture target mismatch/i);
+  });
+
+  it('rejects a screenshot path that escapes the run root', async () => {
+    const { runRoot, workspace, targetGame, indexFile } = await captureFixture();
+    const capture = JSON.parse(await readFile(indexFile, 'utf8'));
+    capture.frames[0].path = '../outside.png';
+    const indexBytes = `${JSON.stringify(capture, null, 2)}\n`;
+    await writeFile(indexFile, indexBytes);
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries[0].sha256 = createHash('sha256').update(indexBytes).digest('hex');
+    await writeFile(manifestFile, JSON.stringify(provenance));
+
+    await expect(extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    })).rejects.toThrow(/path must stay relative to the owning run/i);
+  });
+
+  it('rejects screenshot bytes outside the capture incoming directory even when they stay inside the run', async () => {
+    const { runRoot, workspace, targetGame, indexFile } = await captureFixture();
+    const capture = JSON.parse(await readFile(indexFile, 'utf8'));
+    capture.frames[0].path = 'workspace/game/screenshot.png';
+    const indexBytes = `${JSON.stringify(capture, null, 2)}\n`;
+    await writeFile(indexFile, indexBytes);
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries[0].sha256 = createHash('sha256').update(indexBytes).digest('hex');
+    await writeFile(manifestFile, JSON.stringify(provenance));
+
+    await expect(extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace }, evidenceId: 'web-capture-c1',
+    })).rejects.toThrow(/outside its run-local incoming directory/i);
+  });
+
+  it('excludes a capture until explicit identity review makes it usable', async () => {
+    const { runRoot, workspace, targetGame } = await captureFixture();
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries[0].identityStatus = 'UNKNOWN';
+    provenance.entries[0].reviewStatus = 'PENDING';
+    provenance.entries[0].usableAsEvidence = false;
+    await writeFile(manifestFile, JSON.stringify(provenance));
+
+    await expect(extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame, workspace },
+    })).rejects.toThrow(/no verified gameplay recording/i);
+  });
+
+  it('reuses only a prior explicit recording selection bound to this run', async () => {
+    const { runRoot, workspace, sha256 } = await fixture();
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries.push({ ...provenance.entries[0], id: 'level-2-recording', sha256 });
+    await writeFile(manifestFile, JSON.stringify(provenance));
+    const extractor = async ({ outputDir }: { outputDir: string }) => {
+      await mkdir(outputDir, { recursive: true });
+      await writeFile(path.join(outputDir, 'a.png'), 'frame a');
+      await writeFile(path.join(outputDir, 'b.png'), 'frame b');
+      return { durationMs: 1_000, width: 1100, height: 720, frames: [{ index: 0, requestedMs: 0, actualMs: 0, fileName: 'a.png' }, { index: 1, requestedMs: 125, actualMs: 125, fileName: 'b.png' }], contactSheets: [] };
+    };
+    await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame: 'slice-game', workspace }, evidenceId: 'level-2-recording', fps: 8, extractor,
+    });
+
+    const again = await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame: 'slice-game', workspace }, useExistingSelection: true, fps: 8,
+      extractor: async () => { throw new Error('the selected recording is already extracted'); },
+    });
+    expect(again).toMatchObject({ reused: true, manifest: { source: { evidenceId: 'level-2-recording' } } });
+  });
+
+  it('requires selection when multiple verified recordings have no selection for this run', async () => {
+    const { runRoot, workspace, sha256 } = await fixture();
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries.push({ ...provenance.entries[0], id: 'level-2-recording', sha256 });
+    await writeFile(manifestFile, JSON.stringify(provenance));
+    await expect(extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame: 'slice-game', workspace }, useExistingSelection: true,
+      extractor: async () => { throw new Error('must not reach extractor'); },
+    })).rejects.toThrow(/multiple.*gameplay recordings/i);
+  });
+
+  it.each([
+    ['invalid-json', '{', SyntaxError],
+    ['invalid-schema', '{}', /schemaVersion/],
+  ])('surfaces a corrupt saved selection instead of treating it as absent: %s', async (_name, bytes, expectedError) => {
+    const { runRoot, workspace } = await fixture();
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries.push({ ...provenance.entries[0], id: 'level-2-recording' });
+    await writeFile(manifestFile, JSON.stringify(provenance));
+    await mkdir(path.join(runRoot, 'artifacts'));
+    await writeFile(path.join(runRoot, 'artifacts/reference-frame-manifest.json'), bytes);
+    await expect(extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame: 'slice-game', workspace }, useExistingSelection: true,
+      extractor: async () => { throw new Error('must not replace a corrupt saved selection'); },
+    })).rejects.toThrow(expectedError);
+  });
+
+  it('does not use a previous selection from a different target run', async () => {
+    const { runRoot, workspace, sha256 } = await fixture();
+    const manifestFile = path.join(runRoot, 'reference-evidence/manifest.json');
+    const provenance = JSON.parse(await readFile(manifestFile, 'utf8'));
+    provenance.entries.push({ ...provenance.entries[0], id: 'level-2-recording', sha256 });
+    await writeFile(manifestFile, JSON.stringify(provenance));
+    const first = await extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-elsewhere', expected: { targetGame: 'slice-game', workspace }, evidenceId: 'level-2-recording', fps: 8,
+      extractor: async ({ outputDir }) => {
+        await mkdir(outputDir, { recursive: true });
+        await writeFile(path.join(outputDir, 'a.png'), 'frame a');
+        await writeFile(path.join(outputDir, 'b.png'), 'frame b');
+        return { durationMs: 1_000, width: 1100, height: 720, frames: [{ index: 0, requestedMs: 0, actualMs: 0, fileName: 'a.png' }, { index: 1, requestedMs: 125, actualMs: 125, fileName: 'b.png' }], contactSheets: [] };
+      },
+    });
+    expect(first.manifest.targetRunId).toBe('run-elsewhere');
+
+    await expect(extractReferenceRecordingFrames({
+      runRoot, targetRunId: 'run-1', expected: { targetGame: 'slice-game', workspace }, useExistingSelection: true, fps: 8,
+      extractor: async () => { throw new Error('must not infer a selection from a different target run'); },
+    })).rejects.toThrow(/multiple.*gameplay recordings/i);
   });
 });
