@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {newRun,input,advance,JUMP_BUFFER_SECONDS,JUMP_TRIGGER_METERS} from './adventure.mjs';
+import {newRun,input,advance,readyJumpBarrier,JUMP_BUFFER_SECONDS,JUMP_TRIGGER_METERS} from './adventure.mjs';
 const to=(r,d)=>{for(let i=0;i<18000&&r.distance<d&&r.phase==='running';i++)advance(r,1/120);};
 test('early touch arms the same-lane barrier, genuinely clears it, and catches its fish',()=>{
  const r=newRun(1),b=r.obstacles.find(o=>o.kind==='barrier'&&o.x===35),fish=r.fishes.find(f=>f.sourceObstacleId===b.id);
@@ -29,4 +29,22 @@ test('buffer stays short and vehicles remain unjumpable',()=>{
  const r=newRun(3),car=r.obstacles.find(o=>o.kind==='car'&&o.lane===1);
  r.obstacles=[car];r.fishes=[]; // Isolated real car collision, no fake hit state.
  to(r,car.x-7);input(r,'jump');to(r,car.x+2);assert.equal(r.reason,'vehicle');
+});
+test('visible READY exactly matches native queued jump, not a late unqueueable jump',()=>{
+ const r=newRun(1),barrier=r.obstacles.find(o=>o.kind==='barrier'&&o.x===35);
+ assert.equal(readyJumpBarrier(r),null,'far from obstacle');
+ to(r,barrier.x-7.5);
+ assert.equal(readyJumpBarrier(r)?.id,barrier.id,'inside real buffer window');
+ input(r,'jump');
+ assert.equal(r.bufferedJump,barrier.id);
+ assert.equal(readyJumpBarrier(r),null,'queued cue replaces ready cue');
+ const late=newRun(1);
+ to(late,barrier.x-2.7);
+ assert.equal(readyJumpBarrier(late),null,'after trigger window no false READY');
+ input(late,'jump');
+ assert.equal(late.bufferedJump,null,'late normal jump is never secretly queued');
+ const sideways=newRun(1);
+ input(sideways,'left');
+ to(sideways,barrier.x-7);
+ assert.equal(readyJumpBarrier(sideways),null,'ready only in authored same lane');
 });
