@@ -36,7 +36,7 @@ jobs:
         run: corepack enable
       - name: Install locked dependencies
         run: pnpm install --frozen-lockfile
-      - name: Install Playwright Chromium for browser-backed Vitest checks
-        run: pnpm exec playwright install --with-deps chromium
+      - name: Install Playwright Chromium and WebKit for browser-backed Vitest checks
+        run: pnpm exec playwright install --with-deps chromium webkit
       - name: Verify factory core
         run: pnpm verify
