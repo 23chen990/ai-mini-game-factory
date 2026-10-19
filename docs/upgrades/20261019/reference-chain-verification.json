@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-10-19T09:52:50.508Z",
-  "scope": "shared-factory paired-comparison slice; not a completed automatic reconstruction pipeline",
+  "recordedAt": "2026-10-19T10:29:18.027376Z",
+  "scope": "shared-factory paired comparison and prebuild reuse of core contract checks; not a completed automatic reconstruction pipeline",
   "repository": "https://github.com/23chen990/ai-mini-game-factory",
   "main": "cb0ea67d7ed9ec25a3deed7110cb4b685d598e7b",
   "base": {
@@ -18,17 +18,17 @@
     "lint": "PASS",
     "typecheck": "PASS",
     "testFiles": 183,
-    "testsPassed": 1113,
+    "testsPassed": 1120,
     "testsFailed": 0,
     "evidence": {
-      "path": "artifacts/reference-first-audit/reviewed-final-verify.log",
-      "sha256": "fe41e3db9f80ee2a0a0a49a19a03eb63698b61206c8f466e12cedd9fa8435d99"
+      "path": "artifacts/reference-first-audit/prebuild-full-verify.log",
+      "sha256": "a29dad3aeace4539b932113adcee19af253a68c8b645aaf8b7706e4d14909d97"
     },
     "pilotStandaloneTypecheck": {
       "command": "node_modules/.bin/tsc --noEmit --strict --noUncheckedIndexedAccess --target ES2022 --module NodeNext --skipLibCheck tools/reference-comparison-pilot.ts",
       "status": "PASS",
       "evidence": {
-        "path": "artifacts/reference-first-audit/pilot-typecheck.log",
+        "path": "artifacts/reference-first-audit/prebuild-pilot-typecheck.log",
         "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
@@ -37,6 +37,27 @@
       "evidence": {
         "path": "runs/factory-comparison-2048-20261019/artifacts/builder-template-tests.log",
         "sha256": "6bd1ca968e68d14a11cb7f9b66b0096084b4b9b2a2834c48a5e7616c82d5150d"
+      }
+    },
+    "focusedPrebuild": {
+      "files": 8,
+      "passed": 95,
+      "evidence": {
+        "path": "artifacts/reference-first-audit/prebuild-focused-tests.log",
+        "sha256": "8baa6fdad17bbe9f71bdb85137901b5c9a05afc9625ec8ea753b7b70abadb712"
+      }
+    },
+    "repeatedResume": {
+      "lanes": [
+        "replica-preview",
+        "full-validation"
+      ],
+      "resumesAfterPausePerLane": 4,
+      "additionalResearchCalls": 0,
+      "additionalResearchAttempts": 0,
+      "evidence": {
+        "path": "artifacts/reference-first-audit/green-prebuild-resume.log",
+        "sha256": "b08262149d62b9b759d34aa07448cc6cafec9f2d94d717a190d6ce725056707c"
       }
     }
   },
@@ -76,6 +97,22 @@
     {
       "path": "artifacts/reference-first-audit/red-research-handoff.log",
       "sha256": "a5aeb944c8f6921c1c3f7fbbe4c58db68008641dc2ca0150e4b44e5d5877b25d"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-prebuild-readiness.log",
+      "sha256": "b7af44d7ff6495c7e4da4a3c24750a2fe8d297ab723211169e25286cec63fbb7"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-prebuild-resume.log",
+      "sha256": "4471cc6fcec74560ef0240e1f7118a1355e35eb25dab855dfb0f2a539775212f"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-prebuild-idempotence.log",
+      "sha256": "94b0d19b383ac9df5bfdb568640650032c60eee9bf842ec7eacd04f8e8314207"
+    },
+    {
+      "path": "artifacts/reference-first-audit/red-prebuild-demo.log",
+      "sha256": "a055e25708c68f72b06fd9a63e2b5a7a073d5ce1c126c6370bf6edfc1abd9d36"
     }
   ],
   "review": {
@@ -326,33 +363,39 @@
     "humanAccepted": false,
     "platformPackagesVerified": false,
     "commercialReleaseReady": false,
-    "costReductionMeasured": false
+    "costReductionMeasured": false,
+    "crossGameAccelerationMeasured": false,
+    "deliveryWithinTargetDemonstrated": false
   },
   "evidenceAvailability": "Raw captures, screenshots, reference copy, candidate directories and logs remain local under the listed run/audit paths; no third-party game payload is committed. Revision labels in pilot-scope are preparation claims; runtime identity is verified by file bytes and hashes.",
   "verifiedSourceFiles": [
     {
       "path": "README.md",
-      "sha256": "cdc13ad4bb5c1ebcc8f19d37cf1a081296c9e76dc636b5e0ad640e56d8826a5d"
+      "sha256": "fac7640479c2c215a44c281b3aab19ed2733f29e1a204d136e811f08f54ba88f"
     },
     {
       "path": "docs/upgrades/20261019/reference-chain-audit.md",
-      "sha256": "8213587e623071386e0bcf7c8542dd381afcef27d34057cb2a7f38fd81ca3905"
+      "sha256": "9d3b67b6e5e3ef83cb65f85544e05fba8c071eb3574165abae4f510ef77f4bff"
     },
     {
       "path": "src/core/reference-comparison.ts",
-      "sha256": "0535c645b3ce4fd688c642a442f11913cbbfdac653a3d9db7a347a4ca51ceb4e"
+      "sha256": "287baaf4a13871d59dc27fcbb6b1f0bfdd54fdc4c9e498283bed855f36d40f55"
     },
     {
       "path": "src/core/reference-evidence.ts",
-      "sha256": "654eaabf2aee134cc30f91d4012ee622d66b18e2a91775f02d4304920a96432d"
+      "sha256": "9cf83bff695fdb27cad07cbc3d45fa3fdcceec56c36f7d46dee4dddd7ff09bda"
     },
     {
       "path": "src/core/reference-intake.ts",
       "sha256": "0d2d2cc89eca97008f4dd11c9efdaac2d3356624a739b2d39dc819d530ae81f4"
     },
     {
+      "path": "src/demo/reference-demo.ts",
+      "sha256": "ba29eb59a73278a5f2e2069fd67e8ced9518d59d425d1e68493a3ac6dc7fa150"
+    },
+    {
       "path": "src/factory.ts",
-      "sha256": "50eb022c081e077cd81feb6460b36c1c4d43e5d4e7d9666bc19f98e7ce58c798"
+      "sha256": "b71df35978778465c1774e67a71c901058d902d4536667159f942aca1e891c5f"
     },
     {
       "path": "src/providers/codex-account.ts",
@@ -375,12 +418,28 @@
       "sha256": "a05916f013cbbfeb049e4a8094d737bfa8d6ea1f53a3e3252505aac2c4532b14"
     },
     {
+      "path": "tests/e2e/reference-demo.test.ts",
+      "sha256": "a74865e68c5d6411aa945cf731105132370ca0efb29fb84ad969a26760cd9d0f"
+    },
+    {
       "path": "tests/fixtures/reference-comparison.ts",
-      "sha256": "8f2f946de806c427c6957f46291ea80a3e7267ef5a09a796898c8426d66147fe"
+      "sha256": "38fc76cc27fdeb7d13289e1ceeaf3ffeefadb87d29f35722e719dd933a8fbaf4"
+    },
+    {
+      "path": "tests/integration/action-feel-evidence.test.ts",
+      "sha256": "f2ed7153dc48179dc955d30d6b02e2b0b8951ed3ff26db1a015153d97ec55cfc"
+    },
+    {
+      "path": "tests/integration/cli.test.ts",
+      "sha256": "05d41013951e8ebb5c1d2896c8123fa91df6da273dd2c4a8a32a7ba4b32ddbed"
     },
     {
       "path": "tests/integration/orchestrator.test.ts",
-      "sha256": "bca7bf48ab40cb828869f6034f204740bf8aa08b36dd1c7f138d10eedd872661"
+      "sha256": "b33aa96db460e06f03106c4ad8851ef3225c4f70b024ed57c3b0b67be6f5351c"
+    },
+    {
+      "path": "tests/integration/reference-intake.test.ts",
+      "sha256": "bd908f0092df44996bc409c97165bedea7869b0f6420be515a5ce3b679cbbb64"
     },
     {
       "path": "tests/unit/grid-comparison-adapter.test.ts",
@@ -392,7 +451,7 @@
     },
     {
       "path": "tests/unit/reference-evidence.test.ts",
-      "sha256": "4909291ec95120a1bf58590b2086efce5e912f7dcf0ceb7a8d815e0d79215c75"
+      "sha256": "c9f213954a02a45c70eb7c5a2f9c70d1932449726531787516dba3854553a48d"
     },
     {
       "path": "tests/unit/reference-fidelity-qa.test.ts",
@@ -410,5 +469,76 @@
       "path": "tools/reference-comparison-pilot.ts",
       "sha256": "6a123adf126176f356f2f3c2d5773ba126d1946cb8b8ca9d888b863d9a12d2c3"
     }
-  ]
+  ],
+  "previousVerification": {
+    "commit": "8f295d34caab29d4db7ece685ca7a1861b409675",
+    "checks": {
+      "command": "pnpm_config_verify_deps_before_run=false pnpm verify",
+      "lint": "PASS",
+      "typecheck": "PASS",
+      "testFiles": 183,
+      "testsPassed": 1113,
+      "testsFailed": 0,
+      "evidence": {
+        "path": "artifacts/reference-first-audit/reviewed-final-verify.log",
+        "sha256": "fe41e3db9f80ee2a0a0a49a19a03eb63698b61206c8f466e12cedd9fa8435d99"
+      },
+      "pilotStandaloneTypecheck": {
+        "command": "node_modules/.bin/tsc --noEmit --strict --noUncheckedIndexedAccess --target ES2022 --module NodeNext --skipLibCheck tools/reference-comparison-pilot.ts",
+        "status": "PASS",
+        "evidence": {
+          "path": "artifacts/reference-first-audit/pilot-typecheck.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "existingCandidateUnitTests": {
+        "passed": 14,
+        "evidence": {
+          "path": "runs/factory-comparison-2048-20261019/artifacts/builder-template-tests.log",
+          "sha256": "6bd1ca968e68d14a11cb7f9b66b0096084b4b9b2a2834c48a5e7616c82d5150d"
+        }
+      }
+    }
+  },
+  "prebuildFollowup": {
+    "reason": "Avoid building from unconfirmed or unmeasurable core mechanisms, then paying for post-build rework.",
+    "newAgents": 0,
+    "newRuntimeSchemas": 0,
+    "newDependencies": 0,
+    "blockedGaps": [
+      "measurement-protocol-missing",
+      "inferred",
+      "unknown",
+      "reference-artifact-unbound"
+    ],
+    "defaultMockUnchanged": true,
+    "firstPartyDemo": "authored Boolean requirements marked source-derived; independent comparison and human acceptance remain absent",
+    "initialFullVerification": {
+      "status": "FAIL",
+      "filesFailed": 4,
+      "testsFailed": 7,
+      "evidence": {
+        "path": "artifacts/reference-first-audit/prebuild-full-verify-initial.log",
+        "sha256": "a122c1403bdbaebb434c13d62aa91252b6e837f1deb225b55ffc7843cfb284de"
+      }
+    },
+    "storedCaptureRecomparison": {
+      "path": "artifacts/reference-first-audit/prebuild-recorded-capture-recomparison.json",
+      "sha256": "49d90b54cbeb9fccc4a7c256bca9960d7feabbf8cb4f7522b8acf17f2561f49f"
+    },
+    "limitations": [
+      "legacy seeded incremental re-research/cache invalidation is not completed",
+      "no cross-game runtime component library added",
+      "7-14 day delivery and cross-game acceleration are not demonstrated"
+    ]
+  },
+  "deliveryObjective": {
+    "targetDays": [
+      7,
+      14
+    ],
+    "output": "original playable submission-ready H5 IAA mini-game",
+    "priority": "minimize human intervention and end-to-end cost, not agent/schema/test counts",
+    "status": "target-not-validated"
+  }
 }

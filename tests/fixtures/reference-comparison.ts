@@ -4,6 +4,19 @@ import path from 'node:path';
 import { sha256Text } from '../../src/core/files.js';
 import type { ReferenceBehaviorCheck, ReferenceFidelityContract } from '../../src/schemas/reference-fidelity.js';
 import { ReferenceComparisonCaptureSchema } from '../../src/schemas/reference-comparison.js';
+import { ReferenceBehaviorAnalysisSchema } from '../../src/schemas/reference-evidence.js';
+import { MockAgentProvider } from '../../src/providers/mock.js';
+
+/** Orchestration fixtures only; the production Mock must not invent observations. */
+export class SyntheticReferenceProvider extends MockAgentProvider {
+  researchCalls = 0;
+  override async analyzeReferenceEvidence(...args: Parameters<MockAgentProvider['analyzeReferenceEvidence']>) {
+    this.researchCalls++;
+    const result = await super.analyzeReferenceEvidence(...args);
+    const analysis = ReferenceBehaviorAnalysisSchema.parse(result.value);
+    return { ...result, value: { ...analysis, behaviorChecks: syntheticComparisonChecks(analysis.behaviorChecks) } };
+  }
+}
 
 export function syntheticComparisonChecks(checks: ReferenceBehaviorCheck[]) {
   return checks.map((check) => ({ ...check, comparison: {

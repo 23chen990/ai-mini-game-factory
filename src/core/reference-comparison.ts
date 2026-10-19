@@ -1,4 +1,4 @@
-import type { ReferenceFidelityContract, ReferenceFidelityGateSchema } from '../schemas/reference-fidelity.js';
+import type { ReferenceBehaviorCheck, ReferenceFidelityContract, ReferenceFidelityGateSchema } from '../schemas/reference-fidelity.js';
 import type { ReferenceComparisonCapture, ReferenceDifference } from '../schemas/reference-comparison.js';
 import { ReferenceComparisonTaskSchema } from '../schemas/reference-comparison.js';
 
@@ -42,12 +42,35 @@ export function buildReferenceComparisonTask(input: {
   });
 }
 
+type ComparisonContract = Pick<ReferenceFidelityContract, 'behaviorChecks' | 'provenance'>;
+
+/** Legacy/external contracts can omit a protocol or retain unconfirmed claims. */
+function inspectComparisonContract(contract: ComparisonContract) {
+  const checks: Array<{ check: ReferenceBehaviorCheck; spec: NonNullable<ReferenceBehaviorCheck['comparison']> }> = [];
+  const differences: ReferenceDifference[] = [];
+  for (const check of contract.behaviorChecks) {
+    const spec = check.comparison;
+    if (spec === undefined) { differences.push({ checkId: check.id, route: 'CONTRACT', reason: 'measurement-protocol-missing' }); continue; }
+    if (spec.evidenceBasis === 'inferred' || spec.evidenceBasis === 'unknown') { differences.push({ checkId: check.id, route: 'RESEARCH', reason: 'mechanism-not-confirmed' }); continue; }
+    if (!contract.provenance.some(source => source.path === spec.referenceArtifact.path && source.sha256 === spec.referenceArtifact.sha256)) {
+      differences.push({ checkId: check.id, route: 'RESEARCH', reason: 'reference-artifact-unbound' }); continue;
+    }
+    checks.push({ check, spec });
+  }
+  return { checks, differences };
+}
+
+/** Research must resolve these gaps before Builder; QA enforces the same bar. */
+export function referenceComparisonContractDifferences(contract: ComparisonContract): ReferenceDifference[] {
+  return inspectComparisonContract(contract).differences;
+}
+
 /** Compare independently captured observations, never candidate-authored expectations. */
 export function compareReferenceCaptures(input: {
   contract: ReferenceFidelityContract; contractHash: string; buildHash: string;
   reference: ReferenceComparisonCapture; candidate: ReferenceComparisonCapture;
 }): ReferenceDifference[] {
-  const differences: ReferenceDifference[] = [];
+  const { checks, differences } = inspectComparisonContract(input.contract);
   const add = (checkId: string, route: ReferenceDifference['route'], reason: string) => differences.push({ checkId, route, reason });
   for (const target of ['reference', 'candidate'] as const) {
     const capture = input[target];
@@ -61,33 +84,29 @@ export function compareReferenceCaptures(input: {
   if (input.candidate.artifactHash !== input.buildHash) add('*', 'QA', 'candidate:build-mismatch');
   if (differences.length) return differences;
 
-  for (const check of input.contract.behaviorChecks) {
-    const spec = check.comparison;
-    if (!spec) { add(check.id, 'CONTRACT', 'measurement-protocol-missing'); continue; }
-    if (spec.evidenceBasis === 'inferred' || spec.evidenceBasis === 'unknown') {
-      add(check.id, 'RESEARCH', 'mechanism-not-confirmed'); continue;
-    }
-    if (!input.contract.provenance.some((source) => source.path === spec.referenceArtifact.path && source.sha256 === spec.referenceArtifact.sha256)
-      || spec.referenceArtifact.sha256 !== input.reference.artifactHash) {
+  for (const { check, spec } of checks) {
+    if (spec.referenceArtifact.sha256 !== input.reference.artifactHash) {
       add(check.id, 'RESEARCH', 'reference-artifact-unbound'); continue;
     }
-    const rows = [];
-    for (const target of ['reference', 'candidate'] as const) {
-      const row = input[target].observations.find((observation) => observation.checkId === check.id);
-      if (!row) { add(check.id, 'QA', `${target}:observation-missing`); continue; }
+    const reference = input.reference.observations.find(row => row.checkId === check.id);
+    const candidate = input.candidate.observations.find(row => row.checkId === check.id);
+    if (reference === undefined || candidate === undefined) {
+      if (reference === undefined) add(check.id, 'QA', 'reference:observation-missing');
+      if (candidate === undefined) add(check.id, 'QA', 'candidate:observation-missing');
+      continue;
+    }
+    const priorDifferenceCount = differences.length;
+    for (const { target, row } of [{ target: 'reference', row: reference }, { target: 'candidate', row: candidate }]) {
       if (row.objectType !== check.objectType || row.stateBranch !== check.stateBranch
         || row.viewport.width !== check.viewport.width || row.viewport.height !== check.viewport.height
         || row.condition !== spec.condition || row.protocol !== spec.protocol || row.metric !== spec.metric || row.unit !== spec.unit) {
         add(check.id, 'QA', `${target}:scenario-mismatch`); continue;
       }
       if (row.samples.length < spec.minimumSamples) { add(check.id, 'QA', `${target}:insufficient-samples`); continue; }
-      rows.push(row);
     }
-    if (rows.length !== 2) continue;
-    const [reference, candidate] = rows;
-    // rows has exactly one reference and one candidate after the checks above.
-    const referenceSamples = reference!.samples;
-    const candidateSamples = candidate!.samples;
+    if (differences.length > priorDifferenceCount) continue;
+    const referenceSamples = reference.samples;
+    const candidateSamples = candidate.samples;
     if (referenceSamples.some((value) => value < spec.referenceRange.min || value > spec.referenceRange.max)) {
       add(check.id, 'RESEARCH', 'reference-observation-contradicts-contract'); continue;
     }

@@ -9,10 +9,12 @@ import { ingestReferenceMedia, reviewReferenceMediaIdentity } from '../../src/co
 import { ReferenceMechanicSpecSchema } from '../../src/schemas/reference-mechanic.js';
 import type { ReferenceIntakeEvidence } from '../../src/schemas/reference-intake.js';
 import { referenceBehaviorChecks, referenceFailurePressureContract } from '../fixtures/reference-behavior.js';
+import { syntheticComparisonChecks } from '../fixtures/reference-comparison.js';
 
 class IntakeFixtureProvider extends MockAgentProvider {
   calls = 0;
   blocked = false;
+  measurementBasis: 'runtime-observed' | 'inferred' = 'runtime-observed';
   async draftReference(input: ReferenceIntakeEvidence) {
     this.calls++;
     const seed = parse(await readFile('examples/seeds/relic-revival-workshop.yaml', 'utf8'));
@@ -22,7 +24,10 @@ class IntakeFixtureProvider extends MockAgentProvider {
         schemaVersion: 1, targetRunId: input.targetRunId, inputHash: input.inputHash,
         suggestedTemplate: 'idle-shop-v1',
         mechanics: ReferenceMechanicSpecSchema.omit({ lockedBy: true, source: true }).parse(seed.referenceMechanics),
-        analysis: { schemaVersion: 1, targetRunId: input.targetRunId, behaviorChecks: referenceBehaviorChecks(source),
+        analysis: { schemaVersion: 1, targetRunId: input.targetRunId,
+          behaviorChecks: syntheticComparisonChecks(referenceBehaviorChecks(source)).map(check => ({
+            ...check, comparison: { ...check.comparison, evidenceBasis: this.measurementBasis },
+          })),
           observations: ['Synthetic first-party engineering fixture, not player evidence.'], inferences: [],
           unknowns: this.blocked ? ['failure branch is not observed'] : [],
           status: this.blocked ? 'BLOCKED' : 'READY', failurePressureContract: referenceFailurePressureContract(source) },
@@ -96,6 +101,18 @@ it('keeps an unchanged unknown blocked without spending another model call', asy
   expect((await factory.resume(runId)).stage).toBe('REFERENCE_DEEP_RESEARCH');
   expect(provider.calls).toBe(1);
   await expect(factory.approveReference(runId, { decision: 'APPROVE', notes: '' })).rejects.toThrow(/not waiting/);
+});
+
+it('does not authorize Builder from inferred mechanisms even if Research labels the draft READY', async () => {
+  const provider = new IntakeFixtureProvider(); provider.measurementBasis = 'inferred';
+  const { factory, runId, runRoot, review } = await fixture(provider);
+  await review();
+  const state = await factory.run(runId);
+  expect(state).toMatchObject({ stage: 'REFERENCE_DEEP_RESEARCH', status: 'waiting' });
+  expect(state.stages.FULL_BUILD).toBeUndefined();
+  await expect(readFile(path.join(runRoot, 'input/seed.yaml'))).rejects.toThrow();
+  await factory.resume(runId);
+  expect(provider.calls).toBe(1);
 });
 
 it('rejects approval if source bytes changed since research', async () => {

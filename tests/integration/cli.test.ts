@@ -6,6 +6,7 @@ import path from 'node:path';
 import { promisify } from 'node:util';
 import { expect, it } from 'vitest';
 import { referenceBehaviorChecks } from '../fixtures/reference-behavior.js';
+import { syntheticComparisonChecks } from '../fixtures/reference-comparison.js';
 
 const exec = promisify(execFile);
 const hash = (character: string) => `sha256:${character.repeat(64)}`;
@@ -88,7 +89,7 @@ it('CLI approves a human-locked reference without auto-resuming the run', async 
   await exec('pnpm', ['factory', 'run', runId], { cwd: process.cwd(), env });
   const packPath = path.join(root, 'runs', runId, 'artifacts/reference-evidence-pack.json');
   const pack = JSON.parse(await readFile(packPath, 'utf8'));
-  pack.behaviorChecks = referenceBehaviorChecks(pack.sourceFiles[0]);
+  pack.behaviorChecks = syntheticComparisonChecks(referenceBehaviorChecks(pack.sourceFiles[0]));
   await writeFile(packPath, JSON.stringify(pack));
   await exec('pnpm', ['factory', 'resume', runId], { cwd: process.cwd(), env });
 

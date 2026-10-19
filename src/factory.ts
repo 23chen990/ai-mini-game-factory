@@ -3193,6 +3193,18 @@ export function createFactory(options: FactoryOptions = {}) {
     if (!effectivePlan) {
       await store.log(runId, 'pipeline-plan.legacy-fallback', { reason: 'pipeline-plan-missing-or-invalid' });
     }
+    // Legacy completed/cached research may lack a comparison protocol. Recheck
+    // locally; an unchanged gap must not consume model calls or retry attempts.
+    if (seed.designMode === 'reference_reskin') {
+      const pack = ReferenceEvidencePackSchema.parse(await store.readArtifact(runId, 'reference-evidence-pack.json'));
+      if (done(state, 'REFERENCE_DEEP_RESEARCH') || !referenceBehaviorAnalysisNeeded(pack)) {
+        const evaluation = evaluateReplicaPreviewEvidence(pack);
+        if (!evaluation.passed) {
+          await store.writeArtifact(runId, 'reference-fidelity-contract.json', evaluation.fidelity);
+          return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', ['artifacts/reference-evidence-pack.json'], ['artifacts/reference-fidelity-contract.json'], evaluation.blockers.map(item => `blocked:${item}`));
+        }
+      }
+    }
     // Reference runs use a compact, fidelity-first lane.  Keep this branch
     // before the governance and production-line gates so deferred concerns
     // cannot silently re-enter the preview journey.  The frozen plan records

@@ -1,4 +1,4 @@
-import { mkdtemp, readFile, readdir, writeFile } from 'node:fs/promises';
+import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -14,25 +14,10 @@ import { evaluateReferenceLevelRuntimeTrace } from '../../src/core/reference-lev
 import { ReferenceLevelRuntimeTraceSchema, type ReferenceLevelRuntimeTrace } from '../../src/schemas/reference-recording.js';
 import { lockProductionLine } from '../../src/core/production-lines.js';
 import { RunArchiveManifestSchema } from '../../src/core/run-preservation.js';
-import { ReferenceBehaviorAnalysisSchema } from '../../src/schemas/reference-evidence.js';
-import { syntheticComparisonChecks, writeSyntheticComparison } from '../fixtures/reference-comparison.js';
+import { ReferenceBehaviorAnalysisSchema, ReferenceEvidencePackSchema } from '../../src/schemas/reference-evidence.js';
+import { SyntheticReferenceProvider, writeSyntheticComparison } from '../fixtures/reference-comparison.js';
 
-const roots: string[] = [];
-async function fixture() {
-  const root = await mkdtemp(path.join(tmpdir(), 'factory-test-'));
-  roots.push(root);
-  const seed = path.join(root, 'seed.yaml');
-  await writeFile(seed, 'title: 妖怪夜市\ntheme: 夜市妖怪\ntemplate: idle-shop-v1\ndesignMode: prototype_tournament\npreferences:\n  tone: cozy\n');
-  return { root, seed, factory: createFactory({ root, mode: 'mock', qaMode: 'stub' }) };
-}
-afterEach(async () => { vi.restoreAllMocks(); const { rm } = await import('node:fs/promises'); await Promise.all(roots.splice(0).map((p) => rm(p, { recursive: true, force: true }))); });
-
-describe('orchestrator integration', () => {
-  it.each(['completed', 'pending'] as const)('preserves legacy preview contracts and assets before regenerating the resolved production line with a %s core lock', async (coreStatus) => {
-    const root = await mkdtemp(path.join(tmpdir(), 'factory-preview-preserve-'));
-    roots.push(root);
-    const seed = path.join(root, 'seed.yaml');
-    await writeFile(seed, `title: Factory Archive Fixture
+const syntheticReferenceSeed = `title: Factory Archive Fixture
 theme: original shop orders
 template: idle-shop-v1
 designMode: reference_reskin
@@ -54,8 +39,25 @@ referenceMechanics:
     originalUiLayout: true
     originalAudio: true
     originalTuningValues: true
-`);
-    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub' });
+`;
+
+const roots: string[] = [];
+async function fixture() {
+  const root = await mkdtemp(path.join(tmpdir(), 'factory-test-'));
+  roots.push(root);
+  const seed = path.join(root, 'seed.yaml');
+  await writeFile(seed, 'title: 妖怪夜市\ntheme: 夜市妖怪\ntemplate: idle-shop-v1\ndesignMode: prototype_tournament\npreferences:\n  tone: cozy\n');
+  return { root, seed, factory: createFactory({ root, mode: 'mock', qaMode: 'stub' }) };
+}
+afterEach(async () => { vi.restoreAllMocks(); await Promise.all(roots.splice(0).map((p) => rm(p, { recursive: true, force: true }))); });
+
+describe('orchestrator integration', () => {
+  it.each(['completed', 'pending'] as const)('preserves legacy preview contracts and assets before regenerating the resolved production line with a %s core lock', async (coreStatus) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'factory-preview-preserve-'));
+    roots.push(root);
+    const seed = path.join(root, 'seed.yaml');
+    await writeFile(seed, syntheticReferenceSeed);
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', agentProvider: new SyntheticReferenceProvider() });
     const runId = await factory.newRun(seed);
     const runRoot = path.join(root, 'runs', runId);
     await writeFile(path.join(runRoot, 'input/reference-report.txt'), 'Observed act, earn, upgrade, retry.');
@@ -147,15 +149,10 @@ referenceMechanics:
   });
 
   it('locks a human-designated reference and never asks agents to invent or tournament-test game ideas', async () => {
-    class NoIdeationProvider extends MockAgentProvider {
+    class NoIdeationProvider extends SyntheticReferenceProvider {
       openSourceWasDurableBeforeBlueprint = false;
       override async generateCompetitorResearch(): Promise<never> { throw new Error('reference mode must not run competitor ideation'); }
       override async generateIdeas(): Promise<never> { throw new Error('reference mode must not generate ideas'); }
-      override async analyzeReferenceEvidence(...args: Parameters<MockAgentProvider['analyzeReferenceEvidence']>) {
-        const result = await super.analyzeReferenceEvidence(...args);
-        const analysis = ReferenceBehaviorAnalysisSchema.parse(result.value);
-        return {...result,value:{...analysis,behaviorChecks:syntheticComparisonChecks(analysis.behaviorChecks)}};
-      }
       override async generateBlueprint(...args: Parameters<MockAgentProvider['generateBlueprint']>) {
         const context = args[1];
         if (context) {
@@ -288,6 +285,42 @@ referenceMechanics:
     expect(JSON.parse(await readFile(artifact('reference-fidelity-gate.json'), 'utf8')).passed).toBe(true);
   });
 
+  it.each(['replica-preview', 'full-validation'] as const)('rechecks completed legacy research before continuing %s without repeating model work', async (pipelineMode) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'factory-legacy-research-'));
+    roots.push(root);
+    const seed = path.join(root, 'seed.yaml');
+    await writeFile(seed, syntheticReferenceSeed);
+    const provider = new SyntheticReferenceProvider();
+    const factory = createFactory({ root, mode: 'mock', qaMode: 'stub', agentProvider: provider, operatingProfile: { pipelineMode } });
+    const runId = await factory.newRun(seed);
+    const runRoot = path.join(root, 'runs', runId);
+    await writeFile(path.join(runRoot, 'input/reference-report.txt'), 'Synthetic research fixture, not gameplay evidence.');
+    expect(await factory.run(runId)).toMatchObject({ stage: 'WAITING_FOR_REFERENCE_APPROVAL', status: 'waiting' });
+    await factory.approveReference(runId, { decision: 'APPROVE', notes: 'Synthetic legacy approval before Builder.' });
+
+    // Reproduce a legacy completed stage whose persisted contract predates comparison protocols.
+    const packPath = path.join(runRoot, 'artifacts/reference-evidence-pack.json');
+    const pack = ReferenceEvidencePackSchema.parse(JSON.parse(await readFile(packPath, 'utf8')));
+    for (const check of pack.behaviorChecks) delete check.comparison;
+    await writeFile(packPath, JSON.stringify(pack));
+    const analysisPath = path.join(runRoot, 'artifacts/reference-behavior-analysis.json');
+    const analysis = ReferenceBehaviorAnalysisSchema.parse(JSON.parse(await readFile(analysisPath, 'utf8')));
+    for (const check of analysis.behaviorChecks) delete check.comparison;
+    await writeFile(analysisPath, JSON.stringify(analysis));
+    await rm(path.join(runRoot, 'artifacts/artifact-ledger.json'));
+
+    const resumed = await factory.resume(runId);
+    expect(resumed).toMatchObject({ stage: 'REFERENCE_DEEP_RESEARCH', status: 'waiting' });
+    expect(resumed.stages.FULL_BUILD).toBeUndefined();
+    expect(resumed.stages.REFERENCE_DEEP_RESEARCH?.evidence.join(' ')).toContain('measurement-protocol-missing');
+    for (let retry = 0; retry < 4; retry++) {
+      const unchanged = await factory.resume(runId);
+      expect(unchanged).toMatchObject({ stage: 'REFERENCE_DEEP_RESEARCH', status: 'waiting' });
+      expect(unchanged.stages.REFERENCE_DEEP_RESEARCH?.attempts).toBe(resumed.stages.REFERENCE_DEEP_RESEARCH?.attempts);
+    }
+    expect(provider.researchCalls).toBe(1);
+  });
+
   it('runs the recording-level comparison during preview QA and binds it to the exact build', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'factory-recording-level-test-'));
     roots.push(root);
@@ -299,6 +332,7 @@ referenceMechanics:
       root,
       mode: 'mock',
       qaMode: 'stub',
+      agentProvider: new SyntheticReferenceProvider(),
       enforceStageContracts: true,
       enforceExplicitStageContracts: true,
       allowSyntheticReferenceAnalysisForTests: true,

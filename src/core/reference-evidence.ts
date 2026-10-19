@@ -11,7 +11,7 @@ import { evaluateQaEvidence } from './qa-evidence.js';
 import { ReferenceMechanicSpecSchema, type ReferenceMechanicSpec } from '../schemas/reference-mechanic.js';
 import { buildEvidenceClaimSet } from './evidence-claims.js';
 import { ReferenceComparisonCaptureSchema, type ReferenceDifference } from '../schemas/reference-comparison.js';
-import { compareReferenceCaptures } from './reference-comparison.js';
+import { compareReferenceCaptures, referenceComparisonContractDifferences } from './reference-comparison.js';
 
 /**
  * Resolve a research source without following a symlink.  Research inputs are
@@ -300,6 +300,8 @@ export function evaluateReplicaPreviewEvidence(value: unknown) {
   for (const dimension of REFERENCE_BEHAVIOR_DIMENSIONS) {
     if (!pack.behaviorChecks.some((check) => check.dimension === dimension)) blockers.push(`preview:behavior-dimension-missing:${dimension}`);
   }
+  blockers.push(...referenceComparisonContractDifferences({ behaviorChecks: pack.behaviorChecks, provenance: pack.sourceFiles })
+    .map(({ checkId, reason }) => `preview:behavior-comparison:${checkId}:${reason}`));
   if (pack.mechanicMap.mustPreserveMechanics.length === 0) blockers.push('preview:preserved-mechanics-missing');
   const fidelity = ReferenceFidelityContractSchema.parse({
     schemaVersion: 1,
