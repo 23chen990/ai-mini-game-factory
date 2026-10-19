@@ -2,7 +2,7 @@
 
 此目录是**人工核验的状态快照**，不是实时 GitHub CI 查询。更新任何状态时同步更新 `updatedOn`、`inspectedSha` 和证据；最新分支一旦新增 commit，旧结论不能自动继承。
 
-运行：`node tools/release-status/validate.mjs`；回归：`node --test tools/release-status/validate.test.mjs`。
+运行：`node tools/release-status/validate.mjs`；回归：`node --test tools/release-status/validate-checks.mjs`。
 
 ## 状态定义
 
