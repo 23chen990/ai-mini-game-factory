@@ -1,7 +1,6 @@
 import { chromium, webkit, type Browser, type Page } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 import type { RuntimeAdapter } from '../adapters/runtime.js';
 import { evaluateNaturalFlow } from '../core/qa-evidence.js';
 import { QaReportSchema, type QaReport } from '../schemas/index.js';
@@ -75,7 +74,11 @@ async function waitForPhase(page: Page, expected: string, timeout = 6_000): Prom
 async function naturalTap(page: Page, actions: string[]): Promise<void> {
   const control = page.locator('#primary-action:visible');
   if (await control.count() === 0) throw new Error('visible primary cut/flip control is missing');
-  await control.click();
+  // Mobile play uses an actual browser touch on the visible button, not a
+  // Playwright auto-retrying click that can wait 30s after the run ended.
+  const box = await control.boundingBox();
+  if (!box) throw new Error('primary action lost its visible hit area');
+  await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
   actions.push('pointer:tap-primary-action');
 }
 
@@ -156,15 +159,30 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
     transitions.push({ name: 'retry', changed: retryObserved, evidence: retryObserved ? 'visible retry returned to a ready attempt' : 'retry did not return to ready' });
     checks.push(check('cut-stack-natural-retry', retryObserved, retried));
 
+    // One honest human-reproducible sequence: tap to launch, then tap at
+    // visible progress markers to carry the blade above the central spike.
+    // The progress meter is rendered to players; test-only advanceTicks/tap
+    // are NEVER used in the natural run. Different host frame rates do not
+    // change the authored progress checkpoints.
+    const tapAtProgress = async (minimumPercent: number): Promise<void> => {
+      await page.waitForFunction((percent) => {
+        const api = (window as unknown as { __GAME_TEST__?: { getState?: () => { phase?: unknown } } }).__GAME_TEST__;
+        const phase = api?.getState?.()?.phase;
+        const meter = document.querySelector<HTMLElement>('#progress-fill');
+        return phase === 'won' || phase === 'failed' ||
+          (phase === 'playing' && Number.parseFloat(meter?.style.width ?? '') >= percent);
+      }, minimumPercent, { timeout: 9_000, polling: 30 });
+      const before = await state(page);
+      if (before.phase !== 'playing') throw new Error(
+        `natural success route ended before visible ${minimumPercent}% checkpoint: ${JSON.stringify({
+          phase: before.phase, failureCause: before.failureCause, tick: before.tick,
+        })}`);
+      await naturalTap(page, actions);
+    };
     await naturalTap(page, actions);
-    const successDeadline = Date.now() + 7_000;
-    let success = await state(page);
-    while (success.phase === 'playing' && Date.now() < successDeadline) {
-      await page.waitForTimeout(760);
-      success = await state(page);
-      if (success.phase === 'playing') await naturalTap(page, actions);
-    }
-    if (success.phase !== 'won') success = await waitForPhase(page, 'won', 2_000);
+    await tapAtProgress(18);
+    await tapAtProgress(40);
+    const success = await waitForPhase(page, 'won', 6_000);
     const successEvents = await events(page);
     const finishObserved = success.phase === 'won' && hasEvent(successEvents, 'finish');
     transitions.push({ name: 'finish', changed: finishObserved, evidence: finishObserved ? 'natural tap cadence reached visible settlement' : 'finish settlement missing' });
@@ -224,8 +242,8 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
     issues.push({ id: 'cut-stack-preview-runtime', severity: 'error', message: error instanceof Error ? error.message : String(error), evidence: 'Chromium cut-stack journey' });
   } finally {
     await browser?.close();
-    await preview.stop();
-    await runtime.stopPreview();
+    // Keep the Vite *preview* (served from dist/) alive for independent
+    // packaged WebKit verification below. file:// cannot load Vite ESM chunks.
   }
 
   let packagedBrowser: Browser | undefined;
@@ -237,7 +255,10 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
       if (message.type() === 'error') issues.push({ id: `package-console-${issues.length + 1}`, severity: 'error', message: message.text(), evidence: 'logs/console.log' });
     });
     page.on('pageerror', (error) => issues.push({ id: `package-page-${issues.length + 1}`, severity: 'error', message: error.message, evidence: 'logs/console.log' }));
-    await page.goto(pathToFileURL(path.join(workspace, 'dist/index.html')).href, { waitUntil: 'load' });
+    // Vite emits external ESM chunks. They are not executable under file://
+    // CORS in WebKit, but packaged H5 games are shipped over HTTP(S).
+    // Vite preview serves the actual dist/ directory, not source dev files.
+    await page.goto(preview.url, { waitUntil: 'load' });
     await page.waitForFunction(() => Boolean((window as unknown as { __GAME_TEST__?: unknown }).__GAME_TEST__), undefined, { timeout: 5_000 });
     const packagedCanvas = await page.locator('#game-canvas').isVisible();
     const packagedHud = await page.locator('#hud').isVisible();
@@ -245,9 +266,11 @@ export async function runCutStackDodgePlaywrightQa(runtime: RuntimeAdapter, work
     await capture(page, runRoot, 'packaged-webkit', screenshots);
   } catch (error) {
     checks.push(check('packaged-webkit-load', false, error instanceof Error ? error.message : String(error)));
-    issues.push({ id: 'cut-stack-package-runtime', severity: 'error', message: error instanceof Error ? error.message : String(error), evidence: 'WebKit file:// execution' });
+    issues.push({ id: 'cut-stack-package-runtime', severity: 'error', message: error instanceof Error ? error.message : String(error), evidence: 'WebKit HTTP-served packaged dist/' });
   } finally {
     await packagedBrowser?.close();
+    await preview.stop();
+    await runtime.stopPreview();
   }
 
   for (const item of checks) {

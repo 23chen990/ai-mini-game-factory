@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-10-19",
+  "games": [
+    {
+      "id": "racing",
+      "name": "极速飞驰",
+      "pullRequest": 68,
+      "branch": "chatgpt/racing-unified-20261018",
+      "inspectedSha": "9d342ee8a4c094c7d2e02e403cacacbee1bcf8a4",
+      "ci": "pending",
+      "realDevice": "unverified",
+      "humanPlaytest": "unverified",
+      "realRewardAds": "unverified",
+      "platformPackage": "unverified",
+      "publicLaunchReady": false,
+      "notes": "Most recent racing integrator SHA: independent cold-start and Lean CI passed, Chromium entry smoke remains in progress. Software WebGL and seeded agent runs are not phone/human evidence."
+    },
+    {
+      "id": "pelican",
+      "name": "鹈鹕海岸冒险",
+      "pullRequest": 69,
+      "branch": "feat/pelican-v7-pressure-20261018",
+      "inspectedSha": "aeb96387503937be6ace92a597f04ba4f7464b08",
+      "ci": "pending",
+      "realDevice": "unverified",
+      "humanPlaytest": "unverified",
+      "realRewardAds": "unverified",
+      "platformPackage": "unverified",
+      "publicLaunchReady": false,
+      "notes": "V7 authored pressure and authentic opening detour; V6 endless/cosmetics acceptance green in recent Chromium/WebKit runs, cross-browser legacy/experience regression still executing. Unified physics-accurate READY cue and exact-head recheck pending."
+    },
+    {
+      "id": "cf",
+      "name": "移动枪战",
+      "pullRequest": 64,
+      "branch": "feat/cf-v18-mobile-lite-combat-20261017",
+      "inspectedSha": "34c62be1f564b8fb6802863efb9f5da4c416dda7",
+      "ci": "pending",
+      "realDevice": "unverified",
+      "humanPlaytest": "unverified",
+      "realRewardAds": "unverified",
+      "platformPackage": "unverified",
+      "publicLaunchReady": false,
+      "notes": "Prior exact-head real V20 dual-touch run observed 2 native shots, 2 hits and one kill in ~2.3 simulated seconds, but early-win result visibility and frozen-clock QA failed. New visible first-kill settlement and honest early victory QA submitted; exact-head native CI pending."
+    }
+  ]
+}

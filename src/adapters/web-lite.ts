@@ -6,6 +6,15 @@ import type { RuntimeAdapter } from './runtime.js';
 import type { AssetManifest, GameBlueprint, StyleLock } from '../schemas/index.js';
 import { copyTree, exists, listFiles, writeJsonAtomic } from '../core/files.js';
 
+/** Vite may wrap *parts* of its URL (including the port digits) in ANSI SGR
+ * styling. Strip terminal escapes before scanning accumulated output; scans
+ * must work even when stdout splits mid-escape or mid-URL. */
+export function parseVitePreviewUrl(output: string): string | null {
+  // eslint-disable-next-line no-control-regex -- stripping ANSI CSI colors is intentional.
+  const plain = output.replace(/\x1b\[[0-9;]*m/gu, '');
+  return plain.match(/http:\/\/(?:127\.0\.0\.1|localhost):(\d+)\//u)?.[0] ?? null;
+}
+
 function command(bin: string, args: string[], cwd: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const env = (() => {
@@ -281,7 +290,37 @@ export class WebLiteRuntimeAdapter implements RuntimeAdapter {
   async buildTarget(workspace: string, target: string) { if (target !== 'web') throw new Error(`web-lite does not support target ${target}`); return this.buildWeb(workspace); }
   async startPreview(workspace: string) {
     const child = spawn(path.join(this.repositoryRoot, 'node_modules/.bin/vite'), ['preview', '--host', '127.0.0.1', '--port', '0'], { cwd: workspace, stdio: ['ignore', 'pipe', 'pipe'] });
-    const url = await new Promise<string>((resolve, reject) => { let output = ''; const onData = (data: Buffer) => { output += data.toString(); const match = output.match(/http:\/\/127\.0\.0\.1:(\d+)\//); if (match) resolve(match[0]); }; child.stdout.on('data', onData); child.stderr.on('data', onData); child.on('exit', (code) => reject(new Error(`preview exited early (${code}): ${output}`))); setTimeout(() => reject(new Error('preview start timeout')), 15_000); });
+    const url = await new Promise<string>((resolve, reject) => {
+      let output = '', settled = false;
+      const clean = () => {
+        clearTimeout(timeout);
+        child.stdout.off('data', onData);
+        child.stderr.off('data', onData);
+        child.off('exit', onExit);
+        child.off('error', onError);
+      };
+      const done = (result: string | Error) => {
+        if (settled) return;
+        settled = true;
+        clean();
+        if (result instanceof Error) reject(result); else resolve(result);
+      };
+      const onData = (data: Buffer) => {
+        output += data.toString();
+        const url = parseVitePreviewUrl(output);
+        if (url) done(url);
+      };
+      const onExit = (code: number | null) => done(new Error(`preview exited early (${code}): ${output.slice(-900)}`));
+      const onError = (error: Error) => done(new Error(`preview failed: ${error.message}`));
+      const timeout = setTimeout(() => {
+        child.kill('SIGTERM');
+        done(new Error(`preview start timeout after 45s: ${output.slice(-900)}`));
+      }, 45_000);
+      child.stdout.on('data', onData);
+      child.stderr.on('data', onData);
+      child.on('exit', onExit);
+      child.on('error', onError);
+    });
     const stop = async () => { if (!child.killed) child.kill('SIGTERM'); }; this.preview = { stop }; return { url, stop };
   }
   async stopPreview() { await this.preview?.stop(); this.preview = undefined; }
