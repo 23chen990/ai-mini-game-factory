@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-10-19",
+  "games": [
+    {
+      "id": "racing",
+      "name": "极速飞驰",
+      "pullRequest": 68,
+      "branch": "chatgpt/racing-unified-20261018",
+      "inspectedSha": "da405c23b4ed37d13067cdaca0dda2ae8a64a919",
+      "ci": "passed",
+      "realDevice": "unverified",
+      "humanPlaytest": "unverified",
+      "realRewardAds": "unverified",
+      "platformPackage": "unverified",
+      "publicLaunchReady": false,
+      "notes": "Desktop CI green only; synthetic seeded campaign is not natural human play; measured software WebGL startup is not phone startup."
+    },
+    {
+      "id": "pelican",
+      "name": "鹈鹕海岸冒险",
+      "pullRequest": 69,
+      "branch": "feat/pelican-v7-pressure-20261018",
+      "inspectedSha": "5b4d2d4e6141ea53b4ce2e6648c60efc455f387e",
+      "ci": "pending",
+      "realDevice": "unverified",
+      "humanPlaytest": "unverified",
+      "realRewardAds": "unverified",
+      "platformPackage": "unverified",
+      "publicLaunchReady": false,
+      "notes": "QA syntax repaired at inspected SHA; rerun required before changing CI to passed."
+    },
+    {
+      "id": "cf",
+      "name": "移动枪战",
+      "pullRequest": 64,
+      "branch": "chatgpt/cf-v20-mobile-cover-20261018",
+      "inspectedSha": "ebdff5cbe4b30d7fac52c5176540e19bca1c0dab",
+      "ci": "failed",
+      "realDevice": "unverified",
+      "humanPlaytest": "unverified",
+      "realRewardAds": "unverified",
+      "platformPackage": "unverified",
+      "publicLaunchReady": false,
+      "notes": "First-30 native 3D browser scenario timed out after shots without registered hits; root cause not confirmed."
+    }
+  ]
+}
