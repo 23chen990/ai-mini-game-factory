@@ -132,6 +132,12 @@ try{
     await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o13. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
+  // The authored 130m RIGHT car and 140m CENTRE barrier are a coupled
+  // two-action pressure gate. After the earned 110m gold jump, the visible
+  // LEFT route is the only physically safe through-line until its back wheel
+  // clears 140m. Do not turn back for a fish at 139m.
+  // This is a normal trusted-touch choice; never rewrite run state.
+  if(jumped&&v.distance>=115&&v.distance<152&&!v.lanes[0].danger)want=0;
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
   if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
   if(!bonusShot&&(await snap()).events.some(e=>e.type==='fish-caught'&&e.bonus&&e.golden))bonusShot=true;
