@@ -20,7 +20,10 @@ const reducedMotion=experienceMotionPreference(process.env.QA_TOUCH_MOTION);
 const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,reducedMotion,deviceScaleFactor:qaDpr(),recordVideo:{dir,size:{width:390,height:844}}}),page=await ctx.newPage();
 const snap=()=>page.evaluate(()=>window.__coast.snapshot());
 const shot=async name=>{const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({path:path.relative(RUN,file),sha256:sha(await readFile(file))});};
-const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(name+' '+passed);};
+const check=(name,passed,evidence)=>{
+ report.checks.push({name,passed:passed===true,evidence});
+ console.log(name+' '+passed+(passed?'':' '+JSON.stringify(evidence).slice(0,4300)));
+};
 const tap=async selector=>{const before=await snap();const action={at:new Date().toISOString(),type:'tap',selector,before};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');action.touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await snap();Object.assign(action,{completedAt:new Date().toISOString(),after,events:after.events?.slice(-2)});};
 async function gesture(name,from,to,cancel=false,capture=true){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel&&capture)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
 try{
@@ -120,16 +123,30 @@ try{
    want=safe[0]??v.lane;escapeLane=want;
   }
   else if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=90&&v.distance<110)){want=1;if(v.lane===1&&v.distance>=102&&(v.jumpReady||seconds(1)<=1.0)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};
-    // Preserve the player's real READY decision without two extra remote
-    // snapshot/rAF roundtrips before the native touchscreen event. In the
-    // 1.1s physical queue, slow software WebGL otherwise consumes almost the
-    // whole window before feedback can become visible.
-    const jumpAction={at:new Date().toISOString(),type:'tap',selector:'[data-action="jump"]',
-     before:{phase:v.phase,distance:v.distance},input:'direct trusted Playwright touchscreen'};
-    await page.touchscreen.tap(jumpHitPoint.x,jumpHitPoint.y);
-    jumpAction.touchPoint=jumpHitPoint;report.actions.push(jumpAction);
-    await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o13. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));jumped=true;}}
+  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady||v.distance>=94&&v.distance<110)){
+   want=1;
+   if(v.lane===1&&v.distance>=96&&v.distance<=105){
+    // Read the actual READY cue at frame cadence INSIDE the browser.
+    // Polling HUD across remote procedure calls can consume this 1.1s
+    // physical jump-buffer window before input reaches the rider.
+    const ready=await page.waitForFunction(()=>{
+     const root=document.querySelector('#coast'),button=document.querySelector('[data-action="jump"]');
+     return root?.dataset.phase==='finished'||button?.classList.contains('ready')===true;
+    },null,{timeout:4500,polling:'raf'}).then(()=>true).catch(()=>false);
+    if(ready){
+     jumpProgressBefore={gold:v.gold,jumps:v.jumps};
+     const action={at:new Date().toISOString(),type:'tap',selector:'[data-action="jump"]',
+      before:{phase:v.phase,distance:v.distance},input:'trusted touchscreen after in-page READY observation'};
+     await page.touchscreen.tap(jumpHitPoint.x,jumpHitPoint.y);
+     action.touchPoint=jumpHitPoint;report.actions.push(action);
+     await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1500}).catch(()=>{});
+     const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();
+     check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Real prepared cue followed by trusted touch; never use stale distance as an action proxy'});
+     console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));
+     jumped=true;
+    }
+   }
+  }
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   // The authored 130m RIGHT car and 140m CENTRE barrier are a coupled
