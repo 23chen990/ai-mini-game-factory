@@ -665,6 +665,31 @@ export function patchCourseSkyAndScenery(source) {
   return result;
 }
 
+/** Urban art-direction pass: less neon turf and trees next to realistic GLBs.
+ * No vegetation count, collider, shadow, map or player handling changes.
+ * Patch only receipt-verified original render input, fail closed on drift. */
+export function patchUrbanGrassColor(source) {
+  const old = 'else col.setRGB(0.88 + n * 0.2, 0.97 + n * 0.08, 0.86);';
+  const next = 'else col.setRGB(0.78 + n * 0.10, 0.85 + n * 0.06, 0.78);';
+  if(source.includes(next))return source;
+  if(source.split(old).length!==2)throw Error('Urban ground color anchor changed');
+  return source.replace(old,next);
+}
+
+/** Authored palette only; no extra foliage draws on low-end phones. */
+export function patchUrbanTreeColor(source) {
+  const edits=[
+    ['leafColor = 0x4caf50','leafColor = 0x4b8960'],
+    ['rnd() < 0.3 ? 0x6fbf4a : 0x3f9e4a','rnd() < 0.3 ? 0x689467 : 0x437b55']
+  ];
+  const patched = edits.filter(([a,b])=>source.includes(b));
+  if(patched.length===edits.length)return source;
+  if(patched.length||edits.some(([a])=>source.split(a).length!==2))
+    throw Error('Urban foliage palette anchor changed');
+  for(const [from,to] of edits)source=source.replace(from,to);
+  return source;
+}
+
 /** Only the procedural DESERT ground away from the road gets stronger dune relief.
  * The pinned buildGround function independently carves a safe corridor around
  * the track; no road, car, AI or collisions are patched by this transform.
@@ -1035,7 +1060,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   // Distinct new desert roads may intersect giant fixed pyramid sculptures.
   const nativePropsPath = path.join(project, 'src/props.js');
   await writeFile(nativePropsPath,
-    patchFixedDesertLandmarks(await readFile(nativePropsPath,'utf8')));
+    patchUrbanTreeColor(patchFixedDesertLandmarks(await readFile(nativePropsPath,'utf8'))));
   // Keep the original four bridges/tunnels and all the native physics/checkpoints/AI.
   for (const [nativeName, adapterName, ownedName, transform] of [
     ['layouts.js', 'race-track-design.mjs', 'track-design.mjs', patchRaceLayouts],
@@ -1095,7 +1120,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   let adaptedMain = beforeMain;
   for(const patch of [patchGeneratedCarStartup,patchGeneratedCarPresentation,patchHomeAtmosphere,patchMobileInitialRendering,patchMobileMidRendering,patchRacingSource,patchV8CameraFeel,patchV10NativeCamera,patchV8PointToPoint,
     patchManualNitroEdge,patchCareerRouteSource,patchV10NativeRacecraftWorld,patchV11PhysicalRivalWorld,patchShortcutNativeWorld,
-    patchCourseSkyAndScenery,patchRaceDesertRelief,patchUserCarWorldSource])
+    patchCourseSkyAndScenery,patchUrbanGrassColor,patchRaceDesertRelief,patchUserCarWorldSource])
     adaptedMain=patch(adaptedMain);
   await writeFile(path.join(project, 'src/main.js'), adaptedMain);
   // The template imports its sibling, but generated native main.js uses

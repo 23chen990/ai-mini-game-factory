@@ -571,3 +571,23 @@ test('V11.6 initial render adapter rejects partial and changed native constructo
   const patched = api.patchMobileInitialRendering(nativeGraphicsFixture);
   assert.equal(api.patchMobileInitialRendering(patched), patched);
 });
+
+test('V11.8 urban foliage and grass palette mute saturation with no new geometry or AI edits', () => {
+  const props = [
+    'function addTree(b, x, y, z, s, rot, leafColor = 0x4caf50) {',
+    '  b.add(g.crown, flat(leafColor), M(x, y, z, rot, s));',
+    '}',
+    'const light = rnd() < 0.3 ? 0x6fbf4a : 0x3f9e4a;',
+  ].join('\n');
+  const tree = api.patchUrbanTreeColor(props);
+  assert.match(tree, /leafColor = 0x4b8960/);
+  assert.match(tree, /0x689467 : 0x437b55/);
+  assert.match(tree, /b\.add\(g\.crown, flat\(leafColor\)/);
+  assert.equal(api.patchUrbanTreeColor(tree), tree);
+  assert.throws(() => api.patchUrbanTreeColor(props.replace('0x6fbf4a','0x6fbf4b')), /anchor/);
+  const road = 'else col.setRGB(0.88 + n * 0.2, 0.97 + n * 0.08, 0.86);';
+  const tuned = api.patchUrbanGrassColor('if (id === "city") {\n'+road+'\n}');
+  assert.match(tuned, /0\.78 \+ n \* 0\.10, 0\.85 \+ n \* 0\.06, 0\.78/);
+  assert.equal(api.patchUrbanGrassColor(tuned), tuned);
+  assert.throws(() => api.patchUrbanGrassColor('new unknown ground'), /anchor/);
+});
