@@ -135,16 +135,16 @@ test('static coast boot appears before the old PC intro and old intro stays hidd
  assert.throws(()=>brandPelicanBoot(result),/anchor changed/);
 });
 
-test('early 2.25-second mobile jump queue is real and cannot arm from too far away',()=>{
+test('1.1-second mobile jump queue is real and cannot arm too early',()=>{
  const ready=newRun(1);
- ready.distance=124;ready.lane=0;ready.laneTarget=0;ready.laneIndex=1;
+ ready.distance=133;ready.lane=0;ready.laneTarget=0;ready.laneIndex=1;
  input(ready,'jump');
- assert.equal(ready.bufferedJump,'l1-o1','player gets an actual visible two-second preparation window');
- assert.equal(ready.vy,0,'prepared touch must not trigger an immediate false jump');
- tick(ready,2);
+ assert.equal(ready.bufferedJump,'l1-o1','1.1-second window must queue the exact barrier');
+ assert.equal(ready.vy,0,'queued touch must not trigger an immediate false jump');
+ tick(ready,1.5);
  assert.ok(ready.events.some(e=>e.type==='jump'&&e.objectId==='l1-o1'&&e.buffered===true));
  const tooFar=newRun(1);
- tooFar.distance=120;input(tooFar,'jump');
- assert.equal(tooFar.bufferedJump,null,'jump cannot arm a hazard beyond the intentional 2.25s window');
- assert.ok(tooFar.vy>0,'ordinary early swipe remains a real jump');
+ tooFar.distance=124;input(tooFar,'jump');
+ assert.equal(tooFar.bufferedJump,null,'an early 2-second press must not automatically clear the barrier');
+ assert.ok(tooFar.vy>0,'ordinary early swipe is still a real jump');
 });
