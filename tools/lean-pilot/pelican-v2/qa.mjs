@@ -107,11 +107,19 @@ async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={})
 // Returning to centre by 42m also keeps the right-hand vehicle genuinely lethal.
 // Two genuine adjacent touches clear the V7 opening. Longer probes must
 // also avoid the 110m added centre barrier, not assume a permanently clear lane.
-async function clearV7Opening(target){
+async function clearV7Opening(target,{pedestrianApproach=false}={}){
  if(target!==83&&target!==115)throw Error('Unknown V7 opening target '+target);
  await waitDistance(20);await tap('[data-action="left"]');
  await waitDistance(42);await tap('[data-action="right"]');
  if(target===115){await waitDistance(94);await tap('[data-action="left"]',{fastReaction:true});}
+ // First pedestrian reaches the far-right lane near 89m. Two genuine
+ // adjacent touch nudges must start soon after the 75m centre barrier,
+ // before software-renderer input latency consumes the reaction window.
+ if(target===83&&pedestrianApproach){
+  await waitDistance(79);
+  await tap('[data-action="right"]',{fastReaction:true});
+  await tap('[data-action="right"]',{fastReaction:true});
+ }
  await waitDistance(target);
  const result=await snapshot(),event=id=>result.events.some(e=>e.objectId===id);
  check('v7-opening-three-beat-escape-'+target,
@@ -204,12 +212,20 @@ try{
    // Wait for terminal status, never for a fleeting CSS crash class
    // after screenshot latency has already elapsed.
    await page.waitForFunction(()=>document.querySelector('#coast')?.dataset.phase==='finished',null,{timeout:20000});
-   await shot('vehicle-accident');const crash=await snapshot();await page.locator('#co-modal').waitFor({state:'visible'});const presentation=await page.evaluate(()=>window.__qaCrashFrames);const visibleFrames=presentation.filter(f=>f.crashing&&f.modalHidden),visibleSpanMs=(visibleFrames.at(-1)?.at??0)-(visibleFrames[0]?.at??0);check('accident-visible-before-settlement',visibleFrames.length>=4&&visibleSpanMs>=180,{phase:crash.phase,reason:crash.reason,settlementInitiallyHidden:visibleFrames.length>0,visibleSpanMs,frames:presentation,note:'Continuous read-only DOM frames verify the actual crash display; later RPC latency is not used as a visibility assertion.'});await shot('vehicle-impact');check('car-ends-round',crash.reason==='vehicle',crash);
+   await shot('vehicle-accident');const crash=await snapshot();await page.locator('#co-modal').waitFor({state:'visible'});const presentation=await page.evaluate(()=>window.__qaCrashFrames);const visibleFrames=presentation.filter(f=>f.crashing&&f.modalHidden),visibleSpanMs=(visibleFrames.at(-1)?.at??0)-(visibleFrames[0]?.at??0);check('accident-visible-before-settlement',visibleFrames.length>=2&&visibleSpanMs>=350&&presentation.every(f=>!f.crashing||f.modalHidden),{phase:crash.phase,reason:crash.reason,settlementInitiallyHidden:visibleFrames.length>0,visibleSpanMs,frames:presentation,note:'Continuous read-only DOM frames verify the actual crash display; later RPC latency is not used as a visibility assertion.'});await shot('vehicle-impact');check('car-ends-round',crash.reason==='vehicle',crash);
   await page.waitForTimeout(1200);const frozen=await snapshot();check('crash-freezes-score',frozen.count===crash.count&&frozen.distance===crash.distance,{crash,frozen});
   const n=navs;await tap('#co-replay');await page.waitForTimeout(700);check('failure-replay-without-navigation',navs===n&&(await snapshot()).phase==='running',{navigationCount:navs});await tap('#co-pause');await tap('#co-select');await tap('[data-level="1"]');await tap('#co-start');
   // Exact crossing position: two right nudges from neutral reach the outer
   // road, rather than assuming a fractional 1.18m nudge is a lane centre.
-  await clearV7Opening(83);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();
+  await clearV7Opening(83,{pedestrianApproach:true});
+   await page.waitForFunction(()=>{
+    const run=window.__coast.snapshot();
+    return run.stun>2.7||run.phase==='finished';
+   },null,{timeout:15000});
+   const ped=await snapshot();
+   check('pedestrian-stun-reached-by-real-prepared-touch',ped.phase==='running'&&ped.stun>2.7,
+    {phase:ped.phase,reason:ped.reason,distance:ped.distance,stun:ped.stun,
+     events:ped.events.filter(e=>['pedestrian-hit','failed'].includes(e.type)).slice(-3)});
   // Read the actual timer before software PNG capture can consume the stun.
   await page.waitForTimeout(800);const waiting=await snapshot();
   check('pedestrian-stops-but-countdown-runs',
