@@ -39,6 +39,18 @@ export function steerBy(r, offset, source='hold') {
  if(!Number.isFinite(offset))return false;
  return steerTo(r,(r?.laneTarget??0)+clamp(offset,-4.3,4.3),source);
 }
+/** The same physical window must drive the READY button and the native
+ * buffer. A late illuminated button used to encourage impossible jumps:
+ * after the barrier entered the 3.15m trigger zone the jump was no longer
+ * queueable even though the UI still said READY. */
+export function readyJumpBarrier(r) {
+ if(!r||r.phase!=='running'||r.stun>0||r.y!==0||r.vy!==0||r.bufferedJump)return null;
+ const next=r.obstacles.filter(o=>o.kind==='barrier'&&!o.hit&&!o.passed&&
+   Math.abs(LANES[o.lane]-r.laneTarget)<.72&&o.x>r.distance).sort((a,b)=>a.x-b.x)[0];
+ const remaining=next?(next.x-r.distance)/Math.max(r.speed,.01):Infinity;
+ return next&&remaining<=JUMP_BUFFER_SECONDS&&
+   next.x-r.distance>JUMP_TRIGGER_METERS+.15 ?next:null;
+}
 export function input(r,action) {
  if(action==='pause'&&r.phase==='running'){r.phase='paused';event(r,'pause');return;}
  if(action==='resume'&&r.phase==='paused'){r.phase='running';event(r,'resume');return;}
@@ -49,12 +61,9 @@ export function input(r,action) {
   steerBy(r,(action==='left'?-1:1)*TAP_STEER_DISTANCE,'tap');
  }
  if(action==='jump'&&r.y===0&&r.vy===0&&!r.bufferedJump){
-  const next=r.obstacles.filter(o=>o.kind==='barrier'&&!o.hit&&!o.passed&&
-    Math.abs(LANES[o.lane]-r.laneTarget)<.72&&o.x>r.distance).sort((a,b)=>a.x-b.x)[0];
-  const remaining=next?(next.x-r.distance)/Math.max(r.speed,.01):Infinity;
-  if(next&&remaining<=JUMP_BUFFER_SECONDS&&next.x-r.distance>JUMP_TRIGGER_METERS+.15&&Math.abs(r.laneTarget-LANES[next.lane])<.75){
-   r.bufferedJump=next.id;event(r,'jump-buffered',{objectId:next.id});
-  }else{r.vy=4.4;event(r,'jump');}
+  const next=readyJumpBarrier(r);
+  if(next){r.bufferedJump=next.id;event(r,'jump-buffered',{objectId:next.id});}
+  else{r.vy=4.4;event(r,'jump');}
  }
 }
 export function sweptHit(a,b,hx,hz) {
