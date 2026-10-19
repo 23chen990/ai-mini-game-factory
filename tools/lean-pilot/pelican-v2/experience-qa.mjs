@@ -62,6 +62,11 @@ try{
  await tap('[data-action="left"]');
  await shot('actual-offcentre-second-fish-caught');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
+ // Cache the visible right-thumb centre while it is safe to inspect layout.
+ // The actual jump below still uses a trusted browser touchscreen tap.
+ const jumpHitPoint=await page.locator('[data-action="jump"]').evaluate(node=>{
+  const box=node.getBoundingClientRect();return {x:box.left+box.width/2,y:box.top+box.height/2};
+ });
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  let jumped=false,prizeFeedbackSeen=false,bonusShot=false,choiceShot=false,goldShot=false,leftWarning=false,rightWarning=false,earnedPrizeCue=false,jumpProgressBefore={gold:Infinity,jumps:Infinity};
  let escapedBonus=false,escapeLane=null,escapeUntil=-1;
@@ -93,29 +98,36 @@ try{
   if(jumped&&!prizeFeedbackSeen&&!earnedPrizeCue&&v.lanes[1].kind==='fish'&&v.lanes[1].text.includes('🌟')){
    const observed=await snap();
    if(observed.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o13'&&e.jumped)&&!observed.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o13')){
-    earnedPrizeCue=true;await shot('earned-jump-prize-cue');
+    earnedPrizeCue=true;
    }
   }
   if(escapedBonus&&v.distance<escapeUntil){
-   const safe=[escapeLane,0,2,1].filter((i,index,arr)=>Number.isInteger(i)&&arr.indexOf(i)===index&&!risky(i)&&!v.lanes[i].danger);
+   // The 140m middle barrier is still physically lethal. A later red
+   // warning for the distant 205m side barrier must not lure the rider
+   // back across 140m. Keep a side lane unless its own deadline is real
+   // and imminent; reassess the middle lane only after the rear wheel
+   // clears the 140m collision envelope.
+   const safe=[escapeLane,0,2].filter((i,index,arr)=>
+    Number.isInteger(i)&&arr.indexOf(i)===index&&!risky(i)&&
+    (!v.lanes[i].danger||seconds(i)>3.5));
    want=safe[0]??v.lane;escapeLane=want;
   }
   else if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=90&&v.distance<110)){want=1;if(v.lane===1&&v.distance>=103&&(v.jumpReady||seconds(1)<=1.0)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};
+  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=90&&v.distance<110)){want=1;if(v.lane===1&&v.distance>=102&&(v.jumpReady||seconds(1)<=1.0)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};
     // Preserve the player's real READY decision without two extra remote
     // snapshot/rAF roundtrips before the native touchscreen event. In the
     // 1.1s physical queue, slow software WebGL otherwise consumes almost the
     // whole window before feedback can become visible.
     const jumpAction={at:new Date().toISOString(),type:'tap',selector:'[data-action="jump"]',
      before:{phase:v.phase,distance:v.distance},input:'direct trusted Playwright touchscreen'};
-    jumpAction.touchPoint=await tapVisible(page,'[data-action="jump"]');
-    report.actions.push(jumpAction);
-    await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o13. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
+    await page.touchscreen.tap(jumpHitPoint.x,jumpHitPoint.y);
+    jumpAction.touchPoint=jumpHitPoint;report.actions.push(jumpAction);
+    await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o13. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));jumped=true;}}
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
   if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
-  if(!bonusShot&&(await snap()).events.some(e=>e.type==='fish-caught'&&e.bonus&&e.golden)){bonusShot=true;await shot('jump-gold-earned');}
+  if(!bonusShot&&(await snap()).events.some(e=>e.type==='fish-caught'&&e.bonus&&e.golden))bonusShot=true;
   if(!leftWarning&&v.lanes[2].kind==='pedestrian'&&seconds(2)>=2){leftWarning=true;check('left-pedestrian-warns-right-at-least-two-seconds',true,v);await shot('left-pedestrian-warning');}
   if(!rightWarning&&v.lanes[0].kind==='pedestrian'&&seconds(0)>=2){rightWarning=true;check('right-pedestrian-warns-left-at-least-two-seconds',true,v);await shot('right-pedestrian-warning');}
   await page.waitForTimeout(65);
