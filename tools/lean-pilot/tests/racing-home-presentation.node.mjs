@@ -160,6 +160,6 @@ test('V11.8 foreground tint stays menu-only and has no expensive backdrop filter
   assert.match(mobileCss, /V11\.8 showroom atmosphere/);
   assert.match(mobileCss, /#race-kit\[data-phase="ready"\]::before/);
   const latest = mobileCss.slice(mobileCss.lastIndexOf('V11.8 showroom atmosphere'));
-  assert.doesNotMatch(latest, /backdrop-filter/);
+  assert.doesNotMatch(latest, /backdrop-filter\s*:/, 'no active full-screen backdrop filter declaration');
   assert.doesNotMatch(latest, /data-phase="race"/);
 });
