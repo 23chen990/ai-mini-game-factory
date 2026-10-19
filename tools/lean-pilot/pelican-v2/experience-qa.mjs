@@ -137,7 +137,11 @@ try{
   // LEFT route is the only physically safe through-line until its back wheel
   // clears 140m. Do not turn back for a fish at 139m.
   // This is a normal trusted-touch choice; never rewrite run state.
-  if(jumped&&v.distance>=115&&v.distance<152&&!v.lanes[0].danger)want=0;
+  // Radar can prioritise a later red vehicle over this already-verified
+  // 130m right-car / 140m centre-barrier opening. The authored left lane
+  // stays unblocked through 152m: finish the real left-side manoeuvre
+  // instead of making a fatal right tap near 139m.
+  if(jumped&&v.distance>=115&&v.distance<152)want=0;
   if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
   if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
   if(!bonusShot&&(await snap()).events.some(e=>e.type==='fish-caught'&&e.bonus&&e.golden))bonusShot=true;
