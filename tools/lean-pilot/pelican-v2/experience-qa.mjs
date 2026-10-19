@@ -348,19 +348,24 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
  await page.evaluate(()=>{window.__qaCancellationTouches=[];document.querySelector('#coast').addEventListener('pointerdown',e=>{const action=e.target.closest?.('[data-action]')?.dataset.action;if(action)window.__qaCancellationTouches.push({action,isTrusted:e.isTrusted,pointerType:e.pointerType,at:performance.now()});},{capture:true});});
  // We must land a trusted jump and immediate safe lane change while
  // 35m barrier's 1.1s queue is active (about 27-32m). An ordinary resume
- // RPC itself can advance ~4m, so pause on a genuine touch at ~25m, then
+ // RPC itself can advance ~4m, so pause on a genuine touch at ~19m, then
  // resume through the visible UI and queue two native consecutive taps.
  // No state injection, fake touch events or collision forgiveness.
  await page.waitForFunction(()=>{
-  const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=24.2;
+  const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=19;
  },null,{timeout:25000});
  const beforePause=await snap();
- if(beforePause.phase!=='running'||beforePause.distance>26.6)
+ if(beforePause.phase!=='running'||beforePause.distance>23.8)
   throw Error('Physical jump cancellation setup missed its safe pause window');
  await tap('#co-pause');
  const pauseProof=await snap();
- if(pauseProof.phase!=='paused'||pauseProof.distance>27.5)
+ if(pauseProof.phase!=='paused'||pauseProof.distance>26.5)
   throw Error('Native pause must freeze the rider before READY starts');
+ await page.waitForTimeout(180);
+ const pausedStable=await snap();
+ check('native-pause-freezes-distance-and-time',
+  pausedStable.phase==='paused'&&pausedStable.distance===pauseProof.distance&&
+  pausedStable.elapsed===pauseProof.elapsed,{pauseProof,pausedStable});
  await tap('#co-resume');
  // V7 accepts a queued jump only within 1.1 seconds of the 35m barrier.
  // With the old 24m pause, pressing instantly at 25.7m is an ordinary
