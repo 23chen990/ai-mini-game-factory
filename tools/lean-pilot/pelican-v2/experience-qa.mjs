@@ -305,29 +305,24 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
  const pair=await page.evaluate(()=>Object.fromEntries(['jump','right'].map(action=>{const n=document.querySelector(`[data-action="${action}"]`),r=n.getBoundingClientRect();return [action,{x:r.left+r.width/2,y:r.top+r.height/2}];})));
  const cancellationSession=await touchSession(page,engine);
  await page.evaluate(()=>{window.__qaCancellationTouches=[];document.querySelector('#coast').addEventListener('pointerdown',e=>{const action=e.target.closest?.('[data-action]')?.dataset.action;if(action)window.__qaCancellationTouches.push({action,isTrusted:e.isTrusted,pointerType:e.pointerType,at:performance.now()});},{capture:true});});
- // Prepare the physical timing window before sending the two genuine
- // touchscreen events. READY begins about 27m, but on software WebGL the
- // locator wait plus protocol handoff can consume the whole ~0.7s window.
- // Pause through the actual visible button at early READY, then resume and
- // immediately send an ordered trusted jump->right sequence.
+ // We must land a trusted jump and immediate safe lane change while
+ // 35m barrier's 1.1s queue is active (about 27-32m). An ordinary resume
+ // RPC itself can advance ~4m, so pause on a genuine touch at ~25m, then
+ // resume through the visible UI and queue two native consecutive taps.
+ // No state injection, fake touch events or collision forgiveness.
  await page.waitForFunction(()=>{
-  const v=window.__coast.snapshot(),ready=document.querySelector('[data-action="jump"].ready');
-  return v.phase==='finished'||(v.distance>=27&&!!ready);
+  const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=24.2;
  },null,{timeout:25000});
- const beforeQueue=await snap();
- if(beforeQueue.phase!=='running'||beforeQueue.distance>31.6)
-  throw Error('Cannot safely queue 35m jump after the physical trigger boundary');
+ const beforePause=await snap();
+ if(beforePause.phase!=='running'||beforePause.distance>26.6)
+  throw Error('Physical jump cancellation setup missed its safe pause window');
  await tap('#co-pause');
- // The real visible resume control is part of the SAME trusted touch stream.
- // A separate resume request may advance 4-5m before jump arrives, past the
- // actual 3m trigger line; all three native events must be back-to-back.
- const resumePoint=await page.locator('#co-resume').evaluate(node=>{
-  const r=node.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};
- });
- if(!await page.locator('#co-resume').isVisible())throw Error('Native resume control must be visible before queued touches');
- report.actions.push({at:new Date().toISOString(),type:'tap',selector:'#co-resume',touchPoint:resumePoint,input:'ordered trusted resume/jump/right'});
- for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered Input.dispatchTouchEvent; points measured before queue',normalInputOnly:true});
- await queueTapSequence(cancellationSession,engine,[resumePoint,pair.jump,pair.right]);
+ const pauseProof=await snap();
+ if(pauseProof.phase!=='paused'||pauseProof.distance>27.5)
+  throw Error('Native pause must freeze the rider before READY starts');
+ await tap('#co-resume');
+ for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered native touchscreen session after genuine resume',normalInputOnly:true});
+ await queueTapSequence(cancellationSession,engine,[pair.jump,pair.right]);
  // The V7 opening 35m barrier replaces the original 140m as this
  // buffer-cancellation scenario; waiting for 152m otherwise hangs after
  // the rider's genuine opening crash. No state edits or collision bypass.
