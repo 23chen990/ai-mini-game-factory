@@ -566,14 +566,18 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
       enemyShots:firedRookie.openingBot?.realShots,
       cueObserved:firstKillCueSeen});
     if(firstKillCueSeen)await snap('v17-first-native-kill-visible');
-    if(!firstKillCueSeen || !firedRookie.player.kills){
+    if(!firedRookie.player.kills){
       // These are genuine repeated human-like LOOK -> FIRE gestures. Every
       // touch is fully released before starting another, even across deaths;
       // only the actual native player, original bullets and world line of
       // sight can produce a kill. No hidden actor coordinates are consumed.
       for(let n=0;n<72;n++){
         const pre=await inspect();
-        if(pre.time-rookie.time>=29)break;
+        // Unlike the old V14 team-fight, V20 tags is a ONE-kill microgame.
+        // The result screen is the intended payoff when the first genuine
+        // hit finishes the encounter. A paused victory has a frozen clock;
+        // never keep pressing the hidden FIRE button after settlement.
+        if(pre.phase==='finished'||pre.time-rookie.time>=29)break;
         if(!pre.player?.alive){
           await sleep(300);continue;
         }
@@ -616,7 +620,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
           firstKillCueSeen=true;
           await snap('v17-first-native-kill-visible');
         }
-        if((state.player?.kills||0)>=1&&firstKillCueSeen)break;
+        if((state.player?.kills||0)>=1)break;
       }
     }
     const killResult=await inspect();
@@ -631,17 +635,41 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
         coverFirst30,openingAimTrace:openingAimTrace.slice(-30),trace:killPressTrace});
     const observedCues=await page.evaluate(()=>
       window.__cfKillCueObservations||[]);
+    const terminalFirstKill=await page.evaluate(()=>{
+      const root=document.querySelector('#mobile-kit');
+      const h=document.querySelector('#mk-heading');
+      return {
+        phase:root?.dataset.phase,outcome:root?.dataset.outcome,
+        title:h?.textContent||'',
+        visible:!!h&&getComputedStyle(h).display!=='none'&&
+          h.getBoundingClientRect().width>0&&h.getBoundingClientRect().height>0,
+      };
+    });
+    // First native kill ends a ONE-enemy microlevel immediately; the battle
+    // HUD is intentionally hidden after settlement. A genuinely visible
+    // result heading bearing "first kill" is equivalent player-visible proof,
+    // but ONLY if the original native player kill counter really incremented.
+    const firstKillPresented=killResult.player?.kills>=1&&(
+      firstKillCueSeen&&observedCues.some(e=>e.displayed)||
+      terminalFirstKill.phase==='finished'&&terminalFirstKill.outcome==='won'&&
+      terminalFirstKill.visible&&terminalFirstKill.title.includes('首杀达成'));
     check('first30-kill-reward-rendered-from-real-player-counter',
-      firstKillCueSeen&&observedCues.some(e=>e.displayed),
-      {trace:killPressTrace,observedCues});
-    // Software WebGL can render 6 seconds of native simulation in 11 wall
-    // seconds. Always wait on the ORIGINAL GAME CLOCK, never force timers or
-    // weaken the 10-second tactical release; capture the wall/sim gap as
-    // performance evidence rather than claiming physical-device readiness.
+      firstKillPresented,
+      {trace:killPressTrace,observedCues,terminalFirstKill,
+        nativeKills:killResult.player?.kills});
+    // Read the authoritative simulated clock, NOT wall time. A solo first
+    // kill can legitimately finish the entire first level within ~3 native
+    // seconds: its clock then stops and a blind wait for second 11 is dead.
+    // In that case, demand a genuine native kill + visible victory result.
+    // If the encounter is still running, retain the full native 11s threat
+    // release proof without accelerating time or changing enemy behavior.
     const wallStart=performance.now();
     await page.waitForFunction(deadline=>{
       const g=window.__H5NativeGame;
-      return g?.playing===true&&g?.time>=deadline;
+      const root=document.querySelector('#mobile-kit');
+      return g?.time>=deadline||
+        (root?.dataset.phase==='finished'&&root?.dataset.outcome==='won'&&
+         (g?.player?.stats?.k||0)>=1);
     },rookie.time+11,{timeout:75_000,polling:250});
     const afterRookieWindow=await inspect();
     check('first30-genuine-native-player-hit',afterRookieWindow.player?.hits>=1,
@@ -651,12 +679,17 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // The original opponent was genuinely eliminated in the opening;
     // it is fair for a player's decisive first kill to PREVENT return fire.
     // A separate no-attack branch below must prove genuine counterfire.
-    check('stationary-novice-target-released-by-real-11sec-native-clock',
-      afterRookieWindow.time-rookie.time>=10.5&&
-      (afterRookieWindow.openingBot?.training===false||
-       afterRookieWindow.openingBot?.alive===false),
+    const genuinelyWonEarly=afterRookieWindow.phase==='finished'&&
+      terminalFirstKill.outcome==='won'&&
+      afterRookieWindow.player?.kills>=1&&
+      afterRookieWindow.time-rookie.time<10.5;
+    check('native-scout-released-or-first-kill-completes-stage',
+      genuinelyWonEarly||
+      (afterRookieWindow.time-rookie.time>=10.5&&
+       (afterRookieWindow.openingBot?.training===false||
+        afterRookieWindow.openingBot?.alive===false)),
       {before:rookie.openingBot,after:afterRookieWindow.openingBot,
-       simulatedSec:afterRookieWindow.time-rookie.time,
+       genuinelyWonEarly,simulatedSec:afterRookieWindow.time-rookie.time,
        wallSec:+wallSec.toFixed(2),
        browser:'SWIFTSHADER_CHROMIUM_NOT_A_REAL_PHONE'});
     await snap('v14-first30-live-pressure');
@@ -664,7 +697,7 @@ export async function reviewCfV14({base=path.join(ROOT,'runs')}={}){
     // gameplay blocker. Fail fast WITH the actual screenshots/trace instead
     // of spending ~12min on downstream maps after the key gate has failed.
     if(rookieLite&&(!killResult.player?.kills||
-       !afterRookieWindow.player?.hits||!firstKillCueSeen)){
+       !afterRookieWindow.player?.hits||!firstKillPresented)){
       throw Error('H5_NATIVE_FIRST30_NOT_PLAYABLE: inspect actual LOS, touch and shot traces');
     }
 
