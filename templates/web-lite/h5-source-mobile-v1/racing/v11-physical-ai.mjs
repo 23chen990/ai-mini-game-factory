@@ -14,6 +14,16 @@ const relative = (value, origin, length) => {
 };
 const finite = Number.isFinite;
 const DEFAULT_TUNE = Object.freeze({ vmax: 55, turnRate: 1.9, brake: 45, driftYaw: 1.5, driftYawAlign: .85 });
+/** Faster rivals use more of the *same* physical lateral-grip envelope.
+ * This increases target corner speed only; the native PlayerCar still owns
+ * traction, steering, wall impacts, braking, nitro and race progress.
+ * Weak drivers retain their previous limits; no catch-up rubber banding. */
+export function v11CornerGripBudget(ability) {
+  const skill = clamp(Number.isFinite(ability) ? ability : 1, .65, 2.2);
+  const previous = 25 + skill * 10;
+  return previous + Math.max(0, skill - 1.1) * 9;
+}
+
 const emptyInput = () => ({
   up: false, down: false, left: false, right: false, shift: false,
   upPressed: false, wPressed: false, nitroPressed: false,
@@ -153,6 +163,7 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   input.steerAxis = clamp((yaw - gripLag * .8) / Math.max(.4, normalTurn), -1, 1);
 
   let desired = Math.min(tune.vmax ?? 55, 48 + ability * 4);
+  const gripBudget = v11CornerGripBudget(ability);
   let largestCurve = 0;
   let nearCurve = 0;
   for (let ahead = 0; ahead <= 105; ahead += 10) {
@@ -161,7 +172,7 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
     const absolute = Math.abs(curvature);
     if (ahead <= 20 && absolute > Math.abs(nearCurve)) nearCurve = curvature;
     largestCurve = Math.max(largestCurve, absolute);
-    const gripBudget = 25 + ability * 10;
+    // The requested speed never bypasses native traction or steering.
     const cornerLimit = Math.sqrt(gripBudget / Math.max(.0001, absolute));
     // Respect the native wheel's available yaw, including its high-speed
     // reduction. This is a braking decision, never a change to TUNE or speed.

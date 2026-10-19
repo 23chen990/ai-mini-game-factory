@@ -5,7 +5,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { pathToFileURL, URL } from 'node:url';
-import { createV11PhysicalAiClass, v11AiInput } from '../racing/v11-physical-ai.mjs';
+import { createV11PhysicalAiClass, v11AiInput, v11CornerGripBudget } from '../racing/v11-physical-ai.mjs';
 
 const trackFixture = () => {
   const track = {
@@ -35,6 +35,17 @@ const carFixture = track => ({
   lat: 0, personal: 0, skill: 1.7, rnd: () => 0, lapsDone: 0,
   proj: {}, drifting: false, nitroCount: 0, spin: 0, impact: 0,
 });
+test('native rivals get a bounded physical cornering pressure uplift, never direct speed', () => {
+  const old = skill => 25 + skill * 10;
+  assert.equal(v11CornerGripBudget(.65), old(.65));
+  assert.equal(v11CornerGripBudget(1.10), old(1.10));
+  assert.ok(v11CornerGripBudget(1.6) > old(1.6));
+  assert.ok(v11CornerGripBudget(1.6) < old(1.6) * 1.12);
+  assert.ok(v11CornerGripBudget(2.18) > v11CornerGripBudget(1.6));
+  assert.ok(v11CornerGripBudget(2.18) < old(2.18) * 1.22);
+  assert.equal(v11CornerGripBudget(NaN), old(1));
+});
+
 const physical = car => Object.fromEntries(['x','y','z','h','m','s','d','lat','lapsDone','progress','nitroCount'].map(key => [key, car[key]]));
 
 test('a committed shortcut survives recoverable contact after crossing its nominal start', () => {
