@@ -136,6 +136,9 @@ describe('CodexAccountProvider', () => {
 
     expect(client.requests[0]).toMatchObject({ label: 'BUILD', cwd: workspace, sandbox: 'workspace-write', timeoutMs: 900_000, maxRetries: 0 });
     expect(client.requests[0]?.prompt).toMatch(/implement.*test/i);
+    expect(client.requests[0]?.prompt).toContain('Inspect the existing source and tests before editing');
+    expect(client.requests[0]?.prompt).toContain('Do not re-scaffold or replace the existing project');
+    expect(client.requests[0]?.prompt).toContain('assetSource');
     expect(client.requests[0]?.prompt).toContain('resetGame');
     expect(client.requests[0]?.prompt).toContain('setRandomSeed');
     expect(client.requests[0]?.prompt).toMatch(/package scripts.*test.*typecheck/i);

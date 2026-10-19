@@ -30,7 +30,17 @@ class ExplicitRequirementsFixture extends MockAgentProvider {
       suggestedTemplate: 'cut-stack-dodge-v1', mechanics: document.mechanics,
       analysis: { schemaVersion: 1, targetRunId: input.targetRunId, status: 'READY',
         observations: [`The first-party document declares: ${document.notice}`], inferences: [], unknowns: [],
-        behaviorChecks: document.checks.map((check, index) => ({ ...check, sourceRefs: [{ path: source.path, sha256: source.sha256, locator: `/checks/${index} (authored requirement, not market observation)` }] })),
+        behaviorChecks: document.checks.map((check, index) => ({
+          ...check, sourceRefs: [{ path: source.path, sha256: source.sha256, locator: `/checks/${index} (authored requirement, not market observation)` }],
+          // A Boolean authored requirement, not a measured reference-game result.
+          // The independent paired review remains absent and blocks fidelity acceptance.
+          comparison: {
+            evidenceBasis: 'source-derived', referenceArtifact: { path: source.path, sha256: source.sha256 },
+            condition: `Authored fixture branch: ${check.stateBranch}`,
+            protocol: `${check.playerInput}; check ${check.expectedStateChange}; feedback order: ${check.visibleFeedback.eventOrder.join(' → ')}`,
+            metric: 'authored requirement satisfied', unit: 'boolean', referenceRange: { min: 1, max: 1 }, maxDelta: 0, minimumSamples: 1,
+          },
+        })),
         failurePressureContract: { schemaVersion: 1, purpose: 'Keep the first-party fixture pressure requirements attributable to their document.',
           evidence: [{ id: 'fixture-pressure', competitor: 'First-party requirements fixture', sourceRefs: [source.path], observed: ['The document declares a visible hazard and one-action retry.'], inferred: [], applicability: 'adapt', applicabilityRationale: 'Exercise the existing first-party template with an explicit original specification.', rejectExpression: ['third-party names', 'assets', 'UI', 'text', 'audio', 'tuning'], confidence: 'high' }],
           rules: [{ id: 'fixture-hazard', pressureType: 'hazard', ...document.pressure, sourceEvidenceRefs: ['fixture-pressure'], implementationImplications: ['Keep hazard contact distinguishable from soft target cutting.'] }],

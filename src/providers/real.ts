@@ -1,3 +1,5 @@
+import { BUILDER_CONTINUATION_INSTRUCTION } from '../core/builder-continuation.js';
+import { REFERENCE_COMPARISON_RESEARCH_INSTRUCTION } from '../core/reference-comparison.js';
 import { Agent, run } from '@openai/agents';
 import { ReferenceIntakeDraftSchema, type ReferenceIntakeEvidence } from '../schemas/reference-intake.js';
 import { blockedReferenceIntakeDraft, REFERENCE_INTAKE_INSTRUCTION } from '../core/reference-intake.js';
@@ -125,7 +127,7 @@ export class OpenAIAgentProvider implements AgentProvider {
     const recordingInstruction = hasFrames
       ? 'The text-only OpenAI provider cannot inspect run-local frame pixels. Return a non-null BLOCKED levelReconstruction with this limitation as an explicit unknown; never infer frames from filenames.'
       : 'Return levelReconstruction as null because no verified frame manifest is present.';
-    return this.generate('ReferenceResearchAgent', `Read only the sanitized, run-bound reference evidence in the context packet. ${recordingInstruction} Convert observed behavior into exact QA cases for all five dimensions: input_state, spatial_relation, failure_recovery, feedback_sequence and terminal_replay. Every case must cite a source path, SHA-256 and precise locator already present in the supplied evidence pack; keep object type, lifecycle/state branch, natural player input, expected state change, causal spatial relationship, world/screen feedback anchor, ordered visible events and the observed mobile viewport explicit. Also produce failurePressureContract with source-bound observed versus inferred pressure, applicability, player signal, escalation, attributable failure, recovery/replay, implementation implications and a no-copy boundary. Each pressure evidence sourceRefs value must exactly match a source path or SHA-256 in the evidence pack. Separate observations, inferences and unknowns. Never turn unknowns into facts, and never copy tuning, names, assets, text or UI expression. Return BLOCKED when any required dimension or pressure rule lacks source evidence. Return only ReferenceBehaviorAnalysisSchema.`, pack, ReferenceBehaviorAnalysisSchema, context);
+    return this.generate('ReferenceResearchAgent', `Read only the sanitized, run-bound reference evidence in the context packet. ${recordingInstruction} Convert observed behavior into exact QA cases for all five dimensions: input_state, spatial_relation, failure_recovery, feedback_sequence and terminal_replay. Every case must cite a source path, SHA-256 and precise locator already present in the supplied evidence pack; keep object type, lifecycle/state branch, natural player input, expected state change, causal spatial relationship, world/screen feedback anchor, ordered visible events and the observed mobile viewport explicit. Also produce failurePressureContract with source-bound observed versus inferred pressure, applicability, player signal, escalation, attributable failure, recovery/replay, implementation implications and a no-copy boundary. Each pressure evidence sourceRefs value must exactly match a source path or SHA-256 in the evidence pack. Separate observations, inferences and unknowns. Never turn unknowns into facts, and never copy tuning, names, assets, text or UI expression. Return BLOCKED when any required dimension or pressure rule lacks source evidence. ${REFERENCE_COMPARISON_RESEARCH_INSTRUCTION} Return only ReferenceBehaviorAnalysisSchema.`, pack, ReferenceBehaviorAnalysisSchema, context);
   }
 
   generateCompetitorResearch(seed: Seed, context?: AgentExecutionContext) {
@@ -250,7 +252,7 @@ export class OpenAIImageProvider implements ImageProvider {
 
 export class OpenAICodexProvider implements CodexProvider {
   private readonly codex = new Codex();
-  async build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; template: string; gameplayRevision?: unknown; interactionContinuityContract?: unknown; context?: AgentExecutionContext }) {
+  async build(input: { workspace: string; blueprint: GameBlueprint; styleLock: StyleLock; assets: AssetManifest; assetSource?: string; template: string; gameplayRevision?: unknown; interactionContinuityContract?: unknown; context?: AgentExecutionContext }) {
     required(process.env.OPENAI_API_KEY, 'OPENAI_API_KEY');
     const execution = input.context ? safeExecutionContext({ ...input.context, stage: input.context.stage ?? 'FULL_BUILD', sandbox: input.context.sandbox ?? 'workspace-write' }) : undefined;
     const model = execution?.model?.trim() || process.env.CODEX_MODEL;
@@ -261,7 +263,7 @@ export class OpenAICodexProvider implements CodexProvider {
     const continuityInstruction = input.interactionContinuityContract
       ? 'For every declared interaction, emit machine-readable node facts (feedback visibility, actual action candidates, success successors, failure recovery and physical result) into the run artifact requested by the factory. Use fixed-step traces; never substitute geometry distance or a state label for an observed result.'
       : '';
-    await thread.run(`Modify only this generated game workspace. Implement the supplied validated blueprint/style/assets without broad rewrites. ${fidelityInstruction} ${continuityInstruction} ${builderUiAnimationInstruction()} Sanitized factory context:\n${JSON.stringify(execution?.contextPacket ?? {})}\nInputs:\n${JSON.stringify(builderInputWithUiAnimationStandard(input))}`);
+    await thread.run(`Modify only this generated game workspace. Implement the supplied validated blueprint/style/assets without broad rewrites. ${BUILDER_CONTINUATION_INSTRUCTION} ${fidelityInstruction} ${continuityInstruction} ${builderUiAnimationInstruction()} Sanitized factory context:\n${JSON.stringify(execution?.contextPacket ?? {})}\nInputs:\n${JSON.stringify(builderInputWithUiAnimationStandard(input))}`);
     return { threadId: thread.id ?? undefined, verificationMode: 'full' as const, metrics: { provider: 'openai-codex', model: model ?? 'account-default', calls: 1 } };
   }
   async fix(input: { workspace: string; threadId?: string; qaReport: QaReport; context?: AgentExecutionContext }) {

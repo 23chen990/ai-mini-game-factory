@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { buildReferenceEvidencePack, evaluateReferenceEvidence, evaluateReplicaPreviewEvidence, normalizeReferenceBehaviorAnalysis } from '../../src/core/reference-evidence.js';
+import { syntheticComparisonChecks } from '../fixtures/reference-comparison.js';
 import { ReferenceBehaviorAnalysisSchema, ReferenceEvidencePackSchema } from '../../src/schemas/reference-evidence.js';
 import { referenceBehaviorChecks, referenceFailurePressureContract } from '../fixtures/reference-behavior.js';
 
@@ -172,15 +173,39 @@ describe('reference evidence pack', () => {
     await mkdir(path.join(root, 'input'), { recursive: true });
     await writeFile(path.join(root, 'input/reference-notes.txt'), 'Observed input, failure, recovery and feedback timing.');
     const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference, runRoot: root, requireSupplemental: true });
-    pack.behaviorChecks = referenceBehaviorChecks(pack.sourceFiles[0]!);
+    pack.behaviorChecks = syntheticComparisonChecks(referenceBehaviorChecks(pack.sourceFiles[0]!));
     pack.failurePressureContract = referenceFailurePressureContract(pack.sourceFiles[0]!);
     const result = evaluateReplicaPreviewEvidence(pack);
     expect(result.passed).toBe(true);
     expect(result.fidelity.coreLoopOrder).toEqual(reference.coreLoop);
     expect(result.fidelity.inputStateTransitions).toContain(pack.behaviorChecks[0]!.expectedStateChange);
     expect(result.fidelity.failureRecoveryRules.length).toBeGreaterThan(0);
-    expect(result.fidelity.feedbackTimingBands.immediateSeconds).toBe(1);
+    expect(result.fidelity.feedbackTimingBands).toMatchObject({immediateSeconds:1});
     await rm(root, { recursive: true, force: true });
+  });
+
+  it.each(['missing-protocol', 'inferred', 'unknown', 'unbound-source'] as const)('blocks %s before Builder, not only at post-build QA', async (gap) => {
+    const root = await mkdtemp(path.join(tmpdir(), 'reference-prebuild-'));
+    try {
+      await mkdir(path.join(root, 'input'));
+      const sourceText = 'Synthetic source fixture, not observed gameplay.';
+      await writeFile(path.join(root, 'input/reference-notes.txt'), sourceText);
+      const source = { path: 'input/reference-notes.txt', sha256: createHash('sha256').update(sourceText).digest('hex') };
+      const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference, runRoot: root, requireSupplemental: true });
+      pack.behaviorChecks = syntheticComparisonChecks(referenceBehaviorChecks(source)).map(({ comparison, ...check }) => {
+        if (gap === 'missing-protocol') return check;
+        if (gap === 'inferred' || gap === 'unknown') return { ...check, comparison: { ...comparison, evidenceBasis: gap } };
+        if (gap === 'unbound-source') comparison.referenceArtifact.sha256 = 'f'.repeat(64);
+        return { ...check, comparison };
+      });
+      pack.failurePressureContract = referenceFailurePressureContract(source);
+      const result = evaluateReplicaPreviewEvidence(pack);
+      expect(result.passed).toBe(false);
+      expect(result.fidelity.status).toBe('BLOCKED');
+      for (const check of pack.behaviorChecks) {
+        expect(result.blockers.some(item => item.startsWith(`preview:behavior-comparison:${check.id}:`))).toBe(true);
+      }
+    } finally { await rm(root, { recursive: true, force: true }); }
   });
 
   it('accepts only a verified target recording from the run provenance manifest', async () => {
@@ -201,7 +226,7 @@ describe('reference evidence pack', () => {
     const pack = await buildReferenceEvidencePack({ targetRunId: 'run-1', reference: { ...reference, source: { ...reference.source, researchFiles: [] } }, runRoot: root, requireSupplemental: true, provenanceManifest: manifest, provenanceExpected: expected });
     expect(pack.sourceFiles).toEqual(expect.arrayContaining([expect.objectContaining({ path: storedPath, sha256 })]));
     expect(evaluateReplicaPreviewEvidence(pack).passed).toBe(false);
-    pack.behaviorChecks = referenceBehaviorChecks(pack.sourceFiles[0]!);
+    pack.behaviorChecks = syntheticComparisonChecks(referenceBehaviorChecks(pack.sourceFiles[0]!));
     pack.failurePressureContract = referenceFailurePressureContract(pack.sourceFiles[0]!);
     expect(evaluateReplicaPreviewEvidence(pack).passed).toBe(true);
     await rm(root, { recursive: true, force: true });

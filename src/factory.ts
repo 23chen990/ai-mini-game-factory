@@ -4,6 +4,7 @@ import { appendFile, copyFile, lstat, mkdir, readFile, realpath, readdir, writeF
 import path from 'node:path';
 import { ReferenceIntakeApprovalSchema, ReferenceIntakeBriefSchema, ReferenceIntakeDraftSchema } from './schemas/reference-intake.js';
 import { approvedReferenceIntakeSeed, evaluateReferenceIntakeDraft, loadReferenceIntakeEvidence } from './core/reference-intake.js';
+import { buildReferenceComparisonTask } from './core/reference-comparison.js';
 import { researchPreviewInfrastructure } from './core/preview-infrastructure.js';
 import { buildProductReadinessReport } from './core/product-readiness.js';
 import { LiveVerificationInputSchema } from './schemas/live-verification.js';
@@ -367,6 +368,20 @@ export function createFactory(options: FactoryOptions = {}) {
     await store.save(state);
     await store.log(state.runId, 'run.waiting', { stage, evidence });
     return state;
+  }
+
+  async function waitForReferenceComparison(state: RunState, workspace: string, gate: ReturnType<typeof ReferenceFidelityGateSchema.parse>, inputs: string[]) {
+    const task = buildReferenceComparisonTask({ workspace, gate, inputArtifacts: inputs });
+    await store.writeArtifact(state.runId, 'reference-comparison-task.json', task);
+    const taskPath = 'human/reference-fidelity-review-task.md';
+    await writeFile(path.join(store.runRoot(state.runId), taskPath), [
+      '# 参考对照差异处理', '', `目标 run：${task.targetRunId}`, `唯一工作区：${task.workspace}`,
+      `阶段：${task.stage}；责任角色：${task.owner}；状态：待执行交接（非自动执行成功）`,
+      `当前构建 SHA-256：${task.buildHash}`, `契约 SHA-256：${task.contractHash}`, '',
+      '机器可读任务：artifacts/reference-comparison-task.json。', ...task.instructions,
+      '履行对应阶段及证据失效义务后再恢复；仅重新 resume 不表示任务已执行。', '',
+    ].join('\n'));
+    return setWaiting(state, task.stage, inputs, ['artifacts/reference-fidelity-gate.json', 'artifacts/reference-comparison-task.json', taskPath], gate.blockers.map((blocker) => `blocked:${blocker}`));
   }
 
   async function hashBuildDirectory(directory: string) {
@@ -3014,20 +3029,7 @@ export function createFactory(options: FactoryOptions = {}) {
     });
     await store.writeArtifact(runId, 'reference-fidelity-gate.json', fidelityGate);
     if (!fidelityGate.passed) {
-      const reviewTask = [
-        '# 参照玩法对照验收', '',
-        `目标 run：${runId}`, `唯一工作区：${workspace}`, `当前构建 SHA-256：${previewBuildHash}`, `契约 SHA-256：${fidelityGate.contractHash}`, '',
-        '由独立 QAAgent 或 HumanReviewer 执行；Builder/Fixer 不得自签。读取 game-playtest 技能。此任务只读取游戏，写入本 run 的 QA 证据。',
-        `输入：${path.join(runRoot, 'artifacts/reference-fidelity-contract.json')}、qa-report.json、runtime-product-gates.json。`,
-        '逐一检查 behaviorChecks：在声明视口从初始状态正常操作，覆盖精确对象和状态分支；检查状态变化、空间关系、反馈绑定对象和事件先后顺序。',
-        '截图与自然输入 trace 都必须真实存在并记录 SHA-256。trace 使用 NaturalFlowEvidenceSchema，transitions.name 使用对应 checkId；记录当前 buildHash、视口、正常操作、结算和重玩。',
-        'ReferenceFidelityReviewSchema 定义在 src/schemas/reference-fidelity.ts。按该 schema 写入 artifacts/reference-fidelity-review.json；contractHash 是规范化 ReferenceFidelityContractSchema.parse 结果的 JSON SHA-256。',
-        '每项结果记录实际观察，不得复制预期结果充当观察。缺证据、未到达分支或感知未通过时保留阻塞。文件校验不能代替画面审查。',
-        '修复仍按原有 QA → Fixer → QA 流程处理，保留原线程与累计尝试次数。',
-        `完成后执行：pnpm factory resume ${runId}`, '',
-      ].join('\n');
-      await writeFile(path.join(runRoot, 'human/reference-fidelity-review-task.md'), reviewTask);
-      return setWaiting(state, 'QA', ['artifacts/qa-report.json', 'artifacts/reference-fidelity-contract.json', ...recordingLevelInputs], ['artifacts/reference-fidelity-gate.json', 'human/reference-fidelity-review-task.md'], fidelityGate.blockers.map((blocker) => `blocked:${blocker}`));
+      return waitForReferenceComparison(state, workspace, fidelityGate, ['artifacts/qa-report.json', 'artifacts/reference-fidelity-contract.json', 'artifacts/reference-fidelity-gate.json', 'artifacts/runtime-product-gates.json', ...(fidelityReview === undefined ? [] : ['artifacts/reference-fidelity-review.json']), ...recordingLevelInputs]);
     }
     await recordControlStage(state, 'QA', 'completed',
       ['artifacts/build-report.json', 'artifacts/production-line-contract.json', 'artifacts/product-experience-contract.json', 'artifacts/core-spec-lock.json', 'artifacts/reference-fidelity-contract.json', ...(levelContract ? ['artifacts/reference-level-reconstruction.json', ...recordingLevelInputs] : []), 'artifacts/reference-fidelity-review.json'],
@@ -3190,6 +3192,18 @@ export function createFactory(options: FactoryOptions = {}) {
     activePipelinePlan = effectivePlan;
     if (!effectivePlan) {
       await store.log(runId, 'pipeline-plan.legacy-fallback', { reason: 'pipeline-plan-missing-or-invalid' });
+    }
+    // Legacy completed/cached research may lack a comparison protocol. Recheck
+    // locally; an unchanged gap must not consume model calls or retry attempts.
+    if (seed.designMode === 'reference_reskin') {
+      const pack = ReferenceEvidencePackSchema.parse(await store.readArtifact(runId, 'reference-evidence-pack.json'));
+      if (done(state, 'REFERENCE_DEEP_RESEARCH') || !referenceBehaviorAnalysisNeeded(pack)) {
+        const evaluation = evaluateReplicaPreviewEvidence(pack);
+        if (!evaluation.passed) {
+          await store.writeArtifact(runId, 'reference-fidelity-contract.json', evaluation.fidelity);
+          return setWaiting(state, 'REFERENCE_DEEP_RESEARCH', ['artifacts/reference-evidence-pack.json'], ['artifacts/reference-fidelity-contract.json'], evaluation.blockers.map(item => `blocked:${item}`));
+        }
+      }
     }
     // Reference runs use a compact, fidelity-first lane.  Keep this branch
     // before the governance and production-line gates so deferred concerns
@@ -4043,6 +4057,9 @@ export function createFactory(options: FactoryOptions = {}) {
       await store.writeArtifact(runId, 'perceptual-qa-gate.json', perceptualGate);
       if (seed.designMode === 'reference_reskin') {
         const referenceContract = ReferenceFidelityContractSchema.parse(await store.readArtifact(runId, 'reference-fidelity-contract.json'));
+        const comparisonReviewPath = store.artifact(runId, 'reference-fidelity-review.json');
+        const comparisonReview = await exists(comparisonReviewPath) ? await store.readArtifact(runId, 'reference-fidelity-review.json') : undefined;
+        const comparisonGate = await verifyReferenceFidelityReview({ runRoot, targetRunId: runId, workspace, buildHash: perceptualBuildHash, contract: referenceContract, review: comparisonReview });
         const expectedIds = referenceContract.behaviorChecks.map((check) => check.id);
         const productIds = productExperience.features.flatMap((feature) => feature.sourceCheckIds);
         const checkedIds = expectedIds.filter((id) => {
@@ -4050,6 +4067,7 @@ export function createFactory(options: FactoryOptions = {}) {
           return feature !== undefined && feature.requiredViewports.every((viewport) => perceptualGate.checkedCaseIds.includes(`${feature.id}@${viewport.width}x${viewport.height}:${viewport.label}`));
         });
         const fidelityBlockers = [
+          ...comparisonGate.blockers,
           ...perceptualGate.blockers.map((item) => `fidelity:${item}`),
           ...(productExperience.sourceArtifact.kind === 'reference-fidelity' ? [] : ['fidelity:product-contract-not-reference-derived']),
           ...(new Set(productIds).size === expectedIds.length && expectedIds.every((id) => productIds.includes(id)) ? [] : ['fidelity:behavior-check-coverage-mismatch']),
@@ -4063,7 +4081,10 @@ export function createFactory(options: FactoryOptions = {}) {
           blockers: [...new Set(fidelityBlockers)],
           requiredCheckIds: expectedIds,
           checkedIds,
+          differences: comparisonGate.differences,
         }));
+        if (!comparisonGate.passed) return waitForReferenceComparison(state, workspace, comparisonGate,
+          ['artifacts/reference-fidelity-contract.json', 'artifacts/reference-fidelity-gate.json', 'artifacts/build-report.json', ...(comparisonReview === undefined ? [] : ['artifacts/reference-fidelity-review.json'])]);
       }
       if (!perceptualGate.passed) {
         const reviewTask = [
