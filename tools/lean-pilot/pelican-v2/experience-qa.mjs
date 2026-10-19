@@ -90,10 +90,10 @@ try{
   // decision; do not wait until the 164m car is already inside the hitbox.
   const warnedVehicle=v.feedbackDetail.includes('前方来车')||v.radarLabel.includes('来车')||
    v.lanes[1]?.danger&&['car','van'].includes(v.lanes[1].kind);
-  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&(warnedVehicle||v.distance>=119)){
-   // The rider often makes the correct LEFT turn at ~118m, just before
-   // the 119m HUD threshold. Later confirmation must preserve that
-   // already earned escape; don't chase a centre fish back across 140m.
+  if(jumped&&bonusShot&&!escapedBonus&&(warnedVehicle||v.distance>=119)){
+   // ACTUALLY pick up the jump-only gold around 118m before leaving centre.
+   // An armed jump or popup is insufficient. Leaving around 120m retains
+   // a real safe left escape ahead of the 140m centre barrier.
    const currentSide=v.lane===0||v.lane===2?v.lane:null;
    const safeSide=[currentSide,0,2].filter((i,n,arr)=>Number.isInteger(i)&&arr.indexOf(i)===n&&
     !risky(i)&&(!v.lanes[i].danger||seconds(i)>3.5));
@@ -141,7 +141,7 @@ try{
   // 130m right-car / 140m centre-barrier opening. The authored left lane
   // stays unblocked through 152m: finish the real left-side manoeuvre
   // instead of making a fatal right tap near 139m.
-  if(jumped&&v.distance>=115&&v.distance<145)want=0;
+  if(jumped&&bonusShot&&v.distance>=119&&v.distance<145)want=0;
   // V7's centre car reaches its swept collision envelope near 164m.
   // The second real RIGHT touch must be committed by ~155m, not leave
   // the rider stranded in centre after the left-side 140m barrier.

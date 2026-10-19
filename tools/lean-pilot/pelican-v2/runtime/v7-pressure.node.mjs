@@ -76,7 +76,7 @@ test('V7 post-gold two-tap overtake clears the real centre car on 30/60Hz',()=>{
   const r=newRun(1,{seed:20261017});
   const approach=metres=>{for(let n=0;n<10000&&r.phase==='running'&&r.distance<metres;n++)advance(r,1/fps);};
   const sequence=[[16,'right'],[39,'left'],[51,'right'],[54,'left'],
-   [103,'jump'],[116,'left'],[149,'right'],[152,'right'],
+   [103,'jump'],[121,'left'],[149,'right'],[152,'right'],
    [175,'left'],[211,'left'],[271,'right'],[274,'right'],[285,'left']];
   for(const [metres,action] of sequence){
    approach(metres);assert.equal(r.phase,'running',`actual safe route reaches ${metres}m at ${fps}Hz`);input(r,action);
@@ -86,6 +86,8 @@ test('V7 post-gold two-tap overtake clears the real centre car on 30/60Hz',()=>{
   assert.ok(r.count>=12&&r.gold>=1&&r.jumpedBarriers>=1&&r.bestStreak>=4);
   assert.ok(r.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o13'&&e.jumped));
   assert.ok(r.events.some(e=>e.type==='jump'&&e.objectId==='l1-o13'&&e.buffered));
+  assert.ok(r.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o13'&&e.golden&&e.bonus),
+   'real earned jump prize is required, not simply a displayed jump cue');
  }
 });
 test('V7 narrow 233m jump buffer is still genuinely winnable, unlike 217m pre-jump',()=>{
