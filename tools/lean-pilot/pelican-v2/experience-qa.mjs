@@ -309,11 +309,16 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
  if(beforeQueue.phase!=='running'||beforeQueue.distance>31.6)
   throw Error('Cannot safely queue 35m jump after the physical trigger boundary');
  await tap('#co-pause');
- await tap('#co-resume');
- // Queue two ordered real taps without a browser-ACK roundtrip between them.
- // Screenshots/state reads follow; their actual event order still gates PASS.
+ // The real visible resume control is part of the SAME trusted touch stream.
+ // A separate resume request may advance 4-5m before jump arrives, past the
+ // actual 3m trigger line; all three native events must be back-to-back.
+ const resumePoint=await page.locator('#co-resume').evaluate(node=>{
+  const r=node.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};
+ });
+ if(!await page.locator('#co-resume').isVisible())throw Error('Native resume control must be visible before queued touches');
+ report.actions.push({at:new Date().toISOString(),type:'tap',selector:'#co-resume',touchPoint:resumePoint,input:'ordered trusted resume/jump/right'});
  for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered Input.dispatchTouchEvent; points measured before queue',normalInputOnly:true});
- await queueTapSequence(cancellationSession,engine,[pair.jump,pair.right]);
+ await queueTapSequence(cancellationSession,engine,[resumePoint,pair.jump,pair.right]);
  // The V7 opening 35m barrier replaces the original 140m as this
  // buffer-cancellation scenario; waiting for 152m otherwise hangs after
  // the rider's genuine opening crash. No state edits or collision bypass.

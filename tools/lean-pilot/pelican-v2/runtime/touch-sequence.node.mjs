@@ -24,3 +24,13 @@ test('invalid sequence data fails before any trusted input is sent', async () =>
  await assert.rejects(queueTapSequence(session,'webkit',[]),/Invalid/u);
  assert.equal(calls,0);
 });
+
+test('three trusted taps queue resume, jump, and safe turn without waiting for a frame',async()=>{
+ const sent=[],acks=[],session={send:(method,params)=>{sent.push({method,params});return new Promise(resolve=>acks.push(resolve));}};
+ const points=[{x:160,y:430},{x:272,y:510},{x:122,y:510}];
+ const pending=queueTapSequence(session,'chromium',points);
+ assert.equal(sent.length,6);
+ assert.deepEqual(sent.map(x=>x.params.type),['touchStart','touchEnd','touchStart','touchEnd','touchStart','touchEnd']);
+ assert.deepEqual(sent.filter((_,i)=>i%2===0).map(x=>x.params.touchPoints[0]).map(p=>[p.x,p.y]),[[160,430],[272,510],[122,510]]);
+ acks.forEach(resolve=>resolve());await pending;
+});
