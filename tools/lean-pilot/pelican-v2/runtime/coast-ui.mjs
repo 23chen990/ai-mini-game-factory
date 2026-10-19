@@ -83,7 +83,16 @@ export function createCoastAdventure(api) {
  scene.traverse(o=>{if(o.isMesh){o.castShadow=false;for(const m of Array.isArray(o.material)?o.material:[o.material])if(m?.map)m.map.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());}});rider.traverse(o=>{if(o.isMesh)o.castShadow=true;});
  const followLook=new THREE.Vector3();let cameraReady=false;
  function notice(title,copy,kind=''){if(run?.phase==='running'&&run.bufferedJump&&title!=='↟ 已准备起跳')return;const el=$('feedback');el.className='visible '+kind;el.querySelector('strong').textContent=title;el.querySelector('small').textContent=copy;feedbackUntil=now+1400;}
- function routes(){
+ // The V7 physical jump queue can last just a few render frames. Show the
+// real, accepted queued state synchronously at the trusted input boundary
+// instead of waiting for a slow WebGL frame. Never show a fake buffer.
+function immediateJumpCue(){
+ if(run?.phase!=='running'||!run.bufferedJump)return;
+ const button=root.querySelector('[data-action="jump"]');
+ button?.classList.add('queued');
+ notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial instant-queued');
+}
+function routes(){
   const route=$('route'),earned=allStars(save);
   const selectedLevel=selected===6?{name:'无尽海岸',subtitle:'自由追鱼 · 安全路况不断变化 · 随时暂停结算'}:LEVELS[selected-1];
   $('progress').textContent=`🌟 全海岸 ${earned}/15 星 · ${earned===15?'渔王挑战已达成':'重玩关卡可冲三星'}`;
@@ -169,6 +178,7 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
    b.setPointerCapture(e.pointerId);
    const action=b.dataset.action;
    input(run,action);
+   if(action==='jump')immediateJumpCue();
    if(action==='left'||action==='right')heldSteer={id:e.pointerId,direction:action==='right'?1:-1,started:performance.now()};
    b.classList.add('pressed');
   });
@@ -202,7 +212,7 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
   const from=swipe;swipe=null;if(run?.phase!=='running')return;
   const dx=t.clientX-from.x,dy=t.clientY-from.y;
   if(Math.abs(dx)>9&&Math.abs(dx)>Math.abs(dy)*1.12)dragTarget(t,from);
-  else if(dy< -48)input(run,'jump');
+  else if(dy< -48){input(run,'jump');immediateJumpCue();}
  });
  // Touch cancellation can target a different element from the canvas. Handle
  // trusted touchcancel/pointercancel in capture phase and restore prior intent.
@@ -225,6 +235,7 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
   if(action==='pause'){if(run?.phase==='paused')resume();else pause();}
   else if(run?.phase==='running'){
    input(run,action);
+   if(action==='jump')immediateJumpCue();
    if(action==='left'||action==='right')heldKeySteer={code:e.code,direction:action==='right'?1:-1,started:performance.now()};
   }
  },true);

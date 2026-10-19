@@ -147,3 +147,7 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
  #coast[data-phase="running"] #co-radar-label{top:161px}
  #coast[data-phase="running"] #co-radar{top:180px}
 }
+
+/* Physics-confirmed queued jump feedback is immediate, not delayed by WebGL
+   frame work. This changes no jump timing, collision or scoring rules. */
+#co-feedback.visible.instant-queued{opacity:1;transition:none}
