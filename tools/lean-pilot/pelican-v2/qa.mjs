@@ -101,6 +101,24 @@ async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={})
  await shot('level-'+stage+'-wall-budget').catch(()=>{});
  return result;
 }
+// V7 has a real centre barrier at 35m, LEFT car at 52m and RIGHT car at 63m.
+// A completely idle waitDistance(66/115) now *must* fail. These are ordinary
+// public touchscreen taps, not model-state mutation or collision bypass.
+// Returning to centre by 42m also keeps the right-hand vehicle genuinely lethal.
+async function clearV7Opening(target){
+ if(target<66||target>115)throw Error('Opening detour target out of scope '+target);
+ await waitDistance(20);await tap('[data-action="left"]');
+ await waitDistance(42);await tap('[data-action="right"]');
+ await waitDistance(target);
+ const result=await snapshot();
+ check('v7-opening-three-beat-escape-'+target,
+  result.phase==='running'&&
+  result.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o10'&&!e.jumped)&&
+  result.events.some(e=>e.type==='obstacle-avoided'&&e.objectId==='l1-o11')&&
+  result.events.some(e=>e.type==='obstacle-avoided'&&e.objectId==='l1-o12'),
+  {distance:result.distance,lane:result.lane,events:result.events.filter(e=>['barrier-cleared','obstacle-avoided'].includes(e.type)).slice(-6)});
+ return result;
+}
 async function waitDistance(target,maxMs=70000){await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));const end=Date.now()+maxMs;while(Date.now()<end){const v=await view();if(v.phase==='finished')throw Error('Finished before '+target);if(v.distance>=target)return;await page.waitForTimeout(40);}throw Error('Distance timeout '+target);}
 try{
  await fresh();await shot('menu');check('locked-new-save',await page.locator('[data-level="2"]').isDisabled(),{newBrowser:true});
@@ -188,7 +206,7 @@ try{
   const n=navs;await tap('#co-replay');await page.waitForTimeout(700);check('failure-replay-without-navigation',navs===n&&(await snapshot()).phase==='running',{navigationCount:navs});await tap('#co-pause');await tap('#co-select');await tap('[data-level="1"]');await tap('#co-start');
   // Exact crossing position: two right nudges from neutral reach the outer
   // road, rather than assuming a fractional 1.18m nudge is a lane centre.
-  await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();
+  await clearV7Opening(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();
   // Read the actual timer before software PNG capture can consume the stun.
   await page.waitForTimeout(800);const waiting=await snapshot();
   check('pedestrian-stops-but-countdown-runs',
@@ -232,7 +250,7 @@ try{
    {gauge,actualLane:moved.lane,expectedGauge});
   await shot('fractional-road-position-before-traffic');
   // Fresh native replay restores the identical high-pressure detour at 115m.
-  await tap('#co-pause');await tap('#co-replay');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
+  await tap('#co-pause');await tap('#co-replay');await clearV7Opening(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
   // Its real +9m prize is caught around 241m, not at 237m. Only accept
   // visible, physically earned events after those distances.
   await waitDistance(231);await shot('barrier-jump');await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');
