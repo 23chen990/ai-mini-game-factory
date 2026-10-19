@@ -34,6 +34,16 @@ test('未知源版本不能静默套用补丁', () => {
 });
 
 
+test('V11.6 pre-race quality follows the live renderer and warms up only in visible ready phase', async () => {
+  const mobile = await readFile(new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', import.meta.url), 'utf8');
+  assert.match(mobile, /\$\('quality'\)\.value = g\.settings\.quality/);
+  assert.match(mobile, /const adaptWarmGraphics = dt =>/);
+  assert.match(mobile, /phase === 'ready' && !loading && !backgrounded && !document\.hidden && !portrait\(\)/);
+  assert.match(mobile, /adaptWarmGraphics\(dt\)/);
+  assert.match(mobile, /\$\('quality'\)\.value = lower/);
+  assert.match(mobile, /Countdown already has its own native render-budget guard/);
+});
+
 test('registered build includes live career, items, runtime and fuel dependencies', async () => {
   const source = await readFile(new URL('../racing-mobile-build.mjs', import.meta.url), 'utf8');
   for (const name of ['career.mjs', 'items.mjs', 'runtime.mjs', 'fuel.mjs', 'themes.mjs']) assert.ok(source.includes(name), name);

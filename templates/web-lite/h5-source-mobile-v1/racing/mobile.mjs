@@ -787,6 +787,7 @@ async function boot() {
   g.mobileMode = mobile;g.camMode = 1;g.settings.quality = initialRaceQuality(rememberedQuality,mobile);
   quality.manual = rememberedQuality === 'low' || rememberedQuality === 'mid' || rememberedQuality === 'high';
   career.configure(g);g.setupQuality();
+  $('quality').value = g.settings.quality; // Match the actual renderer, not the select's HTML default.
   career.patchNative(g);
   const meta = window.__PLATFORM_META__ ?? await fetch('platform.json').then(r => r.ok ? r.json() : null).catch(() => null);
   career.setupAd(meta ?? { status: 'PENDING' }, window.tap);
@@ -844,6 +845,14 @@ async function boot() {
   if (!stageTrackReady(g,career.stage)) throw Error('赛道身份校验失败，禁止开始错误的关卡');
   root.dataset.loaded = 'true';
   display('ready');
+  const adaptWarmGraphics = dt => {
+    const lower = quality.frame(dt, g.settings.quality);
+    if (!lower) return;
+    g.settings.quality = lower;
+    g.setupQuality();
+    $('quality').value = lower;
+    $('quality-note').textContent = '已自动调低画质，优先保持驾驶流畅';
+  };
   let lastFuelTick = 0, lastHudTick=-Infinity;
   const frame = now => {
     const dt = (now - lastFrame) / 1000;lastFrame = now;
@@ -901,9 +910,13 @@ async function boot() {
         }
         if (failure) {if (!g.resultShown) g.showResults();finish();}
         root.classList.toggle('drifting', g.player.drifting);
-        const lower = quality.frame(dt, g.settings.quality);
-        if (lower) { g.settings.quality = lower;g.setupQuality();$('quality-note').textContent = '已自动调低画质，优先保持驾驶流畅'; }
+        adaptWarmGraphics(dt);
       }
+    }
+    // A slow native menu should not remain expensive until AFTER the start click.
+    // Countdown already has its own native render-budget guard.
+    if (phase === 'ready' && !loading && !backgrounded && !document.hidden && !portrait()) {
+      adaptWarmGraphics(dt);
     }
     requestAnimationFrame(frame);
   };
