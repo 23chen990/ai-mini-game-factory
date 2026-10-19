@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {cfNativeKillPayoff,cfBattleRecap} from '../fps-mobile-ux.mjs';
+import {cfNativeKillPayoff,cfBattleRecap,cfFirstKillWinBanner} from '../fps-mobile-ux.mjs';
 
 test('CF V17 shows first REAL player elimination only on native kill counter increase',()=>{
   assert.equal(cfNativeKillPayoff(0,0),'');
@@ -35,4 +35,16 @@ test('CF V17 refuses phantom result counts, future time and missing evidence',()
     '实战：命中1次 · 亲手击倒1人 · 敌方开火3发');
   assert.equal(cfBattleRecap({shots:10,hits:1,kills:1,enemyShots:3},-1),
     '实战：命中1次 · 亲手击倒1人 · 敌方开火3发');
+});
+
+test('Fast solo first-kill win remains visible in result, never granted from a non-win',()=>{
+ const challenge={id:'tags',lite:true,title:'01 · 货箱破门'};
+ const metrics={shots:2,hits:2,kills:1,enemyShots:0};
+ assert.equal(cfFirstKillWinBanner(challenge,metrics,'won'),
+   '✦ 首杀达成 · 01 · 货箱破门完成！');
+ assert.equal(cfFirstKillWinBanner(challenge,{...metrics,kills:0},'won'),'');
+ assert.equal(cfFirstKillWinBanner(challenge,metrics,'lost'),'');
+ assert.equal(cfFirstKillWinBanner({...challenge,id:'survive'},metrics,'won'),'');
+ assert.equal(cfFirstKillWinBanner({...challenge,lite:false},metrics,'won'),'');
+ assert.equal(cfFirstKillWinBanner(challenge,{...metrics,kills:NaN},'won'),'');
 });

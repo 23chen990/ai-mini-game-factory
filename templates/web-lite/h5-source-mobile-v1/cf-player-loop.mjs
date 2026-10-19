@@ -10,12 +10,48 @@ import {challengeResult} from './engine.mjs';
 export function cfArenaForLevel(index) {
   return Number.isInteger(index)&&index>=4&&index<8?'depot':'ship';
 }
+/** CF V18 mobile-first mission layer.
+ * Preserve old challenge IDs and saved records. Old base challenges remain
+ * intact for historical tests/replays; only new sessions get lite rules.
+ * The one visible objective follows what the player can actually perceive.
+ */
+export function cfMobileMission(base) {
+  if(!base || typeof base.id!=='string')return base;
+  const elite=base.elite===true;
+  const variants={
+    tags:{title:'01 · 货箱破门',target:elite?2:1,limitMs:elite?45000:50000,maxDeaths:elite?0:1,
+      objective:'亲手击倒'+(elite?2:1)+'名敌人',
+      encounter:'前方1名守卫 · 先瞄准再开火'},
+    precision:{title:'02 · 远点狙击',limitMs:elite?60000:70000,
+      objective:'AWM击倒1名敌人',encounter:'找到视线 · 开镜射击'},
+    survive:{title:'03 · 围攻生存',limitMs:45000,minTravel:0,minKills:1,maxDeaths:elite?1:2,target:elite?1:2,
+      objective:'坚守45秒并亲手击倒1人',encounter:'跟住敌人 · 利用掩体活下来'},
+    defense:{title:'04 · 港口守点',target:1,holdSeconds:elite?9:7,limitMs:elite?65000:75000,
+      objective:'守住A区'+(elite?9:7)+'秒',encounter:'敌人会争夺A区 · 先清掉威胁'},
+    assault:{title:'05 · 仓库突破',minTravel:0,target:elite?3:2,limitMs:elite?70000:80000,
+      objective:'抵达进攻位并击倒'+(elite?3:2)+'人',
+      encounter:'穿过仓库侧路 · 抵达亮起的进攻位'},
+    marksman:{title:'06 · 通道狙击',minTravel:0,target:elite?3:2,limitMs:elite?75000:85000,
+      objective:'AWM击倒'+(elite?3:2)+'人',encounter:'观察掩体间隙 · 不强制绕路'},
+    evac:{title:'07 · 装卸区撤离',minTravel:0,minKills:elite?2:1,extractSeconds:elite?8:5,
+      finishOnExtract:true,limitMs:elite?75000:80000,
+      objective:'击倒'+(elite?2:1)+'名敌人并到撤离区坚守'+(elite?8:5)+'秒',
+      encounter:'撤离点就在前方 · 清出通路即可离开'},
+    counter:{title:'08 · 逆线夺点',target:1,reverse:true,holdSeconds:elite?9:7,
+      limitMs:elite?70000:75000,
+      objective:'抢占并守住远端B区'+(elite?9:7)+'秒',
+      encounter:'先逼退防守敌人 · 守住B区即可完成'}
+  };
+  const config=variants[base.id];
+  return config?{...base,...config,lite:true,
+    instructions:config.objective}:base;
+}
 export const CF_CONTROL_DEFAULTS=Object.freeze({sensitivity:1,opacity:.85});
 const CF_IDS=new Set(['tags','precision','survive','defense','assault','marksman','evac','counter']);
 const GRADE_LABELS=['未完成','完成','优秀','完美'];
 /** Real drill progress as short combat status. Full rules live on ready UI. */
 export function cfRifleCombatStatus(challenge,metrics={}) {
-  if(challenge?.id!=='tags'||challenge?.drill!=='reposition')return null;
+  if(challenge?.lite===true||challenge?.id!=='tags'||challenge?.drill!=='reposition')return null;
   if(metrics.drillFirstHit!==true)return '◎ 前方交火 · 找准目标';
   const travel=Math.max(0,Number(metrics.drillTravel)||0);
   if(metrics.drillStage!==2)
@@ -67,7 +103,9 @@ export function cfMissionMedal(challenge,metrics,outcome,elapsedMs) {
   // gold threshold would be impossible to earn; reward actual movement
   // and zero deaths instead (native player travel, never fabricated).
   const flawless=deaths===0 && (challenge.kind==='survive'
-    ? Number(metrics.travel)>=Math.max(0,Number(challenge.minTravel)||0)+10
+    ? challenge.lite===true
+      ? Number(metrics.kills)>=Math.max(2,(Number(challenge.minKills)||0)+1)
+      :Number(metrics.travel)>=Math.max(0,Number(challenge.minTravel)||0)+10
     : elapsedMs<=challenge.limitMs*.75);
   const stars=flawless?3:deaths<=1?2:1;
   const timeMs=Math.max(1,Math.round(elapsedMs));
@@ -81,6 +119,9 @@ export function cfMissionMedal(challenge,metrics,outcome,elapsedMs) {
  * Do not add intrusive tactical text inside the real-time FPS view. */
 export function cfNextMedalGoal(challenge,medal) {
   if(!medal||!challenge||medal.stars>=3)return '';
+  if(challenge.kind==='survive'&&challenge.lite===true)
+    return '三星目标：零阵亡，亲手击倒至少'+
+      Math.max(2,(Number(challenge.minKills)||0)+1)+'人';
   if(challenge.kind==='survive')
     return '三星目标：零阵亡，真实移动至少'+
       (Math.max(0,Number(challenge.minTravel)||0)+10)+'米'+

@@ -88,8 +88,106 @@ test('CF V12 only real completed match can instantly restart its original 3D eng
 test('CF V12 restores native team spawn array before immediate restart of original match',()=>{
  const main=readFileSync(new URL('../main.mjs',import.meta.url),'utf8');
  const adapter=readFileSync(new URL('../fps-mobile-ux.mjs',import.meta.url),'utf8');
- assert.match(main,/fpsUx\?\.beforeNativeStart\?\.\(\); g\.opts\.primary/);
+ const reset=main.indexOf('fpsUx?.beforeNativeStart?.();');
+ const choose=main.indexOf('g.opts.primary = c.weapon;',reset);
+ const match=main.indexOf('originalStart(c);',choose);
+ assert.ok(reset>=0&&choose>reset&&match>choose,
+  'native team spawn restore must precede weapon selection and match restart');
+ assert.match(main,/if\(c\?\.lite===true\)\{/,
+  'lite optimization must remain explicitly scoped to CF');
  const anchor=adapter.indexOf('beforeNativeStart() {');
  const restore=adapter.indexOf('game.map.spawns[trainingSpawnTeam]=originalEnemySpawns;',anchor);
  assert.ok(anchor>0&&restore>anchor,'restore map spawns before native start');
+});
+
+test('CF V18 final native adapter honors lite actor budget and PVE quota',async()=>{
+ const {createFpsAdapter}=await import('../themes.mjs');
+ const game={opts:{size:6,goal:50},hud:{syncControls(){}}};
+ let launches=0;
+ const doc={getElementById(id){
+   assert.equal(id,'btnStart');
+   return {click(){launches++;}};
+ }};
+ const native=createFpsAdapter(game,doc);
+ native.start({id:'tags',kind:'hits',lite:true});
+ assert.equal(game.opts.size,1,'first H5 fight intentionally uses genuine 1v1');
+ assert.equal(game.opts.goal,300,'native team score cannot preempt PVE goal');
+ assert.equal(launches,1);
+ const {cfMobileActorBudget}=await import('../themes.mjs');
+ const sizes={tags:1,precision:2,survive:3,defense:3,
+   assault:3,marksman:2,evac:3,counter:4};
+ for(const [id,size] of Object.entries(sizes)){
+   const mission={id,kind:id==='precision'?'kills':'hits',lite:true};
+   assert.equal(cfMobileActorBudget(mission),size,id);
+   native.start(mission);
+   assert.equal(game.opts.size,size,id+' actual native team size');
+   assert.equal(game.opts.goal,300,id+' PVE overrides native score');
+ }
+ assert.equal(cfMobileActorBudget({id:'tags',lite:true,elite:true}),2);
+ assert.equal(cfMobileActorBudget({id:'counter',lite:true,elite:true}),4);
+ assert.equal(cfMobileActorBudget({id:'tags',lite:false}),null);
+ native.start({id:'tags',kind:'hits',lite:false});
+ assert.equal(game.opts.size,1,'legacy original behavior stays isolated');
+ assert.equal(game.opts.goal,30);
+ assert.equal(launches,10);
+});
+
+test('CF solo PvE removes AI comrades from the native 3D lifecycle, not just HUD',async()=>{
+ const {cfRemoveNativeAllies}=await import('../themes.mjs');
+ const player={isPlayer:true,team:'BL'};
+ const friendA={team:'BL',soldier:{root:{id:'friend-1'}}};
+ const friendB={team:'BL',soldier:{root:{id:'friend-2'}}};
+ const enemyA={team:'GR',soldier:{root:{id:'enemy-1'}}};
+ const enemyB={team:'GR',soldier:{root:{id:'enemy-2'}}};
+ const removed=[],disposed=[];
+ const aTag={actor:friendA,sprite:{id:'tag-friend',
+   material:{map:{dispose(){disposed.push('map')}},dispose(){disposed.push('material')}}}};
+ const enemyTag={actor:enemyA,sprite:{id:'tag-enemy'}};
+ const game={
+   player,actors:[player,friendA,enemyA,friendB,enemyB],
+   tags:[aTag,enemyTag],
+   renderer:{scene:{remove(node){removed.push(node.id)}}}
+ };
+ const record=cfRemoveNativeAllies(game,{id:'counter',lite:true});
+ assert.deepEqual(record,{applied:true,removed:2,playerCount:1,enemyCount:2});
+ assert.deepEqual(game.actors,[player,enemyA,enemyB]);
+ assert.deepEqual(game.tags,[enemyTag]);
+ assert.deepEqual(removed,['friend-1','friend-2','tag-friend']);
+ assert.deepEqual(disposed,['map','material']);
+ assert.equal(game.__mkSoloPve,true);
+ assert.equal(cfRemoveNativeAllies(game,{id:'counter',lite:true}).removed,0,
+  'native warm replays remain idempotent');
+ const fallback={
+   player,actors:[player,friendA,enemyA],tags:[aTag],
+   renderer:{scene:{remove(node){removed.push(node.id)}}}
+ };
+ assert.equal(cfRemoveNativeAllies(fallback,{lite:false}).applied,false);
+ assert.deepEqual(fallback.actors,[player,friendA,enemyA]);
+ assert.equal(fallback.__mkSoloPve,undefined);
+});
+
+test('CF solo missions direct authentic native Bot tactics without changing gun or stats',async()=>{
+ const {cfSoloEncounterRoles,cfAssignSoloEnemyRoles}=await import('../themes.mjs');
+ const ids=['tags','precision','survive','defense',
+  'assault','marksman','evac','counter'];
+ const expected=[1,2,3,3,3,2,3,4];
+ for(let index=0;index<ids.length;index++){
+   const id=ids[index],N=expected[index];
+   const player={isPlayer:true,team:'BL'};
+   const enemies=Array.from({length:N},(_,i)=>({
+     team:'GR',role:'random',stage:9,
+     path:[[0,0]],pi:3,primary:i?'ak47':'m4a1',
+     stats:{shots:2,k:0},
+     pickGoal(){this.picked=(this.picked||0)+1}
+   }));
+   const g={player,actors:[player,...enemies],__mkSoloPve:true};
+   assert.equal(cfAssignSoloEnemyRoles(g,{id,lite:true}),N);
+   assert.deepEqual(enemies.map(x=>x.role),cfSoloEncounterRoles(id));
+   assert.ok(enemies.every(x=>x.picked===1&&x.pi===0&&x.path===null));
+   assert.ok(enemies.every(x=>x.stats.shots===2&&x.primary),
+    'no fake shots/damage/HP or weapon edits');
+   assert.deepEqual(g.actors,[player,...enemies]);
+   assert.equal(cfAssignSoloEnemyRoles(g,{id,lite:false}),0);
+ }
+ assert.equal(cfAssignSoloEnemyRoles({}, {id:'tags',lite:true}),0);
 });

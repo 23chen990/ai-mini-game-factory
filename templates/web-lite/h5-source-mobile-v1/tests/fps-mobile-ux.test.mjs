@@ -2,6 +2,15 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { teamSide, playerRelativeScore, enemyBadgeAllowed, createFpsMobileUx, mobileTouchAction, mobileChallengeCopy, mobileEnemyDifficulty, mobileAimCorrection, cfVisibleAimCoach, cfFireDragLookDelta, cfBeginTouchFire, cfReleaseTouchFire, selectMobileSpawn, firstEncounterDestination, routeArrow, cfLastSeenLookCue, cfFlankWaypoint, cfSeenLaneSight, cfReacquireLane, cfNativeShotAimError, mobileSimpleFireAllowed, cfIntroAssistCandidate, chooseFirstEncounterSpot, chooseMobileSniperLane, teammateTagOpacity, withinScopedLens, holdOpeningTeammateFire, blockMobileTouchMouse, sniperScopeLabel, mobileScoutHoldExpired, cfScoutHoldSeconds, cfTrainingRespawnSpots, cfStabilizeNoviceScout, cfNoviceScoutStrafe, cfHitCue, cfMissionDebrief, cfEliteUnlocked, cfAutoFireEligible, cfAdvanceDrill, cfTouchTutorial, cfMissionFacts, cfResultFacts } from '../fps-mobile-ux.mjs';
 
+test('CF V18 dead-player touches cannot arm gun or buffered jump, but menus remain accessible',async()=>{
+ const {cfIgnoreDeadCombatTouch}=await import('../fps-mobile-ux.mjs');
+ assert.equal(cfIgnoreDeadCombatTouch({alive:false,nativeControl:true}),true);
+ assert.equal(cfIgnoreDeadCombatTouch({alive:false,nativeControl:false}),false);
+ assert.equal(cfIgnoreDeadCombatTouch({alive:true,nativeControl:true}),false);
+ assert.equal(cfIgnoreDeadCombatTouch({alive:undefined,nativeControl:true}),true);
+ assert.equal(cfIgnoreDeadCombatTouch(),false);
+});
+
 test('team affiliation uses local player perspective, not globally red BL / blue GR', () => {
  assert.equal(teamSide('BL','BL'),'ally');
  assert.equal(teamSide('BL','GR'),'enemy');
@@ -525,8 +534,8 @@ test('CF visible-aim tutorial indicates only camera-confirmed on-screen swipe, n
 test('CF native fire-button gesture gives one right thumb both hold-fire and camera drag',()=>{
  assert.deepEqual(cfFireDragLookDelta(0,0),{x:0,y:0});
  const gesture=cfFireDragLookDelta(-30,20);
- assert.ok(gesture.x < -47.9 && gesture.x > -48.1);
- assert.ok(gesture.y > 31.9 && gesture.y < 32.1);
+ assert.ok(gesture.x < -86.9 && gesture.x > -87.1);
+ assert.ok(gesture.y > 57.9 && gesture.y < 58.1);
  assert.deepEqual(cfFireDragLookDelta(1000,-1000),{x:96,y:-96},
   'one outlier touchmove must not rotate the camera through multiple turns');
  for(const invalid of [NaN,Infinity,undefined]){
@@ -683,4 +692,120 @@ test('CF firing-only aim assist compares target with REAL native recoil-adjusted
    playerYaw:0,playerPitch:0}),null);
  assert.equal('hits' in a,false);
  assert.equal('fire' in a,false);
+});
+
+test('CF V18 real swipe gain is symmetric and only slows under a real aligned target',()=>{
+ const free=cfFireDragLookDelta(25,-12);
+ const opposite=cfFireDragLookDelta(-25,12);
+ assert.deepEqual(free,{x:-opposite.x,y:-opposite.y});
+ assert.deepEqual(free,{x:72.5,y:-34.8});
+ const friction=cfFireDragLookDelta(25,-12,.65);
+ assert.ok(friction.x>0&&friction.x<free.x);
+ assert.ok(friction.y<0&&friction.y>free.y);
+ assert.deepEqual(cfFireDragLookDelta(25,0,0),{x:39.875,y:0},
+   'clamp prevents frozen aim even with accidental zero friction');
+ assert.deepEqual(cfFireDragLookDelta(25,0,Infinity),{x:72.5,y:0});
+ assert.deepEqual(cfFireDragLookDelta(0,0,.65),{x:0,y:0});
+ const lite={id:'tags',kind:'hits',lite:true,drill:'reposition',openingHits:1};
+ assert.equal(cfAutoFireEligible(lite,0),false);
+ assert.equal(cfAutoFireEligible(lite,20),false);
+ assert.match(cfTouchTutorial(lite),/按住开火/);
+ assert.doesNotMatch(mobileChallengeCopy({...lite,limitMs:75000,objective:'亲手击倒2名敌人'}),/换位/);
+});
+
+test('CF V18 opponent pressure is native-difficulty only and mode-dependent',async()=>{
+ const {cfLiteEnemyProfile,mobileEnemyDifficulty}=await import('../fps-mobile-ux.mjs');
+ const base=mobileEnemyDifficulty('hits',5,{hits:0,k:0,d:0});
+ const profile=cfLiteEnemyProfile(base,{id:'tags',lite:true},5);
+ assert.notStrictEqual(profile,base);
+ assert.ok(profile.react[0]<base.react[0]&&profile.react[0]>=.22);
+ assert.ok(profile.aimErr<base.aimErr&&profile.aimErr>=.038);
+ assert.equal(profile.headP,base.headP,'headshot odds unchanged');
+ assert.equal(profile.bunny,base.bunny,'original movement and weapon physics unchanged');
+ const late=cfLiteEnemyProfile(base,{id:'counter',lite:true},30);
+ assert.ok(late.react[0]<profile.react[0]);
+ assert.ok(late.strafe>profile.strafe);
+ assert.strictEqual(cfLiteEnemyProfile(base,{id:'counter',lite:false},50),base);
+ assert.strictEqual(cfLiteEnemyProfile(null,{id:'counter',lite:true},50),null);
+});
+
+test('CF H5 opening lane chooses real unobstructed sightlines, never a wall',async()=>{
+ const {cfChooseVisibleOpeningLane}=await import('../fps-mobile-ux.mjs');
+ const spawns=[{x:-30,z:0,yaw:-Math.PI/2},{x:-30,z:6,yaw:-Math.PI/2}];
+ const originals=JSON.stringify(spawns);
+ const world={
+   blocked:()=>false,
+   raycast:(x,y,z,dx,dy,dz,maxDistance)=>{
+     // The first corridor ends at an opaque container 8m away.
+     if(Math.abs(z)<.2&&Math.abs(dz)<.01&&dx>.9&&maxDistance>8)
+       return {t:8};
+     return null;
+   }
+ };
+ const nav={idx:()=>1,walkable:()=>true,
+   findPath:(sx,sz,dx,dz)=>[[sx,sz],[dx,dz]]};
+ const lane=cfChooseVisibleOpeningLane({
+   spawns,world,nav,actors:[],team:'BL'
+ });
+ assert.ok(lane?.spot&&lane?.spawn,'must find a real corridor');
+ assert.ok(lane.distance>=7&&lane.distance<=10.1,
+  'small lateral aiming offsets slightly increase physical ray distance');
+ assert.ok(lane.backstop>=.8);
+ assert.equal(JSON.stringify(spawns),originals,
+   'candidate selection must never modify authored map starts');
+ assert.ok(lane.spawn.yaw!==undefined);
+ assert.equal(cfChooseVisibleOpeningLane({
+   spawns,world:{...world,raycast:()=>({t:.5})},nav,actors:[],team:'BL'
+ }),null,'opaque walls make a target ineligible');
+ assert.equal(cfChooseVisibleOpeningLane({spawns:[],world,nav}),null);
+});
+
+test('CF H5 opening target must expose a full real torso and a gun-width corridor',async()=>{
+ const {cfOpeningBodyLaneClear}=await import('../fps-mobile-ux.mjs');
+ const from={x:0,z:0},enemy={x:9,z:0};
+ const open={blocked:()=>false,raycast:()=>null};
+ assert.equal(cfOpeningBodyLaneClear(open,from,enemy),true);
+ const metalAtTorso={...open,
+   raycast:(x,y,z,dx,dy,dz,max)=>{
+     if(dy<-.025&&max>3)return {t:5};
+     return null;
+   }};
+ assert.equal(cfOpeningBodyLaneClear(metalAtTorso,from,enemy),false,
+   'a visible floating marker cannot excuse obstructed real chest shots');
+ const metalAtEdge={...open,
+   blocked:(x,y,z)=>z>.45};
+ assert.equal(cfOpeningBodyLaneClear(metalAtEdge,from,enemy),false,
+   'firing lane must leave safe space beside the target');
+ assert.equal(cfOpeningBodyLaneClear(open,{x:0,z:0},{x:2,z:0}),false);
+ assert.equal(cfOpeningBodyLaneClear(null,from,enemy),false);
+});
+
+test('V20 actual H5 crosshair rejects a blank close wall even if UI tags are visible',async()=>{
+ const {cfOpeningCameraQuality,cfChooseVisibleOpeningLane}=await import('../fps-mobile-ux.mjs');
+ const pose={x:0,z:0,yaw:-Math.PI/2};
+ const open={blocked:()=>false,raycast:()=>null};
+ assert.equal(cfOpeningCameraQuality(open,pose,pose.yaw),3);
+ const centerWall={...open,raycast:(x,y,z,dx,dy,dz,depth,mode)=>{
+   assert.equal(mode,'bullet');
+   return Math.abs(dz)<.05?{t:1.5}:null;
+ }};
+ assert.equal(cfOpeningCameraQuality(centerWall,pose,pose.yaw),0,
+   'red offscreen badge is not enough when crosshair faces solid cargo');
+ const nav={
+   idx:()=>1,walkable:()=>true,
+   findPath:(ax,az,bx,bz)=>[[ax,az],[bx,bz]]
+ };
+ const wide=cfChooseVisibleOpeningLane({
+   spawns:[{x:0,z:0,yaw:-Math.PI/2}],world:open,nav,
+   actors:[],team:'BL',h5WideView:true,distances:[7.4,6.6,5.8]
+ });
+ assert.ok(wide,'find close legal, original-world bullet-visible H5 lane');
+ assert.ok(wide.distance>=5.8&&wide.distance<=7.5);
+ assert.equal(wide.viewQuality,3);
+ assert.ok(wide.spawn.x>0,'player may only advance from authored spawn before game begins');
+ assert.equal(cfChooseVisibleOpeningLane({
+   spawns:[{x:0,z:0,yaw:-Math.PI/2}],
+   world:{...open,raycast:()=>({t:1.5})},nav,
+   actors:[],team:'BL',h5WideView:true,distances:[7.4,6.6,5.8]
+ }),null,'never accept a reticle that points into an actual steel wall');
 });

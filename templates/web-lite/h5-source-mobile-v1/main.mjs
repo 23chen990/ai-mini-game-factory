@@ -1,8 +1,9 @@
 /* global window, document, location, localStorage, performance, requestAnimationFrame, fetch, KeyboardEvent, setTimeout, URL, URLSearchParams, navigator */
 import { newProgress, startRound, tickRound, pauseRound, resumeRound, finishRound, rewardRound, saveProgress, loadProgress, adAllowed, purchaseAssist, racePhase, challengesFor, challengeResult, cfEliteChallenge, newChallengeProgress, saveChallengeProgress, loadChallengeProgress, recordChallenge, cfCanOfferRevive } from './engine.mjs';
-import { requestRewardedVideo, createFpsAdapter } from './themes.mjs';
-import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap } from './fps-mobile-ux.mjs';
-import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus} from './cf-player-loop.mjs';
+import { requestRewardedVideo, createFpsAdapter, cfMobileActorBudget, cfRemoveNativeAllies, cfAssignSoloEnemyRoles } from './themes.mjs';
+import { createFpsMobileUx, mobileChallengeCopy, cfMissionDebrief, cfEliteUnlocked, cfMissionFacts, cfResultFacts, cfNearMissCue, cfNativeReviveStatus, cfWarmRestartAllowed, cfBattleRecap, cfFirstKillWinBanner } from './fps-mobile-ux.mjs';
+import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,cfApplyControls,cfNewMastery,cfLoadMastery,cfSaveMastery,cfRecordMastery,cfRecordLabel,cfNextMedalGoal,cfArenaForLevel,cfNewPlaytest,cfLoadPlaytest,cfBeginPlaytest,cfSamplePlaytest,cfFinishPlaytest,cfMarkReplay,cfExportPlaytest,cfRifleCombatStatus,cfMobileMission} from './cf-player-loop.mjs';
+import {cfV20CoverEnabled} from './cf-cover-assault.mjs';
 export function fpsSimulatedDeltaMs(previousSeconds, nowSeconds) {
   const a = Number(previousSeconds), b = Number(nowSeconds);
   return Number.isFinite(a) && Number.isFinite(b) ? Math.max(0, Math.min(300, (b - a) * 1000)) : 0;
@@ -77,9 +78,9 @@ async function boot() {
     <nav id="mk-controls"><button data-code="ArrowLeft">◀ 左</button><button data-code="ArrowRight">右 ▶</button><button id="mk-action" data-code="Space">⤒ 跳跃</button></nav><aside id="mk-rotate" hidden>📱 ↻<b>请横屏游玩</b><span>转动手机后点击继续</span></aside>`;
   document.body.append(root); const $ = x => root.querySelector('#mk-' + x);
   root.dataset.game = id; root.dataset.phase = 'ready';
-  const names = { 'pelican-bike': '骑行抓鱼 · 挑战', 'qq-speed': '赛车 · 私有触控试玩', 'cf-transport-ship': currentArena()==='depot'?'货运基地 · 战术进阶':'运输船 · 任务挑战' };
+  const names = { 'pelican-bike': '骑行抓鱼 · 挑战', 'qq-speed': '赛车 · 私有触控试玩', 'cf-transport-ship': currentArena()==='depot'?'单兵突击 · 货运基地':'单兵突击 · 运输船' };
   $('title').textContent = names[id]; $('heading').textContent = names[id]; $('best').textContent = progress.best;
-  $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : '左手移动、右手瞄准，按住开火。手机横屏游玩；离开页面自动暂停。';
+  $('copy').textContent = id === 'pelican-bike' ? '追随前方发光的鱼，左右调整车道。90秒抓到8分；金鱼分数更高。刷新保留最佳成绩和补给，本局会重开。' : id==='cf-transport-ship'?'你独自突入敌区。左手移动、右手瞄准，按住开火；完成目标立即过关。':'左手移动、右手瞄准，按住开火。手机横屏游玩；离开页面自动暂停。';
   if (!storageAvailable) $('storage').textContent = '存储不可用，本次仍可游玩';
   const persist = () => { try {
     localStorage.setItem(key, saveProgress(progress, id));
@@ -156,13 +157,16 @@ async function boot() {
     $('elite').hidden = !available || root.dataset.phase !== 'ready';
     $('elite').setAttribute('aria-pressed', String(elite));
     $('elite').textContent = elite
-      ? '⚡ 精英模式已开启 · 点击返回普通'
-      : '⚡ 进阶复战 · 敌人更强，无自动辅助';
-    $('heading').textContent = selected.title;
-    const displayChallenge = id==='cf-transport-ship'&&elite
+      ? '⚡ 精英挑战已开启 · 点击返回普通'
+      : '⚡ 进阶挑战 · 更快、更强的敌人';
+    const baseChallenge=id==='cf-transport-ship'&&elite
       ? cfEliteChallenge(selected) : {...selected,elite:false};
+    const displayChallenge=id==='cf-transport-ship'
+      ? cfMobileMission(baseChallenge):baseChallenge;
+    $('heading').textContent=displayChallenge.title;
     $('copy').textContent = id === 'cf-transport-ship'
-      ? mobileChallengeCopy(displayChallenge)
+      ? mobileChallengeCopy(displayChallenge)+
+        (cfV20CoverEnabled(displayChallenge)?' · 右侧瞄准、左手探身射击，松手躲回掩体。点左右掩体换位。':'')
       : selected.instructions;
     if(id==='cf-transport-ship'){
       $('chapters').hidden=root.dataset.phase!=='ready';
@@ -170,7 +174,7 @@ async function boot() {
         button.setAttribute('aria-pressed',String(Number(button.dataset.chapter)===chapter));
     }
     const shownLevels=id==='cf-transport-ship'
-      ?levels.filter((c,i)=>Math.floor(i/4)===chapter):levels;
+      ?levels.filter((c,i)=>Math.floor(i/4)===chapter).map(cfMobileMission):levels;
     $('challenges').innerHTML = shownLevels.map(c => {
       const record = challengeProgress.records[c.id];
       const medalLabel=id==='cf-transport-ship'?
@@ -182,7 +186,7 @@ async function boot() {
         : Math.ceil(c.limitMs / 1000) + '秒';
       return `<button data-challenge-id="${c.id}" data-kind="${c.kind}" aria-pressed="${c.id === selected.id}"><b>${c.title}</b><small>${state}</small></button>`;
     }).join('');
-    $('goal').max = id === 'cf-transport-ship' && displayChallenge.drill==='reposition'
+    $('goal').max = id === 'cf-transport-ship' && displayChallenge.drill==='reposition' && displayChallenge.lite!==true
       ? displayChallenge.openingHits + displayChallenge.minTravel + displayChallenge.target
       : id==='cf-transport-ship'&&selected.kind==='assault'
         ?displayChallenge.minTravel+displayChallenge.target
@@ -256,7 +260,29 @@ async function boot() {
         };
         g.__mkAwmKillHooked = true;
       }
-      native.start = c => { fpsUx?.beforeNativeStart?.(); g.opts.primary = c.weapon; g.__mkAwmKills = 0; originalStart(c); };
+      native.start = c => {
+        fpsUx?.beforeNativeStart?.();
+        if(c?.lite===true){
+          // Bounded native actor count for mobile WebGL. The original AI,
+          // world and ballistics remain real; there is no phantom damage.
+          g.opts.size=cfMobileActorBudget(c);
+          // Ignore original team kill quota; campaign's own real condition
+          // or its visible countdown is the only victory/failure source.
+          g.opts.goal=300;
+        }
+        g.opts.primary = c.weapon;
+        g.__mkAwmKills = 0;
+        g.__mkSoloPve=false;
+        g.__mkSoloStart=null;
+        originalStart(c);
+        // The pinned native engine's team-size property also creates
+        // N-1 friendly bots; this truly removes them BEFORE any game update.
+        // Do not merely hide teammates or let them farm the user's kills.
+        if(c?.lite===true){
+          g.__mkSoloStart=cfRemoveNativeAllies(g,c);
+          g.__mkSoloStart.roles=cfAssignSoloEnemyRoles(g,c);
+        }
+      };
       native.metrics = () => ({hits:g.player?.stats?.hits||0,shots:g.player?.stats?.shots||0,
         enemyShots:(g.actors||[]).reduce((n,a)=>
           !a?.isPlayer&&a.team!==g.player?.team&&Number.isFinite(a.stats?.shots)
@@ -313,7 +339,7 @@ async function boot() {
     }
     const nextIndex = activeChallenge ? levels.findIndex(c => c.id === activeChallenge.id)+1 : -1;
     const next = id === 'cf-transport-ship' && phase === 'finished' &&
-      root.dataset.outcome === 'won' ? levels[nextIndex] : null;
+      root.dataset.outcome === 'won' ? cfMobileMission(levels[nextIndex]):null;
     $('next').hidden = !next;
     if(next)$('next').textContent = '下一关 · ' + next.title + ' →';
     $('pause').disabled = !round || !['running', 'paused'].includes(round.phase);
@@ -326,11 +352,15 @@ async function boot() {
     if(routeToArena(selected))return;
     reviveOffered=false;reviveUsed=false;reviveDeclined=false;reviveBusy=false;
     clearInput();
-    activeChallenge = id === 'cf-transport-ship' ? (elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
-    if(activeChallenge?.drill==='reposition')
+    activeChallenge = id === 'cf-transport-ship' ? cfMobileMission(elite && cfEliteUnlocked(challengeProgress.records[selected.id]) ? cfEliteChallenge(selected) : {...selected,elite:false}) : selected; $('start').disabled = true; $('heading').textContent = '准备场景…'; showPhase('loading'); try {
+    if(activeChallenge?.drill==='reposition'&&activeChallenge.lite===true)
+      $('goal').max=activeChallenge.target;
+    else if(activeChallenge?.drill==='reposition')
       $('goal').max=activeChallenge.openingHits+activeChallenge.minTravel+activeChallenge.target;
     if(activeChallenge?.kind==='defend')
       $('goal').max=activeChallenge.target*activeChallenge.holdSeconds;
+    if(activeChallenge?.lite===true&&activeChallenge.extractSeconds)
+      $('goal').max=activeChallenge.minKills+activeChallenge.extractSeconds;
     if(activeChallenge?.kind==='assault')
       $('goal').max=activeChallenge.minTravel+activeChallenge.target;
     await native.start(activeChallenge); round = startRound(progress, activeChallenge.limitMs); fpsUx?.onStart(activeChallenge);
@@ -448,19 +478,22 @@ async function boot() {
           ? (metrics.assaultSiteValid!==true?'✕ 进攻位不可达':
              metrics.assaultStage===1
                ? '◆ 进攻位已达 · 击杀'+(metrics.assaultKills||0)+'/'+activeChallenge.target
-               : '↗ 进攻位 · 移动'+Math.floor(metrics.assaultTravel||0)+'/'+activeChallenge.minTravel+'米')
+               : activeChallenge.lite?'◆ 进入标记进攻位':
+                 '↗ 进攻位 · 移动'+Math.floor(metrics.assaultTravel||0)+'/'+activeChallenge.minTravel+'米')
           : activeChallenge.extractSeconds
           ? (metrics.evacSiteValid!==true?'✕ 撤离区不可达':
-             metrics.evacExtracted===true?'◆ 撤离区已守住 · 等待结束':
-               '◆ 撤离'+Math.floor(metrics.evacHeldSec||0)+'/'+activeChallenge.extractSeconds+
-               '秒 · '+(metrics.evacContested?'敌军争夺中':'持续作战'))
-          : activeChallenge.drill==='reposition'
+             metrics.evacExtracted===true?'◆ 撤离成功':
+               '◆ 撤离 '+Math.floor(metrics.evacHeldSec||0)+'/'+activeChallenge.extractSeconds+
+               '秒 · '+(metrics.evacContested?'敌军争夺中':
+                 (metrics.kills||0)<activeChallenge.minKills?'先击倒敌人':'进入撤离点坚守'))
+          : activeChallenge.drill==='reposition'&&!activeChallenge.lite
           ? result.label
           : activeChallenge.kind === 'survive'
-          ? '❤ 余' + Math.max(0, activeChallenge.target +
-              (activeChallenge.bonusDeaths===1?1:0) - (metrics.deaths || 0)) + '次 · ↗ ' +
-            Math.floor(metrics.travel || 0) + '/' + (activeChallenge.minTravel || 0) + 'm'+
-            (activeChallenge.minKills?' · 击杀'+(metrics.kills||0)+'/'+activeChallenge.minKills:'')
+          ? '❤ 剩余机会 '+Math.max(0, activeChallenge.target +
+              (activeChallenge.bonusDeaths===1?1:0) - (metrics.deaths || 0))+
+            (activeChallenge.minKills?' · 击杀'+(metrics.kills||0)+'/'+activeChallenge.minKills:'')+
+            (!activeChallenge.lite?' · 移动'+Math.floor(metrics.travel||0)+'/'+
+              (activeChallenge.minTravel||0)+'m':'')
           : activeChallenge.maxDeaths!==undefined
             ? '☠ ' + (metrics.deaths||0) + '/' + activeChallenge.maxDeaths + ' · ' + result.label
             : result.label;
@@ -470,13 +503,16 @@ async function boot() {
         }
         const rewardedRespawn=cfNativeReviveStatus(metrics,reviveUsed);
         if(rewardedRespawn)$('status').textContent=rewardedRespawn;
-        $('goal').value = activeChallenge.kind==='defend'
+        $('goal').value=activeChallenge.lite===true&&activeChallenge.extractSeconds
+          ?Math.min(activeChallenge.minKills,metrics.kills||0)+
+            Math.min(activeChallenge.extractSeconds,metrics.evacHeldSec||0)
+          :activeChallenge.kind==='defend'
           ? Math.min(activeChallenge.target,(metrics.defenseCaptured||0))*activeChallenge.holdSeconds+
             Math.min(activeChallenge.holdSeconds,metrics.defenseHeld||0)
           : activeChallenge.kind==='assault'
           ? Math.min(activeChallenge.minTravel,metrics.assaultTravel||0)+
             (metrics.assaultStage===1?Math.min(activeChallenge.target,metrics.assaultKills||0):0)
-          : activeChallenge.drill==='reposition'
+          : activeChallenge.drill==='reposition'&&!activeChallenge.lite
           ? (metrics.drillFirstHit?activeChallenge.openingHits:0) +
             Math.min(activeChallenge.minTravel,metrics.drillTravel||0) +
             Math.min(activeChallenge.target,metrics.drillFollowUpHits||0)
@@ -533,7 +569,9 @@ async function boot() {
           const nearMiss=result.outcome==='lost'
             ?cfNearMissCue(activeChallenge,metrics,round.elapsedMs):null;
           $('heading').textContent = result.outcome === 'won'
-            ? (reviveUsed?'◆ 辅助续战成功！':activeChallenge.elite?'⚡ 精英复战成功！':'✓ '+activeChallenge.title+'完成！')
+            ? (reviveUsed?'◆ 辅助续战成功！':activeChallenge.elite?'⚡ 精英复战成功！':
+              cfFirstKillWinBanner(activeChallenge,metrics,result.outcome)||
+              '✓ '+activeChallenge.title+'完成！')
             : nearMiss?'就差一点 · '+activeChallenge.title
               :(activeChallenge.elite?'精英复战失败':'本次挑战未完成');
           if(id==='cf-transport-ship')

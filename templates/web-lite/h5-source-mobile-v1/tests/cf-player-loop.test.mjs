@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {challengesFor,cfEliteChallenge} from '../engine.mjs';
 import {CF_CONTROL_DEFAULTS,cfNormalizeControls,cfLoadControls,cfSaveControls,
   cfApplyControls,cfMissionMedal,cfNewMastery,cfMasteryKey,
-  cfRecordMastery,cfLoadMastery,cfSaveMastery,cfRecordLabel,cfNextMedalGoal
+  cfRecordMastery,cfLoadMastery,cfSaveMastery,cfRecordLabel,cfNextMedalGoal,cfMobileMission
 } from '../cf-player-loop.mjs';
 
 const [rifle,sniper,survive]=challengesFor('cf-transport-ship');
@@ -105,4 +105,46 @@ test('CF corrupted local mastery never leaks scores or breaks older challenge sa
  assert.deepEqual(cfLoadMastery(JSON.stringify(r)),r);
  assert.equal(cfRecordMastery(r,{id:'pelican-bike'},rifleWin,'won',1000),null);
  assert.equal(cfMissionMedal(rifle,rifleWin,'won',31900).timeMs,31900);
+});
+
+test('CF V18 lite keeps immutable campaign IDs while using transparent goals',()=>{
+ const old=challengesFor('cf-transport-ship');
+ const now=old.map(cfMobileMission);
+ assert.deepEqual(now.map(x=>x.id),old.map(x=>x.id));
+ assert.deepEqual(old[0].minTravel,8);
+ assert.equal(now[0].lite,true);
+ assert.equal(now[0].target,1);
+ assert.match(now[0].objective,/击倒1名/);
+ assert.equal(now[0].minTravel,8,'historical map data is not rewritten');
+ assert.equal(now[6].minTravel,0);
+ assert.equal(now[6].finishOnExtract,true);
+ assert.equal(now[3].target,1);
+ assert.equal(now[7].target,1);
+ assert.equal(now[1].weapon,'awm');
+ assert.deepEqual(cfMobileMission(null),null);
+});
+test('CF V18 lite awards actual native eliminations and complete extraction',async()=>{
+ const {challengeResult}=await import('../engine.mjs');
+ const [rifle,,,,,,evac]=challengesFor('cf-transport-ship').map(cfMobileMission);
+ assert.equal(challengeResult(rifle,{kills:0,deaths:0},false).outcome,'running');
+ assert.equal(challengeResult(rifle,{kills:1,deaths:0},false).outcome,'won');
+ assert.equal(challengeResult(rifle,{hits:90,kills:0,deaths:0},true).outcome,'lost');
+ assert.equal(challengeResult(evac,{kills:1,deaths:0,travel:0,
+   evacSiteValid:true,evacExtracted:true},false,35000).outcome,'won');
+ assert.equal(challengeResult(evac,{kills:0,deaths:0,travel:0,
+   evacSiteValid:true,evacExtracted:true},false,35000).outcome,'running');
+});
+
+test('CF V18 lite survival mastery rewards fighting instead of hidden walking quotas',()=>{
+ const lite=cfMobileMission(survive),elapsedMs=45000;
+ assert.equal(lite.minTravel,0);
+ const one={shots:7,hits:4,kills:1,deaths:0,travel:0};
+ const two={...one,kills:2};
+ assert.equal(cfMissionMedal(lite,one,'won',elapsedMs)?.stars,2,
+  'one real kill and zero deaths wins, but optional elite mastery needs two');
+ assert.equal(cfMissionMedal(lite,two,'won',elapsedMs)?.stars,3,
+  'two real native player kills and no deaths earn three stars');
+ const next=cfNextMedalGoal(lite,cfMissionMedal(lite,one,'won',elapsedMs));
+ assert.match(next,/亲手击倒至少2人/);
+ assert.doesNotMatch(next,/移动|行进|米/);
 });
