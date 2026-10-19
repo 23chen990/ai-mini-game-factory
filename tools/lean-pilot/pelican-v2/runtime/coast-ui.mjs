@@ -1,7 +1,7 @@
 /* global window, document, localStorage, performance */
 import css from './coast.css';
 import { LEVELS, LANES, BOUNDS } from './levels.mjs';
-import { newRun, retireRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE, JUMP_BUFFER_SECONDS } from './adventure.mjs';
+import { newRun, retireRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE, readyJumpBarrier } from './adventure.mjs';
 import {createReviveController,reviveAvailable,reviveOfferVisible,terminalDisposition} from './revive-flow.mjs';
 import {upcomingHazards,pathRiskAtPosition,rewardExitWarning} from './safety.mjs';
 import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient,heldSteerDistance} from './feel.mjs';
@@ -372,9 +372,9 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
   const postRewardCar=run.level.id===1&&run.distance>=142&&run.distance<171?rewardExitWarning(run):null;
    $('radar-label').textContent=postRewardCar?'🌟 接完金鱼，前方来车 · 及时变道':gateCue??(currentRisk?'⚠️ 当前路线接近障碍 · 向旁边微调':next?.obstacle.kind==='pedestrian'?'前方有人横穿 · 提前避开红色车道':prizeAhead?'前方路障 · 跳过去追奖励金鱼（也可绕开）':(betweenLanes?'🐟 鱼在道线之间 · 按住或拖动微调':'前方路况 · 红色危险车道'));
 
-  const barrier=upcoming.find(h=>h.obstacle.kind==='barrier'&&h.obstacle.lane===run.laneIndex&&h.seconds>.15&&h.seconds<=JUMP_BUFFER_SECONDS);
+  const barrier=readyJumpBarrier(run);
   const jumpButton=root.querySelector('[data-action="jump"]');
-  jumpButton.classList.toggle('ready',!!barrier&&run.y===0&&!run.bufferedJump);
+  jumpButton.classList.toggle('ready',!!barrier);
   jumpButton.classList.toggle('queued',!!run.bufferedJump);
   const m=masteryStatus(run),mark=v=>v?'done':'missed';
   const mastery=run.level.endless?`<b>∞ ${endlessTier(run.distance).name}</b><span>🐟${run.count}</span><span>⚡${run.speed.toFixed(1)}m/s</span><span>🏁${Math.floor(run.distance)}m</span><span>🏆${run.previousBest>0?(run.distance>run.previousBest?'超越 '+Math.floor(run.distance-run.previousBest)+'m':'差 '+Math.ceil(run.previousBest-run.distance)+'m'):'首局挑战'}</span>`:`<b>★★★</b><span data-goal="catch" class="${m.catch.done?'done':''}">🐟 ${m.catch.value}/${m.catch.target}</span><span data-goal="gold" class="${m.gold.done?'done':''}">🌟 ${m.gold.value}/${m.gold.target}</span><span data-goal="jump" class="${m.jump.done?'done':''}">↟ ${m.jump.value}/${m.jump.target}</span><span data-goal="no-hit" title="无碰撞" class="${mark(m.noHit.done)}">🛡${m.noHit.done?'✓':'×'}</span><span data-goal="streak" title="本局最高连续捕鱼" class="${mark(m.streak.done)}">⚡${m.streak.value}/${m.streak.target}</span>`;
