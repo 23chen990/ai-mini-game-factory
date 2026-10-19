@@ -79,12 +79,26 @@ export function patchGeneratedCarPresentation(source) {
         r.model.visible = r === target;
         if (!r.isPlayer) r.model.userData.tag.visible = false;
       }
-      const angle = target.h + 0.85 + Math.sin(this.time * 0.12) * 0.12;
-      const distance = 7.8, fov = 42;
-      const want = new THREE.Vector3(tx + Math.sin(angle) * distance, ty + 3.2, tz + Math.cos(angle) * distance);
+      // V11.7 home hero: an intentional low three-quarter walkaround, not a
+      // barely perceptible 52-second wobble or an overhead garage screenshot.
+      // Only presentation is affected: race follow cameras remain native.
+      if (this.__homeCameraMode !== st) {
+        this.__homeCameraMode = st;
+        this.__homeCameraSince = this.time;
+      }
+      if (this.__homeMotionAllowed === undefined) {
+        this.__homeMotionAllowed = !window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+      }
+      const homeMotion = this.__homeMotionAllowed && st === 'menu';
+      const elapsed = Math.max(0, this.time - this.__homeCameraSince);
+      const reveal = homeMotion ? Math.max(0, 1 - elapsed / 1.3) ** 2 : 0;
+      const angle = target.h + 0.7 + (homeMotion ? Math.sin(this.time * 0.42) * 0.2 : 0) + reveal * 0.12;
+      const distance = 10.2 + reveal + (homeMotion ? Math.sin(this.time * 0.32) * 0.14 : 0);
+      const fov = 42;
+      const want = new THREE.Vector3(tx + Math.sin(angle) * distance, ty + 2.42, tz + Math.cos(angle) * distance);
       const offset = 0.22 * 2 * distance * Math.tan(fov * Math.PI / 360) * cam.aspect;
       this.camPos.copy(want);
-      this.camLook.set(tx - Math.cos(angle) * offset, ty + 0.8, tz + Math.sin(angle) * offset);
+      this.camLook.set(tx - Math.cos(angle) * offset, ty + 0.7, tz + Math.sin(angle) * offset);
       cam.position.copy(this.camPos);
       cam.lookAt(this.camLook);
       cam.fov = fov;

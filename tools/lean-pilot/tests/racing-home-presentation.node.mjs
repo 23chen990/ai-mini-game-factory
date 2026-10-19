@@ -92,3 +92,40 @@ test('740x360 sidebar keeps selectors on one row and removes only decorative bri
   assert.match(mobileCss, /max-height:375px[\s\S]*?#race-stage-tag \{max-width:80px;\}/u);
   assert.match(mobileCss, /#race-panel>\.race-eyebrow \{display:none;\}/u);
 });
+
+test('V11.7 home hero restores a low mobile-safe moving shot without changing the native race camera', async () => {
+  const { patchGeneratedCarPresentation } = await import('../racing-mobile-build.mjs');
+  const native = [
+    'function updateCamera(dt, st, cam) {',
+    "    if (st === 'menu') {",
+    '      this.demoT += dt;',
+    '      target = this.racers[0];',
+    '    }',
+    '    if (!target) return;',
+    "    if (st === 'menu' || (st === 'finish' && this.resultShown)) {",
+    '      oldMenuOrbit();',
+    '    }',
+    '    const P = target;',
+    '    originalRaceCamera();',
+    '}',
+  ].join('\n');
+  const patched = patchGeneratedCarPresentation(native);
+  assert.match(patched, /Original racer presentation camera/);
+  assert.match(patched, /if \(st === 'menu'\) target = this\.racers\[0\]/);
+  assert.match(patched, /const distance = 10\.2/);
+  assert.match(patched, /ty \+ 2\.42/);
+  assert.match(patched, /Math\.sin\(this\.time \* 0\.42\)/);
+  assert.match(patched, /prefers-reduced-motion: reduce/);
+  assert.match(patched, /const P = target;\s+originalRaceCamera\(\);/);
+  assert.doesNotMatch(patched, /this\.scene\.add\(/, 'presentation must not allocate new scene geometry');
+  assert.equal(patchGeneratedCarPresentation(patched), patched, 'patch must be idempotent');
+  assert.throws(() => patchGeneratedCarPresentation('unrelated engine'), /anchor/);
+});
+
+test('V11.7 ready overlay keeps the car visible, noninteractive, and desktop garage compact', () => {
+  assert.match(mobileCss, /#race-kit\[data-phase="ready"\]::before\s*\{[^}]*pointer-events:none/);
+  assert.match(mobileCss, /width:min\(36vw,545px\)/);
+  assert.match(mobileCss, /width:min\(44vw,665px\)/);
+  assert.match(mobileCss, /#race-kit\[data-phase="ready"\] #race-car-choices button\s*\{min-height:68px;\}/);
+  assert.match(mobileCss, /@media\(prefers-reduced-motion:reduce\)/);
+});

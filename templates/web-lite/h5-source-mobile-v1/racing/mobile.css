@@ -734,3 +734,46 @@ html[data-race-platform="touch"] #race-joystick{max-height:43vh}
 @media (min-width:650px) and (max-height:450px) and (orientation:landscape) {
   #race-kit[data-phase="finished"] .race-actions #race-next-ad {flex:1 0 100%;}
 }
+
+/* V11.7 home-only visual hierarchy. No new shader, lights, canvas, or gameplay
+ * layer: background tint remains behind interactive controls and the 3D car
+ * stays on the same native WebGL scene. */
+#race-kit[data-phase="ready"]::before {
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    linear-gradient(90deg,rgba(3,11,24,.50) 0%,rgba(4,17,29,.27) 38%,rgba(3,14,25,.03) 75%),
+    linear-gradient(0deg,rgba(3,11,21,.42),transparent 25%),
+    linear-gradient(180deg,rgba(2,9,18,.16),transparent 38%);
+}
+#race-kit[data-phase="ready"] #race-panel {
+  border-color:#a0c7d848;
+  background:linear-gradient(145deg,rgba(7,21,36,.96),rgba(11,30,46,.95));
+  box-shadow:0 22px 66px #0009,inset 0 1px 0 #fff1;
+}
+#race-kit[data-phase="ready"] #race-course-card {
+  border-color:#61b8d354;
+  background:linear-gradient(120deg,rgba(5,37,53,.94),rgba(15,58,70,.84));
+}
+#race-kit[data-phase="ready"] #race-heading {letter-spacing:.4px;}
+#race-kit[data-phase="ready"] #race-stage-rail {
+  background:linear-gradient(0deg,rgba(3,11,20,.45),transparent);
+}
+@media(min-width:1000px) and (orientation:landscape) {
+  /* Match the hero's 57-65% breathing room; do not add a showroom page. */
+  html[data-race-mobile][data-race-platform] #race-kit[data-phase="ready"] #race-panel {
+    width:min(36vw,545px);
+  }
+  #race-kit[data-phase="ready"] #race-garage {
+    left:auto;right:clamp(18px,3vw,52px);top:clamp(15px,2.8vh,31px);
+    width:min(44vw,665px);max-width:665px;
+    padding:10px 12px;
+  }
+  #race-kit[data-phase="ready"] #race-garage .race-garage-title {margin-bottom:7px;}
+  #race-kit[data-phase="ready"] #race-garage #race-car-name {font-size:15px;}
+  #race-kit[data-phase="ready"] #race-car-choices button {min-height:68px;}
+  #race-kit[data-phase="ready"] .race-car-thumb {height:39px;}
+  #race-kit[data-phase="ready"] .race-car-label {font-size:10px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  #race-kit[data-phase="ready"] #race-stage-rail {scroll-behavior:auto;}
+}
