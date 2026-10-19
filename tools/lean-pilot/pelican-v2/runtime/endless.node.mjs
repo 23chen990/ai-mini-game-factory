@@ -14,6 +14,15 @@ test('infinite coast is deterministic by seed and index, never by player lane',(
   assert.equal(segment.obstacles.length,index<2?1:2);
  }
  assert.deepEqual(endlessSegment(1,9),endlessSegment(1,9));
+ for(const seed of [0,1,77,20261017]){
+  const a=endlessSegment(seed,0,38),b=endlessSegment(seed,1,84);
+  assert.deepEqual(a.obstacles.map(o=>o.lane),[1]);
+  assert.deepEqual(a.obstacles.map(o=>o.kind),['barrier']);
+  assert.equal(b.obstacles.length,1);
+  assert.equal(b.obstacles[0].lane,a.open,'second obstacle must block prior visible escape');
+  assert.equal(b.obstacles[0].kind,'car');
+  assert.equal(b.open,1);
+ }
  assert.throws(()=>endlessSegment(-1,0));
 });
 
@@ -24,9 +33,10 @@ test('unending road has a smooth tutorial and bounded lookahead',()=>{
  assert.equal(r.level.endless,true);
  assert.equal(r.level.id,6);
  assert.deepEqual(r.fishes.filter(f=>f.id.startsWith('endless-warmup')).map(f=>f.x),[15,31,47]);
- assert.equal(r.obstacles.some(o=>o.x<100),false);
+ assert.ok(r.obstacles.some(o=>o.x===38&&o.lane===1&&o.kind==='barrier'),'real opening risk before 5s');
  assert.ok(r.obstacles.length>=3);
  assert.ok(r.endless.nextX>350);
+ assert.deepEqual(ENDLESS_TIERS.map(t=>t.gap),[46,44,42,40,38]);
  const first=r.obstacles.map(o=>o.id);
  const another=newRun(6,{seed:12345});
  assert.deepEqual(another.obstacles.map(o=>o.id),first);
@@ -108,7 +118,7 @@ test('thousands of seeded challenge gates retain a true open route and adequate 
    if(index>=2)assert.equal(segment.obstacles.length,2);
    if(index>=16&&previousOpen!==null&&x>=980)
     assert.notEqual(segment.open,previousOpen,'advanced gaps rotate instead of allowing idle camping');
-   if(index>0)assert.ok(x-lastX>=62);
+   if(index>0)assert.ok(x-lastX>=38);
    previousOpen=segment.open;lastX=x;
   }
  }

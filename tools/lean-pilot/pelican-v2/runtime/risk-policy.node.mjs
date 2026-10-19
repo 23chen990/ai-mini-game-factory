@@ -57,9 +57,9 @@ test('half-second visible early jump cue preserves the 75m left-route choice',()
  const turn=decide(scene,policy.createRiskPolicyState(1,target));
  assert.equal(turn.action,'left','do not turn back to ordinary side fish as the two-lane jump approach opens');
  assert.equal(turn.toLane,0);
- const jump=decide({...scene,distance:59,laneIndex:0,jumpReady:true,
-  lanes:[{...reward,seconds:2},lane(),lane()]},turn.state);
- assert.equal(jump.action,'jump','the ordinary physical 2.25s buffer is still required and remains available');
+ const jump=decide({...scene,distance:67,laneIndex:0,jumpReady:true,
+  lanes:[{...reward,seconds:1.0},lane(),lane()]},turn.state);
+ assert.equal(jump.action,'jump','the actual 1.1s physical buffer is required');
 });
 test('two full-lane changes from right fish to 75m left prize need 4 seconds public radar',()=>{
  const target={barrierId:'l1-o4',distance:75};
@@ -74,8 +74,8 @@ test('two full-lane changes from right fish to 75m left prize need 4 seconds pub
   lanes:[{...radar,seconds:3},lane(),lane({fish:true})]},first.state);
  assert.equal(stillSafe.action,'left');
  assert.equal(stillSafe.toLane,0);
- const third=decide({...early,distance:61,laneIndex:0,jumpReady:true,
-  lanes:[{...radar,seconds:2},lane(),lane()]},stillSafe.state);
+ const third=decide({...early,distance:67,laneIndex:0,jumpReady:true,
+  lanes:[{...radar,seconds:1.0},lane(),lane()]},stillSafe.state);
  assert.equal(third.action,'jump');
  assert.equal(third.state.jumpIssued,true);
 });
@@ -190,12 +190,12 @@ test('two barriers 20m apart: real READY takes priority over another reward lane
 });
 
 test('the policy acts in the early buffered jump window',()=>{
- const s=newState(),earlyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.3s'});
+ const s=newState(),earlyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.0s'});
  const lanes=[lane(),earlyReward,lane()];
  const early=decide(view({distance:221,lanes}),s);
- assert.equal(early.action,'jump','1.3 seconds is an earned buffered input, not a last-frame reaction');
- const readyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟1.1s'});
- assert.equal(readyReward.seconds,1.1);
+ assert.equal(early.action,'jump','1.0 seconds is an earned buffered input, not a last-frame reaction');
+ const readyReward=policy.visibleLaneFromHud({className:'co-lane danger jump-reward',text:'↟🌟0.9s'});
+ assert.equal(readyReward.seconds,0.9);
  const holding=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),early.state);
  assert.equal(holding.action,'wait','one target cannot trigger a second input while the first buffered jump is armed');
  const ready=decide(view({distance:221,nowMs:1100,lanes:[lane(),readyReward,lane()]}),newState());

@@ -87,7 +87,7 @@ try{
    v.lanes[1]?.danger&&['car','van'].includes(v.lanes[1].kind);
   if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&(warnedVehicle||v.distance>=119)){
    const safeSide=[0,2].filter(i=>!risky(i)&&!v.lanes[i].danger);
-   if(safeSide.length){escapedBonus=true;escapeLane=safeSide[0];escapeUntil=v.distance+24;}
+   if(safeSide.length){escapedBonus=true;escapeLane=safeSide[0];escapeUntil=Math.max(148,v.distance+24); // Hold the genuine safe side beyond the 140m centre barrier.}
   }
   if(jumped&&!prizeFeedbackSeen&&!earnedPrizeCue&&v.lanes[1].kind==='fish'&&v.lanes[1].text.includes('🌟')){
    const observed=await snap();

@@ -1,9 +1,9 @@
 // Enough time to physically reach the real +9m fish at the slowest level,
 // without forcing a rider to wait into the next close barrier.
 export const CAPTURE_HOLD_MS = 1200;
-// Match the real 2.25s mobile jump buffer and visible READY button, rather
-// than waiting until a software-rendered HUD is only 0.5s from collision.
-export const JUMP_WINDOW_SECONDS = 2.25;
+import {JUMP_BUFFER_SECONDS} from './adventure.mjs';
+// The policy and READY button must use the exact same physical window.
+export const JUMP_WINDOW_SECONDS = JUMP_BUFFER_SECONDS;
 export const TARGET_WINDOW_LEAD_METERS = 48;
 export const TARGET_WINDOW_TRAIL_METERS = 10;
 

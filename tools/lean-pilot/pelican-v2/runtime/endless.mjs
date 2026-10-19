@@ -4,11 +4,11 @@ const LANES=[-1.7,0,1.7];
 const DISTANCE_LIMIT=100000000;
 const safeInt=n=>Number.isSafeInteger(n)&&n>=0&&n<=DISTANCE_LIMIT;
 export const ENDLESS_TIERS=Object.freeze([
- Object.freeze({id:0,at:0,name:'海风热身',speed:8.3,gap:82,stagger:0}),
- Object.freeze({id:1,at:420,name:'潮汐转向',speed:8.8,gap:76,stagger:0}),
- Object.freeze({id:2,at:980,name:'逆风追鱼',speed:9.4,gap:70,stagger:4}),
- Object.freeze({id:3,at:1800,name:'海岸冲刺',speed:10,gap:66,stagger:7}),
- Object.freeze({id:4,at:3200,name:'破浪极限',speed:10.5,gap:63,stagger:8}),
+ Object.freeze({id:0,at:0,name:'海风热身',speed:8.3,gap:46,stagger:0}),
+ Object.freeze({id:1,at:420,name:'潮汐转向',speed:8.8,gap:44,stagger:0}),
+ Object.freeze({id:2,at:980,name:'逆风追鱼',speed:9.4,gap:42,stagger:4}),
+ Object.freeze({id:3,at:1800,name:'海岸冲刺',speed:10,gap:40,stagger:7}),
+ Object.freeze({id:4,at:3200,name:'破浪极限',speed:10.5,gap:38,stagger:8}),
 ]);
 function hash(seed,index){
  let x=(seed^Math.imul(index+1,0x9e3779b1))>>>0;
@@ -37,15 +37,16 @@ export function endlessSegment(seed,index,metres=100+index*75){
  if(!safeInt(seed)||!safeInt(index)||!safeInt(Math.floor(metres)))
   throw Error('Invalid endless generation');
  const h=hash(seed,index),tier=endlessTier(metres);
- // First two are true single-hazard onboarding encounters. Later, increasing
- // pressure comes from alternating safe exits and short staggered pairs, not
- // three simultaneous blocked lanes or sudden undeclared deaths.
- const open=index<2?1:tier.id<2?(h+index)%3:(seed+index)%3;
+ // The first centre barrier forces a real decision at ~4.5s; the next
+ // car blocks the first safe lane. Thereafter a deterministic safe gap
+ // rotates without observing the player's location, spend or mistakes.
+ const firstEscape=(hash(seed,0)&1)?0:2;
+ const open=index===0?firstEscape:index===1?1:(seed+index)%3;
  const blocked=[0,1,2].filter(lane=>lane!==open);
- const chosen=index<2?[blocked[h%2]]:blocked;
+ const chosen=index===0?[1]:index===1?[firstEscape]:blocked;
  const types=['barrier','car','van'];
  return {open,tier:tier.id,
-  obstacles:chosen.map((lane,i)=>({lane,kind:types[(h>>>(i*5))%types.length],
+  obstacles:chosen.map((lane,i)=>({lane,kind:index===0?'barrier':index===1?'car':types[(h>>>(i*5))%types.length],
    offset:i===1?tier.stagger:0})),
   gold:index>0&&index%5===0};
 }
@@ -61,7 +62,7 @@ export function extendEndless(run,ahead=370){
    z:LANES[lane],hit:false,triggerAt:null,fallAt:null,passed:false});
   // A marked, always-open fish route lets a player read the whole encounter.
   // It cannot be a guaranteed pickup: steering is still manual and physical.
-  for(const [slot,offset] of [[0,-26],[1,19]]){
+  for(const [slot,offset] of [[0,-18],[1,19]]){
    run.fishes.push({id:`endless-f-${index}-${slot}`,x:x+offset,
     lane:segment.open,golden:segment.gold&&slot===1,bonus:false,caught:false});
   }

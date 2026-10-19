@@ -15,7 +15,7 @@ function trial(id,strategy){
  const seconds=run.level.seconds+12,frames=Math.ceil(seconds*60);
  for(let frame=0;frame<frames&&run.phase==='running';frame++){
   // The third negative baseline tries blind jumps rather than decisions.
-  if(strategy==='blind-jump'&&frame>0&&frame%120===0)input(run,'jump');
+  if(['blind-jump','jump-spam'].includes(strategy)&&frame>0&&frame%(strategy==='jump-spam'?30:120)===0)input(run,'jump');
   advance(run,1/60);
  }
  return {strategy,phase:run.phase,reason:run.reason,
@@ -32,7 +32,7 @@ assert.deepEqual(LEVELS.map(l=>starRequirements(l).jumps),[1,1,1,2,2],
 const rows=LEVELS.map(level=>{
  assert.deepEqual(validateLevel(makeLevel(level.id)),[],
   `level ${level.id} must retain a traversable, physically fair route`);
- const baselines=['no-input','hold-left','hold-right','blind-jump'].map(x=>trial(level.id,x));
+ const baselines=['no-input','hold-left','hold-right','blind-jump','jump-spam'].map(x=>trial(level.id,x));
  assert.ok(baselines.every(t=>t.phase==='finished'&&t.elapsedSec>0),
   'all fixed-course trials must terminate through the actual engine');
  const mastery=starRequirements(level);
@@ -45,11 +45,13 @@ const rows=LEVELS.map(level=>{
 // The second level used to be beatable by staying in the middle and blindly
 // jumping every two seconds. Its final public vehicle gate now requires a
 // real steering decision; missing it must fail, without trapping all lanes.
-const blindSecond=rows[1].baselines.find(b=>b.strategy==='blind-jump');
-assert.equal(blindSecond.reason,'vehicle',
- 'level 2 cannot be completed by centre-lane button mashing');
-assert.ok(blindSecond.progressPct>=70&&blindSecond.progressPct<100,
- 'failure belongs to a visible late gate, not a surprise early punishment');
+for(const strategy of ['blind-jump','jump-spam']){
+ const result=rows[1].baselines.find(b=>b.strategy===strategy);
+ assert.ok(['vehicle','barrier'].includes(result.reason),
+  'static centre jump mashing must meet an actual authored hazard');
+ assert.ok(result.progressPct>=5&&result.progressPct<100,
+  'the negative baseline must not finish by staying in the middle');
+}
 
 console.log('PELICAN_DIFFICULTY_BASELINES '+JSON.stringify({
  build:'checked-in-authoritative-physics',

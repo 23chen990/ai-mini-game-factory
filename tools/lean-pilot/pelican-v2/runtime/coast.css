@@ -129,3 +129,21 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 @media(orientation:portrait) and (max-height:650px){
  #coast[data-phase="running"] .co-goal b{font-size:14px}
 }
+
+/* V7 live-run road visibility: keep warnings readable without blocking
+   the incoming bicycle corridor, on 320px and full-size phones alike. */
+@media (orientation:portrait){
+ #coast[data-phase="running"] #co-mastery{top:108px;bottom:auto;left:8px;max-width:calc(100% - 16px);font-size:10px;padding:3px 5px;gap:2px}
+ #coast[data-phase="running"] #co-mastery span{padding:2px 3px}
+ #coast[data-phase="running"] .co-lane-indicator{top:142px;bottom:auto}
+ #coast[data-phase="running"] #co-radar-label{top:158px;left:3%;right:3%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px}
+ #coast[data-phase="running"] #co-radar{top:177px;gap:3px;padding:3px;border-radius:10px;background:#123c4be0}
+ #coast[data-phase="running"] #co-radar .co-lane{width:54px;min-height:38px;font-size:18px}
+ #coast[data-phase="running"] #co-radar .co-lane small{font-size:10px}
+}
+@media (orientation:portrait) and (max-height:650px){
+ #coast[data-phase="running"] #co-mastery{top:104px}
+ #coast[data-phase="running"] .co-lane-indicator{top:135px}
+ #coast[data-phase="running"] #co-radar-label{top:149px}
+ #coast[data-phase="running"] #co-radar{top:166px}
+}

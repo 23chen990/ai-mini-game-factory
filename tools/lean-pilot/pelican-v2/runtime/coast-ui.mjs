@@ -1,7 +1,7 @@
 /* global window, document, localStorage, performance */
 import css from './coast.css';
 import { LEVELS, LANES, BOUNDS } from './levels.mjs';
-import { newRun, retireRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE } from './adventure.mjs';
+import { newRun, retireRun, input, steerTo, steerBy, advance, newSave, loadSave, settle, qualityStep, FREE_ROAD_EDGE, JUMP_BUFFER_SECONDS } from './adventure.mjs';
 import {createReviveController,reviveAvailable,reviveOfferVisible,terminalDisposition} from './revive-flow.mjs';
 import {upcomingHazards,pathRiskAtPosition,rewardExitWarning} from './safety.mjs';
 import {cameraTarget,smooth,FEEL,syncRidePose,renderedRidePose,duskRoadAmbient,heldSteerDistance} from './feel.mjs';
@@ -361,7 +361,7 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
   const postRewardCar=run.level.id===1&&run.distance>=142&&run.distance<171?rewardExitWarning(run):null;
    $('radar-label').textContent=postRewardCar?'🌟 接完金鱼，前方来车 · 及时变道':gateCue??(currentRisk?'⚠️ 当前路线接近障碍 · 向旁边微调':next?.obstacle.kind==='pedestrian'?'前方有人横穿 · 提前避开红色车道':prizeAhead?'前方路障 · 跳过去追奖励金鱼（也可绕开）':(betweenLanes?'🐟 鱼在道线之间 · 按住或拖动微调':'前方路况 · 红色危险车道'));
 
-  const barrier=upcoming.find(h=>h.obstacle.kind==='barrier'&&h.obstacle.lane===run.laneIndex&&h.seconds>.15&&h.seconds<=2.25);
+  const barrier=upcoming.find(h=>h.obstacle.kind==='barrier'&&h.obstacle.lane===run.laneIndex&&h.seconds>.15&&h.seconds<=JUMP_BUFFER_SECONDS);
   const jumpButton=root.querySelector('[data-action="jump"]');
   jumpButton.classList.toggle('ready',!!barrier&&run.y===0&&!run.bufferedJump);
   jumpButton.classList.toggle('queued',!!run.bufferedJump);
