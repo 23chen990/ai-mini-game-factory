@@ -825,6 +825,17 @@ export function cfNativeKillPayoff(previousKills,currentKills) {
   return delta>1?'✦ 连续击倒 +'+delta:'✦ 亲手击倒 +1';
 }
 /** Results-only native fire line: enemy shots are NOT injuries or kills. */
+/** A first-kill stage can end within the SAME simulation tick as the kill.
+ * The battle HUD is then intentionally hidden behind settlement, so its
+ * 1.1s transient cue cannot reach a visible paint frame. In that case make
+ * the visible result headline carry the native player achievement instead.
+ * Nothing is awarded from team score or a fake state. */
+export function cfFirstKillWinBanner(challenge,metrics,outcome) {
+ if(challenge?.lite!==true||challenge.id!=='tags'||
+    outcome!=='won'||!Number.isSafeInteger(metrics?.kills)||
+    metrics.kills<1||typeof challenge.title!=='string')return '';
+ return '✦ 首杀达成 · '+challenge.title+'完成！';
+}
 export function cfBattleRecap(metrics,firstKillMs=null) {
   if(!metrics||!['shots','hits','kills','enemyShots'].every(k=>
     Number.isSafeInteger(metrics[k])&&metrics[k]>=0&&metrics[k]<=100_000))
