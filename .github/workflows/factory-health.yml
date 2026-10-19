@@ -38,5 +38,5 @@ jobs:
         run: pnpm install --frozen-lockfile
       - name: Install Playwright Chromium and WebKit for browser-backed Vitest checks
         run: pnpm exec playwright install --with-deps chromium webkit
-      - name: Verify factory core
-        run: pnpm verify
+      - name: Verify factory core with bounded browser-test parallelism
+        run: pnpm lint && pnpm typecheck && pnpm exec vitest run --maxWorkers=2
