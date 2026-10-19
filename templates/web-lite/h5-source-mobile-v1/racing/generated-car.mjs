@@ -61,8 +61,19 @@ export function createGeneratedCarFactory(THREE, templateScene, assetIdentity) {
 
     const bodyPaint = materialInstances.get(materialSources.get('BodyPaint'));
     bodyPaint.color.set(skin.body);
+    // The baked 1024px source used fully metallic / fully rough paint, which
+    // flattens the bonnet in the menu. Only cloned PBR uniforms are retuned;
+    // texture, UVs, shader mask, original template and car physics are intact.
+    bodyPaint.metalness = 0.58;
+    bodyPaint.roughness = 0.42;
     installBodyPaintMask(bodyPaint);
-    materialInstances.get(materialSources.get('Rim')).color.set(skin.rim);
+    const glass = materialInstances.get(materialSources.get('Glass'));
+    glass.metalness = 0.18;
+    glass.roughness = 0.22;
+    const rim = materialInstances.get(materialSources.get('Rim'));
+    rim.color.set(skin.rim);
+    rim.metalness = 0.46;
+    rim.roughness = 0.36;
     const tailMaterial = materialInstances.get(materialSources.get('Taillight'));
     const exhausts = exhaustPositions.map(([x, y, z]) => new THREE.Vector3(x, y, z));
 

@@ -777,3 +777,36 @@ html[data-race-platform="touch"] #race-joystick{max-height:43vh}
 @media(prefers-reduced-motion:reduce) {
   #race-kit[data-phase="ready"] #race-stage-rail {scroll-behavior:auto;}
 }
+
+/* V11.8 showroom atmosphere: ready-only color separation without a second
+ * canvas, postprocess pass or full-screen backdrop-filter. */
+#race-kit[data-phase="ready"]::before {
+  background:
+    radial-gradient(ellipse 37% 40% at 72% 62%,rgba(255,224,166,.065),transparent 78%),
+    linear-gradient(90deg,rgba(3,11,24,.56) 0%,rgba(4,17,29,.24) 38%,transparent 72%),
+    linear-gradient(0deg,rgba(3,11,21,.43),transparent 26%),
+    linear-gradient(180deg,rgba(2,9,18,.12),transparent 42%);
+}
+#race-kit[data-phase="ready"] #race-garage {
+  border-color:#a9c4d83a;
+  background:linear-gradient(150deg,rgba(5,18,31,.94),rgba(10,32,45,.91));
+  box-shadow:0 16px 40px #010c1b85,inset 0 1px 0 #ffffff0d;
+}
+#race-kit[data-phase="ready"] #race-export {
+  opacity:.68;min-width:32px;
+  border-color:#99acc34d;
+  background:rgba(7,25,42,.56);
+}
+#race-kit[data-phase="ready"] #race-export:focus-visible,
+#race-kit[data-phase="ready"] #race-export:hover {opacity:1;}
+#race-kit[data-phase="ready"] #race-course-card {
+  border-color:#86c9d745;
+  background:linear-gradient(130deg,rgba(7,33,50,.93),rgba(11,45,59,.84));
+}
+@media (min-width:1000px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-garage {
+    width:min(42vw,630px);
+  }
+  #race-kit[data-phase="ready"] #race-car-choices button {min-height:62px;}
+  #race-kit[data-phase="ready"] .race-car-thumb {height:35px;}
+}

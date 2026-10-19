@@ -129,3 +129,37 @@ test('V11.7 ready overlay keeps the car visible, noninteractive, and desktop gar
   assert.match(mobileCss, /#race-kit\[data-phase="ready"\] #race-car-choices button\s*\{min-height:68px;\}/);
   assert.match(mobileCss, /@media\(prefers-reduced-motion:reduce\)/);
 });
+
+test('V11.8 home fog uses reversible native uniforms and never changes the race-camera path', async () => {
+  const { patchGeneratedCarPresentation, patchHomeAtmosphere } = await import('../racing-mobile-build.mjs');
+  const source = [
+    "    if (st === 'menu') {",
+    '      this.demoT += dt;',
+    '      target = this.racers[0];',
+    '    }',
+    '    if (!target) return;',
+    "    if (st === 'menu' || (st === 'finish' && this.resultShown)) {",
+    '      oldCameraOrbit();',
+    '    }',
+    '    const P = target;',
+    '    nativeRaceCamera();',
+  ].join('\n');
+  const changed = patchHomeAtmosphere(patchGeneratedCarPresentation(source));
+  assert.match(changed, /V11\.8 reversible home fog/);
+  assert.match(changed, /this\.__homeFogNear = heroFog\.near/);
+  assert.match(changed, /this\.__homeFogFar = heroFog\.far/);
+  assert.match(changed, /st === 'menu' \|\| \(st === 'finish' && this\.resultShown\)/);
+  assert.match(changed, /: this\.__homeFogNear/);
+  assert.match(changed, /: this\.__homeFogFar/);
+  assert.match(changed, /const P = target;\s+nativeRaceCamera\(\);/);
+  assert.doesNotMatch(changed, /new THREE\.(?:SpotLight|PointLight|Mesh|Texture)/);
+  assert.equal(patchHomeAtmosphere(changed), changed);
+  assert.throws(() => patchHomeAtmosphere('unrecognized engine'), /anchor/);
+});
+test('V11.8 foreground tint stays menu-only and has no expensive backdrop filter', () => {
+  assert.match(mobileCss, /V11\.8 showroom atmosphere/);
+  assert.match(mobileCss, /#race-kit\[data-phase="ready"\]::before/);
+  const latest = mobileCss.slice(mobileCss.lastIndexOf('V11.8 showroom atmosphere'));
+  assert.doesNotMatch(latest, /backdrop-filter/);
+  assert.doesNotMatch(latest, /data-phase="race"/);
+});

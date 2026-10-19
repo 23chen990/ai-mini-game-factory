@@ -109,6 +109,33 @@ export function patchGeneratedCarPresentation(source) {
   return output;
 }
 
+/** Uniform-only atmosphere change, no extra WebGL lights, textures or meshes.
+ * The original native fog values are recovered as soon as driving starts. */
+export function patchHomeAtmosphere(source) {
+  const marker = '// V11.8 reversible home fog';
+  const anchor = '    if (!target) return;';
+  if(source.includes(marker)) return source;
+  if(source.split(anchor).length !== 2)
+    throw Error('Pinned native home atmosphere anchor changed');
+  const setup = `    ${marker}
+    const heroFog = this.scene?.fog;
+    if (heroFog && Number.isFinite(heroFog.near) && Number.isFinite(heroFog.far)) {
+      if (this.__homeFogRef !== heroFog) {
+        this.__homeFogRef = heroFog;
+        this.__homeFogNear = heroFog.near;
+        this.__homeFogFar = heroFog.far;
+      }
+      const isHome = st === 'menu' || (st === 'finish' && this.resultShown);
+      // Cars at roughly 10m remain crisp, distant saturated vegetation fades.
+      heroFog.near = isHome ? Math.min(this.__homeFogNear, 38) : this.__homeFogNear;
+      heroFog.far = isHome
+        ? Math.min(this.__homeFogFar, Math.max(heroFog.near + 100, 185))
+        : this.__homeFogFar;
+    }
+`;
+  return source.replace(anchor, setup + anchor);
+}
+
 /** One optimized binary, decoded once before the first home/demo. Embedding
  * preserves the existing offline single-HTML/preview path without a CDN or 404. */
 export function renderEmbeddedCarModule(bytes, identity) {
@@ -1066,7 +1093,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await readFile(path.join(owned, 'shortcut-network.mjs'), 'utf8'));
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   let adaptedMain = beforeMain;
-  for(const patch of [patchGeneratedCarStartup,patchGeneratedCarPresentation,patchMobileInitialRendering,patchMobileMidRendering,patchRacingSource,patchV8CameraFeel,patchV10NativeCamera,patchV8PointToPoint,
+  for(const patch of [patchGeneratedCarStartup,patchGeneratedCarPresentation,patchHomeAtmosphere,patchMobileInitialRendering,patchMobileMidRendering,patchRacingSource,patchV8CameraFeel,patchV10NativeCamera,patchV8PointToPoint,
     patchManualNitroEdge,patchCareerRouteSource,patchV10NativeRacecraftWorld,patchV11PhysicalRivalWorld,patchShortcutNativeWorld,
     patchCourseSkyAndScenery,patchRaceDesertRelief,patchUserCarWorldSource])
     adaptedMain=patch(adaptedMain);

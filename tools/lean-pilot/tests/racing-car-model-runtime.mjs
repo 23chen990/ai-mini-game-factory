@@ -285,3 +285,24 @@ test('body paint shader has an explicit material-program cache key', async () =>
 
   assert.equal(paint.customProgramCacheKey(), 'generated-car-body-paint-mask-v1');
 });
+
+test('starter visual polish uses bounded cloned PBR uniforms without mutating source meshes', async () => {
+  const { createGeneratedCarFactory } = await import(adapterUrl);
+  const { scene, materials } = makeTemplate();
+  const car = createGeneratedCarFactory(THREE, scene, 'racer-hy-001').instantiate(skins[0]);
+  const body = meshesByMaterialName(car.body, 'BodyPaint')[0];
+  const glass = meshesByMaterialName(car.body, 'Glass')[0];
+  const rim = meshesByMaterialName(mountCar(car), 'Rim')[0];
+  assert.deepEqual([body.metalness, body.roughness], [0.58, 0.42]);
+  assert.deepEqual([glass.metalness, glass.roughness], [0.18, 0.22]);
+  assert.deepEqual([rim.metalness, rim.roughness], [0.46, 0.36]);
+  assert.equal(body.color.getHex(), skins[0].body);
+  assert.equal(rim.color.getHex(), skins[0].rim);
+  assert.equal(body.map, materials.BodyPaint.map);
+  assert.equal(glass.color.getHex(), materials.Glass.color.getHex());
+  assert.equal(materials.BodyPaint.metalness, 0);
+  assert.equal(materials.BodyPaint.roughness, 0.7);
+  assert.equal(materials.Rim.roughness, 0.7);
+  assert.equal(car.wheels.length, 4);
+  assert.equal(car.wheels.every(wheel => wheel.steer.children.length === 1), true);
+});
