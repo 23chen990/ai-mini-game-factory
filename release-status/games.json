@@ -22,13 +22,13 @@
       "pullRequest": 69,
       "branch": "feat/pelican-v7-pressure-20261018",
       "inspectedSha": "5b4d2d4e6141ea53b4ce2e6648c60efc455f387e",
-      "ci": "pending",
+      "ci": "failed",
       "realDevice": "unverified",
       "humanPlaytest": "unverified",
       "realRewardAds": "unverified",
       "platformPackage": "unverified",
       "publicLaunchReady": false,
-      "notes": "QA syntax repaired at inspected SHA; rerun required before changing CI to passed."
+      "notes": "QA parse error repaired; exact-head Chromium and WebKit V6 endless-mode test 'three-fish-genuine-physics' failed. Investigate gameplay/test mismatch before relabeling."
     },
     {
       "id": "cf",
