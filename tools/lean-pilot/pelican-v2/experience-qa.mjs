@@ -90,10 +90,17 @@ try{
   // decision; do not wait until the 164m car is already inside the hitbox.
   const warnedVehicle=v.feedbackDetail.includes('前方来车')||v.radarLabel.includes('来车')||
    v.lanes[1]?.danger&&['car','van'].includes(v.lanes[1].kind);
-  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&(warnedVehicle||v.distance>=119)){
-   const safeSide=[0,2].filter(i=>!risky(i)&&!v.lanes[i].danger);
-   if(safeSide.length){escapedBonus=true;escapeLane=safeSide[0];escapeUntil=Math.max(148,v.distance+24); // Hold the genuine safe side beyond the 140m centre barrier.
-  }
+  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&(warnedVehicle||v.distance>=119)){
+   // The rider often makes the correct LEFT turn at ~118m, just before
+   // the 119m HUD threshold. Later confirmation must preserve that
+   // already earned escape; don't chase a centre fish back across 140m.
+   const currentSide=v.lane===0||v.lane===2?v.lane:null;
+   const safeSide=[currentSide,0,2].filter((i,n,arr)=>Number.isInteger(i)&&arr.indexOf(i)===n&&
+    !risky(i)&&(!v.lanes[i].danger||seconds(i)>3.5));
+   if(safeSide.length){
+    escapedBonus=true;escapeLane=safeSide[0];escapeUntil=Math.max(148,v.distance+24);
+    console.log('V7_BONUS_EXIT_COMMITTED '+JSON.stringify({distance:v.distance,chosenLane:escapeLane,through:escapeUntil,visibleGold:v.gold,visibleJumps:v.jumps}));
+   }
   }
   if(jumped&&!prizeFeedbackSeen&&!earnedPrizeCue&&v.lanes[1].kind==='fish'&&v.lanes[1].text.includes('🌟')){
    const observed=await snap();
