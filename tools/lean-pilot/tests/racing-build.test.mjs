@@ -1,8 +1,26 @@
 /* global URL */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 const api = await import('../racing-mobile-build.mjs').catch(() => ({}));
+test('warm rebuild refreshes the compatibility bridge without changing frozen acceptance',async t=>{
+  const game=await mkdtemp(path.join(tmpdir(),'racing-warm-bridge-'));
+  t.after(()=>rm(game,{recursive:true,force:true}));
+  await mkdir(path.join(game,'tests'));
+  await writeFile(path.join(game,'themes.mjs'),'stale bridge');
+  await writeFile(path.join(game,'tests/ads.test.mjs'),'frozen acceptance');
+  const bridge=await readFile(new URL('../../../templates/web-lite/h5-source-mobile-v1/themes.mjs',import.meta.url),'utf8');
+  assert.equal(typeof api.syncRacingCompatibilityBridge,'function');
+  await api.syncRacingCompatibilityBridge(game,bridge);
+  assert.equal(await readFile(path.join(game,'themes.mjs'),'utf8'),bridge);
+  await api.syncRacingCompatibilityBridge(game,bridge);
+  assert.equal(await readFile(path.join(game,'themes.mjs'),'utf8'),bridge);
+  assert.equal(await readFile(path.join(game,'tests/ads.test.mjs'),'utf8'),'frozen acceptance');
+  const builder=await readFile(new URL('../racing-mobile-build.mjs',import.meta.url),'utf8');
+  assert.match(builder,/await syncRacingCompatibilityBridge\(game, sharedDeps\[1\]\)/);
+});
 const patchFixture = `import * as THREE from 'three';
 const fovT = 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0);
 if (P.nitroTime > 0) {
