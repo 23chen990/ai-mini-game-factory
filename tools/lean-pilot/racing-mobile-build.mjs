@@ -118,6 +118,53 @@ export function patchGeneratedCarPresentation(source) {
   return output;
 }
 
+
+/** The real start gate and blue city arch are world geometry, not lobby props.
+ * Tag only the receipt-pinned generated props, without touching physics,
+ * collider geometry, road sampling, or the original countdown controller. */
+export function patchHomeOccluderProps(source) {
+  const namedGate = "  grp.name = 'race-start-gantry';";
+  const namedArch = "  archRoot.name = 'race-home-arch-occluder';";
+  if (source.includes(namedGate) && source.includes(namedArch)) return source;
+  if (source.includes(namedGate) || source.includes(namedArch)) throw Error('Partial home occluder props patch');
+  const gateAnchor = "function buildStartGate(parent, track, style) {";
+  const gateBlock = "  const grp = new THREE.Group();\n  const H = style.h || 11;";
+  const archStart = "function buildArchBridge(ctx, d, color) {\n  const { track, parent } = ctx;";
+  const archEnd = "\n// ======================= 情迷爱琴海 =======================";
+  for (const anchor of [gateAnchor,gateBlock,archStart,archEnd])
+    if (source.split(anchor).length !== 2) throw Error('Pinned showroom occluder props anchor changed: '+anchor.slice(0,40));
+  const start = source.indexOf(archStart),end = source.indexOf(archEnd,start);
+  if(end<start) throw Error('Native arch bridge boundary missing');
+  let arch=source.slice(start,end);
+  for (const name of ['hanger','arch','beam']) {
+    const from='    parent.add('+name+');',to='    archRoot.add('+name+');';
+    if(arch.split(from).length!==2) throw Error('Native bridge mesh anchor changed: '+name);
+    arch=arch.replace(from,to);
+  }
+  arch=arch.replace(archStart,archStart+"\n  const archRoot = new THREE.Group();\n"+namedArch+"\n  parent.add(archRoot);");
+  return source.slice(0,start)+arch+source.slice(end).replace(gateBlock,"  const grp = new THREE.Group();\n"+namedGate+"\n  const H = style.h || 11;");
+}
+
+/** Keep the big blue start/bridge members visible for real races, including
+ * countdown. Only home and settled result camera remove their near-field
+ * obstruction. Resolve the exact groups once per loaded Track. */
+export function patchHomeOccluderCamera(source) {
+  const marker='// V11.10 reversible start arch home visibility';
+  const anchor='// V11.8 reversible home fog';
+  if(source.includes(marker))return source;
+  if(source.split(anchor).length!==2)throw Error('Pinned showroom camera occluder anchor changed');
+  const block=`// V11.10 reversible start arch home visibility
+    if (this.__homeOccluderTrack !== this.track) {
+      this.__homeOccluderTrack = this.track;
+      this.__homeOccluderNodes = ['race-start-gantry','race-home-arch-occluder']
+        .map(name => this.scene.getObjectByName(name)).filter(Boolean);
+    }
+    const hideFromHero = st === 'menu' || (st === 'finish' && this.resultShown);
+    for (const node of this.__homeOccluderNodes || []) node.visible = !hideFromHero;
+    `;
+  return source.replace(anchor,block+anchor);
+}
+
 /** Uniform-only atmosphere change, no extra WebGL lights, textures or meshes.
  * The original native fog values are recovered as soon as driving starts. */
 export function patchHomeAtmosphere(source) {
@@ -1069,7 +1116,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   // Distinct new desert roads may intersect giant fixed pyramid sculptures.
   const nativePropsPath = path.join(project, 'src/props.js');
   await writeFile(nativePropsPath,
-    patchUrbanTreeColor(patchFixedDesertLandmarks(await readFile(nativePropsPath,'utf8'))));
+    patchHomeOccluderProps(patchUrbanTreeColor(patchFixedDesertLandmarks(await readFile(nativePropsPath,'utf8')))));
   // Keep the original four bridges/tunnels and all the native physics/checkpoints/AI.
   for (const [nativeName, adapterName, ownedName, transform] of [
     ['layouts.js', 'race-track-design.mjs', 'track-design.mjs', patchRaceLayouts],
@@ -1127,7 +1174,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
     await readFile(path.join(owned, 'shortcut-network.mjs'), 'utf8'));
   const beforeMain = await readFile(path.join(project, 'src/main.js'), 'utf8');
   let adaptedMain = beforeMain;
-  for(const patch of [patchGeneratedCarStartup,patchGeneratedCarPresentation,patchHomeAtmosphere,patchMobileInitialRendering,patchMobileMidRendering,patchRacingSource,patchV8CameraFeel,patchV10NativeCamera,patchV8PointToPoint,
+  for(const patch of [patchGeneratedCarStartup,patchGeneratedCarPresentation,patchHomeAtmosphere,patchHomeOccluderCamera,patchMobileInitialRendering,patchMobileMidRendering,patchRacingSource,patchV8CameraFeel,patchV10NativeCamera,patchV8PointToPoint,
     patchManualNitroEdge,patchCareerRouteSource,patchV10NativeRacecraftWorld,patchV11PhysicalRivalWorld,patchShortcutNativeWorld,
     patchCourseSkyAndScenery,patchUrbanGrassColor,patchRaceDesertRelief,patchUserCarWorldSource])
     adaptedMain=patch(adaptedMain);

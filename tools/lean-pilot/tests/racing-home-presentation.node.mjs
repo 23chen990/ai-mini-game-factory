@@ -208,3 +208,39 @@ test('V11.9 camera and parked glow are presentation-only, with untouched game pr
   assert.doesNotMatch(changed, /new THREE\.(?:Mesh|Texture|Light)/);
   assert.equal(patchGeneratedCarPresentation(changed), changed);
 });
+
+test('V11.10 start gate and blue urban arch disappear ONLY in the home/result hero', async () => {
+  const { patchHomeOccluderProps, patchHomeOccluderCamera } = await import('../racing-mobile-build.mjs');
+  const reference = [
+    'function buildStartGate(parent, track, style) {',
+    '  const s = track.sample(0, {});',
+    '  const grp = new THREE.Group();',
+    '  const H = style.h || 11;',
+    '  parent.add(grp);',
+    '}',
+    'function buildArchBridge(ctx, d, color) {',
+    '  const { track, parent } = ctx;',
+    '    parent.add(hanger);',
+    '    parent.add(arch);',
+    '    parent.add(beam);',
+    '}',
+    '// ======================= 情迷爱琴海 =======================',
+  ].join('\n');
+  const changed = patchHomeOccluderProps(reference);
+  assert.match(changed,/grp\.name = 'race-start-gantry'/);
+  assert.match(changed,/archRoot\.name = 'race-home-arch-occluder'/);
+  for (const name of ['hanger','arch','beam']) assert.match(changed,new RegExp('archRoot\\.add\\('+name+'\\)'));
+  assert.equal((changed.match(/parent\.add\(archRoot\)/g)||[]).length,1);
+  assert.equal(patchHomeOccluderProps(changed),changed);
+  assert.throws(()=>patchHomeOccluderProps(reference.replace('    parent.add(arch);','    unknown.add(arch);')),/anchor changed/);
+  assert.throws(()=>patchHomeOccluderProps(reference.replace('  const H = style.h || 11;','  const H = 12;')),/anchor changed/);
+  const camera = '    // V11.8 reversible home fog\n    const heroFog = this.scene?.fog;';
+  const built = patchHomeOccluderCamera(camera);
+  assert.match(built,/this\.__homeOccluderTrack !== this\.track/);
+  assert.match(built,/this\.scene\.getObjectByName\(name\)/);
+  assert.match(built,/node\.visible = !hideFromHero/);
+  assert.match(built,/st === 'menu' \|\| \(st === 'finish' && this\.resultShown\)/);
+  assert.equal(patchHomeOccluderCamera(built),built);
+  assert.throws(()=>patchHomeOccluderCamera('unrelated native camera'),/anchor changed/);
+});
+

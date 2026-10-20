@@ -450,6 +450,15 @@ try {
   report.starGate={quietUntilSelected:true,threshold:'5/8',nativeBypassBlocked:true,adsUnavailableInBrowser:true};
   await page.evaluate(()=>localStorage.removeItem('h5-mobile:qq-speed:career:v1'));
   await page.reload({waitUntil:'domcontentloaded'});await waitLoaded(page);
+  // The native gate and decorative blue bridge are rendered in races but
+  // must never cut across the hero car in a narrow landscape lobby.
+  await page.waitForFunction(() => {
+    const g=window.game;
+    return g?.state === 'menu' &&
+      g.scene?.getObjectByName('race-start-gantry')?.visible === false &&
+      g.scene?.getObjectByName('race-home-arch-occluder')?.visible === false;
+  },null,{timeout:12000});
+  report.lobbyOccluders = {startGateHidden:true,urbanArchHidden:true,menuOnly:true};
   // Genuine browser render of the default lobby at two landscape widths.
   // No seeded save, DOM mutation or mocked UI goes into these screenshots.
   for (const [width,height] of [[844,390],[740,360]]) {
@@ -484,6 +493,15 @@ try {
     fail('Menu export must start empty and explicitly reject human-play claims: '+JSON.stringify(initialExport));
   report.initialExport={filename:firstFile.suggestedFilename(),starts:0,private:true};
   await raceStart(page,0,'01-city-hard-ranked');
+  const restoredScenery=await page.evaluate(() => {
+    const scene=window.game.scene;
+    return ['race-start-gantry','race-home-arch-occluder'].map(name => ({
+      name, visible:scene.getObjectByName(name)?.visible ?? null,
+    }));
+  });
+  if(restoredScenery.some(item=>item.visible!==true))
+    fail('Actual race must restore both native start structures: '+JSON.stringify(restoredScenery));
+  report.lobbyOccluders.raceRestored=restoredScenery;
   // Actual browser-computed hit targets, not hand-estimated circle positions.
   // Temporarily expose the native item button so ALL four right-hand actions
   // are checked even during an ordinary race; restore source state afterwards.
