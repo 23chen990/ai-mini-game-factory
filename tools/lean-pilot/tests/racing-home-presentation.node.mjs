@@ -112,8 +112,11 @@ test('V11.7 home hero restores a low mobile-safe moving shot without changing th
   const patched = patchGeneratedCarPresentation(native);
   assert.match(patched, /Original racer presentation camera/);
   assert.match(patched, /if \(st === 'menu'\) target = this\.racers\[0\]/);
-  assert.match(patched, /const distance = 10\.2/);
-  assert.match(patched, /ty \+ 2\.42/);
+  assert.match(patched, /const distance = 7\.3/);
+  assert.match(patched, /const fov = 52/);
+  assert.match(patched, /ty \+ 2\.78/);
+  assert.match(patched, /start gantry \/ over-road structures/);
+  assert.doesNotMatch(patched, /const distance = 10\.2/);
   assert.match(patched, /Math\.sin\(this\.time \* 0\.42\)/);
   assert.match(patched, /prefers-reduced-motion: reduce/);
   assert.match(patched, /const P = target;\s+originalRaceCamera\(\);/);

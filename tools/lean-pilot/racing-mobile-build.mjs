@@ -93,9 +93,13 @@ export function patchGeneratedCarPresentation(source) {
       const elapsed = Math.max(0, this.time - this.__homeCameraSince);
       const reveal = homeMotion ? Math.max(0, 1 - elapsed / 1.3) ** 2 : 0;
       const angle = target.h + 0.7 + (homeMotion ? Math.sin(this.time * 0.42) * 0.2 : 0) + reveal * 0.12;
-      const distance = 10.2 + reveal + (homeMotion ? Math.sin(this.time * 0.32) * 0.14 : 0);
-      const fov = 42;
-      const want = new THREE.Vector3(tx + Math.sin(angle) * distance, ty + 2.42, tz + Math.cos(angle) * distance);
+      // The start gantry / over-road structures are outside a short hero
+      // camera envelope. Moving the camera 10m back put bridges BETWEEN
+      // the selected car and the player. Keep the original safe proximity
+      // while widening FOV so all five user GLBs fit without roof cropping.
+      const distance = 7.3 + reveal * 0.24 + (homeMotion ? Math.sin(this.time * 0.32) * 0.10 : 0);
+      const fov = 52;
+      const want = new THREE.Vector3(tx + Math.sin(angle) * distance, ty + 2.78, tz + Math.cos(angle) * distance);
       const offset = 0.22 * 2 * distance * Math.tan(fov * Math.PI / 360) * cam.aspect;
       this.camPos.copy(want);
       this.camLook.set(tx - Math.cos(angle) * offset, ty + 0.7, tz + Math.sin(angle) * offset);
