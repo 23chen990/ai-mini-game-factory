@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "task": "git-integration",
+  "findings": [
+    {
+      "id": "pr68-stacked-base",
+      "severity": "P1",
+      "observation": "Observed: PR #68 is OPEN at head 333e5920ece57dfac8fb4e3a41e9e89c05194189 and targets chatgpt/racing-v10-drive-feel-20261017 at base c099cfa17a52a59bb6e494cfab8d686e920425de, not main; there are 111 commits after that base. Exact stacked PR refs (base→head): #68 c099cfa17a52a59bb6e494cfab8d686e920425de→333e5920ece57dfac8fb4e3a41e9e89c05194189; #63 224272ef0b53619b910ab18da81ea9b362f049c9→c099cfa17a52a59bb6e494cfab8d686e920425de; #58 1666d4184cd11826f16e961ddb410cf523561476→224272ef0b53619b910ab18da81ea9b362f049c9; #53 8a93f4df72d23f4a79948df07daadf6028898365→1666d4184cd11826f16e961ddb410cf523561476; #51 144dd46672cf300143237a99283a2dc78244a967→8a93f4df72d23f4a79948df07daadf6028898365; #49 626c4281fa6bd59f7cb01851609638feea21c7b5→144dd46672cf300143237a99283a2dc78244a967; #46 f4afcb243fa10dceba1977018176508a57540abc→626c4281fa6bd59f7cb01851609638feea21c7b5; #44 e536eafd08a97758a02821cca4f97a9fc974fa18→f4afcb243fa10dceba1977018176508a57540abc; #41 02dc26f78c063926e82742c00562e94a1045da0c→e536eafd08a97758a02821cca4f97a9fc974fa18; #38 eb54a4e5190f8a6b06b2a24bc38f33c2837a2df2→02dc26f78c063926e82742c00562e94a1045da0c; #31 4f201f4c12a10aa711e46fbdacd3d52d757af131→eb54a4e5190f8a6b06b2a24bc38f33c2837a2df2; #30 9fa066af4802dda89f9f9d90c01a7a59254f803e→4f201f4c12a10aa711e46fbdacd3d52d757af131; #26 1f88b22f799189cc6130a17d010dc60326a59a53→9fa066af4802dda89f9f9d90c01a7a59254f803e; #23 14e6be744a0c3f4b2eafa6ee8b7737b910bcd6f6→e8dde6aa909f91f8d0381b517152320768b5ba1f; #18 ad96ac53f99fbd417248ca2b39adf038148808d0→14e6be744a0c3f4b2eafa6ee8b7737b910bcd6f6; #17 e2ecde84f41566d6b9f9bb630c529467133c1057→ad96ac53f99fbd417248ca2b39adf038148808d0; #14 b3e9e41dbafd9fecff972e0838aec8bed8220afc→e2ecde84f41566d6b9f9bb630c529467133c1057. Parallel to #63, #60 is 224272ef0b53619b910ab18da81ea9b362f049c9→6e3e12b5f845b06558d8928d7beca8c4aee3ef80, with #65/#66/#67 based on 6e3e12b5f845b06558d8928d7beca8c4aee3ef80. Merge 61ecb2d1c394c0c919d18434953009e4636c47c4 has parents c099cfa17a52a59bb6e494cfab8d686e920425de, 598fec0da40a0d135fe1d8fb0e720022e6bebdf9, 95462069edd5e59f4b5886d17d1f7c37e7d66eef, and f6a4ee179ed2013fe0390728ec3f8839e715262c. #14 starts from b3e9e41dbafd9fecff972e0838aec8bed8220afc. PR #12 is a separate branch, not in that base chain.",
+      "evidence": [
+        "gh pr view 68 --repo 23chen990/ai-mini-game-factory reports state OPEN, baseRefOid c099cfa17a52a59bb6e494cfab8d686e920425de, headRefOid 333e5920ece57dfac8fb4e3a41e9e89c05194189, mergeCommit null.",
+        "gh pr list --state all reports #63 base 224272ef0b53619b910ab18da81ea9b362f049c9/head c099cfa17a52a59bb6e494cfab8d686e920425de; #58 base 1666d4184cd11826f16e961ddb410cf523561476/head 224272ef0b53619b910ab18da81ea9b362f049c9; and the remaining listed stack refs.",
+        "git merge-base c099cfa17a52a59bb6e494cfab8d686e920425de HEAD equals c099cfa17a52a59bb6e494cfab8d686e920425de; git rev-list --count c099cfa17a52a59bb6e494cfab8d686e920425de..HEAD is 111.",
+        "git show -s --format=%H%n%P%n%s 61ecb2d1c394c0c919d18434953009e4636c47c4 shows the four merge parents above."
+      ],
+      "recommendation": "Do not retarget or merge #68 directly into main and do not rewrite the existing open branches. For any main integration, create a new branch from current factory-release/main and preserve this stack; first explicitly select/review the prerequisite commits and shared factory changes, then integrate in dependency order with the existing build/QA checks."
+    },
+    {
+      "id": "main-divergence-and-scope",
+      "severity": "P1",
+      "observation": "The target main is factory-release/main at 5ff8d88945d76fa7dc6b3dd65aa8f9aa58324217; it shares base f38d9955575db5561eba40007640c00094add885 with this branch and has two main-only commits: cb0ea67d7ed9ec25a3deed7110cb4b685d598e7b (romance-story-editor) and 5ff8d88945d76fa7dc6b3dd65aa8f9aa58324217 (release registry/QA gates). Relative to the common base, the branch has 793 commits not in main and main has 2 not in the branch; the whole branch diff is 781 files, 339121 insertions, 71 deletions. That history includes shared factory changes and other game surfaces, including clinic-queue/grid-merge templates and workflow examples, not just QQ Speed. The narrower PR #68 delta from c099 to HEAD is 295 files, 233741 insertions, 972 deletions, mainly racing docs/evidence, tools, templates and workflows. The main-only 26-file diff has no changed-path overlap with the branch diff from the common base; this is path-overlap evidence only, not a completed three-way merge/conflict proof.",
+      "evidence": [
+        "git merge-base HEAD factory-release/main = f38d9955575db5561eba40007640c00094add885; git rev-list --left-right --count HEAD...factory-release/main = 793 2.",
+        "git log --reverse f38d9955575db5561eba40007640c00094add885..factory-release/main lists cb0ea67d7ed9ec25a3deed7110cb4b685d598e7b then 5ff8d88945d76fa7dc6b3dd65aa8f9aa58324217.",
+        "git diff --stat f38d9955575db5561eba40007640c00094add885 HEAD = 781 files changed, 339121 insertions(+), 71 deletions(-); top-level counts include 513 docs, 114 templates, 89 tools, and 48 examples.",
+        "git diff --stat c099cfa17a52a59bb6e494cfab8d686e920425de HEAD = 295 files changed, 233741 insertions(+), 972 deletions(-).",
+        "Changed-path intersection from common base..HEAD versus common base..factory-release/main was empty; no merge was attempted under the read-only constraint.",
+        "Sibling /Users/kker/Documents/ChatGPT/ai-mini-game-factory has origin/main at the same 5ff8d88945d76fa7dc6b3dd65aa8f9aa58324217."
+      ],
+      "recommendation": "Base any integration PR on 5ff8d88945d76fa7dc6b3dd65aa8f9aa58324217 so both main-only commits are retained. Do not import the full historical branch solely to obtain the racing game: scope the factory prerequisites and other-game changes explicitly, preserve existing main files, and run the normal integration checks on the new main-based candidate. Treat the empty path intersection as reduced conflict likelihood, not proof that a merge is conflict-free."
+    },
+    {
+      "id": "unified-branch-included-racing-prs",
+      "severity": "INFO",
+      "observation": "The V11.6 unified history already includes the V9.1/30-fuel, V11.5 pacing, rewarded cosmetics, and original Hunyuan-car branches through merge 61ecb2d1. No extra cherry-pick of those same PR heads is needed for the current branch.",
+      "evidence": [
+        "HEAD 333e5920ece57dfac8fb4e3a41e9e89c05194189 descends from 61ecb2d1c394c0c919d18434953009e4636c47c4.",
+        "git merge-base --is-ancestor returns true for 598fec0da40a0d135fe1d8fb0e720022e6bebdf9 (#67), 95462069edd5e59f4b5886d17d1f7c37e7d66eef (#66), and f6a4ee179ed2013fe0390728ec3f8839e715262c (#65).",
+        "Current template includes racing career, V11 course/physical AI, cosmetics, garage, user-car manifests, wheel steering, tests, and racing QA/build tools under templates/web-lite/h5-source-mobile-v1 and tools/lean-pilot."
+      ],
+      "recommendation": "Keep the existing unified merge ancestry; avoid duplicate cherry-picks of #65/#66/#67 or #60."
+    },
+    {
+      "id": "parallel-history-not-a-proven-omission",
+      "severity": "INFO",
+      "observation": "Observed: PR #12 and PRs #45/#56/#57 are not ancestors of the unified head. PR #12 fuel.mjs is V1 (capacity 10, 5-minute regen, cost 1, ad grant 2); current fuel.mjs is V2 (capacity 30, 1-minute regen, cost 5, grant 10) and migrates V1 saves. PRs #45/#56 patch a floating horizontal joystick; the current runtime imports RaceWheelSteering and uses angular wheel deltas, while retaining pointer-capture fallback and pointerup/pointercancel/lostpointercapture cleanup. Current driver.mjs says the two-key auto-driver is deleted. PR #57 report labels its control lab internal-only and says no formal scheme was selected. Inference: these diffs do not demonstrate a missing compatible production capability. Unknown: real-player preference and natural physical-phone behavior for the current rotary-wheel build remain unverified.",
+      "evidence": [
+        "PR #12 head 658bb6f00c9436941958d11f4a43dd64e6e756a3, #45 head 8c27c6f29a5317f96b6e4b6119de5b0ac3941925, #56 head 45df4abbd2208733ccd7eed7484ca9186b690884, and #57 head ed358db804d6593254696be53e28b42b964ef074 are not ancestors of origin/chatgpt/racing-unified-20261018.",
+        "The PR #12 fuel.mjs snapshot and current unified fuel.mjs show the V1-to-V2 difference; current loadFuel explicitly migrates old version-1 amounts.",
+        "Current templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs imports RaceWheelSteering and has pointer capture fallback plus pointer cancellation/release handlers; current racing/wheel-steering.mjs calculates angular deltas.",
+        "Current templates/web-lite/h5-source-mobile-v1/racing/driver.mjs says the two-key auto-driver is deleted; PR #56 V63 notes describe the different floating-wheel semantics, while PR #57 control-lab notes mark the experiment internal-only."
+      ],
+      "recommendation": "No additional production capability from these branches is supported as a required omission by the Git/diff evidence. Do not merge the old two-button/practice path, the QA-only A/B harness, or the incompatible floating-joystick model into the current rotary-wheel runtime. Keep real-phone/natural-input validation as an unresolved product-evidence item, not a code cherry-pick."
+    },
+    {
+      "id": "ignored-target-run-workspace",
+      "severity": "INFO",
+      "observation": "Observed: the exact target workspace runs/h5-qq-mobile-20261013/workspace exists but is ignored by Git and is not part of the branch diff. Its candidate identifies template h5-source-mobile-v1 and reference qq-speed. The generated run workspace is not byte-identical to the current template: engine.mjs/main.mjs/platform.json/themes.mjs match, while candidate.json/LICENSE.three.txt/index.html/style.css do not. Unknown: this review did not infer whether those four differences are intentional run-specific variation or stale generated content.",
+      "evidence": [
+        "git check-ignore -v runs/h5-qq-mobile-20261013/workspace/game/engine.mjs reports .gitignore:14:runs/.",
+        "git status --short -- runs/h5-qq-mobile-20261013/workspace is empty and git ls-files has no paths under that workspace.",
+        "runs/h5-qq-mobile-20261013/workspace/game/candidate.json contains templateId h5-source-mobile-v1, referenceId qq-speed, sourceRevision 54adc1fb64155f9dd7c1c90ecae7b8185ac540b8.",
+        "Read-only SHA-256 comparison confirms only engine.mjs, main.mjs, platform.json and themes.mjs match the current template among the eight compared top-level game files."
+      ],
+      "recommendation": "Preserve the ignored run workspace and its user/run-specific files. Treat the versioned template path as the Git integration surface; do not overwrite or synchronize the generated run workspace as part of this integration."
+    },
+    {
+      "id": "release-evidence-boundary",
+      "severity": "P1",
+      "observation": "Observed from PR #68 description only: it records HTTP 403 for immutable/branch preview URLs, natural complete-run, physical-phone and real rewarded-ad SDK checks as unaccepted, and publishable:false. This Git review did not independently rerun or validate those gates. Unknown: their present external status.",
+      "evidence": [
+        "gh pr view 68 --repo 23chen990/ai-mini-game-factory returns the PR body describing HTTP 403 for immutable/branch preview URLs and states natural completion, physical device, and real ad SDK are unaccepted.",
+        "No browser/runtime/platform commands were run in this read-only Git-integration task."
+      ],
+      "recommendation": "Keep release and platform claims blocked until the exact integrated build passes the required natural-input, physical-device, and real SDK gates; do not count the Git merge, fixtures, or PR description as those results."
+    }
+  ],
+  "blockers": [
+    "There is no main-based integration PR/commit in the inspected refs. PR #68 remains OPEN and targets c099cfa17a52a59bb6e494cfab8d686e920425de; any direct merge/retarget to main would widen beyond its 295-file delta into the historical 781-file branch scope."
+  ],
+  "commands": [
+    "git status --short --branch",
+    "git log --oneline --decorate --graph --all --max-count=80",
+    "gh pr view 68 --repo 23chen990/ai-mini-game-factory --json number,title,state,baseRefName,headRefName,headRefOid,baseRefOid,mergeCommit,url,body",
+    "gh pr list --repo 23chen990/ai-mini-game-factory --state all --limit 100 --json number,title,state,baseRefName,headRefName,headRefOid,baseRefOid",
+    "git merge-base HEAD factory-release/main",
+    "git rev-list --left-right --count HEAD...factory-release/main",
+    "git diff --stat f38d9955575db5561eba40007640c00094add885 HEAD",
+    "git diff --stat c099cfa17a52a59bb6e494cfab8d686e920425de HEAD",
+    "git diff --name-only f38d9955575db5561eba40007640c00094add885 HEAD",
+    "git check-ignore -v runs/h5-qq-mobile-20261013/workspace/game/engine.mjs",
+    "for f in LICENSE.three.txt candidate.json engine.mjs index.html main.mjs platform.json style.css themes.mjs; do sha256sum runs/h5-qq-mobile-20261013/workspace/game/$f templates/web-lite/h5-source-mobile-v1/$f; done",
+    "for c in 658bb6f00c9436941958d11f4a43dd64e6e756a3 8c27c6f29a5317f96b6e4b6119de5b0ac3941925 45df4abbd2208733ccd7eed7484ca9186b690884 ed358db804d6593254696be53e28b42b964ef074; do git -C /Users/kker/Documents/ChatGPT/ai-mini-game-factory merge-base --is-ancestor \"$c\" origin/chatgpt/racing-unified-20261018; done"
+  ]
+}

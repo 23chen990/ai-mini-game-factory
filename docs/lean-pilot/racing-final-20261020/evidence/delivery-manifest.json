@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "version": "racing-web-qa-20261020.1",
+  "status": "BLOCKED",
+  "runtimeSourceCommit": "042c21168f0ac433b721e7b95b01d2bcbfce64e1",
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "inputHash": "8e09f4831d99d7ab35af02394e360b1f20429142dde8b8ae18578d84bed9efd5",
+  "platformPackage": null,
+  "WEB_RC": "BLOCKED_PRODUCT_ACCEPTANCE",
+  "PLATFORM_RC": "NOT_BUILT",
+  "READY_TO_SUBMIT": false,
+  "files": [
+    {
+      "path": "racing-web-qa-20261020.1.zip",
+      "bytes": 8380623,
+      "sha256": "bef79e3ae40631fec6dce8c4770346ab190d426db28503320bd2cb4e232ee77a"
+    },
+    {
+      "path": "racing-web-qa-20261020.1.html",
+      "bytes": 13347322,
+      "sha256": "c8d9077d0bee73af9d27e1a100130ea728c6178aced3648f05731fe2ed15ff8f"
+    }
+  ],
+  "gameEntries": [
+    {
+      "path": "LICENSE.three.txt",
+      "bytes": 1081,
+      "sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454"
+    },
+    {
+      "path": "candidate.json",
+      "bytes": 674,
+      "sha256": "4a1c53acbf6f76aa7ff6c7e52b5990beb2872ea84500cab5e6dedfe00ad61186"
+    },
+    {
+      "path": "engine.mjs",
+      "bytes": 2866,
+      "sha256": "2558c7f3c9dce4090e9866ce66215cdb04f0204f08477b0db85a78860ec4f9e8"
+    },
+    {
+      "path": "index.html",
+      "bytes": 13289851,
+      "sha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812"
+    },
+    {
+      "path": "main.mjs",
+      "bytes": 11027,
+      "sha256": "c47f751fb87d575c1a73a39e4b093919a979bc206eabc7cc3c4b59ee483eda1c"
+    },
+    {
+      "path": "platform.json",
+      "bytes": 116,
+      "sha256": "ebc8f939c756aa1ff0220059c9fe14a5d473f145696681d26a6d8042f0654daf"
+    },
+    {
+      "path": "style.css",
+      "bytes": 57496,
+      "sha256": "a5e2b84a92a0cfbd3e5163e4d18e6eeda10ffb1fc5cabc570b07023780ad7b15"
+    },
+    {
+      "path": "themes.mjs",
+      "bytes": 3293,
+      "sha256": "177ee6d7c3c4975710b3b853f8fc7ad9ce38c2d0b96e5b96e02ec5c26579e2b2"
+    }
+  ],
+  "tests": "Excluded only from shipping archive; frozen workspace tests unchanged; source 420/420 and builder 28/28 executed separately.",
+  "ciComparison": {
+    "runId": 39380767821,
+    "sourceCommit": "bde813d6f78f44809ae7d475c3dda4efda972823",
+    "allShippedRuntimeEntriesByteIdentical": true,
+    "limitation": "This is the earlier cold CI reference, not the final evidence-commit CI. Attempt16 fixes warm-build compatibility sync; default HTML/style already identical."
+  },
+  "platformStagingPackage": {
+    "path": "taptap-h5-staging-20261020.1.zip",
+    "bytes": 8380815,
+    "sha256": "208e94eb74728dd7eb2340d1baaec5fa712d7b55b14f5bf2c043afe01afbb4b6",
+    "status": "LOCAL_PREFLIGHT_ONLY_NOT_PLATFORM_RC",
+    "onlyChangeFromWebZip": "single game directory prefix; identical inner runtime files",
+    "officialInspection": "evidence/taptap-h5-preflight.json"
+  }
+}

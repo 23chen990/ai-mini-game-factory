@@ -1,0 +1,7 @@
+# Supplemental harness corrections
+
+The first gallery selector matched both the root section and the starter button; it was narrowed to `button[data-car-id]`. The first ad wait expected the word 超时, but the actual UI says 广告暂未完成; the corrected wait observes that real message after the real timeout. The first loss assertion incorrectly equated losing with `player.finished === false`; crossing the line outside the top three is also a real loss, so final acceptance checks the visible current-run **0 stars** and replays it. These are harness errors, not product fixes; no runtime or acceptance threshold was changed. Their raw failures remain in the evidence archive.
+
+The real-tab test failed to produce hidden/blur at all in this automation environment. Instrumentation recorded `hidden:false`, `focused:true`, `events:[]`; it is now explicitly `NOT_OBSERVED`, not reported as a background-lifecycle pass. Physical-device/background acceptance remains blocked.
+
+Final attempt16 advanced naturally through 12 stages. Its existing 45-second ready-button wait stopped after stages10 and12 when the earned fuel was exhausted, not because those races failed. The original failed reports remain. Without editing fuel, clock or save contents, real elapsed time restored enough fuel and the exact save resumed stages11/12. A separate normal-browser check then observed fuel4→5 and Start disabled→enabled after a further real10seconds (`fuel-recovery.json`). The campaign is still not a30-stage natural pass; no wait threshold or product economy was changed.

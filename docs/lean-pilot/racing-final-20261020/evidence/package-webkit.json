@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "mode": "webkit",
+  "sourceCommit": "042c21168f0ac433b721e7b95b01d2bcbfce64e1",
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "inputHash": "8e09f4831d99d7ab35af02394e360b1f20429142dde8b8ae18578d84bed9efd5",
+  "servedRoot": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/artifacts/final-20261020/extracted-web-payload",
+  "htmlSha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812",
+  "physicalPhone": false,
+  "host": "darwin",
+  "rows": [
+    {
+      "case": "webkit-race-entry-not-iPhone-hardware",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 0,
+      "steerAxis": 0,
+      "speed": 0,
+      "steer": 0,
+      "heading": 1.5707963705062866,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "Apple GPU",
+      "fpsEstimate": 65,
+      "geometries": 779,
+      "textures": 37,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "webkit-race.png"
+    },
+    {
+      "case": "wall-clock-raf-sample",
+      "seconds": 5,
+      "frames": 302,
+      "p50Ms": 17,
+      "p95Ms": 18,
+      "state": "race",
+      "phase": "race",
+      "raceTime": 5.095999999999998,
+      "steerAxis": 0,
+      "speed": 144.2036500264643,
+      "steer": 0,
+      "heading": 1.8626902198656898,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "Apple GPU",
+      "fpsEstimate": 60,
+      "geometries": 784,
+      "textures": 37,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "26.5"
+}

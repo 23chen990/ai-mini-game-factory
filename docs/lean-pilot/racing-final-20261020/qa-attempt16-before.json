@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "420 generated-runtime source tests",
+      "passed": true,
+      "evidence": "evidence/native-tests.tap"
+    },
+    {
+      "name": "30 courses / 150 physical opponents / ten physical forks",
+      "passed": true,
+      "evidence": "evidence/ai-150.json and geometry-30.json"
+    },
+    {
+      "name": "SDK fixture lifecycle and durable ownership",
+      "passed": true,
+      "evidence": "evidence/browser-ads.json"
+    },
+    {
+      "name": "Trusted touch countersteer/release/pause/rotation",
+      "passed": true,
+      "evidence": "evidence/browser-touch.json; real OS background NOT_OBSERVED"
+    },
+    {
+      "name": "Stage 01 natural win and replay",
+      "passed": true,
+      "evidence": "natural-flow-stage01.json"
+    },
+    {
+      "name": "All-stage natural campaign",
+      "passed": false,
+      "evidence": "evidence/natural-summary.json"
+    },
+    {
+      "name": "Repository-wide lint",
+      "passed": false,
+      "evidence": "evidence/root-lint.log; 58 errors in two unchanged historical probes"
+    },
+    {
+      "name": "Repository-wide tests",
+      "passed": false,
+      "evidence": "Root pnpm test: 63 node:test suites miscollected by Vitest; one unchanged date-expired waiver assertion. Scoped H5 tests pass."
+    },
+    {
+      "name": "TypeScript",
+      "passed": true,
+      "evidence": "evidence/typecheck.log"
+    }
+  ],
+  "issues": [
+    {
+      "id": "RACE-P1-WARM-COLD-PACKAGE",
+      "severity": "error",
+      "message": "Same source bde813d6 produces local build 0c5132 vs CI 40cf98. Byte comparison isolates stale compatibility themes.mjs on warm rebuild; default index.html/style.css are byte-identical. Frozen historical tests also differ and must not be overwritten. Refresh the compatibility bridge, preserve frozen tests, revalidate the final package.",
+      "evidence": "docs/lean-pilot/racing-final-20261020/evidence/warm-cold-diff.json"
+    },
+    {
+      "id": "RACE-P1-EARLY-PRESSURE",
+      "severity": "error",
+      "message": "Early-stage challenge not closed; faster deterministic AI is not proof that serious braking/drifting is required.",
+      "evidence": "evidence/natural-summary.json"
+    },
+    {
+      "id": "RACE-P1-NATURAL-COVERAGE",
+      "severity": "error",
+      "message": "Visible-input agent lost stage 04; no natural or perceptual acceptance for 05–30. Do not seed wins or weaken thresholds.",
+      "evidence": "evidence/natural-summary.json"
+    },
+    {
+      "id": "RACE-P1-PHONE-PERCEPTION",
+      "severity": "error",
+      "message": "Physical phone, real OS background and complete visual/controls approval missing. Imported static wheels and baked surfaces not remade.",
+      "evidence": "player-acceptance-gate.json"
+    },
+    {
+      "id": "RELEASE-RIGHTS-PLATFORM",
+      "severity": "error",
+      "message": "Rights chain, exact TapTap H5 app/SDK/package contract, live ad and compliance evidence incomplete. Platform package not built/submitted.",
+      "evidence": "PLATFORM-AND-RIGHTS.zh-CN.md"
+    }
+  ],
+  "screenshots": [
+    "materials/screenshot-garage.png",
+    "materials/screenshot-driving.png",
+    "materials/screenshot-settlement.png"
+  ],
+  "consoleLog": "evidence/native-tests.tap",
+  "testedAt": "2026-10-20T06:56:48.237Z",
+  "naturalFlow": {
+    "schemaVersion": 1,
+    "startedFromReset": true,
+    "actions": [
+      "Fresh origin, default free car",
+      "Trusted start and visible-pixel touch steering/drift/spray/nitro",
+      "Native finish and visible settlement",
+      "Trusted replay button"
+    ],
+    "transitions": [
+      {
+        "name": "startup → race",
+        "changed": true,
+        "evidence": "rc15-natural-stage01/startup.png and 01-trace.json"
+      },
+      {
+        "name": "race → settlement",
+        "changed": true,
+        "evidence": "rc15-natural-stage01/01-terminal.png"
+      },
+      {
+        "name": "settlement → replay",
+        "changed": true,
+        "evidence": "rc15-natural-stage01/replay.json and replay.png"
+      }
+    ],
+    "completion": "settlement",
+    "replayObserved": true,
+    "forbiddenOperations": [],
+    "screenshots": [
+      "materials/screenshot-garage.png",
+      "materials/screenshot-driving.png",
+      "materials/screenshot-settlement.png"
+    ],
+    "passed": true,
+    "blockers": [],
+    "runner": "racing-career-qa visible-input agent; not a human player",
+    "buildHash": "0c51322c42e2bf552bcbbd59cf3b0d0d742b6be5964be236547961b2ab0a3b86",
+    "runtime": "Three.js H5 / Chromium 151 Metal on macOS",
+    "device": {
+      "width": 844,
+      "height": 390,
+      "label": "M1 Pro touch-emulated browser, NOT physical phone"
+    },
+    "seed": "Natural default runtime RNG, not forced",
+    "observedAt": "2026-10-20T06:33:16.340Z"
+  },
+  "acceptance": {
+    "schemaVersion": 1,
+    "core": {
+      "passed": false,
+      "evidence": "AI boost braking fixed and 150/150 finish; stages 02/03 still won with zero drift/nitro and many crashes. All-stage competitive pressure not accepted."
+    },
+    "normalFlow": {
+      "passed": true,
+      "evidence": "Same-build natural stage 01 win/replay; stages 02/03 advance with earned save; stage 04 genuine sixth-place loss; separate no-steer loss/replay."
+    },
+    "visualEvidence": {
+      "passed": false,
+      "evidence": "19 exact-model/viewport screenshots and driving captures exist; faceted environment / baked shiny car surfaces / static imported wheels remain. Mobile perceptual approval is not established."
+    },
+    "levelDifference": {
+      "passed": true,
+      "evidence": "30 native constructed routes, height/width/curvature/physical pads and ten forks; each has five native physical finishers. Not a natural 30-stage completion."
+    },
+    "humanPlaytest": {
+      "passed": false,
+      "evidence": "No connected physical Android or iPhone; no human sample. Touch emulation and macOS WebKit are not handsets."
+    },
+    "releaseReady": false,
+    "candidateHash": "0c51322c42e2bf552bcbbd59cf3b0d0d742b6be5964be236547961b2ab0a3b86"
+  }
+}

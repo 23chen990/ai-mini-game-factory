@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "runtimeDependencies": [
+    {
+      "name": "three",
+      "version": "0.169.0",
+      "license": "MIT",
+      "notice": "workspace/game/LICENSE.three.txt",
+      "noticeSha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454",
+      "bundled": true
+    }
+  ],
+  "buildOnlyDependencies": [
+    "esbuild@0.28.2"
+  ],
+  "developmentOnlyDependencies": [
+    "playwright-core@1.63.0",
+    "wrangler@4.136.3"
+  ],
+  "gameCodeLicense": {
+    "declared": "ISC",
+    "grant": "USER_CONFIRMED_NOT_ARCHIVED",
+    "commercialClearance": "BLOCKED"
+  },
+  "models": "See build-racing.json models: six output hashes; rights NOT_VERIFIED",
+  "audio": {
+    "source": "workspace/source/qq-speed/src/audio.js",
+    "sha256": "4d670d863a9f76f63fcb1cfecfa96948524f3c008db20452aaf3e090ded51c39",
+    "implementation": "WebAudio procedural oscillator/noise/music sequences; no external audio files found",
+    "rights": "Covered by unresolved source/content grant; not independently cleared"
+  },
+  "literalHttpUrls": [
+    "http://www.w3.org/1999/xhtml",
+    "https://github.com/riba2534/claude-opus-5-5-demo",
+    "https://x.com/riba2534"
+  ],
+  "networkLimit": "Literal source scan only, not proof of future platform SDK behavior",
+  "audit": {
+    "scope": "Pinned source npm audit --omit=dev --ignore-scripts --json",
+    "observedOn": "2026-10-20",
+    "knownVulnerabilities": 0,
+    "limitation": "Registry advisory result only, not a full security or IP audit",
+    "report": "source-production-audit.json"
+  }
+}

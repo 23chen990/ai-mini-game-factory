@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Final acceptance: showroom quality, competitive physical AI, countersteer/touch affordances, 30-course playability, optional rewarded ownership, honest TapTap readiness. User supplied no new recording or screenshot.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "mobile-readability",
+    "failure-attribution"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Core-loop, persistence, platform and cross-branch release concerns require QA → scoped Fixer → browser retest, retaining attempt 13 baseline. No new factory Agent or Gate.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "Other games",
+      "Unverified reference media",
+      "Historical test results as current passes"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Fetch PR 68 HEAD and inspect prior attempt 13 evidence",
+      "Build exact current source in isolated same-run workspace",
+      "Run default journey and targeted engineering tracks independently"
+    ],
+    "observed": [
+      "Remote HEAD remains 333e5920ece57dfac8fb4e3a41e9e89c05194189",
+      "Prior natural journey has no winning completion; physical phones and real SDK not run",
+      "Template platform configuration remains PENDING / NOT_RUN",
+      "The physical AI brakes when speed exceeds normal vmax despite earned pad/nitro/spray capacity. Same visible-input stage 01 baseline wins with 26 crashes, zero drift or nitro, 711.6 m ahead of nearest AI. This is observed agent performance, not human win rate.",
+      "After timeout, a second request reattaches to the documented singleton. A late close from the old video grants the new reward. Regression returns completed instead of unavailable.",
+      "Final runtime source 042c21168f0ac433b721e7b95b01d2bcbfce64e1; build 40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+      "Formal attempts 14/15/16 fixed boost braking, stale singleton, premature reward closes and warm-build compatibility sync; remaining product/platform gates stay blocked."
+    ],
+    "evidence": [
+      {
+        "path": "docs/lean-pilot/racing-unified-20261018/README-v116.zh-CN.md",
+        "sha256": "46f459e96b9e7ecc9d540d4477d3f8f4369d81a889485654f445f6fda5826ca1",
+        "kind": "qa-artifact",
+        "provenance": "repository-source"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "No injected results or hidden telemetry steering in natural-journey evidence",
+    "Physical AI all 30 routes / 150 opponents finish legitimately; no coordinate, progress, rank or rubber-band manipulation",
+    "Default natural startup → race → settlement → replay and exact touch countersteer branches have visible evidence",
+    "Rewards only on verified complete callback plus successful durable write; cancellation, timeout, duplicate, late and failed storage grant nothing",
+    "Only exact final source/build hashes used in final acceptance; technical status separate from device, copyright and submission blockers",
+    "Native boosted straight decision accelerates, while sharp-curve braking remains; all 150 fixed-seed rivals finish, and same visible agent baseline is compared without changing its policy. Retain only if no route regression and reduced leading gap.",
+    "After singleton timeout no later event can complete any new request on that provider during this page session. New host/reload required; core free gameplay unaffected."
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-20T06:02:29.191Z"
+}

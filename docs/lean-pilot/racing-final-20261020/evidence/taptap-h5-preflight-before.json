@@ -1,0 +1,64 @@
+{
+  "ok": true,
+  "dry_run": true,
+  "data": {
+    "stage": "materials-inspect",
+    "input": "runs/h5-qq-mobile-20261013/artifacts/final-20261020/delivery/racing-web-qa-20261020.1.zip",
+    "materials": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/final-20261020/delivery/racing-web-qa-20261020.1.zip",
+        "name": "racing-web-qa-20261020.1.zip",
+        "size": 8382794,
+        "kind": "package",
+        "packageType": "h5",
+        "reason": "zip 内含 index.html，识别为 H5 包；上传前预检失败：H5 ZIP root must contain exactly one game directory; found: LICENSE.three.txt, candidate.json, engine.mjs, index.html, main.mjs, platform.json, style.css, tests, themes.mjs",
+        "archive_preflight": {
+          "entry_count": 10,
+          "top_level_entries": [
+            "LICENSE.three.txt",
+            "candidate.json",
+            "engine.mjs",
+            "index.html",
+            "main.mjs",
+            "platform.json",
+            "style.css",
+            "tests",
+            "themes.mjs"
+          ],
+          "violations": [
+            "single_game_directory_required"
+          ],
+          "warnings": []
+        }
+      }
+    ],
+    "summary": {
+      "image": 0,
+      "video": 0,
+      "package": 1,
+      "bundle": 0,
+      "unknown": 0,
+      "packagesByType": {
+        "h5": 1
+      }
+    },
+    "notes": [
+      "H5 包 racing-web-qa-20261020.1.zip 未通过上传前预检，不应创建远端 artifact"
+    ],
+    "skipped": [
+      {
+        "name": "racing-web-qa-20261020.1.zip",
+        "reason": "H5 ZIP 未通过上传前预检；按 archive_preflight.violations 修复后重新检查",
+        "code": "H5_ARCHIVE_PREFLIGHT_FAILED"
+      }
+    ],
+    "handoff": {
+      "required": true,
+      "reason": "检查只生成本地 manifest；后续上传和资料绑定必须由明确的专用流程完成。",
+      "nextSteps": [
+        "存在 skipped 条目；它们没有被上传。按 skipped.code 处理；ARCHIVE_EXTRACTION_REQUIRED 先安全解压并重新运行 materials +inspect，重新检查后再生成上传命令。"
+      ]
+    },
+    "hint": "只读物料检查：不会上传文件、创建远端任务、写入资料或绑定包体。按 handoff 继续处理。"
+  }
+}

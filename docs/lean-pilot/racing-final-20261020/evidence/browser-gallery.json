@@ -1,0 +1,585 @@
+{
+  "schemaVersion": 1,
+  "mode": "gallery",
+  "sourceCommit": "042c21168f0ac433b721e7b95b01d2bcbfce64e1",
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "inputHash": "8e09f4831d99d7ab35af02394e360b1f20429142dde8b8ae18578d84bed9efd5",
+  "htmlSha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812",
+  "physicalPhone": false,
+  "host": "darwin",
+  "rows": [
+    {
+      "case": "normal-ui-preview",
+      "id": "starter",
+      "readyMs": 2436,
+      "screenshot": "gallery-1366x768-starter.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 1.3662999999821168,
+      "steerAxis": 0,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 337,
+      "textures": 51,
+      "heapBytes": 127263634,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        1366,
+        768
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-01",
+      "readyMs": 2436,
+      "screenshot": "gallery-1366x768-custom-01.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 2.4421999999880746,
+      "steerAxis": 0,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 363,
+      "textures": 54,
+      "heapBytes": 98089180,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        1366,
+        768
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-02",
+      "readyMs": 2436,
+      "screenshot": "gallery-1366x768-custom-02.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 3.542499999999992,
+      "steerAxis": 0,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 374,
+      "textures": 57,
+      "heapBytes": 97886441,
+      "displayedCar": "custom-02",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        1366,
+        768
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-03",
+      "readyMs": 2436,
+      "screenshot": "gallery-1366x768-custom-03.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 4.587499999999991,
+      "steerAxis": 0,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 392,
+      "textures": 57,
+      "heapBytes": 92024779,
+      "displayedCar": "custom-03",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        1366,
+        768
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-04",
+      "readyMs": 2436,
+      "screenshot": "gallery-1366x768-custom-04.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 5.865499999999986,
+      "steerAxis": 0,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 450,
+      "textures": 57,
+      "heapBytes": 114038628,
+      "displayedCar": "custom-04",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        1366,
+        768
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-05",
+      "readyMs": 2436,
+      "screenshot": "gallery-1366x768-custom-05.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 7.257800000011909,
+      "steerAxis": 0,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 575,
+      "textures": 60,
+      "heapBytes": 120316209,
+      "displayedCar": "custom-05",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        1366,
+        768
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "starter",
+      "readyMs": 1304,
+      "screenshot": "gallery-844x390-starter.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 0.9754000000059595,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 315,
+      "textures": 25,
+      "heapBytes": 65474129,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-01",
+      "readyMs": 1304,
+      "screenshot": "gallery-844x390-custom-01.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 1.7989000000059578,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 321,
+      "textures": 28,
+      "heapBytes": 103778527,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-02",
+      "readyMs": 1304,
+      "screenshot": "gallery-844x390-custom-02.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 2.6009999999999964,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 362,
+      "textures": 31,
+      "heapBytes": 98133428,
+      "displayedCar": "custom-02",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-03",
+      "readyMs": 1304,
+      "screenshot": "gallery-844x390-custom-03.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 3.453600000023835,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 368,
+      "textures": 31,
+      "heapBytes": 116101594,
+      "displayedCar": "custom-03",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-04",
+      "readyMs": 1304,
+      "screenshot": "gallery-844x390-custom-04.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 4.894700000017871,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 377,
+      "textures": 31,
+      "heapBytes": 117108841,
+      "displayedCar": "custom-04",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-05",
+      "readyMs": 1304,
+      "screenshot": "gallery-844x390-custom-05.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 6.8210000000297955,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 548,
+      "textures": 34,
+      "heapBytes": 83551992,
+      "displayedCar": "custom-05",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "starter",
+      "readyMs": 1915,
+      "screenshot": "gallery-667x375-starter.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 1.3724999999701952,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        667,
+        375
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 290,
+      "textures": 25,
+      "heapBytes": 111688638,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        667,
+        375
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-01",
+      "readyMs": 1915,
+      "screenshot": "gallery-667x375-custom-01.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 2.7098999999761504,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        667,
+        375
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 334,
+      "textures": 28,
+      "heapBytes": 133609420,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        667,
+        375
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-02",
+      "readyMs": 1915,
+      "screenshot": "gallery-667x375-custom-02.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 3.743399999976151,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        667,
+        375
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 344,
+      "textures": 31,
+      "heapBytes": 167150541,
+      "displayedCar": "custom-02",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        667,
+        375
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-03",
+      "readyMs": 1915,
+      "screenshot": "gallery-667x375-custom-03.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 4.935499999970192,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        667,
+        375
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 119,
+      "geometries": 353,
+      "textures": 31,
+      "heapBytes": 156457135,
+      "displayedCar": "custom-03",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        667,
+        375
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-04",
+      "readyMs": 1915,
+      "screenshot": "gallery-667x375-custom-04.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 5.79079999995231,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        667,
+        375
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 395,
+      "textures": 31,
+      "heapBytes": 169329988,
+      "displayedCar": "custom-04",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        667,
+        375
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "custom-05",
+      "readyMs": 1915,
+      "screenshot": "gallery-667x375-custom-05.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 6.799099999964231,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        667,
+        375
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 528,
+      "textures": 34,
+      "heapBytes": 86981289,
+      "displayedCar": "custom-05",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂不可用，可选择已拥有的赛车",
+      "viewport": [
+        667,
+        375
+      ]
+    },
+    {
+      "case": "normal-ui-preview",
+      "id": "starter",
+      "readyMs": 1586,
+      "screenshot": "gallery-390x844-starter.png",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 0.8000999999940388,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        390,
+        844
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 60,
+      "geometries": 185,
+      "textures": 23,
+      "heapBytes": 76899380,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        390,
+        844
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "151.0.7922.34"
+}

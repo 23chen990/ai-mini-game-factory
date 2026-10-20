@@ -1,0 +1,36 @@
+✔ warm rebuild refreshes the compatibility bridge without changing frozen acceptance (30.277083ms)
+✔ 赛车源补丁保留原输入、物理和AI流程，只约束手机镜头与渲染 (3.6805ms)
+✔ 未知源版本不能静默套用补丁 (0.74625ms)
+✔ V11.6 pre-race quality follows the live renderer and warms up only in visible ready phase (1.250583ms)
+✔ registered build includes live career, items, runtime and fuel dependencies (1.390417ms)
+✔ race text labels remove known third-party signboards in build output (0.141208ms)
+✔ instrument clean native drift without changing dynamics, and reject unknown source (0.142625ms)
+✔ recognizable character balloons are replaced with generic scene assets (0.0695ms)
+✔ actual esbuild script injection keeps valid $& tokens and exactly one closing body (0.138791ms)
+✔ V3.1 build adds pinned geometry and question-box source patches once, rejects unknown shapes (0.287959ms)
+✔ V3.1 model and spline modules are hashed into H5 build and kept scoped to racing (5.75675ms)
+✔ desert dune relief edits only the original generated sand base, never native physics (0.441042ms)
+✔ native stage-specific course selection is strict, idempotent and does not rewrite driving physics (0.130792ms)
+✔ native fork adapters are exact, idempotent and preserve original acceleration/AI (0.516708ms)
+✔ stage-scenery pipeline changes only sky/props, never native car or track physics (0.17875ms)
+✔ fixed desert monument safety keeps pyramid models away from new racing surfaces (0.089083ms)
+✔ V8 native AI hook is strict and avoids checkpoint/progress surgery (0.130791ms)
+✔ V11 build adapter preserves AI names and instantiates the native PlayerCar subclass (2.813875ms)
+✔ V11 world adapter projects physical rivals and applies real impulses without taking player ownership (0.716792ms)
+✔ V8 one-way finish hooks preserve native progress and onLap bookkeeping (0.112042ms)
+✔ phone and desktop camera differences preserve native car/road physics (0.136375ms)
+✔ native eight-item HUD matches V8 pickups and never crashes on a new item ID (0.357333ms)
+✔ V6.2 graphics safety is re-integrated into native generated WebGL with fail-closed anchors (0.219ms)
+✔ V11.6 default framebuffer avoids MSAA on desktop and touch while preserving saved quality (1.032416ms)
+✔ V11.6 explicit high retains four-sample offscreen rendering before native low direct rendering (0.297125ms)
+✔ V11.6 mid keeps desktop offscreen zero samples and the existing touch budget (0.169667ms)
+✔ V11.6 initial render adapter rejects partial and changed native constructor anchors (0.182417ms)
+✔ V11.8 urban foliage and grass palette mute saturation with no new geometry or AI edits (0.171708ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 124.551584

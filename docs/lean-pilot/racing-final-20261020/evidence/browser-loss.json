@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "mode": "loss",
+  "sourceCommit": "042c21168f0ac433b721e7b95b01d2bcbfce64e1",
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "inputHash": "8e09f4831d99d7ab35af02394e360b1f20429142dde8b8ae18578d84bed9efd5",
+  "htmlSha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812",
+  "physicalPhone": false,
+  "host": "darwin",
+  "rows": [
+    {
+      "case": "natural-no-steering-settlement",
+      "settlement": "★★★本场 0 星 · 历史最高 0 星",
+      "heading": -11.045392226162999,
+      "state": "paused",
+      "phase": "finished",
+      "raceTime": 158.4837000000132,
+      "steerAxis": 0,
+      "speed": 196.163258125464,
+      "steer": 0,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 876,
+      "textures": 38,
+      "heapBytes": 73299821,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "loss-settlement.png"
+    },
+    {
+      "case": "natural-loss-replay",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 0,
+      "steerAxis": 0,
+      "speed": 0,
+      "steer": 0,
+      "heading": 1.5707963705062866,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 854,
+      "textures": 38,
+      "heapBytes": 71436591,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "loss-replay.png"
+    },
+    {
+      "case": "wall-clock-raf-sample",
+      "seconds": 5,
+      "frames": 601,
+      "p50Ms": 8.300000000017462,
+      "p95Ms": 9.10000000000582,
+      "state": "race",
+      "phase": "race",
+      "raceTime": 5.167099999994036,
+      "steerAxis": 0,
+      "speed": 137.32853272377068,
+      "steer": 0,
+      "heading": 1.9247916379368082,
+      "drifting": false,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 858,
+      "textures": 38,
+      "heapBytes": 77995027,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        844,
+        390
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "151.0.7922.34"
+}

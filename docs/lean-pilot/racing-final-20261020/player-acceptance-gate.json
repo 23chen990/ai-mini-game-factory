@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "core": {
+    "passed": false,
+    "evidence": "AI boost braking fixed and 150/150 finish; early stages still won with zero drift/nitro and many crashes. All-stage competitive pressure not accepted."
+  },
+  "normalFlow": {
+    "passed": true,
+    "evidence": "Same-build natural stage 01 win/replay; lawful earned-save campaign observed stages 01,02,03,04,05,06,07,08,09,10,11,12; separate native no-steer loss/replay."
+  },
+  "visualEvidence": {
+    "passed": false,
+    "evidence": "19 exact-model/viewport screenshots and driving captures exist; faceted environment / baked shiny car surfaces / static imported wheels remain. Mobile perceptual approval is not established."
+  },
+  "levelDifference": {
+    "passed": true,
+    "evidence": "30 native constructed routes, height/width/curvature/physical pads and ten forks; each has five native physical finishers. Not a natural 30-stage completion."
+  },
+  "humanPlaytest": {
+    "passed": false,
+    "evidence": "No connected physical Android or iPhone; no human sample. Touch emulation and macOS WebKit are not handsets."
+  },
+  "releaseReady": false,
+  "candidateHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542"
+}

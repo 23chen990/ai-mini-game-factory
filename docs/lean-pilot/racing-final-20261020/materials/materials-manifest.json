@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "buildHashForScreenshots": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "screenshotsUnedited": true,
+  "gameContentRights": "BLOCKED",
+  "files": [
+    {
+      "path": "cover-illustration-draft.png",
+      "width": 1672,
+      "height": 941,
+      "bytes": 2182697,
+      "sha256": "1d9776a83085a519575491633c5c647ea3c637c2b27db843d406401489c97610",
+      "status": "DRAFT_NOT_PLATFORM_APPROVED"
+    },
+    {
+      "path": "icon-512.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 100381,
+      "sha256": "a8bfe4f9266aabb47e9c47238ffc29fa4a305ccdb2053ad107cb13dba1c97f82",
+      "status": "DRAFT_NOT_PLATFORM_APPROVED"
+    },
+    {
+      "path": "screenshot-driving.png",
+      "width": 844,
+      "height": 390,
+      "bytes": 331395,
+      "sha256": "3dab0181abcf3c5976b3c63f4e4487dec959e4f9934f97bfa9d4c4fa017934b0",
+      "status": "BROWSER_QA_CAPTURE_NOT_PHONE"
+    },
+    {
+      "path": "screenshot-garage.png",
+      "width": 844,
+      "height": 390,
+      "bytes": 366458,
+      "sha256": "e57894860eace667116218f6c816fff38ba090d7c3a29a381b657bb3519a976b",
+      "status": "BROWSER_QA_CAPTURE_NOT_PHONE"
+    },
+    {
+      "path": "screenshot-settlement.png",
+      "width": 844,
+      "height": 390,
+      "bytes": 300993,
+      "sha256": "5e86e19da37d2d17d9bd82d0db48bf99c91c0f2946e76c19bfb197ee0eee99f5",
+      "status": "BROWSER_QA_CAPTURE_NOT_PHONE"
+    }
+  ]
+}

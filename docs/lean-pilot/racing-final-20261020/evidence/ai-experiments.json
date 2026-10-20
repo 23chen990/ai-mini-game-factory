@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "classification": "READ_ONLY_CONTROLLER_EXPERIMENT_NOT_BUILD_NOT_NATURAL",
+  "sourceCommit": "042c21168f0ac433b721e7b95b01d2bcbfce64e1",
+  "observedFailure": "Natural early-stage wins with zero effective drift/nitro and many crashes despite baseline physical AI finishing",
+  "actual": {
+    "finishers": 150,
+    "stage1Best": 128,
+    "wallCrashes": 5,
+    "trafficContactEpisodes": 6655,
+    "driftStarts": 2934,
+    "smallBoostEvents": 1608
+  },
+  "variants": {
+    "yaw": {
+      "finishers": 150,
+      "stage1Best": 127.067,
+      "wallCrashes": 1,
+      "trafficContactEpisodes": 7964,
+      "driftStarts": 2688,
+      "smallBoostEvents": 1473
+    },
+    "braking": {
+      "finishers": 150,
+      "stage1Best": 127.033,
+      "wallCrashes": 4,
+      "trafficContactEpisodes": 6762,
+      "driftStarts": 2905,
+      "smallBoostEvents": 1585
+    },
+    "noCurvatureBraking": {
+      "finishers": 150,
+      "stage1Best": 119.575,
+      "wallCrashes": 525,
+      "trafficContactEpisodes": 12302,
+      "driftStarts": 86,
+      "smallBoostEvents": 41
+    }
+  },
+  "decision": "REJECT_ALL_FOR_CURRENT_CANDIDATE",
+  "observation": "Yaw/braking capacity changes gain about one second on stage01; removing curvature braking gains substantially but suppresses drift/spray and increases traffic contacts.",
+  "causalLimit": "Predictive braking contributes to pace loss; this is not proof that deleting it gives a good player experience. Physics and progress unchanged; only controller text substituted in memory.",
+  "remainingUnknown": "A line-aware braking/drift policy that yields competitive pace without a contact convoy has not been validated. No human win-rate or visual pressure measurement exists."
+}

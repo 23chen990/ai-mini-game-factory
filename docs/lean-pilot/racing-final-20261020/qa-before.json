@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [],
+  "issues": [
+    {
+      "id": "RACE-P1-BOOST-BRAKING",
+      "severity": "error",
+      "message": "The physical AI brakes when speed exceeds normal vmax despite earned pad/nitro/spray capacity. Same visible-input stage 01 baseline wins with 26 crashes, zero drift or nitro, 711.6 m ahead of nearest AI. This is observed agent performance, not human win rate.",
+      "evidence": "runs/h5-qq-mobile-20261013/artifacts/final-20261020/red-boost-ad.tap"
+    },
+    {
+      "id": "RACE-P1-LATE-SINGLETON-AD",
+      "severity": "error",
+      "message": "After timeout, a second request reattaches to the documented singleton. A late close from the old video grants the new reward. Regression returns completed instead of unavailable.",
+      "evidence": "runs/h5-qq-mobile-20261013/artifacts/final-20261020/red-boost-ad.tap"
+    }
+  ],
+  "screenshots": [
+    "runs/h5-qq-mobile-20261013/evidence/final-baseline-natural/01-terminal.png"
+  ],
+  "consoleLog": "runs/h5-qq-mobile-20261013/artifacts/final-20261020/red-boost-ad.tap",
+  "testedAt": "2026-10-20T06:10:38.625Z"
+}

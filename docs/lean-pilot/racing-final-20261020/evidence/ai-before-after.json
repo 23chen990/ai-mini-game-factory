@@ -1,0 +1,221 @@
+{
+  "baselineBuild": "cb948095fec6572df905061d777cba6080743d6dc72c3e62dede02b00ebc5725",
+  "finalBuild": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "baseline": "V11.6 archived physical-AI engineering only",
+  "maxSlowdownSeconds": 1,
+  "checkedStages": 30,
+  "status": "PASS",
+  "failedStages": [],
+  "cases": [
+    {
+      "stage": "01",
+      "baselinePodiumSeconds": 133.225,
+      "currentPodiumSeconds": 132.617,
+      "deltaSec": -0.608,
+      "withinBudget": true
+    },
+    {
+      "stage": "02",
+      "baselinePodiumSeconds": 136.658,
+      "currentPodiumSeconds": 135.275,
+      "deltaSec": -1.383,
+      "withinBudget": true
+    },
+    {
+      "stage": "03",
+      "baselinePodiumSeconds": 143.433,
+      "currentPodiumSeconds": 142.65,
+      "deltaSec": -0.783,
+      "withinBudget": true
+    },
+    {
+      "stage": "04",
+      "baselinePodiumSeconds": 139.925,
+      "currentPodiumSeconds": 139.533,
+      "deltaSec": -0.392,
+      "withinBudget": true
+    },
+    {
+      "stage": "05",
+      "baselinePodiumSeconds": 140.8,
+      "currentPodiumSeconds": 138.067,
+      "deltaSec": -2.733,
+      "withinBudget": true
+    },
+    {
+      "stage": "06",
+      "baselinePodiumSeconds": 135.583,
+      "currentPodiumSeconds": 135.325,
+      "deltaSec": -0.258,
+      "withinBudget": true
+    },
+    {
+      "stage": "07",
+      "baselinePodiumSeconds": 84.608,
+      "currentPodiumSeconds": 84.108,
+      "deltaSec": -0.5,
+      "withinBudget": true
+    },
+    {
+      "stage": "08",
+      "baselinePodiumSeconds": 150.192,
+      "currentPodiumSeconds": 149.658,
+      "deltaSec": -0.534,
+      "withinBudget": true
+    },
+    {
+      "stage": "09",
+      "baselinePodiumSeconds": 135.208,
+      "currentPodiumSeconds": 134.275,
+      "deltaSec": -0.933,
+      "withinBudget": true
+    },
+    {
+      "stage": "10",
+      "baselinePodiumSeconds": 210.625,
+      "currentPodiumSeconds": 206.642,
+      "deltaSec": -3.983,
+      "withinBudget": true
+    },
+    {
+      "stage": "11",
+      "baselinePodiumSeconds": 138.017,
+      "currentPodiumSeconds": 136.733,
+      "deltaSec": -1.284,
+      "withinBudget": true
+    },
+    {
+      "stage": "12",
+      "baselinePodiumSeconds": 142.717,
+      "currentPodiumSeconds": 140.45,
+      "deltaSec": -2.267,
+      "withinBudget": true
+    },
+    {
+      "stage": "13",
+      "baselinePodiumSeconds": 211.942,
+      "currentPodiumSeconds": 206.642,
+      "deltaSec": -5.3,
+      "withinBudget": true
+    },
+    {
+      "stage": "14",
+      "baselinePodiumSeconds": 139.083,
+      "currentPodiumSeconds": 137.075,
+      "deltaSec": -2.008,
+      "withinBudget": true
+    },
+    {
+      "stage": "15",
+      "baselinePodiumSeconds": 216.517,
+      "currentPodiumSeconds": 213.383,
+      "deltaSec": -3.134,
+      "withinBudget": true
+    },
+    {
+      "stage": "16",
+      "baselinePodiumSeconds": 215.058,
+      "currentPodiumSeconds": 212.183,
+      "deltaSec": -2.875,
+      "withinBudget": true
+    },
+    {
+      "stage": "17",
+      "baselinePodiumSeconds": 141.758,
+      "currentPodiumSeconds": 139.533,
+      "deltaSec": -2.225,
+      "withinBudget": true
+    },
+    {
+      "stage": "18",
+      "baselinePodiumSeconds": 141.933,
+      "currentPodiumSeconds": 139.667,
+      "deltaSec": -2.266,
+      "withinBudget": true
+    },
+    {
+      "stage": "19",
+      "baselinePodiumSeconds": 141.467,
+      "currentPodiumSeconds": 139.483,
+      "deltaSec": -1.984,
+      "withinBudget": true
+    },
+    {
+      "stage": "20",
+      "baselinePodiumSeconds": 147.725,
+      "currentPodiumSeconds": 145.217,
+      "deltaSec": -2.508,
+      "withinBudget": true
+    },
+    {
+      "stage": "21",
+      "baselinePodiumSeconds": 219.592,
+      "currentPodiumSeconds": 218.542,
+      "deltaSec": -1.05,
+      "withinBudget": true
+    },
+    {
+      "stage": "22",
+      "baselinePodiumSeconds": 87.283,
+      "currentPodiumSeconds": 86.692,
+      "deltaSec": -0.591,
+      "withinBudget": true
+    },
+    {
+      "stage": "23",
+      "baselinePodiumSeconds": 199.367,
+      "currentPodiumSeconds": 198.283,
+      "deltaSec": -1.084,
+      "withinBudget": true
+    },
+    {
+      "stage": "24",
+      "baselinePodiumSeconds": 142.133,
+      "currentPodiumSeconds": 140.692,
+      "deltaSec": -1.441,
+      "withinBudget": true
+    },
+    {
+      "stage": "25",
+      "baselinePodiumSeconds": 221.233,
+      "currentPodiumSeconds": 219.375,
+      "deltaSec": -1.858,
+      "withinBudget": true
+    },
+    {
+      "stage": "26",
+      "baselinePodiumSeconds": 212.075,
+      "currentPodiumSeconds": 208.858,
+      "deltaSec": -3.217,
+      "withinBudget": true
+    },
+    {
+      "stage": "27",
+      "baselinePodiumSeconds": 227.242,
+      "currentPodiumSeconds": 223.5,
+      "deltaSec": -3.742,
+      "withinBudget": true
+    },
+    {
+      "stage": "28",
+      "baselinePodiumSeconds": 215.083,
+      "currentPodiumSeconds": 212.167,
+      "deltaSec": -2.916,
+      "withinBudget": true
+    },
+    {
+      "stage": "29",
+      "baselinePodiumSeconds": 225.392,
+      "currentPodiumSeconds": 221.983,
+      "deltaSec": -3.409,
+      "withinBudget": true
+    },
+    {
+      "stage": "30",
+      "baselinePodiumSeconds": 219.658,
+      "currentPodiumSeconds": 217.05,
+      "deltaSec": -2.608,
+      "withinBudget": true
+    }
+  ]
+}

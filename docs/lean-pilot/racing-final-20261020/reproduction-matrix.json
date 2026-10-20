@@ -1,0 +1,1201 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "starter",
+      "custom-01",
+      "custom-02",
+      "custom-03",
+      "custom-04",
+      "custom-05",
+      "wheel-and-drift",
+      "nitro-and-item",
+      "physical-ai",
+      "reward-ownership"
+    ],
+    "lifecycleStateBranches": [
+      "home",
+      "race",
+      "pause-resume",
+      "settlement-replay",
+      "reward-complete-cancel-timeout-storage"
+    ],
+    "rendererPaths": [
+      "default Three.js + DOM overlay"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "starter-home-desktop",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "starter-race-desktop",
+      "objectType": "starter",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "starter-home-touch-landscape",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "starter-race-touch-landscape",
+      "objectType": "starter",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "starter-home-small-landscape",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "starter-race-small-landscape",
+      "objectType": "starter",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "starter-home-portrait",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "starter-race-portrait",
+      "objectType": "starter",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-home-desktop",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-race-desktop",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-home-touch-landscape",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-race-touch-landscape",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-home-small-landscape",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-race-small-landscape",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-home-portrait",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-01-race-portrait",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-home-desktop",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-race-desktop",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-home-touch-landscape",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-race-touch-landscape",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-home-small-landscape",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-race-small-landscape",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-home-portrait",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-02-race-portrait",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-home-desktop",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-race-desktop",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-home-touch-landscape",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-race-touch-landscape",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-home-small-landscape",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-race-small-landscape",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-home-portrait",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-03-race-portrait",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-home-desktop",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-race-desktop",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-home-touch-landscape",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-race-touch-landscape",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-home-small-landscape",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-race-small-landscape",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-home-portrait",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-04-race-portrait",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-home-desktop",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-race-desktop",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-home-touch-landscape",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-race-touch-landscape",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-home-small-landscape",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-race-small-landscape",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-home-portrait",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "custom-05-race-portrait",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-race-desktop",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-pause-resume-desktop",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-race-touch-landscape",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-pause-resume-touch-landscape",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-race-small-landscape",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-pause-resume-small-landscape",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-race-portrait",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "wheel-and-drift-pause-resume-portrait",
+      "objectType": "wheel-and-drift",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-race-desktop",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-pause-resume-desktop",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-race-touch-landscape",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-pause-resume-touch-landscape",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-race-small-landscape",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-pause-resume-small-landscape",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-race-portrait",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "nitro-and-item-pause-resume-portrait",
+      "objectType": "nitro-and-item",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-race-desktop",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-pause-resume-desktop",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-race-touch-landscape",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-pause-resume-touch-landscape",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-race-small-landscape",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-pause-resume-small-landscape",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-race-portrait",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "physical-ai-pause-resume-portrait",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "pause-resume",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "reward-ownership-reward-complete-cancel-timeout-storage-desktop",
+      "objectType": "reward-ownership",
+      "lifecycleStateBranch": "reward-complete-cancel-timeout-storage",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "reward-ownership-reward-complete-cancel-timeout-storage-touch-landscape",
+      "objectType": "reward-ownership",
+      "lifecycleStateBranch": "reward-complete-cancel-timeout-storage",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "touch-landscape",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "reward-ownership-reward-complete-cancel-timeout-storage-small-landscape",
+      "objectType": "reward-ownership",
+      "lifecycleStateBranch": "reward-complete-cancel-timeout-storage",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "small-landscape",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    },
+    {
+      "id": "reward-ownership-reward-complete-cancel-timeout-storage-portrait",
+      "objectType": "reward-ownership",
+      "lifecycleStateBranch": "reward-complete-cancel-timeout-storage",
+      "rendererPath": "default Three.js + DOM overlay",
+      "viewport": {
+        "label": "portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Exact object/state path is observable and independently verified in final build",
+      "observed": "Pending current-build execution; sibling branches cannot close this cell",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [],
+  "remainingGaps": [
+    "Actual phone hardware not connected",
+    "No new external user media",
+    "Current build natural and perceptual coverage pending"
+  ],
+  "createdAt": "2026-10-20T06:02:29.195Z"
+}

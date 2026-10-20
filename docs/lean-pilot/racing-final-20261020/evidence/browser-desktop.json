@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "mode": "desktop",
+  "sourceCommit": "042c21168f0ac433b721e7b95b01d2bcbfce64e1",
+  "buildHash": "40cf9871719d1154d7d855a805f157f5c00a88b23d6700f90c119717772c7542",
+  "inputHash": "8e09f4831d99d7ab35af02394e360b1f20429142dde8b8ae18578d84bed9efd5",
+  "htmlSha256": "6949497a622678fe3e8ccd5d059a66894ce293020afcaf17fc7c42c31c1ca812",
+  "physicalPhone": false,
+  "host": "darwin",
+  "rows": [
+    {
+      "case": "keyboard-driving",
+      "state": "race",
+      "phase": "race",
+      "raceTime": 0.80990000000596,
+      "steerAxis": 0,
+      "speed": 131.73396871944055,
+      "steer": 0.263596738728075,
+      "heading": 2.2933808410128766,
+      "drifting": false,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 766,
+      "textures": 62,
+      "heapBytes": 132456401,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        1366,
+        768
+      ],
+      "screenshot": "desktop-driving.png"
+    },
+    {
+      "case": "wall-clock-raf-sample",
+      "seconds": 5,
+      "frames": 601,
+      "p50Ms": 8.300000000001091,
+      "p95Ms": 9.200000000000728,
+      "state": "race",
+      "phase": "race",
+      "raceTime": 8.475999999999997,
+      "steerAxis": 0,
+      "speed": 0,
+      "steer": 7.482162552847464e-108,
+      "heading": 1.5707963705062982,
+      "drifting": false,
+      "quality": "mid",
+      "pixelRatio": 1,
+      "buffer": [
+        1366,
+        768
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 772,
+      "textures": 63,
+      "heapBytes": 140639653,
+      "displayedCar": "starter",
+      "owned": [
+        "starter"
+      ],
+      "note": "",
+      "viewport": [
+        1366,
+        768
+      ]
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "151.0.7922.34"
+}
