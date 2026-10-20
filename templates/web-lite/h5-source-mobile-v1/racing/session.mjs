@@ -226,6 +226,7 @@ export function installCountdownQualitySafety(game, {
   let previous = null, previousState = null, previousQuality = null;
   let lowStalls = 0, lowSlowSeconds = 0, pixelRatioLimit = 1;
   let multiSecondStalls = 0, multiSecondSeconds = 0;
+  let freezeSevereCountdown3D = false;
   const resetMeasurements = () => {
     previous = null;previousState = null;previousQuality = null;
     monitor.consecutiveStalls = 0;monitor.severeManualLag = 0;
@@ -259,11 +260,20 @@ export function installCountdownQualitySafety(game, {
   }
   // Hidden documents may receive no RAF callbacks at all. Discard the old
   // sample on visibility changes, including a hide/resume between two frames.
-  visibilityDocument?.addEventListener?.('visibilitychange',resetMeasurements);
+  visibilityDocument?.addEventListener?.('visibilitychange', () => {
+    resetMeasurements(); freezeSevereCountdown3D = false;
+  });
   const nativeRender = game.render;
   game.render = function(...args) {
     const active = (this.state === 'countdown' || this.state === 'race') && !visibilityDocument?.hidden;
     const time = now();
+    if (this.state !== 'countdown' || this.settings.quality !== 'low' || visibilityDocument?.hidden)
+      freezeSevereCountdown3D = false;
+    // After confirmed multi-second native WebGL stalls, the native loop still
+    // runs step(), input and the visible DOM countdown before calling render().
+    // Reuse the last scene frame for the remainder of this pathological countdown.
+    // This is never enabled in normal gameplay, or for sub-second slow frames.
+    if (freezeSevereCountdown3D && active && Number.isFinite(time)) return;
     if (!active || !Number.isFinite(time)) {
       resetMeasurements();
     } else {
@@ -324,6 +334,13 @@ export function installCountdownQualitySafety(game, {
         }
       }
     }
+    // Arm only after 4 *visible*, >=1s average WebGL stalls AND the genuine
+    // native renderer has reached its pre-existing 0.35 pixel-ratio floor.
+    // The arming frame is still drawn, so HUD/gate transitions stay visible.
+    if (active && this.state === 'countdown' && emergency &&
+        this.settings.quality === 'low' && hasPixelBudget && this.renderer === renderer &&
+        renderer.getPixelRatio() <= LOW_RENDER_PIXEL_RATIOS.at(-1) + 1e-6)
+      freezeSevereCountdown3D = true;
     return nativeRender.apply(this, args);
   };
   countdownQualityInstalled.add(game);

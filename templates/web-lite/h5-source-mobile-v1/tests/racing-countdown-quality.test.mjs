@@ -309,3 +309,34 @@ test('native setSize-only resize resets countdown evidence and preserves its rec
     assert.equal(x.renderer.getPixelRatio(),quality==='low'?.75:1,'fresh sub-second evidence must stay gradual');
   }
 });
+
+test('catastrophic software-WebGL countdown freezes only redundant scene draws until native race',()=>{
+  const x=budgetFixture(),g=x.game;x.install();x.frame(0);
+  for(let i=0;i<4;i++)assert.equal(x.frame(1200),73);
+  assert.equal(x.renderer.getPixelRatio(),.35);
+  const before=x.calls.length;
+  const physical={state:g.state,cdT:g.cdT,raceTime:g.raceTime,savedQuality:g.savedQuality,
+    camera:JSON.stringify(g.camera),player:JSON.stringify(g.player)};
+  for(let i=0;i<180;i++)x.frame(16.7);
+  assert.equal(x.calls.length,before,'do not submit new multi-second WebGL frames during severe fallback');
+  assert.deepEqual({state:g.state,cdT:g.cdT,raceTime:g.raceTime,savedQuality:g.savedQuality,
+    camera:JSON.stringify(g.camera),player:JSON.stringify(g.player)},physical);
+  g.state='race';
+  assert.equal(x.frame(16.7),73,'the very first native race frame must render again');
+  assert.equal(x.calls.length,before+1);
+  for(let i=0;i<30;i++)assert.equal(x.frame(16.7),73);
+  assert.equal(x.calls.length,before+31);
+  assert.equal(g.renderer,x.renderer);
+});
+test('visible moderate lag and isolated >1s stall never freeze countdown scene rendering',()=>{
+  const x=budgetFixture();x.install();x.frame(0);
+  for(let i=0;i<15;i++)assert.equal(x.frame(400),73);
+  x.frame(2000);
+  for(let i=0;i<30;i++)assert.equal(x.frame(16.7),73);
+  assert.equal(x.calls.length,47);
+  const y=budgetFixture();y.install();y.frame(0);
+  for(let i=0;i<3;i++)y.frame(1000);
+  y.hidden(true);y.hidden(false);
+  for(let i=0;i<8;i++)assert.equal(y.frame(16.7),73);
+  assert.equal(y.calls.length,12);
+});
