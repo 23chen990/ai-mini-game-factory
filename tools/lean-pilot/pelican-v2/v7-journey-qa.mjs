@@ -1,4 +1,4 @@
-/* global process,console,window,document,performance */
+/* global process,console,window,document,performance,requestAnimationFrame */
 // Normal-input comparison, NOT humans, a retention study or a physical phone.
 import {chromium,webkit} from '@playwright/test';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
@@ -80,9 +80,11 @@ async function round(page,strategy,number){
   if(action==='jump'&&strategy==='skilled'){
    await send('touchStart',point);held={...point,until:targets[index].distance+7};
   }else await page.touchscreen.tap(point.x,point.y);
-  const dispatch=await page.evaluate(start=>({
+  // CI observed the previous HUD lane after a genuine tap and nudged twice.
+  // Wait for the real render update, as the existing experience driver does.
+  const dispatch=await page.evaluate(start=>new Promise(resolve=>requestAnimationFrame(()=>resolve({
    events:window.__v7Trusted.slice(start),phase:document.querySelector('#coast').dataset.phase,
-  }),inputStart);
+  }))),inputStart);
   if(classifyGameplayDispatch(action,dispatch.events,dispatch.phase)==='terminal-before-dispatch'){
    lateRequests.push({action,distance:v.distance,...dispatch});return;
   }

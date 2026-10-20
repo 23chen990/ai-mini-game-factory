@@ -35,3 +35,16 @@ test('campaign pause probe freezes through a real control before screenshot RPCs
  const campaign=source.slice(source.indexOf("if(mode==='campaign'||mode==='all')"),source.indexOf('for(let id=1;id<=5;id++)'));
  assert.ok(campaign.indexOf("await tap('#co-pause'")<campaign.indexOf("await shot('first-fish"));
 });
+test('V4 accounting still targets the exact old barrier/car after naturally clearing V7 hazards',async()=>{
+ const source=await readFile(new URL('../v4-qa.mjs',import.meta.url),'utf8');
+ assert.equal(source.split('await passV7Opening()').length-1,2);
+ assert.match(source,/e\.objectId==='l1-o1'/);
+ assert.match(source,/e\.objectId==='l1-o6'/);
+ assert.match(source,/await distance\(94\);await tap\('\[data-action="left"\]'\)/);
+});
+test('V7 post-touch readback waits for the rendered HUD before another relative nudge',async()=>{
+ const source=await readFile(new URL('../v7-journey-qa.mjs',import.meta.url),'utf8');
+ const readback=source.slice(source.indexOf('const dispatch=await page.evaluate'),source.indexOf('if(classifyGameplayDispatch'));
+ assert.match(readback,/new Promise\(resolve=>requestAnimationFrame/);
+ assert.match(readback,/window\.__v7Trusted\.slice\(start\)/);
+});
