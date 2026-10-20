@@ -48,3 +48,15 @@ test('V7 post-touch readback waits for the rendered HUD before another relative 
  assert.match(readback,/new Promise\(resolve=>requestAnimationFrame/);
  assert.match(readback,/window\.__v7Trusted\.slice\(start\)/);
 });
+test('campaign critical inputs use the observed HUD and cached visible geometry before slow evidence RPCs',async()=>{
+ const source=await readFile(new URL('../qa.mjs',import.meta.url),'utf8');
+ const tap=source.slice(source.indexOf('const tap=async'),source.indexOf('const snapshot='));
+ assert.match(tap,/const before=decisionView\?\?await page\.evaluate/);
+ assert.match(tap,/await page\.touchscreen\.tap\(touchPoint\.x,touchPoint\.y\)/);
+ assert.match(tap,/classifyGameplayDispatch/);
+ assert.match(tap,/if\(!fastReaction\|\|decisionView\)/);
+ const drive=source.slice(source.indexOf('async function drive'),source.indexOf('// V7 has a real centre barrier'));
+ assert.ok(drive.indexOf('const controlPoints=')<drive.indexOf('while(Date.now()<end)'));
+ assert.match(drive,/document\.elementFromPoint/);
+ assert.match(drive,/decisionView:\{\.\.\.v,level:stage\},touchPoint:controlPoints\[decision\.action\]/);
+});
