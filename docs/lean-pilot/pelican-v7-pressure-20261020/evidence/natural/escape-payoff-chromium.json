@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "trusted tap start / public replay reset",
+    "right at public HUD 16m",
+    "left at public HUD 39m",
+    "hold at public HUD 104m",
+    "release at public HUD 116m",
+    "jump at public HUD 134m",
+    "right at public HUD 168m",
+    "left at public HUD 185m",
+    "left at public HUD 188m",
+    "jump at public HUD 199m",
+    "right at public HUD 215m",
+    "hold at public HUD 227m",
+    "release at public HUD 240m",
+    "left at public HUD 245m",
+    "right at public HUD 278m",
+    "right at public HUD 281m",
+    "trusted public replay button"
+  ],
+  "transitions": [
+    {
+      "name": "escape-payoff",
+      "changed": true,
+      "evidence": "attempts/attempt-9/traffic-pressure-chromium/report.json"
+    }
+  ],
+  "completion": "settlement",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "attempts/attempt-9/traffic-pressure-chromium/skilled-route-vehicle-escape.png",
+    "attempts/attempt-9/traffic-pressure-chromium/skilled-route-settlement.png",
+    "attempts/attempt-9/traffic-pressure-chromium/replay-paused.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "Native Playwright input; inspection only; learned route is NOT a human study",
+  "buildHash": "7ae4a32ad7ddd84c54a7e33c03ad7cf72e210e0609b1768c19100352c066ee8a",
+  "runtime": "web-lite",
+  "device": {
+    "width": 390,
+    "height": 844,
+    "label": "chromium-390x844"
+  },
+  "seed": "Authored level1",
+  "observedAt": "2026-10-20T14:40:25.563Z"
+}

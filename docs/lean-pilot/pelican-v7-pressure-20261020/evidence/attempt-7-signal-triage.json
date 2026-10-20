@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险 V7",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-pelican-v7/runs/pelican-coast-v2-20261014/workspace",
+  "report": "Attempt7 actual first-level merge screenshot: added inline direction arrow wraps the compact radar, turning 前方 into a clipped vertical label. Roof arrow is too foreshortened to read as a turn.",
+  "classification": [
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "User-reported lack of pressure concerns the default core loop, traffic simulation, pacing and visible action payoff. Existing Fixer thread continues; no new agent, gate, schema or factory workflow.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "CI-only dispatch repairs",
+      "other games",
+      "full prior conversations",
+      "unbound reference media"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Default start, right at16m, return39m, left49m; inspect exact first-car merge56m at390x844"
+    ],
+    "observed": [
+      "Real collision and complete/replay both passed, but radar added inline arrow increases height and squeezes warning text. Actual image, not a hypothetical.",
+      "Keep physics unchanged; render separate compact direction glyph plus nonwrapping icon/countdown. Replace roof chevron boxes with a visible arrow head."
+    ],
+    "evidence": [
+      {
+        "path": "attempts/attempt-7/traffic-pressure-chromium/missed-merge-merging.png",
+        "sha256": "445e7edf00403d41485beb85090ce0e6c738681bc88ab7515795993abd9d42df",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "At 390x844 and320x568, merging car radar has readable direction+countdown and no clipped vertical word; hazard card <=50 CSS px high.",
+    "World arrow remains visible before and during merge. Exact same natural route/failure/replay stays passing; do not rebuild unchanged code."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-20T11:58:10.492Z"
+}

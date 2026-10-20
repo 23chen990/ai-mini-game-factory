@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "targeted-native",
+      "passed": true,
+      "evidence": "244/244; native-current.log"
+    },
+    {
+      "name": "default-normal-input",
+      "passed": true,
+      "evidence": "attempt9 Chromium14/14 and WebKit12/12; exact merge/failure plus full first-level/replay"
+    },
+    {
+      "name": "independent-perception",
+      "passed": false,
+      "evidence": "Independent report was written before interruption: 3/4 exact cases pass; WebKit l1-o11 terminal/retry pixels absent in selected screenshot. BLOCKED retained; no replacement with state-only proof."
+    },
+    {
+      "name": "full-game-and-human-release",
+      "passed": false,
+      "evidence": "This experiment only redesigns level1. No full current-build five-level browser retest, phone/human enjoyment/ad study, SDK or platform release evidence."
+    }
+  ],
+  "issues": [
+    {
+      "id": "PENDING-WEBKIT-TERMINAL-PIXELS",
+      "severity": "error",
+      "message": "Exact WebKit moving-car failure branch lacks visible settlement/retry pixels in selected capture.",
+      "evidence": "evidence/v7-pressure/perceptual-qa-report.json"
+    },
+    {
+      "id": "PENDING-FULL-GAME-VALIDATION",
+      "severity": "error",
+      "message": "First-level gameplay experiment is not full V7 release acceptance.",
+      "evidence": "docs/lean-pilot/pelican-v7-pressure-20261020/README.md"
+    }
+  ],
+  "screenshots": [
+    "attempts/attempt-9/traffic-pressure-chromium/skilled-route-traffic-merge.png"
+  ],
+  "consoleLog": "No runtime errors in both targeted browser reports; root test baseline failures retained.",
+  "testedAt": "2026-10-20T14:55:08.262Z"
+}

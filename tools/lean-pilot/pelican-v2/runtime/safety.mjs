@@ -55,7 +55,7 @@ export function pathRiskAtPosition(run,forecast,bounds,horizon=3.5){
  const o=forecast.obstacle,kind=o?.kind;
  if(!['car','van','barrier'].includes(kind)||!Number.isFinite(bounds?.[kind]?.z))return false;
  if(kind==='barrier'&&(run.y??0)>.31)return false;
- const z=Number.isFinite(o.z)?o.z:LANES[o.lane];
+ const z=o.mergeFrom!==undefined?LANES[o.lane]:Number.isFinite(o.z)?o.z:LANES[o.lane];
  return Number.isFinite(z)&&Math.abs(run.lane-z)<=bounds[kind].z+.27+.14;
 }
 

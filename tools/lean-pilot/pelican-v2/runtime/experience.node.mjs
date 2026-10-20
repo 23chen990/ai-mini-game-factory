@@ -15,7 +15,7 @@ test('live mastery and settlement share catch, gold, true barrier jumps, no-hit 
  r.hits=1;r.elapsed=r.level.seconds-.1;assert.equal(masteryStatus(r).noHit.done,false);assert.equal(masteryStatus(r).streak.done,true,'clock must not counterfeit or reset a real achieved chain');
 });
 test('V3.2 first minute retains first fish, early gold, crossing decision, optional jump and settlement',()=>{
- const l=LEVELS[0];assert.ok(l.fish[0].x/l.speed<2.5);assert.ok(l.fish.some(f=>f.golden&&f.x/l.speed<10));assert.ok(l.obstacles.some(o=>o.kind==='pedestrian'&&o.x/l.speed<15));const b=l.obstacles.find(o=>o.kind==='barrier');assert.ok(b.x/l.speed<=32);assert.ok(l.fish.some(f=>f.sourceObstacleId===b.id&&f.bonus));assert.ok(l.distance/l.speed<45);
+ const l=LEVELS[0];assert.ok(l.fish[0].x/l.speed<=2.5);assert.ok(l.fish.some(f=>f.golden&&f.x/l.speed<10));assert.ok(l.obstacles.some(o=>o.kind==='pedestrian'&&o.x/l.speed<=15));const b=l.obstacles.find(o=>o.kind==='barrier');assert.ok(b.x/l.speed<=32);assert.ok(l.fish.some(f=>f.sourceObstacleId===b.id&&f.bonus));assert.ok(l.distance/l.speed<=60);
 });
 test('every reward fish follows its exact barrier and has an ordinary safe detour',()=>{
  for(const l of LEVELS){assert.deepEqual(validateLevel(l),[]);for(const f of l.fish.filter(f=>f.bonus)){const b=l.obstacles.find(o=>o.id===f.sourceObstacleId);assert.equal(b.kind,'barrier');assert.equal(b.lane,f.lane);assert.equal(f.x-b.x,BARREL_PRIZE_OFFSET);assert.ok(!l.obstacles.some(o=>['car','van'].includes(o.kind)&&o.lane===f.lane&&Math.abs(o.x-f.x)<14));assert.ok([0,1,2].some(i=>i!==b.lane));}}

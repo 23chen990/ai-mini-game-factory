@@ -4,7 +4,7 @@ import {makeBarrierPrizes} from './engagement.mjs';
 export {LANES} from './safety.mjs';
 // Authored encounters, shared coast. Distances/timing/content are original to this project.
 const definitions = [
- {id:1,name:'海岸出发',subtitle:'海岸挑战 · 连续吞鱼、跳障追金鱼、预判车流',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[233,'barrier',1],
+ {id:1,name:'海岸出发',subtitle:'车流来袭 · 看转向灯，穿过移动空隙',mastery:{jumps:1},distance:300,speed:6,seconds:65,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[233,'barrier',1],
   // V4 authored pressure beats are appended to keep the original obstacle IDs and QA evidence stable.
   // 75m optional left jump; then a right-vehicle/center-jump decision, later alternating safe gaps.
   [75,'barrier',0],[130,'car',2],[181,'car',1],[205,'barrier',0],[248,'van',2],[274,'car',1]]},
@@ -88,6 +88,12 @@ const FISH_PATTERNS = [
 ];
 export const LEVELS=definitions.map(d=>{
  const obstacles=[...d.rows,...(PRESSURE_GATES[d.id]??[]),...(V7_OPENING_WAVES[d.id]??[]),...(V7_MIDCOURSE_WAVES[d.id]??[])].map(([x,kind,lane],i)=>({id:`l${d.id}-o${i}`,x,kind,lane,speed:kind==='car'?1.7:kind==='van'?1.25:0}));
+ // First-level experiment: authored x is the planned encounter, lane is the
+ // destination. Every merge is pre-authored and adjacent, never player-seeking.
+ if(d.id===1)for(const o of obstacles.filter(o=>o.kind==='car'||o.kind==='van')){
+  o.speed=o.kind==='car'?4.6:3.8;
+  o.mergeFrom=o.lane===1?(o.x===181?0:2):1;
+ }
  const fish=[];let lastLane=1;const pattern=FISH_PATTERNS[d.id-1];
  const crossesBlocked=(from,to,bad)=>Array.from({length:Math.abs(from-to)+1},(_,j)=>Math.min(from,to)+j).some(l=>bad.has(l));
  for(let x=15,i=0;x<d.distance-10;x+=16,i++){
@@ -168,7 +174,7 @@ export const LEVELS=definitions.map(d=>{
  // toward the landing exit, rewarding air steering rather than jump spam.
  const airBarriers={1:[110,233],2:[246,356],3:[222,360],4:[350,593],5:[334,584]}[d.id];
  for(const o of obstacles.filter(o=>o.kind==='barrier'&&airBarriers.includes(o.x))){
-  for(const [i,offset] of [4.5,6].entries()){
+  for(const [i,offset] of (d.id===1?[3.3,4.5]:[4.5,6]).entries()){
    if(unsafeLanes(obstacles.filter(other=>other!==o),o.x+offset).has(o.lane))continue;
    const drift=d.id===1&&o.x===110?0:o.lane===0?.72:o.lane===2?-.72:d.id%2===0?.72:-.72;
    fish.push({id:`l${d.id}-air-${o.id}-${i}`,x:o.x+offset,lane:o.lane,

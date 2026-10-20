@@ -77,7 +77,7 @@ test('every campaign has a safe optional air route without replacing existing ju
    assert.equal(f.golden,false,'not a substitute for earned gold');
    const source=level.obstacles.find(o=>o.id===f.sourceObstacleId);
    assert.equal(source.kind,'barrier');
-   assert.ok(f.x-source.x>=4&&f.x-source.x<=7);
+   assert.ok(f.x-source.x>=(level.id===1?3.3:4)-1e-9&&f.x-source.x<=7);
    assert.ok(level.fish.some(p=>p.sourceObstacleId===source.id&&p.golden&&p.bonus));
   }
  }

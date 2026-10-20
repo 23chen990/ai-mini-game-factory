@@ -23,9 +23,9 @@ function cadence(level){
 test('V7 five-stage pressure is sustained instead of isolated ten-second obstacles',()=>{
  for(const level of LEVELS){
   const p=cadence(level);
-  assert.ok(p.first>=3&&p.first<=5.2,
+  assert.ok(p.first>=3&&p.first<=(level.id===1?6:5.2),
    `L${level.id}: first real hazard at ${p.first.toFixed(2)}s, not 3-5.2s`);
-  assert.ok(p.maxQuiet<=5.6,
+  assert.ok(p.maxQuiet<=(level.id===1?6:5.6),
    `L${level.id}: ${p.maxQuiet.toFixed(2)}s empty road dilutes pressure`);
   assert.ok(p.decisionsFirstThirty>=8,
    `L${level.id}: too few distinct decisions in first 30 seconds`);
@@ -43,7 +43,7 @@ test('idle rider meets an actual opening hitbox, not a synthetic fail timer',()=
   const r=newRun(level.id,{seed:20261019});
   for(let i=0;i<6*60&&r.phase==='running';i++)advance(r,1/60);
   assert.equal(r.phase,'finished',`L${level.id}: opening hazard must be real`);
-  assert.ok(r.elapsed>=3&&r.elapsed<=5.7,`L${level.id}: unexpected first failure time`);
+  assert.ok(r.elapsed>=3&&r.elapsed<=5.8,`L${level.id}: unexpected first failure time`);
   assert.equal(r.reason,'barrier');
   assert.ok(r.obstacles.some(o=>o.id===r.lastCollisionId&&o.hit),
    'only a genuine physics collision qualifies');

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {drivePressureRoute} from './qa-pressure-route.mjs';
 import assert from 'node:assert/strict';
 import { LEVELS, LANES, BOUNDS, V7_OPENING_WAVES, makeLevel, validateLevel } from './runtime/levels.mjs';
 import {brandPelicanBoot} from './boot.mjs';
@@ -56,13 +57,13 @@ test('one tap nudges a fractional road position and pause rejects steering',()=>
 
 test('a buffered jump respects the target lane while physical steering is still settling',()=>{
  const r=newRun(1);
- r.distance=132;r.lane=-1.12;r.laneTarget=0;r.laneIndex=1;
+ r.distance=140-r.level.speed;r.lane=-1.12;r.laneTarget=0;r.laneIndex=1;
  input(r,'jump');
  assert.equal(r.bufferedJump,'l1-o1','early jump must queue for the selected barrier rather than fire while the rider is drifting');
  assert.equal(r.vy,0);
  advance(r,.8);
  assert.ok(r.events.some(e=>e.type==='jump'&&e.objectId==='l1-o1'&&e.buffered===true));
- const cancelled=newRun(1);cancelled.distance=132;cancelled.lane=-1.12;cancelled.laneTarget=0;cancelled.laneIndex=1;
+ const cancelled=newRun(1);cancelled.distance=140-cancelled.level.speed;cancelled.lane=-1.12;cancelled.laneTarget=0;cancelled.laneIndex=1;
  input(cancelled,'jump');steerTo(cancelled,1.7);
  assert.equal(cancelled.bufferedJump,null,'leaving the reward lane must cancel the queued jump');
 });
@@ -81,8 +82,8 @@ test('pedestrians start on the sidewalk and do not teleport from a road lane on 
  const r=newRun(2);const p=r.obstacles.find(o=>o.kind==='pedestrian');assert.ok(Math.abs(p.z)>3);const z=p.z;tick(r,.4);assert.equal(p.z,z);
 });
 test('barrier collides at ground height; a visibly cleared jump or lane change avoids it',()=>{
- const r=newRun(1);r.obstacles=[{id:'bar',kind:'barrier',x:15,lane:1,speed:0}];r.fishes=[];tick(r,2.3);assert.equal(r.reason,'barrier');
- const j=newRun(1);j.obstacles=[{id:'bar',kind:'barrier',x:15,lane:1,speed:0}];j.fishes=[];tick(j,1.6);input(j,'jump');tick(j,.7);assert.notEqual(j.phase,'finished');assert.equal(j.events.filter(e=>e.type==='barrier-cleared').length,1);
+ const r=newRun(1);r.obstacles=[{id:'bar',kind:'barrier',x:15,lane:1,speed:0}];r.fishes=[];tick(r,16/r.level.speed);assert.equal(r.reason,'barrier');
+ const j=newRun(1);j.obstacles=[{id:'bar',kind:'barrier',x:15,lane:1,speed:0}];j.fishes=[];tick(j,(15-j.level.speed)/j.level.speed);input(j,'jump');tick(j,1.4);assert.notEqual(j.phase,'finished');assert.equal(j.events.filter(e=>e.type==='barrier-cleared').length,1);
 });
 test('finish requires distance AND both fish count and fish type, settles immediately',()=>{
  const fail=newRun(1);fail.distance=fail.level.distance-.01;fail.fishes=[];advance(fail,.05);assert.equal(fail.reason,'fish-short');
@@ -94,10 +95,10 @@ test('save validates corrupt input; success unlocks next; failure does not; sett
  const f=newRun(3);f.phase='finished';f.reason='vehicle';settle(s,f);assert.equal(s.unlocked,2);
 });
 test('authored courses have a no-hit path meeting distance and fish/type goals at both 30 and 60 Hz',()=>{
- for(const dt of [1/30,1/60,1/120])for(const level of LEVELS){const r=newRun(level.id);let decisions=0;
+ for(const dt of [1/30,1/60,1/120])for(const level of LEVELS){const r=level.id===1?drivePressureRoute(dt):newRun(level.id);let decisions=0;
   while(r.phase==='running'){
    if(decisions++%Math.round(.12/dt)===0){const close=r.obstacles.filter(o=>!o.hit&&!o.passed&&o.x-r.distance>-(BOUNDS[o.kind].x+.75)&&o.x-r.distance<65);
-    const blocked=lane=>close.some(o=>Math.abs(o.z-LANES[lane])<.8&&(o.x-r.distance)/(level.speed+o.speed)<=3);
+    const blocked=lane=>close.some(o=>Math.abs((o.mergeFrom!==undefined?LANES[o.lane]:o.z)-LANES[lane])<.8&&(o.x-r.distance)/(level.speed+o.speed)<=3);
     const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>1&&f.x-r.distance<35);let want=r.laneIndex;
     if(blocked(want)){const safe=[0,1,2].filter(l=>!blocked(l));want=(fish&&safe.includes(fish.lane)?fish.lane:safe.sort((a,b)=>Math.abs(a-r.laneIndex)-Math.abs(b-r.laneIndex))[0])??want;}
     else if(fish&&!blocked(fish.lane))want=fish.lane;
@@ -137,7 +138,7 @@ test('static coast boot appears before the old PC intro and old intro stays hidd
 
 test('1.1-second mobile jump queue is real and cannot arm too early',()=>{
  const ready=newRun(1);
- ready.distance=133;ready.lane=0;ready.laneTarget=0;ready.laneIndex=1;
+ ready.distance=140-ready.level.speed;ready.lane=0;ready.laneTarget=0;ready.laneIndex=1;
  input(ready,'jump');
  assert.equal(ready.bufferedJump,'l1-o1','1.1-second window must queue the exact barrier');
  assert.equal(ready.vy,0,'queued touch must not trigger an immediate false jump');

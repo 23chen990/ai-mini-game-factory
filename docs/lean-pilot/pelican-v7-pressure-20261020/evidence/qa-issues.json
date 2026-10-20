@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "default-traffic-pressure",
+      "passed": false,
+      "evidence": "evidence/v7-pressure/before-traffic.png"
+    }
+  ],
+  "issues": [
+    {
+      "id": "V7-PLAYER-STATIC-TRAFFIC",
+      "severity": "error",
+      "message": "Default first-level traffic lacks perceptible autonomous motion/decisions; player reports no pressure and rejects core experience.",
+      "evidence": "evidence/v7-pressure/triage.json; reproduction-matrix.json; design.md"
+    }
+  ],
+  "screenshots": [
+    "evidence/v7-pressure/before-traffic.png"
+  ],
+  "consoleLog": "No console errors observed in baseline capture; no enjoyment claim.",
+  "testedAt": "2026-10-20T12:03:41.475Z"
+}

@@ -23,7 +23,7 @@ export function createCoastAdventure(api) {
  root.innerHTML=`<header class="co-top"><div><small>PELICAN COAST</small><b id="co-title">鹈鹕海岸冒险</b></div><button id="co-pause" aria-label="暂停">Ⅱ 暂停</button></header>
  <div class="co-goals"><div class="co-goal" id="co-distance-box"><span>🏁 海岸路程</span><b id="co-distance">0 / 300 m</b><progress id="co-distance-bar" value="0" max="300"></progress></div><div class="co-goal" id="co-fish-box"><span id="co-fish-label">🐟 捕鱼目标</span><b id="co-fish">0 / 6 条</b><progress id="co-fish-bar" value="0" max="6"></progress></div><div class="co-goal" id="co-time-box"><span>◷ 剩余</span><b id="co-time">55 秒</b></div></div>
  <div id="co-radar-label" hidden>前方路况 · 左、中、右路面区域；骑车可停在任意位置</div><div id="co-radar" aria-label="前方三车道路况"><div class="co-lane" data-lane="0"></div><div class="co-lane" data-lane="1"></div><div class="co-lane" data-lane="2"></div></div>
- <div id="co-wing-meter" aria-label="展翅余量" hidden><span>🪽</span><progress max="0.55" value="0.55"></progress><b>松手落地</b></div><div id="co-feedback" role="status"><strong></strong><small></small></div><div id="co-crash"></div>
+ <div id="co-wing-meter" aria-label="展翅余量" hidden><span>🪽</span><progress max="0.55" value="0.55"></progress><b>松手落地</b></div><div id="co-escape" aria-live="polite"></div><div id="co-feedback" role="status"><strong></strong><small></small></div><div id="co-crash"></div>
  <div id="co-modal"><div class="co-card"><span class="co-eyebrow">A LITTLE COASTAL ESCAPE</span><h1 id="co-heading">鹈鹕<br>海岸冒险</h1><p id="co-copy">骑着单车追鱼，沿着海岸去下一站。</p><div id="co-rules" class="co-rules"><span><b>◀ ▶</b>轻点微调，按住或拖动自由转向</span><span><b>🐟</b>靠近自动抓鱼</span><span><b>🪽</b>点跳跃 · 按住展翅 · 松手落地</span></div><p id="co-progress" class="co-progress"></p><div class="co-actions"><button id="co-start" class="primary">▶ 出发 · 海岸出发</button><button id="co-resume" class="primary" hidden>▶ 继续骑行</button><button id="co-exit" class="secondary" hidden>🏁 结束本次无尽骑行并结算</button><button id="co-next" class="primary" hidden>下一关 →</button><button id="co-replay" class="secondary" hidden>↻ 重开当前关卡</button><button id="co-select" class="secondary" hidden>海岸路线 · 选择关卡</button><button id="co-revive" class="secondary" hidden disabled>观看完整广告复活一次（未接入）</button><button id="co-ad" class="secondary" hidden>自愿观看广告 · 额外补给（未接入）</button></div><div id="co-route" class="co-route"></div><details id="co-wardrobe"><summary>🐚 外观收藏 · 可选</summary><div id="co-collection" class="co-collection" aria-label="鹈鹕外观收藏"></div></details><div class="co-settings"><button id="co-quality">画质 · 均衡</button><button id="co-sound">声音 · 关</button><button id="co-export">下载试玩数据</button></div><div id="co-notice" role="status"></div><p id="co-storage" class="co-meta">本机保存关卡进度 · 广告未接入 · H5 开发试玩</p></div></div>
  <div class="co-lane-indicator" aria-label="道路自由位置指示"><i></i><i class="on"></i><i></i></div><nav id="co-controls" aria-label="自由骑行操作"><button data-action="left" aria-label="向左转向，长按持续移动">◀<small>按住左转</small></button><button data-action="right" aria-label="向右转向，长按持续移动">▶<small>按住右转</small></button><button data-action="jump" aria-label="跳跃">↟<small>跳跃</small></button></nav>`;
  const mastery=document.createElement('div');mastery.id='co-mastery';mastery.setAttribute('aria-label','三星挑战进度');root.append(mastery);
@@ -31,7 +31,8 @@ export function createCoastAdventure(api) {
  const SAVE='pelican-coast:campaign:v2',REWARD='h5-mobile:pelican-coast-v2-20261014:pelican-bike:v1',COLLECTION='pelican-coast:collection:v1',METRICS='pelican-coast:playtest:v1';
  let save=newSave(),progress=newProgress(),collection=newCollection(),metrics=newPlaytestMetrics(),storage=true;
  try{save=loadSave(localStorage.getItem(SAVE))??save;progress=loadProgress(localStorage.getItem(REWARD),'pelican-bike')??progress;collection=loadCollection(localStorage.getItem(COLLECTION))??collection;metrics=loadPlaytestMetrics(localStorage.getItem(METRICS))??metrics;}catch{storage=false;}
- let run=null,round=null,selected=save.unlocked,lastPhase='ready',eventCursor=0,feedbackUntil=0,settledAt=0,now=performance.now(),sound=false,hudLast='',lastRadar='',pausedBySystem=false;
+ let run=null,round=null,selected=save.unlocked,lastPhase='ready',eventCursor=0,feedbackUntil=0,settledAt=0,now=performance.now(),sound=true,hudLast='',lastRadar='',pausedBySystem=false;
+ $('sound').textContent='声音 · 开';
  // Session-only attempt marker: never adds an invisible hazard or adjusts difficulty.
  const lastFailure=new Map();let replayTarget=null,replayTargetCleared=false;
  let heldSteer=null,heldKeySteer=null,wingPointer=null,wingKey=null,lastEndlessMilestone=0;
@@ -66,8 +67,29 @@ export function createCoastAdventure(api) {
  function hazardModel(o){const g=new THREE.Group();g.userData.kind=o.kind;
   if(o.kind==='car'||o.kind==='van'){
    const van=o.kind==='van',len=van?3.6:3;box(g,len-.1,.55,van?1.32:1.26,van?'#edc66c':'#e77656',0,.64,0);box(g,van?2:1.48,van?1.05:.66,1.12,van?'#e9e2c5':'#f0b294',van?.2:.12,van?1.39:1.21,0);box(g,.025,.43,1.02,'#305967',van?-.82:-.64,van?1.51:1.27,0);
-   for(const x of [-len*.32,len*.32])for(const z of [-.65,.65]){const w=new THREE.Mesh(wheelGeo,mat('#253b41'));w.rotation.x=Math.PI/2;w.position.set(x,.30,z);g.add(w);sphere(g,.12,'#d9ddcb',x,.30,z*1.06);}
+   g.userData.wheels=[];
+   for(const x of [-len*.32,len*.32])for(const z of [-.65,.65]){
+    const wheel=new THREE.Group();wheel.position.set(x,.30,z);g.add(wheel);
+    const tire=new THREE.Mesh(wheelGeo,mat('#253b41'));tire.rotation.x=Math.PI/2;wheel.add(tire);
+    const side=Math.sign(z)*.085;
+    box(wheel,.39,.045,.025,'#e9ddbf',0,0,side);
+    box(wheel,.045,.39,.025,'#e9ddbf',0,0,side);
+    sphere(wheel,.07,'#d9ddcb',0,0,side);g.userData.wheels.push(wheel);
+   }
    for(const z of [-.43,.43]){const light=box(g,.06,.15,.23,'#fff4bd',-len/2,.72,z);light.material=mat('#ffedb0',true);}box(g,.08,.13,.92,'#e9ddbf',-len/2,.48,0);
+   if(o.mergeFrom!==undefined){
+    const signal=new THREE.Group(),direction=Math.sign(o.lane-o.mergeFrom);g.add(signal);
+    for(const x of [-len/2,len/2]){
+     const lamp=box(signal,.09,.18,.19,'#ffb52d',x,.72,direction*.57);
+     lamp.material=mat('#ffb52d',true);
+    }
+    // A roof-height arrow remains legible before the tiny indicator lamps.
+    const arrow=new THREE.Group();arrow.position.set(-.2,van?2.22:1.94,0);
+    box(arrow,.10,.12,.66,'#ffd35f',0,0,direction*.05);
+    const tip=new THREE.Mesh(new THREE.ConeGeometry(.22,.4,4),mat('#ffd35f',true));
+    tip.rotation.x=direction*Math.PI/2;tip.position.z=direction*.48;arrow.add(tip);
+    signal.add(arrow);g.userData.signal=signal;
+   }
   }else if(o.kind==='pedestrian'){
    const body=new THREE.Group();g.add(body);g.userData.body=body;
    box(body,.35,.5,.29,o.lane===0?'#dd895b':'#d5b05d',0,1.03,0);sphere(body,.19,'#e9bf91',0,1.48,0);sphere(body,.2,'#34646a',0,1.61,0);
@@ -83,6 +105,18 @@ export function createCoastAdventure(api) {
  scene.traverse(o=>{if(o.isMesh){o.castShadow=false;for(const m of Array.isArray(o.material)?o.material:[o.material])if(m?.map)m.map.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());}});rider.traverse(o=>{if(o.isMesh)o.castShadow=true;});
  const followLook=new THREE.Vector3();let cameraReady=false;
  function notice(title,copy,kind=''){if(run?.phase==='running'&&run.bufferedJump&&title!=='↟ 已准备起跳')return;const el=$('feedback');el.className='visible '+kind;el.querySelector('strong').textContent=title;el.querySelector('small').textContent=copy;feedbackUntil=now+1400;}
+ function escapeFeedback(e){
+  audio.whoosh();
+  const el=$('escape'),reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  el.textContent=`漂亮擦肩  +${e.points}`;
+  for(const animation of el.getAnimations())animation.cancel();
+  el.animate([
+   {opacity:0,transform:reduced?'translate(-50%, 0)':'translate(-50%, 12px) scale(.82)'},
+   {opacity:1,transform:reduced?'translate(-50%, 0)':'translate(-50%, 0) scale(1.08)',offset:.16},
+   {opacity:1,transform:'translate(-50%, 0) scale(1)',offset:.65},
+   {opacity:0,transform:reduced?'translate(-50%, 0)':'translate(-50%, -18px) scale(1)'},
+  ],{duration:850,easing:'ease-out'});
+ }
  // The V7 physical jump queue can last just a few render frames. Show the
 // real, accepted queued state synchronously at the trusted input boundary
 // instead of waiting for a slow WebGL frame. Never show a fake buffer.
@@ -113,6 +147,7 @@ function routes(){
   track(run.reason==='complete'?'finish':run.reason==='retired'?'retire':'fail');
   return true;}
  function begin(id=selected){
+  if(sound&&!audio.ctx)api.ensureAudio();
   // A paused endless run is an earned journey, not disposable progress.
   if(run?.level.endless&&['running','paused'].includes(run.phase))retireRun(run);
   reviveController.invalidate();bankTerminal();
@@ -283,7 +318,7 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
  applyStyle();
  const loadedAt=performance.now();S.paused=true;S.started=false;settings.autopilot=false;settings.timeFlow=false;settings.hour=14;settings.lookMouse=false;settings.showFps=false;settings.bloom=false;
  // An inspection-only surface: no set score, teleport, unlock, or finish helpers.
- window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneTarget:run.laneTarget,laneIndex:run.laneIndex,score:run.score,rewardScore:run.rewardScore??null,streak:run.streak,bestStreak:run.bestStreak,nearMisses:run.nearMisses,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,gliding:run.gliding,glideTime:run.glideTime,airCatches:run.airCatches,glides:run.glides,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem,revives:run.revives,reviveGrace:run.reviveGrace,hits:run.hits,settled:run.settled,reward:{roundId:round?.id,settled:round?.settled,claimed:round?.rewardClaimed,bank:progress.bank,rounds:progress.rounds},collection:{...collection},metrics:{...metrics.counters}})):({phase:'ready',save}),renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},duskRoadAmbient:duskSafetyLight.intensity,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
+ window.__coast=Object.freeze({snapshot:()=>run?JSON.parse(JSON.stringify({phase:run.phase,level:run.level.id,distance:run.distance,elapsed:run.elapsed,lane:run.lane,laneTarget:run.laneTarget,laneIndex:run.laneIndex,score:run.score,rewardScore:run.rewardScore??null,streak:run.streak,bestStreak:run.bestStreak,nearMisses:run.nearMisses,y:run.y,stun:run.stun,count:run.count,gold:run.gold,jumpedBarriers:run.jumpedBarriers,gliding:run.gliding,glideTime:run.glideTime,airCatches:run.airCatches,glides:run.glides,bufferedJump:run.bufferedJump,reason:run.reason,events:run.events,save,pausedBySystem,revives:run.revives,reviveGrace:run.reviveGrace,hits:run.hits,settled:run.settled,reward:{roundId:round?.id,settled:round?.settled,claimed:round?.rewardClaimed,bank:progress.bank,rounds:progress.rounds},collection:{...collection},metrics:{...metrics.counters}})):({phase:'ready',save}),traffic:()=>run?run.obstacles.filter(o=>o.kind==='car'||o.kind==='van').map(o=>{const mesh=hazards.get(o.id);return {id:o.id,x:o.x,z:o.z,speed:o.speed,phase:o.trafficPhase,from:o.mergeFrom,to:o.lane,visible:mesh?.visible===true,renderedX:mesh?.position.x,renderedZ:mesh?.position.z,wheelAngle:mesh?.userData.wheels[0].rotation.z,signalVisible:mesh?.userData.signal?.visible===true};}):[],renderInfo:()=>({pixelRatio:renderer.getPixelRatio(),canvas:[renderer.domElement.width,renderer.domElement.height],composer:api.composerSize(),camera:{position:camera.position.toArray(),quaternion:camera.quaternion.toArray(),fov:camera.fov},pose:renderedRidePose(api),quality:{...quality},duskRoadAmbient:duskSafetyLight.intensity,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,memory:{...renderer.info.memory}})});
  phase('ready');routes();persist();applyRender();root.dataset.loaded='true';
  document.getElementById('coast-boot')?.remove();
  function beforeRide(dt){
@@ -304,7 +339,7 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
    }
    const milestone=Math.floor(run.distance/500);if(milestone>lastEndlessMilestone){lastEndlessMilestone=milestone;track('endless_gate');notice('🌊 新海岸路段！',`已骑行 ${Math.floor(run.distance)} 米 · 前方难度仍有安全出口`,'combo');}}
   if(run){
-   while(eventCursor-(run.eventOffset??0)<run.events.length){const e=run.events[eventCursor-(run.eventOffset??0)];eventCursor++;if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.airborne?'🪽 掠空接鱼！+3分':e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',e.first&&run.level.id===1?'下一条鱼偏右，轻点 ▶ 或右拖微调':(e.bonus&&rewardExitWarning(run))||(run.level.endless?`已收集 ${e.count} 条鱼`:`${e.count} / ${run.level.goal.count} 条`), e.airborne?'air-catch':e.comboPoints?'combo':'catch');}if(e.type==='endless-tier'){track('endless_tier');notice('🌊 '+e.name+'！','速度逐步提升 · 小心下一段海岸','combo');}if(e.type==='near-miss')notice('💨 漂亮擦肩！+3分','避开危险，也能获得额外分数','near-miss');if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='glide-start'){audio.whoosh();notice('🪽 展翅掠空','松手落地 · 仍要绕开车辆','glide');}if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
+   while(eventCursor-(run.eventOffset??0)<run.events.length){const e=run.events[eventCursor-(run.eventOffset??0)];eventCursor++;if(e.type==='fish-caught'){api.onFish(e.golden);notice(e.airborne?'🪽 掠空接鱼！+3分':e.comboPoints?'⚡ 连续捕鱼 '+e.streak+' 连！+2分':e.bonus?'🏆 奖励金鱼 +7分':e.golden?'🌟 金鱼到手！':e.first?'🐟 第一条鱼！':'🐟 +1 条鱼',e.first&&run.level.id===1?'下一条鱼偏右，轻点 ▶ 或右拖微调':(e.bonus&&rewardExitWarning(run))||(run.level.endless?`已收集 ${e.count} 条鱼`:`${e.count} / ${run.level.goal.count} 条`), e.airborne?'air-catch':e.comboPoints?'combo':'catch');}if(e.type==='endless-tier'){track('endless_tier');notice('🌊 '+e.name+'！','速度逐步提升 · 小心下一段海岸','combo');}if(e.type==='near-miss')escapeFeedback(e);if(e.type==='jump-buffered')notice('↟ 已准备起跳','继续骑当前车道，靠近路障自动起跳','tutorial');if(e.type==='jump')audio.whoosh();if(e.type==='glide-start'){audio.whoosh();notice('🪽 展翅掠空','松手落地 · 仍要绕开车辆','glide');}if(e.type==='pedestrian-hit'){audio.thump();notice('⏸ 停车 3 秒','行人摔倒了，倒计时仍在继续','collision');}if(e.type==='recovered')notice('▶ 继续骑行','看清前方再出发','tutorial');if(e.type==='barrier-cleared'&&e.jumped)notice('↟ 跳过路障！',`本关成功跳障 ${e.combo} 次 · 后方有奖励金鱼`,'tutorial');}
    if(run.phase==='running'&&!replayTargetCleared&&passedPreviousFailure(run.distance,replayTarget)){
     replayTargetCleared=true;notice('⚡ 超过上次失误点！',`已骑 ${Math.floor(run.distance)} 米 · 继续看前方空路`,'combo');
    }
@@ -325,6 +360,10 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
    }
   }
   for(const o of run.obstacles){const rel=o.x-run.distance;if(rel>100||rel<-9){const g=hazards.get(o.id);if(g)g.visible=false;continue;}let g=hazards.get(o.id);if(!g){g=hazardModel(o);hazards.set(o.id,g);obstacleRoot.add(g);}g.visible=true;g.position.set(rel,0,o.z??LANES[o.lane]);
+    if(o.kind==='car'||o.kind==='van'){
+     for(const wheel of g.userData.wheels)wheel.rotation.z=-run.elapsed*o.speed/.29;
+     if(o.mergeFrom!==undefined)g.userData.signal.visible=(o.trafficPhase==='signal'||o.trafficPhase==='merging')&&Math.floor(run.elapsed*3)%2===0;
+    }
     if(o.kind==='pedestrian'){const fall=o.fallAt===null||o.fallAt===undefined?0:run.elapsed-o.fallAt;const lying=o.hit&&fall<2;const amount=lying?Math.min(1,fall/.22):o.hit?Math.max(0,1-(fall-2)/.65):0;g.userData.body.rotation.x=amount*1.25*(o.z>0?-1:1);g.userData.body.position.y=0;for(let i=0;i<g.userData.limbs.length;i++)g.userData.limbs[i].rotation.z=Math.sin(run.elapsed*8+i*2)*.28*(o.crossAt!==undefined&&!o.hit?1:0);if(o.hit&&fall>2.8)g.position.z+=(o.lane===0?-1:1)*Math.min(3,(fall-2.8)*1.5);}}
    if(!run.level.endless)finishRoot.position.x=run.level.distance-run.distance;
    if(rainGroup.visible){rain.position.y=-(S.t*10%3);rain.position.x=-(S.t*2%2);}
@@ -359,14 +398,14 @@ ${endlessCause?endlessCause+'\n':''}${recordStory.detail}${opportunity.eligible&
    // hazard on another lane is drawing the player's eye. Early oncoming-vehicle
    // warnings make the correct countersteer possible without changing physics.
    const hazard=upcoming.find(h=>h.lanes.includes(lane));
-   if(hazard&&!earnedPrizePrecedesRisk(run,fish?.lane===lane?fish:null,hazard)){const kind=hazard.obstacle.kind,bonus=kind==='barrier'&&run.fishes.some(f=>f.bonus&&f.sourceObstacleId===hazard.obstacle.id&&!f.caught),urgency=hazardUrgency(hazard);
+   if(hazard&&!earnedPrizePrecedesRisk(run,fish?.lane===lane?fish:null,hazard)){const kind=hazard.obstacle.kind,merging=hazard.obstacle.mergeFrom!==undefined&&hazard.obstacle.trafficPhase!=='settled',arrow=merging?(hazard.obstacle.lane>hazard.obstacle.mergeFrom?' →':' ←'):'',bonus=kind==='barrier'&&run.fishes.some(f=>f.bonus&&f.sourceObstacleId===hazard.obstacle.id&&!f.caught),urgency=hazardUrgency(hazard);
      const earlyFish=urgency==='warning'&&fish?.lane===lane&&(fish.x-run.distance)/run.speed+.7<hazard.seconds;
-     return {kind:bonus?'danger jump-reward':urgency+(earlyFish?' fish':''),icon:(bonus?'↟🌟':kind==='barrier'?'↟':kind==='pedestrian'?'🚶':'🚗')+(earlyFish?' 🐟':''),// A rounded-up whole-second jump cue hid the early 3.5s approach.
+     return {kind:bonus?'danger jump-reward':urgency+(earlyFish?' fish':''),turnArrow:arrow.trim(),icon:(bonus?'↟🌟':kind==='barrier'?'↟':kind==='pedestrian'?'🚶':'🚗')+(earlyFish?' 🐟':''),// A rounded-up whole-second jump cue hid the early 3.5s approach.
      // Half-second precision shows the decision soon enough to steer twice,
      // without 10Hz fractional DOM updates on slower phones.
      seconds:bonus?Math.max(.1,Math.round(hazard.seconds*2)/2).toFixed(1):kind==='barrier'&&hazard.seconds<1.5?Math.max(.1,hazard.seconds).toFixed(1):Math.max(1,Math.ceil(hazard.seconds)),label:kind};}
    return fish?.lane===lane?{kind:'fish',icon:fish.golden?'🌟':'🐟',seconds:'',label:'fish'}:{kind:'',icon:'·',seconds:'',label:'clear'};
-  });const rkey=JSON.stringify(lanes);if(rkey!==lastRadar){lastRadar=rkey;for(let i=0;i<3;i++){const n=root.querySelector(`[data-lane="${i}"]`),r=lanes[i];n.className='co-lane '+r.kind;n.innerHTML=r.icon+(r.seconds?`<small>${r.seconds}s</small>`:'');n.dataset.kind=r.label;}}
+  });const rkey=JSON.stringify(lanes);if(rkey!==lastRadar){lastRadar=rkey;for(let i=0;i<3;i++){const n=root.querySelector(`[data-lane="${i}"]`),r=lanes[i];n.className='co-lane '+r.kind+(r.turnArrow?' has-turn':'');n.innerHTML=`<span class="co-lane-icon">${r.icon}</span>`+(r.seconds?`<small>${r.seconds}s</small>`:'')+(r.turnArrow?`<b class="co-turn">${r.turnArrow}</b>`:'');n.dataset.kind=r.label;}}
   $('radar').classList.toggle('active',!!next||!!fish);$('radar-label').hidden=!next&&!fish;
   const prizeAhead=next?.obstacle.kind==='barrier'&&run.fishes.some(f=>f.bonus&&!f.caught&&f.sourceObstacleId===next.obstacle.id&&f.x-run.distance<50);
   const betweenLanes=fish&&Number.isFinite(fish.z)&&Math.min(...LANES.map(z=>Math.abs(z-fish.z)))>.2;

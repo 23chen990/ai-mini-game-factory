@@ -10,9 +10,17 @@ export const JUMP_TRIGGER_METERS=3.0;
 export const FREE_ROAD_EDGE=2.15;
 export const TAP_STEER_DISTANCE=1.18;
 export const WING_SECONDS=.55;
+export const jumpTriggerMeters=r=>Math.min(JUMP_TRIGGER_METERS,r.speed*.4);
 const nearestLane=z=>clamp(Math.round((z-LANES[0])/(LANES[1]-LANES[0])),0,2);
 const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500){r.events.shift();r.eventOffset=(r.eventOffset??0)+1;}};
-export function newRun(id,{seed=Math.floor(Date.now()/86400000)}={}) {const level=id===6?createEndlessLevel(seed):makeLevel(id);const run={phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,wingHeld:false,gliding:false,glideTime:0,glides:0,airCatches:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],eventOffset:0,fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false,revives:0,reviveGrace:0};
+function spawnObstacle(o,level){
+ const moving=o.mergeFrom!==undefined;
+ return {...o,x:moving?o.x*(1+o.speed/level.speed):o.x,
+  z:moving?LANES[o.mergeFrom]:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],
+  ...(moving?{encounterX:o.x,trafficPhase:'approach'}:{}),
+  hit:false,triggerAt:null,fallAt:null,passed:false};
+}
+export function newRun(id,{seed=Math.floor(Date.now()/86400000)}={}) {const level=id===6?createEndlessLevel(seed):makeLevel(id);const run={phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,wingHeld:false,gliding:false,glideTime:0,glides:0,airCatches:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],eventOffset:0,fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>spawnObstacle(o,level)),settled:false,revives:0,reviveGrace:0};
  if(level.endless){run.endless={seed:level.seed,index:0,nextX:38,tier:0};
   run.fishes.push(...[15,31,47].map((x,i)=>({id:`endless-warmup-${i}`,x,lane:1,golden:false,bonus:false,caught:false})));
   extendEndless(run);
@@ -50,7 +58,7 @@ export function readyJumpBarrier(r) {
    Math.abs(LANES[o.lane]-r.laneTarget)<.72&&o.x>r.distance).sort((a,b)=>a.x-b.x)[0];
  const remaining=next?(next.x-r.distance)/Math.max(r.speed,.01):Infinity;
  return next&&remaining<=JUMP_BUFFER_SECONDS&&
-   next.x-r.distance>JUMP_TRIGGER_METERS+.15 ?next:null;
+   next.x-r.distance>jumpTriggerMeters(r)+.15 ?next:null;
 }
 export function input(r,action) {
  if(action==='wing-release'){r.wingHeld=false;r.gliding=false;return;}
@@ -117,7 +125,7 @@ function step(r,dt){
  if(r.bufferedJump){
   const target=r.obstacles.find(o=>o.id===r.bufferedJump);
   if(!target||target.hit||target.passed||target.lane!==r.laneIndex||r.stun>0)r.bufferedJump=null;
-  else if(target.x-r.distance<=JUMP_TRIGGER_METERS){
+  else if(target.x-r.distance<=jumpTriggerMeters(r)){
    const objectId=r.bufferedJump;r.bufferedJump=null;r.vy=4.4;event(r,'jump',{objectId,buffered:true});
   }
  }
@@ -132,9 +140,22 @@ function step(r,dt){
  }
  for(const o of r.obstacles){
   const oldX=o.x,oldOZ=o.z??LANES[o.lane];if(o.z===undefined)o.z=oldOZ;
+  if(o.mergeFrom!==undefined&&!o.hit){
+   // Independent world motion. Pausing stops the simulation; a pedestrian
+   // stop does not secretly stop traffic or retarget it toward the rider.
+   o.x-=o.speed*dt;
+   const seconds=(o.x-r.distance)/(r.level.speed+o.speed);
+   const p=clamp((2.1-seconds)/1.2,0,1),ease=p*p*(3-2*p);
+   o.z=LANES[o.mergeFrom]+(LANES[o.lane]-LANES[o.mergeFrom])*ease;
+   const phase=seconds>3.4?'approach':seconds>2.1?'signal':seconds>.9?'merging':'settled';
+   if(phase!==o.trafficPhase){
+    o.trafficPhase=phase;
+    event(r,'traffic-'+phase,{objectId:o.id,from:o.mergeFrom,to:o.lane});
+   }
+  }
   if(o.x-r.distance<85&&o.triggerAt===null||o.triggerAt===undefined&&o.x-r.distance<85)o.triggerAt=r.elapsed;
   if(o.triggerAt!==null&&o.triggerAt!==undefined&&!o.hit){
-   if(o.kind==='car'||o.kind==='van')o.x-=o.speed*dt;
+   if((o.kind==='car'||o.kind==='van')&&o.mergeFrom===undefined)o.x-=o.speed*dt;
    if(o.kind==='pedestrian'&&!o.stationary){
     // A visible sidewalk wait, then a single clear crossing. Direction varies by authored side.
     const lead=Math.max(0,(o.x-r.distance)/r.level.speed);if(o.crossAt===undefined&&lead<3.4)o.crossAt=r.elapsed;

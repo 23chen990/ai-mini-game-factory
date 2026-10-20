@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "鹈鹕海岸冒险 V7",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-pelican-v7/runs/pelican-coast-v2-20261014/workspace",
+  "axes": {
+    "objectTypes": [
+      "car/van",
+      "pelican bicycle",
+      "escape feedback"
+    ],
+    "lifecycleStateBranches": [
+      "first-level approach and pass",
+      "first-level start-to-terminal",
+      "successful dodge/jump"
+    ],
+    "rendererPaths": [
+      "default Three.js Chromium",
+      "default Three.js WebKit"
+    ],
+    "viewports": [
+      {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "initial-0-0",
+      "objectType": "car/van",
+      "lifecycleStateBranch": "first-level approach and pass",
+      "rendererPath": "default Three.js Chromium",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "REPRODUCED",
+      "expected": "Default first-level cars visibly move relative to the road, not only relative to camera; vehicle cues and collision share the same motion.",
+      "observed": "Exact normal-input first-level before capture shows same-lane vehicle presentation; code confirms 1.7/1.25 m/s independent movement, no wheel animation or lane changes. Cars are not mathematically stationary; the reported static impression is credible.",
+      "evidence": [
+        {
+          "path": "evidence/v7-pressure/user-report.txt",
+          "sha256": "1dd91299194c368f19e9f2955499e5d82c0835e56bbf154d3a523c19a65ef6be",
+          "kind": "user-report",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "evidence/v7-pressure/before-traffic.png",
+          "sha256": "b8270984c60ee4f2e142495da1accd17759e12b98127f13ae762cd239293500d",
+          "kind": "runtime-capture",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "initial-0-1",
+      "objectType": "pelican bicycle",
+      "lifecycleStateBranch": "first-level start-to-terminal",
+      "rendererPath": "default Three.js Chromium",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Lower base cycling pace while introducing visible, deterministic threats requiring changed decisions, not only more hazards or a faster scroll.",
+      "observed": "Pending exact default-path reproduction. Prior engineering PASS is not player-experience acceptance.",
+      "evidence": [
+        {
+          "path": "evidence/v7-pressure/user-report.txt",
+          "sha256": "1dd91299194c368f19e9f2955499e5d82c0835e56bbf154d3a523c19a65ef6be",
+          "kind": "user-report",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "initial-0-2",
+      "objectType": "escape feedback",
+      "lifecycleStateBranch": "successful dodge/jump",
+      "rendererPath": "default Three.js Chromium",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Normal-input play shows threat anticipation, deliberate dodge or jump, and perceptible successful escape/reward; exact collision failure explains missed action.",
+      "observed": "Pending exact default-path reproduction. Prior engineering PASS is not player-experience acceptance.",
+      "evidence": [
+        {
+          "path": "evidence/v7-pressure/user-report.txt",
+          "sha256": "1dd91299194c368f19e9f2955499e5d82c0835e56bbf154d3a523c19a65ef6be",
+          "kind": "user-report",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "initial-1-0",
+      "objectType": "car/van",
+      "lifecycleStateBranch": "first-level approach and pass",
+      "rendererPath": "default Three.js WebKit",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Default first-level cars visibly move relative to the road, not only relative to camera; vehicle cues and collision share the same motion.",
+      "observed": "Pending exact default-path reproduction. Prior engineering PASS is not player-experience acceptance.",
+      "evidence": [
+        {
+          "path": "evidence/v7-pressure/user-report.txt",
+          "sha256": "1dd91299194c368f19e9f2955499e5d82c0835e56bbf154d3a523c19a65ef6be",
+          "kind": "user-report",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "initial-1-1",
+      "objectType": "pelican bicycle",
+      "lifecycleStateBranch": "first-level start-to-terminal",
+      "rendererPath": "default Three.js WebKit",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Lower base cycling pace while introducing visible, deterministic threats requiring changed decisions, not only more hazards or a faster scroll.",
+      "observed": "Pending exact default-path reproduction. Prior engineering PASS is not player-experience acceptance.",
+      "evidence": [
+        {
+          "path": "evidence/v7-pressure/user-report.txt",
+          "sha256": "1dd91299194c368f19e9f2955499e5d82c0835e56bbf154d3a523c19a65ef6be",
+          "kind": "user-report",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "initial-1-2",
+      "objectType": "escape feedback",
+      "lifecycleStateBranch": "successful dodge/jump",
+      "rendererPath": "default Three.js WebKit",
+      "viewport": {
+        "label": "mobile-portrait",
+        "width": 390,
+        "height": 844
+      },
+      "status": "BLOCKED",
+      "expected": "Normal-input play shows threat anticipation, deliberate dodge or jump, and perceptible successful escape/reward; exact collision failure explains missed action.",
+      "observed": "Pending exact default-path reproduction. Prior engineering PASS is not player-experience acceptance.",
+      "evidence": [
+        {
+          "path": "evidence/v7-pressure/user-report.txt",
+          "sha256": "1dd91299194c368f19e9f2955499e5d82c0835e56bbf154d3a523c19a65ef6be",
+          "kind": "user-report",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Player has rejected current core experience.",
+    "Exact normal-input first-level before capture shows same-lane vehicle presentation; code confirms 1.7/1.25 m/s independent movement, no wheel animation or lane changes. Cars are not mathematically stationary; the reported static impression is credible."
+  ],
+  "remainingGaps": [
+    "Exact own-motion versus scroll visibility",
+    "Control timing and dynamic pressure cause",
+    "Natural before/after player-visible comparison"
+  ],
+  "createdAt": "2026-10-20T11:58:10.492Z"
+}

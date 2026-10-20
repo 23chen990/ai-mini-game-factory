@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "startedFromReset": true,
+  "actions": [
+    "trusted tap start / public replay reset",
+    "right at public HUD 16m",
+    "left at public HUD 39m",
+    "left at public HUD 49m",
+    "trusted public replay button"
+  ],
+  "transitions": [
+    {
+      "name": "traffic-merge",
+      "changed": true,
+      "evidence": "attempts/attempt-9/traffic-pressure-webkit/report.json"
+    }
+  ],
+  "completion": "terminal",
+  "replayObserved": true,
+  "forbiddenOperations": [],
+  "screenshots": [
+    "attempts/attempt-9/traffic-pressure-webkit/missed-merge-signal.png",
+    "attempts/attempt-9/traffic-pressure-webkit/missed-merge-merging.png",
+    "attempts/attempt-9/traffic-pressure-webkit/missed-merge-settled.png",
+    "attempts/attempt-9/traffic-pressure-webkit/missed-merge-settlement.png"
+  ],
+  "passed": true,
+  "blockers": [],
+  "runner": "Native Playwright input; inspection only; learned route is NOT a human study",
+  "buildHash": "7ae4a32ad7ddd84c54a7e33c03ad7cf72e210e0609b1768c19100352c066ee8a",
+  "runtime": "web-lite",
+  "device": {
+    "width": 390,
+    "height": 844,
+    "label": "webkit-390x844"
+  },
+  "seed": "Authored level1",
+  "observedAt": "2026-10-20T14:41:31.578Z"
+}
