@@ -225,6 +225,7 @@ test('V11.10 start gate and blue urban arch disappear ONLY in the home/result he
     '    parent.add(beam);',
     '}',
     '// ======================= 情迷爱琴海 =======================',
+    'function aegeanProps(ctx) {',
   ].join('\n');
   const changed = patchHomeOccluderProps(reference);
   assert.match(changed,/grp\.name = 'race-start-gantry'/);

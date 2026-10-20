@@ -130,7 +130,9 @@ export function patchHomeOccluderProps(source) {
   const gateAnchor = "function buildStartGate(parent, track, style) {";
   const gateBlock = "  const grp = new THREE.Group();\n  const H = style.h || 11;";
   const archStart = "function buildArchBridge(ctx, d, color) {\n  const { track, parent } = ctx;";
-  const archEnd = "\n// ======================= 情迷爱琴海 =======================";
+  // The branding neutralizer legitimately rewrites the Chinese section title.
+  // Anchor to the stable following function instead of localized comments.
+  const archEnd = "\nfunction aegeanProps(ctx) {";
   for (const anchor of [gateAnchor,gateBlock,archStart,archEnd])
     if (source.split(anchor).length !== 2) throw Error('Pinned showroom occluder props anchor changed: '+anchor.slice(0,40));
   const start = source.indexOf(archStart),end = source.indexOf(archEnd,start);
