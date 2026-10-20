@@ -70,9 +70,10 @@ async function setup(t, { amount = 30, delay = 0, denied = false } = {}) {
   return page;
 }
 const amount = page => page.evaluate(key => JSON.parse(localStorage.getItem(key)).amount, FUEL_KEY);
-// Policy text can appear before the asynchronous native preview/track boot finishes.
+// Full rules remain in the fuel-box title; the player-facing amount is compact.
+// Policy resolution still must precede the asynchronous native preview/track boot.
 const ready = page => page.waitForFunction(() => document.querySelector('#race-kit').dataset.loaded === 'true' &&
-  document.querySelector('#race-fuel-info').textContent.includes('每局 -5 · 每分钟 +1'));
+  document.querySelector('#race-fuel-box').title.includes('每局 -5 · 每分钟 +1'));
 
 test('V3 resolves fuel policy before accepting the first race', async t => {
   const page = await setup(t, { delay: 1200 });

@@ -422,11 +422,12 @@ try {
     cap:document.querySelector('#race-fuel-gauge')?.getAttribute('aria-valuemax'),
     segments:document.querySelectorAll('#race-fuel-gauge span').length,
     label:document.querySelector('#race-fuel-info')?.textContent,
+    rules:document.querySelector('#race-fuel-box').title,
     amount:document.querySelector('#race-fuel-gauge')?.getAttribute('aria-valuenow'),
     adHidden:document.querySelector('#race-star-ad')?.hidden
   }));
   if(fuelUI.cap!=='30'||fuelUI.segments!==6||fuelUI.amount!=='30'||
-     !fuelUI.label.includes('每局 -5 · 每分钟 +1')||!fuelUI.adHidden)
+     !fuelUI.label.includes('30/30')||!fuelUI.rules.includes('每局 -5 · 每分钟 +1')||!fuelUI.adHidden)
     fail('Mobile fuel and star gate must use real 30/5/1m economy, no synthetic ads: '+JSON.stringify(fuelUI));
   report.fuelAtStart=fuelUI;
   // Verify a locked checkpoint is visible only when explicitly chosen,
