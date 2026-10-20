@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "task": "visual-acceptance18",
+  "findings": [
+    {
+      "id": "material-highlight-reduction",
+      "severity": "P2",
+      "observation": "Observed: comparing the attempt-16 and attempt-18 captures, custom-01 at 1366×768 and 844×390 has materially fewer near-white mirror-like hotspots; the purple/black body remains legible. Custom-04 at 1366×768 also retains more red surface detail under highlights. Custom-02 at 1366×768 is still very bright lime, but its body shape and texture remain discernible. Inference: the changed per-instance finish response reduced glare without removing the source maps. This is consistent with the attempt-17 controlled result in triage: environment reduction alone did not remove near-mirror texels, normal-map disable did not solve glare, and bounding mapped roughness/metalness reduced it. Unknown: the attempt-18 gallery combines the per-instance changes, so it does not isolate the contribution of each final coefficient, and the screenshots are not a performance benchmark.",
+      "evidence": [
+        "Attempt 16: runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-1366x768-custom-01.png and gallery-844x390-custom-01.png",
+        "Attempt 18: runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-1366x768-custom-01.png and gallery-844x390-custom-01.png",
+        "Attempt 16: runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-1366x768-custom-04.png; attempt 18: runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-1366x768-custom-04.png",
+        "Attempt 18: runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-1366x768-custom-02.png",
+        "docs/lean-pilot/racing-internal-20261020/triage.json, observed attempt-17 environment-only / normal-map-off / mapped-roughness-and-metalness experiment outcomes",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-user-car.mjs:37-62; private clone keeps source maps/topology, scales envMapIntensity and metalness, and floors mapped roughness at 0.38",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-generated-car.mjs:5-17; starter roughness-map floor is 0.30"
+      ],
+      "recommendation": "Retain the current private-material finish bounds for this repair pass; they are the smallest existing-module correction and the attempt-18 pixels improve the reported glare without hiding the models. Do not repeat the rejected environment-only or normal-map-removal experiments. Preserve the source maps and mesh topology. Treat the exact best coefficient and any performance effect as unknown unless a separate controlled comparison is requested."
+    },
+    {
+      "id": "tree-crown-shading-improved",
+      "severity": "P2",
+      "observation": "Observed: the broad triangular shade patches visible on foliage in attempt-16 previews are substantially reduced in attempt 18 at desktop, touch, and small-touch sizes. Tree crowns now read as rounded/smoother surfaces behind the selected cars; their silhouette remains somewhat coarse. Inference: the improvement tracks the change from a flat-shaded crown material to smooth shading, rather than a camera or asset change. Unknown: this gallery cannot show whether smoother crowns match every course biome or race-scene composition.",
+      "evidence": [
+        "Attempt 16 vs 18: starter 1366×768 — runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-1366x768-starter.png; runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-1366x768-starter.png",
+        "Attempt 16 vs 18: custom-01 844×390 — runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery-844x390-custom-01.png; runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-844x390-custom-01.png",
+        "Attempt 18: custom-02 667×375 — runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-667x375-custom-02.png",
+        "Attempt 18: custom-05 1366×768 — runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-1366x768-custom-05.png",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/props.js:56-64,111-115; existing Icosahedron crown geometry is unchanged and addTree now uses std(leafColor, { roughness: .95 })"
+      ],
+      "recommendation": "Keep the smooth crown shading; do not raise tree geometry detail or add a new foliage pipeline. The attempt-18 captures show a visible improvement with the same coarse geometry. Retest a race-scene view in QA for shared scenery regression; if only silhouette faceting remains, classify it as authored low-poly style rather than a blocker."
+    },
+    {
+      "id": "remaining-imported-asset-style",
+      "severity": "P2",
+      "observation": "Observed: custom-01 still has dense high-contrast purple/magenta panel marks at 667×375; custom-02 remains unusually high-chroma lime at 844×390; custom-05 retains blue/white livery with tan mottling at 1366×768. Custom-03 remains an open-wheel formula silhouette while custom-04 is a red sports-car silhouette. These model-specific colors/forms remain visible after the finish response was bounded. Inference: the remaining differences are primarily authored source texture/mesh style, not a global lighting or framing failure. Unknown: the screenshots cannot determine whether the patterns are intended livery, unwanted baked texture, or an asset-rights issue; no replacement/texture edit is authorized by this visual review.",
+      "evidence": [
+        "Attempt 18: custom-01 667×375 — runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-667x375-custom-01.png",
+        "Attempt 18: custom-02 844×390 — runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-844x390-custom-02.png",
+        "Attempt 18: custom-03 1366×768 — runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-1366x768-custom-03.png",
+        "Attempt 18: custom-04 844×390 — runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-844x390-custom-04.png",
+        "Attempt 18: custom-05 1366×768 — runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-1366x768-custom-05.png",
+        "runs/h5-qq-mobile-20261013/workspace/source/qq-speed/src/race-car-loader.mjs:7-16 and race-user-car.mjs:1-18,37-62; imported custom models are marked non-paintable/static-source-mesh and keep their embedded PBR maps"
+      ],
+      "recommendation": "Do not apply another global lighting, camera, or geometry change to chase these remaining source-specific looks. Record them as non-blocking asset-style polish for this pass. Any texture/model re-authoring should wait for the asset owner and rights review; never replace or repaint the supplied assets blindly."
+    },
+    {
+      "id": "no-severe-gallery-layout-failure",
+      "severity": "INFO",
+      "observation": "Observed: all six selected cars are present, recognizable, and fully framed across the 1366×768, 844×390, and 667×375 menu previews. The left menu and top-right car selector do not visibly cover the hero cars; the 667×375 custom-01 spoiler comes close to the selector card edge but remains visibly separate. No severe readability, clipping, or overlap defect is supported by these captures. This is not evidence of a player-perception pass: the manifest is a macOS Chromium gallery with physicalPhone:false and only the normal-ui-preview/menu branch.",
+      "evidence": [
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery.json; attempt-18 sourceCommit 7b9791100346916aaea0ba6b01d828879bb9a222, buildHash 016c807e29f2736ca2d02f9cabbe6b9b5bdfeddc653a67f9bbac8ee4a2fcc718, pixelRatio 1, physicalPhone false, all 18 landscape rows",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-667x375-custom-01.png (near selector edge, no visible overlap)",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-844x390-custom-03.png",
+        "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser18/gallery-1366x768-custom-05.png"
+      ],
+      "recommendation": "Keep the existing home camera and UI layout; these captures do not justify a layout change. No P0/P1 visual blocker is supported by the reviewed gallery. Do not promote this finding to a general gameplay, physical-phone, or human-acceptance claim."
+    }
+  ],
+  "blockers": [
+    "The 18 captures cover only the menu/garage preview in an emulated macOS browser (gallery.json physicalPhone:false); natural race readability, physical-phone behavior, and human preference remain unobserved.",
+    "The attempt-18 gallery combines the environment-intensity, metalness, and mapped-roughness bounds. Attempt-17 triage provides causal experiments, but this visual review does not independently measure the per-coefficient effect or performance regression."
+  ],
+  "commands": [
+    "view_image inspected all 18 attempt-18 screenshots: six exact cars × 1366×768, 844×390, and 667×375.",
+    "Compared attempt-16 screenshots to attempt-18 exact model/viewport captures; used only the attempt-17 causal experiment summary already recorded in triage.json.",
+    "Read the current source branch in race-user-car.mjs, race-generated-car.mjs, and props.js; no source or build files modified.",
+    "Zod output-contract validation was run after writing this JSON; no browser was launched."
+  ]
+}

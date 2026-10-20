@@ -1,6 +1,11 @@
 // Opt-in natural QA policy. Inputs are rendered minimap observations and the
 // visible speed/button treatments, never native inventory, track or car state.
 // The original steering-only baseline remains the default comparison policy.
+export function visibleSteering(road) {
+  if (road.direction === null || road.box || road.reason?.includes('recovery')) return road.direction;
+  return Math.sign(road.angle) * Math.min(1, Math.abs(road.angle) * 3);
+}
+
 export class VisibleActionPolicy {
   constructor() {
     this.driftUntil = 0;

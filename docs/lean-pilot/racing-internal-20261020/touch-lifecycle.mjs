@@ -11,7 +11,7 @@ import { reconcileTouchContacts } from '../../../tools/lean-pilot/racing-visible
 
 const run = path.resolve('runs/h5-qq-mobile-20261013'), game = run + '/workspace/game';
 const build = JSON.parse(await readFile(run + '/artifacts/build-racing.json'));
-const out = run + '/artifacts/internal-experience-20261020/touch-' + build.buildHash.slice(0, 12);
+const out = run + '/artifacts/internal-experience-20261020/touch-' + build.buildHash.slice(0, 12) + (process.env.RACE_TOUCH_LABEL ?? '');
 await mkdir(out, { recursive: true });
 const files = new Map();
 for (const file of await readdir(game, { withFileTypes: true }))
@@ -93,6 +93,8 @@ try {
     // Playwright forces focus by default. Restore browser focus behavior before
     // an actual window switch; do not dispatch synthetic lifecycle events.
     await cdp.send('Emulation.setFocusEmulationEnabled', { enabled: false });
+    await page.bringToFront();
+    await page.waitForFunction(() => document.hasFocus());
     const backgroundPage = await context.newPage();
     await backgroundPage.bringToFront();
     await new Promise(resolve => setTimeout(resolve, 800));
@@ -101,13 +103,17 @@ try {
     await dispatch([{ type: 'touchEnd', touchPoints: [] }]); actions = []; angle = null;
     const resumed = await observe();
     const emitted = background.events.some(e => e.hidden || e.type === 'blur');
-    assert.equal(emitted, true, 'Browser must emit a real focus/visibility event; absence is not a pass');
-    assert.equal(resumed.phase, 'paused'); assert.equal(resumed.axis, 0); await page.locator('#race-resume').tap();
     report.rows.push({ width, case: 'actual-browser-window-background', status: emitted ? 'PASS' : 'NOT_OBSERVED',
       background, foreground: resumed, screenshot: await shot('foreground') });
+    assert.equal(emitted, true, 'Browser must emit a real focus/visibility event; absence is not a pass');
+    assert.equal(resumed.phase, 'paused'); assert.equal(resumed.axis, 0); await page.locator('#race-resume').tap();
+    await page.waitForFunction(() => !window.game.player.drifting, null, { timeout: 2000 });
+    report.rows.push({ width, case: 'background-resume-drift-released', ...await observe(),
+      screenshot: await shot('background-drift-released') });
     await page.setViewportSize({ width: height, height: width }); await page.waitForTimeout(150);
     assert.equal(await page.locator('#race-rotate').isVisible(), true); assert.equal((await observe()).phase, 'paused');
     await page.setViewportSize({ width, height }); await page.locator('#race-resume').tap();
+    await page.waitForFunction(() => !window.game.player.drifting, null, { timeout: 2000 });
     assert.equal((await observe()).axis, 0);
     report.rows.push({ width, case: 'rotate-resume-neutral', ...await observe(), screenshot: await shot('rotation-resume') });
     const video = page.video(); await context.close(); await video.saveAs(out + `/${width}-touch.webm`);

@@ -119,7 +119,10 @@ function routeSampler(ai, track, route) {
   if (!route) return ahead => {
     const d = ai.d + ahead, point = track.sample(d, {});
     const half = track.v9WidthAt?.(d) ?? track.halfW;
-    const lane = personal * Math.max(1, half - 3) * .70;
+    // The passing planner already bounds personal to the legal corridor.
+    // Compressing it again kept passing cars inside the 3.1 m collision
+    // cylinder. Steer to that lane; retain three metres of edge reserve.
+    const lane = personal * Math.max(1, half - 3);
     return { ...point, x: point.x + point.rx * lane, z: point.z + point.rz * lane };
   };
   return ahead => {

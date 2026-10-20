@@ -35,7 +35,9 @@
       "Trusted touch countersteer passed the starter/844×390 branch; resource use, small viewport natural driving, later stages and physical devices remain separate evidence gaps.",
       "Attempt 17 actual natural baseline placed 2/3/4; visible-resource input placed 1/1/1. All 150 native rivals finish; no native physics changes. More-map and smaller-screen natural coverage still pending.",
       "Attempt 17 environment reduction alone did not remove near-mirror baked texels. Disabling normal maps did not resolve the glare; bounding mapped roughness and metallic contribution visibly reduced it. Preserve all source maps and mesh topology.",
-      "Attempt 17 background test did not observe blur: an isolated browser test identified Playwright forced-focus emulation. Disabling it allows real window blur; final gameplay retest pending."
+      "Attempt 17 background test did not observe blur: an isolated browser test identified Playwright forced-focus emulation. Disabling it allows real window blur; final gameplay retest pending.",
+      "Attempt 18 engineering-only native audit omits live traffic tactics; its clustered finishes alone cannot diagnose runtime convoys. A separate same-seed six-route run INCLUDING the existing tactical lane planner reproduced repeated contacts (stage01 8522 contact frames, stage08 47687). The legacy passing planner expects a >=3.9m offset, but V11 shrinks that request by an additional0.70. Wider legal steering targets (no position writes) reduce contact frames to2504/24039 respectively, with the six-route total wall crashes unchanged at16. This is engineering evidence, not natural overtaking acceptance.",
+      "Attempt18 natural resource-policy run qualified01/02 but lost03 after40+wall crashes. No race errors, no injected state. This is a retained failed playthrough, not a human win-rate or proof that the game is impossible."
     ],
     "evidence": [
       {
@@ -71,6 +73,18 @@
       {
         "path": "runs/h5-qq-mobile-20261013/evidence/rc17-natural-resources/report.json",
         "sha256": "95dcd53f6b57e340198ad070f3afdaebb94025695ffea016f1d5cd703a560b02",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/lane-experiment-0.7-true.json",
+        "sha256": "4448afd0ad4a2969ad3a19b31574ea6e252c4d33adb0de7a46af405186a84920",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/lane-experiment-1-true.json",
+        "sha256": "29a81de7f798cbea59e159c6d5125e334b44f1662e92356a436b2e0c0da45035",
         "kind": "qa-artifact",
         "provenance": "verified-run-artifact"
       }

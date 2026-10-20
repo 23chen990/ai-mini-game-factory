@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { actionTouchPoints, planWheelGesture } from '../racing-wheel-qa-input.mjs';
+import { RaceWheelSteering } from '../../../templates/web-lite/h5-source-mobile-v1/racing/wheel-steering.mjs';
 
 const wheel = { x: 10, y: 20, width: 200, height: 200 };
 const center = { x: wheel.x + wheel.width / 2, y: wheel.y + wheel.height / 2 };
@@ -72,6 +73,22 @@ test('wheel start and rotation preserve visible drift, small, nitro, and item to
   assert.deepEqual(actions.map(({ id }) => id), [2, 3, 4, 5]);
   for (const event of plan.events) {
     assert.deepEqual(event.touchPoints.map(({ id }) => id), [1, 2, 3, 4, 5]);
+  }
+});
+
+test('opt-in analogue gestures produce partial native wheel inputs without saturation or reversal offset', () => {
+  const control = new RaceWheelSteering();
+  let angle = null;
+  for (const axis of [.4, -.35, .6]) {
+    const plan = planWheelGesture(axis, wheel, [], angle);
+    for (const event of plan.events) {
+      const p = event.touchPoints[0];
+      if (event.type === 'touchStart') control.press(p.id, p.x, p.y, center.x, center.y, wheel.width / 2);
+      else control.update(p.id, p.x, p.y);
+    }
+    angle = plan.angle;
+    assert.ok(Math.abs(control.snapshot() - axis) < .001);
+    assertOnRim(plan.events);
   }
 });
 

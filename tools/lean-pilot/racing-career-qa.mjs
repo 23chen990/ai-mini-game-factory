@@ -11,7 +11,7 @@ import { z } from 'zod';
 import { createRequire } from 'node:module';
 import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish, dailyRaceDayFromStart, needsVisibleItemPickup, visibleItemSteer } from './racing-visible-policy.mjs';
 import { actionTouchPoints, planWheelGesture } from './racing-wheel-qa-input.mjs';
-import { VisibleActionPolicy, reconcileTouchContacts } from './racing-visible-actions.mjs';
+import { VisibleActionPolicy, reconcileTouchContacts, visibleSteering } from './racing-visible-actions.mjs';
 const require = createRequire(import.meta.url), testRequire = createRequire(require.resolve('@playwright/test'));
 const playwrightRequire = createRequire(testRequire.resolve('playwright'));
 const { PNG } = require(path.join(path.dirname(playwrightRequire.resolve('playwright-core/package.json')), 'lib/utilsBundle.js'));
@@ -82,6 +82,7 @@ let touching = null, wheelBounds, actionBounds, wheelAngle = null;
 let activeActionNames = [];
 let contacts = [];
 const useVisibleActions = process.env.RACE_QA_ACTIONS === 'visible';
+const useAnalogueWheel = process.env.RACE_QA_WHEEL === 'analogue';
 async function dispatchTouches(events) {
   for (const event of events) {
     await cdp.send('Input.dispatchTouchEvent', event);
@@ -245,7 +246,7 @@ try {
         box = itemBoxPolicy(PNG.sync.read(await page.screenshot()));
       }
       policy = visibleItemSteer(policy, box);
-      await steer(policy.direction);
+      await steer(useAnalogueWheel ? visibleSteering(policy) : policy.direction);
       let actionHud = null;
       if (useVisibleActions) {
         actionHud = await page.evaluate(() => ({
@@ -323,7 +324,7 @@ finally {
     viewport: z.object({ width: z.number(), height: z.number() }), naturalInputsOnly: z.literal(true), seededCampaign: z.literal(false),
     driverPolicy: z.string(), races: z.array(z.any()), errors: z.array(z.string()), passed: z.boolean(), checkedAt: z.string() });
   const report = Schema.parse({ schemaVersion: 1, gameId: 'qq-speed', buildHash: build.buildHash, viewport,
-    naturalInputsOnly: true, seededCampaign: false, driverPolicy: 'visible minimap, cyan cube pixels and visible wrong-way warning; native state read only for assertions' + (useVisibleActions ? '; opt-in visible speed and resource-button action policy' : '; unchanged steering-only baseline'),
+    naturalInputsOnly: true, seededCampaign: false, driverPolicy: 'visible minimap, cyan cube pixels and visible wrong-way warning; native state read only for assertions' + (useVisibleActions ? '; opt-in visible speed and resource-button action policy' : '; unchanged steering-only baseline') + (useAnalogueWheel ? '; opt-in analogue wheel from visible road angle, no native geometry/state decisions' : '; original full-turn wheel policy'),
     races, errors, passed: races.length === Number(process.env.RACE_QA_STAGES ?? 30) + (Number(process.env.RACE_QA_STAGES ?? 30) === 30 ? 1 : 0) && races.every(r => r.status === 'PASS' && r.actionsFit) && !errors.length, checkedAt: new Date().toISOString() });
   report.recordingTimebase = { beforePageMs: recordingBeforePageMs, afterPageMs: recordingAfterPageMs, uncertainty: 'Recorder starts during page creation; use visible clock and keep context around trimmed evidence' };
   report.fuelWaits = fuelWaits;

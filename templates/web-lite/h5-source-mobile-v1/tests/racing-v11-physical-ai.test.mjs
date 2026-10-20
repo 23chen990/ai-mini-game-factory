@@ -353,3 +353,15 @@ test('near-bend sensing compares raw curvature consistently, independent of the 
   v11AiInput(car, track, 1/120);
   assert.ok(Math.abs(car.__V11_AI_DECISION__.nearCurve - .026) < 1e-9);
 });
+
+test('a committed passing lane clears the native collision diameter without targeting the road edge', () => {
+  const track=trackFixture();track.halfW=8;
+  const car={...carFixture(track),z:100,d:100,personal:.84};
+  const before=physical(car);
+  v11AiInput(car,track,1/120);
+  const look=7+car.s*.65;
+  const requestedLateral=Math.abs(Math.tan(car.__V11_AI_DECISION__.headingError)*look);
+  assert.ok(requestedLateral>3.1, 'the existing passing tactic must not be compressed into the blocker collision cylinder');
+  assert.ok(requestedLateral<=track.halfW-3, 'passing keeps a three-metre native road-edge reserve');
+  assert.deepEqual(physical(car),before,'passing changes only wheel intentions');
+});

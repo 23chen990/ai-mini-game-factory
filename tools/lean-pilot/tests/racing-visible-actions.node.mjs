@@ -49,3 +49,11 @@ test('lifecycle observer disables automation focus emulation before testing real
   assert.match(source, /Emulation\.setFocusEmulationEnabled', \{ enabled: false \}/);
   assert.doesNotMatch(source, /dispatchEvent\(/);
 });
+test('analogue QA steering scales rendered road angle but preserves visible recovery and item decisions', async () => {
+  const { visibleSteering } = await import('../racing-visible-actions.mjs');
+  assert.equal(visibleSteering({ direction: 'left', angle: .12 }), .36);
+  assert.equal(visibleSteering({ direction: 'right', angle: -.7 }), -1);
+  assert.equal(visibleSteering({ direction: null, angle: .03 }), null);
+  assert.equal(visibleSteering({ direction: 'right', angle: .15, box: {} }), 'right');
+  assert.equal(visibleSteering({ direction: 'left', angle: -.9, reason: 'visible-arrow-spin-recovery' }), 'left');
+});

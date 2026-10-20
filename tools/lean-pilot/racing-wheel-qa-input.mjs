@@ -26,7 +26,9 @@ export function planWheelGesture(direction, bounds, activeActionPoints, previous
   }
 
   const angle = previousAngle ?? -Math.PI / 2;
-  const target = direction === 'left' ? -Math.PI : 0;
+  const target = typeof direction === 'number'
+    ? -Math.PI / 2 - direction * 58 * Math.PI / 180
+    : direction === 'left' ? -Math.PI : 0;
   const events = previousAngle === null
     ? [{ type: 'touchStart', touchPoints: [wheelPoint(angle, bounds), ...activeActionPoints] }]
     : [];
