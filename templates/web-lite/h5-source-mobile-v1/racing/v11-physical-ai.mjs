@@ -185,12 +185,25 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   if (Math.abs(headingError) > .70) desired = Math.min(desired, Math.max(9, 25 * Math.cos(Math.min(1.12, Math.abs(headingError)))));
   if ((ai.impact ?? 0) > 4 && route) desired = Math.min(desired, 20);
 
-  // The inherited drift state must be released with a real input edge after
-  // collision. Holding Shift through a crash may not silently start a drift.
+  // Skilled physical rivals use the SAME held Shift drift input as the
+  // player, on readable medium bends only. Never gift speed, position, gauge,
+  // nitro or a shortcut. All resulting wall risk and grip loss stay native.
+  ai.__V11_DRIFT_COOLDOWN__ = Math.max(0, (ai.__V11_DRIFT_COOLDOWN__ ?? 0) - dt);
   if (ai.drifting) {
-    input.shift = false;
     const correction = wrap(aim - ai.h);
     input.steerAxis = clamp(correction * 2.4, -1, 1);
+    input.shift = Number.isFinite(ai.driftTime) && ai.driftTime < 0.34 &&
+      Math.sign(input.steerAxis) === Math.sign(ai.driftDir) &&
+      Math.abs(input.steerAxis) > 0.12 && Math.abs(ai.driftAngle ?? 0) < 0.8 &&
+      !ai.airborne && (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0;
+    if (!input.shift) ai.__V11_DRIFT_COOLDOWN__ = 1.8;
+  } else {
+    const readableBend = Math.abs(nearCurve) > 0.009 && largestCurve < 0.026;
+    input.shift = !route && ability >= 1.35 && speed >= 23 && speed <= 42 &&
+      readableBend && Math.abs(headingError) < 0.26 &&
+      Math.abs(input.steerAxis) > 0.29 &&
+      !ai.airborne && (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0 &&
+      ai.__V11_DRIFT_COOLDOWN__ === 0;
   }
   input.up = ai.s < desired - .35;
   input.down = ai.s > desired + .9;
@@ -198,7 +211,12 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   input.right = input.steerAxis < -.04;
   const safeBoost = !route && largestCurve < .0055 && Math.abs(headingError) < .10 &&
     !ai.airborne && !ai.drifting && (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0 && speed > 24;
-  input.wPressed = safeBoost && (ai.smallWindow ?? 0) > 0;
+  // A just-earned clean-drift spray may be released safely at corner exit.
+  // Nitro remains stock-based, and can only be used on the original safer straight.
+  const safeSpray = !route && !ai.airborne && !ai.drifting &&
+    (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0 &&
+    largestCurve < .010 && Math.abs(headingError) < .16 && speed > 21;
+  input.wPressed = (safeBoost || safeSpray) && (ai.smallWindow ?? 0) > 0;
   if (safeBoost && (ai.nitroCount ?? 0) > 0 && (ai.nitroTime ?? 0) <= 0) {
     input.nitroPressed = !ai.__V11_ITEM_MODE__;
     input.manualNitroPressed = !!ai.__V11_ITEM_MODE__;
@@ -235,6 +253,7 @@ export function createV11PhysicalAiClass(PlayerCar, tune = DEFAULT_TUNE) {
       this.__V11_AI_ROUTE__ = null;
       this.__V11_AI_DECISION__ = null;
       this.__V11_AI_INPUT__ = emptyInput();
+      this.__V11_DRIFT_COOLDOWN__ = 0;
     }
 
     get dist() { return this.lapsDone * this.track.length + this.d; }

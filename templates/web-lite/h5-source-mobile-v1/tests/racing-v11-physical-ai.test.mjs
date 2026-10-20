@@ -245,3 +245,49 @@ for (const id of ['05','10','12','13','16','18','22','25','27','30']) {
     assert.ok(hit.maxStep<1.2);
   });
 }
+
+test('skilled rivals initiate and release a legal native Shift drift on a readable bend', () => {
+  const R=70,track={
+    length:1800,halfW:11,
+    sample(d,out={}){
+      const hd=d/R;
+      return Object.assign(out,{
+        x:R*(1-Math.cos(hd)),y:0,z:R*Math.sin(hd),hd,
+        rx:-Math.cos(hd),rz:Math.sin(hd),bank:0
+      });
+    }
+  };
+  const at=track.sample(200,{});
+  const car={
+    track,x:at.x,y:0,z:at.z,h:at.hd,m:at.hd,d:200,s:32,
+    skill:1.8,lat:0,personal:0,proj:{},lapsDone:0,
+    drifting:false,airborne:false,impact:0,spin:0,
+    nitroCount:0,smallWindow:0,driftTime:0,driftAngle:0
+  };
+  const before=physical(car);
+  const entry=v11AiInput(car,track,1/120);
+  assert.ok(entry.shift,'skilled rival must actively request one native drift');
+  assert.ok(Math.abs(entry.steerAxis)>.29);
+  assert.equal(entry.nitroPressed,false);
+  assert.equal(entry.wPressed,false,'a drift request must not grant a free spray');
+  assert.deepEqual(physical(car),before,'controller cannot change speed or position');
+  car.drifting=true;
+  car.driftDir=Math.sign(entry.steerAxis);
+  car.driftTime=.35;
+  car.driftAngle=.3;
+  const release=v11AiInput(car,track,1/120);
+  assert.equal(release.shift,false,'native drift is released with a real input edge');
+  assert.ok(car.__V11_DRIFT_COOLDOWN__>=1.7);
+  car.drifting=false;
+  const immediate=v11AiInput(car,track,1/120);
+  assert.equal(immediate.shift,false,'drift must not immediately restart on the same corner');
+});
+test('rival never drifts at a physical shortcut entrance or with impact',()=>{
+  const track=trackFixture(),car=carFixture(track);
+  const shortcut=v11AiInput(car,track,1/120);
+  assert.equal(shortcut.shift,false);
+  car.impact=10;car.drifting=true;car.driftDir=1;car.driftTime=.1;car.driftAngle=.3;
+  const collision=v11AiInput(car,track,1/120);
+  assert.equal(collision.shift,false,'no held Shift through contact');
+  assert.ok(car.__V11_DRIFT_COOLDOWN__>1);
+});
