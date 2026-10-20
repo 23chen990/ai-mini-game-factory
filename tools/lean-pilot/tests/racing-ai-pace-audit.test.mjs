@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { nativeWorldMethods, simulateNativeRace, auditStatus, assertNativeAiBuildMetadata } from '../racing-ai-pace-audit.mjs';
+import { nativeWorldMethods, simulateNativeRace, auditStatus, compareFixedSeedOpponentPace, assertNativeAiBuildMetadata } from '../racing-ai-pace-audit.mjs';
 
 for (const version of ['V11.5', 'V11.6']) {
   test(version + ' metadata supports the explicitly shared native PlayerCar AI mode', () => {
@@ -162,4 +162,31 @@ test('a successful subset cannot claim that all thirty stages passed', () => {
   assert.equal(auditStatus(all).status, 'FAIL');
   all[6] = { id: '01', status: 'PASS' };
   assert.equal(auditStatus(all).status, 'PARTIAL');
+});
+
+test('fixed-seed AI pace guard rejects softer podium results but never claims human difficulty', () => {
+  const baseline = Array.from({length:30}, (_, i) => {
+    const id = String(i + 1).padStart(2, '0');
+    return {id, targetProgressM:6400 + i * 100,
+      racers:[100,101,102,103,104].map((finishTimeSec, slot) => ({
+        finished:true,failure:null,finishTimeSec:finishTimeSec + i,slot
+      }))};
+  });
+  const faster = baseline.map(row => ({...row,racers:row.racers.map(car => ({
+    ...car,finishTimeSec:car.finishTimeSec - 1.25
+  }))}));
+  const pass = compareFixedSeedOpponentPace(faster,baseline,1);
+  assert.equal(pass.status,'PASS');
+  assert.equal(pass.checkedStages,30);
+  assert.equal(pass.cases[0].deltaSec,-1.25);
+  assert.equal(pass.cases[0].currentPodiumSeconds,100.75);
+  const nerfed = faster.map(row => ({...row,racers:row.racers.map(car => ({...car}))}));
+  nerfed[3].racers.forEach(car => {car.finishTimeSec += 4;});
+  const fail = compareFixedSeedOpponentPace(nerfed,baseline,1);
+  assert.deepEqual(fail.failedStages,['04']);
+  assert.equal(fail.status,'FAIL');
+  const wrongTrack = faster.map(row => ({...row}));
+  wrongTrack[6].targetProgressM += 20;
+  assert.throws(() => compareFixedSeedOpponentPace(wrongTrack,baseline),/reference geometry differs/);
+  assert.throws(() => compareFixedSeedOpponentPace(faster,baseline.slice(0,29)),/thirty stages/);
 });

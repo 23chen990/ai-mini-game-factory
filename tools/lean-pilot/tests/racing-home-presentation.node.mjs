@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { STAGES } from '../../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs';
+import { homeOrbitOffset } from '../../../templates/web-lite/h5-source-mobile-v1/racing/presentation.mjs';
 
 const mobileSource = readFileSync(fileURLToPath(new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs', import.meta.url)), 'utf8');
 const mobileCss = readFileSync(fileURLToPath(new URL('../../../templates/web-lite/h5-source-mobile-v1/racing/mobile.css', import.meta.url)), 'utf8');
@@ -165,4 +166,45 @@ test('V11.8 foreground tint stays menu-only and has no expensive backdrop filter
   const latest = mobileCss.slice(mobileCss.lastIndexOf('V11.8 showroom atmosphere'));
   assert.doesNotMatch(latest, /backdrop-filter\s*:/, 'no active full-screen backdrop filter declaration');
   assert.doesNotMatch(latest, /data-phase="race"/);
+});
+
+test('V11.9 native-canvas showcase drag is bounded and does not capture race controls', () => {
+  assert.equal(homeOrbitOffset(0, 40), 0.104);
+  assert.equal(homeOrbitOffset(0.18, 40), 0.2);
+  assert.equal(homeOrbitOffset(-0.18, -40), -0.2);
+  assert.equal(homeOrbitOffset(NaN, 0), 0);
+  assert.equal(homeOrbitOffset(0.07, NaN), 0.07);
+  assert.match(mobileSource, /const showcaseCanvas = document\.querySelector\('#gl'\)/);
+  assert.match(mobileSource, /showcaseCanvas\.addEventListener\('pointerdown'/);
+  assert.match(mobileSource, /phase !== 'ready' \|\| loading \|\| backgrounded/);
+  assert.match(mobileSource, /event\.clientX > window\.innerWidth \* 0\.46/);
+  assert.match(mobileSource, /g\.__homeLookOffset = homeOrbitOffset\(/);
+  assert.match(mobileSource, /pointercancel', 'lostpointercapture/);
+  const stageTag = mobileSource.match(/\$\('stage-tag'\)\.textContent = [\s\S]*?;/)?.[0];
+  assert.ok(stageTag && !stageTag.includes('V11.6'), 'home must not display a development version label');
+  assert.match(mobileCss, /V11\.9 garage focus/);
+  assert.match(mobileCss, /#race-kit\[data-phase="ready"\] #race-export::after/);
+  assert.match(mobileCss, /#race-kit\[data-phase="ready"\] #race-guide \.race-guide-keys \{display:none;\}/);
+});
+
+test('V11.9 camera and parked glow are presentation-only, with untouched game projection', async () => {
+  const { patchGeneratedCarPresentation } = await import('../racing-mobile-build.mjs');
+  const native = [
+    "    if (st === 'menu') {",
+    '      this.demoT += dt;',
+    '      target = this.racers[0];',
+    '    }',
+    '    if (!target) return;',
+    "    if (st === 'menu' || (st === 'finish' && this.resultShown)) {",
+    '      oldOrbit();',
+    '    }',
+    '    const P = target;',
+    '    nativeRaceFollowCamera();',
+  ].join('\n');
+  const changed = patchGeneratedCarPresentation(native);
+  assert.match(changed, /const userOrbit = Math\.max\(-0\.2, Math\.min\(0\.2, this\.__homeLookOffset \|\| 0\)\)/);
+  assert.match(changed, /heroGlow\.opacity = 0\.24/);
+  assert.match(changed, /const P = target;\s+nativeRaceFollowCamera\(\);/);
+  assert.doesNotMatch(changed, /new THREE\.(?:Mesh|Texture|Light)/);
+  assert.equal(patchGeneratedCarPresentation(changed), changed);
 });

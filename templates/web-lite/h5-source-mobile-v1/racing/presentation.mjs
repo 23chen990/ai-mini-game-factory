@@ -90,3 +90,10 @@ export function compactRaceObjective(stage,stats={},raceTime=0) {
     default:return '';
   }
 }
+/** Hero view only: bounded user-driven yaw around the native start-grid car.
+ * No changes to car transforms, collisions, checkpoints or active race input. */
+export function homeOrbitOffset(current, deltaX) {
+  const base = Number.isFinite(current) ? current : 0;
+  if (!Number.isFinite(deltaX)) return base;
+  return Math.max(-0.2, Math.min(0.2, base + deltaX * 0.0026));
+}

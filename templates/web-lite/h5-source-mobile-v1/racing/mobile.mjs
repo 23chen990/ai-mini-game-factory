@@ -7,7 +7,7 @@ import { RaceDuelTracker } from './duel-loop.mjs';
 import { ShortcutDecisionTracker } from './shortcut-decisions.mjs';
 import { SHORTCUT_PLANS } from './shortcut-network.mjs';
 import { RaceTrialMetrics, rankFinishGapSeconds } from './trial-metrics.mjs';
-import { careerCourseSvg, compactRaceObjective, stageRailScrollLeft, rewardedStageStatus } from './presentation.mjs';
+import { careerCourseSvg, compactRaceObjective, stageRailScrollLeft, rewardedStageStatus, homeOrbitOffset } from './presentation.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { CarGarage } from './garage.mjs';
 import { CAR_MODELS } from './cosmetics.mjs';
@@ -75,6 +75,35 @@ const career = new RacingCareer(storageRef, best);
 const trial = new RaceTrialMetrics(storageRef);
 let garageNotice='';
 const garage=new CarGarage(career,id=>g.previewCar(id),fuelView,()=>phase==='ready');
+// The only drag-enabled surface is the exposed native canvas on the right.
+// Car/paint cards, the bottom stage rail and race controls remain untouched.
+const showcaseCanvas = document.querySelector('#gl');
+let showcaseGesture = null;
+if (showcaseCanvas) {
+  showcaseCanvas.addEventListener('pointerdown', event => {
+    const isHeroArea = event.clientX > window.innerWidth * 0.46 &&
+      event.clientY > window.innerHeight * 0.18 &&
+      event.clientY < window.innerHeight * 0.83;
+    if (phase !== 'ready' || loading || backgrounded || garage.busy || !g ||
+        !isHeroArea || event.isPrimary === false ||
+        (event.pointerType === 'mouse' && event.button !== 0)) return;
+    showcaseGesture = { id: event.pointerId, x: event.clientX };
+    try { showcaseCanvas.setPointerCapture(event.pointerId); }
+    catch { /* Lost capture must not affect the ability to start a race. */ }
+  }, { passive: true });
+  showcaseCanvas.addEventListener('pointermove', event => {
+    if (!showcaseGesture || event.pointerId !== showcaseGesture.id || phase !== 'ready' || !g) return;
+    const delta = event.clientX - showcaseGesture.x;
+    showcaseGesture.x = event.clientX;
+    g.__homeLookOffset = homeOrbitOffset(g.__homeLookOffset, delta);
+  }, { passive: true });
+  for (const type of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+    showcaseCanvas.addEventListener(type, event => {
+      if (showcaseGesture?.id === event.pointerId) showcaseGesture = null;
+    });
+  }
+}
+
 for(const [index,model] of CAR_MODELS.entries()) {
   const button=document.createElement('button');button.type='button';button.dataset.carId=model.id;
   button.innerHTML='<span class="race-car-thumb"></span><span class="race-car-label"></span><span class="race-car-lock" aria-hidden="true"></span>';
@@ -253,7 +282,7 @@ function renderLobby() {
   const courseInfo=V11_COURSES[stage.course.slice(-2)];
   $('stage-tag').textContent = (!locked && career.dailySnapshot ? '每日挑战' : '第 ' + stage.id + ' 关') +
     ' · ' + (v11RaceFraction(stage.course)<1?'单程':stage.laps+' 圈') +
-    ' · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛') + ' · V11.6';
+    ' · ' + (stage.mode === 'item' ? '道具赛' : '竞速赛');
   $('course-map').innerHTML = careerCourseSvg(stage.course);
   $('course-name').textContent = courseInfo?.identity.split('：')[0] ?? stage.name;
   $('course-feel').textContent = (courseInfo?.identity.split('：').slice(1).join('：') ?? '') +

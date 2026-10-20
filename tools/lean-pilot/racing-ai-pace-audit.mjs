@@ -194,6 +194,36 @@ export function simulateNativeRace({ stage, track, racers, world }, { maxSeconds
   };
 }
 
+/** Fixed-seed third-place AI pace relative to the archived V11.6 physical
+ * opponents on the SAME thirty road lengths. This is NOT a player win-rate
+ * estimate; it prevents graphics/UX work from silently slowing the rivals. */
+export function compareFixedSeedOpponentPace(cases, baselineCases, maxSlowdownSeconds = 1) {
+  if (!Array.isArray(cases) || !Array.isArray(baselineCases) ||
+      !Number.isFinite(maxSlowdownSeconds) || maxSlowdownSeconds < 0)
+    throw Error('Invalid fixed-seed rival comparison');
+  const lookup = new Map(baselineCases.map(row => [row.id, row]));
+  if (lookup.size !== 30 || baselineCases.length !== 30)
+    throw Error('Archived native-AI pace reference must contain exactly thirty stages');
+  const checks = cases.map(now => {
+    const before = lookup.get(now.id);
+    if (!before || Math.abs(before.targetProgressM - now.targetProgressM) > 0.5)
+      throw Error('AI reference geometry differs on ' + now.id + '; rebaseline only with reviewed physical geometry');
+    const podium = row => row.racers.filter(car => car.finished && car.failure === null)
+      .map(car => car.finishTimeSec).sort((a, b) => a - b)[2];
+    const previous = podium(before), current = podium(now);
+    const valid = Number.isFinite(previous) && Number.isFinite(current);
+    const deltaSec = valid ? Math.round((current - previous) * 1000) / 1000 : null;
+    return { stage: now.id, baselinePodiumSeconds: previous ?? null,
+      currentPodiumSeconds: current ?? null, deltaSec,
+      withinBudget: valid && deltaSec <= maxSlowdownSeconds };
+  });
+  return { baseline: 'V11.6 archived physical-AI engineering only',
+    maxSlowdownSeconds, checkedStages: checks.length,
+    status: checks.every(row => row.withinBudget) ? 'PASS' : 'FAIL',
+    failedStages: checks.filter(row => !row.withinBudget).map(row => row.stage),
+    cases: checks };
+}
+
 export function auditStatus(cases) {
   const ids = new Set(cases.map(entry => entry.id));
   const completeCoverage = ids.size === 30 && cases.length === 30 &&
@@ -329,6 +359,17 @@ export async function runAudit({ root = process.cwd(), stageIds = STAGES.map(sta
     afterBuild.buildHash === native.build.buildHash && afterBuild.inputHash === native.build.inputHash &&
     native.build.buildHash === await buildHash(path.join(native.run, 'workspace/game'));
   Object.assign(report, auditStatus(cases));
+  // A real tracked reference: prevent a fixed-seed podium pace regression.
+  // Completion remains a separate gate; human win-rate is still NOT_RUN.
+  const referencePath = path.join(root, 'docs/lean-pilot/racing-unified-20261018/evidence-v116/ai-150.json');
+  const referenceBytes = await readFile(referencePath);
+  const reference = JSON.parse(referenceBytes.toString('utf8'));
+  if (reference.fixedSeedBase !== SEED || reference.mode !== 'v11-native-playercar-physics')
+    throw Error('Historical physical-AI baseline seed or mode changed');
+  report.fixedSeedPaceGuard = compareFixedSeedOpponentPace(cases, reference.cases);
+  report.fixedSeedPaceGuard.baselineSha256 = sha256(referenceBytes);
+  report.fixedSeedPaceGuard.humanSkillCertified = false;
+  if (report.fixedSeedPaceGuard.status !== 'PASS') report.status = 'FAIL';
   if (!report.sourceUnchanged) report.status = 'STALE';
   report.finishedRacers = cases.reduce((sum, entry) => sum + entry.finishedRacers, 0);
   report.totalRacers = cases.reduce((sum, entry) => sum + entry.racerCount, 0);

@@ -810,3 +810,25 @@ html[data-race-platform="touch"] #race-joystick{max-height:43vh}
   #race-kit[data-phase="ready"] #race-car-choices button {min-height:62px;}
   #race-kit[data-phase="ready"] .race-car-thumb {height:35px;}
 }
+
+/* V11.9 garage focus: keep QA export functional but remove developer chrome
+ * from the hero, and make controls a quiet hint rather than a briefing card. */
+#race-kit[data-phase="ready"] #race-export {
+  min-width:32px;width:32px;height:32px;padding:0;
+  display:grid;place-items:center;font-size:0;line-height:0;
+  color:#b9d5e3;background:rgba(8,25,42,.48);
+}
+#race-kit[data-phase="ready"] #race-export::after {
+  content:"⋯";font:800 19px/1 system-ui;display:block;
+}
+#race-kit[data-phase="ready"] #race-guide {
+  justify-content:flex-start;gap:0;margin:1px 0 10px;
+  opacity:.73;
+}
+#race-kit[data-phase="ready"] #race-guide .race-guide-keys {display:none;}
+#race-kit[data-phase="ready"] #race-guide p {
+  font-size:11px;line-height:1.35;color:#c7d9e4;
+}
+@media (max-height:450px) and (orientation:landscape) {
+  #race-kit[data-phase="ready"] #race-guide {display:none;}
+}

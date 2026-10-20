@@ -79,6 +79,10 @@ export function patchGeneratedCarPresentation(source) {
         r.model.visible = r === target;
         if (!r.isPlayer) r.model.userData.tag.visible = false;
       }
+      // The default 85% additive underglow obscures wheel detail and makes a
+      // parked showroom car look airborne. Race cars use fresh native models.
+      const heroGlow = target.model?.userData?.glowMat;
+      if (heroGlow) heroGlow.opacity = 0.24;
       // V11.7 home hero: an intentional low three-quarter walkaround, not a
       // barely perceptible 52-second wobble or an overhead garage screenshot.
       // Only presentation is affected: race follow cameras remain native.
@@ -92,7 +96,8 @@ export function patchGeneratedCarPresentation(source) {
       const homeMotion = this.__homeMotionAllowed && st === 'menu';
       const elapsed = Math.max(0, this.time - this.__homeCameraSince);
       const reveal = homeMotion ? Math.max(0, 1 - elapsed / 1.3) ** 2 : 0;
-      const angle = target.h + 0.7 + (homeMotion ? Math.sin(this.time * 0.42) * 0.2 : 0) + reveal * 0.12;
+      const userOrbit = Math.max(-0.2, Math.min(0.2, this.__homeLookOffset || 0));
+      const angle = target.h + 0.7 + userOrbit + (homeMotion ? Math.sin(this.time * 0.42) * 0.2 : 0) + reveal * 0.12;
       // The start gantry / over-road structures are outside a short hero
       // camera envelope. Moving the camera 10m back put bridges BETWEEN
       // the selected car and the player. Keep the original safe proximity
