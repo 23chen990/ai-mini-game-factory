@@ -66,3 +66,19 @@ test('verified TapTap H5 landscape metadata can request a rewarded video',async(
   const result=await requestRewardedVideo({...h,config:{...config,screenOrientation:0}});
   assert.equal(result.status,'completed');assert.equal(h.shows(),1);
 });
+
+test('a stale complete close during load cannot replace the current video cancellation',async()=>{
+  const h=host('cancel');
+  h.tap.createRewardedVideoAd().load=async()=>{for(const close of [...h.listeners.close])close({isEnded:true});};
+  assert.equal((await requestRewardedVideo({...h,config})).status,'cancelled');
+  assert.equal(h.shows(),1);
+});
+
+test('a complete callback cannot grant a reward when show rejects',async()=>{
+  const h=host('complete');
+  h.tap.createRewardedVideoAd().show=async()=>{
+    for(const close of [...h.listeners.close])close({isEnded:true});
+    throw Error('SDK failed to present the video');
+  };
+  assert.equal((await requestRewardedVideo({...h,config})).status,'failed');
+});
