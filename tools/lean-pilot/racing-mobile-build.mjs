@@ -684,7 +684,7 @@ export function patchUrbanTreeColor(source) {
   ];
   const patched = edits.filter(([, replacement]) => source.includes(replacement));
   if(patched.length===edits.length)return source;
-  if(patched.length||edits.some(([a])=>source.split(a).length!==2))
+  if(patched.length||edits.some(([original])=>source.split(original).length!==2))
     throw Error('Urban foliage palette anchor changed');
   for(const [from,to] of edits)source=source.replace(from,to);
   return source;
