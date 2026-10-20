@@ -312,3 +312,44 @@ test('physical rivals still brake for a corner during an earned boost', () => {
   const input=v11AiInput(car,track,1/120);
   assert.equal(input.down,true);assert.equal(input.up,false);
 });
+
+const arcTrack = (radius, halfW) => ({
+  length: 2 * Math.PI * radius, halfW,
+  sample(d) {
+    const hd = d / radius;
+    return { x: radius * (1 - Math.cos(hd)), y: 0, z: radius * Math.sin(hd),
+      hd, rx: -Math.cos(hd), rz: Math.sin(hd) };
+  },
+});
+test('a wide legal bend is not driven as a zero-width centerline, while a narrow hairpin still requires braking', () => {
+  const track = arcTrack(36, 10);
+  const car = { ...carFixture(track), x: 0, z: 0, d: 0, s: 48 };
+  const before = physical(car);
+  assert.equal(v11AiInput(car, track, 1/120).up, true);
+  assert.ok(car.__V11_AI_DECISION__.targetSpeed > 48);
+  assert.deepEqual(physical(car), before);
+  const narrow = arcTrack(18, 4);
+  const tightCar = { ...car, track: narrow };
+  assert.equal(v11AiInput(tightCar, narrow, 1/120).down, true);
+});
+test('a fast readable bend can earn a drift and its exit spray is not vetoed by a distant bend', () => {
+  const track = arcTrack(80, 10);
+  const car = { ...carFixture(track), x: 0, z: 0, d: 0, s: 50, m: .10, h: .10 };
+  assert.equal(v11AiInput(car, track, 1/120).shift, true, 'legal Shift rather than a speed grant');
+  const exit = { ...car, s: 40, smallWindow: .3, nitroCount: 0, __V11_DRIFT_COOLDOWN__: 1 };
+  assert.equal(v11AiInput(exit, track, 1/120).wPressed, true, 'use only an already-earned native window');
+  exit.smallWindow = 0;
+  assert.equal(v11AiInput(exit, track, 1/120).wPressed, false);
+});
+test('near-bend sensing compares raw curvature consistently, independent of the wider-line speed budget', () => {
+  const track = trackFixture();
+  delete track.__RACE_SHORTCUT__;
+  const sample = track.sample.bind(track);
+  track.sample = (d, out = {}) => {
+    const a = d - 440;
+    return Object.assign(sample(d, out), { hd: a * .01 + a * a * .0004 });
+  };
+  const car = carFixture(track);
+  v11AiInput(car, track, 1/120);
+  assert.ok(Math.abs(car.__V11_AI_DECISION__.nearCurve - .026) < 1e-9);
+});

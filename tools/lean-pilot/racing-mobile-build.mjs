@@ -749,6 +749,15 @@ export function patchUrbanTreeColor(source) {
   return source;
 }
 
+/** Use the existing crown normals; no extra vertices, instances or lights. */
+export function patchTreeSurface(source) {
+  const old = 'b.add(g.crown, flat(leafColor), M(x, y, z, rot, s));';
+  const next = 'b.add(g.crown, std(leafColor, { roughness: .95 }), M(x, y, z, rot, s));';
+  if (source.includes(next)) return source;
+  if (source.split(old).length !== 2) throw Error('Tree crown surface anchor changed');
+  return source.replace(old, next);
+}
+
 /** Only the procedural DESERT ground away from the road gets stronger dune relief.
  * The pinned buildGround function independently carves a safe corridor around
  * the track; no road, car, AI or collisions are patched by this transform.
@@ -1126,7 +1135,7 @@ export async function buildRacingMobile({ base = path.join(ROOT, 'runs'), source
   // Distinct new desert roads may intersect giant fixed pyramid sculptures.
   const nativePropsPath = path.join(project, 'src/props.js');
   await writeFile(nativePropsPath,
-    patchHomeOccluderProps(patchUrbanTreeColor(patchFixedDesertLandmarks(await readFile(nativePropsPath,'utf8')))));
+    patchHomeOccluderProps(patchTreeSurface(patchUrbanTreeColor(patchFixedDesertLandmarks(await readFile(nativePropsPath,'utf8'))))));
   // Keep the original four bridges/tunnels and all the native physics/checkpoints/AI.
   for (const [nativeName, adapterName, ownedName, transform] of [
     ['layouts.js', 'race-track-design.mjs', 'track-design.mjs', patchRaceLayouts],

@@ -41,6 +41,21 @@ test('real Three clone retains each baked material and shared texture, with hone
   assert.deepEqual(first.body.scale.toArray(), [1, 1, 1]);
 });
 
+test('imported cars reduce environmental glare only on private material clones, preserving original PBR maps and color', async () => {
+  const { createUserCarFactory } = await import(new URL('user-car.mjs', owned));
+  const original = template();
+  original.material.envMapIntensity = 1;
+  original.material.metalness = .8;
+  const result = createUserCarFactory(THREE, original.scene, identity('custom-01'), metadata).instantiate();
+  const material = result.body.getObjectByName('BakedUserCar').material;
+  assert.equal(material.envMapIntensity, .45);
+  assert.equal(original.material.envMapIntensity, 1);
+  assert.equal(material.metalness, .8);
+  assert.equal(material.map, original.map);
+  assert.equal(material.color.getHex(), original.material.color.getHex());
+  assert.deepEqual(result.wheels, []);
+});
+
 test('wrong normalization and animated/skinned user meshes fail instead of silently rescaling or pretending wheel rigs', async () => {
   const { createUserCarFactory } = await import(new URL('user-car.mjs', owned));
   const wrong = template(); wrong.scene.scale.setScalar(2);

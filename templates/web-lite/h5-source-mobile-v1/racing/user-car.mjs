@@ -38,7 +38,14 @@ export function createUserCarFactory(THREE, templateScene, assetIdentity, metada
       clone.traverse(object => {
         if (!object.isMesh) return;
         const own = material => {
-          if (!materials.has(material)) materials.set(material, material.clone());
+          if (!materials.has(material)) {
+            const privateMaterial = material.clone();
+            // Preserve the supplied albedo, PBR maps and merged-wheel topology.
+            // A lower environment contribution avoids mirror-like glare without
+            // changing another instance or destroying the original texture.
+            privateMaterial.envMapIntensity *= .45;
+            materials.set(material, privateMaterial);
+          }
           return materials.get(material);
         };
         object.material = Array.isArray(object.material) ? object.material.map(own) : own(object.material);

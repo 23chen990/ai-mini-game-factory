@@ -609,3 +609,11 @@ test('V11.8 urban foliage and grass palette mute saturation with no new geometry
   assert.equal(api.patchUrbanGrassColor(tuned), tuned);
   assert.throws(() => api.patchUrbanGrassColor('new unknown ground'), /anchor/);
 });
+
+test('tree crowns use existing smooth normals without extra geometry, draws or changing pine branches', () => {
+  const source = 'b.add(g.crown, flat(leafColor), M(x, y, z, rot, s));\nb.add(g.green, flat(0x2f6b45), M(x, y, z, rot, s));';
+  const patched = api.patchTreeSurface(source);
+  assert.equal(patched, source.replace('flat(leafColor)', 'std(leafColor, { roughness: .95 })'));
+  assert.equal(api.patchTreeSurface(patched), patched);
+  assert.throws(() => api.patchTreeSurface('unrecognized upstream'), /anchor/);
+});

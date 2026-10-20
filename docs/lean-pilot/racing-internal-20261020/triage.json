@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Continue internal experience repairs; account blockers are separate. Do not call missing or failed natural/perceptual evidence problem-free.",
+  "classification": [
+    "core-experience",
+    "visual-hierarchy",
+    "mobile-readability",
+    "failure-attribution"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Existing validated core-loop and perceptual QA failures require retained QA → Fixer → natural/perceptual retest. No new factory stage or gate.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "Other games",
+      "Account provisioning",
+      "Historical branches already audited",
+      "Unverified reference media"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Read exact attempt 16 evidence",
+      "Recheck remote HEAD 05e31aa698b3625a7efdc16490cdf05bf69c6351",
+      "Compare isolated controller hypotheses on unchanged native physics before implementing"
+    ],
+    "observed": [
+      "Attempt 16 visible-pixel/touch driver won stages 01–12 with 8–32 crashes per race and no effective drift, spray or nitro. This is not a human win-rate estimate.",
+      "Removing predictive braking in the read-only experiment improved stage 01 from 128.000 to 119.575 s, but increased aggregate wall crashes from 5 to 525: rejected, not a fix.",
+      "Six actual car previews exist. Custom-01 at 844×390 has busy high-contrast purple/black surfaces and the faceted green vegetation conflicts with the hard-surface car.",
+      "Trusted touch countersteer passed the starter/844×390 branch; resource use, small viewport natural driving, later stages and physical devices remain separate evidence gaps."
+    ],
+    "evidence": [
+      {
+        "path": "docs/lean-pilot/racing-final-20261020/evidence/natural-summary.json",
+        "sha256": "14c9fb4a418fb66d43ed5b998bebe13ad13d12119b8c4105516c1b3d48ff3661",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
+        "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "No changes to native player physics, speed, position, progress, rank, clocks, finish rules or catch-up based on player lead.",
+    "All 150 fixed-seed native opponents finish all 30 unchanged routes within the existing 350 s limit; legal shortcut entries/exits remain balanced.",
+    "Retain an AI change only with a material pace improvement over attempt 16 on early routes, no existing podium pace regression beyond the existing 1 s budget, and no wall-riding or sustained collision-convoy strategy.",
+    "Run the same visible-pixel normal-input player policy against the new build, record rank changes, rival gaps and overtakes; a no-resource crash-heavy easy win is not sufficient competition.",
+    "Natural successful drift release → small spray, earned nitro and item use are independently observable; repeat countersteer, pause and rotate at both 844×390 and 667×375 without overlapping controls.",
+    "Review all six exact models at three landscape viewports; reduce the observed presentation defect without replacing licensed/user assets blindly, hiding it in particles or falsely animating merged wheels.",
+    "Natural wins, losses, retry, next-stage and saved progress must use normal inputs; preserve every failed run and exact build hash. Hardware and human subjective findings remain honest, never inferred from automation."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-20T08:34:07.516Z"
+}

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "task": "visual-diagnosis",
+  "root": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "route": "formal-fixer",
+  "ownership": "Read-only visual/source diagnosis; write ONLY the output JSON in the docs folder. No workspace/template changes or builds.",
+  "inputEvidence": [
+    "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-internal-20261020/triage.json",
+    "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-internal-20261020/reproduction-matrix.json",
+    "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/artifacts/final-20261020/browser/gallery.json"
+  ],
+  "questions": [
+    "Observed failure: attempt 16 six-car gallery has incoherent shiny/baked imported cars and faceted scenery; inspect exact screenshots to refine, not an imagined design risk.",
+    "Causal alternatives: distinguish baked texture/model geometry from material/lighting/camera/environment using current loader and actual pixels; no image-derived Figma measurements.",
+    "Simpler alternative: keep working camera/layout; propose smallest existing-module correction before remodel/new asset pipeline. Read-only isolated review avoids simultaneous source writes and repeated context.",
+    "Experiment: before/after exact six models and 1366×768/844×390/667×375, full pixel ratio. Retain only visible improvement without hiding detail, clipping, UI overlap or performance regression. Limit review to one pass and no new architecture."
+  ],
+  "instructions": [
+    "You are not alone in the codebase. Do not revert others or edit source, tests, generated game or old evidence.",
+    "Read the named target screenshots with view_image and source implementing their exact branch.",
+    "Return evidence-backed concrete low-cost patches with file/function locations; separate observation, hypothesis and unknown. Do not declare player perception pass.",
+    "All agent exchange is this Zod-validated structured artifact. Write output and validate via Zod before returning JSON only with its absolute path and SHA-256."
+  ],
+  "acceptance": [
+    "All six car branches inspected at least at touch size",
+    "Exact causes distinguished or unknown",
+    "No file changes except output JSON",
+    "Output validated using Zod object {schemaVersion: literal(1), task: string, findings: array({id:string,severity:enum(P0,P1,P2,INFO),observation:string,evidence:array(string),recommendation:string}), blockers:array(string), commands:array(string)}"
+  ],
+  "output": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/docs/lean-pilot/racing-internal-20261020/visual-diagnosis.json"
+}

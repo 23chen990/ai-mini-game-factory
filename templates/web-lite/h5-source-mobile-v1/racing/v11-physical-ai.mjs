@@ -144,7 +144,9 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   const at = routeSampler(ai, track, route);
   const ability = clamp(finite(ai.skill) ? ai.skill : 1, .65, 2.2);
   const speed = Math.max(0, ai.s);
-  const look = clamp(7 + speed * (route ? .28 : .34), 10, route ? 21 : 27);
+  // Look through the main-road apex rather than reacting at its tightest
+  // centerline sample. A fork still uses the shorter, portal-safe intercept.
+  const look = clamp(7 + speed * (route ? .28 : .65), 10, route ? 21 : 43);
   // After contact on the far side, a long lookahead cuts diagonally toward
   // the already-separated middle of a fork. Intercept its early portal at
   // low speed first; only the native road projection can confirm entry.
@@ -172,19 +174,25 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   let largestCurve = 0;
   let nearCurve = 0;
   for (let ahead = 0; ahead <= 105; ahead += 10) {
-    const a = at(Math.max(0, ahead - 5)), b = at(ahead + 7);
-    const curvature = wrap(b.hd - a.hd) / Math.max(5, ahead === 0 ? 7 : 12);
-    const absolute = Math.abs(curvature);
-    if (ahead <= 20 && absolute > Math.abs(nearCurve)) nearCurve = curvature;
+    const a = at(ahead - 15), b = at(ahead + 15);
+    const curvature = wrap(b.hd - a.hd) / 30;
+    const rawCurve = Math.abs(curvature);
+    const margin = Math.max(0, (track.v9WidthAt?.(ai.d + ahead) ?? track.halfW) - 3);
+    // Empirical speed planning for a swept line across the legal road width,
+    // not a traction grant. Zero-width planning braked before every apex even
+    // though the ordinary wheel input could make it cleanly. Narrow roads and
+    // committed forks retain their own slower bound; native walls still apply.
+    const absolute = route ? rawCurve : rawCurve / (1 + rawCurve * margin * 3);
+    if (ahead <= 20 && rawCurve > Math.abs(nearCurve)) nearCurve = curvature;
     largestCurve = Math.max(largestCurve, absolute);
     // The requested speed never bypasses native traction or steering.
     const cornerLimit = Math.sqrt(gripBudget / Math.max(.0001, absolute));
     // Respect the native wheel's available yaw, including its high-speed
     // reduction. This is a braking decision, never a change to TUNE or speed.
-    const yawLimit = (tune.turnRate ?? 1.9) * .87 /
-      Math.max(.0001, absolute + (tune.turnRate ?? 1.9) * .87 * .42 / (tune.vmax ?? 55));
+    const yawLimit = (tune.turnRate ?? 1.9) /
+      Math.max(.0001, absolute + (tune.turnRate ?? 1.9) * .42 / (tune.vmax ?? 55));
     const limit = Math.max(10, Math.min(cornerLimit, yawLimit));
-    const braking = (tune.brake ?? 45) * .66;
+    const braking = (tune.brake ?? 45) * .9;
     desired = Math.min(desired, Math.sqrt(limit * limit + 2 * braking * Math.max(0, ahead - 9)));
   }
   if (Math.abs(headingError) > .70) desired = Math.min(desired, Math.max(9, 25 * Math.cos(Math.min(1.12, Math.abs(headingError)))));
@@ -203,8 +211,8 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
       !ai.airborne && (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0;
     if (!input.shift) ai.__V11_DRIFT_COOLDOWN__ = 1.8;
   } else {
-    const readableBend = Math.abs(nearCurve) > 0.009 && largestCurve < 0.026;
-    input.shift = !route && ability >= 1.35 && speed >= 23 && speed <= 42 &&
+    const readableBend = Math.abs(nearCurve) > 0.009 && largestCurve < 0.040;
+    input.shift = !route && ability >= 1.35 && speed >= 23 && speed <= 56 &&
       readableBend && Math.abs(headingError) < 0.26 &&
       Math.abs(input.steerAxis) > 0.29 &&
       !ai.airborne && (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0 &&
@@ -220,7 +228,8 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
   // Nitro remains stock-based, and can only be used on the original safer straight.
   const safeSpray = !route && !ai.airborne && !ai.drifting &&
     (ai.spin ?? 0) <= 0 && (ai.impact ?? 0) <= 0 &&
-    largestCurve < .010 && Math.abs(headingError) < .16 && speed > 21;
+    Math.abs(nearCurve) < .016 && Math.abs(headingError) < .20 &&
+    Math.abs(input.steerAxis) < .65 && speed > 21;
   input.wPressed = (safeBoost || safeSpray) && (ai.smallWindow ?? 0) > 0;
   if (safeBoost && (ai.nitroCount ?? 0) > 0 && (ai.nitroTime ?? 0) <= 0) {
     input.nitroPressed = !ai.__V11_ITEM_MODE__;
