@@ -192,7 +192,7 @@ async function runLevel(level){
 
   const episodes=result.targetEpisodes;
   let targetIndex=0,state=createRiskPolicyState(level.id,level.targets[0]);
-  let terminal=null;
+  let terminal=null,openingForecastCaptured=false;
   const deadline=Date.now()+campaignWallBudgetMs(level.id);
   while(Date.now()<deadline){
    const view=await readVisibleView(page);
@@ -302,6 +302,11 @@ async function runLevel(level){
       return lane===expected;
      },decision.toLane,{timeout:1800});
     }
+   }
+   if(!openingForecastCaptured&&((level.id===5&&view.distance>=38)||(level.id===2&&view.distance>=74))){
+    await recordSnapshot(page,'opening-after-trusted-escape',{levelId:level.id});
+    await shot(page,`level-${level.id}-opening-forecast-escape`,{levelId:level.id,kind:'opening-warning-branch'});
+    openingForecastCaptured=true;
    }
    await page.waitForTimeout(80);
   }

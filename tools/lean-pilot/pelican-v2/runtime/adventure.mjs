@@ -9,9 +9,10 @@ export const JUMP_BUFFER_SECONDS=1.1;
 export const JUMP_TRIGGER_METERS=3.0;
 export const FREE_ROAD_EDGE=2.15;
 export const TAP_STEER_DISTANCE=1.18;
+export const WING_SECONDS=.55;
 const nearestLane=z=>clamp(Math.round((z-LANES[0])/(LANES[1]-LANES[0])),0,2);
 const event=(r,type,details={})=>{r.events.push({type,at:r.elapsed,distance:r.distance,...details});if(r.events.length>500){r.events.shift();r.eventOffset=(r.eventOffset??0)+1;}};
-export function newRun(id,{seed=Math.floor(Date.now()/86400000)}={}) {const level=id===6?createEndlessLevel(seed):makeLevel(id);const run={phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],eventOffset:0,fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false,revives:0,reviveGrace:0};
+export function newRun(id,{seed=Math.floor(Date.now()/86400000)}={}) {const level=id===6?createEndlessLevel(seed):makeLevel(id);const run={phase:'running',level,laneIndex:1,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,distance:0,elapsed:0,count:0,gold:0,score:0,streak:0,bestStreak:0,nearMisses:0,jumpedBarriers:0,bufferedJump:null,y:0,vy:0,wingHeld:false,gliding:false,glideTime:0,glides:0,airCatches:0,speed:level.speed,stun:0,hits:0,reason:null,events:[],eventOffset:0,fishes:level.fish.map(f=>({...f,caught:false})),obstacles:level.obstacles.map(o=>({...o,z:o.kind==='pedestrian'?(o.lane===2?3.6:-3.6):LANES[o.lane],hit:false,triggerAt:null,fallAt:null,passed:false})),settled:false,revives:0,reviveGrace:0};
  if(level.endless){run.endless={seed:level.seed,index:0,nextX:38,tier:0};
   run.fishes.push(...[15,31,47].map((x,i)=>({id:`endless-warmup-${i}`,x,lane:1,golden:false,bonus:false,caught:false})));
   extendEndless(run);
@@ -52,15 +53,18 @@ export function readyJumpBarrier(r) {
    next.x-r.distance>JUMP_TRIGGER_METERS+.15 ?next:null;
 }
 export function input(r,action) {
- if(action==='pause'&&r.phase==='running'){r.phase='paused';event(r,'pause');return;}
+ if(action==='wing-release'){r.wingHeld=false;r.gliding=false;return;}
+ if(action==='pause'&&r.phase==='running'){r.phase='paused';r.wingHeld=false;r.gliding=false;event(r,'pause');return;}
  if(action==='resume'&&r.phase==='paused'){r.phase='running';event(r,'resume');return;}
  if(r.phase!=='running'||r.stun>0)return;
+ if(action==='wing-hold'&&(r.y>0||r.vy>0||r.bufferedJump)){r.wingHeld=true;return;}
  if(action==='left'||action==='right'){
   // A tap nudges an intermediate road position. Longer holding and scene-drag
   // may stop anywhere; no invisible three-lane magnet is applied at release.
   steerBy(r,(action==='left'?-1:1)*TAP_STEER_DISTANCE,'tap');
  }
  if(action==='jump'&&r.y===0&&r.vy===0&&!r.bufferedJump){
+  r.glideTime=0;
   const next=readyJumpBarrier(r);
   if(next){r.bufferedJump=next.id;event(r,'jump-buffered',{objectId:next.id});}
   else{r.vy=4.4;event(r,'jump');}
@@ -72,7 +76,7 @@ export function sweptHit(a,b,hx,hz) {
   let lo=(-half-a[key])/v,hi=(half-a[key])/v;if(lo>hi)[lo,hi]=[hi,lo];min=Math.max(min,lo);max=Math.min(max,hi);if(min>max)return false;
  }return true;
 }
-function finish(r,reason,object){r.phase='finished';r.reason=reason;r.speed=0;r.lastCollisionId=object?.id??null;event(r,reason==='complete'?'complete':'failed',{reason,objectId:object?.id,kind:object?.kind});}
+function finish(r,reason,object){r.phase='finished';r.reason=reason;r.speed=0;r.wingHeld=false;r.gliding=false;r.lastCollisionId=object?.id??null;event(r,reason==='complete'?'complete':'failed',{reason,objectId:object?.id,kind:object?.kind});}
 // A revival is only granted by a verified rewarded-ad completion in the UI.
 // Never revive an already settled run, a fish shortage, or a time-out.
 export function canRevive(r){return !!r&&r.phase==='finished'&&!r.settled&&r.revives===0&&['vehicle','barrier'].includes(r.reason);}
@@ -117,7 +121,15 @@ function step(r,dt){
    const objectId=r.bufferedJump;r.bufferedJump=null;r.vy=4.4;event(r,'jump',{objectId,buffered:true});
   }
  }
- if(r.y>0||r.vy>0){r.vy-=13*dt;r.y=Math.max(0,r.y+r.vy*dt);if(r.y===0){r.vy=0;event(r,'land');}}
+ if(r.y>0||r.vy>0){
+  const glide=r.wingHeld&&r.y>.08&&r.vy<=0&&r.glideTime<WING_SECONDS;
+  if(glide&&!r.gliding){r.glides++;event(r,'glide-start');}
+  r.gliding=glide;
+  if(glide){r.glideTime=Math.min(WING_SECONDS,r.glideTime+dt);r.vy=Math.max(-.6,r.vy-1.6*dt);}
+  else r.vy-=13*dt;
+  r.y=Math.max(0,r.y+r.vy*dt);
+  if(r.y===0){r.vy=0;r.gliding=false;r.wingHeld=false;event(r,'land');}
+ }
  for(const o of r.obstacles){
   const oldX=o.x,oldOZ=o.z??LANES[o.lane];if(o.z===undefined)o.z=oldOZ;
   if(o.x-r.distance<85&&o.triggerAt===null||o.triggerAt===undefined&&o.x-r.distance<85)o.triggerAt=r.elapsed;
@@ -134,7 +146,7 @@ function step(r,dt){
   if(r.reviveGrace<=0&&sweptHit({x:oldX-oldD,z:oldOZ-oldZ},{x:o.x-r.distance,z:o.z-r.lane},bounds.x+.58,bounds.z+.27)){
    if(o.kind==='barrier'&&Math.min(oldY,r.y)>.31){o.jumped=true;continue;}
    o.hit=true;o.fallAt=r.elapsed;r.hits++;r.streak=0;
-   if(o.kind==='pedestrian'){r.stun=3;r.speed=0;event(r,'pedestrian-hit',{objectId:o.id});}
+   if(o.kind==='pedestrian'){r.stun=3;r.speed=0;r.wingHeld=false;r.gliding=false;event(r,'pedestrian-hit',{objectId:o.id});}
    else {finish(r,o.kind==='barrier'?'barrier':'vehicle',o);return;}
   }
   // Record only genuinely close, collision-free lateral passes in the original
@@ -153,19 +165,21 @@ function step(r,dt){
  // Fish use swept relative coordinates as well. No score is awarded after a terminal collision.
  for(const f of r.fishes){
   if(f.caught||f.forfeited||r.stun>0)continue;
-  if(f.bonus){
+  if(f.bonus||f.airborne&&f.sourceObstacleId){
    const source=r.obstacles.find(o=>o.id===f.sourceObstacleId);
    // A safe detour is valid progress, but it cannot award a jump-only prize.
    // Forfeit without resetting an ordinary fish streak or giving hidden points.
    if(!source?.jumped){if(source?.passed)f.forfeited=true;continue;}
   }
-  if(!f.missed&&f.x-r.distance< -2.5){f.missed=true;r.streak=0;}
-  if(sweptHit({x:f.x-oldD-.55,z:fishRoadZ(f)-oldZ},{x:f.x-r.distance-.55,z:fishRoadZ(f)-r.lane},.55,.63)&&r.y<.85){
+  if(!f.missed&&f.x-r.distance< -2.5){f.missed=true;if(!f.airborne)r.streak=0;}
+  const inReach=f.airborne?r.y>.22&&r.y<.9:r.y<.85;
+  if(sweptHit({x:f.x-oldD-.55,z:fishRoadZ(f)-oldZ},{x:f.x-r.distance-.55,z:fishRoadZ(f)-r.lane},.55,.63)&&inReach){
    f.caught=true;r.count++;if(f.golden)r.gold++;
+   if(f.airborne)r.airCatches++;
    r.streak++;r.bestStreak=Math.max(r.streak,r.bestStreak);
    const comboPoints=r.streak>=3&&r.streak%3===0?2:0;
    r.score+=fishPoints(f)+comboPoints;
-   event(r,'fish-caught',{objectId:f.id,golden:f.golden,bonus:!!f.bonus,first:r.count===1,count:r.count,streak:r.streak,comboPoints});
+   event(r,'fish-caught',{objectId:f.id,golden:f.golden,bonus:!!f.bonus,airborne:!!f.airborne,first:r.count===1,count:r.count,streak:r.streak,comboPoints});
   }
  }
  if(!r.level.endless&&r.distance>=r.level.distance)finish(r,r.count<r.level.goal.count?'fish-short':r.gold<r.level.goal.gold?'gold-short':'complete');

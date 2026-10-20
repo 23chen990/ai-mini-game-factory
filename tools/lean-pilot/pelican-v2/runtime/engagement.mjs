@@ -46,6 +46,7 @@ export function makeBarrierPrizes(levelId, obstacles, endDistance) {
 }
 
 export function fishPoints(fish) {
+  if(fish.airborne)return 3;
   return (fish.golden ? 5 : 1) + (fish.bonus ? 2 : 0);
 }
 
@@ -118,6 +119,6 @@ export function allStars(save) {
 // Keep the visible prize trail after a real jump while side fish remain optional.
 // This changes only the HUD cue; collection still uses the ordinary hit test.
 export function selectFishCue(run){
- const available=run.fishes.filter(f=>!f.caught&&!f.forfeited&&f.x-run.distance>1&&f.x-run.distance<35&&(!f.bonus||run.obstacles.some(o=>o.id===f.sourceObstacleId&&o.jumped===true)));
+ const available=run.fishes.filter(f=>!f.caught&&!f.forfeited&&(!f.airborne||run.gliding)&&f.x-run.distance>1&&f.x-run.distance<35&&(!f.bonus||run.obstacles.some(o=>o.id===f.sourceObstacleId&&o.jumped===true)));
  return available.find(f=>f.bonus&&run.obstacles.some(o=>o.id===f.sourceObstacleId&&o.jumped===true&&o.passed===true))??available[0];
 }

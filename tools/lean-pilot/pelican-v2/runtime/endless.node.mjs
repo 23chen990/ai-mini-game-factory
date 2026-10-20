@@ -154,3 +154,17 @@ test('physical steering can survive every difficulty tier via actual open road',
   assert.equal(r.hits,0);
  }
 });
+test('endless alternates authored maneuver phrases, not only speed and random obstacle counts',()=>{
+ const segments=Array.from({length:24},(_,i)=>endlessSegment(77,i+2,200+i*50));
+ assert.ok(new Set(segments.map(s=>s.phrase)).size>=3);
+ assert.ok(segments.some(s=>s.phrase==='air-route'&&s.obstacles.some(o=>o.kind==='barrier')));
+ assert.ok(segments.some(s=>s.phrase==='traffic'&&s.obstacles.every(o=>o.kind!=='barrier')));
+ assert.ok(segments.some(s=>s.obstacles[1].offset>0),'a follow-up beat, not simultaneous walls only');
+ const r=newRun(6,{seed:77});extendEndless(r,1400);
+ assert.ok(r.fishes.some(f=>f.airborne),'optional wing route is wired to actual endless generation');
+ for(const f of r.fishes.filter(f=>f.airborne)){
+  const b=r.obstacles.find(o=>o.id===f.sourceObstacleId);
+  assert.equal(b.kind,'barrier');assert.equal(b.lane,f.lane);
+  assert.ok(f.x-b.x>=4&&f.x-b.x<=7);
+ }
+});

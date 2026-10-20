@@ -12,7 +12,7 @@ import {capturePath} from './qa-capture-paths.mjs';
 import {RISK_LEVELS,TARGET_WINDOW_TRAIL_METERS,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const mode=process.argv[2]??'campaign',engine=process.env.QA_ENGINE??'webkit';
-const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'qa-'+mode+'-'+engine);await mkdir(qaDir,{recursive:true});
+const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'qa-'+mode+'-'+engine+(process.env.QA_CAPTURE_LABEL?'-'+process.env.QA_CAPTURE_LABEL:''));await mkdir(qaDir,{recursive:true});
 const driver=await readFile(new URL(import.meta.url));await writeFile(path.join(qaDir,'driver-source.mjs'),driver);
 await json(path.join(qaDir,'driver-provenance.json'),{path:'tools/lean-pilot/pelican-v2/qa.mjs',snapshot:path.relative(RUN,path.join(qaDir,'driver-source.mjs')),sha256:sha(driver),buildHash:build.buildHash,normalInputOnly:true});
 const server=await serve(),base='http://127.0.0.1:'+server.address().port+'/game/index.html';
@@ -135,9 +135,12 @@ try{
  await fresh();await shot('menu');check('locked-new-save',await page.locator('[data-level="2"]').isDisabled(),{newBrowser:true});
  if(mode==='campaign'||mode==='all'){
   captureSection='campaign';
-  const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});await shot('first-fish');const first=await snapshot(),firstEvent=first.events.find(e=>e.type==='fish-caught'&&e.first);check('first-seconds-objective-and-fish',first.count>=1&&firstEvent?.at<3,{count:first.count,elapsed:first.elapsed,firstCatchGameSeconds:firstEvent?.at,runnerWallMs:Date.now()-firstStarted,note:'Actual first event time, with runner wall time kept separate; software-renderer wall delay is not phone performance.'});
+  const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});
+  // The first pickup is real. Freeze via the visible pause button BEFORE slow
+  // PNG/render RPCs; the old ordering reached the34m barrier while capturing.
+  await tap('#co-pause',{fastReaction:true});await shot('first-fish-paused');const first=await snapshot(),firstEvent=first.events.find(e=>e.type==='fish-caught'&&e.first);check('first-seconds-objective-and-fish',first.count>=1&&firstEvent?.at<3,{count:first.count,elapsed:first.elapsed,firstCatchGameSeconds:firstEvent?.at,runnerWallMs:Date.now()-firstStarted,note:'Actual first event time, with runner wall time kept separate; software-renderer wall delay is not phone performance.'});
   const ri=await page.evaluate(()=>window.__coast.renderInfo());check('renderer-composer-resolution',ri.pixelRatio>=Math.min(1.25,qaDpr())&&ri.canvas[0]===ri.composer[0]&&ri.canvas[1]===ri.composer[1],ri);
-  await tap('#co-pause');const before=await snapshot();await page.waitForTimeout(1100);const after=await snapshot();check('pause-freezes-world-and-timer',before.distance===after.distance&&before.elapsed===after.elapsed,{before,after});await shot('pause');await tap('#co-resume');
+  const before=await snapshot();await page.waitForTimeout(1100);const after=await snapshot();check('pause-freezes-world-and-timer',before.distance===after.distance&&before.elapsed===after.elapsed,{before,after});await shot('pause');await tap('#co-resume');
   for(let id=1;id<=5;id++){
    if(id>1){await tap('#co-next');await page.waitForTimeout(1500);}
    await shot('level-'+id+'-start');
@@ -201,12 +204,14 @@ try{
    // the original 100m vehicle. Use real lane controls to pass the
    // opening, then return to centre and deliberately hit that car.
    await tap('[data-action="left"]');
-   await page.waitForFunction(()=>{const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=45},null,{timeout:11000});
+   await page.waitForFunction(()=>{const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=40},null,{timeout:11000});
+   // Dispatch before evidence RPCs: the measured old45m wait returned56m,
+   // then the snapshot/log delayed steering until the left car hit at61m.
+   await tap('[data-action="right"]',{fastReaction:true});
    const opening=await snapshot();
-   check('vehicle-impact-test-survives-V7-opening',opening.phase==='running'&&opening.distance>=45&&
+   check('vehicle-impact-test-survives-V7-opening',opening.phase==='running'&&opening.distance>=40&&
     opening.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l3-o16'&&!e.jumped),
     {phase:opening.phase,distance:opening.distance,events:opening.events.slice(-6)});
-   await tap('[data-action="right"]');
    await shot('vehicle-warning');
    // The read-only animation-frame observer was armed BEFORE the drive.
    // Wait for terminal status, never for a fleeting CSS crash class

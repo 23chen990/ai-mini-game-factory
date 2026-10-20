@@ -23,6 +23,7 @@ export function patchMain(original){
  s=s.slice(0,rideStart)+`  coast.beforeRide(dt);\n  const down = false;\n  const acc = (settings.cruise - S.speed) * .7;\n  S.accel = damp(S.accel, acc, 6, dt);\n  S.pedaling = !S.airborne && S.speed > .25;\n  S.wheel += (S.speed / WHEEL_R) * dt;\n\n`+s.slice(rideEnd);
  const laneStart=s.indexOf('  // 变道 / 自动驾驶',s.indexOf('function updateRide')),laneEnd=s.indexOf('  // 特技：',laneStart);
  s=s.slice(0,laneStart)+'  // Adventure owns continuous lateral input, bounded jump integration and swept hazards.\n'+s.slice(laneEnd);
+ s=once(s,'trick: S.trick,','trick: S.gliding ? 1 : S.trick,');
  s=once(s,'rider.rotation.set(S.lean, -Math.atan2(S.laneV, Math.max(S.speed, 1.5)), 0);','rider.rotation.set(S.lean, S.yaw, 0);');
  const fishStart=s.indexOf('function updateFishes(dt) {'),fishEnd=s.indexOf('\n// 跃出海面的鱼',fishStart);
  s=s.slice(0,fishStart)+'function updateFishes() { coast.updateFishVisuals(); }\n'+s.slice(fishEnd);

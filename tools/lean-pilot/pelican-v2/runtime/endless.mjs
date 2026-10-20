@@ -36,7 +36,7 @@ export function createEndlessLevel(seed=1){
 export function endlessSegment(seed,index,metres=100+index*75){
  if(!safeInt(seed)||!safeInt(index)||!safeInt(Math.floor(metres)))
   throw Error('Invalid endless generation');
- const h=hash(seed,index),tier=endlessTier(metres);
+ const tier=endlessTier(metres);
  // The first centre barrier forces a real decision at ~4.5s; the next
  // car blocks the first safe lane. Thereafter a deterministic safe gap
  // rotates without observing the player's location, spend or mistakes.
@@ -44,10 +44,15 @@ export function endlessSegment(seed,index,metres=100+index*75){
  const open=index===0?firstEscape:index===1?1:(seed+index)%3;
  const blocked=[0,1,2].filter(lane=>lane!==open);
  const chosen=index===0?[1]:index===1?[firstEscape]:blocked;
- const types=['barrier','car','van'];
- return {open,tier:tier.id,
-  obstacles:chosen.map((lane,i)=>({lane,kind:index===0?'barrier':index===1?'car':types[(h>>>(i*5))%types.length],
-   offset:i===1?tier.stagger:0})),
+ // Four readable phrases alternate pressure and collection without changing
+ // the safe opening or consulting player performance. Each phrase uses the
+ // same tested collision bodies; only their ordering/optional route differs.
+ const phrase=index<2?'opening':['traffic','air-route','stagger','shoal'][(index+hash(seed,Math.floor(index/4)))%4];
+ const types=phrase==='traffic'?['car','van']:phrase==='air-route'?['barrier','van']:
+  phrase==='stagger'?['van','barrier']:['barrier','barrier'];
+ return {open,tier:tier.id,phrase,
+  obstacles:chosen.map((lane,i)=>({lane,kind:index===0?'barrier':index===1?'car':types[i],
+   offset:i===1?Math.max(tier.stagger,phrase==='traffic'?0:phrase==='stagger'?8:4):0})),
   gold:index>0&&index%5===0};
 }
 export function extendEndless(run,ahead=370){
@@ -66,6 +71,16 @@ export function extendEndless(run,ahead=370){
    run.fishes.push({id:`endless-f-${index}-${slot}`,x:x+offset,
     lane:segment.open,golden:segment.gold&&slot===1,bonus:false,caught:false});
   }
+  if(segment.phrase==='air-route'){
+   const barrier=segment.obstacles.find(o=>o.kind==='barrier');
+   const sourceObstacleId=`endless-o-${index}-${barrier.lane}`;
+   for(const [slot,offset] of [4.5,6,9].entries())
+    run.fishes.push({id:`endless-air-${index}-${slot}`,x:x+offset,lane:barrier.lane,
+     airborne:slot<2,golden:slot===2,bonus:slot===2,sourceObstacleId,caught:false});
+  }
+  if(segment.phrase==='shoal')for(const offset of [22,25])
+   run.fishes.push({id:`endless-shoal-${index}-${offset}`,x:x+offset,lane:segment.open,
+    golden:false,bonus:false,caught:false});
   const tier=endlessTier(x);
   run.endless.index++;
   run.endless.nextX=x+tier.gap+(hash(run.endless.seed,index+5)%7);

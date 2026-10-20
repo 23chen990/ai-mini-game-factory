@@ -72,3 +72,10 @@ export function rewardExitWarning(run){
    h.lanes.includes(run.laneIndex)&&h.seconds<=SAFE_LANE_WARNING_SECONDS);
  return vehicle?'⚠️ 前方来车 · 及时换到空车道':null;
 }
+
+// 4.5s forecasts are useful preparation, not three simultaneous closed lanes.
+// A two-tap crossing takes <1s; amber preserves that choice while red marks
+// the final 3s reaction corridor. Barriers keep their explicit jump warning.
+export function hazardUrgency(forecast){
+ return forecast.obstacle.kind!=='barrier'&&forecast.seconds>3?'warning':'danger';
+}

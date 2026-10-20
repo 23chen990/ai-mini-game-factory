@@ -55,7 +55,7 @@ test('dedicated CI builds the pinned pelican and earns five unlocks in both brow
  const workflow=parse(bytes);assert.ok(workflow,'Dedicated pelican CI is missing');
  const job=workflow.jobs['pelican-browser'];assert.deepEqual(job.strategy.matrix.engine,['webkit','chromium']);
  const commands=job.steps.map(s=>s.run??'').join('\n');
- for(const required of ['54adc1fb64155f9dd7c1c90ecae7b8185ac540b8','pelican:test','pelican-v2/prepare.mjs','pelican-v2/build.mjs','pelican-v2/qa.mjs campaign','pelican-v2/experience-qa.mjs','pelican-v2/risk-qa.mjs','pelican-v2/v4-qa.mjs','pelican-v2/qa.mjs collisions'])assert.ok(commands.includes(required),required);
+ for(const required of ['54adc1fb64155f9dd7c1c90ecae7b8185ac540b8','pelican:test','pelican-v2/prepare.mjs','pelican-v2/build.mjs','pelican-v2/qa.mjs campaign','pelican-v2/experience-qa.mjs','pelican-v2/risk-qa.mjs','pelican-v2/v4-qa.mjs','pelican-v2/qa.mjs collisions','pelican-v2/v7-journey-qa.mjs'])assert.ok(commands.includes(required),required);
  assert.ok(!commands.includes('continue-on-error'));assert.ok(!job['continue-on-error']);
  for(const step of job.steps)assert.ok(!step['continue-on-error'],'Every required Pelican step must propagate failures');
  for(const receipt of ['baseline-receipt.json','repair-state.json'])assert.ok(commands.includes('test ! -e runs/pelican-coast-v2-20261014/'+receipt),'A stale run must fail closed');

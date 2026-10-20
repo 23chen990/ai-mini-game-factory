@@ -49,7 +49,7 @@ jobs:
     env:
       QA_ENGINE: ${{ matrix.engine }}
       # Software runner functional input coverage. Local perceptual/quality
-      # captures remain DPR3 on native GPUs and are committed separately.
+      # captures label their actual DPR/native GPU and are archived separately.
       QA_DPR: 1
       QA_USE_MESA: 1
       # Existing menu preset via trusted taps; game speed/collision unchanged.
@@ -96,7 +96,9 @@ jobs:
       # Run the fragile player-visible jump/reward journey first for faster
       # diagnostic feedback; all campaign and risk gates still run afterwards.
       - name: Real touch swipes, cancel, jump choice and first-minute feedback
-        run: xvfb-run -a node tools/lean-pilot/pelican-v2/experience-qa.mjs
+        run: |
+          xvfb-run -a node tools/lean-pilot/pelican-v2/experience-qa.mjs
+          QA_V7_QUICK=1 xvfb-run -a node tools/lean-pilot/pelican-v2/v7-journey-qa.mjs
       # Execute the post-pedestrian normal-input crash path before the long
       # five-level run; do not omit it or skip any earned unlock prerequisite.
       - name: Legacy collision and jump regressions with legitimate V4 detours
@@ -115,7 +117,7 @@ jobs:
         if: ${{ success() && matrix.engine == 'chromium' }}
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: pelican-v6-playtest-${{ github.event.pull_request.head.sha }}
+          name: pelican-v7-playtest-${{ github.event.pull_request.head.sha }}
           path: runs/pelican-coast-v2-20261014/workspace/game/index.html
           retention-days: 14
           if-no-files-found: error

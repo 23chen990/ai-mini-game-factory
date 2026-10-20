@@ -1,5 +1,5 @@
 /* global structuredClone */
-import {unsafeFishLanes} from './safety.mjs';
+import {LANES,unsafeFishLanes} from './safety.mjs';
 import {makeBarrierPrizes} from './engagement.mjs';
 export {LANES} from './safety.mjs';
 // Authored encounters, shared coast. Distances/timing/content are original to this project.
@@ -97,6 +97,17 @@ export const LEVELS=definitions.map(d=>{
   if(crossesBlocked(lastLane,lane,bad))lane=[lastLane,1,2,0].find(l=>!crossesBlocked(lastLane,l,bad))??[1,2,0].find(l=>!bad.has(l))??2;
   lastLane=lane;fish.push({id:`l${d.id}-f${i}`,x,lane,golden:i>1&&i%7===3});
  }
+ // The rain jump route previously led away from its own preparation/landing:
+ // the verified 225/350/593m route earned 25/28 fish despite three clean jumps.
+ // Move three EXISTING fish onto that route; no extra fish or easier star rule.
+ // The alternate 351m left fish still offers a safe, non-jumping choice.
+ if(d.id===4){
+  for(const [x,lane] of [[335,1],[367,1],[607,2]])fish.find(f=>f.x===x).lane=lane;
+ }
+ // Commit left after the opening crossing, before the 112m centre barrier.
+ // The old 79m centre fish rewarded a late steering response and was missed
+ // by the same clean WebKit route that caught it in Chromium.
+ if(d.id===2)fish.find(f=>f.id==='l2-f4').lane=0;
  // A rider who never touches the steering should not take every tutorial fish.
  // First fish remains central and easy; these next two fish are physically
  // between the painted lane centres. 'lane' is a HUD zone, not a magnet.
@@ -151,6 +162,19 @@ export const LEVELS=definitions.map(d=>{
  }
  // Optional visible golden fish behind barriers; never required for one-star completion.
  fish.push(...makeBarrierPrizes(d.id,obstacles,d.distance));
+ // Optional wing lines: tap clears the obstacle and still earns the original
+ // +9m gold; holding the SAME button lets the pelican reach two elevated fish.
+ // No level/star requirement depends on these new fish. Later lines lean
+ // toward the landing exit, rewarding air steering rather than jump spam.
+ const airBarriers={1:[110,233],2:[246,356],3:[222,360],4:[350,593],5:[334,584]}[d.id];
+ for(const o of obstacles.filter(o=>o.kind==='barrier'&&airBarriers.includes(o.x))){
+  for(const [i,offset] of [4.5,6].entries()){
+   if(unsafeLanes(obstacles.filter(other=>other!==o),o.x+offset).has(o.lane))continue;
+   const drift=d.id===1&&o.x===110?0:o.lane===0?.72:o.lane===2?-.72:d.id%2===0?.72:-.72;
+   fish.push({id:`l${d.id}-air-${o.id}-${i}`,x:o.x+offset,lane:o.lane,
+    z:LANES[o.lane]+drift*i,golden:false,bonus:false,airborne:true,sourceObstacleId:o.id});
+  }
+ }
  fish.sort((a,b)=>a.x-b.x);
  const {rows: _rows,...config}=d; void _rows;
  return Object.freeze({...config,fish,obstacles});

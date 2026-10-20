@@ -41,6 +41,8 @@ try{
  await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');
  await page.waitForSelector('#coast[data-loaded="true"]');
  check('endless-select-visible',await page.locator('[data-level="6"]').isVisible());
+ check('optional-wardrobe-closed-at-start',!(await page.locator('#co-wardrobe').evaluate(e=>e.open)));
+ await tap('#co-wardrobe summary');
  check('earned-cosmetic-items-visible',await page.locator('#co-collection [data-style]').count()===6);
  check('initial-wallet-is-zero',(await page.locator('.co-collection-total').innerText()).includes('0 贝壳'));
   check('unselected-route-details-hidden-until-asked',
@@ -79,6 +81,7 @@ try{
  await tap('[data-style="classic"]');
  check('equip-owned-style-without-price',(await page.locator('[data-style="classic"] small').innerText())==='已穿戴');
  await page.reload();await page.waitForSelector('#coast[data-loaded="true"]');
+ await tap('#co-wardrobe summary');
  const shop=await page.locator('.co-collection-total').innerText();
  check('real-page-reload-persists-wallet-and-record',shop.includes(String(r.collection.coins))&&shop.includes(String(r.collection.bestDistance)));
  check('local-only-playtest-disclosure-visible',await page.locator('#co-storage').innerText().then(t=>t.includes('仅存本机')));
