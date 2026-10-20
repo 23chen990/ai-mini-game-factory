@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "product-experience-contract",
+  "targetGame": "鹈鹕海岸冒险 V7",
+  "targetRunId": "pelican-coast-v2-20261014",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-pelican-v7/runs/pelican-coast-v2-20261014/workspace",
+  "runtime": "web-lite",
+  "runtimeEntrypoints": [
+    "game/index.html",
+    "source/pelican-bike/src/main.js",
+    "source/pelican-bike/src/coast-ui.mjs",
+    "source/pelican-bike/src/adventure.mjs",
+    "source/pelican-bike/src/levels.mjs",
+    "source/pelican-bike/src/safety.mjs",
+    "source/pelican-bike/src/feel.mjs",
+    "source/pelican-bike/src/coast.css"
+  ],
+  "sourceArtifact": {
+    "kind": "experience-contract",
+    "path": "evidence/v7-pressure/user-report.txt",
+    "sha256": "1dd91299194c368f19e9f2955499e5d82c0835e56bbf154d3a523c19a65ef6be"
+  },
+  "features": [
+    {
+      "id": "traffic-merge",
+      "sourceCheckIds": [
+        "V7-PLAYER-STATIC-TRAFFIC"
+      ],
+      "objectType": "first oncoming car l1-o11",
+      "stateBranch": "centre -> left signal -> merge -> settled -> actual impact",
+      "playerAction": "Start, right at16m, return39m, left49m, deliberately ignore destination",
+      "visibleSignal": "Vehicle moves independently, direction is shown before the car crosses paint lines; real left-lane collision and free replay",
+      "naturalTrigger": "Fresh default first level or public replay reset, trusted touch only",
+      "expectedEventOrder": [
+        "start",
+        "traffic-signal",
+        "traffic-merging",
+        "traffic-settled",
+        "failed",
+        "replay"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "chromium-390x844"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "webkit-390x844"
+        }
+      ],
+      "negativeAssertions": [
+        "No state/score/unlock/collision injection",
+        "No countdown clipping or control occlusion",
+        "No fun, retention, real-phone or ad-intent claim"
+      ],
+      "sourceEvidence": [
+        "evidence/v7-pressure/user-report.txt",
+        "evidence/v7-pressure/triage.json"
+      ],
+      "blockingIf": [
+        "Exact car, state or visible cue absent",
+        "Pixel evidence unreadable or only an engineering fixture"
+      ]
+    },
+    {
+      "id": "escape-payoff",
+      "sourceCheckIds": [
+        "V7-PLAYER-STATIC-TRAFFIC"
+      ],
+      "objectType": "centre-merging car l1-o6 and rider",
+      "stateBranch": "181m car pass -> earned near miss -> finish -> replay",
+      "playerAction": "Ride learned normal-input route, stay right through actual181m car pass, four real jumps and fish catches",
+      "visibleSignal": "Close-pass pop beside rider, unobscured next threat, earned finish and one-tap retry",
+      "naturalTrigger": "Fresh default first level or public replay reset, trusted touch only",
+      "expectedEventOrder": [
+        "start",
+        "traffic-settled",
+        "near-miss",
+        "complete",
+        "replay"
+      ],
+      "requiredViewports": [
+        {
+          "width": 390,
+          "height": 844,
+          "label": "chromium-390x844"
+        },
+        {
+          "width": 390,
+          "height": 844,
+          "label": "webkit-390x844"
+        }
+      ],
+      "negativeAssertions": [
+        "No state/score/unlock/collision injection",
+        "No countdown clipping or control occlusion",
+        "No fun, retention, real-phone or ad-intent claim"
+      ],
+      "sourceEvidence": [
+        "evidence/v7-pressure/user-report.txt",
+        "evidence/v7-pressure/triage.json"
+      ],
+      "blockingIf": [
+        "Exact car, state or visible cue absent",
+        "Pixel evidence unreadable or only an engineering fixture"
+      ]
+    }
+  ]
+}

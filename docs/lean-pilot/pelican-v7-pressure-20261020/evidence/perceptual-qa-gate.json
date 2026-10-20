@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "targetRunId": "pelican-coast-v2-20261014",
+  "contractHash": "80209ccdf17a866f1be5fef7ffda424ac75a6075e3ce6711d46cbd30136069f6",
+  "buildHash": "7ae4a32ad7ddd84c54a7e33c03ad7cf72e210e0609b1768c19100352c066ee8a",
+  "passed": false,
+  "blockers": [
+    "perceptual:visual-evidence-incomplete:traffic-merge@390x844:webkit-390x844",
+    "perceptual:experience-blocked:traffic-merge@390x844:webkit-390x844"
+  ],
+  "requiredCaseIds": [
+    "traffic-merge@390x844:chromium-390x844",
+    "traffic-merge@390x844:webkit-390x844",
+    "escape-payoff@390x844:chromium-390x844",
+    "escape-payoff@390x844:webkit-390x844"
+  ],
+  "checkedCaseIds": [
+    "traffic-merge@390x844:chromium-390x844",
+    "escape-payoff@390x844:chromium-390x844",
+    "escape-payoff@390x844:webkit-390x844"
+  ]
+}

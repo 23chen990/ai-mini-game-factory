@@ -11,7 +11,7 @@ import {tapVisible} from './touch.mjs';
 import {softwareQualityActions,experienceMotionPreference} from './experience-policy.mjs';
 import {readCompactPresentation,portraitMasteryClear} from './qa-presentation.mjs';
 const engine=process.env.QA_ENGINE??'chromium',build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
-const dir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'v4-boundaries-'+engine);await mkdir(dir,{recursive:true});
+const dir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'v4-boundaries-'+engine+(process.env.QA_CAPTURE_LABEL?'-'+process.env.QA_CAPTURE_LABEL:''));await mkdir(dir,{recursive:true});
 const server=await serve(),browser=await(engine==='chromium'?chromium:webkit).launch(browserOptions(engine));
 const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),reducedMotion:experienceMotionPreference(process.env.QA_TOUCH_MOTION),recordVideo:{dir,size:{width:390,height:844}}}),page=await ctx.newPage();
 const report={targetGame:'鹈鹕海岸冒险',workspace:WORKSPACE,engine,buildHash:build.buildHash,attempt:build.attempt,driverSha256:sha(await readFile(new URL(import.meta.url))),normalInputOnly:true,stateInjection:false,liveAds:'NOT_INTEGRATED',humanFun:'NOT_RUN',checks:[],actions:[],screenshots:[],errors:[],passed:false};
@@ -21,6 +21,15 @@ const shot=async name=>{const file=path.join(dir,name+'.png');await page.screens
 const tap=async selector=>{const before=await snap(),point=await tapVisible(page,selector);report.actions.push({selector,point,before,at:new Date().toISOString()});};
 const distance=async n=>{await page.waitForFunction(target=>document.querySelector('#coast').dataset.phase==='finished'||Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0])>=target,n,{timeout:45000});const r=await snap();if(r.phase!=='running')throw Error('Unexpected death before '+n+': '+r.reason);
  if(r.distance<n-1)throw Error('Visible HUD distance claimed '+n+'m while actual run is only '+r.distance.toFixed(2)+'m');};
+// Same observed normal-touch opening as qa.mjs clearV7Opening(115).
+// Keep the exact historical barrier/car assertions; an earlier death cannot
+// substitute for either accounting branch.
+async function passV7Opening(){
+ await distance(20);await tap('[data-action="left"]');
+ await distance(42);await tap('[data-action="right"]');
+ await distance(94);await tap('[data-action="left"]');
+ await distance(115);
+}
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
  await page.evaluate(()=>{window.__v4Frames=[];const observe=()=>{const root=document.querySelector('#coast');if(root&&window.__v4Frames.length<12000)window.__v4Frames.push({at:performance.now(),phase:root.dataset.phase,beat:root.dataset.beat,label:document.querySelector('#co-distance-box span')?.textContent,crash:root.classList.contains('crashing')});requestAnimationFrame(observe);};observe();});
@@ -38,6 +47,7 @@ try{
   check('controls-fit-'+viewport.width,geometry.every(g=>g.width>=44&&g.height>=44&&g.x>=0&&g.y>=0&&g.right<=viewport.width&&g.bottom<=viewport.height),geometry);await shot('viewport-'+viewport.width);await tap('#co-pause');
  }
  await page.setViewportSize({width:390,height:844});await tap('#co-replay');
+ await passV7Opening();await tap('[data-action="right"]');
  await page.waitForSelector('#coast[data-phase="finished"]',{timeout:40000});await page.locator('#co-modal').waitFor({state:'visible'});
  r=await snap();check('actual-barrier-death-settles-once-without-ad',r.reason==='barrier'&&r.events.some(e=>e.type==='failed'&&e.objectId==='l1-o1')&&r.settled===true&&r.reward?.settled===true&&r.reward.rounds===1&&r.reward.bank===r.rewardScore,r);await shot('barrier-death-revive-unavailable');
  check('unavailable-ad-buttons-hidden-free-replay-enabled',await page.locator('#co-revive').isHidden()&&await page.locator('#co-ad').isHidden()&&await page.locator('#co-replay').isEnabled()&&(await page.locator('#co-storage').innerText()).includes('广告未接入'),{reviveHidden:await page.locator('#co-revive').isHidden(),adHidden:await page.locator('#co-ad').isHidden()});
@@ -49,7 +59,7 @@ try{
   {realDistance:r.distance,visibleDistance:replayHud,previousFailureDistance:beforeDisabled.distance});
  // Exact new V4 centre vehicle. A legitimate detour avoids the preceding
  // barrier; no teleport, save injection, debug control or internal event.
- await distance(115);await tap('[data-action="left"]');await distance(145);await tap('[data-action="right"]');
+ await passV7Opening();await distance(145);await tap('[data-action="right"]');
  await page.waitForSelector('#coast[data-phase="finished"]',{timeout:15000});await page.locator('#co-modal').waitFor({state:'visible'});r=await snap();
  check('actual-new-vehicle-death-settles-once',r.reason==='vehicle'&&r.events.some(e=>e.type==='failed'&&e.objectId==='l1-o6')&&r.settled&&r.reward.settled&&r.reward.rounds===2&&r.reward.bank===beforeDisabled.reward.bank+r.rewardScore,r);await shot('new-v4-vehicle-death');
  // Export the outcome of a real vehicle collision, not injected game state.

@@ -1,0 +1,85 @@
+{
+  "attempt": 9,
+  "role": "FixerAgent",
+  "route": "formal-fixer",
+  "codeHash": "45ad80410073356341cb69219ff9d40d219ff99ce96e5b9b0529d4609b50ca11",
+  "hypothesis": "Attempt8 normal portrait captures show jump-reward icon+decimal countdown overflow3px in54px slot after the nonwrapping merge fix. Preserve captured failure; restore64px radar slots without shrinking text or hiding overflow. Physics and default learned route unchanged. Retest all exact mobile cue branches.",
+  "baselineCommit": "b3e9e41dbafd9fecff972e0838aec8bed8220afc",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-pelican-v7/runs/pelican-coast-v2-20261014/workspace",
+  "threadId": "01a15812-6dca-7260-ae97-7f44b17d2c3a",
+  "contextIntentionallyOmitted": [
+    "unrelated games",
+    "full conversation",
+    "legacy REA logs"
+  ],
+  "inputHashes": [
+    {
+      "path": "levels.mjs",
+      "sha256": "fd7c949351a3b0917aa9028739c71e3d7e84f2f5be5ec7e8e76d98fd43ac02f1"
+    },
+    {
+      "path": "adventure.mjs",
+      "sha256": "01c100bc5b124c9be9b9f6fdf991595902baab92ee838316dfe856ad759546f5"
+    },
+    {
+      "path": "endless.mjs",
+      "sha256": "571685adc8c9f7355594b7b412667751830a3773bf584ba1ef513e3e5f785b7c"
+    },
+    {
+      "path": "collection.mjs",
+      "sha256": "e2ea8509016b1eceee7084c51ab2be74f73e14eb2ea69767c6d0e9c1b15ed809"
+    },
+    {
+      "path": "telemetry.mjs",
+      "sha256": "e4304c3caf82f8c8f67f3867e6df35f37afd8fd375e5645c0a64a007b7559650"
+    },
+    {
+      "path": "replay-value.mjs",
+      "sha256": "1d042a1ae53691ce80ee8d1981721205aa22fecce1270a8c397aaab353de6aa9"
+    },
+    {
+      "path": "coast-ui.mjs",
+      "sha256": "5511eaed08342a158060f2df8f811414b1cd2e50ca96b361c390bcb727bea959"
+    },
+    {
+      "path": "coast.css",
+      "sha256": "90477a286558599bc10b8050c79470955b05afde83f021aaaf93e57a2944dfed"
+    },
+    {
+      "path": "feel.mjs",
+      "sha256": "159ba7d0ca26b295bd4bc8eda1b98503af72c5ba52e63a6ab84ab6f2d88d47c6"
+    },
+    {
+      "path": "safety.mjs",
+      "sha256": "0a805895655941d55edf7dde6575a0a12d4b299a2bade85c21d2fdb05e30f004"
+    },
+    {
+      "path": "engagement.mjs",
+      "sha256": "23aa0c2b2e3c35837ce82fb1066fd8b3a8a32925e37189cf3fcb0fe6470565b0"
+    },
+    {
+      "path": "revive-flow.mjs",
+      "sha256": "2b8e76582ea5d7411676193c0dbbe8699b16c1f1810ae041e9ab7b0256e818ff"
+    },
+    {
+      "path": "retry-loop.mjs",
+      "sha256": "4ac0817198efc53a03f9b1c4028dad6afee49dcedb9ab19450f555d4c88be269"
+    },
+    {
+      "path": "boot.mjs",
+      "sha256": "ef857f27868263dcbe1cc50efaac823b5b4f9ac8fbec95650eaeb42682771b5e"
+    },
+    {
+      "path": "pelican.js",
+      "sha256": "5f9a79741a52a039bd0fb94c75e929b541c51f87b3cdbde3f6f086457aceded4"
+    },
+    {
+      "path": "textures.js",
+      "sha256": "ed75c1909220d537de5d839b247dc8f7177d112bb7a28a921a07b2466b97bf62"
+    }
+  ],
+  "buildExit": 0,
+  "buildHash": "7ae4a32ad7ddd84c54a7e33c03ad7cf72e210e0609b1768c19100352c066ee8a",
+  "qa": "PENDING",
+  "at": "2026-10-20T14:38:56.231Z"
+}

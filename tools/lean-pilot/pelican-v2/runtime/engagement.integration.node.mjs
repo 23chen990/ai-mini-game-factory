@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {drivePressureRoute} from '../qa-pressure-route.mjs';
 import assert from 'node:assert/strict';
 import {LEVELS,LANES,BOUNDS,validateLevel,makeLevel} from './levels.mjs';
 import {newRun,advance,input,steerTo,settle,newSave,loadSave} from './adventure.mjs';
@@ -28,7 +29,7 @@ test('safe detour is legitimate without winning optional jump prize',()=>{
 test('a safe detour forfeits only the jump prize, without pretending a jump or destroying a fish streak',()=>{
  const r=newRun(1);r.obstacles=[{id:'b1',kind:'barrier',x:60,lane:1,speed:0,z:0,hit:false,passed:false,triggerAt:null}];
  r.fishes=[{id:'prize',x:69,lane:1,golden:true,bonus:true,sourceObstacleId:'b1',caught:false}];
- r.streak=3;r.bestStreak=3;input(r,'left');tick(r,8.6);
+ r.streak=3;r.bestStreak=3;input(r,'left');tick(r,65/r.level.speed);
  assert.equal(r.obstacles[0].passed,true);
  assert.notEqual(r.obstacles[0].jumped,true);
  assert.equal(r.fishes[0].forfeited,true,'bonus must disappear after safely bypassing its source barrier');
@@ -48,28 +49,35 @@ test('opening fish teaches fractional steering without faking collection or puni
  assert.equal(idle.fishes.find(f=>f.id===second.id).caught,false,'no passive reward for the side fish');
  const controlled=newRun(1);tick(controlled,2.25);
  assert.equal(steerTo(controlled,.98,'finger-drag'),true);
- tick(controlled,2.4);
+ tick(controlled,32/controlled.level.speed-controlled.elapsed);
  assert.equal(controlled.fishes.find(f=>f.id===second.id).caught,true);
  assert.ok(controlled.lane>.6&&controlled.lane<1.3,'real rider remains between lane centres');
- steerTo(controlled,.35,'finger-drag');tick(controlled,1.9);
+ // Steer back only once past the new real 35m centre barrier.
+ tick(controlled,38/controlled.level.speed-controlled.elapsed);steerTo(controlled,.35,'finger-drag');tick(controlled,49/controlled.level.speed-controlled.elapsed);
  assert.equal(controlled.fishes.find(f=>f.id===third.id).caught,true);
  assert.equal(controlled.count,3);
  assert.equal(controlled.hits,0);
 });
 test('first minute offers fish, golden decision, nonlethal street crossing and optional jump',()=>{
- const l=LEVELS[0];assert.ok(l.fish[0].x/l.speed<2.5);
+ const l=LEVELS[0];assert.ok(l.fish[0].x/l.speed<=2.5);
  assert.ok(l.fish.some(f=>f.golden&&f.x/l.speed<10));
- assert.ok(l.obstacles.some(o=>o.kind==='pedestrian'&&o.x/l.speed<15));
+ assert.ok(l.obstacles.some(o=>o.kind==='pedestrian'&&o.x/l.speed<=15));
  assert.ok(l.obstacles.some(o=>o.kind==='barrier'&&o.x/l.speed<=20));
  assert.ok(l.fish.some(f=>f.bonus&&f.x/l.speed<=22));
- assert.ok(l.distance/l.speed<45);
+ assert.ok(l.distance/l.speed<=60);
 });
 function driver(dt,level){
+ // First level now has a learned moving-traffic route; later-course probes stay unchanged.
+ if(level.id===1)return drivePressureRoute(dt);
  const r=newRun(level.id);let decisions=0;
  while(r.phase==='running'){
   if(decisions++%Math.round(.12/dt)===0){
    const close=r.obstacles.filter(o=>!o.hit&&!o.passed&&o.x-r.distance>-(BOUNDS[o.kind].x+.75)&&o.x-r.distance<65);
-   const blocked=lane=>close.some(o=>Math.abs(o.z-LANES[lane])<.8&&(o.x-r.distance)/(level.speed+(o.speed||0))<=3);
+   // A crossing rider must pre-commit before the next lane becomes fatal.
+    // Previously a 3s-only lookahead made this bot drag through the
+    // 112m centre barrier while still between lanes after a V7 early beat.
+    const blocked=lane=>close.some(o=>Math.abs((o.mergeFrom!==undefined?LANES[o.lane]:o.z)-LANES[lane])<.8&&
+      (o.x-r.distance)/(level.speed+(o.speed||0))<=3.6);
    const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>1&&f.x-r.distance<35);
    let want=r.laneIndex;
    if(blocked(want)){const safe=[0,1,2].filter(l=>!blocked(l));want=(fish&&safe.includes(fish.lane)?fish.lane:safe.sort((a,b)=>Math.abs(a-r.laneIndex)-Math.abs(b-r.laneIndex))[0])??want;}
@@ -115,15 +123,21 @@ function masteryDrive(level,dt,jumpDistance){
    const ahead=r.obstacles.filter(o=>!o.hit&&!o.passed&&o.x-r.distance>-(BOUNDS[o.kind].x+.75)&&o.x-r.distance<65)
     .sort((a,b)=>(a.x-r.distance)/(level.speed+(a.speed||0))-(b.x-r.distance)/(level.speed+(b.speed||0)));
    const seconds=o=>(o.x-r.distance)/(level.speed+(o.speed||0));
-   const blocked=lane=>ahead.some(o=>o.kind!=='barrier'&&Math.abs(o.z-LANES[lane])<.8&&seconds(o)<2.8&&seconds(o)>-.3);
+   const blocked=lane=>ahead.some(o=>o.kind!=='barrier'&&Math.abs((o.mergeFrom!==undefined?LANES[o.lane]:o.z)-LANES[lane])<.8&&seconds(o)<3.4&&seconds(o)>-.3);
    const barrier=ahead.find(o=>o.kind==='barrier'&&o.x-r.distance<55&&o.x-r.distance>0&&!blocked(o.lane));
-   const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>2&&f.x-r.distance<31);
+   const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>2&&f.x-r.distance<31&&
+    (!f.bonus||r.obstacles.some(o=>o.id===f.sourceObstacleId&&o.jumped&&o.passed)));
+   // A future fish is not a valid reason to drive through a close barrier
+   // while crossing one or two real adjacent lanes.
+   const safeFishCross=to=>Array.from({length:Math.abs(to-r.laneIndex)+1},
+    (_,i)=>r.laneIndex+i*Math.sign(to-r.laneIndex)).every(l=>
+     !ahead.some(o=>o.kind==='barrier'&&o.lane===l&&seconds(o)<2.2&&seconds(o)>-.4));
    let want=r.laneIndex;
    if(blocked(want)||ahead.some(o=>o.kind==='barrier'&&o.lane===want&&seconds(o)<1.5&&seconds(o)>0&&!barrier)){
     const safe=[0,1,2].filter(l=>!blocked(l)&&!ahead.some(o=>o.kind==='barrier'&&o.lane===l&&seconds(o)<1.3));
     want=safe.sort((a,b)=>Math.abs(a-r.laneIndex)-Math.abs(b-r.laneIndex))[0]??want;
    }else if(barrier&&r.jumpedBarriers<level.mastery.jumps)want=barrier.lane;
-   else if(fish&&!blocked(fish.lane))want=fish.lane;
+   else if(fish&&!blocked(fish.lane)&&safeFishCross(fish.lane))want=fish.lane;
    if(want!==r.laneIndex)input(r,want<r.laneIndex?'left':'right');
    const b=ahead.find(o=>o.kind==='barrier'&&o.lane===r.laneIndex&&o.x-r.distance<jumpDistance+.6&&o.x-r.distance>jumpDistance-.6);
    if(b&&r.y===0)input(r,'jump');
@@ -136,7 +150,8 @@ function masteryDrive(level,dt,jumpDistance){
 test('all five levels have a real safe 3-star jump/fishing path',()=>{
  const jumpDistances=[3.4,3.4,4.2,3.8,4.2];
  for(const l of LEVELS){
-  const r=masteryDrive(l,1/120,jumpDistances[l.id-1]);
+  const r=l.id===1?drivePressureRoute(1/120):masteryDrive(l,1/120,jumpDistances[l.id-1]);
+  if(l.id===1)settle(newSave(),r);
   assert.equal(r.reason,'complete','level '+l.id+' ended '+r.reason+' hit='+r.lastCollisionId+' dist='+r.distance.toFixed(1)+' lane='+r.lane.toFixed(2));
   assert.equal(r.stars,3,'level '+l.id+' fish='+r.count+' gold='+r.gold+' jumps='+r.jumpedBarriers+' bestStreak='+r.bestStreak+' targetStreak='+starRequirements(l).streak);
   assert.equal(r.hits,0);

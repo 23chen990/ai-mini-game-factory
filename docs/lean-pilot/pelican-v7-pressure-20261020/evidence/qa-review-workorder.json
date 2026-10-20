@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "role": "QAAgent",
+  "targetGame": "鹈鹕海岸冒险 V7",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-pelican-v7/runs/pelican-coast-v2-20261014/workspace",
+  "runRoot": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-pelican-v7/runs/pelican-coast-v2-20261014",
+  "buildHash": "7ae4a32ad7ddd84c54a7e33c03ad7cf72e210e0609b1768c19100352c066ee8a",
+  "contract": "evidence/v7-pressure/product-experience-contract.json",
+  "contractHash": "80209ccdf17a866f1be5fef7ffda424ac75a6075e3ce6711d46cbd30136069f6",
+  "scope": [
+    "Continue existing independent QA role. Only4 exact cases: car l1-o11 merge/failure and car l1-o6 earned close pass/finish, on Chromium and WebKit390x844.",
+    "Inspect pixels via view_image and selected raw state/input/event sequences; do not approve from passing flags. Read case bindings for exact paths/hashes.",
+    "Attempt7 signal wrapping and attempt8 jump-icon overflow are preserved outside current reports; current build widened slots. Do not treat older screenshots as current.",
+    "This is a first-level gameplay experiment, NOT full formalFIX, release approval or proof of enjoyment.320/landscape geometric checks are separate, not in these4 perceptual cases."
+  ],
+  "traces": [
+    {
+      "name": "traffic-merge-chromium",
+      "path": "evidence/v7-pressure/natural/traffic-merge-chromium.json",
+      "sha256": "b6a973c239be621f29c64465f1c424bc6cd926765b258f7ba02d318e8d435cdf",
+      "raw": "attempts/attempt-9/traffic-pressure-chromium/report.json",
+      "features": [
+        "traffic-merge"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "chromium-390x844"
+      }
+    },
+    {
+      "name": "escape-payoff-chromium",
+      "path": "evidence/v7-pressure/natural/escape-payoff-chromium.json",
+      "sha256": "f09d7dc1e8b47ed986fb0074b208c9d44dc32be8110bb9112a666758fcc53f0d",
+      "raw": "attempts/attempt-9/traffic-pressure-chromium/report.json",
+      "features": [
+        "escape-payoff"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "chromium-390x844"
+      }
+    },
+    {
+      "name": "traffic-merge-webkit",
+      "path": "evidence/v7-pressure/natural/traffic-merge-webkit.json",
+      "sha256": "5ec03fa04fc7b81058344436f5088a2a0b30ca5ca0db1d4cd26d12b1d2928f9c",
+      "raw": "attempts/attempt-9/traffic-pressure-webkit/report.json",
+      "features": [
+        "traffic-merge"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "webkit-390x844"
+      }
+    },
+    {
+      "name": "escape-payoff-webkit",
+      "path": "evidence/v7-pressure/natural/escape-payoff-webkit.json",
+      "sha256": "382392281eb5369a16ee4dbf61a5e9bdbfa0d711d7efa8f3e40eaa1a84f2cd86",
+      "raw": "attempts/attempt-9/traffic-pressure-webkit/report.json",
+      "features": [
+        "escape-payoff"
+      ],
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "webkit-390x844"
+      }
+    }
+  ],
+  "rawReports": [
+    "attempts/attempt-9/traffic-pressure-chromium/report.json",
+    "attempts/attempt-9/traffic-pressure-webkit/report.json"
+  ],
+  "output": "evidence/v7-pressure/perceptual-qa-report.json",
+  "acceptance": [
+    "Write ONLY the assigned PerceptualQaReportSchema-valid output; return a Zod-validated {path,sha256} binding, no prose.",
+    "Use exact contract/check/object/state/viewport labels. Review actual l1-o6 near-miss (not sibling barrier35m).",
+    "Set reviewer QAAgent and authorIndependent true; you did not implement source. Honest BLOCKED is valid.",
+    "Use existing src/core/product-experience-qa.ts verifier if useful; parent owns final acceptance."
+  ],
+  "forbidden": [
+    "You are not alone in this worktree. Do not revert others or change source, captures, contracts, tests or any file besides the assigned report.",
+    "Do not spawn agents, launch browsers, fix source or expand review scope.",
+    "Do not claim human fun, ad desire, audible sound from silent videos or real-phone performance."
+  ],
+  "sourceBindings": [
+    {
+      "path": "attempts/attempt-9/traffic-pressure-chromium/report.json",
+      "sha256": "d4a1cf3b0113af8bd0224401f0cc0a5195dbd52fdd8da6ec8ef09c132cc59a3b"
+    },
+    {
+      "path": "attempts/attempt-9/traffic-pressure-webkit/report.json",
+      "sha256": "aab399d137edaaab3ce5c61859f6c9d3c59f9d3118306170a08d404144033d47"
+    },
+    {
+      "path": "evidence/v7-pressure/review-case-bindings.json",
+      "sha256": "dcefd234f92300a2ec4da32c8413baa54f1c2982651e6c123ab8a0f52907555b"
+    }
+  ]
+}

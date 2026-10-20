@@ -1,10 +1,10 @@
 /* global structuredClone */
-import {unsafeFishLanes} from './safety.mjs';
+import {LANES,unsafeFishLanes} from './safety.mjs';
 import {makeBarrierPrizes} from './engagement.mjs';
 export {LANES} from './safety.mjs';
 // Authored encounters, shared coast. Distances/timing/content are original to this project.
 const definitions = [
- {id:1,name:'海岸出发',subtitle:'海岸挑战 · 连续吞鱼、跳障追金鱼、预判车流',mastery:{jumps:1},distance:300,speed:7.5,seconds:55,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[233,'barrier',1],
+ {id:1,name:'海岸出发',subtitle:'车流来袭 · 看转向灯，穿过移动空隙',mastery:{jumps:1},distance:300,speed:6,seconds:65,goal:{count:8,gold:0},hour:14,weather:'clear',reward:15,rows:[[90,'pedestrian',0],[140,'barrier',1],[162,'pedestrian',2],[233,'barrier',1],
   // V4 authored pressure beats are appended to keep the original obstacle IDs and QA evidence stable.
   // 75m optional left jump; then a right-vehicle/center-jump decision, later alternating safe gaps.
   [75,'barrier',0],[130,'car',2],[181,'car',1],[205,'barrier',0],[248,'van',2],[274,'car',1]]},
@@ -45,6 +45,28 @@ export const PRESSURE_GATES=Object.freeze({
   [558,'van',1],[558,'car',2], // left gap after 475m
  ]),
 });
+// V7 authored opening decision waves. Start a real physical risk in ~4-5s,
+// followed by two different hazards while the player is still recovering from
+// the first action. Keep old barrier IDs stable for saved QA target mapping.
+// NEVER spawn dynamically to punish a player, and never close all three lanes.
+// Alternative fish/jump lines are earned using the same authoritative physics.
+export const V7_OPENING_WAVES=Object.freeze({
+ 1:Object.freeze([[35,'barrier',1],[65,'car',0],[80,'car',2]]),
+ 2:Object.freeze([[35,'barrier',1],[53,'car',0],[67,'car',2]]),
+ 3:Object.freeze([[37,'barrier',1],[57,'car',2],[75,'car',0]]),
+ 4:Object.freeze([[38,'barrier',1],[57,'van',2],[77,'car',0]]),
+ 5:Object.freeze([[38,'barrier',1],[57,'van',2],[76,'car',0]]),
+});
+// V7 midcourse pressure: 16 physically verified hazard beats inserted into
+// previously sparse intervals. Every old obstacle ID and exact jump prize
+// remains unchanged: all V7 hazards are appended, never retargeted.
+export const V7_MIDCOURSE_WAVES=Object.freeze({
+ 1:Object.freeze([[110,'barrier',1],[219,'car',2]]),
+ 2:Object.freeze([[219,'barrier',0],[314,'barrier',1]]),
+ 3:Object.freeze([[132,'barrier',2],[190,'car',2],[448,'barrier',1]]),
+ 4:Object.freeze([[130,'barrier',2],[190,'car',1],[380,'barrier',2],[566,'car',1]]),
+ 5:Object.freeze([[184,'car',1],[239,'barrier',2],[366,'barrier',0],[515,'car',2],[611,'barrier',1]]),
+});
 export const BOUNDS = {car:{x:1.5,z:.63},van:{x:1.8,z:.66},pedestrian:{x:.25,z:.25},barrier:{x:.24,z:.59}};
 // Conservative envelopes include approach motion, player body and pedestrian crossing.
 export function unsafeLanes(obstacles,x) { return unsafeFishLanes(obstacles,x); }
@@ -65,7 +87,13 @@ const FISH_PATTERNS = [
  [1,2,0,2,0,1,0,2], // dusk
 ];
 export const LEVELS=definitions.map(d=>{
- const obstacles=[...d.rows,...(PRESSURE_GATES[d.id]??[])].map(([x,kind,lane],i)=>({id:`l${d.id}-o${i}`,x,kind,lane,speed:kind==='car'?1.7:kind==='van'?1.25:0}));
+ const obstacles=[...d.rows,...(PRESSURE_GATES[d.id]??[]),...(V7_OPENING_WAVES[d.id]??[]),...(V7_MIDCOURSE_WAVES[d.id]??[])].map(([x,kind,lane],i)=>({id:`l${d.id}-o${i}`,x,kind,lane,speed:kind==='car'?1.7:kind==='van'?1.25:0}));
+ // First-level experiment: authored x is the planned encounter, lane is the
+ // destination. Every merge is pre-authored and adjacent, never player-seeking.
+ if(d.id===1)for(const o of obstacles.filter(o=>o.kind==='car'||o.kind==='van')){
+  o.speed=o.kind==='car'?4.6:3.8;
+  o.mergeFrom=o.lane===1?(o.x===181?0:2):1;
+ }
  const fish=[];let lastLane=1;const pattern=FISH_PATTERNS[d.id-1];
  const crossesBlocked=(from,to,bad)=>Array.from({length:Math.abs(from-to)+1},(_,j)=>Math.min(from,to)+j).some(l=>bad.has(l));
  for(let x=15,i=0;x<d.distance-10;x+=16,i++){
@@ -75,6 +103,17 @@ export const LEVELS=definitions.map(d=>{
   if(crossesBlocked(lastLane,lane,bad))lane=[lastLane,1,2,0].find(l=>!crossesBlocked(lastLane,l,bad))??[1,2,0].find(l=>!bad.has(l))??2;
   lastLane=lane;fish.push({id:`l${d.id}-f${i}`,x,lane,golden:i>1&&i%7===3});
  }
+ // The rain jump route previously led away from its own preparation/landing:
+ // the verified 225/350/593m route earned 25/28 fish despite three clean jumps.
+ // Move three EXISTING fish onto that route; no extra fish or easier star rule.
+ // The alternate 351m left fish still offers a safe, non-jumping choice.
+ if(d.id===4){
+  for(const [x,lane] of [[335,1],[367,1],[607,2]])fish.find(f=>f.x===x).lane=lane;
+ }
+ // Commit left after the opening crossing, before the 112m centre barrier.
+ // The old 79m centre fish rewarded a late steering response and was missed
+ // by the same clean WebKit route that caught it in Chromium.
+ if(d.id===2)fish.find(f=>f.id==='l2-f4').lane=0;
  // A rider who never touches the steering should not take every tutorial fish.
  // First fish remains central and easy; these next two fish are physically
  // between the painted lane centres. 'lane' is a HUD zone, not a magnet.
@@ -120,8 +159,28 @@ export const LEVELS=definitions.map(d=>{
    fish.push({id:`l5-trail-${x}`,x:followed,lane:leader.lane,z:leader.z,golden:false,shoal:true});
   }
  }
+ // V7 extra catch on the real safe CENTRE approach before the 222m barrier.
+ // This ordinary fish requires manual riding and does not grant jump gold.
+ if(d.id===3){
+  const x=211,lane=1;
+  if(!unsafeLanes(obstacles,x).has(lane))
+   fish.push({id:'l3-v7-escape-trail-211',x,lane,golden:false,shoal:true});
+ }
  // Optional visible golden fish behind barriers; never required for one-star completion.
  fish.push(...makeBarrierPrizes(d.id,obstacles,d.distance));
+ // Optional wing lines: tap clears the obstacle and still earns the original
+ // +9m gold; holding the SAME button lets the pelican reach two elevated fish.
+ // No level/star requirement depends on these new fish. Later lines lean
+ // toward the landing exit, rewarding air steering rather than jump spam.
+ const airBarriers={1:[110,233],2:[246,356],3:[222,360],4:[350,593],5:[334,584]}[d.id];
+ for(const o of obstacles.filter(o=>o.kind==='barrier'&&airBarriers.includes(o.x))){
+  for(const [i,offset] of (d.id===1?[3.3,4.5]:[4.5,6]).entries()){
+   if(unsafeLanes(obstacles.filter(other=>other!==o),o.x+offset).has(o.lane))continue;
+   const drift=d.id===1&&o.x===110?0:o.lane===0?.72:o.lane===2?-.72:d.id%2===0?.72:-.72;
+   fish.push({id:`l${d.id}-air-${o.id}-${i}`,x:o.x+offset,lane:o.lane,
+    z:LANES[o.lane]+drift*i,golden:false,bonus:false,airborne:true,sourceObstacleId:o.id});
+  }
+ }
  fish.sort((a,b)=>a.x-b.x);
  const {rows: _rows,...config}=d; void _rows;
  return Object.freeze({...config,fish,obstacles});

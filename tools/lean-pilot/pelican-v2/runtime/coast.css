@@ -8,7 +8,7 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 .co-goals{display:grid;grid-template-columns:1.2fr 1fr .6fr;gap:6px;margin:7px 12px}.co-goal{padding:7px 10px;background:#fff9eced;border-radius:13px;box-shadow:0 2px 10px #12384a1a}.co-goal span{font-size:11px;color:#436a70}.co-goal b{font-size:17px;display:block;font-variant-numeric:tabular-nums;white-space:nowrap}.co-goal progress{width:100%;height:5px;display:block;accent-color:#21877c;margin-top:4px}.co-goal.done{background:#dbf4cb}.co-goal.urgent{background:#ffcf9f;animation:co-pulse .8s infinite alternate}
 #co-radar{display:flex;gap:4px;position:absolute;left:50%;top:174px;transform:translateX(-50%);padding:5px;background:#153f4b9c;border-radius:14px;opacity:0;transition:opacity .2s}#co-radar.active{opacity:1}.co-lane{width:64px;min-height:43px;text-align:center;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:3px;color:white;font-size:21px;border:2px solid transparent}.co-lane.danger{background:#c74332e6;border-color:#ffbfa1}.co-lane.fish{background:#167878e6;border-color:#a4ffdf}.co-lane small{font-size:11px}#co-radar-label{position:absolute;top:156px;left:0;right:0;text-align:center;font-size:10px;color:#fff;text-shadow:0 1px 3px #123;opacity:.9}
 #co-feedback{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);text-align:center;background:#fff8e8f2;border:2px solid #f9d477;border-radius:20px;min-width:190px;padding:12px 18px;opacity:0;transition:opacity .12s;box-shadow:0 5px 30px #14383c33}#co-feedback.visible{opacity:1}#co-feedback strong{font-size:25px;display:block}#co-feedback small{font-size:13px}#co-feedback.collision{background:#ffe1c6;border-color:#e98360}#co-feedback.catch{background:#e4f2c8;border-color:#9bcf73}#co-feedback.combo{background:#ffeb9e;border-color:#e7a82b;color:#59420e;box-shadow:0 6px 22px #a96b2766}#co-feedback.near-miss{background:#d5fbeb;border-color:#22bdb6;color:#135d66;box-shadow:0 6px 22px #177b8870}
-#co-feedback.catch,#co-feedback.tutorial,#co-feedback.combo,#co-feedback.near-miss{top:auto;bottom:182px;left:16px;transform:none;min-width:0;padding:7px 12px;border-radius:13px}#co-feedback.catch strong,#co-feedback.tutorial strong,#co-feedback.combo strong,#co-feedback.near-miss strong{font-size:16px}#co-feedback.catch small,#co-feedback.tutorial small,#co-feedback.combo small,#co-feedback.near-miss small{display:none}
+#co-feedback.catch,#co-feedback.tutorial,#co-feedback.combo,#co-feedback.near-miss,#co-feedback.glide,#co-feedback.air-catch{top:auto;bottom:182px;left:16px;transform:none;min-width:0;padding:7px 12px;border-radius:13px}#co-feedback.catch strong,#co-feedback.tutorial strong,#co-feedback.combo strong,#co-feedback.near-miss strong,#co-feedback.glide strong,#co-feedback.air-catch strong{font-size:16px}#co-feedback.catch small,#co-feedback.tutorial small,#co-feedback.combo small,#co-feedback.near-miss small,#co-feedback.glide small,#co-feedback.air-catch small{display:none}
 #co-modal{pointer-events:auto;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:145px 12px max(22px,env(safe-area-inset-bottom));background:linear-gradient(#18485a0a,#173e4a66)}
 #coast.crashing #co-modal{visibility:hidden;pointer-events:none}
 .co-card{width:min(430px,100%);max-height:100%;overflow:auto;overscroll-behavior:contain;background:var(--cream);border:2px solid #fff8ec;border-radius:26px;box-shadow:0 18px 70px #0c343c55;padding:22px;touch-action:pan-y}.co-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#4b807e}.co-card h1{font-size:30px!important;line-height:1.18;margin:6px 0 10px!important;color:var(--ink)!important;background:none!important;-webkit-text-fill-color:var(--ink);letter-spacing:.03em}.co-card h2{font-size:25px;line-height:1.25;margin:7px 0 9px}.co-card p{color:#4f6b6c;font-size:13px;margin:8px 0 13px}#co-copy{font-size:14px;line-height:1.5;white-space:pre-line}.co-progress{font-size:12px!important;font-weight:800!important;color:#407b71!important;margin:10px 0 0!important}.co-route{display:grid;gap:7px;margin-top:9px}.co-route button{display:flex;align-items:center;gap:12px;text-align:left;background:#e7ebd9!important;color:var(--ink)!important;padding:10px 12px!important;box-shadow:none!important}.co-route button>strong{display:grid;place-items:center;min-width:36px;height:36px;border-radius:50%;background:#fff7df;font-size:20px}.co-route button span{flex:1}.co-route b{display:block;font-size:15px}.co-route small{display:block;font-size:11px;font-weight:500;color:#5d7876}.co-route small.co-master{color:#99721d;font-weight:700;font-size:10px}.co-route em{font-style:normal;color:#99721d;font-size:13px}.co-route button.selected{background:#d3e7d0!important;outline:2px solid #5e9a8c}.co-route button.locked{background:#e9e8de!important;opacity:.6}
@@ -29,15 +29,15 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
 @media(orientation:landscape){.co-top{width:290px}.co-goals{width:290px;grid-template-columns:1.15fr 1fr .65fr}.co-top b{font-size:13px}.co-goal{padding:5px 7px}.co-goal b{font-size:14px}#co-modal{padding:8px 20px;justify-content:flex-end}.co-card{width:350px;padding:17px;max-height:calc(100% - 16px)}.co-card h1{font-size:25px!important}.co-route{grid-template-columns:1fr 1fr;gap:5px;margin-top:9px}.co-route button{padding:8px!important;gap:5px}.co-route button>strong{min-width:23px;height:23px;font-size:13px}.co-route b{font-size:12px}.co-route small{font-size:9px}.co-route em{display:none}.co-rules{padding-top:4px}.co-rules b{font-size:19px}.co-actions{margin-top:9px;gap:6px}.co-settings{margin-top:6px}.co-card p{margin:6px 0}.co-meta{display:none}#co-controls{left:auto;width:310px;gap:10px;bottom:max(12px,env(safe-area-inset-bottom))}#co-controls button{height:55px;font-size:21px}#co-radar{top:10px;left:60%}#co-radar-label{top:59px;left:40%;right:10%}.co-lane-indicator{left:190px;bottom:25px}#co-feedback{top:55%;left:45%}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(orientation:portrait){#coast[data-phase="ready"] .co-card{height:calc(100vh - 168px);max-height:calc(100vh - 168px);height:calc(100dvh - 168px);max-height:calc(100dvh - 168px);display:flex;flex-direction:column;overflow:hidden}#coast[data-phase="ready"] .co-card>*{flex-shrink:0}#coast[data-phase="ready"] .co-route{flex:1 1 auto;min-height:0;overflow:auto;overscroll-behavior:contain;padding:3px 2px;margin-top:10px}#coast[data-phase="ready"] .co-actions{margin-top:10px}}
-@media(orientation:landscape){#co-feedback.catch,#co-feedback.tutorial,#co-feedback.combo,#co-feedback.near-miss{top:auto;bottom:80px;left:16px;transform:none}}
+@media(orientation:landscape){#co-feedback.catch,#co-feedback.tutorial,#co-feedback.combo,#co-feedback.near-miss,#co-feedback.glide,#co-feedback.air-catch{top:auto;bottom:80px;left:16px;transform:none}}
 @media(orientation:landscape){.co-lane-indicator{left:50%}}
 @media(max-height:650px) and (orientation:portrait){
  #coast[data-phase="ready"] .co-card h1{font-size:24px!important;margin:0 0 4px!important}
  #coast[data-phase="ready"] .co-card h1 br,#coast[data-phase="ready"] .co-eyebrow,#coast[data-phase="ready"] #co-notice:empty{display:none}
  #coast[data-phase="ready"] #co-copy{font-size:11px;margin:5px 0}
  .co-goal{padding:4px 6px}.co-goal span,.co-goal b{line-height:1.1}.co-goal progress{height:3px;margin-top:3px}
- #co-feedback.catch,#co-feedback.tutorial,#co-feedback.combo,#co-feedback.near-miss{top:246px;bottom:auto;left:12px;padding:4px 8px}
- #co-feedback.catch strong,#co-feedback.tutorial strong,#co-feedback.combo strong,#co-feedback.near-miss strong{font-size:12px}
+ #co-feedback.catch,#co-feedback.tutorial,#co-feedback.combo,#co-feedback.near-miss,#co-feedback.glide,#co-feedback.air-catch{top:246px;bottom:auto;left:12px;padding:4px 8px}
+ #co-feedback.catch strong,#co-feedback.tutorial strong,#co-feedback.combo strong,#co-feedback.near-miss strong,#co-feedback.glide strong,#co-feedback.air-catch strong{font-size:12px}
  #co-radar{top:190px}#co-radar-label{top:174px}
  #co-mastery{top:130px;bottom:auto;left:12px;max-width:calc(100% - 24px);padding:3px 5px;gap:2px}
  #co-mastery span{padding:1px 3px}
@@ -103,3 +103,75 @@ body{--ink:#163a42;--cream:#fff7de;--sea:#17696b;--gold:#ffc957;--red:#e96a4d;co
  #coast[data-phase="ready"] #co-modal{padding-top:max(84px,calc(env(safe-area-inset-top,0px) + 74px));padding-bottom:max(10px,env(safe-area-inset-bottom,0px))}
  #coast[data-phase="ready"] .co-card{height:calc(100dvh - 104px);max-height:calc(100dvh - 104px)}
 }
+
+/* V7: make the FORWARD ROAD the primary instrument during a live run.
+   No gameplay control or collision changes. The previous three tall HUD
+   bands occluded oncoming vehicles on a 320x568 phone.
+   Menu and finish screens retain the full information density. */
+#coast[data-phase="running"] .co-top{
+ margin:4px 8px 0;padding:2px 8px 2px 10px;min-height:45px;
+ border-radius:12px
+}
+#coast[data-phase="running"] .co-top small{font-size:9px;line-height:1}
+#coast[data-phase="running"] .co-top b{font-size:14px;line-height:1.1}
+#coast[data-phase="running"] .co-goals{
+ gap:4px;margin:3px 8px;grid-template-columns:1.2fr 1fr .6fr
+}
+#coast[data-phase="running"] .co-goal{
+ padding:4px 6px;border-radius:9px
+}
+#coast[data-phase="running"] .co-goal span{font-size:10px}
+#coast[data-phase="running"] .co-goal b{font-size:15px;line-height:1.1}
+#coast[data-phase="running"] .co-goal progress{height:4px;margin-top:2px}
+/* Preserve the tested vertical safety order: goals -> mastery -> lane gauge
+   -> warning LABEL -> radar. Compacting the upper HUD must never push a
+   danger preview over the mastery track on a 320x568 phone. */
+@media(orientation:portrait) and (max-height:650px){
+ #coast[data-phase="running"] .co-goal b{font-size:14px}
+}
+
+/* V7 live-run road visibility: keep warnings readable without blocking
+   the incoming bicycle corridor, on 320px and full-size phones alike. */
+@media (orientation:portrait){
+ #coast[data-phase="running"] #co-mastery{top:110px;bottom:auto;left:8px;max-width:calc(100% - 16px);font-size:12px;padding:3px 5px;gap:2px}
+ #coast[data-phase="running"] #co-mastery span{padding:2px 3px}
+ #coast[data-phase="running"] .co-lane-indicator{top:145px;bottom:auto}
+ #coast[data-phase="running"] #co-radar-label{top:161px;left:3%;right:3%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:10px}
+ #coast[data-phase="running"] #co-radar{top:180px;gap:3px;padding:3px;border-radius:10px;background:#123c4be0}
+ #coast[data-phase="running"] #co-radar .co-lane{width:54px;min-height:38px;font-size:18px}
+ #coast[data-phase="running"] #co-radar .co-lane small{font-size:10px}
+}
+@media (orientation:portrait) and (max-height:650px){
+ #coast[data-phase="running"] #co-mastery{top:110px}
+ #coast[data-phase="running"] .co-lane-indicator{top:145px}
+ #coast[data-phase="running"] #co-radar-label{top:161px}
+ #coast[data-phase="running"] #co-radar{top:180px}
+}
+
+/* Physics-confirmed queued jump feedback is immediate, not delayed by WebGL
+   frame work. This changes no jump timing, collision or scoring rules. */
+#co-feedback.visible.instant-queued{opacity:1;transition:none}
+/* A forecast is not a wall: amber traffic is still ahead, red needs action.
+   Geometry/collision never changes with this presentation. */
+#co-radar .co-lane.warning{background:#fff0bf;color:#634b20;border-color:#dda543;box-shadow:inset 0 -4px 0 #dda543}
+#co-radar .co-lane.warning::after{content:'前方';font-size:10px;display:block;line-height:1.1}
+#co-wing-meter{position:fixed;right:16px;bottom:calc(108px + env(safe-area-inset-bottom));z-index:12;display:flex;align-items:center;gap:5px;background:#154e58ed;border:2px solid #77d8ca;color:#eafff7;border-radius:16px;padding:7px 9px;pointer-events:none;font-size:12px}
+#co-wing-meter[hidden]{display:none}#co-wing-meter progress{width:52px;height:9px;accent-color:#5ff5d0}#co-wing-meter.active{background:#126357;border-color:#6ff7cb}
+#co-controls [data-action="jump"].winging{background:#64edc6;color:#124c49;box-shadow:0 0 0 4px #c1ffe2a0;transform:translateY(-2px)}
+#co-feedback.air-catch{background:#d0fff0;border-color:#289e86;color:#11584c}
+#co-feedback.glide{background:#154e58ee;border-color:#77d8ca;color:#ecfff5}
+@media(orientation:landscape){#co-wing-meter{right:14px;bottom:102px}}
+@media(prefers-reduced-motion:reduce){#co-controls [data-action="jump"].winging{transform:none}}
+
+#co-wardrobe{margin-top:6px}#co-wardrobe summary{min-height:44px;padding:12px 8px;cursor:pointer;font-size:12px;font-weight:750;color:#365b5b;border-top:1px solid #c8d8bc}#co-wardrobe[open]{max-height:180px;overflow:auto;flex-shrink:0!important}#coast[data-phase="ready"] .co-card:has(#co-wardrobe[open]){overflow:auto}
+
+/* An earned, brief escape pop beside the rider. No opaque road-covering card. */
+#co-escape{position:fixed;z-index:12;left:50%;bottom:35%;transform:translate(-50%,0);opacity:0;pointer-events:none;white-space:nowrap;color:#eaffda;text-shadow:0 2px 0 #075756,0 0 12px #14796b;font-weight:950;font-size:25px;letter-spacing:.02em}
+@media(orientation:landscape){#co-escape{bottom:38%;font-size:23px}}
+#co-radar .co-lane{position:relative;flex-wrap:nowrap}
+#co-radar .co-lane-icon,#co-radar .co-lane small{white-space:nowrap}
+#co-radar .co-lane.has-turn,#co-radar .co-lane.warning{padding-bottom:12px}
+#co-radar .co-turn{position:absolute;bottom:0;left:7px;font-size:16px;line-height:14px}
+#co-radar .co-lane.warning::after{position:absolute;bottom:2px;right:3px;font-size:8px;white-space:nowrap}
+
+#coast[data-phase="running"] #co-radar .co-lane{width:64px}

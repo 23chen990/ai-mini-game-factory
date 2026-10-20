@@ -92,10 +92,10 @@ test('actual consecutive caught fish earn a small streak reward; missed fish bre
   {id:'s3',x:47,lane:1,golden:false,caught:false},
   {id:'skip',x:63,lane:2,golden:false,caught:false}
  ];
- for(let i=0;i<780;i++)advance(r,1/120);
+ while(r.distance<49)advance(r,1/120);
  assert.equal(r.count,3);assert.equal(r.bestStreak,3);assert.equal(r.score,5);
  assert.ok(r.events.some(e=>e.type==='fish-caught'&&e.streak===3&&e.comboPoints===2));
- for(let i=0;i<450;i++)advance(r,1/120);
+ while(r.distance<67)advance(r,1/120);
  assert.equal(r.streak,0);assert.equal(r.bestStreak,3);
 });
 

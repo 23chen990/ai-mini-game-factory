@@ -30,8 +30,8 @@ export function heldSteerDistance(deltaSeconds, heldElapsedMs, speed=2.6, tapDel
 // The pinned demo has no yaw field. Copy the complete adventure pose even in
 // the pre-start/menu branch, before worldToLocal() drives the native head IK.
 export function syncRidePose(state,run){
- if(!run){Object.assign(state,{speed:0,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,y:0,vy:0,airborne:false,paused:true});return;}
- Object.assign(state,{distance:run.distance,lane:run.lane,laneTarget:run.laneTarget,laneV:run.laneV,speed:run.speed,y:run.y,vy:run.vy,airborne:run.y>0,fish:run.score,golden:run.gold,paused:run.phase!=='running',latAcc:run.latAcc,lean:run.lean,steer:run.steer,yaw:run.yaw});
+ if(!run){Object.assign(state,{speed:0,lane:0,laneTarget:0,laneV:0,latAcc:0,lean:0,steer:0,yaw:0,y:0,vy:0,airborne:false,gliding:false,paused:true});return;}
+ Object.assign(state,{distance:run.distance,lane:run.lane,laneTarget:run.laneTarget,laneV:run.laneV,speed:run.speed,y:run.y,vy:run.vy,airborne:run.y>0,gliding:run.gliding,fish:run.score,golden:run.gold,paused:run.phase!=='running',latAcc:run.latAcc,lean:run.lean,steer:run.steer,yaw:run.yaw});
 }
 
 // Inspection only: copy native mesh joints, never substitute finite fallbacks

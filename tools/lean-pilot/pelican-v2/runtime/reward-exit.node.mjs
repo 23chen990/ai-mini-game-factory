@@ -1,11 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {newRun} from './adventure.mjs';
+import {newRun,advance} from './adventure.mjs';
 import {rewardExitWarning} from './safety.mjs';
 
+function afterPrize(){const r=newRun(1);r.obstacles=r.obstacles.filter(o=>['car','van'].includes(o.kind));while(r.distance<156)advance(r,1/120);return r;}
+
 test('earned jump gold warns of the actual subsequent oncoming car, not fabricated deaths',()=>{
- const run=newRun(1);
- run.distance=148;run.laneIndex=1;
+ const run=afterPrize();run.laneIndex=1;
  assert.match(rewardExitWarning(run),/前方来车.*换到空车道/);
  run.laneIndex=0;
  assert.equal(rewardExitWarning(run),null,'safe adjacent lane must not inherit the center vehicle warning');
@@ -13,7 +14,7 @@ test('earned jump gold warns of the actual subsequent oncoming car, not fabricat
  assert.equal(rewardExitWarning(run),null,'distant traffic is not an immediate reward-exit hazard');
 });
 test('reward warning has no side effects and ignores already passed vehicles',()=>{
- const run=newRun(1);run.distance=148;run.laneIndex=1;
+ const run=afterPrize();run.laneIndex=1;
  const snapshot=JSON.stringify(run.obstacles);
  assert.ok(rewardExitWarning(run));
  assert.equal(JSON.stringify(run.obstacles),snapshot);

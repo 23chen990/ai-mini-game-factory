@@ -1,6 +1,7 @@
 import test from 'node:test';
+import {drivePressureRoute} from './qa-pressure-route.mjs';
 import assert from 'node:assert/strict';
-import { LEVELS, LANES, BOUNDS, makeLevel, validateLevel } from './runtime/levels.mjs';
+import { LEVELS, LANES, BOUNDS, V7_OPENING_WAVES, makeLevel, validateLevel } from './runtime/levels.mjs';
 import {brandPelicanBoot} from './boot.mjs';
 import { newRun, input, steerTo, advance, sweptHit, newSave, loadSave, settle, cameraPose, qualityStep } from './runtime/adventure.mjs';
 
@@ -10,14 +11,19 @@ test('five distinct safe courses: first-level traffic follows teaching; second l
  for(const l of LEVELS){assert.deepEqual(validateLevel(makeLevel(l.id)),[]);assert.ok(l.fish[0].x/l.speed<=2.5);assert.ok(l.fish.length>=l.goal.count+4);}
  const openingTraffic=LEVELS[0].obstacles.filter(o=>['car','van'].includes(o.kind));
  assert.ok(openingTraffic.length>=3,'V4 retains alternating vehicle decisions');
- assert.ok(openingTraffic.every(o=>o.x>=100),'early steering/fishing teaching precedes lethal traffic');
- assert.ok(LEVELS[0].obstacles.some(o=>o.kind==='barrier'&&o.x<openingTraffic[0].x),'jump-or-detour teaching precedes cars');
- // Level 2 is pedestrian/barrier-dominant, but its last visible choke
- // introduces ONE vehicle before level 3 so repeated jump spam cannot clear.
- const lateVehicles=LEVELS[1].obstacles.filter(o=>['car','van'].includes(o.kind));
- assert.equal(lateVehicles.length,1);
- assert.ok(lateVehicles[0].x>=380,'late fair vehicle remains telegraphed, not a surprise first-second death');
- assert.ok(LEVELS[1].obstacles.filter(o=>o.x<lateVehicles[0].x).every(o=>!['car','van'].includes(o.kind)));
+ // Original authored obstacle IDs and the late 390m gate remain intact;
+ // V7 intentionally adds two EARLY visible cars after an honest jump choice.
+ assert.ok(openingTraffic.some(o=>o.x>=100));
+ assert.equal(openingTraffic.filter(o=>o.x<100).length,2,
+  'early cars create a second and third actual decision instead of idle riding');
+ assert.ok(LEVELS[0].obstacles.some(o=>o.kind==='barrier'&&o.x<53),
+  'the opening jump-or-detour exists before the first car');
+ const allVehicles=LEVELS[1].obstacles.filter(o=>['car','van'].includes(o.kind));
+ assert.equal(allVehicles.length,3,'two V7 early lane pressures plus original closing vehicle');
+ assert.deepEqual(allVehicles.filter(o=>o.x<100).map(o=>o.x).sort((a,b)=>a-b),[53,67]);
+ assert.ok(allVehicles.some(o=>o.x===390&&o.id==='l2-o14'));
+ assert.ok(LEVELS[1].obstacles.some(o=>o.kind==='pedestrian'&&o.x===76));
+ assert.equal(V7_OPENING_WAVES[1].length,3);
  assert.ok(LEVELS[2].obstacles.some(o=>o.kind==='car')&&LEVELS[2].obstacles.some(o=>o.kind==='van'));
  assert.equal(LEVELS[3].weather,'rain');assert.ok(LEVELS[4].hour>=18);assert.ok(LEVELS[4].hour<18.5,'dusk road must stay readable');
 });
@@ -51,13 +57,13 @@ test('one tap nudges a fractional road position and pause rejects steering',()=>
 
 test('a buffered jump respects the target lane while physical steering is still settling',()=>{
  const r=newRun(1);
- r.distance=132;r.lane=-1.12;r.laneTarget=0;r.laneIndex=1;
+ r.distance=140-r.level.speed;r.lane=-1.12;r.laneTarget=0;r.laneIndex=1;
  input(r,'jump');
  assert.equal(r.bufferedJump,'l1-o1','early jump must queue for the selected barrier rather than fire while the rider is drifting');
  assert.equal(r.vy,0);
  advance(r,.8);
  assert.ok(r.events.some(e=>e.type==='jump'&&e.objectId==='l1-o1'&&e.buffered===true));
- const cancelled=newRun(1);cancelled.distance=132;cancelled.lane=-1.12;cancelled.laneTarget=0;cancelled.laneIndex=1;
+ const cancelled=newRun(1);cancelled.distance=140-cancelled.level.speed;cancelled.lane=-1.12;cancelled.laneTarget=0;cancelled.laneIndex=1;
  input(cancelled,'jump');steerTo(cancelled,1.7);
  assert.equal(cancelled.bufferedJump,null,'leaving the reward lane must cancel the queued jump');
 });
@@ -76,8 +82,8 @@ test('pedestrians start on the sidewalk and do not teleport from a road lane on 
  const r=newRun(2);const p=r.obstacles.find(o=>o.kind==='pedestrian');assert.ok(Math.abs(p.z)>3);const z=p.z;tick(r,.4);assert.equal(p.z,z);
 });
 test('barrier collides at ground height; a visibly cleared jump or lane change avoids it',()=>{
- const r=newRun(1);r.obstacles=[{id:'bar',kind:'barrier',x:15,lane:1,speed:0}];r.fishes=[];tick(r,2.3);assert.equal(r.reason,'barrier');
- const j=newRun(1);j.obstacles=[{id:'bar',kind:'barrier',x:15,lane:1,speed:0}];j.fishes=[];tick(j,1.6);input(j,'jump');tick(j,.7);assert.notEqual(j.phase,'finished');assert.equal(j.events.filter(e=>e.type==='barrier-cleared').length,1);
+ const r=newRun(1);r.obstacles=[{id:'bar',kind:'barrier',x:15,lane:1,speed:0}];r.fishes=[];tick(r,16/r.level.speed);assert.equal(r.reason,'barrier');
+ const j=newRun(1);j.obstacles=[{id:'bar',kind:'barrier',x:15,lane:1,speed:0}];j.fishes=[];tick(j,(15-j.level.speed)/j.level.speed);input(j,'jump');tick(j,1.4);assert.notEqual(j.phase,'finished');assert.equal(j.events.filter(e=>e.type==='barrier-cleared').length,1);
 });
 test('finish requires distance AND both fish count and fish type, settles immediately',()=>{
  const fail=newRun(1);fail.distance=fail.level.distance-.01;fail.fishes=[];advance(fail,.05);assert.equal(fail.reason,'fish-short');
@@ -89,10 +95,10 @@ test('save validates corrupt input; success unlocks next; failure does not; sett
  const f=newRun(3);f.phase='finished';f.reason='vehicle';settle(s,f);assert.equal(s.unlocked,2);
 });
 test('authored courses have a no-hit path meeting distance and fish/type goals at both 30 and 60 Hz',()=>{
- for(const dt of [1/30,1/60,1/120])for(const level of LEVELS){const r=newRun(level.id);let decisions=0;
+ for(const dt of [1/30,1/60,1/120])for(const level of LEVELS){const r=level.id===1?drivePressureRoute(dt):newRun(level.id);let decisions=0;
   while(r.phase==='running'){
    if(decisions++%Math.round(.12/dt)===0){const close=r.obstacles.filter(o=>!o.hit&&!o.passed&&o.x-r.distance>-(BOUNDS[o.kind].x+.75)&&o.x-r.distance<65);
-    const blocked=lane=>close.some(o=>Math.abs(o.z-LANES[lane])<.8&&(o.x-r.distance)/(level.speed+o.speed)<=3);
+    const blocked=lane=>close.some(o=>Math.abs((o.mergeFrom!==undefined?LANES[o.lane]:o.z)-LANES[lane])<.8&&(o.x-r.distance)/(level.speed+o.speed)<=3);
     const fish=r.fishes.find(f=>!f.caught&&f.x-r.distance>1&&f.x-r.distance<35);let want=r.laneIndex;
     if(blocked(want)){const safe=[0,1,2].filter(l=>!blocked(l));want=(fish&&safe.includes(fish.lane)?fish.lane:safe.sort((a,b)=>Math.abs(a-r.laneIndex)-Math.abs(b-r.laneIndex))[0])??want;}
     else if(fish&&!blocked(fish.lane))want=fish.lane;
@@ -130,16 +136,16 @@ test('static coast boot appears before the old PC intro and old intro stays hidd
  assert.throws(()=>brandPelicanBoot(result),/anchor changed/);
 });
 
-test('early 2.25-second mobile jump queue is real and cannot arm from too far away',()=>{
+test('1.1-second mobile jump queue is real and cannot arm too early',()=>{
  const ready=newRun(1);
- ready.distance=124;ready.lane=0;ready.laneTarget=0;ready.laneIndex=1;
+ ready.distance=140-ready.level.speed;ready.lane=0;ready.laneTarget=0;ready.laneIndex=1;
  input(ready,'jump');
- assert.equal(ready.bufferedJump,'l1-o1','player gets an actual visible two-second preparation window');
- assert.equal(ready.vy,0,'prepared touch must not trigger an immediate false jump');
- tick(ready,2);
+ assert.equal(ready.bufferedJump,'l1-o1','1.1-second window must queue the exact barrier');
+ assert.equal(ready.vy,0,'queued touch must not trigger an immediate false jump');
+ tick(ready,1.5);
  assert.ok(ready.events.some(e=>e.type==='jump'&&e.objectId==='l1-o1'&&e.buffered===true));
  const tooFar=newRun(1);
- tooFar.distance=120;input(tooFar,'jump');
- assert.equal(tooFar.bufferedJump,null,'jump cannot arm a hazard beyond the intentional 2.25s window');
- assert.ok(tooFar.vy>0,'ordinary early swipe remains a real jump');
+ tooFar.distance=124;input(tooFar,'jump');
+ assert.equal(tooFar.bufferedJump,null,'an early 2-second press must not automatically clear the barrier');
+ assert.ok(tooFar.vy>0,'ordinary early swipe is still a real jump');
 });

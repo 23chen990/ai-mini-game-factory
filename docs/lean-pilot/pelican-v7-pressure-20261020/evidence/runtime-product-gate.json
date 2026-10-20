@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "entrypoint": "workspace/game/index.html",
+  "defaultMode": "First-level authored moving-traffic pressure experiment",
+  "journey": [
+    "启动",
+    "escape-payoff",
+    "settlement",
+    "结算",
+    "replay",
+    "重试"
+  ],
+  "coreLoop": [
+    "escape-payoff"
+  ],
+  "terminal": [
+    "settlement"
+  ],
+  "replay": [
+    "replay"
+  ],
+  "runtimeWiredFiles": [
+    "workspace/game/index.html",
+    "workspace/source/pelican-bike/src/main.js",
+    "workspace/source/pelican-bike/src/coast-ui.mjs",
+    "workspace/source/pelican-bike/src/adventure.mjs",
+    "workspace/source/pelican-bike/src/levels.mjs",
+    "workspace/source/pelican-bike/src/safety.mjs",
+    "workspace/source/pelican-bike/src/feel.mjs",
+    "workspace/source/pelican-bike/src/coast.css"
+  ],
+  "legacyBehavior": {
+    "status": "REMOVED_FROM_DEFAULT_PATH",
+    "evidence": [
+      "Default fresh browser starts revised first level with actual traffic signal/merge; old fixed-lane first-level recipe is not an alternate hidden default.",
+      "Later levels intentionally retain their original pace/layout, not claimed redesigned. Save compatibility only."
+    ]
+  },
+  "browserEvidence": [
+    "attempts/attempt-9/traffic-pressure-chromium/report.json",
+    "attempts/attempt-9/traffic-pressure-webkit/report.json"
+  ],
+  "passed": true
+}

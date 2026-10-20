@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "perceptual-qa-report",
+  "targetGame": "鹈鹕海岸冒险 V7",
+  "targetRunId": "pelican-coast-v2-20261014",
+  "targetWorkspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-pelican-v7/runs/pelican-coast-v2-20261014/workspace",
+  "runtimeEntrypoints": [
+    "game/index.html",
+    "source/pelican-bike/src/main.js",
+    "source/pelican-bike/src/coast-ui.mjs",
+    "source/pelican-bike/src/adventure.mjs",
+    "source/pelican-bike/src/levels.mjs",
+    "source/pelican-bike/src/safety.mjs",
+    "source/pelican-bike/src/feel.mjs",
+    "source/pelican-bike/src/coast.css"
+  ],
+  "contractHash": "80209ccdf17a866f1be5fef7ffda424ac75a6075e3ce6711d46cbd30136069f6",
+  "buildHash": "7ae4a32ad7ddd84c54a7e33c03ad7cf72e210e0609b1768c19100352c066ee8a",
+  "runtime": "web-lite",
+  "reviewer": "QAAgent",
+  "authorIndependent": true,
+  "passed": false,
+  "blockers": [
+    "perceptual:visual-evidence-incomplete:traffic-merge@390x844:webkit-390x844"
+  ],
+  "cases": [
+    {
+      "featureId": "traffic-merge",
+      "sourceCheckIds": [
+        "V7-PLAYER-STATIC-TRAFFIC"
+      ],
+      "objectType": "first oncoming car l1-o11",
+      "stateBranch": "centre -> left signal -> merge -> settled -> actual impact",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "chromium-390x844"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "44.6m: HUD shows oncoming car, left arrow and 4s; 52.4m: merge warning and moving car; 59.6m: car settled left; 63.9m: collision panel and retry text.",
+      "observedEventOrder": [
+        "start",
+        "traffic-signal",
+        "traffic-merging",
+        "traffic-settled",
+        "failed",
+        "replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-9/traffic-pressure-chromium/missed-merge-signal.png",
+          "sha256": "a124b0bb169eee0fa5d8f715380177f4321bb21b0daa8afaf1c3034402582e5c"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-chromium/missed-merge-merging.png",
+          "sha256": "963dde9ab7a1e37a4b0b20a03beb6426471259345b857cb108b3fd686e3e71c1"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-chromium/missed-merge-settled.png",
+          "sha256": "ac7f2848d5a051a449174cbeead5895c7871c7b13ed7a6fde9988af4213f1d04"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-chromium/missed-merge-settlement.png",
+          "sha256": "52b601655b389e007663ba5d0952ef089f102f007d787fc0decb135f8b667edf"
+        }
+      ],
+      "trace": {
+        "path": "evidence/v7-pressure/natural/traffic-merge-chromium.json",
+        "sha256": "b6a973c239be621f29c64465f1c424bc6cd926765b258f7ba02d318e8d435cdf"
+      },
+      "evidence": [
+        "attempts/attempt-9/traffic-pressure-chromium/report.json",
+        "evidence/v7-pressure/natural/traffic-merge-chromium.json"
+      ],
+      "notes": [
+        "Viewed all four hashed merge screenshots. The l1-o11 car, direction signal, merge warning, settled lane and visible crash/retry feedback align with the raw failure event at 63.855m.",
+        "Native trusted-input trace starts from reset, records right at 16m then left at 39m and 49m, has no forbidden operations and observes public replay. No human or physical-phone study is claimed."
+      ]
+    },
+    {
+      "featureId": "traffic-merge",
+      "sourceCheckIds": [
+        "V7-PLAYER-STATIC-TRAFFIC"
+      ],
+      "objectType": "first oncoming car l1-o11",
+      "stateBranch": "centre -> left signal -> merge -> settled -> actual impact",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "webkit-390x844"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": false,
+      "observedSignal": "44.6m/52.4m/59.6m pixels show the same oncoming-car warning and merge progression; the 63m image shows the car against the rider, but no terminal failure panel although raw state records l1-o11 failure at 63.862m.",
+      "observedEventOrder": [
+        "start",
+        "traffic-signal",
+        "traffic-merging",
+        "traffic-settled",
+        "failed",
+        "replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-9/traffic-pressure-webkit/missed-merge-signal.png",
+          "sha256": "e7b47397f28f12abfd68ae58cfc282ca34a49b17bf4e6fcced9cef1b95111615"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-webkit/missed-merge-merging.png",
+          "sha256": "7079f418eda2c5d72dbc265f6eb11847e2072f3e2653c539f4472dee0aeca055"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-webkit/missed-merge-settled.png",
+          "sha256": "21b1a8d40908becfb9e944acd099961e3fce118aef3b235eb6ccd126f2e319d8"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-webkit/missed-merge-settlement.png",
+          "sha256": "cf9620926e526d559f1aab354a6f1f6a2609a2f25ab4e7e12fe34646935f482a"
+        }
+      ],
+      "trace": {
+        "path": "evidence/v7-pressure/natural/traffic-merge-webkit.json",
+        "sha256": "5ec03fa04fc7b81058344436f5088a2a0b30ca5ca0db1d4cd26d12b1d2928f9c"
+      },
+      "evidence": [
+        "attempts/attempt-9/traffic-pressure-webkit/report.json",
+        "evidence/v7-pressure/natural/traffic-merge-webkit.json"
+      ],
+      "notes": [
+        "Viewed all four hashed merge screenshots. Raw normal-input events verify l1-o11 signal, merge, settled state, vehicle failure and replay, but selected pixels do not show terminal failure/retry feedback. Keep this exact WebKit visual branch BLOCKED rather than infer missing terminal pixels.",
+        "No state injection or forbidden operations; no human or physical-phone study is claimed."
+      ]
+    },
+    {
+      "featureId": "escape-payoff",
+      "sourceCheckIds": [
+        "V7-PLAYER-STATIC-TRAFFIC"
+      ],
+      "objectType": "centre-merging car l1-o6 and rider",
+      "stateBranch": "181m car pass -> earned near miss -> finish -> replay",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "chromium-390x844"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "At 182.301m the raw event is a non-jumped near-miss of car l1-o6; the 183m pixel shows 漂亮擦肩 +3 beside the rider; the route completes at 300m and public replay returns to a fresh run.",
+      "observedEventOrder": [
+        "start",
+        "traffic-signal",
+        "traffic-merging",
+        "traffic-settled",
+        "near-miss",
+        "complete",
+        "replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-9/traffic-pressure-chromium/skilled-route-vehicle-escape.png",
+          "sha256": "9ed138ef3f7280c71219820a20a76a2494a4b7ebd1fd0d707a717426c4071c42"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-chromium/skilled-route-settlement.png",
+          "sha256": "7e7f95db0698848f04628e0aa6d49f976dcc2df37ad02f3295d32602bac1856f"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-chromium/replay-paused.png",
+          "sha256": "4d3afa52c53cb92d4e6ae99ac374af5039cfade82ddbf498ff82484164426722"
+        }
+      ],
+      "trace": {
+        "path": "evidence/v7-pressure/natural/escape-payoff-chromium.json",
+        "sha256": "f09d7dc1e8b47ed986fb0074b208c9d44dc32be8110bb9112a666758fcc53f0d"
+      },
+      "evidence": [
+        "attempts/attempt-9/traffic-pressure-chromium/report.json",
+        "evidence/v7-pressure/natural/escape-payoff-chromium.json"
+      ],
+      "notes": [
+        "Independently viewed the exact 183m near-miss screenshot plus finish and post-replay pause screenshots. The raw l1-o6 signal/merge/settled/near-miss sequence (not the separate barrier at 35m) binds the visible +3 pop to the requested car.",
+        "Raw checks report four jumps, three air catches and 300m completion; actions are trusted gameplay input only. No human enjoyment, ad intent, audible-sound or physical-phone claim is made."
+      ]
+    },
+    {
+      "featureId": "escape-payoff",
+      "sourceCheckIds": [
+        "V7-PLAYER-STATIC-TRAFFIC"
+      ],
+      "objectType": "centre-merging car l1-o6 and rider",
+      "stateBranch": "181m car pass -> earned near miss -> finish -> replay",
+      "viewport": {
+        "width": 390,
+        "height": 844,
+        "label": "webkit-390x844"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": true,
+      "observedSignal": "At 182.302m the raw event is a non-jumped near-miss of car l1-o6; the 183m pixel shows 漂亮擦肩 +3 beside the rider; the route completes at 300m and public replay returns to a fresh run.",
+      "observedEventOrder": [
+        "start",
+        "traffic-signal",
+        "traffic-merging",
+        "traffic-settled",
+        "near-miss",
+        "complete",
+        "replay"
+      ],
+      "screenshots": [
+        {
+          "path": "attempts/attempt-9/traffic-pressure-webkit/skilled-route-vehicle-escape.png",
+          "sha256": "57d4d764e3011890801401e8708419f322ca9ff83bf45f7cc958cf9a8015e416"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-webkit/skilled-route-settlement.png",
+          "sha256": "6d1ee6887effe6e634a0974cc7ffb992393b0f07a882b1e8e3850d5d9626567f"
+        },
+        {
+          "path": "attempts/attempt-9/traffic-pressure-webkit/replay-paused.png",
+          "sha256": "59891cb07d6ad596ec817962607522f526ff1c6161f3dededa0ccc74dc5490fc"
+        }
+      ],
+      "trace": {
+        "path": "evidence/v7-pressure/natural/escape-payoff-webkit.json",
+        "sha256": "382392281eb5369a16ee4dbf61a5e9bdbfa0d711d7efa8f3e40eaa1a84f2cd86"
+      },
+      "evidence": [
+        "attempts/attempt-9/traffic-pressure-webkit/report.json",
+        "evidence/v7-pressure/natural/escape-payoff-webkit.json"
+      ],
+      "notes": [
+        "Independently viewed the exact 183m near-miss screenshot plus finish and post-replay pause screenshots. The raw l1-o6 signal/merge/settled/near-miss sequence (not the separate barrier at 35m) binds the visible +3 pop to the requested car.",
+        "Raw checks report four jumps, three air catches and 300m completion; actions are trusted gameplay input only. No human enjoyment, ad intent, audible-sound or physical-phone claim is made."
+      ]
+    }
+  ],
+  "checkedAt": "2026-10-20T14:54:13.172Z"
+}

@@ -1,0 +1,13 @@
+{
+  "wechatMiniGame": {
+    "status": "NOT_PACKAGED"
+  },
+  "douyinMiniGame": {
+    "status": "NOT_PACKAGED"
+  },
+  "tapTapH5": {
+    "status": "NOT_INTEGRATED",
+    "liveAds": false
+  },
+  "production": false
+}

@@ -1,9 +1,13 @@
 // Enough time to physically reach the real +9m fish at the slowest level,
 // without forcing a rider to wait into the next close barrier.
 export const CAPTURE_HOLD_MS = 1200;
-// Match the real 2.25s mobile jump buffer and visible READY button, rather
-// than waiting until a software-rendered HUD is only 0.5s from collision.
-export const JUMP_WINDOW_SECONDS = 2.25;
+import {JUMP_BUFFER_SECONDS} from './adventure.mjs';
+// The policy and READY button must use the exact same physical window.
+export const JUMP_WINDOW_SECONDS = JUMP_BUFFER_SECONDS;
+// Visible reward countdowns are rounded (often to half-seconds).
+// 1.0s displayed can still mean 1.24s in actual engine time: preserve
+// a small physical margin and never spend the jump on a decoy READY cue.
+export const JUMP_ACTUATION_MARGIN_SECONDS = .10;
 export const TARGET_WINDOW_LEAD_METERS = 48;
 export const TARGET_WINDOW_TRAIL_METERS = 10;
 
@@ -149,6 +153,12 @@ export function decideRiskAction(view,state){
  }
 
  const target=state.target;
+ const physicalTarget=RISK_LEVELS.find(level=>level.id===state.levelId);
+ const realSecondsToTarget=physicalTarget&&Number.isFinite(view.distance)
+  ?(target.distance-view.distance)/physicalTarget.speed:Infinity;
+ // Use the already-authored target and player-visible road distance only.
+ const timingSafeForTarget=realSecondsToTarget<=JUMP_WINDOW_SECONDS-JUMP_ACTUATION_MARGIN_SECONDS&&
+  realSecondsToTarget>.35;
  const inTargetWindow=Number.isFinite(view.distance)
   &&view.distance>=target.distance-TARGET_WINDOW_LEAD_METERS
   &&view.distance<=target.distance+TARGET_WINDOW_TRAIL_METERS;
@@ -159,7 +169,7 @@ export function decideRiskAction(view,state){
  // is public player-visible feedback from the actual physics, not QA state.
  // Give it priority over an unrelated fish/reward lane; never jump into a car.
  if(inTargetWindow&&!state.jumpIssued&&current===state.committedRewardLane&&
-    view.jumpReady===true&&view.distance<target.distance-3.15&&
+    view.jumpReady===true&&timingSafeForTarget&&view.distance<target.distance-3.15&&
     !laneIsVehicle(lanes[current])&&
     !(lanes[current]?.danger&&lanes[current]?.kind==='barrier'&&
       !radarIsExpectedBarrier(view,lanes[current],state.target,state.levelId))){
@@ -176,7 +186,7 @@ export function decideRiskAction(view,state){
   // Keep the already-seen route rather than oscillating back toward safe fish.
   nextState.committedRewardLane=targetLane;
   if(current!==targetLane)return moveOneLane({...view,lanes},nextState,targetLane,'approach-jump-reward',targetLane);
-  if(Number.isFinite(countdown)&&countdown<=JUMP_WINDOW_SECONDS){
+  if(Number.isFinite(countdown)&&countdown<=JUMP_WINDOW_SECONDS&&timingSafeForTarget){
    nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;nextState.lastJumpCountdown=countdown;
    nextState.goldAtJump=Number.isFinite(view.goldCounter)?view.goldCounter:null;
    return decision('jump',nextState,'decimal-jump-window',current,countdown);
@@ -190,7 +200,7 @@ export function decideRiskAction(view,state){
   // The native button glows READY based on the real nearest low barrier.
   // Accept this player-visible signal even if the radar icon is momentarily
   // replaced by an ordinary fish. Never jump after the barrier is passed.
-  if(view.jumpReady===true&&Number.isFinite(view.distance)&&view.distance<target.distance-3.15&&
+  if(view.jumpReady===true&&timingSafeForTarget&&Number.isFinite(view.distance)&&view.distance<target.distance-3.15&&
      !(lanes[current]?.danger&&lanes[current]?.kind==='barrier'&&
        !radarIsExpectedBarrier(view,lanes[current],target,state.levelId))){
    nextState.stage='capture';nextState.jumpIssued=true;nextState.jumpAtMs=nowMs;

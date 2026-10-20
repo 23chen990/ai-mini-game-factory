@@ -55,7 +55,7 @@ export function pathRiskAtPosition(run,forecast,bounds,horizon=3.5){
  const o=forecast.obstacle,kind=o?.kind;
  if(!['car','van','barrier'].includes(kind)||!Number.isFinite(bounds?.[kind]?.z))return false;
  if(kind==='barrier'&&(run.y??0)>.31)return false;
- const z=Number.isFinite(o.z)?o.z:LANES[o.lane];
+ const z=o.mergeFrom!==undefined?LANES[o.lane]:Number.isFinite(o.z)?o.z:LANES[o.lane];
  return Number.isFinite(z)&&Math.abs(run.lane-z)<=bounds[kind].z+.27+.14;
 }
 
@@ -71,4 +71,11 @@ export function rewardExitWarning(run){
  const vehicle=upcomingHazards(run).find(h=>['car','van'].includes(h.obstacle.kind)&&
    h.lanes.includes(run.laneIndex)&&h.seconds<=SAFE_LANE_WARNING_SECONDS);
  return vehicle?'⚠️ 前方来车 · 及时换到空车道':null;
+}
+
+// 4.5s forecasts are useful preparation, not three simultaneous closed lanes.
+// A two-tap crossing takes <1s; amber preserves that choice while red marks
+// the final 3s reaction corridor. Barriers keep their explicit jump warning.
+export function hazardUrgency(forecast){
+ return forecast.obstacle.kind!=='barrier'&&forecast.seconds>3?'warning':'danger';
 }

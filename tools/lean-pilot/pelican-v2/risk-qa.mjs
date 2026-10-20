@@ -105,7 +105,10 @@ async function tap(page,selector,{levelId=activeLevelId,targetBarrierId=null,dec
  const after=fastReaction?null:await recordSnapshot(page,'after-touch-tap',{levelId,targetBarrierId});
  const touches=await page.evaluate(start=>window.__riskTouchEvidence?.slice(start)??[],touchStart);
  action.completedAt=new Date().toISOString();action.beforeSnapshotId=before?.id??null;action.afterSnapshotId=after?.id??null;action.nativeTouchEvidence=touches;
- action.trustedTouch=touches.some(event=>event.pointerType==='touch'&&event.isTrusted===true);
+ const control=selector.match(/^\[data-action="(\w+)"\]$/u);
+ action.trustedTouch=touches.some(event=>event.type==='pointerdown'&&event.pointerType==='touch'&&event.isTrusted===true&&
+  (!control||event.target==='data-action='+control[1]));
+ if(control&&!action.trustedTouch)throw Error('Gameplay touch did not reach requested control: '+selector);
  if(!fastReaction)action.visibleViewAfter=await readVisibleView(page);
  return action;
 }
@@ -190,9 +193,9 @@ async function runLevel(level){
   check(`level-${level.id}-running-started`,intro.value.phase==='running'&&intro.value.level===level.id,intro.value);
   result.rafStartAt=await page.evaluate(()=>performance.now());
 
-  const episodes=result.targetEpisodes;
+  const episodes=result.targetEpisodes,deferredEscapePhotos=[];
   let targetIndex=0,state=createRiskPolicyState(level.id,level.targets[0]);
-  let terminal=null;
+  let terminal=null,openingForecastCaptured=false;
   const deadline=Date.now()+campaignWallBudgetMs(level.id);
   while(Date.now()<deadline){
    const view=await readVisibleView(page);
@@ -214,6 +217,10 @@ async function runLevel(level){
     }
    }
    const evidenceTarget=level.targets[targetIndex]??null,evidenceEpisode=episodes[targetIndex]??null;
+   // CI's233m reward was earned, but two PNGs consumed244→255m before
+   // steering away from the visible car. Keep live HUD/state/video evidence;
+   // photograph the result only after the real escape input has taken effect.
+   const deferRewardPhotos=view.lanes[view.laneIndex].danger&&view.lanes[view.laneIndex].kind==='vehicle';
    const inEvidenceRange=evidenceTarget&&view.distance>=evidenceTarget.distance-55&&view.distance<=evidenceTarget.distance+15;
    if(inEvidenceRange||evidenceEpisode?.jump){
     const observed=await readSnapshot(page);
@@ -231,7 +238,12 @@ async function runLevel(level){
       else evidenceEpisode.approachScreenshot=(await saveEvidenceShot(page,evidenceEpisode,'reward-approach')).path;
      }
      const barrierClear=eventFor(observed,'barrier-cleared',evidenceTarget.barrierId);
-     if(barrierClear&&!evidenceEpisode.barrierClearSnapshotId){const record=await recordSnapshot(page,'exact-barrier-cleared-event',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});evidenceEpisode.barrierClearSnapshotId=record.id;await saveEvidenceShot(page,evidenceEpisode,'barrier-cleared');}
+     if(barrierClear&&!evidenceEpisode.barrierClearSnapshotId){
+      const record=await recordSnapshot(page,'exact-barrier-cleared-event',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});
+      evidenceEpisode.barrierClearSnapshotId=record.id;
+      if(deferRewardPhotos)deferredEscapePhotos.push({episode:evidenceEpisode,kind:'barrier-cleared-post-escape'});
+      else await saveEvidenceShot(page,evidenceEpisode,'barrier-cleared');
+     }
      const bonusFishCatch=eventFor(observed,'fish-caught',evidenceEpisode.goldFishId);
      if(bonusFishCatch&&!evidenceEpisode.bonusFishCatchSnapshotId){
       const record=await recordSnapshot(page,'exact-golden-bonus-fish-caught',{levelId:level.id,targetBarrierId:evidenceTarget.barrierId,value:observed});
@@ -241,7 +253,8 @@ async function runLevel(level){
       evidenceEpisode.goldHud=await visibleHud(page);
       const nextTarget=level.targets[targetIndex+1];
       const nextIsClose=nextTarget&&nextTarget.distance-evidenceTarget.distance<=30;
-      if(nextIsClose)evidenceEpisode.deferredGoldPhoto=true;
+      if(deferRewardPhotos)deferredEscapePhotos.push({episode:evidenceEpisode,kind:'golden-bonus-fish-caught-post-escape'});
+      else if(nextIsClose)evidenceEpisode.deferredGoldPhoto=true;
       else await saveEvidenceShot(page,evidenceEpisode,'golden-bonus-fish-caught');
      }
     }
@@ -301,7 +314,14 @@ async function runLevel(level){
       const lane=[...document.querySelectorAll('.co-lane-indicator i')].findIndex(node=>node.classList.contains('on'));
       return lane===expected;
      },decision.toLane,{timeout:1800});
+     for(const photo of deferredEscapePhotos)await saveEvidenceShot(page,photo.episode,photo.kind);
+     deferredEscapePhotos.length=0;
     }
+   }
+   if(!openingForecastCaptured&&((level.id===5&&view.distance>=38)||(level.id===2&&view.distance>=74))){
+    await recordSnapshot(page,'opening-after-trusted-escape',{levelId:level.id});
+    await shot(page,`level-${level.id}-opening-forecast-escape`,{levelId:level.id,kind:'opening-warning-branch'});
+    openingForecastCaptured=true;
    }
    await page.waitForTimeout(80);
   }

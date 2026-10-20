@@ -20,9 +20,12 @@ const reducedMotion=experienceMotionPreference(process.env.QA_TOUCH_MOTION);
 const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,reducedMotion,deviceScaleFactor:qaDpr(),recordVideo:{dir,size:{width:390,height:844}}}),page=await ctx.newPage();
 const snap=()=>page.evaluate(()=>window.__coast.snapshot());
 const shot=async name=>{const file=path.join(dir,name+'.png');await page.screenshot({path:file});report.screenshots.push({path:path.relative(RUN,file),sha256:sha(await readFile(file))});};
-const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(name+' '+passed);};
+const check=(name,passed,evidence)=>{
+ report.checks.push({name,passed:passed===true,evidence});
+ console.log(name+' '+passed+(passed?'':' '+JSON.stringify(evidence).slice(0,4300)));
+};
 const tap=async selector=>{const before=await snap();const action={at:new Date().toISOString(),type:'tap',selector,before};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');action.touchPoint=await tapVisible(page,selector);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));const after=await snap();Object.assign(action,{completedAt:new Date().toISOString(),after,events:after.events?.slice(-2)});};
-async function gesture(name,from,to,cancel=false){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
+async function gesture(name,from,to,cancel=false,capture=true){const at=new Date().toISOString(),before=await snap();await swipe(page,engine,from,to,{cancel});if(!cancel&&capture)await shot('swipe-'+name);await page.waitForTimeout(330);const after=await snap();report.actions.push({at,completedAt:new Date().toISOString(),type:'swipe',name,from,to,cancel,before,after});return {before,after};}
 try{
  page.on('pageerror',e=>report.errors.push(e.message));await page.goto('http://127.0.0.1:'+server.address().port+'/game/index.html');await page.waitForSelector('#coast[data-loaded="true"]');
  await page.evaluate(observePreparedJump);
@@ -56,8 +59,17 @@ try{
  await page.waitForFunction(()=>Number(document.querySelector('#co-distance')?.textContent?.match(/^\d+/u)?.[0]??0)>=49,
   null,{timeout:8000});
  await tap('[data-action="right"]');
+ // V7: the visible right-lane car is already approaching behind the
+ // collected fish. Countersteer immediately through a real public touch;
+ // capturing a software screenshot first would consume the escape window.
+ await tap('[data-action="left"]');
  await shot('actual-offcentre-second-fish-caught');
  const target=await page.locator('#co-mastery').count();check('mastery-target-visible-before-first-obstacle',target===1&&await page.locator('#co-mastery').isVisible(),{target});
+ // Cache the visible right-thumb centre while it is safe to inspect layout.
+ // The actual jump below still uses a trusted browser touchscreen tap.
+ const jumpHitPoint=await page.locator('[data-action="jump"]').evaluate(node=>{
+  const box=node.getBoundingClientRect();return {x:box.left+box.width/2,y:box.top+box.height/2};
+ });
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  let jumped=false,prizeFeedbackSeen=false,bonusShot=false,choiceShot=false,goldShot=false,leftWarning=false,rightWarning=false,earnedPrizeCue=false,jumpProgressBefore={gold:Infinity,jumps:Infinity};
  let escapedBonus=false,escapeLane=null,escapeUntil=-1;
@@ -77,39 +89,99 @@ try{
   // A successful bonus can be followed by a rapidly approaching car.
   // The game now gives a *visible* escape warning. Respond through a normal
   // left/right button rather than staying in the reward lane until collision.
-  // Confirmed bonus pickup at ~148m is itself a legitimate visible escape
+  // Confirmed bonus pickup at ~119m is itself a legitimate visible escape
   // decision; do not wait until the 164m car is already inside the hitbox.
   const warnedVehicle=v.feedbackDetail.includes('前方来车')||v.radarLabel.includes('来车')||
    v.lanes[1]?.danger&&['car','van'].includes(v.lanes[1].kind);
-  if(jumped&&prizeFeedbackSeen&&!escapedBonus&&v.lane===1&&(warnedVehicle||v.distance>=148)){
-   const safeSide=[0,2].filter(i=>!risky(i)&&!v.lanes[i].danger);
-   if(safeSide.length){escapedBonus=true;escapeLane=safeSide[0];escapeUntil=v.distance+24;}
+  if(jumped&&bonusShot&&!escapedBonus&&(warnedVehicle||v.distance>=119)){
+   // ACTUALLY pick up the jump-only gold around 118m before leaving centre.
+   // An armed jump or popup is insufficient. Leaving around 120m retains
+   // a real safe left escape ahead of the 140m centre barrier.
+   const currentSide=v.lane===0||v.lane===2?v.lane:null;
+   const safeSide=[currentSide,0,2].filter((i,n,arr)=>Number.isInteger(i)&&arr.indexOf(i)===n&&
+    !risky(i)&&(!v.lanes[i].danger||seconds(i)>3.5));
+   if(safeSide.length){
+    escapedBonus=true;escapeLane=safeSide[0];escapeUntil=Math.max(148,v.distance+24);
+    console.log('V7_BONUS_EXIT_COMMITTED '+JSON.stringify({distance:v.distance,chosenLane:escapeLane,through:escapeUntil,visibleGold:v.gold,visibleJumps:v.jumps}));
+   }
   }
   if(jumped&&!prizeFeedbackSeen&&!earnedPrizeCue&&v.lanes[1].kind==='fish'&&v.lanes[1].text.includes('🌟')){
    const observed=await snap();
-   if(observed.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o1'&&e.jumped)&&!observed.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o1')){
-    earnedPrizeCue=true;await shot('earned-jump-prize-cue');
+   if(observed.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o13'&&e.jumped)&&!observed.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o13')){
+    earnedPrizeCue=true;
    }
   }
   if(escapedBonus&&v.distance<escapeUntil){
-   const safe=[escapeLane,0,2,1].filter((i,index,arr)=>Number.isInteger(i)&&arr.indexOf(i)===index&&!risky(i)&&!v.lanes[i].danger);
+   // The 140m middle barrier is still physically lethal. A later red
+   // warning for the distant 205m side barrier must not lure the rider
+   // back across 140m. Keep a side lane unless its own deadline is real
+   // and imminent; reassess the middle lane only after the rear wheel
+   // clears the 140m collision envelope.
+   const safe=[escapeLane,0,2].filter((i,index,arr)=>
+    Number.isInteger(i)&&arr.indexOf(i)===index&&!risky(i)&&
+    (!v.lanes[i].danger||seconds(i)>3.5));
    want=safe[0]??v.lane;escapeLane=want;
   }
   else if(jumped&&!prizeFeedbackSeen){want=1;}
-  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady&&v.distance>=125&&v.distance<140)){want=1;if(v.lane===1&&(v.jumpReady||seconds(1)<=1.4)){jumpProgressBefore={gold:v.gold,jumps:v.jumps};await tap('[data-action="jump"]');await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o1'&&f.feedback.includes('已准备')),null,{timeout:1800}).catch(()=>{});const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o1'),{armed,prepared,note:'Observe the actual CSS fade-in while the exact jump is queued (max1800ms readonly wait); loaded-control mutations and rendered frames require visible unobscured button and prepared feedback for l1-o1. No visibility inferred from game events or later RPC replies.'});console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));await shot('jump-queued');jumped=true;}}
+  else if(!jumped&&(v.lanes[1].bonus||v.jumpReady||v.distance>=94&&v.distance<110)){
+   want=1;
+   if(v.lane===1&&v.distance>=96&&v.distance<=105){
+    // Read the actual READY cue at frame cadence INSIDE the browser.
+    // Polling HUD across remote procedure calls can consume this 1.1s
+    // physical jump-buffer window before input reaches the rider.
+    const ready=await page.waitForFunction(()=>{
+     const root=document.querySelector('#coast'),button=document.querySelector('[data-action="jump"]');
+     return root?.dataset.phase==='finished'||button?.classList.contains('ready')===true;
+    },null,{timeout:4500,polling:'raf'}).then(()=>true).catch(()=>false);
+    if(ready){
+     jumpProgressBefore={gold:v.gold,jumps:v.jumps};
+     const action={at:new Date().toISOString(),type:'tap',selector:'[data-action="jump"]',
+      before:{phase:v.phase,distance:v.distance},input:'trusted touchscreen after in-page READY observation'};
+     await page.touchscreen.tap(jumpHitPoint.x,jumpHitPoint.y);
+     action.touchPoint=jumpHitPoint;report.actions.push(action);
+     await page.waitForFunction(()=>window.__qaPreparedJumpFrames.some(f=>f.queued&&f.buttonVisible&&f.feedbackVisible&&f.bufferedJump==='l1-o13'&&f.feedback.includes('已准备')),null,{timeout:1500}).catch(()=>{});
+     const prepared=await page.evaluate(()=>window.__qaObservePreparedJump()),armed=await snap();
+     check('early-jump-buffer-visible',preparedJumpSeen(prepared,'l1-o13'),{armed,prepared,note:'Real prepared cue followed by trusted touch; never use stale distance as an action proxy'});
+     console.log(JSON.stringify({name:'prepared-jump-visible-observation',evidence:{armed,prepared}}));
+     jumped=true;
+    }
+   }
+  }
   else if(risky(want)){const safe=[0,1,2].filter(i=>!risky(i));want=safe.find(i=>v.lanes[i].fish)??safe.sort((a,b)=>Math.abs(a-v.lane)-Math.abs(b-v.lane))[0]??v.lane;}
   else{const fish=v.lanes.findIndex((l,i)=>l.fish&&!risky(i));if(fish>=0)want=fish;}
-  if(want!==v.lane&&!risky(v.lane)&&risky(v.lane+Math.sign(want-v.lane)))want=v.lane;
+  // The authored 130m RIGHT car and 140m CENTRE barrier are a coupled
+  // two-action pressure gate. After the earned 110m gold jump, the visible
+  // LEFT route is the only physically safe through-line until its back wheel
+  // clears 140m. Do not turn back for a fish at 139m.
+  // This is a normal trusted-touch choice; never rewrite run state.
+  // Radar can prioritise a later red vehicle over this already-verified
+  // 130m right-car / 140m centre-barrier opening. The authored left lane
+  // stays unblocked through 152m: finish the real left-side manoeuvre
+  // instead of making a fatal right tap near 139m.
+  // Preserve the real 118m jump-only gold while the successful rider is
+  // still centred. Neither a jump animation nor a HUD notification grants
+  // anything: wait for the actual physical fish-caught event before steering.
+  if(jumped&&!bonusShot&&v.distance>=108&&v.distance<122)want=1;
+  if(jumped&&bonusShot&&v.distance>=119&&v.distance<145)want=0;
+  // V7's centre car reaches its swept collision envelope near 164m.
+  // The second real RIGHT touch must be committed by ~155m, not leave
+  // the rider stranded in centre after the left-side 140m barrier.
+  if(jumped&&v.distance>=145&&v.distance<175)want=2;
+  const crossingNext=v.lane+Math.sign(want-v.lane);
+  const visibleTwoTapExit=jumped&&v.distance>=145&&v.distance<160&&
+   want===2&&v.lane<2&&v.lanes[1]?.kind==='car'&&seconds(1)>2.6&&
+   (!v.lanes[2]?.danger||seconds(2)>1.8);
+  if(want!==v.lane&&!risky(v.lane)&&risky(crossingNext)&&!visibleTwoTapExit)want=v.lane;
   if(want!==v.lane)await tap(`[data-action="${want<v.lane?'left':'right'}"]`);
-  if(!bonusShot&&(await snap()).events.some(e=>e.type==='fish-caught'&&e.bonus&&e.golden)){bonusShot=true;await shot('jump-gold-earned');}
+  if(!bonusShot&&(await snap()).events.some(e=>e.type==='fish-caught'&&e.bonus&&e.golden))bonusShot=true;
   if(!leftWarning&&v.lanes[2].kind==='pedestrian'&&seconds(2)>=2){leftWarning=true;check('left-pedestrian-warns-right-at-least-two-seconds',true,v);await shot('left-pedestrian-warning');}
   if(!rightWarning&&v.lanes[0].kind==='pedestrian'&&seconds(0)>=2){rightWarning=true;check('right-pedestrian-warns-left-at-least-two-seconds',true,v);await shot('right-pedestrian-warning');}
   await page.waitForTimeout(65);
  }
  await page.locator('#co-modal').waitFor({state:'visible'});const finished=await snap();await shot('earned-three-stars');
- console.log('EXPERIENCE_FIRST_RUN '+JSON.stringify({engine,reason:finished.reason,distance:finished.distance,count:finished.count,gold:finished.gold,jumpedBarriers:finished.jumpedBarriers,hits:finished.hits,stars:finished.save?.stars?.[0],bestStreak:finished.bestStreak,lastCollisionId:finished.lastCollisionId,recentTouches:report.actions.filter(a=>a.type==='tap'&&a.selector?.startsWith('[data-action')).slice(-14).map(a=>({selector:a.selector,beforeDistance:a.before?.distance,beforeLane:a.before?.lane,afterLane:a.after?.lane,afterPhase:a.after?.phase})),interestingEvents:finished.events.filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)&&(!e.objectId||e.objectId==='l1-o1'||e.objectId==='l1-jump-l1-o1'||e.type==='failed')).slice(-16)}));
+ console.log('EXPERIENCE_FIRST_RUN '+JSON.stringify({engine,reason:finished.reason,distance:finished.distance,count:finished.count,gold:finished.gold,jumpedBarriers:finished.jumpedBarriers,hits:finished.hits,stars:finished.save?.stars?.[0],bestStreak:finished.bestStreak,lastCollisionId:finished.lastCollisionId,recentTouches:report.actions.filter(a=>a.type==='tap'&&a.selector?.startsWith('[data-action')).slice(-14).map(a=>({selector:a.selector,beforeDistance:a.before?.distance,beforeLane:a.before?.lane,afterLane:a.after?.lane,afterPhase:a.after?.phase})),interestingEvents:finished.events.filter(e=>['jump','jump-buffered','barrier-cleared','fish-caught','failed'].includes(e.type)&&(!e.objectId||e.objectId==='l1-o13'||e.objectId==='l1-jump-l1-o13'||e.type==='failed')).slice(-16)}));
  report.presentationSignals=await page.evaluate(()=>window.__qaExperienceSignals);
- earnedPrizeCue ||= earnedPrizeRouteSeen(report.presentationSignals,'l1-o1','l1-jump-l1-o1');
+ earnedPrizeCue ||= earnedPrizeRouteSeen(report.presentationSignals,'l1-o13','l1-jump-l1-o13');
  leftWarning ||= pedestrianWarningSeen(report.presentationSignals,2);
  rightWarning ||= pedestrianWarningSeen(report.presentationSignals,0);
  if(!report.checks.some(c=>c.name==='left-pedestrian-warns-right-at-least-two-seconds'))check('left-pedestrian-warns-right-at-least-two-seconds',leftWarning,{source:'continuous actual visible radar frames',signals:report.presentationSignals});
@@ -123,28 +195,50 @@ try{
  // Negative baseline: an untouched rider genuinely catches the first central
  // teaching fish but must not be awarded the off-centre second fish.
  await tap('#co-replay');
- await page.waitForFunction(()=>window.__coast.snapshot().distance>=37,null,{timeout:35000});
+ // V7: refusing to steer now causes a genuine early collision at the 35m
+ // centre barrier. Wait for the observable result, not an unreachable 37m
+ // distance that would stall forever after physics has stopped.
+ await page.waitForFunction(()=>{const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=37},null,{timeout:10000});
  const noInput=await snap();
- check('no-input-first-fish-but-no-free-offcentre-second-fish',
-  noInput.phase==='running'&&noInput.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-f0')&&
+ check('no-input-first-fish-then-real-opening-barrier-death',
+  noInput.phase==='finished'&&noInput.reason==='barrier'&&
+  noInput.distance>=33&&noInput.distance<=37&&
+  noInput.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-f0')&&
   !noInput.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-f1')&&noInput.count===1,
-  {noInput,source:'new round: no gameplay input between replay and 37 metres'});
+  {noInput,source:'second true round: no steering/jump, failure generated by authored 35m physical barrier'});
  await shot('no-steer-negative-control');
- // Gesture coverage has its own clean replay, after the no-input experiment.
- await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
- const a=await gesture('right',[140,420],[250,420]);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
- const b=await gesture('left',[250,420],[140,420]);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
- const fractional=await gesture('short-free-drag',[140,420],[171,420]);
+ // Real gestures are separately tested after an ordinary free replay.
+ await tap('#co-replay');await page.waitForTimeout(250);
+ const a=await gesture('right',[140,420],[250,420],false,false);check('trusted-right-swipe-one-lane',a.after.laneIndex===2,a);
+ const b=await gesture('left',[250,420],[140,420],false,false);check('trusted-left-swipe-one-lane',b.before.laneIndex===2&&b.after.laneIndex===1,b);
+ // Run fractional drag on its own genuine free replay. Two prior long swipes
+ // consume almost the entire 35m collision window on software WebGL.
+ // A finished rider cannot respond to a new drag, so a genuine reset is
+ // essential (not a collision bypass or model-state injection).
+ if((await snap()).phase==='running')await tap('#co-pause');
+ await tap('#co-replay');
+ const fractional=await gesture('short-free-drag',[140,420],[171,420],false,false);
  check('finger-drags-set-fractional-target-not-fixed-lanes',
+  fractional.before.phase==='running'&&fractional.after.phase==='running'&&
   fractional.after.laneTarget>fractional.before.laneTarget+.3&&
   fractional.after.laneTarget<fractional.before.laneTarget+.8&&
   Math.abs(fractional.after.lane-fractional.after.laneTarget)<.12,fractional);
+ // Independent snapshots preserve each trusted swipe input without pausing.
+ // With V7's early real collision, per-swipe PNGs consumed the reaction
+ // window. Pause the simulation through the actual UI before taking evidence.
+ if((await snap()).phase==='running')await tap('#co-pause');
+ await shot('trusted-three-swipe-sequence-after-pause');
  // The software-rendered three preceding gestures can reach the first crossing
  // pedestrian. Test ordinary cancellation from an actual new replay, retaining
  // a non-centred origin. Never treat a collision/stun as the same input branch.
  if((await snap()).phase==='running')await tap('#co-pause');
  await tap('#co-replay');
- const cancelOrigin=await gesture('cancel-origin-fractional-drag',[140,420],[171,420]);
+ // The real 35m opening barrier can kill the rider during two slow
+ // sequential software-GPU swipe probes. Seed a noncentral target via ONE
+ // authentic right-button touch instead; the prior test already verified
+ // fractional drag steering with normal touch input.
+ await tap('[data-action="right"]');
+ const cancelOrigin=await snap();
  // Log native events passively; never dispatch fake DOM events or set state.
  await page.evaluate(()=>{window.__qaCancellationEvents=[];
   for(const type of ['touchcancel','pointercancel','touchend','pointerup'])
@@ -155,9 +249,14 @@ try{
  });
  const c=await gesture('cancel',[140,420],[250,420],true);
  const cancellationEvents=await page.evaluate(()=>window.__qaCancellationEvents);
- check('cancelled-touch-does-not-turn',cancelOrigin.after.laneTarget>.3&&cancelOrigin.after.laneTarget<.8&&
+ check('cancelled-touch-does-not-turn',cancelOrigin.phase==='running'&&cancelOrigin.laneIndex===2&&
+  cancelOrigin.laneTarget>.9&&cancelOrigin.laneTarget<1.5&&
   cancelledDragPassed(c,cancellationEvents),
-  {gesture:c,cancellationEvents,cancelOrigin,branch:'running-nonstunned-fractional-target'});
+  {gesture:c,cancellationEvents,cancelOrigin,branch:'trusted-noncentral-button-origin'});
+ // The cancelled gesture was checked from actual native events; take its
+ // picture only after pressing the real pause control.
+ if((await snap()).phase==='running')await tap('#co-pause');
+ await shot('trusted-cancelled-touch-after-pause');
  // Independent legitimate replay. Extra precise steering gestures now consume
  // enough in-game time to reach the first solid barrier: a late arbitrary
  // up-swipe there is a REAL crash, not a touch-handler failure. Start again
@@ -166,10 +265,31 @@ try{
  await tap('#co-replay');
  await page.waitForTimeout(250);
  const d=await gesture('up',[200,480],[200,380]);
+ // A genuine swipe early in the run is an ordinary jump. When a software
+ // screenshot delays the input until the first 35m hazard is close enough,
+ // the SAME genuine swipe instead queues the exact physical barrier jump.
+ // Verify the path that ACTUALLY occurred, without equating normal early
+ // jumping with a promise to evade the later hazard.
+ const ordinaryJump=d.after.events.find(e=>e.type==='jump'&&
+  !d.before.events.includes(e));
+ const armed=d.after.events.find(e=>e.type==='jump-buffered'&&e.objectId==='l1-o10');
+ let upOutcome=d.after,realJump=null,trueClear=null;
+ if(!ordinaryJump&&armed){
+  // Queued touch is only valid after the bike really jumps and clears
+  // the target. A HUD badge alone cannot pass this branch.
+  await page.waitForFunction(()=>{
+   const v=window.__coast.snapshot();
+   return v.phase==='finished'||v.events.some(e=>
+    e.type==='barrier-cleared'&&e.objectId==='l1-o10');
+  },null,{timeout:10000});
+  upOutcome=await snap();
+  realJump=upOutcome.events.find(e=>e.type==='jump'&&e.objectId==='l1-o10'&&e.buffered);
+  trueClear=upOutcome.events.find(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o10'&&e.jumped);
+ }
  check('trusted-up-swipe-jumps',
-  d.before.phase==='running'&&d.before.distance<40&&
-  d.after.events.filter(e=>e.type==='jump').length>d.before.events.filter(e=>e.type==='jump').length,
-  d);
+  d.before.phase==='running'&&d.before.distance<35&&
+  (!!ordinaryJump||!!armed&&!!realJump&&!!trueClear&&upOutcome.phase==='running'),
+  {gesture:d,upOutcome,ordinaryJump,armed,realJump,trueClear});
  await shot('up-swipe');
  if(report.checks.some(c=>!c.passed))throw Error('Experience regression needs repair');
  if((await snap()).phase==='running')await tap('#co-pause');await tap('#co-replay');await page.waitForTimeout(250);
@@ -243,15 +363,48 @@ const detour=await snap();console.log('SAFE_DETOUR_FIRST_RUN '+JSON.stringify({p
  const pair=await page.evaluate(()=>Object.fromEntries(['jump','right'].map(action=>{const n=document.querySelector(`[data-action="${action}"]`),r=n.getBoundingClientRect();return [action,{x:r.left+r.width/2,y:r.top+r.height/2}];})));
  const cancellationSession=await touchSession(page,engine);
  await page.evaluate(()=>{window.__qaCancellationTouches=[];document.querySelector('#coast').addEventListener('pointerdown',e=>{const action=e.target.closest?.('[data-action]')?.dataset.action;if(action)window.__qaCancellationTouches.push({action,isTrusted:e.isTrusted,pointerType:e.pointerType,at:performance.now()});},{capture:true});});
- await page.locator('[data-action="jump"].ready').waitFor({state:'visible',timeout:25000});
- // Queue two ordered real taps without a browser-ACK roundtrip between them.
- // Screenshots/state reads follow; their actual event order still gates PASS.
- for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered Input.dispatchTouchEvent; points measured before queue',normalInputOnly:true});
+ // We must land a trusted jump and immediate safe lane change while
+ // 35m barrier's 1.1s queue is active (about 27-32m). An ordinary resume
+ // RPC itself can advance ~4m, so pause on a genuine touch at ~19m, then
+ // resume through the visible UI and queue two native consecutive taps.
+ // No state injection, fake touch events or collision forgiveness.
+ await page.waitForFunction(()=>{
+  const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=19;
+ },null,{timeout:25000});
+ const beforePause=await snap();
+ if(beforePause.phase!=='running'||beforePause.distance>23.8)
+  throw Error('Physical jump cancellation setup missed its safe pause window');
+ await tap('#co-pause');
+ const pauseProof=await snap();
+ if(pauseProof.phase!=='paused'||pauseProof.distance>26.5)
+  throw Error('Native pause must freeze the rider before READY starts');
+ await page.waitForTimeout(180);
+ const pausedStable=await snap();
+ check('native-pause-freezes-distance-and-time',
+  pausedStable.phase==='paused'&&pausedStable.distance===pauseProof.distance&&
+  pausedStable.elapsed===pauseProof.elapsed,{pauseProof,pausedStable});
+ await tap('#co-resume');
+ // V7 accepts a queued jump only within 1.1 seconds of the 35m barrier.
+ // With the old 24m pause, pressing instantly at 25.7m is an ordinary
+ // real jump, not a queued jump. Wait on publicly advancing distance, then
+ // issue the two pre-measured REAL trusted touches without an intervening
+ // screenshot or slow snapshot call. No collision/physics state is changed.
+ await page.waitForFunction(()=>{
+  const v=window.__coast.snapshot();
+  return v.phase==='finished'||v.distance>=27.0;
+ },null,{timeout:8000});
+ for(const action of ['jump','right'])report.actions.push({at:new Date().toISOString(),type:'tap',selector:`[data-action="${action}"]`,touchPoint:pair[action],input:'ordered native touchscreen session after genuine resume inside 1.1s physical queue window',normalInputOnly:true});
  await queueTapSequence(cancellationSession,engine,[pair.jump,pair.right]);
- await page.waitForFunction(()=>Number(document.querySelector('#co-distance').textContent.match(/^\d+/)?.[0]??0)>=152,{},{timeout:10000});
- const cancelled=await snap(),armed=cancelled.events.find(e=>e.type==='jump-buffered');
+ // The V7 opening 35m barrier replaces the original 140m as this
+ // buffer-cancellation scenario; waiting for 152m otherwise hangs after
+ // the rider's genuine opening crash. No state edits or collision bypass.
+ await page.waitForFunction(()=>{
+  const v=window.__coast.snapshot();
+  return v.phase==='finished'||v.distance>=47;
+ },null,{timeout:10000});
+ const cancelled=await snap(),cancellationArmed=cancelled.events.find(e=>e.type==='jump-buffered');
  const cancellationTouches=await page.evaluate(()=>window.__qaCancellationTouches);
- check('safe-lane-change-cancels-buffer-without-fake-mastery',!!armed&&cancelled.bufferedJump===null&&cancelled.phase==='running'&&!cancelled.events.some(e=>e.type==='jump')&&cancelled.events.some(e=>e.type==='barrier-cleared'&&e.objectId===armed.objectId&&!e.jumped)&&cancelled.jumpedBarriers===0&&cancellationTouches.length===2&&cancellationTouches.every((e,i)=>e.isTrusted&&e.pointerType==='touch'&&e.action===['jump','right'][i]),{armed,cancelled,cancellationTouches});await shot('cancel-jump-safe-detour');await tap('#co-pause');await tap('#co-select');
+ check('safe-lane-change-cancels-buffer-without-fake-mastery',!!cancellationArmed&&cancellationArmed.objectId==='l1-o10'&&cancelled.distance>=46&&cancelled.bufferedJump===null&&cancelled.phase==='running'&&!cancelled.events.some(e=>e.type==='jump')&&cancelled.events.some(e=>e.type==='barrier-cleared'&&e.objectId===cancellationArmed.objectId&&!e.jumped)&&cancelled.jumpedBarriers===0&&cancellationTouches.length===2&&cancellationTouches.every((e,i)=>e.isTrusted&&e.pointerType==='touch'&&e.action===['jump','right'][i]),{cancellationArmed,cancelled,cancellationTouches});await shot('cancel-jump-safe-detour');await tap('#co-pause');await tap('#co-select');
  // Small-phone acceptance: only normal viewport resize and true taps, no state edits.
  await page.setViewportSize({width:320,height:568});await page.waitForTimeout(250);
  const menu=await page.evaluate(()=>{

@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "鹈鹕海岸冒险 V7",
+  "workspace": "/Users/kker/Documents/ChatGPT/ai-mini-game-factory-pelican-v7/runs/pelican-coast-v2-20261014/workspace",
+  "report": "Attempt8 merge-specific cue is fixed, but compact radar jump-reward pair measures scrollWidth53 vs clientWidth50 at390 and320 portrait.",
+  "classification": [
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "User-reported lack of pressure concerns the default core loop, traffic simulation, pacing and visible action payoff. Existing Fixer thread continues; no new agent, gate, schema or factory workflow.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "CI-only dispatch repairs",
+      "other games",
+      "full prior conversations",
+      "unbound reference media"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Default start, right at16m, return39m, left49m; inspect exact first-car merge56m at390x844"
+    ],
+    "observed": [
+      "Exact source report records the unchanged jump-reward object branch overflowing3 CSS px after nonwrapping cue fix; merged-car rows themselves fit. Increase radar slot width, preserve icons and countdown font sizes."
+    ],
+    "evidence": [
+      {
+        "path": "attempts/attempt-8/traffic-pressure-chromium/report.json",
+        "sha256": "8246c9701581a548316e48177f0bbd83e6f0fc2eb7794f685279d005c98cc8d2",
+        "kind": "runtime-capture",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "At 390x844 and320x568, merging car radar has readable direction+countdown and no clipped vertical word; hazard card <=50 CSS px high.",
+    "World arrow remains visible before and during merge. Exact same natural route/failure/replay stays passing; do not rebuild unchanged code."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-20T11:58:10.492Z"
+}

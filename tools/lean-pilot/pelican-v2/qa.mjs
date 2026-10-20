@@ -7,12 +7,13 @@ import {RUN,WORKSPACE,json,sha} from './prepare.mjs';
 import {serve} from './serve.mjs';
 import {browserOptions,qaDpr} from './browser-options.mjs';
 import {tapVisible} from './touch.mjs';
+import {classifyGameplayDispatch} from './qa-input.mjs';
 import {campaignWallBudgetMs} from './runtime/qa-budget.mjs';
 import {capturePath} from './qa-capture-paths.mjs';
 import {RISK_LEVELS,TARGET_WINDOW_TRAIL_METERS,createRiskPolicyState,decideRiskAction,visibleLaneFromHud} from './runtime/risk-policy.mjs';
 const build=JSON.parse(await readFile(path.join(RUN,'build-receipt.json'),'utf8'));
 const mode=process.argv[2]??'campaign',engine=process.env.QA_ENGINE??'webkit';
-const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'qa-'+mode+'-'+engine);await mkdir(qaDir,{recursive:true});
+const qaDir=path.join(RUN,'attempts',`attempt-${build.attempt}`,'qa-'+mode+'-'+engine+(process.env.QA_CAPTURE_LABEL?'-'+process.env.QA_CAPTURE_LABEL:''));await mkdir(qaDir,{recursive:true});
 const driver=await readFile(new URL(import.meta.url));await writeFile(path.join(qaDir,'driver-source.mjs'),driver);
 await json(path.join(qaDir,'driver-provenance.json'),{path:'tools/lean-pilot/pelican-v2/qa.mjs',snapshot:path.relative(RUN,path.join(qaDir,'driver-source.mjs')),sha256:sha(driver),buildHash:build.buildHash,normalInputOnly:true});
 const server=await serve(),base='http://127.0.0.1:'+server.address().port+'/game/index.html';
@@ -24,17 +25,33 @@ function segment(name){segments.push({name,checkStart,checkEnd:report.checks.len
 const ROAD_EDGE_FOR_QA=2.15;
 const check=(name,passed,evidence)=>{report.checks.push({name,passed:passed===true,evidence});console.log(JSON.stringify({name,passed,evidence}));};
 const shot=async name=>{const p=path.join(qaDir,capturePath(captureSection,name));await mkdir(path.dirname(p),{recursive:true});await page.screenshot({path:p});report.screenshots.push({path:path.relative(RUN,p),sha256:sha(await readFile(p))});};
-const tap=async (selector,{fastReaction=false}={})=>{const before=await page.evaluate(()=>window.__coast.snapshot());const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance,level:before.level}};report.actions.push(action);if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');const touchPoint=await tapVisible(page,selector);
- // A real touch is mandatory. Do not wait through software-rendered frames
- // before the next visible jump / lane decision.
- if(!fastReaction)await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
- const after=fastReaction?{...await page.evaluate(()=>({
+const tap=async (selector,{fastReaction=false,decisionView,touchPoint}={})=>{
+ const before=decisionView??await page.evaluate(()=>window.__coast.snapshot());
+ const action={at:new Date().toISOString(),type:'tap',selector,before:{phase:before.phase,distance:before.distance,level:before.level},visibleDecisionView:decisionView};
+ report.actions.push(action);
+ if(selector.startsWith('[data-action')&&before.phase!=='running')throw Error('Gameplay stopped: '+before.reason+' at '+before.distance+'m');
+ // CI observed68.7m but repeated geometry RPCs delayed the75m jump to73.6m.
+ // Reuse the visible controls measured at this drive's start, just as the
+ // experience runner does; never insert a snapshot before a critical input.
+ if(touchPoint)await page.touchscreen.tap(touchPoint.x,touchPoint.y);
+ else touchPoint=await tapVisible(page,selector);
+ if(!fastReaction||decisionView)await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(resolve)));
+ const after=fastReaction?{...await page.evaluate(since=>({
   phase:document.querySelector('#coast')?.dataset.phase,
   distance:Number(document.querySelector('#co-distance')?.textContent?.match(/\d+/u)?.[0]??0),
- })),level:before.level}:await page.evaluate(()=>window.__coast.snapshot());Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}};
+  inputs:window.__qaControlInputs.filter(event=>event.at>=since),
+ }),decisionView?.nowMs??Infinity),level:before.level}:await page.evaluate(()=>window.__coast.snapshot());
+ Object.assign(action,{completedAt:new Date().toISOString(),touchPoint,after:{phase:after.phase,distance:after.distance,level:after.level},events:after.events?.slice(-2)});
+ if(decisionView){
+  action.nativeTouchEvidence=after.inputs;
+  action.dispatch=classifyGameplayDispatch(selector.match(/data-action="(\w+)"/u)[1],after.inputs,after.phase);
+  if(action.dispatch!=='delivered')throw Error('Critical input arrived after settlement');
+ }
+ const route=selector.match(/^\[data-level="(\d+)"\]$/u);if(route){const selected=await page.locator('[data-level].selected').getAttribute('data-level');action.selectedLevel=selected;if(selected!==route[1])throw Error('Requested stage '+route[1]+' was not actually selected: '+selected);}
+};
 const snapshot=()=>page.evaluate(()=>window.__coast.snapshot());
 async function fresh(){context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true,deviceScaleFactor:qaDpr(),recordVideo:{dir:qaDir,size:{width:390,height:844}}});page=await context.newPage();page.on('pageerror',e=>report.errors.push(e.message));page.on('framenavigated',f=>{if(f===page.mainFrame())navs++;});
- await page.addInitScript(()=>{window.__qaFrames=[];let prev;const f=t=>{if(prev&&window.__qaFrames.length<100000)window.__qaFrames.push(t-prev);prev=t;requestAnimationFrame(f);};requestAnimationFrame(f);});await page.goto(base);await page.waitForSelector('#coast[data-loaded="true"]');}
+ await page.addInitScript(()=>{window.__qaControlInputs=[];document.addEventListener('pointerdown',event=>window.__qaControlInputs.push({at:performance.now(),type:event.type,action:event.target.closest('[data-action]')?.dataset.action,trusted:event.isTrusted,pointerType:event.pointerType}),true);window.__qaFrames=[];let prev;const f=t=>{if(prev&&window.__qaFrames.length<100000)window.__qaFrames.push(t-prev);prev=t;requestAnimationFrame(f);};requestAnimationFrame(f);});await page.goto(base);await page.waitForSelector('#coast[data-loaded="true"]');}
 const view=async()=>{
  const raw=await page.evaluate(()=>({
   phase:document.querySelector('#coast').dataset.phase,
@@ -51,6 +68,14 @@ async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={})
  // Host software WebGL can run below real-time. Bound wall time by authored ride length;
  // never accelerate game simulation, inject scores or fabricate unlocks.
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+ // Fixed390×844 running layout: measure and hit-test once, outside a timed
+ // hazard window. Trusted pointer evidence below rejects an overlay/wrong hit.
+ const controlPoints=await page.evaluate(()=>Object.fromEntries(['left','right','jump'].map(action=>{
+  const node=document.querySelector(`[data-action="${action}"]`),box=node.getBoundingClientRect();
+  const point={x:box.left+box.width/2,y:box.top+box.height/2};
+  if(!node.contains(document.elementFromPoint(point.x,point.y))||node.disabled)throw Error('Gameplay control is not the visible hit target: '+action);
+  return [action,point];
+ })));
  const wallStarted=Date.now(),budgetMs=campaignWallBudgetMs(stage,maxMs),end=wallStarted+budgetMs;let lastTap=0,nearShot=false;
  const authored=Number.isInteger(stage)?RISK_LEVELS.find(level=>level.id===stage):null;
  const rewardTargets=authored?.targets??[];let targetIndex=0;
@@ -74,7 +99,7 @@ async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={})
    }
    decision=decideRiskAction(v,policyState);policyState=decision.state;
    if(['left','right','jump'].includes(decision.action)){
-    await tap(`[data-action="${decision.action}"]`,{fastReaction:true});lastTap=Date.now();
+    await tap(`[data-action="${decision.action}"]`,{fastReaction:true,decisionView:{...v,level:stage},touchPoint:controlPoints[decision.action]});lastTap=Date.now();
     if(decision.action==='left'||decision.action==='right')
      await page.waitForFunction(expected=>[...document.querySelectorAll('.co-lane-indicator i')]
       .findIndex(node=>node.classList.contains('on'))===expected,decision.toLane,{timeout:1800});
@@ -101,14 +126,46 @@ async function drive({maxMs,stage=0,stopAtDistance=Infinity,avoidFish=false}={})
  await shot('level-'+stage+'-wall-budget').catch(()=>{});
  return result;
 }
+// V7 has a real centre barrier at 35m, LEFT car at 52m and RIGHT car at 63m.
+// A completely idle waitDistance(66/115) now *must* fail. These are ordinary
+// public touchscreen taps, not model-state mutation or collision bypass.
+// Returning to centre by 42m also keeps the right-hand vehicle genuinely lethal.
+// Two genuine adjacent touches clear the V7 opening. Longer probes must
+// also avoid the 110m added centre barrier, not assume a permanently clear lane.
+async function clearV7Opening(target,{pedestrianApproach=false}={}){
+ if(target!==83&&target!==115)throw Error('Unknown V7 opening target '+target);
+ await waitDistance(20);await tap('[data-action="left"]');
+ await waitDistance(42);await tap('[data-action="right"]');
+ if(target===115){await waitDistance(94);await tap('[data-action="left"]',{fastReaction:true});}
+ // First pedestrian reaches the far-right lane near 89m. Two genuine
+ // adjacent touch nudges must start soon after the 75m centre barrier,
+ // before software-renderer input latency consumes the reaction window.
+ if(target===83&&pedestrianApproach){
+  await waitDistance(79);
+  await tap('[data-action="right"]',{fastReaction:true});
+  await tap('[data-action="right"]',{fastReaction:true});
+ }
+ await waitDistance(target);
+ const result=await snapshot(),event=id=>result.events.some(e=>e.objectId===id);
+ check('v7-opening-three-beat-escape-'+target,
+  result.phase==='running'&&
+  result.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o10'&&!e.jumped)&&
+  event('l1-o11')&&event('l1-o12')&&
+  (target!==115||result.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o13'&&!e.jumped)),
+  {distance:result.distance,lane:result.lane,events:result.events.filter(e=>['barrier-cleared','obstacle-avoided'].includes(e.type)).slice(-7)});
+ return result;
+}
 async function waitDistance(target,maxMs=70000){await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));const end=Date.now()+maxMs;while(Date.now()<end){const v=await view();if(v.phase==='finished')throw Error('Finished before '+target);if(v.distance>=target)return;await page.waitForTimeout(40);}throw Error('Distance timeout '+target);}
 try{
  await fresh();await shot('menu');check('locked-new-save',await page.locator('[data-level="2"]').isDisabled(),{newBrowser:true});
  if(mode==='campaign'||mode==='all'){
   captureSection='campaign';
-  const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});await shot('first-fish');const first=await snapshot(),firstEvent=first.events.find(e=>e.type==='fish-caught'&&e.first);check('first-seconds-objective-and-fish',first.count>=1&&firstEvent?.at<3,{count:first.count,elapsed:first.elapsed,firstCatchGameSeconds:firstEvent?.at,runnerWallMs:Date.now()-firstStarted,note:'Actual first event time, with runner wall time kept separate; software-renderer wall delay is not phone performance.'});
+  const firstStarted=Date.now();await tap('#co-start');await page.waitForFunction(()=>Number(document.querySelector('#co-fish')?.textContent.match(/^\d+/)?.[0]??0)>0,null,{timeout:20000});
+  // The first pickup is real. Freeze via the visible pause button BEFORE slow
+  // PNG/render RPCs; the old ordering reached the34m barrier while capturing.
+  await tap('#co-pause',{fastReaction:true});await shot('first-fish-paused');const first=await snapshot(),firstEvent=first.events.find(e=>e.type==='fish-caught'&&e.first);check('first-seconds-objective-and-fish',first.count>=1&&firstEvent?.at<3,{count:first.count,elapsed:first.elapsed,firstCatchGameSeconds:firstEvent?.at,runnerWallMs:Date.now()-firstStarted,note:'Actual first event time, with runner wall time kept separate; software-renderer wall delay is not phone performance.'});
   const ri=await page.evaluate(()=>window.__coast.renderInfo());check('renderer-composer-resolution',ri.pixelRatio>=Math.min(1.25,qaDpr())&&ri.canvas[0]===ri.composer[0]&&ri.canvas[1]===ri.composer[1],ri);
-  await tap('#co-pause');const before=await snapshot();await page.waitForTimeout(1100);const after=await snapshot();check('pause-freezes-world-and-timer',before.distance===after.distance&&before.elapsed===after.elapsed,{before,after});await shot('pause');await tap('#co-resume');
+  const before=await snapshot();await page.waitForTimeout(1100);const after=await snapshot();check('pause-freezes-world-and-timer',before.distance===after.distance&&before.elapsed===after.elapsed,{before,after});await shot('pause');await tap('#co-resume');
   for(let id=1;id<=5;id++){
    if(id>1){await tap('#co-next');await page.waitForTimeout(1500);}
    await shot('level-'+id+'-start');
@@ -168,12 +225,37 @@ try{
   // Unlock exclusively through the same visible campaign. No save seeding.
   if(mode==='all'){await tap('[data-level="3"]');await tap('#co-start');}else{await tap('#co-start');for(let id=1;id<=2;id++){const r=await drive({stage:id});check('unlock-prerequisite-'+id,r.reason==='complete',r);if(r.reason!=='complete')throw Error('Unlock prerequisite failed');await tap('#co-next');}}
   // Center-lane first vehicle deliberately left unavoided with normal input.
-  await page.waitForTimeout(5000);await shot('vehicle-warning');await page.waitForFunction(()=>document.querySelector('#coast')?.classList.contains('crashing'),null,{polling:'raf',timeout:20000});await shot('vehicle-accident');const crash=await snapshot();await page.locator('#co-modal').waitFor({state:'visible'});const presentation=await page.evaluate(()=>window.__qaCrashFrames);const visibleFrames=presentation.filter(f=>f.crashing&&f.modalHidden),visibleSpanMs=(visibleFrames.at(-1)?.at??0)-(visibleFrames[0]?.at??0);check('accident-visible-before-settlement',visibleFrames.length>=4&&visibleSpanMs>=180,{phase:crash.phase,reason:crash.reason,settlementInitiallyHidden:visibleFrames.length>0,visibleSpanMs,frames:presentation,note:'Continuous read-only DOM frames verify the actual crash display; later RPC latency is not used as a visibility assertion.'});await shot('vehicle-impact');check('car-ends-round',crash.reason==='vehicle',crash);
+  // V7's genuine 37m centre barrier now blocks an idle rider before
+   // the original 100m vehicle. Use real lane controls to pass the
+   // opening, then return to centre and deliberately hit that car.
+   await tap('[data-action="left"]');
+   await page.waitForFunction(()=>{const v=window.__coast.snapshot();return v.phase==='finished'||v.distance>=40},null,{timeout:11000});
+   // Dispatch before evidence RPCs: the measured old45m wait returned56m,
+   // then the snapshot/log delayed steering until the left car hit at61m.
+   await tap('[data-action="right"]',{fastReaction:true});
+   const opening=await snapshot();
+   check('vehicle-impact-test-survives-V7-opening',opening.phase==='running'&&opening.distance>=40&&
+    opening.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l3-o16'&&!e.jumped),
+    {phase:opening.phase,distance:opening.distance,events:opening.events.slice(-6)});
+   await shot('vehicle-warning');
+   // The read-only animation-frame observer was armed BEFORE the drive.
+   // Wait for terminal status, never for a fleeting CSS crash class
+   // after screenshot latency has already elapsed.
+   await page.waitForFunction(()=>document.querySelector('#coast')?.dataset.phase==='finished',null,{timeout:20000});
+   await shot('vehicle-accident');const crash=await snapshot();await page.locator('#co-modal').waitFor({state:'visible'});const presentation=await page.evaluate(()=>window.__qaCrashFrames);const visibleFrames=presentation.filter(f=>f.crashing&&f.modalHidden),visibleSpanMs=(visibleFrames.at(-1)?.at??0)-(visibleFrames[0]?.at??0);check('accident-visible-before-settlement',visibleFrames.length>=2&&visibleSpanMs>=350&&presentation.every(f=>!f.crashing||f.modalHidden),{phase:crash.phase,reason:crash.reason,settlementInitiallyHidden:visibleFrames.length>0,visibleSpanMs,frames:presentation,note:'Continuous read-only DOM frames verify the actual crash display; later RPC latency is not used as a visibility assertion.'});await shot('vehicle-impact');check('car-ends-round',crash.reason==='vehicle',crash);
   await page.waitForTimeout(1200);const frozen=await snapshot();check('crash-freezes-score',frozen.count===crash.count&&frozen.distance===crash.distance,{crash,frozen});
   const n=navs;await tap('#co-replay');await page.waitForTimeout(700);check('failure-replay-without-navigation',navs===n&&(await snapshot()).phase==='running',{navigationCount:navs});await tap('#co-pause');await tap('#co-select');await tap('[data-level="1"]');await tap('#co-start');
   // Exact crossing position: two right nudges from neutral reach the outer
   // road, rather than assuming a fractional 1.18m nudge is a lane centre.
-  await waitDistance(66);await tap('[data-action="right"]');await tap('[data-action="right"]');await page.waitForFunction(()=>window.__coast.snapshot().stun>2.7,null,{timeout:15000});const ped=await snapshot();
+  await clearV7Opening(83,{pedestrianApproach:true});
+   await page.waitForFunction(()=>{
+    const run=window.__coast.snapshot();
+    return run.stun>2.7||run.phase==='finished';
+   },null,{timeout:15000});
+   const ped=await snapshot();
+   check('pedestrian-stun-reached-by-real-prepared-touch',ped.phase==='running'&&ped.stun>2.7,
+    {phase:ped.phase,reason:ped.reason,distance:ped.distance,stun:ped.stun,
+     events:ped.events.filter(e=>['pedestrian-hit','failed'].includes(e.type)).slice(-3)});
   // Read the actual timer before software PNG capture can consume the stun.
   await page.waitForTimeout(800);const waiting=await snapshot();
   check('pedestrian-stops-but-countdown-runs',
@@ -217,10 +299,15 @@ try{
    {gauge,actualLane:moved.lane,expectedGauge});
   await shot('fractional-road-position-before-traffic');
   // Fresh native replay restores the identical high-pressure detour at 115m.
-  await tap('#co-pause');await tap('#co-replay');await waitDistance(115);await tap('[data-action="left"]');await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');await waitDistance(208);await tap('[data-action="left"]');await waitDistance(217);await tap('[data-action="jump"]');// The 233m barrier only clears after the actual bike passes ~234m.
+  await tap('#co-pause');await tap('#co-replay');await clearV7Opening(115);await waitDistance(145);await tap('[data-action="right"]');await tap('[data-action="right"]');// A V7 right-side oncoming car collides near 201m. Use a real left touch
+  // at 179m, after the centre car has passed. A 217m jump is now TOO EARLY
+  // for the genuine 1.1s jump buffer: touch again near 225m, without easing physics.
+  await waitDistance(179);await tap('[data-action="left"]',{fastReaction:true});
+  await waitDistance(225);await tap('[data-action="jump"]',{fastReaction:true});
+  // The 233m barrier clears only after crossing about 234m.
   // Its real +9m prize is caught around 241m, not at 237m. Only accept
   // visible, physically earned events after those distances.
-  await waitDistance(231);await shot('barrier-jump');await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');
+  await waitDistance(235);const jumped=await snapshot();check('visible-barrier-jump-clears',jumped.phase==='running'&&jumped.events.some(e=>e.type==='barrier-cleared'&&e.objectId==='l1-o3'&&e.jumped),jumped);await shot('barrier-jump');await shot('barrier-cleared');await waitDistance(244);const prize=await snapshot();check('authored-barrier-prize-caught',prize.events.some(e=>e.type==='fish-caught'&&e.objectId==='l1-jump-l1-o3'&&e.bonus&&e.golden),prize);await shot('authored-barrier-prize');
   // Public touch nudges to fractional metres instead of forcing a road lane center.
 
   segment('collisions');
