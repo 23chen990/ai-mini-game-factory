@@ -291,12 +291,14 @@ async function raceStart(page, index, name) {
   if(early.map!==expectedMap || early.laps!==expectedLaps || early.mode!==expectedMode)
     fail(name+': wrong actual native map/laps/mode: '+JSON.stringify(early));
   if(!early.mobileCamera)fail(name+': actual touch driving must enable mobile camera and anti-jitter rendering');
+  // RC23 deliberately uses a closer 63–72 degree phone view. Preserve the
+  // chase/movement/look-ahead checks; the old 65–89 range tested a retired lens.
   if(!Number.isFinite(after.mobileChaseDistance) ||
      after.mobileChaseDistance>16.0 ||
-     !Number.isFinite(after.actualCameraFov) || after.actualCameraFov<65 ||
-     after.actualCameraFov>89 ||
+     !Number.isFinite(after.actualCameraFov) || after.actualCameraFov<63 ||
+     after.actualCameraFov>72 ||
      !Number.isFinite(after.mobileLookAhead) || after.mobileLookAhead<5)
-     fail(name+': V10 native mobile chase camera did not bring car closer while tracking real exit: '+JSON.stringify(after));
+     fail(name+': RC23 phone chase must preserve readable framing and a real forward exit: '+JSON.stringify(after));
   if(!early.controlsVisible || after.progress <= early.progress + 0.5)
     fail(name+': native vehicle did not progress with real auto throttle; '+JSON.stringify({early,after,error:movementError?.message}));
   const originalPadLanes={city:[6,-6,-4,4],egypt:[0,-6],aegean:[5,-5],snow:[5,-5]}[expectedMap];

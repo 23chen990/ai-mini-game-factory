@@ -18,6 +18,12 @@ test('phone high-speed composition keeps a readable car without borrowing deskto
   assert.ok(build.includes(': 66 + Math.abs(P.s) * 0.12 + (P.nitroTime > 0 ? 9 : 0) + (P.smallBoost > 0 ? 4 : 0)'),'desktop FOV must stay native');
   assert.ok(build.includes(': m.dist + Math.abs(P.s) * .018 + boostPull'),'desktop chase must stay native');
 });
+test('browser camera observation enforces the new phone range, not the retired wide-angle range',()=>{
+  const smoke=readFileSync(new URL('../../../../tools/lean-pilot/racing-v3-smoke.mjs',import.meta.url),'utf8');
+  assert.match(smoke,/after\.actualCameraFov<63/);
+  assert.match(smoke,/after\.actualCameraFov>72/);
+  assert.match(smoke,/after\.mobileChaseDistance>16\.0/,'retain the existing chase bound');
+});
 test('action states expose real earned resources and current item, not duplicate button subtitles',()=>{
   assert.equal(typeof presentation.raceActionView,'function');
   const player={drifting:false,smallWindow:0,nitroCount:0,gauge:.4,items:[],nitroTime:0,smallBoost:0};
