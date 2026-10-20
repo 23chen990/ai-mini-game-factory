@@ -45,6 +45,11 @@ export class TouchActions {
   clear() { this.pointers.clear(); this.pending.clear(); this.pendingAt.clear(); }
 }
 
+/** Desktop keeps native acceleration/steering; item races have distinct resource keys. */
+export function keyboardRaceActions(raw,itemMode,nitro,item) {
+  return itemMode?{...raw,nitroPressed:item,manualNitroPressed:nitro}:raw;
+}
+
 /** Manual mode preserves full analog player steering; acceleration is automatic.
  * If a player spins backwards, apply native brake/crawl until steering is viable.
  * We never alter coordinates, yaw or give free boosts: only native control inputs. */

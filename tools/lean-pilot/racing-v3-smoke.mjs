@@ -39,6 +39,20 @@ const report = { stage:'BUILT_H5_CHROMIUM_ENTRY_SMOKE', assertion:'source-level/
 let browser;
 const jsErrors=[];
 const fail = reason => {report.errors.push(String(reason));throw Error(reason);};
+async function downloadLocalQA(page) {
+  // Normal player flow must not expose diagnostics. Verify the same real
+  // download in its explicit QA entry, keeping the default page unchanged.
+  if(await page.locator('#race-export').isVisible())fail('Default player UI exposes QA export');
+  const diagnostics=await page.context().newPage();
+  await diagnostics.goto(url+'?qa=1',{waitUntil:'domcontentloaded',timeout:45000});
+  await waitLoaded(diagnostics);
+  const download=diagnostics.waitForEvent('download');
+  await diagnostics.locator('#race-export').tap();
+  const file=await download,content=JSON.parse(await readFile(await file.path(),'utf8'));
+  const filename=file.suggestedFilename();
+  await diagnostics.close();await page.bringToFront();
+  return {filename,content};
+}
 async function desktopSnapshot(page) {
   // Read-only native evidence. The overlay FPS estimate is not updated during
   // countdown, so do not misreport it as countdown/render performance.
@@ -483,15 +497,12 @@ try {
   if(title!==31)fail('Expected 30 campaign stages + daily, got '+title);
   // Real user-triggered browser download, checked from bytes rather than just
   // checking a button exists. It must be a local QA report, not a human claim.
-  const firstDownload=page.waitForEvent('download');
-  await page.locator('#race-export').tap();
-  const firstFile=await firstDownload;
-  const initialExport=JSON.parse(await readFile(await firstFile.path(),'utf8'));
-  if(firstFile.suggestedFilename()!=='racing-v80-local-playtest.json'||
+  const {filename:firstFilename,content:initialExport}=await downloadLocalQA(page);
+  if(firstFilename!=='racing-v80-local-playtest.json'||
      initialExport.build!=='V8.0'||initialExport.verifiedHumanPlay!==false||
      initialExport.metrics.starts!==0||initialExport.metrics.finishes!==0)
     fail('Menu export must start empty and explicitly reject human-play claims: '+JSON.stringify(initialExport));
-  report.initialExport={filename:firstFile.suggestedFilename(),starts:0,private:true};
+  report.initialExport={filename:firstFilename,starts:0,private:true};
   await raceStart(page,0,'01-city-hard-ranked');
   const restoredScenery=await page.evaluate(() => {
     const scene=window.game.scene;
@@ -799,10 +810,7 @@ try {
   },null,{timeout:12000});
   // Staged-DNF smoke runs should be exportable for developer comparison while
   // visibly marked as UNVERIFIED HUMAN PLAY rather than real retention data.
-  const laterDownload=page.waitForEvent('download');
-  await page.locator('#race-export').tap();
-  const laterFile=await laterDownload;
-  const finalExport=JSON.parse(await readFile(await laterFile.path(),'utf8'));
+  const {content:finalExport}=await downloadLocalQA(page);
   if(finalExport.verifiedHumanPlay!==false||finalExport.metrics.finishes<1||
      finalExport.metrics.starts<2||finalExport.metrics.didNotFinish<1||
      !finalExport.metrics.notes.includes('自动化测试'))

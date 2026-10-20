@@ -44,6 +44,8 @@ export function patchGeneratedCarModelSource(source) {
   output = output.slice(0, body) + '  root.add(asset.body);\n  const exhausts = asset.exhausts;\n  const tailM = asset.tailMaterial;\n\n' + output.slice(glow);
   const wheels = output.indexOf(anchors[5]), flames = output.indexOf(anchors[6]);
   return (output.slice(0, wheels) + '  const wheels = asset.wheels;\n  for (const wheel of wheels) car.add(wheel.steer);\n\n' + output.slice(flames))
+    .replace('fg.add(outer, inner);', 'outer.scale.set(.85,.6,.85); inner.scale.set(.8,.55,.8);\n    fg.add(outer, inner);')
+    .replace('new THREE.Color(2.5, 2.5, 2.5)', 'new THREE.Color(1.4, 1.4, 1.4)')
     .replace('car.userData = { root,', 'car.userData = { assetIdentity: asset.assetIdentity, root,');
 }
 

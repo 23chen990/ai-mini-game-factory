@@ -108,6 +108,14 @@ test('a genuine podium replay may retain a better historical medal and best time
     saved: JSON.stringify({ version: 1, rounds: 2, stars: { '01': 3 }, times: { '01': 120 } }) };
   assert.equal(qualifiedVisibleFinish(finish, 3), true);
 });
+test('product result card binds the visible dedicated time and CURRENT stars to native finish',()=>{
+  const finish={...currentFinish(),result:'进入前三 · 下一关已解锁',
+    resultCard:{time:'02:22.34',stars:'本场 3 星 · 历史最高 3 星'}};
+  assert.equal(qualifiedVisibleFinish(finish,3),true);
+  assert.equal(qualifiedVisibleFinish({...finish,resultCard:{...finish.resultCard,time:'02:21.00'}},3),false);
+  assert.equal(qualifiedVisibleFinish({...finish,resultCard:{...finish.resultCard,stars:'本场 0 星 · 历史最高 3 星'}},3),false);
+  assert.equal(qualifiedVisibleFinish({...finish,place:5,heading:'第 5 名'},3),false);
+});
 test('old saved medals do not turn an unfinished player, fourth place or an active race into a victory', () => {
   const finish = currentFinish();
   assert.equal(qualifiedVisibleFinish({ ...finish, finished: false }, 3), false);

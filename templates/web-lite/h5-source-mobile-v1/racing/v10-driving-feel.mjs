@@ -10,7 +10,7 @@ export const V10_DRIVE_TUNE=Object.freeze({
   mobileHighSpeedTurnRetention:.58,
   minCountersteerAxis:.12,
   cameraRollLimit:.048,
-  maxCameraFov:88,
+  maxCameraFov:72,
 });
 export function v10SteerDamping(previous,target) {
   if(!Number.isFinite(previous)||!Number.isFinite(target))
@@ -39,9 +39,9 @@ export function v10MobileCameraPreset(speed,drifting,driftAngle) {
   const v=clamp(Math.abs(Number.isFinite(speed)?speed:0),0,90),
     slide=clamp(Math.abs(Number.isFinite(driftAngle)?driftAngle:0),0,1.2);
   return {
-    // Native V9 chase mode 12.5m / 4.6m: car was too small on phone.
-    dist:8.7+v*.015,
-    h:2.85+v*.006,
+    // Handset composition only. Desktop keeps the native chase modes/FOV.
+    dist:7.1+v*.009,
+    h:2.65+v*.004,
     look:7.6+v*.042+(drifting?1.15:0),
     lookH:1.18+v*.005,
     roll:clamp(slide*.048,0,V10_DRIVE_TUNE.cameraRollLimit),
@@ -58,8 +58,8 @@ export function v10MobileCameraYaw(heading,velocityHeading,drifting,speed) {
 }
 export function v10MobileFov(speed,nitro,small) {
   const v=clamp(Math.abs(Number.isFinite(speed)?speed:0),0,90);
-  return clamp(68.5+v*.14+(nitro?7.5:0)+(small?2.8:0),
-    68.5,V10_DRIVE_TUNE.maxCameraFov);
+  return clamp(63+v*.06+(nitro?2.6:0)+(small?1:0),
+    63,V10_DRIVE_TUNE.maxCameraFov);
 }
 export function v10TrackFacingLook(player,track) {
   const speed=Math.max(0,Number.isFinite(player?.s)?player.s:0);

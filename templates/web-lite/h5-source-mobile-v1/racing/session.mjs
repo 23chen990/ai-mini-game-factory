@@ -84,10 +84,11 @@ export function tuneRaceFx(game) {
   for (const kind of ['smoke', 'glow']) {
     const pool = game.fx[kind], nativeEmit = pool.emit.bind(pool);
     pool.emit = (...args) => {
-      if (game.mobileMode) {
-        args[7] *= .55;args[8] *= .55;
-        args[12] *= kind === 'glow' ? .35 : .55;
-      }
+      // Desktop drift smoke was still a large white veil. Separate effect
+      // budgets, independent of each platform's camera and native simulation.
+      const scale=game.mobileMode?(kind==='glow'?.36:.55):(kind==='glow'?.5:.45);
+      const opacity=game.mobileMode?(kind==='glow'?.18:.55):(kind==='glow'?.28:.38);
+      args[7] *= scale;args[8] *= scale;args[12] *= opacity;
       return nativeEmit(...args);
     };
   }

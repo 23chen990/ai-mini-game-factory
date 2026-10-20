@@ -131,6 +131,10 @@ async function observed(full = false) {
       events: full ? window.__RACE_EVIDENCE__.events : window.__RACE_EVIDENCE__.events.filter(e => ['driftEnd', 'smallBoost', 'nitro', 'crash', 'pad', 'item'].includes(e.type)).slice(-8),
       heading: document.querySelector('#race-heading').textContent,
       result: document.querySelector('#race-result-copy').textContent,
+      resultCard: document.querySelector('#race-result-time')?.getClientRects().length ? {
+        time:document.querySelector('#race-result-time').textContent,
+        stars:document.querySelector('#race-result-stars small').textContent,
+      } : null,
       resultStats: document.querySelector('#race-result-stats').textContent,
       saved: localStorage.getItem('h5-mobile:qq-speed:career:v1') };
   }, full);

@@ -80,7 +80,12 @@ export function qualifiedVisibleFinish(terminal, savedStars) {
   const seconds = terminal.finishTime;
   const visibleTime = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${(seconds % 60).toFixed(2).padStart(5, '0')}`;
   const resultPrefix = `${daily ? '每日挑战成功 · ' : ''}第 ${terminal.place} 名 · ${visibleTime} · `;
-  if (typeof terminal.result !== 'string' || !terminal.result.startsWith(resultPrefix)) return false;
+  if(terminal.resultCard){
+    // New product layout renders time/stars in their own visible fields.
+    // Keep old report validation intact; neither path accepts stale medals.
+    if(terminal.resultCard.time!==visibleTime ||
+      !terminal.resultCard.stars?.startsWith(`本场 ${4-terminal.place} 星 · `))return false;
+  }else if (typeof terminal.result !== 'string' || !terminal.result.startsWith(resultPrefix)) return false;
   let saved;
   try { saved = JSON.parse(terminal.saved); } catch { return false; }
   if (saved?.version !== 1 || !Number.isInteger(saved.rounds) || saved.rounds < 1) return false;

@@ -1,6 +1,28 @@
 /** Pure arcade presentation. Never mutates native driving, result or save state. */
 import { V11_COURSES,createV11CourseGeometry,v11RaceFraction } from './v11-course-director.mjs';
 import { raceDistanceM } from './session.mjs';
+import { ITEM_ICONS } from './items.mjs';
+
+const ACTION_ITEM_NAMES=Object.freeze({nitro:'加速',shield:'护盾',missile:'导弹',magnet:'磁铁',banana:'香蕉皮',shockwave:'冲击波',thunder:'雷电',barricade:'路障'});
+/** Read-only feedback for earned native actions; never presses a key or grants a resource. */
+export function raceActionView(player) {
+  const item=player.items[0];
+  return {
+    drift:{label:'漂移',icon:'↷',badge:'',ready:false,active:player.drifting},
+    small:{label:'小喷',icon:'»',badge:player.smallWindow>0?'就绪':'',ready:player.smallWindow>0,active:player.smallBoost>0},
+    nitro:{label:'氮气',icon:'ϟ',badge:String(player.nitroCount),ready:player.nitroCount>0,active:player.nitroTime>0},
+    item:{label:item?ACTION_ITEM_NAMES[item]:'道具',icon:item?ITEM_ICONS[item]:'◇',badge:'',ready:!!item,active:false},
+  };
+}
+/** A previous medal is a record, not the current race's result. */
+export function raceResultView(result,stars,bestStars,gap) {
+  return {
+    stars,primary:stars>0?'next':'replay',
+    subtitle:stars>0?'进入前三 · 下一关已解锁':
+      !result.finished?'本场未完赛':gap!==null?`距前三 ${gap.toFixed(1)} 秒`:'本场未进前三',
+    record:`本场 ${stars} 星 · 历史最高 ${bestStars} 星`,
+  };
+}
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const finite = value => typeof value === 'number' && Number.isFinite(value);

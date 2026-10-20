@@ -74,12 +74,14 @@ test('输入释放同时清除触屏、键盘、两个边沿集合', () => {
   const input = { down: new Set(['ArrowLeft']), pressed: new Set(['KeyW']), touchPressed: new Set(['TouchNitro']), touch: { up: true, left: true, shift: true } };
   clear(input);assert.equal(input.down.size + input.pressed.size + input.touchPressed.size, 0);assert.ok(Object.values(input.touch).every(v => !v));
 });
-test('V10手机镜头FOV有可感知的速度反馈且不超过88度', () => {
+test('手机独立镜头收敛广角：保留速度反馈，氮气只小幅打开视野', () => {
   const fov = need('raceCameraFov');
   assert.ok(fov(55, true, false) > fov(55, false, false));
-  assert.ok(fov(86, true, true) <= 88);assert.ok(fov(0, false, false) >= 68);assert.ok(fov(70,true,false)>=85);
+  assert.ok(fov(86, true, true) <= 72);assert.ok(fov(0, false, false) >= 63);
+  assert.ok(fov(70,true,false)<=70);
+  assert.ok(fov(70,true,false)-fov(70,false,false)<3);
 });
-test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；安装一次且键盘模式恢复原参数', () => {
+test('双端分别限制特效遮挡，保持原生粒子事件与寿命且只安装一次', () => {
   const tune = need('tuneRaceFx'), calls = [];
   const pool = kind => ({ emit(...args) { calls.push({ kind, args });return 'native'; } });
   const g = { mobileMode: true, fx: { smoke: pool('smoke'), glow: pool('glow') } };
@@ -95,7 +97,10 @@ test('手机特效保持原生粒子事件与寿命，限制近镜头遮挡；�
     assert.ok(call.args[12] > 0 && call.args[12] < .6);
     assert.deepEqual(call.args.slice(13), args.slice(13));
   }
-  g.mobileMode = false;g.fx.glow.emit(...args);assert.deepEqual(calls.at(-1).args, args);
+  g.mobileMode = false;g.fx.glow.emit(...args);
+  assert.deepEqual(calls.at(-1).args.slice(0,7),args.slice(0,7));
+  assert.equal(calls.at(-1).args[7],args[7]*.5);
+  assert.equal(calls.at(-1).args[12],args[12]*.28);
   const bloom = need('raceBloomStrength');assert.ok(bloom(true) > bloom(false));assert.ok(bloom(true) <= .46);
 });
 test('自适应只在持续低帧率后降一档；手选画质保留', () => {
