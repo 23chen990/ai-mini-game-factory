@@ -142,7 +142,8 @@ export function patchHomeOccluderProps(source) {
     arch=arch.replace(from,to);
   }
   arch=arch.replace(archStart,archStart+"\n  const archRoot = new THREE.Group();\n"+namedArch+"\n  parent.add(archRoot);");
-  return source.slice(0,start)+arch+source.slice(end).replace(gateBlock,"  const grp = new THREE.Group();\n"+namedGate+"\n  const H = style.h || 11;");
+  const withArch = source.slice(0,start)+arch+source.slice(end);
+  return withArch.replace(gateBlock,"  const grp = new THREE.Group();\n"+namedGate+"\n  const H = style.h || 11;");
 }
 
 /** Keep the big blue start/bridge members visible for real races, including
