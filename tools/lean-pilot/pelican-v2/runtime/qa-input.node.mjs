@@ -60,3 +60,18 @@ test('campaign critical inputs use the observed HUD and cached visible geometry 
  assert.match(drive,/document\.elementFromPoint/);
  assert.match(drive,/decisionView:\{\.\.\.v,level:stage\},touchPoint:controlPoints\[decision\.action\]/);
 });
+test('risk reward PNGs wait until an actual escape from the current visible vehicle lane',async()=>{
+ const source=await readFile(new URL('../risk-qa.mjs',import.meta.url),'utf8');
+ assert.match(source,/const deferRewardPhotos=view\.lanes\[view\.laneIndex\]\.danger&&view\.lanes\[view\.laneIndex\]\.kind==='vehicle'/);
+ assert.match(source,/deferredEscapePhotos\.push\(\{episode:evidenceEpisode,kind:'barrier-cleared-post-escape'\}\)/);
+ assert.match(source,/deferredEscapePhotos\.push\(\{episode:evidenceEpisode,kind:'golden-bonus-fish-caught-post-escape'\}\)/);
+ const escape=source.slice(source.indexOf('await page.waitForFunction(expected=>'),source.indexOf('if(!openingForecastCaptured'));
+ assert.ok(escape.indexOf('for(const photo of deferredEscapePhotos)')>escape.indexOf('timeout:1800'));
+});
+test('risk input evidence rejects a late canvas hit instead of calling it a control press',async()=>{
+ const source=await readFile(new URL('../risk-qa.mjs',import.meta.url),'utf8');
+ const tap=source.slice(source.indexOf('async function tap('),source.indexOf('function makeEpisode'));
+ assert.match(tap,/event\.type==='pointerdown'/);
+ assert.match(tap,/event\.target==='data-action='\+control\[1\]/);
+ assert.match(tap,/if\(control&&!action\.trustedTouch\)throw Error/);
+});

@@ -391,6 +391,26 @@
       "bytes": 16160
     },
     {
+      "path": "attempts/attempt-6/risk-chromium-390x844/driver-source.mjs",
+      "sha256": "eea56c8de06c09301f943819721c68d2ed42f51f4726ffa539593d1b5a447ac2",
+      "bytes": 38627
+    },
+    {
+      "path": "attempts/attempt-6/risk-chromium-390x844/level-1-l1-o1-golden-bonus-fish-caught-post-escape.png",
+      "sha256": "f17b5352f2c544f54d1439c4d5f756977c23bae9fa390c95627119ab7779518b",
+      "bytes": 338700
+    },
+    {
+      "path": "attempts/attempt-6/risk-chromium-390x844/level-1-l1-o3-golden-bonus-fish-caught-post-escape.png",
+      "sha256": "8589c986c3840814cd7ca625043f80a30b425cb4fe177e61563acd6f0140dd07",
+      "bytes": 322111
+    },
+    {
+      "path": "attempts/attempt-6/risk-chromium-390x844/report.json",
+      "sha256": "cc61dc548a2a299e21ac08bd0fa88b89e207ee77c046a55ef8ec65e688a0698f",
+      "bytes": 3608485
+    },
+    {
       "path": "attempts/attempt-6/risk-chromium/driver-source.mjs",
       "sha256": "76b75e28717be7aac30acd5549745250706dbe2cb4883f32b693344430eeaf7d",
       "bytes": 37598
@@ -434,6 +454,21 @@
       "path": "attempts/attempt-6/risk-chromium/report.json",
       "sha256": "bd780ec612e1319306c9af708e1e6ceeffde7860aa1daf30988ad91c39967b40",
       "bytes": 3583500
+    },
+    {
+      "path": "attempts/attempt-6/risk-webkit-390x844/driver-source.mjs",
+      "sha256": "eea56c8de06c09301f943819721c68d2ed42f51f4726ffa539593d1b5a447ac2",
+      "bytes": 38627
+    },
+    {
+      "path": "attempts/attempt-6/risk-webkit-390x844/level-1-l1-o1-golden-bonus-fish-caught-post-escape.png",
+      "sha256": "0d1750e705550cac47fd58a39cf7faf2383e3b453c8a15dba1ff80c162663014",
+      "bytes": 417611
+    },
+    {
+      "path": "attempts/attempt-6/risk-webkit-390x844/report.json",
+      "sha256": "2b21f103607454ee893935313ec8eadf2f451d25774b0c1c6c626c4e321a604b",
+      "bytes": 3582519
     },
     {
       "path": "attempts/attempt-6/risk-webkit/driver-source.mjs",
@@ -791,6 +826,16 @@
       "bytes": 3157
     },
     {
+      "path": "evidence/v7-review/attempt-6-ci-risk-escape-triage.json",
+      "sha256": "626ed77fa7df7a308889101307d0236ddc7a6e924a5630d3e75328bd14410053",
+      "bytes": 3134
+    },
+    {
+      "path": "evidence/v7-review/attempt-6-ci-risk-lane-triage.json",
+      "sha256": "34f11bd336cd32526d5f5210ce3a6c9ebacf5a6cf772bb1157d90c2106c91f03",
+      "bytes": 2379
+    },
+    {
       "path": "evidence/v7-review/attempt-6-ci-stale-hud-triage.json",
       "sha256": "ad7a44e4f4c1a91e80192d14bc77caf54d9d3884d3cf077d52af41f2856a4e2b",
       "bytes": 3031
@@ -951,6 +996,106 @@
       "bytes": 3211
     },
     {
+      "path": "evidence/v7-review/ci-a96-chromium-job.log",
+      "sha256": "6fd4d72ae4295c74f0664df23363e1af43f18c5bb416bd6f2d69abe6b183e5e9",
+      "bytes": 178624
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/build.log",
+      "sha256": "93ab9614077e3a8a0525914fc863a910acbd02efc4c4ac7d3a913c92b1107f4a",
+      "bytes": 41
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/experience-chromium/driver-source.mjs",
+      "sha256": "56cf6494e9d8e8ca1310beef90d1132a69f6783004a0b2351caeed57be5788b9",
+      "bytes": 34551
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/experience-chromium/report.json",
+      "sha256": "d4a51cc11ca0e64fb8605c24e067916dce6cf6193c737721e49cf0bb40493504",
+      "bytes": 791161
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/fix-evidence.json",
+      "sha256": "1418e7e9f66e32dca527fbe47c505fb73e4e3a08f64578d4ad1e8abf68d6e6e9",
+      "bytes": 2781
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/qa-collisions-chromium/driver-provenance.json",
+      "sha256": "f765cf470aec189012dbad6895966773fbe56de726856c2cd177439c1fc2e22c",
+      "bytes": 318
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/qa-collisions-chromium/driver-source.mjs",
+      "sha256": "3fb0b9c1c4df3e2dfe6990d3581508ebdb00861d8fbd47767ca227d1734f27f3",
+      "bytes": 32673
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/qa-collisions-chromium/report.json",
+      "sha256": "4872bd8506815062b6ccd148df51a31ab8faaa2db00c92fcdc1501cc9b74d431",
+      "bytes": 197437
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/risk-chromium/driver-source.mjs",
+      "sha256": "76b75e28717be7aac30acd5549745250706dbe2cb4883f32b693344430eeaf7d",
+      "bytes": 37598
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/risk-chromium/level-1-l1-o3-golden-bonus-fish-caught.png",
+      "sha256": "ab534b5011506809bb481ef62460cf56d7735849860c798806138accb5a9995c",
+      "bytes": 328752
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/risk-chromium/report.json",
+      "sha256": "cf24aa680680db70feca30070a73fa9bac49b26f93e228c1923ba6021427821f",
+      "bytes": 394149
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/v6-real-browser-chromium/report.json",
+      "sha256": "ddde4c17db43f5031982f95e754252a84b73bc2cb2c9234fce1782dd3caa5ff0",
+      "bytes": 4988
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/v7-journey-chromium-candidate/driver-source.mjs",
+      "sha256": "6fe3c2bd882d1775120d8ce665a4841090088c8bfc33d29b8e34c8ad590174d9",
+      "bytes": 14732
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/attempts/attempt-1/v7-journey-chromium-candidate/report.json",
+      "sha256": "4f9d709c06d796b2b692052d6bfe6c7641620c966bf59bc7265f588714229378",
+      "bytes": 294654
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/baseline-receipt.json",
+      "sha256": "8bc2df3eaced80811fc4335018dd036c71eaa33c984add9171466e139c8ce9fd",
+      "bytes": 2652
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/build-receipt.json",
+      "sha256": "1418e7e9f66e32dca527fbe47c505fb73e4e3a08f64578d4ad1e8abf68d6e6e9",
+      "bytes": 2781
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-chromium/repair-state.json",
+      "sha256": "36e811609383ec74971ced89b010d02899bb19461d70658544704901d26d37dc",
+      "bytes": 3211
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-final.json",
+      "sha256": "93b51a361691908d52767003b36930bcc409ea15b8a01bacc68e629030a5a482",
+      "bytes": 10072
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-lean-final.json",
+      "sha256": "f7f316c9d18c9eb5d03320ff886927c7b2c957f2df9026bd42c4f95ba29f15ed",
+      "bytes": 7460
+    },
+    {
+      "path": "evidence/v7-review/ci-a96-watch.log",
+      "sha256": "ac6ad5e964ff090e93b613f0b516b8ac2d303e8bd4b0abd334325ffb204dba0b",
+      "bytes": 71414
+    },
+    {
       "path": "evidence/v7-review/ci-eba6-chromium-job.log",
       "sha256": "3435373446d3f9f62dca969190910c8b7a60a72f78761489a8f4d6b0611855f3",
       "bytes": 109995
@@ -1076,6 +1221,31 @@
       "bytes": 2817
     },
     {
+      "path": "evidence/v7-review/ci-risk-escape-green.log",
+      "sha256": "e3692c7384f2460e46ee1c90869796d2ba4af047390c3a89f6c506931e5556d9",
+      "bytes": 1080
+    },
+    {
+      "path": "evidence/v7-review/ci-risk-escape-matrix.json",
+      "sha256": "8fe98c1f87f4d3beb7530c47dd6707e10611dd400a85e231ee5bb6a7b10a09ac",
+      "bytes": 3595
+    },
+    {
+      "path": "evidence/v7-review/ci-risk-escape-red.log",
+      "sha256": "6d89b1fb42aa179bd6778d1b3e6b287549d6a4d4561b73a5f4350c3b166cbbf8",
+      "bytes": 29869
+    },
+    {
+      "path": "evidence/v7-review/ci-risk-escape-result.json",
+      "sha256": "b0c059d6ede8d3ab0ba78a35581970972551e38be3139c78392e5d1a9b0ee408",
+      "bytes": 2769
+    },
+    {
+      "path": "evidence/v7-review/ci-risk-lane-matrix.json",
+      "sha256": "77e7d5cacdfcc92b7d9d1a6a2ced0bbd8f988a7413a9a0a8bbf7b521a297e46f",
+      "bytes": 2684
+    },
+    {
       "path": "evidence/v7-review/ci-stale-hud-green.log",
       "sha256": "d05456e92824ef972f381094db12bc8c2d0abc7980c873de203c3fa5292766aa",
       "bytes": 764
@@ -1099,6 +1269,11 @@
       "path": "evidence/v7-review/delivery-blockers-current-triage.json",
       "sha256": "7c3cf9e199e2d0fdf8071e070317de9b8ac94db398a7e9d599d90df7981da247",
       "bytes": 2675
+    },
+    {
+      "path": "evidence/v7-review/delivery-blockers-risk-triage.json",
+      "sha256": "a5f3a44a0c95ee460955d698ddeecf5acab01425974a45e8c09fba4288dcbe14",
+      "bytes": 2919
     },
     {
       "path": "evidence/v7-review/delivery-blockers-triage.json",
@@ -1132,8 +1307,8 @@
     },
     {
       "path": "evidence/v7-review/export-delivery.mjs",
-      "sha256": "61ead14779e8250694361f761e6f463f13799afe34030599a986e6dea973792d",
-      "bytes": 4524
+      "sha256": "bf4a9399bc5015c2cca3df5917ae1adf274135cab042fe1e4f9b0b380163d279",
+      "bytes": 4801
     },
     {
       "path": "evidence/v7-review/failure-pressure-contract.json",
@@ -1266,6 +1441,11 @@
       "bytes": 11
     },
     {
+      "path": "evidence/v7-review/lint-risk-escape.log",
+      "sha256": "050c69da23536758722729aeda55a8d0fb9d557495ef6d33d70873a3b64a71c1",
+      "bytes": 11
+    },
+    {
       "path": "evidence/v7-review/native-attempt-3.log",
       "sha256": "c66544857ea9785c41551ea7459eaf44342914f1d43568e32c7c9009ee7562fc",
       "bytes": 20186
@@ -1304,6 +1484,11 @@
       "path": "evidence/v7-review/native-final-232.log",
       "sha256": "4f0e4eafb6e348803a294915592efb8d4ba3660b69abf84f17350d8bc2635856",
       "bytes": 21321
+    },
+    {
+      "path": "evidence/v7-review/native-final-234.log",
+      "sha256": "e2f562eacc63bdf0ef606c5502f826966e4727a935b0437c53190a0c69bad383",
+      "bytes": 21484
     },
     {
       "path": "evidence/v7-review/native-final.log",
@@ -1686,6 +1871,16 @@
       "bytes": 41353
     },
     {
+      "path": "evidence/v7-review/risk-escape-chromium.log",
+      "sha256": "092b0f8da34f29174c6f7ed8a5017aae3412d82f1eac0b0e40083144755c4e7f",
+      "bytes": 48755
+    },
+    {
+      "path": "evidence/v7-review/risk-escape-webkit.log",
+      "sha256": "8d5f8891ae70f07ba3a455cee6175e6289b127840eb6a685265cac917c73b6de",
+      "bytes": 48722
+    },
+    {
       "path": "evidence/v7-review/runtime-product-gate.json",
       "sha256": "4327b48b2ab34f75b100d17e2a55aa800ff3faa0848048e13f35c3a3aa3ae7c3",
       "bytes": 1510
@@ -1722,6 +1917,11 @@
     },
     {
       "path": "evidence/v7-review/typecheck-final.log",
+      "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "bytes": 15
+    },
+    {
+      "path": "evidence/v7-review/typecheck-risk-escape.log",
       "sha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
       "bytes": 15
     },
@@ -1779,6 +1979,11 @@
       "path": "evidence/v7-review/verification-summary-current.json",
       "sha256": "ab606accb55de670fe522c4c0bac9440f2c4473935e0747b8b1acfe1dc95db2c",
       "bytes": 7748
+    },
+    {
+      "path": "evidence/v7-review/verification-summary-risk-current.json",
+      "sha256": "adb7be8cad6f86ab3acaef3dc707e0b66c00f1cd199c0f7f0b2df9a3de409770",
+      "bytes": 9812
     },
     {
       "path": "evidence/v7-review/verification-summary.json",
@@ -2056,6 +2261,6 @@
   "scope": "Selected review screenshots, all attempt JSON/driver sources, current run-bound contracts and logs. Other raw captures remain in the local run; nothing omitted is claimed passed.",
   "archive": {
     "path": "review-bundle.tar.gz",
-    "sha256": "a70f27cefcdcdb6011a7ab565f4fe6b55fa610af1dcbf1d5c1aeae7c65a749e4"
+    "sha256": "f2ea4b3e3a018b6c51bb5a20d48389e0ad454e74cbc06d5113df4ab75fedde4c"
   }
 }
