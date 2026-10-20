@@ -1,0 +1,661 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "starter",
+      "custom-01",
+      "custom-02",
+      "custom-03",
+      "custom-04",
+      "custom-05",
+      "physical-ai",
+      "wheel-resources"
+    ],
+    "lifecycleStateBranches": [
+      "home",
+      "race",
+      "settlement-replay"
+    ],
+    "rendererPaths": [
+      "default Three.js + DOM"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "starter-home-desktop",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-home-touch",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "starter-home-small-touch",
+      "objectType": "starter",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-01-home-desktop",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-01-home-touch",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-01-home-small-touch",
+      "objectType": "custom-01",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-02-home-desktop",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-02-home-touch",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-02-home-small-touch",
+      "objectType": "custom-02",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-03-home-desktop",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-03-home-touch",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-03-home-small-touch",
+      "objectType": "custom-03",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-04-home-desktop",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-04-home-touch",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-04-home-small-touch",
+      "objectType": "custom-04",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-05-home-desktop",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-05-home-touch",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "custom-05-home-small-touch",
+      "objectType": "custom-05",
+      "lifecycleStateBranch": "home",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Exact car readable, correctly framed and unobscured; material and environment cohesion reviewed from actual pixels.",
+      "observed": "Final19 exact car/viewport captured and independently reviewed: no supported P0/P1 clipping/overlap; source-specific P2 polish disclosed.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+          "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/browser19/gallery.json",
+          "sha256": "b3ffa5155186694d242619d45f3de942fbcf51c9e0dcdcb6d78cba2d697307aa",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "physical-ai-race-touch",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Physical, understandable competition and distinct successful natural resource inputs with recovery.",
+      "observed": "Actual earlier-stage pressure and lawful overtakes shown; all30 native finishes do not establish natural difficulty of unobserved later routes or small viewport.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/evidence/natural-summary.json",
+          "sha256": "24e345c8ebc4204a6a4b052f83296aef15fc008af0830fda6d8aefc45cf8588d",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "physical-ai-race-small-touch",
+      "objectType": "physical-ai",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Physical, understandable competition and distinct successful natural resource inputs with recovery.",
+      "observed": "Actual earlier-stage pressure and lawful overtakes shown; all30 native finishes do not establish natural difficulty of unobserved later routes or small viewport.",
+      "evidence": [
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/evidence/natural-summary.json",
+          "sha256": "24e345c8ebc4204a6a4b052f83296aef15fc008af0830fda6d8aefc45cf8588d",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "wheel-resources-race-touch",
+      "objectType": "wheel-resources",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "touch",
+        "width": 844,
+        "height": 390
+      },
+      "status": "PASS",
+      "expected": "Physical, understandable competition and distinct successful natural resource inputs with recovery.",
+      "observed": "Final19 trusted countersteer, release, pause, actual window blur and rotation pass at both844/667. Natural resource full races are separately scoped; not real phone.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/touch-811e05f4f620-foreground-check/report.json",
+          "sha256": "e35bf7a3a3efebc4b264e441131f1cf293e97973f9320e18bf731f4e04f5acd4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/evidence/natural-summary.json",
+          "sha256": "24e345c8ebc4204a6a4b052f83296aef15fc008af0830fda6d8aefc45cf8588d",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "wheel-resources-race-small-touch",
+      "objectType": "wheel-resources",
+      "lifecycleStateBranch": "race",
+      "rendererPath": "default Three.js + DOM",
+      "viewport": {
+        "label": "small-touch",
+        "width": 667,
+        "height": 375
+      },
+      "status": "PASS",
+      "expected": "Physical, understandable competition and distinct successful natural resource inputs with recovery.",
+      "observed": "Final19 trusted countersteer, release, pause, actual window blur and rotation pass at both844/667. Natural resource full races are separately scoped; not real phone.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/touch-811e05f4f620-foreground-check/report.json",
+          "sha256": "e35bf7a3a3efebc4b264e441131f1cf293e97973f9320e18bf731f4e04f5acd4",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        },
+        {
+          "path": "docs/lean-pilot/racing-internal-20261020/evidence/natural-summary.json",
+          "sha256": "24e345c8ebc4204a6a4b052f83296aef15fc008af0830fda6d8aefc45cf8588d",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    }
+  ],
+  "confirmedFindings": [
+    "Attempt 16 visible-pixel/touch driver won stages 01–12 with 8–32 crashes per race and no effective drift, spray or nitro. This is not a human win-rate estimate.",
+    "Removing predictive braking in the read-only experiment improved stage 01 from 128.000 to 119.575 s, but increased aggregate wall crashes from 5 to 525: rejected, not a fix.",
+    "Six actual car previews exist. Custom-01 at 844×390 has busy high-contrast purple/black surfaces and the faceted green vegetation conflicts with the hard-surface car.",
+    "Trusted touch countersteer passed the starter/844×390 branch; resource use, small viewport natural driving, later stages and physical devices remain separate evidence gaps."
+  ],
+  "remainingGaps": [
+    "Natural unobserved stages:07,09,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",
+    "Actual Android/iPhone and human perception",
+    "Live SDK/background OS/rights clearance"
+  ],
+  "createdAt": "2026-10-20T08:34:07.520Z"
+}

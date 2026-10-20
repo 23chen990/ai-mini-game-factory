@@ -1,0 +1,29 @@
+✔ factory exposes the native loader contract as instantiate(skin) (4.590667ms)
+✔ all eight skins recolor only body paint and rims, preserving glass, tires and lights (5.118292ms)
+✔ instances share source geometry and textures but own one deduplicated cloned material set (1.303875ms)
+✔ four wheel pivots retain car-space axle positions with independent steering and spin axes (3.593792ms)
+✔ each car carries two independent exhaust vectors and the configured asset identity (1.577292ms)
+✔ template hierarchy, transforms and source materials stay unchanged after instantiation (0.779458ms)
+✔ a missing named GLB material fails at instantiation instead of silently leaving it unadapted (0.707208ms)
+✔ missing processed exhaust metadata fails instead of synthesizing outlet defaults (0.512625ms)
+✔ body paint masks the original atlas per texel while retaining the native skin color uniform (1.518917ms)
+✔ body paint shader has an explicit material-program cache key (0.7295ms)
+✔ starter visual polish uses bounded cloned PBR uniforms without mutating source meshes (0.551959ms)
+✔ real Three clone retains each baked material and shared texture, with honest static wheels and exact identity (3.489583ms)
+✔ imported cars bound specular glare only on private material clones, preserving every original PBR map and color (0.473792ms)
+✔ wrong normalization and animated/skinned user meshes fail instead of silently rescaling or pretending wheel rigs (0.584708ms)
+✔ cache is lazy, deduplicates a request, serializes decode, skips cancelled queued models, and has no unknown fallback (1.345ms)
+✔ decode failure rejects accurately, leaves no ready factory, and permits one later real retry (0.380083ms)
+✔ an in-flight cancelled preview cannot evict the owned model being prepared for native map startup (1.48725ms)
+✔ bounded cache preserves active cars and starter; removal frees private materials once but not shared assets or native cached textures (1.685291ms)
+✔ native preview swaps only the home model, is last-request-wins and never mutates selected car or racer physics (27.271042ms)
+✔ all six actual GLB geometries/material links parse through pinned GLTFLoader and match their identity/normalization (51.324917ms)
+ℹ {"scope":"Actual GLB geometry/material topology; browser bitmap decoding stubbed","models":[{"carId":"starter","sha256":"d565a27bb82550785c09b79ff30b7e8ff990a41f6847d2e4e2f0b87f6912c083","triangles":17473,"wheels":4},{"carId":"custom-01","sha256":"14e0536f803a360a7b6abf5d976dbff94885318bf77af0729d43498d14649fd1","triangles":63998,"wheels":0},{"carId":"custom-02","sha256":"7419803c3e1e404b4556b5b9c4c3284636d5be8f60c69eb49c64a4a4ace53f69","triangles":18000,"wheels":0},{"carId":"custom-03","sha256":"db9e3949d926cec74e1268917567d71848fcdb28e294fbd6120308fa052ecca8","triangles":18000,"wheels":0},{"carId":"custom-04","sha256":"475646dcfcbf3c4fbea5be0f418d98d961b53db1622f516783725b3c65e3c911","triangles":18000,"wheels":0},{"carId":"custom-05","sha256":"bc82f0ebb80c246388c5561a1afcc54a648b18106daaeea9e702c5f6a993a323","triangles":18000,"wheels":0}]}
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 163.791834

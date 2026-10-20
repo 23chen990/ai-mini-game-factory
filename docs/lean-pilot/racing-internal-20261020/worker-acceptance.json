@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "task": "visual-acceptance19",
+  "accepted": true,
+  "artifact": "docs/lean-pilot/racing-internal-20261020/visual-acceptance19.json",
+  "sha256": "9746396d6d3eba3f4e06aea912445a380e8db6b652506658fab4823e95847350",
+  "scope": "18 exact final gallery images plus named three stills; no runtime or phone acceptance delegated",
+  "p0p1": 0
+}

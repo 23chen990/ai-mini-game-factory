@@ -16,6 +16,14 @@ export function earnedResumeOrigin(report, storage, buildHash) {
   if (!saved || exact.length !== 1 || !/^http:\/\/127\.0\.0\.1:\d+$/u.test(exact[0].origin)) throw Error('Resume requires one exact earned local origin');
   return exact[0].origin;
 }
+/** A separately labelled upgrade test, never proof of new-build earlier wins.
+ * The source is an actual previous natural run, not a fabricated campaign fixture. */
+export function earnedUpgradeOrigin(report, storage, archivedBuild, nextBuildHash) {
+  if (report.buildHash !== archivedBuild.buildHash || report.buildHash === nextBuildHash ||
+      report.naturalInputsOnly !== true || report.seededCampaign !== false)
+    throw Error('Upgrade requires a matching archived natural build and unmodified earned origin');
+  return earnedResumeOrigin(report, storage, archivedBuild.buildHash);
+}
 export function warningVisible(element) {
   return !!element && !element.hidden && !element.classList.contains('hidden') && element.getClientRects().length > 0;
 }

@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "Native source424/424 and realThree20/20",
+      "passed": true,
+      "evidence": "evidence/native19.tap, car19.tap; no skip"
+    },
+    {
+      "name": "Thirty actual routes,150 physical AI,ten forks",
+      "passed": true,
+      "evidence": "evidence/ai-150.json,geometry-30.json,COURSES.zh-CN.md"
+    },
+    {
+      "name": "Final-build six-car layout",
+      "passed": true,
+      "evidence": "visual-acceptance19.json;19 gallery screenshots include portrait rotate overlay"
+    },
+    {
+      "name": "Trusted multitouch, countersteer, release, pause, actual blur and rotation",
+      "passed": true,
+      "evidence": "evidence/touch-lifecycle.json; actual document.hidden/phone OS background not observed"
+    },
+    {
+      "name": "Reward failure paths and durable same-origin ownership",
+      "passed": true,
+      "evidence": "evidence/browser-ads.json; SDK fixture, not a live video"
+    },
+    {
+      "name": "Desktop/WebKit actual entry and frame sampling",
+      "passed": true,
+      "evidence": "evidence/browser-desktop.json,browser-webkit.json; fullpixelRatio1"
+    },
+    {
+      "name": "Extracted final ZIP actual desktop/SDK-failure/WebKit entry",
+      "passed": true,
+      "evidence": "evidence/extracted-zip-desktop.json,extracted-zip-ads.json,extracted-zip-webkit.json; exact8 runtime bytes compared with CI"
+    },
+    {
+      "name": "Actual zero-star failure and trusted replay",
+      "passed": true,
+      "evidence": "evidence/browser-loss.json"
+    },
+    {
+      "name": "All-stage natural coverage",
+      "passed": false,
+      "evidence": "evidence/natural-summary.json; losses retained, no fake completion"
+    },
+    {
+      "name": "Human physical-phone acceptance",
+      "passed": false,
+      "evidence": "No connected Android/iPhone and no human usability sample. Actual macOS Chromium/WebKit and touch emulation must not be called real mobile hardware."
+    },
+    {
+      "name": "Platform/rights/real ads ready",
+      "passed": false,
+      "evidence": "../racing-final-20261020/PLATFORM-AND-RIGHTS.zh-CN.md; final local H5 ZIP preflight only"
+    },
+    {
+      "name": "Whole-factory test and lint",
+      "passed": false,
+      "evidence": "evidence/final-root-lint.log,final-root-test.log;58 unchanged historical lint errors,63 node:test collection failures and1 expired-waiver assertion;974 assertions pass; not suppressed"
+    }
+  ],
+  "issues": [
+    {
+      "id": "real-phone-human",
+      "severity": "error",
+      "message": "Actual phone/human player acceptance not available; internal experience cannot be universally declared issue-free.",
+      "evidence": "No connected Android/iPhone and no human usability sample. Actual macOS Chromium/WebKit and touch emulation must not be called real mobile hardware."
+    },
+    {
+      "id": "natural-coverage",
+      "severity": "error",
+      "message": "Natural coverage must remain explicitly bounded: 07,09,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30",
+      "evidence": "evidence/natural-summary.json"
+    },
+    {
+      "id": "platform-rights",
+      "severity": "error",
+      "message": "No verified target App/SDK/ad-slot and no complete commercial rights archive. PLATFORM_RC not built.",
+      "evidence": "../racing-final-20261020/PLATFORM-AND-RIGHTS.zh-CN.md"
+    }
+  ],
+  "screenshots": [
+    "materials/screenshot-garage.png",
+    "materials/screenshot-driving.png",
+    "materials/screenshot-settlement.png"
+  ],
+  "consoleLog": "Natural reports errors[]; browser report errors[] are preserved individually. Native failure traces are not deleted.",
+  "testedAt": "2026-10-20T11:03:39.646Z",
+  "acceptance": {
+    "schemaVersion": 1,
+    "core": {
+      "passed": false,
+      "evidence": "All30 native routes/150 finishers pass unchanged350s gate; actual natural rank changes and loss/win/resource/recovery are recorded. Natural observed:01,02,03,04,05,06,08,13; unobserved:07,09,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30. Fixed-seed pace is not human difficulty or all-stage perceptual acceptance."
+    },
+    "normalFlow": {
+      "passed": true,
+      "evidence": "Same-build fresh stage01 native win, failed races, exact earned-save reload and next-stage progression; separate trusted-input real no-steering loss and replay. See natural-summary and browser-loss."
+    },
+    "visualEvidence": {
+      "passed": true,
+      "evidence": "Independent review of all18 final landscape six-car previews plus three driving/settlement stills found no supported P0/P1 layout blocker. P2 source-specific texture/geometry variation and five static merged-wheel models remain disclosed. Not handset/human approval."
+    },
+    "levelDifference": {
+      "passed": true,
+      "evidence": "Thirty physically constructed routes and ten legal fork entry/exit paths; geometry, heights, width, pads, native finishes and duration tabulated in COURSES.zh-CN.md. No separate road slowpad implementation was found."
+    },
+    "humanPlaytest": {
+      "passed": false,
+      "evidence": "No connected Android/iPhone and no human usability sample. Actual macOS Chromium/WebKit and touch emulation must not be called real mobile hardware."
+    },
+    "releaseReady": false,
+    "candidateHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6"
+  }
+}

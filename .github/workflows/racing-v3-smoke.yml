@@ -28,6 +28,11 @@ on:
       - 'tools/lean-pilot/racing-career-qa.mjs'
       - 'tools/lean-pilot/racing-integrated-campaign-audit.mjs'
       - 'tools/lean-pilot/racing-visible-policy.mjs'
+      - 'tools/lean-pilot/racing-visible-actions.mjs'
+      - 'tools/lean-pilot/racing-minimap-observer.mjs'
+      - 'tools/lean-pilot/tests/racing-visible-actions.node.mjs'
+      - 'tools/lean-pilot/tests/racing-earned-upgrade.node.mjs'
+      - 'tools/lean-pilot/tests/racing-minimap-observer.node.mjs'
       - 'tools/lean-pilot/racing-mobile-experience-qa.mjs'
       - 'tools/lean-pilot/racing-delivery-verify.mjs'
       - 'tools/lean-pilot/racing-delivery-verify.test.mjs'
@@ -72,9 +77,9 @@ jobs:
           node --test --test-isolation=none tools/lean-pilot/tests/racing-car-qa-instrumentation.node.mjs
           node --test --test-isolation=none tools/lean-pilot/tests/racing-large-build-hash.node.mjs
           node --test --test-isolation=none tools/lean-pilot/tests/racing-shortcut-cost.test.mjs
-          node --test --test-isolation=none tools/lean-pilot/tests/racing-visible-policy.test.mjs
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-visible-policy.test.mjs tools/lean-pilot/tests/racing-visible-actions.node.mjs tools/lean-pilot/tests/racing-earned-upgrade.node.mjs
           node --test --test-isolation=none tools/lean-pilot/racing-delivery-verify.test.mjs
-          pnpm exec eslint tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
+          pnpm exec eslint tools/lean-pilot/racing-visible-actions.mjs tools/lean-pilot/racing-minimap-observer.mjs tools/lean-pilot/tests/racing-visible-actions.node.mjs tools/lean-pilot/tests/racing-minimap-observer.node.mjs tools/lean-pilot/racing-browser-config.mjs tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-shortcut-cost.mjs tools/lean-pilot/tests/racing-shortcut-cost.test.mjs tools/lean-pilot/racing-native-player-qa.mjs tools/lean-pilot/racing-ai-pace-audit.mjs tools/lean-pilot/racing-geometry-audit.mjs tools/lean-pilot/racing-mobile-build.mjs tools/lean-pilot/racing-v3-smoke.mjs tools/lean-pilot/racing-career-qa.mjs tools/lean-pilot/racing-visible-policy.mjs tools/lean-pilot/racing-mobile-experience-qa.mjs templates/web-lite/h5-source-mobile-v1/racing templates/web-lite/h5-source-mobile-v1/fuel.mjs
           pnpm exec eslint tools/lean-pilot/racing-car-*.mjs tools/lean-pilot/racing-wheel-qa-input.mjs tools/lean-pilot/racing-native-player-v11-qa.mjs tools/lean-pilot/racing-next-stage-ad-browser-qa.mjs tools/lean-pilot/tests/racing-car-*.mjs tools/lean-pilot/tests/racing-wheel-qa-input.node.mjs tools/lean-pilot/tests/racing-home-presentation.node.mjs
           pnpm exec eslint tools/lean-pilot/tests/racing-user-car-*.mjs tools/lean-pilot/racing-build-fingerprint-check.mjs tools/lean-pilot/racing-delivery-verify.mjs
           pnpm typecheck
@@ -111,6 +116,7 @@ jobs:
         run: node tools/lean-pilot/racing-car-garage-qa.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/car-garage-ci
       - name: Launch actual bundled WebGL racing in complete Chromium
         run: |
+          node --test --test-isolation=none tools/lean-pilot/tests/racing-minimap-observer.node.mjs
           node --test --test-isolation=none tools/lean-pilot/racing-fuel-lifecycle-qa.mjs
           node --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-v3-smoke.mjs runs/h5-qq-mobile-20261013/workspace/game runs/h5-qq-mobile-20261013/artifacts/racing-v3-smoke
       - name: Verify adjacent-stage ad callbacks in the actual built H5

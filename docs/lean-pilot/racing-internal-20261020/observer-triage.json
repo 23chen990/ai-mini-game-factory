@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "qq-speed / 极速飞驰",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Natural QA observer intermittently loses the visible player arrow; this is a test operator failure, not a game state fix.",
+  "classification": [
+    "qa-false-positive"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Retain failed natural attempts under the existing formal QA flow; correct only the evidence collection/operator and retest the identical runtime.",
+    "generatedWorkspaceModified": false,
+    "contextIntentionallyOmitted": [
+      "Native track/car/AI state as steering input",
+      "Other games",
+      "Platform accounts"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Read retained stage06 traces: 248/1608 frames report player-arrow-not-visible.",
+      "Rasterize the existing visible arrow shape at 120 three-degree rotations with a distractor yellow rival circle.",
+      "Original >15 bounding-box gate misses all eight cardinal/diagonal orientations; exact shape shrinks to a 15-pixel colored extent after its outline.",
+      "Replace axis-aligned size gating with rotation-invariant pixel covariance; all 120 orientations pass, circular rival excluded."
+    ],
+    "observed": [
+      "Reduced steering gain and shorter lookahead did not resolve stage06 losses; those failed runs remain intact.",
+      "This defect affects only automated visual observation, not runtime minimap rendering or human input.",
+      "Game build811e05f4f620 and all podium/time/difficulty acceptance thresholds remain unchanged.",
+      "New operator runs are separately labelled; do not splice them into unchanged-policy difficulty comparisons."
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-gain15/06-trace.json",
+        "sha256": "525834917a4c44638ece131d77ecfae31192eb54af389e942897349e6c1006c4",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/red-minimap-observer.tap",
+        "sha256": "0295232dad1af531d339b5bfdb5b8b89357c8ebd1229644a45b412462816c557",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/green-minimap-observer.tap",
+        "sha256": "b1f845a297becc56ee701d3999aa6c5b3cc78536f97b2da956a7301a51cb8278",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "The same raster test passes every orientation and excludes the circular yellow distractor.",
+    "No native state, route coordinates, progress, finish, fuel, or clock writes; use only framebuffer observations and trusted touch.",
+    "Retest final19 natural stage06 and retain losses; successful finishes must satisfy unchanged native podium and save assertions."
+  ],
+  "status": "READY_FOR_REPAIR",
+  "createdAt": "2026-10-20T10:28:11.169Z"
+}

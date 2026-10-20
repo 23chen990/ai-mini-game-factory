@@ -4,6 +4,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
+import assert from 'node:assert/strict';
 const root=process.cwd(),out=root+'/runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020';
 let audit=await readFile('tools/lean-pilot/racing-ai-pace-audit.mjs','utf8');
 audit=audit.slice(0,audit.indexOf('if (process.argv[1] &&')).replace(/from '(\.\.?\/[^']+)'/g,(_,ref)=>`from '${pathToFileURL(path.resolve('tools/lean-pilot',ref)).href}'`);
@@ -11,7 +13,8 @@ const api=await import('data:text/javascript;base64,'+Buffer.from(audit+'\nexpor
 const native=await api.loadNative(root),{PlayerCar,TUNE}=await import(pathToFileURL(native.src+'/vehicle.js'));
 const {STAGES}=await import('../../../templates/web-lite/h5-source-mobile-v1/racing/career.mjs');
 const {applyRivalTactics}=await import('../../../templates/web-lite/h5-source-mobile-v1/racing/rival-pressure.mjs');
-const source=await readFile(native.src+'/race-v11-physical-ai.mjs','utf8');
+const source=execFileSync('git',['show','7b9791100346916aaea0ba6b01d828879bb9a222:templates/web-lite/h5-source-mobile-v1/racing/v11-physical-ai.mjs'],{encoding:'utf8'});
+assert.equal(source.split('half - 3) * .70').length,2,'Pinned attempt18 main-road planning anchor');
 const stages=process.env.RACE_EXPERIMENT_STAGES?.split(',')??['01','02','08','16','24','30'];
 for(const scale of process.env.RACE_EXPERIMENT_SCALES?.split(',').map(Number)??[.70,.90,1]) {
  const code=source.replace('half - 3) * .70','half - 3) * '+scale);

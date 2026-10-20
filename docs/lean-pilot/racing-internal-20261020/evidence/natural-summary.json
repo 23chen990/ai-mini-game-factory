@@ -1,0 +1,984 @@
+{
+  "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+  "sourceCommit": "6196faa085e18ac38b484fcfc1d6909c2bf22882",
+  "scope": "Trusted touch agent; framebuffer/button HUD inputs only. No state/clock/physics/progress edits; inherited races excluded from attempt counts. Natural default RNG, not controlled human samples.",
+  "seen": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "08",
+    "13"
+  ],
+  "passed": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05"
+  ],
+  "unobserved": [
+    "07",
+    "09",
+    "10",
+    "11",
+    "12",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30"
+  ],
+  "reports": [
+    {
+      "label": "rc19-natural-baseline",
+      "sha256": "d4430c724170a5575c6a76d2dbc76898b5769ba9186669eb2babf26fce32baf5",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": "Parameters precede persisted schema field; command/log is retained",
+      "errors": [],
+      "checkedAt": "2026-10-20T09:52:15.106Z"
+    },
+    {
+      "label": "rc19-natural-campaign",
+      "sha256": "3af2bb2fa99764271ed6ca3191ca17ea7ffffd143989357feb0aa1d4cf377746",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": "Parameters precede persisted schema field; command/log is retained",
+      "errors": [],
+      "checkedAt": "2026-10-20T10:00:46.692Z"
+    },
+    {
+      "label": "rc19-natural-retry04-look16",
+      "sha256": "28319d4201ba8dd0330fa92f56f0ec1504556d553499db71b918a7c52a5348ec",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": "Parameters precede persisted schema field; command/log is retained",
+      "errors": [],
+      "checkedAt": "2026-10-20T10:08:27.689Z"
+    },
+    {
+      "label": "rc19-natural-retry06-arrow",
+      "sha256": "df65172315ea43017965fa88947c16bbc2d46fc14d05a19f752fbc5200411aef",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": {
+        "wheel": "analogue",
+        "steeringGain": 3,
+        "lookaheadPixels": "16"
+      },
+      "errors": [],
+      "checkedAt": "2026-10-20T10:29:01.430Z"
+    },
+    {
+      "label": "rc19-natural-retry06-arrow21",
+      "sha256": "9ce747b5f338a1568e1a68dc173df4727e557f7eeb0e5ce63f069a2f28755d71",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": {
+        "wheel": "analogue",
+        "steeringGain": 3,
+        "lookaheadPixels": "21"
+      },
+      "errors": [],
+      "checkedAt": "2026-10-20T10:31:58.375Z"
+    },
+    {
+      "label": "rc19-natural-retry06-damped",
+      "sha256": "c9c02ea9bfd43a0e63439013760503cdd723acde023c7612c5534e604e661434",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": {
+        "wheel": "analogue-damped",
+        "steeringGain": 3,
+        "lookaheadPixels": "21"
+      },
+      "errors": [],
+      "checkedAt": "2026-10-20T10:35:22.854Z"
+    },
+    {
+      "label": "rc19-natural-retry06-fullturn",
+      "sha256": "b29c102e58e198b861d7662fcdb251731206d3394b9e58dbd015b4c5fe216a48",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": {
+        "wheel": "full-turn",
+        "steeringGain": 3,
+        "lookaheadPixels": "21 (18 on snow item races)"
+      },
+      "errors": [],
+      "checkedAt": "2026-10-20T10:25:07.474Z"
+    },
+    {
+      "label": "rc19-natural-retry06-gain15",
+      "sha256": "b34c0d862167bf1bbbe3bc920643f1724308c0e4f7f437ec2f76ce6af018b923",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": "Parameters precede persisted schema field; command/log is retained",
+      "errors": [],
+      "checkedAt": "2026-10-20T10:17:58.606Z"
+    },
+    {
+      "label": "rc19-natural-retry06-look12",
+      "sha256": "e972b3ec736aac54217635205a839bd43220288ad9c326082a9d2e155dbb8215",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": "Parameters precede persisted schema field; command/log is retained",
+      "errors": [],
+      "checkedAt": "2026-10-20T10:13:02.181Z"
+    },
+    {
+      "label": "rc19-natural-small667",
+      "sha256": "bd750a72e3ae72dbe11eb95df6962025d21db10fb7a9c60abae72399aae55165",
+      "passed": false,
+      "profileJourney": "fresh-or-same-build-earned-resume (see provenance)",
+      "viewport": {
+        "width": 667,
+        "height": 375
+      },
+      "parameters": {
+        "wheel": "analogue",
+        "steeringGain": 3,
+        "actionTiming": "exit",
+        "lookaheadPixels": "21"
+      },
+      "errors": [],
+      "checkedAt": "2026-10-20T10:38:54.729Z"
+    },
+    {
+      "label": "rc19-small667-item05",
+      "sha256": "1eb8726019a707bbcd52906fee455b87b0d3883b23cb0380350342d19a10b366",
+      "passed": false,
+      "profileJourney": "same-build-earned-resume",
+      "viewport": {
+        "width": 667,
+        "height": 375
+      },
+      "parameters": {
+        "wheel": "full-turn",
+        "steeringGain": 3,
+        "actionTiming": "immediate",
+        "lookaheadPixels": "21 (18 on snow item races)"
+      },
+      "errors": [],
+      "checkedAt": "2026-10-20T11:00:41.976Z"
+    },
+    {
+      "label": "rc19-upgrade-snow08",
+      "sha256": "8150a7b1d3b80fa5e26b469d5840a8a4cac9227173c9754959611404ac3f2758",
+      "passed": false,
+      "profileJourney": "unmodified-previously-earned-profile-upgrade",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": {
+        "wheel": "full-turn",
+        "steeringGain": 3,
+        "actionTiming": "immediate",
+        "lookaheadPixels": "21 (18 on snow item races)"
+      },
+      "errors": [],
+      "checkedAt": "2026-10-20T10:48:29.682Z"
+    },
+    {
+      "label": "rc19-upgrade13-earned",
+      "sha256": "9bd3d6ce220037a0a1d2e0a10bdfdcccee12d40cc66b3ae7906b1db107e4547d",
+      "passed": false,
+      "profileJourney": "unmodified-previously-earned-profile-upgrade",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "parameters": {
+        "wheel": "analogue",
+        "steeringGain": 3,
+        "actionTiming": "immediate",
+        "lookaheadPixels": "16"
+      },
+      "errors": [],
+      "checkedAt": "2026-10-20T10:45:18.006Z"
+    }
+  ],
+  "races": [
+    {
+      "label": "rc19-natural-baseline",
+      "stage": "01",
+      "status": "BLOCKED",
+      "finishTime": 119.4106999999823,
+      "finished": true,
+      "place": 4,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 0,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 26,
+        "top": 241.3872852157408,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第4名，要求前三名",
+      "actionsFit": true,
+      "rankTransitions": 7,
+      "rankImprovementEvents": 3,
+      "rankLossEvents": 4,
+      "leaderGapM": {
+        "min": -129.14685548535363,
+        "max": 44.15660663244216,
+        "within100mFraction": 0.8466666666666667
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-baseline/report.json",
+      "traceSha256": "9819ce641cc506a4fdf1bfe59456c8296966cdfe8e4409607b67bc3b3ceb5bc4"
+    },
+    {
+      "label": "rc19-natural-campaign",
+      "stage": "01",
+      "status": "PASS",
+      "finishTime": 113.36590000000129,
+      "finished": true,
+      "place": 1,
+      "savedBestStars": 3,
+      "currentRunStars": 3,
+      "stats": {
+        "drift": 37,
+        "small": 28,
+        "perfect": 28,
+        "double": 4,
+        "nitro": 3,
+        "crash": 34,
+        "top": 298.46983849287335,
+        "land": 0
+      },
+      "result": "第 1 名 · 01:53.37 · 最佳 01:53.37 · 累计 3 星",
+      "actionsFit": true,
+      "rankTransitions": 2,
+      "rankImprovementEvents": 2,
+      "rankLossEvents": 0,
+      "leaderGapM": {
+        "min": -8.44245034751566,
+        "max": 260.45156297714857,
+        "within100mFraction": 0.24263193968471555
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-campaign/report.json",
+      "traceSha256": "785ccc30ff40d0c9d2c461543e8adcd1b7e9c3d53c62054903ef33fd6649187a"
+    },
+    {
+      "label": "rc19-natural-campaign",
+      "stage": "02",
+      "status": "PASS",
+      "finishTime": 116.23129999997755,
+      "finished": true,
+      "place": 1,
+      "savedBestStars": 3,
+      "currentRunStars": 3,
+      "stats": {
+        "drift": 40,
+        "small": 31,
+        "perfect": 31,
+        "double": 4,
+        "nitro": 3,
+        "crash": 31,
+        "top": 309.7873679780231,
+        "land": 0
+      },
+      "result": "第 1 名 · 01:56.23 · 最佳 01:56.23 · 累计 6 星",
+      "actionsFit": true,
+      "rankTransitions": 2,
+      "rankImprovementEvents": 2,
+      "rankLossEvents": 0,
+      "leaderGapM": {
+        "min": -11.303146212937463,
+        "max": 338.4189885062606,
+        "within100mFraction": 0.5706010137581463
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-campaign/report.json",
+      "traceSha256": "fde5f66fe58b08a95276053a055f99c12ae4d6da3ed743db021b73a99c120479"
+    },
+    {
+      "label": "rc19-natural-campaign",
+      "stage": "03",
+      "status": "PASS",
+      "finishTime": 119.03369999998161,
+      "finished": true,
+      "place": 1,
+      "savedBestStars": 3,
+      "currentRunStars": 3,
+      "stats": {
+        "drift": 44,
+        "small": 39,
+        "perfect": 37,
+        "double": 7,
+        "nitro": 4,
+        "crash": 36,
+        "top": 310.05725455204407,
+        "land": 0
+      },
+      "result": "第 1 名 · 01:59.03 · 最佳 01:59.03 · 累计 9 星",
+      "actionsFit": true,
+      "rankTransitions": 20,
+      "rankImprovementEvents": 10,
+      "rankLossEvents": 10,
+      "leaderGapM": {
+        "min": -25.681045298759273,
+        "max": 339.1471260894923,
+        "within100mFraction": 0.41816816816816815
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-campaign/report.json",
+      "traceSha256": "62cd23c843aef7c5c2407ceef0190887c0b6dd20ee74c69ad7f237a31cb66c71"
+    },
+    {
+      "label": "rc19-natural-campaign",
+      "stage": "04",
+      "status": "BLOCKED",
+      "finishTime": 138.99189999999868,
+      "finished": true,
+      "place": 6,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 39,
+        "small": 26,
+        "perfect": 25,
+        "double": 4,
+        "nitro": 3,
+        "crash": 41,
+        "top": 309.8352219456425,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第6名，要求前三名 · 距目标名次 11.1 秒",
+      "actionsFit": true,
+      "rankTransitions": 7,
+      "rankImprovementEvents": 2,
+      "rankLossEvents": 5,
+      "leaderGapM": {
+        "min": -455.3366451481652,
+        "max": 341.287174568879,
+        "within100mFraction": 0.4386406544996853
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-campaign/report.json",
+      "traceSha256": "7b99cc3a32c5d724fefba8dafaa79775ad5bc2bbb374c7bc015491b2c4029db3"
+    },
+    {
+      "label": "rc19-natural-retry04-look16",
+      "stage": "04",
+      "status": "PASS",
+      "finishTime": 122.86799999999396,
+      "finished": true,
+      "place": 1,
+      "savedBestStars": 3,
+      "currentRunStars": 3,
+      "stats": {
+        "drift": 42,
+        "small": 26,
+        "perfect": 24,
+        "double": 4,
+        "nitro": 4,
+        "crash": 27,
+        "top": 309.8363063000313,
+        "land": 0
+      },
+      "result": "第 1 名 · 02:02.87 · 最佳 02:02.87 · 累计 12 星",
+      "actionsFit": true,
+      "rankTransitions": 6,
+      "rankImprovementEvents": 4,
+      "rankLossEvents": 2,
+      "leaderGapM": {
+        "min": -15.774356799043744,
+        "max": 184.96613577408243,
+        "within100mFraction": 0.7562642369020501
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry04-look16/report.json",
+      "traceSha256": "b1697e9b8b2c18b3b951899b4c07e0f5f3ed231bf7feddb7ffc1c4827cc0e806"
+    },
+    {
+      "label": "rc19-natural-retry04-look16",
+      "stage": "05",
+      "status": "PASS",
+      "finishTime": 124.13290000000214,
+      "finished": true,
+      "place": 1,
+      "savedBestStars": 3,
+      "currentRunStars": 3,
+      "stats": {
+        "drift": 47,
+        "small": 35,
+        "perfect": 32,
+        "double": 8,
+        "nitro": 5,
+        "crash": 36,
+        "top": 309.8915983932803,
+        "land": 0
+      },
+      "result": "第 1 名 · 02:04.13 · 最佳 02:04.13 · 累计 15 星",
+      "actionsFit": true,
+      "rankTransitions": 2,
+      "rankImprovementEvents": 2,
+      "rankLossEvents": 0,
+      "leaderGapM": {
+        "min": -10.740422793560356,
+        "max": 479.6699262614111,
+        "within100mFraction": 0.44733333333333336
+      },
+      "observedItemConsumptionNearTrustedTap": 8,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry04-look16/report.json",
+      "traceSha256": "4203f352a9fc4b5f6a08bfdcaa7a1f368936112c0f8090bbc945d56176190d8a"
+    },
+    {
+      "label": "rc19-natural-retry04-look16",
+      "stage": "06",
+      "status": "BLOCKED",
+      "finishTime": 121.25790000000151,
+      "finished": true,
+      "place": 5,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 46,
+        "small": 35,
+        "perfect": 33,
+        "double": 8,
+        "nitro": 6,
+        "crash": 38,
+        "top": 300.8652175167403,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第5名，要求前三名 · 距目标名次 5.4 秒",
+      "actionsFit": true,
+      "rankTransitions": 10,
+      "rankImprovementEvents": 4,
+      "rankLossEvents": 6,
+      "leaderGapM": {
+        "min": -396.0197639770013,
+        "max": -2.963415531000919,
+        "within100mFraction": 0.444364161849711
+      },
+      "observedItemConsumptionNearTrustedTap": 3,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry04-look16/report.json",
+      "traceSha256": "d24066d17faf5d93ab0dad418889e0247bbd864fbc2fae2d87897d14cf208bc3"
+    },
+    {
+      "label": "rc19-natural-retry06-arrow",
+      "stage": "06",
+      "status": "BLOCKED",
+      "finishTime": 128.14709999998624,
+      "finished": true,
+      "place": 6,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 39,
+        "small": 28,
+        "perfect": 27,
+        "double": 10,
+        "nitro": 8,
+        "crash": 34,
+        "top": 306.53392296584065,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第6名，要求前三名 · 距目标名次 11.8 秒",
+      "actionsFit": true,
+      "rankTransitions": 7,
+      "rankImprovementEvents": 2,
+      "rankLossEvents": 5,
+      "leaderGapM": {
+        "min": -751.5604726525798,
+        "max": 9.92154494603119,
+        "within100mFraction": 0.20041039671682626
+      },
+      "observedItemConsumptionNearTrustedTap": 4,
+      "renderSamples": 1628,
+      "render": {
+        "fpsEstimateP05": 119,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 4,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-arrow/report.json",
+      "traceSha256": "09a8572c1d5b849dfefa122433c5a62be7679b3375ff1c53760b5f68ae17d6fc"
+    },
+    {
+      "label": "rc19-natural-retry06-arrow21",
+      "stage": "06",
+      "status": "BLOCKED",
+      "finishTime": 125.15699999996284,
+      "finished": true,
+      "place": 5,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 41,
+        "small": 31,
+        "perfect": 31,
+        "double": 6,
+        "nitro": 6,
+        "crash": 26,
+        "top": 299.6342545063233,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第5名，要求前三名 · 距目标名次 6.2 秒",
+      "actionsFit": true,
+      "rankTransitions": 17,
+      "rankImprovementEvents": 8,
+      "rankLossEvents": 9,
+      "leaderGapM": {
+        "min": -699.9600864608137,
+        "max": 2.4890580540950396,
+        "within100mFraction": 0.19780971937029432
+      },
+      "observedItemConsumptionNearTrustedTap": 5,
+      "renderSamples": 1614,
+      "render": {
+        "fpsEstimateP05": 120,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 4,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-arrow21/report.json",
+      "traceSha256": "2b6e9c7d19e8115c3b6fd4af159a9ead2da859306f9bd2850ab50bae0dce72e8"
+    },
+    {
+      "label": "rc19-natural-retry06-damped",
+      "stage": "06",
+      "status": "BLOCKED",
+      "finishTime": 149.28779999997596,
+      "finished": true,
+      "place": 6,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 23,
+        "small": 17,
+        "perfect": 16,
+        "double": 7,
+        "nitro": 5,
+        "crash": 45,
+        "top": 309.8709277869095,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第6名，要求前三名 · 距目标名次 29.6 秒",
+      "actionsFit": true,
+      "rankTransitions": 17,
+      "rankImprovementEvents": 7,
+      "rankLossEvents": 10,
+      "leaderGapM": {
+        "min": -1377.1251829661378,
+        "max": 39.75801304329525,
+        "within100mFraction": 0.23586880669923238
+      },
+      "observedItemConsumptionNearTrustedTap": 7,
+      "renderSamples": 1754,
+      "render": {
+        "fpsEstimateP05": 120,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 3,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-damped/report.json",
+      "traceSha256": "91f5508fe1d64b41d4c3f48907fe9f49581f1e4f73f0a06a2a9be66f0b82dbbe"
+    },
+    {
+      "label": "rc19-natural-retry06-fullturn",
+      "stage": "06",
+      "status": "BLOCKED",
+      "finishTime": 129.61469999998042,
+      "finished": true,
+      "place": 6,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 38,
+        "small": 33,
+        "perfect": 30,
+        "double": 5,
+        "nitro": 5,
+        "crash": 40,
+        "top": 305.4458666029464,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第6名，要求前三名 · 距目标名次 8.2 秒",
+      "actionsFit": true,
+      "rankTransitions": 13,
+      "rankImprovementEvents": 5,
+      "rankLossEvents": 8,
+      "leaderGapM": {
+        "min": -349.1136938895688,
+        "max": -3.0953580796367532,
+        "within100mFraction": 0.30737365368682684
+      },
+      "observedItemConsumptionNearTrustedTap": 6,
+      "renderSamples": 1396,
+      "render": {
+        "fpsEstimateP05": 119,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 5,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-fullturn/report.json",
+      "traceSha256": "ce76d82be8ecec16e00eb0d66e73da0fc5b98b775e13f66af9e59ccdf5e8cd44"
+    },
+    {
+      "label": "rc19-natural-retry06-gain15",
+      "stage": "06",
+      "status": "BLOCKED",
+      "finishTime": 135.87019999998157,
+      "finished": true,
+      "place": 6,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 44,
+        "small": 26,
+        "perfect": 26,
+        "double": 5,
+        "nitro": 3,
+        "crash": 38,
+        "top": 292.0293271014851,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第6名，要求前三名 · 距目标名次 12.3 秒",
+      "actionsFit": true,
+      "rankTransitions": 14,
+      "rankImprovementEvents": 5,
+      "rankLossEvents": 9,
+      "leaderGapM": {
+        "min": -1096.4189370004942,
+        "max": -8.872859187402355,
+        "within100mFraction": 0.2216338880484115
+      },
+      "observedItemConsumptionNearTrustedTap": 4,
+      "renderSamples": 1608,
+      "render": {
+        "fpsEstimateP05": 119,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 5,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-gain15/report.json",
+      "traceSha256": "525834917a4c44638ece131d77ecfae31192eb54af389e942897349e6c1006c4"
+    },
+    {
+      "label": "rc19-natural-retry06-look12",
+      "stage": "06",
+      "status": "BLOCKED",
+      "finishTime": 130.33130000000432,
+      "finished": true,
+      "place": 6,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 51,
+        "small": 43,
+        "perfect": 40,
+        "double": 4,
+        "nitro": 6,
+        "crash": 50,
+        "top": 294.4206525653551,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第6名，要求前三名 · 距目标名次 12.6 秒",
+      "actionsFit": true,
+      "rankTransitions": 7,
+      "rankImprovementEvents": 2,
+      "rankLossEvents": 5,
+      "leaderGapM": {
+        "min": -783.0531992484102,
+        "max": -8.94027179609293,
+        "within100mFraction": 0.17797228300510576
+      },
+      "observedItemConsumptionNearTrustedTap": 2,
+      "renderSamples": 0,
+      "render": null,
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry06-look12/report.json",
+      "traceSha256": "a8d2d49919f71678584d8cd718607f35bb647f4f274b2b4246435b792c17f295"
+    },
+    {
+      "label": "rc19-natural-small667",
+      "stage": "01",
+      "status": "BLOCKED",
+      "finishTime": 119.6866999999823,
+      "finished": true,
+      "place": 4,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 39,
+        "small": 18,
+        "perfect": 12,
+        "double": 3,
+        "nitro": 3,
+        "crash": 24,
+        "top": 305.2590242199162,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第4名，要求前三名 · 距目标名次 1.2 秒",
+      "actionsFit": true,
+      "rankTransitions": 7,
+      "rankImprovementEvents": 3,
+      "rankLossEvents": 4,
+      "leaderGapM": {
+        "min": -240.62539765765632,
+        "max": -2.044853847849936,
+        "within100mFraction": 0.27860696517412936
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 1637,
+      "render": {
+        "fpsEstimateP05": 119,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 5,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-small667/report.json",
+      "traceSha256": "a7a4995b1c443e47171f09e41deb7810fce2366551e72597c2b426125e0d03de"
+    },
+    {
+      "label": "rc19-small667-item05",
+      "stage": "05",
+      "status": "BLOCKED",
+      "finishTime": 136.07970000001336,
+      "finished": true,
+      "place": 6,
+      "savedBestStars": 3,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 39,
+        "small": 28,
+        "perfect": 26,
+        "double": 5,
+        "nitro": 5,
+        "crash": 40,
+        "top": 309.8281872889208,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第6名，要求前三名 · 距目标名次 4.1 秒 · 近道 1/1",
+      "actionsFit": true,
+      "rankTransitions": 17,
+      "rankImprovementEvents": 7,
+      "rankLossEvents": 10,
+      "leaderGapM": {
+        "min": -247.06026142919563,
+        "max": 266.71670637591615,
+        "within100mFraction": 0.44601542416452444
+      },
+      "observedItemConsumptionNearTrustedTap": 8,
+      "renderSamples": 1596,
+      "render": {
+        "fpsEstimateP05": 119,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 6,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-small667-item05/report.json",
+      "traceSha256": "fbf435cb6db4e138a2305c7830130f9638b136bafe468f14fbcf5028277cfe33"
+    },
+    {
+      "label": "rc19-upgrade-snow08",
+      "stage": "08",
+      "status": "BLOCKED",
+      "finishTime": 138.91709999998778,
+      "finished": true,
+      "place": 5,
+      "savedBestStars": 3,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 43,
+        "small": 36,
+        "perfect": 31,
+        "double": 6,
+        "nitro": 4,
+        "crash": 33,
+        "top": 309.72539406227884,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第5名，要求前三名 · 距目标名次 1.8 秒",
+      "actionsFit": true,
+      "rankTransitions": 8,
+      "rankImprovementEvents": 3,
+      "rankLossEvents": 5,
+      "leaderGapM": {
+        "min": -316.5633606002302,
+        "max": -1.1548703711409871,
+        "within100mFraction": 0.18811881188118812
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 1581,
+      "render": {
+        "fpsEstimateP05": 120,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 5,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-upgrade-snow08/report.json",
+      "traceSha256": "e7b0fb54d902bd55e2559c67d350dc92f5c1b4c35d7fe6af7eaea9f8774db0a1"
+    },
+    {
+      "label": "rc19-upgrade13-earned",
+      "stage": "13",
+      "status": "BLOCKED",
+      "finishTime": 252.05090000000618,
+      "finished": true,
+      "place": 6,
+      "savedBestStars": 0,
+      "currentRunStars": 0,
+      "stats": {
+        "drift": 52,
+        "small": 37,
+        "perfect": 36,
+        "double": 4,
+        "nitro": 6,
+        "crash": 71,
+        "top": 301.42654207609814,
+        "land": 0
+      },
+      "result": "本次未进前三 · 第6名，要求前三名 · 距目标名次 69.0 秒 · 近道 2/2",
+      "actionsFit": true,
+      "rankTransitions": 26,
+      "rankImprovementEvents": 12,
+      "rankLossEvents": 14,
+      "leaderGapM": {
+        "min": -2762.4516903193007,
+        "max": -2.8158702359150993,
+        "within100mFraction": 0.2058244785517513
+      },
+      "observedItemConsumptionNearTrustedTap": 0,
+      "renderSamples": 3485,
+      "render": {
+        "fpsEstimateP05": 119,
+        "fpsEstimateP50": 120,
+        "touchSampleMsP95": 4,
+        "pixelRatios": [
+          1
+        ],
+        "quality": [
+          "low"
+        ],
+        "limitation": "Read-only internal estimates during recorded touch-emulated Mac run; not phone thermal/frame-time benchmark"
+      },
+      "report": "runs/h5-qq-mobile-20261013/evidence/rc19-upgrade13-earned/report.json",
+      "traceSha256": "fb07ea97b2ba2c20604e7d5584234b47e400fec573cfc077786557c6391a0646"
+    }
+  ]
+}

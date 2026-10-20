@@ -1,0 +1,33 @@
+{
+  "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+  "kind": "ACTUAL_RECORDED_VIDEO_FRAME_NOT_NEW_GAMEPLAY",
+  "video": "runs/h5-qq-mobile-20261013/evidence/rc19-natural-retry04-look16/natural-career.webm",
+  "videoSha256": "159bad6cc168deac828eeccb88620263a9a7e4c380f034cf89a6b4d40673284a",
+  "traceSha256": "4203f352a9fc4b5f6a08bfdcaa7a1f368936112c0f8090bbc945d56176190d8a",
+  "requestedVideoSeconds": 171.37599999999998,
+  "nativeBefore": {
+    "time": 37.595400000006585,
+    "items": [
+      "shield"
+    ],
+    "actions": [
+      "item"
+    ]
+  },
+  "nativeAfter": {
+    "time": 37.67909999999467,
+    "items": []
+  },
+  "recordingTimebase": {
+    "beforePageMs": 1792490523617,
+    "afterPageMs": 1792490523934,
+    "uncertainty": "Recorder starts during page creation; use visible clock and keep context around trimmed evidence"
+  },
+  "screenshot": "shield-after-trusted-use.png",
+  "limitation": "Approximate recorder start; inspect visible race clock before treating exact timing as confirmed. Inventory consumption is read-only telemetry, not injected.",
+  "visualReview": {
+    "visibleRaceClock": "00:38.49",
+    "observation": "Gold shield surrounds the car; item button has returned to empty. This is an actual frame from the same captured race, paired with the recorded shield inventory consumption after trusted tap.",
+    "exactTimingClaim": false
+  }
+}

@@ -52,8 +52,31 @@ test('lifecycle observer disables automation focus emulation before testing real
 test('analogue QA steering scales rendered road angle but preserves visible recovery and item decisions', async () => {
   const { visibleSteering } = await import('../racing-visible-actions.mjs');
   assert.equal(visibleSteering({ direction: 'left', angle: .12 }), .36);
+  assert.equal(visibleSteering({ direction: 'left', angle: .12 }, 1.5), .18);
   assert.equal(visibleSteering({ direction: 'right', angle: -.7 }), -1);
   assert.equal(visibleSteering({ direction: null, angle: .03 }), null);
   assert.equal(visibleSteering({ direction: 'right', angle: .15, box: {} }), 'right');
   assert.equal(visibleSteering({ direction: 'left', angle: -.9, reason: 'visible-arrow-spin-recovery' }), 'left');
+});
+test('QA damped wheel uses only visible angle change and releases on unobserved/recovery frames', async () => {
+  const { VisibleWheelPolicy } = await import('../racing-visible-actions.mjs');
+  const p = new VisibleWheelPolicy(3);
+  assert.equal(p.frame({ direction: 'left', angle: .2 }, 1000), .2 * 3);
+  const approaching = p.frame({ direction: 'left', angle: .1 }, 1100);
+  assert.ok(approaching < .3 && approaching > -1, 'countersteer before overshooting the rendered road');
+  assert.equal(p.frame({ direction: null, reason: 'player-arrow-not-visible' }, 1200), null);
+  assert.equal(p.frame({ direction: 'right', angle: -.5, reason: 'visible-arrow-spin-recovery' }, 1300), 'right');
+  const steady = new VisibleWheelPolicy(3);
+  assert.equal(steady.frame({ direction: null, angle: .05 }, 1000), .05 * 3, 'fine wheel correction inside old binary deadzone');
+  assert.equal(steady.frame({ direction: null, angle: 0 }, 1100), null);
+});
+test('optional exit-timed QA technique saves earned spray until the visible road straightens', () => {
+  const p = new VisibleActionPolicy('exit');
+  assert.deepEqual(p.frame({ direction: 'left', angle: .6, wrongWay: false }, hud({ smallReady: true }), 1000), []);
+  assert.deepEqual(p.frame({ direction: null, angle: .08, wrongWay: false }, hud({ smallReady: true }), 1500), ['small']);
+});
+test('capture directories fail fast instead of overwriting an earlier failed QA run', async () => {
+  const source = await readFile(new URL('../../../docs/lean-pilot/racing-internal-20261020/touch-lifecycle.mjs', import.meta.url), 'utf8');
+  assert.match(source, /await mkdir\(out\);/);
+  assert.doesNotMatch(source, /mkdir\(out, \{ recursive: true \}\)/);
 });

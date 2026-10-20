@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "version": "racing-web-rc19-20261020",
+  "status": "BLOCKED",
+  "runtimeSourceCommit": "6196faa085e18ac38b484fcfc1d6909c2bf22882",
+  "buildHash": "811e05f4f6207050a63939680de93b4b3b262904663a103048d310f1466e37d6",
+  "inputHash": "448f0eaac44a2f89f5b54c6504d294e77f4e0d7018b07ea13d3d227033cf5f0d",
+  "WEB_RC": "BROWSER_CANDIDATE_WITH_DEVICE_ACCEPTANCE_PENDING",
+  "PLATFORM_RC": "NOT_BUILT",
+  "READY_TO_SUBMIT": false,
+  "platformPackage": null,
+  "files": [
+    {
+      "path": "racing-web-rc19-20261020.zip",
+      "bytes": 8380760,
+      "sha256": "a5219ae592ac89597fb3636d7d8c691bd22727114d7de47431f6f019fd26a2ef"
+    },
+    {
+      "path": "racing-web-rc19-20261020.html",
+      "bytes": 13347826,
+      "sha256": "bf68ed63714900a049afd1cb003c5c395155fa1c92b50fe37c72737f5ae40ea4"
+    }
+  ],
+  "gameEntries": [
+    {
+      "path": "LICENSE.three.txt",
+      "bytes": 1081,
+      "sha256": "4c40a1ef62450b857c3b2aaf294936304cd552d965fbcd9d32d4c5bcf4ba4454"
+    },
+    {
+      "path": "candidate.json",
+      "bytes": 674,
+      "sha256": "4a1c53acbf6f76aa7ff6c7e52b5990beb2872ea84500cab5e6dedfe00ad61186"
+    },
+    {
+      "path": "engine.mjs",
+      "bytes": 2866,
+      "sha256": "2558c7f3c9dce4090e9866ce66215cdb04f0204f08477b0db85a78860ec4f9e8"
+    },
+    {
+      "path": "index.html",
+      "bytes": 13290355,
+      "sha256": "78ac91a51615608d8194402463f1004b16428ca59d86fd9428e92122b0290e23"
+    },
+    {
+      "path": "main.mjs",
+      "bytes": 11027,
+      "sha256": "c47f751fb87d575c1a73a39e4b093919a979bc206eabc7cc3c4b59ee483eda1c"
+    },
+    {
+      "path": "platform.json",
+      "bytes": 116,
+      "sha256": "ebc8f939c756aa1ff0220059c9fe14a5d473f145696681d26a6d8042f0654daf"
+    },
+    {
+      "path": "style.css",
+      "bytes": 57496,
+      "sha256": "a5e2b84a92a0cfbd3e5163e4d18e6eeda10ffb1fc5cabc570b07023780ad7b15"
+    },
+    {
+      "path": "themes.mjs",
+      "bytes": 3293,
+      "sha256": "177ee6d7c3c4975710b3b853f8fc7ad9ce38c2d0b96e5b96e02ec5c26579e2b2"
+    }
+  ],
+  "ciComparison": {
+    "sourceCommit": "6196faa085e18ac38b484fcfc1d6909c2bf22882",
+    "archive": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/ci19/racing-v3-h5-6196faa085e18ac38b484fcfc1d6909c2bf22882/artifacts/racing-v3-delivery/qq-speed-v3-h5.zip",
+    "allEightRuntimeEntriesByteIdentical": true
+  },
+  "platformStagingPackage": {
+    "path": "taptap-h5-staging-rc19-20261020.zip",
+    "bytes": 8380952,
+    "sha256": "33a7725cf268e08098baea23c637d4eba5e35e17bc9daf03b6c85eb5d7b5160c",
+    "status": "LOCAL_PREFLIGHT_ONLY_NOT_PLATFORM_RC",
+    "onlyChangeFromWebZip": "single directory prefix; identical inner runtime bytes"
+  },
+  "scope": "Same tested browser runtime. Human/phone, live platform SDK, account and rights clearance remain separate. Tests are executed, not removed; they are not shipped as player assets."
+}
