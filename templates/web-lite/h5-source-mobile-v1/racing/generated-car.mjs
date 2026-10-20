@@ -1,6 +1,6 @@
 const WHEEL_NAMES = ['Wheel_FL', 'Wheel_FR', 'Wheel_RL', 'Wheel_RR'];
 const MATERIAL_NAMES = ['BodyPaint', 'Glass', 'Tire', 'Rim', 'Headlight', 'Taillight', 'Trim'];
-const BODY_PAINT_PROGRAM_KEY = 'generated-car-body-paint-mask-v1';
+const BODY_PAINT_PROGRAM_KEY = 'generated-car-body-paint-mask-v2';
 
 function installBodyPaintMask(material) {
   material.onBeforeCompile = shader => {
@@ -9,6 +9,9 @@ function installBodyPaintMask(material) {
       `#include <map_fragment>
 float paintMask = smoothstep(0.16, 0.6, min(sampledDiffuseColor.r, min(sampledDiffuseColor.g, sampledDiffuseColor.b)));
 diffuseColor.rgb = sampledDiffuseColor.rgb * mix(vec3(1.0), diffuse, paintMask);`,
+    ).replace(
+      '#include <roughnessmap_fragment>',
+      '#include <roughnessmap_fragment>\nroughnessFactor = max(roughnessFactor, 0.30);',
     );
   };
   material.customProgramCacheKey = () => BODY_PAINT_PROGRAM_KEY;

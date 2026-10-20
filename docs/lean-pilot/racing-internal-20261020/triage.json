@@ -13,7 +13,7 @@
   "scope": {
     "route": "formal-fixer",
     "rationale": "Existing validated core-loop and perceptual QA failures require retained QA → Fixer → natural/perceptual retest. No new factory stage or gate.",
-    "generatedWorkspaceModified": false,
+    "generatedWorkspaceModified": true,
     "contextIntentionallyOmitted": [
       "Other games",
       "Account provisioning",
@@ -32,7 +32,10 @@
       "Attempt 16 visible-pixel/touch driver won stages 01–12 with 8–32 crashes per race and no effective drift, spray or nitro. This is not a human win-rate estimate.",
       "Removing predictive braking in the read-only experiment improved stage 01 from 128.000 to 119.575 s, but increased aggregate wall crashes from 5 to 525: rejected, not a fix.",
       "Six actual car previews exist. Custom-01 at 844×390 has busy high-contrast purple/black surfaces and the faceted green vegetation conflicts with the hard-surface car.",
-      "Trusted touch countersteer passed the starter/844×390 branch; resource use, small viewport natural driving, later stages and physical devices remain separate evidence gaps."
+      "Trusted touch countersteer passed the starter/844×390 branch; resource use, small viewport natural driving, later stages and physical devices remain separate evidence gaps.",
+      "Attempt 17 actual natural baseline placed 2/3/4; visible-resource input placed 1/1/1. All 150 native rivals finish; no native physics changes. More-map and smaller-screen natural coverage still pending.",
+      "Attempt 17 environment reduction alone did not remove near-mirror baked texels. Disabling normal maps did not resolve the glare; bounding mapped roughness and metallic contribution visibly reduced it. Preserve all source maps and mesh topology.",
+      "Attempt 17 background test did not observe blur: an isolated browser test identified Playwright forced-focus emulation. Disabling it allows real window blur; final gameplay retest pending."
     ],
     "evidence": [
       {
@@ -44,6 +47,30 @@
       {
         "path": "docs/lean-pilot/racing-final-20261020/evidence/browser-gallery.json",
         "sha256": "ae721261ae33dedf1b742ef518cc90580d1e17ed3626bd0e19aa1c7815228f1f",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/finish-diagnostic17/report.json",
+        "sha256": "253fc41cb58304f81121f3f06bed67b38cdd58df50059d79db317f41d3c93059",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/touch-e8ae1ba8825e/report.json",
+        "sha256": "90cfc05621747a78a9f3a60a1719b0408a68d60ee87c25e102666549ca392654",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/rc17-natural-baseline/report.json",
+        "sha256": "78e24142f1c2c1eca49edf170b2f71dc29c6e5b529d6c10fa9fbf2982cd59307",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/evidence/rc17-natural-resources/report.json",
+        "sha256": "95dcd53f6b57e340198ad070f3afdaebb94025695ffea016f1d5cd703a560b02",
         "kind": "qa-artifact",
         "provenance": "verified-run-artifact"
       }

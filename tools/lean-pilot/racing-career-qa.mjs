@@ -11,6 +11,7 @@ import { z } from 'zod';
 import { createRequire } from 'node:module';
 import { itemBoxPolicy, earnedResumeOrigin, recoverVisibleHeading, qualifiedVisibleFinish, dailyRaceDayFromStart, needsVisibleItemPickup, visibleItemSteer } from './racing-visible-policy.mjs';
 import { actionTouchPoints, planWheelGesture } from './racing-wheel-qa-input.mjs';
+import { VisibleActionPolicy, reconcileTouchContacts } from './racing-visible-actions.mjs';
 const require = createRequire(import.meta.url), testRequire = createRequire(require.resolve('@playwright/test'));
 const playwrightRequire = createRequire(testRequire.resolve('playwright'));
 const { PNG } = require(path.join(path.dirname(playwrightRequire.resolve('playwright-core/package.json')), 'lib/utilsBundle.js'));
@@ -51,15 +52,51 @@ const page = await context.newPage();
 const recordingAfterPageMs = Date.now();
 const cdp = await context.newCDPSession(page);
 const errors = [], races = [], controls = [];
+const fuelWaits = [];
+// Opt-in long-session observation, not an extended race/startup threshold.
+// The shipping rule visibly regenerates one unit per real minute. Waiting in
+// the lobby is normal play; changing fuel, Date or browser clocks is not.
+async function waitForReady() {
+  if (process.env.RACE_QA_WAIT_FUEL === '1') {
+    await page.waitForFunction(() => document.querySelector('#race-fuel-box')?.classList.contains('empty') ||
+      document.querySelector('#race-start')?.disabled === false, null, { timeout: 45000 });
+    if (await page.locator('#race-fuel-box').evaluate(node => node.classList.contains('empty'))) {
+      const started = Date.now(), before = await page.locator('#race-fuel-info').textContent();
+      const number = fuelWaits.length + 1;
+      await page.screenshot({ path: path.join(out, `fuel-wait-${number}.png`) });
+      console.log(JSON.stringify({ status: 'WAITING_REAL_FUEL_REGENERATION', before }));
+      await page.waitForFunction(() => !document.querySelector('#race-fuel-box').classList.contains('empty'), null,
+        { timeout: 310000, polling: 1000 });
+      const waited = { before, after: await page.locator('#race-fuel-info').textContent(), wallMs: Date.now() - started,
+        clockModified: false, fuelInjected: false };
+      fuelWaits.push(waited);
+      await writeFile(path.join(out, 'fuel-waits.json'), JSON.stringify(fuelWaits, null, 2));
+    }
+  }
+  await page.locator('#race-start:not([disabled])').waitFor({ timeout: 45000 });
+}
 let startIndex = 0;
 page.on('pageerror', e => errors.push(e.message));
 page.on('dialog', dialog => dialog.accept());
 let touching = null, wheelBounds, actionBounds, wheelAngle = null;
 let activeActionNames = [];
+let contacts = [];
+const useVisibleActions = process.env.RACE_QA_ACTIONS === 'visible';
+async function dispatchTouches(events) {
+  for (const event of events) {
+    await cdp.send('Input.dispatchTouchEvent', event);
+    contacts = event.touchPoints;
+  }
+}
+async function setActions(names) {
+  const desired = [...contacts.filter(p => p.id === 1), ...actionTouchPoints(names, actionBounds)];
+  await dispatchTouches(reconcileTouchContacts(contacts, desired));
+  activeActionNames = names;
+}
 async function steer(direction) {
   if (direction === touching) return;
   const plan = planWheelGesture(direction, wheelBounds, actionTouchPoints(activeActionNames, actionBounds), wheelAngle);
-  for (const event of plan.events) await cdp.send('Input.dispatchTouchEvent', event);
+  await dispatchTouches(plan.events);
   touching = direction;
   wheelAngle = plan.angle;
   controls.push({ at: Date.now(), direction });
@@ -120,7 +157,7 @@ async function observed(full = false) {
       roadHint: document.querySelector('#race-road-hint')?.textContent ?? '',
       goal: document.querySelector('#race-compact-goal').textContent,
       feedback: document.querySelector('#msgs').textContent,
-      events: full ? window.__RACE_EVIDENCE__.events : window.__RACE_EVIDENCE__.events.filter(e => ['driftEnd', 'nitro', 'crash', 'pad', 'item'].includes(e.type)).slice(-8),
+      events: full ? window.__RACE_EVIDENCE__.events : window.__RACE_EVIDENCE__.events.filter(e => ['driftEnd', 'smallBoost', 'nitro', 'crash', 'pad', 'item'].includes(e.type)).slice(-8),
       heading: document.querySelector('#race-heading').textContent,
       result: document.querySelector('#race-result-copy').textContent,
       resultStats: document.querySelector('#race-result-stats').textContent,
@@ -136,7 +173,7 @@ function dailyStartSnapshot() {
 }
 try {
   await page.goto('http://127.0.0.1:' + server.address().port + '/');
-  await page.locator('#race-start:not([disabled])').waitFor({ timeout: 45000 });
+  await waitForReady();
   await page.screenshot({ path: path.join(out, 'startup.png') });
   const limit = Number(process.env.RACE_QA_STAGES ?? 30);
   const count = limit + (limit === 30 ? 1 : 0);
@@ -151,7 +188,7 @@ try {
     const name = index === 30 ? 'daily' : String(index + 1).padStart(2, '0');
     if (index) {
       await page.locator('#race-stage').selectOption(index === 30 ? 'daily' : String(index));
-      await page.waitForFunction(() => !document.querySelector('#race-start').disabled, null, { timeout: 45000 });
+      await waitForReady();
     }
     const entry = await page.locator('#race-stage option:checked').textContent();
     await page.bringToFront();
@@ -190,7 +227,7 @@ try {
       const rect = button.getBoundingClientRect();
       return [button.dataset.raceAction, { x: rect.x, y: rect.y, width: rect.width, height: rect.height }];
     })));
-    const trace = [], captures = new Set(); let terminal = null, lastLog = 0;
+    const trace = [], captures = new Set(), actionPolicy = new VisibleActionPolicy(); let terminal = null, lastLog = 0;
     const diagnosticSeconds = Math.max(0,Number(process.env.RACE_QA_DIAGNOSTIC_RACE_SECS ?? 0));
     let diagnosticStop = false;
     const startedAt = Date.now(), deadline = startedAt + Math.max(30000, Math.min(600000, Number(process.env.RACE_QA_MAX_MS ?? 600000)));
@@ -209,10 +246,21 @@ try {
       }
       policy = visibleItemSteer(policy, box);
       await steer(policy.direction);
+      let actionHud = null;
+      if (useVisibleActions) {
+        actionHud = await page.evaluate(() => ({
+          speedKmh: Number(document.querySelector('#race-speed-value').textContent),
+          drifting: document.querySelector('#race-kit').classList.contains('drifting'),
+          smallReady: document.querySelector('[data-race-action="small"]').classList.contains('ready'),
+          nitroReady: document.querySelector('[data-race-action="nitro"]').classList.contains('ready'),
+          itemReady: document.querySelector('[data-race-action="item"]').classList.contains('ready'),
+        }));
+        await setActions(actionPolicy.frame(policy, actionHud, Date.now()));
+      }
       const o = await observed();
       const telemetry = { ...o }; delete telemetry.events; delete telemetry.saved;
-      trace.push({ at: Date.now(), policy, touch: touching, observed: telemetry });
-      const capture = o.events.find(e => !captures.has(e.type) && ['driftEnd', 'nitro', 'crash', 'pad'].includes(e.type) && (e.type !== 'driftEnd' || e.clean));
+      trace.push({ at: Date.now(), policy, touch: touching, actions: [...activeActionNames], actionHud, observed: telemetry });
+      const capture = o.events.find(e => !captures.has(e.type) && ['driftEnd', 'smallBoost', 'nitro', 'crash', 'pad'].includes(e.type) && (e.type !== 'driftEnd' || e.clean));
       if (capture) { captures.add(capture.type); await page.screenshot({ path: path.join(out, `${name}-${capture.type}.png`) }); }
       const pickups = Number(o.goal.match(/已拾取道具 (\d+)\//u)?.[1] ?? 0);
       for (const [key, condition] of [['elimination', o.goal.includes('距离淘汰')], ['item-use', pickups > 0 && o.feedback.includes('已使用')], ['pickup', pickups > lastPickups]]) {
@@ -229,7 +277,7 @@ try {
       }
       await page.waitForTimeout(40);
     }
-    await steer(null);
+    await setActions([]); await steer(null);
     await page.screenshot({ path: path.join(out,name+(terminal?'-terminal.png':'-diagnostic.png')) });
     const t = { ...(terminal ?? await observed()), stage: name, ...(dailyStart ? { raceDay, dailyStart } : {}) };
     const saved = JSON.parse(t.saved ?? '{}'), stars = name === 'daily' ? saved.daily?.stars ?? 0 : saved.stars?.[name] ?? 0;
@@ -240,7 +288,7 @@ try {
     const race = { stage: name, entry, ...t, earnedStars: stars, wallDurationMs: Date.now() - startedAt,
       terminalButtons, actionsFit: terminalButtons.every(b => b.top >= 0 && b.bottom <= viewport.height && b.height >= 44),
       status: terminal ? (qualifiedVisibleFinish(t, stars) ? 'PASS' : 'BLOCKED') :
-        diagnosticStop ? 'DIAGNOSTIC_ONLY' : 'BLOCKED', input: 'visible minimap + cyan cube pixels + visible wrong-way warning; trusted CDP touch only', forbiddenOperations: [] };
+        diagnosticStop ? 'DIAGNOSTIC_ONLY' : 'BLOCKED', input: 'visible minimap + cyan cube pixels + visible wrong-way warning; trusted CDP touch only' + (useVisibleActions ? '; opt-in visible speed and resource-button action policy' : '; unchanged steering-only baseline'), forbiddenOperations: [] };
     races.push(race);
     await writeFile(path.join(out, name + '-trace.json'), JSON.stringify({ buildHash: build.buildHash, driverPolicy: race.input, inputTransport: 'CDP Input.dispatchTouchEvent', forbiddenOperations: [], controls: controls.splice(0), frames: trace, terminal: race }, null, 2));
     await writeFile(path.join(out, 'checkpoint.json'), JSON.stringify({ buildHash: build.buildHash, races, errors }, null, 2));
@@ -265,7 +313,7 @@ try {
       await page.locator('#race-pause').tap();
     }
     await page.reload({ waitUntil: 'domcontentloaded' });
-    await page.locator('#race-start:not([disabled])').waitFor({ timeout: 45000 });
+    await waitForReady();
     const restored = await page.evaluate(() => localStorage.getItem('h5-mobile:qq-speed:career:v1'));
     if (restored !== t.saved) throw Error('earned campaign progress changed on reload');
   }
@@ -275,9 +323,10 @@ finally {
     viewport: z.object({ width: z.number(), height: z.number() }), naturalInputsOnly: z.literal(true), seededCampaign: z.literal(false),
     driverPolicy: z.string(), races: z.array(z.any()), errors: z.array(z.string()), passed: z.boolean(), checkedAt: z.string() });
   const report = Schema.parse({ schemaVersion: 1, gameId: 'qq-speed', buildHash: build.buildHash, viewport,
-    naturalInputsOnly: true, seededCampaign: false, driverPolicy: 'visible minimap, cyan cube pixels and visible wrong-way warning; native state read only for assertions',
+    naturalInputsOnly: true, seededCampaign: false, driverPolicy: 'visible minimap, cyan cube pixels and visible wrong-way warning; native state read only for assertions' + (useVisibleActions ? '; opt-in visible speed and resource-button action policy' : '; unchanged steering-only baseline'),
     races, errors, passed: races.length === Number(process.env.RACE_QA_STAGES ?? 30) + (Number(process.env.RACE_QA_STAGES ?? 30) === 30 ? 1 : 0) && races.every(r => r.status === 'PASS' && r.actionsFit) && !errors.length, checkedAt: new Date().toISOString() });
   report.recordingTimebase = { beforePageMs: recordingBeforePageMs, afterPageMs: recordingAfterPageMs, uncertainty: 'Recorder starts during page creation; use visible clock and keep context around trimmed evidence' };
+  report.fuelWaits = fuelWaits;
   await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
   const video = page.video(); await context.close(); if (video) await video.saveAs(path.join(out, 'natural-career.webm'));
   await browser.close(); server.close();

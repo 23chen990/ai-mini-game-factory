@@ -41,9 +41,17 @@ export function createUserCarFactory(THREE, templateScene, assetIdentity, metada
           if (!materials.has(material)) {
             const privateMaterial = material.clone();
             // Preserve the supplied albedo, PBR maps and merged-wheel topology.
-            // A lower environment contribution avoids mirror-like glare without
-            // changing another instance or destroying the original texture.
+            // Bound specular response after the baked roughness map: lowering
+            // environment intensity alone left near-mirror texels in these GLBs.
             privateMaterial.envMapIntensity *= .45;
+            privateMaterial.metalness *= .55;
+            privateMaterial.onBeforeCompile = shader => {
+              shader.fragmentShader = shader.fragmentShader.replace(
+                '#include <roughnessmap_fragment>',
+                '#include <roughnessmap_fragment>\nroughnessFactor = max(roughnessFactor, 0.38);',
+              );
+            };
+            privateMaterial.customProgramCacheKey = () => 'user-car-bounded-finish-v1';
             materials.set(material, privateMaterial);
           }
           return materials.get(material);

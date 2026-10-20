@@ -275,6 +275,7 @@ test('body paint masks the original atlas per texel while retaining the native s
   assert.match(shader.fragmentShader, /#include <map_fragment>\s*\n\s*float paintMask = smoothstep\(0\.16, 0\.6, min\(sampledDiffuseColor\.r, min\(sampledDiffuseColor\.g, sampledDiffuseColor\.b\)\)\);/);
   assert.match(shader.fragmentShader, /diffuseColor\.rgb = sampledDiffuseColor\.rgb \* mix\(vec3\(1\.0\), diffuse, paintMask\);/);
   assert.ok(shader.fragmentShader.indexOf('diffuseColor.rgb = sampledDiffuseColor.rgb') > shader.fragmentShader.indexOf('#include <map_fragment>'));
+  assert.match(shader.fragmentShader, /#include <roughnessmap_fragment>\nroughnessFactor = max\(roughnessFactor, 0\.30\);/);
 });
 
 test('body paint shader has an explicit material-program cache key', async () => {
@@ -283,7 +284,7 @@ test('body paint shader has an explicit material-program cache key', async () =>
   const car = createGeneratedCarFactory(THREE, scene, 'racer-hy-001').instantiate(skins[0]);
   const paint = meshesByMaterialName(car.body, 'BodyPaint')[0];
 
-  assert.equal(paint.customProgramCacheKey(), 'generated-car-body-paint-mask-v1');
+  assert.equal(paint.customProgramCacheKey(), 'generated-car-body-paint-mask-v2');
 });
 
 test('starter visual polish uses bounded cloned PBR uniforms without mutating source meshes', async () => {
