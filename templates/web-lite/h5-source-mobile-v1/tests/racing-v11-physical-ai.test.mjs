@@ -291,3 +291,24 @@ test('rival never drifts at a physical shortcut entrance or with impact',()=>{
   assert.equal(collision.shift,false,'no held Shift through contact');
   assert.ok(car.__V11_DRIFT_COOLDOWN__>1);
 });
+
+test('physical rivals do not brake away an earned boost on a clear straight', () => {
+  const track=trackFixture();delete track.__RACE_SHORTCUT__;
+  for(const vmaxNow of [67,76,86]) {
+    const car={...carFixture(track),s:60,vmaxNow};
+    const before=physical(car);
+    const input=v11AiInput(car,track,1/120);
+    assert.equal(input.down,false,'earned native speed allowance must not trigger normal-speed braking');
+    assert.equal(input.up,true,'accelerate within the actual native boost allowance');
+    assert.deepEqual(physical(car),before,'controller must not grant speed or boost resources');
+  }
+});
+
+test('physical rivals still brake for a corner during an earned boost', () => {
+  const track=trackFixture();delete track.__RACE_SHORTCUT__;
+  const sample=track.sample.bind(track);
+  track.sample=(d,out={})=>Object.assign(sample(d,out),{hd:(d-440)*.05});
+  const car={...carFixture(track),s:70,vmaxNow:76};
+  const input=v11AiInput(car,track,1/120);
+  assert.equal(input.down,true);assert.equal(input.up,false);
+});

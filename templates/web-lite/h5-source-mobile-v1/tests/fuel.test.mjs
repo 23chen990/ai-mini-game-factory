@@ -124,3 +124,12 @@ test('next single fuel point countdown never becomes a five-minute wait',()=>{
   assert.equal(fuelTimeLeft(s,T-20*M),M);
   assert.equal(fuelTimeLeft(s,T+30_000),30_000);
 });
+
+test('TapTap H5 landscape is enum zero, portrait one, and neither implies permission',()=>{
+  const config={status:1,source:'check_ads_status',appId:'fixture-only',spaceId:'fixture-only',screenOrientation:0};
+  const tap={createRewardedVideoAd(){}};
+  assert.equal(fuelPlatformReady(config,tap),true);
+  assert.equal(fuelPlatformReady({...config,screenOrientation:1},tap),true);
+  for(const screenOrientation of [null,undefined,2,'0'])assert.equal(fuelPlatformReady({...config,screenOrientation},tap),false);
+  assert.equal(fuelPlatformReady({...config,status:'PENDING'},tap),false);
+});

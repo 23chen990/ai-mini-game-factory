@@ -76,7 +76,7 @@ export function fuelAdEligible(state, { rounds = 0, sessionMs = 0, adReady = fal
 
 export function fuelPlatformReady(config, tap) {
   return config?.status === 1 && config?.source === 'check_ads_status' && !!config.appId &&
-    config.screenOrientation === 1 && typeof config.spaceId === 'string' && !!config.spaceId &&
+    [0, 1].includes(config.screenOrientation) && typeof config.spaceId === 'string' && !!config.spaceId &&
     typeof tap?.createRewardedVideoAd === 'function';
 }
 

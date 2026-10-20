@@ -11,17 +11,22 @@ export function createFpsAdapter(game, doc) {
   };
 }
 let adBusy = false;
+// TapTap's video component is a singleton and close events have no request ID.
+// After a timeout its later close cannot safely belong to another request.
+const timedOutProviders = new WeakSet();
 /** Official H5 global tap only; no APK SDK, placeholder unit, or automatic activation. */
 export function requestRewardedVideo({ tap, config, loadTimeoutMs = 8000, closeTimeoutMs = 180000 } = {}) {
   if (adBusy) return Promise.resolve({ status: 'busy' });
   if (config?.status !== 1 || config.source !== 'check_ads_status' || !config.appId ||
-    config.screenOrientation !== 1 || typeof config.spaceId !== 'string' || !config.spaceId ||
+    ![0, 1].includes(config.screenOrientation) || typeof config.spaceId !== 'string' || !config.spaceId ||
     typeof tap?.createRewardedVideoAd !== 'function') return Promise.resolve({ status: 'unavailable' });
+  if (timedOutProviders.has(tap)) return Promise.resolve({ status: 'unavailable' });
   adBusy = true;
   return new Promise(resolve => {
     let ad, finished = false, timer;
     const finish = status => {
       if (finished) return;
+      if (status === 'timed-out') timedOutProviders.add(tap);
       finished = true; clearTimeout(timer); adBusy = false;
       ad?.offClose?.(closed); ad?.offError?.(errored);
       resolve({ status });

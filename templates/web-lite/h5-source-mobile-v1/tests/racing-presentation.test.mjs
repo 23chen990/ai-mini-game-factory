@@ -164,3 +164,11 @@ test('late and mismatched next-stage UI callbacks cannot reopen a result or jump
   assert.equal(invalid.context.phase,'finished');assert.deepEqual(invalid.selected,[]);
   assert.match(invalid.nodes.get('note').textContent,/未确认/);
 });
+
+test('permanent reward UI discloses the local-only ownership boundary',()=>{
+  const source=readFileSync(new URL('../racing/mobile.mjs',import.meta.url),'utf8');
+  assert.match(source,/id="race-save-scope"[^>]*>[^<]*同一浏览器[^<]*清除[^<]*跨设备/);
+  assert.match(source,/看广告 · 永久解锁（本机）/);
+  assert.match(source,/看广告永久解锁车漆（本机）/);
+  assert.match(source,/看广告永久解锁本关（本机）/);
+});

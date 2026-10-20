@@ -30,12 +30,12 @@ root.innerHTML = `<button id="race-pause" aria-label="暂停比赛" hidden><span
   <div id="race-compact-goal" hidden></div><div id="race-knockout" hidden><span class="race-knockout-icon" aria-hidden="true">⚑</span><div class="race-knockout-detail"><div id="race-field" aria-hidden="true">${Array.from({length:6},(_,i)=>`<i>${i+1}</i>`).join('')}</div><div id="race-knockout-meter" role="progressbar" aria-label="下一次末位淘汰" aria-valuemin="0" aria-valuemax="100"><span id="race-knockout-fill"></span></div></div></div><div id="race-controls" hidden><div id="race-joystick" role="group" aria-label="按住方向盘圆环旋转，松手回正"><div class="race-stick-track"><i id="race-stick-knob"><span class="race-wheel-hub"></span><span class="race-wheel-spoke spoke-top"></span><span class="race-wheel-spoke spoke-left"></span><span class="race-wheel-spoke spoke-right"></span></i></div></div><div id="race-action-pad"><button data-race-action="drift" aria-label="按住漂移">漂移</button><button data-race-action="small" aria-label="小喷">小喷</button><button data-race-action="nitro" aria-label="使用氮气">氮气</button><button data-race-action="item" aria-label="使用道具">道具</button></div></div>
   <div id="race-panel" role="dialog" aria-label="赛车菜单"><div class="race-eyebrow">ARCADE RACING</div><h1 id="race-heading">极速飞驰</h1><button id="race-export" type="button" aria-label="导出本机试玩数据JSON">导出数据 ↓</button>
     <div id="race-guide"><div class="race-guide-keys" aria-hidden="true"><span>◎</span></div><p>左手转动方向盘 · 右手漂移 / 小喷 / 氮气</p></div>
-    <div id="race-ready"><label class="race-visually-hidden" for="race-stage">关卡</label><select id="race-stage" class="race-native-stage-select" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label id="race-skin-label" for="race-skin">车漆</label><select id="race-skin" aria-label="选择车漆（部分需要广告永久解锁）"></select><button id="race-skin-ad" type="button" hidden>看广告永久解锁车漆</button></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="30" aria-valuenow="30" hidden>${'<span></span>'.repeat(6)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +10</button></div>
+    <div id="race-ready"><label class="race-visually-hidden" for="race-stage">关卡</label><select id="race-stage" class="race-native-stage-select" aria-label="选择已解锁关卡"></select><select id="race-map" hidden>${MAPS.map(m => `<option value="${m.id}">${m.name}</option>`).join('')}</select><span class="race-round-tag" id="race-stage-tag"></span><label id="race-skin-label" for="race-skin">车漆</label><select id="race-skin" aria-label="选择车漆（部分需要广告永久解锁）"></select><button id="race-skin-ad" type="button" hidden>看广告永久解锁车漆（本机）</button></div><div id="race-course-card"><div id="race-course-map" aria-hidden="true"></div><div class="race-course-info"><span class="race-course-kicker">本场赛道</span><strong id="race-course-name">准备出发</strong><small id="race-course-feel"></small></div></div><p id="race-stage-goal"></p><div id="race-fuel-box"><div id="race-fuel-gauge" role="meter" aria-label="油量" aria-valuemin="0" aria-valuemax="30" aria-valuenow="30" hidden>${'<span></span>'.repeat(6)}</div><span id="race-fuel-info"></span><button id="race-fuel-ad" hidden>观看广告 · 加油 +10</button></div>
     <div id="race-result-stars" hidden aria-label="本场与历史星级"></div><p id="race-result-copy" hidden></p><div id="race-result-stats" hidden></div><ol id="race-results" hidden></ol>
-    <div id="race-settings" hidden><label for="race-steering-sens">转向</label><select id="race-steering-sens" aria-label="方向盘转向灵敏度"><option value="calm">柔和</option><option value="normal">标准</option><option value="sharp">灵敏</option></select><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">优先流畅，暂停时可调整画质</small></div>
-    <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-star-ad" class="race-secondary" hidden type="button">看广告永久解锁本关</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-next-ad" class="race-secondary" type="button" hidden>看广告解锁下一关</button><button id="race-retry-ad" class="race-secondary" hidden>看广告 · 下局额外氮气</button><button id="race-next" class="race-secondary" hidden>下一关 →</button><button id="race-lobby" class="race-secondary" hidden>返回首页</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
+    <div id="race-settings" hidden><label for="race-steering-sens">转向</label><select id="race-steering-sens" aria-label="方向盘转向灵敏度"><option value="calm">柔和</option><option value="normal">标准</option><option value="sharp">灵敏</option></select><label for="race-sound">声音</label><button id="race-sound" type="button" aria-pressed="true">声音：开</button><label for="race-quality">画质</label><select id="race-quality"><option value="low">流畅</option><option value="mid">均衡</option><option value="high">清晰</option></select><small id="race-quality-note">优先流畅，暂停时可调整画质</small><small id="race-save-scope">解锁仅保存在同一浏览器和网址；清除数据会丢失，暂无跨设备恢复。</small></div>
+    <div class="race-actions"><button id="race-start" disabled>赛道准备中…</button><button id="race-star-ad" class="race-secondary" hidden type="button">看广告永久解锁本关（本机）</button><button id="race-resume" hidden>继续比赛</button><button id="race-replay" hidden>再来一次</button><button id="race-next-ad" class="race-secondary" type="button" hidden>看广告解锁下一关</button><button id="race-retry-ad" class="race-secondary" hidden>看广告 · 下局额外氮气</button><button id="race-next" class="race-secondary" hidden>下一关 →</button><button id="race-lobby" class="race-secondary" hidden>返回首页</button><button id="race-restart" class="race-secondary" hidden>重新开始</button></div>
     <p id="race-note" aria-live="polite"></p>
-  </div><section id="race-garage" aria-label="选择赛车"><div class="race-garage-title"><span>赛车</span><strong id="race-car-name"></strong><small id="race-car-status"></small></div><div id="race-car-choices" role="group" aria-label="切换赛车"></div><div class="race-garage-actions"><button id="race-car-ad" type="button" hidden><span aria-hidden="true">▶</span> 看广告 · 永久解锁</button><button id="race-car-owned" type="button" hidden>返回已拥有</button></div><p id="race-car-note" role="status" hidden></p></section><nav id="race-stage-rail" aria-label="主线关卡" hidden><div class="race-stage-rail-meta"><span>关卡</span><span>01 — 30</span></div><div class="race-stage-choices" role="group" aria-label="选择关卡"></div></nav><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>请使用横屏</b><span>横屏后继续比赛</span></aside>`;
+  </div><section id="race-garage" aria-label="选择赛车"><div class="race-garage-title"><span>赛车</span><strong id="race-car-name"></strong><small id="race-car-status"></small></div><div id="race-car-choices" role="group" aria-label="切换赛车"></div><div class="race-garage-actions"><button id="race-car-ad" type="button" hidden><span aria-hidden="true">▶</span> 看广告 · 永久解锁（本机）</button><button id="race-car-owned" type="button" hidden>返回已拥有</button></div><p id="race-car-note" role="status" hidden></p></section><nav id="race-stage-rail" aria-label="主线关卡" hidden><div class="race-stage-rail-meta"><span>关卡</span><span>01 — 30</span></div><div class="race-stage-choices" role="group" aria-label="选择关卡"></div></nav><aside id="race-storage-warning" role="status" hidden>⚠ 本地存储不可用，本次试玩不限油</aside><aside id="race-rotate" hidden role="alert"><div class="race-phone" aria-hidden="true">↻</div><b>请使用横屏</b><span>横屏后继续比赛</span></aside>`;
 document.body.append(root);
 root.dataset.platform=mobile?'touch':'desktop';
 document.documentElement.dataset.racePlatform=root.dataset.platform;
@@ -129,7 +129,7 @@ function renderGarage() {
   }
   $('car-ad').hidden=phase!=='ready'||view.owned||!career.adReady;
   $('car-ad').disabled=loading||!policyReady||!view.canWatch;
-  $('car-ad').textContent=career.adBusy?'广告播放中…':'▶ 看广告 · 永久解锁';
+  $('car-ad').textContent=career.adBusy?'广告播放中…':'▶ 看广告 · 永久解锁（本机）';
   $('car-owned').hidden=view.id===career.progress.car&&!view.error;
   $('car-owned').disabled=career.adBusy||loading;
   const note=garageNotice||(view.error?'模型加载失败，点选赛车可重试':!view.owned&&!career.adReady?'广告暂不可用，可选择已拥有的赛车':'');
@@ -291,7 +291,7 @@ function renderLobby() {
     ('第 '+stage.id+' 关 · 累计 '+locked.earned+'/'+locked.required+'★') :
     stage.goal+' · 累计 '+careerStars(career.progress)+'/90★';
   $('star-ad').hidden=phase!=='ready'||!locked||!career.canOfferGateAd(gateSelectionIndex);
-  $('star-ad').textContent=locked?'看广告永久解锁第 '+stage.id+' 关':'看广告永久解锁本关';
+  $('star-ad').textContent=locked?'看广告永久解锁第 '+stage.id+' 关（本机）':'看广告永久解锁本关（本机）';
   $('start').hidden=phase!=='ready'||!!locked;
   root.dataset.starLocked=locked?'true':'false';
   $('skin').replaceChildren();
@@ -300,7 +300,7 @@ function renderLobby() {
     opt.value = String(i);
     const owned=skinUnlocked(career.progress,i);
     opt.textContent = (owned ? '✓ ' : '🔒 ') + SKIN_NAMES[i] +
-      (owned ? (i===0?' · 默认':' · 已永久拥有') : ' · 看广告永久解锁');
+      (owned ? (i===0?' · 默认':' · 本机已拥有') : ' · 看广告永久解锁（本机）');
     $('skin').append(opt);
   }
   if(pendingSkinIndex!==null && skinUnlocked(career.progress,pendingSkinIndex))
@@ -309,7 +309,7 @@ function renderLobby() {
   $('skin-ad').hidden=phase!=='ready'||pendingSkinIndex===null||
     !career.canOfferSkinAd(pendingSkinIndex);
   if(pendingSkinIndex!==null)
-    $('skin-ad').textContent='看广告永久解锁 · '+SKIN_NAMES[pendingSkinIndex];
+    $('skin-ad').textContent='看广告永久解锁（本机） · '+SKIN_NAMES[pendingSkinIndex];
   if (phase === 'ready' && pendingSkinIndex===null) $('note').textContent = '';
   fuelView();
 }

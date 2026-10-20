@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { setTimeout as delay } from 'node:timers/promises';
 import { requestRewardedVideo } from '../themes.mjs';
 
 // External SDK fixtures only. None of these results represents a live TapTap ad.
@@ -46,4 +47,22 @@ test('double tap cannot start two concurrent ad shows', async () => {
   const h = host('never-close'); const first = requestRewardedVideo({ ...h, config, closeTimeoutMs: 20 });
   const second = await requestRewardedVideo({ ...h, config });
   assert.equal(second.status, 'busy'); await first; assert.equal(h.shows(), 1);
+});
+
+test('a timed-out singleton cannot attribute its late close to a second reward request', async () => {
+  const h=host('never-close');
+  assert.equal((await requestRewardedVideo({...h,config,closeTimeoutMs:5})).status,'timed-out');
+  const second=requestRewardedVideo({...h,config,closeTimeoutMs:20});
+  await delay(1);
+  // TapTap documents a singleton. This is the old video closing through
+  // the CURRENT listeners, not a saved pointer to the removed old handler.
+  for(const callback of [...h.listeners.close])callback({isEnded:true});
+  assert.equal((await second).status,'unavailable');
+  assert.equal(h.shows(),1,'a provider with an uncorrelated timeout stays quarantined until reload');
+});
+
+test('verified TapTap H5 landscape metadata can request a rewarded video',async()=>{
+  const h=host('complete');
+  const result=await requestRewardedVideo({...h,config:{...config,screenOrientation:0}});
+  assert.equal(result.status,'completed');assert.equal(h.shows(),1);
 });

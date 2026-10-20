@@ -162,7 +162,12 @@ export function v11AiInput(ai, track, dt, tune = DEFAULT_TUNE) {
     (1 - .42 * clamp(speed / (tune.vmax ?? 55), 0, 1.3));
   input.steerAxis = clamp((yaw - gripLag * .8) / Math.max(.4, normalTurn), -1, 1);
 
-  let desired = Math.min(tune.vmax ?? 55, 48 + ability * 4);
+  // PlayerCar owns this cap, including earned pads, sprays and nitro. Before
+  // its first physics step vmaxNow is unset. Never brake away a live boost
+  // merely because it exceeds the unboosted cruise speed.
+  const baseSpeed = tune.vmax ?? 55;
+  const nativeLimit = ai.vmaxNow ?? baseSpeed;
+  let desired = Math.min(nativeLimit, 48 + ability * 4 + Math.max(0, nativeLimit - baseSpeed));
   const gripBudget = v11CornerGripBudget(ability);
   let largestCurve = 0;
   let nearCurve = 0;
