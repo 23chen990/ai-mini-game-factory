@@ -682,7 +682,7 @@ export function patchUrbanTreeColor(source) {
     ['leafColor = 0x4caf50','leafColor = 0x4b8960'],
     ['rnd() < 0.3 ? 0x6fbf4a : 0x3f9e4a','rnd() < 0.3 ? 0x689467 : 0x437b55']
   ];
-  const patched = edits.filter(([a,b])=>source.includes(b));
+  const patched = edits.filter(([, b]) => source.includes(b));
   if(patched.length===edits.length)return source;
   if(patched.length||edits.some(([a])=>source.split(a).length!==2))
     throw Error('Urban foliage palette anchor changed');
