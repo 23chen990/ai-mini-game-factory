@@ -333,14 +333,14 @@ export function installCountdownQualitySafety(game, {
           }
         }
       }
-    }
-    // Arm only after 4 *visible*, >=1s average WebGL stalls AND the genuine
+      // Arm only after 4 *visible*, >=1s average WebGL stalls AND the genuine
     // native renderer has reached its pre-existing 0.35 pixel-ratio floor.
     // The arming frame is still drawn, so HUD/gate transitions stay visible.
     if (active && this.state === 'countdown' && emergency &&
         this.settings.quality === 'low' && hasPixelBudget && this.renderer === renderer &&
         renderer.getPixelRatio() <= LOW_RENDER_PIXEL_RATIOS.at(-1) + 1e-6)
       freezeSevereCountdown3D = true;
+    }
     return nativeRender.apply(this, args);
   };
   countdownQualityInstalled.add(game);
