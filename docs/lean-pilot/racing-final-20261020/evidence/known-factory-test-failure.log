@@ -1,0 +1,34 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市
+
+ ❯ tests/unit/unknown-waiver-binding.test.ts (3 tests | 1 failed) 13ms
+     × rejects a waiver bound to a stale artifact hash 5ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/unknown-waiver-binding.test.ts > unknown waiver binding > rejects a waiver bound to a stale artifact hash
+AssertionError: expected { passed: false, …(4) } to match object { passed: false, …(1) }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "blocking": [
+      "license-risk:waiver-artifact-hash-mismatch",
++     "license-risk",
+    ],
+    "passed": false,
+  }
+
+ ❯ tests/unit/unknown-waiver-binding.test.ts:29:179
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  14:47:37
+   Duration  228ms (transform 33ms, setup 0ms, import 92ms, tests 13ms, environment 0ms)
+
