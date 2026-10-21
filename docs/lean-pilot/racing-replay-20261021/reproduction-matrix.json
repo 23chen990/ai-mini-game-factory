@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-reproduction-matrix",
+  "targetGame": "极速飞驰 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "axes": {
+    "objectTypes": [
+      "player-control",
+      "physical-rival",
+      "settlement"
+    ],
+    "lifecycleStateBranches": [
+      "drift-held-countersteer",
+      "clean-release-spray",
+      "collision-recovery",
+      "chase-pass",
+      "loss-replay"
+    ],
+    "rendererPaths": [
+      "native PlayerCar + Three.js + DOM"
+    ],
+    "viewports": [
+      {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      }
+    ]
+  },
+  "cells": [
+    {
+      "id": "desktop-drift-held-countersteer",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "drift-held-countersteer",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "desktop-clean-release-spray",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "clean-release-spray",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "REPRODUCED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Normal keyboard trace: W at2.908s while drifting, clean driftEnd3.050s, no smallBoost. Subsequent collision preserved. Native input.frame clears the edge; touch has260ms pending action support but desktop bypasses it.",
+      "evidence": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/before-desktop-sequence-v2/report.json",
+          "sha256": "e76b0bbfa1c0bd8fd16f709f6947751962657e105a33ba81e1983168fa53bd7d",
+          "kind": "qa-artifact",
+          "provenance": "verified-run-artifact"
+        }
+      ]
+    },
+    {
+      "id": "desktop-collision-recovery",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "desktop-chase-pass",
+      "objectType": "physical-rival",
+      "lifecycleStateBranch": "chase-pass",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "desktop-loss-replay",
+      "objectType": "settlement",
+      "lifecycleStateBranch": "loss-replay",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "desktop",
+        "width": 1366,
+        "height": 768
+      },
+      "status": "BLOCKED",
+      "expected": "First stage and a legitimately unlocked difficult stage reach actual terminal and replay through normal keys/touch; failures remain failures. Observe physical AI chase/pass, do not weaken early stages or use player-lead rubberbanding.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "phone-drift-held-countersteer",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "drift-held-countersteer",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "phone-clean-release-spray",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "clean-release-spray",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "phone-collision-recovery",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "phone-chase-pass",
+      "objectType": "physical-rival",
+      "lifecycleStateBranch": "chase-pass",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "phone-loss-replay",
+      "objectType": "settlement",
+      "lifecycleStateBranch": "loss-replay",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "phone",
+        "width": 844,
+        "height": 390
+      },
+      "status": "BLOCKED",
+      "expected": "First stage and a legitimately unlocked difficult stage reach actual terminal and replay through normal keys/touch; failures remain failures. Observe physical AI chase/pass, do not weaken early stages or use player-lead rubberbanding.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "small-phone-drift-held-countersteer",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "drift-held-countersteer",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "small-phone-clean-release-spray",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "clean-release-spray",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "small-phone-collision-recovery",
+      "objectType": "player-control",
+      "lifecycleStateBranch": "collision-recovery",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "small-phone-chase-pass",
+      "objectType": "physical-rival",
+      "lifecycleStateBranch": "chase-pass",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    },
+    {
+      "id": "small-phone-loss-replay",
+      "objectType": "settlement",
+      "lifecycleStateBranch": "loss-replay",
+      "rendererPath": "native PlayerCar + Three.js + DOM",
+      "viewport": {
+        "label": "small-phone",
+        "width": 667,
+        "height": 375
+      },
+      "status": "BLOCKED",
+      "expected": "First stage and a legitimately unlocked difficult stage reach actual terminal and replay through normal keys/touch; failures remain failures. Observe physical AI chase/pass, do not weaken early stages or use player-lead rubberbanding.",
+      "observed": "Pending exact current-build normal-input observation; no sibling branch substitution.",
+      "evidence": []
+    }
+  ],
+  "confirmedFindings": [
+    "Normal keyboard trace: W at2.908s while drifting, clean driftEnd3.050s, no smallBoost. Subsequent collision preserved. Native input.frame clears the edge; touch has260ms pending action support but desktop bypasses it.",
+    "Action view currently provides no pre-release charge/eligibility or remaining-window meter; native handleEvents has no driftEnd audio branch. Speed, flames and smallBoost sound already exist and must not be recreated as a new feature."
+  ],
+  "remainingGaps": [
+    "Current-build exact cell recordings",
+    "Human and physical-device review"
+  ],
+  "createdAt": "2026-10-21T03:50:36.528Z"
+}

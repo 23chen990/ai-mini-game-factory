@@ -1,0 +1,535 @@
+{
+  "buildHash": "d4b6e32b056a5f7c3afb4f3cafe7da01282488ea58f78b1e5490955a3a3db005",
+  "inputHash": "7bd0a02b0dbd1713279e473d6cb8c2aa8083ec23d9c4bc458e85912156625f1f",
+  "browser": "151.0.7922.34",
+  "physicalPhone": false,
+  "input": "Trusted CDP touch and real Chromium window focus loss/restore with forced-focus emulation disabled; no synthetic DOM lifecycle events",
+  "rows": [
+    {
+      "width": 844,
+      "case": "held-left-drift",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 1,
+      "steer": 0.9999393989436755,
+      "drifting": true,
+      "stats": {
+        "drift": 1,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 0,
+        "top": 198.06483432988847,
+        "land": 0
+      },
+      "speed": 194.93178751516294,
+      "viewport": [
+        844,
+        390
+      ],
+      "pixelRatio": 1,
+      "screenshot": "844-left-drift.png"
+    },
+    {
+      "width": 844,
+      "case": "emergency-countersteer",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": -1,
+      "steer": -0.9876567896848808,
+      "drifting": true,
+      "stats": {
+        "drift": 1,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 0,
+        "top": 198.06483432988847,
+        "land": 0
+      },
+      "speed": 190.7818985130557,
+      "viewport": [
+        844,
+        390
+      ],
+      "pixelRatio": 1,
+      "screenshot": "844-countersteer.png"
+    },
+    {
+      "width": 844,
+      "case": "release-centers-and-ends-drift",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 0,
+      "steer": -0.04070645486988628,
+      "drifting": false,
+      "stats": {
+        "drift": 1,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 1,
+        "top": 198.06483432988847,
+        "land": 0
+      },
+      "speed": 97.59240674241978,
+      "viewport": [
+        844,
+        390
+      ],
+      "pixelRatio": 1,
+      "screenshot": "844-released.png"
+    },
+    {
+      "width": 844,
+      "case": "separate-visible-action-targets",
+      "targets": [
+        {
+          "action": "drift",
+          "label": "按住漂移",
+          "x": 740.3046875,
+          "y": 290.3046875,
+          "width": 89.6953125,
+          "height": 89.6953125,
+          "top": 290.3046875,
+          "right": 830,
+          "bottom": 380,
+          "left": 740.3046875
+        },
+        {
+          "action": "small",
+          "label": "小喷，可用",
+          "x": 672,
+          "y": 322,
+          "width": 58,
+          "height": 58,
+          "top": 322,
+          "right": 730,
+          "bottom": 380,
+          "left": 672
+        },
+        {
+          "action": "nitro",
+          "label": "氮气",
+          "x": 672,
+          "y": 247.90625,
+          "width": 58,
+          "height": 58,
+          "top": 247.90625,
+          "right": 730,
+          "bottom": 305.90625,
+          "left": 672
+        }
+      ]
+    },
+    {
+      "width": 844,
+      "case": "actual-browser-window-background",
+      "status": "PASS",
+      "background": {
+        "hidden": false,
+        "events": [
+          {
+            "type": "blur",
+            "hidden": false,
+            "focused": false
+          }
+        ]
+      },
+      "foreground": {
+        "phase": "paused",
+        "nativeState": "paused",
+        "axis": 0,
+        "steer": 0.9148260597627595,
+        "drifting": true,
+        "stats": {
+          "drift": 2,
+          "small": 0,
+          "perfect": 0,
+          "double": 0,
+          "nitro": 0,
+          "crash": 1,
+          "top": 198.06483432988847,
+          "land": 0
+        },
+        "speed": 106.988018604972,
+        "viewport": [
+          844,
+          390
+        ],
+        "pixelRatio": 1
+      },
+      "screenshot": "844-foreground.png"
+    },
+    {
+      "width": 844,
+      "case": "foreground-resume-click",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 0,
+      "steer": 0.9148260597627595,
+      "drifting": true,
+      "stats": {
+        "drift": 2,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 1,
+        "top": 198.06483432988847,
+        "land": 0
+      },
+      "speed": 106.988018604972,
+      "viewport": [
+        844,
+        390
+      ],
+      "pixelRatio": 1,
+      "browser": {
+        "focused": true,
+        "hidden": false,
+        "events": [
+          {
+            "type": "blur",
+            "hidden": false,
+            "focused": false
+          },
+          {
+            "type": "focus",
+            "hidden": false,
+            "focused": true
+          },
+          {
+            "type": "focus",
+            "hidden": false,
+            "focused": true
+          },
+          {
+            "type": "blur",
+            "hidden": false,
+            "focused": true
+          }
+        ]
+      }
+    },
+    {
+      "width": 844,
+      "case": "background-resume-drift-released",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 0,
+      "steer": 0.01283360706216985,
+      "drifting": false,
+      "stats": {
+        "drift": 2,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 1,
+        "top": 198.06483432988847,
+        "land": 0
+      },
+      "speed": 110.07123553872502,
+      "viewport": [
+        844,
+        390
+      ],
+      "pixelRatio": 1,
+      "screenshot": "844-background-drift-released.png"
+    },
+    {
+      "width": 844,
+      "case": "rotate-resume-neutral",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 0,
+      "steer": 0.0015200358932878648,
+      "drifting": false,
+      "stats": {
+        "drift": 2,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 1,
+        "top": 198.06483432988847,
+        "land": 0
+      },
+      "speed": 111.91203820315857,
+      "viewport": [
+        844,
+        390
+      ],
+      "pixelRatio": 1,
+      "screenshot": "844-rotation-resume.png"
+    },
+    {
+      "width": 667,
+      "case": "held-left-drift",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 1,
+      "steer": 0.9999775449870054,
+      "drifting": true,
+      "stats": {
+        "drift": 1,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 0,
+        "top": 198.05164503530273,
+        "land": 0
+      },
+      "speed": 194.81768026337352,
+      "viewport": [
+        667,
+        375
+      ],
+      "pixelRatio": 1,
+      "screenshot": "667-left-drift.png"
+    },
+    {
+      "width": 667,
+      "case": "emergency-countersteer",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": -1,
+      "steer": -0.9902580944141557,
+      "drifting": true,
+      "stats": {
+        "drift": 1,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 0,
+        "top": 198.05164503530273,
+        "land": 0
+      },
+      "speed": 190.9415853909848,
+      "viewport": [
+        667,
+        375
+      ],
+      "pixelRatio": 1,
+      "screenshot": "667-countersteer.png"
+    },
+    {
+      "width": 667,
+      "case": "release-centers-and-ends-drift",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 0,
+      "steer": -0.031170651285405672,
+      "drifting": false,
+      "stats": {
+        "drift": 1,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 1,
+        "top": 198.05164503530273,
+        "land": 0
+      },
+      "speed": 98.24898435024818,
+      "viewport": [
+        667,
+        375
+      ],
+      "pixelRatio": 1,
+      "screenshot": "667-released.png"
+    },
+    {
+      "width": 667,
+      "case": "separate-visible-action-targets",
+      "targets": [
+        {
+          "action": "drift",
+          "label": "按住漂移",
+          "x": 566,
+          "y": 278,
+          "width": 87,
+          "height": 87,
+          "top": 278,
+          "right": 653,
+          "bottom": 365,
+          "left": 566
+        },
+        {
+          "action": "small",
+          "label": "小喷",
+          "x": 495,
+          "y": 307,
+          "width": 58,
+          "height": 58,
+          "top": 307,
+          "right": 553,
+          "bottom": 365,
+          "left": 495
+        },
+        {
+          "action": "nitro",
+          "label": "氮气",
+          "x": 495,
+          "y": 235.75,
+          "width": 58,
+          "height": 58,
+          "top": 235.75,
+          "right": 553,
+          "bottom": 293.75,
+          "left": 495
+        }
+      ]
+    },
+    {
+      "width": 667,
+      "case": "actual-browser-window-background",
+      "status": "PASS",
+      "background": {
+        "hidden": false,
+        "events": [
+          {
+            "type": "blur",
+            "hidden": false,
+            "focused": false
+          }
+        ]
+      },
+      "foreground": {
+        "phase": "paused",
+        "nativeState": "paused",
+        "axis": 0,
+        "steer": 0.9486717498856623,
+        "drifting": true,
+        "stats": {
+          "drift": 2,
+          "small": 0,
+          "perfect": 0,
+          "double": 0,
+          "nitro": 0,
+          "crash": 1,
+          "top": 198.05164503530273,
+          "land": 0
+        },
+        "speed": 109.99497759171508,
+        "viewport": [
+          667,
+          375
+        ],
+        "pixelRatio": 1
+      },
+      "screenshot": "667-foreground.png"
+    },
+    {
+      "width": 667,
+      "case": "foreground-resume-click",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 0,
+      "steer": 0.9486717498856623,
+      "drifting": true,
+      "stats": {
+        "drift": 2,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 1,
+        "top": 198.05164503530273,
+        "land": 0
+      },
+      "speed": 109.99497759171508,
+      "viewport": [
+        667,
+        375
+      ],
+      "pixelRatio": 1,
+      "browser": {
+        "focused": true,
+        "hidden": false,
+        "events": [
+          {
+            "type": "blur",
+            "hidden": false,
+            "focused": false
+          },
+          {
+            "type": "focus",
+            "hidden": false,
+            "focused": true
+          },
+          {
+            "type": "focus",
+            "hidden": false,
+            "focused": true
+          },
+          {
+            "type": "blur",
+            "hidden": false,
+            "focused": true
+          }
+        ]
+      }
+    },
+    {
+      "width": 667,
+      "case": "background-resume-drift-released",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 0,
+      "steer": 0.007807328534110195,
+      "drifting": false,
+      "stats": {
+        "drift": 2,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 1,
+        "top": 198.05164503530273,
+        "land": 0
+      },
+      "speed": 112.94924751271145,
+      "viewport": [
+        667,
+        375
+      ],
+      "pixelRatio": 1,
+      "screenshot": "667-background-drift-released.png"
+    },
+    {
+      "width": 667,
+      "case": "rotate-resume-neutral",
+      "phase": "race",
+      "nativeState": "race",
+      "axis": 0,
+      "steer": 0.0009247142712916704,
+      "drifting": false,
+      "stats": {
+        "drift": 2,
+        "small": 0,
+        "perfect": 0,
+        "double": 0,
+        "nitro": 0,
+        "crash": 1,
+        "top": 198.05164503530273,
+        "land": 0
+      },
+      "speed": 114.72829233290075,
+      "viewport": [
+        667,
+        375
+      ],
+      "pixelRatio": 1,
+      "screenshot": "667-rotation-resume.png"
+    }
+  ],
+  "errors": [],
+  "passed": true
+}

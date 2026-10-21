@@ -1,0 +1,237 @@
+{
+  "schemaVersion": 1,
+  "targetGame": "极速飞驰 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "route": "formal-fixer",
+  "attempt": 24,
+  "buildHash": "d4b6e32b056a5f7c3afb4f3cafe7da01282488ea58f78b1e5490955a3a3db005",
+  "baselineHash": "dc3b07593b98a5a91eadbd37fd256d58afd78ec4bc098fe98a86c2468cc5809d",
+  "unchanged": {
+    "generatedVehicleSha256": "c99698dd31c5ad2c90720f129616e6b65185875cc4c85cbd9d4c7c54e7c8261f",
+    "generatedAiSha256": "47377c07688e4023d57a8db1167eb3e70fced3b896b5786aca7f86f5ceb805c7",
+    "generatedTrackSha256": "336c734656afaf5df0c33ec132743d1e8a3023bfee348db528ab050de31f85de",
+    "trackGeometrySha256": "307e0ecf8a30214b98049576ac445abe1f7b15a81435d34916bf7afaf1ceb421",
+    "itemVisualSourceSha256": "5c0dd3178540d61a58938fb8e9c67f39481c2e0a4fceb6eb51b3a057799e471e",
+    "userCarManifestSha256": "17f63f08818e0a7e7decdccc7f08fb79326c50fd06d61fc49e2fccf7b8f3c558"
+  },
+  "comparison": {
+    "keyboardBeforeSprays": 0,
+    "keyboardAfterSprays": 1,
+    "afterCleanExitToSprayMs": 8.700000017881404,
+    "interpretation": "Same release/countersteer/early-W action class, separate natural runs, not seeded A/B timing or race difficulty proof.",
+    "smallPhoneEarlyPress": "One early-touch sequence did not spray; retained. Native260ms expiry unchanged; the cause of that earlier miss remains unknown. A separate timestamped normal-input small-phone sequence did spray; it does not erase the earlier failure."
+  },
+  "smallPhoneTimestamped": {
+    "inputToCleanExitMs": 241.69999998807867,
+    "cleanExitToSprayMs": 9.200000017881349,
+    "sprays": 1,
+    "report": {
+      "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-small-timestamped/report.json",
+      "sha256": "9be8e80a4cdaa53c6797e3866527125e660fcca42d646cf81970925f16a3e2a5"
+    },
+    "interpretation": "Game-clock intervals, not end-to-end latency. Same viewport and state branch; separate retest, not proof of the old miss cause."
+  },
+  "browserRegressions": [
+    {
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/smoke24/smoke.json",
+        "sha256": "c43f2f27b5c0af613fe5bf05b70d8a82a6eb55eca8e6e3915a02a022972275d3"
+      },
+      "passed": true,
+      "physicalPhone": false
+    },
+    {
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/internal-experience-20261020/touch-d4b6e32b056a-replay24/report.json",
+        "sha256": "5ca7eeb086199139084aaa0957f239b57e2e4946e903d2078794f6050c7effe2"
+      },
+      "passed": true,
+      "physicalPhone": false
+    },
+    {
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/browser24/ads.json",
+        "sha256": "415405367817ae4634943bf96426db7f03d81527b610e1c83c6d6ff4dc58b2e8"
+      },
+      "passed": true,
+      "physicalPhone": false
+    },
+    {
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/browser24/webkit.json",
+        "sha256": "5e2f251125d64c207d06ec4a8c26e82cbad547746d045e8626d7dc7ba8219592"
+      },
+      "passed": true,
+      "physicalPhone": false
+    }
+  ],
+  "journeys": [
+    {
+      "label": "after24-serial-desktop-journey",
+      "stage": "1",
+      "device": "desktop",
+      "profile": "fresh",
+      "finished": true,
+      "place": 1,
+      "finishTime": 112.31269999998467,
+      "currentOutcome": "PODIUM",
+      "replay": true,
+      "flowPassed": true,
+      "rankImprovements": 1,
+      "rankLosses": 0,
+      "stats": {
+        "drift": 42,
+        "small": 13,
+        "perfect": 9,
+        "double": 2,
+        "nitro": 2,
+        "crash": 10,
+        "top": 304.31334036782636,
+        "land": 0
+      },
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-journey/report.json",
+        "sha256": "bd61b8c666c232a145b4de16ae38c57380583fdced78aaea0ba146acbb158398"
+      },
+      "naturalFlow": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-journey/natural-flow.json",
+        "sha256": "50290bfc39b11754e62f3fa13e82e4657ee3360cf4297c267a0cf1eee6dd81eb"
+      }
+    },
+    {
+      "label": "after24-serial-phone-journey",
+      "stage": "1",
+      "device": "phone",
+      "profile": "fresh",
+      "finished": true,
+      "place": 6,
+      "finishTime": 128.99720000001136,
+      "currentOutcome": "LOSS_OR_UNFINISHED",
+      "replay": true,
+      "flowPassed": true,
+      "rankImprovements": 2,
+      "rankLosses": 5,
+      "stats": {
+        "drift": 17,
+        "small": 5,
+        "perfect": 3,
+        "double": 1,
+        "nitro": 2,
+        "crash": 19,
+        "top": 273.6262266110427,
+        "land": 0
+      },
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-journey/report.json",
+        "sha256": "964366114b406dd27551e74602b7f9cafa9c0774860e31a5b629dc75953cad5f"
+      },
+      "naturalFlow": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-journey/natural-flow.json",
+        "sha256": "2f174a1637127fbd534f3051ecd2b686e507a3665045d6219f3c456d70c07a85"
+      }
+    },
+    {
+      "label": "after24-serial-small-journey",
+      "stage": "1",
+      "device": "small-phone",
+      "profile": "fresh",
+      "finished": true,
+      "place": 6,
+      "finishTime": 124.81480000000583,
+      "currentOutcome": "LOSS_OR_UNFINISHED",
+      "replay": true,
+      "flowPassed": true,
+      "rankImprovements": 5,
+      "rankLosses": 8,
+      "stats": {
+        "drift": 29,
+        "small": 13,
+        "perfect": 10,
+        "double": 2,
+        "nitro": 3,
+        "crash": 31,
+        "top": 302.14299452482595,
+        "land": 0
+      },
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-journey/report.json",
+        "sha256": "ab56c1ed2405b3abca11306c874f1eb7bb841cbee53939ce4915cec08090f280"
+      },
+      "naturalFlow": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-journey/natural-flow.json",
+        "sha256": "ffffca3cb479b503ba42275fd693543b87cd971c446869e32868b68c811a8439"
+      }
+    },
+    {
+      "label": "after24-stage06-desktop",
+      "stage": "6",
+      "device": "desktop",
+      "profile": "unchanged-earned-profile-upgrade",
+      "finished": true,
+      "place": 2,
+      "finishTime": 117.68779999997763,
+      "currentOutcome": "PODIUM",
+      "replay": true,
+      "flowPassed": true,
+      "rankImprovements": 2,
+      "rankLosses": 2,
+      "stats": {
+        "drift": 47,
+        "small": 17,
+        "perfect": 13,
+        "double": 2,
+        "nitro": 4,
+        "crash": 26,
+        "top": 295.0515556444659,
+        "land": 0
+      },
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-stage06-desktop/report.json",
+        "sha256": "c7569644216b266623fac5c2f929852aefeb519b01b8d36044c0ed8337cf9f39"
+      },
+      "naturalFlow": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-stage06-desktop/natural-flow.json",
+        "sha256": "ffaebc7e4de7abcf0fa09e77b1cc89c5fefae7e83cbfe1548eef7f9dd98f6fec"
+      }
+    },
+    {
+      "label": "after24-stage06-phone",
+      "stage": "6",
+      "device": "phone",
+      "profile": "unchanged-earned-profile-upgrade",
+      "finished": true,
+      "place": 6,
+      "finishTime": 131.67059999998773,
+      "currentOutcome": "LOSS_OR_UNFINISHED",
+      "replay": true,
+      "flowPassed": true,
+      "rankImprovements": 3,
+      "rankLosses": 5,
+      "stats": {
+        "drift": 24,
+        "small": 16,
+        "perfect": 9,
+        "double": 3,
+        "nitro": 4,
+        "crash": 32,
+        "top": 309.627113206612,
+        "land": 0
+      },
+      "report": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-stage06-phone/report.json",
+        "sha256": "a987cdc35e77e6e9aed2a3965e07780d4bf8d717e4083275aff334067ab196ae"
+      },
+      "naturalFlow": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-stage06-phone/natural-flow.json",
+        "sha256": "3feecd00433841dfbcabf72d31024c2e1f6730fee566a3ed6f4c092cd45b01b2"
+      }
+    }
+  ],
+  "limitations": [
+    "Human enjoyment/voluntary retry not measured.",
+    "No physical Android/iPhone, real ads or platform acceptance.",
+    "Independent perceptual reviewer not run in this chat; self-inspection is not a passing independent gate.",
+    "Only01 and legitimately previously unlocked06 sampled here, not all30 naturally completed.",
+    "RC23 remains historical candidate; RC24 is an internal candidate, not formal FIX/release acceptance."
+  ]
+}

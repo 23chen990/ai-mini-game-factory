@@ -1,5 +1,5 @@
 /* global window, document, navigator, localStorage, performance, requestAnimationFrame, setTimeout, fetch, Blob, URL */
-import { ManualRaceDriver, TouchActions, keyboardRaceActions } from './driver.mjs';
+import { ManualRaceDriver, TouchActions, keyboardRaceActions, bufferKeyboardSpray } from './driver.mjs';
 import { RaceWheelSteering } from './wheel-steering.mjs';
 import { V11_COURSES,v11RaceFraction } from './v11-course-director.mjs';
 import { raceSpeedHUD } from './speed-hud.mjs';
@@ -7,7 +7,7 @@ import { RaceDuelTracker } from './duel-loop.mjs';
 import { ShortcutDecisionTracker } from './shortcut-decisions.mjs';
 import { SHORTCUT_PLANS } from './shortcut-network.mjs';
 import { RaceTrialMetrics, rankFinishGapSeconds } from './trial-metrics.mjs';
-import { careerCourseSvg, compactRaceObjective, stageRailScrollLeft, rewardedStageStatus, homeOrbitOffset, raceActionView, raceResultView } from './presentation.mjs';
+import { careerCourseSvg, compactRaceObjective, stageRailScrollLeft, rewardedStageStatus, homeOrbitOffset, raceActionView, raceResultView, playDriftReleaseCue } from './presentation.mjs';
 import { RacingCareer } from './runtime.mjs';
 import { CarGarage } from './garage.mjs';
 import { CAR_MODELS } from './cosmetics.mjs';
@@ -751,6 +751,10 @@ function renderActions(player){
       node.classList.toggle('ready',view.ready);node.classList.toggle('active',view.active);
       icon.textContent=view.icon;label.textContent=view.label;badge.textContent=view.badge;
       badge.hidden=!view.badge;
+      if(action==='small') {
+        node.dataset.sprayPhase=view.phase;
+        node.style.setProperty('--spray-progress',view.progress.toFixed(3));
+      }
     }
     actionButtons[action].dataset.label=action==='item'&&player.items[0]?ITEM_LABELS[player.items[0]]:view.label;
     actionButtons[action].setAttribute('aria-label',action==='drift'?'按住漂移':
@@ -868,7 +872,9 @@ async function boot() {
     g.input.touch.left = false; g.input.touch.right = false;
     const keyboardNitro=g.input.was('Space'),keyboardItem=g.input.was('ControlLeft','ControlRight');
     const raw = nativeFrame(), canStep = g.acc + dt >= 1 / 120;
-    if (!touchDriving) return keyboardRaceActions(raw,g.itemMode,keyboardNitro,keyboardItem);
+    if (!touchDriving) return keyboardRaceActions(
+      bufferKeyboardSpray(raw,g.player,actions,{state:g.state,canStep,now:g.raceTime}),
+      g.itemMode,keyboardNitro,keyboardItem);
     raw.steerAxis = joystick.snapshot();
     if(touchSerial!==consumedTouchSerial){
       consumedTouchSerial=touchSerial;
@@ -884,6 +890,7 @@ async function boot() {
   g.handleEvents = player => {
     const pending = player.events.map(event => ({ ...event, data: { ...event.data } }));nativeEvents(player);
     for (const event of pending) {
+      playDriftReleaseCue(g.audio,event);
       career.onEvent(event, g);events.push({ atRaceSec: g.raceTime, type: event.type, ...event.data }); if (events.length > 800) events.shift();
       // Only real native earned micro-spray or double boost gives a small
       // speedometer highlight. This is never an advice overlay or fake award.

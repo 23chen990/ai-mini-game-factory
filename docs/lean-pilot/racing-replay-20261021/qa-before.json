@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "passed": false,
+  "checks": [
+    {
+      "name": "desktop pre-release spray",
+      "passed": false,
+      "evidence": "W2.908s, clean end3.050s, no smallBoost"
+    }
+  ],
+  "issues": [
+    {
+      "id": "replay-keyboard-spray",
+      "severity": "error",
+      "message": "Desktop pre-release W edge lost; retain one real input up to260ms like touch.",
+      "evidence": "docs/lean-pilot/racing-replay-20261021/triage.json"
+    },
+    {
+      "id": "replay-drift-cue",
+      "severity": "error",
+      "message": "Clean release opportunity has no anticipatory charge/expiry treatment or release audio cue.",
+      "evidence": "templates/web-lite/h5-source-mobile-v1/racing/presentation.mjs"
+    }
+  ],
+  "screenshots": [],
+  "consoleLog": "No product page errors; separate observer selector/transport errors retained.",
+  "testedAt": "2026-10-21T03:56:07.300Z"
+}

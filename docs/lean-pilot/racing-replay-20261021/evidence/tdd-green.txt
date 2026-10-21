@@ -1,0 +1,22 @@
+✔ phone high-speed composition keeps a readable car without borrowing desktop camera values (0.859041ms)
+✔ browser camera observation enforces the new phone range, not the retired wide-angle range (1.089542ms)
+✔ action states expose real earned resources and current item, not duplicate button subtitles (0.493833ms)
+✔ result stars describe THIS finish; best record belongs in secondary copy (0.131959ms)
+✔ default results keep diagnostics and detailed statistics out of the main action path (0.194125ms)
+✔ exhaust silhouette stays compact without removing the native boost animation (0.072375ms)
+✔ desktop item races distinguish Space nitro from Ctrl item without consuming both (0.163083ms)
+✔ settlement is not covered by the still-running race HUD (0.292917ms)
+✔ desktop drift smoke no longer forms a car-sized opaque white cloud (0.237792ms)
+✔ completed fuel reward remains visible when the result no longer has an empty tank (1.05275ms)
+✔ keyboard W just before a clean drift end survives until one physical step, not a render-only frame (0.588458ms)
+✔ keyboard buffer expires and clears on pause; never fabricates a small boost or changes player state (0.506292ms)
+✔ small-spray button previews native clean-drift eligibility and counts down the actual window (0.18375ms)
+✔ ready audio is a short native-mixer cue only for an earned clean drift, not collision or a tap (0.144875ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 100.338375

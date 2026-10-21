@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "experience-complaint-triage",
+  "targetGame": "极速飞驰 / qq-speed",
+  "workspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "report": "Implement a more legible drift → exit spray → chase/pass → replay loop, based on current RC23 observation. No ad/economy redesign.",
+  "classification": [
+    "core-experience",
+    "failure-attribution",
+    "mobile-readability"
+  ],
+  "scope": {
+    "route": "formal-fixer",
+    "rationale": "Core input/feedback experience requires native physical and exact natural/perceptual retest; retain repair23 and continue as current workspace-scoped Fixer.",
+    "generatedWorkspaceModified": true,
+    "contextIntentionallyOmitted": [
+      "Other games",
+      "Ad reward redesign and platform credentials",
+      "New agents/gates/workflows",
+      "Unrelated repository history"
+    ]
+  },
+  "reproduction": {
+    "status": "REPRODUCED",
+    "steps": [
+      "Verify existing RC23 receipt and preserve immutable current baseline.",
+      "Run normal-input sequences and first/difficult-stage journeys before choosing a causal patch."
+    ],
+    "observed": [
+      "RC23 exact final report records touch844 podium, desktop win, touch667 sixth-place loss with finish/replay. This is scripted normal input, not a human enjoyment claim.",
+      "No new root cause accepted yet; hypotheses about spray timing and recovery require exact branch evidence.",
+      "Normal keyboard trace: W at2.908s while drifting, clean driftEnd3.050s, no smallBoost. Subsequent collision preserved. Native input.frame clears the edge; touch has260ms pending action support but desktop bypasses it.",
+      "Action view currently provides no pre-release charge/eligibility or remaining-window meter; native handleEvents has no driftEnd audio branch. Speed, flames and smallBoost sound already exist and must not be recreated as a new feature.",
+      "RC24 keyboard normal-input early-W reproducer triggers exactly one native smallBoost8.7ms after clean exit. Physics, AI, track, item and car asset hashes remain RC23-identical. Full default natural results are in qa-summary.json; all losses preserved."
+    ],
+    "evidence": [
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/product-20261020/delivery/final-acceptance.json",
+        "sha256": "6071d356fd763c3ea7a1b79ea17a3e067a2fe94a0257efedbb44f07ead479041",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      },
+      {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/before-desktop-sequence-v2/report.json",
+        "sha256": "e76b0bbfa1c0bd8fd16f709f6947751962657e105a33ba81e1983168fa53bd7d",
+        "kind": "qa-artifact",
+        "provenance": "verified-run-artifact"
+      }
+    ]
+  },
+  "acceptanceCriteria": [
+    "Same normal-input drift/release/spray sequence before and after on desktop1366x768, touch844x390 and touch667x375; explicit successful input has timely visible vehicle, sound and speed feedback without new track-obscuring particles or banners.",
+    "Countersteer and collision recovery remain manual, symmetric and physically integrated; retain collision cost, drift rearm, no coordinate/heading/progress/rank gifts.",
+    "First stage and a legitimately unlocked difficult stage reach actual terminal and replay through normal keys/touch; failures remain failures. Observe physical AI chase/pass, do not weaken early stages or use player-lead rubberbanding.",
+    "Preserve30 stages,10 physical shortcuts,6 cars and static imported wheels, split keyboard resources, mobile-only camera, saves, fuel and ad callbacks. Run lint, typecheck, tests and complete Playwright retest.",
+    "Human enjoyment, physical phones, complete campaign and platform publication remain unknown/BLOCKED; scripted replay is not voluntary human replay."
+  ],
+  "status": "BLOCKED",
+  "createdAt": "2026-10-21T03:50:36.524Z"
+}

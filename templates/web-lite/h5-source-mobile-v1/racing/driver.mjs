@@ -50,6 +50,17 @@ export function keyboardRaceActions(raw,itemMode,nitro,item) {
   return itemMode?{...raw,nitroPressed:item,manualNitroPressed:nitro}:raw;
 }
 
+/** Match touch's 260ms early-spray buffer. Native physics still decides whether
+ * a clean exit exists; this retains one real W edge, not an automatic spray. */
+export function bufferKeyboardSpray(raw,player,actions,{state,canStep,now}) {
+  if(state!=='race') { actions.clear(); return {...raw,wPressed:false}; }
+  if(raw.wPressed) { actions.press(-1,'small',now); actions.release(-1); }
+  actions.expire('small',now);
+  const wPressed=player.drifting&&!(player.smallWindow>0)
+    ? false : actions.consume('small',canStep);
+  return {...raw,wPressed};
+}
+
 /** Manual mode preserves full analog player steering; acceleration is automatic.
  * If a player spins backwards, apply native brake/crawl until steering is viable.
  * We never alter coordinates, yaw or give free boosts: only native control inputs. */

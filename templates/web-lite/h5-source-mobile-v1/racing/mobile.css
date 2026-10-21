@@ -852,6 +852,15 @@ html[data-race-platform="desktop"] #race-kit[data-phase="race"] #race-keyboard-a
 #race-keyboard-actions .race-action-badge {font-style:normal;color:#f1dfaa;}
 #race-keyboard-actions>span.ready {border-color:#a2dfc7;color:#effff8;background:#19473edb;}
 #race-keyboard-actions>span.active {border-color:#ffe0a0;color:#fff3d0;}
+/* Readable in the original control footprint: fill while drifting, drain only
+ * during the real spray window. No track overlay, particles or flashing. */
+[data-spray-phase] {position:relative;}
+[data-spray-phase]::after {content:"";position:absolute;left:16%;right:16%;bottom:6px;height:4px;border-radius:3px;background:#eac469;transform:scaleX(var(--spray-progress));transform-origin:left;pointer-events:none;}
+#race-keyboard-actions [data-spray-phase] {padding-bottom:14px;}
+#race-kit #race-controls #race-action-pad [data-spray-phase="armed"] {opacity:1;border-color:#eac469;}
+#race-keyboard-actions [data-spray-phase="armed"] {border-color:#eac469;color:#f8e8c4;}
+[data-spray-phase="ready"]::after {background:#dcffad;height:5px;}
+#race-kit #race-controls #race-action-pad [data-spray-phase="armed"] .race-action-badge {background:#eac469;border-color:#f8e8c4;color:#302414;}
 #race-kit[data-item-mode="false"] #race-keyboard-actions [data-key-action="item"] {display:none;}
 @media(max-width:900px) {#race-keyboard-actions>span {padding:6px;gap:4px;}#race-keyboard-actions .race-key-drive {display:none;}}
 

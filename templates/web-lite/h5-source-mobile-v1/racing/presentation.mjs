@@ -7,12 +7,25 @@ const ACTION_ITEM_NAMES=Object.freeze({nitro:'加速',shield:'护盾',missile:'�
 /** Read-only feedback for earned native actions; never presses a key or grants a resource. */
 export function raceActionView(player) {
   const item=player.items[0];
+  const ready=player.smallWindow>0;
+  const phase=ready?'ready':player.smallBoost>0?'active':
+    player.drifting?(player.driftTime>.22?'armed':'charging'):'idle';
+  const progress=ready?Math.min(1,player.smallWindow/(player.windowKind==='land'?.45:.5)):
+    player.drifting?Math.min(1,player.driftTime/.22):0;
   return {
     drift:{label:'漂移',icon:'↷',badge:'',ready:false,active:player.drifting},
-    small:{label:'小喷',icon:'»',badge:player.smallWindow>0?'就绪':'',ready:player.smallWindow>0,active:player.smallBoost>0},
+    small:{label:'小喷',icon:'»',badge:ready?'就绪':phase==='armed'?'松漂移':'',ready,active:player.smallBoost>0,phase,progress},
     nitro:{label:'氮气',icon:'ϟ',badge:String(player.nitroCount),ready:player.nitroCount>0,active:player.nitroTime>0},
     item:{label:item?ACTION_ITEM_NAMES[item]:'道具',icon:item?ITEM_ICONS[item]:'◇',badge:'',ready:!!item,active:false},
   };
+}
+
+/** Two quiet notes through the existing SFX mixer, never a new audio context.
+ * The native clean-exit event is the authority; crashes and short taps are silent. */
+export function playDriftReleaseCue(audio,event) {
+  if(event.type!=='driftEnd'||!event.data.clean||event.data.time<=.22)return;
+  audio.tone(880,.07,'triangle',.07);
+  audio.tone(1320,.10,'triangle',.08,0,.045);
 }
 /** A previous medal is a record, not the current race's result. */
 export function raceResultView(result,stars,bestStars,gap) {

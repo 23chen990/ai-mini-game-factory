@@ -1,0 +1,211 @@
+{
+  "schemaVersion": 1,
+  "mode": "ads",
+  "buildHash": "d4b6e32b056a5f7c3afb4f3cafe7da01282488ea58f78b1e5490955a3a3db005",
+  "inputHash": "7bd0a02b0dbd1713279e473d6cb8c2aa8083ec23d9c4bc458e85912156625f1f",
+  "servedRoot": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace/game",
+  "htmlSha256": "b373da08e526996af0de64641a899f9a120a734e471298d221e0f66049432e43",
+  "physicalPhone": false,
+  "host": "darwin",
+  "rows": [
+    {
+      "case": "fixture-load-timeout",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 8.388000000000003,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 566,
+      "textures": 32,
+      "heapBytes": 95464504,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂未完成，请稍后重试",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "ads-timeout.png"
+    },
+    {
+      "case": "fixture-late-singleton-close-after-second-click",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 8.736500000000001,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 120,
+      "geometries": 570,
+      "textures": 32,
+      "heapBytes": 102677965,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂未完成，请稍后重试",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "ads-late-close-no-reward.png"
+    },
+    {
+      "case": "fixture-cancel",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 0.31790000003576285,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 67,
+      "geometries": 312,
+      "textures": 28,
+      "heapBytes": 150111628,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告未完整观看，赛车仍未解锁",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "fixture-complete-landscape-ownership",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 0.376600000023842,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 79,
+      "geometries": 313,
+      "textures": 28,
+      "heapBytes": 153895771,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter",
+        "custom-01"
+      ],
+      "note": "已永久解锁并装备，下次进入可直接使用",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "ads-complete.png"
+    },
+    {
+      "case": "same-origin-reload-restores-reward",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 0.15659999999403956,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 84,
+      "geometries": 299,
+      "textures": 27,
+      "heapBytes": 111283808,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter",
+        "custom-01"
+      ],
+      "note": "拖动赛车查看外观 · 所有车型性能相同",
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "case": "stale-load-close",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 0.32759999999403966,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 69,
+      "geometries": 308,
+      "textures": 28,
+      "heapBytes": 135190996,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告未完整观看，赛车仍未解锁",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "ads-stale-load-close.png"
+    },
+    {
+      "case": "show-reject-after-close",
+      "state": "menu",
+      "phase": "ready",
+      "raceTime": 0.3277999999821188,
+      "steerAxis": 0,
+      "quality": "low",
+      "pixelRatio": 1,
+      "buffer": [
+        844,
+        390
+      ],
+      "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M1 Pro, Unspecified Version)",
+      "fpsEstimate": 68,
+      "geometries": 307,
+      "textures": 28,
+      "heapBytes": 86891458,
+      "displayedCar": "custom-01",
+      "owned": [
+        "starter"
+      ],
+      "note": "广告暂未完成，请稍后重试",
+      "viewport": [
+        844,
+        390
+      ],
+      "screenshot": "ads-show-reject-after-close.png"
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "browser": "151.0.7922.34"
+}

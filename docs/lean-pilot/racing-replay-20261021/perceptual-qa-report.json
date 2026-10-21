@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 2,
+  "artifactType": "perceptual-qa-report",
+  "targetGame": "极速飞驰 / qq-speed",
+  "targetRunId": "h5-qq-mobile-20261013",
+  "targetWorkspace": "/Users/kker/.codex/worktrees/racing-final-acceptance/妖怪夜市/runs/h5-qq-mobile-20261013/workspace",
+  "runtimeEntrypoints": [
+    "workspace/source/qq-speed/src/main.js (Three.js racing)",
+    "workspace/source/qq-speed/src/carModel.js (selected model + preserved native effects)",
+    "workspace/source/qq-speed/src/race-car-loader.mjs (six embedded GLBs, lazy serialized decoding)",
+    "workspace/source/qq-speed/src/race-generated-car.mjs (starter materials and wheel pivots)",
+    "workspace/source/qq-speed/src/race-user-car.mjs (baked user models)",
+    "workspace/source/qq-speed/src/race-car-asset-cache.mjs (bounded shared resources and instance disposal)",
+    "workspace/source/qq-speed/src/ai.js (physical PlayerCar rivals)",
+    "workspace/source/qq-speed/src/race-v11-physical-ai.mjs",
+    "workspace/source/qq-speed/src/v11-course-director.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/garage.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/car-thumbnails.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/driver.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/wheel-steering.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/session.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/career.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/cosmetics.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/items.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/runtime.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/recovery.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/road-coach.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/corner-speed.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/speed-hud.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/corner-signs.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/track-design.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/lane-design.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/item-visuals.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/shortcut-network.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/shortcut-decisions.mjs",
+    "templates/web-lite/h5-source-mobile-v1/fuel.mjs",
+    "templates/web-lite/h5-source-mobile-v1/racing/mobile.css"
+  ],
+  "contractHash": "fe158848a88a51a1357623cbab5b5ab01ab1f3c7dc66d04d5e52c7134220e1bf",
+  "buildHash": "d4b6e32b056a5f7c3afb4f3cafe7da01282488ea58f78b1e5490955a3a3db005",
+  "runtime": "web-lite",
+  "reviewer": "DeterministicCapture",
+  "authorIndependent": false,
+  "passed": false,
+  "blockers": [
+    "Independent QA/human perceptual review unavailable; current self-inspection cannot close this gate.",
+    "An earlier small-phone sequence did not spray. The timestamped small-phone retest sprayed once, but the earlier miss cause remains unresolved; both are retained."
+  ],
+  "cases": [
+    {
+      "featureId": "drift-release-spray",
+      "sourceCheckIds": [
+        "replay-keyboard-spray",
+        "replay-drift-cue"
+      ],
+      "objectType": "player-control",
+      "stateBranch": "clean-release-spray",
+      "viewport": {
+        "width": 1366,
+        "height": 768,
+        "label": "desktop"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": false,
+      "observedSignal": "Original control footprint shows gold armed state; green native window and drain observed on small phone. Existing native flame/acceleration appears after genuine spray; no added particles. Self-inspected pixels, not independent approval.",
+      "observedEventOrder": [
+        "driftStart",
+        "driftEnd",
+        "smallBoost",
+        "crash",
+        "crash"
+      ],
+      "screenshots": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-sequence/drift.png",
+          "sha256": "3868b38a59b55b7e892fd4cdd89695058595b051641bc50bead208d2f665dd7e"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-sequence/countersteer.png",
+          "sha256": "630ebd632612f5c462b3370bd4f423fd85b56ed1cb9f28a02927d2b900254932"
+        }
+      ],
+      "trace": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-desktop-sequence/report.json",
+        "sha256": "f58da0d85eaaeafebd3093772fd9f02ab55d97b546675ddbc70e81173dfd4257"
+      },
+      "evidence": [
+        "after24-serial-desktop-sequence/audio.webm",
+        "after24-serial-desktop-journey/report.json"
+      ],
+      "notes": [
+        "Early-small-phone sequence did not spray; not rewritten as success. Full natural actions separately recorded.",
+        "Scripted replay is not voluntary human replay."
+      ]
+    },
+    {
+      "featureId": "drift-release-spray",
+      "sourceCheckIds": [
+        "replay-keyboard-spray",
+        "replay-drift-cue"
+      ],
+      "objectType": "player-control",
+      "stateBranch": "clean-release-spray",
+      "viewport": {
+        "width": 844,
+        "height": 390,
+        "label": "phone"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": true,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": false,
+      "observedSignal": "Original control footprint shows gold armed state; green native window and drain observed on small phone. Existing native flame/acceleration appears after genuine spray; no added particles. Self-inspected pixels, not independent approval.",
+      "observedEventOrder": [
+        "driftStart",
+        "driftEnd",
+        "smallBoost",
+        "crash"
+      ],
+      "screenshots": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-sequence/drift.png",
+          "sha256": "31b0db99f0032640659d11c5f0098620a815038ff139d925ec1bdaecba2bc5e5"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-sequence/countersteer.png",
+          "sha256": "098c68707a08229ed76fce66e1c4b0162a14bb8f18807c4d5b341d4bbe25cf41"
+        }
+      ],
+      "trace": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-phone-sequence/report.json",
+        "sha256": "d923dd07683b006a12eef9c01827498921e85ae8f55886d77ade362661b993f7"
+      },
+      "evidence": [
+        "after24-serial-phone-sequence/audio.webm",
+        "after24-serial-phone-journey/report.json"
+      ],
+      "notes": [
+        "Early-small-phone sequence did not spray; not rewritten as success. Full natural actions separately recorded.",
+        "Scripted replay is not voluntary human replay."
+      ]
+    },
+    {
+      "featureId": "drift-release-spray",
+      "sourceCheckIds": [
+        "replay-keyboard-spray",
+        "replay-drift-cue"
+      ],
+      "objectType": "player-control",
+      "stateBranch": "clean-release-spray",
+      "viewport": {
+        "width": 667,
+        "height": 375,
+        "label": "small-phone"
+      },
+      "playerVisible": true,
+      "naturalTriggerVerified": true,
+      "eventOrderVerified": false,
+      "negativeAssertionsPassed": true,
+      "perceptualPassed": false,
+      "observedSignal": "Original control footprint shows gold armed state; green native window and drain observed on small phone. Existing native flame/acceleration appears after genuine spray; no added particles. Self-inspected pixels, not independent approval.",
+      "observedEventOrder": [
+        "driftStart",
+        "driftEnd",
+        "crash"
+      ],
+      "screenshots": [
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-sequence/drift.png",
+          "sha256": "81970315b0eda432d6c3de81f6355784f0ffb9a06af57ecb613c413ec4a94853"
+        },
+        {
+          "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-sequence/countersteer.png",
+          "sha256": "87547be823281e5466fef38436d95db1cd94e8613c92532ba5ef9ae4fa55c5e6"
+        }
+      ],
+      "trace": {
+        "path": "runs/h5-qq-mobile-20261013/artifacts/replay-20261021/after24-serial-small-sequence/report.json",
+        "sha256": "ee2853a6df80e1fa2ff6d4a05cd4a38dbe2cfbc5581637d4d06213e2292cf5ec"
+      },
+      "evidence": [
+        "after24-serial-small-sequence/audio.webm",
+        "after24-serial-small-journey/report.json"
+      ],
+      "notes": [
+        "Early-small-phone sequence did not spray; not rewritten as success. Full natural actions separately recorded.",
+        "Scripted replay is not voluntary human replay."
+      ]
+    }
+  ],
+  "checkedAt": "2026-10-21T04:30:28.254Z"
+}
