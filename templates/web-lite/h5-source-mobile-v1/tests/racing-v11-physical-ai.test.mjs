@@ -53,12 +53,12 @@ test('V11 corner-exit pressure uses only an existing native nitro, never retired
   assert.equal(native.nitroCount,1,'boost opportunity does not grant or consume stock');
   assert.equal(native.__V11_EXIT_BOOST_TTL__,1.35);
   assert.equal(controller.frame(game,{mode:'speed'}),null,'one bend does not mint unlimited intents');
-  const noStock={...native,nitroCount:0};
+  const noStock={...native,nitroCount:0,__V11_EXIT_BOOST_TTL__:0};
   const other=new RivalPressure(),g2={...game,racers:[player,noStock],raceTime:20};
   curve=.014;other.frame(g2,{mode:'speed'});
   curve=0;g2.raceTime=20.2;
   assert.equal(other.frame(g2,{mode:'speed'}),null,'no native nitro means no boost offer');
-  assert.equal(noStock.__V11_EXIT_BOOST_TTL__,1.35,'fixture inherited the earlier window only');
+  assert.equal(noStock.__V11_EXIT_BOOST_TTL__,0,'no native nitro: corner does not create a boost window');
 });
 
 test('earned bend-exit intent spends real nitro on a safe near-straight, not a dangerous next corner',()=>{

@@ -249,8 +249,12 @@ export class RivalPressure {
       return null;
     let observed=null;
     for(const rival of game.racers) {
-      if(!rival||rival.isPlayer||rival.finished||!rival.__V11_PHYSICAL_AI__||
+      if(!rival||rival.isPlayer||rival.finished||
          !Number.isFinite(rival.dist)||!Number.isFinite(rival.s))continue;
+      const physicalV11=!!rival.__V11_PHYSICAL_AI__;
+      // Keep the original on-rail AICar contract in legacy scenarios; the
+      // production V11 branch uses earned native nitroCount instead.
+      if(!physicalV11&&!Number.isFinite(rival.nitroCd))continue;
       const state=this.corners.get(rival)??{armed:false,last:-1e5};
       const bend=Math.abs(game.track.curvAhead(rival.dist,55));
       if(rival.s>=27&&bend>=.011&&!rival.airborne&&(rival.spin??0)<=0)
@@ -261,11 +265,16 @@ export class RivalPressure {
         if(rival.s>=32 && !rival.drifting && !rival.airborne &&
           (rival.spin??0)<=0 && (rival.impact??0)<=0 &&
           (rival.slowTime??0)<=0 && (rival.nitroTime??0)<=0 &&
-          (rival.nitroCount??0)>0 && game.raceTime-state.last>=22){
-          // V11 rivals are native PlayerCars: nitroCd belongs to the RETIRED
-          // on-rail AI and changing it does nothing. Reserve a short, safe
-          // native-input opportunity instead. Never grant nitro or velocity.
-          rival.__V11_EXIT_BOOST_TTL__=Math.max(rival.__V11_EXIT_BOOST_TTL__??0,1.35);
+          (physicalV11 ? (rival.nitroCount??0)>0 : rival.nitroCd>2.5) &&
+          game.raceTime-state.last>=22){
+          if(physicalV11){
+            // V11 native PlayerCar cannot use the old AI cooldown. Only
+            // reserve a short safe window for stock it really owns.
+            rival.__V11_EXIT_BOOST_TTL__=Math.max(rival.__V11_EXIT_BOOST_TTL__??0,1.35);
+          }else{
+            // Preserve legacy on-rail AICar behavior outside the V11 game.
+            rival.nitroCd=Math.min(rival.nitroCd,.85);
+          }
           state.last=game.raceTime;
           if(!observed&&Number.isFinite(rival.progress)&&
             Number.isFinite(game.player.progress)&&
