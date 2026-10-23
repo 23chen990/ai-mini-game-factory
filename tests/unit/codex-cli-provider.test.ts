@@ -142,6 +142,30 @@ describe('CodexCliProvider', () => {
     expect(retained).not.toContain(secret);
   });
 
+  it('rejects a final unfinished turn even when an earlier turn completed', async () => {
+    const sequence = [
+      '{"type":"turn.started"}',
+      '{"type":"turn.completed","usage":{"input_tokens":6,"output_tokens":3}}',
+      '{"type":"turn.started"}',
+    ].join('\n');
+    const parsed = parseCodexJsonl(sequence);
+    expect(parsed.completed).toBe(false);
+    expect(parsed.usage).toEqual({ inputTokens: 6, outputTokens: 3, totalTokens: 9 });
+
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-unfinished-turn-'));
+    const outputPath = path.join(root, 'out.txt');
+    await writeFile(outputPath, 'previous approved artifact');
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([{ stdout: sequence + '\n', output: 'partial output' }], []),
+      timeoutMs: 100, maxRetries: 0,
+    });
+    await expect(provider.execute({
+      label: 'BLUEPRINT', prompt: 'complete the task', cwd: root, sandbox: 'read-only',
+      outputPath, logDir: path.join(root, 'logs'),
+    })).rejects.toThrow(/exited|failed/i);
+    expect(await readFile(outputPath, 'utf8')).toBe('previous approved artifact');
+  });
+
   it('parses thread, completion, failure, usage and error JSONL events', () => {
     const parsed = parseCodexJsonl([
       '{"type":"thread.started","thread_id":"thread-42"}',
