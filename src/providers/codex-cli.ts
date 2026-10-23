@@ -285,7 +285,9 @@ export class CodexCliProvider {
     if (schemaPath) await writeJsonAtomic(schemaPath, request.outputSchema);
     let lastError: Error | undefined;
     let chargedCompletedTokens = 0;
-    const configuredBudget = process.env.CODEX_EXEC_MAX_TOTAL_TOKENS;
+    const configuredBudget = request.stage === 'REFERENCE_DEEP_RESEARCH'
+      ? process.env.CODEX_RESEARCH_MAX_TOTAL_TOKENS ?? process.env.CODEX_EXEC_MAX_TOTAL_TOKENS ?? '200000'
+      : process.env.CODEX_EXEC_MAX_TOTAL_TOKENS;
     const maxTotalTokens = request.maxTotalTokens ?? (configuredBudget !== undefined ? Number(configuredBudget) : undefined);
     if (maxTotalTokens !== undefined && (!Number.isSafeInteger(maxTotalTokens) || maxTotalTokens <= 0)) throw new Error('Codex token budget must be a positive safe integer');
     const maxRetries = Math.min(1, Math.max(0, request.maxRetries ?? this.maxRetries));
