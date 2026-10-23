@@ -239,7 +239,7 @@ export function applyRivalTactics(game,stage) {
  */
 export class RivalPressure {
   constructor() { this.reset(); }
-  reset() { this.corners=new WeakMap(); }
+  reset() { this.corners=new WeakMap();this.lastNotice=-1e5; }
   frame(game,stage) {
     applyRivalTactics(game,stage);
     if(!game||game.state!=='race'||!game.track||!game.player||
@@ -266,7 +266,10 @@ export class RivalPressure {
           (rival.spin??0)<=0 && (rival.impact??0)<=0 &&
           (rival.slowTime??0)<=0 && (rival.nitroTime??0)<=0 &&
           (physicalV11 ? (rival.nitroCount??0)>0 : rival.nitroCd>2.5) &&
-          game.raceTime-state.last>=22){
+          // The retired on-rail AI needs a 22s cooldown. A V11 PlayerCar
+          // already has a finite, physically earned nitro inventory, so
+          // keeping that legacy wait wastes repeated clean corner exits.
+          game.raceTime-state.last>=(physicalV11?8:22)){
           if(physicalV11){
             // V11 native PlayerCar cannot use the old AI cooldown. Only
             // reserve a short safe window for stock it really owns.
@@ -276,10 +279,15 @@ export class RivalPressure {
             rival.nitroCd=Math.min(rival.nitroCd,.85);
           }
           state.last=game.raceTime;
+          // The native AI may take more real boost opportunities than the
+          // UI announces. Never turn the extra decisions into toast spam.
           if(!observed&&Number.isFinite(rival.progress)&&
             Number.isFinite(game.player.progress)&&
-            Math.abs(rival.progress-game.player.progress)<=100)
+            Math.abs(rival.progress-game.player.progress)<=100 &&
+            game.raceTime-this.lastNotice>=22){
             observed={name:rival.name||'对手',cornerExit:true};
+            this.lastNotice=game.raceTime;
+          }
         }
       }
       this.corners.set(rival,state);

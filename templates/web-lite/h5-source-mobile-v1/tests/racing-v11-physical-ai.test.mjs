@@ -61,6 +61,49 @@ test('V11 corner-exit pressure uses only an existing native nitro, never retired
   assert.equal(noStock.__V11_EXIT_BOOST_TTL__,0,'no native nitro: corner does not create a boost window');
 });
 
+test('V11 earns repeat safe nitro intents from real corners while legacy AI stays on its own cooldown',()=>{
+  const logic=new RivalPressure();
+  let curve=.018;
+  const native={__V11_PHYSICAL_AI__:true,isPlayer:false,finished:false,
+    dist:120,s:38,nitroCount:2,nitroTime:0,drifting:false,
+    airborne:false,impact:0,slowTime:0,spin:0,progress:120,name:'Fast'};
+  const player={isPlayer:true,progress:120};
+  const game={state:'race',raceTime:25,player,racers:[player,native],
+    track:{curvAhead:()=>curve,halfW:9}};
+  assert.equal(logic.frame(game,{mode:'speed'}),null);
+  game.raceTime=26;curve=.002;
+  assert.deepEqual(logic.frame(game,{mode:'speed'}),{name:'Fast',cornerExit:true});
+  assert.equal(native.__V11_EXIT_BOOST_TTL__,1.35);
+  assert.equal(native.nitroCount,2,'pressure only schedules inputs; native stock is untouched');
+  native.__V11_EXIT_BOOST_TTL__=0;
+  game.raceTime=30;curve=.018;logic.frame(game,{mode:'speed'});
+  game.raceTime=31;curve=.002;
+  assert.equal(logic.frame(game,{mode:'speed'}),null,'no re-trigger four seconds later');
+  assert.equal(native.__V11_EXIT_BOOST_TTL__,0);
+  game.raceTime=35;curve=.018;logic.frame(game,{mode:'speed'});
+  game.raceTime=36;curve=.002;
+  assert.equal(logic.frame(game,{mode:'speed'}),null,'UI stays quiet between warnings');
+  assert.equal(native.__V11_EXIT_BOOST_TTL__,1.35,'V11 can spend a second earned stock without a 22s artificial cooldown');
+  assert.equal(native.nitroCount,2,'no extra nitro is created');
+  native.__V11_EXIT_BOOST_TTL__=0;
+  game.raceTime=49;curve=.018;logic.frame(game,{mode:'speed'});
+  game.raceTime=50;curve=.002;
+  assert.deepEqual(logic.frame(game,{mode:'speed'}),{name:'Fast',cornerExit:true},
+    'genuine nearby threat may be signaled after the original 22s notice limit');
+  native.__V11_EXIT_BOOST_TTL__=0;native.nitroCount=0;
+  game.raceTime=60;curve=.018;logic.frame(game,{mode:'speed'});
+  game.raceTime=61;curve=.002;
+  assert.equal(logic.frame(game,{mode:'speed'}),null);
+  assert.equal(native.__V11_EXIT_BOOST_TTL__,0,'zero earned nitro never becomes a free nitro intent');
+  const old={...native,__V11_PHYSICAL_AI__:false,nitroCd:8,nitroCount:0};
+  const legacy=new RivalPressure(),legacyGame={...game,racers:[player,old]};
+  legacyGame.raceTime=25;curve=.018;legacy.frame(legacyGame,{mode:'speed'});
+  legacyGame.raceTime=26;curve=.002;legacy.frame(legacyGame,{mode:'speed'});
+  assert.equal(old.nitroCd,.85);
+  old.nitroCd=8;legacyGame.raceTime=35;curve=.018;legacy.frame(legacyGame,{mode:'speed'});
+  legacyGame.raceTime=36;curve=.002;legacy.frame(legacyGame,{mode:'speed'});
+  assert.equal(old.nitroCd,8,'old on-rail AI keeps its 22s cooldown');
+});
 test('earned bend-exit intent spends real nitro on a safe near-straight, not a dangerous next corner',()=>{
   const track={
     length:1800,halfW:9,
