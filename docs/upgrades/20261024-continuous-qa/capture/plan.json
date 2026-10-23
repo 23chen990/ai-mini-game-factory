@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "packetSha256": "cad2e0c830152d213405539686976a611f0b9c31d8979505674c8e9a0f303ee7",
+  "sessionMs": 40000,
+  "maxAcquisitionMs": 600000,
+  "viewports": [
+    {
+      "width": 390,
+      "height": 844
+    },
+    {
+      "width": 1100,
+      "height": 720
+    }
+  ],
+  "policies": [
+    {
+      "id": "steady",
+      "intervals": [
+        700
+      ],
+      "initialIdleMs": 300,
+      "intent": "Repeated ordinary taps to cut next targets and maintain travel."
+    },
+    {
+      "id": "fast",
+      "intervals": [
+        420
+      ],
+      "initialIdleMs": 300,
+      "intent": "More frequent ordinary taps to attempt higher traversal/avoidance."
+    },
+    {
+      "id": "slow",
+      "intervals": [
+        1100
+      ],
+      "initialIdleMs": 300,
+      "intent": "Less frequent taps to observe landing/contact and attributable failure."
+    },
+    {
+      "id": "mixed",
+      "intervals": [
+        550,
+        550,
+        800,
+        1800,
+        550,
+        800
+      ],
+      "initialIdleMs": 3000,
+      "intent": "Observe initial pause and varying timing, recovery and renewed cutting."
+    }
+  ],
+  "input": "Real touch/mouse center at50%width/45%height. No state hooks, game source, fixtures or game API. Fixed policies frozen before candidate navigation. Playwright continuously records video.",
+  "terminalPolicy": "At each scheduled action, click an actually visible role=button whose visible name indicates replay/retry; wait150ms, then normal play input. No hidden telemetry.",
+  "limitations": [
+    "Controller-authored input schedules, not an autonomous learned/visual play policy; independent subject judges recorded visible outcomes.",
+    "Cadence variation is an acquisition strategy, not a gameplay acceptance rule or copied balancing. No claim that failure under a given cadence is a defect.",
+    "Fixed40sec may not reach all branches. Unreached/ambiguous branches UNOBSERVED. No extra sessions after freeze.",
+    "No mobile landscape in this limited12-case protocol; no platform package proof."
+  ]
+}

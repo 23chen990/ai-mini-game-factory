@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "videoPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-fast/page@429294d81beac92b81500cfc3293ce30.webm",
+      "videoSha256": "4e76b3df5d299cd4454191b8e2b68c27e3be212f4a58d37ea94395513df1a4d7",
+      "overviewPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-fast-overview.jpg",
+      "framesDirectory": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-fast",
+      "sampling": "ffmpeg -r1 approximate 1-second overview, inspect dense source frames for transient/sequence claims"
+    },
+    {
+      "videoPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+      "videoSha256": "47b1735685ba19839751a2015820dfa96cd88cc2f4c057ca449fe9057cc2b960",
+      "overviewPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-mixed-overview.jpg",
+      "framesDirectory": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-mixed",
+      "sampling": "ffmpeg -r1 approximate 1-second overview, inspect dense source frames for transient/sequence claims"
+    },
+    {
+      "videoPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-slow/page@8db02021d5bdc38fafb7d0ed52784dd8.webm",
+      "videoSha256": "befcf62f758a70b01e882cbfee6ace0776f46ef638df2c4ebeb81ac534be87fd",
+      "overviewPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-slow-overview.jpg",
+      "framesDirectory": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-slow",
+      "sampling": "ffmpeg -r1 approximate 1-second overview, inspect dense source frames for transient/sequence claims"
+    },
+    {
+      "videoPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "videoSha256": "3b3d0c3ec43cbf7047e35064969ae54bfcdd4873460fd5faaa61f45ff47c2815",
+      "overviewPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-steady-overview.jpg",
+      "framesDirectory": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-steady",
+      "sampling": "ffmpeg -r1 approximate 1-second overview, inspect dense source frames for transient/sequence claims"
+    },
+    {
+      "videoPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-fast/page@29dab2ae790ec2af0b3c5c19b11e1a41.webm",
+      "videoSha256": "b74497695a78b616d08ad6e64bce04ae36617df0c3c5920e92640e43e38b7cec",
+      "overviewPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-fast-overview.jpg",
+      "framesDirectory": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-fast",
+      "sampling": "ffmpeg -r1 approximate 1-second overview, inspect dense source frames for transient/sequence claims"
+    },
+    {
+      "videoPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-mixed/page@dc305b08bab2d01e82d6f1634f159d5c.webm",
+      "videoSha256": "4db9f169f5b20af6ce434d1caefd1adb11b741d558e8b8c88a7b51189c89680b",
+      "overviewPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-mixed-overview.jpg",
+      "framesDirectory": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-mixed",
+      "sampling": "ffmpeg -r1 approximate 1-second overview, inspect dense source frames for transient/sequence claims"
+    },
+    {
+      "videoPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+      "videoSha256": "63d799ff089ff4eabf0cde9935138bc40c798bc7eb2363ca79e2310fcfd46f5b",
+      "overviewPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-slow-overview.jpg",
+      "framesDirectory": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-slow",
+      "sampling": "ffmpeg -r1 approximate 1-second overview, inspect dense source frames for transient/sequence claims"
+    },
+    {
+      "videoPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "videoSha256": "805703deb06fd2092ce2a6aa8b9ee4b9e3be3fba8100b3f1fd600afcb2b3dfc7",
+      "overviewPath": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-steady-overview.jpg",
+      "framesDirectory": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-steady",
+      "sampling": "ffmpeg -r1 approximate 1-second overview, inspect dense source frames for transient/sequence claims"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+import json,pathlib,subprocess,math,sys
+from PIL import Image,ImageDraw
+OUT=pathlib.Path('/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review');FF='/Users/kker/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac';CAP=OUT.parent/'continuous-capture'
+m=json.loads((OUT/'extraction-manifest.json').read_text())
+def extract(session,tag,start,end,fps=25):
+ video=str(next((CAP/session).glob('*.webm')));name=session+'-'+tag;folder=OUT/'media'/name;folder.mkdir(exist_ok=True)
+ # decode from beginning then select frames by output timestamp; no fast seek ambiguity
+ subprocess.run([FF,'-hide_banner','-loglevel','error','-i',video,'-ss',str(start),'-t',str(end-start),'-r',str(fps),str(folder/'f-%04d.png')],check=True)
+ files=sorted(folder.glob('f-*.png'));sheets=[]
+ for p in range(math.ceil(len(files)/12)):
+  group=files[p*12:p*12+12];cellw=390 if session.startswith('390') else 550;cellh=510 if session.startswith('390') else 380
+  sheet=Image.new('RGB',(cellw*3,cellh*4),'white');d=ImageDraw.Draw(sheet)
+  for j,f in enumerate(group):
+   im=Image.open(f)
+   if session.startswith('390'):im=im.crop((0,0,390,490))
+   else:im=im.resize((550,360))
+   x=j%3*cellw;y=j//3*cellh;sheet.paste(im,(x,y+20));d.text((x+2,y+2),f'{name} video {start+(p*12+j)/fps:.3f}s',fill='black')
+  dest=OUT/'media'/f'{name}-{p:02}.jpg';sheet.save(dest,quality=92);sheets.append(str(dest))
+ m.append({'id':name,'source':video,'videoWindowMs':[int(start*1000),int(end*1000)],'fps':fps,'frameCount':len(files),'frames':[str(f) for f in files],'sheets':sheets,'sheetCrop':[0,0,390,490] if session.startswith('390') else None})
+ print(name,len(files),len(sheets))
+for session,tag,start,end,fps in json.loads(sys.argv[1]):extract(session,tag,start,end,fps)
+(OUT/'extraction-manifest.json').write_text(json.dumps(m,indent=2))

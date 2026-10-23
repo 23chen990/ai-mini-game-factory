@@ -1,0 +1,56 @@
+import { createRequire } from 'node:module';
+import {createServer} from 'node:http';
+import {readFileSync,writeFileSync,appendFileSync,mkdirSync,createReadStream} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {join} from 'node:path';
+const require=createRequire('/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/package.json');
+const {chromium}=require('@playwright/test');const {z}=require('zod');
+const out='/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture';
+mkdirSync(out,{recursive:true});
+const packetPath='/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous/packet.json';
+const packet=JSON.parse(readFileSync(packetPath));
+const hash=b=>createHash('sha256').update(b).digest('hex');
+if(hash(readFileSync(packet.candidate.path))!==packet.candidate.sha256)throw Error('Candidate hash mismatch');
+const plan=z.object({schemaVersion:z.literal(1),packetSha256:z.string(),sessionMs:z.number().positive(),maxAcquisitionMs:z.literal(600000),viewports:z.array(z.object({width:z.number(),height:z.number()})),policies:z.array(z.object({id:z.string(),intervals:z.array(z.number().positive()),initialIdleMs:z.number().nonnegative(),intent:z.string()})),input:z.string(),terminalPolicy:z.string(),limitations:z.array(z.string())}).strict().parse(JSON.parse(readFileSync(join(out,'plan.json'))));
+if(hash(readFileSync(packetPath))!==plan.packetSha256)throw Error('Packet hash mismatch');
+const startedAt=new Date().toISOString(),start=Date.now();let expired=false;const sessions=[];
+const browser=await chromium.launch({headless:true});
+const timer=setTimeout(()=>{expired=true;void browser.close();},plan.maxAcquisitionMs);
+const server=createServer((req,res)=>{if(!['/','/index.html'].includes(req.url)){res.writeHead(404);res.end();return;}res.setHeader('Content-Type','text/html');res.setHeader('Cache-Control','no-store');createReadStream(packet.candidate.path).pipe(res);});
+await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const url=`http://127.0.0.1:${server.address().port}/`;
+try{
+for(const viewport of plan.viewports){for(const policy of plan.policies){
+if(expired)break;
+const id=`${viewport.width}-${policy.id}`,dir=join(out,id);mkdirSync(dir,{recursive:true});
+const trace=join(dir,'inputs.jsonl'),events=join(dir,'browser.jsonl');
+const context=await browser.newContext({viewport,deviceScaleFactor:1,isMobile:viewport.width===390,hasTouch:viewport.width===390,recordVideo:{dir,size:viewport}});
+const page=await context.newPage();const video=page.video();let base=Date.now();
+const log=e=>appendFileSync(trace,JSON.stringify({wallAt:new Date().toISOString(),elapsedMs:Date.now()-base,...e})+'\n');
+page.on('console',m=>appendFileSync(events,JSON.stringify({elapsedMs:Date.now()-base,type:m.type(),text:m.text()})+'\n'));
+page.on('pageerror',e=>appendFileSync(events,JSON.stringify({elapsedMs:Date.now()-base,type:'pageerror',text:e.message})+'\n'));
+page.on('requestfailed',r=>appendFileSync(events,JSON.stringify({elapsedMs:Date.now()-base,type:'requestfailed',url:r.url()})+'\n'));
+try{
+base=Date.now();log({type:'navigation',url});await page.goto(url,{waitUntil:'load',timeout:15000});await page.screenshot({path:join(dir,'startup.png')});
+const ready=Date.now();let n=0,next=ready+policy.initialIdleMs,replays=0;
+while(Date.now()-ready<plan.sessionMs&&!expired){
+await page.waitForTimeout(Math.max(1,next-Date.now()));if(expired)break;
+const terminals=await page.getByRole('button',{name:/重玩|重试|再来|重新开始|retry|replay/i}).all();let replayed=false;
+for(const button of terminals){if(await button.isVisible()){
+const name=await button.innerText();log({type:'visible-replay-click',name});await button.click();replays++;replayed=true;break;}}
+if(replayed)await page.waitForTimeout(150);
+const x=Math.round(viewport.width*.5),y=Math.round(viewport.height*.45);
+log({type:viewport.width===390?'touch':'mouse',x,y,ordinal:n});
+if(viewport.width===390)await page.touchscreen.tap(x,y);else await page.mouse.click(x,y);
+n++;next=Date.now()+policy.intervals[(n-1)%policy.intervals.length];
+}
+await page.screenshot({path:join(dir,'end.png')});
+sessions.push({id,viewport,policy:policy.id,durationMs:Date.now()-base,inputs:n,replays,video:await video.path()});
+log({type:'session-end',inputs:n,replays});
+}finally{await context.close();}
+}}
+}finally{
+clearTimeout(timer);await browser.close();await new Promise(r=>server.close(r));
+writeFileSync(join(out,'capture.json'),JSON.stringify({schemaVersion:1,startedAt,finishedAt:new Date().toISOString(),durationMs:Date.now()-start,expired,planSha256:hash(readFileSync(join(out,'plan.json'))),runnerSha256:hash(readFileSync(new URL(import.meta.url))),candidateSha256:packet.candidate.sha256,sessions},null,2)+'\n');
+}
+console.log(JSON.stringify({out,sessions:sessions.length,durationMs:Date.now()-start,expired}));

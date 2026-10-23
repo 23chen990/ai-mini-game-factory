@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "frozenAt": "2026-10-23T17:29:02.735859+00:00",
+  "files": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous/packet.json",
+      "sha256": "cad2e0c830152d213405539686976a611f0b9c31d8979505674c8e9a0f303ee7"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/plan.json",
+      "sha256": "29ebe6c5445c3276e42b21c8d60080a5f746629e422c70142c88ea8143e9f416"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/runner.mjs",
+      "sha256": "614b0a04b3507a68d47a2b54e35cdf97075114a0a80d3b783aec36bf1fc089b1"
+    }
+  ],
+  "candidateNavigationsBeforeFreeze": 0,
+  "controllerGameplayHintsToSubject": 0,
+  "controllerAuthoredPlan": true
+}

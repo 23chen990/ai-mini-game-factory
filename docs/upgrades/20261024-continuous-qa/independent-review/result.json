@@ -1,0 +1,1664 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "independent-post-capture-video-adjudication",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "reviewStartedAt": "2026-10-23T18:01:06.000Z",
+  "reviewEndedAt": "2026-10-23T18:28:15.804Z",
+  "elapsedMs": 1629804,
+  "administrativeDeadlineMs": 1200000,
+  "overrunMs": 429804,
+  "stoppedBy": "parent administrative deadline; no media inspection after instruction",
+  "status": "BLOCKED",
+  "summary": "Partial independent adjudication: 2 PASS, 2 FAIL, 8 UNOBSERVED. A true frozen reward-order violation was independently confirmed at both viewports. Complete 12-case/default-journey approval is blocked. This is not proof of factory-agent success, formal FIX completion, or publishability.",
+  "source": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+    "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a",
+    "hashVerified": true,
+    "referenceBinding": "Verified source identity is supplied by packet; source SHA-256 independently matches. Frame-manifest source SHA-256 matches. No other provenance/history file was read."
+  },
+  "candidate": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/qa-builds/attempt13/index.html",
+    "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+    "verification": "Declared consistently by packet/windows/capture metadata. Candidate HTML was not opened or independently hashed because it is outside allowed review inputs."
+  },
+  "recordings": [
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "sha256": "805703deb06fd2092ce2a6aa8b9ee4b9e3be3fba8100b3f1fd600afcb2b3dfc7"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+      "sha256": "63d799ff089ff4eabf0cde9935138bc40c798bc7eb2363ca79e2310fcfd46f5b"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "sha256": "3b3d0c3ec43cbf7047e35064969ae54bfcdd4873460fd5faaa61f45ff47c2815"
+    },
+    {
+      "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+      "sha256": "47b1735685ba19839751a2015820dfa96cd88cc2f4c057ca449fe9057cc2b960"
+    }
+  ],
+  "referenceObservations": [
+    {
+      "videoWindowMs": [
+        0,
+        9000
+      ],
+      "observation": "Blade visibly rises/flips, approaches individual fruit, contacts it, exposes two cut faces, and detached pieces fall below thick white support. Local small reward numerals appear near cuts."
+    },
+    {
+      "videoWindowMs": [
+        10000,
+        21000
+      ],
+      "observation": "Blade crosses gap then contacts coloured horizontal bars attached to posts. Several cut bar portions visibly separate and fall. These are not identical object geometry to candidate fruit overlap clusters."
+    },
+    {
+      "videoWindowMs": [
+        21000,
+        25000
+      ],
+      "observation": "Spike warning and icon appear adjacent to pink spike patch before knife passes overhead. Source clip does not demonstrate spike-contact failure."
+    },
+    {
+      "videoWindowMs": [
+        24000,
+        36492
+      ],
+      "observation": "Finish multiplier tower is visible in advance; knife contacts finish platform, confetti/world feedback precedes completion overlay and reward tally/claim controls. Source does not itself demonstrate replay."
+    }
+  ],
+  "referenceInspection": {
+    "method": "All 19 source-bound 8fps contact sheets inspected before candidate media. Full temporal coverage 0–36.375s, last actual frame 36.358s; recording duration 36.492s. Not continuous real-time playback or native-frame inspection.",
+    "sheets": [
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-000-00000-00015.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-001-00016-00031.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-002-00032-00047.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-003-00048-00063.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-004-00064-00079.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-005-00080-00095.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-006-00096-00111.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-007-00112-00127.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-008-00128-00143.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-009-00144-00159.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-010-00160-00175.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-011-00176-00191.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-012-00192-00207.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-013-00208-00223.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-014-00224-00239.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-015-00240-00255.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-016-00256-00271.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-017-00272-00287.jpg",
+      "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-018-00288-00291.jpg"
+    ]
+  },
+  "actualCandidateWindowsInspected": [
+    {
+      "id": "390-steady-initial",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "videoWindowMs": [
+        1021,
+        3621
+      ],
+      "fps": 25,
+      "frameCount": 65,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-01.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-02.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-03.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-04.jpg"
+      ],
+      "presentationLimit": "Mobile sheets retain y=0..490 only. Full startup and selected native reward/settlement frames were inspected separately."
+    },
+    {
+      "id": "390-steady-trigger",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "videoWindowMs": [
+        0,
+        1500
+      ],
+      "fps": 25,
+      "frameCount": 38,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-01.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-02.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-03.jpg"
+      ],
+      "presentationLimit": "Mobile sheets retain y=0..490 only. Full startup and selected native reward/settlement frames were inspected separately."
+    },
+    {
+      "id": "1100-steady-trigger",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "videoWindowMs": [
+        0,
+        1500
+      ],
+      "fps": 25,
+      "frameCount": 38,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-01.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-02.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-03.jpg"
+      ],
+      "presentationLimit": "Full viewport downsampled to 550×360 in sheets."
+    },
+    {
+      "id": "390-steady-finish-replay",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "videoWindowMs": [
+        14500,
+        20500
+      ],
+      "fps": 8,
+      "frameCount": 48,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-01.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-02.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-03.jpg"
+      ],
+      "presentationLimit": "Mobile sheets retain y=0..490 only. Full startup and selected native reward/settlement frames were inspected separately."
+    },
+    {
+      "id": "390-slow-failure-replay",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+      "videoWindowMs": [
+        10800,
+        16300
+      ],
+      "fps": 8,
+      "frameCount": 44,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-01.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-02.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-03.jpg"
+      ],
+      "presentationLimit": "Mobile sheets retain y=0..490 only. Full startup and selected native reward/settlement frames were inspected separately."
+    },
+    {
+      "id": "1100-steady-finish-replay",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "videoWindowMs": [
+        16000,
+        22000
+      ],
+      "fps": 8,
+      "frameCount": 48,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-01.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-02.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-03.jpg"
+      ],
+      "presentationLimit": "Full viewport downsampled to 550×360 in sheets."
+    },
+    {
+      "id": "1100-mixed-failure-replay",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+      "videoWindowMs": [
+        11500,
+        17000
+      ],
+      "fps": 8,
+      "frameCount": 44,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-01.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-02.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-03.jpg"
+      ],
+      "presentationLimit": "Full viewport downsampled to 550×360 in sheets."
+    },
+    {
+      "id": "390-steady-hazard",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "videoWindowMs": [
+        11500,
+        14500
+      ],
+      "fps": 8,
+      "frameCount": 24,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard-01.jpg"
+      ],
+      "presentationLimit": "Mobile sheets retain y=0..490 only. Full startup and selected native reward/settlement frames were inspected separately."
+    },
+    {
+      "id": "1100-steady-hazard",
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "videoWindowMs": [
+        13500,
+        16000
+      ],
+      "fps": 8,
+      "frameCount": 20,
+      "sheets": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard-00.jpg",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard-01.jpg"
+      ],
+      "presentationLimit": "Full viewport downsampled to 550×360 in sheets."
+    }
+  ],
+  "caseResults": [
+    {
+      "id": "L1-INPUT-390",
+      "dimension": "input_state",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "blade + first cuttable",
+      "stateBranch": "startup → first input → airborne → contact",
+      "requirement": "普通点击触发可见起跳/翻转，刀接触首个可切物后切开；刀、目标和承托面在交互窗口内同时可辨。",
+      "eventOrder": [
+        "输入",
+        "起跳/翻转",
+        "接触",
+        "切开"
+      ],
+      "referenceWindowMs": [
+        0,
+        9000
+      ],
+      "basis": "verified-reference-window",
+      "status": "UNOBSERVED",
+      "finding": "Normal first input visibly initiates flight/rotation and the first melon becomes two visible pieces. However the blade already overlaps/touches the target silhouette at startup, and the short initial contact is partly covered by the tutorial overlay. Airborne-before-contact order cannot be independently resolved from these pixels; no input bug is asserted.",
+      "evidence": [
+        {
+          "session": "390-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+          "videoWindowMs": [
+            0,
+            1500
+          ],
+          "detail": "Native 25fps startup, input response, rotation, reward and separation inspected.",
+          "frames": [
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0001.png",
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0017.png",
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0020.png"
+          ]
+        }
+      ],
+      "missingSubpaths": [
+        "An unambiguous visually ordered airborne → first contact transition with the exact first target."
+      ],
+      "triageId": null
+    },
+    {
+      "id": "L1-GROUND-390",
+      "dimension": "spatial_relation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "visible tabletop base",
+      "stateBranch": "startup/intact → approach",
+      "requirement": "开场台面有可读厚度且底部接地，物品底部与可见承托面相接；接近和接触过程中该关系保持可解释。",
+      "eventOrder": [
+        "接触关系可见",
+        "刀接近时关系保持一致"
+      ],
+      "referenceWindowMs": null,
+      "basis": "product-requirement",
+      "status": "UNOBSERVED",
+      "finding": "Opening watermelon meets a visible narrow white support, with green tapered supports and a large pale base plane below. Thickness is visible. This perspective/overlay does not let the reviewer unambiguously establish the entire required grounded tabletop/base relation for all intact opening items; an elevated banana is visible but its intended support relation is not established. No confirmed grounding bug is claimed.",
+      "evidence": [
+        {
+          "session": "390-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+          "videoWindowMs": [
+            0,
+            1500
+          ],
+          "detail": "Startup and first-cut approach; full startup image also inspected.",
+          "frames": [
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0001.png"
+          ]
+        }
+      ],
+      "missingSubpaths": [
+        "Unambiguous tabletop-bottom-to-ground relation and item-bottom/support continuity throughout approach; ambiguity is not a proven defect."
+      ],
+      "triageId": null
+    },
+    {
+      "id": "L1-STACK-390",
+      "dimension": "spatial_relation",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "overlapping cuttable stack and its support",
+      "stateBranch": "intact overlap → blade contact → cut/separate → unsupported falling",
+      "requirement": "通过正常输入接触可见重叠可切物堆叠，观察原堆叠接触→切开/分离→失去承托部分下落→落地；另一次自然重玩尝试避开。",
+      "eventOrder": [
+        "接触",
+        "切开/散开",
+        "失去承托部分下落",
+        "落地"
+      ],
+      "referenceWindowMs": [
+        10000,
+        17000
+      ],
+      "basis": "reference-plus-product-requirement",
+      "status": "UNOBSERVED",
+      "finding": "A coconut/banana/apple overlap cluster is visible. In 390-slow a large coconut splits around video 12.3s; the knife then drops and the session fails around 12.8s. This does not establish the whole original stack losing support, falling and landing; failure freezes/ends the attempt.",
+      "evidence": [
+        {
+          "session": "390-slow",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+          "videoWindowMs": [
+            10800,
+            16300
+          ],
+          "detail": "Cluster, ordinary-input approach, failure and replay inspected; no fixture or state injection.",
+          "frames": []
+        }
+      ],
+      "missingSubpaths": [
+        "Whole original overlapping stack contact and separation, not just a nearby single object.",
+        "Unsupported portions falling and landing.",
+        "Separate natural replay attempt avoiding the exact stack with causal outcome."
+      ],
+      "triageId": null
+    },
+    {
+      "id": "L1-REWARD-390",
+      "dimension": "feedback_sequence",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "cut object + local reward + cumulative HUD",
+      "stateBranch": "contact → cut completed → separated → reward → total sync",
+      "requirement": "正常完成切割后观察物体分离→该切割世界位置的局部奖励动画→累计值同步，保留可辨的事件顺序。",
+      "eventOrder": [
+        "切割完成",
+        "物体分离",
+        "局部奖励动画",
+        "累计值同步"
+      ],
+      "referenceWindowMs": null,
+      "basis": "product-requirement",
+      "status": "FAIL",
+      "finding": "At approximately video 0.64s HUD remains 0. At 0.68s local +1, cumulative 1, and reward banner are already visible while the melon silhouette is still whole/rind-covered. A visibly separated red cut face appears by about 0.76s. This reverses the frozen separation → local reward → cumulative synchronization sequence. The failure is positive early feedback, not a claimed absence.",
+      "evidence": [
+        {
+          "session": "390-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+          "videoWindowMs": [
+            0,
+            1500
+          ],
+          "detail": "Full trigger and initial response inspected at native 25fps; same first watermelon branch.",
+          "frames": [
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0017.png",
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0018.png",
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0020.png"
+          ]
+        }
+      ],
+      "missingSubpaths": [],
+      "triageId": "REWARD-EARLY-390"
+    },
+    {
+      "id": "L1-PRESSURE-390",
+      "dimension": "failure_recovery",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "spike hazard + blade + failure/recovery affordance",
+      "stateBranch": "warning → approach → collision/avoidance → failure or recovery",
+      "requirement": "危险在接近前有与实际物体关联的可见信号；通过自然输入观察避开与接触的不同后果、可归因失败和可见重试返回可玩状态。",
+      "eventOrder": [
+        "提前显示危险",
+        "操作选择",
+        "可归因后果",
+        "恢复/重试"
+      ],
+      "referenceWindowMs": [
+        18000,
+        24000
+      ],
+      "basis": "verified-reference-window",
+      "status": "UNOBSERVED",
+      "finding": "A red/pink warning banner appears before the spike area and the knife travels above the danger area without a spike failure. Separate natural drop failures have visible cause text, replay controls, reset and renewed cutting. Drop failure is not substituted for the required spike-contact branch.",
+      "evidence": [
+        {
+          "session": "390-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+          "videoWindowMs": [
+            11500,
+            14500
+          ],
+          "detail": "Warning and traversal inspected at 8fps; mobile contact sheets crop below y=490, so do not prove full spike pixels.",
+          "frames": []
+        },
+        {
+          "session": "390-slow",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+          "videoWindowMs": [
+            10800,
+            16300
+          ],
+          "detail": "Drop failure and replay, only a sibling failure branch.",
+          "frames": []
+        }
+      ],
+      "missingSubpaths": [
+        "Normal-input spike contact and attributable spike-specific failure.",
+        "Contrast of contact versus avoidance for the same hazard.",
+        "Spike-failure replay returning to playable state.",
+        "Mobile warning-to-actual-spike association at native readable size remains incompletely inspected."
+      ],
+      "triageId": null
+    },
+    {
+      "id": "L1-FINISH-390",
+      "dimension": "terminal_replay",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "objectType": "finish outcome lanes + settlement + replay",
+      "stateBranch": "approach → choose/contact → world result → settlement → replay",
+      "requirement": "终点结果区域在选择前可见，正常选择/接触→世界结果反馈→结算，使用可见重玩入口返回可操作首关。",
+      "eventOrder": [
+        "结果区可见",
+        "接触/选择",
+        "世界结果反馈",
+        "结算",
+        "重玩"
+      ],
+      "referenceWindowMs": [
+        24000,
+        36492
+      ],
+      "basis": "reference-plus-product-requirement",
+      "status": "PASS",
+      "finding": "Outcome lanes are visible before approach. Knife reaches the wall; x2 lane lights gold around video 15.875s, then reward reveal and completion settlement appear, visible 重玩 is used, startup returns around 17.5s, and renewed input visibly cuts the first melon around 17.75–18s.",
+      "evidence": [
+        {
+          "session": "390-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+          "videoWindowMs": [
+            14500,
+            20500
+          ],
+          "detail": "Approach → world lane highlight → settlement → replay/reset → renewed cutting, inspected at 8fps; native mobile settlement frame includes the visible buttons.",
+          "frames": [
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0022.png"
+          ]
+        }
+      ],
+      "missingSubpaths": [],
+      "triageId": null
+    },
+    {
+      "id": "L1-INPUT-1100",
+      "dimension": "input_state",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "blade + first cuttable",
+      "stateBranch": "startup → first input → airborne → contact",
+      "requirement": "普通点击触发可见起跳/翻转，刀接触首个可切物后切开；刀、目标和承托面在交互窗口内同时可辨。",
+      "eventOrder": [
+        "输入",
+        "起跳/翻转",
+        "接触",
+        "切开"
+      ],
+      "referenceWindowMs": [
+        0,
+        9000
+      ],
+      "basis": "verified-reference-window",
+      "status": "UNOBSERVED",
+      "finding": "Normal first input visibly initiates flight/rotation and the first melon becomes two visible pieces. However the blade already overlaps/touches the target silhouette at startup, and the short initial contact is partly covered by the tutorial overlay. Airborne-before-contact order cannot be independently resolved from these pixels; no input bug is asserted.",
+      "evidence": [
+        {
+          "session": "1100-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+          "videoWindowMs": [
+            0,
+            1500
+          ],
+          "detail": "Native 25fps startup, input response, rotation, reward and separation inspected.",
+          "frames": [
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0001.png",
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0017.png",
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0020.png"
+          ]
+        }
+      ],
+      "missingSubpaths": [
+        "An unambiguous visually ordered airborne → first contact transition with the exact first target."
+      ],
+      "triageId": null
+    },
+    {
+      "id": "L1-GROUND-1100",
+      "dimension": "spatial_relation",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "visible tabletop base",
+      "stateBranch": "startup/intact → approach",
+      "requirement": "开场台面有可读厚度且底部接地，物品底部与可见承托面相接；接近和接触过程中该关系保持可解释。",
+      "eventOrder": [
+        "接触关系可见",
+        "刀接近时关系保持一致"
+      ],
+      "referenceWindowMs": null,
+      "basis": "product-requirement",
+      "status": "UNOBSERVED",
+      "finding": "Opening watermelon meets a visible narrow white support, with green tapered supports and a large pale base plane below. Thickness is visible. This perspective/overlay does not let the reviewer unambiguously establish the entire required grounded tabletop/base relation for all intact opening items; an elevated banana is visible but its intended support relation is not established. No confirmed grounding bug is claimed.",
+      "evidence": [
+        {
+          "session": "1100-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+          "videoWindowMs": [
+            0,
+            1500
+          ],
+          "detail": "Startup and first-cut approach; full startup image also inspected.",
+          "frames": [
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0001.png"
+          ]
+        }
+      ],
+      "missingSubpaths": [
+        "Unambiguous tabletop-bottom-to-ground relation and item-bottom/support continuity throughout approach; ambiguity is not a proven defect."
+      ],
+      "triageId": null
+    },
+    {
+      "id": "L1-STACK-1100",
+      "dimension": "spatial_relation",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "overlapping cuttable stack and its support",
+      "stateBranch": "intact overlap → blade contact → cut/separate → unsupported falling",
+      "requirement": "通过正常输入接触可见重叠可切物堆叠，观察原堆叠接触→切开/分离→失去承托部分下落→落地；另一次自然重玩尝试避开。",
+      "eventOrder": [
+        "接触",
+        "切开/散开",
+        "失去承托部分下落",
+        "落地"
+      ],
+      "referenceWindowMs": [
+        10000,
+        17000
+      ],
+      "basis": "reference-plus-product-requirement",
+      "status": "UNOBSERVED",
+      "finding": "Overlap clusters are visible. 1100-mixed passes below the cluster and fails by dropping, while 1100-steady flies above it. No complete contact → original stack separation → unsupported falling → landing was inspected.",
+      "evidence": [
+        {
+          "session": "1100-mixed",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+          "videoWindowMs": [
+            11500,
+            17000
+          ],
+          "detail": "Cluster, ordinary-input approach, failure and replay inspected; no fixture or state injection.",
+          "frames": []
+        }
+      ],
+      "missingSubpaths": [
+        "Whole original overlapping stack contact and separation, not just a nearby single object.",
+        "Unsupported portions falling and landing.",
+        "Separate natural replay attempt avoiding the exact stack with causal outcome."
+      ],
+      "triageId": null
+    },
+    {
+      "id": "L1-REWARD-1100",
+      "dimension": "feedback_sequence",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "cut object + local reward + cumulative HUD",
+      "stateBranch": "contact → cut completed → separated → reward → total sync",
+      "requirement": "正常完成切割后观察物体分离→该切割世界位置的局部奖励动画→累计值同步，保留可辨的事件顺序。",
+      "eventOrder": [
+        "切割完成",
+        "物体分离",
+        "局部奖励动画",
+        "累计值同步"
+      ],
+      "referenceWindowMs": null,
+      "basis": "product-requirement",
+      "status": "FAIL",
+      "finding": "At approximately video 0.60s HUD remains 0. At 0.64s local +1, cumulative 1, and reward banner are already visible while melon still appears whole. A clearly separated red cut face is visible by about 0.76s. This reverses the frozen separation → local reward → cumulative synchronization sequence. The failure is positive early feedback, not a claimed absence.",
+      "evidence": [
+        {
+          "session": "1100-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+          "videoWindowMs": [
+            0,
+            1500
+          ],
+          "detail": "Full trigger and initial response inspected at native 25fps; same first watermelon branch.",
+          "frames": [
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0016.png",
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0017.png",
+            "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0020.png"
+          ]
+        }
+      ],
+      "missingSubpaths": [],
+      "triageId": "REWARD-EARLY-1100"
+    },
+    {
+      "id": "L1-PRESSURE-1100",
+      "dimension": "failure_recovery",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "spike hazard + blade + failure/recovery affordance",
+      "stateBranch": "warning → approach → collision/avoidance → failure or recovery",
+      "requirement": "危险在接近前有与实际物体关联的可见信号；通过自然输入观察避开与接触的不同后果、可归因失败和可见重试返回可玩状态。",
+      "eventOrder": [
+        "提前显示危险",
+        "操作选择",
+        "可归因后果",
+        "恢复/重试"
+      ],
+      "referenceWindowMs": [
+        18000,
+        24000
+      ],
+      "basis": "verified-reference-window",
+      "status": "UNOBSERVED",
+      "finding": "A red/pink warning banner appears before the spike area and the knife travels above the danger area without a spike failure. Separate natural drop failures have visible cause text, replay controls, reset and renewed cutting. Drop failure is not substituted for the required spike-contact branch.",
+      "evidence": [
+        {
+          "session": "1100-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+          "videoWindowMs": [
+            13500,
+            16000
+          ],
+          "detail": "Warning and traversal inspected at 8fps; mobile contact sheets crop below y=490, so do not prove full spike pixels.",
+          "frames": []
+        },
+        {
+          "session": "1100-mixed",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+          "videoWindowMs": [
+            11500,
+            17000
+          ],
+          "detail": "Drop failure and replay, only a sibling failure branch.",
+          "frames": []
+        }
+      ],
+      "missingSubpaths": [
+        "Normal-input spike contact and attributable spike-specific failure.",
+        "Contrast of contact versus avoidance for the same hazard.",
+        "Spike-failure replay returning to playable state."
+      ],
+      "triageId": null
+    },
+    {
+      "id": "L1-FINISH-1100",
+      "dimension": "terminal_replay",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "objectType": "finish outcome lanes + settlement + replay",
+      "stateBranch": "approach → choose/contact → world result → settlement → replay",
+      "requirement": "终点结果区域在选择前可见，正常选择/接触→世界结果反馈→结算，使用可见重玩入口返回可操作首关。",
+      "eventOrder": [
+        "结果区可见",
+        "接触/选择",
+        "世界结果反馈",
+        "结算",
+        "重玩"
+      ],
+      "referenceWindowMs": [
+        24000,
+        36492
+      ],
+      "basis": "reference-plus-product-requirement",
+      "status": "PASS",
+      "finding": "Outcome lanes are visible before approach. Knife reaches the wall; x4 lights gold around video 17.625s, then reward reveal and completion settlement appear, visible 重玩 is used, startup returns around 19s, and renewed normal input cuts the first melon around 19.25–19.5s.",
+      "evidence": [
+        {
+          "session": "1100-steady",
+          "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+          "videoWindowMs": [
+            16000,
+            22000
+          ],
+          "detail": "Approach → world lane highlight → settlement → replay/reset → renewed cutting, inspected at 8fps; native mobile settlement frame includes the visible buttons.",
+          "frames": []
+        }
+      ],
+      "missingSubpaths": [],
+      "triageId": null
+    }
+  ],
+  "confirmedObservations": [
+    {
+      "id": "REWARD-EARLY-390",
+      "targetGame": "mobile-slice-adaptation-20260830",
+      "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+      "classification": "confirmed visible feedback-order requirement violation",
+      "scope": "first watermelon cut on default first-level entry; this viewport only",
+      "reproduction": {
+        "session": "390-steady",
+        "normalInput": {
+          "type": "touch",
+          "x": 195,
+          "y": 380,
+          "ordinal": 0,
+          "inputLogElapsedMs": 1421
+        },
+        "videoWindowMs": [
+          0,
+          1500
+        ],
+        "timing": "Video-relative timestamps approximately 40ms resolution; navigation log and video zero are not synchronized. Do not equate the two clocks."
+      },
+      "observation": "At approximately video 0.64s HUD remains 0. At 0.68s local +1, cumulative 1, and reward banner are already visible while the melon silhouette is still whole/rind-covered. A visibly separated red cut face appears by about 0.76s.",
+      "evidenceFrames": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0017.png",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0018.png",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0020.png"
+      ],
+      "reproductionMatrix": [
+        {
+          "objectType": "first intact watermelon, not later coconut/overlap stack",
+          "lifecycleState": "startup → normal first cut → beginning of separation",
+          "rendererPresentation": "recorded browser world rendering + cumulative HUD + local floating reward; no hidden state",
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "observed": true
+        }
+      ],
+      "causalHypothesis": null,
+      "rootCause": "Unknown. No source or hidden state inspected; this is a presentation-order counterexample, not an implementation diagnosis.",
+      "acceptanceCriteria": [
+        "Under normal first-level input, visible completed cut and object separation precede the local reward animation.",
+        "Cumulative HUD synchronization follows the local reward, with a visually distinguishable order in the exact same object/state/viewport."
+      ],
+      "exclusions": [
+        "No claim about all later cuts or platforms.",
+        "No cadence failure is treated as a bug."
+      ]
+    },
+    {
+      "id": "REWARD-EARLY-1100",
+      "targetGame": "mobile-slice-adaptation-20260830",
+      "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+      "classification": "confirmed visible feedback-order requirement violation",
+      "scope": "first watermelon cut on default first-level entry; this viewport only",
+      "reproduction": {
+        "session": "1100-steady",
+        "normalInput": {
+          "type": "mouse",
+          "x": 550,
+          "y": 324,
+          "ordinal": 0,
+          "inputLogElapsedMs": 1280
+        },
+        "videoWindowMs": [
+          0,
+          1500
+        ],
+        "timing": "Video-relative timestamps approximately 40ms resolution; navigation log and video zero are not synchronized. Do not equate the two clocks."
+      },
+      "observation": "At approximately video 0.60s HUD remains 0. At 0.64s local +1, cumulative 1, and reward banner are already visible while melon still appears whole. A clearly separated red cut face is visible by about 0.76s.",
+      "evidenceFrames": [
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0016.png",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0017.png",
+        "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0020.png"
+      ],
+      "reproductionMatrix": [
+        {
+          "objectType": "first intact watermelon, not later coconut/overlap stack",
+          "lifecycleState": "startup → normal first cut → beginning of separation",
+          "rendererPresentation": "recorded browser world rendering + cumulative HUD + local floating reward; no hidden state",
+          "viewport": {
+            "width": 1100,
+            "height": 720
+          },
+          "observed": true
+        }
+      ],
+      "causalHypothesis": null,
+      "rootCause": "Unknown. No source or hidden state inspected; this is a presentation-order counterexample, not an implementation diagnosis.",
+      "acceptanceCriteria": [
+        "Under normal first-level input, visible completed cut and object separation precede the local reward animation.",
+        "Cumulative HUD synchronization follows the local reward, with a visually distinguishable order in the exact same object/state/viewport."
+      ],
+      "exclusions": [
+        "No claim about all later cuts or platforms.",
+        "No cadence failure is treated as a bug."
+      ]
+    }
+  ],
+  "suspectedObservations": [
+    {
+      "observation": "Some elevated targets/support relations are visually ambiguous; not established as a requirement violation.",
+      "classification": "uncertain presentation observation, not an added requirement"
+    },
+    {
+      "observation": "Video zero and navigation input-log zero differ appreciably: first response appears about 0.6–0.7s in steady videos versus first logged input at 1.28–1.421s. Initial suggested windows can already contain a cut. Native trigger windows beginning at video zero were inspected instead.",
+      "classification": "timing-alignment limitation; no game defect or exact latency claim"
+    }
+  ],
+  "naturalJourney": {
+    "status": "BLOCKED",
+    "observed": [
+      "ordinary input → visible first cut",
+      "finish → highlighted world outcome → settlement → visible replay → renewed first cut at both viewports",
+      "natural drop failure → visible replay → renewed cutting"
+    ],
+    "missing": [
+      "exact full-stack support-loss/fall/landing and separate avoidance",
+      "spike-contact failure/recovery contrast",
+      "unambiguous first airborne-before-contact and complete grounding presentation"
+    ],
+    "cadenceFailureIsBug": false
+  },
+  "perceptualGate": {
+    "status": "FAIL",
+    "reason": "Observed reward/HUD precedes visible object separation at both viewports; additional case branches remain UNOBSERVED."
+  },
+  "engineeringTruth": {
+    "status": "UNASSESSED",
+    "reason": "Read-only video adjudication; no source, internal state, collision hooks, fixtures or deterministic runtime tests."
+  },
+  "scopeLimits": [
+    "Only frozen first-level 12 cases; no second level, source correctness, release, platform-package or complete-gold metrics.",
+    "Only four selected existing sessions had dense windows reviewed. Other capture sessions were not used to claim absence.",
+    "No new gameplay, build, paid API, policy generation, fixes, or evidence modification.",
+    "Normal-control provenance rests on frozen plan and input logs, with visible response corroboration; this reviewer did not acquire the recordings.",
+    "Temporal values are approximate video times, native sampling 40ms and finish/failure sampling 125ms. No exact cross-clock mapping is asserted."
+  ],
+  "humanIntervention": {
+    "duringThisReview": "none; parent supplied only scope and administrative stop instruction",
+    "acquisition": "controller-authored fixed ordinary-input schedules and visible replay-button policy, as declared in frozen plan"
+  },
+  "labelExposure": false,
+  "exposureStatement": "No other QA result/status/adjudication, raw contract, history, git, candidate HTML/game source or hidden-state hooks read. Positive packet requirements are known; defect/gold labels were not supplied.",
+  "filesRead": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/packet.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/windows.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/reference-frame-manifest.json",
+    "/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/package.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/plan.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/freeze.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/capture.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/inputs.jsonl",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/inputs.jsonl",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/inputs.jsonl",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/inputs.jsonl",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-steady-overview.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-slow-overview.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-steady-overview.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-mixed-overview.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/startup.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/startup.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-000-00000-00015.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-001-00016-00031.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-002-00032-00047.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-003-00048-00063.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-004-00064-00079.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-005-00080-00095.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-006-00096-00111.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-007-00112-00127.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-008-00128-00143.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-009-00144-00159.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-010-00160-00175.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-011-00176-00191.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-012-00192-00207.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-013-00208-00223.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-014-00224-00239.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-015-00240-00255.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-016-00256-00271.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-017-00272-00287.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/reference-evidence/derived/user-recording-20260906-level01/3781e4dcd3d2-8fps-v2/contact-018-00288-00291.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0039.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0040.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0041.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0042.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0043.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0044.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0045.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0046.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0047.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0048.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0049.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0050.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0051.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0052.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0053.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0054.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0055.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0056.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0057.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0058.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0059.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0060.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0061.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0062.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0063.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0064.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial/f-0065.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-04.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0039.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0040.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0041.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0042.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0043.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0044.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0045.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0046.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0047.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0048.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0049.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0050.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0051.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0052.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0053.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0054.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0055.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0056.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0057.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0058.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0059.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0060.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0061.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0062.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0063.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0064.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial/f-0065.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-04.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0039.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0040.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0041.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0042.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0043.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0044.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0045.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0046.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0047.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0048.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0049.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0050.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0051.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0052.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0053.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0054.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0055.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0056.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0057.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0058.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0059.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0060.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0061.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0062.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0063.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0064.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial/f-0065.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-04.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0039.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0040.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0041.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0042.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0043.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0044.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0045.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0046.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0047.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0048.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0049.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0050.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0051.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0052.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0053.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0054.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0055.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0056.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0057.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0058.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0059.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0060.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0061.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0062.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0063.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0064.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial/f-0065.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-04.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0039.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0040.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0041.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0042.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0043.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0044.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0045.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0046.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0047.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay/f-0048.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0039.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0040.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0041.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0042.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0043.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay/f-0044.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0039.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0040.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0041.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0042.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0043.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0044.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0045.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0046.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0047.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay/f-0048.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0025.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0026.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0027.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0028.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0029.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0030.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0031.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0032.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0033.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0034.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0035.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0036.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0037.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0038.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0039.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0040.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0041.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0042.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0043.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay/f-0044.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-02.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-03.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0021.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0022.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0023.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard/f-0024.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0001.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0002.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0003.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0004.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0005.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0006.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0007.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0008.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0009.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0010.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0011.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0012.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0013.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0014.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0015.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0016.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0017.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0018.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0019.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard/f-0020.png",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard-00.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard-01.jpg",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/extraction-manifest.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media-hashes.json"
+  ],
+  "filesReadNotes": "Includes original inputs read directly and newly generated frame/sheet artifacts read programmatically while making contact sheets. Generated-but-not-visually-reviewed extraction groups are NOT listed as inspected windows. Directory entries were listed under continuous-capture; timing-review.json and runner.mjs were not opened. Node/Zod/Pillow/ffmpeg runtime dependencies were loaded as tooling only.",
+  "cost": {
+    "modelTokens": null,
+    "money": null,
+    "newPaidCalls": 0
+  },
+  "metrics": {
+    "completeGoldDetectionRate": null,
+    "completeGoldMissRate": null,
+    "completeGoldPrecision": null
+  },
+  "validation": {
+    "tool": "local createRequire zod",
+    "schemaFile": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/finalize.mjs",
+    "passed": true
+  }
+}

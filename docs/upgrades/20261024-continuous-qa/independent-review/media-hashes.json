@@ -1,0 +1,22 @@
+[
+  {
+    "path": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/reference-evidence/incoming/_2026-09-06-135548-3781e4dcd3d2.mp4",
+    "sha256": "3781e4dcd3d21094f186cf442b3ee30cddfbb2fbe68d87c5c7470a2c742bf75a"
+  },
+  {
+    "path": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+    "sha256": "805703deb06fd2092ce2a6aa8b9ee4b9e3be3fba8100b3f1fd600afcb2b3dfc7"
+  },
+  {
+    "path": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+    "sha256": "63d799ff089ff4eabf0cde9935138bc40c798bc7eb2363ca79e2310fcfd46f5b"
+  },
+  {
+    "path": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+    "sha256": "3b3d0c3ec43cbf7047e35064969ae54bfcdd4873460fd5faaa61f45ff47c2815"
+  },
+  {
+    "path": "/Users/kker/Documents/ChatGPT/\u5996\u602a\u591c\u5e02/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+    "sha256": "47b1735685ba19839751a2015820dfa96cd88cc2f4c057ca449fe9057cc2b960"
+  }
+]

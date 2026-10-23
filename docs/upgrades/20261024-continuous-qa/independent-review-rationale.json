@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "role": "Independent video reviewer, existing QA review channel; no game generation, no new production Agent/Gate/model/default workflow",
+  "observedFailure": "Fresh luna subject returned12UNOBSERVED after908000ms; viewed8one-second overviews, did not inspect dense videos. Some positive UI observations have incorrect approximate timestamp windows. Raw result remains immutable.",
+  "causality": "This proves inadequate temporal review, not that game behavior passed/failed. Normal-input acquisition completed332182ms and includes raw8videos/442inputs/14replay clicks, so missing footage is not the acquisition blocker. No claims about why model was slow.",
+  "simplerAlternatives": [
+    "Repeat gameplay rejected: existing full video is sufficient and another cadence does not solve missing video review.",
+    "Accept sparse report rejected: temporal evidence acceptance unmet.",
+    "Use root alone: lower coordination cost but root has historical labels; retain root only as non-blind independent claim checker.",
+    "Chosen: one fresh, bounded read-only reviewer on existing sanitized video packet, no history/gold. Does not erase subject failure or turn this into autonomous-policy success."
+  ],
+  "experiment": {
+    "frozenScope": "Original12-case positive packet, candidate/reference identities and pass criteria unchanged. No new gameplay.",
+    "success": "Reviewer provides window-bound visible judgements and factual omissions; every defect claim independently inspected. Incomplete branches remain BLOCKED; no complete-gold detection metrics.",
+    "cost": "one replacement independent review, no paid Factory provider invocation; desktop model tokens/price unknown. No further retries if unavailable.",
+    "retainRevert": "Retain verifiable review only; unreviewed/mislocalized claims remain unknown or refuted. Original subject stays failed/blocked regardless."
+  },
+  "createdAt": "2026-10-23T17:59:56.652976+00:00"
+}
