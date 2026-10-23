@@ -310,7 +310,7 @@ export class CodexCliProvider {
           lowerBoundOnly: Boolean(processResult.stopReason || processResult.code !== 0 || parsed.failed || !parsed.completed),
           reportedAt: new Date().toISOString(),
         });
-        if (processResult.stopReason) throw new Error(`codex exec stopped: ${processResult.stopReason}; observed completed-turn tokens ${chargedCompletedTokens}`);
+        if (processResult.stopReason) throw new Error(processResult.stopReason === 'timeout' ? `codex exec timed out after ${request.timeoutMs ?? this.timeoutMs}ms; observed completed-turn tokens ${chargedCompletedTokens}` : `codex exec stopped: ${processResult.stopReason}; observed completed-turn tokens ${chargedCompletedTokens}`);
         if (processResult.code !== 0 || parsed.failed || !parsed.completed) throw new Error(parsed.errors.at(-1) ?? (stderr.trim() || `codex exec exited with code ${processResult.code}`));
         const rawOutputText = await readFile(request.outputPath, 'utf8');
         const outputText = redactText(rawOutputText);
