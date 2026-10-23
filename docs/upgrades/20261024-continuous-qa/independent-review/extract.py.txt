@@ -1,0 +1,25 @@
+import json,pathlib,subprocess,hashlib,math
+from PIL import Image,ImageDraw
+ROOT=pathlib.Path('/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024')
+OUT=ROOT/'independent-video-review'
+FF='/Users/kker/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac'
+windows=json.loads((OUT/'windows.json').read_text())['windows']
+manifest=[]
+for w in windows:
+ start,end=w['initialWindowMs'];start=start/1000;end=end/1000
+ name=w['session']+'-initial';folder=OUT/'media'/name;folder.mkdir(parents=True,exist_ok=True)
+ subprocess.run([FF,'-hide_banner','-loglevel','error','-ss',str(start),'-i',w['video'],'-t',str(end-start),'-r','25',str(folder/'f-%04d.png')],check=True)
+ files=sorted(folder.glob('f-*.png'));pages=[]
+ # Candidate crop retains full world/hud but omits blank lower third mobile only for contact sheet; originals untouched.
+ for p in range(math.ceil(len(files)/16)):
+  group=files[p*16:p*16+16];cellw=390 if name.startswith('390') else 550;cellh=510 if name.startswith('390') else 380
+  sheet=Image.new('RGB',(cellw*4,cellh*4),'white');d=ImageDraw.Draw(sheet)
+  for j,f in enumerate(group):
+   im=Image.open(f)
+   if name.startswith('390'): im=im.crop((0,0,390,490))
+   else: im=im.resize((550,360))
+   x=(j%4)*cellw;y=(j//4)*cellh;sheet.paste(im,(x,y+20));d.text((x+3,y+3),f'{name} video {start+(p*16+j)/25:.3f}s',fill='black')
+  dest=OUT/'media'/f'{name}-{p:02}.jpg';sheet.save(dest,quality=92);pages.append(str(dest))
+ manifest.append({'id':name,'source':w['video'],'videoWindowMs':[round(start*1000),round(end*1000)],'fps':25,'frameCount':len(files),'frames':[str(f) for f in files],'sheets':pages,'sheetCrop': [0,0,390,490] if name.startswith('390') else None})
+(OUT/'extraction-manifest.json').write_text(json.dumps(manifest,indent=2))
+print(json.dumps([{k:v for k,v in m.items() if k not in ['frames']} for m in manifest],indent=2))

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-23T17:29:03.019Z",
+  "finishedAt": "2026-10-23T17:34:35.201Z",
+  "durationMs": 332182,
+  "expired": false,
+  "planSha256": "29ebe6c5445c3276e42b21c8d60080a5f746629e422c70142c88ea8143e9f416",
+  "runnerSha256": "614b0a04b3507a68d47a2b54e35cdf97075114a0a80d3b783aec36bf1fc089b1",
+  "candidateSha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+  "sessions": [
+    {
+      "id": "390-steady",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "policy": "steady",
+      "durationMs": 41786,
+      "inputs": 55,
+      "replays": 2,
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm"
+    },
+    {
+      "id": "390-fast",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "policy": "fast",
+      "durationMs": 41037,
+      "inputs": 89,
+      "replays": 2,
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-fast/page@29dab2ae790ec2af0b3c5c19b11e1a41.webm"
+    },
+    {
+      "id": "390-slow",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "policy": "slow",
+      "durationMs": 41276,
+      "inputs": 35,
+      "replays": 2,
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm"
+    },
+    {
+      "id": "390-mixed",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "policy": "mixed",
+      "durationMs": 41304,
+      "inputs": 42,
+      "replays": 1,
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-mixed/page@dc305b08bab2d01e82d6f1634f159d5c.webm"
+    },
+    {
+      "id": "1100-steady",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "policy": "steady",
+      "durationMs": 41604,
+      "inputs": 55,
+      "replays": 2,
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm"
+    },
+    {
+      "id": "1100-fast",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "policy": "fast",
+      "durationMs": 41067,
+      "inputs": 88,
+      "replays": 2,
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-fast/page@429294d81beac92b81500cfc3293ce30.webm"
+    },
+    {
+      "id": "1100-slow",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "policy": "slow",
+      "durationMs": 41125,
+      "inputs": 35,
+      "replays": 1,
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-slow/page@8db02021d5bdc38fafb7d0ed52784dd8.webm"
+    },
+    {
+      "id": "1100-mixed",
+      "viewport": {
+        "width": 1100,
+        "height": 720
+      },
+      "policy": "mixed",
+      "durationMs": 41690,
+      "inputs": 43,
+      "replays": 2,
+      "video": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm"
+    }
+  ]
+}

@@ -1,0 +1,841 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous/packet.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/blind/packet.json",
+      "sha256": "cad2e0c830152d213405539686976a611f0b9c31d8979505674c8e9a0f303ee7",
+      "bytes": 12815
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous/status.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/blind/status.json",
+      "sha256": "5143299825a166015e6f804a2f9936f7e3626e4d478422d2a3c42a28f24ddf03",
+      "bytes": 11981
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous/review-schema.mjs",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/blind/review-schema.mjs.txt",
+      "sha256": "794d0d70e32b200819ac859869e24da2d9311a5fd9e615cbd4f8aad3c85fa38f",
+      "bytes": 1528
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/plan.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/plan.json",
+      "sha256": "29ebe6c5445c3276e42b21c8d60080a5f746629e422c70142c88ea8143e9f416",
+      "bytes": 2063
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/freeze.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/freeze.json",
+      "sha256": "c49852f4eb566eece3ed13d0de22d7aed4ec3db39fc1b9dbfd1db336f03da9bc",
+      "bytes": 980
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/capture.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/capture.json",
+      "sha256": "6c6d84991288d79331833dc1d9dece5c0ceb9810bcc9f52737e866665f79beea",
+      "bytes": 3601
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/timing-review.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/timing-review.json",
+      "sha256": "94b39a925a4f33e161b72fca15dfc4785e87b80b22f79bf83878b149b6979a35",
+      "bytes": 4255
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/runner.mjs",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/runner.mjs.txt",
+      "sha256": "614b0a04b3507a68d47a2b54e35cdf97075114a0a80d3b783aec36bf1fc089b1",
+      "bytes": 4954
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-fast/end.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-fast/end.png",
+      "sha256": "f9377e837743bb10148b640a260191287e425f52515b8ce86248fe9ca1be6068",
+      "bytes": 134122
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-fast/page@429294d81beac92b81500cfc3293ce30.webm",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-fast/page@429294d81beac92b81500cfc3293ce30.webm",
+      "sha256": "4e76b3df5d299cd4454191b8e2b68c27e3be212f4a58d37ea94395513df1a4d7",
+      "bytes": 4807750
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-fast/inputs.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-fast/inputs.jsonl",
+      "sha256": "b095820e0429cd20c7ba37d4241165a8253e9c28daee74b1d7dd600334fc1041",
+      "bytes": 9179
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-fast/startup.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-fast/startup.png",
+      "sha256": "c0efee5f9bbaa7f11cae709dd9212970aabc7e0fcffb1811ac7922b998ae8a80",
+      "bytes": 117725
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-mixed/page@acd7fed5be690bd1b592f87264aa648f.webm",
+      "sha256": "47b1735685ba19839751a2015820dfa96cd88cc2f4c057ca449fe9057cc2b960",
+      "bytes": 5017162
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/end.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-mixed/end.png",
+      "sha256": "cb72b1439b65b55c82af2e9a5a95dcaf34360ed1e036fafba8bc98103852b720",
+      "bytes": 129797
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/inputs.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-mixed/inputs.jsonl",
+      "sha256": "bc5f35dacf40a9a0c14b6a881846c19f744407a84625566bb486a78afe52f858",
+      "bytes": 4691
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-mixed/startup.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-mixed/startup.png",
+      "sha256": "b8b26b0157340a205a23ee5dfe9a31e5ae729aa345e34ddb5372184006ec3f30",
+      "bytes": 117632
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-slow/page@8db02021d5bdc38fafb7d0ed52784dd8.webm",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-slow/page@8db02021d5bdc38fafb7d0ed52784dd8.webm",
+      "sha256": "befcf62f758a70b01e882cbfee6ace0776f46ef638df2c4ebeb81ac534be87fd",
+      "bytes": 4826756
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-slow/end.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-slow/end.png",
+      "sha256": "28f7450076ff77ee604948c41b5d4fec5515efa1bad84e35d48dcf2d0c80793b",
+      "bytes": 105786
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-slow/inputs.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-slow/inputs.jsonl",
+      "sha256": "ac9d3956de31cac7c4a7a3e36b8920446ce2c61b44d05aa767ab7569f9a97ca4",
+      "bytes": 3789
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-slow/startup.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-slow/startup.png",
+      "sha256": "585c136e4ab30a80e2aee8526d2b8db1cd3f2e93e59233edd7434f1dccedc953",
+      "bytes": 117724
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/end.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-steady/end.png",
+      "sha256": "664d8905632b522b2d163745cd6cf71b04664d28fa183717f116cbb246f7f85c",
+      "bytes": 100813
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/inputs.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-steady/inputs.jsonl",
+      "sha256": "b6026d483ef974d8e1dea20f2003f6b18817a08246f2283ff6c13f80d3752c0e",
+      "bytes": 5887
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-steady/page@3150f9369372beb62466664eef9a2c60.webm",
+      "sha256": "3b3d0c3ec43cbf7047e35064969ae54bfcdd4873460fd5faaa61f45ff47c2815",
+      "bytes": 4879838
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/1100-steady/startup.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/1100-steady/startup.png",
+      "sha256": "184b6611eb8493b4f1f85a98674b30a71e447ec047e258eeb6bca9f6c0869236",
+      "bytes": 117777
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-fast/end.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-fast/end.png",
+      "sha256": "dc180135f204033e936e148e72042f6179ddf9476ca29e9686f5314c3d5657a5",
+      "bytes": 57186
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-fast/inputs.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-fast/inputs.jsonl",
+      "sha256": "d58ad605e458deac3b40b901a8e4b091d9b492ffa707896025ef67e360565322",
+      "bytes": 9279
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-fast/page@29dab2ae790ec2af0b3c5c19b11e1a41.webm",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-fast/page@29dab2ae790ec2af0b3c5c19b11e1a41.webm",
+      "sha256": "b74497695a78b616d08ad6e64bce04ae36617df0c3c5920e92640e43e38b7cec",
+      "bytes": 4882390
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-fast/startup.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-fast/startup.png",
+      "sha256": "dee95884d0418ab51ff58886781635395cd33bf657c29c84671b54f79a2eef5f",
+      "bytes": 68347
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-mixed/end.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-mixed/end.png",
+      "sha256": "fbfe00235dcb2d9ab0b5686fcf33546493252abda4e24c40d1c060bb1acbd130",
+      "bytes": 62834
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-mixed/inputs.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-mixed/inputs.jsonl",
+      "sha256": "326d504c5052e4f0a67b4038795ee1a468781bcce7619c1e6097f129612c5149",
+      "bytes": 4489
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-mixed/startup.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-mixed/startup.png",
+      "sha256": "d4ac08c95d16b5c0675865c53777def1150c74cedb81c919245d61643c871e28",
+      "bytes": 68351
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-mixed/page@dc305b08bab2d01e82d6f1634f159d5c.webm",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-mixed/page@dc305b08bab2d01e82d6f1634f159d5c.webm",
+      "sha256": "4db9f169f5b20af6ce434d1caefd1adb11b741d558e8b8c88a7b51189c89680b",
+      "bytes": 4882283
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/end.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-slow/end.png",
+      "sha256": "ac2d033ece315a7a7d579018a7035b84087feaa49d02491cba0e5f86648c878a",
+      "bytes": 56609
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-slow/page@952df565aced6606a0f08d35ee6d4a74.webm",
+      "sha256": "63d799ff089ff4eabf0cde9935138bc40c798bc7eb2363ca79e2310fcfd46f5b",
+      "bytes": 4813452
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/inputs.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-slow/inputs.jsonl",
+      "sha256": "6867d96e4f294ce0233857abc35d6110e311436903c48e28b05288683cf9080c",
+      "bytes": 3891
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-slow/startup.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-slow/startup.png",
+      "sha256": "d4ac08c95d16b5c0675865c53777def1150c74cedb81c919245d61643c871e28",
+      "bytes": 68351
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-steady/page@78a7bbabaf1848ba6fdd308c478815c8.webm",
+      "sha256": "805703deb06fd2092ce2a6aa8b9ee4b9e3be3fba8100b3f1fd600afcb2b3dfc7",
+      "bytes": 4910557
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/end.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-steady/end.png",
+      "sha256": "01841130b210b08e7f7a272b1fc0c3c042aed37c29cd4a5941d7474849a07f23",
+      "bytes": 55626
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/inputs.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-steady/inputs.jsonl",
+      "sha256": "ce8544abe670f3741a1e7debeb177edd25d22593d9193a6c9eb1b239c61be029",
+      "bytes": 5887
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/browser.jsonl",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-steady/browser.jsonl",
+      "sha256": "f75757f565714aaa87dbfe6be871e94556aab40d0f30147dc3a9488fb2821d17",
+      "bytes": 677
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/390-steady/startup.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/390-steady/startup.png",
+      "sha256": "92774a7a48f6cb48c6c6cfd3d8b0e45a165464a66d1d9dcea8071d5180da510e",
+      "bytes": 68309
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-fast-overview.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/390-fast-overview.jpg",
+      "sha256": "d3b5b63f2a1361d8a9f438efcd054dab3c98a4e1618e4c0fc56b26f31080d25e",
+      "bytes": 635597
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-mixed-overview.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/1100-mixed-overview.jpg",
+      "sha256": "49b47e15fa787260be98d4b109c45ba06123b6b8928710a2abded531a087d25e",
+      "bytes": 599783
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-slow-overview.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/1100-slow-overview.jpg",
+      "sha256": "0714a9b7855a624ac10d7eded68c7e31751b814ddf29d5da26183114746a8969",
+      "bytes": 605841
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-fast-overview.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/1100-fast-overview.jpg",
+      "sha256": "16152946a2ebd42cf2b1763fbef86bb69c7a8950bb05f0169788aadf00b0f048",
+      "bytes": 598510
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-steady-overview.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/390-steady-overview.jpg",
+      "sha256": "c9acd25b893d1302c03f423ed045ba79142cd88412e131898263d59b390643ce",
+      "bytes": 651309
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-mixed-overview.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/390-mixed-overview.jpg",
+      "sha256": "a6187fbb740cdb57c3505f279d56e0dd6ead9ad97979c8a94e92fe1fd70d23ed",
+      "bytes": 647082
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/1100-steady-overview.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/1100-steady-overview.jpg",
+      "sha256": "4bd8b62a99ee276d05a2cb0c29cc5f7fb60c32aa17b5a84bee5d79b4fe62f449",
+      "bytes": 599713
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/390-slow-overview.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/390-slow-overview.jpg",
+      "sha256": "0cf3859c01d1f15aa4f4fb6a9c15d27c50a5382b7cfef5b80ca315243a1cd747",
+      "bytes": 637110
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/review-media/manifest.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/capture/review-media/manifest.json",
+      "sha256": "71250e4fc75cd2217bb31071d2f0d45e80d3c731a0960eb980300cb4ab515e3c",
+      "bytes": 6536
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/blind-continuous/result.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/blind/result.json",
+      "sha256": "df2a73c7402c34a81f760bf1e294a254d09d76d7c36643c7189a85cce10b1e7b",
+      "bytes": 21575
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish390.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/finish390.jpg",
+      "sha256": "ff9c581fdaa411f8acd03d792ccad43c30429d60f6d4adf83395d32d49438031",
+      "bytes": 762777
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/input390.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/input390.jpg",
+      "sha256": "5f21d0f11f27585b910cdfbe97cc4fba0faba3b540217430902825824d52d152",
+      "bytes": 470248
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/input1100.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/input1100.jpg",
+      "sha256": "bdddc682de31b25cd5a36c30046747b210224cb1377f237b2812b01d8dc891c1",
+      "bytes": 447925
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/failure390.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/failure390.jpg",
+      "sha256": "528c7a98b257be4e11cbed8df2594ee7be4067c936e738071d07075b588a0368",
+      "bytes": 770769
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish1100.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/finish1100.jpg",
+      "sha256": "524e382a3f36690a2aba41aa2eec67fb7f2c77cdc0ab2f6f2a0998c7866b2730",
+      "bytes": 694206
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/manifest.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/manifest.json",
+      "sha256": "e973d8ac0603fd7025b467d70f01e0b3f5d79667237e00a58a4f152a842092fd",
+      "bytes": 6696
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/failure390/frame-005.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/failure390/frame-005.png",
+      "sha256": "342300967ae0725f629b0ed7ccbff0c3e6db3d08f726ddc1a6b57aaa81886bb9",
+      "bytes": 195589
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/failure390/frame-007.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/failure390/frame-007.png",
+      "sha256": "ad57ac44a6c89ed249124110980be646e4e07e6dbce742a4d97634d6d541d68c",
+      "bytes": 202214
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/failure390/frame-021.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/failure390/frame-021.png",
+      "sha256": "890559f2adc5db694f7441c39a5a5aa23c0eb6988cfe93b06875b572c6b5c15d",
+      "bytes": 169449
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/failure390/frame-030.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/failure390/frame-030.png",
+      "sha256": "5420b0aef52fd470305907c7a64a1e795420bd927aa4bfaf0b95ffab9e29dbfd",
+      "bytes": 228330
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish390/frame-004.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/finish390/frame-004.png",
+      "sha256": "bd2c59aa5d15b69bfec2b17a47669eba5e86163eafc5e0955a94512805317359",
+      "bytes": 199841
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish390/frame-016.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/finish390/frame-016.png",
+      "sha256": "d8d14bba93991bd85347e244418b1563d7dc626abd0ba48e76d7276034edab64",
+      "bytes": 202525
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish390/frame-025.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/finish390/frame-025.png",
+      "sha256": "f3b89f8112406c2de65f4ba8a770acd5c3ca1d5088a45674d7676c52a48aa67c",
+      "bytes": 219521
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish1100/frame-010.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/finish1100/frame-010.png",
+      "sha256": "c7396a6f8cd103b4c1f47acc51c363734e99f123264eba4355658d83cd8bfc1e",
+      "bytes": 479265
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish1100/frame-018.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/finish1100/frame-018.png",
+      "sha256": "f3d18d20d033f5274ff54b026e24f17639e3df6fbc3ccb6be3b67022e64df713",
+      "bytes": 339657
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/continuous-capture/controller-review/finish1100/frame-027.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/controller-review/finish1100/frame-027.png",
+      "sha256": "fcaf01b26e51d1a1941d1e99895843d208021b0feb3db869d842bcff7671542c",
+      "bytes": 512944
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/result.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/result.json",
+      "sha256": "b4970549e02b9c443953d48bdc3e38fb2ba626f1a8ae00ae0b0004119fbe6c6a",
+      "bytes": 179833
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/triage.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/triage.json",
+      "sha256": "82277515d057c7ca845103586f19a0e976ea7560d249db13d7d19f26a144205b",
+      "bytes": 5303
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/validation.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/validation.json",
+      "sha256": "e379469ec0c7aea6635b7b88559bdca2e246a37ab8ded4713386ebcdd05da114",
+      "bytes": 426
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/packet.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/packet.json",
+      "sha256": "cad2e0c830152d213405539686976a611f0b9c31d8979505674c8e9a0f303ee7",
+      "bytes": 12815
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/windows.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/windows.json",
+      "sha256": "7dac654640a73f415ee8ac87212e6301ae8a1eb4e0130360743b61a95c021354",
+      "bytes": 3122
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/extraction-manifest.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/extraction-manifest.json",
+      "sha256": "f722e93bcc41cfa31a987f60bf9e8dc0e0e2a817ec6755c3711d0cee7b8fa042",
+      "bytes": 135589
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media-hashes.json",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media-hashes.json",
+      "sha256": "73c741fb6541ba41b732ebabbb83e8524f538e3abb792c6483b470dd28a36e20",
+      "bytes": 1435
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/extract.py",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/extract.py.txt",
+      "sha256": "70074c6d7287aaca529e6393dcd12ee29f0cd21d7d49d94c7e9b7884cde252b4",
+      "bytes": 1896
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/extract_more.py",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/extract_more.py.txt",
+      "sha256": "0faf1ab25d20665be1552cc83528f23c50af0457b4b4e0cce9d6ac490bd969d9",
+      "bytes": 1870
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/finalize.mjs",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/finalize.mjs.txt",
+      "sha256": "b01e609c44be7cb813e423a1484c4bf6fb48ec55670b4d27e26443b005a1bb96",
+      "bytes": 18423
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-failure-replay-00.jpg",
+      "sha256": "f18c5c8a138e597e7da03c0362ec09105f95e4713f2593172a51438595a19c3b",
+      "bytes": 454457
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-trigger-01.jpg",
+      "sha256": "f9feb165a7ec77f4fedaf3e1ce233cb69ba805077e5a6906df709f972b76a2f1",
+      "bytes": 412458
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-trigger-00.jpg",
+      "sha256": "e5741a074321b023022301474e4606c9e19afde6cab38245d9dd6939c7caa2f7",
+      "bytes": 388986
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-failure-replay-01.jpg",
+      "sha256": "8c1b66fc1ac20e129166fc4dafaf4c0ff6f74082aa4f8b6d681663368354335d",
+      "bytes": 565326
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-failure-replay-03.jpg",
+      "sha256": "91a7ee0319459ed36ce6bab1a0c0013db425dd07f8f81f6e0130228e98c625cc",
+      "bytes": 363571
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-trigger-02.jpg",
+      "sha256": "2fb3deb1861b28d87d6e28d7415d6d8aa20e521fd9c83140ca312c259d19bb50",
+      "bytes": 430743
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-trigger-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-trigger-03.jpg",
+      "sha256": "923b5fed053fd418e4f94f029727d1c4f989808f1bf9871fd74981b93a43d613",
+      "bytes": 109490
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-failure-replay-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-failure-replay-02.jpg",
+      "sha256": "1f5a6f0af08d3d7e49bcee9aec6f3be44f5e793a248f0b7b33a0dcabd699c4e7",
+      "bytes": 543834
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-trigger-01.jpg",
+      "sha256": "284d51b46ff4ce0c3e798544246acb488be2e941a9dd815e5371a15df30c9c10",
+      "bytes": 509634
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-trigger-00.jpg",
+      "sha256": "13da64596d098740ad16319c3f62c1123ba34812f695f9b9c9cb7a03b87ac83a",
+      "bytes": 467459
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-trigger-02.jpg",
+      "sha256": "30801ab008b1ff71a865923f8288bb3d8d11e96fee0824ec4afd5ad4eb80569d",
+      "bytes": 535811
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-trigger-03.jpg",
+      "sha256": "213165631b586d010e80286d35b5f84a6fdb0c685e8b3577fe68123d7c37b07a",
+      "bytes": 120724
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-finish-replay-00.jpg",
+      "sha256": "df8f1d6777b74d05427b3615abb2196c4d91c7103599d765cda06b53d4094e16",
+      "bytes": 484205
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-initial-02.jpg",
+      "sha256": "da4cbe063ed6eed4219bb35ed91cdf0975fc68983649674974311ec27775f990",
+      "bytes": 678654
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-finish-replay-01.jpg",
+      "sha256": "c7593534e52662ef7a0c8cc766488af6d3425199c03e3b8bf9d4f35795568ced",
+      "bytes": 424494
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-trigger-01.jpg",
+      "sha256": "c9a0ea3f7ae8954d5c65f20bc2adb8620b21621504f0af00486634079cf2068c",
+      "bytes": 408416
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-trigger-00.jpg",
+      "sha256": "ef182b79f75ebc4effc1f1036b9ff5903accaa26cd7e2ccf8ae49423e142b89c",
+      "bytes": 383696
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-finish-replay-00.jpg",
+      "sha256": "fc9e5b4a73b77744ec700d83f48dfe91f8dac8bff116a9ced1f01a1899235532",
+      "bytes": 404989
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-initial-03.jpg",
+      "sha256": "2b7bc84bbf0bd48d8abdf57e7b4a3f7b5acf5c97393379c36e43de4e09bab43c",
+      "bytes": 652581
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-finish-replay-01.jpg",
+      "sha256": "d11ed88331349cc006e12baf6ae7445b1869f19b75901ed0e78174d95506cbc2",
+      "bytes": 526527
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-finish-replay-03.jpg",
+      "sha256": "65561802a4204859892eeb277c7a79d656ac0b7872abd7fa179a41e1d88adf84",
+      "bytes": 497056
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-initial-01.jpg",
+      "sha256": "573ee04ba22fb5818b83896164e9320f13f00dbd6d33e51f571aff5db6b03fd3",
+      "bytes": 709523
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-finish-replay-02.jpg",
+      "sha256": "6bcce4f88b8cb82c3928d3c7cec1cf22a253ae203e17322c80d6fd6f41a803c1",
+      "bytes": 425122
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-trigger-02.jpg",
+      "sha256": "ff2e77bab37a03d110cf6b97a32e742f032f23fbb629c8d7c6deb57813e36b62",
+      "bytes": 422274
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-trigger-03.jpg",
+      "sha256": "c1e4f1cb4e8fcbb8bfb3fd490b50884cdd5f75739a6ddee5546e5237ae7ae694",
+      "bytes": 108101
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-finish-replay-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-finish-replay-03.jpg",
+      "sha256": "9dea98d05e80d82d07dc31efe6b75146345d2537d0f69991dc1e7af3de21c568",
+      "bytes": 397274
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-initial-00.jpg",
+      "sha256": "20072fde1e0b70750184c0553f3630eef06c684214fe8089ece915a743a3dc27",
+      "bytes": 716769
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-finish-replay-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-finish-replay-02.jpg",
+      "sha256": "1c29c45d67d90af73894a6db1dbfe88bb1e684b65ac15b0d7ec756bad6d7f7b7",
+      "bytes": 525161
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-initial-04.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-initial-04.jpg",
+      "sha256": "fcbc333d70ae5f9d5b8ba5a1bc959fec60fea694410c3a4f3a86ba76076a2a4a",
+      "bytes": 89370
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-hazard-01.jpg",
+      "sha256": "4c2680b130ebf0895b45b8b5e0d7cad174e036537b75b747596ab56b3850ae11",
+      "bytes": 291283
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-hazard-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-hazard-00.jpg",
+      "sha256": "c03e4fd0b2c753c90a5f385a266a1d4c02e6fb87368a1c50cfc0b09833cc9d0a",
+      "bytes": 456112
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-04.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-initial-04.jpg",
+      "sha256": "fcb3e618801b7450c29696d47a1741ee128e9cc53f29a85bbbfcda5296558cab",
+      "bytes": 85263
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-hazard-01.jpg",
+      "sha256": "e7d61b60eb16531ce75c1bc6594d5c1ff41a6d2f6f652718231b66c2ba3d6c25",
+      "bytes": 470562
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-initial-03.jpg",
+      "sha256": "c99b99fa418ea0cd57f821053ef67917304113ff6915cb5e96ebadff0639b13d",
+      "bytes": 549356
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-trigger-00.jpg",
+      "sha256": "603bf8044ee6810270bb9c16d4c1431786eb390e2257a260b11a0c48802e8ff1",
+      "bytes": 466103
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-trigger-01.jpg",
+      "sha256": "043c4424fa2eaa706d4bb2406407a7ba1fe70edf3bcdca1e9307231df78635a9",
+      "bytes": 526123
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-initial-02.jpg",
+      "sha256": "273f5cd2698977077574751894f3e3687c0b2eb6614030aaeac07ca994713b0a",
+      "bytes": 562324
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-hazard-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-hazard-00.jpg",
+      "sha256": "d00aa1ee8f14838ddb577f6d2a6451b776480e8d9dbd821fd5d33a10eabb2ace",
+      "bytes": 452154
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-initial-00.jpg",
+      "sha256": "8579fdd48d59aaff5fd3279da6798dfcf805d1ff6b9b35859a77f430b85f934f",
+      "bytes": 567920
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-trigger-03.jpg",
+      "sha256": "dae3f0cbd33374232a1b8141e9e5a18b075287b50906b9ec882a68a277059666",
+      "bytes": 120214
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-slow-trigger-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-slow-trigger-02.jpg",
+      "sha256": "da29ee70a3a599273c42a0236022860d5b5418a73ceaa493bd75fb7d7a831b46",
+      "bytes": 537468
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-initial-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-initial-01.jpg",
+      "sha256": "746e6d3fd547b952f95f20febf073ad1c7010d5642fc38782e599770a6878dd9",
+      "bytes": 587900
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-initial-03.jpg",
+      "sha256": "d44e426424203071bb37dffa8c4204178bb4d24d7eda69f3ac8ca053c09df433",
+      "bytes": 503054
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-failure-replay-03.jpg",
+      "sha256": "64544e45e5bb6c88bc8d4b506c6dc322b35871b98ed8cafff0edba808d52cf35",
+      "bytes": 299730
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-failure-replay-02.jpg",
+      "sha256": "f76985325eb3877fa28befe4dc3e277275d70554f041dd3b80d08ab5087e55b0",
+      "bytes": 426071
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-04.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-initial-04.jpg",
+      "sha256": "c9b9db611dc3c124585b0957f62d9706e731ce57adb3c48d0e3d44c0fd3a9373",
+      "bytes": 85160
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-initial-02.jpg",
+      "sha256": "965572488c35231475d5a24ba4f07156a96772915378f8d0106a7a8754025275",
+      "bytes": 558140
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-initial-00.jpg",
+      "sha256": "f8bf3024e4ef96f03707d1177034684fe0d924f2996e92c581fe909b9f129d52",
+      "bytes": 704562
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-failure-replay-00.jpg",
+      "sha256": "bc5f6c6a49d9acfea84fb779ad7f7fff0a5c1344aab06e21e4481207e81a6703",
+      "bytes": 399220
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-failure-replay-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-failure-replay-01.jpg",
+      "sha256": "f65a2cbdc7577f65080c1c12caa77761b4ed34c80c5553fd5b6aaad18d29421e",
+      "bytes": 432448
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-initial-01.jpg",
+      "sha256": "91bd6b1b72e1e460400576395c01b60d63ab6e88cbfd0ab708c8b56a04a3fcac",
+      "bytes": 676485
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-03.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-initial-03.jpg",
+      "sha256": "ae053e0cd529f674c2d9c117b01e60ae24d0d0152997fe49af7ee380f1c177f7",
+      "bytes": 536962
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-02.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-initial-02.jpg",
+      "sha256": "616b1b9d75c6fbe8c15d7853d68703502bd1d24d97d88432ea19d04ef06d26d3",
+      "bytes": 538006
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-initial-04.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-initial-04.jpg",
+      "sha256": "b19911150d444758001f2643bedf4b4ab320093670385cf8641c9e9db4a1bfae",
+      "bytes": 79736
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-00.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-initial-00.jpg",
+      "sha256": "8521117ad6e10cc88b6f368821ab292616ab12398f5587d7abd2db80cd491b7a",
+      "bytes": 575686
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-mixed-initial-01.jpg",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-mixed-initial-01.jpg",
+      "sha256": "8b3c6c241a63c325be6d4b77aa6c750216d24d1360251c56195b49c23513c0ee",
+      "bytes": 583687
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0017.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-trigger/f-0017.png",
+      "sha256": "1f3c879be3fc95ea436a12c23bad897a27265ef19968707446e5578dd38e6a79",
+      "bytes": 180121
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0018.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-trigger/f-0018.png",
+      "sha256": "6819c9f14676ae6226489a755c84907c458c5e38104325b66121694dd36f1428",
+      "bytes": 188385
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/390-steady-trigger/f-0020.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/390-steady-trigger/f-0020.png",
+      "sha256": "ae00d0f812f902ef3c85c83bda867b574e5538cdd16ab02b88a3a54bab54727d",
+      "bytes": 206153
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0017.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-trigger/f-0017.png",
+      "sha256": "496b8c4372b7a138b11cb469ee7a0083e69295dbb9ebfb2be4faaf1e0d0f8509",
+      "bytes": 377340
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0016.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-trigger/f-0016.png",
+      "sha256": "786efbc85c40a400f0b974ea64761063b608b057b3197143f88072f6de63fbfa",
+      "bytes": 339804
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261024/independent-video-review/media/1100-steady-trigger/f-0020.png",
+      "publicPath": "docs/upgrades/20261024-continuous-qa/independent-review/media/1100-steady-trigger/f-0020.png",
+      "sha256": "56a94e612113f8ac4c7e8b54eece0f8835d379271d54989cd5aa9ce7a963f6c6",
+      "bytes": 425133
+    }
+  ],
+  "thirdPartyReferenceCopied": false,
+  "notes": "Exact bytes of all8 candidate videos, input logs and browser events published. No reference video or reference images copied. Offline raw extracted PNGs remain local; overview and manifest retained. Independent review publishes all candidate contact sheets and six decisive native frames; other decoded native frames remain local and are reproducible from published videos/extraction scripts, not silently counted as published."
+}

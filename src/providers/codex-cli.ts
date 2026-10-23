@@ -1,5 +1,5 @@
 import { spawn as nodeSpawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
-import { readFile, writeFile } from 'node:fs/promises';
+import { lstat, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { z } from 'zod';
 import { ensureDir, exists, writeJsonAtomic } from '../core/files.js';
@@ -128,6 +128,9 @@ export function parseCodexJsonl(stdout: string): CodexJsonlResult {
     try { event = z.record(z.string(), z.unknown()).parse(JSON.parse(line)); } catch { errors.push('Codex emitted invalid JSONL'); continue; }
     events.push(event);
     if (event.type === 'thread.started') threadId = typeof event.thread_id === 'string' ? event.thread_id : typeof event.threadId === 'string' ? event.threadId : threadId;
+    // The last turn must finish. A prior completed turn cannot stand in for a
+    // new turn that began but never emitted a completion event.
+    if (event.type === 'turn.started') completed = false;
     if (event.type === 'turn.completed') {
       completed = true;
       const rawUsage = event.usage as Record<string, unknown> | undefined;
@@ -147,6 +150,14 @@ export function parseCodexJsonl(stdout: string): CodexJsonlResult {
 
 type ProcessStopReason = 'failed' | 'token-budget' | 'usage-unavailable' | 'timeout' | 'cancelled';
 type ProcessResult = { code: number | null; signal: NodeJS.Signals | null; stdout: string; stderr: string; stopReason?: ProcessStopReason };
+
+async function redactAttemptOutput(outputPath: string): Promise<void> {
+  // The external CLI can fail before writing a message or leave a non-file.
+  if (!await exists(outputPath)) return;
+  const stat = await lstat(outputPath);
+  if (!stat.isFile() || stat.isSymbolicLink()) throw new Error('Codex attempt output must be a regular file');
+  await writeFile(outputPath, redactText(await readFile(outputPath, 'utf8')));
+}
 
 function isWithin(parent: string, candidate: string): boolean {
   const relative = path.relative(path.resolve(parent), path.resolve(candidate));
@@ -327,7 +338,11 @@ export class CodexCliProvider {
         if (request.signal?.aborted) throw new Error('codex exec was cancelled before launch');
         attempts = attempt;
         await execution.save(usage, attempts, 'running');
-        const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: request.outputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model });
+        // Output-last-message is per-attempt, never a shared old stage artifact.
+        // Without this isolation a successful exit without a new output file
+        // could accidentally publish the previous attempt's result.
+        const attemptOutputPath = path.join(execution.logDir, `${request.label}.attempt-${attempt}.last-message.txt`);
+        const args = buildCodexExecArgs({ cwd: workingDirectory.cwd, sandbox: request.sandbox, schemaPath, outputPath: attemptOutputPath, resumeThreadId: request.resumeThreadId, model: request.model?.trim() || this.model });
         try {
           const remainingTokens = maxTotalTokens === undefined ? undefined : maxTotalTokens - usage.totalTokens;
           if (remainingTokens !== undefined && remainingTokens <= 0) throw new Error('codex exec token budget exhausted');
@@ -362,10 +377,14 @@ export class CodexCliProvider {
             ? `codex exec timed out after ${request.timeoutMs ?? this.timeoutMs}ms; observed completed-turn tokens ${usage.totalTokens}`
             : `codex exec stopped: ${processResult.stopReason}; observed completed-turn tokens ${usage.totalTokens}`);
           if (failed || (maxTotalTokens !== undefined && parsed.usageIncomplete)) throw new Error(parsed.errors.at(-1) ?? (stderr.trim() || `codex exec exited with code ${processResult.code}`));
-          const rawOutputText = await readFile(request.outputPath, 'utf8');
-          const outputText = redactText(rawOutputText);
+          const outputStat = await lstat(attemptOutputPath);
+          if (!outputStat.isFile() || outputStat.isSymbolicLink()) throw new Error('Codex current attempt output must be a regular file');
+          const outputText = redactText(await readFile(attemptOutputPath, 'utf8'));
+          // Publish only a confirmed *current-attempt* output. Prior formal
+          // artifacts remain untouched on provider error or missing output.
+          await writeFile(attemptOutputPath, outputText);
           await writeFile(path.join(execution.logDir, `${request.label}.last-message.txt`), outputText);
-          if (outputText !== rawOutputText) await writeFile(request.outputPath, outputText);
+          await writeFile(request.outputPath, outputText);
           let output: unknown = outputText;
           try { output = JSON.parse(outputText); } catch { /* unstructured Builder/Fixer summary */ }
           return { ...parsed, usage, output, attempts, stdout, stderr, executionId: execution.executionId };
@@ -374,12 +393,15 @@ export class CodexCliProvider {
           // A failed budgeted process can have an unreported in-flight turn.
           // No retry is safe merely because its observed lower bound is small.
           if (maxTotalTokens !== undefined || request.signal?.aborted) throw error;
+        } finally {
+          // A later successful retry must not leave an earlier partial message
+          // unredacted, even though the outer error handler will not run.
+          await redactAttemptOutput(attemptOutputPath);
         }
       }
       throw lastError;
     } catch (error) {
       await execution.save(usage, attempts, uncertain || attempts > 0 ? 'uncertain' : 'complete');
-      if (await exists(request.outputPath)) await writeFile(request.outputPath, redactText(await readFile(request.outputPath, 'utf8')));
       throw new CodexExecutionError(redactText(error instanceof Error ? error.message : String(error)), usage, attempts, execution.executionId, model);
     } finally { await execution.release(); }
   }

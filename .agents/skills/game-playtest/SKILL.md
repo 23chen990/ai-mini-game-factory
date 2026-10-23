@@ -48,6 +48,12 @@ source, or pass a run based only on screenshots.
    `BLOCKED` and route it back to Blueprint/Builder; level completion alone cannot waive it.
 6. Always close browser and preview in cleanup. Validate all report JSON before handoff.
 
+## Temporal evidence and bounded natural input
+
+- For an **absence claim** (e.g., missing reward, cue, animation, or collision feedback), a single still screenshot or a missed sampling instant is insufficient. First confirm that normal player input actually triggered the relevant state, then inspect the continuous recording or timestamped frame sequence across the expected response window, including both world-local and HUD overlays. Attempt an independent normal-input reproduction when practical. Bind the claim to input time, observed trigger, viewport, frame range and contradictory frames. If coverage is incomplete or the trigger was not observed, report `UNOBSERVED`/unknown, **not FAIL or PASS**. Never turn a later screenshot into proof that a transient event never occurred.
+- Plan natural input **before** the session: compactly execute the intended player actions using real Playwright mouse/touch/keyboard APIs, collect input timestamps and continuous video, and review the evidence afterward. Avoid long Agent/tool think-time gaps between gameplay actions; such idle intervals can cause legitimate failures unrelated to the mechanism under test. Compare intended actions and feedback, not arbitrary fixed tap cadence. Record timing gaps, early falls, skipped branches and elapsed wall time. If the frozen deadline is exceeded or a required journey is not observed, keep the relevant checks BLOCKED instead of treating an exploratory run as accepted.
+- Keep independent adjudication separate from the subject's narrative. An independently verified counterexample must invalidate the precise negative claim; do not silently replace the failed claim with a different hypothesis or promote that case to PASS. Preserve the raw claim, counterexample and original timestamps for Agent Eval.
+
 ## Acceptance
 
 For a reference preview, first observe one complete reference core slice independently of the candidate's expected

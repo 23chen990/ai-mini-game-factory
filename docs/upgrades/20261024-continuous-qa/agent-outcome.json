@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "evidenceMode": "live-desktop-agent-not-factory-provider",
+  "routingTestsAreAgentCapabilityEvidence": false,
+  "primarySubject": {
+    "id": "blind_continuous_qa",
+    "freshLabelUnexposed": true,
+    "candidateSha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae",
+    "protocolPacketSha256": "cad2e0c830152d213405539686976a611f0b9c31d8979505674c8e9a0f303ee7",
+    "experimentAdjudicated": true,
+    "taskOutcome": "UNSUCCESSFUL",
+    "executionStatus": "BLOCKED",
+    "acceptedAttempts": 0,
+    "attemptedSamples": 1,
+    "taskSuccessRate": 0,
+    "rateScope": "This one predeclared complete-core-comparison task only, not defect detection or overall Agent generalization. Controller-assisted capture did not make the subject inspect dense evidence.",
+    "failureReasons": [
+      "Did not produce plan/runner before prep stop",
+      "Only1FPS candidate overviews reviewed; no dense temporal evidence",
+      "All12casesUNOBSERVED",
+      "Review908000ms exceeded600000ms",
+      "Positive-UI timestamp mislocalizations"
+    ],
+    "qaDefectGoldComplete": false,
+    "defectDetectionRate": null,
+    "defectMissRate": null,
+    "falsePositiveRate": null,
+    "claimsOfGameDefects": 0,
+    "verifiedNewGameDefects": 0,
+    "totalTokens": null,
+    "costUsd": null
+  },
+  "otherAgents": [
+    {
+      "role": "Research",
+      "newInvocations": 0,
+      "successRate": null,
+      "reason": "No new authentic execution sample; existing blocked/historical evidence not relabelled"
+    },
+    {
+      "role": "Builder",
+      "newInvocations": 0,
+      "successRate": null,
+      "reason": "No new authentic execution sample; existing blocked/historical evidence not relabelled"
+    },
+    {
+      "role": "Fixer",
+      "newInvocations": 0,
+      "successRate": null,
+      "reason": "No new authentic execution sample; existing blocked/historical evidence not relabelled"
+    }
+  ],
+  "independentPostCaptureReviewer": {
+    "role": "QA video adjudicator",
+    "separateFromPrimarySubject": true,
+    "doesNotUpgradePrimaryTask": true,
+    "noNewGameplay": true,
+    "status": "BLOCKED",
+    "resultSha256": "b4970549e02b9c443953d48bdc3e38fb2ba626f1a8ae00ae0b0004119fbe6c6a",
+    "caseOutcomes": {
+      "PASS": 2,
+      "FAIL": 2,
+      "UNOBSERVED": 8
+    },
+    "uniqueConfirmedIssueCount": 1,
+    "acceptedWholeScope": false,
+    "elapsedMs": 1629804,
+    "overrunMs": 429804,
+    "taskSuccessRate": null,
+    "reason": "Separate post-capture judgment, not the primary timed QA task or a complete autonomous factory sample; overrun retained."
+  },
+  "holdout": "Not holdout: same existing slice family. No independent holdout success inferred.",
+  "humanAndControllerCost": {
+    "newHumanGameplayActions": 0,
+    "humanActiveMinutes": null,
+    "controllerAuthoredCapturePolicies": 1,
+    "controllerAcquisitionMs": 332182,
+    "preparationAdministrativeStops": 1,
+    "primaryReviewAdministrativeStops": 1,
+    "controllerVideoExtractionAndReview": true,
+    "desktopAgentTokensAndMoneyUnavailable": true
+  },
+  "modelCost": {
+    "newPaidFactoryCalls": 0,
+    "desktopAgentTotalTokens": null,
+    "desktopAgentCostUsd": null,
+    "historicalCountersAddedAsNewUsage": false
+  }
+}

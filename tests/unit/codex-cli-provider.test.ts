@@ -95,11 +95,95 @@ describe('CodexCliProvider', () => {
     const result = await provider.execute({ label: 'BLUEPRINT', prompt: 'Read input/seed.yaml', cwd: root, sandbox: 'read-only', outputSchema: { type: 'object', additionalProperties: false }, outputPath: path.join(root, 'game-blueprint.json'), logDir: path.join(root, 'logs') });
 
     expect(calls[0]?.command).toBe('codex');
-    expect(calls[0]?.args).toEqual(buildCodexExecArgs({ cwd: root, sandbox: 'read-only', schemaPath: path.join(root, `logs/codex/executions/${result.executionId}/BLUEPRINT.schema.json`), outputPath: path.join(root, 'game-blueprint.json') }));
+    expect(calls[0]?.args).toEqual(buildCodexExecArgs({ cwd: root, sandbox: 'read-only', schemaPath: path.join(root, `logs/codex/executions/${result.executionId}/BLUEPRINT.schema.json`), outputPath: path.join(root, `logs/codex/executions/${result.executionId}/BLUEPRINT.attempt-1.last-message.txt`) }));
     expect(calls[0]?.args).not.toContain('danger-full-access');
     expect(calls[0]?.stdin).toBe('Read input/seed.yaml');
     expect(JSON.parse(await readFile(path.join(root, 'logs/BLUEPRINT.schema.json'), 'utf8'))).toMatchObject({ type: 'object' });
     expect(result).toMatchObject({ threadId: 'thread-1', output: { schemaVersion: 1 }, usage: { inputTokens: 1, outputTokens: 2, totalTokens: 3 } });
+  });
+
+  it('never accepts a stale shared result when the current Codex attempt produces no last message', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-stale-output-'));
+    const outputPath = path.join(root, 'out.json');
+    await writeFile(outputPath, '{"old":true}');
+    const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([{ stdout: '{"type":"turn.completed","usage":{"input_tokens":1,"output_tokens":1}}\n' }], calls),
+      timeoutMs: 100, maxRetries: 0,
+    });
+    await expect(provider.execute({
+      label: 'BLUEPRINT', prompt: 'fresh', cwd: root, sandbox: 'read-only',
+      outputPath, logDir: path.join(root, 'logs'),
+    })).rejects.toThrow();
+    expect(await readFile(outputPath, 'utf8')).toBe('{"old":true}');
+    expect(calls).toHaveLength(1);
+    expect(calls[0]?.args[calls[0].args.indexOf('--output-last-message') + 1]).not.toBe(outputPath);
+  });
+
+  it('retains and redacts the failed attempt output without overwriting an earlier successful artifact', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-failed-output-'));
+    const outputPath = path.join(root, 'out.json');
+    const secret = 'account-token-123456789';
+    await writeFile(outputPath, 'previous approved artifact');
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([{ code: 1, stdout: '{"type":"turn.failed","error":{"message":"failed"}}\n',
+        output: 'failed text Authorization: Bearer ' + secret }], []),
+      timeoutMs: 100, maxRetries: 0,
+    });
+    await expect(provider.execute({
+      label: 'BLUEPRINT', prompt: 'fresh', cwd: root, sandbox: 'read-only',
+      outputPath, logDir: path.join(root, 'logs'),
+    })).rejects.toThrow();
+    expect(await readFile(outputPath, 'utf8')).toBe('previous approved artifact');
+    const { readdir } = await import('node:fs/promises');
+    const executions = await readdir(path.join(root, 'logs/codex/executions'));
+    expect(executions).toHaveLength(1);
+    const retained = await readFile(path.join(root, 'logs/codex/executions', executions[0]!, 'BLUEPRINT.attempt-1.last-message.txt'), 'utf8');
+    expect(retained).not.toContain(secret);
+  });
+
+  it('rejects a final unfinished turn even when an earlier turn completed', async () => {
+    const sequence = [
+      '{"type":"turn.started"}',
+      '{"type":"turn.completed","usage":{"input_tokens":6,"output_tokens":3}}',
+      '{"type":"turn.started"}',
+    ].join('\n');
+    const parsed = parseCodexJsonl(sequence);
+    expect(parsed.completed).toBe(false);
+    expect(parsed.usage).toEqual({ inputTokens: 6, outputTokens: 3, totalTokens: 9 });
+
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-unfinished-turn-'));
+    const outputPath = path.join(root, 'out.txt');
+    await writeFile(outputPath, 'previous approved artifact');
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([{ stdout: sequence + '\n', output: 'partial output' }], []),
+      timeoutMs: 100, maxRetries: 0,
+    });
+    await expect(provider.execute({
+      label: 'BLUEPRINT', prompt: 'complete the task', cwd: root, sandbox: 'read-only',
+      outputPath, logDir: path.join(root, 'logs'),
+    })).rejects.toThrow(/exited|failed/i);
+    expect(await readFile(outputPath, 'utf8')).toBe('previous approved artifact');
+  });
+
+  it('redacts a failed attempt even when the next unbudgeted attempt succeeds', async () => {
+    const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-retry-redaction-'));
+    const outputPath = path.join(root, 'out.txt');
+    const secret = 'account-token-123456789';
+    const provider = new CodexCliProvider({
+      spawn: fakeSpawn([
+        { code: 1, stdout: '{"type":"turn.completed","usage":{"input_tokens":2,"output_tokens":1}}\n', output: `partial Authorization: Bearer ${secret}` },
+        { stdout: '{"type":"turn.completed","usage":{"input_tokens":3,"output_tokens":1}}\n', output: 'fresh output' },
+      ], []),
+      timeoutMs: 100, maxRetries: 1,
+    });
+    const result = await provider.execute({ label: 'BLUEPRINT', prompt: 'fresh', cwd: root,
+      sandbox: 'read-only', outputPath, logDir: path.join(root, 'logs') });
+    const retained = await readFile(path.join(root, `logs/codex/executions/${result.executionId}/BLUEPRINT.attempt-1.last-message.txt`), 'utf8');
+    expect(retained).toContain('partial');
+    expect(retained).not.toContain(secret);
+    expect(await readFile(outputPath, 'utf8')).toBe('fresh output');
+    expect(result).toMatchObject({ attempts: 2, usage: { inputTokens: 5, outputTokens: 2, totalTokens: 7 } });
   });
 
   it('parses thread, completion, failure, usage and error JSONL events', () => {

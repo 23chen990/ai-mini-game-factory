@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "baselinePr75Head": "31838a3fba67afc53b80e074bb3ea5f2631cc3e2",
+  "baselineCi": {
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39989703558",
+    "headSha": "31838a3fba67afc53b80e074bb3ea5f2631cc3e2",
+    "result": "success",
+    "jobs": [
+      "Release registry integrity",
+      "Factory lint, types and tests"
+    ],
+    "testFiles": 193,
+    "testsPassed": 1233
+  },
+  "change": "Retained partial last-message redaction now runs for every attempt, including failed attempt followed by legacy unbudgeted retry success. No budgeted retry policy changed.",
+  "local": {
+    "lint": 0,
+    "typecheck": 0,
+    "fullTestFilesPassed": 193,
+    "fullTestsPassed": 1234,
+    "controlledBudgetFilesPassed": 3,
+    "controlledBudgetTestsPassed": 23,
+    "providerTestsPassed": 22,
+    "releaseRegistryGames": 3,
+    "registryTestsPassed": 4
+  },
+  "retainedFailures": [
+    "New regression RED reproduced unredacted sentinel after retry success; initial concurrent full run also saw this RED.",
+    "First implementation lint rejected direct throw in finally; extracted external-file cleanup helper, no lint override.",
+    "New test initially passed optional executionId directly to path.join; typecheck caught this; corrected test path to existing template-literal pattern, no cast/assertion."
+  ],
+  "sourceFingerprints": [
+    {
+      "path": "src/providers/codex-cli.ts",
+      "sha256": "a9b4590c7657055afd3d4a9ab48d632e37c98b3b0016507980c89862f7add9fa"
+    },
+    {
+      "path": "tests/unit/codex-cli-provider.test.ts",
+      "sha256": "011f53517e8f1dd2b3af0b249f7cc790b84b5a5d425249a45ac958e6ac2d58f8"
+    }
+  ],
+  "newPaidFactoryModelCalls": 0,
+  "budgetLimitsUnchanged": "Observed-usage admission/stop, not a vendor financial hard cap; delayed/in-flight reports may overshoot. Desktop QA subagent is outside Factory receipt accounting. Unknown monetary cost is null.",
+  "dependency": [
+    "main",
+    "#73@6acaf36aac3df657287f7a6552b2fdd9840a37ab",
+    "#74@3c07762ceafcedfe8ce58241055619ec5e7eee85",
+    "#75"
+  ],
+  "merged": false,
+  "implementationCommit": "e8f30de2cf4369d2db6c838e1afa6ab26733a284",
+  "implementationCi": {
+    "headSha": "e8f30de2cf4369d2db6c838e1afa6ab26733a284",
+    "url": "https://github.com/23chen990/ai-mini-game-factory/actions/runs/39998921920",
+    "conclusion": "success"
+  }
+}

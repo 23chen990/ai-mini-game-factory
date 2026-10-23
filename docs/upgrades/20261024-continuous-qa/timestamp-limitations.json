@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "inputClock": "Date.now elapsed from immediately before page.goto, plus absolute wallAt per action",
+  "videoClock": "Playwright video container begins with captured presentation; first-frame wall clock was not logged/calibrated to navigation time",
+  "crossClockAlignment": "Unknown; do not treat equal input elapsedMs and video offset as exact frame correlation or numeric response latency. Windows are approximate selections only.",
+  "withinVideo": "Frame order can establish visible transition order within inspected contiguous video windows; sampling can miss transients, so retain unknowns where needed.",
+  "sourceScope": "No hidden game-state telemetry was used; capture does not establish deterministic physics truth or platform certification.",
+  "controllerDenseReview": "Root inspected5dense12FPS sheets and8overviews; root knows history and is not the blind subject. Approximate video windows input390/input1100 1.0\u20133.4s, failure39012.3\u201315.9s, finish39016.5\u201320.1s, finish110017.5\u201321.1s. No complete12-case pass claimed."
+}

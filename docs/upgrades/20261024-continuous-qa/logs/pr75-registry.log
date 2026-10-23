@@ -1,0 +1,12 @@
+✔ current registry satisfies schema (0.875667ms)
+✔ cannot mark a game release ready without each evidence axis passing (0.179916ms)
+✔ cannot treat missing real-world evidence as passing (0.6145ms)
+✔ duplicate game entries are rejected (0.096667ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56.701042

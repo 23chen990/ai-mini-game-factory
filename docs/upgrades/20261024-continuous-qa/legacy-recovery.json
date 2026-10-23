@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-23T17:02:00Z",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a",
+  "candidate": {
+    "path": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/dist/index.html",
+    "sha256": "c4cc3c427fc52c9f91f6229c9aea0ae7cfe8220341be521df6c807626d101aae"
+  },
+  "missing": [
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/state.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/input/seed.yaml",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/pipeline-plan.json",
+    "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/artifacts/permission-manifest.json"
+  ],
+  "priorSearch": {
+    "record": "../20261023-budget-acceptance/legacy-recovery-search.json",
+    "areas": [
+      "exact canonical run",
+      "other local worktrees",
+      "git --all exact paths"
+    ],
+    "completeSameTimepointBackupFound": false
+  },
+  "currentPr75RecoveryChange": false,
+  "decision": "BLOCKED",
+  "restorationPerformed": false,
+  "newFixerInvocations": 0,
+  "newGameSourceEdits": 0,
+  "newGameBuilds": 0,
+  "reason": "PR75 changes provider output isolation, final-turn completion, tests and QA instructions only; no legacy adoption/recovery path. Missing state/seed/plan/permissions cannot be invented; migration seed and alternate repair state are not original canonical state.",
+  "alternate": {
+    "workspace": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a",
+    "state": {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/repair-state.json",
+      "sha256": "f2c6b80843618468e53a71f0c431b8cc0e38276321e85f181bc63f3968a17dd3"
+    },
+    "build": {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a/dist/index.html",
+      "sha256": "28b2879d24d20c76d519fabb5dcc7a9ea19f96460b024057bf870f45ecea87fa"
+    },
+    "attempt": 10,
+    "thread": "01a15738-4235-7e82-8981-bd0ffa00c524",
+    "remainingHistoricalAuthorizedCalls": 0,
+    "currentUserDirection": "Conditional continuation of existing Fixer if legitimate recovery conditions hold; not evidence that missing canonical state exists.",
+    "lastIndependentRetest": "../20261023-budget-acceptance/retest/result.json",
+    "status": "BLOCKED",
+    "notTransplanted": true,
+    "scope": "Existing narrow low-gap cue fix, not the canonical c4 candidate or original removed white-column branch."
+  },
+  "requiredToUnblock": [
+    "Authentic same-run state.json preserving stages, attempts, stored thread and usage",
+    "Original seed and matching pipeline plan",
+    "Authentic permission manifest / approvals for exact workspace and operation",
+    "Reconcile historical unresolved model usage before another budgeted model invocation; do not zero it",
+    "Exact issue-specific QA and same-build natural/perceptual retest; no sibling branch substitution"
+  ]
+}
