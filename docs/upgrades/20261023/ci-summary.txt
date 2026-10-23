@@ -1,0 +1,3 @@
+Factory lint, types and tests	Verify factory core with bounded browser-test parallelism	2026-10-23T10:01:45.7407833Z  Test Files  190 passed (190)
+Factory lint, types and tests	Verify factory core with bounded browser-test parallelism	2026-10-23T10:01:45.7414471Z       Tests  1202 passed (1202)
+Factory lint, types and tests	Verify factory core with bounded browser-test parallelism	2026-10-23T10:01:45.7419163Z    Duration  221.68s (transform 3.85s, setup 0ms, import 79.39s, tests 323.50s, environment 25ms)

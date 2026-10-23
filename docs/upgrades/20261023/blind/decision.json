@@ -42,5 +42,12 @@
     ]
   },
   "nextDiscriminatingExperiment": "使用同一构建、预先冻结的中性玩家意图与完整关卡观察预算，给QA原始视频与已批准核心契约但不透露缺陷标签；完整覆盖后再独立标注TP/FP/FN。用户要求任何必要逆向先暂停并给外部Agent提示词；当前无逆向调用。",
-  "releaseBlocked": true
+  "releaseBlocked": true,
+  "sessions": {
+    "initial": 2,
+    "supplemental": 1,
+    "originalSessionLimit": 2,
+    "deviation": "Supplemental acceptance task explicitly requested one additional recovery attempt; its fresh session is outside the initial two-session protocol. Do not count it as initial zero-followup completion."
+  },
+  "taskSealLimitation": "neutral-task-copy.json was saved by the evaluator; it is not a pre-execution cryptographic seal of the exact original dispatch. The original neutral tool dispatch remains in this chat."
 }
