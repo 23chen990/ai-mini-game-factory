@@ -1,0 +1,9 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+
+ Test Files  4 passed (4)
+      Tests  42 passed (42)
+   Start at  23:20:14
+   Duration  2.12s (transform 1.30s, setup 0ms, import 2.73s, tests 841ms, environment 0ms)
+

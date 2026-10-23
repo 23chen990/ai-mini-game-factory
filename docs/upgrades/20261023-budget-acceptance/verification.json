@@ -103,5 +103,7 @@
     "blindQa": "UNSUCCESSFUL_PARTIAL_WITH_TWO_REFUTED_FINDINGS",
     "existingRepairRetest": "BLOCKED_NATURAL_PERCEPTUAL"
   },
-  "ciChannel": "GitHub workflow_dispatch on the pushed PR74 head; authoritative result is posted to the PR after execution. No CI success inferred from local tests."
+  "ciChannel": "GitHub workflow_dispatch on the pushed PR74 head; authoritative result is posted to the PR after execution. No CI success inferred from local tests.",
+  "implementationSha": "cc512bcc9f7e470e03bcfaa5960fe96199afea43",
+  "localLogsRetainedAndPublished": true
 }

@@ -1,0 +1,27 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-budget-process.test.ts (10 tests | 1 failed) 1736ms
+   × preserves known tokens when an external JSONL record is null 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > preserves known tokens when an external JSONL record is null
+TypeError: Cannot read properties of null (reading 'type')
+ ❯ parseCodexJsonl src/providers/codex-cli.ts:128:15
+    126|     try { event = JSON.parse(line) as Record<string, unknown>; } catch…
+    127|     events.push(event);
+    128|     if (event.type === 'thread.started') threadId = typeof event.threa…
+       |               ^
+    129|     if (event.type === 'turn.completed') {
+    130|       completed = true;
+ ❯ tests/unit/codex-budget-process.test.ts:110:18
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 9 passed (10)
+   Start at  23:23:45
+   Duration  2.35s (transform 333ms, setup 0ms, import 511ms, tests 1.74s, environment 0ms)
+

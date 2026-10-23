@@ -1,0 +1,201 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-budget-process.test.ts (19 tests | 4 failed) 2926ms
+   × rejects an unbudgeted FULL_BUILD side entrypoint before launch 45ms
+   × rejects an unbudgeted FIX side entrypoint before launch 40ms
+   × rejects an unbudgeted BUILD_3_PROTOTYPES side entrypoint before launch 40ms
+   × rejects an unbudgeted BUILD_ACTION_PROTOTYPES side entrypoint before launch 40ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > rejects an unbudgeted FULL_BUILD side entrypoint before launch
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(11) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 1,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "executionId": "07ce5ef4-87b3-44db-bb42-8386ff08c474",
++   "failed": false,
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
++   "usageIncomplete": false,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:183:52
+    181|   await mkdir(workspace, { recursive: true });
+    182|   await expect(f.provider().execute({ ...f.request, cwd: workspace, sa…
+    183|     role: stage === 'FIX' ? 'fixer' : 'builder' })).rejects.toThrow(/r…
+       |                                                    ^
+    184|   expect(f.calls()).toBe(0);
+    185| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > rejects an unbudgeted FIX side entrypoint before launch
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(11) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 1,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "executionId": "44dd82f0-4677-49c4-958b-9f6749a86308",
++   "failed": false,
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
++   "usageIncomplete": false,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:183:52
+    181|   await mkdir(workspace, { recursive: true });
+    182|   await expect(f.provider().execute({ ...f.request, cwd: workspace, sa…
+    183|     role: stage === 'FIX' ? 'fixer' : 'builder' })).rejects.toThrow(/r…
+       |                                                    ^
+    184|   expect(f.calls()).toBe(0);
+    185| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > rejects an unbudgeted BUILD_3_PROTOTYPES side entrypoint before launch
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(11) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 1,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "executionId": "2f2e8886-0ec9-4e18-a104-ab698b258c14",
++   "failed": false,
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
++   "usageIncomplete": false,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:183:52
+    181|   await mkdir(workspace, { recursive: true });
+    182|   await expect(f.provider().execute({ ...f.request, cwd: workspace, sa…
+    183|     role: stage === 'FIX' ? 'fixer' : 'builder' })).rejects.toThrow(/r…
+       |                                                    ^
+    184|   expect(f.calls()).toBe(0);
+    185| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  tests/unit/codex-budget-process.test.ts > rejects an unbudgeted BUILD_ACTION_PROTOTYPES side entrypoint before launch
+AssertionError: promise resolved "{ events: [ { …(2) } ], …(11) }" instead of rejecting
+
+- Expected
++ Received
+
+- Error {
+-   "message": "rejected promise",
++ {
++   "attempts": 1,
++   "completed": true,
++   "errors": [],
++   "events": [
++     {
++       "type": "turn.completed",
++       "usage": {
++         "input_tokens": 9,
++         "output_tokens": 1,
++       },
++     },
++   ],
++   "executionId": "02c91247-5001-43d6-900a-15fb09ff3a32",
++   "failed": false,
++   "output": "ok",
++   "stderr": "",
++   "stdout": "{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":9,\"output_tokens\":1}}
++ ",
++   "threadId": undefined,
++   "usage": {
++     "inputTokens": 9,
++     "outputTokens": 1,
++     "totalTokens": 10,
++   },
++   "usageIncomplete": false,
+  }
+
+ ❯ tests/unit/codex-budget-process.test.ts:183:52
+    181|   await mkdir(workspace, { recursive: true });
+    182|   await expect(f.provider().execute({ ...f.request, cwd: workspace, sa…
+    183|     role: stage === 'FIX' ? 'fixer' : 'builder' })).rejects.toThrow(/r…
+       |                                                    ^
+    184|   expect(f.calls()).toBe(0);
+    185| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 15 passed (19)
+   Start at  23:56:02
+   Duration  3.65s (transform 389ms, setup 0ms, import 607ms, tests 2.93s, environment 0ms)
+

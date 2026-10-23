@@ -1,0 +1,55 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-budget-accounting.test.ts (2 tests | 2 failed) 15ms
+   × keeps cost acknowledgements when a retry discards obsolete gameplay evidence 5ms
+   × adds orphan receipts to mixed-provider usage and deduplicates acknowledged receipts 9ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-accounting.test.ts > keeps cost acknowledgements when a retry discards obsolete gameplay evidence
+AssertionError: expected { stage: 'BLUEPRINT', …(10) } to have property "codexExecutionIds" with value [ Array(1) ]
+
+- Expected:
+[
+  "c7034409-23b3-48b8-955f-2b900a202a60",
+]
+
++ Received:
+undefined
+
+ ❯ tests/unit/codex-budget-accounting.test.ts:12:47
+     10|   const store = new FileRunStore('/tmp/codex-accounting-no-io');
+     11|   const previous = { ...store.record('BLUEPRINT'), codexExecutionIds: …
+     12|   expect(store.record('BLUEPRINT', previous)).toHaveProperty('codexExe…
+       |                                               ^
+     13| });
+     14|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  tests/unit/codex-budget-accounting.test.ts > adds orphan receipts to mixed-provider usage and deduplicates acknowledged receipts
+AssertionError: expected [ { stage: 'BLUEPRINT', …(2) }, …(1) ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ tests/unit/codex-budget-accounting.test.ts:25:19
+     23|     const stages = [{ stage: 'BLUEPRINT', evidence: [], codexExecution…
+     24|     const extra = unaccountedCodexUsage(stages, await readCodexUsageRe…
+     25|     expect(extra).toHaveLength(1);
+       |                   ^
+     26|     expect(deriveCostUsage([...stages, ...extra]).agentTokens).toBe(90…
+     27|   } finally { await rm(root, { recursive: true, force: true }); }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed (2)
+   Start at  23:21:08
+   Duration  592ms (transform 292ms, setup 0ms, import 482ms, tests 15ms, environment 0ms)
+

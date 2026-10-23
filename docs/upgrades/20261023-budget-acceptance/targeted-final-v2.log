@@ -1,0 +1,57 @@
+
+ RUN  v4.1.11 /Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市
+
+ ❯ tests/unit/codex-cli-provider.test.ts (18 tests | 1 failed) 129ms
+     × resumes the Builder thread in workspace-write without unsafe sandbox flags 4ms
+ ❯ tests/unit/codex-budget-accounting.test.ts (3 tests | 2 failed) 14ms
+   × adds orphan receipts to mixed-provider usage and deduplicates acknowledged receipts 9ms
+   × selects the latest uniquely bound execution for recovery instead of a first-call pointer 2ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/unit/codex-budget-accounting.test.ts > adds orphan receipts to mixed-provider usage and deduplicates acknowledged receipts
+Error: Codex FIX requires a run token budget; invocation-only limits cannot authorize a writer
+ ❯ beginCodexExecution src/core/codex-budget.ts:61:13
+     59|     const runBudget = rawBudget === undefined ? undefined : BudgetSche…
+     60|     if (['FULL_BUILD', 'FIX', 'BUILD_3_PROTOTYPES', 'BUILD_ACTION_PROT…
+     61|       throw new Error(`Codex ${input.stage} requires a run token budge…
+       |             ^
+     62|     }
+     63|     const receipts = await readCodexUsageReceipts(runRoot);
+ ❯ tests/unit/codex-budget-accounting.test.ts:20:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  tests/unit/codex-budget-accounting.test.ts > selects the latest uniquely bound execution for recovery instead of a first-call pointer
+Error: Codex FULL_BUILD requires a run token budget; invocation-only limits cannot authorize a writer
+ ❯ beginCodexExecution src/core/codex-budget.ts:61:13
+     59|     const runBudget = rawBudget === undefined ? undefined : BudgetSche…
+     60|     if (['FULL_BUILD', 'FIX', 'BUILD_3_PROTOTYPES', 'BUILD_ACTION_PROT…
+     61|       throw new Error(`Codex ${input.stage} requires a run token budge…
+       |             ^
+     62|     }
+     63|     const receipts = await readCodexUsageReceipts(runRoot);
+ ❯ tests/unit/codex-budget-accounting.test.ts:34:19
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  tests/unit/codex-cli-provider.test.ts > CodexCliProvider > resumes the Builder thread in workspace-write without unsafe sandbox flags
+Error: Codex FIX requires a run token budget; invocation-only limits cannot authorize a writer
+ ❯ beginCodexExecution src/core/codex-budget.ts:61:13
+     59|     const runBudget = rawBudget === undefined ? undefined : BudgetSche…
+     60|     if (['FULL_BUILD', 'FIX', 'BUILD_3_PROTOTYPES', 'BUILD_ACTION_PROT…
+     61|       throw new Error(`Codex ${input.stage} requires a run token budge…
+       |             ^
+     62|     }
+     63|     const receipts = await readCodexUsageReceipts(runRoot);
+ ❯ CodexCliProvider.execute src/providers/codex-cli.ts:310:23
+ ❯ tests/unit/codex-cli-provider.test.ts:148:20
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  2 failed | 5 passed (7)
+      Tests  3 failed | 72 passed (75)
+   Start at  23:56:53
+   Duration  18.17s (transform 1.30s, setup 0ms, import 3.94s, tests 19.61s, environment 0ms)
+
