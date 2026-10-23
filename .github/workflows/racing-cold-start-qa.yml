@@ -50,8 +50,13 @@ jobs:
         env:
           H5_PINNED_SOURCE_ROOT: ${{ runner.temp }}/racing-source
         run: node tools/lean-pilot/racing-mobile-build.mjs
+      # ubuntu-24.04 GitHub runners already ship Chromium's runtime libraries.
+      # --with-deps repeatedly downloaded 25.9 MB of extra system fonts via a
+      # throttled apt mirror, cancelling touch/context before their assertions.
+      # Install the same Playwright-managed browser but skip that apt upgrade;
+      # keep actual launch, software-WebGL and cold-start limits unchanged.
       - name: Matching complete Chromium browser
-        run: pnpm exec playwright install --with-deps chromium
+        run: pnpm exec playwright install chromium
       - name: Original cold-start assertions in complete Chromium - no timeout changes
         if: matrix.mode != 'context'
         run: node --import ./tools/lean-pilot/racing-real-browser-preload.mjs tools/lean-pilot/racing-cold-start-qa.mjs ${{ matrix.mode }}
