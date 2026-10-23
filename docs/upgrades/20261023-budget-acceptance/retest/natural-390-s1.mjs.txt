@@ -1,0 +1,38 @@
+import { createRequire } from 'node:module';
+const require = createRequire('/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a/package.json');
+const { chromium } = require('@playwright/test');
+const fs = require('node:fs');
+const out = '/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023';
+const viewport={width:390,height:844};
+const browser = await chromium.launch({headless:true});
+const context = await browser.newContext({viewport,deviceScaleFactor:1,isMobile:true,hasTouch:true,recordVideo:{dir:out+'/videos',size:viewport}});
+const page = await context.newPage(); const logs=[]; page.on('console',m=>logs.push({type:m.type(),text:m.text()})); page.on('pageerror',e=>logs.push({type:'pageerror',text:String(e)}));
+await page.goto('http://127.0.0.1:4173/',{waitUntil:'networkidle'}); await page.waitForTimeout(500);
+await page.screenshot({path:out+'/natural-390-s1-startup.png'});
+const t0=Date.now(); await page.touchscreen.tap(190,420);
+const lines=[]; let priorStatus=''; let priorCuts=-1; let targetHits=new Set();
+for (let n=0;n<400;n++) {
+  const elapsed=Date.now()-t0;
+  const sample=await page.evaluate((elapsed)=>{
+    const s=window.__GAME_TEST__.getState();
+    const cue=document.querySelector('#tutorial-cue'); const compact=document.querySelector('#instruction-text');
+    const vis=e=>!!e&&!e.hidden&&getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden';
+    return {elapsed,status:s.status,phase:s.phase,levelNumber:s.levelNumber,player:{x:s.player.x,y:s.player.y,vy:s.player.vy,vx:s.player.vx},cuts:s.cuts,score:s.score,totalCuts:s.totalCuts,finishPhase:s.finishPhase,finishSettled:s.finishSettled,events:s.events.slice(-3),visible:{large:vis(cue),largeCue:cue?.dataset.cue,largeTitle:cue?.querySelector('#tutorial-cue-title')?.textContent,largeDetail:cue?.querySelector('#tutorial-cue-detail')?.textContent,compact:vis(compact),compactText:compact?.textContent}};
+  },elapsed);
+  lines.push(JSON.stringify(sample));
+  if (sample.status!==priorStatus || sample.cuts!==priorCuts) {
+    await page.screenshot({path:out+`/natural-390-s1-event-${sample.elapsed}-${sample.status}-cuts${sample.cuts}.png`});
+    priorStatus=sample.status; priorCuts=sample.cuts;
+  }
+  for (const [name,c] of Object.entries({p1:{x:2480,y:500},p2:{x:2518,y:643},p3:{x:2550,y:690}})) {
+    if (!targetHits.has(name) && Math.abs(sample.player.x-c.x)<=12 && Math.abs(sample.player.y-c.y)<=14 && sample.player.vy>0) {
+      targetHits.add(name); await page.screenshot({path:out+`/natural-390-s1-${name}.png`});
+    }
+  }
+  if (['failed','won'].includes(sample.status) && elapsed>1000) break;
+  await page.waitForTimeout(50);
+}
+await page.screenshot({path:out+'/natural-390-s1-terminal.png'});
+fs.writeFileSync(out+'/natural-390-s1-trace.jsonl',lines.join('\n')+'\n');
+fs.writeFileSync(out+'/natural-390-s1-console.json',JSON.stringify(logs,null,2));
+await context.close(); await browser.close();

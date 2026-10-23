@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "artifactType": "issue-scoped-independent-retest",
+  "route": "formal-fixer",
+  "phase": "QA retest only; existing attempt10, zero new Fixer calls/builds",
+  "createdAt": "2026-10-23T15:36:13.204Z",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a",
+  "build": {
+    "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a/dist/index.html",
+    "sha256": "28b2879d24d20c76d519fabb5dcc7a9ea19f96460b024057bf870f45ecea87fa"
+  },
+  "issue": {
+    "id": "LOW-GAP-CUE-MISMATCH-009",
+    "observed": "Review caught the same issue persisting below y600: isLowGapFlight has unexplained playerY < landingTop+180 cap, so the last falling frames again say observe ASCENT. Actual attempt9 normal missed-gap landscape has x2484,y523,vy465 then x2518,y643,vy600. The latter still fails current attempt10 code. Do not introduce a vertical cutoff before failure.",
+    "evidence": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/attempt-9-after-natural/miss-gap-844x390-trace.json",
+    "acceptance": [
+      "At x2480,y500 and x2518,y643 and x2550,y690 with downwardvy450/600/650, both large and compact cues truthfully indicate low/falling until actual terminal.",
+      "Existing successful recovery/landing/ascending/high/ordinary branches retain assertions.",
+      "Remove only the arbitrary upper height cap; real status terminal and actual gap/next-support bounds already delimit the branch. No defensive guard or new tuning."
+    ]
+  },
+  "matrix": [
+    {
+      "id": "gap-cue-390x844",
+      "objectType": "actual horizontal gap and action cue",
+      "lifecycleStateBranch": "gap action → successful crossing OR below-landing descent → terminal → replay",
+      "rendererPath": "src/main.ts → src/game-levels.ts / src/game-core.ts → ThreePresentationModel → ThreeWorldRenderer/current fruit-cleave pipeline",
+      "viewport": {
+        "label": "mobile portrait",
+        "width": 390,
+        "height": 844
+      },
+      "expected": "Visible action at usable timing; following it crosses gap and completes, withholding it produces attributable failure and replay."
+    },
+    {
+      "id": "gap-cue-844x390",
+      "objectType": "actual horizontal gap and action cue",
+      "lifecycleStateBranch": "gap action → successful crossing OR below-landing descent → terminal → replay",
+      "rendererPath": "src/main.ts → src/game-levels.ts / src/game-core.ts → ThreePresentationModel → ThreeWorldRenderer/current fruit-cleave pipeline",
+      "viewport": {
+        "label": "mobile landscape",
+        "width": 844,
+        "height": 390
+      },
+      "expected": "Visible action at usable timing; following it crosses gap and completes, withholding it produces attributable failure and replay."
+    }
+  ],
+  "sources": [
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-10-prebuild-review.json",
+      "sha256": "b3c2fe45669c7c1cca57f82c92fc79d6b1c74875561fdbf920d548ce8691fb02"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-10-matrix.json",
+      "sha256": "ee62043d8be80ef29011264a4a7e391d4a6304084a49b424f764957e507a7442"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/attempt-9-qa-report.json",
+      "sha256": "7e4416aec986aa8729a608efe5ccbfe664de20925fc529ba339283557bf8f256"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/attempt-10-engineering-results.json",
+      "sha256": "c7681a0556163222da4fee23af2e32b13a32f6c55847c86aa0fb964284f5c358"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-4-open-source-research.json",
+      "sha256": "5b22e6fbdeebc826843951c8f8b4190f512b5a28bcb4e9a3a3f42fcfbb9edcc3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-4-research-binding.json",
+      "sha256": "da5d89498db1f25efefcd409b6a3ba23a0f3701abd4f63486814b2fe4a19db19"
+    }
+  ],
+  "acceptance": {
+    "exactBranch": [
+      "At x2480,y500 and x2518,y643 and x2550,y690 with downwardvy450/600/650, both large and compact cues truthfully indicate low/falling until actual terminal.",
+      "Existing successful recovery/landing/ascending/high/ordinary branches retain assertions.",
+      "Remove only the arbitrary upper height cap; real status terminal and actual gap/next-support bounds already delimit the branch. No defensive guard or new tuning."
+    ],
+    "natural": "390×844、844×390各新浏览器，正常输入到达gap低位下坠直至真实terminal，保存大提示和compact提示同状态玩家可见像素；未到达/分支证据缺失为BLOCKED，不能用fixture替代。",
+    "defaultJourney": "正常输入startup→core cutting→terminal/settlement→visible replay→new cut，并自然失败/重玩；未观察任何段落则BLOCKED。",
+    "regressions": "独立运行现有相关测试/lint/typecheck（不重新build，不改代码）；工程绿不覆盖自然/感知缺口。",
+    "scope": "仅评估LOW-GAP-CUE-MISMATCH-009；原white-column/later-recovery与其他问题保持开放；不宣称全游戏或平台通过。"
+  },
+  "limits": {
+    "wallClockMs": 600000,
+    "sessionsPerViewport": 4,
+    "newFixerCalls": 0,
+    "newBuilds": 0,
+    "gameEdits": 0
+  },
+  "output": {
+    "directory": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023",
+    "report": "result.json",
+    "required": [
+      "三轨独立状态、矩阵逐项证据",
+      "原始正常输入时间轨迹/截图/视频/console",
+      "额外观察/遗漏/人工介入",
+      "模型token和money不可观测则null"
+    ]
+  }
+}

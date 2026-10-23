@@ -1,0 +1,4 @@
+{"time":"2026-10-23T15:32:49.520Z","viewport":{"width":390,"height":844},"runNo":1,"type":"warning","text":"[.WebGL-0x10400511e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"}
+{"time":"2026-10-23T15:32:49.556Z","viewport":{"width":390,"height":844},"runNo":1,"type":"warning","text":"[.WebGL-0x10400511e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"}
+{"time":"2026-10-23T15:32:49.567Z","viewport":{"width":390,"height":844},"runNo":1,"type":"warning","text":"[.WebGL-0x10400511e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"}
+{"time":"2026-10-23T15:32:49.573Z","viewport":{"width":390,"height":844},"runNo":1,"type":"warning","text":"[.WebGL-0x10400511e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"}

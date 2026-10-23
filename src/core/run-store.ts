@@ -155,5 +155,5 @@ export class FileRunStore {
     await assertNoSymlinkInPath(path.join(this.runRoot(runId), 'artifacts'), file);
     return readJson(file);
   }
-  record(stage: StageName, previous?: StageRecord): StageRecord { return { stage, status: 'running', startedAt: new Date().toISOString(), finishedAt: null, attempts: (previous?.attempts ?? 0) + 1, inputArtifacts: [], outputArtifacts: [], errors: previous?.errors ?? [], evidence: [], providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } }; }
+  record(stage: StageName, previous?: StageRecord): StageRecord { return { stage, status: 'running', startedAt: new Date().toISOString(), finishedAt: null, attempts: (previous?.attempts ?? 0) + 1, inputArtifacts: [], outputArtifacts: [], errors: previous?.errors ?? [], evidence: [], codexExecutionIds: previous?.codexExecutionIds, providerCalls: previous?.providerCalls ?? { agent: 0, image: 0 }, tokenUsage: previous?.tokenUsage ?? { inputTokens: 0, outputTokens: 0, totalTokens: 0 } }; }
 }

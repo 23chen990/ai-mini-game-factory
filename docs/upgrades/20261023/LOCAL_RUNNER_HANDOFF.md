@@ -1,3 +1,5 @@
+> **Acceptance update (2026-10-24):** see [controlled budget and real QA results](../20261023-budget-acceptance/README.md). Run-wide controlled-process tests now pass; blind QA and formal retest retain explicit failures/BLOCKED outcomes. No paid Factory call was made. The original b3bd042 handoff below is preserved as historical context, not the current acceptance status.
+
 # Follow-up tasks requiring the user's local runner
 
 This branch implements a **per-Codex-invocation** streamed token guard. It has not been proven to enforce a **whole-run**, multi-agent budget. No real paid Codex call was run. Merging requires the usual full CI and reviewer approval.

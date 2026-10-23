@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "baseSha": "b3bd04275259db9c1f581ab263cb73b679f3c9df",
+  "branch": "codex/factory-runtime-budget-guard-20261023",
+  "pullRequest": 74,
+  "dependsOn": {
+    "pullRequest": 73,
+    "sha": "6acaf36aac3df657287f7a6552b2fdd9840a37ab"
+  },
+  "sourceFiles": [
+    {
+      "path": "factory-eval/agent-cases.json",
+      "sha256": "0ecff13fb74cd03b26f69c4cd7c696e6469d96b2c1c526f4bfad1dfb6f642360"
+    },
+    {
+      "path": "src/core/codex-budget.ts",
+      "sha256": "c4a2e7a429985fd96ef7ae6f4901065ffb0d0dcddafc2b89ebecc6430c22ac71"
+    },
+    {
+      "path": "src/core/factory-eval.ts",
+      "sha256": "7e77baa2221d4a6e498d42c420acaf0d9fae67ace3c4e4c5346e4cbb96c9f2ef"
+    },
+    {
+      "path": "src/core/run-store.ts",
+      "sha256": "abd2ae40087ad0cce3062d4b416ebc922d413e268cd62923dec0ebbeb79735d1"
+    },
+    {
+      "path": "src/factory.ts",
+      "sha256": "439590a6b609517d34044bd840a23d2e59dd5e4ed047f0bcda79fd2a2ecdfd4a"
+    },
+    {
+      "path": "src/providers/codex-account.ts",
+      "sha256": "7c887f6eb8f0fcfe3b9cb4821d50a49d86e971e5b47338e72474ff2db9b8375f"
+    },
+    {
+      "path": "src/providers/codex-cli.ts",
+      "sha256": "a79ea2cfdc30616eb427685cdf3f5cf181ba9cf8727f721fb1a358bb95e8b921"
+    },
+    {
+      "path": "src/providers/interfaces.ts",
+      "sha256": "32ab92ff058846460d2529bb3fe0bf2d102b335180b27192b1c6f261f9155f99"
+    },
+    {
+      "path": "src/schemas/factory-operating.ts",
+      "sha256": "5982ca974c58aad9a4c98ddfadbe268bfa7449d0b527d9373a52397e3d0631aa"
+    },
+    {
+      "path": "src/schemas/index.ts",
+      "sha256": "afb26a26b7c87992b2773e5ea834b76f3b6d76a5a146235574ec3912bd18f778"
+    },
+    {
+      "path": "tests/integration/codex-account-orchestrator.test.ts",
+      "sha256": "41c1eb9db54d4243ec667df708e0f19478ccb1375f70d9729a2f6dbbbcaaba97"
+    },
+    {
+      "path": "tests/integration/codex-budget-accounting.test.ts",
+      "sha256": "56421d0f182716b0a3b88b87f5acbc0162967ac4300f5c4b4f778138ec9616bf"
+    },
+    {
+      "path": "tests/unit/codex-budget-accounting.test.ts",
+      "sha256": "fd6db65e4a8d45c8b9939f2800d81f440ff9f1afa268a02c0eea7cdec056d5a2"
+    },
+    {
+      "path": "tests/unit/codex-budget-process.test.ts",
+      "sha256": "a1b636a0fa32c3f4bd4b78d6c3b9184834588469d6c8f48f8c8deafa7fb921e9"
+    },
+    {
+      "path": "tests/unit/codex-cli-provider.test.ts",
+      "sha256": "91e5e3e68b708e0911c4ba03c81817e4d28f3c2e497c5b8dc89bbaa33ab5e5aa"
+    },
+    {
+      "path": "tests/unit/factory-agent-eval.test.ts",
+      "sha256": "51a21b98efb346d4f7ecef6000bcd2be98b14195d0d183b2eb68d0fc76073890"
+    },
+    {
+      "path": "tests/unit/factory-eval.test.ts",
+      "sha256": "fd281f321368912f4b236ccba6a641a69f4f4ada4435254d02a3be4179dceb3d"
+    }
+  ],
+  "sourceFingerprint": "8c6916f1866fa62fa0a919dc01d6c019efb315ad8633bf38b0861294d82b54b4",
+  "checks": {
+    "lint": "PASS",
+    "typecheck": "PASS",
+    "testFiles": 193,
+    "testsPassed": 1230,
+    "testsFailed": 0,
+    "fullRegressionLog": "all-tests-complete.log",
+    "releaseRegistry": "PASS",
+    "releaseRegistryRegressions": 4,
+    "credentialPatternMatches": 0
+  },
+  "scope": {
+    "newPaidFactoryModelInvocations": 0,
+    "newGeneratedGameSourceEdits": 0,
+    "newGeneratedGameBuilds": 0,
+    "newFixerInvocations": 0,
+    "reverseEngineeringPerformed": false,
+    "externalSubagentTokens": null,
+    "externalSubagentCostUsd": null
+  },
+  "results": {
+    "budget": "CONTROLLED_PROCESS_PASS_WITH_EXPLICIT_LIMITS",
+    "blindQa": "UNSUCCESSFUL_PARTIAL_WITH_TWO_REFUTED_FINDINGS",
+    "existingRepairRetest": "BLOCKED_NATURAL_PERCEPTUAL"
+  },
+  "ciChannel": "GitHub workflow_dispatch on the pushed PR74 head; authoritative result is posted to the PR after execution. No CI success inferred from local tests."
+}

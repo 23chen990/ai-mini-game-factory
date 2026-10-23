@@ -95,7 +95,7 @@ describe('CodexCliProvider', () => {
     const result = await provider.execute({ label: 'BLUEPRINT', prompt: 'Read input/seed.yaml', cwd: root, sandbox: 'read-only', outputSchema: { type: 'object', additionalProperties: false }, outputPath: path.join(root, 'game-blueprint.json'), logDir: path.join(root, 'logs') });
 
     expect(calls[0]?.command).toBe('codex');
-    expect(calls[0]?.args).toEqual(buildCodexExecArgs({ cwd: root, sandbox: 'read-only', schemaPath: path.join(root, 'logs/BLUEPRINT.schema.json'), outputPath: path.join(root, 'game-blueprint.json') }));
+    expect(calls[0]?.args).toEqual(buildCodexExecArgs({ cwd: root, sandbox: 'read-only', schemaPath: path.join(root, `logs/codex/executions/${result.executionId}/BLUEPRINT.schema.json`), outputPath: path.join(root, 'game-blueprint.json') }));
     expect(calls[0]?.args).not.toContain('danger-full-access');
     expect(calls[0]?.stdin).toBe('Read input/seed.yaml');
     expect(JSON.parse(await readFile(path.join(root, 'logs/BLUEPRINT.schema.json'), 'utf8'))).toMatchObject({ type: 'object' });
@@ -176,7 +176,7 @@ describe('CodexCliProvider', () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-live-budget-'));
     const calls: string[] = [];
     let killed = false;
-    const controlledSpawn = ((_command: string, _args: readonly string[]) => {
+    const controlledSpawn = (() => {
       const child = new EventEmitter() as EventEmitter & {
         stdout: PassThrough; stderr: PassThrough; stdin: PassThrough; kill: (signal?: string) => boolean;
       };

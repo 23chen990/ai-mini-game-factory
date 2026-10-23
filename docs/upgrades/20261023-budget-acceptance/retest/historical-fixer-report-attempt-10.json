@@ -1,0 +1,31 @@
+{
+  "route": "formal-fixer",
+  "attempt": 10,
+  "rationale": "Added the failing late-low landing regression, required flight arguments, and geometry-based failure cue without changing layout or physics.",
+  "contextIntentionallyOmitted": [
+    "Full conversation and repository history",
+    "Other games and unrelated modules",
+    "Renderer, core physics, assets, save, and levels 2–12",
+    "Browser/build and unbound media evidence"
+  ],
+  "changedFiles": [
+    "src/level-one-guidance.ts",
+    "tests/level-ui.test.ts",
+    "tests/level1-recovery.test.ts",
+    ".fix-evidence/attempt-10-red.log",
+    ".fix-evidence/attempt-10-green.log"
+  ],
+  "redTestEvidence": [
+    "node --import tsx --test tests/level-ui.test.ts tests/level1-recovery.test.ts — RED, including new LEVEL-UI-GAP-008 and missing-flight-argument failures before implementation."
+  ],
+  "greenTestEvidence": [
+    "node --import tsx --test tests/*.test.ts — 328 tests, 327 passed, 0 failed, 1 pre-existing skip.",
+    "node_modules/.bin/eslint src tests scripts vite.config.ts --config eslint.config.js — passed.",
+    "node_modules/.bin/tsc --noEmit — passed."
+  ],
+  "summary": "Late falling states at x2480 through the next support’s right edge now show the existing danger cue with truthful low/descent copy. High-altitude, ordinary non-descending, post-edge, and anchored states clear that failure cue. Flight y/vy are required inputs; existing callers now provide explicit values. Original stack, rack, replay, and cadence behavior remain unchanged.",
+  "remainingEvidenceGaps": [
+    "No build or browser run was performed. Parent must verify exact portrait/landscape pixels and natural failure attribution on the built entrypoint.",
+    "Deterministic tests do not establish final natural-input or perceptual acceptance."
+  ]
+}

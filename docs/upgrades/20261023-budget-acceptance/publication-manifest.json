@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "copies": [
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/result.json",
+      "sourceSha256": "b725addb33a619911df434eb472bcdf3f031652745c020c8b9c48d80849a2a5b",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/result.json",
+      "publishedSha256": "b725addb33a619911df434eb472bcdf3f031652745c020c8b9c48d80849a2a5b",
+      "bytes": 20371
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/natural-runner.mjs",
+      "sourceSha256": "38c17380e8aabc8a118c84e8d05c735fdf05c73f19db8e357fe6da7948e01a89",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/natural-runner.mjs.txt",
+      "publishedSha256": "38c17380e8aabc8a118c84e8d05c735fdf05c73f19db8e357fe6da7948e01a89",
+      "bytes": 4822
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/administrator-oracle.json",
+      "sourceSha256": "f6961fba8391817b2c0ed5fa106ab94534b0ac01dea941048544a3b45780cb41",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/administrator-oracle.json",
+      "publishedSha256": "f6961fba8391817b2c0ed5fa106ab94534b0ac01dea941048544a3b45780cb41",
+      "bytes": 2972
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/validate-result.mjs",
+      "sourceSha256": "e6d26d867db2f841c32152583ff4be00adf4a3c39dd79854110350ef1edc6ff3",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/validate-result.mjs.txt",
+      "publishedSha256": "e6d26d867db2f841c32152583ff4be00adf4a3c39dd79854110350ef1edc6ff3",
+      "bytes": 1979
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/browser-events.jsonl",
+      "sourceSha256": "bfe2c44de9dc717e6003f0694f43c7a8823301d590c7c1b5af8c513e34d71de7",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/browser-events.jsonl",
+      "publishedSha256": "bfe2c44de9dc717e6003f0694f43c7a8823301d590c7c1b5af8c513e34d71de7",
+      "bytes": 937
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-390-run4.jsonl",
+      "sourceSha256": "c7b4abbfc7ddaa80a04099d5a41b086c923ba4c047156ba2dae932ff3dc5028e",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/inputs-390-run4.jsonl",
+      "publishedSha256": "c7b4abbfc7ddaa80a04099d5a41b086c923ba4c047156ba2dae932ff3dc5028e",
+      "bytes": 1824
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-1100-run1.jsonl",
+      "sourceSha256": "41f92a52b700410afbc26cbab561f27998c720211c804ee21e7bbf076041fbf4",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/inputs-1100-run1.jsonl",
+      "publishedSha256": "41f92a52b700410afbc26cbab561f27998c720211c804ee21e7bbf076041fbf4",
+      "bytes": 3170
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/protocol.json",
+      "sourceSha256": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/protocol.json",
+      "publishedSha256": "6194f64374ed10d582d1222b1e764ea23fda9f32d72aafd2c12d17c355066163",
+      "bytes": 11879
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-390-run2.jsonl",
+      "sourceSha256": "0373ef84fb25f2fa37e0b4c5c28abe11928695c0a6fbf5cabdd6cbcc873bbf5c",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/inputs-390-run2.jsonl",
+      "publishedSha256": "0373ef84fb25f2fa37e0b4c5c28abe11928695c0a6fbf5cabdd6cbcc873bbf5c",
+      "bytes": 1940
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-390-run3.jsonl",
+      "sourceSha256": "00e8d6a5b8cf246e3ac58bc9a31b2921f94184feb7d17378015b2214d05f5515",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/inputs-390-run3.jsonl",
+      "publishedSha256": "00e8d6a5b8cf246e3ac58bc9a31b2921f94184feb7d17378015b2214d05f5515",
+      "bytes": 478
+    },
+    {
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/inputs-390-run1.jsonl",
+      "sourceSha256": "83e64134c809671352bdd0122034d444a7329b0ea3617c2c5ecaab6163b8d8e4",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/blind/inputs-390-run1.jsonl",
+      "publishedSha256": "83e64134c809671352bdd0122034d444a7329b0ea3617c2c5ecaab6163b8d8e4",
+      "bytes": 1062
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-tests.log",
+      "sourceSha256": "d0e7df9268330f211df757efc402df04fbe7254a82af3bca3e285ee288887e91",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/engineering-tests.log",
+      "publishedSha256": "d0e7df9268330f211df757efc402df04fbe7254a82af3bca3e285ee288887e91",
+      "bytes": 41564
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/startup-390x844.json",
+      "sourceSha256": "05e4fe0ce52abfad5d24fe8fdc727deb93b156bb98a892f1d3615d8cdfee1a8d",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/startup-390x844.json",
+      "publishedSha256": "05e4fe0ce52abfad5d24fe8fdc727deb93b156bb98a892f1d3615d8cdfee1a8d",
+      "bytes": 22519
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-inputs.json",
+      "sourceSha256": "7deb879b518cf39a0f8c4396e999b9746c19ff61e01c2b12ccd37794a0c9c89d",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/follow-390-inputs.json",
+      "publishedSha256": "7deb879b518cf39a0f8c4396e999b9746c19ff61e01c2b12ccd37794a0c9c89d",
+      "bytes": 11303
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-inputs.json",
+      "sourceSha256": "aefedf432dfd46beabb59656794f712d20a522675dd4d6d2de4b94f3aed7c78a",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/followfixed-390-inputs.json",
+      "publishedSha256": "aefedf432dfd46beabb59656794f712d20a522675dd4d6d2de4b94f3aed7c78a",
+      "bytes": 15036
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-console.json",
+      "sourceSha256": "e2ef5a8d3f465dcba286f81c223fce9f95cea56ee5d3098a8f5094e7185252a4",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/hold-844x390-console.json",
+      "publishedSha256": "e2ef5a8d3f465dcba286f81c223fce9f95cea56ee5d3098a8f5094e7185252a4",
+      "bytes": 683
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/result.json",
+      "sourceSha256": "ed63828dcac41ff49f01734f49d2fcc2395c50a91cc61b6468905323f7b9e24f",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/result.json",
+      "publishedSha256": "ed63828dcac41ff49f01734f49d2fcc2395c50a91cc61b6468905323f7b9e24f",
+      "bytes": 8260
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-trace.jsonl",
+      "sourceSha256": "90bfac572989850dab586a2ec0071fa977b84fd571f7970e295f7cd21da61ff7",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/followfixed-390-trace.jsonl",
+      "publishedSha256": "90bfac572989850dab586a2ec0071fa977b84fd571f7970e295f7cd21da61ff7",
+      "bytes": 288864
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-trace.jsonl",
+      "sourceSha256": "a45431ed5cd49718535e0f698252dd6b5e4ea0325784dfc6a9f276822fa903a1",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/natural-390-s1-trace.jsonl",
+      "publishedSha256": "a45431ed5cd49718535e0f698252dd6b5e4ea0325784dfc6a9f276822fa903a1",
+      "bytes": 363871
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-trace.jsonl",
+      "sourceSha256": "dbfdbe6cd9647f6f413541e001ecdec80b8c93dcf1869b2d6dbbc96d0adb9ff6",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/follow-390-trace.jsonl",
+      "publishedSha256": "dbfdbe6cd9647f6f413541e001ecdec80b8c93dcf1869b2d6dbbc96d0adb9ff6",
+      "bytes": 117324
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/packet.json",
+      "sourceSha256": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/packet.json",
+      "publishedSha256": "fdec3adeae7a94e0cbafd8c1bb55e6c2af72bfb9ee0eef4265ba4db08e2938ef",
+      "bytes": 6630
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-summary.json",
+      "sourceSha256": "0ca32be438417814c81e2594ed7ffc043d368e57fd0887a5b8d82fabcf384985",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/hold-844x390-summary.json",
+      "publishedSha256": "0ca32be438417814c81e2594ed7ffc043d368e57fd0887a5b8d82fabcf384985",
+      "bytes": 1225
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1-console.json",
+      "sourceSha256": "8bae75c96973c72b382d2c0eea4197990859fbe50905741c6052176b9df0edc1",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/natural-390-s1-console.json",
+      "publishedSha256": "8bae75c96973c72b382d2c0eea4197990859fbe50905741c6052176b9df0edc1",
+      "bytes": 683
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-trace.jsonl",
+      "sourceSha256": "c1b0bc85a2875995b688229193362af14503e438b1350210e4f564002c26607e",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/hold-844x390-trace.jsonl",
+      "publishedSha256": "c1b0bc85a2875995b688229193362af14503e438b1350210e4f564002c26607e",
+      "bytes": 225020
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-follow.mjs",
+      "sourceSha256": "3b11a8592112ffbb70bc69d3c59514f5ea0d067f27f6c433eea7d3253388b630",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/natural-follow.mjs.txt",
+      "publishedSha256": "3b11a8592112ffbb70bc69d3c59514f5ea0d067f27f6c433eea7d3253388b630",
+      "bytes": 6007
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-console.json",
+      "sourceSha256": "c7a9de5a38b590691bea7cbde558dfe0740e81ae1b7bba609e4dd594873fff2a",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/followfixed-390-console.json",
+      "publishedSha256": "c7a9de5a38b590691bea7cbde558dfe0740e81ae1b7bba609e4dd594873fff2a",
+      "bytes": 683
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-summary.json",
+      "sourceSha256": "0e39212768a50fb4d944aa388bf58b3a44151a4172108d629b728cade0843b9d",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/follow-390-summary.json",
+      "publishedSha256": "0e39212768a50fb4d944aa388bf58b3a44151a4172108d629b728cade0843b9d",
+      "bytes": 1223
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-lint.log",
+      "sourceSha256": "6dbeb5a5df94f7c16c62b6704af9d643eb25d75b8701ec1385fcaa0af97fadb4",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/engineering-lint.log",
+      "publishedSha256": "6dbeb5a5df94f7c16c62b6704af9d643eb25d75b8701ec1385fcaa0af97fadb4",
+      "bytes": 68
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/hold-844x390-inputs.json",
+      "sourceSha256": "b31a1b3b6a4f3c5c385e87bd6eb40769c0e8d5253468e6337908fe7d943f22a5",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/hold-844x390-inputs.json",
+      "publishedSha256": "b31a1b3b6a4f3c5c385e87bd6eb40769c0e8d5253468e6337908fe7d943f22a5",
+      "bytes": 12246
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-run.mjs",
+      "sourceSha256": "314a9874a1897a8bc50321bd3ffb2fe3a59d0462dd02ad4e1b69facdf1fa0733",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/natural-run.mjs.txt",
+      "publishedSha256": "314a9874a1897a8bc50321bd3ffb2fe3a59d0462dd02ad4e1b69facdf1fa0733",
+      "bytes": 5806
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/server.log",
+      "sourceSha256": "53791f6b970099754753cc9362134f4dbc29a63a2ef4ee916dc12b403215a3a7",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/server.log",
+      "publishedSha256": "53791f6b970099754753cc9362134f4dbc29a63a2ef4ee916dc12b403215a3a7",
+      "bytes": 404
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/engineering-typecheck.log",
+      "sourceSha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/engineering-typecheck.log",
+      "publishedSha256": "8366207267355d3e3d5bf3bf6e8c94c5f93f6078c34f08973fa2b38cdda6cc92",
+      "bytes": 15
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/followfixed-390-summary.json",
+      "sourceSha256": "fe63ad3997df7723cf272b223a5b1d870ebf4fd3143ebc7dcf8b390c11917d8e",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/followfixed-390-summary.json",
+      "publishedSha256": "fe63ad3997df7723cf272b223a5b1d870ebf4fd3143ebc7dcf8b390c11917d8e",
+      "bytes": 1207
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/inspect-start.mjs",
+      "sourceSha256": "a1b856a3f3b1ad6ea5c023ed45739c352d59f0a144ce79fab4434c1eff4b9899",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/inspect-start.mjs.txt",
+      "publishedSha256": "a1b856a3f3b1ad6ea5c023ed45739c352d59f0a144ce79fab4434c1eff4b9899",
+      "bytes": 1840
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/follow-390-console.json",
+      "sourceSha256": "dada33c0060f777624dfc9fc36212225763e799a663e8a3fad570f85b884b73d",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/follow-390-console.json",
+      "publishedSha256": "dada33c0060f777624dfc9fc36212225763e799a663e8a3fad570f85b884b73d",
+      "bytes": 683
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/natural-390-s1.mjs",
+      "sourceSha256": "bd3d3c5f5d96394da7d3b43905f1fb426410c0f5f8c68d93d3e787080c06a19d",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/natural-390-s1.mjs.txt",
+      "publishedSha256": "bd3d3c5f5d96394da7d3b43905f1fb426410c0f5f8c68d93d3e787080c06a19d",
+      "bytes": 3135
+    },
+    {
+      "sourcePath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/fixer-report-attempt-10.json",
+      "sourceSha256": "b4688d268e0cec61b5d6eec16e033b2244e540e6c813cc3cc075fdf573650b51",
+      "publishedPath": "docs/upgrades/20261023-budget-acceptance/retest/historical-fixer-report-attempt-10.json",
+      "publishedSha256": "b4688d268e0cec61b5d6eec16e033b2244e540e6c813cc3cc075fdf573650b51",
+      "bytes": 1821
+    }
+  ],
+  "derivedCounterexamples": [
+    {
+      "path": "docs/upgrades/20261023-budget-acceptance/qa-review/frames-390-frame-03.png",
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-03.png",
+      "sha256": "16bd2b038b128116e259d815e94ea0bdc75ee33805120d7a05f06656669a65e8"
+    },
+    {
+      "path": "docs/upgrades/20261023-budget-acceptance/qa-review/frames-390-frame-04.png",
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-390/frame-04.png",
+      "sha256": "ce96d54282840206258ad779e68a4a77694bc8eaffaea013a946f1cd53db071b"
+    },
+    {
+      "path": "docs/upgrades/20261023-budget-acceptance/qa-review/frames-1100-frame-02.png",
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-02.png",
+      "sha256": "22ac29188268ec2fe55b6302ad9f1368695f291c8829cb96a9db097f851a9dbb"
+    },
+    {
+      "path": "docs/upgrades/20261023-budget-acceptance/qa-review/frames-1100-frame-03.png",
+      "sourcePath": "/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/controller-review/frames-1100/frame-03.png",
+      "sha256": "5cea6d661eda0996d1113e94edf5d5f6786720a2bee3e2ddca7f3d9651924723"
+    }
+  ]
+}

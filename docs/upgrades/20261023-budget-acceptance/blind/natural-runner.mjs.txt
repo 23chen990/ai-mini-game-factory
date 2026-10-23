@@ -1,0 +1,68 @@
+import { createServer } from 'node:http';
+import { createReadStream, mkdirSync, writeFileSync, appendFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+import { resolve, join } from 'node:path';
+import { createInterface } from 'node:readline';
+
+const repo = '/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市';
+const require = createRequire(join(repo, 'package.json'));
+const { chromium } = require('@playwright/test');
+const out = '/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2';
+const candidate = '/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/workspace/prototype-a/qa-builds/attempt13/index.html';
+const browser = await chromium.launch({ headless: true });
+const server = createServer((req, res) => {
+  if (req.method !== 'GET' || (req.url !== '/' && req.url !== '/index.html')) {
+    res.writeHead(404); res.end('not found'); return;
+  }
+  res.writeHead(200, { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store' });
+  createReadStream(candidate).pipe(res);
+});
+await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+const url = `http://127.0.0.1:${server.address().port}/`;
+console.log(JSON.stringify({ready: true, url}));
+let ctx, page, viewport, runNo, tracePath, startTime;
+let pendingVideo = null;
+const logs = join(out, 'browser-events.jsonl');
+function record(event) {
+  appendFileSync(tracePath, JSON.stringify({ elapsedMs: Date.now() - startTime, viewport, runNo, ...event }) + '\n');
+}
+function listen(p) {
+  p.on('console', msg => {
+    const entry = { time: new Date().toISOString(), viewport, runNo, type: msg.type(), text: msg.text() };
+    appendFileSync(logs, JSON.stringify(entry) + '\n');
+  });
+  p.on('pageerror', err => appendFileSync(logs, JSON.stringify({time:new Date().toISOString(),viewport,runNo,type:'pageerror',text:err.message,stack:err.stack})+'\n'));
+  p.on('requestfailed', req => appendFileSync(logs, JSON.stringify({time:new Date().toISOString(),viewport,runNo,type:'requestfailed',url:req.url(),failure:req.failure()?.errorText})+'\n'));
+}
+async function open(w,h,n) {
+  if (ctx) await ctx.close();
+  viewport = {width:w,height:h}; runNo=n; startTime=Date.now();
+  const mobile = w < 500;
+  const videoDir = join(out, `video-${w}-run${n}`); mkdirSync(videoDir,{recursive:true});
+  ctx = await browser.newContext({ viewport, deviceScaleFactor: 1, isMobile:mobile, hasTouch:mobile, recordVideo:{dir:videoDir,size:viewport} });
+  page = await ctx.newPage(); listen(page);
+  tracePath = join(out, `inputs-${w}-run${n}.jsonl`); writeFileSync(tracePath,'');
+  await page.goto(url, {waitUntil:'load'});
+  console.log(JSON.stringify({opened:true,viewport,runNo,title:await page.title(),url}));
+}
+async function screenshot(label) {
+  const name=`candidate-${viewport.width}-run${runNo}-${label}.png`;
+  await page.screenshot({path:join(out,name)});
+  console.log(JSON.stringify({screenshot:name}));
+}
+const rl=createInterface({input:process.stdin,output:process.stdout});
+for await (const line of rl) {
+  const [cmd,...rest]=line.trim().split(/\s+/);
+  try {
+    if (cmd==='open') await open(Number(rest[0]),Number(rest[1]),Number(rest[2]));
+    else if (cmd==='shot') await screenshot(rest[0]||`t${Date.now()}`);
+    else if (cmd==='wait') {const ms=Number(rest[0]);record({type:'wait',ms});await page.waitForTimeout(ms);console.log(JSON.stringify({waited:ms}));}
+    else if (cmd==='tap') {const x=Number(rest[0]),y=Number(rest[1]);record({type:'touch-tap',x,y});if(viewport.width<500)await page.touchscreen.tap(x,y);else await page.mouse.click(x,y);console.log(JSON.stringify({tapped:{x,y}}));}
+    else if (cmd==='click') {const x=Number(rest[0]),y=Number(rest[1]);record({type:'mouse-click',x,y});await page.mouse.click(x,y);console.log(JSON.stringify({clicked:{x,y}}));}
+    else if (cmd==='key') {const key=rest.join(' ');record({type:'keyboard',key});await page.keyboard.press(key);console.log(JSON.stringify({key}));}
+    else if (cmd==='size') console.log(JSON.stringify(await page.evaluate(()=>({innerWidth,innerHeight,devicePixelRatio,scrollWidth:document.documentElement.scrollWidth,scrollHeight:document.documentElement.scrollHeight}))));
+    else if (cmd==='close') {const vid=page.video();await ctx.close();ctx=null;console.log(JSON.stringify({closed:true,video:await vid.path()}));}
+    else if (cmd==='quit') {if(ctx){const vid=page.video();await ctx.close();console.log(JSON.stringify({closed:true,video:await vid.path()}));}await browser.close();await new Promise(r=>server.close(r));console.log(JSON.stringify({quit:true}));process.exit(0);}
+    else console.log(JSON.stringify({error:'unknown command',cmd}));
+  } catch(e) {console.log(JSON.stringify({commandError:e.message,stack:e.stack}));}
+}

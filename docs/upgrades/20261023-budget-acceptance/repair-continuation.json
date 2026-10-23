@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "scope": "Continue existing formal-fixer attempt10 QA only; no new Fixer or build",
+  "targetGame": "mobile-slice-adaptation-20260830",
+  "workspace": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/workspace/prototype-a",
+  "buildSha256": "28b2879d24d20c76d519fabb5dcc7a9ea19f96460b024057bf870f45ecea87fa",
+  "issueId": "LOW-GAP-CUE-MISMATCH-009",
+  "originalWhiteColumnIssueClosed": false,
+  "canonicalRunRestored": false,
+  "attemptPreserved": 10,
+  "historicalAttemptPreserved": 11,
+  "newSourceEdits": [],
+  "newBuilds": 0,
+  "newFixerInvocations": 0,
+  "historicalChangedFiles": [
+    "src/level-one-guidance.ts",
+    "tests/level-ui.test.ts",
+    "tests/level1-recovery.test.ts",
+    ".fix-evidence/attempt-10-red.log",
+    ".fix-evidence/attempt-10-green.log"
+  ],
+  "historicalReportedUsageCounter": {
+    "inputTokens": 54335230,
+    "outputTokens": 278765,
+    "totalTokens": 54613995
+  },
+  "costCaveat": "Historical reported counters retained, not reconciled to vendor billing or proven delta semantics; never add them as new experiment usage. New external QA tokens/money are unknown.",
+  "independentRetest": {
+    "resultPath": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/independent-retest-20261023/result.json",
+    "sha256": "ed63828dcac41ff49f01734f49d2fcc2395c50a91cc61b6468905323f7b9e24f",
+    "engineering": "PASS",
+    "natural": "BLOCKED",
+    "perceptual": "BLOCKED",
+    "overall": "BLOCKED",
+    "reportedDurationLowerBoundMs": 1032000,
+    "timeLimitMs": 600000
+  },
+  "sources": [
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/repair-state.json",
+      "sha256": "f2c6b80843618468e53a71f0c431b8cc0e38276321e85f181bc63f3968a17dd3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/delivery-status.json",
+      "sha256": "bc4119c8750c541aa98e913f1bbf7c98a9be3d70c9513086f08d87545c3152b1"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/invocation-attempt-10.json",
+      "sha256": "42140b12363f5157cb7712a38e997454c2f16708ab823c84ac90b3e22893cea8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/execution-result-attempt-10.json",
+      "sha256": "2c499c19347010f9e5cfd6112d77c4d381142ff1dfc38dfd4e29412bbe200f28"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/fixer-report-attempt-10.json",
+      "sha256": "b4688d268e0cec61b5d6eec16e033b2244e540e6c813cc3cc075fdf573650b51"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-10-triage.json",
+      "sha256": "93489f3d29de81028827df771c3ef747d571532efd3a462f367f6e4954dee216"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-10-prebuild-review.json",
+      "sha256": "b3c2fe45669c7c1cca57f82c92fc79d6b1c74875561fdbf920d548ce8691fb02"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-10-matrix.json",
+      "sha256": "ee62043d8be80ef29011264a4a7e391d4a6304084a49b424f764957e507a7442"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-4-research-binding.json",
+      "sha256": "da5d89498db1f25efefcd409b6a3ba23a0f3701abd4f63486814b2fe4a19db19"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/inputs/attempt-4-open-source-research.json",
+      "sha256": "5b22e6fbdeebc826843951c8f8b4190f512b5a28bcb4e9a3a3f42fcfbb9edcc3"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/attempt-9-qa-report.json",
+      "sha256": "7e4416aec986aa8729a608efe5ccbfe664de20925fc529ba339283557bf8f256"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/qa/attempt-10-engineering-results.json",
+      "sha256": "c7681a0556163222da4fee23af2e32b13a32f6c55847c86aa0fb964284f5c358"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/authorization-use.json",
+      "sha256": "6bd1f493cd9bf85c44132cabca104b52022cd7e95fb0f1e58562e59f8b89f6d8"
+    },
+    {
+      "path": "/Users/kker/.codex/worktrees/factory-agent-evaluation/妖怪夜市/runs/mobile-slice-adaptation-20260830/repair-20261020-white-column/authorization-use-attempt-2.json",
+      "sha256": "e9e70b7ea32753ca2b839a72b59a7ce29ff0a31e8bc2f91a9e8a03d560650e49"
+    }
+  ]
+}

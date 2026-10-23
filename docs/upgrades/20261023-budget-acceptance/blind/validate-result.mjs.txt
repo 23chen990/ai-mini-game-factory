@@ -1,0 +1,41 @@
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+const require = createRequire('/Users/kker/.codex/worktrees/factory-agent-eval-v4/妖怪夜市/package.json');
+const { z } = require('zod');
+const hash = z.string().regex(/^[0-9a-f]{64}$/);
+const caseSchema = z.object({
+  id: z.string(),
+  outcome: z.enum(['PASS', 'FAIL', 'UNOBSERVED']),
+  observations: z.string().min(1),
+  evidencePaths: z.array(z.string()).min(1),
+  unobservedSubpaths: z.array(z.string())
+}).strict();
+const summarySchema = z.object({
+  status: z.enum(['PASS', 'FAIL', 'BLOCKED', 'UNOBSERVED']),
+  summary: z.string().min(1),
+  evidencePaths: z.array(z.string()).min(1)
+}).strict();
+const schema = z.object({
+  schemaVersion: z.literal(1),
+  protocolSha256: hash,
+  candidateSha256: hash,
+  referenceSha256: hash,
+  startedAt: z.string().datetime(),
+  finishedAt: z.string().datetime(),
+  durationMs: z.number().int().nonnegative(),
+  cases: z.array(caseSchema).length(12),
+  naturalJourney: summarySchema,
+  perceptual: summarySchema,
+  additionalObservations: z.array(z.string()),
+  humanInterventions: z.array(z.unknown()).length(0),
+  filesRead: z.array(z.string()).min(1),
+  labelExposure: z.literal(false),
+  cost: z.object({ totalTokens: z.null(), costUsd: z.null() }).strict()
+}).strict().superRefine((data, ctx) => {
+  const ids = data.cases.map(c => c.id);
+  if (new Set(ids).size !== 12) ctx.addIssue({code:'custom', message:'case ids must be unique'});
+  if (data.cases.filter(c => c.outcome === 'PASS').length + data.cases.filter(c => c.outcome === 'FAIL').length + data.cases.filter(c => c.outcome === 'UNOBSERVED').length !== 12) ctx.addIssue({code:'custom',message:'all 12 case outcomes required'});
+});
+const file = '/Users/kker/Documents/ChatGPT/妖怪夜市/runs/mobile-slice-adaptation-20260830/factory-eval-20261023/blind-qa-v2/result.json';
+schema.parse(JSON.parse(readFileSync(file, 'utf8')));
+console.log('Zod result validation passed: 12 cases');
