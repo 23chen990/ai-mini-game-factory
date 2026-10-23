@@ -183,7 +183,7 @@ describe('CodexCliProvider', () => {
       child.stdout = new PassThrough(); child.stderr = new PassThrough(); child.stdin = new PassThrough();
       child.kill = (signal) => { killed = true; calls.push(String(signal)); queueMicrotask(() => child.emit('close', null, 'SIGTERM')); return true; };
       queueMicrotask(() => {
-        child.stdout.write('{"type":"turn.completed","usage":{"input_tokens":35,"output_tokens":20}}\\n');
+        child.stdout.write('{"type":"turn.completed","usage":{"input_tokens":35,"output_tokens":20}}\n');
       });
       return child as never;
     }) as SpawnFunction;
