@@ -164,6 +164,14 @@ describe('CodexCliProvider', () => {
     expect(killed.value).toBe(true);
   });
 
+  it('sums completed-turn usage instead of silently keeping only the final turn', () => {
+    const parsed = parseCodexJsonl([
+      '{"type":"turn.completed","usage":{"input_tokens":100,"cached_input_tokens":80,"output_tokens":20}}',
+      '{"type":"turn.completed","usage":{"input_tokens":70,"cached_input_tokens":50,"output_tokens":10}}',
+    ].join('\\n'));
+    expect(parsed.usage).toEqual({ inputTokens: 170, outputTokens: 30, totalTokens: 200 });
+  });
+
   it('allows a long-running Builder request to override the text-stage timeout', async () => {
     const root = await mkdtemp(path.join(tmpdir(), 'codex-cli-builder-timeout-'));
     const calls: Array<{ command: string; args: string[]; cwd?: string; stdin: string }> = [];
