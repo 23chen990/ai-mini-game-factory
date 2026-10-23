@@ -128,6 +128,9 @@ export function parseCodexJsonl(stdout: string): CodexJsonlResult {
     try { event = z.record(z.string(), z.unknown()).parse(JSON.parse(line)); } catch { errors.push('Codex emitted invalid JSONL'); continue; }
     events.push(event);
     if (event.type === 'thread.started') threadId = typeof event.thread_id === 'string' ? event.thread_id : typeof event.threadId === 'string' ? event.threadId : threadId;
+    // The last turn must finish. A prior completed turn cannot stand in for a
+    // new turn that began but never emitted a completion event.
+    if (event.type === 'turn.started') completed = false;
     if (event.type === 'turn.completed') {
       completed = true;
       const rawUsage = event.usage as Record<string, unknown> | undefined;
